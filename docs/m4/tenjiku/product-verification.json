@@ -1,0 +1,406 @@
+{
+  "schema": "mshogi.tenjiku.product-verification.v1",
+  "task": "MSH-44",
+  "status": "implementation_in_progress",
+  "base_revision": "84d7aa83c5477dfde4513515fe54c3b9e1fb2587",
+  "tested_revision": null,
+  "scope": "Functional two-profile playable desktop visual checkpoint; normal activation and final acceptance pending owner approval",
+  "profiles": [
+    "mshogi.tenjiku.adams1999-modern.v1",
+    "mshogi.tenjiku.muller-completed.v1"
+  ],
+  "resource_policy": {
+    "native_bytes": 1048576,
+    "native_events": 1024,
+    "native_replay_work": 512000000,
+    "document_replay_work": 160000000,
+    "document_deadline_seconds": 15,
+    "changed": false
+  },
+  "search_limits": {
+    "default_depth": 1,
+    "default_visits": 1024,
+    "max_depth": 2,
+    "max_visits": 2000,
+    "measurements": "engine-v1.md"
+  },
+  "checks": [
+    {
+      "command": "cargo check --locked --workspace --offline",
+      "result": "passed"
+    },
+    {
+      "command": "cargo check --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --features desktop-verification",
+      "result": "passed; existing vendored Tao warnings"
+    },
+    {
+      "command": "PATH=<bundled Node24.22.1>/bin:$PATH npm run check",
+      "cwd": "desktop",
+      "result": "passed"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-engine --test tenjiku_protocol",
+      "result": "3 passed"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-engine --test tenjiku_routing",
+      "result": "4 passed"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-desktop-session tenjiku_document::tests::execution:: -- --test-threads=1",
+      "result": "5 passed in18.84s"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-desktop-session shared::tenjiku_tests::real_search -- --test-threads=1",
+      "result": "1 passed in4.36s"
+    },
+    {
+      "command": "cargo test --release --locked --offline -p mshogi-desktop-session measured_real_engine_contexts_actual_worker -- --ignored --nocapture --test-threads=1",
+      "result": "1 passed in113.32s; both profiles"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked --offline -- -D warnings",
+      "result": "passed in28.74s"
+    },
+    {
+      "command": "Node24.22.1 npm test (desktop)",
+      "result": "508 tests/41 files passed37.17s before final QA-only metric/strip changes; affected checks and actual GUI verify those separately"
+    },
+    {
+      "command": "Node24.22.1 npm --prefix desktop run build",
+      "result": "passed; normal bundle verification-module exclusion active"
+    },
+    {
+      "command": "cargo clippy --locked --offline -p mshogi-desktop-session --all-targets --all-features -- -D warnings",
+      "result": "passed"
+    },
+    {
+      "command": "cargo test --release -p mshogi-console --test tenjiku_internal --test tenjiku_selfplay --locked",
+      "result": "internal6 passed9.44s; selfplay2 passed5.40s after initial-root assertion correction"
+    },
+    {
+      "command": "cargo test -p mshogi-console --test tenjiku_internal --test tenjiku_selfplay --locked",
+      "result": "explicit debug diagrams: internal6 passed10.77s; selfplay2 passed4.36s; no skipped tests"
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-desktop-session real_stationary_capture_analysis -- --test-threads=1",
+      "result": "1 passed1.37s; bothprofiles exact igui target in presented PV and read-only native record"
+    }
+  ],
+  "performance": {
+    "real_contexts_note": "Each profile used one genuine depth1 search at a retained128-action native root, with explicitly synthetic nonce variants for repeated-context/PV growth, not four separate searches. Full worker operations used the last accepted complete candidate.",
+    "real_context_growth": [
+      {
+        "contexts": 1,
+        "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
+        "usage": {
+          "controls": 1,
+          "encoded_bytes": 271720,
+          "observations": 1,
+          "replay_work": 61058200,
+          "reserved_bytes": 959,
+          "reserved_work": 813656,
+          "retained_events": 384
+        },
+        "validate_us": 1567604
+      },
+      {
+        "contexts": 2,
+        "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
+        "usage": {
+          "controls": 2,
+          "encoded_bytes": 362652,
+          "observations": 2,
+          "replay_work": 91633508,
+          "reserved_bytes": 959,
+          "reserved_work": 813656,
+          "retained_events": 512
+        },
+        "validate_us": 2654209
+      },
+      {
+        "contexts": 3,
+        "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
+        "usage": {
+          "controls": 3,
+          "encoded_bytes": 453584,
+          "observations": 3,
+          "replay_work": 122208816,
+          "reserved_bytes": 959,
+          "reserved_work": 813656,
+          "retained_events": 640
+        },
+        "validate_us": 3395874
+      },
+      {
+        "contexts": 4,
+        "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
+        "usage": {
+          "controls": 4,
+          "encoded_bytes": 544516,
+          "observations": 4,
+          "replay_work": 152784124,
+          "reserved_bytes": 959,
+          "reserved_work": 813656,
+          "retained_events": 768
+        },
+        "validate_us": 4682021
+      },
+      {
+        "contexts": 1,
+        "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
+        "usage": {
+          "controls": 1,
+          "encoded_bytes": 271769,
+          "observations": 1,
+          "replay_work": 61065431,
+          "reserved_bytes": 959,
+          "reserved_work": 813719,
+          "retained_events": 384
+        },
+        "validate_us": 1207104
+      },
+      {
+        "contexts": 2,
+        "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
+        "usage": {
+          "controls": 2,
+          "encoded_bytes": 362715,
+          "observations": 2,
+          "replay_work": 91644358,
+          "reserved_bytes": 959,
+          "reserved_work": 813719,
+          "retained_events": 512
+        },
+        "validate_us": 2024360
+      },
+      {
+        "contexts": 3,
+        "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
+        "usage": {
+          "controls": 3,
+          "encoded_bytes": 453661,
+          "observations": 3,
+          "replay_work": 122223285,
+          "reserved_bytes": 959,
+          "reserved_work": 813719,
+          "retained_events": 640
+        },
+        "validate_us": 3051380
+      },
+      {
+        "contexts": 4,
+        "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
+        "usage": {
+          "controls": 4,
+          "encoded_bytes": 544607,
+          "observations": 4,
+          "replay_work": 152802212,
+          "reserved_bytes": 959,
+          "reserved_work": 813719,
+          "retained_events": 768
+        },
+        "validate_us": 3829696
+      }
+    ],
+    "real_context_refusals": [
+      {
+        "contexts": 5,
+        "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+        "real_engine_context_refusal": "mshogi.tenjiku.adams1999-modern.v1",
+        "resource": {
+          "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+          "facts": [
+            {
+              "category": "replay_work",
+              "count": 160404848,
+              "limit": 160000000,
+              "measurement": "candidate",
+              "observations": null,
+              "reserved": 0,
+              "scope": "tenjiku",
+              "unit": "replay_units"
+            }
+          ],
+          "omitted_facts": 0
+        },
+        "validate_us": 4540773
+      },
+      {
+        "contexts": 5,
+        "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+        "real_engine_context_refusal": "mshogi.tenjiku.muller-completed.v1",
+        "resource": {
+          "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+          "facts": [
+            {
+              "category": "replay_work",
+              "count": 160423839,
+              "limit": 160000000,
+              "measurement": "candidate",
+              "observations": null,
+              "reserved": 0,
+              "scope": "tenjiku",
+              "unit": "replay_units"
+            }
+          ],
+          "omitted_facts": 0
+        },
+        "validate_us": 3892258
+      }
+    ],
+    "actual_workers": [
+      {
+        "actual_worker_profile": "mshogi.tenjiku.adams1999-modern.v1",
+        "close_us": 415,
+        "ended_open_us": 5830624,
+        "ended_save_us": 5470015,
+        "ended_usage": {
+          "controls": 8,
+          "encoded_bytes": 545439,
+          "observations": 4,
+          "replay_work": 153597758,
+          "reserved_bytes": 14,
+          "reserved_work": 0,
+          "retained_events": 771
+        },
+        "endings_us": [
+          5289744,
+          4808483,
+          4650047
+        ],
+        "fresh_stopped_reopen": true,
+        "open_us": 7055771,
+        "prior_file_preserved": true,
+        "save_us": 5930886,
+        "source_usage": {
+          "controls": 4,
+          "encoded_bytes": 544516,
+          "observations": 4,
+          "replay_work": 152784124,
+          "reserved_bytes": 959,
+          "reserved_work": 813656,
+          "retained_events": 768
+        }
+      },
+      {
+        "actual_worker_profile": "mshogi.tenjiku.muller-completed.v1",
+        "close_us": 430,
+        "ended_open_us": 5799651,
+        "ended_save_us": 5588766,
+        "ended_usage": {
+          "controls": 8,
+          "encoded_bytes": 545530,
+          "observations": 4,
+          "replay_work": 153615909,
+          "reserved_bytes": 14,
+          "reserved_work": 0,
+          "retained_events": 771
+        },
+        "endings_us": [
+          4577547,
+          4653534,
+          4698466
+        ],
+        "fresh_stopped_reopen": true,
+        "open_us": 5664776,
+        "prior_file_preserved": true,
+        "save_us": 5615759,
+        "source_usage": {
+          "controls": 4,
+          "encoded_bytes": 544607,
+          "observations": 4,
+          "replay_work": 152802212,
+          "reserved_bytes": 959,
+          "reserved_work": 813719,
+          "retained_events": 768
+        }
+      }
+    ]
+  },
+  "independent_review": [
+    {
+      "reviewer": "msh44_console_map",
+      "scope": "search/evaluation",
+      "result": "no blocking finding; independently ran10 focused tests"
+    },
+    {
+      "reviewer": "msh44_search_map",
+      "scope": "supervised engine results/context/PV",
+      "result": "no implementation correctness defect; independently ran6 prior protocol/routing tests; root subsequently added explicit no-action and exact-work/mid-validation-stop coverage"
+    },
+    {
+      "reviewer": "msh44_visual_map",
+      "scope": "native document/runtime admission and console/notation",
+      "result": "no blocking admission/atomicity or console/notation finding; four presentation findings corrected and re-reviewed"
+    },
+    {
+      "reviewer": "msh44_search_map",
+      "scope": "final root engine/document/runtime/QA and release CI policy",
+      "result": "PASS; independently reran3 protocol+1 observation/action document test; no skipped/ignored new tests; all3OS release standardroot requirement preserved"
+    },
+    {
+      "reviewer": "msh44_visual_map",
+      "scope": "snapshot-only notation performance fix; successful real QA initialization guards; actual initial1180 screenshot",
+      "result": "PASS with source conclusions limited to reviewed scope; compact QA strip recommended to recover viewportheight; minimum-size/allfaces comfort pending actual captures"
+    }
+  ],
+  "development_observations": [
+    {
+      "category": "test command filter",
+      "detail": "Two attempted desktop execution filters matched0 tests; corrected to tenjiku_document::tests::execution::,5 actually passed. Zero-test runs are not evidence."
+    },
+    {
+      "category": "debug process contention",
+      "detail": "First parallel actual-child standard-history test hit unchanged15s engine watchdog; preserved failure; serial diagnosis pending."
+    },
+    {
+      "category": "search test expectation",
+      "detail": "Exploratory material-band assertion used256 squares instead of admitted156-piece inventory; corrected, rules unchanged."
+    },
+    {
+      "category": "notation rendering performance",
+      "detail": "Historical notation initially re-admitted LocalPosition per row; scoped fix uses immutable native snapshot Position directly, preserving notation while avoiding rules generation during projection."
+    },
+    {
+      "category": "debug standard-root retry",
+      "detail": "Serialized full-standard internal rerun5passed/1failed202.07s; historicalanalysis20s observation wait expired (hiddenphase not established). Historical-only repro passed64.45s. Explicit debug4-piece diagrams and required release156-piece roots now separate resource claims without skipping assertions or raising product deadlines."
+    },
+    {
+      "category": "selfplay test expectation",
+      "detail": "New assertion incorrectly required156 currentpieces after4real standard plies; legal captures left152. Corrected to assert156 at native initialroot. Release selfplay rerun passed; no product or rules change."
+    },
+    {
+      "category": "QA fixture writer invocation",
+      "detail": "First invocation omitted required outputdirectory and failed before writing files; corrected explicit desktop/src/__fixtures__ invocation passed."
+    },
+    {
+      "category": "npm working directory",
+      "detail": "Two root-directory npm invocations failed ENOENT before checks; corrected desktop prefix/cwd checks passed. Failures are not counted as verification."
+    },
+    {
+      "category": "evidence naming",
+      "detail": "Initial MSH-44 draft reused existing83 verification.json filename; original restored byte-for-byte fromHEAD immediately. MSH-44 single ledger is product-verification.json; prior source/rules ledger preserved."
+    }
+  ],
+  "ci": {
+    "required_jobs": [
+      "Rust Linux",
+      "Rust macOS15",
+      "Rust Windows",
+      "Desktop Linux",
+      "Desktop macOS15",
+      "Desktop Windows"
+    ],
+    "status": "not_started",
+    "configuration_revision": "83cdd2c24586ca2c5bde619c50020f6476d27d36",
+    "configuration_transport": "Existing authorized GitHub app; intermediate workflow-only commit skipped CI. Required six jobs must execute on final combined implementation source."
+  },
+  "macos_visual": {
+    "status": "not_run",
+    "fixed_slot": "org.mshogi.desktop.verification.r6.shogipromotion",
+    "owner_approval": "pending"
+  },
+  "normal_activation": false,
+  "final_acceptance": false
+}

@@ -2,7 +2,7 @@
   "moves": {
     "root": {
       "label": "Starting position",
-      "numbering": "Tenjiku technical complete actions · known-root move pairs · declared root plies 0 · earlier history unknown"
+      "numbering": "mShogi Tenjiku complete-action notation · known-root move pairs · declared root plies 0 · earlier history unknown"
     },
     "entries": [
       {
@@ -10,7 +10,7 @@
         "board_ply": 1,
         "number": 1,
         "column": 0,
-        "notation": "Technical action {\"kind\":\"travel\",\"from\":[8,8],\"route\":[[7,8],[7,7],[6,7]],\"promote\":false}",
+        "notation": "VGn8h-7h-7g-6g",
         "action": "{\"kind\":\"travel\",\"from\":[8,8],\"route\":[[7,8],[7,7],[6,7]],\"promote\":false}",
         "command_start": 0,
         "command_end": 1
@@ -908,7 +908,7 @@
         "work_units": 783
       }
     },
-    "execution_supported": false
+    "execution_supported": true
   },
   "open_token": {
     "document": 1,
@@ -1128,7 +1128,7 @@
       "kind": "K",
       "promoted": false,
       "text": "K",
-      "label": "1a, Gote K"
+      "label": "1a, Gote King"
     },
     {
       "square": "2c",
@@ -1136,7 +1136,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "2c, Gote P"
+      "label": "2c, Gote Pawn"
     },
     {
       "square": "6g",
@@ -1144,7 +1144,7 @@
       "kind": "VGn",
       "promoted": false,
       "text": "VGn",
-      "label": "6g, Sente VGn"
+      "label": "6g, Sente Vice General"
     },
     {
       "square": "9h",
@@ -1152,7 +1152,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "9h, Gote P"
+      "label": "9h, Gote Pawn"
     },
     {
       "square": "15n",
@@ -1160,7 +1160,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "15n, Sente P"
+      "label": "15n, Sente Pawn"
     },
     {
       "square": "16p",
@@ -1168,7 +1168,7 @@
       "kind": "K",
       "promoted": false,
       "text": "K",
-      "label": "16p, Sente K"
+      "label": "16p, Sente King"
     }
   ],
   "hands": [],
@@ -1270,8 +1270,8 @@
     "promotion": true,
     "take_back": true,
     "undo": true,
-    "engine_turn": false,
-    "move_analysis": false,
+    "engine_turn": true,
+    "move_analysis": true,
     "chess_full": false,
     "claims": false,
     "declaration": false,
@@ -1289,14 +1289,14 @@
     {
       "index": 1,
       "board_ply": 1,
-      "label": "Sente · Technical action {\"kind\":\"travel\",\"from\":[8,8],\"route\":[[7,8],[7,7],[6,7]],\"promote\":false}"
+      "label": "Sente · VGn8h-7h-7g-6g"
     }
   ],
   "event_index": 1,
   "board_ply": 1,
   "play_limits": {
     "depth": 1,
-    "nodes": 1
+    "nodes": 1024
   },
   "historical": false,
   "paused": true,
@@ -1309,7 +1309,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Tenjiku execution is unsupported. Operational failures and absence of board actions are unscored; native conclusions remain separate.",
+  "score_meaning": "Transparent material evaluation in Pawns from the analyzed native side; native terminal wins use board-action distance. Operational failures and absence of board actions remain unscored.",
   "chess": null,
   "chess_match": null
 }

@@ -12,6 +12,7 @@ mod chu_session;
 mod record_io;
 mod session;
 mod shogi_session;
+mod tenjiku_session;
 mod tori_session;
 mod uci;
 mod usi;
@@ -27,6 +28,7 @@ enum Game {
     Xiangqi,
     Tori,
     Chu,
+    Tenjiku,
 }
 impl Game {
     fn name(self) -> &'static str {
@@ -36,16 +38,19 @@ impl Game {
             Self::Xiangqi => "xiangqi",
             Self::Tori => "tori",
             Self::Chu => "chu",
+            Self::Tenjiku => "tenjiku",
         }
     }
 }
 struct Invocation {
     game: Game,
     mode: String,
+    profile: Option<mshogi_core::tenjiku::Profile>,
 }
 fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocation, String> {
     let mut args = args.into_iter();
     let mut selected = None;
+    let mut profile = None;
     let mut mode = None;
     while let Some(arg) = args.next() {
         let arg = arg.to_str().ok_or("arguments must be valid Unicode")?;
@@ -55,26 +60,41 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
             }
             let value = args
                 .next()
-                .ok_or("--game requires chess, shogi, xiangqi, tori or chu")?;
+                .ok_or("--game requires chess, shogi, xiangqi, tori, chu or tenjiku")?;
             selected = Some(match value.to_str() {
                 Some("chess") => Game::Chess,
                 Some("shogi") => Game::Shogi,
                 Some("xiangqi") => Game::Xiangqi,
                 Some("tori") => Game::Tori,
                 Some("chu") => Game::Chu,
+                Some("tenjiku") => Game::Tenjiku,
                 _ => {
                     return Err(
-                        "unknown or missing game; --game requires chess, shogi, xiangqi, tori or chu"
+                        "unknown or missing game; --game requires chess, shogi, xiangqi, tori, chu or tenjiku"
                             .into(),
                     );
                 }
+            });
+        } else if arg == "--profile" {
+            if profile.is_some() {
+                return Err("duplicate/conflicting --profile selections".into());
+            }
+            let value = args.next().ok_or("--profile requires adams or muller")?;
+            profile = Some(match value.to_str() {
+                Some("adams" | "mshogi.tenjiku.adams1999-modern.v1") => {
+                    mshogi_core::tenjiku::Profile::AdamsModern
+                }
+                Some("muller" | "mshogi.tenjiku.muller-completed.v1") => {
+                    mshogi_core::tenjiku::Profile::MullerCompleted
+                }
+                _ => return Err("unsupported Tenjiku profile; choose adams or muller".into()),
             });
         } else if mode.replace(arg.to_owned()).is_some() {
             return Err("unsupported extra arguments".into());
         }
     }
     let mut mode = mode.unwrap_or("--help".into());
-    if mode == "internal-search" && selected.is_some() {
+    if mode == "internal-search" && (selected.is_some() || profile.is_some()) {
         return Err("--game is incompatible with internal-search: its structured request supplies the game identity".into());
     }
     let game = if mode == "usi" {
@@ -92,7 +112,7 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
         selected.unwrap_or(Game::Chess)
     };
     if mode == "uci" && !matches!(game, Game::Chess | Game::Xiangqi) {
-        return Err("UCI supports chess or xiangqi; select --game shogi usi for shogi; Tori/Chu use shell or structured internal-search".into());
+        return Err("UCI supports chess or xiangqi; select --game shogi usi for shogi; Tori/Chu/Tenjiku use shell or structured internal-search".into());
     }
     if !matches!(
         mode.as_str(),
@@ -108,15 +128,31 @@ fn arguments(args: impl Iterator<Item = std::ffi::OsString>) -> Result<Invocatio
     ) {
         return Err("unsupported arguments".into());
     }
-    Ok(Invocation { game, mode })
+    if profile.is_some() && game != Game::Tenjiku {
+        return Err("--profile is supported only with --game tenjiku".into());
+    }
+    if game == Game::Tenjiku && matches!(mode.as_str(), "profile" | "shell") && profile.is_none() {
+        return Err("Tenjiku requires an explicit whole profile: --profile adams|muller".into());
+    }
+    Ok(Invocation {
+        game,
+        mode,
+        profile,
+    })
 }
 fn help(game: Game) {
+    let profile_option = if game == Game::Tenjiku {
+        " --profile adams|muller"
+    } else {
+        ""
+    };
     let game = game.name();
     println!("mShogi headless console — selected game: {game}
 
-Usage: mshogi [--game chess|shogi|xiangqi|tori|chu] [--help | --version | profile | shell | shogi | uci | usi | internal-search]
+Usage: mshogi [--game chess|shogi|xiangqi|tori|chu|tenjiku] [--profile adams|muller] [--help | --version | profile | shell | shogi | uci | usi | internal-search]
 
-  --game <game>  Select chess, shogi, xiangqi, tori or chu (default chess)
+  --game <game>  Select chess, shogi, xiangqi, tori, chu or tenjiku (default chess)
+  --profile     Required Tenjiku whole profile: adams or muller (no default)
   --help, -h     Show selected-game help
   --version, -V  Show the application version
   profile        Show the selected native rules profile and actual coverage
@@ -126,7 +162,7 @@ Usage: mshogi [--game chess|shogi|xiangqi|tori|chu] [--help | --version | profil
   usi            Untimed bounded USI shogi adapter (bare usi selects shogi)
   internal-search  Structured native search; request supplies game, no --game
 
-Use 'mshogi --game {game} shell' and type 'help' for native commands.
+Use 'mshogi --game {game}{profile_option} shell' and type 'help' for native commands.
 The shell is a diagnostic console, not a UCI engine. Results go to stdout;
 errors to stderr as 'error: line N: ...'. A failed command changes nothing.
 Exit status: 0 success, 1 any shell failure, 2 invalid program arguments.
@@ -139,11 +175,17 @@ Tori: native7x7 board/hands, complete history/T06 obligations, readable complete
 actions, canonical standard/custom roots, bounded search and local diagnostics.
 Chu: native12x12 board without hands, King/Prince, complete compound routes,
 ordered captures and returns, actual draw agreements, canonical history and bounded search.
+Tenjiku: explicit whole profile, native16x16 original/promoted identities, ordered
+travel and stationary igui, full-history bounded perft/divide and search.
 All: position/show/legal/move/undo/history/status; canonical envelope record
 print/save/load-file/load-json. Saves require a new file. No shared board engine.");
 }
 fn main() -> ExitCode {
-    let Invocation { game, mode } = match arguments(env::args_os().skip(1)) {
+    let Invocation {
+        game,
+        mode,
+        profile,
+    } = match arguments(env::args_os().skip(1)) {
         Ok(invocation) => invocation,
         Err(error) => return invalid_arguments(&error),
     };
@@ -185,6 +227,14 @@ fn main() -> ExitCode {
                     "Coverage: untimed native12x12 complete one/two-stage actions, ordered captures/returns, promotion, King/Prince survival, Lion protection, pre-fourth repetition admission, native conclusions and actual draw agreements; exact event undo, strict canonical standard/custom records, bounded history-aware search and local perft/divide0..2. No hands, USI/SFEN or competitive-strength claim."
                 );
             }
+            Game::Tenjiku => {
+                let profile = profile.expect("validated explicit Tenjiku profile");
+                println!("Target rules profile: {}", profile.id());
+                println!("Edition: {}", profile.edition());
+                println!(
+                    "Coverage: untimed native16x16, complete ordered travel/returns/stationary igui, original identities and once-only promotion, native burn/death phases, royal/bare/repetition history and actual draw agreements; exact event undo, strict canonical standard/custom records, read-only bounded history-aware search and full-Game perft/divide0..3. No hands, USI/SFEN or competitive-strength claim."
+                );
+            }
         },
         "shell" => match game {
             Game::Chess => {
@@ -213,12 +263,20 @@ fn main() -> ExitCode {
                 let mut session = chu_session::Session::new();
                 return shell(|line, out| session.execute(line, out));
             }
+            Game::Tenjiku => {
+                let mut session = tenjiku_session::Session::new(
+                    profile.expect("validated explicit Tenjiku profile"),
+                );
+                return shell(|line, out| session.execute(line, out));
+            }
         },
         "uci" => {
             return match game {
                 Game::Chess => uci::run(),
                 Game::Xiangqi => xiangqi_uci::run(),
-                Game::Shogi | Game::Tori | Game::Chu => unreachable!("validated protocol"),
+                Game::Shogi | Game::Tori | Game::Chu | Game::Tenjiku => {
+                    unreachable!("validated protocol")
+                }
             };
         }
         "usi" => return usi::run(),

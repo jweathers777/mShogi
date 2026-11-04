@@ -664,3 +664,72 @@ fn measure_repeated_action_contexts_with_deadline() {
         }
     }
 }
+
+pub(super) fn measured_real_engine_document(profile: c::Profile) -> ValidatedTenjikuDocument {
+    let (game, _) = grown(profile, 128, false);
+    let base =
+        ValidatedTenjikuDocument::new(c::GameRecord::from_game(&game).unwrap(), c::Side::Sente)
+            .unwrap();
+    let mut ctx = execution::context(base.record(), 1);
+    ctx.limits = mshogi_engine::TENJIKU_PLAY_LIMITS;
+    ctx.purpose = mshogi_engine::ExecutionPurpose::MoveAnalysis {
+        target: mshogi_engine::ExecutionTarget {
+            selection_id: 1,
+            event_index: 128,
+            board_ply: 128,
+            session_version: 1,
+            label: "Retained128, actual engine analysis".into(),
+            turn: mshogi_core::native::NativeSide::Tenjiku(game.position().side_to_move()),
+        },
+    };
+    let request = mshogi_engine::ExecutionRequest {
+        protocol: mshogi_engine::PROTOCOL_VERSION,
+        context: ctx,
+    };
+    let mut bytes = vec![];
+    mshogi_engine::serve_once(
+        std::io::Cursor::new(format!("{}\n", serde_json::to_string(&request).unwrap())),
+        &mut bytes,
+    )
+    .unwrap();
+    let response: mshogi_engine::ExecutionResponse = serde_json::from_slice(&bytes).unwrap();
+    assert!(response.matches(&request));
+    assert!(matches!(
+        &response.observation.result,
+        ExecutionResult::Tenjiku {
+            result: mshogi_engine::TenjikuResult::Choice { .. }
+        }
+    ));
+    // One actual search result with explicitly synthetic nonce variants measures
+    // repeated-context/PV growth; it is not four separately executed searches.
+    let mut last = base.clone();
+    for count in 1..=8 {
+        let mut payload = repeated_contexts(&base, &response.observation, count);
+        for o in &mut payload.observations {
+            if let ExecutionPurpose::MoveAnalysis { target } = &mut o.context.purpose {
+                target.session_version = o.context.session_version;
+                target.selection_id = o.context.request_id;
+            }
+        }
+        let begin = std::time::Instant::now();
+        match validate(payload, &mut || false) {
+            Ok(d) => {
+                println!(
+                    "{}",
+                    serde_json::json!({"real_engine_context_growth":profile.id(),"contexts":count,"validate_us":begin.elapsed().as_micros(),"usage":d.usage()})
+                );
+                last = d;
+            }
+            Err(e) => {
+                assert!(e.resource.is_some(), "{e}");
+                println!(
+                    "{}",
+                    serde_json::json!({"real_engine_context_refusal":profile.id(),"contexts":count,"validate_us":begin.elapsed().as_micros(),"diagnostic":e.to_string(),"resource":e.resource})
+                );
+                break;
+            }
+        }
+    }
+    assert!(!last.observations().is_empty());
+    last
+}

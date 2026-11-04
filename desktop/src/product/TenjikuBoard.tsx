@@ -4,10 +4,11 @@ import { NativeBoard } from "../NativeBoard";
 import type { TenjikuSnapshot } from "./native";
 import type { InspectMovement } from "./movementInspection";
 import { GameFrame } from "./GameFrame";
+import { TenjikuPiece } from "./TenjikuPiece";
 import "./tenjiku.css";
 
-// Technical native abbreviations only. Final Tenjiku artwork/notation belongs
-// to MSH-44; all selection and completion use the surviving native controller.
+// Artwork decorates the surviving shared native controller. The selected native
+// identity, including a promoted piece's original base, is never reconstructed.
 export function TenjikuBoard({ snapshot, disabled, inspectionDisabled, onPlay, onInspect, completedAction }: {
   snapshot: TenjikuSnapshot; disabled: boolean; inspectionDisabled: boolean;
   onPlay: (action: string) => void; onInspect: InspectMovement;
@@ -18,11 +19,11 @@ export function TenjikuBoard({ snapshot, disabled, inspectionDisabled, onPlay, o
   return <GameFrame className="tenjiku-stage" snapshot={snapshot} bottom={bottom}
     board={<div className="tenjiku-board-frame"><NativeBoard snapshot={snapshot} bottomSide={bottom.key}
       disabled={disabled} inspectionDisabled={inspectionDisabled} coordinateFrame onInspect={onInspect} onPlay={onPlay}
-      completedAction={completedAction ?? null} helpTarget={help} renderNativePiece={(piece, rotated) => <g
-        data-tenjiku-piece={piece.kind} data-promoted={piece.promoted} data-owner={piece.owner}
-        transform={rotated ? "rotate(180 50 50)" : undefined} aria-hidden="true">
-        <path className="tenjiku-technical-piece" d="M50 10L83 26L89 88H11L17 26Z" />
-        <text x="50" y="60" textAnchor="middle" className="tenjiku-technical-label">{piece.text}</text>
-      </g>} /></div>}
+      completedAction={completedAction ?? null} helpTarget={help} renderNativePiece={(piece, rotated) => {
+        const identity = snapshot.tenjiku.selected.identities.find(identity => identity.square === piece.square);
+        return identity ? <TenjikuPiece face={identity.face} base={identity.piece.base}
+          promoted={identity.piece.promoted} rotated={rotated} owner={piece.owner}
+          royal={snapshot.tenjiku.selected.royals.some(royal => royal.piece.id === identity.piece.id)} /> : null;
+      }} /></div>}
     help={<div ref={setHelp} className="tenjiku-board-help shell-board-help" />} />;
 }

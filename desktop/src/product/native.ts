@@ -146,7 +146,7 @@ export type TenjikuSnapshot = GameSnapshotBase & {
   game: "tenjiku"; profile: TenjikuProfile;
   tenjiku: { profile: TenjikuProfile; edition: string; root: unknown; declared_root_plies: string;
     earlier_history_unknown: boolean; historical_reachability_proven: boolean;
-    selected: TenjikuHistory; live: TenjikuHistory; execution_supported: false };
+    selected: TenjikuHistory; live: TenjikuHistory; execution_supported: boolean };
   document: GameSnapshotBase["document"] & { settings: { game_kind: "tenjiku"; settings: { orientation: ToriSide } } };
 };
 export type GameSnapshot = ChessSnapshot | ShogiSnapshot | XiangqiSnapshot | ToriSnapshot | ChuSnapshot | TenjikuSnapshot;

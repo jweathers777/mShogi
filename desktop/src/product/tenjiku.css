@@ -1,14 +1,31 @@
-.tenjiku-board-frame { position:relative; aspect-ratio:1; width:min(100cqw,100cqh); }
+@font-face { font-family:"mShogi Tenjiku Pieces"; src:url("../assets/fonts/mshogi-tenjiku-pieces.woff2") format("woff2"); font-style:normal; font-weight:400; font-display:swap; }
+.tenjiku-board-frame { position:relative; aspect-ratio:1; width:min(100cqw,100cqh); filter:drop-shadow(0 8px 9px #030e1240); }
 .game-shell.game-shell .shell-board-slot .tenjiku-board-frame .board-wrap { width:100%; max-width:none; margin:0; }
 .tenjiku-board-frame .chess-board { filter:none; }
 .tenjiku-board-frame .board-border { fill:#bd945b; }
 .tenjiku-board-frame .square.light .square-fill,.tenjiku-board-frame .square.dark .square-fill { fill:#e5c58d; stroke:#947344; stroke-width:1.5; }
-.tenjiku-board-frame .square.selected .square-fill { fill:#bdc98e; }
-.tenjiku-board-frame .square.target .square-fill { fill:#cbd29d; }
+.tenjiku-board-frame .square.selected.light .square-fill,.tenjiku-board-frame .square.selected.dark .square-fill { fill:#c1c690; }
+.tenjiku-board-frame .square.target.light .square-fill,.tenjiku-board-frame .square.target.dark .square-fill { fill:#ced29b; }
 .tenjiku-board-frame .coordinate { fill:#513f28; font-size:34px; }
-.tenjiku-technical-piece { fill:#f6deb0; stroke:#765b34; stroke-width:2; }
-.tenjiku-technical-label { fill:#1e2528; font:600 25px system-ui,sans-serif; }
-.tenjiku-board-frame [data-promoted="true"] .tenjiku-technical-label { fill:#9b2421; }
+.tenjiku-board-frame .move-marker { fill:#355e42; }
+.tenjiku-board-frame .capture-marker { fill:none; stroke:#355e42; stroke-width:5; }
+.tenjiku-piece { pointer-events:none; }
+.tenjiku-piece-shadow { fill:#87613680; }
+.tenjiku-piece-body { fill:#f8e3b8; stroke:#8c6433; stroke-width:1.8; }
+.tenjiku-piece-bevel { fill:none; stroke:#fff2d0; stroke-width:1; }
+.tenjiku-face text { font-family:"mShogi Tenjiku Pieces",serif; font-size:47px; font-weight:400; fill:#28231d; stroke:none; }
+.tenjiku-face-1 text { font-size:62px; }
+/* Preserve the full three-character 四天王 name; no invented abbreviation. */
+.tenjiku-face-3 text { font-size:32px; }
+.tenjiku-piece.promoted text { fill:#8b2d25; }
+.tenjiku-promotion-mark { fill:none; stroke:#8b2d25; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
 .tenjiku-board-frame .completed-action-origin,.tenjiku-board-frame .completed-action-destination { stroke:#513b14; filter:none; }
-.tenjiku-verification-banner { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:10px 20px; background:#172d36; border-bottom:1px solid #48616c; font-size:.85rem; }
-.tenjiku-verification-banner span { flex:1 1 280px; }
+.tenjiku-board-frame .completed-action-capture { stroke:#7f3024; }
+.tenjiku-board-frame .native-selected-route polyline { fill:none; stroke:#264c45; stroke-width:5; stroke-dasharray:10 7; }
+.tenjiku-board-frame .native-selected-route circle { fill:#203e37; stroke:#f8e9bc; stroke-width:2; }
+.tenjiku-board-frame .native-selected-route text { fill:#fff5d6; font:600 19px system-ui,sans-serif; }
+.game-shell .tenjiku-board-help .board-help { margin:0; padding-top:3px; font-size:10px; line-height:1.2; }
+.game-shell .tenjiku-board-help:has(.route-selection) .board-help:not(.movement-inspection-status) { display:none; }
+.tenjiku-board-help .route-selection { display:flex; align-items:center; gap:6px; margin:0; padding:2px 0; border:0; font-size:10px; }
+.tenjiku-board-help .route-selection p { margin:0; line-height:1.2; }
+.tenjiku-board-help .route-selection button { flex-shrink:0; padding:3px 6px; margin:0; font-size:10px; }

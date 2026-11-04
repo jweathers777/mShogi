@@ -471,7 +471,7 @@ pub(super) fn tenjiku_projection(game: &mshogi_core::tenjiku::Game) -> MovesProj
     let mut view = projection(
         "Starting position".into(),
         format!(
-            "Tenjiku technical complete actions · known-root move pairs · declared root plies {} · earlier history {}",
+            "mShogi Tenjiku complete-action notation · known-root move pairs · declared root plies {} · earlier history {}",
             root.declared_completed_plies(),
             if root.earlier_history_unknown() {
                 "unknown"
@@ -517,6 +517,11 @@ pub(super) fn tenjiku_projection(game: &mshogi_core::tenjiku::Game) -> MovesProj
                 },
             })
             .collect();
+        let before = game
+            .event_prefix(event.index)
+            .expect("accepted native prefix");
+        let notation = t::notation::format_history_action(&before, action.clone())
+            .expect("accepted native action");
         let technical = serde_json::to_string(action).expect("native complete action");
         let geometry = CompletedActionGeometry {
             action: technical.clone(),
@@ -547,7 +552,7 @@ pub(super) fn tenjiku_projection(game: &mshogi_core::tenjiku::Game) -> MovesProj
             &mut view,
             number,
             u8::from(event.actor == t::Side::Gote),
-            format!("Technical action {technical}"),
+            notation,
             geometry,
             event.index,
             event.index + 1,

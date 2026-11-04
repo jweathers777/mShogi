@@ -1,10 +1,11 @@
 ---
 id: MSH-44
 title: Deliver complete tenjiku shogi rules and functional product integration
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-04T20:34:00Z'
+updated_date: '2026-11-04T21:32:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -56,6 +57,17 @@ Open design questions (D-07/D-08): Resolve the authoritative historical conventi
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Primary builder/integrator: Codex, codex/rewrite in the primary checkout; start 84d7aa83c5477dfde4513515fe54c3b9e1fb2587. All six dependencies Done; unrelated worktrees preserved.
+A. Implement and measure authoritative full-history native Tenjiku evaluation/search for both profiles; add real results to the existing supervised family, then independently review terminal, restoration, cancellation and identity boundaries. Choose finite limits from standard/tactical measurements.
+B. Add common Rust notation, console selection/diagnostics and genuine engine-observation/document admission with exact PV/action re-admission, existing aggregate budgets and saved-history invariants. Verify focused dispatches in both Cargo workspaces and frontend early.
+C. Replace the technical QA board with licensed traditional-kanji faces and native identity/effect/route presentation in the existing shell. Preserve normal chooser activation gates through owner approval. Measure representative engine, files, history, inspection, choices and cancellation journeys.
+D. Independently review coherent source; run required Rust and Desktop Linux/macOS15/Windows CI once per coherent tested checkpoint using one monitor. Reuse fixed macOS QA identity for actual play/files/analysis and a genuine screenshot gallery at normal/minimum sizes and orientations. Integrate and push reviewed checkpoint, present supported launch command and request owner visual approval; STOP with MSH-44 unfinished. Later normal six-game activation/final acceptance remain pending approval.
+No rules/profile, persistence-budget, session-architecture or M5 changes. Preserve original eight AC and DoD; distinguish native conformance, smoke, responsiveness and strength.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -76,4 +88,10 @@ Final79handoff: source3a290024df82d23f215165707c81de4928ad3a4aimplementationinde
 Latest79handoff supersedesLinux-pendingnote: four exact3a290jobs have terminalsuccess (RustLinux/Windows, DesktopLinux/Windowswithactual5gameGUI). OnlyrequiredmacOS15Rust/Desktopreceiptsmissingaftertwo hostedrunneracquisitioncancellations; thirdDesktopjob126702335253queued, RustMacrerunawaitsworkflowAPIterminalstate.79InReview/AC4+DoD1incomplete, sourceimplementationaccepted, no44activation. Resume79onlyforCIreconciliation/finalization;44ToDo/unassigned/unstarted andalloriginal8AC/DoDunchanged.
 
 MSH79 is nowDone after finalCI-onlyacceptance at unchanged testedsource3a290024df82d23f215165707c81de4928ad3a4a. Both requiredmacOS15.8.2 arm64jobs actuallyexecutedandpassed: Rust126831432252/run41856238536attempt3; Desktop126831460036/run41856238041attempt4. All6Linux/macOS/WindowsRust/Desktopexecutionreceipts success, bothworkflowruns completedSUCCESS; freshindependentfinalevidencereconciliation PASS. Prior5macOScapacitycancellationsandknown112firstLinuxfailure preserved; healthyexecutionsreused. Seeexistingshared-verification.json revisionMSH79-CI-FINAL-2026-11-04 andshared-v1/handoff. All6direct44dependencies(39/72/73/79/83/87) nowDone:44isdependency-ready, remainsToDo/unassigned/unstarted. Original8AC/DoDand5productconsumerrowsunchanged; no engine/search/console/notation/art/M5 workstarted. Nextownerassignmentmayactivate44; thissessionstopsafter79.
+
+Owner-authorized MSH-44 implementation begins 2026-11-04 after completed MSH-79 at84d7aa8. Codex owns primary integration checkout codex/rewrite; origin aligned, clean startup, four unrelated worktrees preserved. Read-only mapping delegated for search/execution, console/notation and licensed desktop presentation; no competing builders or new owner task hierarchy. Actual visual approval is the explicit stopping point, not final product acceptance.
+
+Internal A/B/C working checkpoint: authoritative full-history search/evaluation for both profiles, existing supervised Tenjiku result family, native PV/score/work admission and observation-before-action journal implemented; console/notation and licensed44-face/30-promotion renderer integrated in sole existing architecture. Defaultdepth1/1024visits, analysismaxdepth2/2000 selected from release standard/tactical/area/128-history measurements; no strength claim. Independent search, engine, document/runtime, notation/console and artwork reviews passed with presentation findings corrected. Focused native/protocol/document/controller and release actual-child/selfplay checks pass; frontend508 tests and workspaceClippy pass. Broad workspace test run ongoing.
+Product engine15s watchdog, document160M/15s and native1MiB/1024/512M remain unchanged. Four repeated128-action real-PV contexts accepted around153M; fifth typed-refused; actual workerOpen/Save/endings/reopen passed with priorfile/freshstopped assertions. Debug fullstandard children exposed contention-sensitive watchdog failures; explicitdebugdiagram functionaltests nowexecute allassertions and requiredrelease full156-piece standard-root journeys are added for all3RustCIplatforms, independentlyreviewed. HostedRust jobbudget45min accommodates expanded verification; no test or productdeadline removed.
+ReviewedCI-only change integrated normally as83cdd2c via existingGitHubapp (CLI token lacksworkflow scope); intermediatecommit explicitlyskipCI and isnotacceptedsourceverification. Finalcombinedsource mustpass all6Rust/DesktopLinux/macOS15/Windowsjobs. ExistingmacOS QAidentity reused, realGUIcheckpoint/gallery/sizelegibility/interaction underway. Normalchooseractivation off; original8AC/DoD unchanged and taskunfinished. Source/evidence ledger: docs/m4/tenjiku/product-verification.json; prior83 verification.json and87/79 ledgers preserved.
 <!-- SECTION:NOTES:END -->

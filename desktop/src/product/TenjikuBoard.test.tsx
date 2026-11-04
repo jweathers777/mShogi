@@ -63,7 +63,7 @@ function returningChoices(value: TenjikuSnapshot) {
   return value.choices.filter(choice => choice.steps.length === 2 && choice.steps[1] === choice.from);
 }
 
-it.each(fixtures)("renders the actual $label 16×16 board in both orientations without advertising engine play", fixture => {
+it.each(fixtures)("renders the actual $label 16×16 board in both orientations with the shared player identities", fixture => {
   const { container, props, rerender } = board(fixture.compound);
   expect(container.querySelectorAll("svg [role=button]")).toHaveLength(256);
   expect(container.querySelector("svg")?.getAttribute("viewBox")).toBe("0 0 1680 1680");
@@ -71,11 +71,11 @@ it.each(fixtures)("renders the actual $label 16×16 board in both orientations w
   expect(container.querySelectorAll(".native-coordinate-frame .coordinate")).toHaveLength(32);
   expect(container.querySelectorAll(".square .coordinate")).toHaveLength(0);
   expect(container.querySelector('[data-game-slot="footer"] [data-position-status]')).toBeTruthy();
-  expect(container.querySelector('[data-game-slot="upper-player"]')?.textContent).toContain("Native side");
+  expect(container.querySelector('[data-game-slot="upper-player"]')?.textContent).toContain("mShogi");
   expect(container.querySelector(".shogi-hand")).toBeNull();
   expect(props.snapshot.hands).toEqual([]);
-  expect(props.snapshot.capabilities.engine_turn).toBe(false);
-  expect(props.snapshot.capabilities.move_analysis).toBe(false);
+  expect(props.snapshot.capabilities.engine_turn).toBe(true);
+  expect(props.snapshot.capabilities.move_analysis).toBe(true);
   expect(square("1a").querySelector("[data-tenjiku-piece]")?.getAttribute("transform")).toBe("rotate(180 50 50)");
   fireEvent.keyDown(square("8h"), { key: "ArrowRight" });
   expect(document.activeElement).toBe(square("7h"));

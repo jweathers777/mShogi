@@ -12,13 +12,12 @@ export function GameFrame({ snapshot, bottom, board, help, upperContent, lowerCo
 }) {
   const upper = snapshot.sides.find(side => side.key !== bottom.key)!;
   const player = (side: Side, content: ReactNode) => <PlayerArea side={side.label}
-    human={side.key === snapshot.human.key} {...(snapshot.game === "tenjiku" ? { participant: side.key === snapshot.human.key ? "You" : "Native side" } : {})} playerKey={side.id.side}
+    human={side.key === snapshot.human.key} playerKey={side.id.side}
     className={(snapshot.game === "shogi" || snapshot.game === "tori") ? "shogi-player" : ""}
     toMove={!snapshot.status.concluded && side.key === snapshot.turn.key}>{content}</PlayerArea>;
   return <GameArea className={className} upperPlayer={player(upper, upperContent)}
     lowerPlayer={player(bottom, lowerContent)} board={board} {...(onFocusCapture ? { onFocusCapture } : {})} {...(onBlurCapture ? { onBlurCapture } : {})}
     footer={<>{help}<GamePositionStatus historical={snapshot.historical} concluded={snapshot.status.concluded}
       paused={snapshot.paused} humanTurn={snapshot.human.key === snapshot.turn.key}
-      {...(snapshot.game === "tenjiku" ? { stateLabel: snapshot.status.label } : {})}
       thinking={snapshot.capabilities.engine_turn && snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn"} ply={snapshot.board_ply} /></>} />;
 }

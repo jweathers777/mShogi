@@ -2,7 +2,7 @@
   "moves": {
     "root": {
       "label": "Starting position",
-      "numbering": "Tenjiku technical complete actions · known-root move pairs · declared root plies 0 · earlier history unknown"
+      "numbering": "mShogi Tenjiku complete-action notation · known-root move pairs · declared root plies 0 · earlier history unknown"
     },
     "entries": [],
     "last_action": null
@@ -5298,7 +5298,7 @@
       "incomplete": null,
       "last_effects": null
     },
-    "execution_supported": false
+    "execution_supported": true
   },
   "open_token": {
     "document": 1,
@@ -5518,7 +5518,7 @@
       "kind": "L",
       "promoted": false,
       "text": "L",
-      "label": "1a, Gote L"
+      "label": "1a, Gote Lance"
     },
     {
       "square": "2a",
@@ -5526,7 +5526,7 @@
       "kind": "N",
       "promoted": false,
       "text": "N",
-      "label": "2a, Gote N"
+      "label": "2a, Gote Knight"
     },
     {
       "square": "3a",
@@ -5534,7 +5534,7 @@
       "kind": "FL",
       "promoted": false,
       "text": "FL",
-      "label": "3a, Gote FL"
+      "label": "3a, Gote Ferocious Leopard"
     },
     {
       "square": "4a",
@@ -5542,7 +5542,7 @@
       "kind": "I",
       "promoted": false,
       "text": "I",
-      "label": "4a, Gote I"
+      "label": "4a, Gote Iron General"
     },
     {
       "square": "5a",
@@ -5550,7 +5550,7 @@
       "kind": "C",
       "promoted": false,
       "text": "C",
-      "label": "5a, Gote C"
+      "label": "5a, Gote Copper General"
     },
     {
       "square": "6a",
@@ -5558,7 +5558,7 @@
       "kind": "S",
       "promoted": false,
       "text": "S",
-      "label": "6a, Gote S"
+      "label": "6a, Gote Silver General"
     },
     {
       "square": "7a",
@@ -5566,7 +5566,7 @@
       "kind": "G",
       "promoted": false,
       "text": "G",
-      "label": "7a, Gote G"
+      "label": "7a, Gote Gold General"
     },
     {
       "square": "8a",
@@ -5574,7 +5574,7 @@
       "kind": "K",
       "promoted": false,
       "text": "K",
-      "label": "8a, Gote K"
+      "label": "8a, Gote King"
     },
     {
       "square": "9a",
@@ -5582,7 +5582,7 @@
       "kind": "DE",
       "promoted": false,
       "text": "DE",
-      "label": "9a, Gote DE"
+      "label": "9a, Gote Drunk Elephant"
     },
     {
       "square": "10a",
@@ -5590,7 +5590,7 @@
       "kind": "G",
       "promoted": false,
       "text": "G",
-      "label": "10a, Gote G"
+      "label": "10a, Gote Gold General"
     },
     {
       "square": "11a",
@@ -5598,7 +5598,7 @@
       "kind": "S",
       "promoted": false,
       "text": "S",
-      "label": "11a, Gote S"
+      "label": "11a, Gote Silver General"
     },
     {
       "square": "12a",
@@ -5606,7 +5606,7 @@
       "kind": "C",
       "promoted": false,
       "text": "C",
-      "label": "12a, Gote C"
+      "label": "12a, Gote Copper General"
     },
     {
       "square": "13a",
@@ -5614,7 +5614,7 @@
       "kind": "I",
       "promoted": false,
       "text": "I",
-      "label": "13a, Gote I"
+      "label": "13a, Gote Iron General"
     },
     {
       "square": "14a",
@@ -5622,7 +5622,7 @@
       "kind": "FL",
       "promoted": false,
       "text": "FL",
-      "label": "14a, Gote FL"
+      "label": "14a, Gote Ferocious Leopard"
     },
     {
       "square": "15a",
@@ -5630,7 +5630,7 @@
       "kind": "N",
       "promoted": false,
       "text": "N",
-      "label": "15a, Gote N"
+      "label": "15a, Gote Knight"
     },
     {
       "square": "16a",
@@ -5638,7 +5638,7 @@
       "kind": "L",
       "promoted": false,
       "text": "L",
-      "label": "16a, Gote L"
+      "label": "16a, Gote Lance"
     },
     {
       "square": "1b",
@@ -5646,7 +5646,7 @@
       "kind": "RC",
       "promoted": false,
       "text": "RC",
-      "label": "1b, Gote RC"
+      "label": "1b, Gote Reverse Chariot"
     },
     {
       "square": "3b",
@@ -5654,7 +5654,7 @@
       "kind": "ChS",
       "promoted": false,
       "text": "ChS",
-      "label": "3b, Gote ChS"
+      "label": "3b, Gote Chariot Soldier"
     },
     {
       "square": "4b",
@@ -5662,7 +5662,7 @@
       "kind": "ChS",
       "promoted": false,
       "text": "ChS",
-      "label": "4b, Gote ChS"
+      "label": "4b, Gote Chariot Soldier"
     },
     {
       "square": "6b",
@@ -5670,7 +5670,7 @@
       "kind": "BT",
       "promoted": false,
       "text": "BT",
-      "label": "6b, Gote BT"
+      "label": "6b, Gote Blind Tiger"
     },
     {
       "square": "7b",
@@ -5678,7 +5678,7 @@
       "kind": "Ky",
       "promoted": false,
       "text": "Ky",
-      "label": "7b, Gote Ky"
+      "label": "7b, Gote Kirin"
     },
     {
       "square": "8b",
@@ -5686,7 +5686,7 @@
       "kind": "Ln",
       "promoted": false,
       "text": "Ln",
-      "label": "8b, Gote Ln"
+      "label": "8b, Gote Lion"
     },
     {
       "square": "9b",
@@ -5694,7 +5694,7 @@
       "kind": "FK",
       "promoted": false,
       "text": "FK",
-      "label": "9b, Gote FK"
+      "label": "9b, Gote Free King"
     },
     {
       "square": "10b",
@@ -5702,7 +5702,7 @@
       "kind": "Ph",
       "promoted": false,
       "text": "Ph",
-      "label": "10b, Gote Ph"
+      "label": "10b, Gote Phoenix"
     },
     {
       "square": "11b",
@@ -5710,7 +5710,7 @@
       "kind": "BT",
       "promoted": false,
       "text": "BT",
-      "label": "11b, Gote BT"
+      "label": "11b, Gote Blind Tiger"
     },
     {
       "square": "13b",
@@ -5718,7 +5718,7 @@
       "kind": "ChS",
       "promoted": false,
       "text": "ChS",
-      "label": "13b, Gote ChS"
+      "label": "13b, Gote Chariot Soldier"
     },
     {
       "square": "14b",
@@ -5726,7 +5726,7 @@
       "kind": "ChS",
       "promoted": false,
       "text": "ChS",
-      "label": "14b, Gote ChS"
+      "label": "14b, Gote Chariot Soldier"
     },
     {
       "square": "16b",
@@ -5734,7 +5734,7 @@
       "kind": "RC",
       "promoted": false,
       "text": "RC",
-      "label": "16b, Gote RC"
+      "label": "16b, Gote Reverse Chariot"
     },
     {
       "square": "1c",
@@ -5742,7 +5742,7 @@
       "kind": "SSo",
       "promoted": false,
       "text": "SSo",
-      "label": "1c, Gote SSo"
+      "label": "1c, Gote Side Soldier"
     },
     {
       "square": "2c",
@@ -5750,7 +5750,7 @@
       "kind": "VSo",
       "promoted": false,
       "text": "VSo",
-      "label": "2c, Gote VSo"
+      "label": "2c, Gote Vertical Soldier"
     },
     {
       "square": "3c",
@@ -5758,7 +5758,7 @@
       "kind": "B",
       "promoted": false,
       "text": "B",
-      "label": "3c, Gote B"
+      "label": "3c, Gote Bishop"
     },
     {
       "square": "4c",
@@ -5766,7 +5766,7 @@
       "kind": "DH",
       "promoted": false,
       "text": "DH",
-      "label": "4c, Gote DH"
+      "label": "4c, Gote Dragon Horse"
     },
     {
       "square": "5c",
@@ -5774,7 +5774,7 @@
       "kind": "DK",
       "promoted": false,
       "text": "DK",
-      "label": "5c, Gote DK"
+      "label": "5c, Gote Dragon King"
     },
     {
       "square": "6c",
@@ -5782,7 +5782,7 @@
       "kind": "WBf",
       "promoted": false,
       "text": "WBf",
-      "label": "6c, Gote WBf"
+      "label": "6c, Gote Water Buffalo"
     },
     {
       "square": "7c",
@@ -5790,7 +5790,7 @@
       "kind": "FiD",
       "promoted": false,
       "text": "FiD",
-      "label": "7c, Gote FiD"
+      "label": "7c, Gote Fire Demon"
     },
     {
       "square": "8c",
@@ -5798,7 +5798,7 @@
       "kind": "LHk",
       "promoted": false,
       "text": "LHk",
-      "label": "8c, Gote LHk"
+      "label": "8c, Gote Lion Hawk"
     },
     {
       "square": "9c",
@@ -5806,7 +5806,7 @@
       "kind": "FEg",
       "promoted": false,
       "text": "FEg",
-      "label": "9c, Gote FEg"
+      "label": "9c, Gote Free Eagle"
     },
     {
       "square": "10c",
@@ -5814,7 +5814,7 @@
       "kind": "FiD",
       "promoted": false,
       "text": "FiD",
-      "label": "10c, Gote FiD"
+      "label": "10c, Gote Fire Demon"
     },
     {
       "square": "11c",
@@ -5822,7 +5822,7 @@
       "kind": "WBf",
       "promoted": false,
       "text": "WBf",
-      "label": "11c, Gote WBf"
+      "label": "11c, Gote Water Buffalo"
     },
     {
       "square": "12c",
@@ -5830,7 +5830,7 @@
       "kind": "DK",
       "promoted": false,
       "text": "DK",
-      "label": "12c, Gote DK"
+      "label": "12c, Gote Dragon King"
     },
     {
       "square": "13c",
@@ -5838,7 +5838,7 @@
       "kind": "DH",
       "promoted": false,
       "text": "DH",
-      "label": "13c, Gote DH"
+      "label": "13c, Gote Dragon Horse"
     },
     {
       "square": "14c",
@@ -5846,7 +5846,7 @@
       "kind": "B",
       "promoted": false,
       "text": "B",
-      "label": "14c, Gote B"
+      "label": "14c, Gote Bishop"
     },
     {
       "square": "15c",
@@ -5854,7 +5854,7 @@
       "kind": "VSo",
       "promoted": false,
       "text": "VSo",
-      "label": "15c, Gote VSo"
+      "label": "15c, Gote Vertical Soldier"
     },
     {
       "square": "16c",
@@ -5862,7 +5862,7 @@
       "kind": "SSo",
       "promoted": false,
       "text": "SSo",
-      "label": "16c, Gote SSo"
+      "label": "16c, Gote Side Soldier"
     },
     {
       "square": "1d",
@@ -5870,7 +5870,7 @@
       "kind": "SM",
       "promoted": false,
       "text": "SM",
-      "label": "1d, Gote SM"
+      "label": "1d, Gote Side Mover"
     },
     {
       "square": "2d",
@@ -5878,7 +5878,7 @@
       "kind": "VM",
       "promoted": false,
       "text": "VM",
-      "label": "2d, Gote VM"
+      "label": "2d, Gote Vertical Mover"
     },
     {
       "square": "3d",
@@ -5886,7 +5886,7 @@
       "kind": "R",
       "promoted": false,
       "text": "R",
-      "label": "3d, Gote R"
+      "label": "3d, Gote Rook"
     },
     {
       "square": "4d",
@@ -5894,7 +5894,7 @@
       "kind": "HF",
       "promoted": false,
       "text": "HF",
-      "label": "4d, Gote HF"
+      "label": "4d, Gote Horned Falcon"
     },
     {
       "square": "5d",
@@ -5902,7 +5902,7 @@
       "kind": "SE",
       "promoted": false,
       "text": "SE",
-      "label": "5d, Gote SE"
+      "label": "5d, Gote Soaring Eagle"
     },
     {
       "square": "6d",
@@ -5910,7 +5910,7 @@
       "kind": "BGn",
       "promoted": false,
       "text": "BGn",
-      "label": "6d, Gote BGn"
+      "label": "6d, Gote Bishop General"
     },
     {
       "square": "7d",
@@ -5918,7 +5918,7 @@
       "kind": "RGn",
       "promoted": false,
       "text": "RGn",
-      "label": "7d, Gote RGn"
+      "label": "7d, Gote Rook General"
     },
     {
       "square": "8d",
@@ -5926,7 +5926,7 @@
       "kind": "GGn",
       "promoted": false,
       "text": "GGn",
-      "label": "8d, Gote GGn"
+      "label": "8d, Gote Great General"
     },
     {
       "square": "9d",
@@ -5934,7 +5934,7 @@
       "kind": "VGn",
       "promoted": false,
       "text": "VGn",
-      "label": "9d, Gote VGn"
+      "label": "9d, Gote Vice General"
     },
     {
       "square": "10d",
@@ -5942,7 +5942,7 @@
       "kind": "RGn",
       "promoted": false,
       "text": "RGn",
-      "label": "10d, Gote RGn"
+      "label": "10d, Gote Rook General"
     },
     {
       "square": "11d",
@@ -5950,7 +5950,7 @@
       "kind": "BGn",
       "promoted": false,
       "text": "BGn",
-      "label": "11d, Gote BGn"
+      "label": "11d, Gote Bishop General"
     },
     {
       "square": "12d",
@@ -5958,7 +5958,7 @@
       "kind": "SE",
       "promoted": false,
       "text": "SE",
-      "label": "12d, Gote SE"
+      "label": "12d, Gote Soaring Eagle"
     },
     {
       "square": "13d",
@@ -5966,7 +5966,7 @@
       "kind": "HF",
       "promoted": false,
       "text": "HF",
-      "label": "13d, Gote HF"
+      "label": "13d, Gote Horned Falcon"
     },
     {
       "square": "14d",
@@ -5974,7 +5974,7 @@
       "kind": "R",
       "promoted": false,
       "text": "R",
-      "label": "14d, Gote R"
+      "label": "14d, Gote Rook"
     },
     {
       "square": "15d",
@@ -5982,7 +5982,7 @@
       "kind": "VM",
       "promoted": false,
       "text": "VM",
-      "label": "15d, Gote VM"
+      "label": "15d, Gote Vertical Mover"
     },
     {
       "square": "16d",
@@ -5990,7 +5990,7 @@
       "kind": "SM",
       "promoted": false,
       "text": "SM",
-      "label": "16d, Gote SM"
+      "label": "16d, Gote Side Mover"
     },
     {
       "square": "1e",
@@ -5998,7 +5998,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "1e, Gote P"
+      "label": "1e, Gote Pawn"
     },
     {
       "square": "2e",
@@ -6006,7 +6006,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "2e, Gote P"
+      "label": "2e, Gote Pawn"
     },
     {
       "square": "3e",
@@ -6014,7 +6014,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "3e, Gote P"
+      "label": "3e, Gote Pawn"
     },
     {
       "square": "4e",
@@ -6022,7 +6022,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "4e, Gote P"
+      "label": "4e, Gote Pawn"
     },
     {
       "square": "5e",
@@ -6030,7 +6030,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "5e, Gote P"
+      "label": "5e, Gote Pawn"
     },
     {
       "square": "6e",
@@ -6038,7 +6038,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "6e, Gote P"
+      "label": "6e, Gote Pawn"
     },
     {
       "square": "7e",
@@ -6046,7 +6046,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "7e, Gote P"
+      "label": "7e, Gote Pawn"
     },
     {
       "square": "8e",
@@ -6054,7 +6054,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "8e, Gote P"
+      "label": "8e, Gote Pawn"
     },
     {
       "square": "9e",
@@ -6062,7 +6062,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "9e, Gote P"
+      "label": "9e, Gote Pawn"
     },
     {
       "square": "10e",
@@ -6070,7 +6070,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "10e, Gote P"
+      "label": "10e, Gote Pawn"
     },
     {
       "square": "11e",
@@ -6078,7 +6078,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "11e, Gote P"
+      "label": "11e, Gote Pawn"
     },
     {
       "square": "12e",
@@ -6086,7 +6086,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "12e, Gote P"
+      "label": "12e, Gote Pawn"
     },
     {
       "square": "13e",
@@ -6094,7 +6094,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "13e, Gote P"
+      "label": "13e, Gote Pawn"
     },
     {
       "square": "14e",
@@ -6102,7 +6102,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "14e, Gote P"
+      "label": "14e, Gote Pawn"
     },
     {
       "square": "15e",
@@ -6110,7 +6110,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "15e, Gote P"
+      "label": "15e, Gote Pawn"
     },
     {
       "square": "16e",
@@ -6118,7 +6118,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "16e, Gote P"
+      "label": "16e, Gote Pawn"
     },
     {
       "square": "5f",
@@ -6126,7 +6126,7 @@
       "kind": "Dg",
       "promoted": false,
       "text": "Dg",
-      "label": "5f, Gote Dg"
+      "label": "5f, Gote Dog"
     },
     {
       "square": "12f",
@@ -6134,7 +6134,7 @@
       "kind": "Dg",
       "promoted": false,
       "text": "Dg",
-      "label": "12f, Gote Dg"
+      "label": "12f, Gote Dog"
     },
     {
       "square": "8h",
@@ -6142,7 +6142,7 @@
       "kind": "Ln",
       "promoted": false,
       "text": "Ln",
-      "label": "8h, Sente Ln"
+      "label": "8h, Sente Lion"
     },
     {
       "square": "5k",
@@ -6150,7 +6150,7 @@
       "kind": "Dg",
       "promoted": false,
       "text": "Dg",
-      "label": "5k, Sente Dg"
+      "label": "5k, Sente Dog"
     },
     {
       "square": "12k",
@@ -6158,7 +6158,7 @@
       "kind": "Dg",
       "promoted": false,
       "text": "Dg",
-      "label": "12k, Sente Dg"
+      "label": "12k, Sente Dog"
     },
     {
       "square": "1l",
@@ -6166,7 +6166,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "1l, Sente P"
+      "label": "1l, Sente Pawn"
     },
     {
       "square": "2l",
@@ -6174,7 +6174,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "2l, Sente P"
+      "label": "2l, Sente Pawn"
     },
     {
       "square": "3l",
@@ -6182,7 +6182,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "3l, Sente P"
+      "label": "3l, Sente Pawn"
     },
     {
       "square": "4l",
@@ -6190,7 +6190,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "4l, Sente P"
+      "label": "4l, Sente Pawn"
     },
     {
       "square": "5l",
@@ -6198,7 +6198,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "5l, Sente P"
+      "label": "5l, Sente Pawn"
     },
     {
       "square": "6l",
@@ -6206,7 +6206,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "6l, Sente P"
+      "label": "6l, Sente Pawn"
     },
     {
       "square": "7l",
@@ -6214,7 +6214,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "7l, Sente P"
+      "label": "7l, Sente Pawn"
     },
     {
       "square": "8l",
@@ -6222,7 +6222,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "8l, Sente P"
+      "label": "8l, Sente Pawn"
     },
     {
       "square": "9l",
@@ -6230,7 +6230,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "9l, Sente P"
+      "label": "9l, Sente Pawn"
     },
     {
       "square": "10l",
@@ -6238,7 +6238,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "10l, Sente P"
+      "label": "10l, Sente Pawn"
     },
     {
       "square": "11l",
@@ -6246,7 +6246,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "11l, Sente P"
+      "label": "11l, Sente Pawn"
     },
     {
       "square": "12l",
@@ -6254,7 +6254,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "12l, Sente P"
+      "label": "12l, Sente Pawn"
     },
     {
       "square": "13l",
@@ -6262,7 +6262,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "13l, Sente P"
+      "label": "13l, Sente Pawn"
     },
     {
       "square": "14l",
@@ -6270,7 +6270,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "14l, Sente P"
+      "label": "14l, Sente Pawn"
     },
     {
       "square": "15l",
@@ -6278,7 +6278,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "15l, Sente P"
+      "label": "15l, Sente Pawn"
     },
     {
       "square": "16l",
@@ -6286,7 +6286,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "16l, Sente P"
+      "label": "16l, Sente Pawn"
     },
     {
       "square": "1m",
@@ -6294,7 +6294,7 @@
       "kind": "SM",
       "promoted": false,
       "text": "SM",
-      "label": "1m, Sente SM"
+      "label": "1m, Sente Side Mover"
     },
     {
       "square": "2m",
@@ -6302,7 +6302,7 @@
       "kind": "VM",
       "promoted": false,
       "text": "VM",
-      "label": "2m, Sente VM"
+      "label": "2m, Sente Vertical Mover"
     },
     {
       "square": "3m",
@@ -6310,7 +6310,7 @@
       "kind": "R",
       "promoted": false,
       "text": "R",
-      "label": "3m, Sente R"
+      "label": "3m, Sente Rook"
     },
     {
       "square": "4m",
@@ -6318,7 +6318,7 @@
       "kind": "HF",
       "promoted": false,
       "text": "HF",
-      "label": "4m, Sente HF"
+      "label": "4m, Sente Horned Falcon"
     },
     {
       "square": "5m",
@@ -6326,7 +6326,7 @@
       "kind": "SE",
       "promoted": false,
       "text": "SE",
-      "label": "5m, Sente SE"
+      "label": "5m, Sente Soaring Eagle"
     },
     {
       "square": "6m",
@@ -6334,7 +6334,7 @@
       "kind": "BGn",
       "promoted": false,
       "text": "BGn",
-      "label": "6m, Sente BGn"
+      "label": "6m, Sente Bishop General"
     },
     {
       "square": "7m",
@@ -6342,7 +6342,7 @@
       "kind": "RGn",
       "promoted": false,
       "text": "RGn",
-      "label": "7m, Sente RGn"
+      "label": "7m, Sente Rook General"
     },
     {
       "square": "8m",
@@ -6350,7 +6350,7 @@
       "kind": "VGn",
       "promoted": false,
       "text": "VGn",
-      "label": "8m, Sente VGn"
+      "label": "8m, Sente Vice General"
     },
     {
       "square": "9m",
@@ -6358,7 +6358,7 @@
       "kind": "GGn",
       "promoted": false,
       "text": "GGn",
-      "label": "9m, Sente GGn"
+      "label": "9m, Sente Great General"
     },
     {
       "square": "10m",
@@ -6366,7 +6366,7 @@
       "kind": "RGn",
       "promoted": false,
       "text": "RGn",
-      "label": "10m, Sente RGn"
+      "label": "10m, Sente Rook General"
     },
     {
       "square": "11m",
@@ -6374,7 +6374,7 @@
       "kind": "BGn",
       "promoted": false,
       "text": "BGn",
-      "label": "11m, Sente BGn"
+      "label": "11m, Sente Bishop General"
     },
     {
       "square": "12m",
@@ -6382,7 +6382,7 @@
       "kind": "SE",
       "promoted": false,
       "text": "SE",
-      "label": "12m, Sente SE"
+      "label": "12m, Sente Soaring Eagle"
     },
     {
       "square": "13m",
@@ -6390,7 +6390,7 @@
       "kind": "HF",
       "promoted": false,
       "text": "HF",
-      "label": "13m, Sente HF"
+      "label": "13m, Sente Horned Falcon"
     },
     {
       "square": "14m",
@@ -6398,7 +6398,7 @@
       "kind": "R",
       "promoted": false,
       "text": "R",
-      "label": "14m, Sente R"
+      "label": "14m, Sente Rook"
     },
     {
       "square": "15m",
@@ -6406,7 +6406,7 @@
       "kind": "VM",
       "promoted": false,
       "text": "VM",
-      "label": "15m, Sente VM"
+      "label": "15m, Sente Vertical Mover"
     },
     {
       "square": "16m",
@@ -6414,7 +6414,7 @@
       "kind": "SM",
       "promoted": false,
       "text": "SM",
-      "label": "16m, Sente SM"
+      "label": "16m, Sente Side Mover"
     },
     {
       "square": "1n",
@@ -6422,7 +6422,7 @@
       "kind": "SSo",
       "promoted": false,
       "text": "SSo",
-      "label": "1n, Sente SSo"
+      "label": "1n, Sente Side Soldier"
     },
     {
       "square": "2n",
@@ -6430,7 +6430,7 @@
       "kind": "VSo",
       "promoted": false,
       "text": "VSo",
-      "label": "2n, Sente VSo"
+      "label": "2n, Sente Vertical Soldier"
     },
     {
       "square": "3n",
@@ -6438,7 +6438,7 @@
       "kind": "B",
       "promoted": false,
       "text": "B",
-      "label": "3n, Sente B"
+      "label": "3n, Sente Bishop"
     },
     {
       "square": "4n",
@@ -6446,7 +6446,7 @@
       "kind": "DH",
       "promoted": false,
       "text": "DH",
-      "label": "4n, Sente DH"
+      "label": "4n, Sente Dragon Horse"
     },
     {
       "square": "5n",
@@ -6454,7 +6454,7 @@
       "kind": "DK",
       "promoted": false,
       "text": "DK",
-      "label": "5n, Sente DK"
+      "label": "5n, Sente Dragon King"
     },
     {
       "square": "6n",
@@ -6462,7 +6462,7 @@
       "kind": "WBf",
       "promoted": false,
       "text": "WBf",
-      "label": "6n, Sente WBf"
+      "label": "6n, Sente Water Buffalo"
     },
     {
       "square": "7n",
@@ -6470,7 +6470,7 @@
       "kind": "FiD",
       "promoted": false,
       "text": "FiD",
-      "label": "7n, Sente FiD"
+      "label": "7n, Sente Fire Demon"
     },
     {
       "square": "8n",
@@ -6478,7 +6478,7 @@
       "kind": "FEg",
       "promoted": false,
       "text": "FEg",
-      "label": "8n, Sente FEg"
+      "label": "8n, Sente Free Eagle"
     },
     {
       "square": "9n",
@@ -6486,7 +6486,7 @@
       "kind": "LHk",
       "promoted": false,
       "text": "LHk",
-      "label": "9n, Sente LHk"
+      "label": "9n, Sente Lion Hawk"
     },
     {
       "square": "10n",
@@ -6494,7 +6494,7 @@
       "kind": "FiD",
       "promoted": false,
       "text": "FiD",
-      "label": "10n, Sente FiD"
+      "label": "10n, Sente Fire Demon"
     },
     {
       "square": "11n",
@@ -6502,7 +6502,7 @@
       "kind": "WBf",
       "promoted": false,
       "text": "WBf",
-      "label": "11n, Sente WBf"
+      "label": "11n, Sente Water Buffalo"
     },
     {
       "square": "12n",
@@ -6510,7 +6510,7 @@
       "kind": "DK",
       "promoted": false,
       "text": "DK",
-      "label": "12n, Sente DK"
+      "label": "12n, Sente Dragon King"
     },
     {
       "square": "13n",
@@ -6518,7 +6518,7 @@
       "kind": "DH",
       "promoted": false,
       "text": "DH",
-      "label": "13n, Sente DH"
+      "label": "13n, Sente Dragon Horse"
     },
     {
       "square": "14n",
@@ -6526,7 +6526,7 @@
       "kind": "B",
       "promoted": false,
       "text": "B",
-      "label": "14n, Sente B"
+      "label": "14n, Sente Bishop"
     },
     {
       "square": "15n",
@@ -6534,7 +6534,7 @@
       "kind": "VSo",
       "promoted": false,
       "text": "VSo",
-      "label": "15n, Sente VSo"
+      "label": "15n, Sente Vertical Soldier"
     },
     {
       "square": "16n",
@@ -6542,7 +6542,7 @@
       "kind": "SSo",
       "promoted": false,
       "text": "SSo",
-      "label": "16n, Sente SSo"
+      "label": "16n, Sente Side Soldier"
     },
     {
       "square": "1o",
@@ -6550,7 +6550,7 @@
       "kind": "RC",
       "promoted": false,
       "text": "RC",
-      "label": "1o, Sente RC"
+      "label": "1o, Sente Reverse Chariot"
     },
     {
       "square": "3o",
@@ -6558,7 +6558,7 @@
       "kind": "ChS",
       "promoted": false,
       "text": "ChS",
-      "label": "3o, Sente ChS"
+      "label": "3o, Sente Chariot Soldier"
     },
     {
       "square": "4o",
@@ -6566,7 +6566,7 @@
       "kind": "ChS",
       "promoted": false,
       "text": "ChS",
-      "label": "4o, Sente ChS"
+      "label": "4o, Sente Chariot Soldier"
     },
     {
       "square": "6o",
@@ -6574,7 +6574,7 @@
       "kind": "BT",
       "promoted": false,
       "text": "BT",
-      "label": "6o, Sente BT"
+      "label": "6o, Sente Blind Tiger"
     },
     {
       "square": "7o",
@@ -6582,7 +6582,7 @@
       "kind": "Ph",
       "promoted": false,
       "text": "Ph",
-      "label": "7o, Sente Ph"
+      "label": "7o, Sente Phoenix"
     },
     {
       "square": "8o",
@@ -6590,7 +6590,7 @@
       "kind": "FK",
       "promoted": false,
       "text": "FK",
-      "label": "8o, Sente FK"
+      "label": "8o, Sente Free King"
     },
     {
       "square": "10o",
@@ -6598,7 +6598,7 @@
       "kind": "Ky",
       "promoted": false,
       "text": "Ky",
-      "label": "10o, Sente Ky"
+      "label": "10o, Sente Kirin"
     },
     {
       "square": "11o",
@@ -6606,7 +6606,7 @@
       "kind": "BT",
       "promoted": false,
       "text": "BT",
-      "label": "11o, Sente BT"
+      "label": "11o, Sente Blind Tiger"
     },
     {
       "square": "13o",
@@ -6614,7 +6614,7 @@
       "kind": "ChS",
       "promoted": false,
       "text": "ChS",
-      "label": "13o, Sente ChS"
+      "label": "13o, Sente Chariot Soldier"
     },
     {
       "square": "14o",
@@ -6622,7 +6622,7 @@
       "kind": "ChS",
       "promoted": false,
       "text": "ChS",
-      "label": "14o, Sente ChS"
+      "label": "14o, Sente Chariot Soldier"
     },
     {
       "square": "16o",
@@ -6630,7 +6630,7 @@
       "kind": "RC",
       "promoted": false,
       "text": "RC",
-      "label": "16o, Sente RC"
+      "label": "16o, Sente Reverse Chariot"
     },
     {
       "square": "1p",
@@ -6638,7 +6638,7 @@
       "kind": "L",
       "promoted": false,
       "text": "L",
-      "label": "1p, Sente L"
+      "label": "1p, Sente Lance"
     },
     {
       "square": "2p",
@@ -6646,7 +6646,7 @@
       "kind": "N",
       "promoted": false,
       "text": "N",
-      "label": "2p, Sente N"
+      "label": "2p, Sente Knight"
     },
     {
       "square": "3p",
@@ -6654,7 +6654,7 @@
       "kind": "FL",
       "promoted": false,
       "text": "FL",
-      "label": "3p, Sente FL"
+      "label": "3p, Sente Ferocious Leopard"
     },
     {
       "square": "4p",
@@ -6662,7 +6662,7 @@
       "kind": "I",
       "promoted": false,
       "text": "I",
-      "label": "4p, Sente I"
+      "label": "4p, Sente Iron General"
     },
     {
       "square": "5p",
@@ -6670,7 +6670,7 @@
       "kind": "C",
       "promoted": false,
       "text": "C",
-      "label": "5p, Sente C"
+      "label": "5p, Sente Copper General"
     },
     {
       "square": "6p",
@@ -6678,7 +6678,7 @@
       "kind": "S",
       "promoted": false,
       "text": "S",
-      "label": "6p, Sente S"
+      "label": "6p, Sente Silver General"
     },
     {
       "square": "7p",
@@ -6686,7 +6686,7 @@
       "kind": "G",
       "promoted": false,
       "text": "G",
-      "label": "7p, Sente G"
+      "label": "7p, Sente Gold General"
     },
     {
       "square": "8p",
@@ -6694,7 +6694,7 @@
       "kind": "DE",
       "promoted": false,
       "text": "DE",
-      "label": "8p, Sente DE"
+      "label": "8p, Sente Drunk Elephant"
     },
     {
       "square": "9p",
@@ -6702,7 +6702,7 @@
       "kind": "K",
       "promoted": false,
       "text": "K",
-      "label": "9p, Sente K"
+      "label": "9p, Sente King"
     },
     {
       "square": "10p",
@@ -6710,7 +6710,7 @@
       "kind": "G",
       "promoted": false,
       "text": "G",
-      "label": "10p, Sente G"
+      "label": "10p, Sente Gold General"
     },
     {
       "square": "11p",
@@ -6718,7 +6718,7 @@
       "kind": "S",
       "promoted": false,
       "text": "S",
-      "label": "11p, Sente S"
+      "label": "11p, Sente Silver General"
     },
     {
       "square": "12p",
@@ -6726,7 +6726,7 @@
       "kind": "C",
       "promoted": false,
       "text": "C",
-      "label": "12p, Sente C"
+      "label": "12p, Sente Copper General"
     },
     {
       "square": "13p",
@@ -6734,7 +6734,7 @@
       "kind": "I",
       "promoted": false,
       "text": "I",
-      "label": "13p, Sente I"
+      "label": "13p, Sente Iron General"
     },
     {
       "square": "14p",
@@ -6742,7 +6742,7 @@
       "kind": "FL",
       "promoted": false,
       "text": "FL",
-      "label": "14p, Sente FL"
+      "label": "14p, Sente Ferocious Leopard"
     },
     {
       "square": "15p",
@@ -6750,7 +6750,7 @@
       "kind": "N",
       "promoted": false,
       "text": "N",
-      "label": "15p, Sente N"
+      "label": "15p, Sente Knight"
     },
     {
       "square": "16p",
@@ -6758,7 +6758,7 @@
       "kind": "L",
       "promoted": false,
       "text": "L",
-      "label": "16p, Sente L"
+      "label": "16p, Sente Lance"
     }
   ],
   "hands": [],
@@ -9978,8 +9978,8 @@
     "promotion": true,
     "take_back": false,
     "undo": false,
-    "engine_turn": false,
-    "move_analysis": false,
+    "engine_turn": true,
+    "move_analysis": true,
     "chess_full": false,
     "claims": false,
     "declaration": false,
@@ -9998,7 +9998,7 @@
   "board_ply": 0,
   "play_limits": {
     "depth": 1,
-    "nodes": 1
+    "nodes": 1024
   },
   "historical": false,
   "paused": true,
@@ -10011,7 +10011,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Tenjiku execution is unsupported. Operational failures and absence of board actions are unscored; native conclusions remain separate.",
+  "score_meaning": "Transparent material evaluation in Pawns from the analyzed native side; native terminal wins use board-action distance. Operational failures and absence of board actions remain unscored.",
   "chess": null,
   "chess_match": null
 }

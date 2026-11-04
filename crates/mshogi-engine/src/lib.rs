@@ -11,6 +11,7 @@ mod chu;
 mod server;
 mod shared;
 mod shogi;
+mod tenjiku;
 mod tori;
 mod xiangqi;
 pub use bridge::{BridgeOptions, EngineBridge, SubmitError};
@@ -21,6 +22,7 @@ use serde::{Deserialize, Serialize};
 pub use server::serve_once;
 pub use shared::*;
 pub use shogi::*;
+pub use tenjiku::*;
 pub use tori::*;
 pub use xiangqi::*;
 

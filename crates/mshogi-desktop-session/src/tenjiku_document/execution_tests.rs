@@ -18,9 +18,12 @@ pub(super) fn execute(context: ExecutionContext) -> ExecutionObservation {
     .unwrap();
     let response: ExecutionResponse = serde_json::from_slice(&output).unwrap();
     assert!(response.matches(&request));
-    assert!(
-        matches!(&response.observation.result,ExecutionResult::Failure{failure} if failure.kind==FailureKind::UnsupportedMode)
-    );
+    assert!(matches!(
+        &response.observation.result,
+        ExecutionResult::Tenjiku {
+            result: mshogi_engine::TenjikuResult::Incomplete { .. }
+        }
+    ));
     response.observation
 }
 pub(super) fn context(record: &c::GameRecord, id: u64) -> ExecutionContext {
@@ -79,7 +82,7 @@ fn oversized_observation_native_history_preserves_typed_capacity_and_accepted_by
     }
 }
 #[test]
-fn real_unsupported_failure_is_unscored_exact_historical_and_survives_rewind() {
+fn real_incomplete_work_is_unscored_exact_historical_and_survives_rewind() {
     for profile in c::Profile::ALL {
         let d = administrative_root(profile);
         let d = command(&d, c::Side::Sente, c::GameCommand::OfferDraw);
@@ -159,12 +162,12 @@ fn both_direction_cross_profile_contexts_invalid_targets_and_forged_results_refu
     }
 }
 #[test]
-fn failure_observation_capacity_256_to257_preserves_complete_document_and_all_endings() {
+fn incomplete_observation_capacity_256_to257_preserves_complete_document_and_all_endings() {
     for profile in c::Profile::ALL {
         let baseline = administrative_root(profile);
         let observation = execute(context(baseline.record(), 1));
         let mut payload = baseline.payload.clone();
-        // Synthetic nonce variants of one real UnsupportedMode observation test
+        // Synthetic nonce variants of one real incomplete observation test
         // document capacity; this is not255 separately executed engine requests.
         for id in 1..=256 {
             let mut o = observation.clone();
@@ -223,5 +226,92 @@ fn failure_observation_capacity_256_to257_preserves_complete_document_and_all_en
         assert_eq!(restored.observations(), d.observations());
         assert_eq!(restored.record().event_count(), 3);
         assert_eq!(restored.record(), &c::GameRecord::from_game(&game).unwrap());
+    }
+}
+
+#[test]
+fn real_completed_engine_action_requires_observation_then_exact_action_and_analysis_is_read_only() {
+    for profile in c::Profile::ALL {
+        let baseline = administrative_root(profile);
+        let mut ctx = context(baseline.record(), 1);
+        ctx.limits = mshogi_engine::TENJIKU_PLAY_LIMITS;
+        let request = ExecutionRequest {
+            protocol: PROTOCOL_VERSION,
+            context: ctx.clone(),
+        };
+        let mut output = vec![];
+        mshogi_engine::serve_once(
+            Cursor::new(format!("{}\n", serde_json::to_string(&request).unwrap())),
+            &mut output,
+        )
+        .unwrap();
+        let response: ExecutionResponse = serde_json::from_slice(&output).unwrap();
+        assert!(response.matches(&request));
+        let observation = response.observation;
+        assert!(matches!(
+            &observation.result,
+            ExecutionResult::Tenjiku {
+                result: mshogi_engine::TenjikuResult::Choice { .. }
+            }
+        ));
+        let d = baseline
+            .with_observation(observation.clone(), &mut || false)
+            .unwrap();
+        assert_eq!(d.record().event_count(), 1);
+        assert!(matches!(
+            &d.controls()[0],
+            TenjikuControl::Observation { index: 0 }
+        ));
+        assert!(matches!(
+            &d.controls()[1],
+            TenjikuControl::Native {
+                command: c::GameCommand::Play { .. },
+                ..
+            }
+        ));
+        assert_eq!(decoded(&d).record(), d.record());
+        assert_eq!(decoded(&d).observations(), d.observations());
+        for forgery in 0..4 {
+            let mut payload = d.payload.clone();
+            match forgery {
+                0 => {
+                    payload.controls.remove(1);
+                }
+                1 => payload.controls.swap(0, 1),
+                2 => {
+                    if let TenjikuControl::Native { actor, .. } = &mut payload.controls[1] {
+                        *actor = actor.opponent()
+                    }
+                }
+                _ => {
+                    if let ExecutionResult::Tenjiku {
+                        result: mshogi_engine::TenjikuResult::Choice { telemetry, .. },
+                    } = &mut payload.observations[0].result
+                    {
+                        telemetry.score = Some(123)
+                    }
+                }
+            }
+            assert!(
+                validate(payload, &mut || false).is_err(),
+                "forgery {forgery}"
+            );
+        }
+        let mut analysis = observation;
+        analysis.context.purpose = ExecutionPurpose::MoveAnalysis {
+            target: ExecutionTarget {
+                selection_id: 1,
+                event_index: 0,
+                board_ply: 0,
+                session_version: 1,
+                label: "Imported root, read-only".into(),
+                turn: NativeSide::Tenjiku(c::Side::Sente),
+            },
+        };
+        let d = baseline.with_observation(analysis, &mut || false).unwrap();
+        assert_eq!(d.record(), baseline.record());
+        assert_eq!(d.controls().len(), 1);
+        assert_eq!(decoded(&d).record(), baseline.record());
+        assert_eq!(baseline.record().event_count(), 0);
     }
 }

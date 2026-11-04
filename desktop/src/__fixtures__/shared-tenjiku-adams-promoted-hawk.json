@@ -2,7 +2,7 @@
   "moves": {
     "root": {
       "label": "Starting position",
-      "numbering": "Tenjiku technical complete actions · known-root move pairs · declared root plies 0 · earlier history unknown"
+      "numbering": "mShogi Tenjiku complete-action notation · known-root move pairs · declared root plies 0 · earlier history unknown"
     },
     "entries": [],
     "last_action": null
@@ -828,7 +828,7 @@
       "incomplete": null,
       "last_effects": null
     },
-    "execution_supported": false
+    "execution_supported": true
   },
   "open_token": {
     "document": 1,
@@ -1048,7 +1048,7 @@
       "kind": "K",
       "promoted": false,
       "text": "K",
-      "label": "1a, Gote K"
+      "label": "1a, Gote King"
     },
     {
       "square": "2c",
@@ -1056,7 +1056,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "2c, Gote P"
+      "label": "2c, Gote Pawn"
     },
     {
       "square": "8h",
@@ -1064,7 +1064,7 @@
       "kind": "Ln",
       "promoted": true,
       "text": "+LHk",
-      "label": "8h, Sente LHk (promoted Ln)"
+      "label": "8h, Sente Lion Hawk (promoted Lion)"
     },
     {
       "square": "9h",
@@ -1072,7 +1072,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "9h, Gote P"
+      "label": "9h, Gote Pawn"
     },
     {
       "square": "10h",
@@ -1080,7 +1080,7 @@
       "kind": "G",
       "promoted": false,
       "text": "G",
-      "label": "10h, Gote G"
+      "label": "10h, Gote Gold General"
     },
     {
       "square": "15n",
@@ -1088,7 +1088,7 @@
       "kind": "P",
       "promoted": false,
       "text": "P",
-      "label": "15n, Sente P"
+      "label": "15n, Sente Pawn"
     },
     {
       "square": "16p",
@@ -1096,7 +1096,7 @@
       "kind": "K",
       "promoted": false,
       "text": "K",
-      "label": "16p, Sente K"
+      "label": "16p, Sente King"
     }
   ],
   "hands": [],
@@ -3252,8 +3252,8 @@
     "promotion": true,
     "take_back": false,
     "undo": false,
-    "engine_turn": false,
-    "move_analysis": false,
+    "engine_turn": true,
+    "move_analysis": true,
     "chess_full": false,
     "claims": false,
     "declaration": false,
@@ -3272,7 +3272,7 @@
   "board_ply": 0,
   "play_limits": {
     "depth": 1,
-    "nodes": 1
+    "nodes": 1024
   },
   "historical": false,
   "paused": true,
@@ -3285,7 +3285,7 @@
   "analysis": null,
   "observations": [],
   "search_observations": [],
-  "score_meaning": "Tenjiku execution is unsupported. Operational failures and absence of board actions are unscored; native conclusions remain separate.",
+  "score_meaning": "Transparent material evaluation in Pawns from the analyzed native side; native terminal wins use board-action distance. Operational failures and absence of board actions remain unscored.",
   "chess": null,
   "chess_match": null
 }

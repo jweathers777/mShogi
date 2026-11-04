@@ -74,7 +74,21 @@ fn root(profile: c::Profile, input: &Value) -> Result<c::Game, String> {
 }
 pub fn game(profile: c::Profile, scenario: &str) -> Result<c::Game, String> {
     match scenario {
-        "standard" | "gote" => Ok(c::Game::standard(profile)),
+        "all-faces" => {
+            let mut pieces = Vec::new();
+            for (i, base) in c::Base::ALL.into_iter().enumerate() {
+                pieces.push((c::Square::new(14-(i%12) as u8, 10+(i/12) as u8).unwrap(),
+                    c::Piece::new(i as u16,c::Side::Sente,base,false).map_err(|e|e.to_string())?));
+            }
+            for (i, base) in c::Base::ALL.into_iter().filter(|b|b.promotable()).enumerate() {
+                pieces.push((c::Square::new(14-(i%12) as u8, 3+(i/12) as u8).unwrap(),
+                    c::Piece::new((36+i) as u16,c::Side::Gote,base,true).map_err(|e|e.to_string())?));
+            }
+            pieces.push((c::Square::new(8,1).unwrap(),c::Piece::new(66,c::Side::Gote,c::Base::K,false).map_err(|e|e.to_string())?));
+            c::Game::from_root(c::Position::from_diagram(profile,&pieces,c::Side::Sente,
+                c::RootMetadata::imported("Artwork inspection diagram: all44faces and30once-promoted identities, not reached play".into(),0).map_err(|e|e.to_string())?).map_err(|e|e.to_string())?).map_err(|e|e.to_string())
+        }
+        "standard" | "gote" | "engine-played" | "analysis" => Ok(c::Game::standard(profile)),
         "burn" | "burned" => root(profile, &fixture_input("TEN-BURN-DYING")["root"]),
         "igui" | "iguied" => root(profile, &fixture_input("TEN-TETRARCH-IGUI")["root"]),
         "promotion" | "promoted" | "declined" => root(

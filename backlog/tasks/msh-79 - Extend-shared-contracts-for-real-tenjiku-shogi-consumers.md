@@ -1,11 +1,11 @@
 ---
 id: MSH-79
 title: Extend shared contracts for real tenjiku shogi consumers
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-04T16:27:00Z'
+updated_date: '2026-11-04T20:34:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -27,6 +27,8 @@ documentation:
   - docs/m4/tenjiku/profile.md
   - docs/m4/tenjiku/native-v1.md
   - docs/m4/tenjiku/native-verification.json
+  - docs/m4/tenjiku/shared-v1.md
+  - docs/m4/tenjiku/shared-verification.json
 type: task
 ordinal: 79000
 ---
@@ -46,12 +48,12 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [x] #1 The real game-owned native handoff is consumed through explicit typed profile/record/session/engine dispatch and supported capabilities; existing chess/shogi contexts remain compatible and stale/cancelled results cannot cross profiles.
 - [x] #2 Shared mechanisms accommodate 16x16 complete routes,profile-specific ordered derived effects,royal status and native history/outcome payloads through native metadata and complete choices,with no frontend legality or mandatory common board representation.
 - [x] #3 Canonical envelope/history/admission supports the concrete game payload and documented resource policy without losing prior accepted data; unsupported profiles/conversions remain explicit.
-- [ ] #4 Real authoritative game-generated fixtures and interaction tests establish the extension; synthetic M3 fixtures alone do not prove real-game support. Required cross-game regression and ownership boundaries are recorded.
+- [x] #4 Real authoritative game-generated fixtures and interaction tests establish the extension; synthetic M3 fixtures alone do not prove real-game support. Required cross-game regression and ownership boundaries are recorded.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
 - [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
@@ -64,6 +66,8 @@ A. Extend actual native/profile/schema/record/side/command routing with explicit
 B. Add one immutable Tenjiku payload and ActiveDocument adapter within existing transaction/file/install/lifecycle owners. Retain exact journal/observations/branches/prefixes, fresh stopped reopen and real Stop→Resign→Stop→Close reserves. Measure representative and near-limit whole documents before ratifying bounded aggregate work policy; preserve atomic refusal/dirty/runtime/prior-file state.
 C. Extend shared native presentation and existing frontend owner/controller for16×16, both profiles/orientations, complete routes, stationary targets and ordered burn/death/promotion phases. Explicit Newprofile plumbing and verification route only; exclude Tenjiku from normal chooser and product Load, gate engine retry/analysis capabilities.
 D. Execute12 applicable consumer rows with real native/controller/frontend cases for both profiles; keep5 MSH44 product rows pending and do not recount621 native assertions. Measure worker/inspection/serialization/render/cancel costs. Obtain independent checkpoint/final review, coherent five-game/frontend/host regression and exact-source required nativeCI(Rust Ubuntu24.04/macOS15/Windows2022) plus applicable Desktop/frontend/host checks. Record one structured verification ledger, integrate/push normally, update44handoff and stopafter79.
+
+CI-only resume: reconcile both completed runs/all attempts and exact3a290 source; retry only each latest unsuccessful macOS15 job once in this session after the elapsed cooldown. Use one completion-aware monitor; no overlapping campaigns or healthy Linux/Windows reruns. If acquisition fails again, stop automatic retries, inspect supported provider retry/scheduling limits and preserve In Review with exact receipts. If both execute/pass, briefly independently reconcile all6platform receipts, finalize evidence/AC/DoD and update44handoff without starting44.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -88,14 +92,20 @@ CI41856238536 Ubuntu job126665514599 failed known112early-exitclassificationrace
 Finalindependentboundedverdict: AC1–3supported; AC4sourcefixtures/interaction/ownershipsupportedbutrequiredcross-platformclosureincomplete. DoD2review/findingsresolved supported; docs/handoff andintegration recorded; fullacceptance/DonegateNOTsupportedwithoutmacOS15terminalsuccess. FirstMacjobs126665515114/126665513921andsecond126684767741/126686298972cancelledwithnohostedrunner; exactannotationsnotacquired/capacityconstraints. DesktopthirdsameSHAretryacceptedjob126702335253queued; LinuxRust126684768079allstepssuccessinclComplete16:14:15UTCbutAPIterminalpending at16:21–16:24UTC. No localMac27substitution, assertionweakening, runnerconfigchange orhealthyjobcancellation. Sourcefrozen3a290; onlyfinalevidence/taskhandoff edits. Keep79InReview,44ToDo/unstarted.
 
 Latest receipt16:25:23UTC supersedes earlier Linux-terminal-pending notes: LinuxRust retry126684768079 is terminalSUCCESS, alongside WindowsRust andLinux/WindowsDesktop. OnlymacOS15success receiptsmissing. BothsecondMacjobs126684767741/126686298972 CANCELLED withsame nohostedrunner/capacityannotations. ThirdDesktopretryaccepted/queued126702335253. Rustthirdrerun403 becauseworkflowstillin_progress(attempt2,updated16:19:14), despitealljobsnowterminal; deferuntilworkflowfinalization, thenretryMaconly. No requiredplatformconfigurationchange/localMac27substitution. Completionnotapproved; AC4/DoD1unchecked; sourcefrozen3a290, evidencehandoffonly.
+
+CI-only resume4November2026 20:05UTC: clean primarycodex/rewrite aee38a2, origin aligned0/0, Backlog1.55.1 matchesbaseline; @codex resumes own InReview task with unchangedsource3a290024df82d23f215165707c81de4928ad3a4a. Four unrelatedworktrees preserved. LiveRust41856238536 completedfailure attempt2; Desktop41856238041 completedfailure attempt3. RustMac126665515114/126684767741 andDesktopMac126665513921/126686298972/126702335253 allcancelled beforehostedrunneracquisition(runner_id0). Linux/Windows passed; successfulcopiedjobIDs retain originalexecutiontimes. Noimplementation re-review/broadtestcampaign or44work. Onefreshmac-only retry perworkflow is the session bound; acquisition failure again ends automaticretryloop and preservesblocked acceptance.
+
+LiveCI-onlyretry: supported specific-job reruns accepted for RustMac126684767741→126831432252(attempt3) andDesktopMac126702335253→126831460036(attempt4). Bothactuallyacquiredrunnersandareexecutingchecks, unlikeprior5cancellations. SourceSHAremains3a290; successfulLinux/Windowsreceiptscopiedwithoriginalexecutiontimes, notrerun. All224sourcehashesmatchtestedrevision/currentcheckout. Onecombinedcompletion-awaremonitor; no source/config/testchanges, no new broadcampaign or44work. Initialfullhistory/annotationsandfreshretrymetadataareconsolidatedinexistingstructuredledger.
+
+FinalCI-onlyacceptance4November2026: specific macOS job retries only, after cooldown, bothacquiredhostedrunners. Rust126831432252 runner1000002608 attempt3:20:06:26–20:28:42UTC SUCCESS; Desktop126831460036 runner1000002609 attempt4:20:06:29–20:15:43UTC SUCCESS. Both actualmacOS15.8.2/24H232 arm64 image20261028.0489.1; checkoutlogsverify3a290. All6originalexecutionreceipts terminalsuccess atsameSHA: RustLinux126684768079/Windows126665515550; DesktopLinux126665513098/Windows126665513623; freshMac2. BothrunscompletedSUCCESS. Healthyjobsnotrerun; latestcopiedstatusjobIDsretainoriginalexecutiontimes. One60scompletion-awaremonitor exited0; no furthercampaign. Freshindependentreview/root/msh79_final_ci_reconciliation PASS verifiedsource/receipts/requiredsteps/history; populatedexplicitreusedDesktopLinux/Windowsrequired-step lists. OriginalAC/DoDtext, source/config/tests, profile/rules/budgets/architecture unchanged. ClosedAC4/DoD1; allcriteriaDone. HistoricalMac5capacitycancellations+MSH112failure retained, no localMac27substitution. Update44handoffonly, stop79.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Implementation accepted and integrated on codex/rewrite at 3a290024df82d23f215165707c81de4928ad3a4a (reviewed implementation b459250; identical source tree). Both explicit immutable profiles use the existing native dispatch, current desktop envelope, controller, workers, install path, frontend owner and native-choice controller. Complete routes, stationary targets, native burn/death/promotion phases, rights, royals, history, retained branches, observations, atomic files and fresh stopped authority are preserved. Engine/analysis remain unscored UnsupportedMode; ordinary product New/Load/chooser stay disabled for Tenjiku.
+Completed and integrated on codex/rewrite at exact tested source3a290024df82d23f215165707c81de4928ad3a4a (reviewed implementationb459250, identical source tree). Both explicit immutable Tenjiku profiles use the existing native dispatch, desktop envelope, controller/workers/install, frontend session/shell and native-choice controller. Complete routes, stationary capture targets, native capture/burn/mover-death/promotion phases, rights, royals, history, branches, observations, atomic files, cancellation and fresh stopped authority are preserved. Execution remains generic unscored UnsupportedMode and ordinary Tenjiku product activation remains off. Original160M aggregate admission,15s deadline and actual ending/Close reserves are unchanged.
 
-Evidence: 53 actual native DTOs; 12 applicable consumer rows for both profiles; 50 Tenjiku and 495 total frontend tests; workspace/focused correctness and refusal checks; independent code/evidence/measurement reviews; actual macOS 27 bounded QA smoke. Measured 160M whole-document work plus independent 15s deadline: actual 8-context worker Open/Save about 5.3–5.6s, endings about 3.4s, prepaid Close under0.5ms. Actual mutex probe covers2808 ordinary inspection guards, max0.950ms; max observed contention wait1.033ms. Scope and historical rejected600M policy are explicit in docs/m4/tenjiku/shared-verification.json. Frozen83/87 expectations unchanged; native621 assertions are not recounted as shared coverage.
+Existing evidence remains accepted:53 real native DTOs,12 applicable consumer rows for both profiles,50 Tenjiku/495 total frontend tests, workspace/focused checks and measured worker/mutex/QA observations. Native87 conformance is not recounted. CI-only resumption obtained the missing actual macOS15.8.2 arm64 executions: Rust126831432252(run41856238536 attempt3), Desktop126831460036(run41856238041 attempt4), both terminalSUCCESS. Reconciled all6 exact-source platform receipts; successful original Linux/Windows executions reused without rerun. Both workflow runs now completedSUCCESS. Five earlier zero-runner macOS cancellations and knownMSH112 firstLinuxfailure are preserved, with successful same-source retry. No source/check/runner configuration or acceptance text changed; all224sourcehashes match.
 
-COMPLETION NOT APPROVED: required macOS15 Rust and Desktop jobs failed to acquire hosted runners in two attempts. Four exact-source jobs now have terminal success: Rust Linux/Windows and Desktop Linux/Windows including actual five-game packaged journeys. First Linux failure was unchanged knownMSH112; same-source retry passed. Third Desktop macOS retry126702335253 remains queued. Rust workflow API still reports running despite terminal job receipts and rejects a third rerun until workflow finalization; then rerun cancelled macOS job126684767741 at the same source. Preserve all failure/runner annotations. AC1–3 supported; AC4 and full DoD1 remain incomplete, so keep In Review. Resume79 only to obtain/reconcile missing macOS receipts and finalize. MSH44 remains To Do, unassigned and unstarted, retaining all8 original criteria and5 product consumer rows for functional engine/search/complete games, console/final notation, licensed assets/final board and normal/minimum three-platform Tenjiku gameplay. No44/M5 or unrelated work started.
+Fresh independent final evidence reconciliation PASS, no blocking findings; originalimplementationreview reused. All4AC and4DoD supported. Single structured record docs/m4/tenjiku/shared-verification.json, evidence revisionMSH79-CI-FINAL-2026-11-04, includes exactjob/step/source/runner/attempt receipts and historical outcomes. MSH44 now has all6dependenciesDone, but remainsToDo/unassigned/unstarted with all8originalcriteria and5productconsumerrows unchanged: functionalengine/search/completegames, console/finalnotation, licensedassets/finalboard andnormal/minimumthreeplatformTenjigameplay. No44/M5 or unrelated implementation started. Stopafter79.
 <!-- SECTION:FINAL_SUMMARY:END -->

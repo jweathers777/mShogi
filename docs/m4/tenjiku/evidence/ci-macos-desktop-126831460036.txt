@@ -1,0 +1,30 @@
+Selected output from macOS Desktop job 126831460036 (workflow41856238041, attempt4).
+Original timestamps preserved; ANSI color sequences removed. Full source/job receipts are in shared-verification.json.
+https://github.com/jweathers777/mShogi/actions/runs/41856238041/job/126831460036
+
+2026-11-04T20:06:30.1009900Z ##[group]Operating System
+2026-11-04T20:06:30.1010290Z macOS
+2026-11-04T20:06:30.1010650Z 15.8.2
+2026-11-04T20:06:30.1010990Z 24H232
+2026-11-04T20:06:30.1011410Z ##[endgroup]
+2026-11-04T20:06:30.1011800Z ##[group]Runner Image
+2026-11-04T20:06:30.1012220Z Image: macos-15-arm64
+2026-11-04T20:06:30.1012680Z Version: 20261028.0489.1
+2026-11-04T20:06:30.1013580Z Included Software: https://github.com/actions/runner-images/blob/macos-15-arm64/20261028.0489/images/macos/macos-15-arm64-Readme.md
+2026-11-04T20:06:30.1014840Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15-arm64%2F20261028.0489
+2026-11-04T20:06:30.1015490Z ##[endgroup]
+2026-11-04T20:06:32.1093180Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3a290024df82d23f215165707c81de4928ad3a4a:refs/remotes/origin/codex/rewrite
+2026-11-04T20:06:37.4103930Z  * [new ref]         3a290024df82d23f215165707c81de4928ad3a4a -> origin/codex/rewrite
+2026-11-04T20:06:37.4242440Z 3a290024df82d23f215165707c81de4928ad3a4a
+2026-11-04T20:06:39.6587830Z 3a290024df82d23f215165707c81de4928ad3a4a
+2026-11-04T20:08:20.1281050Z  Test Files  39 passed (39)
+2026-11-04T20:08:20.1283120Z       Tests  495 passed (495)
+2026-11-04T20:11:34.1242340Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+2026-11-04T20:11:47.2416280Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.15s
+2026-11-04T20:11:48.6221920Z Ran 11 tests in 0.473s
+2026-11-04T20:11:48.6222400Z OK
+2026-11-04T20:11:53.2963790Z Normal frontend excludes verification modules and markers.
+2026-11-04T20:15:32.5333340Z        Built application at: /Users/runner/work/mShogi/mShogi/desktop/src-tauri/target/release/mshogi-desktop
+2026-11-04T20:15:32.6330950Z     Finished 1 bundle at:
+2026-11-04T20:15:33.2131510Z   "sha256": "7fea44f35566004eeb63c21c9af03b3a68ac5caae744f3c385c590e480e45a62",
+2026-11-04T20:15:33.2132180Z   "host_sha256": "8f347d755376938dad2fc279c917ba0e6b2884282986b8644b18e328a3257af5",

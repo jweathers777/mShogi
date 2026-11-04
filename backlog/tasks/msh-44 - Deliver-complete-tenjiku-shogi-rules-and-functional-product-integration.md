@@ -4,7 +4,7 @@ title: Deliver complete tenjiku shogi rules and functional product integration
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-04T16:27:00Z'
+updated_date: '2026-11-04T20:34:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -23,6 +23,8 @@ documentation:
   - docs/m4/tenjiku/handoff.md
   - docs/m4/tenjiku/native-v1.md
   - docs/m4/tenjiku/native-verification.json
+  - docs/m4/tenjiku/shared-v1.md
+  - docs/m4/tenjiku/shared-verification.json
 ordinal: 44000
 ---
 
@@ -72,4 +74,6 @@ MSH79 shared handoff implemented/reviewed and integrated as3a290024df82d23f21516
 Final79handoff: source3a290024df82d23f215165707c81de4928ad3a4aimplementationindependentlyaccepted, but79remainsInReview becausemacOS15Rust/Desktoprunneracquisitionfailedtwice; same-sourceDesktopthirdretry126702335253queued, RustMacretryawaitsLinuxrunterminalreceipt. WindowsRust andLinux/WindowsDesktopactual5gamecampaignspassed; LinuxRustallrequiredstepspassedbutterminalmetadatareceiptpendingatlastrefresh. See79singleledger/shared-v1foractualcontracts,resource/lockmetrics,failuresandjobIDs. DoNOTtreat79asDone/44dependency-readyuntilrequiredterminalreceiptsreconciled.44remainsToDo/unassigned/unstarted, alloriginal8AC/DoDunchecked; nofunctionalengine,normalactivation,finalnotation/artorpackagedTenjigameplayclaim. Nextresume79only; no44implementationplanoradditionalhierarchy.
 
 Latest79handoff supersedesLinux-pendingnote: four exact3a290jobs have terminalsuccess (RustLinux/Windows, DesktopLinux/Windowswithactual5gameGUI). OnlyrequiredmacOS15Rust/Desktopreceiptsmissingaftertwo hostedrunneracquisitioncancellations; thirdDesktopjob126702335253queued, RustMacrerunawaitsworkflowAPIterminalstate.79InReview/AC4+DoD1incomplete, sourceimplementationaccepted, no44activation. Resume79onlyforCIreconciliation/finalization;44ToDo/unassigned/unstarted andalloriginal8AC/DoDunchanged.
+
+MSH79 is nowDone after finalCI-onlyacceptance at unchanged testedsource3a290024df82d23f215165707c81de4928ad3a4a. Both requiredmacOS15.8.2 arm64jobs actuallyexecutedandpassed: Rust126831432252/run41856238536attempt3; Desktop126831460036/run41856238041attempt4. All6Linux/macOS/WindowsRust/Desktopexecutionreceipts success, bothworkflowruns completedSUCCESS; freshindependentfinalevidencereconciliation PASS. Prior5macOScapacitycancellationsandknown112firstLinuxfailure preserved; healthyexecutionsreused. Seeexistingshared-verification.json revisionMSH79-CI-FINAL-2026-11-04 andshared-v1/handoff. All6direct44dependencies(39/72/73/79/83/87) nowDone:44isdependency-ready, remainsToDo/unassigned/unstarted. Original8AC/DoDand5productconsumerrowsunchanged; no engine/search/console/notation/art/M5 workstarted. Nextownerassignmentmayactivate44; thissessionstopsafter79.
 <!-- SECTION:NOTES:END -->

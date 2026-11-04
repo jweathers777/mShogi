@@ -57,6 +57,8 @@ pub enum ResourceScope {
     Tori,
     /// A Chu-owned native/document resource.
     Chu,
+    /// A Tenjiku-owned native/document resource, qualified by the document profile.
+    Tenjiku,
 }
 
 /// Unit of a count or allowance; no conversion is implied between units.

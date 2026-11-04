@@ -34,11 +34,11 @@ export function LiveGameHeading({ eyebrow, status, player, flip, statusRef }: {
   </div>;
 }
 
-export function PlayerArea({ side, human, toMove, playerKey, className = "", children }: {
-  side: string; human: boolean; toMove: boolean; playerKey?: string; className?: string; children?: ReactNode;
+export function PlayerArea({ side, human, toMove, playerKey, className = "", children, participant }: {
+  participant?: string; side: string; human: boolean; toMove: boolean; playerKey?: string; className?: string; children?: ReactNode;
 }) {
   return <div className={`shell-player ${className}${toMove ? " to-move" : ""}`} data-player={playerKey}>
-    <div className="shell-player-identity shogi-player-identity"><span className="player-avatar" aria-hidden="true">{human ? "Y" : "m"}</span><div><strong>{human ? "You" : "mShogi"}<span>{side}</span></strong><small>{human ? "Human player" : "Your opponent"}</small></div>{toMove && <span className="turn-indicator">To move</span>}</div>
+    <div className="shell-player-identity shogi-player-identity"><span className="player-avatar" aria-hidden="true">{human ? "Y" : "m"}</span><div><strong>{participant ?? (human ? "You" : "mShogi")}<span>{side}</span></strong><small>{participant ? "Verification side" : human ? "Human player" : "Your opponent"}</small></div>{toMove && <span className="turn-indicator">To move</span>}</div>
     {children}
   </div>;
 }
@@ -76,7 +76,7 @@ export function AnalysisActions({ children }: { children: ReactNode }) {
 }
 
 export function ApplicationShell({ game, runtime, document, actions, heading, board, positionNotice, notices, analysis, history, gameActions, support, overlays, blocked, historical, attributes = {}, onFocusCapture }: {
-  game: "chess" | "shogi" | "xiangqi" | "tori" | "chu"; runtime: string; document: ReactNode; actions: ReactNode;
+  game: "chess" | "shogi" | "xiangqi" | "tori" | "chu" | "tenjiku"; runtime: string; document: ReactNode; actions: ReactNode;
   heading: ReactNode; board: ReactNode; positionNotice?: ReactNode; notices?: ReactNode; analysis: ReactNode;
   history: ReactNode; gameActions: ReactNode; support: ReactNode; overlays?: ReactNode;
   blocked?: boolean; historical?: boolean; attributes?: Record<string, string | number | boolean>;

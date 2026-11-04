@@ -2,13 +2,24 @@ import type { ResourceFailure } from "../resources";
 import type { AnalysisOperation, AnalysisState, Claim, ChessResult, Color, MatchConclusion, ExecutionObservation } from "../native";
 import type { NativeBoardSnapshot } from "../NativeBoard";
 import type { CompletedActionGeometry } from "../boardPresentation";
-export type GameKind = "chess" | "shogi" | "xiangqi" | "tori" | "chu";
-export type PlayableGameKind = GameKind;
+export type GameKind = "chess" | "shogi" | "xiangqi" | "tori" | "chu" | "tenjiku";
+export type PlayableGameKind = Exclude<GameKind, "tenjiku">;
+export type TenjikuProfile = "mshogi.tenjiku.adams1999-modern.v1" | "mshogi.tenjiku.muller-completed.v1";
+export type RulesProfile = "mshogi.chess.match.v1" | "mshogi.shogi.csa36.v1" | "mshogi.xiangqi.wxf2018.v1" | "mshogi.tori.modern.v1" | "mshogi.chu.jcsa2019.v1" | TenjikuProfile;
+export const playableProfiles: Record<PlayableGameKind, RulesProfile> = {
+  chess: "mshogi.chess.match.v1", shogi: "mshogi.shogi.csa36.v1", xiangqi: "mshogi.xiangqi.wxf2018.v1",
+  tori: "mshogi.tori.modern.v1", chu: "mshogi.chu.jcsa2019.v1",
+};
+export const tenjikuProfiles = [
+  { id: "mshogi.tenjiku.adams1999-modern.v1", label: "Adams Modern" },
+  { id: "mshogi.tenjiku.muller-completed.v1", label: "Muller Completed" },
+] as const;
 export type NativeSide = { game_kind: "chess"; side: "white" | "black" }
   | { game_kind: "shogi"; side: "sente" | "gote" }
   | { game_kind: "xiangqi"; side: "red" | "black" }
   | { game_kind: "tori"; side: "sente" | "gote" }
-  | { game_kind: "chu"; side: "sente" | "gote" };
+  | { game_kind: "chu"; side: "sente" | "gote" }
+  | { game_kind: "tenjiku"; side: "sente" | "gote" };
 export interface Side { id: NativeSide; key: string; label: string; first_mover: boolean }
 export interface OpenToken { document: number; version: number; document_revision: number }
 export interface SearchView {
@@ -118,12 +129,34 @@ export type ChuSnapshot = GameSnapshotBase & {
   chu: { root: unknown; declared_root_plies: string; earlier_history_unknown: boolean; historical_reachability_proven: boolean; selected: ChuHistory; live: ChuHistory; execution_supported: boolean };
   document: GameSnapshotBase["document"] & { settings: { game_kind: "chu"; settings: { orientation: ToriSide } } };
 };
-export type GameSnapshot = ChessSnapshot | ShogiSnapshot | XiangqiSnapshot | ToriSnapshot | ChuSnapshot;
+export type TenjikuAction = { kind: "travel"; from: ChuSquare; route: ChuSquare[]; promote: boolean }
+  | { kind: "igui"; from: ChuSquare; route: []; promote: false; target: ChuSquare };
+export interface TenjikuPieceIdentity {
+  square: string; face: string;
+  piece: { id: number; side: ToriSide; base: string; promoted: boolean; right: string };
+}
+export interface TenjikuHistory {
+  event_index: number; board_ply: number; declared_total_plies: string;
+  identities: TenjikuPieceIdentity[]; royals: TenjikuPieceIdentity[];
+  repetition_key: unknown; known_repetition_positions: number; first_recurrence_forbidden: true;
+  pending_bare: ToriSide | null; conclusion: unknown | null; draw_offer: ToriSide | null;
+  incomplete: ToriStop | null; last_effects: unknown | null;
+}
+export type TenjikuSnapshot = GameSnapshotBase & {
+  game: "tenjiku"; profile: TenjikuProfile;
+  tenjiku: { profile: TenjikuProfile; edition: string; root: unknown; declared_root_plies: string;
+    earlier_history_unknown: boolean; historical_reachability_proven: boolean;
+    selected: TenjikuHistory; live: TenjikuHistory; execution_supported: false };
+  document: GameSnapshotBase["document"] & { settings: { game_kind: "tenjiku"; settings: { orientation: ToriSide } } };
+};
+export type GameSnapshot = ChessSnapshot | ShogiSnapshot | XiangqiSnapshot | ToriSnapshot | ChuSnapshot | TenjikuSnapshot;
 export interface Observation {
   historical: boolean; application_error: string | null;
   observation: ExecutionObservation;
 }
 export type Operation =
+  | { kind: "tenjiku"; actor: ToriSide; command: { kind: "play"; action: TenjikuAction } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" } | { kind: "stop"; reason: ToriStop } }
+  | { kind: "tenjiku_preferences"; settings: { orientation: ToriSide } }
   | { kind: "chu"; actor: ToriSide; command: { kind: "play"; action: ChuAction } | { kind: "resign" | "offer_draw" | "accept_draw" | "decline_draw" } | { kind: "stop"; reason: "cancelled" | "resource_limit" | "engine_failure" | "work_limit" } }
   | { kind: "chu_preferences"; settings: { orientation: ToriSide } }
   | { kind: "tori"; actor: ToriSide; command: { kind: "play"; action: ToriAction } | { kind: "resign" | "agree_draw" | "declare_impasse" } | { kind: "stop"; reason: ToriStop } }

@@ -5,7 +5,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { useGameSession } from "./useGameSession";
-import type { GameSnapshot, ShogiSnapshot } from "./native";
+import { playableProfiles, type GameSnapshot, type ShogiSnapshot } from "./native";
 import toriJson from "../__fixtures__/shared-tori-contract.json";
 import selectedToriJson from "../__fixtures__/shared-tori-selected-root.json";
 import chessJson from "../__fixtures__/shared-chess-standard.json";
@@ -58,8 +58,8 @@ it("serializes commands and binds new-game and file operations to native precond
   await act(async () => { expect(await result.current.file(standard, "open")).toBeNull(); });
   expect(invoke).toHaveBeenCalledTimes(2);
   await act(async () => { command.resolve(standard); await pending; });
-  await act(async () => { await result.current.newGame(standard.open_token, "shogi", { game_kind: "shogi", side: "gote" }); });
-  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: standard.open_token, game: "shogi", human: { game_kind: "shogi", side: "gote" } });
+  await act(async () => { await result.current.newGame(standard.open_token, "shogi", { game_kind: "shogi", side: "gote" }, "mshogi.shogi.csa36.v1"); });
+  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: standard.open_token, game: "shogi", profile: "mshogi.shogi.csa36.v1", human: { game_kind: "shogi", side: "gote" } });
 });
 it("fetches authoritative paused shogi metadata before opening the native quit guard", async () => {
   let close!: () => void;
@@ -168,7 +168,7 @@ it.each([chessJson, standardJson, xiangqiJson])("keeps exact $game Save authorit
   expect(result.current.snapshot).toBe(saved); expect(result.current.error).toBe("Atomic write interrupted.");
 });
 it.each([chessJson, standardJson, xiangqiJson])("keeps dirty $game during cancelled/malformed/resource/stale Load and rejected New Game", async fixture => {
-  const source = fixture as unknown as Exclude<GameSnapshot, { game: "tori" | "chu" }>;
+  const source = fixture as unknown as Exclude<GameSnapshot, { game: "tori" | "chu" | "tenjiku" }>;
   vi.mocked(invoke).mockResolvedValueOnce(source).mockRejectedValueOnce("Load cancelled.").mockRejectedValueOnce("Malformed record.").mockRejectedValueOnce("Replay capacity exceeded.").mockRejectedValueOnce("Stale document token.").mockRejectedValueOnce("New Game admission failed.");
   const { result } = renderHook(useGameSession); await flush();
   for (const reason of ["Load cancelled.", "Malformed record.", "Replay capacity exceeded.", "Stale document token."]) {
@@ -176,8 +176,8 @@ it.each([chessJson, standardJson, xiangqiJson])("keeps dirty $game during cancel
     expect(invoke).toHaveBeenLastCalledWith("game_file", { action: "open", expected: source.open_token });
     expect(result.current.snapshot).toBe(source); expect(result.current.error).toBe(reason);
   }
-  await act(async () => { expect(await result.current.newGame(source.open_token, source.game, source.human.id)).toBeNull(); });
-  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: source.open_token, game: source.game, human: source.human.id });
+  await act(async () => { expect(await result.current.newGame(source.open_token, source.game, source.human.id, playableProfiles[source.game])).toBeNull(); });
+  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: source.open_token, game: source.game, profile: source.profile, human: source.human.id });
   expect(result.current.snapshot).toBe(source); expect(result.current.error).toBe("New Game admission failed.");
 });
 it.each([chessJson, standardJson, xiangqiJson])("does not turn delayed clean $game Save into authority over newer dirty work", async fixture => {

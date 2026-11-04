@@ -13,7 +13,7 @@ export function SupportDialog({ snapshot, session, close }: { snapshot: GameSnap
   const diagnostics = { token: snapshot.token, profile: snapshot.profile, document: snapshot.document, close_requires_save: snapshot.close_requires_save,
     context: snapshot.context, moves: snapshot.moves, capacity: snapshot.capacity, diagnostic: snapshot.diagnostic,
     io: snapshot.io, error: session.error, analysis: snapshot.game === "chess" ? snapshot.chess.analysis : snapshot.analysis,
-    observations: snapshot.observations, ...(snapshot.game === "xiangqi" ? { xiangqi: snapshot.xiangqi } : snapshot.game === "chu" ? { chu: snapshot.chu } : snapshot.game === "tori" ? { tori: snapshot.tori } : snapshot.game === "chess" ? { chess: snapshot.chess, chess_match: snapshot.chess_match } : {}) };
+    observations: snapshot.observations, ...(snapshot.game === "xiangqi" ? { xiangqi: snapshot.xiangqi } : snapshot.game === "tenjiku" ? { tenjiku: snapshot.tenjiku } : snapshot.game === "chu" ? { chu: snapshot.chu } : snapshot.game === "tori" ? { tori: snapshot.tori } : snapshot.game === "chess" ? { chess: snapshot.chess, chess_match: snapshot.chess_match } : {}) };
   return <Dialog title="About mShogi" className="support-dialog" cancel={close}>
     <p>mShogi {version} · Chess, Shogi, Xiangqi, Tori Shogi and Chu Shogi</p>
     <details onToggle={event => setCaptured(event.currentTarget.open ? JSON.stringify(diagnostics) : null)}><summary>Diagnostics</summary><p>Game profile, exact history, engine requests, work limits and resource details.</p>{captured !== null && <DiagnosticText text={captured} />}</details>

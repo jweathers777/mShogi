@@ -1748,7 +1748,7 @@ fn normal_tori_browse_return_preserves_running_intent_but_never_revives_work() {
         let (_, receipt) = c
             .shared_new_game(
                 c.shared_open_token(),
-                GameKind::Tori,
+                mshogi_core::native::RulesProfile::ToriModernV1,
                 NativeSide::Tori(human),
             )
             .unwrap();

@@ -1,0 +1,328 @@
+Window: "mShogi Verification — tenjiku-adams-compound (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical", App: mShogi Verification.
+0 standard window Secondary Actions: Raise, mShogi Verification — tenjiku-adams-compound (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container Tenjiku contract verification
+				4 text Tenjiku shared-contract verification
+				5 text Muller Completed · Engine play is unavailable. Final notation and artwork are pending.
+				6 button New Adams Modern game
+				7 button New Muller Completed game
+			8 container
+				9 heading mShogi, Value: 1
+					10 text mShogi
+				11 button About mShogi
+				12 text TENJIKU
+				13 text Native contract verification
+				14 container Game file
+					15 text UNSAVED
+					16 heading Untitled game, Value: 2
+						17 text Untitled game
+				18 button New game
+				19 button Save
+				20 button Load
+				21 container Live game
+					22 text YOUR GAME
+					23 text Sente to move
+					24 text Verification side: Sente · engine unavailable
+					25 button Flip board; currently Sente at bottom
+					26 text Native sideGote
+					27 text Verification side
+					28 container Tenjiku Shogi 16×16 verification board, Sente at bottom
+						29 image
+						30 toggle button Description: 16a, Gote L, Value: off
+						31 toggle button Description: 15a, Gote N, Value: off
+						32 toggle button Description: 14a, Gote FL, Value: off
+						33 toggle button Description: 13a, Gote I, Value: off
+						34 toggle button Description: 12a, Gote C, Value: off
+						35 toggle button Description: 11a, Gote S, Value: off
+						36 toggle button Description: 10a, Gote G, Value: off
+						37 toggle button Description: 9a, Gote DE, Value: off
+						38 toggle button Description: 8a, Gote K, Value: off
+						39 toggle button Description: 7a, Gote G, Value: off
+						40 toggle button Description: 6a, Gote S, Value: off
+						41 toggle button Description: 5a, Gote C, Value: off
+						42 toggle button Description: 4a, Gote I, Value: off
+						43 toggle button Description: 3a, Gote FL, Value: off
+						44 toggle button Description: 2a, Gote N, Value: off
+						45 toggle button Description: 1a, Gote L, Value: off
+						46 toggle button Description: 16b, Gote RC, Value: off
+						47 toggle button Description: 15b, empty, Value: off
+						48 toggle button Description: 14b, Gote ChS, Value: off
+						49 toggle button Description: 13b, Gote ChS, Value: off
+						50 toggle button Description: 12b, empty, Value: off
+						51 toggle button Description: 11b, Gote BT, Value: off
+						52 toggle button Description: 10b, Gote Ph, Value: off
+						53 toggle button Description: 9b, Gote FK, Value: off
+						54 toggle button Description: 8b, Gote Ln, Value: off
+						55 toggle button Description: 7b, Gote Ky, Value: off
+						56 toggle button Description: 6b, Gote BT, Value: off
+						57 toggle button Description: 5b, empty, Value: off
+						58 toggle button Description: 4b, Gote ChS, Value: off
+						59 toggle button Description: 3b, Gote ChS, Value: off
+						60 toggle button Description: 2b, empty, Value: off
+						61 toggle button Description: 1b, Gote RC, Value: off
+						62 toggle button Description: 16c, Gote SSo, Value: off
+						63 toggle button Description: 15c, Gote VSo, Value: off
+						64 toggle button Description: 14c, Gote B, Value: off
+						65 toggle button Description: 13c, Gote DH, Value: off
+						66 toggle button Description: 12c, Gote DK, Value: off
+						67 toggle button Description: 11c, Gote WBf, Value: off
+						68 toggle button Description: 10c, Gote FiD, Value: off
+						69 toggle button Description: 9c, Gote FEg, Value: off
+						70 toggle button Description: 8c, Gote LHk, Value: off
+						71 toggle button Description: 7c, Gote FiD, Value: off
+						72 toggle button Description: 6c, Gote WBf, Value: off
+						73 toggle button Description: 5c, Gote DK, Value: off
+						74 toggle button Description: 4c, Gote DH, Value: off
+						75 toggle button Description: 3c, Gote B, Value: off
+						76 toggle button Description: 2c, Gote VSo, Value: off
+						77 toggle button Description: 1c, Gote SSo, Value: off
+						78 toggle button Description: 16d, Gote SM, Value: off
+						79 toggle button Description: 15d, Gote VM, Value: off
+						80 toggle button Description: 14d, Gote R, Value: off
+						81 toggle button Description: 13d, Gote HF, Value: off
+						82 toggle button Description: 12d, Gote SE, Value: off
+						83 toggle button Description: 11d, Gote BGn, Value: off
+						84 toggle button Description: 10d, Gote RGn, Value: off
+						85 toggle button Description: 9d, Gote VGn, Value: off
+						86 toggle button Description: 8d, Gote GGn, Value: off
+						87 toggle button Description: 7d, Gote RGn, Value: off
+						88 toggle button Description: 6d, Gote BGn, Value: off
+						89 toggle button Description: 5d, Gote SE, Value: off
+						90 toggle button Description: 4d, Gote HF, Value: off
+						91 toggle button Description: 3d, Gote R, Value: off
+						92 toggle button Description: 2d, Gote VM, Value: off
+						93 toggle button Description: 1d, Gote SM, Value: off
+						94 toggle button Description: 16e, Gote P, Value: off
+						95 toggle button Description: 15e, Gote P, Value: off
+						96 toggle button Description: 14e, Gote P, Value: off
+						97 toggle button Description: 13e, Gote P, Value: off
+						98 toggle button Description: 12e, Gote P, Value: off
+						99 toggle button Description: 11e, Gote P, Value: off
+						100 toggle button Description: 10e, Gote P, Value: off
+						101 toggle button Description: 9e, Gote P, Value: off
+						102 toggle button Description: 8e, Gote P, Value: off
+						103 toggle button Description: 7e, Gote P, Value: off
+						104 toggle button Description: 6e, Gote P, Value: off
+						105 toggle button Description: 5e, Gote P, Value: off
+						106 toggle button Description: 4e, Gote P, Value: off
+						107 toggle button Description: 3e, Gote P, Value: off
+						108 toggle button Description: 2e, Gote P, Value: off
+						109 toggle button Description: 1e, Gote P, Value: off
+						110 toggle button Description: 16f, empty, Value: off
+						111 toggle button Description: 15f, empty, Value: off
+						112 toggle button Description: 14f, empty, Value: off
+						113 toggle button Description: 13f, empty, Value: off
+						114 toggle button Description: 12f, Gote Dg, Value: off
+						115 toggle button Description: 11f, empty, Value: off
+						116 toggle button Description: 10f, empty, Value: off
+						117 toggle button Description: 9f, empty, Value: off
+						118 toggle button Description: 8f, empty, Value: off
+						119 toggle button Description: 7f, empty, Value: off
+						120 toggle button Description: 6f, empty, Value: off
+						121 toggle button Description: 5f, Gote Dg, Value: off
+						122 toggle button Description: 4f, empty, Value: off
+						123 toggle button Description: 3f, empty, Value: off
+						124 toggle button Description: 2f, empty, Value: off
+						125 toggle button Description: 1f, empty, Value: off
+						126 toggle button Description: 16g, empty, Value: off
+						127 toggle button Description: 15g, empty, Value: off
+						128 toggle button Description: 14g, empty, Value: off
+						129 toggle button Description: 13g, empty, Value: off
+						130 toggle button Description: 12g, empty, Value: off
+						131 toggle button Description: 11g, empty, Value: off
+						132 toggle button Description: 10g, empty, Value: off
+						133 toggle button Description: 9g, empty, Value: off
+						134 toggle button Description: 8g, empty, Value: off
+						135 toggle button Description: 7g, empty, Value: off
+						136 toggle button Description: 6g, empty, Value: off
+						137 toggle button Description: 5g, empty, Value: off
+						138 toggle button Description: 4g, empty, Value: off
+						139 toggle button Description: 3g, empty, Value: off
+						140 toggle button Description: 2g, empty, Value: off
+						141 toggle button Description: 1g, empty, Value: off
+						142 toggle button Description: 16h, empty, Value: off
+						143 toggle button Description: 15h, empty, Value: off
+						144 toggle button Description: 14h, empty, Value: off
+						145 toggle button Description: 13h, empty, Value: off
+						146 toggle button Description: 12h, empty, Value: off
+						147 toggle button Description: 11h, empty, Value: off
+						148 toggle button Description: 10h, empty, Value: off
+						149 toggle button Description: 9h, empty, Value: off
+						150 toggle button Description: 8h, empty, Value: off
+						151 toggle button Description: 7h, empty, Value: off
+						152 toggle button Description: 6h, empty, Value: off
+						153 toggle button Description: 5h, empty, Value: off
+						154 toggle button Description: 4h, empty, Value: off
+						155 toggle button Description: 3h, empty, Value: off
+						156 toggle button Description: 2h, empty, Value: off
+						157 toggle button Description: 1h, empty, Value: off
+						158 toggle button Description: 16i, empty, Value: off
+						159 toggle button Description: 15i, empty, Value: off
+						160 toggle button Description: 14i, empty, Value: off
+						161 toggle button Description: 13i, empty, Value: off
+						162 toggle button Description: 12i, empty, Value: off
+						163 toggle button Description: 11i, empty, Value: off
+						164 toggle button Description: 10i, empty, Value: off
+						165 toggle button Description: 9i, empty, Value: off
+						166 toggle button Description: 8i, empty, Value: off
+						167 toggle button Description: 7i, empty, Value: off
+						168 toggle button Description: 6i, empty, Value: off
+						169 toggle button Description: 5i, empty, Value: off
+						170 toggle button Description: 4i, empty, Value: off
+						171 toggle button Description: 3i, empty, Value: off
+						172 toggle button Description: 2i, empty, Value: off
+						173 toggle button Description: 1i, empty, Value: off
+						174 toggle button Description: 16j, empty, Value: off
+						175 toggle button Description: 15j, empty, Value: off
+						176 toggle button Description: 14j, empty, Value: off
+						177 toggle button Description: 13j, empty, Value: off
+						178 toggle button Description: 12j, empty, Value: off
+						179 toggle button Description: 11j, empty, Value: off
+						180 toggle button Description: 10j, empty, Value: off
+						181 toggle button Description: 9j, empty, Value: off
+						182 toggle button Description: 8j, empty, Value: off
+						183 toggle button Description: 7j, empty, Value: off
+						184 toggle button Description: 6j, empty, Value: off
+						185 toggle button Description: 5j, empty, Value: off
+						186 toggle button Description: 4j, empty, Value: off
+						187 toggle button Description: 3j, empty, Value: off
+						188 toggle button Description: 2j, empty, Value: off
+						189 toggle button Description: 1j, empty, Value: off
+						190 toggle button Description: 16k, empty, Value: off
+						191 toggle button Description: 15k, empty, Value: off
+						192 toggle button Description: 14k, empty, Value: off
+						193 toggle button Description: 13k, empty, Value: off
+						194 toggle button Description: 12k, Sente Dg, Value: off
+						195 toggle button Description: 11k, empty, Value: off
+						196 toggle button Description: 10k, empty, Value: off
+						197 toggle button Description: 9k, empty, Value: off
+						198 toggle button Description: 8k, empty, Value: off
+						199 toggle button Description: 7k, empty, Value: off
+						200 toggle button Description: 6k, empty, Value: off
+						201 toggle button Description: 5k, Sente Dg, Value: off
+						202 toggle button Description: 4k, empty, Value: off
+						203 toggle button Description: 3k, empty, Value: off
+						204 toggle button Description: 2k, empty, Value: off
+						205 toggle button Description: 1k, empty, Value: off
+						206 toggle button Description: 16l, Sente P, Value: off
+						207 toggle button Description: 15l, Sente P, Value: off
+						208 toggle button Description: 14l, Sente P, Value: off
+						209 toggle button Description: 13l, Sente P, Value: off
+						210 toggle button Description: 12l, Sente P, Value: off
+						211 toggle button Description: 11l, Sente P, Value: off
+						212 toggle button Description: 10l, Sente P, Value: off
+						213 toggle button Description: 9l, Sente P, Value: off
+						214 toggle button Description: 8l, Sente P, Value: off
+						215 toggle button Description: 7l, Sente P, Value: off
+						216 toggle button Description: 6l, Sente P, Value: off
+						217 toggle button Description: 5l, Sente P, Value: off
+						218 toggle button Description: 4l, Sente P, Value: off
+						219 toggle button Description: 3l, Sente P, Value: off
+						220 toggle button Description: 2l, Sente P, Value: off
+						221 toggle button Description: 1l, Sente P, Value: off
+						222 toggle button Description: 16m, Sente SM, Value: off
+						223 toggle button Description: 15m, Sente VM, Value: off
+						224 toggle button Description: 14m, Sente R, Value: off
+						225 toggle button Description: 13m, Sente HF, Value: off
+						226 toggle button Description: 12m, Sente SE, Value: off
+						227 toggle button Description: 11m, Sente BGn, Value: off
+						228 toggle button Description: 10m, Sente RGn, Value: off
+						229 toggle button Description: 9m, Sente GGn, Value: off
+						230 toggle button Description: 8m, Sente VGn, Value: off
+						231 toggle button Description: 7m, Sente RGn, Value: off
+						232 toggle button Description: 6m, Sente BGn, Value: off
+						233 toggle button Description: 5m, Sente SE, Value: off
+						234 toggle button Description: 4m, Sente HF, Value: off
+						235 toggle button Description: 3m, Sente R, Value: off
+						236 toggle button Description: 2m, Sente VM, Value: off
+						237 toggle button Description: 1m, Sente SM, Value: off
+						238 toggle button Description: 16n, Sente SSo, Value: off
+						239 toggle button Description: 15n, Sente VSo, Value: off
+						240 toggle button Description: 14n, Sente B, Value: off
+						241 toggle button Description: 13n, Sente DH, Value: off
+						242 toggle button Description: 12n, Sente DK, Value: off
+						243 toggle button Description: 11n, Sente WBf, Value: off
+						244 toggle button Description: 10n, Sente FiD, Value: off
+						245 toggle button Description: 9n, Sente LHk, Value: off
+						246 toggle button Description: 8n, Sente FEg, Value: off
+						247 toggle button Description: 7n, Sente FiD, Value: off
+						248 toggle button Description: 6n, Sente WBf, Value: off
+						249 toggle button Description: 5n, Sente DK, Value: off
+						250 toggle button Description: 4n, Sente DH, Value: off
+						251 toggle button Description: 3n, Sente B, Value: off
+						252 toggle button Description: 2n, Sente VSo, Value: off
+						253 toggle button Description: 1n, Sente SSo, Value: off
+						254 toggle button Description: 16o, Sente RC, Value: off
+						255 toggle button Description: 15o, empty, Value: off
+						256 toggle button Description: 14o, Sente ChS, Value: off
+						257 toggle button Description: 13o, Sente ChS, Value: off
+						258 toggle button Description: 12o, empty, Value: off
+						259 toggle button Description: 11o, Sente BT, Value: off
+						260 toggle button Description: 10o, Sente Ky, Value: off
+						261 toggle button Description: 9o, Sente Ln, Value: off
+						262 toggle button Description: 8o, Sente FK, Value: off
+						263 toggle button Description: 7o, Sente Ph, Value: off
+						264 toggle button Description: 6o, Sente BT, Value: off
+						265 toggle button Description: 5o, empty, Value: off
+						266 toggle button Description: 4o, Sente ChS, Value: off
+						267 toggle button Description: 3o, Sente ChS, Value: off
+						268 toggle button Description: 2o, empty, Value: off
+						269 toggle button Description: 1o, Sente RC, Value: off
+						270 toggle button Description: 16p, Sente L, Value: off
+						271 toggle button Description: 15p, Sente N, Value: off
+						272 toggle button Description: 14p, Sente FL, Value: off
+						273 toggle button Description: 13p, Sente I, Value: off
+						274 toggle button Description: 12p, Sente C, Value: off
+						275 toggle button Description: 11p, Sente S, Value: off
+						276 toggle button Description: 10p, Sente G, Value: off
+						277 toggle button Description: 9p, Sente K, Value: off
+						278 toggle button Description: 8p, Sente DE, Value: off
+						279 toggle button Description: 7p, Sente G, Value: off
+						280 toggle button Description: 6p, Sente S, Value: off
+						281 toggle button Description: 5p, Sente C, Value: off
+						282 toggle button Description: 4p, Sente I, Value: off
+						283 toggle button Description: 3p, Sente FL, Value: off
+						284 toggle button Description: 2p, Sente N, Value: off
+						285 toggle button Description: 1p, Sente L, Value: off
+					286 text YouSente
+					287 text Verification side To move
+					288 text Arrows: move focus · Enter/Space: select · Esc: cancel
+					289 text Sente to move Live position · 0 plies
+				290 container Game controls and inspection
+					291 heading Analysis, Value: 2
+						292 text Analysis
+					293 container Engine analysis
+						294 heading Analysis, Value: 2
+							295 text Analysis
+						296 text Engine play and analysis are unavailable for this rules profile.
+					297 heading Game Actions, Value: 2
+						298 text Game Actions
+					299 container
+						300 button (disabled) Take back
+						301 button Offer draw…
+						302 button Resign
+					303 container Moves
+						304 heading Moves, Value: 2
+							305 text Moves
+						306 text 0 moves
+						307 button Starting position
+						308 text Tenjiku technical complete actions · known-root move pairs · declared root plies 0 · earlier history known
+						309 table
+							310 row (selectable) Move number
+Sente
+Gote
+						311 text No moves in known history.
+		312 scroll bar (settable, float) 0
+	313 close button
+	314 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	315 minimize button
+	316 text mShogi Verification — tenjiku-adams-compound (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+317 menu bar
+	318 mShogi Verification
+	319 Edit
+	320 View
+	321 Window
+	322 Verification window size
+
+The focused UI element is 2 HTML content Description: mShogi, URL: tauri://localhost

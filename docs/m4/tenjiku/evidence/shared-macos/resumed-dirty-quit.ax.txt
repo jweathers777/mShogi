@@ -1,0 +1,9 @@
+The following is a diff from the previous accessibility tree for Window: "mShogi Verification — tenjiku-adams-compound (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 30, 33-315, 318-338
+~			28 container Save Game
+~				29 heading Save Game, Value: 2
++					30 text Save Game
+~				31 button Save
+~				32 button Discard
++				33 button Cancel
+The focused UI element is 33 button Cancel

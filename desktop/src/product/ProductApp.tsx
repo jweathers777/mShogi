@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { ApplicationView } from "./ApplicationView";
 import { Dialog } from "./Dialog";
 import { useGameSession } from "./useGameSession";
-import type { PlayableGameKind, GameSnapshot, NativeSide, OpenToken } from "./native";
+import { playableProfiles, type PlayableGameKind, type GameSnapshot, type NativeSide, type OpenToken } from "./native";
 import "./shogi.css";
 const games: { key: PlayableGameKind; label: string; first: string; second: string }[] = [
   { key: "chess", label: "Chess", first: "White", second: "Black" },
@@ -22,8 +22,9 @@ function radioKeys(event: KeyboardEvent<HTMLDivElement>) {
   next?.focus(); next?.click();
 }
 const same = (a: OpenToken, b: OpenToken) => a.document === b.document && a.version === b.version && a.document_revision === b.document_revision;
-export function ProductApp() {
-  const session = useGameSession(), { snapshot } = session;
+export interface VerificationControlsProps { snapshot: GameSnapshot; session: ReturnType<typeof useGameSession>; blocked: boolean }
+export function ProductApp({ verification = false, verificationControls }: { verification?: boolean; verificationControls?: (props: VerificationControlsProps) => ReactNode } = {}) {
+  const session = useGameSession(verification), { snapshot } = session;
   const [pending, setPending] = useState<{ source: GameSnapshot } | null>(null);
   const [choice, setChoice] = useState<{ source: GameSnapshot; game: PlayableGameKind; side: "first" | "second" | "random" } | null>(null);
   const [message, setMessage] = useState("");
@@ -32,7 +33,7 @@ export function ProductApp() {
     if (!source) return; setMessage("");
     // New/Load are deliberate replacement requests. Merely opening either
     // chooser leaves the current native document installed until admission.
-    if (intent === "new") { setChoice({ source, game: source.game, side: source.human.first_mover ? "first" : "second" }); return; }
+    if (intent === "new") { setChoice({ source, game: source.game === "tenjiku" ? "chess" : source.game, side: source.human.first_mover ? "first" : "second" }); return; }
     if (intent === "open") { void session.file(source, "open"); return; }
     if (source.close_requires_save) setPending({ source });
     else void session.finishClose(source).then(closed => { if (!closed) void session.cancelClose(); });
@@ -70,13 +71,13 @@ export function ProductApp() {
       : choice.game === "tori" ? { game_kind: "tori", side: first ? "sente" : "gote" }
       : choice.game === "chu" ? { game_kind: "chu", side: first ? "sente" : "gote" }
       : { game_kind: "xiangqi", side: first ? "red" : "black" };
-    const next = await session.newGame(choice.source.open_token, choice.game, human);
+    const next = await session.newGame(choice.source.open_token, choice.game, human, playableProfiles[choice.game]);
     if (next) setChoice(null);
   }
   if (!snapshot) return <main className="loading"><h1>mShogi</h1><p role="status">Opening your game…</p>{session.error && <p role="alert">The native application could not connect.</p>}</main>;
   const blocked = pending !== null || choice !== null;
   const selectedGame = games.find((g) => g.key === choice?.game) ?? games[0]!;
-  return <><div inert={blocked}><ApplicationView key={snapshot.token.document} snapshot={snapshot} session={session} onNewGame={() => begin("new")} onOpen={() => begin("open")} blocked={blocked} /></div>
+  return <>{verification && verificationControls?.({ snapshot, session, blocked })}<div inert={blocked}><ApplicationView key={snapshot.token.document} snapshot={snapshot} session={session} onNewGame={() => begin("new")} onOpen={() => begin("open")} blocked={blocked} /></div>
     {pending && <Dialog title="Save Game" className="document-guard" cancel={() => { if (!session.busy) void cancelGuard(); }}>{stale && <p role="alert">The game changed. Cancel and review the current position.</p>}{message && <p role="alert">{message}</p>}<div className="dialog-actions"><button className="secondary" disabled={session.busy || stale || !snapshot.close_requires_save} onClick={() => { void decide(true); }}>Save</button><button className="danger" disabled={session.busy || stale} onClick={() => { void decide(false); }}>Discard</button><button data-cancel className="quiet" disabled={session.busy} onClick={() => { void cancelGuard(); }}>Cancel</button></div></Dialog>}
     {choice && <Dialog title="New game" cancel={() => { if (!session.busy) setChoice(null); }} className="new-game-dialog"><label className="game-select-label">Game<select data-game-select value={choice.game} disabled={session.busy} onChange={event => setChoice({ ...choice, game: event.target.value as PlayableGameKind })}>{games.map(game => <option key={game.key} value={game.key}>{game.label}</option>)}</select></label><h3>Your side</h3><div className="side-choices" role="radiogroup" aria-label="Your side" onKeyDown={radioKeys}>{(["first", "second", "random"] as const).map((side) => <button key={side} role="radio" tabIndex={choice.side === side ? 0 : -1} aria-checked={choice.side === side} data-side={side === "random" ? "random" : (side === "first" ? selectedGame.first : selectedGame.second).toLowerCase()} className={choice.side === side ? "chosen" : ""} disabled={session.busy} onClick={() => setChoice({ ...choice, side })}>{side === "first" ? selectedGame.first : side === "second" ? selectedGame.second : "Random"}</button>)}</div>{!same(choice.source.open_token, snapshot.open_token) && <p role="alert">The current game changed. Cancel and review it before starting another game.</p>}{session.error && <p role="alert">The new game could not start. Your current game is retained.</p>}<div className="dialog-actions"><button className="quiet" data-cancel onClick={() => setChoice(null)} disabled={session.busy}>Cancel</button><button className="primary" data-start-game disabled={session.busy || !same(choice.source.open_token, snapshot.open_token)} onClick={() => { void start(); }}>Start game</button></div></Dialog>}
   </>;

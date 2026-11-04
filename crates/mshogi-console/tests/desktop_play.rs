@@ -394,7 +394,7 @@ impl SettledCommand for DesktopController {
     fn fresh(&mut self, expected: SharedOpenToken, human: Color) -> Result<SharedSnapshot, String> {
         let (snapshot, receipt) = self.shared_new_game(
             expected,
-            mshogi_desktop_session::GameKind::Chess,
+            mshogi_core::native::RulesProfile::ChessMatchV1,
             NativeSide::Chess(human),
         )?;
         complete(self, snapshot, receipt)

@@ -26,6 +26,14 @@ shogi-control-capacity shogi-hands shogi-promotion shogi-forced shogi-declaratio
 shogi-concluded xiangqi-standard xiangqi-failure xiangqi-capacity
 xiangqi-control-capacity xiangqi-offer xiangqi-agreed xiangqi-resigned xiangqi-warning
 xiangqi-fourth xiangqi-count xiangqi-fast-proof xiangqi-exact-evidence""".split())
+# Whole-profile QA scenarios share the existing immutable QA launch identity.
+FIXTURES |= frozenset(f"tenjiku-{profile}-{scenario}"
+    for profile in ("adams", "muller")
+    for scenario in ("standard", "gote", "compound", "compound-played", "selected-root",
+                     "burn", "burned", "igui", "iguied", "promotion", "promoted", "declined",
+                     "hawk", "hawk-played", "promoted-hawk", "area", "area-played",
+                     "ranked-jump", "ranked-jump-played", "ranked-blocked",
+                     "unsupported", "ending-stopped"))
 
 
 def directory():

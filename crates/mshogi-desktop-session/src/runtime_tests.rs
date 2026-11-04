@@ -25,7 +25,11 @@ fn exactly_one_native_document_and_uniform_metadata_survive_cross_game_replaceme
         NativeSide::Chess(Color::White),
     ] {
         let (_, receipt) = c
-            .shared_new_game(c.shared_open_token(), human.game(), human)
+            .shared_new_game(
+                c.shared_open_token(),
+                crate::test_single_profile(human.game()),
+                human,
+            )
             .unwrap();
         settle(&mut c, &receipt);
         let snapshot = c.shared_snapshot();
@@ -135,8 +139,12 @@ fn close_authority_rejects_all_native_replacement_commands_and_open_but_keeps_sa
             .is_err()
     );
     assert!(
-        c.shared_new_game(expected, GameKind::Chess, NativeSide::Chess(Color::White))
-            .is_err()
+        c.shared_new_game(
+            expected,
+            mshogi_core::native::RulesProfile::ChessMatchV1,
+            NativeSide::Chess(Color::White)
+        )
+        .is_err()
     );
     assert!(
         c.shared_command(SharedDesktopCommand {
@@ -208,7 +216,11 @@ fn reopened_all_game_identities_exceed_runtime_only_revisions_without_spending_s
     .enumerate()
     {
         let (_, receipt) = c
-            .shared_new_game(c.shared_open_token(), human.game(), human)
+            .shared_new_game(
+                c.shared_open_token(),
+                crate::test_single_profile(human.game()),
+                human,
+            )
             .unwrap();
         settle(&mut c, &receipt);
         let canonical = c.shared_snapshot().context;

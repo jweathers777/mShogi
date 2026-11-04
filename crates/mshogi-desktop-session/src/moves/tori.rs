@@ -35,7 +35,11 @@ pub(super) fn project(game: &t::Game) -> MovesProjection {
             ),
             t::Action::Drop { face, to } => (
                 ChoiceOrigin::Hand {
-                    owner: shared::side(NativeSide::Tori(event.actor)).key,
+                    owner: shared::side(
+                        mshogi_core::native::RulesProfile::ToriModernV1,
+                        NativeSide::Tori(event.actor),
+                    )
+                    .key,
                     piece_kind: face.code().into(),
                 },
                 to,
@@ -48,6 +52,7 @@ pub(super) fn project(game: &t::Game) -> MovesProjection {
             column,
             label,
             CompletedActionGeometry {
+                native_effects: None,
                 action: serde_json::to_string(&action).expect("native Tori action"),
                 event_index: event.index + 1,
                 origin,

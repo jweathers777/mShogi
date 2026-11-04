@@ -48,6 +48,7 @@ fn actual_native_payloads_round_trip_with_derived_identity_and_provenance() {
         assert_eq!(wire["envelope_version"], 1);
         assert_eq!(wire["native_schema_version"], 1);
         match native {
+            CanonicalRecord::Tenjiku(_) => unreachable!("covered by native_tenjiku_envelope"),
             CanonicalRecord::Chu(_) => unreachable!("covered by native_chu_envelope"),
             CanonicalRecord::Tori(_) => unreachable!("covered by native_tori_envelope"),
             CanonicalRecord::Xiangqi(_) => unreachable!("covered by native_xiangqi_envelope"),
@@ -349,10 +350,10 @@ fn record_byte_event_and_diagnostic_bounds_are_explicit() {
     assert!(text.len() < MAX_RECORD_ENVELOPE_BYTES);
     assert_eq!(CanonicalRecord::from_json(&text).unwrap(), native);
     record.push_event(record.events()[0].clone());
-    assert_eq!(
-        CanonicalRecord::chess(record).to_json(),
-        Err(EnvelopeError::Capacity)
-    );
+    let oversized = CanonicalRecord::chess(record);
+    assert_eq!(oversized.to_json(), Err(EnvelopeError::Capacity));
+    assert!(serde_json::to_string(&oversized).is_err());
+    assert!(serde_json::to_string_pretty(&oversized).is_err());
     assert_eq!(
         CanonicalRecord::from_json(&" ".repeat(MAX_RECORD_ENVELOPE_BYTES + 1)),
         Err(EnvelopeError::Capacity)
@@ -367,4 +368,54 @@ fn record_byte_event_and_diagnostic_bounds_are_explicit() {
         panic!()
     };
     assert!(message.len() <= MAX_RECORD_DIAGNOSTIC_BYTES);
+}
+
+#[test]
+fn pretty_serialization_preserves_existing_outer_fields_and_raw_native_payloads() {
+    use mshogi_core::{chu, tenjiku, tori, xiangqi};
+    let records = [
+        CanonicalRecord::chess(c::AdjudicatedGame::new(c::ClaimPolicy::ExplicitOnly).record()),
+        CanonicalRecord::shogi(s::GameRecord::from_game(&s::Game::new())),
+        CanonicalRecord::xiangqi(
+            xiangqi::GameRecord::from_game(
+                &xiangqi::Game::standard(xiangqi::ClaimPolicy::Explicit).unwrap(),
+            )
+            .unwrap(),
+        ),
+        CanonicalRecord::tori(tori::GameRecord::from_game(&tori::Game::standard()).unwrap()),
+        CanonicalRecord::chu(chu::GameRecord::from_game(&chu::Game::standard()).unwrap()),
+    ];
+    for record in records {
+        let payload = match &record {
+            CanonicalRecord::Chess(record) => record.to_json(),
+            CanonicalRecord::Shogi(record) => record.to_json().unwrap(),
+            CanonicalRecord::Xiangqi(record) => record.to_json().to_owned(),
+            CanonicalRecord::Tori(record) => record.to_json().to_owned(),
+            CanonicalRecord::Chu(record) => record.to_json().to_owned(),
+            CanonicalRecord::Tenjiku(_) => unreachable!(),
+        };
+        let expected = format!(
+            "{{\n  \"envelope_version\": 1,\n  \"game_kind\": {},\n  \"rules_profile\": {},\n  \"profile_edition\": {},\n  \"native_schema_version\": {},\n  \"payload\": {payload}\n}}",
+            serde_json::to_string(&record.game_kind()).unwrap(),
+            serde_json::to_string(&record.profile()).unwrap(),
+            serde_json::to_string(record.profile().edition()).unwrap(),
+            record.native_schema().version(),
+        );
+        let pretty = serde_json::to_string_pretty(&record).unwrap();
+        assert_eq!(pretty, expected);
+        assert_eq!(CanonicalRecord::from_json(&pretty).unwrap(), record);
+        assert_eq!(
+            serde_json::to_string(&record).unwrap(),
+            record.to_json().unwrap()
+        );
+    }
+    for profile in tenjiku::Profile::ALL {
+        let record = CanonicalRecord::tenjiku(
+            tenjiku::GameRecord::from_game(&tenjiku::Game::standard(profile)).unwrap(),
+        );
+        assert_eq!(
+            serde_json::to_string_pretty(&record).unwrap(),
+            record.to_json().unwrap()
+        );
+    }
 }

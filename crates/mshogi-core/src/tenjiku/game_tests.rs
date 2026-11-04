@@ -516,3 +516,30 @@ fn native_counter_refusal_is_capacity_and_not_a_game_outcome() {
     assert_eq!(g.conclusion(), None);
     submit(&mut g, Side::Sente, GameCommand::Resign).unwrap();
 }
+
+#[test]
+fn cancellable_prefix_reconstruction_preserves_live_state_and_fresh_authority() {
+    for profile in Profile::ALL {
+        let mut game = corner(profile);
+        play(&mut game, (16, 16), (15, 16));
+        let prefix = GameRecord::from_game(&game).unwrap();
+        play(&mut game, (1, 1), (2, 1));
+        let live = GameRecord::from_game(&game).unwrap();
+        let context = game.context();
+        let mut polls = 0;
+        assert_eq!(
+            game.record_prefix_with_stop(2, &mut || {
+                polls += 1;
+                polls >= 8
+            }),
+            Err(RecordError::Stopped)
+        );
+        assert_eq!(game.context(), context);
+        assert_eq!(GameRecord::from_game(&game).unwrap(), live);
+        let observed = game.record_prefix_with_stop(1, &mut || false).unwrap();
+        assert_eq!(observed, prefix);
+        let restored = observed.to_game().unwrap();
+        assert_ne!(restored.context(), context);
+        assert_eq!(restored.profile(), profile);
+    }
+}

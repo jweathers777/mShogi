@@ -149,6 +149,8 @@ fn with_synthetic<T>(
 fn desktop_verification_mode(verification: State<'_, VerificationState>) -> &'static str {
     if verification.is_synthetic() {
         "synthetic"
+    } else if verification.fixture.starts_with("tenjiku-") {
+        "tenjiku-contract"
     } else if verification.fixture == "shared-contract" || verification.fixture.starts_with("chu-")
     {
         "shared-contract"
@@ -218,6 +220,11 @@ async fn game_command(
 ) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
     ensure_product_mode(&app)?;
     let command = mshogi_desktop_session::SharedDesktopCommand::from_json(&command_json)?;
+    if operation_requires_tenjiku_verification(&command)
+        && !tenjiku_verification_allowed(&app, Some(true))
+    {
+        return Err("Tenjiku commands require the active labeled verification route until playable delivery.".into());
+    }
     let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
     let (initial, receipt, reservation) = with_controller(
         &app.state::<Mutex<DesktopController>>(),
@@ -260,12 +267,14 @@ fn current_contract_snapshot(
 async fn game_file(
     app: AppHandle,
     action: String,
+    verification: Option<bool>,
     expected: mshogi_desktop_session::SharedOpenToken,
 ) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
     if !matches!(action.as_str(), "save" | "save_as" | "open") {
         return Err("Unknown native file operation.".into());
     }
     let reservation = reserve_file_operation(&app)?;
+    let allow_tenjiku = tenjiku_verification_allowed(&app, verification);
     tauri::async_runtime::spawn_blocking(move || {
         let _reservation = reservation;
         let actual = with_controller(
@@ -295,6 +304,7 @@ async fn game_file(
                         mshogi_desktop_session::GameKind::Xiangqi => "xiangqi.mshogi",
                         mshogi_desktop_session::GameKind::Tori => "tori.mshogi",
                         mshogi_desktop_session::GameKind::Chu => "chu.mshogi",
+                        mshogi_desktop_session::GameKind::Tenjiku => "tenjiku.mshogi",
                     })
                     .blocking_save_file()
             };
@@ -314,7 +324,7 @@ async fn game_file(
         let id = with_controller(
             &app.state::<Mutex<DesktopController>>(),
             &app.state::<Arc<ShutdownState>>(),
-            |c| queue_game_file(c, &action, path, expected),
+            |c| queue_game_file_with_verification(c, &action, path, expected, allow_tenjiku),
         )??;
         loop {
             let snapshot = current_contract_snapshot(&app)?;
@@ -339,11 +349,21 @@ async fn game_file(
 
 // Called after native picker completion under controller serialization. The
 // picker itself grants no authority to replace a document or bypass close.
+#[cfg(test)]
 fn queue_game_file(
     controller: &mut DesktopController,
     action: &str,
     path: PathBuf,
     expected: SharedOpenToken,
+) -> Result<u64, String> {
+    queue_game_file_with_verification(controller, action, path, expected, false)
+}
+fn queue_game_file_with_verification(
+    controller: &mut DesktopController,
+    action: &str,
+    path: PathBuf,
+    expected: SharedOpenToken,
+    allow_tenjiku: bool,
 ) -> Result<u64, String> {
     // The engine/close callback may change authoritative content while the OS
     // picker is open. A path grants no authority to save that newer document.
@@ -356,10 +376,41 @@ fn queue_game_file(
             if controller.lifecycle().close_requested() {
                 return Err("Finish or cancel the close request before opening.".into());
             }
-            controller.queue_product_open(path, expected)
+            if allow_tenjiku {
+                controller.queue_shared_open(path, expected)
+            } else {
+                controller.queue_product_open(path, expected)
+            }
         }
         "save" | "save_as" => controller.queue_shared_save(path),
         _ => Err("Unknown native file operation.".into()),
+    }
+}
+
+fn tenjiku_verification_requested(requested: Option<bool>, fixture: Option<&str>) -> bool {
+    cfg!(feature = "desktop-verification")
+        && requested == Some(true)
+        && fixture.is_some_and(|name| name.starts_with("tenjiku-"))
+}
+fn operation_requires_tenjiku_verification(
+    command: &mshogi_desktop_session::SharedDesktopCommand,
+) -> bool {
+    command.game == mshogi_desktop_session::GameKind::Tenjiku
+        || matches!(&command.operation, mshogi_desktop_session::SessionOperation::Replace { record, .. } if record.game_kind() == mshogi_desktop_session::GameKind::Tenjiku)
+}
+fn tenjiku_verification_allowed(_app: &AppHandle, requested: Option<bool>) -> bool {
+    #[cfg(feature = "desktop-verification")]
+    {
+        tenjiku_verification_requested(
+            requested,
+            _app.try_state::<VerificationState>()
+                .as_ref()
+                .map(|state| state.fixture.as_str()),
+        )
+    }
+    #[cfg(not(feature = "desktop-verification"))]
+    {
+        tenjiku_verification_requested(requested, None)
     }
 }
 
@@ -368,16 +419,29 @@ async fn game_new(
     app: AppHandle,
     game: mshogi_desktop_session::GameKind,
     human: mshogi_desktop_session::NativeSide,
+    profile: mshogi_desktop_session::RulesProfile,
+    verification: Option<bool>,
     expected: mshogi_desktop_session::SharedOpenToken,
 ) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
     ensure_product_mode(&app)?;
+    if profile.game() != game || human.game() != game {
+        return Err("New Game profile, game and side disagree.".into());
+    }
+    if game == mshogi_desktop_session::GameKind::Tenjiku
+        && !tenjiku_verification_allowed(&app, verification)
+    {
+        return Err(
+            "Tenjiku is available only in the labeled verification route until playable delivery."
+                .into(),
+        );
+    }
     let shutdown = app.state::<Arc<ShutdownState>>().inner().clone();
     let (initial, receipt, reservation) = with_controller(
         &app.state::<Mutex<DesktopController>>(),
         &shutdown,
         |controller| {
             let reservation = controller.lifecycle().reserve_command()?;
-            let (initial, receipt) = controller.shared_new_game(expected, game, human)?;
+            let (initial, receipt) = controller.shared_new_game(expected, profile, human)?;
             Ok::<_, String>((initial, receipt, reservation))
         },
     )??;
@@ -1053,6 +1117,105 @@ mod tests {
         ))
     }
 
+    #[test]
+    fn tenjiku_new_and_load_require_feature_explicit_flag_and_active_labeled_fixture() {
+        for fixture in [
+            None,
+            Some("standard"),
+            Some("chu-contract"),
+            Some("synthetic"),
+        ] {
+            assert!(!tenjiku_verification_requested(Some(true), fixture));
+        }
+        for flag in [None, Some(false)] {
+            assert!(!tenjiku_verification_requested(
+                flag,
+                Some("tenjiku-adams-standard")
+            ));
+        }
+        for fixture in ["tenjiku-adams-standard", "tenjiku-muller-contract"] {
+            assert_eq!(
+                tenjiku_verification_requested(Some(true), Some(fixture)),
+                cfg!(feature = "desktop-verification")
+            );
+        }
+        let controller = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
+        let mut command = mshogi_desktop_session::SharedDesktopCommand {
+            expected: controller.shared_token(),
+            game: mshogi_desktop_session::GameKind::Chess,
+            operation: mshogi_desktop_session::SessionOperation::Cancel {},
+        };
+        assert!(!operation_requires_tenjiku_verification(&command));
+        command.game = mshogi_desktop_session::GameKind::Tenjiku;
+        assert!(operation_requires_tenjiku_verification(&command));
+    }
+
+    #[cfg(feature = "desktop-verification")]
+    #[test]
+    fn tenjiku_labeled_load_uses_same_worker_and_normal_load_preserves_document() {
+        use mshogi_desktop_session::{GameKind, RulesProfile};
+        for (fixture, profile) in [
+            ("tenjiku-adams-contract", RulesProfile::TenjikuAdamsModernV1),
+            (
+                "tenjiku-muller-contract",
+                RulesProfile::TenjikuMullerCompletedV1,
+            ),
+        ] {
+            let path = file_path(fixture);
+            let mut source =
+                DesktopController::verification(PathBuf::from("unused-test-engine"), fixture)
+                    .unwrap();
+            let snapshot = source.shared_snapshot();
+            let raw_replace = mshogi_desktop_session::SharedDesktopCommand {
+                expected: source.shared_token(),
+                game: GameKind::Chess,
+                operation: mshogi_desktop_session::SessionOperation::Replace {
+                    record: snapshot.context,
+                    human: snapshot.human.id,
+                },
+            };
+            assert!(operation_requires_tenjiku_verification(&raw_replace));
+            let token = source.shared_open_token();
+            let id = queue_game_file(&mut source, "save", path.clone(), token).unwrap();
+            wait_file(&mut source, id).unwrap();
+            let saved_bytes = std::fs::read(&path).unwrap();
+            let mut normal = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();
+            let before = normal.shared_snapshot();
+            let id = queue_game_file(&mut normal, "open", path.clone(), before.open_token).unwrap();
+            assert!(wait_file(&mut normal, id).is_err());
+            let after = normal.shared_snapshot();
+            assert_eq!(after.open_token, before.open_token);
+            assert_eq!(after.context, before.context);
+            assert_eq!(after.document.dirty, before.document.dirty);
+            assert_eq!(after.document.path, before.document.path);
+            assert_eq!(std::fs::read(&path).unwrap(), saved_bytes);
+            let allowed = tenjiku_verification_requested(Some(true), Some(fixture));
+            let id = queue_game_file_with_verification(
+                &mut normal,
+                "open",
+                path.clone(),
+                after.open_token,
+                allowed,
+            )
+            .unwrap();
+            let opened = wait_file(&mut normal, id).unwrap();
+            assert_eq!(opened.game, GameKind::Tenjiku);
+            assert_eq!(opened.profile, profile);
+            assert!(opened.paused);
+            assert!(!opened.capabilities.engine_turn && !opened.capabilities.move_analysis);
+            assert!(opened.observations.is_empty());
+            assert_ne!(opened.open_token.document, before.open_token.document);
+            std::fs::remove_file(path).unwrap();
+        }
+        assert!(
+            DesktopController::verification(
+                PathBuf::from("unused-test-engine"),
+                "tenjiku-standard"
+            )
+            .is_err()
+        );
+    }
+
     fn wait_file(controller: &mut DesktopController, id: u64) -> Result<SharedSnapshot, String> {
         let deadline = Instant::now() + Duration::from_secs(20);
         loop {
@@ -1290,7 +1453,7 @@ mod tests {
             let (_, receipt) = controller
                 .shared_new_game(
                     obsolete,
-                    mshogi_desktop_session::GameKind::Shogi,
+                    mshogi_desktop_session::RulesProfile::ShogiCsa36V1,
                     mshogi_desktop_session::NativeSide::Shogi(
                         mshogi_desktop_session::ShogiSide::Sente,
                     ),
@@ -1335,7 +1498,7 @@ mod tests {
         let receipt = with_controller(&controller, &shutdown, |c| {
             c.shared_new_game(
                 c.shared_open_token(),
-                GameKind::Shogi,
+                mshogi_desktop_session::RulesProfile::ShogiCsa36V1,
                 NativeSide::Shogi(ShogiSide::Sente),
             )
         })

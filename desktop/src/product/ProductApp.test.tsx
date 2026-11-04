@@ -3,7 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { ProductApp } from "./ProductApp";
 import { useGameSession, type GameSession } from "./useGameSession";
-import type { GameSnapshot, ShogiSnapshot } from "./native";
+import { playableProfiles, type PlayableGameKind, type GameSnapshot, type ShogiSnapshot } from "./native";
 import shogiJson from "../__fixtures__/shared-shogi-standard.json";
 import xiangqiJson from "../__fixtures__/shared-xiangqi-standard.json";
 import toriJson from "../__fixtures__/shared-tori-contract.json";
@@ -25,7 +25,7 @@ it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"
   fireEvent.change(screen.getByRole("combobox", { name: "Game" }), { target: { value: game } });
   fireEvent.click(screen.getByRole("radio", { name: sideLabel }));
   fireEvent.click(screen.getByRole("button", { name: "Start game" }));
-  expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side });
+  expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side }, playableProfiles[game as PlayableGameKind]);
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   expect(session.file).not.toHaveBeenCalled();
 });
@@ -172,7 +172,7 @@ it.each([["tori", 0, "sente"], ["tori", 1, "gote"], ["chu", 0, "sente"], ["chu",
     fireEvent.change(screen.getByRole("combobox", { name: "Game" }), { target: { value: game } });
     fireEvent.click(screen.getByRole("radio", { name: "Random" }));
     fireEvent.click(screen.getByRole("button", { name: "Start game" }));
-    await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side }));
+    await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side }, playableProfiles[game]));
   } finally { entropy.mockRestore(); }
 });
 

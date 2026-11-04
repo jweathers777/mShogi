@@ -1,0 +1,14 @@
+.tenjiku-board-frame { position:relative; aspect-ratio:1; width:min(100cqw,100cqh); }
+.game-shell.game-shell .shell-board-slot .tenjiku-board-frame .board-wrap { width:100%; max-width:none; margin:0; }
+.tenjiku-board-frame .chess-board { filter:none; }
+.tenjiku-board-frame .board-border { fill:#bd945b; }
+.tenjiku-board-frame .square.light .square-fill,.tenjiku-board-frame .square.dark .square-fill { fill:#e5c58d; stroke:#947344; stroke-width:1.5; }
+.tenjiku-board-frame .square.selected .square-fill { fill:#bdc98e; }
+.tenjiku-board-frame .square.target .square-fill { fill:#cbd29d; }
+.tenjiku-board-frame .coordinate { fill:#513f28; font-size:34px; }
+.tenjiku-technical-piece { fill:#f6deb0; stroke:#765b34; stroke-width:2; }
+.tenjiku-technical-label { fill:#1e2528; font:600 25px system-ui,sans-serif; }
+.tenjiku-board-frame [data-promoted="true"] .tenjiku-technical-label { fill:#9b2421; }
+.tenjiku-board-frame .completed-action-origin,.tenjiku-board-frame .completed-action-destination { stroke:#513b14; filter:none; }
+.tenjiku-verification-banner { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:10px 20px; background:#172d36; border-bottom:1px solid #48616c; font-size:.85rem; }
+.tenjiku-verification-banner span { flex:1 1 280px; }

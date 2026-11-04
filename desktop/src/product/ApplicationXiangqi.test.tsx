@@ -175,7 +175,7 @@ for (const [label, json] of [["fourth occurrence", fourthJson], ["agreement", ag
   });
 }
 it("separates unresolved assessment and process failure and retains retry and Save", () => {
-  const failed = { ...standard, phase: "failed" as const, turn: standard.sides[1]!, paused: true };
+  const failed = { ...standard, phase: "failed" as const, turn: standard.sides[1]!, paused: true, capabilities: { ...standard.capabilities, engine_turn: true } };
   const { props, session, rerender } = app(failed, "stale request refused");
   expect(screen.getByText(/The action could not complete/)).toBeTruthy();
   expect(screen.getByText("The current game is intact. No game result is implied.")).toBeTruthy();

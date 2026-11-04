@@ -21,6 +21,7 @@ pub enum ExecutionOperation {
 /// Advertise only real native execution consumers. Shogi has no chess Full operation.
 pub fn execution_capabilities(game: GameKind) -> &'static [ExecutionOperation] {
     match game {
+        GameKind::Tenjiku => &[],
         GameKind::Chu => &[
             ExecutionOperation::EngineTurn,
             ExecutionOperation::MoveAnalysis,
@@ -114,6 +115,9 @@ impl ExecutionContext {
                 && target.board_ply == self.game.known_board_actions() as u64
                 && target.turn.game() == self.game.game_kind()
                 && match &self.game {
+                    CanonicalRecord::Tenjiku(record) => {
+                        target.turn == NativeSide::Tenjiku(record.side_to_move())
+                    }
                     CanonicalRecord::Chu(record) => {
                         target.turn == NativeSide::Chu(record.side_to_move())
                     }
@@ -133,7 +137,7 @@ impl ExecutionContext {
             // requests used these generic bounds before search was implemented.
             // Real Tori execution/result admission separately enforces its much
             // smaller native limits; transport parsing does not advertise work.
-            GameKind::Tori | GameKind::Chu => {
+            GameKind::Tori | GameKind::Chu | GameKind::Tenjiku => {
                 (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
                     && self.limits.nodes <= MAX_ANALYSIS_NODES
             }
@@ -224,7 +228,117 @@ pub struct ExecutionObservation {
 }
 /// Current durable semantic observation schema.
 pub const OBSERVATION_SCHEMA_VERSION: u32 = 1;
+/// Strict observation decoding preserves native resource and cancellation failures.
+#[derive(Debug)]
+pub enum ObservationDecodeError {
+    /// Cooperative decoding was interrupted before acceptance.
+    Stopped,
+    /// The embedded native record rejected admission.
+    Native(mshogi_core::native::EnvelopeError),
+    /// The observation wire shape or version is invalid.
+    Invalid(String),
+}
+impl std::fmt::Display for ObservationDecodeError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Stopped => f.write_str("Execution observation parsing stopped"),
+            Self::Native(error) => error.fmt(f),
+            Self::Invalid(error) => f.write_str(error),
+        }
+    }
+}
+impl std::error::Error for ObservationDecodeError {}
+impl From<String> for ObservationDecodeError {
+    fn from(error: String) -> Self {
+        Self::Invalid(error)
+    }
+}
+impl From<&str> for ObservationDecodeError {
+    fn from(error: &str) -> Self {
+        Self::Invalid(error.into())
+    }
+}
 impl ExecutionObservation {
+    /// Parse a durable observation without buffering its native record into a map
+    /// or replaying Tenjiku twice. Native facts remain subject to `matches` and
+    /// the owning document's target/result admission after this strict parse.
+    pub fn from_json_with_stop(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self, String> {
+        Self::from_json_with_stop_typed(text, stop).map_err(|error| error.to_string())
+    }
+    /// Decode without erasing the embedded native record's typed admission failure.
+    pub fn from_json_with_stop_typed(
+        text: &str,
+        stop: &mut impl FnMut() -> bool,
+    ) -> Result<Self, ObservationDecodeError> {
+        fn check(stop: &mut impl FnMut() -> bool) -> Result<(), ObservationDecodeError> {
+            if stop() {
+                Err(ObservationDecodeError::Stopped)
+            } else {
+                Ok(())
+            }
+        }
+        check(stop)?;
+        if text.len() > crate::MAX_RESPONSE_BYTES {
+            return Err("Execution observation exceeds the encoded response limit.".into());
+        }
+        reject_observation_duplicates(text, stop).map_err(|error| {
+            if error == "Execution observation parsing stopped" {
+                ObservationDecodeError::Stopped
+            } else {
+                ObservationDecodeError::Invalid(error)
+            }
+        })?;
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct Wire {
+            schema_version: u32,
+            context: Box<serde_json::value::RawValue>,
+            result: Box<serde_json::value::RawValue>,
+        }
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct ContextWire {
+            purpose: ExecutionPurpose,
+            request_id: u64,
+            session_version: u64,
+            process_generation: u64,
+            game: Box<serde_json::value::RawValue>,
+            limits: WorkLimits,
+        }
+        let wire: Wire = serde_json::from_str(text).map_err(|error| error.to_string())?;
+        check(stop)?;
+        if wire.schema_version != OBSERVATION_SCHEMA_VERSION {
+            return Err("Unsupported execution observation schema.".into());
+        }
+        let context: ContextWire =
+            serde_json::from_str(wire.context.get()).map_err(|error| error.to_string())?;
+        check(stop)?;
+        let game =
+            CanonicalRecord::from_json_with_stop(context.game.get(), stop).map_err(|error| {
+                match error {
+                    mshogi_core::native::EnvelopeError::Stopped => ObservationDecodeError::Stopped,
+                    error => ObservationDecodeError::Native(error),
+                }
+            })?;
+        check(stop)?;
+        let result = serde_json::from_str(wire.result.get()).map_err(|error| error.to_string())?;
+        check(stop)?;
+        Ok(Self {
+            schema_version: wire.schema_version,
+            context: ExecutionContext {
+                purpose: context.purpose,
+                request_id: context.request_id,
+                session_version: context.session_version,
+                process_generation: context.process_generation,
+                game,
+                limits: context.limits,
+            },
+            result,
+        })
+    }
     /// Preserve exact context and native result under the current durable schema.
     pub fn new(context: ExecutionContext, result: ExecutionResult) -> Self {
         Self {
@@ -270,6 +384,91 @@ impl ExecutionObservation {
             }
         }
     }
+}
+
+// Preserve duplicate fields before internally tagged purpose/result parsers can
+// buffer them. The seed checks cancellation at each actual JSON value boundary.
+fn reject_observation_duplicates(
+    text: &str,
+    stop: &mut impl FnMut() -> bool,
+) -> Result<(), String> {
+    use serde::de::{self, DeserializeSeed, MapAccess, SeqAccess, Visitor};
+    use std::{collections::BTreeSet, fmt};
+    struct Unique<'a> {
+        stop: &'a mut dyn FnMut() -> bool,
+    }
+    impl<'de> DeserializeSeed<'de> for Unique<'_> {
+        type Value = ();
+        fn deserialize<D: serde::Deserializer<'de>>(self, d: D) -> Result<(), D::Error> {
+            if (self.stop)() {
+                return Err(de::Error::custom("Execution observation parsing stopped"));
+            }
+            d.deserialize_any(self)
+        }
+    }
+    impl<'de> Visitor<'de> for Unique<'_> {
+        type Value = ();
+        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            f.write_str("bounded duplicate-free observation JSON")
+        }
+        fn visit_map<M: MapAccess<'de>>(self, mut map: M) -> Result<(), M::Error> {
+            let mut keys = BTreeSet::new();
+            while let Some(key) = map.next_key::<String>()? {
+                if !keys.insert(key) {
+                    return Err(de::Error::custom("duplicate observation field"));
+                }
+                map.next_value_seed(Unique {
+                    stop: &mut *self.stop,
+                })?;
+            }
+            Ok(())
+        }
+        fn visit_seq<S: SeqAccess<'de>>(self, mut seq: S) -> Result<(), S::Error> {
+            while seq
+                .next_element_seed(Unique {
+                    stop: &mut *self.stop,
+                })?
+                .is_some()
+            {}
+            Ok(())
+        }
+        fn visit_bool<E: de::Error>(self, _: bool) -> Result<(), E> {
+            Ok(())
+        }
+        fn visit_i64<E: de::Error>(self, _: i64) -> Result<(), E> {
+            Ok(())
+        }
+        fn visit_u64<E: de::Error>(self, _: u64) -> Result<(), E> {
+            Ok(())
+        }
+        fn visit_f64<E: de::Error>(self, _: f64) -> Result<(), E> {
+            Ok(())
+        }
+        fn visit_str<E: de::Error>(self, _: &str) -> Result<(), E> {
+            Ok(())
+        }
+        fn visit_unit<E: de::Error>(self) -> Result<(), E> {
+            Ok(())
+        }
+    }
+    let mut d = serde_json::Deserializer::from_str(text);
+    let mut stopped = false;
+    let parsed = {
+        let mut observed_stop = || {
+            let answer = stop();
+            stopped |= answer;
+            answer
+        };
+        Unique {
+            stop: &mut observed_stop,
+        }
+        .deserialize(&mut d)
+    };
+    if stopped {
+        return Err("Execution observation parsing stopped".into());
+    }
+    parsed.map_err(|error| error.to_string())?;
+    d.end().map_err(|error| error.to_string())
 }
 
 /// Current versioned one-shot transport request.

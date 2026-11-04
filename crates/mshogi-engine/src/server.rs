@@ -108,6 +108,10 @@ fn execute_chess(context: &ExecutionContext) -> ChessResult {
 
 pub(crate) fn execute(context: &ExecutionContext) -> ExecutionResult {
     match context.game.game_kind() {
+        mshogi_core::native::GameKind::Tenjiku => ExecutionResult::failure(
+            FailureKind::UnsupportedMode,
+            "Tenjiku native records are supported; functional engine execution belongs to MSH-44 and remains unsupported and unscored.",
+        ),
         mshogi_core::native::GameKind::Chu => execute_chu(context),
         mshogi_core::native::GameKind::Tori => execute_tori(context),
         mshogi_core::native::GameKind::Xiangqi => execute_xiangqi(context),

@@ -748,7 +748,7 @@ fn product_new_game_archive_reopens_native_human_orientation_stopped_and_fresh()
     let (_, receipt) = c
         .shared_new_game(
             c.shared_open_token(),
-            GameKind::Shogi,
+            mshogi_core::native::RulesProfile::ShogiCsa36V1,
             NativeSide::Shogi(s::Side::Gote),
         )
         .unwrap();

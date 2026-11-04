@@ -796,7 +796,7 @@ fn normal_tori_new_game_uses_the_admitted_native_document() {
     let (_, receipt) = c
         .shared_new_game(
             c.shared_open_token(),
-            GameKind::Tori,
+            mshogi_core::native::RulesProfile::ToriModernV1,
             NativeSide::Tori(t::Side::Sente),
         )
         .unwrap();

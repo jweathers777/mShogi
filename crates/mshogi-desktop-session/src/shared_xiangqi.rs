@@ -188,6 +188,7 @@ impl XiangqiSession {
 }
 fn choice(a: x::Action) -> PresentedChoice {
     PresentedChoice {
+        tenjiku: None,
         origin: ChoiceOrigin::Intersection {
             point: a.from.to_string(),
         },
@@ -200,7 +201,13 @@ fn choice(a: x::Action) -> PresentedChoice {
 // Presentation only. Native events, actor identity, indices and replay payloads
 // remain authoritative; no reconstruction or adjudication runs to make a label.
 fn event_label(event: &x::GameEvent) -> String {
-    let name = |s| side(NativeSide::Xiangqi(s)).label;
+    let name = |s| {
+        side(
+            mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
+            NativeSide::Xiangqi(s),
+        )
+        .label
+    };
     let actor = event.actor.map(name).unwrap_or_else(|| "Game".into());
     let fault = |f| match f {
         x::FaultKind::PerpetualCheck => "perpetual check",
@@ -255,7 +262,13 @@ fn event_label(event: &x::GameEvent) -> String {
     }
 }
 fn conclusion_label(conclusion: &x::Conclusion) -> String {
-    let name = |s| side(NativeSide::Xiangqi(s)).label;
+    let name = |s| {
+        side(
+            mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
+            NativeSide::Xiangqi(s),
+        )
+        .label
+    };
     let fault = |f| match f {
         x::FaultKind::PerpetualCheck => "perpetual check",
         x::FaultKind::PerpetualChase => "perpetual chase",
@@ -303,7 +316,7 @@ pub(super) fn inspect(
         owner,
         format!(
             "{} {}",
-            side(owner).label,
+            side(RulesProfile::XiangqiWxf2018V1, owner).label,
             format!("{:?}", piece.kind).to_lowercase()
         ),
         position
@@ -549,8 +562,14 @@ impl DesktopController {
         let historical = state.viewed.is_some();
         let active = !historical && concluded.is_none() && pending.is_none();
         let sides = vec![
-            side(NativeSide::Xiangqi(x::Side::Red)),
-            side(NativeSide::Xiangqi(x::Side::Black)),
+            side(
+                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
+                NativeSide::Xiangqi(x::Side::Red),
+            ),
+            side(
+                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
+                NativeSide::Xiangqi(x::Side::Black),
+            ),
         ];
         let files: Vec<_> = (b'a'..=b'i').map(|f| char::from(f).to_string()).collect();
         let ranks: Vec<_> = (0..10).rev().map(|r| r.to_string()).collect();
@@ -585,7 +604,11 @@ impl DesktopController {
             } else {
                 format!(
                     "{} to move{}",
-                    side(NativeSide::Xiangqi(position.side_to_move())).label,
+                    side(
+                        mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
+                        NativeSide::Xiangqi(position.side_to_move())
+                    )
+                    .label,
                     if position.is_in_check(position.side_to_move()) {
                         " · check"
                     } else {
@@ -597,6 +620,7 @@ impl DesktopController {
         SharedSnapshot {
             tori: None,
             chu: None,
+            tenjiku: None,
             moves: self.present_moves(history.event_count),
             xiangqi: Some(XiangqiPresentation {
                 terminal_actions: XiangqiTerminalActions {
@@ -638,8 +662,14 @@ impl DesktopController {
             game: GameKind::Xiangqi,
             profile: RulesProfile::XiangqiWxf2018V1,
             edition: RulesProfile::XiangqiWxf2018V1.edition(),
-            human: side(NativeSide::Xiangqi(state.human)),
-            turn: side(NativeSide::Xiangqi(position.side_to_move())),
+            human: side(
+                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
+                NativeSide::Xiangqi(state.human),
+            ),
+            turn: side(
+                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
+                NativeSide::Xiangqi(position.side_to_move()),
+            ),
             sides: sides.clone(),
             board: BoardDescriptor {
                 files: files.clone(),
@@ -654,7 +684,10 @@ impl DesktopController {
                         .map(|actor| {
                             let base = if actor == x::Side::Red { 0 } else { 7 };
                             Palace {
-                                side: side(NativeSide::Xiangqi(actor)),
+                                side: side(
+                                    mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
+                                    NativeSide::Xiangqi(actor),
+                                ),
                                 points: x::Intersection::all()
                                     .filter(|p| actor.in_palace(*p))
                                     .map(|p| p.to_string())
@@ -691,7 +724,10 @@ impl DesktopController {
             pieces: x::Intersection::all()
                 .filter_map(|point| {
                     position.piece(point).map(|p| {
-                        let owner = side(NativeSide::Xiangqi(p.side));
+                        let owner = side(
+                            mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
+                            NativeSide::Xiangqi(p.side),
+                        );
                         PresentedPiece {
                             square: point.to_string(),
                             owner: owner.key,
@@ -808,7 +844,13 @@ fn display_observation(
         ),
     };
     let perspective = match &o.observation.context.game {
-        CanonicalRecord::Xiangqi(r) => side(NativeSide::Xiangqi(r.side_to_move())).label,
+        CanonicalRecord::Xiangqi(r) => {
+            side(
+                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
+                NativeSide::Xiangqi(r.side_to_move()),
+            )
+            .label
+        }
         _ => unreachable!(),
     };
     PresentedSearchObservation {

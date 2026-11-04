@@ -58,6 +58,8 @@ export function Board({ pieces, choices, orientation, version, disabled,
     neighbor: (key, direction) => gridNeighbor(squares, columns, key, direction),
   });
   const { selected, prefix, completions, inspection, inspectionPending, destinations } = interaction;
+  const selectedChoices = (inspection?.choices ?? choices).filter(choice => choice.from === selected && prefix.every((step,index) => choice.steps[index] === step));
+  const stationarySelection = selectedChoices.length > 0 && selectedChoices.every(choice => choice.tenjiku?.kind === "stationary_capture");
   const promotionDialog = completions.length > 0 && profile === "chess" && completions.every(choice => choice.completion !== null);
   const displayFiles = nativeOrientation?.files ?? (orientation === "white" ? geometry.files : [...geometry.files].reverse());
   const displayRanks = nativeOrientation?.ranks ?? (orientation === "white" ? [...geometry.ranks].reverse() : geometry.ranks);
@@ -102,7 +104,7 @@ export function Board({ pieces, choices, orientation, version, disabled,
           {displayFiles.map((file, index) => <text key={`file-${index}`} className="coordinate" data-coordinate-axis="file" x={padding + index * 100 + 50} y={height - 8} textAnchor="middle">{file}</text>)}
           {displayRanks.map((rank, index) => <text key={`rank-${index}`} className="coordinate" data-coordinate-axis="rank" x={width - 20} y={padding + index * 100 + 62} textAnchor="middle">{rank}</text>)}
         </g>}
-        {renderNativePiece && selected && prefix.length > 0 && !inspection && <g className="native-selected-route" aria-hidden="true" pointerEvents="none" data-selected-route={[selected, ...prefix].join(">")}>
+        {renderNativePiece && selected && prefix.length > 0 && !inspection && !stationarySelection && <g className="native-selected-route" aria-hidden="true" pointerEvents="none" data-selected-route={[selected, ...prefix].join(">")}>
           <polyline points={[selected, ...prefix].map(key => { const i = squares.indexOf(key); return `${padding + 50 + i % columns * 100},${padding + 50 + Math.floor(i / columns) * 100}`; }).join(" ")} />
           {prefix.map((key, index) => { const i = squares.indexOf(key); return <g key={index} transform={`translate(${padding + 84 + i % columns * 100} ${padding + 16 + Math.floor(i / columns) * 100})`}><circle r="14" /><text textAnchor="middle" y="5">{index + 1}</text></g>; })}
         </g>}

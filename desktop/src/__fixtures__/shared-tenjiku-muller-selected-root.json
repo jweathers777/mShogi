@@ -1,0 +1,1201 @@
+{
+  "moves": {
+    "root": {
+      "label": "Starting position",
+      "numbering": "Tenjiku technical complete actions · known-root move pairs · declared root plies 0 · earlier history unknown"
+    },
+    "entries": [
+      {
+        "event_index": 1,
+        "board_ply": 1,
+        "number": 1,
+        "column": 0,
+        "notation": "Technical action {\"kind\":\"travel\",\"from\":[8,8],\"route\":[[8,7],[8,8]],\"promote\":false}",
+        "action": "{\"kind\":\"travel\",\"from\":[8,8],\"route\":[[8,7],[8,8]],\"promote\":false}",
+        "command_start": 0,
+        "command_end": 1
+      }
+    ],
+    "last_action": null
+  },
+  "tenjiku": {
+    "profile": "mshogi.tenjiku.muller-completed.v1",
+    "edition": "MULLER+ADAMS-COMPLETION+MSH83-2026-11-04",
+    "root": {
+      "kind": "diagram",
+      "source": null,
+      "declared_completed_plies": 0
+    },
+    "declared_root_plies": "0",
+    "earlier_history_unknown": true,
+    "historical_reachability_proven": false,
+    "selected": {
+      "event_index": 0,
+      "board_ply": 0,
+      "declared_total_plies": "0",
+      "identities": [
+        {
+          "square": "1a",
+          "piece": {
+            "id": 2,
+            "side": "gote",
+            "base": "K",
+            "promoted": false,
+            "right": "consumed"
+          },
+          "face": "K"
+        },
+        {
+          "square": "2c",
+          "piece": {
+            "id": 3,
+            "side": "gote",
+            "base": "P",
+            "promoted": false,
+            "right": "unseen"
+          },
+          "face": "P"
+        },
+        {
+          "square": "8g",
+          "piece": {
+            "id": 5,
+            "side": "gote",
+            "base": "P",
+            "promoted": false,
+            "right": "unseen"
+          },
+          "face": "P"
+        },
+        {
+          "square": "9g",
+          "piece": {
+            "id": 6,
+            "side": "gote",
+            "base": "P",
+            "promoted": false,
+            "right": "unseen"
+          },
+          "face": "P"
+        },
+        {
+          "square": "8h",
+          "piece": {
+            "id": 4,
+            "side": "sente",
+            "base": "Ln",
+            "promoted": false,
+            "right": "unseen"
+          },
+          "face": "Ln"
+        },
+        {
+          "square": "15n",
+          "piece": {
+            "id": 1,
+            "side": "sente",
+            "base": "P",
+            "promoted": false,
+            "right": "unseen"
+          },
+          "face": "P"
+        },
+        {
+          "square": "16p",
+          "piece": {
+            "id": 0,
+            "side": "sente",
+            "base": "K",
+            "promoted": false,
+            "right": "consumed"
+          },
+          "face": "K"
+        }
+      ],
+      "royals": [
+        {
+          "square": "1a",
+          "piece": {
+            "id": 2,
+            "side": "gote",
+            "base": "K",
+            "promoted": false,
+            "right": "consumed"
+          },
+          "face": "K"
+        },
+        {
+          "square": "16p",
+          "piece": {
+            "id": 0,
+            "side": "sente",
+            "base": "K",
+            "promoted": false,
+            "right": "consumed"
+          },
+          "face": "K"
+        }
+      ],
+      "repetition_key": {
+        "profile": "mshogi.tenjiku.muller-completed.v1",
+        "side": "sente",
+        "board": [
+          [
+            "gote",
+            "K",
+            false
+          ],
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            "gote",
+            "P",
+            false
+          ],
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            "gote",
+            "P",
+            false
+          ],
+          [
+            "gote",
+            "P",
+            false
+          ],
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            "sente",
+            "Ln",
+            false
+          ],
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            "sente",
+            "P",
+            false
+          ],
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            "sente",
+            "K",
+            false
+          ]
+        ]
+      },
+      "known_repetition_positions": 1,
+      "first_recurrence_forbidden": true,
+      "pending_bare": null,
+      "conclusion": null,
+      "draw_offer": null,
+      "incomplete": null,
+      "last_effects": null
+    },
+    "live": {
+      "event_index": 1,
+      "board_ply": 1,
+      "declared_total_plies": "1",
+      "identities": [
+        {
+          "square": "1a",
+          "piece": {
+            "id": 2,
+            "side": "gote",
+            "base": "K",
+            "promoted": false,
+            "right": "consumed"
+          },
+          "face": "K"
+        },
+        {
+          "square": "2c",
+          "piece": {
+            "id": 3,
+            "side": "gote",
+            "base": "P",
+            "promoted": false,
+            "right": "unseen"
+          },
+          "face": "P"
+        },
+        {
+          "square": "9g",
+          "piece": {
+            "id": 6,
+            "side": "gote",
+            "base": "P",
+            "promoted": false,
+            "right": "unseen"
+          },
+          "face": "P"
+        },
+        {
+          "square": "8h",
+          "piece": {
+            "id": 4,
+            "side": "sente",
+            "base": "Ln",
+            "promoted": false,
+            "right": "unseen"
+          },
+          "face": "Ln"
+        },
+        {
+          "square": "15n",
+          "piece": {
+            "id": 1,
+            "side": "sente",
+            "base": "P",
+            "promoted": false,
+            "right": "unseen"
+          },
+          "face": "P"
+        },
+        {
+          "square": "16p",
+          "piece": {
+            "id": 0,
+            "side": "sente",
+            "base": "K",
+            "promoted": false,
+            "right": "consumed"
+          },
+          "face": "K"
+        }
+      ],
+      "royals": [
+        {
+          "square": "1a",
+          "piece": {
+            "id": 2,
+            "side": "gote",
+            "base": "K",
+            "promoted": false,
+            "right": "consumed"
+          },
+          "face": "K"
+        },
+        {
+          "square": "16p",
+          "piece": {
+            "id": 0,
+            "side": "sente",
+            "base": "K",
+            "promoted": false,
+            "right": "consumed"
+          },
+          "face": "K"
+        }
+      ],
+      "repetition_key": {
+        "profile": "mshogi.tenjiku.muller-completed.v1",
+        "side": "gote",
+        "board": [
+          [
+            "gote",
+            "K",
+            false
+          ],
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            "gote",
+            "P",
+            false
+          ],
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            "gote",
+            "P",
+            false
+          ],
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            "sente",
+            "Ln",
+            false
+          ],
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            "sente",
+            "P",
+            false
+          ],
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          [
+            "sente",
+            "K",
+            false
+          ]
+        ]
+      },
+      "known_repetition_positions": 2,
+      "first_recurrence_forbidden": true,
+      "pending_bare": null,
+      "conclusion": null,
+      "draw_offer": null,
+      "incomplete": null,
+      "last_effects": {
+        "actor": "sente",
+        "action": {
+          "kind": "travel",
+          "from": [
+            8,
+            8
+          ],
+          "route": [
+            [
+              8,
+              7
+            ],
+            [
+              8,
+              8
+            ]
+          ],
+          "promote": false
+        },
+        "mover_before": {
+          "id": 4,
+          "side": "sente",
+          "base": "Ln",
+          "promoted": false,
+          "right": "unseen"
+        },
+        "mover_after": {
+          "id": 4,
+          "side": "sente",
+          "base": "Ln",
+          "promoted": false,
+          "right": "unseen"
+        },
+        "phases": [
+          {
+            "phase": "capture",
+            "victim": {
+              "square": [
+                8,
+                7
+              ],
+              "piece": {
+                "id": 5,
+                "side": "gote",
+                "base": "P",
+                "promoted": false,
+                "right": "unseen"
+              }
+            }
+          }
+        ],
+        "work_units": 779
+      }
+    },
+    "execution_supported": false
+  },
+  "open_token": {
+    "document": 1,
+    "version": 5,
+    "document_revision": 2
+  },
+  "document": {
+    "revision": 2,
+    "dirty": true,
+    "path": null,
+    "settings": {
+      "game_kind": "tenjiku",
+      "settings": {
+        "orientation": "sente"
+      }
+    }
+  },
+  "io": {
+    "id": 0,
+    "phase": "idle",
+    "message": null,
+    "resource": null
+  },
+  "capacity": {
+    "id": 3,
+    "status": "available",
+    "message": null,
+    "resource": null
+  },
+  "token": {
+    "document": 1,
+    "version": 5,
+    "revision": 7,
+    "selection": 5
+  },
+  "game": "tenjiku",
+  "profile": "mshogi.tenjiku.muller-completed.v1",
+  "edition": "MULLER+ADAMS-COMPLETION+MSH83-2026-11-04",
+  "human": {
+    "id": {
+      "game_kind": "tenjiku",
+      "side": "sente"
+    },
+    "key": "mshogi.tenjiku.muller-completed.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "turn": {
+    "id": {
+      "game_kind": "tenjiku",
+      "side": "sente"
+    },
+    "key": "mshogi.tenjiku.muller-completed.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
+  "sides": [
+    {
+      "id": {
+        "game_kind": "tenjiku",
+        "side": "sente"
+      },
+      "key": "mshogi.tenjiku.muller-completed.v1:sente",
+      "label": "Sente",
+      "first_mover": true
+    },
+    {
+      "id": {
+        "game_kind": "tenjiku",
+        "side": "gote"
+      },
+      "key": "mshogi.tenjiku.muller-completed.v1:gote",
+      "label": "Gote",
+      "first_mover": false
+    }
+  ],
+  "board": {
+    "files": [
+      "16",
+      "15",
+      "14",
+      "13",
+      "12",
+      "11",
+      "10",
+      "9",
+      "8",
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "ranks": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i",
+      "j",
+      "k",
+      "l",
+      "m",
+      "n",
+      "o",
+      "p"
+    ],
+    "label": "Tenjiku Shogi 16×16 verification board",
+    "initial_focus": "8i"
+  },
+  "orientations": [
+    {
+      "side": {
+        "id": {
+          "game_kind": "tenjiku",
+          "side": "sente"
+        },
+        "key": "mshogi.tenjiku.muller-completed.v1:sente",
+        "label": "Sente",
+        "first_mover": true
+      },
+      "files": [
+        "16",
+        "15",
+        "14",
+        "13",
+        "12",
+        "11",
+        "10",
+        "9",
+        "8",
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1"
+      ],
+      "ranks": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p"
+      ]
+    },
+    {
+      "side": {
+        "id": {
+          "game_kind": "tenjiku",
+          "side": "gote"
+        },
+        "key": "mshogi.tenjiku.muller-completed.v1:gote",
+        "label": "Gote",
+        "first_mover": false
+      },
+      "files": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16"
+      ],
+      "ranks": [
+        "p",
+        "o",
+        "n",
+        "m",
+        "l",
+        "k",
+        "j",
+        "i",
+        "h",
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ]
+    }
+  ],
+  "pieces": [
+    {
+      "square": "1a",
+      "owner": "mshogi.tenjiku.muller-completed.v1:gote",
+      "kind": "K",
+      "promoted": false,
+      "text": "K",
+      "label": "1a, Gote K"
+    },
+    {
+      "square": "2c",
+      "owner": "mshogi.tenjiku.muller-completed.v1:gote",
+      "kind": "P",
+      "promoted": false,
+      "text": "P",
+      "label": "2c, Gote P"
+    },
+    {
+      "square": "8g",
+      "owner": "mshogi.tenjiku.muller-completed.v1:gote",
+      "kind": "P",
+      "promoted": false,
+      "text": "P",
+      "label": "8g, Gote P"
+    },
+    {
+      "square": "9g",
+      "owner": "mshogi.tenjiku.muller-completed.v1:gote",
+      "kind": "P",
+      "promoted": false,
+      "text": "P",
+      "label": "9g, Gote P"
+    },
+    {
+      "square": "8h",
+      "owner": "mshogi.tenjiku.muller-completed.v1:sente",
+      "kind": "Ln",
+      "promoted": false,
+      "text": "Ln",
+      "label": "8h, Sente Ln"
+    },
+    {
+      "square": "15n",
+      "owner": "mshogi.tenjiku.muller-completed.v1:sente",
+      "kind": "P",
+      "promoted": false,
+      "text": "P",
+      "label": "15n, Sente P"
+    },
+    {
+      "square": "16p",
+      "owner": "mshogi.tenjiku.muller-completed.v1:sente",
+      "kind": "K",
+      "promoted": false,
+      "text": "K",
+      "label": "16p, Sente K"
+    }
+  ],
+  "hands": [],
+  "choices": [],
+  "capabilities": {
+    "board_action": false,
+    "drops": false,
+    "promotion": true,
+    "take_back": false,
+    "undo": false,
+    "engine_turn": false,
+    "move_analysis": false,
+    "chess_full": false,
+    "claims": false,
+    "declaration": false,
+    "resign": false,
+    "hands": false,
+    "history": true,
+    "save": true
+  },
+  "status": {
+    "concluded": false,
+    "label": "Sente to move",
+    "score_half_points": null
+  },
+  "events": [
+    {
+      "index": 1,
+      "board_ply": 1,
+      "label": "Sente · Technical action {\"kind\":\"travel\",\"from\":[8,8],\"route\":[[8,7],[8,8]],\"promote\":false}"
+    }
+  ],
+  "event_index": 0,
+  "board_ply": 0,
+  "play_limits": {
+    "depth": 1,
+    "nodes": 1
+  },
+  "historical": true,
+  "paused": true,
+  "close_requires_save": true,
+  "phase": "paused",
+  "execution_purpose": null,
+  "diagnostic": "Historical position. Analysis is read-only. Return to live explicitly.",
+  "declaration_advice": [],
+  "context": {"envelope_version":1,"game_kind":"tenjiku","rules_profile":"mshogi.tenjiku.muller-completed.v1","profile_edition":"MULLER+ADAMS-COMPLETION+MSH83-2026-11-04","native_schema_version":1,"payload":{"format":"mshogi.tenjiku.game","game":"tenjiku","profile":"mshogi.tenjiku.muller-completed.v1","edition":"MULLER+ADAMS-COMPLETION+MSH83-2026-11-04","schema_version":1,"mode":"untimed","root":{"board":[{"id":2,"side":"gote","base":"K","promoted":false,"right":"consumed"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":3,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":5,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":6,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":4,"side":"sente","base":"Ln","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":1,"side":"sente","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":0,"side":"sente","base":"K","promoted":false,"right":"consumed"}],"profile":"mshogi.tenjiku.muller-completed.v1","side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"root_conclusion":null,"root_pending_bare":null,"root_draw_offer":null,"root_incomplete":null,"events":[],"current_position":{"board":[{"id":2,"side":"gote","base":"K","promoted":false,"right":"consumed"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":3,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":5,"side":"gote","base":"P","promoted":false,"right":"unseen"},{"id":6,"side":"gote","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":4,"side":"sente","base":"Ln","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":1,"side":"sente","base":"P","promoted":false,"right":"unseen"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":0,"side":"sente","base":"K","promoted":false,"right":"consumed"}],"profile":"mshogi.tenjiku.muller-completed.v1","side":"sente","root":{"kind":"diagram","source":null,"declared_completed_plies":0},"accepted_plies":0},"conclusion":null,"pending_bare":null,"draw_offer":null,"incomplete":null}},
+  "analysis": null,
+  "observations": [],
+  "search_observations": [],
+  "score_meaning": "Tenjiku execution is unsupported. Operational failures and absence of board actions are unscored; native conclusions remain separate.",
+  "chess": null,
+  "chess_match": null
+}

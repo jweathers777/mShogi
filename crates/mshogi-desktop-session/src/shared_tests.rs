@@ -669,7 +669,11 @@ fn new_product_game(
     human: NativeSide,
 ) -> SharedSnapshot {
     let (_, receipt) = c
-        .shared_new_game(c.shared_open_token(), game, human)
+        .shared_new_game(
+            c.shared_open_token(),
+            crate::test_single_profile(game),
+            human,
+        )
         .unwrap();
     let deadline = Instant::now() + std::time::Duration::from_secs(20);
     loop {
@@ -710,6 +714,9 @@ fn product_new_games_are_native_qualified_oriented_and_live_with_fresh_identitie
         assert!(current.document.dirty);
         assert_eq!(current.open_token, c.shared_open_token());
         match human {
+            NativeSide::Tenjiku(_) => unreachable!(
+                "Two explicitly named Tenjiku profiles have separate native consumer fixtures"
+            ),
             NativeSide::Chu(side) => {
                 use mshogi_core::chu;
                 assert_eq!(current.profile.id(), chu::PROFILE_ID);
@@ -782,13 +789,17 @@ fn product_new_rejects_stale_or_conflicting_choices_before_retiring_live_work() 
     let before = new_product_game(&mut c, GameKind::Shogi, NativeSide::Shogi(s::Side::Gote));
     let pending = c.session.shogi().unwrap().pending.clone();
     assert!(
-        c.shared_new_game(stale, GameKind::Chess, NativeSide::Chess(Color::White))
-            .is_err()
+        c.shared_new_game(
+            stale,
+            mshogi_core::native::RulesProfile::ChessMatchV1,
+            NativeSide::Chess(Color::White)
+        )
+        .is_err()
     );
     assert!(
         c.shared_new_game(
             c.shared_open_token(),
-            GameKind::Chess,
+            mshogi_core::native::RulesProfile::ChessMatchV1,
             NativeSide::Shogi(s::Side::Sente)
         )
         .is_err()
@@ -929,8 +940,12 @@ fn xiangqi_product_creation_retires_prior_work_and_keeps_archive_admission() {
             assert_ne!(old.game, after.context);
         }
         assert!(
-            c.shared_new_game(open, GameKind::Xiangqi, NativeSide::Xiangqi(x::Side::Black))
-                .is_err()
+            c.shared_new_game(
+                open,
+                mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
+                NativeSide::Xiangqi(x::Side::Black)
+            )
+            .is_err()
         );
         assert!(after.capabilities.save, "MSH-99 native archive support");
     }
@@ -972,7 +987,11 @@ fn native_tori_rejects_conflicting_player_before_admission_and_accepts_native_re
     let token = c.shared_token();
     let open = c.shared_open_token();
     let error = c
-        .shared_new_game(open, GameKind::Tori, NativeSide::Shogi(s::Side::Sente))
+        .shared_new_game(
+            open,
+            mshogi_core::native::RulesProfile::ToriModernV1,
+            NativeSide::Shogi(s::Side::Sente),
+        )
         .unwrap_err();
     assert!(error.contains("side does not belong"));
     assert_eq!(c.shared_token(), token);

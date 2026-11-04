@@ -1,0 +1,31 @@
+Window: "mShogi Verification — tenjiku-adams-compound (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical", App: mShogi Verification.
+0 standard window Secondary Actions: Raise, mShogi Verification — tenjiku-adams-compound (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container New game
+				4 heading New game, Value: 2
+					5 text New game
+				6 container
+					7 text Game
+					8 pop up button (collapsed) Game, Value: Chess, Secondary Actions: Expand
+				9 heading Your side, Value: 3
+					10 text Your side
+				11 (settable, unknown) Your side
+					12 radio button White, Value: 1
+					13 radio button Black, Value: 0
+					14 radio button Random, Value: 0
+				15 button Cancel
+				16 button Start game
+		17 scroll bar (settable, float) 0
+	18 close button
+	19 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	20 minimize button
+	21 text mShogi Verification — tenjiku-adams-compound (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+22 menu bar
+	23 mShogi Verification
+	24 Edit
+	25 View
+	26 Window
+	27 Verification window size
+
+The focused UI element is 8 pop up button (collapsed) Game, Value: Chess, Secondary Actions: Expand

@@ -26,6 +26,9 @@ pub struct MovementInspection {
     pub token: SessionToken,
     /// Native game family.
     pub game: GameKind,
+    /// Explicit whole profile where the game has multiple selectable profiles.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub profile: Option<RulesProfile>,
     /// Queried opaque origin.
     pub origin: String,
     /// Native owner of the selected piece/resource.
@@ -47,7 +50,9 @@ impl DesktopController {
         if query.expected != self.shared_token() {
             return Err("The position changed. Select the piece again.".into());
         }
-        let (game, owner, label, choices) = if let Some(state) = self.session.chu() {
+        let (game, owner, label, choices) = if let Some(state) = self.session.tenjiku() {
+            tenjiku::inspect(state.selected(), &query.origin)?
+        } else if let Some(state) = self.session.chu() {
             chu::inspect(state.selected(), &query.origin)?
         } else if let Some(state) = self.session.tori() {
             tori::inspect(state.selected(), &query.origin)?
@@ -61,8 +66,9 @@ impl DesktopController {
         Ok(MovementInspection {
             token: query.expected,
             game,
+            profile: (game == GameKind::Tenjiku).then(|| self.session.profile()),
             origin: query.origin,
-            side: side(owner),
+            side: side(self.session.profile(), owner),
             label,
             choices,
             read_only: true,
@@ -86,7 +92,7 @@ fn inspect_chess(position: &Position, origin: &str) -> Result<Inspected, String>
     let owner = NativeSide::Chess(piece.color);
     let label = format!(
         "{} {}",
-        side(owner).label,
+        side(RulesProfile::ChessMatchV1, owner).label,
         format!("{:?}", piece.kind).to_lowercase()
     );
     let choices = position
@@ -94,6 +100,7 @@ fn inspect_chess(position: &Position, origin: &str) -> Result<Inspected, String>
         .into_iter()
         .filter(|a| a.from == square)
         .map(|a| PresentedChoice {
+            tenjiku: None,
             origin: ChoiceOrigin::Board {
                 square: origin.into(),
             },
@@ -120,7 +127,11 @@ fn inspect_shogi(position: &s::Position, origin: &str) -> Result<Inspected, Stri
                     (origin
                         == format!(
                             "hand:{}:{}",
-                            side(NativeSide::Shogi(actor)).key,
+                            side(
+                                mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                                NativeSide::Shogi(actor)
+                            )
+                            .key,
                             piece_text(kind)
                         ))
                     .then_some((actor, kind))
@@ -135,7 +146,7 @@ fn inspect_shogi(position: &s::Position, origin: &str) -> Result<Inspected, Stri
     let owner = NativeSide::Shogi(actor);
     let label = format!(
         "{} {}{}{}",
-        side(owner).label,
+        side(RulesProfile::ShogiCsa36V1, owner).label,
         if promoted { "promoted " } else { "" },
         format!("{kind:?}").to_lowercase(),
         if square.is_none() { " in hand" } else { "" }
@@ -171,13 +182,14 @@ fn inspect_shogi(position: &s::Position, origin: &str) -> Result<Inspected, Stri
                 s::Action::Drop { to, .. } => (to, None),
             };
             PresentedChoice {
+                tenjiku: None,
                 origin: if let Some(square) = square {
                     ChoiceOrigin::Board {
                         square: square.to_string(),
                     }
                 } else {
                     ChoiceOrigin::Hand {
-                        owner: side(owner).key,
+                        owner: side(RulesProfile::ShogiCsa36V1, owner).key,
                         piece_kind: format!("{kind:?}").to_lowercase(),
                     }
                 },
@@ -321,7 +333,14 @@ mod tests {
             inspected.choices[0].completion.as_ref().unwrap().label,
             "Do not promote"
         );
-        let origin = format!("hand:{}:P", side(NativeSide::Shogi(s::Side::Gote)).key);
+        let origin = format!(
+            "hand:{}:P",
+            side(
+                mshogi_core::native::RulesProfile::ShogiCsa36V1,
+                NativeSide::Shogi(s::Side::Gote)
+            )
+            .key
+        );
         let hand = query(&c, &origin).unwrap();
         assert_eq!(hand.label, "Gote pawn in hand");
         assert!(hand.choices.iter().any(|a| a.action == "P*4f"));

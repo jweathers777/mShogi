@@ -1,9 +1,9 @@
 {
   "schema": "mshogi.tenjiku.shared-verification.v1",
   "task": "MSH-79",
-  "status": "source_reviewed_ci_pending",
+  "status": "implementation_accepted_completion_blocked_external_CI",
   "base_revision": "68915085be4bdefbf9591b7aa4ddd042c013f0f9",
-  "tested_revision": null,
+  "tested_revision": "3a290024df82d23f215165707c81de4928ad3a4a",
   "environment": {
     "os": "macOS 27.0.1 (26A434)",
     "architecture": "arm64",
@@ -531,7 +531,10 @@
               "omitted_facts": 0
             }
           }
-        ]
+        ],
+        "policy_work_limit": 160000000,
+        "acceptance_evidence": true,
+        "scope": "Final160Mpolicy document validation/decode plus nativeGame restoration; actualworkermeasuredseparately"
       },
       "context-policy": {
         "sha256": "56d3e9b8bddcd1ff1c588aded6d34332a83f56d3f85517a05f667e68b49e8b82",
@@ -645,7 +648,10 @@
               "retained_events": 3840
             }
           }
-        ]
+        ],
+        "policy_work_limit": 600000000,
+        "acceptance_evidence": false,
+        "scope": "Historical provisional600M development observations, superseded by final160M policy. Above160M acceptances are NOT currentadmittedjourneys. context-policy records the15s reopencounterexample causingrejection."
       },
       "measure": {
         "sha256": "caee6b41567ba74ad8ea50c66d35d8cb220a36087e491da7bfefe4f8776b18f5",
@@ -987,7 +993,10 @@
             "runtime_restore_us": 2135575,
             "validation_us": 2210853
           }
-        ]
+        ],
+        "policy_work_limit": 600000000,
+        "acceptance_evidence": false,
+        "scope": "Historical provisional600M development observations, superseded by final160M policy. Above160M acceptances are NOT currentadmittedjourneys. context-policy records the15s reopencounterexample causingrejection."
       },
       "near-limit": {
         "sha256": "cad67a73145ef8102652076c743f69a0ccb0a5562bc02504263a6c3f7ecb7368",
@@ -1043,7 +1052,10 @@
             "near_limit_import_profile": "mshogi.tenjiku.muller-completed.v1",
             "restore_us": 2125803
           }
-        ]
+        ],
+        "policy_work_limit": 600000000,
+        "acceptance_evidence": false,
+        "scope": "Historical provisional600M development observations, superseded by final160M policy. Above160M acceptances are NOT currentadmittedjourneys. context-policy records the15s reopencounterexample causingrejection."
       }
     },
     "actual_file_worker": {
@@ -1186,6 +1198,16 @@
     {
       "command": "directreleaseTenjikufixturewriter twice",
       "result": "53nativeDTOs deterministicbothprofiles,0changedhashes,6245934totalbytes"
+    },
+    {
+      "command": "cargo clippy --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --all-targets -- -D warnings",
+      "result": "passed5.22s",
+      "log": "/private/tmp/msh79-host-normal-clippy.log"
+    },
+    {
+      "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml",
+      "result": "passed9tests0.05s",
+      "log": "/private/tmp/msh79-host-normal-tests.log"
     }
   ],
   "consumer_coverage": [
@@ -1193,43 +1215,70 @@
       "id": "TEN-CONSUMER-STRICT_PROFILE_DISPATCH",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "native_tenjiku_envelope::both_profiles_keep_native_effects_root_history_and_fresh_authority;exact_profile_edition_schema_and_duplicate_preserving_native_payload",
+        "shared::tenjiku_tests::strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_directions"
+      ]
     },
     {
       "id": "TEN-CONSUMER-SAME_BOARD_CROSS_PROFILE_REJECTION",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "native_tenjiku_envelope strictouter/inner identity cases",
+        "tenjiku_document::tests::execution::both_direction_cross_profile_contexts_invalid_targets_and_forged_results_refuse",
+        "TenjikuSession.test.tsx same-epoch/cross-profile rejection"
+      ]
     },
     {
       "id": "TEN-CONSUMER-NATIVE_BURN_PROJECTION",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "shared::tenjiku_tests::native_burn_projection_preserves_profile_specific_order_and_dying_mover",
+        "TenjikuBoard.test.tsx source-correct burn/death phases"
+      ]
     },
     {
       "id": "TEN-CONSUMER-COMPLETE_ROUTE_PARTIAL_SELECTION",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "shared::tenjiku_tests::complete_route_choices_roundtrip_without_collapsing_landings_and_partial_wire_refuses",
+        "TenjikuBoard.test.tsx pointer/keyboard/prefix/Complete/Escape/sameendpoint/LionHawk/Area3/rankedjump/returns/igui/promotion",
+        "nativeWKWebView Adamscompound+Mullerigui boundedcontractsmoke"
+      ]
     },
     {
       "id": "TEN-CONSUMER-SELECTED_HISTORY_INSPECTION",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "shared::tenjiku_tests::selected_history_inspection_takeback_retained_branch_and_return_live_use_exact_prefixes",
+        "TenjikuBoard.test.tsx historicalreadonly",
+        "TenjikuSession.test.tsx exactprofile/selection responseguards"
+      ]
     },
     {
       "id": "TEN-CONSUMER-WHOLE_DOCUMENT_CAPACITY",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "tenjiku_document::tests aggregatework/nativeendings/256observation/cancellation/typedcapacity",
+        "shared::tenjiku_tests::whole_document_control_capacity_refusal_retains_the_complete_accepted_document",
+        "shared::tenjiku_tests::measured_policy_boundary_actual_worker_open_save_endings_and_close",
+        "persistence::validation_budget_tests exactelapsed/cancellationclassifier"
+      ]
     },
     {
       "id": "TEN-CONSUMER-SAVED_PROFILE_REOPEN_STOPPED",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "shared::tenjiku_tests::stopped_shared_reopen_product_gate_and_failed_files_preserve_prior_file_and_dirty_state",
+        "shared::tenjiku_tests::resume_after_saved_close_still_retires_runtime_without_duplicate_close_journal",
+        "realworkerOpen/Save/ending/Close measurements"
+      ]
     },
     {
       "id": "TEN-CONSUMER-NEW_GAME_PROFILE_CHOICE",
@@ -1265,35 +1314,53 @@
       "id": "TEN-PROFILE-MIX-OBSERVATION_CONTEXT",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "tenjiku_document::tests::execution::both_direction_cross_profile_contexts_invalid_targets_and_forged_results_refuse",
+        "shared::tenjiku_tests::real_unsupported_observations_reject_profile_purpose_and_all_runtime_context_changes"
+      ]
     },
     {
       "id": "TEN-PROFILE-MIX-HISTORICAL_SELECTION",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "tenjiku_document strictselected-prefix replay/profileadmission",
+        "shared::tenjiku_tests exactselected/livecontext andforeignobservations",
+        "TenjikuSession.test.tsx historicalprofile/selectionguards"
+      ]
     },
     {
       "id": "TEN-PROFILE-MIX-EXECUTION_RESULT",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "engine::tenjiku_routing realserve_once genericUnsupportedMode allpurposes",
+        "shared::tenjiku_tests::real_unsupported_observations_reject_profile_purpose_and_all_runtime_context_changes",
+        "shared::tenjiku_tests::cancelled_replacement_receipt_cannot_install_other_profile_or_damage_the_saved_file"
+      ]
     },
     {
       "id": "TEN-PROFILE-MIX-NEW_GAME_IMMUTABLE",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "shared::tenjiku_tests::strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_directions forgedpreferencesrules_profile rejected",
+        "TenjikuSession.test.tsx same-epochotherprofile response rejected"
+      ]
     },
     {
       "id": "TEN-CONSUMER-FRESH-NEW-OTHER-PROFILE",
       "owner": "MSH-79",
       "status": "executed_both_profiles",
-      "evidence": "shared_tenjiku_tests;tenjiku_document tests;native_tenjiku_envelope;engine tenjiku_routing;53nativeDTOs;50TenjikuFrontendTests"
+      "evidence": [
+        "shared::tenjiku_tests::strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_directions",
+        "TenjikuApplication.test.tsx explicitQAwholeprofiles+reset/selectionretirement",
+        "TenjikuSession.test.tsx actualnativeAdams\u2192Muller\u2192Adams epochs"
+      ]
     }
   ],
   "independent_review": {
-    "status": "source_approved_CI_pending",
+    "status": "implementation_approved_completion_not_approved_missing_required_CI",
     "reviewer": "fresh read-only /root/independent_review",
     "independent_checks": [
       "12controllercases passed",
@@ -1310,11 +1377,13 @@
       "ConcludingStop preservesnativewinner/score presentation.",
       "ResumeafterClose mustretirecurrentnativeauthority onnextClose."
     ],
-    "remaining": "RequiredexactsourceRust/DesktopCI andfinalevidencereconciliation."
+    "remaining": "OnlyrequiredmacOS15Rust+Desktopsuccessfulterminalreceiptsmissing. Desktopthirdqueued;RustthirdrerunAPI403whileworkflowfinalizesdespitealljobsterminal. LinuxandWindowsRust/Desktopterminalsuccessrecorded.",
+    "evidence_audit": "224sourcehashesmatchtestedrevision; treeequalsreviewedimplementation; frozeninputs,51legacyDTOs,resourcepayloads/workerrecords and10GUIartifacthashesreconcile. FixedCIactive-status, historical600Mscope andprettyJSONmeasurementlabels; finalCIpending.",
+    "controller_mutex_audit": "Approved standaloneportableprobe, all5hashes/7rawrows/2808inspectionguards/18snapshotguards/6realcontentionpairs andnativepreservation. Maxordinaryinspectionguard0.950416ms; contentionworker1.024750msincludingsync; maxobservedmainwait1.033333ms; noproductionchange."
   },
   "ci": {
-    "rust_three_platforms": "not_run",
-    "desktop_three_platforms": "not_run",
+    "rust_three_platforms": "Linux_and_Windows_terminal_success;macOSrunnernotacquiredtwice;thirdretrydeferredworkflowAPIstillrunning",
+    "desktop_three_platforms": "incomplete:LinuxandWindowspassedactual5gameGUI;macOSrunnernotacquiredtwice;thirdsame-sourceunsuccessfuljobrerequestaccepted",
     "job_budget": {
       "prior_required_run": 41816309261,
       "windows_duration": "24m19s",
@@ -1322,7 +1391,610 @@
       "timeout_minutes": 30,
       "reason": "Additional requiredtwo-profile sharedchecks; no tests orproductlimitsweakened."
     },
-    "fixture_freshness_note": "Independent review flagged five-game pretty-wrapper regression; restored originalfive-game SerializeStruct layout while Tenjiku retains exactRawValue wrapper. Optionalfeature-enabled firstwriter emits8historicalextra fixtures not emittedby requiredno-feature firstwriter; theirpre-existingdrift is notsilentlycopied. Exactworkflowmodes emit51oldtrackedfiles, allbyte-identical. The9unemittedfeature-onlyfiles(includingsynthetic) arepreserved;8hadpre-existingoptionalfeaturegenerationdrift."
+    "fixture_freshness_note": "Independent review flagged five-game pretty-wrapper regression; restored originalfive-game SerializeStruct layout while Tenjiku retains exactRawValue wrapper. Optionalfeature-enabled firstwriter emits8historicalextra fixtures not emittedby requiredno-feature firstwriter; theirpre-existingdrift is notsilentlycopied. Exactworkflowmodes emit51oldtrackedfiles, allbyte-identical. The9unemittedfeature-onlyfiles(includingsynthetic) arepreserved;8hadpre-existingoptionalfeaturegenerationdrift.",
+    "rust_run": 41856238536,
+    "desktop_run": 41856238041,
+    "rust_url": "https://github.com/jweathers777/mShogi/actions/runs/41856238536",
+    "desktop_url": "https://github.com/jweathers777/mShogi/actions/runs/41856238041",
+    "source_revision": "3a290024df82d23f215165707c81de4928ad3a4a",
+    "failed_attempts": [
+      {
+        "run": 41856238536,
+        "job": 126665514599,
+        "platform": "ubuntu-24.04",
+        "source": "3a290024df82d23f215165707c81de4928ad3a4a",
+        "result": "failure",
+        "test": "mshogi-runner::process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored",
+        "expected": "UnexpectedExit",
+        "actual": "MissingResponse (handshake Brokenpipe, exitNone)",
+        "classification": "ExistingMSH-112race; nativeTenjiku/assertionunchanged",
+        "evidence": "evidence/ci-linux-rust-attempt1.txt",
+        "retry": "Same3a290Linuxretry126684768079 terminalsuccess captured16:25:23UTC, assertionunchanged; firstfailurepreservedasMSH112. SuccessfulWindowsjobpreserved."
+      }
+    ],
+    "cancelled_infrastructure_attempts": [
+      {
+        "run": 41856238536,
+        "job": 126665515114,
+        "platform": "macos-15",
+        "source": "3a290024df82d23f215165707c81de4928ad3a4a",
+        "result": "cancelled_before_runner_acquisition",
+        "annotations": [
+          "The job was not acquired by Runner of type hosted even after multiple attempts",
+          "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times."
+        ],
+        "retry": "Waitremaininghealthyjobs; same-sourceunsuccessfuljob retry; preserveMacOSconfiguration."
+      },
+      {
+        "run": 41856238041,
+        "job": 126665513921,
+        "platform": "macos-15",
+        "source": "3a290024df82d23f215165707c81de4928ad3a4a",
+        "result": "cancelled_before_runner_acquisition",
+        "annotations": [
+          "The job was not acquired by Runner of type hosted even after multiple attempts",
+          "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times."
+        ],
+        "retry": "Waitremaininghealthyjobs; same-sourceunsuccessfuljob retry; preserveMacOSconfiguration."
+      },
+      {
+        "run": 41856238536,
+        "job": 126684767741,
+        "attempt": 2,
+        "platform": "macos-15",
+        "source": "3a290024df82d23f215165707c81de4928ad3a4a",
+        "result": "cancelled_before_runner_acquisition",
+        "runner_acquired": false,
+        "annotations": [
+          "The job was not acquired by Runner of type hosted even after multiple attempts",
+          "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times."
+        ],
+        "retry": "AllRustjobsnowterminalbutrerunAPIstill403workflowrunning; requestthirdmacOSretryafterworkflowfinalization."
+      },
+      {
+        "run": 41856238041,
+        "job": 126686298972,
+        "attempt": 2,
+        "platform": "macos-15",
+        "source": "3a290024df82d23f215165707c81de4928ad3a4a",
+        "result": "cancelled_before_runner_acquisition",
+        "runner_acquired": false,
+        "annotations": [
+          "The job was not acquired by Runner of type hosted even after multiple attempts",
+          "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times."
+        ],
+        "retry": "Desktopthirdunsuccessfuljobretryaccepted;RustthirdretryrequiresLinuxterminalreceiptbecauseworkflowstillrunning."
+      }
+    ],
+    "desktop_first_attempt_platform_passes": [
+      "ubuntu-24.04 package+actualfivegameGUI",
+      "windows-2022 package+actualfivegameGUI"
+    ],
+    "rust_first_attempt_platform_passes": [
+      "windows-2022 allrequiredsteps"
+    ],
+    "handoff_snapshot": [
+      {
+        "run_id": 41856238536,
+        "jobs": [
+          {
+            "id": 126684767741,
+            "name": "Rust (macos-15)",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "run_id": 41856238536,
+            "logs_url": null,
+            "steps": null
+          },
+          {
+            "id": 126684768079,
+            "name": "Rust (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "success",
+            "run_id": 41856238536,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Install and identify the pinned toolchain",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Format",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4
+              },
+              {
+                "name": "Lint",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Test",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6
+              },
+              {
+                "name": "Verify isolated desktop QA constructors",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7
+              },
+              {
+                "name": "Verify native desktop snapshot fixtures",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8
+              },
+              {
+                "name": "Build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9
+              },
+              {
+                "name": "Console smoke",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10
+              },
+              {
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 20
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 21
+              }
+            ]
+          },
+          {
+            "id": 126684770209,
+            "name": "Rust (windows-2022)",
+            "status": "completed",
+            "conclusion": "success",
+            "run_id": 41856238536,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Install and identify the pinned toolchain",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Format",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4
+              },
+              {
+                "name": "Lint",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Test",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6
+              },
+              {
+                "name": "Verify isolated desktop QA constructors",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7
+              },
+              {
+                "name": "Verify native desktop snapshot fixtures",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8
+              },
+              {
+                "name": "Build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 9
+              },
+              {
+                "name": "Console smoke",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10
+              },
+              {
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 20
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 21
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "run_id": 41856238041,
+        "jobs": [
+          {
+            "id": 126702335253,
+            "name": "Desktop (macos-15)",
+            "status": "queued",
+            "conclusion": null,
+            "run_id": 41856238041,
+            "logs_url": null,
+            "steps": null
+          },
+          {
+            "id": 126702336680,
+            "name": "Desktop (ubuntu-24.04)",
+            "status": "completed",
+            "conclusion": "success",
+            "run_id": 41856238041,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Linux native build dependencies",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4
+              },
+              {
+                "name": "Install desktop toolchain",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Locked frontend and native checks",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6
+              },
+              {
+                "name": "Verify stable macOS QA identities and external fixture selection",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 7
+              },
+              {
+                "name": "Build normal native package",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8
+              },
+              {
+                "name": "Inspect macOS application package and run bundled engine",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 9
+              },
+              {
+                "name": "Inspect extracted Debian package and run bundled engine",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10
+              },
+              {
+                "name": "Install Windows package and run bundled engine",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 11
+              },
+              {
+                "name": "Preserve normal package identity before separate verification build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 12
+              },
+              {
+                "name": "Install actual Linux application for GUI interaction",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 13
+              },
+              {
+                "name": "Prepare external native GUI driver",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 14
+              },
+              {
+                "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 15
+              },
+              {
+                "name": "Pin external Windows GUI Python runtime",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 16
+              },
+              {
+                "name": "Prepare matching Windows WebView2 driver and native UI tools",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 17
+              },
+              {
+                "name": "Build separately labeled packaged verification application",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 18
+              },
+              {
+                "name": "Extract Linux verification package with separate identity",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 19
+              },
+              {
+                "name": "Interact with actual installed and packaged Chess Shogi Xiangqi Tori and Chu on Linux",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 20
+              },
+              {
+                "name": "Install separate Windows verification package and interact with actual Chess Shogi Xiangqi Tori and Chu",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 21
+              },
+              {
+                "name": "Upload native package and observations",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 22
+              },
+              {
+                "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 43
+              },
+              {
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 44
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 45
+              }
+            ]
+          },
+          {
+            "id": 126702338217,
+            "name": "Desktop (windows-2022)",
+            "status": "completed",
+            "conclusion": "success",
+            "run_id": 41856238041,
+            "logs_url": null,
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1
+              },
+              {
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2
+              },
+              {
+                "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3
+              },
+              {
+                "name": "Linux native build dependencies",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 4
+              },
+              {
+                "name": "Install desktop toolchain",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5
+              },
+              {
+                "name": "Locked frontend and native checks",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6
+              },
+              {
+                "name": "Verify stable macOS QA identities and external fixture selection",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 7
+              },
+              {
+                "name": "Build normal native package",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 8
+              },
+              {
+                "name": "Inspect macOS application package and run bundled engine",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 9
+              },
+              {
+                "name": "Inspect extracted Debian package and run bundled engine",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 10
+              },
+              {
+                "name": "Install Windows package and run bundled engine",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11
+              },
+              {
+                "name": "Preserve normal package identity before separate verification build",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 12
+              },
+              {
+                "name": "Install actual Linux application for GUI interaction",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 13
+              },
+              {
+                "name": "Prepare external native GUI driver",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 14
+              },
+              {
+                "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 15
+              },
+              {
+                "name": "Pin external Windows GUI Python runtime",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 16
+              },
+              {
+                "name": "Prepare matching Windows WebView2 driver and native UI tools",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 17
+              },
+              {
+                "name": "Build separately labeled packaged verification application",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 18
+              },
+              {
+                "name": "Extract Linux verification package with separate identity",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 19
+              },
+              {
+                "name": "Interact with actual installed and packaged Chess Shogi Xiangqi Tori and Chu on Linux",
+                "status": "completed",
+                "conclusion": "skipped",
+                "number": 20
+              },
+              {
+                "name": "Install separate Windows verification package and interact with actual Chess Shogi Xiangqi Tori and Chu",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 21
+              },
+              {
+                "name": "Upload native package and observations",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 22
+              },
+              {
+                "name": "Post Pin external Windows GUI Python runtime",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 42
+              },
+              {
+                "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 43
+              },
+              {
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 44
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 45
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "handoff_captured_at": "2026-11-04 16:25:23 UTC",
+    "desktop_retry_job": 126702335253
   },
   "pending_msh44": [
     "Normal product profile chooser and ordinary Load activation for bothprofiles.",
@@ -1904,8 +2576,506 @@
       "Generator peakRSS is Darwin child process ru_maxrss in bytes, not allocation attribution.",
       "Read-only per-origin query and snapshot generation run synchronously under the controller owner; timings bound these measured lock-held workloads, not every admitted history.",
       "Actualworker release timings are distinct from preliminary documentdecode+nativeGame metrics.",
-      "Local source was dirty over base6891508; final exact-source CI will establish the recorded tested revision. Unchanged measured Tenjiku production paths are reused after test/format/five-game serialization compatibility corrections."
-    ]
+      "Local source was dirty over base6891508; final exact-source CI will establish the recorded tested revision. Unchanged measured Tenjiku production paths are reused after test/format/five-game serialization compatibility corrections.",
+      "Generator snapshot/inspection byte sizes and serialization timings use pretty serdeJSON fixture output; these are not exact compactIPCresponse bandwidth or transport latency. React snapshot byte counts separately use compactJSON.stringify."
+    ],
+    "actual_controller_mutex": {
+      "source_revision": "3a290024df82d23f215165707c81de4928ad3a4a",
+      "command": "CARGO_TARGET_DIR=<repo>/target cargo +1.99.1 run --locked --offline --release --manifest-path docs/m4/tenjiku/evidence/controller-lock/Cargo.toml",
+      "result": "exit0;2808inspectionguardacquisitions+18snapshotguards+6realquerycontentionpairs; allacceptedtoken/context/dirtyunchanged",
+      "measurements": [
+        {
+          "build": "offline release; current public DesktopController; desktop-verification inputs",
+          "contention": "one competing real inspection; no synthetic sleep or timing assertion",
+          "excluded": [
+            "Tauri IPC and query JSON parsing",
+            "native WebView rendering",
+            "production deadlines and timing guarantees"
+          ],
+          "kind": "scope",
+          "lock": "actual std::sync::Mutex<DesktopController>, host-style shutdown/lifecycle checks",
+          "repetitions": 3,
+          "source_revision": "3a290024df82d23f215165707c81de4928ad3a4a",
+          "timer": "std::time::Instant nanoseconds; acquisition wait separate from acquired-to-drop duration"
+        },
+        {
+          "accepted_token_context_dirty_unchanged": true,
+          "contention_sample": {
+            "main_choices": 1,
+            "main_guard_held_ns": 194250,
+            "main_wait_ns": 196083,
+            "worker_busy_at_attempt": true,
+            "worker_choices": 1,
+            "worker_guard_held_ns_includes_ready_send": 195709
+          },
+          "inspection_call_with_lifecycle_checks": {
+            "max_ns": 209875,
+            "min_ns": 917,
+            "p50_ns": 8625,
+            "p95_ns": 33125,
+            "samples": 468,
+            "total_ns": 7268254
+          },
+          "inspection_guard_held": {
+            "max_ns": 209875,
+            "min_ns": 958,
+            "p50_ns": 8625,
+            "p95_ns": 33167,
+            "samples": 468,
+            "total_ns": 7278511
+          },
+          "inspection_serialization_outside_guard": {
+            "max_ns": 80875,
+            "min_ns": 500,
+            "p50_ns": 1000,
+            "p95_ns": 2584,
+            "samples": 468,
+            "total_ns": 597968
+          },
+          "inspection_wait": {
+            "max_ns": 42,
+            "min_ns": 0,
+            "p50_ns": 41,
+            "p95_ns": 42,
+            "samples": 468,
+            "total_ns": 10949
+          },
+          "kind": "controller_lock",
+          "origins_per_repetition": 156,
+          "pieces": 156,
+          "profile": "mshogi.tenjiku.adams1999-modern.v1",
+          "scenario": "standard",
+          "slowest_origin": "8m",
+          "slowest_origin_choices": 1,
+          "slowest_origin_pretty_bytes": 804,
+          "snapshot_guard_held": {
+            "max_ns": 158041,
+            "min_ns": 128958,
+            "p50_ns": 132125,
+            "p95_ns": 132125,
+            "samples": 3,
+            "total_ns": 419124
+          },
+          "snapshot_pretty_utf8_bytes": 191216,
+          "snapshot_serialization_outside_guard": {
+            "max_ns": 391167,
+            "min_ns": 253000,
+            "p50_ns": 255042,
+            "p95_ns": 255042,
+            "samples": 3,
+            "total_ns": 899209
+          },
+          "snapshot_wait": {
+            "max_ns": 250,
+            "min_ns": 0,
+            "p50_ns": 42,
+            "p95_ns": 42,
+            "samples": 3,
+            "total_ns": 292
+          },
+          "total_inspection_choices": 420,
+          "total_inspection_pretty_utf8_bytes": 362760
+        },
+        {
+          "accepted_token_context_dirty_unchanged": true,
+          "contention_sample": {
+            "main_choices": 594,
+            "main_guard_held_ns": 794792,
+            "main_wait_ns": 791750,
+            "worker_busy_at_attempt": true,
+            "worker_choices": 594,
+            "worker_guard_held_ns_includes_ready_send": 775083
+          },
+          "inspection_call_with_lifecycle_checks": {
+            "max_ns": 840000,
+            "min_ns": 917,
+            "p50_ns": 8541,
+            "p95_ns": 35833,
+            "samples": 468,
+            "total_ns": 9214549
+          },
+          "inspection_guard_held": {
+            "max_ns": 840209,
+            "min_ns": 959,
+            "p50_ns": 8542,
+            "p95_ns": 35875,
+            "samples": 468,
+            "total_ns": 9225924
+          },
+          "inspection_serialization_outside_guard": {
+            "max_ns": 295542,
+            "min_ns": 500,
+            "p50_ns": 1000,
+            "p95_ns": 3167,
+            "samples": 468,
+            "total_ns": 1360832
+          },
+          "inspection_wait": {
+            "max_ns": 125,
+            "min_ns": 0,
+            "p50_ns": 41,
+            "p95_ns": 42,
+            "samples": 468,
+            "total_ns": 11003
+          },
+          "kind": "controller_lock",
+          "origins_per_repetition": 156,
+          "pieces": 156,
+          "profile": "mshogi.tenjiku.adams1999-modern.v1",
+          "scenario": "dense-fire",
+          "slowest_origin": "8h",
+          "slowest_origin_choices": 594,
+          "slowest_origin_pretty_bytes": 255225,
+          "snapshot_guard_held": {
+            "max_ns": 254834,
+            "min_ns": 207958,
+            "p50_ns": 210458,
+            "p95_ns": 210458,
+            "samples": 3,
+            "total_ns": 673250
+          },
+          "snapshot_pretty_utf8_bytes": 450481,
+          "snapshot_serialization_outside_guard": {
+            "max_ns": 594709,
+            "min_ns": 518083,
+            "p50_ns": 519208,
+            "p95_ns": 519208,
+            "samples": 3,
+            "total_ns": 1632000
+          },
+          "snapshot_wait": {
+            "max_ns": 2833,
+            "min_ns": 42,
+            "p50_ns": 42,
+            "p95_ns": 42,
+            "samples": 3,
+            "total_ns": 2917
+          },
+          "total_inspection_choices": 2241,
+          "total_inspection_pretty_utf8_bytes": 1141680
+        },
+        {
+          "accepted_token_context_dirty_unchanged": true,
+          "contention_sample": {
+            "main_choices": 597,
+            "main_guard_held_ns": 744708,
+            "main_wait_ns": 731459,
+            "worker_busy_at_attempt": true,
+            "worker_choices": 597,
+            "worker_guard_held_ns_includes_ready_send": 734750
+          },
+          "inspection_call_with_lifecycle_checks": {
+            "max_ns": 822167,
+            "min_ns": 917,
+            "p50_ns": 8625,
+            "p95_ns": 36708,
+            "samples": 468,
+            "total_ns": 9428004
+          },
+          "inspection_guard_held": {
+            "max_ns": 822167,
+            "min_ns": 917,
+            "p50_ns": 8667,
+            "p95_ns": 36750,
+            "samples": 468,
+            "total_ns": 9439706
+          },
+          "inspection_serialization_outside_guard": {
+            "max_ns": 331417,
+            "min_ns": 500,
+            "p50_ns": 1000,
+            "p95_ns": 2375,
+            "samples": 468,
+            "total_ns": 1390123
+          },
+          "inspection_wait": {
+            "max_ns": 208,
+            "min_ns": 0,
+            "p50_ns": 41,
+            "p95_ns": 42,
+            "samples": 468,
+            "total_ns": 10832
+          },
+          "kind": "controller_lock",
+          "origins_per_repetition": 156,
+          "pieces": 156,
+          "profile": "mshogi.tenjiku.adams1999-modern.v1",
+          "scenario": "dense-area",
+          "slowest_origin": "8h",
+          "slowest_origin_choices": 597,
+          "slowest_origin_pretty_bytes": 256336,
+          "snapshot_guard_held": {
+            "max_ns": 236458,
+            "min_ns": 203917,
+            "p50_ns": 229209,
+            "p95_ns": 229209,
+            "samples": 3,
+            "total_ns": 669584
+          },
+          "snapshot_pretty_utf8_bytes": 447230,
+          "snapshot_serialization_outside_guard": {
+            "max_ns": 795000,
+            "min_ns": 549083,
+            "p50_ns": 560916,
+            "p95_ns": 560916,
+            "samples": 3,
+            "total_ns": 1904999
+          },
+          "snapshot_wait": {
+            "max_ns": 125,
+            "min_ns": 41,
+            "p50_ns": 41,
+            "p95_ns": 41,
+            "samples": 3,
+            "total_ns": 207
+          },
+          "total_inspection_choices": 2217,
+          "total_inspection_pretty_utf8_bytes": 1131891
+        },
+        {
+          "accepted_token_context_dirty_unchanged": true,
+          "contention_sample": {
+            "main_choices": 1,
+            "main_guard_held_ns": 191042,
+            "main_wait_ns": 201917,
+            "worker_busy_at_attempt": true,
+            "worker_choices": 1,
+            "worker_guard_held_ns_includes_ready_send": 218208
+          },
+          "inspection_call_with_lifecycle_checks": {
+            "max_ns": 183208,
+            "min_ns": 875,
+            "p50_ns": 8459,
+            "p95_ns": 31667,
+            "samples": 468,
+            "total_ns": 6969004
+          },
+          "inspection_guard_held": {
+            "max_ns": 183208,
+            "min_ns": 875,
+            "p50_ns": 8500,
+            "p95_ns": 31708,
+            "samples": 468,
+            "total_ns": 6980231
+          },
+          "inspection_serialization_outside_guard": {
+            "max_ns": 4875,
+            "min_ns": 500,
+            "p50_ns": 1000,
+            "p95_ns": 2792,
+            "samples": 468,
+            "total_ns": 481205
+          },
+          "inspection_wait": {
+            "max_ns": 42,
+            "min_ns": 0,
+            "p50_ns": 41,
+            "p95_ns": 42,
+            "samples": 468,
+            "total_ns": 10627
+          },
+          "kind": "controller_lock",
+          "origins_per_repetition": 156,
+          "pieces": 156,
+          "profile": "mshogi.tenjiku.muller-completed.v1",
+          "scenario": "standard",
+          "slowest_origin": "8m",
+          "slowest_origin_choices": 1,
+          "slowest_origin_pretty_bytes": 804,
+          "snapshot_guard_held": {
+            "max_ns": 181042,
+            "min_ns": 133084,
+            "p50_ns": 157833,
+            "p95_ns": 157833,
+            "samples": 3,
+            "total_ns": 471959
+          },
+          "snapshot_pretty_utf8_bytes": 192940,
+          "snapshot_serialization_outside_guard": {
+            "max_ns": 310417,
+            "min_ns": 282750,
+            "p50_ns": 288917,
+            "p95_ns": 288917,
+            "samples": 3,
+            "total_ns": 882084
+          },
+          "snapshot_wait": {
+            "max_ns": 42,
+            "min_ns": 0,
+            "p50_ns": 41,
+            "p95_ns": 41,
+            "samples": 3,
+            "total_ns": 83
+          },
+          "total_inspection_choices": 444,
+          "total_inspection_pretty_utf8_bytes": 372936
+        },
+        {
+          "accepted_token_context_dirty_unchanged": true,
+          "contention_sample": {
+            "main_choices": 594,
+            "main_guard_held_ns": 840792,
+            "main_wait_ns": 1033333,
+            "worker_busy_at_attempt": true,
+            "worker_choices": 594,
+            "worker_guard_held_ns_includes_ready_send": 1024750
+          },
+          "inspection_call_with_lifecycle_checks": {
+            "max_ns": 834083,
+            "min_ns": 917,
+            "p50_ns": 8833,
+            "p95_ns": 33792,
+            "samples": 468,
+            "total_ns": 9251472
+          },
+          "inspection_guard_held": {
+            "max_ns": 834291,
+            "min_ns": 959,
+            "p50_ns": 8833,
+            "p95_ns": 33792,
+            "samples": 468,
+            "total_ns": 9263627
+          },
+          "inspection_serialization_outside_guard": {
+            "max_ns": 312375,
+            "min_ns": 500,
+            "p50_ns": 1000,
+            "p95_ns": 3208,
+            "samples": 468,
+            "total_ns": 1387207
+          },
+          "inspection_wait": {
+            "max_ns": 292,
+            "min_ns": 0,
+            "p50_ns": 41,
+            "p95_ns": 42,
+            "samples": 468,
+            "total_ns": 11327
+          },
+          "kind": "controller_lock",
+          "origins_per_repetition": 156,
+          "pieces": 156,
+          "profile": "mshogi.tenjiku.muller-completed.v1",
+          "scenario": "dense-fire",
+          "slowest_origin": "8h",
+          "slowest_origin_choices": 594,
+          "slowest_origin_pretty_bytes": 255225,
+          "snapshot_guard_held": {
+            "max_ns": 269916,
+            "min_ns": 223625,
+            "p50_ns": 250792,
+            "p95_ns": 250792,
+            "samples": 3,
+            "total_ns": 744333
+          },
+          "snapshot_pretty_utf8_bytes": 452205,
+          "snapshot_serialization_outside_guard": {
+            "max_ns": 567125,
+            "min_ns": 512167,
+            "p50_ns": 565667,
+            "p95_ns": 565667,
+            "samples": 3,
+            "total_ns": 1644959
+          },
+          "snapshot_wait": {
+            "max_ns": 42,
+            "min_ns": 0,
+            "p50_ns": 0,
+            "p95_ns": 0,
+            "samples": 3,
+            "total_ns": 42
+          },
+          "total_inspection_choices": 2265,
+          "total_inspection_pretty_utf8_bytes": 1151856
+        },
+        {
+          "accepted_token_context_dirty_unchanged": true,
+          "contention_sample": {
+            "main_choices": 597,
+            "main_guard_held_ns": 729500,
+            "main_wait_ns": 730167,
+            "worker_busy_at_attempt": true,
+            "worker_choices": 597,
+            "worker_guard_held_ns_includes_ready_send": 734709
+          },
+          "inspection_call_with_lifecycle_checks": {
+            "max_ns": 950375,
+            "min_ns": 958,
+            "p50_ns": 9000,
+            "p95_ns": 43667,
+            "samples": 468,
+            "total_ns": 9896250
+          },
+          "inspection_guard_held": {
+            "max_ns": 950416,
+            "min_ns": 958,
+            "p50_ns": 9041,
+            "p95_ns": 43709,
+            "samples": 468,
+            "total_ns": 9908033
+          },
+          "inspection_serialization_outside_guard": {
+            "max_ns": 284208,
+            "min_ns": 500,
+            "p50_ns": 1000,
+            "p95_ns": 3292,
+            "samples": 468,
+            "total_ns": 1360748
+          },
+          "inspection_wait": {
+            "max_ns": 42,
+            "min_ns": 0,
+            "p50_ns": 41,
+            "p95_ns": 42,
+            "samples": 468,
+            "total_ns": 11369
+          },
+          "kind": "controller_lock",
+          "origins_per_repetition": 156,
+          "pieces": 156,
+          "profile": "mshogi.tenjiku.muller-completed.v1",
+          "scenario": "dense-area",
+          "slowest_origin": "8h",
+          "slowest_origin_choices": 597,
+          "slowest_origin_pretty_bytes": 256336,
+          "snapshot_guard_held": {
+            "max_ns": 283333,
+            "min_ns": 222375,
+            "p50_ns": 266708,
+            "p95_ns": 266708,
+            "samples": 3,
+            "total_ns": 772416
+          },
+          "snapshot_pretty_utf8_bytes": 448954,
+          "snapshot_serialization_outside_guard": {
+            "max_ns": 598375,
+            "min_ns": 550792,
+            "p50_ns": 551333,
+            "p95_ns": 551333,
+            "samples": 3,
+            "total_ns": 1700500
+          },
+          "snapshot_wait": {
+            "max_ns": 125,
+            "min_ns": 42,
+            "p50_ns": 42,
+            "p95_ns": 42,
+            "samples": 3,
+            "total_ns": 209
+          },
+          "total_inspection_choices": 2241,
+          "total_inspection_pretty_utf8_bytes": 1142067
+        }
+      ],
+      "artifacts_sha256": {
+        "evidence/controller-lock/Cargo.toml": "e04162c36211a5c64567256ffd7bc1d5fc1f8cb13b1519f2f6db1b6be0f19f1f",
+        "evidence/controller-lock/Cargo.lock": "f33a8bade4f6325c52d3962c9b3ea8f403896d1dffe05a5b9ab64f6f2c4b71d4",
+        "evidence/controller-lock/README.md": "4f513416433a808de8738969bdd74b9bc273dab56e8ac8c654a6c21d1d8f3003",
+        "evidence/controller-lock/main.rs": "3a443182033dcfaab86bf0d4198695b56590fdcc8ef7300a6fb9b2f501178c0b",
+        "evidence/controller-lock/stdout.jsonl": "e8ae6b8cb29d2fb3964500a628b10f0ca5b83aad6858fbcbbfe50373440a0bcc"
+      },
+      "scope": "Actualstd::sync::Mutex<DesktopController> guardheld/acquisitionwait measuredseparately from serializationafterguarddrop; host-styleshutdown/lifecyclechecks; noTauriIPC/queryJSONparse/WebView/deadlineoruniversalcontentionguarantee."
+    }
   },
   "development_failures": [
     {
@@ -2219,5 +3389,61 @@
     "desktop/src/interaction/useNativeChoiceController.ts": "55172f7f9d3c3b4ead9ba7a303c2eb227bd2ff58bcd58e9e3cc9e513da9c3f61",
     "desktop/src/interaction/useNativeChoiceController.test.tsx": "1bcc265360406e91bf9ef75a3f61b5c0ad033f39abc809078278cf743525ca72",
     "desktop/src-tauri/src/main.rs": "e7bfcfdcc467e594234b2ae11c01a15229e8beef299c1a6ff2e682b49bf574b9"
+  },
+  "implementation_revision": "b459250c59f141c819a2450b46046355fbd31384",
+  "integration": {
+    "branch": "codex/rewrite",
+    "source_tree_equal_to_implementation": true,
+    "workflow_update": "99447c6f18eb8467ffc5804a5d729ae4fe687ba1",
+    "tested_merge": "3a290024df82d23f215165707c81de4928ad3a4a",
+    "authentication": "CLIinitialpushrejectedmissingworkflowOAuthscope. AlreadyconnectedGitHubappupdatedonlyreviewedworkflow[skipci], thennormalnon-destructivemergeandCLIpush. Noauth/repositorypermissionchange, forcepushorhistoryrewrite."
+  },
+  "frozen_inputs_sha256": {
+    "fixtures.json": "2005e098b507f73248b8f9bd442f7ffe0c2c0c5ae205428d9a3d2371a7c08e82",
+    "profile.json": "bf4c1d492f344da3ac5cc5effbc27c096dabc8fc1599db10ee7239d4bfe7d015"
+  },
+  "acceptance": {
+    "AC1": {
+      "status": "supported",
+      "evidence": "Explicit typed profile/edition/schema/native dispatch; strictcontext/record/error tests; exact51legacyDTO bytecompatibility; newprofilefreshidentity andcancel/stale tests; realUnsupportedMode."
+    },
+    "AC2": {
+      "status": "supported",
+      "evidence": "16x16 bothorientations, actualcompletechoices/routes/igui/effectphases/nativehistory/royal/repetition payloads;50frontendcases plusactualnativeQAcontractsmoke."
+    },
+    "AC3": {
+      "status": "supported",
+      "evidence": "Immutable currentenvelopecandidate; typedwork/deadline separation; actual8actorending/Close reserve; fullworker/Open/Save/install probe bothprofiles; previousstate/dirty/file preservation."
+    },
+    "AC4": {
+      "status": "incomplete_required_cross_platform_regression_closure",
+      "evidence": "53actualnative/controllerDTOs,12consumerrows bothprofiles,495frontendregressions,coherentworkspace+focusedfixes,independentsourcereview; requiredexactsource6platformjobs pending."
+    }
+  },
+  "architecture_owners": {
+    "native_record_dispatch": "crates/mshogi-core/src/native.rs::CanonicalRecord",
+    "execution": "mshogi-engine shared ExecutionContext/ExecutionObservation and existing supervised bridge",
+    "desktop_envelope": "document::DocumentEnvelope(mshogi.desktop.document.v1)",
+    "runtime": "DesktopController/ActiveDocument with pureValidatedTenjikuDocument",
+    "install": "persistence::install_document",
+    "workers": "existing FileWorker and native admission transaction owner",
+    "frontend": "ProductApp/useGameSession/ApplicationView",
+    "choices": "existing useNativeChoiceController"
+  },
+  "completion_approved": false,
+  "handoff": {
+    "task_status": "In Review",
+    "completion": "not approved",
+    "source_revision": "3a290024df82d23f215165707c81de4928ad3a4a",
+    "next_actions": [
+      "LeavequeuedthirdDesktopmacOS15retry126702335253running.",
+      "AfterRustworkflowfinalization,requestthirdsame-sourceunsuccessfuljobrerunformissingmacOS15Rustreceipt (lastcancelled126684767741).",
+      "RequiredmacOS15RustandDesktopmustactuallyacquirerunnersandpassallrequiredsteps;localmacOS27evidenceisnotsubstitute.",
+      "Reconcileall6terminaljobreceiptsatsame3a290source, updateledger/Backlogandcomplete79only;stopbefore44."
+    ],
+    "msh44": "To Do, unassigned/unstarted; original8AC/DoDunchanged",
+    "source_frozen": true,
+    "code_changes_after_tested_revision": false,
+    "queued_desktop_macOS_job": 126702335253
   }
 }

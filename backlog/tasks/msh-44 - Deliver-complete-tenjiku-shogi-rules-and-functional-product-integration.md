@@ -4,7 +4,7 @@ title: Deliver complete tenjiku shogi rules and functional product integration
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-01T13:44:00Z'
+updated_date: '2026-11-04T09:19:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -19,6 +19,8 @@ documentation:
   - docs/m4/delivery-plan.md
   - docs/m4/implementation-map.md
   - docs/testing/conformance-policy.md
+  - docs/m4/tenjiku/README.md
+  - docs/m4/tenjiku/handoff.md
 ordinal: 44000
 ---
 
@@ -56,4 +58,6 @@ Open design questions (D-07/D-08): Resolve the authoritative historical conventi
 MSH62 planning refinement2026-10-26: original identity,status,AC and DoD remain intact. This complete-delivery record now depends explicitly on its required bounded component/shared work; docs/m4/delivery-plan.md traces each original criterion and single ownership. No game implementation or delivery completion occurred. Earlier M3-context wording remains historical; current authorization is planning-only.
 
 Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
+
+MSH83 ratifies two owner-selected whole Tenjiku profiles rather than one universal convention. Complete delivery retains all original8AC and DoD: actual native/shared handoff87/79, functional search/supervision and complete console/notation, native-sourced traditional-kanji16x16 board, two named New Game profile choices, actual playable/save/history/analysis/recovery/platform evidence. Profile is immutable within game; Load preserves identity and fresh New may select other profile. No normal unsupported selector activation, game implementation, M5strength claim or scope closure occurs in83. See currentprofile/corpus/decisions/handoff; no new planning hierarchy/dependency.
 <!-- SECTION:NOTES:END -->

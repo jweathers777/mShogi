@@ -36,3 +36,7 @@ Environment:macOS host; bundled runtime26.1103.10131, system Python3 for JSON/ha
 - Scope review: only new historical-access report/directory; no MSH-83 record/profile/fixtures, dependencies, other tasks or production files.
 
 Required CI jobs:**none**. Native game tests, CI and GUI campaigns:**not run, not required** for this investigation. No emails/forms/orders/account registrations/payments. The source tree and originals are rechecked at integration; actual delivery commit is available in Git history for these paths.
+
+## Recorded integration
+
+Reviewed research integrated as `ee9aaa8172bf26f0f2b7d08fc62040a5dbbe911c` on `codex/rewrite`, preserving the other worker's preceding modern-profile commit `1136886`. `git diff be93699 ee9aaa8 -- docs/m4/research/tenjiku-historical-access.md docs/m4/research/tenjiku-historical-access` is empty: integrated research bytes match the reviewed isolated source. At `ee9aaa8`, the validation script run against the primary checkout passed7original-file hashes/sizes,9relative links and5fee illustrations; committed diff whitespace check passed. Working tree clean, originals ignored and retained. This final integration note changes no research finding or reviewed artifact hash.

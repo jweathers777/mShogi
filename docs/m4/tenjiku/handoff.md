@@ -152,3 +152,27 @@ Tenjiku gameplay on all three platforms remains44's obligation. Twelve consumer
 rows are within79; the five product rows remain pending44. Native87's621
 assertions per profile remain historical rule evidence, not new shared tests.
 No44/M5 work is started by this handoff.
+
+## Final MSH-79 acceptance
+
+MSH-79 is Done at tested source `3a290024df82d23f215165707c81de4928ad3a4a`.
+All six required platform executions passed on that exact source:
+[Rust CI](https://github.com/jweathers777/mShogi/actions/runs/41856238536)
+and [Desktop CI](https://github.com/jweathers777/mShogi/actions/runs/41856238041)
+both concluded successfully. The missing macOS jobs actually ran on macOS15.8.2
+arm64: Rust job126831432252 (attempt3) and Desktop job126831460036 (attempt4).
+The four previously successful Linux/Windows executions were reused unchanged.
+Five earlier macOS runner-acquisition cancellations and the original MSH-112
+Linux failure remain historical evidence; the Linux retry passed without an
+assertion or source change. Local macOS27 observations remain supplemental.
+
+Fresh independent final evidence reconciliation approved the six receipts,
+source identities, required steps and retained history. Source, workflows,
+accepted criteria, profiles, persistence limits and architecture were unchanged
+during this CI-only resumption. The single structured record carries evidence
+revision `MSH79-CI-FINAL-2026-11-04` and the exact execution references.
+
+All six direct prerequisites of MSH-44 are now Done. MSH-44 is dependency-ready
+and remains To Do, unassigned and unstarted. Its original eight criteria and five
+product consumer obligations above remain intact. Stop after MSH-79 acceptance;
+this closure starts no engine/search, console/notation, artwork, M5 or other work.

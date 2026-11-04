@@ -1,10 +1,10 @@
 ---
 id: MSH-87
 title: Deliver the authoritative tenjiku shogi native handoff for shared consumers
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-04T09:19:00Z'
+updated_date: '2026-11-04T09:25:00Z'
 labels:
   - m4
   - owner-msh-44
@@ -41,7 +41,7 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #1 After profile refinement,a native game-owned kernel exposes authoritative state,complete legal actions/derived effects,exact reversal,history/adjudication and canonical record contracts needed by its named shared consumer.
 - [ ] #2 Independent rule/transition/history fixtures establish the handoff,including relevant board topology,hands/promotions,compound routes,royal identity and non-chess terminal behavior; no unverified rule convention becomes an interface default.
 - [ ] #3 The shared extension consumes stable documented native payloads/capabilities without frontend rules or duplicate ownership; further game-specific engine/console/desktop work remains visible in its complete delivery record.
-- [ ] #4 Before Ready,the game owner splits this native scope further where useful and records all child dependencies/verification. No implementation plan is prescribed by this planning task and no dependency on its own aggregate delivery is introduced.
+- [x] #4 Before Ready,the game owner splits this native scope further where useful and records all child dependencies/verification. No implementation plan is prescribed by this planning task and no dependency on its own aggregate delivery is introduced.
 <!-- AC:END -->
 
 ## Definition of Done
@@ -58,4 +58,6 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
 
 MSH83 current handoff4November2026: implement the coherent native kernel directly after ratified83, as one bounded assignment with internal state/transitions, LegalAll/effects, history/records and conformance/acceptance checkpoints. No additional child hierarchy is useful under current owner direction; originalAC4 where-useful refinement is satisfied by this direct bounded scope, without changing its text. Two whole immutable profiles: mshogi.tenjiku.adams1999-modern.v1 and mshogi.tenjiku.muller-completed.v1. Preserve actual FD/FE/HT/general differences, explicit shared A/S completions, original/promoted identities and per-piece refusal rights.350corpus rows:204native-boundary/129annotations/17consumer; all native observations pending87, not loader passes. Add thin native corpus adapters reusing shared comparators, independently exercise full action/effect/royal/history/undo/replay/negative/property cases. Native resource accounting must be measured;107 replay-retention/cancel/inspection risks are measurement obligations, not automatic refactor gates or inherited Chu constants.79 consumes actual handoff;44retains engine/console/notation/kanji/playable delivery. No implementation plan or activation is added by83.
+
+Ready refinement completed by83: independent handoff/contract review confirms one bounded direct native task is appropriate, no children useful now under owner instruction; originalAC4planning obligation supported by docs/m4/tenjiku/handoff.md. RemainingAC1–3/native assertions/DoD staypending; unassigned, no implementation plan or implementation started. Dependency83Done, no dependency changes.
 <!-- SECTION:NOTES:END -->

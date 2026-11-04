@@ -1,11 +1,11 @@
 ---
 id: MSH-83
 title: Acquire and ratify sourced tenjiku shogi profile and fixtures
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-04T09:19:00Z'
+updated_date: '2026-11-04T09:25:00Z'
 labels:
   - m4
   - owner-msh-44
@@ -38,18 +38,18 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A bounded source acquisition/reconciliation record resolves historical edition/facsimiles versustranslations/revisions,fire-demon effects and ordering,lion-hawk/generals,promotion/multi-stage actions,royals/repetition/endings,with primary editions,translation limits and adopted rules versus proposed/software conventions explicit.
-- [ ] #2 Material owner choices have concrete sourced options/recommendation and recorded decisions before affected behavior; unresolved required rules remain blocking named obligations,not silently omitted.
-- [ ] #3 A named/versioned complete profile and initial independent fixture expectations cover state,complete actions,history/conclusions and notation/consumer constraints without importing chess semantics.
-- [ ] #4 The native consumer handoff and necessary shared extension scope are refined into actionable acceptance/dependencies without requiring another game final delivery or closing this game.
+- [x] #1 A bounded source acquisition/reconciliation record resolves historical edition/facsimiles versustranslations/revisions,fire-demon effects and ordering,lion-hawk/generals,promotion/multi-stage actions,royals/repetition/endings,with primary editions,translation limits and adopted rules versus proposed/software conventions explicit.
+- [x] #2 Material owner choices have concrete sourced options/recommendation and recorded decisions before affected behavior; unresolved required rules remain blocking named obligations,not silently omitted.
+- [x] #3 A named/versioned complete profile and initial independent fixture expectations cover state,complete actions,history/conclusions and notation/consumer constraints without importing chess semantics.
+- [x] #4 The native consumer handoff and necessary shared extension scope are refined into actionable acceptance/dependencies without requiring another game final delivery or closing this game.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -77,4 +77,12 @@ Owner2026-11-01 testing-policy supersession: rules-profile-derived independently
 Owner2026-11-04 request supersedes historical-first research plan: select coherent sourced complete modern-playable Tenjiku profile; historical witnesses remain evidence/qualifications, not automatic blockers. Startup clean primary codex/rewrite8676cbb774c5837b839772a731868a720aaab43f; existing three unrelated worktrees preserved, no active workers found; @codex sole integrator in primary checkout. Pinned Backlog1.55.1 verified for writes, global1.55.0 read-only. Original four AC/DoD preserved. No87/79/44 implementation, external-engine dependency, research campaign or new planning hierarchy authorized.
 
 Owner answered material baseline choice: support selecting options1AdamsModern or2Muller. Two immutable whole profile identities selected; explicit Adams general-game supplements for Muller plus labelled software completions, no feature toggles/universal rules framework. Source main-book figures differ materially on Free Eagle/Heavenly Tetrarch as well as dying-Demon burn/general target handling. Current source/data/contract reviews resolved wrongB/BGn promotion directions, bare-royal winning-reply priority, concrete versus documentary fixture accounting, repetition candidate versus committed state, two-direction profile mixes and schema gaps.350rows204native-boundary/129annotations/17consumer, native0executed0passed;25validator tests pass. Three independent read-only source/rules/data/contract assessments approve; final ratified metadata/hash/evidence check pending. Direct87/79/44 ownership preserved; no native/product implementation.
+
+Reviewed two-profile package integrated/pushed11368860a426d0675e133c7039b462d34301585e oncodex/rewrite. Exact committed data/hash validation and25 admission tests pass; no native/product source change or required newCI/GUI campaign. Final source/rules/fixture and data/contract reviews APPROVE; refreshed ratified metadata hashes/per-profile digests verified.350rows204native-boundary129annotations17consumer,44rotations,1018top-level expected fields/profile,0native executed/passed. OriginalfourAC/fourDoD supported by profile/source/decisions/corpus/verification/handoff; no material owner decision remains. MSH87 now prepared as direct native assignment (no child hierarchy),79/44remainfuture. An unrelated untracked docs/m4/research/tenjiku-historical-access directory appeared during session; preserved untouched/uncommitted, not used as new research. No disposable worktree created. Terminal bookkeeping commit follows; STOP after83.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Ratified two owner-selected immutable modern Tenjiku profiles: mshogi.tenjiku.adams1999-modern.v1 and mshogi.tenjiku.muller-completed.v1. Published full156piece setup/36originals/44faces/30promotion pairs, complete actions and ordered burn/capture/promotion effects, native royals/history/endings/replay contracts and explicit source differences/Adams supplements/software conventions. Preserved historical evidence and qualified unavailable witnesses without acquisition gates.350 independently reviewed rows cover204native-boundary cases,129documentary annotations and17consumer obligations;44rotations and1018expected top-level fields/profile are not executed assertion counts. Native remains0executed0passed pending87. Strict data/hash/profile checks and25negative admission tests pass at committed1136886. Independent source/rules/fixture and schema/contract reviewers approved after resolving concrete movement, bare-win priority, scope/input and profile-mixing findings. Updated87/79/44handoffs without changing original criteria/dependencies or adding hierarchy; designD21 records both choices. No native/engine/console/desktop implementation, resource-policy change, mandatory external engine, new historical campaign, broadCI/GUI or M5work. Integrated/pushed11368860a426d0675e133c7039b462d34301585e oncodex/rewrite; completion bookkeeping follows. Next dependency-ready native assignmentMSH87 only; do not start it. Unrelated untracked historical-access files preserved.
+<!-- SECTION:FINAL_SUMMARY:END -->

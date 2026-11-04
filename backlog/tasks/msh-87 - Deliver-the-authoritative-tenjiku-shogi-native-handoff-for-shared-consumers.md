@@ -1,10 +1,11 @@
 ---
 id: MSH-87
 title: Deliver the authoritative tenjiku shogi native handoff for shared consumers
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-04T09:25:00Z'
+updated_date: '2026-11-04T10:36:00Z'
 labels:
   - m4
   - owner-msh-44
@@ -52,6 +53,15 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+A. Implement explicit two-profile16x16 state,44faces/30promotions/156setup, complete local actions/effects/inspection and instance-bound reversal; focused independent local-rules review.
+B. Implement authoritative Game history/promotion rights/repetition/royal and bare-response endings, compact reversal tokens, strict cancellable schema1replay and measured native admission with actual Stop/Resign reserve.
+C. Add thin Tenjiku conformance corpus boundary and real production adapters for all applicable350rows, exact geometry/action/effect sets, concrete histories, native properties/adversarial cases and external-core-consumer/perft checks. Keep native versus annotations versus future-consumer accounting explicit.
+D. Review source/adapters/resource measurements independently, check root and standalone-host consumer boundaries, run coherent relevant regressions/format/lint and one exact-source three-platform nativeCI campaign. Integrate/push, finalize only supportedAC1–3/DoD, preserveAC4 and update79/44handoffs. No shared/product activation or new task hierarchy; stop after87.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -60,4 +70,8 @@ Owner2026-11-01 testing-policy supersession: rules-profile-derived independently
 MSH83 current handoff4November2026: implement the coherent native kernel directly after ratified83, as one bounded assignment with internal state/transitions, LegalAll/effects, history/records and conformance/acceptance checkpoints. No additional child hierarchy is useful under current owner direction; originalAC4 where-useful refinement is satisfied by this direct bounded scope, without changing its text. Two whole immutable profiles: mshogi.tenjiku.adams1999-modern.v1 and mshogi.tenjiku.muller-completed.v1. Preserve actual FD/FE/HT/general differences, explicit shared A/S completions, original/promoted identities and per-piece refusal rights.350corpus rows:204native-boundary/129annotations/17consumer; all native observations pending87, not loader passes. Add thin native corpus adapters reusing shared comparators, independently exercise full action/effect/royal/history/undo/replay/negative/property cases. Native resource accounting must be measured;107 replay-retention/cancel/inspection risks are measurement obligations, not automatic refactor gates or inherited Chu constants.79 consumes actual handoff;44retains engine/console/notation/kanji/playable delivery. No implementation plan or activation is added by83.
 
 Ready refinement completed by83: independent handoff/contract review confirms one bounded direct native task is appropriate, no children useful now under owner instruction; originalAC4planning obligation supported by docs/m4/tenjiku/handoff.md. RemainingAC1–3/native assertions/DoD staypending; unassigned, no implementation plan or implementation started. Dependency83Done, no dependency changes.
+
+Startup4November2026: clean primary codex/rewritea7f9205 after unrelated historical-access documentation integration; origin configuredgithub:jweathers777/mShogi.git, existingfourotherworktrees preserved. No InProgress/InReview owner; @codex sole integrator. PinnedBacklog1.55.1 verified, global1.55.0 not used for writes. Both ratified profile/corpus data remain fixed. Isolated native local-state/rules and record/diagnostic file ownership may be delegated; root owns Game/integration/conformance; fresh review remains read-only and independent. No87child hierarchy,79/44implementation or historical research campaign.
+
+Native checkpointsA–Dsource complete: public two-profile Tenjiku state/local actions/effects/Game/history/strict schema1/reversal/perft; frozen204rows/621native expected fields perprofile allpass,129annotations/17consumer rows explicitlyexcluded. Current core+conformance regressions373pass/0fail/2existingignored, native41 and externalconsumer2 included; fmt/workspacealltargetsClippy/standalonehostcheck pass. Fresh independent source/adapters/capacity/consumer review passes with material findingsresolved. Native1MiB/1024events/512Munits plus actual eight-actor-combination Stop→Resign→Stop and runtime ending reserve. Release128plies bothprofiles and1021event controls pass; Adams1021boardplies557612B/299287458units/3.264s replay, fullprocess40.3MBRSS. See docs/m4/tenjiku/native-v1.md and native-verification.json; exact-source threeplatform RustCI and final reconciliation stillpending, AC1–3/DoD unchecked. No79/44 implementation or normal activation.
 <!-- SECTION:NOTES:END -->

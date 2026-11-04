@@ -32,3 +32,6 @@ pub mod tori;
 
 /// Native modern JCSA Chu Shogi rules and complete-action admission.
 pub mod chu;
+
+/// Complete native Tenjiku state, actions, ordered effects and profile-qualified histories.
+pub mod tenjiku;

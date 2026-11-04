@@ -1,0 +1,998 @@
+{
+  "task": "MSH-87",
+  "schema_version": 1,
+  "recorded_at": "2026-11-04T10:36:06.149450+00:00",
+  "source": {
+    "base_revision": "a7f920586d9527b87622101966098f8cbb89dbc5",
+    "revision": null,
+    "files_sha256": {
+      "crates/mshogi-conformance/src/lib.rs": "94a09a2e924b2b37a3ede8b24d56ad8b4e4df208390af6a1acc14c40519cc1f0",
+      "crates/mshogi-conformance/src/tenjiku.rs": "282c9bd2863fc6a1ab9e883d5955c81a4e84c7c0aaa5892f63eec335e9a5349f",
+      "crates/mshogi-core/examples/tenjiku_work.rs": "ca13bcfaa7f4ebe2fa44ab75e6b71fa799e2fb067c3226dcd2578203120bbe7d",
+      "crates/mshogi-core/src/lib.rs": "6cff5351f4eb9d4489bc4162940550c4181c0f2bf8728595ba5061fe8e4eb51b",
+      "crates/mshogi-core/src/tenjiku/conformance.rs": "cf63cf5205560e4cd22fe04efe16d770c4ee454c23867186a5db4c5e14c94123",
+      "crates/mshogi-core/src/tenjiku/conformance_cases.rs": "9d3e47195515c04d895a4ae5eeabc089660ec1fe9ca188642b04a65d9bb8810b",
+      "crates/mshogi-core/src/tenjiku/game.rs": "c22785801fd09edce1806338c3f3735cda48f5aecdf90d8f3ba8ed917f7a169f",
+      "crates/mshogi-core/src/tenjiku/game_tests.rs": "7458bb4ac2043342fe2d6fb482e9f098dcf76e1cb4b21ffaeec77d5e5b8ab7b8",
+      "crates/mshogi-core/src/tenjiku/legal.rs": "59fa4f19862f3b75112e9644da81dfe416d0e9711b4b1d1ea5f2ea9fd3137ba1",
+      "crates/mshogi-core/src/tenjiku/local_tests.rs": "cffdbd5575cc3d3a4c1ba814292f3978efdaa37f431965f763733ab63e5253dc",
+      "crates/mshogi-core/src/tenjiku/mod.rs": "61e8163a0b833f842e62118f54645d8cf2e5153828c91ae528f6bb9532b83485",
+      "crates/mshogi-core/src/tenjiku/perft.rs": "581f5785badce26ea7bb9a3fa47b47b974364a349e119bdd98148b4183e5444b",
+      "crates/mshogi-core/src/tenjiku/perft_tests.rs": "3244f9e8c9c8e382c1a56137f32b493a8ffe3591bbc7b3172ebb5a8c950dd695",
+      "crates/mshogi-core/src/tenjiku/position.rs": "3dd041837676f50a7fc930c590d5e9a71f03b62a156f560f306f7118c341d399",
+      "crates/mshogi-core/src/tenjiku/record.rs": "127db6688bfe43665760102d9b37ccc5f80d23e44de6a1134596a381134f17f9",
+      "crates/mshogi-core/src/tenjiku/record_tests.rs": "87f5f57208568fd85daf8c3a1a406bc042fa84f9e762593377c717c0900db0a0",
+      "crates/mshogi-core/tests/tenjiku_consumer.rs": "4e9d438cd6ae24372bb89484cd24d09e77d5b598e8bff06010b52b602eaaf62b"
+    }
+  },
+  "environment": {
+    "os": "macOS27.0.1 build26A434",
+    "architecture": "aarch64-apple-darwin",
+    "rustc": "1.99.1 (58cf8f9c3 2026-10-13)",
+    "mode": "local debug tests/lint; release measurements"
+  },
+  "frozen_sources": {
+    "fixtures_sha256": "2005e098b507f73248b8f9bd442f7ffe0c2c0c5ae205428d9a3d2371a7c08e82",
+    "profile_sha256": "bf4c1d492f344da3ac5cc5effbc27c096dabc8fc1599db10ee7239d4bfe7d015",
+    "modified_expectations": false
+  },
+  "native_conformance": {
+    "per_profile": [
+      {
+        "profile": "mshogi.tenjiku.adams1999-modern.v1",
+        "unique_native_rows": 204,
+        "executed_expected_fields": 621,
+        "passed": 621,
+        "failed": 0
+      },
+      {
+        "profile": "mshogi.tenjiku.muller-completed.v1",
+        "unique_native_rows": 204,
+        "executed_expected_fields": 621,
+        "passed": 621,
+        "failed": 0
+      }
+    ],
+    "documentary_or_property_annotations": 129,
+    "future_consumer_rows": 17,
+    "data_admission_tests_not_counted": 25,
+    "focused_native_tests": 41,
+    "external_consumer_tests": 2
+  },
+  "checks": [
+    {
+      "command": "cargo test --locked --offline -p mshogi-core --lib tenjiku:: -- --nocapture",
+      "result": "passed",
+      "log": "/private/tmp/msh87-native-checkpoint.log",
+      "tests": 41
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-core -p mshogi-conformance",
+      "result": "passed",
+      "log": "/private/tmp/msh87-regressions.log",
+      "passed": 373,
+      "failed": 0,
+      "ignored": 2,
+      "note": "Existing ignored diagnostics remain ignored; native41 and consumer2 included. Final CI repeats the exact committed source, including mechanical test-only lint cleanup after the local run."
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "result": "passed",
+      "log": null
+    },
+    {
+      "command": "cargo clippy --locked --offline --workspace --all-targets -- -D warnings",
+      "result": "passed",
+      "log": "/private/tmp/msh87-clippy-final.log"
+    },
+    {
+      "command": "cargo check --locked --offline --manifest-path desktop/src-tauri/Cargo.toml",
+      "result": "passed",
+      "log": "/private/tmp/msh87-host-check.log",
+      "note": "Existing vendor warnings observed; host is separate Cargo workspace."
+    },
+    {
+      "command": "cargo build --locked --offline -p mshogi-core --release --example tenjiku_work",
+      "result": "passed",
+      "log": "/private/tmp/msh87-release-build.log"
+    },
+    {
+      "command": "python3 docs/m4/tenjiku/validate.py",
+      "result": "passed",
+      "log": "/private/tmp/msh87-frozen-validation.log"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed",
+      "log": null
+    }
+  ],
+  "development_corrections": {
+    "failed_checks": [
+      "initial adapter projection omitted promotion facts",
+      "initial divide comparison incorrectly treated outer mapping order as semantic",
+      "initial workspace Clippy found test type complexity and collapsible-if"
+    ],
+    "resolution": "Projection and comparator corrected without changing frozen expectations; test-only lint cleanup. Later current checks pass. Independent review corrections also preserve strict root/counter/error typing and ending authority through undo."
+  },
+  "limits": {
+    "native_encoded_bytes": 1048576,
+    "events_and_commands": 1024,
+    "deterministic_units": 512000000,
+    "perft_depth": 3,
+    "perft_visits": 100000,
+    "ending_reserve": "Actual widest Stop\u2192Resign\u2192Stop over all eight actor combinations; bytes/events/work/runtime counter headroom. Declines with existing stopped/concluded state.",
+    "deterministic_unit_definition": "Native rules, repetition inspected cells, canonical bytes per prefix. Excludes some transient capacity-validation CPU/allocation.",
+    "unmeasured_edges": [
+      "Empirical worst-case byte/work-edge latency",
+      "All possible board/history workloads",
+      "Whole application document, branches, observation retention and worker/frontend latency"
+    ]
+  },
+  "measurements": [
+    {
+      "name": "adams128",
+      "command": "/usr/bin/time -l target/release/examples/tenjiku_work adams 128 play",
+      "exit_code": 0,
+      "result": {
+        "accepted_board_plies": 128,
+        "accepted_events": 128,
+        "actual_closing_path": {
+          "encoded_bytes": 90626,
+          "events": 131,
+          "replayed_exactly": true,
+          "stop_then_resign_then_stop": true
+        },
+        "build_us": 378960,
+        "capacity": {
+          "bytes": 89965,
+          "events": 128,
+          "limits": {
+            "bytes": 1048576,
+            "events": 1024,
+            "work_units": 512000000
+          },
+          "reserved_bytes": 677,
+          "reserved_events": 3,
+          "reserved_work_units": 271217,
+          "work_units": 7620723
+        },
+        "cooperative_cancellation": {
+          "admission_polls": 2,
+          "admission_us": 96,
+          "atomic": true,
+          "inspection_polls": 3,
+          "inspection_us": 1,
+          "no_external_watchdog_or_product_latency_claim": true,
+          "replay_polls": 8,
+          "replay_us": 825
+        },
+        "edition": "ADAMS1999-MODERN+MSH83-2026-11-04",
+        "explicit_undo": null,
+        "generator_attempts": 825,
+        "isolated_native_workloads": {
+          "active_burn": {
+            "captured_or_burned": 7,
+            "effect_bytes": 986,
+            "resolution_us": 2,
+            "serialization_us": 6,
+            "work_units": 279
+          },
+          "empty_center_generation": [
+            {
+              "action_bytes": 46072,
+              "actions": 622,
+              "generation_us": 205,
+              "original": "FiD",
+              "serialization_us": 57,
+              "work_units": 174380
+            },
+            {
+              "action_bytes": 45246,
+              "actions": 609,
+              "generation_us": 182,
+              "original": "VGn",
+              "serialization_us": 55,
+              "work_units": 165805
+            },
+            {
+              "action_bytes": 5957,
+              "actions": 88,
+              "generation_us": 26,
+              "original": "Ln",
+              "serialization_us": 7,
+              "work_units": 23818
+            },
+            {
+              "action_bytes": 7302,
+              "actions": 109,
+              "generation_us": 34,
+              "original": "LHk",
+              "serialization_us": 8,
+              "work_units": 29666
+            },
+            {
+              "action_bytes": 3758,
+              "actions": 59,
+              "generation_us": 21,
+              "original": "FEg",
+              "serialization_us": 5,
+              "work_units": 16693
+            }
+          ]
+        },
+        "local_choices": {
+          "count": 212,
+          "history_filtered": false,
+          "query_us": 822,
+          "work_units": 1209577
+        },
+        "mode": "play",
+        "ordinary_replay": {
+          "exact_semantics_and_fresh_authority": true,
+          "retention_policy": "ordinary replay requests no private undo handles; source-defined, not an RSS measurement",
+          "returned_undo_handles": 0,
+          "us": 275084
+        },
+        "per_origin_inspection": {
+          "action_serialization_us": 31,
+          "origins": 156,
+          "slowest_three": [
+            {
+              "action_json_bytes": 8297,
+              "choices": 112,
+              "inspection_us": 207,
+              "origin": [
+                9,
+                4
+              ],
+              "serialization_us": 13,
+              "work_units": 341965
+            },
+            {
+              "action_json_bytes": 4687,
+              "choices": 61,
+              "inspection_us": 195,
+              "origin": [
+                8,
+                13
+              ],
+              "serialization_us": 5,
+              "work_units": 325564
+            },
+            {
+              "action_json_bytes": 2,
+              "choices": 0,
+              "inspection_us": 158,
+              "origin": [
+                7,
+                14
+              ],
+              "serialization_us": 0,
+              "work_units": 291751
+            }
+          ],
+          "total_action_json_bytes": 32438,
+          "total_us": 1522,
+          "total_work_units": 2586863
+        },
+        "profile": "mshogi.tenjiku.adams1999-modern.v1",
+        "record": {
+          "deterministic_reconstruction_units": 7620723,
+          "encode_us": 107,
+          "encoded_bytes": 89965
+        },
+        "refusal": null,
+        "requested": 128,
+        "root_us": 1040,
+        "timing_unit": "microseconds measured by Instant; deterministic units are not CPU time or strength"
+      },
+      "process_max_rss_bytes": 10567680,
+      "process_peak_memory_footprint_bytes": 9191832,
+      "time_output": "        1.51 real         1.48 user         0.00 sys\n            10567680  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 821  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 948  involuntary context switches\n         23566295180  instructions retired\n          4616279856  cycles elapsed\n             9191832  peak memory footprint\n"
+    },
+    {
+      "name": "muller128",
+      "command": "/usr/bin/time -l target/release/examples/tenjiku_work muller 128 undo",
+      "exit_code": 0,
+      "result": {
+        "accepted_board_plies": 128,
+        "accepted_events": 128,
+        "actual_closing_path": {
+          "encoded_bytes": 90633,
+          "events": 131,
+          "replayed_exactly": true,
+          "stop_then_resign_then_stop": true
+        },
+        "build_us": 415946,
+        "capacity": {
+          "bytes": 89972,
+          "events": 128,
+          "limits": {
+            "bytes": 1048576,
+            "events": 1024,
+            "work_units": 512000000
+          },
+          "reserved_bytes": 677,
+          "reserved_events": 3,
+          "reserved_work_units": 271238,
+          "work_units": 7621626
+        },
+        "cooperative_cancellation": {
+          "admission_polls": 2,
+          "admission_us": 97,
+          "atomic": true,
+          "inspection_polls": 3,
+          "inspection_us": 1,
+          "no_external_watchdog_or_product_latency_claim": true,
+          "replay_polls": 8,
+          "replay_us": 880
+        },
+        "edition": "MULLER+ADAMS-COMPLETION+MSH83-2026-11-04",
+        "explicit_undo": {
+          "excludes_game_owned_history_and_allocator_overhead": true,
+          "handles": 128,
+          "inline_handle_bytes": 40,
+          "inline_vector_allocation_bytes": 5120,
+          "replay_with_undo_us": 317469,
+          "restored_root_exact": true,
+          "undo_us": 140976,
+          "vector_capacity": 128
+        },
+        "generator_attempts": 832,
+        "isolated_native_workloads": {
+          "active_burn": {
+            "captured_or_burned": 7,
+            "effect_bytes": 986,
+            "resolution_us": 1,
+            "serialization_us": 6,
+            "work_units": 279
+          },
+          "empty_center_generation": [
+            {
+              "action_bytes": 46072,
+              "actions": 622,
+              "generation_us": 204,
+              "original": "FiD",
+              "serialization_us": 62,
+              "work_units": 174380
+            },
+            {
+              "action_bytes": 45246,
+              "actions": 609,
+              "generation_us": 178,
+              "original": "VGn",
+              "serialization_us": 50,
+              "work_units": 165805
+            },
+            {
+              "action_bytes": 5957,
+              "actions": 88,
+              "generation_us": 25,
+              "original": "Ln",
+              "serialization_us": 7,
+              "work_units": 23818
+            },
+            {
+              "action_bytes": 7302,
+              "actions": 109,
+              "generation_us": 33,
+              "original": "LHk",
+              "serialization_us": 8,
+              "work_units": 29666
+            },
+            {
+              "action_bytes": 4870,
+              "actions": 75,
+              "generation_us": 26,
+              "original": "FEg",
+              "serialization_us": 6,
+              "work_units": 20761
+            }
+          ]
+        },
+        "local_choices": {
+          "count": 215,
+          "history_filtered": false,
+          "query_us": 858,
+          "work_units": 1216741
+        },
+        "mode": "undo",
+        "ordinary_replay": {
+          "exact_semantics_and_fresh_authority": true,
+          "retention_policy": "ordinary replay requests no private undo handles; source-defined, not an RSS measurement",
+          "returned_undo_handles": 0,
+          "us": 278419
+        },
+        "per_origin_inspection": {
+          "action_serialization_us": 37,
+          "origins": 156,
+          "slowest_three": [
+            {
+              "action_json_bytes": 8297,
+              "choices": 112,
+              "inspection_us": 216,
+              "origin": [
+                9,
+                4
+              ],
+              "serialization_us": 14,
+              "work_units": 341965
+            },
+            {
+              "action_json_bytes": 4687,
+              "choices": 61,
+              "inspection_us": 196,
+              "origin": [
+                8,
+                13
+              ],
+              "serialization_us": 5,
+              "work_units": 325564
+            },
+            {
+              "action_json_bytes": 2,
+              "choices": 0,
+              "inspection_us": 183,
+              "origin": [
+                7,
+                3
+              ],
+              "serialization_us": 0,
+              "work_units": 291751
+            }
+          ],
+          "total_action_json_bytes": 32957,
+          "total_us": 1617,
+          "total_work_units": 2603927
+        },
+        "profile": "mshogi.tenjiku.muller-completed.v1",
+        "record": {
+          "deterministic_reconstruction_units": 7621626,
+          "encode_us": 111,
+          "encoded_bytes": 89972
+        },
+        "refusal": null,
+        "requested": 128,
+        "root_us": 1122,
+        "timing_unit": "microseconds measured by Instant; deterministic units are not CPU time or strength"
+      },
+      "process_max_rss_bytes": 10420224,
+      "process_peak_memory_footprint_bytes": 9044376,
+      "time_output": "        2.05 real         1.92 user         0.01 sys\n            10420224  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 814  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                1530  involuntary context switches\n         30191306910  instructions retired\n          5936616081  cycles elapsed\n             9044376  peak memory footprint\n"
+    },
+    {
+      "name": "adams-controls",
+      "command": "/usr/bin/time -l target/release/examples/tenjiku_work adams 1025 controls",
+      "exit_code": 0,
+      "result": {
+        "accepted_board_plies": 0,
+        "accepted_events": 1021,
+        "actual_closing_path": {
+          "encoded_bytes": 194881,
+          "events": 1024,
+          "replayed_exactly": true,
+          "stop_then_resign_then_stop": true
+        },
+        "build_us": 2359810,
+        "capacity": {
+          "bytes": 194223,
+          "events": 1021,
+          "limits": {
+            "bytes": 1048576,
+            "events": 1024,
+            "work_units": 512000000
+          },
+          "reserved_bytes": 674,
+          "reserved_events": 3,
+          "reserved_work_units": 583988,
+          "work_units": 111350193
+        },
+        "cooperative_cancellation": {
+          "admission_polls": 2,
+          "admission_us": 111,
+          "atomic": true,
+          "inspection_polls": 3,
+          "inspection_us": 1,
+          "no_external_watchdog_or_product_latency_claim": true,
+          "replay_polls": 8,
+          "replay_us": 1256
+        },
+        "edition": "ADAMS1999-MODERN+MSH83-2026-11-04",
+        "explicit_undo": null,
+        "generator_attempts": 0,
+        "isolated_native_workloads": {
+          "active_burn": {
+            "captured_or_burned": 7,
+            "effect_bytes": 986,
+            "resolution_us": 2,
+            "serialization_us": 6,
+            "work_units": 279
+          },
+          "empty_center_generation": [
+            {
+              "action_bytes": 46072,
+              "actions": 622,
+              "generation_us": 218,
+              "original": "FiD",
+              "serialization_us": 70,
+              "work_units": 174380
+            },
+            {
+              "action_bytes": 45246,
+              "actions": 609,
+              "generation_us": 185,
+              "original": "VGn",
+              "serialization_us": 55,
+              "work_units": 165805
+            },
+            {
+              "action_bytes": 5957,
+              "actions": 88,
+              "generation_us": 26,
+              "original": "Ln",
+              "serialization_us": 8,
+              "work_units": 23818
+            },
+            {
+              "action_bytes": 7302,
+              "actions": 109,
+              "generation_us": 37,
+              "original": "LHk",
+              "serialization_us": 9,
+              "work_units": 29666
+            },
+            {
+              "action_bytes": 3758,
+              "actions": 59,
+              "generation_us": 22,
+              "original": "FEg",
+              "serialization_us": 6,
+              "work_units": 16693
+            }
+          ]
+        },
+        "local_choices": {
+          "count": 70,
+          "history_filtered": false,
+          "query_us": 779,
+          "work_units": 1177177
+        },
+        "mode": "controls",
+        "ordinary_replay": {
+          "exact_semantics_and_fresh_authority": true,
+          "retention_policy": "ordinary replay requests no private undo handles; source-defined, not an RSS measurement",
+          "returned_undo_handles": 0,
+          "us": 2208982
+        },
+        "per_origin_inspection": {
+          "action_serialization_us": 4,
+          "origins": 156,
+          "slowest_three": [
+            {
+              "action_json_bytes": 66,
+              "choices": 1,
+              "inspection_us": 181,
+              "origin": [
+                8,
+                13
+              ],
+              "serialization_us": 0,
+              "work_units": 306903
+            },
+            {
+              "action_json_bytes": 65,
+              "choices": 1,
+              "inspection_us": 169,
+              "origin": [
+                9,
+                4
+              ],
+              "serialization_us": 0,
+              "work_units": 306903
+            },
+            {
+              "action_json_bytes": 2,
+              "choices": 0,
+              "inspection_us": 163,
+              "origin": [
+                7,
+                14
+              ],
+              "serialization_us": 0,
+              "work_units": 291751
+            }
+          ],
+          "total_action_json_bytes": 9278,
+          "total_us": 1412,
+          "total_work_units": 2431786
+        },
+        "profile": "mshogi.tenjiku.adams1999-modern.v1",
+        "record": {
+          "deterministic_reconstruction_units": 111350193,
+          "encode_us": 179,
+          "encoded_bytes": 194223
+        },
+        "refusal": {
+          "accepted_record_and_authority_preserved": true,
+          "error": "Tenjiku game refused: Capacity(Events)"
+        },
+        "requested": 1025,
+        "root_us": 1072,
+        "timing_unit": "microseconds measured by Instant; deterministic units are not CPU time or strength"
+      },
+      "process_max_rss_bytes": 23805952,
+      "process_peak_memory_footprint_bytes": 22430104,
+      "time_output": "       11.41 real        10.93 user         0.06 sys\n            23805952  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1629  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                9087  involuntary context switches\n        171283441297  instructions retired\n         34041569723  cycles elapsed\n            22430104  peak memory footprint\n"
+    },
+    {
+      "name": "muller-controls",
+      "command": "/usr/bin/time -l target/release/examples/tenjiku_work muller 1025 controls",
+      "exit_code": 0,
+      "result": {
+        "accepted_board_plies": 0,
+        "accepted_events": 1021,
+        "actual_closing_path": {
+          "encoded_bytes": 194888,
+          "events": 1024,
+          "replayed_exactly": true,
+          "stop_then_resign_then_stop": true
+        },
+        "build_us": 2258044,
+        "capacity": {
+          "bytes": 194230,
+          "events": 1021,
+          "limits": {
+            "bytes": 1048576,
+            "events": 1024,
+            "work_units": 512000000
+          },
+          "reserved_bytes": 674,
+          "reserved_events": 3,
+          "reserved_work_units": 584009,
+          "work_units": 111357347
+        },
+        "cooperative_cancellation": {
+          "admission_polls": 2,
+          "admission_us": 106,
+          "atomic": true,
+          "inspection_polls": 3,
+          "inspection_us": 1,
+          "no_external_watchdog_or_product_latency_claim": true,
+          "replay_polls": 8,
+          "replay_us": 1371
+        },
+        "edition": "MULLER+ADAMS-COMPLETION+MSH83-2026-11-04",
+        "explicit_undo": null,
+        "generator_attempts": 0,
+        "isolated_native_workloads": {
+          "active_burn": {
+            "captured_or_burned": 7,
+            "effect_bytes": 986,
+            "resolution_us": 1,
+            "serialization_us": 6,
+            "work_units": 279
+          },
+          "empty_center_generation": [
+            {
+              "action_bytes": 46072,
+              "actions": 622,
+              "generation_us": 224,
+              "original": "FiD",
+              "serialization_us": 60,
+              "work_units": 174380
+            },
+            {
+              "action_bytes": 45246,
+              "actions": 609,
+              "generation_us": 184,
+              "original": "VGn",
+              "serialization_us": 53,
+              "work_units": 165805
+            },
+            {
+              "action_bytes": 5957,
+              "actions": 88,
+              "generation_us": 26,
+              "original": "Ln",
+              "serialization_us": 7,
+              "work_units": 23818
+            },
+            {
+              "action_bytes": 7302,
+              "actions": 109,
+              "generation_us": 36,
+              "original": "LHk",
+              "serialization_us": 9,
+              "work_units": 29666
+            },
+            {
+              "action_bytes": 4870,
+              "actions": 75,
+              "generation_us": 26,
+              "original": "FEg",
+              "serialization_us": 7,
+              "work_units": 20761
+            }
+          ]
+        },
+        "local_choices": {
+          "count": 74,
+          "history_filtered": false,
+          "query_us": 763,
+          "work_units": 1184357
+        },
+        "mode": "controls",
+        "ordinary_replay": {
+          "exact_semantics_and_fresh_authority": true,
+          "retention_policy": "ordinary replay requests no private undo handles; source-defined, not an RSS measurement",
+          "returned_undo_handles": 0,
+          "us": 2147588
+        },
+        "per_origin_inspection": {
+          "action_serialization_us": 8,
+          "origins": 156,
+          "slowest_three": [
+            {
+              "action_json_bytes": 66,
+              "choices": 1,
+              "inspection_us": 180,
+              "origin": [
+                8,
+                13
+              ],
+              "serialization_us": 0,
+              "work_units": 306903
+            },
+            {
+              "action_json_bytes": 65,
+              "choices": 1,
+              "inspection_us": 175,
+              "origin": [
+                9,
+                4
+              ],
+              "serialization_us": 0,
+              "work_units": 306903
+            },
+            {
+              "action_json_bytes": 2,
+              "choices": 0,
+              "inspection_us": 165,
+              "origin": [
+                7,
+                14
+              ],
+              "serialization_us": 0,
+              "work_units": 291751
+            }
+          ],
+          "total_action_json_bytes": 9794,
+          "total_us": 1436,
+          "total_work_units": 2448346
+        },
+        "profile": "mshogi.tenjiku.muller-completed.v1",
+        "record": {
+          "deterministic_reconstruction_units": 111357347,
+          "encode_us": 170,
+          "encoded_bytes": 194230
+        },
+        "refusal": {
+          "accepted_record_and_authority_preserved": true,
+          "error": "Tenjiku game refused: Capacity(Events)"
+        },
+        "requested": 1025,
+        "root_us": 1024,
+        "timing_unit": "microseconds measured by Instant; deterministic units are not CPU time or strength"
+      },
+      "process_max_rss_bytes": 23396352,
+      "process_peak_memory_footprint_bytes": 22020504,
+      "time_output": "       10.96 real        10.80 user         0.06 sys\n            23396352  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                1604  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                5029  involuntary context switches\n        171330556446  instructions retired\n         33849162802  cycles elapsed\n            22020504  peak memory footprint\n"
+    },
+    {
+      "name": "adams-long",
+      "command": "/usr/bin/time -l target/release/examples/tenjiku_work adams 1025 play",
+      "exit_code": 0,
+      "result": {
+        "accepted_board_plies": 1021,
+        "accepted_events": 1021,
+        "actual_closing_path": {
+          "encoded_bytes": 558279,
+          "events": 1024,
+          "replayed_exactly": true,
+          "stop_then_resign_then_stop": true
+        },
+        "build_us": 4483156,
+        "capacity": {
+          "bytes": 557612,
+          "events": 1021,
+          "limits": {
+            "bytes": 1048576,
+            "events": 1024,
+            "work_units": 512000000
+          },
+          "reserved_bytes": 683,
+          "reserved_events": 3,
+          "reserved_work_units": 1674170,
+          "work_units": 299287458
+        },
+        "cooperative_cancellation": {
+          "admission_polls": 2,
+          "admission_us": 400,
+          "atomic": true,
+          "inspection_polls": 3,
+          "inspection_us": 1,
+          "no_external_watchdog_or_product_latency_claim": true,
+          "replay_polls": 8,
+          "replay_us": 4219
+        },
+        "edition": "ADAMS1999-MODERN+MSH83-2026-11-04",
+        "explicit_undo": null,
+        "generator_attempts": 31605,
+        "isolated_native_workloads": {
+          "active_burn": {
+            "captured_or_burned": 7,
+            "effect_bytes": 986,
+            "resolution_us": 1,
+            "serialization_us": 6,
+            "work_units": 279
+          },
+          "empty_center_generation": [
+            {
+              "action_bytes": 46072,
+              "actions": 622,
+              "generation_us": 196,
+              "original": "FiD",
+              "serialization_us": 60,
+              "work_units": 174380
+            },
+            {
+              "action_bytes": 45246,
+              "actions": 609,
+              "generation_us": 172,
+              "original": "VGn",
+              "serialization_us": 52,
+              "work_units": 165805
+            },
+            {
+              "action_bytes": 5957,
+              "actions": 88,
+              "generation_us": 24,
+              "original": "Ln",
+              "serialization_us": 7,
+              "work_units": 23818
+            },
+            {
+              "action_bytes": 7302,
+              "actions": 109,
+              "generation_us": 32,
+              "original": "LHk",
+              "serialization_us": 8,
+              "work_units": 29666
+            },
+            {
+              "action_bytes": 3758,
+              "actions": 59,
+              "generation_us": 20,
+              "original": "FEg",
+              "serialization_us": 4,
+              "work_units": 16693
+            }
+          ]
+        },
+        "local_choices": {
+          "count": 689,
+          "history_filtered": false,
+          "query_us": 858,
+          "work_units": 1068246
+        },
+        "mode": "play",
+        "ordinary_replay": {
+          "exact_semantics_and_fresh_authority": true,
+          "retention_policy": "ordinary replay requests no private undo handles; source-defined, not an RSS measurement",
+          "returned_undo_handles": 0,
+          "us": 3264307
+        },
+        "per_origin_inspection": {
+          "action_serialization_us": 74,
+          "origins": 156,
+          "slowest_three": [
+            {
+              "action_json_bytes": 10372,
+              "choices": 141,
+              "inspection_us": 237,
+              "origin": [
+                4,
+                4
+              ],
+              "serialization_us": 11,
+              "work_units": 352484
+            },
+            {
+              "action_json_bytes": 5740,
+              "choices": 79,
+              "inspection_us": 205,
+              "origin": [
+                8,
+                7
+              ],
+              "serialization_us": 7,
+              "work_units": 336152
+            },
+            {
+              "action_json_bytes": 2,
+              "choices": 0,
+              "inspection_us": 164,
+              "origin": [
+                3,
+                10
+              ],
+              "serialization_us": 0,
+              "work_units": 291751
+            }
+          ],
+          "total_action_json_bytes": 81845,
+          "total_us": 1670,
+          "total_work_units": 2456063
+        },
+        "profile": "mshogi.tenjiku.adams1999-modern.v1",
+        "record": {
+          "deterministic_reconstruction_units": 299287458,
+          "encode_us": 594,
+          "encoded_bytes": 557612
+        },
+        "refusal": {
+          "error": "Tenjiku game refused: Capacity(Events)"
+        },
+        "requested": 1025,
+        "root_us": 1045,
+        "timing_unit": "microseconds measured by Instant; deterministic units are not CPU time or strength"
+      },
+      "process_max_rss_bytes": 40288256,
+      "process_peak_memory_footprint_bytes": 38896024,
+      "time_output": "       17.64 real        17.48 user         0.08 sys\n            40288256  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                2635  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                4206  involuntary context switches\n        261473902360  instructions retired\n         54802485497  cycles elapsed\n            38896024  peak memory footprint\n"
+    }
+  ],
+  "measurement_interpretation": [
+    "RSS is maximum of entire example process with multiple simultaneously live reconstructions, not isolated allocation count for one Game.",
+    "Explicit undo inline vector bytes exclude Game history and allocator overhead.",
+    "Ordinary replay source drops private undo handles; still retains required Game snapshots/history.",
+    "Cooperative requested stop timing is not watchdog preemption or product15second deadline evidence.",
+    "Initial sandboxed macOS time returned1 because read-only sysctl was denied; all reported process memory comes from successful unsandboxed time measurements."
+  ],
+  "independent_review": {
+    "reviewer": "/root/independent_review fresh read-only session",
+    "status": "pre-CI source, adapters, capacity, consumer and documentation acceptance passed; exact-source CI reconciliation pending",
+    "independent_runs": [
+      "Reserved-ending undo refusal/token integrity:1 passed",
+      "Native counter capacity classification:1 passed",
+      "Frozen native conformance204rows/621fields/profile:passed",
+      "Public external consumer2:passed"
+    ],
+    "material_open_findings": [],
+    "evidence_reconciliation": "Reviewer independently verified all17 source hashes, frozen source hashes,5 raw metric JSONs/time/RSS,373pass/0fail/2ignored regression summaries, Clippy/host/validator logs and bounded87/79/44handoff."
+  },
+  "native_ci": {
+    "workflow": "Rust workspace",
+    "required_jobs": [
+      "Rust (ubuntu-24.04)",
+      "Rust (macos-15)",
+      "Rust (windows-2022)"
+    ],
+    "source_revision": null,
+    "run_id": null,
+    "status": "pending"
+  },
+  "not_run": [
+    "Finished-product packaged GUI campaign: not required for native-only MSH-87",
+    "External engine comparison: optional, not required",
+    "MSH-79 or MSH-44 product integration"
+  ],
+  "handoff": {
+    "shared_owner": "MSH-79",
+    "product_owner": "MSH-44",
+    "contract": "docs/m4/tenjiku/native-v1.md",
+    "public_consumer": "crates/mshogi-core/tests/tenjiku_consumer.rs",
+    "normal_product_activation": false
+  }
+}

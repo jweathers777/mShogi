@@ -4,7 +4,7 @@ title: Deliver complete tenjiku shogi rules and functional product integration
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-04T09:19:00Z'
+updated_date: '2026-11-04T10:36:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -21,6 +21,7 @@ documentation:
   - docs/testing/conformance-policy.md
   - docs/m4/tenjiku/README.md
   - docs/m4/tenjiku/handoff.md
+  - docs/m4/tenjiku/native-v1.md
 ordinal: 44000
 ---
 
@@ -60,4 +61,6 @@ MSH62 planning refinement2026-10-26: original identity,status,AC and DoD remain 
 Owner2026-11-01 testing-policy supersession: rules-profile-derived independently expected fixtures/history, deterministic regression, exact reversal/replay, meaningful property/metamorphic/adversarial tests and independent review establish conformance without any external engine. External comparisons are optional investigative evidence, not build/test/CI/milestone/release gates. Historical observations/source audits retained; no completed-game campaign reopened. For Tori,126 is now the self-contained executable harness; no Fairy build/admission prerequisite. Existing task dependencies and implementation plans unchanged; no activation by this note. Apply game-specific properties where meaningful, never expected outputs copied from the implementation. See docs/testing/conformance-policy.md.
 
 MSH83 ratifies two owner-selected whole Tenjiku profiles rather than one universal convention. Complete delivery retains all original8AC and DoD: actual native/shared handoff87/79, functional search/supervision and complete console/notation, native-sourced traditional-kanji16x16 board, two named New Game profile choices, actual playable/save/history/analysis/recovery/platform evidence. Profile is immutable within game; Load preserves identity and fresh New may select other profile. No normal unsupported selector activation, game implementation, M5strength claim or scope closure occurs in83. See currentprofile/corpus/decisions/handoff; no new planning hierarchy/dependency.
+
+MSH87actual native handoff implements both immutable modernprofiles and source-derived complete actions/effects/Game/history/schema1/exactreversal/conformance; review/evidence docs/m4/tenjiku/native-v1.md and native-verification.json. Native source is not finished product:79stillowns shared/session/frontend/whole-document admission and selected-profile New Game,44retains functional history-aware evaluation/search, completeconsole/notation, actual engine journeys, traditional-kanji/promoted-face assets and final16x16playable delivery. No normal selector or Tenjiku engine advertised; no44implementation started. Original complete-game acceptance criteria remainunchecked and unchanged.
 <!-- SECTION:NOTES:END -->

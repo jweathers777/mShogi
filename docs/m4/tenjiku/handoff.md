@@ -1,10 +1,12 @@
 # Direct Tenjiku native/shared/product handoff
 
-MSH-83 profile/fixture assignment only, source8676cbb. This handoff is subject to
-ratification of its named modern profile. It authorizes no native or product code.
+MSH-83 ratified both immutable profiles. MSH-87 now supplies the native boundary
+documented in [native-v1.md](native-v1.md); structured acceptance evidence lives in
+`native-verification.json`. The planning checkpoints below retain their original
+traceability; shared and product implementation remain separate.
 Original87/79/44 criteria and complete-delivery ownership remain intact.
 
-## MSH-87 — one direct native implementation assignment
+## MSH-87 — native assignment and retained checkpoint traceability
 
 After83's complete profile/fixtures are ratified,87 should be Ready with83 as its
 existing prerequisite. No new child hierarchy is necessary: AC4's “where useful”
@@ -96,3 +98,23 @@ and side names do not determine the profile. Same-board cross-profile records,
 observations, restored selections and execution results must reject atomically.
 44 exposes the two named choices only after actual playable delivery. No live
 rule toggles, record reinterpretation, universal rules framework or new app owner.
+
+## Actual MSH-87 contract for MSH-79
+
+Use `mshogi_core::tenjiku::{Profile,Game,GameRequest,GameCommand,GameContext,
+GameRecord,Action,Effects,EffectPhase,LocalPosition}` and the public native root,
+side, square, piece, royal, history and capacity types. `Profile::ALL` contains the
+two exact IDs; no implicit default exists. Native schema1 is untimed and explicit
+about profile/edition. Current Game context binds actual full history plus runtime
+authority; restored contexts are fresh. Local inspection is read-only, can inspect
+either owner, and does not grant Game/history permission. Source-derived burns
+and multi-stage routes must remain complete; no frontend-provided victim lists.
+
+Native limits are1MiB/1024commands-events/512Mdeterministic units plus actual
+Stop→Resign→Stop headroom, including runtime authority. Ordinary replay does not
+retain a private undo vector. See native-v1 for measurement meanings and limitations.
+The external public-core consumer is real, but no production `native.rs` dispatch,
+application envelope, engine worker or frontend selector has been added. MSH-79
+must measure whole retained documents, additional observations/branches/history and
+ending/Close capacity itself; native timings are not a15second desktop guarantee.
+All original79/44 criteria and dependencies are preserved; neither task is begun.

@@ -3,11 +3,11 @@
   "schema_version": 1,
   "recorded_at": "2026-11-04T10:36:06.149450+00:00",
   "source": {
-    "base_revision": "a7f920586d9527b87622101966098f8cbb89dbc5",
+    "base_revision": "5786e5950a0185359f9ed5c3c4ae758448832622",
     "revision": null,
     "files_sha256": {
       "crates/mshogi-conformance/src/lib.rs": "94a09a2e924b2b37a3ede8b24d56ad8b4e4df208390af6a1acc14c40519cc1f0",
-      "crates/mshogi-conformance/src/tenjiku.rs": "282c9bd2863fc6a1ab9e883d5955c81a4e84c7c0aaa5892f63eec335e9a5349f",
+      "crates/mshogi-conformance/src/tenjiku.rs": "e86367b8f24f5bf2ea1b1a484cb579706e1ceebf4436fbffe0e22015bd161211",
       "crates/mshogi-core/examples/tenjiku_work.rs": "ca13bcfaa7f4ebe2fa44ab75e6b71fa799e2fb067c3226dcd2578203120bbe7d",
       "crates/mshogi-core/src/lib.rs": "6cff5351f4eb9d4489bc4162940550c4181c0f2bf8728595ba5061fe8e4eb51b",
       "crates/mshogi-core/src/tenjiku/conformance.rs": "cf63cf5205560e4cd22fe04efe16d770c4ee454c23867186a5db4c5e14c94123",
@@ -22,7 +22,8 @@
       "crates/mshogi-core/src/tenjiku/position.rs": "3dd041837676f50a7fc930c590d5e9a71f03b62a156f560f306f7118c341d399",
       "crates/mshogi-core/src/tenjiku/record.rs": "127db6688bfe43665760102d9b37ccc5f80d23e44de6a1134596a381134f17f9",
       "crates/mshogi-core/src/tenjiku/record_tests.rs": "87f5f57208568fd85daf8c3a1a406bc042fa84f9e762593377c717c0900db0a0",
-      "crates/mshogi-core/tests/tenjiku_consumer.rs": "4e9d438cd6ae24372bb89484cd24d09e77d5b598e8bff06010b52b602eaaf62b"
+      "crates/mshogi-core/tests/tenjiku_consumer.rs": "4e9d438cd6ae24372bb89484cd24d09e77d5b598e8bff06010b52b602eaaf62b",
+      ".gitattributes": "1802e1f1fb8935f4a46074128a35ba20e9430e2a9fafe522c5576347a4ead9c1"
     }
   },
   "environment": {
@@ -105,6 +106,18 @@
       "command": "git diff --check",
       "result": "passed",
       "log": null
+    },
+    {
+      "command": "cargo test --locked --offline -p mshogi-conformance --lib tenjiku::",
+      "result": "passed",
+      "log": "/private/tmp/msh87-eol-fix.log",
+      "tests": 1,
+      "scope": "Exact LF-checkout correction; production native core unchanged."
+    },
+    {
+      "command": "cargo clippy --locked --offline -p mshogi-conformance --all-targets -- -D warnings",
+      "result": "passed",
+      "log": "/private/tmp/msh87-eol-clippy.log"
     }
   ],
   "development_corrections": {
@@ -958,11 +971,12 @@
     "Explicit undo inline vector bytes exclude Game history and allocator overhead.",
     "Ordinary replay source drops private undo handles; still retains required Game snapshots/history.",
     "Cooperative requested stop timing is not watchdog preemption or product15second deadline evidence.",
-    "Initial sandboxed macOS time returned1 because read-only sysctl was denied; all reported process memory comes from successful unsandboxed time measurements."
+    "Initial sandboxed macOS time returned1 because read-only sysctl was denied; all reported process memory comes from successful unsandboxed time measurements.",
+    "All measurements use unchanged native production and benchmark code from5786e59. Corrected-source change only pins fixture/profile checkout LF and adds one loader negative mutation; prior production scope evidence is reused."
   ],
   "independent_review": {
     "reviewer": "/root/independent_review fresh read-only session",
-    "status": "pre-CI source, adapters, capacity, consumer and documentation acceptance passed; exact-source CI reconciliation pending",
+    "status": "Pre-CI source/adapters/capacity/consumer/docs plus LF-checkout correction accepted; corrected-source CI pending",
     "independent_runs": [
       "Reserved-ending undo refusal/token integrity:1 passed",
       "Native counter capacity classification:1 passed",
@@ -981,12 +995,14 @@
     ],
     "source_revision": null,
     "run_id": null,
-    "status": "pending"
+    "status": "awaiting corrected-source campaign",
+    "url": null
   },
   "not_run": [
     "Finished-product packaged GUI campaign: not required for native-only MSH-87",
     "External engine comparison: optional, not required",
-    "MSH-79 or MSH-44 product integration"
+    "MSH-79 or MSH-44 product integration",
+    "Automatic Desktop packages run41815468887 cancelled as outside native-only scope; no platform/package acceptance claimed."
   ],
   "handoff": {
     "shared_owner": "MSH-79",
@@ -994,5 +1010,375 @@
     "contract": "docs/m4/tenjiku/native-v1.md",
     "public_consumer": "crates/mshogi-core/tests/tenjiku_consumer.rs",
     "normal_product_activation": false
-  }
+  },
+  "integration_transport": {
+    "configured_remote": "git@github.com:jweathers777/mShogi.git",
+    "transport": "Per-command HTTPS rewrite using existing gh credential, remote unchanged",
+    "observed_failures": [
+      "SSH publickey authentication failed on final fetch",
+      "Initial HTTPS push rejected by GitHub Internal Server Error; ordinary retry succeeded"
+    ],
+    "source_pushed": "5786e5950a0185359f9ed5c3c4ae758448832622"
+  },
+  "prior_ci_attempts": [
+    {
+      "source": {
+        "base_revision": "a7f920586d9527b87622101966098f8cbb89dbc5",
+        "revision": "5786e5950a0185359f9ed5c3c4ae758448832622",
+        "files_sha256": {
+          "crates/mshogi-conformance/src/lib.rs": "94a09a2e924b2b37a3ede8b24d56ad8b4e4df208390af6a1acc14c40519cc1f0",
+          "crates/mshogi-conformance/src/tenjiku.rs": "e86367b8f24f5bf2ea1b1a484cb579706e1ceebf4436fbffe0e22015bd161211",
+          "crates/mshogi-core/examples/tenjiku_work.rs": "ca13bcfaa7f4ebe2fa44ab75e6b71fa799e2fb067c3226dcd2578203120bbe7d",
+          "crates/mshogi-core/src/lib.rs": "6cff5351f4eb9d4489bc4162940550c4181c0f2bf8728595ba5061fe8e4eb51b",
+          "crates/mshogi-core/src/tenjiku/conformance.rs": "cf63cf5205560e4cd22fe04efe16d770c4ee454c23867186a5db4c5e14c94123",
+          "crates/mshogi-core/src/tenjiku/conformance_cases.rs": "9d3e47195515c04d895a4ae5eeabc089660ec1fe9ca188642b04a65d9bb8810b",
+          "crates/mshogi-core/src/tenjiku/game.rs": "c22785801fd09edce1806338c3f3735cda48f5aecdf90d8f3ba8ed917f7a169f",
+          "crates/mshogi-core/src/tenjiku/game_tests.rs": "7458bb4ac2043342fe2d6fb482e9f098dcf76e1cb4b21ffaeec77d5e5b8ab7b8",
+          "crates/mshogi-core/src/tenjiku/legal.rs": "59fa4f19862f3b75112e9644da81dfe416d0e9711b4b1d1ea5f2ea9fd3137ba1",
+          "crates/mshogi-core/src/tenjiku/local_tests.rs": "cffdbd5575cc3d3a4c1ba814292f3978efdaa37f431965f763733ab63e5253dc",
+          "crates/mshogi-core/src/tenjiku/mod.rs": "61e8163a0b833f842e62118f54645d8cf2e5153828c91ae528f6bb9532b83485",
+          "crates/mshogi-core/src/tenjiku/perft.rs": "581f5785badce26ea7bb9a3fa47b47b974364a349e119bdd98148b4183e5444b",
+          "crates/mshogi-core/src/tenjiku/perft_tests.rs": "3244f9e8c9c8e382c1a56137f32b493a8ffe3591bbc7b3172ebb5a8c950dd695",
+          "crates/mshogi-core/src/tenjiku/position.rs": "3dd041837676f50a7fc930c590d5e9a71f03b62a156f560f306f7118c341d399",
+          "crates/mshogi-core/src/tenjiku/record.rs": "127db6688bfe43665760102d9b37ccc5f80d23e44de6a1134596a381134f17f9",
+          "crates/mshogi-core/src/tenjiku/record_tests.rs": "87f5f57208568fd85daf8c3a1a406bc042fa84f9e762593377c717c0900db0a0",
+          "crates/mshogi-core/tests/tenjiku_consumer.rs": "4e9d438cd6ae24372bb89484cd24d09e77d5b598e8bff06010b52b602eaaf62b",
+          ".gitattributes": "1802e1f1fb8935f4a46074128a35ba20e9430e2a9fafe522c5576347a4ead9c1"
+        }
+      },
+      "campaign": {
+        "conclusion": "cancelled",
+        "headSha": "5786e5950a0185359f9ed5c3c4ae758448832622",
+        "jobs": [
+          {
+            "completedAt": "2026-11-04T10:43:23Z",
+            "conclusion": "cancelled",
+            "databaseId": 126524973348,
+            "name": "Rust (ubuntu-24.04)",
+            "startedAt": "2026-11-04T10:38:06Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-11-04T10:38:08Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-11-04T10:38:07Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:14Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "number": 2,
+                "startedAt": "2026-11-04T10:38:08Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:22Z",
+                "conclusion": "success",
+                "name": "Install and identify the pinned toolchain",
+                "number": 3,
+                "startedAt": "2026-11-04T10:38:14Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:23Z",
+                "conclusion": "success",
+                "name": "Format",
+                "number": 4,
+                "startedAt": "2026-11-04T10:38:22Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:36Z",
+                "conclusion": "success",
+                "name": "Lint",
+                "number": 5,
+                "startedAt": "2026-11-04T10:38:23Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "cancelled",
+                "name": "Test",
+                "number": 6,
+                "startedAt": "2026-11-04T10:38:36Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "skipped",
+                "name": "Verify isolated desktop QA constructors",
+                "number": 7,
+                "startedAt": "2026-11-04T10:43:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "skipped",
+                "name": "Verify native desktop snapshot fixtures",
+                "number": 8,
+                "startedAt": "2026-11-04T10:43:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "skipped",
+                "name": "Build",
+                "number": 9,
+                "startedAt": "2026-11-04T10:43:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "skipped",
+                "name": "Console smoke",
+                "number": 10,
+                "startedAt": "2026-11-04T10:43:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "number": 20,
+                "startedAt": "2026-11-04T10:43:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 21,
+                "startedAt": "2026-11-04T10:43:20Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41815468988/job/126524973348"
+          },
+          {
+            "completedAt": "2026-11-04T10:39:57Z",
+            "conclusion": "failure",
+            "databaseId": 126524976010,
+            "name": "Rust (windows-2022)",
+            "startedAt": "2026-11-04T10:38:07Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-11-04T10:38:08Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-11-04T10:38:07Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:19Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "number": 2,
+                "startedAt": "2026-11-04T10:38:08Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:30Z",
+                "conclusion": "success",
+                "name": "Install and identify the pinned toolchain",
+                "number": 3,
+                "startedAt": "2026-11-04T10:38:19Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:31Z",
+                "conclusion": "success",
+                "name": "Format",
+                "number": 4,
+                "startedAt": "2026-11-04T10:38:30Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:51Z",
+                "conclusion": "success",
+                "name": "Lint",
+                "number": 5,
+                "startedAt": "2026-11-04T10:38:31Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:39:55Z",
+                "conclusion": "failure",
+                "name": "Test",
+                "number": 6,
+                "startedAt": "2026-11-04T10:38:51Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:39:55Z",
+                "conclusion": "skipped",
+                "name": "Verify isolated desktop QA constructors",
+                "number": 7,
+                "startedAt": "2026-11-04T10:39:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:39:55Z",
+                "conclusion": "skipped",
+                "name": "Verify native desktop snapshot fixtures",
+                "number": 8,
+                "startedAt": "2026-11-04T10:39:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:39:55Z",
+                "conclusion": "skipped",
+                "name": "Build",
+                "number": 9,
+                "startedAt": "2026-11-04T10:39:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:39:55Z",
+                "conclusion": "skipped",
+                "name": "Console smoke",
+                "number": 10,
+                "startedAt": "2026-11-04T10:39:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:39:56Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "number": 20,
+                "startedAt": "2026-11-04T10:39:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:39:56Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 21,
+                "startedAt": "2026-11-04T10:39:56Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41815468988/job/126524976010"
+          },
+          {
+            "completedAt": "2026-11-04T10:43:28Z",
+            "conclusion": "cancelled",
+            "databaseId": 126524977113,
+            "name": "Rust (macos-15)",
+            "startedAt": "2026-11-04T10:38:07Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-11-04T10:38:08Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-11-04T10:38:07Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:32Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "number": 2,
+                "startedAt": "2026-11-04T10:38:08Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:40Z",
+                "conclusion": "success",
+                "name": "Install and identify the pinned toolchain",
+                "number": 3,
+                "startedAt": "2026-11-04T10:38:32Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:41Z",
+                "conclusion": "success",
+                "name": "Format",
+                "number": 4,
+                "startedAt": "2026-11-04T10:38:40Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:38:59Z",
+                "conclusion": "success",
+                "name": "Lint",
+                "number": 5,
+                "startedAt": "2026-11-04T10:38:41Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "cancelled",
+                "name": "Test",
+                "number": 6,
+                "startedAt": "2026-11-04T10:38:59Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "skipped",
+                "name": "Verify isolated desktop QA constructors",
+                "number": 7,
+                "startedAt": "2026-11-04T10:43:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "skipped",
+                "name": "Verify native desktop snapshot fixtures",
+                "number": 8,
+                "startedAt": "2026-11-04T10:43:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "skipped",
+                "name": "Build",
+                "number": 9,
+                "startedAt": "2026-11-04T10:43:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:20Z",
+                "conclusion": "skipped",
+                "name": "Console smoke",
+                "number": 10,
+                "startedAt": "2026-11-04T10:43:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:22Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "number": 20,
+                "startedAt": "2026-11-04T10:43:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-11-04T10:43:27Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 21,
+                "startedAt": "2026-11-04T10:43:22Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/jweathers777/mShogi/actions/runs/41815468988/job/126524977113"
+          }
+        ],
+        "status": "completed",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/41815468988"
+      },
+      "result": "Superseded after Windows fixture hash failed because Git checkout converted unpinned Tenjiku JSON to CRLF. Other platform jobs deliberately cancelled; not accepted evidence.",
+      "failure_log": "/private/tmp/msh87-windows-first.log",
+      "correction": "Pin reviewed fixture/profile bytes to LF in .gitattributes, matching Tori/Chu. Keep exact hash rejection and explicitly test CRLF mutation. Frozen expectations unchanged.",
+      "independent_review": "Bounded correction accepted; reviewer independently ran1focused test, verified attrs and fixed source hashes."
+    }
+  ]
 }

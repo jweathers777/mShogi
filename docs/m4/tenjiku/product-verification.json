@@ -3,7 +3,7 @@
   "task": "MSH-44",
   "status": "implementation_in_progress",
   "base_revision": "84d7aa83c5477dfde4513515fe54c3b9e1fb2587",
-  "tested_revision": null,
+  "tested_revision": "aecdccd6152df9cef8736e83ef74d8bc81ae39b2",
   "scope": "Functional two-profile playable desktop visual checkpoint; normal activation and final acceptance pending owner approval",
   "profiles": [
     "mshogi.tenjiku.adams1999-modern.v1",
@@ -85,6 +85,18 @@
     {
       "command": "cargo test --locked --offline -p mshogi-desktop-session real_stationary_capture_analysis -- --test-threads=1",
       "result": "1 passed1.37s; bothprofiles exact igui target in presented PV and read-only native record"
+    },
+    {
+      "command": "cargo test --workspace --locked --offline",
+      "result": "passed including doctests; full coherent source checkpoint"
+    },
+    {
+      "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml",
+      "result": "9 passed0.06s after stale capability assertion correction"
+    },
+    {
+      "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --features desktop-verification",
+      "result": "18 passed1.11s after stale capability assertion correction"
     }
   ],
   "performance": {
@@ -343,6 +355,11 @@
       "reviewer": "msh44_visual_map",
       "scope": "snapshot-only notation performance fix; successful real QA initialization guards; actual initial1180 screenshot",
       "result": "PASS with source conclusions limited to reviewed scope; compact QA strip recommended to recover viewportheight; minimum-size/allfaces comfort pending actual captures"
+    },
+    {
+      "reviewer": "msh44_search_map",
+      "scope": "one host cfg(test) assertion correction vs aecd",
+      "result": "PASS; all bytes before test module identical; normal feature/flag/fixture activation gates preserved"
     }
   ],
   "development_observations": [
@@ -381,6 +398,10 @@
     {
       "category": "evidence naming",
       "detail": "Initial MSH-44 draft reused existing83 verification.json filename; original restored byte-for-byte fromHEAD immediately. MSH-44 single ledger is product-verification.json; prior source/rules ledger preserved."
+    },
+    {
+      "category": "missed standalone host assertion",
+      "detail": "Early host compile passed but full host tests were not run before first push. Required DesktopLinux CI caught stale unavailable-capability expectation in main.rs:1205. Fixed under cfg(test),9normal+18QA tests now pass; unchanged production prefix SHA2563754c55bee97a61d0d4bb818cf8dab779cf637bf5f8b19a01654794dec440fec. No rule/production/acceptance weakening."
     }
   ],
   "ci": {
@@ -394,7 +415,26 @@
     ],
     "status": "not_started",
     "configuration_revision": "83cdd2c24586ca2c5bde619c50020f6476d27d36",
-    "configuration_transport": "Existing authorized GitHub app; intermediate workflow-only commit skipped CI. Required six jobs must execute on final combined implementation source."
+    "configuration_transport": "Existing authorized GitHub app; intermediate workflow-only commit skipped CI. Required six jobs must execute on final combined implementation source.",
+    "superseded": [
+      {
+        "source": "aecdccd6152df9cef8736e83ef74d8bc81ae39b2",
+        "rust_run": 41917239468,
+        "desktop_run": 41917239537,
+        "attempt": 1,
+        "jobs": [
+          126880029405,
+          126880029776,
+          126880029841,
+          126880029217,
+          126880029598,
+          126880030453
+        ],
+        "failure_job": 126880029598,
+        "reason": "Standalone host cfg(test) assertion still expected unsupported Tenjiku execution. Normal9tests passed; QA17passed1failed. Corrected exactly one assertion; production prefix unchanged, independently reviewed. Both old campaigns cancellation requested before corrected campaign.",
+        "failure_log": "evidence/ci-desktop-linux-126880029598-failure.txt"
+      }
+    ]
   },
   "macos_visual": {
     "status": "not_run",

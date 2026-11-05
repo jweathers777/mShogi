@@ -1,3 +1,10 @@
+> Deferred expansion direction — 2026-11-05: the authoritative
+> [future historical Shogi roadmap](../design.md#deferred-larger-historical-shogi-expansion-2026-11-05)
+> records provisional larger variants outside M4/M5 and pending future owner
+> authorization. Complete the current six-game M4 delivery, then prioritize M5
+> engine strength, efficiency and quality. This adds no game delivery, research,
+> milestone, task prerequisite or closure gate to the ownership map below.
+
 > MSH-83 modern Tenjiku handoff,2026-11-04: the owner selected support for both
 > [Adams1999 Modern and Muller completed profiles](tenjiku/README.md), with distinct
 > immutable identities,350 independently reviewed data rows and native0executed/

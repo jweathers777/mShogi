@@ -2280,3 +2280,7 @@ mod chu_tests;
 #[cfg(test)]
 #[path = "shared_tenjiku_tests.rs"]
 mod tenjiku_tests;
+
+#[cfg(test)]
+#[path = "six_game_integration_tests.rs"]
+mod six_game_integration_tests;

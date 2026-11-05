@@ -178,10 +178,18 @@ def selected_gui_phases(choice):
     normal = [None, "normal-shogi", "normal-shogi-reopened", "normal-xiangqi", "normal-tori", "normal-tori-native", "normal-chu", "normal-chu-native"]
     tenjiku_normal = [f'normal-tenjiku-{profile}{suffix}' for profile in ('adams','muller') for suffix in ('','-native')]
     tenjiku_verification = [f'{kind}-tenjiku-{profile}' for profile in ('adams','muller') for kind in ('pending','recovery')]
-    return {"normal": [*normal,*tenjiku_normal], "normal-shogi": normal[1:3],
+    integration_normal = ['normal-cross-game']
+    integration_qa = ['pending-cross-game']
+    return {"normal": [*normal,*tenjiku_normal,*integration_normal], "cross-game": [*integration_normal,*integration_qa], "normal-shogi": normal[1:3],
             "normal-xiangqi": ["normal-xiangqi"], "normal-tori": normal[4:6], "normal-chu": normal[6:], "normal-tenjiku": tenjiku_normal,
-            "verification": [*chess, *shogi, *xiangqi,*tenjiku_verification], "verification-shogi": shogi,
-            "verification-xiangqi": xiangqi, "verification-tori": ["pending-tori", "tori-recovery"], "verification-chu": ["pending-chu", "chu-recovery"], "verification-tenjiku": tenjiku_verification, "all": [*normal,*tenjiku_normal,*chess,*shogi,*xiangqi,*tenjiku_verification]}[choice]
+            "verification": [*chess, *shogi, *xiangqi,*tenjiku_verification,*integration_qa], "verification-shogi": shogi,
+            "verification-xiangqi": xiangqi, "verification-tori": ["pending-tori", "tori-recovery"], "verification-chu": ["pending-chu", "chu-recovery"], "verification-tenjiku": tenjiku_verification, "all": [*normal,*tenjiku_normal,*integration_normal,*chess,*shogi,*xiangqi,*tenjiku_verification,*integration_qa]}[choice]
+
+
+def engine_processes(processes, engine, gates=()):
+    """Exact observed executable identity, excluding persistent webview children."""
+    paths={os.path.normcase(str(Path(p).resolve())) for p in (engine,*gates)}
+    return [p for p in processes if os.path.normcase(str(Path(p.get('executable',p.get('path',''))).resolve())) in paths]
 
 
 def replacement_analysis_accepted(game, before, after, analyzing):
@@ -1567,6 +1575,138 @@ class Journey:
             path = Path(before['document']['path'])
             desktop_document_payload(json.loads(path.read_text(encoding='utf-8')), before['context']['game_kind'])
             self.record("Dirty native Quit saves the complete current document before shutdown", {'path': str(path), 'sha256': digest(path)})
+
+    def cross_game_new(self, game, profile=None, replacing_work=False):
+        """Focused ordinary New input; no all-selector sweep in a pending window."""
+        w=self.web
+        w.button('New game')
+        wait(lambda:w.has('.new-game-dialog'),'cross-game New chooser')
+        w.click('[data-game-select]');w.key('\ue011')
+        for _ in range(['chess','shogi','xiangqi','tori','chu','tenjiku'].index(game)):
+            w.key('\ue015')
+        w.key('\ue007')
+        wait(lambda:w.read("document.querySelector('[data-game-select]').value")==game,'focused native game selection')
+        if game=='tenjiku':
+            wait(lambda:w.has('[data-profile-select]'),'whole Tenjiku profile picker')
+            w.click('[data-profile-select]');w.key('\ue011')
+            if profile=='muller':w.key('\ue015')
+            w.key('\ue007')
+            wait(lambda:w.read("document.querySelector('[data-profile-select]').value")==self.tenjiku_profile_id(profile),'explicit immutable profile')
+        w.click('[data-side="'+{'chess':'white','xiangqi':'red'}.get(game,'sente')+'"]')
+        if replacing_work:
+            assert w.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]'), 'source work must still be active immediately before New commits'
+            self.record('Replace genuinely active native work through ordinary New',{'target_game':game,'target_profile':profile,'processes':self.native.processes()})
+        w.click('[data-start-game]')
+        wait(lambda:not w.has('.new-game-dialog') and w.has('.shell-'+game),'new cross-game document installed')
+        wait(lambda:w.has('.moves-root:not(:disabled)'),'new root controls available')
+        assert not w.has('.square.target,.shogi-square.target,.inspection-marker,.promotion-dialog,.compound-dialog'), 'old board input cannot cross documents'
+        assert w.read("document.querySelector('.game-shell').dataset.historical")=='false'
+
+    def cross_game_opening(self, game):
+        origin,destination={'chess':('e2','e4'),'shogi':('7g','7f'),'xiangqi':('a3','a4'),
+            'tori':('3d','3c'),'chu':('9h','9g'),'tenjiku':('16l','16k')}[game]
+        point=self.square if game=='chess' else self.xiangqi_point if game=='xiangqi' else self.shogi_square if game in ('shogi','tori') else self.chu_square
+        self.web.click(point(origin));self.web.click(point(destination))
+        return origin,point
+
+    def normal_cross_game(self):
+        """One real normal host, seven saved profiles, and cross-game replacements."""
+        self.start(product='cross-game');w=self.web;self.viewport(1180,820)
+        host_pid=self.native.pid
+        choices=[('chess',None),('shogi',None),('xiangqi',None),('tori',None),('chu',None),('tenjiku','adams'),('tenjiku','muller'),('tenjiku','adams'),('chess',None)]
+        saved={};previous=self.native_diagnostics()
+        for game,profile in choices:
+            self.cross_game_new(game,profile)
+            fresh=self.native_diagnostics()
+            assert fresh['token']['document']>previous['token']['document']
+            assert fresh['context']['game_kind']==game and not fresh['observations']
+            if profile:assert fresh['profile']==self.tenjiku_profile_id(profile)
+            assert self.native.pid==host_pid and self.native.alive()
+            origin,point=self.cross_game_opening(game)
+            self.plies(2)
+            wait(lambda:w.has('[data-search-purpose="engine_turn"]'),'real cross-game engine reply',45)
+            played=self.native_diagnostics()
+            assert len(played['observations'])==1
+            observation=played['observations'][0]['observation']
+            assert observation['context']['game']['game_kind']==game
+            assert observation['context']['game']['rules_profile']==played['profile']
+            assert observation['context']['purpose']['kind']=='engine_turn'
+            key=profile or game;path=self.args.output/f'cross-game-{key}.mshogi'
+            archive=self.save_current(path);desktop_document_payload(archive,game)
+            saved[key]=(path,played)
+            self.capture('saved-'+key)
+            w.click('.moves-root')
+            wait(lambda:w.read("document.querySelector('.game-shell').dataset.historical")=='true','historical source before cross-game New')
+            w.click(point(origin))
+            previous=self.native_diagnostics()
+            self.record('Same normal host New/play/Save/history before next game replacement',{'host_pid':host_pid,'game':game,'profile':played['profile'],'fresh':fresh,'played':played,'historical':previous,'saved_sha256':digest(path)})
+        for key in ('muller','chu','shogi','adams','xiangqi','tori','chess'):
+            path,played=saved[key];before=self.native_diagnostics()
+            self.file('open',path);self.wait_opened(path)
+            opened=self.native_diagnostics()
+            assert opened['context']==played['context']
+            assert [x['observation'] for x in opened['observations']]==[x['observation'] for x in played['observations']]
+            assert all(x['historical'] for x in opened['observations'])
+            assert opened['token']['document']>before['token']['document']
+            assert opened['token']['selection']!=before['token']['selection']
+            assert w.read("document.querySelector('.game-shell').dataset.paused")=='true'
+            assert not w.has('.inspection-marker,.square.target,.shogi-square.target,.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
+            w.focused_button('Resume play')
+            wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','explicit cross-game stopped Load Resume')
+            w.click('.moves-root');wait(lambda:w.read("document.querySelector('.game-shell').dataset.historical")=='true','loaded native historical prefix')
+            w.focused_button('Return to live')
+            wait(lambda:w.read("document.querySelector('.game-shell').dataset.historical")=='false','loaded Return to live')
+            assert self.native_diagnostics()['context']==played['context']
+            w.focused_button('Take back');self.plies(0)
+            wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='true','cross-game Take back stopped')
+            taken=self.native_diagnostics()
+            assert taken['observations'], 'abandoned native observations must survive Take back'
+            archive=self.save_current(path);desktop_document_payload(archive,opened['context']['game_kind'])
+            assert self.native.pid==host_pid and self.native.alive()
+            self.capture('loaded-and-taken-back-'+key)
+            self.record('Cross-game native Load/stopped Resume/history/Return/Take back and complete Save',{'host_pid':host_pid,'key':key,'before':before,'opened':opened,'taken':taken,'saved_sha256':digest(path)})
+        self.quit()
+
+    def pending_cross_game(self):
+        """Retire real children across game/profile New and cross-game Load."""
+        self.start('standard',gated=True,phase_name='verification-pending-cross-game')
+        w=self.web;self.viewport(1180,820);host_pid=self.native.pid
+        path=self.args.output/'cross-game-pending-chess-root.mshogi'
+        self.save_current(path)
+        choices=[('chess',None),('shogi',None),('xiangqi',None),('tori',None),('chu',None),('tenjiku','adams'),('tenjiku','muller'),('tenjiku','adams')]
+        for index,(game,profile) in enumerate(choices):
+            before=self.native_diagnostics()
+            self.cross_game_opening(game)
+            wait(lambda:w.has('.shogi-analysis[data-phase="thinking"]'),'real delayed source engine turn')
+            source_processes=engine_processes(self.native.processes(),self.args.verification_engine,getattr(self.native,'verification_paths',[]))
+            assert source_processes, 'a real bundled-engine or external-gate process must be observed'
+            if index+1<len(choices):
+                target,target_profile=choices[index+1]
+                self.cross_game_new(target,target_profile,replacing_work=True)
+            else:
+                # file() normally captures a fresh public receipt floor before
+                # opening the picker. Do that before work above, not in its
+                # five-second active window; the native completion still must
+                # exceed this floor and match the exact target path.
+                self._file_receipt_floor=before['io']['id']
+                with ThreadPoolExecutor(max_workers=1) as pool:
+                    picker=pool.submit(self.native.choose_file,'open',path)
+                    assert w.has('.shogi-analysis[data-phase="thinking"]')
+                    w.button('Load');evidence=picker.result(timeout=35)
+                self.record('Replace active Tenjiku work with native Chess Load',evidence)
+                self.wait_opened(path)
+            installed=self.native_diagnostics()
+            assert installed['token']['document']>before['token']['document']
+            assert not installed['observations'], 'retired work cannot become a new-document observation'
+            time.sleep(5.2)  # One bounded completion-aware campaign, beyond external gate.
+            after=self.native_diagnostics()
+            assert retained_document_state(after)==retained_document_state(installed)
+            remaining=self.native.processes()
+            retired_ids={p['pid'] for p in source_processes}
+            assert not retired_ids.intersection(p['pid'] for p in remaining)
+            assert self.native.pid==host_pid and self.native.alive()
+            self.record('Cross-game/profile replacement retires real process and preserves exact new authority beyond gate',{'source_game':game,'source_profile':profile,'source_processes':source_processes,'installed':installed,'after_gate':after,'remaining_processes':remaining,'qualification':'Actual child retirement; deterministic native tests separately attempt obsolete response admission.'})
+        self.quit()
 
     def normal(self):
         self.start()
@@ -3598,7 +3738,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--driver", default="tauri-driver")
     parser.add_argument("--native-driver")
-    parser.add_argument("--phase", choices=["normal", "normal-shogi", "normal-xiangqi", "normal-tori", "normal-chu", "verification", "verification-shogi", "verification-xiangqi", "verification-tori", "verification-chu", "normal-tenjiku", "verification-tenjiku", "all"], default="all")
+    parser.add_argument("--phase", choices=["normal", "normal-shogi", "normal-xiangqi", "normal-tori", "normal-chu", "verification", "verification-shogi", "verification-xiangqi", "verification-tori", "verification-chu", "normal-tenjiku", "verification-tenjiku", "cross-game", "all"], default="all")
     args = parser.parse_args()
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=True)
@@ -3629,6 +3769,10 @@ def main():
             try:
                 if fixture is None:
                     journey.normal()
+                elif fixture == 'normal-cross-game':
+                    journey.normal_cross_game()
+                elif fixture == 'pending-cross-game':
+                    journey.pending_cross_game()
                 elif fixture == "normal-shogi":
                     journey.normal_shogi()
                 elif fixture == "normal-shogi-reopened":

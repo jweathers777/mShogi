@@ -1,10 +1,11 @@
 ---
 id: MSH-88
 title: Verify final six-game shared integration in packaged applications
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-10-26T07:44:00Z'
+updated_date: '2026-11-05T12:33:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -58,3 +59,17 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Primary builder/integrator: Codex in the primary codex/rewrite checkout; clean origin-aligned start c1aee938e8057c5a2c1ec48e86ad87716f18c811, accepted production eca9f9cfd43cf83ff4e3489292f6c25f8951bb30. Five unrelated worktrees and MSH133 ownership are preserved. A. Audit accepted per-game/current shared contracts and the47-phase packaged baseline against original88AC1–4 and MSH46AC1–5; record one ownership/evidence matrix and explicit gaps, reusing unchanged conformance/resource evidence. B. Add only missing integrated verification: actual same-process cross-game/seven-profile New/Load and outstanding-work transitions, strict current-envelope/native-history/saveability/refusal checks, complete-action/accessible UI coverage and fixed-slot actual macOS six-game journeys. Preserve rules, architecture, resource budgets and minimum760x650. C. Run focused native/frontend/observer checks and fresh independent review early; freeze coherent source, run required Rust+Desktop ubuntu24.04/macOS15/windows2022 plus actual packaged GUI on each platform, bothTenjiku profiles, under one completion-aware monitor. Preserve all failed/superseded attempts and do not treat an unchanged retry as fixing an existing race. D. Reconcile exact source/package/environment/actions in one structured shared evidence record, fresh independent final review and all original88AC/DoD; update46/89 handoffs, integrate/push normally, mark88Done only if supported. Do not begin89/46/108/47/M5 or closeM4.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Startup2026-11-05: CLI1.55.1 matches recorded baseline. c1aee938 HEAD/origin/FETCH_HEAD aligned; no dirty or untracked work. MSH88 Ready/unassigned/all dependenciesDone; no competing active implementer. Codex claims88 only in primaryrewrite; MSH133 remains independentlyInReview and its worktree plusfour other unrelated worktrees untouched. Owner request114b0252 requires integrated acceptance, actual all-six-game GUI on eachOS, two immutableTenjiku profiles, original46AC1–5 traceability and later89/47 ownership. Accepted44productionECA/6CI/47GUIbaseline reused only for unchanged scope; cross-game and all-six normalmacOS gaps to audit before implementation.
+
+Focused integrated checkpoint: added one same-controller seven-profile New/reverse-current-Load ring, stale command/inspection/replacement/Open/execution rejection and malformed-Load authority/prior-file preservation (manual execution, explicitly not subprocess evidence); default and all-feature focused native test each passed. Added actual normal same-host seven-profile New/play/Save/reverse-Load/history/Resume/Take back journey and separately labeled delayed real-engine cross-game/profile New/Load retirement journey. Fresh independent source review approved after correcting verifier process classification to exclude persistent WebKit children; negative observer regression added. Final actual platform evidence remains pending; no production rules, architecture, supported formats, budgets or UI minimum changed.
+<!-- SECTION:NOTES:END -->

@@ -1,9 +1,11 @@
 # Six-game shared delivery — MSH-46
 
-MSH-46 reconciles the original six shared-delivery obligations using the completed
-component, game, integrated-platform and independent-contract evidence. Its final
-completion review is approved; normal evidence integration and final task closure
-are pending. No executable source changes are part of this
+MSH-46 is **Done**: all six original criteria and four completion items are
+supported by the completed component, game, integrated-platform and independent
+contract evidence. Fresh final completion review is approved. The accepted
+closure evidence was normally committed and pushed to `codex/rewrite` at
+`90e1222d8db27ede3212b794e877a975a068c35d` before the final DoD4/status update.
+No executable source changes are part of this
 aggregate acceptance. MSH-88 verifies the delivered games together. Its single structured record is
 [verification.json](verification.json). MSH-88 is Done after final independent review and normal evidence integration
 at `e68e8e3d1787f2d029e3601259070807bdbab180`. The fresh MSH-89
@@ -136,8 +138,12 @@ tasks46/108/47 (candidate diff SHA256
 The reviewer independently checked all six original criteria,
 DoD1–3, source equivalence,202 hashes/raw reports,16 completed prerequisites,
 original46/108/47 criteria/dependencies and unchanged downstream ownership.
-DoD4 is conditional only on ordinary evidence integration/push and the durable
-completion summary; neither downstream task nor M4 is closed by this verdict.
+At review, DoD4 was conditional only on ordinary evidence integration/push and
+the durable completion summary. Those are now satisfied by the pushed evidence
+revision `90e1222d8db27ede3212b794e877a975a068c35d` and MSH-46 final summary.
+DoD1 has criterion-by-criterion evidence above; DoD2 has the independent verdict;
+DoD3 has current documentation and108/47 handoffs. Neither downstream task nor
+M4 is closed by this verdict.
 
 New closure checks passed: master SHA/all202 retained hashes; six raw job receipts,
 runner acquisition, source/attempt and successful-or-skipped step conclusions;
@@ -160,7 +166,7 @@ native/frontend/GUI/CI campaign is repeated for this aggregate bookkeeping.
 
 All16 original dependencies remain unchanged:
 MSH-39,41,42,43,44,45,69,72,73,76,77,78,79,88,89,90. They are Done, and game-specific
-adaptations remain with41–45. MSH-108 still depends on46/106/107; after46 completion
+adaptations remain with41–45. MSH-108 still depends on46/106/107; with46 complete,
 it is the next dependency-ready diagnostic assignment, unassigned and unstarted.
 MSH-47 still depends on26/39/41–46/**108**, remains To Do and owns independent
 whole-M4 acceptance. Neither task is activated here; M4 remains open.

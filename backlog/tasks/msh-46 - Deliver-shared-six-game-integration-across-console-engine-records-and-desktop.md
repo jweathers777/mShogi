@@ -1,11 +1,11 @@
 ---
 id: MSH-46
 title: Deliver shared six-game integration across console engine records and desktop
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-05T21:53:00Z'
+updated_date: '2026-11-05T21:55:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -59,7 +59,7 @@ Delivery may coordinate with game tickets before their completion; dependencies 
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -82,4 +82,20 @@ MSH-89 independent contract reconciliation approved 2026-11-05; publication/inte
 MSH-89 is Done. Independent original46AC1–6 contract reconciliation/report and compact review index were normally integrated/pushed on codex/rewrite at22b4f409f738cd7dec45a78ab7ecc4cf9661322b before final89closure. All six obligations have supporting evidence, with no material shared-contract blocker; current source/compatibility/resource/platform qualifications and the separate unfixed112 disposition remain explicit. Original46criteria/dependencies, ToDo status, unassigned ownership and unchecked items are preserved. With89Done all16dependencies are satisfied;46 is the next M4 task and still requires its own authorized activation, final criteria/DoD reconciliation and normal completion.108/47/M4 remain open; none started here.
 
 MSH-46 final reconciliation2026-11-05: all original6AC and DoD1–3 independently supported; durable current record docs/m4/shared-integration/README.md maps every original obligation to source, original88receipts and89assessment, with no criterion/dependency/ownership removed. Fresh fork-none read-only reviewer msh46_completion_review approved at91115368c6e99f344dee002d9264f4d0b62cc76b plus six-file candidate diff SHA25627e8e364e59b2a4b1bab3f09b6225d837cd5b991ea1b55f9d5761cced28c8322, no material blocker; DoD4 remains pending ordinary commit/push. LocalmacOS27arm64 Python3 closure checks pass: unchanged master88SHA097118de9a7c9507900f554da7c91dde97ad35729bce73c9f491b52a7a9cd985/all202filehashes; six raw sourcebc92bfe jobs+attempt1+runners+stepconclusions; originaldecompressedWindows/LinuxreportSHAs49/49passed/no failures; source equivalence (only4neutralrustdoccomments since testedbc);19originalAC/DoD/dependency/non46owner comparisons againstGit9111536; full16prerequisite statuses allDone;113resolvedgraphnodes;86local linktargets; compatible1.55.1doctor;gitdiff--check. Initial audit harness omitted39 from selected dictionary and raisedKeyError; corrected complete prerequisite lookup passes, no application failure or source change. Existing native11/11 and platform/actualGUI checks reused at actual sources; no new broad campaign. Native gameconformance/search/performance/strength/shared integration remain distinct. BothwholeTenjiku IDs, current/retiredformat meanings, resource/actualendingClose reserves, normalQA identity/signature/accessibility limitations and MSH112separatelyunfixedfunctionaldiagnostic disposition preserved.108/47handoffs appended without claiming/starting them;108 remains next after46Done and47stillwaits108. Evidence integration/push and finalDoD4/Done closure follow.
+
+Final integration condition satisfied: approved evidence90e1222d8db27ede3212b794e877a975a068c35d was normally committed and pushed to origin/codex/rewrite before DoD4/Done. Original6AC/4DoD now checked; final metadata/docs commit follows normally. No product source or acceptance change.
+
+Fresh independent final reconciliation approved after actual90e1222d8db27ede3212b794e877a975a068c35d evidence push: reviewer independently confirmed HEAD/origin alignment, durable final summary, all original46/47/108 AC/DoD/dependencies intact,46Done supported,108Ready/unassigned/unstarted,47ToDo/unassigned/unstarted/gated108, no runtime/evidence change;gitdiff--check passed. Reviewed final metadata candidate diff SHA256ea6b5903e79d9a687efa6230e80001041c815d8c123490de3a146e68d4485375. No material blocker; ordinary closure commit/push authorized. No next task started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Closed the original six-game shared-delivery assignment using source-qualified component/game acceptance, actual packaged integration and fresh independent contract/completion review. No implementation, rules, architecture, formats, limits, ending/Close reserves or requirements changed. All six original AC and four DoD items are supported in docs/m4/shared-integration/README.md; every original criterion and all16 dependencies are preserved, with native/game-specific ownership still41–45. Six games include both immutable Tenjiku whole profiles.
+
+Exact tested runtime/platform source bc92bfe5e3b20e9e999df12cbf54b91682c71b8d passed all6 required jobs: Rust42028972679 and Desktop42028972586, attempt1. Windows/Linux actual packaged reports each49/49 pass; localmacOS27 gameplay and four-file package equivalence remain distinct from hostedmacOS15 native/package CI. Existing MSH88verification.json/all202evidence files and MSH89report/index remain unchanged. Current runtime differs from tested source only by four neutral rustdoc comments; no new binary/OS execution is claimed. Current versus retired development formats, supported Chess native/console/live desktop scopes, actual keyboard/accessiblemetadata versus full screen-reader support, dense kanji760x650 limitation and signing/notarization qualifications remain explicit. Functional search is not competitive strength.
+
+Fresh independent read-only msh46_completion_review approved all6AC/DoD1–3, no material blocker; DoD4 followed actual normal evidence commit/push90e1222d8db27ede3212b794e877a975a068c35d on codex/rewrite. New closure checks passed exact-source diff, immutable master/202hashes, six raw jobs+steps/runners/source, original49phase report hashes,19record AC/DoD/dependency/non46owner preservation, all16prerequisitesDone,113resolved graphnodes,86local linktargets, Backlog1.55.1doctor andgitdiff--check. Audit harness first omitted39 from its selecteddictionary; complete prerequisite lookup corrected and passed, no application failure/change. No broad product/conformance/frontend/GUI/CI campaign repeated.
+
+MSH112 remains separately owned ToDo/unfixed functional runner diagnostics with recurrence evidence and nonblocking shared-contract rationale retained; later green retries do not fix it. MSH108/47 handoffs updated without activation:108 is Ready/unassigned/now dependency-satisfied, next independent architecture diagnostic;47 remains ToDo/unassigned and gated by108, owning whole-M4 closure. M4 and M5 are not begun/closed here. Primary integration checkout reused; no worktree created/removed and unrelated historical-access worktree preserved. Stop after46.
+<!-- SECTION:FINAL_SUMMARY:END -->

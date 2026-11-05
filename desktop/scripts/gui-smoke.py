@@ -208,10 +208,12 @@ def completed_tenjiku_analysis(before, after, request_floor, generation_floor, d
     """A retained old result/status cannot prove a newly requested analysis."""
     try:
         previous=before['observations'];current=after['observations']
+        selected=before['tenjiku']['selected'];turn={'game_kind':'tenjiku','side':before['context']['payload']['current_position']['side']}
         if (len(current)!=len(previous)+1 or [item['observation'] for item in current[:-1]]!=[item['observation'] for item in previous]
                 or after['profile']!=before['profile'] or after['context']!=before['context']
                 or after['token']['document']!=before['token']['document'] or after['token']['version']<=before['token']['version']
-                or after['tenjiku']['live']!=before['tenjiku']['live'] or after['events']!=before['events']):return False
+                or after['tenjiku']['selected']!=selected or after['tenjiku']['live']!=before['tenjiku']['live']
+                or after['moves']['entries']!=before['moves']['entries']):return False
         observation=current[-1]['observation'];context=observation['context'];purpose=context['purpose'];target=purpose['target']
         result=observation['result'];value=result['result'];telemetry=value['telemetry']
         return (observation['schema_version']==1 and after['analysis']['observation']==observation
@@ -219,12 +221,30 @@ def completed_tenjiku_analysis(before, after, request_floor, generation_floor, d
             and context['session_version']>=before['token']['version'] and target['session_version']==context['session_version']
             and purpose['kind']=='move_analysis' and context['game']==before['context']
             and context['limits']=={'depth':depth,'nodes':nodes}
-            and target['event_index']==before['event_index'] and target['board_ply']==before['board_ply'] and target['turn']==before['turn']['id']
+            and target['event_index']==selected['event_index'] and target['board_ply']==selected['board_ply'] and target['turn']==turn
             and result['kind']=='tenjiku' and value['kind']=='choice' and telemetry['completed_depth']==depth
-            and telemetry['perspective']==before['turn']['id']['side'] and type(telemetry['score']) is int
+            and telemetry['perspective']==turn['side'] and type(telemetry['score']) is int
             and 0<telemetry['nodes']<=nodes and telemetry['principal_variation'][0]==value['action']
             and telemetry['evaluator_id']=='mshogi.tenjiku.material.v1' and telemetry['search_id']=='mshogi.tenjiku.full-width.v1')
     except (KeyError,TypeError,IndexError):
+        return False
+
+
+def reopened_tenjiku_document_stopped(before, after, ui):
+    """Ordinary Open stops work even when a concluded game has no Resume banner."""
+    try:
+        concluded=before['context']['payload']['conclusion'] is not None
+        return (after['profile']==before['profile'] and after['context']==before['context']
+            and after['tenjiku']==before['tenjiku'] and after['moves']==before['moves']
+            and after['token']['document']>before['token']['document']
+            and after['token']['version']>before['token']['version'] and after['token']['selection']>before['token']['selection']
+            and after['document']['path']==before['document']['path'] and not after['document']['dirty']
+            and after['document']['settings']==before['document']['settings']
+            and [item['observation'] for item in after['observations']]==[item['observation'] for item in before['observations']]
+            and all(item['historical'] for item in after['observations']) and after['analysis'] is None
+            and ui['paused']=='true' and not ui['activeWork']
+            and ui['outcome']==concluded and ui['resume']==(not concluded))
+    except (KeyError,TypeError):
         return False
 
 
@@ -2370,9 +2390,11 @@ class Journey:
         before=self.native_diagnostics();actual=Path(before['document']['path'])
         assert actual.is_file() and digest(actual)==digest(evidence_path)
         self.file('open',actual);self.wait_opened(actual);after=self.native_diagnostics()
-        assert after['profile']==self.tenjiku_profile_id(profile) and after['context']==before['context']
-        assert after['token']['document']>before['token']['document'] and all(item['historical'] for item in after['observations'])
-        assert self.web.has('.play-paused') and not self.web.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
+        ui=self.web.read("""(() => ({paused:document.querySelector('.shell-tenjiku')?.dataset.paused,
+            activeWork:!!document.querySelector('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]'),
+            outcome:!!document.querySelector('.outcome-card'),resume:!!document.querySelector('.play-paused')}))()""")
+        assert before['profile']==self.tenjiku_profile_id(profile) and reopened_tenjiku_document_stopped(before,after,ui),ui
+        self.record('Fresh ordinary Tenjiku Open retains exact native state/history/observations and stops work, including concluded games',ui)
         return after
 
     def tenjiku_analysis(self):
@@ -2383,11 +2405,11 @@ class Journey:
         before=self.native_diagnostics()
         request_floor=max((item['observation']['context']['request_id'] for item in before['observations']),default=0)
         generation_floor=max((item['observation']['context']['process_generation'] for item in before['observations']),default=0)
-        self.record('Capture pre-click native Tenjiku analysis identity floor and exact selected source',{'observations':len(before['observations']),'request_floor':request_floor,'generation_floor':generation_floor,'source':before['context'],'selected_event':before['event_index'],'board_ply':before['board_ply'],'token':before['token']})
+        self.record('Capture pre-click native Tenjiku analysis identity floor and exact selected source',{'observations':len(before['observations']),'request_floor':request_floor,'generation_floor':generation_floor,'source':before['context'],'selected_event':before['tenjiku']['selected']['event_index'],'board_ply':before['tenjiku']['selected']['board_ply'],'token':before['token']})
         w.click('[data-analysis-start="tenjiku"]')
         def newly_completed():
             after=self.native_diagnostics()
-            assert completed_tenjiku_analysis(before,after,request_floor,generation_floor),{'observations':len(after['observations']),'expected_count':len(before['observations'])+1,'phase':after['phase'],'diagnostic':after['diagnostic'],'latest_result':after['observations'][-1]['observation']['result'] if after['observations'] else None}
+            assert completed_tenjiku_analysis(before,after,request_floor,generation_floor),{'observations':len(after['observations']),'expected_count':len(before['observations'])+1,'selected':after['tenjiku']['selected']['event_index'],'diagnostic':after['diagnostic'],'latest_result':after['observations'][-1]['observation']['result'] if after['observations'] else None}
             return after
         after=wait(newly_completed,'new genuine Tenjiku move-analysis observation for exact selected prefix with fresh execution identity',45)
         assert 'Analysis result available' in w.text('.shogi-analysis-state') and 'No move was played.' in w.text('.shogi-analysis')

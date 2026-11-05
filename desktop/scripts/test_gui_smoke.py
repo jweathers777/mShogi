@@ -1660,10 +1660,10 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
 
     def test_repeated_analysis_requires_new_observation_fresh_identity_and_exact_selected_prefix(self):
         action={'kind':'travel','from':[1,3],'route':[[1,4]],'promote':False}
-        native={'game_kind':'tenjiku','rules_profile':'mshogi.tenjiku.adams1999-modern.v1','payload':{'events':[{'native':'prefix1'}]}}
+        native={'game_kind':'tenjiku','rules_profile':'mshogi.tenjiku.adams1999-modern.v1','payload':{'events':[{'native':'prefix1'}],'current_position':{'side':'gote'}}}
         old={'schema_version':1,'context':{'request_id':5,'process_generation':6},'result':{'kind':'retained-prior-analysis'}}
-        before={'profile':native['rules_profile'],'context':native,'token':{'document':4,'version':8},'event_index':1,'board_ply':1,'turn':{'id':{'game_kind':'tenjiku','side':'gote'}},'tenjiku':{'live':{'event_index':2,'identities':'native-live'}},'events':[{'native':'event1'},{'native':'event2'}],'observations':[{'observation':old}]}
-        observation={'schema_version':1,'context':{'request_id':10,'process_generation':11,'session_version':9,'game':copy.deepcopy(native),'limits':{'depth':1,'nodes':1024},'purpose':{'kind':'move_analysis','target':{'event_index':1,'board_ply':1,'session_version':9,'turn':copy.deepcopy(before['turn']['id'])}}},'result':{'kind':'tenjiku','result':{'kind':'choice','action':action,'telemetry':{'completed_depth':1,'perspective':'gote','score':0,'nodes':5,'principal_variation':[action],'evaluator_id':'mshogi.tenjiku.material.v1','search_id':'mshogi.tenjiku.full-width.v1'}}}}
+        before={'profile':native['rules_profile'],'context':native,'token':{'document':4,'version':8},'tenjiku':{'selected':{'event_index':1,'board_ply':1},'live':{'event_index':2,'identities':'native-live'}},'moves':{'entries':[{'native':'event1'},{'native':'event2'}]},'observations':[{'observation':old}]}
+        observation={'schema_version':1,'context':{'request_id':10,'process_generation':11,'session_version':9,'game':copy.deepcopy(native),'limits':{'depth':1,'nodes':1024},'purpose':{'kind':'move_analysis','target':{'event_index':1,'board_ply':1,'session_version':9,'turn':{'game_kind':'tenjiku','side':'gote'}}}},'result':{'kind':'tenjiku','result':{'kind':'choice','action':action,'telemetry':{'completed_depth':1,'perspective':'gote','score':0,'nodes':5,'principal_variation':[action],'evaluator_id':'mshogi.tenjiku.material.v1','search_id':'mshogi.tenjiku.full-width.v1'}}}}
         after=copy.deepcopy(before);after['token']['version']=10;after['observations'].append({'observation':observation});after['analysis']={'observation':observation}
         self.assertTrue(module.completed_tenjiku_analysis(before,after,5,6))
         self.assertFalse(module.completed_tenjiku_analysis(before,before,5,6),'old available UI/status/native result is insufficient')
@@ -1671,11 +1671,64 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
                        lambda a:a['analysis']['observation']['context'].update(request_id=5),lambda a:a['analysis']['observation']['context'].update(process_generation=6),
                        lambda a:a['analysis']['observation']['context'].update(session_version=7),lambda a:a['analysis']['observation']['context']['purpose']['target'].update(event_index=2),
                        lambda a:a['analysis']['observation']['context']['purpose']['target'].update(board_ply=2),lambda a:a['analysis']['observation']['context']['purpose'].update(kind='engine_turn'),
+                       lambda a:a['analysis']['observation']['context']['purpose']['target']['turn'].update(side='sente'),lambda a:a['tenjiku']['selected'].update(event_index=2),
+                       lambda a:a['moves']['entries'].append({'played':'unexpected-event'}),
                        lambda a:a['analysis']['observation']['context']['game']['payload']['events'].append({'future':'event2'}),lambda a:a['context']['payload']['events'].append({'played':'move'}),
                        lambda a:a['tenjiku']['live'].update(identities='changed-live-game'),lambda a:a.update(profile='mshogi.tenjiku.muller-completed.v1'),
                        lambda a:a['analysis']['observation']['result']['result']['telemetry'].update(score=None),lambda a:a['analysis']['observation']['result'].update(kind='chu')):
             changed=copy.deepcopy(after);mutate(changed)
             self.assertFalse(module.completed_tenjiku_analysis(before,changed,5,6))
+
+    def tenjiku_public_diagnostics(self, name):
+        snapshot=json.loads((Path(__file__).parents[1]/'src'/'__fixtures__'/f'shared-tenjiku-{name}.json').read_text())
+        # Exact public About projection, also observed in Linux source0a2.
+        # Its shape deliberately differs from the complete native snapshot.
+        keys=('token','profile','document','close_requires_save','context','moves','capacity','diagnostic','io','analysis','observations','tenjiku')
+        return {**{key:snapshot[key] for key in keys},'error':''}
+
+    def test_real_native_analysis_projection_has_no_full_snapshot_only_top_level_fields(self):
+        for profile in ('adams','muller'):
+            before=self.tenjiku_public_diagnostics(f'{profile}-standard');after=self.tenjiku_public_diagnostics(f'{profile}-analysis')
+            self.assertEqual(set(before),{'token','profile','document','close_requires_save','context','moves','capacity','diagnostic','io','analysis','observations','tenjiku','error'})
+            self.assertTrue({'event_index','board_ply','turn','events','phase'}.isdisjoint(before))
+            # The Muller standard artifact was produced by a separate New epoch.
+            # Use the actual analysis request's prior authority for that sample.
+            if profile=='muller':
+                self.assertFalse(module.completed_tenjiku_analysis(before,after,0,0))
+                before=copy.deepcopy(after);before['observations']=[];before['analysis']=None
+                context=after['analysis']['observation']['context']
+                before['token']['version']=context['session_version'];before['token']['selection']=context['purpose']['target']['selection_id']
+            self.assertTrue(module.completed_tenjiku_analysis(before,after,0,0))
+            self.assertFalse(module.completed_tenjiku_analysis(before,before,0,0))
+            journey=object.__new__(module.Journey);journey.web=Mock();journey.record=Mock()
+            journey.native_diagnostics=Mock(side_effect=[before,after]);journey.web.has.return_value=True
+            journey.web.text.side_effect=['Analysis result available','No move was played.']
+            with patch.object(module,'wait',side_effect=lambda check,*args:check()):
+                self.assertEqual(journey.tenjiku_analysis(),after)
+            journey.web.click.assert_called_once_with('[data-analysis-start="tenjiku"]')
+
+    def test_ordinary_open_requires_fresh_stopped_authority_and_retains_terminal_conclusion_without_resume(self):
+        for profile in ('adams','muller'):
+            for name,concluded in (('analysis',False),('ending-stopped',True)):
+                before=self.tenjiku_public_diagnostics(f'{profile}-{name}');after=copy.deepcopy(before)
+                after['token']={key:value+10 for key,value in before['token'].items()};after['document']['dirty']=False;after['analysis']=None
+                for item in after['observations']:item['historical']=True
+                ui={'paused':'true','activeWork':False,'outcome':concluded,'resume':not concluded}
+                self.assertTrue(module.reopened_tenjiku_document_stopped(before,after,ui))
+                for field,value in (('paused','false'),('activeWork',True),('outcome',not concluded),('resume',concluded)):
+                    self.assertFalse(module.reopened_tenjiku_document_stopped(before,after,{**ui,field:value}))
+                for mutate in (lambda a:a['token'].update(document=before['token']['document']),lambda a:a['token'].update(version=before['token']['version']),
+                               lambda a:a['token'].update(selection=before['token']['selection']),lambda a:a['document'].update(dirty=True),
+                               lambda a:a['document'].update(path='different-native-file'),lambda a:a['context']['payload'].update(conclusion={'kind':'agreement'}),
+                               lambda a:a['tenjiku']['selected'].update(event_index=999),lambda a:a['tenjiku']['live'].update(event_index=999),
+                               lambda a:a['moves']['entries'].append({'invented':'event'}),lambda a:a.update(analysis={'stale':'pending-analysis'})):
+                    changed=copy.deepcopy(after);mutate(changed)
+                    self.assertFalse(module.reopened_tenjiku_document_stopped(before,changed,ui))
+                if after['observations']:
+                    changed=copy.deepcopy(after);changed['observations'][0]['historical']=False
+                    self.assertFalse(module.reopened_tenjiku_document_stopped(before,changed,ui))
+                    changed=copy.deepcopy(after);changed['observations'][0]['observation']['context']['request_id']+=1
+                    self.assertFalse(module.reopened_tenjiku_document_stopped(before,changed,ui))
 
     def png(self,path,pixels,rgba=False):
         import struct,zlib

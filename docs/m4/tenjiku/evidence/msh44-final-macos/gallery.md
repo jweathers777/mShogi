@@ -1,8 +1,8 @@
 # Normal Tenjiku desktop continuation
 
-Actual normal `org.mshogi.desktop` application on macOS 27.0.1, arm64. These are native screenshots and accessibility captures, not web mockups. The exact package hashes, tested source and final cross-platform receipts are reconciled in [product-verification.json](../../product-verification.json). Each image has an accompanying `.ax.txt` capture and an entry in [artifact-manifest.json](artifact-manifest.json).
+Actual normal `org.mshogi.desktop` application on macOS 27.0.1, arm64. These are native screenshots and accessibility captures, not web mockups. The exact package hashes and tested source are reconciled in [product-verification.json](../../product-verification.json); final cross-platform receipts remain pending there until the campaign completes. Each image has an accompanying `.ax.txt` capture and an entry in [artifact-manifest.json](artifact-manifest.json).
 
-The owner approved the traditional-kanji design. The hard application minimum remains 760×650; approximately 960×1000 is a recommended playing size when the display permits. The whole 16×16 board fits at the minimum, but some kanji and secondary route badges remain too small for comfortable reading. Friendly piece names help identification without resolving every small-window accessibility limitation. These normal application captures do not claim fresh minimum-size DOM measurements; the prior fixed-slot QA measurements and the final Linux/Windows native-frame checks are recorded separately.
+The owner approved the traditional-kanji design. The hard application minimum remains 760×650; approximately 960×1000 is a recommended playing size when the display permits. The whole 16×16 board fits at the minimum, but some kanji and secondary route badges remain too small for comfortable reading. Friendly piece names help identification without resolving every small-window accessibility limitation. These normal application captures do not claim fresh minimum-size DOM measurements. Prior fixed-slot QA measurements are preserved; final Linux/Windows native-frame checks remain pending.
 
 ## Normal activation and shared presentation
 

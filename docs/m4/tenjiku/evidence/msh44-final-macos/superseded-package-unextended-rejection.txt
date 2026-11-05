@@ -1,0 +1,6 @@
+
+thread 'main' (44458251) panicked at crates/mshogi-desktop-session/examples/write_tenjiku_gui_fixtures.rs:245:13:
+assertion `left == right` failed
+  left: Some(BareRoyalLoss { winner: Sente })
+ right: Some(RoyalCapture { winner: Sente })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

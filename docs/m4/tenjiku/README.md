@@ -27,7 +27,8 @@ choices and ordinary profile-preserving Load: see
 [engine](engine-v1.md), [notation/console](notation.md), [artwork](desktop-art.md),
 [original-criteria coverage](product-coverage.md), the single
 [product evidence record](product-verification.json) and
-[genuine macOS gallery](evidence/msh44-macos/gallery.md).
+[normal macOS gallery](evidence/msh44-final-macos/gallery.md). The
+[earlier QA gallery](evidence/msh44-macos/gallery.md) retains its checkpoint scope.
 On 5 November the owner approved the traditional-kanji artwork and authorized
 normal activation. The shared footer identifies the selected native piece across
 all six games, including compound entry; capture outlines paint above occupied

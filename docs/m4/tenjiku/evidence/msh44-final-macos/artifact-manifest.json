@@ -1,5 +1,6 @@
 {
-  "scope": "Genuine normal macOS desktop continuation captures; source identity reconciled in product-verification.json. Old unextended royal probe is explicitly superseded.",
+  "source_revision": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+  "scope": "Genuine normal macOS desktop continuation captures. Packagebinaryhashesreproducedfromreviewedsource; oldunextendedroyalprobeexplicitlysuperseded.",
   "artifacts": {
     "normal-muller-readonly-analysis.ax.txt": {
       "bytes": 20228,
@@ -8,6 +9,10 @@
     "normal-adams-engine-royal-capture.png": {
       "bytes": 329490,
       "sha256": "ac49fbead363465521e80b098e16aae958352f7bb02a5ea18a38c5711ddda3ab"
+    },
+    "package-smoke.json": {
+      "bytes": 153181,
+      "sha256": "867652642749d42ca4b835c43ac51b524cf3dfa15fbc7ff8d76656f686bcc988"
     },
     "normal-muller-dirty-quit-guard.png": {
       "bytes": 284556,
@@ -69,6 +74,10 @@
       "bytes": 19279,
       "sha256": "65dfc5061e7834c4814e70f658fcb9467ec8165e8617dd8ec8bd3842d982b2eb"
     },
+    "superseded-package-unextended-rejection.txt": {
+      "bytes": 317,
+      "sha256": "0a5d1b3ef126086901fa216aa7a74dea2c766039dd47abcf343972ae66f9ec35"
+    },
     "superseded-adams-royal-probe-bare-loss.ax.txt": {
       "bytes": 18011,
       "sha256": "bf6ddee50eef8500162744c476ea6db4ace4ba1f8fefb2e64828d3a9a2b14cfa"
@@ -76,6 +85,10 @@
     "normal-adams-compound-completed-engine-reply.png": {
       "bytes": 310189,
       "sha256": "ce3e94d385b13b2b9ecc4f1bdc1be5aa1c7dc644db6a8e538b2c24892f3df4d9"
+    },
+    "superseded-package-unextended.json": {
+      "bytes": 38964,
+      "sha256": "df2add0df10af0043da05f3f16b3510a70b649ad28e3af9a9cc2aed0f26810aa"
     },
     "normal-adams-takeback-retained.ax.txt": {
       "bytes": 19258,
@@ -118,8 +131,8 @@
       "sha256": "80f765aca84522d7d6c0f1e72c35190f6b0d7d1f54b91ea17bd629f407c61771"
     },
     "gallery.md": {
-      "bytes": 3736,
-      "sha256": "1b4961a202ae69bd3a7016d46df97e5777245c10d852ee8b8edb4151a2d0c539"
+      "bytes": 3780,
+      "sha256": "5e8d48a60f5d5a1c1605d0259e5d8ab0c25c56bb7404b6dcb1a59fc472cf972d"
     },
     "normal-muller-gote-profile-chooser.ax.txt": {
       "bytes": 1028,
@@ -152,6 +165,10 @@
     "normal-sixth-game-adams-profile-chooser.ax.txt": {
       "bytes": 1080,
       "sha256": "959bbf127d10734b7fb25889d5d00553504f4650a41f4c158e2c764519b1fba2"
+    },
+    "normal-package-identity.json": {
+      "bytes": 2080,
+      "sha256": "7c072cd428121914123785ccef210c5a171f32e3bbe931348c9c6887b66aff34"
     },
     "normal-adams-independent-royal-root.ax.txt": {
       "bytes": 17649,

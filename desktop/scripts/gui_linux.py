@@ -18,6 +18,10 @@ import threading
 import time
 
 
+class FilenameReadbackUnavailable(TimeoutError):
+    """Copy did not yield entry text; never an accepted filename."""
+
+
 class Native:
     """Operate only the bound application's native X11 windows."""
 
@@ -261,7 +265,10 @@ class Native:
             if len(value) > 4096:
                 raise RuntimeError("Native filename Copy exceeded the bounded entry size")
             return value if value and value != marker else None
-        return self._wait(copied, "Native filename Copy produced no entry text", timeout=2)
+        try:
+            return self._wait(copied, "Native filename Copy produced no entry text", timeout=2)
+        except TimeoutError as error:
+            raise FilenameReadbackUnavailable(str(error)) from error
 
     def _enter_picker_path(self, picker: dict, selected: str, stem: str) -> dict:
         if not selected or len(selected) > 4096 or not Path(selected).is_absolute() or any(ord(char) < 32 for char in selected):
@@ -269,15 +276,27 @@ class Native:
         self._key("ctrl+l")
         self._key("ctrl+a")
         self._run(["xdotool", "type", "--clearmodifiers", "--delay", "1", "--", selected])
-        observed = self._copy_picker_text()
+        unavailable = None
+        try:
+            observed = self._copy_picker_text()
+        except FilenameReadbackUnavailable as error:
+            # GTK may show the location entry after the first typing burst.
+            # Preserve that empty/unavailable observation; no Open/Save has
+            # been sent and no filename has been accepted.
+            observed = None
+            unavailable = str(error)
         corrected = False
         if observed != selected:
             self.screenshot(self.output / f"{stem}-filename-mismatch.png")
-            # Correct only an actually observed missing-prefix suffix, once;
-            # never accept an unverified path or replay an Open/Save action.
-            if not observed or not selected.endswith(observed):
+            # One input-only replacement is allowed for unavailable Copy or an
+            # observed missing-prefix suffix. Unrelated text still fails.
+            if unavailable is None and (not observed or not selected.endswith(observed)):
                 raise RuntimeError(f"Native filename differs from requested path: {observed!r}")
+            current = [window for window in self._windows() if window["id"] == picker["id"]]
+            if len(current) != 1 or (current[0]["pid"], current[0]["title"]) != (picker["pid"], picker["title"]):
+                raise RuntimeError("Native picker identity changed before filename replacement")
             self._activate(picker["id"])
+            self._key("ctrl+l")
             self._key("ctrl+a")
             self._run(["xdotool", "type", "--clearmodifiers", "--delay", "1", "--", selected])
             corrected = True
@@ -285,7 +304,10 @@ class Native:
             if actual != selected:
                 raise RuntimeError(f"Native filename replacement did not match requested path: {actual!r}")
         return {"expected": selected, "first_readback": observed,
-                "accepted_readback": selected, "observed_prefix_corrected": corrected}
+                "accepted_readback": selected,
+                "observed_prefix_corrected": corrected and unavailable is None,
+                "unavailable_copy_replaced": unavailable,
+                "readback_attempts": 2 if corrected else 1}
 
     def _picker_fallback(self, picker: dict, kind: str, stem: str) -> dict | None:
         """Accept a still-open exact picker; closure is not outcome evidence."""

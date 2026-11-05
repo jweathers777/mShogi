@@ -1,10 +1,10 @@
 {
   "schema": "mshogi.tenjiku.product-verification.v1",
   "task": "MSH-44",
-  "status": "normal_activation_implemented_final_platform_verification_pending",
+  "status": "corrected_verifier_source_reviewed_final_campaign_pending",
   "base_revision": "84d7aa83c5477dfde4513515fe54c3b9e1fb2587",
   "tested_revision": null,
-  "scope": "Functional two-profile playable desktop visual checkpoint; normal activation and final acceptance pending owner approval",
+  "scope": "Normal sixth-game activation for both immutable profiles, shared native friendly-piece identification and above-piece capture outlines; final exact-source three-platform packaged acceptance.",
   "profiles": [
     "mshogi.tenjiku.adams1999-modern.v1",
     "mshogi.tenjiku.muller-completed.v1"
@@ -26,885 +26,100 @@
   },
   "checks": [
     {
-      "command": "cargo check --locked --workspace --offline",
+      "command": "npm test",
+      "result": "567 tests /42 files passed34.39s"
+    },
+    {
+      "command": "npm run check",
       "result": "passed"
     },
     {
-      "command": "cargo check --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --features desktop-verification",
-      "result": "passed; existing vendored Tao warnings"
-    },
-    {
-      "command": "PATH=<bundled Node24.22.1>/bin:$PATH npm run check",
-      "cwd": "desktop",
+      "command": "cargo check --workspace --locked --offline",
       "result": "passed"
     },
     {
-      "command": "cargo test --locked --offline -p mshogi-engine --test tenjiku_protocol",
-      "result": "3 passed"
+      "command": "cargo test --manifest-path desktop/src-tauri/Cargo.toml --locked",
+      "result": "8 passed"
     },
     {
-      "command": "cargo test --locked --offline -p mshogi-engine --test tenjiku_routing",
-      "result": "4 passed"
+      "command": "cargo test --manifest-path desktop/src-tauri/Cargo.toml --locked --features desktop-verification",
+      "result": "17 passed"
     },
     {
-      "command": "cargo test --locked --offline -p mshogi-desktop-session tenjiku_document::tests::execution:: -- --test-threads=1",
-      "result": "5 passed in18.84s"
-    },
-    {
-      "command": "cargo test --locked --offline -p mshogi-desktop-session shared::tenjiku_tests::real_search -- --test-threads=1",
-      "result": "1 passed in4.36s"
-    },
-    {
-      "command": "cargo test --release --locked --offline -p mshogi-desktop-session measured_real_engine_contexts_actual_worker -- --ignored --nocapture --test-threads=1",
-      "result": "1 passed in113.32s; both profiles"
-    },
-    {
-      "command": "cargo clippy --workspace --all-targets --locked --offline -- -D warnings",
-      "result": "passed in28.74s"
-    },
-    {
-      "command": "Node24.22.1 npm test (desktop)",
-      "result": "508 tests/41 files passed37.17s before final QA-only metric/strip changes; affected checks and actual GUI verify those separately"
-    },
-    {
-      "command": "Node24.22.1 npm --prefix desktop run build",
-      "result": "passed; normal bundle verification-module exclusion active"
-    },
-    {
-      "command": "cargo clippy --locked --offline -p mshogi-desktop-session --all-targets --all-features -- -D warnings",
+      "command": "cargo clippy --manifest-path desktop/src-tauri/Cargo.toml --locked --all-targets -- -D warnings",
       "result": "passed"
     },
     {
-      "command": "cargo test --release -p mshogi-console --test tenjiku_internal --test tenjiku_selfplay --locked",
-      "result": "internal6 passed9.44s; selfplay2 passed5.40s after initial-root assertion correction"
+      "command": "Focused native cross-profile product Open test",
+      "result": "1 passed; restored profile/human/epoch/history/file bytes"
     },
     {
-      "command": "cargo test -p mshogi-console --test tenjiku_internal --test tenjiku_selfplay --locked",
-      "result": "explicit debug diagrams: internal6 passed10.77s; selfplay2 passed4.36s; no skipped tests"
+      "command": "Independent shared UI tests",
+      "result": "30 passed; all6games/bothprofiles"
     },
     {
-      "command": "cargo test --locked --offline -p mshogi-desktop-session real_stationary_capture_analysis -- --test-threads=1",
-      "result": "1 passed1.37s; bothprofiles exact igui target in presented PV and read-only native record"
+      "command": "External GUI observer tests",
+      "result": "122 focused passed; full153 previouslypassed"
     },
     {
-      "command": "cargo test --workspace --locked --offline",
-      "result": "passed including doctests; full coherent source checkpoint"
+      "command": "write_tenjiku_gui_fixtures / publicGame package result verifier",
+      "result": "20docs+manifest byte-reproducible; actualbundledengine4queries bothprofiles\u00d7play/analysis replayRoyalCaptureSente; Clippy passed"
     },
     {
-      "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml",
-      "result": "9 passed0.06s after stale capability assertion correction"
+      "command": "npm run desktop:build -- --bundles app",
+      "result": "passed; finalhost/engine hashes unchanged"
     },
     {
-      "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --features desktop-verification",
-      "result": "18 passed1.11s after stale capability assertion correction"
-    },
-    {
-      "command": "cargo test --locked -p mshogi-engine --test tenjiku_profile_play -- --nocapture",
-      "result": "4 passed25.81s;8 actual line-server cases for bothprofiles FreeEagle/Tetrarch/rankedvictim/dyingDemon; no subprocessclaim"
-    },
-    {
-      "command": "cargo test --release --locked -p mshogi-engine --test tenjiku_profile_play -- --nocapture",
-      "result": "4 passed1.63s; source-derived route/effect/outcome contrasts validated"
-    },
-    {
-      "command": "cargo test --locked --offline -p mshogi-core tenjiku::notation",
-      "result": "9 passed, including both-profile igui destruction; isolated formatter author",
-      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
-    },
-    {
-      "command": "cargo test --locked --offline -p mshogi-console --test tenjiku_cli",
-      "result": "8 passed2.09s; ordered burn/igui/promotion and rejected-batch output atomicity",
-      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
-    },
-    {
-      "command": "cargo test --locked --offline -p mshogi-desktop-session shared::tenjiku_tests:: -- --test-threads=1",
-      "result": "14 passed;2 explicitly ignored release resource measurements separately executed earlier;28.97s",
-      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
-    },
-    {
-      "command": "Node24 npm --prefix desktop test -- src/product/Moves.test.tsx src/product/TenjikuBoard.test.tsx src/product/TenjikuArtwork.test.tsx src/product/TenjikuPiece.test.tsx",
-      "result": "48 passed in14.21s",
-      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
-    },
-    {
-      "command": "Node24 npm --prefix desktop run check",
-      "result": "passed",
-      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
-    },
-    {
-      "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --features desktop-verification",
-      "result": "18 passed1.12s",
-      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
-    },
-    {
-      "command": "cargo clippy --workspace --all-targets --locked --offline -- -D warnings",
-      "result": "passed on initial effects fix; later igui wording and console changes checked with core/console Clippy by isolated author",
-      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
-    },
-    {
-      "command": "Node24 CARGO_NET_OFFLINE=true npm run desktop:build -- --bundles app --features desktop-verification --config src-tauri/tauri.verification.conf.json",
-      "result": "passed; rebuilt after final source commit, exact source-matched fixed-slot package staged and strictly verified",
-      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
-    },
-    {
-      "command": "Node24 npm --prefix desktop test",
-      "result": "511 tests/41 files passed16.94s",
-      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+      "command": "python3 -m unittest discover -s desktop/scripts -p 'test_gui*.py'",
+      "result": "160 tests passed in1.779s; focusedAbout5passed1.95s; syntax/diffchecks passed."
     }
   ],
   "performance": {
-    "real_contexts_note": "Each profile used one genuine depth1 search at a retained128-action native root, with explicitly synthetic nonce variants for repeated-context/PV growth, not four separate searches. Full worker operations used the last accepted complete candidate.",
-    "real_context_growth": [
-      {
-        "contexts": 1,
-        "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
-        "usage": {
-          "controls": 1,
-          "encoded_bytes": 271720,
-          "observations": 1,
-          "replay_work": 61058200,
-          "reserved_bytes": 959,
-          "reserved_work": 813656,
-          "retained_events": 384
-        },
-        "validate_us": 1567604
-      },
-      {
-        "contexts": 2,
-        "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
-        "usage": {
-          "controls": 2,
-          "encoded_bytes": 362652,
-          "observations": 2,
-          "replay_work": 91633508,
-          "reserved_bytes": 959,
-          "reserved_work": 813656,
-          "retained_events": 512
-        },
-        "validate_us": 2654209
-      },
-      {
-        "contexts": 3,
-        "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
-        "usage": {
-          "controls": 3,
-          "encoded_bytes": 453584,
-          "observations": 3,
-          "replay_work": 122208816,
-          "reserved_bytes": 959,
-          "reserved_work": 813656,
-          "retained_events": 640
-        },
-        "validate_us": 3395874
-      },
-      {
-        "contexts": 4,
-        "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
-        "usage": {
-          "controls": 4,
-          "encoded_bytes": 544516,
-          "observations": 4,
-          "replay_work": 152784124,
-          "reserved_bytes": 959,
-          "reserved_work": 813656,
-          "retained_events": 768
-        },
-        "validate_us": 4682021
-      },
-      {
-        "contexts": 1,
-        "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
-        "usage": {
-          "controls": 1,
-          "encoded_bytes": 271769,
-          "observations": 1,
-          "replay_work": 61065431,
-          "reserved_bytes": 959,
-          "reserved_work": 813719,
-          "retained_events": 384
-        },
-        "validate_us": 1207104
-      },
-      {
-        "contexts": 2,
-        "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
-        "usage": {
-          "controls": 2,
-          "encoded_bytes": 362715,
-          "observations": 2,
-          "replay_work": 91644358,
-          "reserved_bytes": 959,
-          "reserved_work": 813719,
-          "retained_events": 512
-        },
-        "validate_us": 2024360
-      },
-      {
-        "contexts": 3,
-        "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
-        "usage": {
-          "controls": 3,
-          "encoded_bytes": 453661,
-          "observations": 3,
-          "replay_work": 122223285,
-          "reserved_bytes": 959,
-          "reserved_work": 813719,
-          "retained_events": 640
-        },
-        "validate_us": 3051380
-      },
-      {
-        "contexts": 4,
-        "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
-        "usage": {
-          "controls": 4,
-          "encoded_bytes": 544607,
-          "observations": 4,
-          "replay_work": 152802212,
-          "reserved_bytes": 959,
-          "reserved_work": 813719,
-          "retained_events": 768
-        },
-        "validate_us": 3829696
-      }
-    ],
-    "real_context_refusals": [
-      {
-        "contexts": 5,
-        "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
-        "real_engine_context_refusal": "mshogi.tenjiku.adams1999-modern.v1",
-        "resource": {
-          "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
-          "facts": [
-            {
-              "category": "replay_work",
-              "count": 160404848,
-              "limit": 160000000,
-              "measurement": "candidate",
-              "observations": null,
-              "reserved": 0,
-              "scope": "tenjiku",
-              "unit": "replay_units"
-            }
-          ],
-          "omitted_facts": 0
-        },
-        "validate_us": 4540773
-      },
-      {
-        "contexts": 5,
-        "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
-        "real_engine_context_refusal": "mshogi.tenjiku.muller-completed.v1",
-        "resource": {
-          "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
-          "facts": [
-            {
-              "category": "replay_work",
-              "count": 160423839,
-              "limit": 160000000,
-              "measurement": "candidate",
-              "observations": null,
-              "reserved": 0,
-              "scope": "tenjiku",
-              "unit": "replay_units"
-            }
-          ],
-          "omitted_facts": 0
-        },
-        "validate_us": 3892258
-      }
-    ],
-    "actual_workers": [
-      {
-        "actual_worker_profile": "mshogi.tenjiku.adams1999-modern.v1",
-        "close_us": 415,
-        "ended_open_us": 5830624,
-        "ended_save_us": 5470015,
-        "ended_usage": {
-          "controls": 8,
-          "encoded_bytes": 545439,
-          "observations": 4,
-          "replay_work": 153597758,
-          "reserved_bytes": 14,
-          "reserved_work": 0,
-          "retained_events": 771
-        },
-        "endings_us": [
-          5289744,
-          4808483,
-          4650047
-        ],
-        "fresh_stopped_reopen": true,
-        "open_us": 7055771,
-        "prior_file_preserved": true,
-        "save_us": 5930886,
-        "source_usage": {
-          "controls": 4,
-          "encoded_bytes": 544516,
-          "observations": 4,
-          "replay_work": 152784124,
-          "reserved_bytes": 959,
-          "reserved_work": 813656,
-          "retained_events": 768
-        }
-      },
-      {
-        "actual_worker_profile": "mshogi.tenjiku.muller-completed.v1",
-        "close_us": 430,
-        "ended_open_us": 5799651,
-        "ended_save_us": 5588766,
-        "ended_usage": {
-          "controls": 8,
-          "encoded_bytes": 545530,
-          "observations": 4,
-          "replay_work": 153615909,
-          "reserved_bytes": 14,
-          "reserved_work": 0,
-          "retained_events": 771
-        },
-        "endings_us": [
-          4577547,
-          4653534,
-          4698466
-        ],
-        "fresh_stopped_reopen": true,
-        "open_us": 5664776,
-        "prior_file_preserved": true,
-        "save_us": 5615759,
-        "source_usage": {
-          "controls": 4,
-          "encoded_bytes": 544607,
-          "observations": 4,
-          "replay_work": 152802212,
-          "reserved_bytes": 959,
-          "reserved_work": 813719,
-          "retained_events": 768
-        }
-      }
-    ],
-    "projection_inspection_measurements": {
-      "command": "cargo run --release --locked --offline -p mshogi-desktop-session --features desktop-verification --example write_tenjiku_frontend_fixtures -- desktop/src/__fixtures__",
-      "source": "2c00e2107ac74334bce5d55813e5be25666d7c46",
-      "scope": "Local macOS27 arm64 release native/controller DTO generation and serialization, measured beforecommit on identical source tree. Microseconds, not GUI frame/transport/portable latency guarantees. All156-piece dense diagrams are explicitly synthetic custom roots.",
-      "rows": [
-        {
-          "inspection_encode_total_us": 129,
-          "inspection_max_bytes": 2994,
-          "inspection_max_choices": 6,
-          "inspection_max_us": 209,
-          "inspection_origins": 156,
-          "inspection_total_bytes": 122132,
-          "inspection_total_choices": 140,
-          "inspection_total_us": 2476,
-          "pieces": 156,
-          "profile": "adams",
-          "scenario": "standard",
-          "snapshot_choices": 70,
-          "snapshot_encode_us": 268,
-          "snapshot_encoded_bytes": 192435,
-          "snapshot_us": 143
-        },
-        {
-          "inspection_encode_total_us": 138,
-          "inspection_max_bytes": 2994,
-          "inspection_max_choices": 6,
-          "inspection_max_us": 188,
-          "inspection_origins": 156,
-          "inspection_total_bytes": 125524,
-          "inspection_total_choices": 148,
-          "inspection_total_us": 2368,
-          "pieces": 156,
-          "profile": "muller",
-          "scenario": "standard",
-          "snapshot_choices": 74,
-          "snapshot_encode_us": 264,
-          "snapshot_encoded_bytes": 194159,
-          "snapshot_us": 142
-        },
-        {
-          "inspection_encode_total_us": 536,
-          "inspection_max_bytes": 257120,
-          "inspection_max_choices": 598,
-          "inspection_max_us": 798,
-          "inspection_origins": 7,
-          "inspection_total_bytes": 472547,
-          "inspection_total_choices": 1096,
-          "inspection_total_us": 1528,
-          "pieces": 7,
-          "profile": "adams",
-          "scenario": "burn",
-          "snapshot_choices": 602,
-          "snapshot_encode_us": 315,
-          "snapshot_encoded_bytes": 283559,
-          "snapshot_us": 128
-        },
-        {
-          "inspection_encode_total_us": 22,
-          "inspection_max_bytes": 11106,
-          "inspection_max_choices": 29,
-          "inspection_max_us": 40,
-          "inspection_origins": 6,
-          "inspection_total_bytes": 16584,
-          "inspection_total_choices": 38,
-          "inspection_total_us": 83,
-          "pieces": 6,
-          "profile": "adams",
-          "scenario": "igui",
-          "snapshot_choices": 33,
-          "snapshot_encode_us": 52,
-          "snapshot_encoded_bytes": 36585,
-          "snapshot_us": 20
-        },
-        {
-          "inspection_encode_total_us": 49,
-          "inspection_max_bytes": 34655,
-          "inspection_max_choices": 88,
-          "inspection_max_us": 101,
-          "inspection_origins": 7,
-          "inspection_total_bytes": 40931,
-          "inspection_total_choices": 98,
-          "inspection_total_us": 148,
-          "pieces": 7,
-          "profile": "adams",
-          "scenario": "compound",
-          "snapshot_choices": 92,
-          "snapshot_encode_us": 78,
-          "snapshot_encoded_bytes": 61042,
-          "snapshot_us": 38
-        },
-        {
-          "inspection_encode_total_us": 58,
-          "inspection_max_bytes": 41940,
-          "inspection_max_choices": 108,
-          "inspection_max_us": 132,
-          "inspection_origins": 7,
-          "inspection_total_bytes": 49700,
-          "inspection_total_choices": 122,
-          "inspection_total_us": 191,
-          "pieces": 7,
-          "profile": "adams",
-          "scenario": "hawk",
-          "snapshot_choices": 112,
-          "snapshot_encode_us": 84,
-          "snapshot_encoded_bytes": 68357,
-          "snapshot_us": 36
-        },
-        {
-          "inspection_encode_total_us": 266,
-          "inspection_max_bytes": 215370,
-          "inspection_max_choices": 504,
-          "inspection_max_us": 660,
-          "inspection_origins": 6,
-          "inspection_total_bytes": 220848,
-          "inspection_total_choices": 513,
-          "inspection_total_us": 715,
-          "pieces": 6,
-          "profile": "adams",
-          "scenario": "area",
-          "snapshot_choices": 508,
-          "snapshot_encode_us": 269,
-          "snapshot_encoded_bytes": 240858,
-          "snapshot_us": 102
-        },
-        {
-          "inspection_encode_total_us": 22,
-          "inspection_max_bytes": 11317,
-          "inspection_max_choices": 28,
-          "inspection_max_us": 45,
-          "inspection_origins": 7,
-          "inspection_total_bytes": 17603,
-          "inspection_total_choices": 38,
-          "inspection_total_us": 95,
-          "pieces": 7,
-          "profile": "adams",
-          "scenario": "ranked-jump",
-          "snapshot_choices": 33,
-          "snapshot_encode_us": 53,
-          "snapshot_encoded_bytes": 38088,
-          "snapshot_us": 21
-        },
-        {
-          "inspection_encode_total_us": 527,
-          "inspection_max_bytes": 257120,
-          "inspection_max_choices": 598,
-          "inspection_max_us": 768,
-          "inspection_origins": 7,
-          "inspection_total_bytes": 472547,
-          "inspection_total_choices": 1096,
-          "inspection_total_us": 1478,
-          "pieces": 7,
-          "profile": "muller",
-          "scenario": "burn",
-          "snapshot_choices": 602,
-          "snapshot_encode_us": 323,
-          "snapshot_encoded_bytes": 283587,
-          "snapshot_us": 123
-        },
-        {
-          "inspection_encode_total_us": 26,
-          "inspection_max_bytes": 15819,
-          "inspection_max_choices": 42,
-          "inspection_max_us": 59,
-          "inspection_origins": 6,
-          "inspection_total_bytes": 21297,
-          "inspection_total_choices": 51,
-          "inspection_total_us": 103,
-          "pieces": 6,
-          "profile": "muller",
-          "scenario": "igui",
-          "snapshot_choices": 46,
-          "snapshot_encode_us": 55,
-          "snapshot_encoded_bytes": 41326,
-          "snapshot_us": 39
-        },
-        {
-          "inspection_encode_total_us": 48,
-          "inspection_max_bytes": 34655,
-          "inspection_max_choices": 88,
-          "inspection_max_us": 98,
-          "inspection_origins": 7,
-          "inspection_total_bytes": 40931,
-          "inspection_total_choices": 98,
-          "inspection_total_us": 146,
-          "pieces": 7,
-          "profile": "muller",
-          "scenario": "compound",
-          "snapshot_choices": 92,
-          "snapshot_encode_us": 76,
-          "snapshot_encoded_bytes": 61070,
-          "snapshot_us": 37
-        },
-        {
-          "inspection_encode_total_us": 59,
-          "inspection_max_bytes": 41940,
-          "inspection_max_choices": 108,
-          "inspection_max_us": 141,
-          "inspection_origins": 7,
-          "inspection_total_bytes": 49700,
-          "inspection_total_choices": 122,
-          "inspection_total_us": 196,
-          "pieces": 7,
-          "profile": "muller",
-          "scenario": "hawk",
-          "snapshot_choices": 112,
-          "snapshot_encode_us": 87,
-          "snapshot_encoded_bytes": 68385,
-          "snapshot_us": 37
-        },
-        {
-          "inspection_encode_total_us": 242,
-          "inspection_max_bytes": 215370,
-          "inspection_max_choices": 504,
-          "inspection_max_us": 644,
-          "inspection_origins": 6,
-          "inspection_total_bytes": 220848,
-          "inspection_total_choices": 513,
-          "inspection_total_us": 689,
-          "pieces": 6,
-          "profile": "muller",
-          "scenario": "area",
-          "snapshot_choices": 508,
-          "snapshot_encode_us": 280,
-          "snapshot_encoded_bytes": 240886,
-          "snapshot_us": 103
-        },
-        {
-          "inspection_encode_total_us": 22,
-          "inspection_max_bytes": 11317,
-          "inspection_max_choices": 28,
-          "inspection_max_us": 41,
-          "inspection_origins": 7,
-          "inspection_total_bytes": 17603,
-          "inspection_total_choices": 38,
-          "inspection_total_us": 89,
-          "pieces": 7,
-          "profile": "muller",
-          "scenario": "ranked-jump",
-          "snapshot_choices": 33,
-          "snapshot_encode_us": 79,
-          "snapshot_encoded_bytes": 38116,
-          "snapshot_us": 52
-        },
-        {
-          "inspection_encode_total_us": 171,
-          "inspection_max_bytes": 34655,
-          "inspection_max_choices": 88,
-          "inspection_max_us": 311,
-          "inspection_origins": 156,
-          "inspection_total_bytes": 160532,
-          "inspection_total_choices": 239,
-          "inspection_total_us": 2610,
-          "pieces": 156,
-          "profile": "adams",
-          "scenario": "dense-lion",
-          "snapshot_choices": 168,
-          "snapshot_encode_us": 358,
-          "snapshot_encoded_bytes": 230507,
-          "snapshot_us": 188
-        },
-        {
-          "inspection_encode_total_us": 241,
-          "inspection_max_bytes": 35753,
-          "inspection_max_choices": 91,
-          "inspection_max_us": 1272,
-          "inspection_origins": 156,
-          "inspection_total_bytes": 162458,
-          "inspection_total_choices": 244,
-          "inspection_total_us": 3975,
-          "pieces": 156,
-          "profile": "adams",
-          "scenario": "dense-hawk",
-          "snapshot_choices": 173,
-          "snapshot_encode_us": 723,
-          "snapshot_encoded_bytes": 232439,
-          "snapshot_us": 458
-        },
-        {
-          "inspection_encode_total_us": 414,
-          "inspection_max_bytes": 255232,
-          "inspection_max_choices": 594,
-          "inspection_max_us": 811,
-          "inspection_origins": 156,
-          "inspection_total_bytes": 381772,
-          "inspection_total_choices": 747,
-          "inspection_total_us": 3021,
-          "pieces": 156,
-          "profile": "adams",
-          "scenario": "dense-fire",
-          "snapshot_choices": 676,
-          "snapshot_encode_us": 542,
-          "snapshot_encoded_bytes": 451751,
-          "snapshot_us": 246
-        },
-        {
-          "inspection_encode_total_us": 415,
-          "inspection_max_bytes": 256356,
-          "inspection_max_choices": 597,
-          "inspection_max_us": 745,
-          "inspection_origins": 156,
-          "inspection_total_bytes": 378518,
-          "inspection_total_choices": 739,
-          "inspection_total_us": 3093,
-          "pieces": 156,
-          "profile": "adams",
-          "scenario": "dense-area",
-          "snapshot_choices": 668,
-          "snapshot_encode_us": 545,
-          "snapshot_encoded_bytes": 448509,
-          "snapshot_us": 245
-        },
-        {
-          "inspection_encode_total_us": 177,
-          "inspection_max_bytes": 34655,
-          "inspection_max_choices": 88,
-          "inspection_max_us": 211,
-          "inspection_origins": 156,
-          "inspection_total_bytes": 164325,
-          "inspection_total_choices": 248,
-          "inspection_total_us": 2664,
-          "pieces": 156,
-          "profile": "muller",
-          "scenario": "dense-lion",
-          "snapshot_choices": 173,
-          "snapshot_encode_us": 313,
-          "snapshot_encoded_bytes": 232632,
-          "snapshot_us": 156
-        },
-        {
-          "inspection_encode_total_us": 173,
-          "inspection_max_bytes": 35753,
-          "inspection_max_choices": 91,
-          "inspection_max_us": 202,
-          "inspection_origins": 156,
-          "inspection_total_bytes": 165850,
-          "inspection_total_choices": 252,
-          "inspection_total_us": 2519,
-          "pieces": 156,
-          "profile": "muller",
-          "scenario": "dense-hawk",
-          "snapshot_choices": 177,
-          "snapshot_encode_us": 317,
-          "snapshot_encoded_bytes": 234163,
-          "snapshot_us": 155
-        },
-        {
-          "inspection_encode_total_us": 417,
-          "inspection_max_bytes": 255232,
-          "inspection_max_choices": 594,
-          "inspection_max_us": 799,
-          "inspection_origins": 156,
-          "inspection_total_bytes": 385164,
-          "inspection_total_choices": 755,
-          "inspection_total_us": 3003,
-          "pieces": 156,
-          "profile": "muller",
-          "scenario": "dense-fire",
-          "snapshot_choices": 680,
-          "snapshot_encode_us": 537,
-          "snapshot_encoded_bytes": 453475,
-          "snapshot_us": 245
-        },
-        {
-          "inspection_encode_total_us": 444,
-          "inspection_max_bytes": 256356,
-          "inspection_max_choices": 597,
-          "inspection_max_us": 763,
-          "inspection_origins": 156,
-          "inspection_total_bytes": 381910,
-          "inspection_total_choices": 747,
-          "inspection_total_us": 4496,
-          "pieces": 156,
-          "profile": "muller",
-          "scenario": "dense-area",
-          "snapshot_choices": 672,
-          "snapshot_encode_us": 600,
-          "snapshot_encoded_bytes": 450233,
-          "snapshot_us": 257
-        }
-      ]
-    },
-    "actual_gui_responsiveness": {
-      "cancel_analysis_roundtrip_ms": 983,
-      "qualification": "Observed CUA StartAnalysis\u2192Cancel\u2192SearchStopped roundtrip including automation/state observation overhead; no incomplete move applied. This is not a pure cancellation latency or portable guarantee.",
-      "other_actual_observations": "Native keyboard/pointer partial choices, promotiondialog, history/Takeback/file/close controls visibly settled with accepted state preserved. Their rendering latency was not isolated from automation overhead. Extra end-to-end timings blocked after Maclocked; no throughput/FPS claim.",
-      "replacement": "Actual child tests assert cancelled prior context cannot install, new process generation/request/PID, independent profile and cross-game replacement, and child cleanup. The5second test bound is not a measured steady-state performance claim."
-    }
+    "qualification": "Unchanged native/search/resource measurements are reused for their exact original source and scope, retained under historical_working_checkpoint.performance and engine-v1.md. No fresh tuning or strength claim.",
+    "native_search_source_unchanged": true,
+    "policy_and_limits_unchanged": true
   },
   "independent_review": [
     {
-      "reviewer": "msh44_console_map",
-      "scope": "search/evaluation",
-      "result": "no blocking finding; independently ran10 focused tests"
-    },
-    {
-      "reviewer": "msh44_search_map",
-      "scope": "supervised engine results/context/PV",
-      "result": "no implementation correctness defect; independently ran6 prior protocol/routing tests; root subsequently added explicit no-action and exact-work/mid-validation-stop coverage"
-    },
-    {
-      "reviewer": "msh44_visual_map",
-      "scope": "native document/runtime admission and console/notation",
-      "result": "no blocking admission/atomicity or console/notation finding; four presentation findings corrected and re-reviewed"
-    },
-    {
-      "reviewer": "msh44_search_map",
-      "scope": "final root engine/document/runtime/QA and release CI policy",
-      "result": "PASS; independently reran3 protocol+1 observation/action document test; no skipped/ignored new tests; all3OS release standardroot requirement preserved"
-    },
-    {
-      "reviewer": "msh44_visual_map",
-      "scope": "snapshot-only notation performance fix; successful real QA initialization guards; actual initial1180 screenshot",
-      "result": "PASS with source conclusions limited to reviewed scope; compact QA strip recommended to recover viewportheight; minimum-size/allfaces comfort pending actual captures"
-    },
-    {
-      "reviewer": "msh44_search_map",
-      "scope": "one host cfg(test) assertion correction vs aecd",
-      "result": "PASS; all bytes before test module identical; normal feature/flag/fixture activation gates preserved"
-    },
-    {
-      "reviewer": "primary integrator (not author of isolated testfile)",
-      "scope": "tenjiku_profile_play.rs diagrams vs acceptedT03/T04/T05; complete result/nativecommit checks",
-      "result": "PASS; independently reasoned unique feature differences, no product or legality duplication"
+      "reviewer": "independent_review",
+      "scope": "Activation, strictprofile/nativeadmission, sharedfooter/capture source+30tests,57DTOs onlyboardlabel",
+      "result": "PASS"
     },
     {
       "reviewer": "independent_review",
-      "scope": "Actual renderer/native effects/activation boundaries plus normal/narrow/minimum allfaces captures",
-      "result": "Structural and native-sourced presentation approved; required accessible burn/death gap found and fixed; practical760/960 reading comfort not accepted."
+      "scope": "Actualfreshanalysis observer identity/prefix/context;122tests",
+      "result": "PASS after staleUI readiness-onlyfinding fixed"
     },
     {
       "reviewer": "independent_review",
-      "scope": "Final ordered-effects formatter, console atomic output, optional DTO, exact native projection, QA-only tall preset and18 regenerated fixtures",
-      "result": "PASS after igui survival wording finding closed; all18 DTO changes only added descriptions, legacy/action/context/canonical fields unchanged. New native test captures igui mover death."
+      "scope": "20deriveddiagrams andguardedroyalroots, actual4bundledenginequeries publicGamenativePVreplay",
+      "result": "PASS; only2roots addexplicitremotePawn1a; frozenconformancecorpusunchanged"
     },
     {
       "reviewer": "independent_review",
-      "scope": "Actual proposed960x1000 live/history/Gote allfaces captures versus760",
-      "result": "Concrete proposal materially clearer, all256 visible and full faces preserved; owner decision remains, no current-minimum usability claim."
+      "scope": "Finalsourcefreeze andactualnormalmacOS densecapture/compound/terminalAXPNG",
+      "result": "PASS; final6CI/evidencereconciliation pending."
     },
     {
       "reviewer": "independent_review",
-      "scope": "Actual final effect/promotion AX and dialogs; artifact/package manifest reconciliation",
-      "result": "PASS: accessible distinct nativeburn/death,stationaryorigin,promotion text verified; dialogcontrols/focus fit1180/760.165 artifacthashes and stagedpackage hashes matched; no technicalfinding. Minimumcomfort/ownerapproval remainsopen."
+      "scope": "Original eight acceptance criteria / four DoD evidence map",
+      "result": "No additional required behavior gap found. AC1\u20136 evidence reused only at unchanged native/source scope; AC7 implemented and normalMac verified, pending exactsource Linux/Windows normal/native/pending/recovery and allrequiredjobs. AC8/DoD1\u20132 pending final receipts and reconciliation; no strength/externalengine/historical gate introduced."
     },
     {
       "reviewer": "independent_review",
-      "scope": "Actual partialLion1180/760, keyboard760, completedLion1180, completed3stageDemon760, route/footer/cue source",
-      "result": "Functionalentry supported: nativegeometry, continuationtargets, orderedcoordinatefooter, Complete/Cancel andfocus visible. No newfunctionalblocker. Smallsecondarybadgenumerals remain visualconcern; neither current nor proposedminimum establishesbadgecomfort. Ownervisualapproval remainsopen. No completedLion760capture claimed."
-    },
-    {
-      "reviewer": "independent_review",
-      "scope": "FINAL exact-source six-platform receipts, liveGitHub job/step reconciliation, artifacthashes and no productiondiff",
-      "result": "PASS for workingtechnical/visualcheckpoint at2c00e2107ac74334bce5d55813e5be25666d7c46. IndependentlyqueriedliveGitHubbothruns:all6terminalsuccess,allapplicablemandatorystepssuccess,no nonterminalsteps. Ledgerexactlymatchescache;required3OSrelease andLinux/Windowsactualfive-gameGUI verified.165artifacthashesmatch,productiondiffempty. AC1\u20136supportable;AC7/8+DoD1/2/ownercomfort/minpolicy/badges/activation/finalacceptance OPEN. No newtechnicalfinding."
+      "scope": "Bounded corrections afteractualfirstcampaignfailure, including realpublicdiagnosticshape/nativepausedconcludedOpen andboundpickerinput-onlyrecovery",
+      "result": "PASS; independently124observer+21pickertests, actualfailurePNG/JSON/sourcechecked. Earlier syntheticguardshape reviewmiss explicitlycorrected. OnlyproductionchangeAboutsixgamelist+affected5passingtests."
     }
   ],
   "development_observations": [
-    {
-      "category": "test command filter",
-      "detail": "Two attempted desktop execution filters matched0 tests; corrected to tenjiku_document::tests::execution::,5 actually passed. Zero-test runs are not evidence."
-    },
-    {
-      "category": "debug process contention",
-      "detail": "First parallel actual-child standard-history test hit unchanged15s engine watchdog; preserved failure; serial diagnosis was pending at that checkpoint and is resolved by the later explicit debug/release policy entry."
-    },
-    {
-      "category": "search test expectation",
-      "detail": "Exploratory material-band assertion used256 squares instead of admitted156-piece inventory; corrected, rules unchanged."
-    },
-    {
-      "category": "notation rendering performance",
-      "detail": "Historical notation initially re-admitted LocalPosition per row; scoped fix uses immutable native snapshot Position directly, preserving notation while avoiding rules generation during projection."
-    },
-    {
-      "category": "debug standard-root retry",
-      "detail": "Serialized full-standard internal rerun5passed/1failed202.07s; historicalanalysis20s observation wait expired (hiddenphase not established). Historical-only repro passed64.45s. Explicit debug4-piece diagrams and required release156-piece roots now separate resource claims without skipping assertions or raising product deadlines."
-    },
-    {
-      "category": "selfplay test expectation",
-      "detail": "New assertion incorrectly required156 currentpieces after4real standard plies; legal captures left152. Corrected to assert156 at native initialroot. Release selfplay rerun passed; no product or rules change."
-    },
-    {
-      "category": "QA fixture writer invocation",
-      "detail": "First invocation omitted required outputdirectory and failed before writing files; corrected explicit desktop/src/__fixtures__ invocation passed."
-    },
-    {
-      "category": "npm working directory",
-      "detail": "Two root-directory npm invocations failed ENOENT before checks; corrected desktop prefix/cwd checks passed. Failures are not counted as verification."
-    },
-    {
-      "category": "evidence naming",
-      "detail": "Initial MSH-44 draft reused existing83 verification.json filename; original restored byte-for-byte fromHEAD immediately. MSH-44 single ledger is product-verification.json; prior source/rules ledger preserved."
-    },
-    {
-      "category": "missed standalone host assertion",
-      "detail": "Early host compile passed but full host tests were not run before first push. Required DesktopLinux CI caught stale unavailable-capability expectation in main.rs:1205. Fixed under cfg(test),9normal+18QA tests now pass; unchanged production prefix SHA2563754c55bee97a61d0d4bb818cf8dab779cf637bf5f8b19a01654794dec440fec. No rule/production/acceptance weakening."
-    },
-    {
-      "category": "independent profile fixture correction",
-      "detail": "First FreeEagle diagram used ownPawn8g, which itself directly captured King8f;3 tests passed1 failed because legitimate equalwin contradicted intendeduniqueEagle expectation. Replaced onlytestblocker withKnight8g, which cannot capture8f; no rule/sourcechange. Bothdebug/release4tests thenpassed."
-    },
-    {
-      "category": "minimum usability",
-      "detail": "Actual fit is insufficient: allfaces HT engraving5.295CSSpx at760x618 WebView,7.600 at1180x788. Proposed960x1000 native frame gives960x968 WebView: live598board/35.595cell/11.390minimumem; history534/31.786/10.171bothorientations. No minpolicy change."
-    },
-    {
-      "category": "accessibility correction",
-      "detail": "Independent actual-app review found native burn/death phases aria-hidden and absent from move names; final native formatter now supplies ordered descriptions, exposed in Moves aria-label/title and console. Igui text uses stationary origin so mover destruction does not imply survival."
-    },
-    {
-      "category": "fixture ordering during local test",
-      "detail": "First frontend effects test ran before final regeneration finished and read stale igui wording:34passed1failed. After writer completed all48focused tests passed. No product change required."
-    },
-    {
-      "category": "Mac lock",
-      "detail": "After completed promotion/refusal and corrected native effects captures, desktop control reported locked Mac; manual unlock requested. No security policy or approval store changed."
-    },
-    {
-      "category": "superseded cancelled-job step failure",
-      "detail": "Finalreconciliation of126880030453logs found macOSlockedchecks17passed1failed atsamecfg(test)capabilityassertion1205 despitejobcancelledconclusion; failureexcerptpreserved. Thealreadyreviewedtest-onlycorrection fixedbothOSexpectations. Neitherjobconclusionnorstepfailureoverwritten."
-    }
+    "Oldunextendedroyaldiagram permittedlegitimateBareRoyalLossviaFiD8j-1c. PreservedactualAX/PNG; notcountedasRoyalCapturepass. Derived2fixtures independentlyguardthisshortcutwithremotePawn1a; native rules unchanged.",
+    "NativegetAppinitial907swait measuredprovider/launchboundary; causeunisolated, notengineperformancedata. Subsequentactualnormalrelaunch0.756s.",
+    "Initialtypecheckoldverificationarguments andoneold5gameassertion corrected; subsequentfocusedandfullchecks passed.",
+    "NativepopupmenuAX staleindex observations resolvedwithsupportedkeyboardtypeahead; no productfailureinferred.",
+    "Actual first finalcampaign exposedwrongpublicdiagnosticshape andwrongterminalResume expectation inexternalobserver tests; corrected againstrealreport, with124focusedtests andindependentreview. Failedcampaign andnativepickertimeoutpreserved."
   ],
   "ci": {
-    "status": "pending_final_source_commit",
+    "status": "pending_corrected_source_freeze",
     "required_jobs": [
       "Rust ubuntu-24.04",
       "Rust macos-15",
@@ -913,7 +128,7 @@
       "Desktop macos-15 package/engine plusgenuinelocalnormalmacOSGUIbothprofiles",
       "Desktop windows-2022 withnormalboth-profileTenjiku actualGUI"
     ],
-    "monitor": "One completion-aware monitor after the single final source push; no campaign currently running."
+    "campaign": "Corrected coherent source after real observer failures. No overlapping campaign; previous all6 attempts preserved."
   },
   "macos_visual": {
     "status": "owner_approved_shared_corrections_and_normal_gameplay_captured",
@@ -926,7 +141,7 @@
     "rebuild": "Final reviewed source rebuild reproduces both captured package binaries byte-for-byte.",
     "journeys": [
       "Normal sixth-game chooser with both explicit profiles; fresh immutable games.",
-      "Adams humanSente16l-16k, genuine GoteBGn6mx16n promotion reply; readonlySenteanalysis; Save/Openstopped/history/ReturnLive/Takebackretainedbranch/cleanQuit.",
+      "Adams humanSente16l-16k, genuine GoteBGn6dx16n promotion reply; readonlySenteanalysis; Save/Openstopped/history/ReturnLive/Takebackretainedbranch/cleanQuit.",
       "Muller humanGote: realinitialSenteBGn6mx16c promotion; human16e-16f; genuineSenteBGn+16c-15bx14b; readonlyGoteanalysis; Save/Openstopped/Resume/Flip/dirtyQuitCancel/history/ReturnLive/Takebackretainedbranch.",
       "DenseGG selectednativefriendlylabel and above-pieceoutlinedoccupiedtargets forbothprofiles/oppositeorientations.",
       "LionHawk8h\u21929h partialname/controls, Escape cancellation, completed8hx9hx10h and realengine reply.",
@@ -993,7 +208,11 @@
         "retired": 0,
         "qualification": "Private journeyfile notpromisedpermanent; source fixtures reproduce roots."
       }
-    }
+    },
+    "package_receipt": "evidence/msh44-final-macos/package-smoke.json",
+    "package_identity": "evidence/msh44-final-macos/normal-package-identity.json",
+    "source_revision": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+    "qualification_after_correction": "Earlier actual normal journeys retain exact captured source/package hashes. New source changes only About wording in production; final-source supplemental normal package captures pending."
   },
   "normal_activation": true,
   "final_acceptance": false,
@@ -1021,6 +240,10 @@
     {
       "revision": "2c00e2107ac74334bce5d55813e5be25666d7c46",
       "scope": "Native readable ordered effect formatter shared by console and desktop history, accessible history descriptions; QA-only960x1000 inspection preset. No rules/profile/canonical format/limits/minimum policy changes."
+    },
+    {
+      "revision": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+      "scope": "Reviewed normaltwo-profileactivation andsharednativefriendlynames/above-piececaptureoutlines; fullpackagedbothprofileharness andindependentlyguardedderivedterminalroots. Native rules/search/limits/windowminimumunchanged."
     }
   ],
   "source_integrity": {
@@ -1033,7 +256,9 @@
       "shared-verification.json",
       "profile.json",
       "decisions.md"
-    ]
+    ],
+    "remaining_worktree_changes": "Evidence/Backlog only after reviewed source freeze; unrelated roadmap-only integration2ac32c0/9326489 preserved.",
+    "post_0a2_product_change": "Only About six-game display string; rules/search/session/admission/rendering/limits/minimum unchanged. External GUI observers corrected against captured failures."
   },
   "evidence_timezone": "UTC (checkpoint began4November; final handoff may be5November inEurope/Paris)",
   "task_acceptance": {
@@ -1058,7 +283,7 @@
       1,
       2
     ],
-    "decision": "Shared fixes andnormalactivation reviewed; finalthree-platformpackagedverification/all6CI andindependentfinalreconciliation pending."
+    "decision": "OriginalAC1\u20136 supported; correctedexternalverificationreviewed. Finalcorrectedsource/all6CI/platformacceptance andindependentfinalreconciliation pending."
   },
   "owner_decisions_2026_11_05": {
     "overall_visual_design": "Approved traditionalkanji and existingboardpresentation.",
@@ -3189,7 +2414,887 @@
         2
       ],
       "decision": "Working checkpoint only; STOP for owner visual/minimum decision. No Done, normal activation or final six-game product acceptance."
-    }
+    },
+    "scope": "Functional two-profile playable desktop visual checkpoint; normal activation and final acceptance pending owner approval",
+    "checks": [
+      {
+        "command": "cargo check --locked --workspace --offline",
+        "result": "passed"
+      },
+      {
+        "command": "cargo check --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --features desktop-verification",
+        "result": "passed; existing vendored Tao warnings"
+      },
+      {
+        "command": "PATH=<bundled Node24.22.1>/bin:$PATH npm run check",
+        "cwd": "desktop",
+        "result": "passed"
+      },
+      {
+        "command": "cargo test --locked --offline -p mshogi-engine --test tenjiku_protocol",
+        "result": "3 passed"
+      },
+      {
+        "command": "cargo test --locked --offline -p mshogi-engine --test tenjiku_routing",
+        "result": "4 passed"
+      },
+      {
+        "command": "cargo test --locked --offline -p mshogi-desktop-session tenjiku_document::tests::execution:: -- --test-threads=1",
+        "result": "5 passed in18.84s"
+      },
+      {
+        "command": "cargo test --locked --offline -p mshogi-desktop-session shared::tenjiku_tests::real_search -- --test-threads=1",
+        "result": "1 passed in4.36s"
+      },
+      {
+        "command": "cargo test --release --locked --offline -p mshogi-desktop-session measured_real_engine_contexts_actual_worker -- --ignored --nocapture --test-threads=1",
+        "result": "1 passed in113.32s; both profiles"
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --locked --offline -- -D warnings",
+        "result": "passed in28.74s"
+      },
+      {
+        "command": "Node24.22.1 npm test (desktop)",
+        "result": "508 tests/41 files passed37.17s before final QA-only metric/strip changes; affected checks and actual GUI verify those separately"
+      },
+      {
+        "command": "Node24.22.1 npm --prefix desktop run build",
+        "result": "passed; normal bundle verification-module exclusion active"
+      },
+      {
+        "command": "cargo clippy --locked --offline -p mshogi-desktop-session --all-targets --all-features -- -D warnings",
+        "result": "passed"
+      },
+      {
+        "command": "cargo test --release -p mshogi-console --test tenjiku_internal --test tenjiku_selfplay --locked",
+        "result": "internal6 passed9.44s; selfplay2 passed5.40s after initial-root assertion correction"
+      },
+      {
+        "command": "cargo test -p mshogi-console --test tenjiku_internal --test tenjiku_selfplay --locked",
+        "result": "explicit debug diagrams: internal6 passed10.77s; selfplay2 passed4.36s; no skipped tests"
+      },
+      {
+        "command": "cargo test --locked --offline -p mshogi-desktop-session real_stationary_capture_analysis -- --test-threads=1",
+        "result": "1 passed1.37s; bothprofiles exact igui target in presented PV and read-only native record"
+      },
+      {
+        "command": "cargo test --workspace --locked --offline",
+        "result": "passed including doctests; full coherent source checkpoint"
+      },
+      {
+        "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml",
+        "result": "9 passed0.06s after stale capability assertion correction"
+      },
+      {
+        "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --features desktop-verification",
+        "result": "18 passed1.11s after stale capability assertion correction"
+      },
+      {
+        "command": "cargo test --locked -p mshogi-engine --test tenjiku_profile_play -- --nocapture",
+        "result": "4 passed25.81s;8 actual line-server cases for bothprofiles FreeEagle/Tetrarch/rankedvictim/dyingDemon; no subprocessclaim"
+      },
+      {
+        "command": "cargo test --release --locked -p mshogi-engine --test tenjiku_profile_play -- --nocapture",
+        "result": "4 passed1.63s; source-derived route/effect/outcome contrasts validated"
+      },
+      {
+        "command": "cargo test --locked --offline -p mshogi-core tenjiku::notation",
+        "result": "9 passed, including both-profile igui destruction; isolated formatter author",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+      },
+      {
+        "command": "cargo test --locked --offline -p mshogi-console --test tenjiku_cli",
+        "result": "8 passed2.09s; ordered burn/igui/promotion and rejected-batch output atomicity",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+      },
+      {
+        "command": "cargo test --locked --offline -p mshogi-desktop-session shared::tenjiku_tests:: -- --test-threads=1",
+        "result": "14 passed;2 explicitly ignored release resource measurements separately executed earlier;28.97s",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+      },
+      {
+        "command": "Node24 npm --prefix desktop test -- src/product/Moves.test.tsx src/product/TenjikuBoard.test.tsx src/product/TenjikuArtwork.test.tsx src/product/TenjikuPiece.test.tsx",
+        "result": "48 passed in14.21s",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+      },
+      {
+        "command": "Node24 npm --prefix desktop run check",
+        "result": "passed",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+      },
+      {
+        "command": "cargo test --locked --offline --manifest-path desktop/src-tauri/Cargo.toml --features desktop-verification",
+        "result": "18 passed1.12s",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --locked --offline -- -D warnings",
+        "result": "passed on initial effects fix; later igui wording and console changes checked with core/console Clippy by isolated author",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+      },
+      {
+        "command": "Node24 CARGO_NET_OFFLINE=true npm run desktop:build -- --bundles app --features desktop-verification --config src-tauri/tauri.verification.conf.json",
+        "result": "passed; rebuilt after final source commit, exact source-matched fixed-slot package staged and strictly verified",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+      },
+      {
+        "command": "Node24 npm --prefix desktop test",
+        "result": "511 tests/41 files passed16.94s",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46"
+      }
+    ],
+    "performance": {
+      "real_contexts_note": "Each profile used one genuine depth1 search at a retained128-action native root, with explicitly synthetic nonce variants for repeated-context/PV growth, not four separate searches. Full worker operations used the last accepted complete candidate.",
+      "real_context_growth": [
+        {
+          "contexts": 1,
+          "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
+          "usage": {
+            "controls": 1,
+            "encoded_bytes": 271720,
+            "observations": 1,
+            "replay_work": 61058200,
+            "reserved_bytes": 959,
+            "reserved_work": 813656,
+            "retained_events": 384
+          },
+          "validate_us": 1567604
+        },
+        {
+          "contexts": 2,
+          "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
+          "usage": {
+            "controls": 2,
+            "encoded_bytes": 362652,
+            "observations": 2,
+            "replay_work": 91633508,
+            "reserved_bytes": 959,
+            "reserved_work": 813656,
+            "retained_events": 512
+          },
+          "validate_us": 2654209
+        },
+        {
+          "contexts": 3,
+          "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
+          "usage": {
+            "controls": 3,
+            "encoded_bytes": 453584,
+            "observations": 3,
+            "replay_work": 122208816,
+            "reserved_bytes": 959,
+            "reserved_work": 813656,
+            "retained_events": 640
+          },
+          "validate_us": 3395874
+        },
+        {
+          "contexts": 4,
+          "real_engine_context_growth": "mshogi.tenjiku.adams1999-modern.v1",
+          "usage": {
+            "controls": 4,
+            "encoded_bytes": 544516,
+            "observations": 4,
+            "replay_work": 152784124,
+            "reserved_bytes": 959,
+            "reserved_work": 813656,
+            "retained_events": 768
+          },
+          "validate_us": 4682021
+        },
+        {
+          "contexts": 1,
+          "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
+          "usage": {
+            "controls": 1,
+            "encoded_bytes": 271769,
+            "observations": 1,
+            "replay_work": 61065431,
+            "reserved_bytes": 959,
+            "reserved_work": 813719,
+            "retained_events": 384
+          },
+          "validate_us": 1207104
+        },
+        {
+          "contexts": 2,
+          "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
+          "usage": {
+            "controls": 2,
+            "encoded_bytes": 362715,
+            "observations": 2,
+            "replay_work": 91644358,
+            "reserved_bytes": 959,
+            "reserved_work": 813719,
+            "retained_events": 512
+          },
+          "validate_us": 2024360
+        },
+        {
+          "contexts": 3,
+          "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
+          "usage": {
+            "controls": 3,
+            "encoded_bytes": 453661,
+            "observations": 3,
+            "replay_work": 122223285,
+            "reserved_bytes": 959,
+            "reserved_work": 813719,
+            "retained_events": 640
+          },
+          "validate_us": 3051380
+        },
+        {
+          "contexts": 4,
+          "real_engine_context_growth": "mshogi.tenjiku.muller-completed.v1",
+          "usage": {
+            "controls": 4,
+            "encoded_bytes": 544607,
+            "observations": 4,
+            "replay_work": 152802212,
+            "reserved_bytes": 959,
+            "reserved_work": 813719,
+            "retained_events": 768
+          },
+          "validate_us": 3829696
+        }
+      ],
+      "real_context_refusals": [
+        {
+          "contexts": 5,
+          "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+          "real_engine_context_refusal": "mshogi.tenjiku.adams1999-modern.v1",
+          "resource": {
+            "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+            "facts": [
+              {
+                "category": "replay_work",
+                "count": 160404848,
+                "limit": 160000000,
+                "measurement": "candidate",
+                "observations": null,
+                "reserved": 0,
+                "scope": "tenjiku",
+                "unit": "replay_units"
+              }
+            ],
+            "omitted_facts": 0
+          },
+          "validate_us": 4540773
+        },
+        {
+          "contexts": 5,
+          "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+          "real_engine_context_refusal": "mshogi.tenjiku.muller-completed.v1",
+          "resource": {
+            "diagnostic": "Application limit reached. The complete previously accepted game can still be saved.",
+            "facts": [
+              {
+                "category": "replay_work",
+                "count": 160423839,
+                "limit": 160000000,
+                "measurement": "candidate",
+                "observations": null,
+                "reserved": 0,
+                "scope": "tenjiku",
+                "unit": "replay_units"
+              }
+            ],
+            "omitted_facts": 0
+          },
+          "validate_us": 3892258
+        }
+      ],
+      "actual_workers": [
+        {
+          "actual_worker_profile": "mshogi.tenjiku.adams1999-modern.v1",
+          "close_us": 415,
+          "ended_open_us": 5830624,
+          "ended_save_us": 5470015,
+          "ended_usage": {
+            "controls": 8,
+            "encoded_bytes": 545439,
+            "observations": 4,
+            "replay_work": 153597758,
+            "reserved_bytes": 14,
+            "reserved_work": 0,
+            "retained_events": 771
+          },
+          "endings_us": [
+            5289744,
+            4808483,
+            4650047
+          ],
+          "fresh_stopped_reopen": true,
+          "open_us": 7055771,
+          "prior_file_preserved": true,
+          "save_us": 5930886,
+          "source_usage": {
+            "controls": 4,
+            "encoded_bytes": 544516,
+            "observations": 4,
+            "replay_work": 152784124,
+            "reserved_bytes": 959,
+            "reserved_work": 813656,
+            "retained_events": 768
+          }
+        },
+        {
+          "actual_worker_profile": "mshogi.tenjiku.muller-completed.v1",
+          "close_us": 430,
+          "ended_open_us": 5799651,
+          "ended_save_us": 5588766,
+          "ended_usage": {
+            "controls": 8,
+            "encoded_bytes": 545530,
+            "observations": 4,
+            "replay_work": 153615909,
+            "reserved_bytes": 14,
+            "reserved_work": 0,
+            "retained_events": 771
+          },
+          "endings_us": [
+            4577547,
+            4653534,
+            4698466
+          ],
+          "fresh_stopped_reopen": true,
+          "open_us": 5664776,
+          "prior_file_preserved": true,
+          "save_us": 5615759,
+          "source_usage": {
+            "controls": 4,
+            "encoded_bytes": 544607,
+            "observations": 4,
+            "replay_work": 152802212,
+            "reserved_bytes": 959,
+            "reserved_work": 813719,
+            "retained_events": 768
+          }
+        }
+      ],
+      "projection_inspection_measurements": {
+        "command": "cargo run --release --locked --offline -p mshogi-desktop-session --features desktop-verification --example write_tenjiku_frontend_fixtures -- desktop/src/__fixtures__",
+        "source": "2c00e2107ac74334bce5d55813e5be25666d7c46",
+        "scope": "Local macOS27 arm64 release native/controller DTO generation and serialization, measured beforecommit on identical source tree. Microseconds, not GUI frame/transport/portable latency guarantees. All156-piece dense diagrams are explicitly synthetic custom roots.",
+        "rows": [
+          {
+            "inspection_encode_total_us": 129,
+            "inspection_max_bytes": 2994,
+            "inspection_max_choices": 6,
+            "inspection_max_us": 209,
+            "inspection_origins": 156,
+            "inspection_total_bytes": 122132,
+            "inspection_total_choices": 140,
+            "inspection_total_us": 2476,
+            "pieces": 156,
+            "profile": "adams",
+            "scenario": "standard",
+            "snapshot_choices": 70,
+            "snapshot_encode_us": 268,
+            "snapshot_encoded_bytes": 192435,
+            "snapshot_us": 143
+          },
+          {
+            "inspection_encode_total_us": 138,
+            "inspection_max_bytes": 2994,
+            "inspection_max_choices": 6,
+            "inspection_max_us": 188,
+            "inspection_origins": 156,
+            "inspection_total_bytes": 125524,
+            "inspection_total_choices": 148,
+            "inspection_total_us": 2368,
+            "pieces": 156,
+            "profile": "muller",
+            "scenario": "standard",
+            "snapshot_choices": 74,
+            "snapshot_encode_us": 264,
+            "snapshot_encoded_bytes": 194159,
+            "snapshot_us": 142
+          },
+          {
+            "inspection_encode_total_us": 536,
+            "inspection_max_bytes": 257120,
+            "inspection_max_choices": 598,
+            "inspection_max_us": 798,
+            "inspection_origins": 7,
+            "inspection_total_bytes": 472547,
+            "inspection_total_choices": 1096,
+            "inspection_total_us": 1528,
+            "pieces": 7,
+            "profile": "adams",
+            "scenario": "burn",
+            "snapshot_choices": 602,
+            "snapshot_encode_us": 315,
+            "snapshot_encoded_bytes": 283559,
+            "snapshot_us": 128
+          },
+          {
+            "inspection_encode_total_us": 22,
+            "inspection_max_bytes": 11106,
+            "inspection_max_choices": 29,
+            "inspection_max_us": 40,
+            "inspection_origins": 6,
+            "inspection_total_bytes": 16584,
+            "inspection_total_choices": 38,
+            "inspection_total_us": 83,
+            "pieces": 6,
+            "profile": "adams",
+            "scenario": "igui",
+            "snapshot_choices": 33,
+            "snapshot_encode_us": 52,
+            "snapshot_encoded_bytes": 36585,
+            "snapshot_us": 20
+          },
+          {
+            "inspection_encode_total_us": 49,
+            "inspection_max_bytes": 34655,
+            "inspection_max_choices": 88,
+            "inspection_max_us": 101,
+            "inspection_origins": 7,
+            "inspection_total_bytes": 40931,
+            "inspection_total_choices": 98,
+            "inspection_total_us": 148,
+            "pieces": 7,
+            "profile": "adams",
+            "scenario": "compound",
+            "snapshot_choices": 92,
+            "snapshot_encode_us": 78,
+            "snapshot_encoded_bytes": 61042,
+            "snapshot_us": 38
+          },
+          {
+            "inspection_encode_total_us": 58,
+            "inspection_max_bytes": 41940,
+            "inspection_max_choices": 108,
+            "inspection_max_us": 132,
+            "inspection_origins": 7,
+            "inspection_total_bytes": 49700,
+            "inspection_total_choices": 122,
+            "inspection_total_us": 191,
+            "pieces": 7,
+            "profile": "adams",
+            "scenario": "hawk",
+            "snapshot_choices": 112,
+            "snapshot_encode_us": 84,
+            "snapshot_encoded_bytes": 68357,
+            "snapshot_us": 36
+          },
+          {
+            "inspection_encode_total_us": 266,
+            "inspection_max_bytes": 215370,
+            "inspection_max_choices": 504,
+            "inspection_max_us": 660,
+            "inspection_origins": 6,
+            "inspection_total_bytes": 220848,
+            "inspection_total_choices": 513,
+            "inspection_total_us": 715,
+            "pieces": 6,
+            "profile": "adams",
+            "scenario": "area",
+            "snapshot_choices": 508,
+            "snapshot_encode_us": 269,
+            "snapshot_encoded_bytes": 240858,
+            "snapshot_us": 102
+          },
+          {
+            "inspection_encode_total_us": 22,
+            "inspection_max_bytes": 11317,
+            "inspection_max_choices": 28,
+            "inspection_max_us": 45,
+            "inspection_origins": 7,
+            "inspection_total_bytes": 17603,
+            "inspection_total_choices": 38,
+            "inspection_total_us": 95,
+            "pieces": 7,
+            "profile": "adams",
+            "scenario": "ranked-jump",
+            "snapshot_choices": 33,
+            "snapshot_encode_us": 53,
+            "snapshot_encoded_bytes": 38088,
+            "snapshot_us": 21
+          },
+          {
+            "inspection_encode_total_us": 527,
+            "inspection_max_bytes": 257120,
+            "inspection_max_choices": 598,
+            "inspection_max_us": 768,
+            "inspection_origins": 7,
+            "inspection_total_bytes": 472547,
+            "inspection_total_choices": 1096,
+            "inspection_total_us": 1478,
+            "pieces": 7,
+            "profile": "muller",
+            "scenario": "burn",
+            "snapshot_choices": 602,
+            "snapshot_encode_us": 323,
+            "snapshot_encoded_bytes": 283587,
+            "snapshot_us": 123
+          },
+          {
+            "inspection_encode_total_us": 26,
+            "inspection_max_bytes": 15819,
+            "inspection_max_choices": 42,
+            "inspection_max_us": 59,
+            "inspection_origins": 6,
+            "inspection_total_bytes": 21297,
+            "inspection_total_choices": 51,
+            "inspection_total_us": 103,
+            "pieces": 6,
+            "profile": "muller",
+            "scenario": "igui",
+            "snapshot_choices": 46,
+            "snapshot_encode_us": 55,
+            "snapshot_encoded_bytes": 41326,
+            "snapshot_us": 39
+          },
+          {
+            "inspection_encode_total_us": 48,
+            "inspection_max_bytes": 34655,
+            "inspection_max_choices": 88,
+            "inspection_max_us": 98,
+            "inspection_origins": 7,
+            "inspection_total_bytes": 40931,
+            "inspection_total_choices": 98,
+            "inspection_total_us": 146,
+            "pieces": 7,
+            "profile": "muller",
+            "scenario": "compound",
+            "snapshot_choices": 92,
+            "snapshot_encode_us": 76,
+            "snapshot_encoded_bytes": 61070,
+            "snapshot_us": 37
+          },
+          {
+            "inspection_encode_total_us": 59,
+            "inspection_max_bytes": 41940,
+            "inspection_max_choices": 108,
+            "inspection_max_us": 141,
+            "inspection_origins": 7,
+            "inspection_total_bytes": 49700,
+            "inspection_total_choices": 122,
+            "inspection_total_us": 196,
+            "pieces": 7,
+            "profile": "muller",
+            "scenario": "hawk",
+            "snapshot_choices": 112,
+            "snapshot_encode_us": 87,
+            "snapshot_encoded_bytes": 68385,
+            "snapshot_us": 37
+          },
+          {
+            "inspection_encode_total_us": 242,
+            "inspection_max_bytes": 215370,
+            "inspection_max_choices": 504,
+            "inspection_max_us": 644,
+            "inspection_origins": 6,
+            "inspection_total_bytes": 220848,
+            "inspection_total_choices": 513,
+            "inspection_total_us": 689,
+            "pieces": 6,
+            "profile": "muller",
+            "scenario": "area",
+            "snapshot_choices": 508,
+            "snapshot_encode_us": 280,
+            "snapshot_encoded_bytes": 240886,
+            "snapshot_us": 103
+          },
+          {
+            "inspection_encode_total_us": 22,
+            "inspection_max_bytes": 11317,
+            "inspection_max_choices": 28,
+            "inspection_max_us": 41,
+            "inspection_origins": 7,
+            "inspection_total_bytes": 17603,
+            "inspection_total_choices": 38,
+            "inspection_total_us": 89,
+            "pieces": 7,
+            "profile": "muller",
+            "scenario": "ranked-jump",
+            "snapshot_choices": 33,
+            "snapshot_encode_us": 79,
+            "snapshot_encoded_bytes": 38116,
+            "snapshot_us": 52
+          },
+          {
+            "inspection_encode_total_us": 171,
+            "inspection_max_bytes": 34655,
+            "inspection_max_choices": 88,
+            "inspection_max_us": 311,
+            "inspection_origins": 156,
+            "inspection_total_bytes": 160532,
+            "inspection_total_choices": 239,
+            "inspection_total_us": 2610,
+            "pieces": 156,
+            "profile": "adams",
+            "scenario": "dense-lion",
+            "snapshot_choices": 168,
+            "snapshot_encode_us": 358,
+            "snapshot_encoded_bytes": 230507,
+            "snapshot_us": 188
+          },
+          {
+            "inspection_encode_total_us": 241,
+            "inspection_max_bytes": 35753,
+            "inspection_max_choices": 91,
+            "inspection_max_us": 1272,
+            "inspection_origins": 156,
+            "inspection_total_bytes": 162458,
+            "inspection_total_choices": 244,
+            "inspection_total_us": 3975,
+            "pieces": 156,
+            "profile": "adams",
+            "scenario": "dense-hawk",
+            "snapshot_choices": 173,
+            "snapshot_encode_us": 723,
+            "snapshot_encoded_bytes": 232439,
+            "snapshot_us": 458
+          },
+          {
+            "inspection_encode_total_us": 414,
+            "inspection_max_bytes": 255232,
+            "inspection_max_choices": 594,
+            "inspection_max_us": 811,
+            "inspection_origins": 156,
+            "inspection_total_bytes": 381772,
+            "inspection_total_choices": 747,
+            "inspection_total_us": 3021,
+            "pieces": 156,
+            "profile": "adams",
+            "scenario": "dense-fire",
+            "snapshot_choices": 676,
+            "snapshot_encode_us": 542,
+            "snapshot_encoded_bytes": 451751,
+            "snapshot_us": 246
+          },
+          {
+            "inspection_encode_total_us": 415,
+            "inspection_max_bytes": 256356,
+            "inspection_max_choices": 597,
+            "inspection_max_us": 745,
+            "inspection_origins": 156,
+            "inspection_total_bytes": 378518,
+            "inspection_total_choices": 739,
+            "inspection_total_us": 3093,
+            "pieces": 156,
+            "profile": "adams",
+            "scenario": "dense-area",
+            "snapshot_choices": 668,
+            "snapshot_encode_us": 545,
+            "snapshot_encoded_bytes": 448509,
+            "snapshot_us": 245
+          },
+          {
+            "inspection_encode_total_us": 177,
+            "inspection_max_bytes": 34655,
+            "inspection_max_choices": 88,
+            "inspection_max_us": 211,
+            "inspection_origins": 156,
+            "inspection_total_bytes": 164325,
+            "inspection_total_choices": 248,
+            "inspection_total_us": 2664,
+            "pieces": 156,
+            "profile": "muller",
+            "scenario": "dense-lion",
+            "snapshot_choices": 173,
+            "snapshot_encode_us": 313,
+            "snapshot_encoded_bytes": 232632,
+            "snapshot_us": 156
+          },
+          {
+            "inspection_encode_total_us": 173,
+            "inspection_max_bytes": 35753,
+            "inspection_max_choices": 91,
+            "inspection_max_us": 202,
+            "inspection_origins": 156,
+            "inspection_total_bytes": 165850,
+            "inspection_total_choices": 252,
+            "inspection_total_us": 2519,
+            "pieces": 156,
+            "profile": "muller",
+            "scenario": "dense-hawk",
+            "snapshot_choices": 177,
+            "snapshot_encode_us": 317,
+            "snapshot_encoded_bytes": 234163,
+            "snapshot_us": 155
+          },
+          {
+            "inspection_encode_total_us": 417,
+            "inspection_max_bytes": 255232,
+            "inspection_max_choices": 594,
+            "inspection_max_us": 799,
+            "inspection_origins": 156,
+            "inspection_total_bytes": 385164,
+            "inspection_total_choices": 755,
+            "inspection_total_us": 3003,
+            "pieces": 156,
+            "profile": "muller",
+            "scenario": "dense-fire",
+            "snapshot_choices": 680,
+            "snapshot_encode_us": 537,
+            "snapshot_encoded_bytes": 453475,
+            "snapshot_us": 245
+          },
+          {
+            "inspection_encode_total_us": 444,
+            "inspection_max_bytes": 256356,
+            "inspection_max_choices": 597,
+            "inspection_max_us": 763,
+            "inspection_origins": 156,
+            "inspection_total_bytes": 381910,
+            "inspection_total_choices": 747,
+            "inspection_total_us": 4496,
+            "pieces": 156,
+            "profile": "muller",
+            "scenario": "dense-area",
+            "snapshot_choices": 672,
+            "snapshot_encode_us": 600,
+            "snapshot_encoded_bytes": 450233,
+            "snapshot_us": 257
+          }
+        ]
+      },
+      "actual_gui_responsiveness": {
+        "cancel_analysis_roundtrip_ms": 983,
+        "qualification": "Observed CUA StartAnalysis\u2192Cancel\u2192SearchStopped roundtrip including automation/state observation overhead; no incomplete move applied. This is not a pure cancellation latency or portable guarantee.",
+        "other_actual_observations": "Native keyboard/pointer partial choices, promotiondialog, history/Takeback/file/close controls visibly settled with accepted state preserved. Their rendering latency was not isolated from automation overhead. Extra end-to-end timings blocked after Maclocked; no throughput/FPS claim.",
+        "replacement": "Actual child tests assert cancelled prior context cannot install, new process generation/request/PID, independent profile and cross-game replacement, and child cleanup. The5second test bound is not a measured steady-state performance claim."
+      }
+    },
+    "independent_review": [
+      {
+        "reviewer": "msh44_console_map",
+        "scope": "search/evaluation",
+        "result": "no blocking finding; independently ran10 focused tests"
+      },
+      {
+        "reviewer": "msh44_search_map",
+        "scope": "supervised engine results/context/PV",
+        "result": "no implementation correctness defect; independently ran6 prior protocol/routing tests; root subsequently added explicit no-action and exact-work/mid-validation-stop coverage"
+      },
+      {
+        "reviewer": "msh44_visual_map",
+        "scope": "native document/runtime admission and console/notation",
+        "result": "no blocking admission/atomicity or console/notation finding; four presentation findings corrected and re-reviewed"
+      },
+      {
+        "reviewer": "msh44_search_map",
+        "scope": "final root engine/document/runtime/QA and release CI policy",
+        "result": "PASS; independently reran3 protocol+1 observation/action document test; no skipped/ignored new tests; all3OS release standardroot requirement preserved"
+      },
+      {
+        "reviewer": "msh44_visual_map",
+        "scope": "snapshot-only notation performance fix; successful real QA initialization guards; actual initial1180 screenshot",
+        "result": "PASS with source conclusions limited to reviewed scope; compact QA strip recommended to recover viewportheight; minimum-size/allfaces comfort pending actual captures"
+      },
+      {
+        "reviewer": "msh44_search_map",
+        "scope": "one host cfg(test) assertion correction vs aecd",
+        "result": "PASS; all bytes before test module identical; normal feature/flag/fixture activation gates preserved"
+      },
+      {
+        "reviewer": "primary integrator (not author of isolated testfile)",
+        "scope": "tenjiku_profile_play.rs diagrams vs acceptedT03/T04/T05; complete result/nativecommit checks",
+        "result": "PASS; independently reasoned unique feature differences, no product or legality duplication"
+      },
+      {
+        "reviewer": "independent_review",
+        "scope": "Actual renderer/native effects/activation boundaries plus normal/narrow/minimum allfaces captures",
+        "result": "Structural and native-sourced presentation approved; required accessible burn/death gap found and fixed; practical760/960 reading comfort not accepted."
+      },
+      {
+        "reviewer": "independent_review",
+        "scope": "Final ordered-effects formatter, console atomic output, optional DTO, exact native projection, QA-only tall preset and18 regenerated fixtures",
+        "result": "PASS after igui survival wording finding closed; all18 DTO changes only added descriptions, legacy/action/context/canonical fields unchanged. New native test captures igui mover death."
+      },
+      {
+        "reviewer": "independent_review",
+        "scope": "Actual proposed960x1000 live/history/Gote allfaces captures versus760",
+        "result": "Concrete proposal materially clearer, all256 visible and full faces preserved; owner decision remains, no current-minimum usability claim."
+      },
+      {
+        "reviewer": "independent_review",
+        "scope": "Actual final effect/promotion AX and dialogs; artifact/package manifest reconciliation",
+        "result": "PASS: accessible distinct nativeburn/death,stationaryorigin,promotion text verified; dialogcontrols/focus fit1180/760.165 artifacthashes and stagedpackage hashes matched; no technicalfinding. Minimumcomfort/ownerapproval remainsopen."
+      },
+      {
+        "reviewer": "independent_review",
+        "scope": "Actual partialLion1180/760, keyboard760, completedLion1180, completed3stageDemon760, route/footer/cue source",
+        "result": "Functionalentry supported: nativegeometry, continuationtargets, orderedcoordinatefooter, Complete/Cancel andfocus visible. No newfunctionalblocker. Smallsecondarybadgenumerals remain visualconcern; neither current nor proposedminimum establishesbadgecomfort. Ownervisualapproval remainsopen. No completedLion760capture claimed."
+      },
+      {
+        "reviewer": "independent_review",
+        "scope": "FINAL exact-source six-platform receipts, liveGitHub job/step reconciliation, artifacthashes and no productiondiff",
+        "result": "PASS for workingtechnical/visualcheckpoint at2c00e2107ac74334bce5d55813e5be25666d7c46. IndependentlyqueriedliveGitHubbothruns:all6terminalsuccess,allapplicablemandatorystepssuccess,no nonterminalsteps. Ledgerexactlymatchescache;required3OSrelease andLinux/Windowsactualfive-gameGUI verified.165artifacthashesmatch,productiondiffempty. AC1\u20136supportable;AC7/8+DoD1/2/ownercomfort/minpolicy/badges/activation/finalacceptance OPEN. No newtechnicalfinding."
+      }
+    ],
+    "development_observations": [
+      {
+        "category": "test command filter",
+        "detail": "Two attempted desktop execution filters matched0 tests; corrected to tenjiku_document::tests::execution::,5 actually passed. Zero-test runs are not evidence."
+      },
+      {
+        "category": "debug process contention",
+        "detail": "First parallel actual-child standard-history test hit unchanged15s engine watchdog; preserved failure; serial diagnosis was pending at that checkpoint and is resolved by the later explicit debug/release policy entry."
+      },
+      {
+        "category": "search test expectation",
+        "detail": "Exploratory material-band assertion used256 squares instead of admitted156-piece inventory; corrected, rules unchanged."
+      },
+      {
+        "category": "notation rendering performance",
+        "detail": "Historical notation initially re-admitted LocalPosition per row; scoped fix uses immutable native snapshot Position directly, preserving notation while avoiding rules generation during projection."
+      },
+      {
+        "category": "debug standard-root retry",
+        "detail": "Serialized full-standard internal rerun5passed/1failed202.07s; historicalanalysis20s observation wait expired (hiddenphase not established). Historical-only repro passed64.45s. Explicit debug4-piece diagrams and required release156-piece roots now separate resource claims without skipping assertions or raising product deadlines."
+      },
+      {
+        "category": "selfplay test expectation",
+        "detail": "New assertion incorrectly required156 currentpieces after4real standard plies; legal captures left152. Corrected to assert156 at native initialroot. Release selfplay rerun passed; no product or rules change."
+      },
+      {
+        "category": "QA fixture writer invocation",
+        "detail": "First invocation omitted required outputdirectory and failed before writing files; corrected explicit desktop/src/__fixtures__ invocation passed."
+      },
+      {
+        "category": "npm working directory",
+        "detail": "Two root-directory npm invocations failed ENOENT before checks; corrected desktop prefix/cwd checks passed. Failures are not counted as verification."
+      },
+      {
+        "category": "evidence naming",
+        "detail": "Initial MSH-44 draft reused existing83 verification.json filename; original restored byte-for-byte fromHEAD immediately. MSH-44 single ledger is product-verification.json; prior source/rules ledger preserved."
+      },
+      {
+        "category": "missed standalone host assertion",
+        "detail": "Early host compile passed but full host tests were not run before first push. Required DesktopLinux CI caught stale unavailable-capability expectation in main.rs:1205. Fixed under cfg(test),9normal+18QA tests now pass; unchanged production prefix SHA2563754c55bee97a61d0d4bb818cf8dab779cf637bf5f8b19a01654794dec440fec. No rule/production/acceptance weakening."
+      },
+      {
+        "category": "independent profile fixture correction",
+        "detail": "First FreeEagle diagram used ownPawn8g, which itself directly captured King8f;3 tests passed1 failed because legitimate equalwin contradicted intendeduniqueEagle expectation. Replaced onlytestblocker withKnight8g, which cannot capture8f; no rule/sourcechange. Bothdebug/release4tests thenpassed."
+      },
+      {
+        "category": "minimum usability",
+        "detail": "Actual fit is insufficient: allfaces HT engraving5.295CSSpx at760x618 WebView,7.600 at1180x788. Proposed960x1000 native frame gives960x968 WebView: live598board/35.595cell/11.390minimumem; history534/31.786/10.171bothorientations. No minpolicy change."
+      },
+      {
+        "category": "accessibility correction",
+        "detail": "Independent actual-app review found native burn/death phases aria-hidden and absent from move names; final native formatter now supplies ordered descriptions, exposed in Moves aria-label/title and console. Igui text uses stationary origin so mover destruction does not imply survival."
+      },
+      {
+        "category": "fixture ordering during local test",
+        "detail": "First frontend effects test ran before final regeneration finished and read stale igui wording:34passed1failed. After writer completed all48focused tests passed. No product change required."
+      },
+      {
+        "category": "Mac lock",
+        "detail": "After completed promotion/refusal and corrected native effects captures, desktop control reported locked Mac; manual unlock requested. No security policy or approval store changed."
+      },
+      {
+        "category": "superseded cancelled-job step failure",
+        "detail": "Finalreconciliation of126880030453logs found macOSlockedchecks17passed1failed atsamecfg(test)capabilityassertion1205 despitejobcancelledconclusion; failureexcerptpreserved. Thealreadyreviewedtest-onlycorrection fixedbothOSexpectations. Neitherjobconclusionnorstepfailureoverwritten."
+      }
+    ]
   },
   "continuation_verification": {
     "checks": [
@@ -3253,6 +3358,16 @@
         "reviewer": "independent_review",
         "scope": "20deriveddiagrams andguardedroyalroots, actual4bundledenginequeries publicGamenativePVreplay",
         "result": "PASS; only2roots addexplicitremotePawn1a; frozenconformancecorpusunchanged"
+      },
+      {
+        "reviewer": "independent_review",
+        "scope": "Finalsourcefreeze andactualnormalmacOS densecapture/compound/terminalAXPNG",
+        "result": "PASS; final6CI/evidencereconciliation pending."
+      },
+      {
+        "reviewer": "independent_review",
+        "scope": "Original eight acceptance criteria / four DoD evidence map",
+        "result": "No additional required behavior gap found. AC1\u20136 evidence reused only at unchanged native/source scope; AC7 implemented and normalMac verified, pending exactsource Linux/Windows normal/native/pending/recovery and allrequiredjobs. AC8/DoD1\u20132 pending final receipts and reconciliation; no strength/externalengine/historical gate introduced."
       }
     ],
     "development_observations": [
@@ -3261,5 +3376,1885 @@
       "Initialtypecheckoldverificationarguments andoneold5gameassertion corrected; subsequentfocusedandfullchecks passed.",
       "NativepopupmenuAX staleindex observations resolvedwithsupportedkeyboardtypeahead; no productfailureinferred."
     ]
-  }
+  },
+  "superseded_continuation_campaigns": [
+    {
+      "status": "superseded_after_actual_gui_observer_failures",
+      "required_jobs": [
+        "Rust ubuntu-24.04",
+        "Rust macos-15",
+        "Rust windows-2022",
+        "Desktop ubuntu-24.04 withnormalboth-profileTenjiku actualGUI",
+        "Desktop macos-15 package/engine plusgenuinelocalnormalmacOSGUIbothprofiles",
+        "Desktop windows-2022 withnormalboth-profileTenjiku actualGUI"
+      ],
+      "monitor": "Single monitor exited1 when both workflows terminal; no campaign remains active.",
+      "source_revision": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+      "runs": [
+        {
+          "id": 42001930699,
+          "name": "Rust workspace",
+          "head_sha": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+          "run_attempt": 1,
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42001930699"
+        },
+        {
+          "id": 42001931107,
+          "name": "Desktop packages",
+          "head_sha": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+          "run_attempt": 1,
+          "status": "completed",
+          "conclusion": "failure",
+          "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42001931107"
+        }
+      ],
+      "verified_artifacts": [
+        {
+          "platform": "macos-15",
+          "artifact_id": 13403113034,
+          "name": "desktop-macos-15",
+          "archive_bytes": 14880486,
+          "archive_digest": "sha256:1d7bf6792a945eb45476be9bf174bc09a6e4e4f10d803faa0c65d7b54374a872",
+          "url": "https://github.com/jweathers777/mShogi/actions/runs/42001931107/artifacts/13403113034",
+          "job_id": 127159030423,
+          "source_revision": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+          "normal_package_files_verified": 5,
+          "native_terminal_replays": [
+            {
+              "profile": "mshogi.tenjiku.adams1999-modern.v1",
+              "purpose": "engine_turn",
+              "actual_action": {
+                "from": [
+                  8,
+                  10
+                ],
+                "kind": "travel",
+                "promote": false,
+                "route": [
+                  [
+                    8,
+                    7
+                  ]
+                ]
+              },
+              "conclusion": {
+                "kind": "royal_capture",
+                "winner": "sente"
+              }
+            },
+            {
+              "profile": "mshogi.tenjiku.adams1999-modern.v1",
+              "purpose": "analysis",
+              "actual_action": {
+                "from": [
+                  8,
+                  10
+                ],
+                "kind": "travel",
+                "promote": false,
+                "route": [
+                  [
+                    8,
+                    7
+                  ]
+                ]
+              },
+              "conclusion": {
+                "kind": "royal_capture",
+                "winner": "sente"
+              }
+            },
+            {
+              "profile": "mshogi.tenjiku.muller-completed.v1",
+              "purpose": "engine_turn",
+              "actual_action": {
+                "from": [
+                  8,
+                  10
+                ],
+                "kind": "travel",
+                "promote": false,
+                "route": [
+                  [
+                    8,
+                    7
+                  ]
+                ]
+              },
+              "conclusion": {
+                "kind": "royal_capture",
+                "winner": "sente"
+              }
+            },
+            {
+              "profile": "mshogi.tenjiku.muller-completed.v1",
+              "purpose": "analysis",
+              "actual_action": {
+                "from": [
+                  8,
+                  10
+                ],
+                "kind": "travel",
+                "promote": false,
+                "route": [
+                  [
+                    8,
+                    7
+                  ]
+                ]
+              },
+              "conclusion": {
+                "kind": "royal_capture",
+                "winner": "sente"
+              }
+            }
+          ],
+          "receipt": "evidence/msh44-final-ci/macos-package-smoke.json",
+          "receipt_sha256": "cce9dc6b206cf19bbd864abc87f147c3e5a78b69582fd0199b6b712e8002d79f",
+          "qualification": "macOS15CIpackage/build/engine, separate genuine normalGUIonlocalmacOS27; no inferenceofCIUIinteraction."
+        }
+      ],
+      "receipts": [
+        {
+          "run_id": 42001930699,
+          "jobs": [
+            {
+              "id": 127159029367,
+              "run_id": 42001930699,
+              "workflow_name": "Rust workspace",
+              "head_branch": "codex/rewrite",
+              "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42001930699",
+              "run_attempt": 1,
+              "node_id": "CR_kwDOAClwqs8AAAAdm0TOdw",
+              "head_sha": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+              "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/127159029367",
+              "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42001930699/job/127159029367",
+              "status": "completed",
+              "conclusion": "success",
+              "created_at": "2026-11-05T09:23:10Z",
+              "started_at": "2026-11-05T09:23:13Z",
+              "completed_at": "2026-11-05T09:52:05Z",
+              "name": "Rust (macos-15)",
+              "steps": [
+                {
+                  "name": "Set up job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 1,
+                  "started_at": "2026-11-05T09:23:14Z",
+                  "completed_at": "2026-11-05T09:23:16Z"
+                },
+                {
+                  "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 2,
+                  "started_at": "2026-11-05T09:23:16Z",
+                  "completed_at": "2026-11-05T09:23:34Z"
+                },
+                {
+                  "name": "Install and identify the pinned toolchain",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 3,
+                  "started_at": "2026-11-05T09:23:34Z",
+                  "completed_at": "2026-11-05T09:23:41Z"
+                },
+                {
+                  "name": "Format",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 4,
+                  "started_at": "2026-11-05T09:23:41Z",
+                  "completed_at": "2026-11-05T09:23:43Z"
+                },
+                {
+                  "name": "Lint",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 5,
+                  "started_at": "2026-11-05T09:23:43Z",
+                  "completed_at": "2026-11-05T09:24:15Z"
+                },
+                {
+                  "name": "Test",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 6,
+                  "started_at": "2026-11-05T09:24:15Z",
+                  "completed_at": "2026-11-05T09:39:27Z"
+                },
+                {
+                  "name": "Verify production Tenjiku subprocess and standard-root journeys",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 7,
+                  "started_at": "2026-11-05T09:39:27Z",
+                  "completed_at": "2026-11-05T09:41:27Z"
+                },
+                {
+                  "name": "Verify isolated desktop QA constructors",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 8,
+                  "started_at": "2026-11-05T09:41:27Z",
+                  "completed_at": "2026-11-05T09:50:39Z"
+                },
+                {
+                  "name": "Verify native desktop snapshot fixtures",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 9,
+                  "started_at": "2026-11-05T09:50:39Z",
+                  "completed_at": "2026-11-05T09:51:58Z"
+                },
+                {
+                  "name": "Build",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 10,
+                  "started_at": "2026-11-05T09:51:58Z",
+                  "completed_at": "2026-11-05T09:51:58Z"
+                },
+                {
+                  "name": "Console smoke",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 11,
+                  "started_at": "2026-11-05T09:51:58Z",
+                  "completed_at": "2026-11-05T09:52:00Z"
+                },
+                {
+                  "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 22,
+                  "started_at": "2026-11-05T09:52:00Z",
+                  "completed_at": "2026-11-05T09:52:01Z"
+                },
+                {
+                  "name": "Complete job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 23,
+                  "started_at": "2026-11-05T09:52:01Z",
+                  "completed_at": "2026-11-05T09:52:02Z"
+                }
+              ],
+              "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/127159029367",
+              "labels": [
+                "macos-15"
+              ],
+              "runner_id": 1000002646,
+              "runner_name": "GitHub Actions 1000002646",
+              "runner_group_id": 0,
+              "runner_group_name": "GitHub Actions"
+            },
+            {
+              "id": 127159029822,
+              "run_id": 42001930699,
+              "workflow_name": "Rust workspace",
+              "head_branch": "codex/rewrite",
+              "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42001930699",
+              "run_attempt": 1,
+              "node_id": "CR_kwDOAClwqs8AAAAdm0TQPg",
+              "head_sha": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+              "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/127159029822",
+              "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42001930699/job/127159029822",
+              "status": "completed",
+              "conclusion": "success",
+              "created_at": "2026-11-05T09:23:10Z",
+              "started_at": "2026-11-05T09:23:12Z",
+              "completed_at": "2026-11-05T09:49:13Z",
+              "name": "Rust (ubuntu-24.04)",
+              "steps": [
+                {
+                  "name": "Set up job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 1,
+                  "started_at": "2026-11-05T09:23:13Z",
+                  "completed_at": "2026-11-05T09:23:13Z"
+                },
+                {
+                  "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 2,
+                  "started_at": "2026-11-05T09:23:13Z",
+                  "completed_at": "2026-11-05T09:23:22Z"
+                },
+                {
+                  "name": "Install and identify the pinned toolchain",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 3,
+                  "started_at": "2026-11-05T09:23:22Z",
+                  "completed_at": "2026-11-05T09:23:31Z"
+                },
+                {
+                  "name": "Format",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 4,
+                  "started_at": "2026-11-05T09:23:31Z",
+                  "completed_at": "2026-11-05T09:23:33Z"
+                },
+                {
+                  "name": "Lint",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 5,
+                  "started_at": "2026-11-05T09:23:33Z",
+                  "completed_at": "2026-11-05T09:23:51Z"
+                },
+                {
+                  "name": "Test",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 6,
+                  "started_at": "2026-11-05T09:23:51Z",
+                  "completed_at": "2026-11-05T09:37:59Z"
+                },
+                {
+                  "name": "Verify production Tenjiku subprocess and standard-root journeys",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 7,
+                  "started_at": "2026-11-05T09:37:59Z",
+                  "completed_at": "2026-11-05T09:39:16Z"
+                },
+                {
+                  "name": "Verify isolated desktop QA constructors",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 8,
+                  "started_at": "2026-11-05T09:39:16Z",
+                  "completed_at": "2026-11-05T09:48:21Z"
+                },
+                {
+                  "name": "Verify native desktop snapshot fixtures",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 9,
+                  "started_at": "2026-11-05T09:48:21Z",
+                  "completed_at": "2026-11-05T09:49:10Z"
+                },
+                {
+                  "name": "Build",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 10,
+                  "started_at": "2026-11-05T09:49:10Z",
+                  "completed_at": "2026-11-05T09:49:10Z"
+                },
+                {
+                  "name": "Console smoke",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 11,
+                  "started_at": "2026-11-05T09:49:10Z",
+                  "completed_at": "2026-11-05T09:49:11Z"
+                },
+                {
+                  "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 22,
+                  "started_at": "2026-11-05T09:49:11Z",
+                  "completed_at": "2026-11-05T09:49:11Z"
+                },
+                {
+                  "name": "Complete job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 23,
+                  "started_at": "2026-11-05T09:49:11Z",
+                  "completed_at": "2026-11-05T09:49:11Z"
+                }
+              ],
+              "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/127159029822",
+              "labels": [
+                "ubuntu-24.04"
+              ],
+              "runner_id": 1000002648,
+              "runner_name": "GitHub Actions 1000002648",
+              "runner_group_id": 0,
+              "runner_group_name": "GitHub Actions"
+            },
+            {
+              "id": 127159029975,
+              "run_id": 42001930699,
+              "workflow_name": "Rust workspace",
+              "head_branch": "codex/rewrite",
+              "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42001930699",
+              "run_attempt": 1,
+              "node_id": "CR_kwDOAClwqs8AAAAdm0TQ1w",
+              "head_sha": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+              "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/127159029975",
+              "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42001930699/job/127159029975",
+              "status": "completed",
+              "conclusion": "success",
+              "created_at": "2026-11-05T09:23:10Z",
+              "started_at": "2026-11-05T09:23:13Z",
+              "completed_at": "2026-11-05T09:48:33Z",
+              "name": "Rust (windows-2022)",
+              "steps": [
+                {
+                  "name": "Set up job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 1,
+                  "started_at": "2026-11-05T09:23:14Z",
+                  "completed_at": "2026-11-05T09:23:14Z"
+                },
+                {
+                  "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 2,
+                  "started_at": "2026-11-05T09:23:14Z",
+                  "completed_at": "2026-11-05T09:23:32Z"
+                },
+                {
+                  "name": "Install and identify the pinned toolchain",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 3,
+                  "started_at": "2026-11-05T09:23:32Z",
+                  "completed_at": "2026-11-05T09:23:45Z"
+                },
+                {
+                  "name": "Format",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 4,
+                  "started_at": "2026-11-05T09:23:45Z",
+                  "completed_at": "2026-11-05T09:23:48Z"
+                },
+                {
+                  "name": "Lint",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 5,
+                  "started_at": "2026-11-05T09:23:48Z",
+                  "completed_at": "2026-11-05T09:24:15Z"
+                },
+                {
+                  "name": "Test",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 6,
+                  "started_at": "2026-11-05T09:24:15Z",
+                  "completed_at": "2026-11-05T09:37:48Z"
+                },
+                {
+                  "name": "Verify production Tenjiku subprocess and standard-root journeys",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 7,
+                  "started_at": "2026-11-05T09:37:48Z",
+                  "completed_at": "2026-11-05T09:39:27Z"
+                },
+                {
+                  "name": "Verify isolated desktop QA constructors",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 8,
+                  "started_at": "2026-11-05T09:39:27Z",
+                  "completed_at": "2026-11-05T09:47:21Z"
+                },
+                {
+                  "name": "Verify native desktop snapshot fixtures",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 9,
+                  "started_at": "2026-11-05T09:47:21Z",
+                  "completed_at": "2026-11-05T09:48:28Z"
+                },
+                {
+                  "name": "Build",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 10,
+                  "started_at": "2026-11-05T09:48:28Z",
+                  "completed_at": "2026-11-05T09:48:28Z"
+                },
+                {
+                  "name": "Console smoke",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 11,
+                  "started_at": "2026-11-05T09:48:28Z",
+                  "completed_at": "2026-11-05T09:48:29Z"
+                },
+                {
+                  "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 22,
+                  "started_at": "2026-11-05T09:48:29Z",
+                  "completed_at": "2026-11-05T09:48:30Z"
+                },
+                {
+                  "name": "Complete job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 23,
+                  "started_at": "2026-11-05T09:48:30Z",
+                  "completed_at": "2026-11-05T09:48:30Z"
+                }
+              ],
+              "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/127159029975",
+              "labels": [
+                "windows-2022"
+              ],
+              "runner_id": 1000002651,
+              "runner_name": "GitHub Actions 1000002651",
+              "runner_group_id": 0,
+              "runner_group_name": "GitHub Actions"
+            }
+          ]
+        },
+        {
+          "run_id": 42001931107,
+          "jobs": [
+            {
+              "id": 127159030081,
+              "run_id": 42001931107,
+              "workflow_name": "Desktop packages",
+              "head_branch": "codex/rewrite",
+              "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42001931107",
+              "run_attempt": 1,
+              "node_id": "CR_kwDOAClwqs8AAAAdm0TRQQ",
+              "head_sha": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+              "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/127159030081",
+              "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42001931107/job/127159030081",
+              "status": "completed",
+              "conclusion": "failure",
+              "created_at": "2026-11-05T09:23:10Z",
+              "started_at": "2026-11-05T09:23:12Z",
+              "completed_at": "2026-11-05T09:59:18Z",
+              "name": "Desktop (windows-2022)",
+              "steps": [
+                {
+                  "name": "Set up job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 1,
+                  "started_at": "2026-11-05T09:23:13Z",
+                  "completed_at": "2026-11-05T09:23:14Z"
+                },
+                {
+                  "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 2,
+                  "started_at": "2026-11-05T09:23:14Z",
+                  "completed_at": "2026-11-05T09:23:31Z"
+                },
+                {
+                  "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 3,
+                  "started_at": "2026-11-05T09:23:31Z",
+                  "completed_at": "2026-11-05T09:23:45Z"
+                },
+                {
+                  "name": "Linux native build dependencies",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 4,
+                  "started_at": "2026-11-05T09:23:45Z",
+                  "completed_at": "2026-11-05T09:23:45Z"
+                },
+                {
+                  "name": "Install desktop toolchain",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 5,
+                  "started_at": "2026-11-05T09:23:45Z",
+                  "completed_at": "2026-11-05T09:24:01Z"
+                },
+                {
+                  "name": "Locked frontend and native checks",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 6,
+                  "started_at": "2026-11-05T09:24:01Z",
+                  "completed_at": "2026-11-05T09:30:39Z"
+                },
+                {
+                  "name": "Verify stable macOS QA identities and external fixture selection",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 7,
+                  "started_at": "2026-11-05T09:30:39Z",
+                  "completed_at": "2026-11-05T09:30:39Z"
+                },
+                {
+                  "name": "Build normal native package",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 8,
+                  "started_at": "2026-11-05T09:30:39Z",
+                  "completed_at": "2026-11-05T09:35:38Z"
+                },
+                {
+                  "name": "Inspect macOS application package and run bundled engine",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 9,
+                  "started_at": "2026-11-05T09:35:38Z",
+                  "completed_at": "2026-11-05T09:35:38Z"
+                },
+                {
+                  "name": "Inspect extracted Debian package and run bundled engine",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 10,
+                  "started_at": "2026-11-05T09:35:38Z",
+                  "completed_at": "2026-11-05T09:35:38Z"
+                },
+                {
+                  "name": "Install Windows package and run bundled engine",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 11,
+                  "started_at": "2026-11-05T09:35:38Z",
+                  "completed_at": "2026-11-05T09:36:38Z"
+                },
+                {
+                  "name": "Preserve normal package identity before separate verification build",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 12,
+                  "started_at": "2026-11-05T09:36:38Z",
+                  "completed_at": "2026-11-05T09:36:38Z"
+                },
+                {
+                  "name": "Install actual Linux application for GUI interaction",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 13,
+                  "started_at": "2026-11-05T09:36:38Z",
+                  "completed_at": "2026-11-05T09:36:38Z"
+                },
+                {
+                  "name": "Prepare external native GUI driver",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 14,
+                  "started_at": "2026-11-05T09:36:38Z",
+                  "completed_at": "2026-11-05T09:37:17Z"
+                },
+                {
+                  "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 15,
+                  "started_at": "2026-11-05T09:37:17Z",
+                  "completed_at": "2026-11-05T09:37:17Z"
+                },
+                {
+                  "name": "Pin external Windows GUI Python runtime",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 16,
+                  "started_at": "2026-11-05T09:37:17Z",
+                  "completed_at": "2026-11-05T09:37:17Z"
+                },
+                {
+                  "name": "Prepare matching Windows WebView2 driver and native UI tools",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 17,
+                  "started_at": "2026-11-05T09:37:17Z",
+                  "completed_at": "2026-11-05T09:37:31Z"
+                },
+                {
+                  "name": "Build separately labeled packaged verification application",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 18,
+                  "started_at": "2026-11-05T09:37:31Z",
+                  "completed_at": "2026-11-05T09:39:16Z"
+                },
+                {
+                  "name": "Extract Linux verification package with separate identity",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 19,
+                  "started_at": "2026-11-05T09:39:16Z",
+                  "completed_at": "2026-11-05T09:39:16Z"
+                },
+                {
+                  "name": "Interact with actual installed six games and both Tenjiku profiles on Linux",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 20,
+                  "started_at": "2026-11-05T09:39:16Z",
+                  "completed_at": "2026-11-05T09:39:16Z"
+                },
+                {
+                  "name": "Install verification package and interact with six games and both Tenjiku profiles on Windows",
+                  "status": "completed",
+                  "conclusion": "failure",
+                  "number": 21,
+                  "started_at": "2026-11-05T09:39:16Z",
+                  "completed_at": "2026-11-05T09:58:51Z"
+                },
+                {
+                  "name": "Upload native package and observations",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 22,
+                  "started_at": "2026-11-05T09:58:51Z",
+                  "completed_at": "2026-11-05T09:59:14Z"
+                },
+                {
+                  "name": "Post Pin external Windows GUI Python runtime",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 42,
+                  "started_at": "2026-11-05T09:59:14Z",
+                  "completed_at": "2026-11-05T09:59:14Z"
+                },
+                {
+                  "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 43,
+                  "started_at": "2026-11-05T09:59:14Z",
+                  "completed_at": "2026-11-05T09:59:14Z"
+                },
+                {
+                  "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 44,
+                  "started_at": "2026-11-05T09:59:14Z",
+                  "completed_at": "2026-11-05T09:59:16Z"
+                },
+                {
+                  "name": "Complete job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 45,
+                  "started_at": "2026-11-05T09:59:16Z",
+                  "completed_at": "2026-11-05T09:59:16Z"
+                }
+              ],
+              "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/127159030081",
+              "labels": [
+                "windows-2022"
+              ],
+              "runner_id": 1000002647,
+              "runner_name": "GitHub Actions 1000002647",
+              "runner_group_id": 0,
+              "runner_group_name": "GitHub Actions"
+            },
+            {
+              "id": 127159030423,
+              "run_id": 42001931107,
+              "workflow_name": "Desktop packages",
+              "head_branch": "codex/rewrite",
+              "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42001931107",
+              "run_attempt": 1,
+              "node_id": "CR_kwDOAClwqs8AAAAdm0TSlw",
+              "head_sha": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+              "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/127159030423",
+              "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42001931107/job/127159030423",
+              "status": "completed",
+              "conclusion": "success",
+              "created_at": "2026-11-05T09:23:10Z",
+              "started_at": "2026-11-05T09:23:12Z",
+              "completed_at": "2026-11-05T09:30:27Z",
+              "name": "Desktop (macos-15)",
+              "steps": [
+                {
+                  "name": "Set up job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 1,
+                  "started_at": "2026-11-05T09:23:12Z",
+                  "completed_at": "2026-11-05T09:23:13Z"
+                },
+                {
+                  "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 2,
+                  "started_at": "2026-11-05T09:23:13Z",
+                  "completed_at": "2026-11-05T09:23:27Z"
+                },
+                {
+                  "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 3,
+                  "started_at": "2026-11-05T09:23:27Z",
+                  "completed_at": "2026-11-05T09:23:32Z"
+                },
+                {
+                  "name": "Linux native build dependencies",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 4,
+                  "started_at": "2026-11-05T09:23:32Z",
+                  "completed_at": "2026-11-05T09:23:32Z"
+                },
+                {
+                  "name": "Install desktop toolchain",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 5,
+                  "started_at": "2026-11-05T09:23:32Z",
+                  "completed_at": "2026-11-05T09:23:38Z"
+                },
+                {
+                  "name": "Locked frontend and native checks",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 6,
+                  "started_at": "2026-11-05T09:23:38Z",
+                  "completed_at": "2026-11-05T09:27:04Z"
+                },
+                {
+                  "name": "Verify stable macOS QA identities and external fixture selection",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 7,
+                  "started_at": "2026-11-05T09:27:04Z",
+                  "completed_at": "2026-11-05T09:27:05Z"
+                },
+                {
+                  "name": "Build normal native package",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 8,
+                  "started_at": "2026-11-05T09:27:05Z",
+                  "completed_at": "2026-11-05T09:29:50Z"
+                },
+                {
+                  "name": "Inspect macOS application package and run bundled engine",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 9,
+                  "started_at": "2026-11-05T09:29:50Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Inspect extracted Debian package and run bundled engine",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 10,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Install Windows package and run bundled engine",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 11,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Preserve normal package identity before separate verification build",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 12,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Install actual Linux application for GUI interaction",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 13,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Prepare external native GUI driver",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 14,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 15,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Pin external Windows GUI Python runtime",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 16,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Prepare matching Windows WebView2 driver and native UI tools",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 17,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Build separately labeled packaged verification application",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 18,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Extract Linux verification package with separate identity",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 19,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Interact with actual installed six games and both Tenjiku profiles on Linux",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 20,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Install verification package and interact with six games and both Tenjiku profiles on Windows",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 21,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:21Z"
+                },
+                {
+                  "name": "Upload native package and observations",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 22,
+                  "started_at": "2026-11-05T09:30:21Z",
+                  "completed_at": "2026-11-05T09:30:23Z"
+                },
+                {
+                  "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 43,
+                  "started_at": "2026-11-05T09:30:23Z",
+                  "completed_at": "2026-11-05T09:30:23Z"
+                },
+                {
+                  "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 44,
+                  "started_at": "2026-11-05T09:30:23Z",
+                  "completed_at": "2026-11-05T09:30:24Z"
+                },
+                {
+                  "name": "Complete job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 45,
+                  "started_at": "2026-11-05T09:30:24Z",
+                  "completed_at": "2026-11-05T09:30:25Z"
+                }
+              ],
+              "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/127159030423",
+              "labels": [
+                "macos-15"
+              ],
+              "runner_id": 1000002649,
+              "runner_name": "GitHub Actions 1000002649",
+              "runner_group_id": 0,
+              "runner_group_name": "GitHub Actions"
+            },
+            {
+              "id": 127159030552,
+              "run_id": 42001931107,
+              "workflow_name": "Desktop packages",
+              "head_branch": "codex/rewrite",
+              "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42001931107",
+              "run_attempt": 1,
+              "node_id": "CR_kwDOAClwqs8AAAAdm0TTGA",
+              "head_sha": "0a2fb9d72a2ed59bf896d7a350794896b2885936",
+              "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/127159030552",
+              "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42001931107/job/127159030552",
+              "status": "completed",
+              "conclusion": "failure",
+              "created_at": "2026-11-05T09:23:10Z",
+              "started_at": "2026-11-05T09:23:12Z",
+              "completed_at": "2026-11-05T09:51:32Z",
+              "name": "Desktop (ubuntu-24.04)",
+              "steps": [
+                {
+                  "name": "Set up job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 1,
+                  "started_at": "2026-11-05T09:23:13Z",
+                  "completed_at": "2026-11-05T09:23:14Z"
+                },
+                {
+                  "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 2,
+                  "started_at": "2026-11-05T09:23:14Z",
+                  "completed_at": "2026-11-05T09:23:22Z"
+                },
+                {
+                  "name": "Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 3,
+                  "started_at": "2026-11-05T09:23:22Z",
+                  "completed_at": "2026-11-05T09:23:28Z"
+                },
+                {
+                  "name": "Linux native build dependencies",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 4,
+                  "started_at": "2026-11-05T09:23:28Z",
+                  "completed_at": "2026-11-05T09:23:58Z"
+                },
+                {
+                  "name": "Install desktop toolchain",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 5,
+                  "started_at": "2026-11-05T09:23:58Z",
+                  "completed_at": "2026-11-05T09:24:07Z"
+                },
+                {
+                  "name": "Locked frontend and native checks",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 6,
+                  "started_at": "2026-11-05T09:24:07Z",
+                  "completed_at": "2026-11-05T09:28:51Z"
+                },
+                {
+                  "name": "Verify stable macOS QA identities and external fixture selection",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 7,
+                  "started_at": "2026-11-05T09:28:51Z",
+                  "completed_at": "2026-11-05T09:28:51Z"
+                },
+                {
+                  "name": "Build normal native package",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 8,
+                  "started_at": "2026-11-05T09:28:51Z",
+                  "completed_at": "2026-11-05T09:32:13Z"
+                },
+                {
+                  "name": "Inspect macOS application package and run bundled engine",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 9,
+                  "started_at": "2026-11-05T09:32:13Z",
+                  "completed_at": "2026-11-05T09:32:13Z"
+                },
+                {
+                  "name": "Inspect extracted Debian package and run bundled engine",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 10,
+                  "started_at": "2026-11-05T09:32:13Z",
+                  "completed_at": "2026-11-05T09:32:45Z"
+                },
+                {
+                  "name": "Install Windows package and run bundled engine",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 11,
+                  "started_at": "2026-11-05T09:32:45Z",
+                  "completed_at": "2026-11-05T09:32:45Z"
+                },
+                {
+                  "name": "Preserve normal package identity before separate verification build",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 12,
+                  "started_at": "2026-11-05T09:32:45Z",
+                  "completed_at": "2026-11-05T09:32:45Z"
+                },
+                {
+                  "name": "Install actual Linux application for GUI interaction",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 13,
+                  "started_at": "2026-11-05T09:32:45Z",
+                  "completed_at": "2026-11-05T09:32:48Z"
+                },
+                {
+                  "name": "Prepare external native GUI driver",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 14,
+                  "started_at": "2026-11-05T09:32:48Z",
+                  "completed_at": "2026-11-05T09:32:48Z"
+                },
+                {
+                  "name": "Prepare bounded Linux verification proxy and test actual transport boundary",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 15,
+                  "started_at": "2026-11-05T09:32:48Z",
+                  "completed_at": "2026-11-05T09:33:24Z"
+                },
+                {
+                  "name": "Pin external Windows GUI Python runtime",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 16,
+                  "started_at": "2026-11-05T09:33:24Z",
+                  "completed_at": "2026-11-05T09:33:24Z"
+                },
+                {
+                  "name": "Prepare matching Windows WebView2 driver and native UI tools",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 17,
+                  "started_at": "2026-11-05T09:33:24Z",
+                  "completed_at": "2026-11-05T09:33:24Z"
+                },
+                {
+                  "name": "Build separately labeled packaged verification application",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 18,
+                  "started_at": "2026-11-05T09:33:24Z",
+                  "completed_at": "2026-11-05T09:34:19Z"
+                },
+                {
+                  "name": "Extract Linux verification package with separate identity",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 19,
+                  "started_at": "2026-11-05T09:34:19Z",
+                  "completed_at": "2026-11-05T09:34:19Z"
+                },
+                {
+                  "name": "Interact with actual installed six games and both Tenjiku profiles on Linux",
+                  "status": "completed",
+                  "conclusion": "failure",
+                  "number": 20,
+                  "started_at": "2026-11-05T09:34:19Z",
+                  "completed_at": "2026-11-05T09:51:19Z"
+                },
+                {
+                  "name": "Install verification package and interact with six games and both Tenjiku profiles on Windows",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 21,
+                  "started_at": "2026-11-05T09:51:19Z",
+                  "completed_at": "2026-11-05T09:51:19Z"
+                },
+                {
+                  "name": "Upload native package and observations",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 22,
+                  "started_at": "2026-11-05T09:51:19Z",
+                  "completed_at": "2026-11-05T09:51:30Z"
+                },
+                {
+                  "name": "Post Run actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+                  "status": "completed",
+                  "conclusion": "skipped",
+                  "number": 43,
+                  "started_at": "2026-11-05T09:51:30Z",
+                  "completed_at": "2026-11-05T09:51:30Z"
+                },
+                {
+                  "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 44,
+                  "started_at": "2026-11-05T09:51:30Z",
+                  "completed_at": "2026-11-05T09:51:30Z"
+                },
+                {
+                  "name": "Complete job",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "number": 45,
+                  "started_at": "2026-11-05T09:51:30Z",
+                  "completed_at": "2026-11-05T09:51:30Z"
+                }
+              ],
+              "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/127159030552",
+              "labels": [
+                "ubuntu-24.04"
+              ],
+              "runner_id": 1000002650,
+              "runner_name": "GitHub Actions 1000002650",
+              "runner_group_id": 0,
+              "runner_group_name": "GitHub Actions"
+            }
+          ]
+        }
+      ],
+      "failed_gui_artifacts": [
+        {
+          "platform": "linux",
+          "artifact_id": 13404602463,
+          "archive_sha256": "6e7e43f1baf3d2b2b71487fda7ff7220a5efbb7e6c8051b2e28a3d9f26dba956",
+          "report_extract": "evidence/msh44-final-ci/superseded-0a2fb9d-linux-gui-extract.json",
+          "report_sha256": "d73426a6c4c065c3c15e60cd486d858c5a597786c160878b6c1e98238bff68c8",
+          "phase_failures": [
+            {
+              "phase": "normal-chu-native",
+              "error": "Native filename Copy produced no entry text",
+              "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 3610, in main\n    journey.normal_chu_native()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2827, in normal_chu_native\n    ended_reopened=self.chu_reopen_saved(ended_path)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2624, in chu_reopen_saved\n    self.file('open',actual); self.wait_opened(actual)\n    ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1324, in file\n    evidence = picker.result(timeout=35)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/concurrent/futures/_base.py\", line 456, in result\n    return self.__get_result()\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/concurrent/futures/_base.py\", line 401, in __get_result\n    raise self._exception\n  File \"/usr/lib/python3.12/concurrent/futures/thread.py\", line 58, in run\n    result = self.fn(*self.args, **self.kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui_linux.py\", line 355, in choose_file\n    filename_readback = self._enter_picker_path(picker, selected, stem)\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui_linux.py\", line 272, in _enter_picker_path\n    observed = self._copy_picker_text()\n               ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui_linux.py\", line 264, in _copy_picker_text\n    return self._wait(copied, \"Native filename Copy produced no entry text\", timeout=2)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui_linux.py\", line 93, in _wait\n    raise TimeoutError(message)\nTimeoutError: Native filename Copy produced no entry text\n"
+            },
+            {
+              "phase": "normal-tenjiku-adams",
+              "error": "'event_index'",
+              "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 3614, in main\n    else:journey.normal_tenjiku(profile)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2466, in normal_tenjiku\n    self.tenjiku_analysis();selected=self.native_diagnostics();assert selected['context']['payload']['events']==events[:1]\n    ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2386, in tenjiku_analysis\n    self.record('Capture pre-click native Tenjiku analysis identity floor and exact selected source',{'observations':len(before['observations']),'request_floor':request_floor,'generation_floor':generation_floor,'source':before['context'],'selected_event':before['event_index'],'board_ply':before['board_ply'],'token':before['token']})\n                                                                                                                                                                                                                                                               ~~~~~~^^^^^^^^^^^^^^^\nKeyError: 'event_index'\n"
+            },
+            {
+              "phase": "normal-tenjiku-adams-native",
+              "error": "",
+              "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 3613, in main\n    if fixture.endswith('-native'):journey.normal_tenjiku_native(profile)\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2538, in normal_tenjiku_native\n    self.tenjiku_save(path,profile);self.tenjiku_reopen_saved(path,profile);self.capture('native-complete-game-fresh-stopped-reopen');self.quit()\n                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2375, in tenjiku_reopen_saved\n    assert self.web.has('.play-paused') and not self.web.has('.shogi-analysis[data-phase=\"thinking\"],.shogi-analysis[data-phase=\"analyzing\"]')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+            },
+            {
+              "phase": "normal-tenjiku-muller",
+              "error": "Timed out: native Open accepts exact path with work stopped and file controls settled: /home/runner/work/mShogi/mShogi/gui-evidence/normal-tenjiku-adams-concluded.mshogi; last observation: None",
+              "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 3614, in main\n    else:journey.normal_tenjiku(profile)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2448, in normal_tenjiku\n    self.file('open',previous);self.wait_opened(previous)\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 1516, in wait_opened\n    observation = wait(accepted, f\"native Open accepts exact path with work stopped and file controls settled: {path}\")\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 520, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: native Open accepts exact path with work stopped and file controls settled: /home/runner/work/mShogi/mShogi/gui-evidence/normal-tenjiku-adams-concluded.mshogi; last observation: None\n"
+            },
+            {
+              "phase": "normal-tenjiku-muller-native",
+              "error": "",
+              "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 3613, in main\n    if fixture.endswith('-native'):journey.normal_tenjiku_native(profile)\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2538, in normal_tenjiku_native\n    self.tenjiku_save(path,profile);self.tenjiku_reopen_saved(path,profile);self.capture('native-complete-game-fresh-stopped-reopen');self.quit()\n                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2375, in tenjiku_reopen_saved\n    assert self.web.has('.play-paused') and not self.web.has('.shogi-analysis[data-phase=\"thinking\"],.shogi-analysis[data-phase=\"analyzing\"]')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+            }
+          ],
+          "phase_results": [
+            {
+              "phase": "normal",
+              "status": "passed",
+              "error": null,
+              "events": 161
+            },
+            {
+              "phase": "normal-shogi",
+              "status": "passed",
+              "error": null,
+              "events": 233
+            },
+            {
+              "phase": "normal-shogi-reopened",
+              "status": "passed",
+              "error": null,
+              "events": 31
+            },
+            {
+              "phase": "normal-xiangqi",
+              "status": "passed",
+              "error": null,
+              "events": 180
+            },
+            {
+              "phase": "normal-tori",
+              "status": "passed",
+              "error": null,
+              "events": 177
+            },
+            {
+              "phase": "normal-tori-native",
+              "status": "passed",
+              "error": null,
+              "events": 48
+            },
+            {
+              "phase": "normal-chu",
+              "status": "passed",
+              "error": null,
+              "events": 177
+            },
+            {
+              "phase": "normal-chu-native",
+              "status": "failed",
+              "error": "Native filename Copy produced no entry text",
+              "events": 210
+            },
+            {
+              "phase": "normal-tenjiku-adams",
+              "status": "failed",
+              "error": "'event_index'",
+              "events": 69
+            },
+            {
+              "phase": "normal-tenjiku-adams-native",
+              "status": "failed",
+              "error": "",
+              "events": 135
+            },
+            {
+              "phase": "normal-tenjiku-muller",
+              "status": "failed",
+              "error": "Timed out: native Open accepts exact path with work stopped and file controls settled: /home/runner/work/mShogi/mShogi/gui-evidence/normal-tenjiku-adams-concluded.mshogi; last observation: None",
+              "events": 3
+            },
+            {
+              "phase": "normal-tenjiku-muller-native",
+              "status": "failed",
+              "error": "",
+              "events": 135
+            },
+            {
+              "phase": "verification-standard",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-promotion",
+              "status": "passed",
+              "error": null,
+              "events": 11
+            },
+            {
+              "phase": "verification-claim",
+              "status": "passed",
+              "error": null,
+              "events": 6
+            },
+            {
+              "phase": "verification-current-claim",
+              "status": "passed",
+              "error": null,
+              "events": 6
+            },
+            {
+              "phase": "verification-concluded",
+              "status": "passed",
+              "error": null,
+              "events": 7
+            },
+            {
+              "phase": "verification-full-unknown-cancel",
+              "status": "passed",
+              "error": null,
+              "events": 7
+            },
+            {
+              "phase": "verification-capacity",
+              "status": "passed",
+              "error": null,
+              "events": 9
+            },
+            {
+              "phase": "verification-synthetic",
+              "status": "passed",
+              "error": null,
+              "events": 53
+            },
+            {
+              "phase": "verification-pending-chess",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-pending-shogi",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-pending-xiangqi",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-pending-tori",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-tori-recovery",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-pending-chu",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-chu-recovery",
+              "status": "passed",
+              "error": null,
+              "events": 12
+            },
+            {
+              "phase": "verification-shogi-hands",
+              "status": "passed",
+              "error": null,
+              "events": 14
+            },
+            {
+              "phase": "verification-shogi-promotion",
+              "status": "passed",
+              "error": null,
+              "events": 12
+            },
+            {
+              "phase": "verification-shogi-forced",
+              "status": "passed",
+              "error": null,
+              "events": 9
+            },
+            {
+              "phase": "verification-shogi-declaration",
+              "status": "passed",
+              "error": null,
+              "events": 29
+            },
+            {
+              "phase": "verification-shogi-concluded",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-shogi-capacity",
+              "status": "passed",
+              "error": null,
+              "events": 11
+            },
+            {
+              "phase": "verification-xiangqi-warning",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-xiangqi-fourth",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-count",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-offer",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-agreed",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-fast-proof",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-resigned",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-capacity",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-failure",
+              "status": "passed",
+              "error": null,
+              "events": 14
+            },
+            {
+              "phase": "verification-xiangqi-exact-evidence",
+              "status": "passed",
+              "error": null,
+              "events": 14
+            },
+            {
+              "phase": "verification-pending-tenjiku-adams",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-recovery-tenjiku-adams",
+              "status": "passed",
+              "error": null,
+              "events": 12
+            },
+            {
+              "phase": "verification-pending-tenjiku-muller",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-recovery-tenjiku-muller",
+              "status": "passed",
+              "error": null,
+              "events": 12
+            }
+          ]
+        },
+        {
+          "platform": "windows",
+          "artifact_id": 13404504006,
+          "archive_sha256": "bb932e14db47eda9ad2dd08dcf6acc9c552d69fd428056fdb0794487148754f5",
+          "report_extract": "evidence/msh44-final-ci/superseded-0a2fb9d-windows-gui-extract.json",
+          "report_sha256": "9fc881967292e1f7300d8ebfb5cba0e8ae314a31922b753deb0c332fe84e3065",
+          "phase_failures": [
+            {
+              "phase": "normal-tenjiku-adams",
+              "error": "'event_index'",
+              "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 3614, in main\n    else:journey.normal_tenjiku(profile)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2466, in normal_tenjiku\n    self.tenjiku_analysis();selected=self.native_diagnostics();assert selected['context']['payload']['events']==events[:1]\n    ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2386, in tenjiku_analysis\n    self.record('Capture pre-click native Tenjiku analysis identity floor and exact selected source',{'observations':len(before['observations']),'request_floor':request_floor,'generation_floor':generation_floor,'source':before['context'],'selected_event':before['event_index'],'board_ply':before['board_ply'],'token':before['token']})\n                                                                                                                                                                                                                                                               ~~~~~~^^^^^^^^^^^^^^^\nKeyError: 'event_index'\n"
+            },
+            {
+              "phase": "normal-tenjiku-adams-native",
+              "error": "",
+              "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 3613, in main\n    if fixture.endswith('-native'):journey.normal_tenjiku_native(profile)\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2538, in normal_tenjiku_native\n    self.tenjiku_save(path,profile);self.tenjiku_reopen_saved(path,profile);self.capture('native-complete-game-fresh-stopped-reopen');self.quit()\n                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2375, in tenjiku_reopen_saved\n    assert self.web.has('.play-paused') and not self.web.has('.shogi-analysis[data-phase=\"thinking\"],.shogi-analysis[data-phase=\"analyzing\"]')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+            },
+            {
+              "phase": "normal-tenjiku-muller",
+              "error": "Native picker did not close after selection",
+              "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 3614, in main\n    else:journey.normal_tenjiku(profile)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2448, in normal_tenjiku\n    self.file('open',previous);self.wait_opened(previous)\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 1324, in file\n    evidence = picker.result(timeout=35)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\concurrent\\futures\\_base.py\", line 456, in result\n    return self.__get_result()\n           ^^^^^^^^^^^^^^^^^^^\n  File \"C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\concurrent\\futures\\_base.py\", line 401, in __get_result\n    raise self._exception\n  File \"C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\Lib\\concurrent\\futures\\thread.py\", line 59, in run\n    result = self.fn(*self.args, **self.kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui_windows.py\", line 640, in choose_file\n    raise TimeoutError(f\"Native picker did not close after {'Cancel' if path is None else 'selection'}\")\nTimeoutError: Native picker did not close after selection\n"
+            },
+            {
+              "phase": "normal-tenjiku-muller-native",
+              "error": "",
+              "traceback": "Traceback (most recent call last):\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 3613, in main\n    if fixture.endswith('-native'):journey.normal_tenjiku_native(profile)\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2538, in normal_tenjiku_native\n    self.tenjiku_save(path,profile);self.tenjiku_reopen_saved(path,profile);self.capture('native-complete-game-fresh-stopped-reopen');self.quit()\n                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\a\\mShogi\\mShogi\\desktop\\scripts\\gui-smoke.py\", line 2375, in tenjiku_reopen_saved\n    assert self.web.has('.play-paused') and not self.web.has('.shogi-analysis[data-phase=\"thinking\"],.shogi-analysis[data-phase=\"analyzing\"]')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+            }
+          ],
+          "phase_results": [
+            {
+              "phase": "normal",
+              "status": "passed",
+              "error": null,
+              "events": 161
+            },
+            {
+              "phase": "normal-shogi",
+              "status": "passed",
+              "error": null,
+              "events": 232
+            },
+            {
+              "phase": "normal-shogi-reopened",
+              "status": "passed",
+              "error": null,
+              "events": 31
+            },
+            {
+              "phase": "normal-xiangqi",
+              "status": "passed",
+              "error": null,
+              "events": 180
+            },
+            {
+              "phase": "normal-tori",
+              "status": "passed",
+              "error": null,
+              "events": 177
+            },
+            {
+              "phase": "normal-tori-native",
+              "status": "passed",
+              "error": null,
+              "events": 48
+            },
+            {
+              "phase": "normal-chu",
+              "status": "passed",
+              "error": null,
+              "events": 177
+            },
+            {
+              "phase": "normal-chu-native",
+              "status": "passed",
+              "error": null,
+              "events": 216
+            },
+            {
+              "phase": "normal-tenjiku-adams",
+              "status": "failed",
+              "error": "'event_index'",
+              "events": 69
+            },
+            {
+              "phase": "normal-tenjiku-adams-native",
+              "status": "failed",
+              "error": "",
+              "events": 135
+            },
+            {
+              "phase": "normal-tenjiku-muller",
+              "status": "failed",
+              "error": "Native picker did not close after selection",
+              "events": 2
+            },
+            {
+              "phase": "normal-tenjiku-muller-native",
+              "status": "failed",
+              "error": "",
+              "events": 135
+            },
+            {
+              "phase": "verification-standard",
+              "status": "passed",
+              "error": null,
+              "events": 12
+            },
+            {
+              "phase": "verification-promotion",
+              "status": "passed",
+              "error": null,
+              "events": 11
+            },
+            {
+              "phase": "verification-claim",
+              "status": "passed",
+              "error": null,
+              "events": 6
+            },
+            {
+              "phase": "verification-current-claim",
+              "status": "passed",
+              "error": null,
+              "events": 6
+            },
+            {
+              "phase": "verification-concluded",
+              "status": "passed",
+              "error": null,
+              "events": 7
+            },
+            {
+              "phase": "verification-full-unknown-cancel",
+              "status": "passed",
+              "error": null,
+              "events": 7
+            },
+            {
+              "phase": "verification-capacity",
+              "status": "passed",
+              "error": null,
+              "events": 9
+            },
+            {
+              "phase": "verification-synthetic",
+              "status": "passed",
+              "error": null,
+              "events": 52
+            },
+            {
+              "phase": "verification-pending-chess",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-pending-shogi",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-pending-xiangqi",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-pending-tori",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-tori-recovery",
+              "status": "passed",
+              "error": null,
+              "events": 12
+            },
+            {
+              "phase": "verification-pending-chu",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-chu-recovery",
+              "status": "passed",
+              "error": null,
+              "events": 12
+            },
+            {
+              "phase": "verification-shogi-hands",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-shogi-promotion",
+              "status": "passed",
+              "error": null,
+              "events": 12
+            },
+            {
+              "phase": "verification-shogi-forced",
+              "status": "passed",
+              "error": null,
+              "events": 9
+            },
+            {
+              "phase": "verification-shogi-declaration",
+              "status": "passed",
+              "error": null,
+              "events": 32
+            },
+            {
+              "phase": "verification-shogi-concluded",
+              "status": "passed",
+              "error": null,
+              "events": 16
+            },
+            {
+              "phase": "verification-shogi-capacity",
+              "status": "passed",
+              "error": null,
+              "events": 11
+            },
+            {
+              "phase": "verification-xiangqi-warning",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-xiangqi-fourth",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-count",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-offer",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-agreed",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-fast-proof",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-resigned",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-capacity",
+              "status": "passed",
+              "error": null,
+              "events": 13
+            },
+            {
+              "phase": "verification-xiangqi-failure",
+              "status": "passed",
+              "error": null,
+              "events": 14
+            },
+            {
+              "phase": "verification-xiangqi-exact-evidence",
+              "status": "passed",
+              "error": null,
+              "events": 14
+            },
+            {
+              "phase": "verification-pending-tenjiku-adams",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-recovery-tenjiku-adams",
+              "status": "passed",
+              "error": null,
+              "events": 12
+            },
+            {
+              "phase": "verification-pending-tenjiku-muller",
+              "status": "passed",
+              "error": null,
+              "events": 17
+            },
+            {
+              "phase": "verification-recovery-tenjiku-muller",
+              "status": "passed",
+              "error": null,
+              "events": 12
+            }
+          ]
+        }
+      ],
+      "findings": [
+        "Public diagnostics nested selected/canonical side/Moves fields differed from synthetic observer assumption; corrected against real SupportDialog/report.",
+        "Concluded fresh stopped Open correctly retains outcome and no Resume banner; observer wrongly required nonterminal UI.",
+        "Muller normal failures were downstream missingAdams output after earlier observer abort.",
+        "Linux existingChu nativepicker showedemptyfilenameentry; boundedinput-only replacement nowrechecksidentity andrequiresfresh exactCopy before singleacceptance."
+      ]
+    }
+  ]
 }

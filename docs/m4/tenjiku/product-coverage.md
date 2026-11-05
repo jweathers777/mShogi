@@ -7,7 +7,7 @@ acceptance. The single MSH-44 execution/evidence record is
 requirements map, not another results ledger.
 
 The earlier working implementation was integrated on `codex/rewrite` at
-`aecdccd6152df9cef8736e83ef74d8bc81ae39b2`. The final pushed production checkpoint is
+`aecdccd6152df9cef8736e83ef74d8bc81ae39b2`. Its final pushed visual checkpoint was
 `2c00e2107ac74334bce5d55813e5be25666d7c46`, including the test-only host
 assertion correction, profile-specific engine cases and reviewed native effect
 descriptions shared by console and accessible Moves history. See the genuine
@@ -17,7 +17,8 @@ authorized normal activation. Normal sixth-game New with both explicit profile
 choices and ordinary profile-preserving Load are now implemented. The current
 continuation includes shared piece-name footer and occupied capture-overlay
 corrections. Exact final source, artifact reconciliation, six required CI jobs
-and three-platform acceptance remain pending in the single product record.
+and three-platform acceptance for the reviewed normal-product source
+`0a2fb9d72a2ed59bf896d7a350794896b2885936` remain pending in the single product record.
 MSH-44 remains unfinished; AC7, AC8 and the definition of done are not complete.
 
 Both owner-selected whole profiles remain required:

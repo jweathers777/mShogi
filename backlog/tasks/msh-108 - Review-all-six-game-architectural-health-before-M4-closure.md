@@ -4,7 +4,7 @@ title: Review all-six-game architectural health before M4 closure
 status: Ready
 assignee: []
 created_date: '2026-10-27T20:26:00Z'
-updated_date: '2026-11-05T21:51:00Z'
+updated_date: '2026-11-05T21:55:00Z'
 labels:
   - architecture-review
   - planning
@@ -56,4 +56,6 @@ Future diagnostic work only. Intent, scope, acceptance and verification expectat
 MSH-107 handoff at accepted source a8581f09107648d03e3016786b41c267ace88bca: current five-game map/report docs/review/architecture-health-107.md confirms R1–R6 ownership with real Tori/Chu consumers; no material redesign or demonstrated architectural Tenjiku blocker. Reconcile advisory F01 repeated replay/unused retained undo, F02 cooperative replay/watchdog granularity, F03 synchronous inspection/choice-cost risks and F04 narrow duplication/comment drift against the eventual six-game source. Preserve native semantics, selected profiles, one controller/envelope/frontend/choice lifetime, actual saveability reserves and conformance policy; no automatic refactor or new dependency. Existing MSH-83/87/79/44 own actual Tenjiku profile/actions/effects/native search/capacity/kanji product evidence. Reuse107 exact focused checks and qualified R6/Tori/Chu evidence; Tenjiku readiness is not delivered proof. MSH-108 remains Ready/unassigned/dependency-blocked by46; no activation or plan added.
 
 MSH-46 final aggregate acceptance handoff2026-11-05 (closure pending): docs/m4/shared-integration/README.md is the current six-criterion ownership/completion record. Reuse unchanged tested runtime/platformbc92bfe5e3b20e9e999df12cbf54b91682c71b8d, immutable MSH88verification.json and MSH89contract-review-89.md/.json; incoming integration91115368c6e99f344dee002d9264f4d0b62cc76b differs only by four neutral rustdoc descriptions in runtime inputs. All six games/seven profiles, native-specific resource/ending/Close policies and localmacOS27 versus hostedmacOS15/actual WindowsLinux49phase qualifications remain explicit. After46Done,106/107 alreadyDone make108 dependency-ready. Keep108 Ready/unassigned/unstarted with original46/106/107 dependencies and eight criteria; no plan/diagnostic/refactor is performed here. Reconcile106/107 advisory findings against then-current source in your own assignment; no advisory change automatically becomes required.112 remains a separately owned unfixed functional diagnostic race with the89disposition retained.47 remains the later independent M4 closure gate.
+
+MSH-46 is now Done, all original6AC/4DoD supported after fresh independent completion review and accepted evidence normal push90e1222d8db27ede3212b794e877a975a068c35d. Final current delivery record docs/m4/shared-integration/README.md; runtime/platform source remainsbc92bfe5e3b20e9e999df12cbf54b91682c71b8d. With106/107Done all three existing108prerequisites46/106/107 are satisfied.108 is the next assignment, remains Ready/unassigned/unstarted with no implementation plan added; original8AC/4DoD/dependencies intact.47/M4 remain open;112 remains unfixed as qualified in89. Do not treat advisory architecture recommendations as mandatory refactors.
 <!-- SECTION:NOTES:END -->

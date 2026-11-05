@@ -315,6 +315,11 @@
     "normal-muller-readonly-analysis.png": {
       "bytes": 511489,
       "sha256": "acc90884f903471eafd79d76757b5759f43d073bae0b144bcf873a04767cbb9d"
+    },
+    "final-fe9144a-package-equivalence.json": {
+      "bytes": 973,
+      "sha256": "9890af49bc5890c8d87dd2ebad26ee3fcb05f0d0e6e1f9af53ab217fa9d2403d",
+      "source_revision": "fe9144a49e6dc1aa811ae4b6f316fe93f2be5dfb"
     }
   },
   "capture_groups": {
@@ -325,7 +330,8 @@
     "final_normal_supplement": {
       "source_revision": "241807f647583e5ccf87eb3d5e8e8ca2aa192675",
       "host_sha256": "4e3719fe779a78f7800a31a827fa605dff4e1182f0ac26a41842a7e5e2c35c80",
-      "qualification": "OnlyAboutstringchangedinproduct; currenthostcoldlaunchandactualbothprofileterminal/densecaptures."
+      "qualification": "OnlyAboutstringchangedinproduct; currenthostcoldlaunchandactualbothprofileterminal/densecaptures.",
+      "equivalent_final_source_revision": "fe9144a49e6dc1aa811ae4b6f316fe93f2be5dfb"
     }
   }
 }

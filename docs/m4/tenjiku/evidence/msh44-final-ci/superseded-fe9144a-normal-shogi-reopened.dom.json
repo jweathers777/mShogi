@@ -1,0 +1,32 @@
+{
+  "text": "\u6b69\nmShogi\n\nSHOGI\nLocal engine\nUNSAVED CHANGES\nnormal-shogi-complete.mshogi\nNew game\nSave\nLoad\nYOUR GAME\n\nSente to move\nYou play Sente against mShogi\n\u2195\nFlip board\nm\nmShogiGote\nYour opponent\nNo pieces in hand\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u738b\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n\u98db\n\u8eca\n\u89d2\n\u884c\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u6b69\n\u5175\n\u89d2\n\u884c\n\u98db\n\u8eca\n\u9999\n\u8eca\n\u6842\n\u99ac\n\u9280\n\u5c06\n\u91d1\n\u5c06\n\u7389\n\u5c06\n\u91d1\n\u5c06\n\u9280\n\u5c06\n\u6842\n\u99ac\n\u9999\n\u8eca\n9\n8\n7\n6\n5\n4\n3\n2\n1\na\nb\nc\nd\ne\nf\ng\nh\ni\nY\nYouSente\nHuman player\nTo move\nNo pieces in hand\nArrows: move focus \u00b7 Enter/Space: select \u00b7 Esc: cancel\nPlay paused \u00b7 resume explicitly to continue\nLive position \u00b7 2 plies\nPlay is paused.\nResume play\nAnalysis\n\nPlay details\nAnalyze position\nMove analysis\nSelected event 2 \u00b7 Sente perspective\n\nDepth\nNode limit\nStart move analysis\nSet work limits and start analysis.\nRecorded searches (4)\nGame Actions\n\nTake backResign\nMoves\n2 moves\nStarting position\nMove pairs from the starting position\nMove number\tSente\tGote\n1.\t\uff17\uff16\u6b69\t\uff14\uff14\u6b69",
+  "focus": {
+    "label": "7c, Gote pawn",
+    "text": "\u6b69\u5175",
+    "tag": "g"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 820,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": [
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "1",
+      "max": "4",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "20000",
+      "tag": "INPUT"
+    }
+  ]
+}

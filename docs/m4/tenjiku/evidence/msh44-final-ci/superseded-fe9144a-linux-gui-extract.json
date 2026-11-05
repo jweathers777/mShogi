@@ -1,0 +1,321 @@
+{
+  "source_revision": "fe9144a49e6dc1aa811ae4b6f316fe93f2be5dfb",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/42013800230",
+  "started_at_utc": "2026-11-05T10:58:01.457738+00:00",
+  "finished_at_utc": "2026-11-05T11:19:28.497192+00:00",
+  "status": "failed",
+  "environment": {
+    "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "runner_image": "20261101.360.1",
+    "runner_os": "Linux",
+    "renderer_environment": {
+      "GDK_BACKEND": "x11",
+      "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+  "phase_failures": [
+    {
+      "phase": "normal-shogi-reopened",
+      "error": "{\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 578, in _request_once\n    with urllib.request.urlopen(request, timeout=45) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 400: Bad Request\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 3631, in main\n    journey.normal_shogi_reopened()\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 2106, in normal_shogi_reopened\n    w.button(\"Resume play\")\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 644, in button\n    self.command(\"POST\", f\"/element/{element}/click\", {})\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 588, in command\n    return self.request(method, f\"/session/{self.session}{path}\", data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 559, in request\n    result = self._request_once(method, path, data)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 581, in _request_once\n    raise RuntimeError(error.read().decode(errors=\"replace\")) from error\nRuntimeError: {\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}\n"
+    },
+    {
+      "phase": "verification-pending-chess",
+      "error": "Timed out: new native replacement authority and read-only purpose admitted; last observation: 'Timed out: About restores its actual keyboard invoker; last observation: False'",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 3657, in main\n    journey.pending(fixture.removeprefix(\"pending-\"))\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 3265, in pending\n    replacement = wait(accepted_replacement, 'new native replacement authority and read-only purpose admitted')\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/mShogi/mShogi/desktop/scripts/gui-smoke.py\", line 540, in wait\n    raise AssertionError(f\"Timed out: {label}; last observation: {last!r}\")\nAssertionError: Timed out: new native replacement authority and read-only purpose admitted; last observation: 'Timed out: About restores its actual keyboard invoker; last observation: False'\n"
+    }
+  ],
+  "qualification": "Superseded Linux platform failure. All8 Tenjiku phasespassed; legacy Shogi visibility and generic asynchronous-focus assertions failed. This is not overall platform acceptance.",
+  "artifact_id": 13410631047,
+  "archive_digest": "sha256:eca198b9134781af50c73fee461f7bf7c34b9ad4042cc624982dd13ba4da53bd",
+  "raw_report_bytes": 135413742,
+  "raw_report_sha256": "ed258ba1f2da88ce78d57ef7fd1af63e99947c3971baae20521e841fb571b7b3",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "events": 245,
+      "error": null
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "events": 292,
+      "error": null
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "failed",
+      "events": 38,
+      "error": "{\"value\":{\"error\":\"element not interactable\",\"message\":\"\",\"stacktrace\":\"\"}}"
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed",
+      "events": 312,
+      "error": null
+    },
+    {
+      "phase": "normal-tori",
+      "status": "passed",
+      "events": 286,
+      "error": null
+    },
+    {
+      "phase": "normal-tori-native",
+      "status": "passed",
+      "events": 189,
+      "error": null
+    },
+    {
+      "phase": "normal-chu",
+      "status": "passed",
+      "events": 294,
+      "error": null
+    },
+    {
+      "phase": "normal-chu-native",
+      "status": "passed",
+      "events": 603,
+      "error": null
+    },
+    {
+      "phase": "normal-tenjiku-adams",
+      "status": "passed",
+      "events": 247,
+      "error": null
+    },
+    {
+      "phase": "normal-tenjiku-adams-native",
+      "status": "passed",
+      "events": 406,
+      "error": null
+    },
+    {
+      "phase": "normal-tenjiku-muller",
+      "status": "passed",
+      "events": 264,
+      "error": null
+    },
+    {
+      "phase": "normal-tenjiku-muller-native",
+      "status": "passed",
+      "events": 409,
+      "error": null
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "events": 15,
+      "error": null
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "events": 14,
+      "error": null
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "events": 10,
+      "error": null
+    },
+    {
+      "phase": "verification-current-claim",
+      "status": "passed",
+      "events": 9,
+      "error": null
+    },
+    {
+      "phase": "verification-concluded",
+      "status": "passed",
+      "events": 17,
+      "error": null
+    },
+    {
+      "phase": "verification-full-unknown-cancel",
+      "status": "passed",
+      "events": 20,
+      "error": null
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "events": 21,
+      "error": null
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "events": 53,
+      "error": null
+    },
+    {
+      "phase": "verification-pending-chess",
+      "status": "failed",
+      "events": 99,
+      "error": "Timed out: new native replacement authority and read-only purpose admitted; last observation: 'Timed out: About restores its actual keyboard invoker; last observation: False'"
+    },
+    {
+      "phase": "verification-pending-shogi",
+      "status": "passed",
+      "events": 59,
+      "error": null
+    },
+    {
+      "phase": "verification-pending-xiangqi",
+      "status": "passed",
+      "events": 59,
+      "error": null
+    },
+    {
+      "phase": "verification-pending-tori",
+      "status": "passed",
+      "events": 59,
+      "error": null
+    },
+    {
+      "phase": "verification-tori-recovery",
+      "status": "passed",
+      "events": 28,
+      "error": null
+    },
+    {
+      "phase": "verification-pending-chu",
+      "status": "passed",
+      "events": 59,
+      "error": null
+    },
+    {
+      "phase": "verification-chu-recovery",
+      "status": "passed",
+      "events": 27,
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "events": 16,
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "events": 16,
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "events": 12,
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "events": 53,
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "events": 19,
+      "error": null
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "events": 23,
+      "error": null
+    },
+    {
+      "phase": "verification-xiangqi-warning",
+      "status": "passed",
+      "events": 50,
+      "error": null
+    },
+    {
+      "phase": "verification-xiangqi-fourth",
+      "status": "passed",
+      "events": 40,
+      "error": null
+    },
+    {
+      "phase": "verification-xiangqi-count",
+      "status": "passed",
+      "events": 43,
+      "error": null
+    },
+    {
+      "phase": "verification-xiangqi-offer",
+      "status": "passed",
+      "events": 40,
+      "error": null
+    },
+    {
+      "phase": "verification-xiangqi-agreed",
+      "status": "passed",
+      "events": 40,
+      "error": null
+    },
+    {
+      "phase": "verification-xiangqi-fast-proof",
+      "status": "passed",
+      "events": 40,
+      "error": null
+    },
+    {
+      "phase": "verification-xiangqi-resigned",
+      "status": "passed",
+      "events": 40,
+      "error": null
+    },
+    {
+      "phase": "verification-xiangqi-capacity",
+      "status": "passed",
+      "events": 40,
+      "error": null
+    },
+    {
+      "phase": "verification-xiangqi-failure",
+      "status": "passed",
+      "events": 44,
+      "error": null
+    },
+    {
+      "phase": "verification-xiangqi-exact-evidence",
+      "status": "passed",
+      "events": 44,
+      "error": null
+    },
+    {
+      "phase": "verification-pending-tenjiku-adams",
+      "status": "passed",
+      "events": 59,
+      "error": null
+    },
+    {
+      "phase": "verification-recovery-tenjiku-adams",
+      "status": "passed",
+      "events": 27,
+      "error": null
+    },
+    {
+      "phase": "verification-pending-tenjiku-muller",
+      "status": "passed",
+      "events": 59,
+      "error": null
+    },
+    {
+      "phase": "verification-recovery-tenjiku-muller",
+      "status": "passed",
+      "events": 27,
+      "error": null
+    }
+  ]
+}

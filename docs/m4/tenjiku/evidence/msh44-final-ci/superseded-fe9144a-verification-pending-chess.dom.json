@@ -1,0 +1,56 @@
+{
+  "text": "\u6b69\nmShogi\n\nCHESS\nLocal engine\nUNSAVED\nUntitled game\nNew game\nSave\nLoad\nYOUR GAME\n\nWhite to move\nYou play White against mShogi\n\u2195\nFlip board\nm\nmShogiBlack\nYour opponent\n\u265c\n8\n\u265e\n\u265d\n\u265b\n\u265a\n\u265d\n\u265e\n\u265c\n\u265f\n7\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n6\n5\n4\n3\n\u265f\n2\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265f\n\u265c\n1\na\n\u265e\nb\n\u265d\nc\n\u265b\nd\n\u265a\ne\n\u265d\nf\n\u265e\ng\n\u265c\nh\nY\nYouWhite\nHuman player\nTo move\nArrows: move focus \u00b7 Enter/Space: select \u00b7 Esc: cancel\nPlay paused \u00b7 resume explicitly to continue\nLive position \u00b7 0 plies\nPlay is paused.\nResume play\nAnalysis\n\nPlay details\nAnalyze position\nMove analysis\nSelected event 1 \u00b7 White perspective\n\nDepth\nNode limit\nStart move analysis\nAnalysis result available\nAdvanced: Full mating reachability\nMove analysis completed for Live position after 0 plies, White to move. Suggested move: a2 \u2192 a3; not played.\nLive position after 0 plies\n\nWhite perspective \u00b7 Bounded move search\nRecorded limit: depth 1, 1000 nodes.\nSuggested move: a2 \u2192 a3 \u00b7 not played\n0.00 pawns from White perspective\n\nCompleted depth\n1\nNodes\n21\nSuggested continuation \u00b7 not played: a2 \u2192 a3\nSaved analysis evidence (1)\nRecorded searches (1)\nGame Actions\n\nTake backResign\nMoves\n0 moves\nStarting position\nMoves from the starting position\nMove number\tWhite\tBlack\nNo moves in known history.\n\nPosition events (1)\n\n1\nMatch started",
+  "focus": {
+    "label": null,
+    "text": "\u6b69mShogiCHESSLocal engineUnsavedUntitled gameNew gameSaveLoadYOUR GAMEWhite to moveYou play White against mShogi\u2195 Flip boardmmShogiBlackYour opponent\u265c8\u265e\u265d\u265b\u265a\u265d\u265e\u265c\u265f7\u265f\u265f\u265f\u265f\u265f\u265f\u265f6543\u265f2\u265f\u265f\u265f\u265f\u265f\u265f\u265f\u265c1a\u265eb\u265dc\u265bd\u265ae\u265df\u265eg\u265chYYouWhiteHuman playerTo moveArrows: move focus \u00b7 Enter/Space: select \u00b7 Esc: cancelPlay paused \u00b7 resume explicitly to continueLive position \u00b7 0 pliesPlay is paused.Resume playAnalysisPlay detailsAnalyze positionMove analysisSelected event 1 \u00b7 White perspectiveDepthNode limitStart move analysisAnalysis result availableAdvanced: Full mating reachabilityCooperative legal play, not forced-win search. Both sides may cooperate to reach mate. Future draw claims and repetition/move-count endings are outside this geometric query; normal draw rules still apply to your game.Mating sideEither sideWhiteBlackPosition budgetTransition budgetRun Full reachabilityMove analysis completed for Live position after 0 plies, White to move. Suggested move: a2 \u2192 a3; not played.Live position after 0 pliesWhite perspective \u00b7 Bounded move searchRecorded limit: depth 1, 1000 nodes.Suggested move: a2 \u2192 a3 \u00b7 not played0.00 pawns from White perspectiveCompleted depth1Nodes21Suggested continuation \u00b7 not played: a2 \u2192 a3Saved analysis evidence (1)Live position after 0 plies \u00b7 saved historical observation, not a pending requestRecorded searches (1)Move analysis \u00b7 event 0+0.00 pawnsWhite perspective \u00b7 CompleteCompleted depth1Nodes21Continuationa2a3No move or claim was played.Game ActionsTake backResignMoves0 movesStarting positionMoves from the starting positionMove numberWhiteBlackNo moves in known history.Position events (1)1Match started\n",
+    "tag": "BODY"
+  },
+  "dimensions": {
+    "dpr": 1,
+    "height": 795,
+    "width": 1180
+  },
+  "common_actions": [],
+  "inputs": [
+    {
+      "min": "1",
+      "disabled": false,
+      "type": "number",
+      "value": "1",
+      "max": "8",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "5000000",
+      "tag": "INPUT"
+    },
+    {
+      "min": null,
+      "disabled": false,
+      "type": "select-one",
+      "value": "either",
+      "max": null,
+      "tag": "SELECT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "1000",
+      "max": "100000",
+      "tag": "INPUT"
+    },
+    {
+      "min": "0",
+      "disabled": false,
+      "type": "number",
+      "value": "10000",
+      "max": "1000000",
+      "tag": "INPUT"
+    }
+  ]
+}

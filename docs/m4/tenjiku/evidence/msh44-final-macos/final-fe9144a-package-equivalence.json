@@ -1,0 +1,16 @@
+{
+  "source_revision": "fe9144a49e6dc1aa811ae4b6f316fe93f2be5dfb",
+  "captured_package_source": "241807f647583e5ccf87eb3d5e8e8ca2aa192675",
+  "bundle_id": "org.mshogi.desktop",
+  "all_four_package_files_byte_identical": true,
+  "files": {
+    "Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+    "Contents/MacOS/mshogi": "a3c0cda3e4da2b00b931e0100000387fa9d34835d0e6565587a02f7750dd1567",
+    "Contents/MacOS/mshogi-desktop": "4e3719fe779a78f7800a31a827fa605dff4e1182f0ac26a41842a7e5e2c35c80",
+    "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+  },
+  "production_and_workflow_diff": [],
+  "command": "npm run desktop:build -- --bundles app",
+  "result": "passed; rebuilt after final source commit while normal application stopped",
+  "qualification": "Actual241normalGUIcapturesreusedonlybecausefinalsourceall4bundlefilesarebyteidentical. No newGUIexecutionormacOS15UIclaim."
+}

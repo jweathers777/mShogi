@@ -1,0 +1,21 @@
+Source: fe9144a49e6dc1aa811ae4b6f316fe93f2be5dfb
+Workflow run: 42013800198; job: 127199134945; attempt: 1
+2026-11-05T11:05:02.2486738Z      Running tests\tenjiku_internal.rs (target\release\deps\tenjiku_internal-1852fb0576a95591.exe)
+2026-11-05T11:05:02.2552455Z 
+2026-11-05T11:05:02.2552819Z running 6 tests
+2026-11-05T11:05:03.7104209Z test actual_child_executes_complete_tenjiku_choices_for_full_known_history_and_purpose ... ok
+2026-11-05T11:05:03.7772860Z test actual_child_incomplete_work_has_no_fallback_score_or_conclusion ... ok
+2026-11-05T11:05:05.7671895Z test actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement ... ok
+2026-11-05T11:05:07.9931995Z test actual_engine_turns_for_both_player_assignments_admit_observation_then_action ... ok
+2026-11-05T11:05:08.3634980Z test actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded ... ok
+2026-11-05T11:05:11.3103543Z test real_historical_analysis_saves_exact_prefix_and_reopens_stopped_without_future ... ok
+2026-11-05T11:05:11.3103884Z 
+2026-11-05T11:05:11.3104153Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.06s
+2026-11-05T11:05:11.3104424Z 
+2026-11-05T11:05:11.3124459Z      Running tests\tenjiku_selfplay.rs (target\release\deps\tenjiku_selfplay-9ff83eb96d986db1.exe)
+2026-11-05T11:05:11.3189232Z 
+2026-11-05T11:05:11.3189722Z running 2 tests
+2026-11-05T11:05:11.5630666Z test actual_complete_custom_game_captures_both_independently_expected_native_royals ... ok
+2026-11-05T11:05:17.2884065Z test actual_selfplay_is_deterministic_bounded_and_unscored_at_work_stop ... ok
+2026-11-05T11:05:17.2884359Z 
+2026-11-05T11:05:17.2884577Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.97s

@@ -5,7 +5,8 @@ MSH-88 verifies the delivered games together. Its single structured record is
 at `e68e8e3d1787f2d029e3601259070807bdbab180`. The fresh MSH-89
 [contract reconciliation](contract-review-89.md) and compact
 [review index](contract-review-89.json) support all six original MSH-46
-obligations; normal review publication/integration follows. MSH-46 and MSH-47
+obligations. MSH-89 is Done; its report was normally integrated/pushed at
+`22b4f40`. MSH-46 and MSH-47
 remain open. This
 current map supersedes the implementation assumptions in the preserved
 pre-R1 Shogi planning tables, without reviving retired development readers.

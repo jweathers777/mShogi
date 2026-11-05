@@ -1,11 +1,11 @@
 ---
 id: MSH-89
 title: Independently review shared six-game contracts and reconcile MSH46
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-05T21:08:00Z'
+updated_date: '2026-11-05T21:14:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -48,7 +48,7 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -66,3 +66,15 @@ Startup2026-11-05: explicit BacklogCLI1.55.1 matches baseline. Branch/origin cle
 
 Fresh independent native and consumer/platform reviewers inspected actual source and original receipts rather than child checks. No material shared-contract blocker found. A third fresh read-only reviewer approved the consolidated original46AC1–6 matrix, findings, current compatibility, capacity/Close/deadline and112 disposition, actualplatform qualifications and preserved DAG. Independently verified master88recordSHA097118de9a7c9507900f554da7c91dde97ad35729bce73c9f491b52a7a9cd985/all202evidencehashes, rawWindows/Linux49/49 exactbc reports/package identities and all6 successful job/step receipts; no new platform campaign. New native envelope check11/11 passed at3bcaf01; compatible1.55.1doctor, originalAC/DoD/dependency audit(19selected records/103resolved graphnodes), fmt/diff passed. Only four stale GameKind rustdoc comments and Load/New wording corrected; no behavior or limits changed. Existing112 remains unfixed and separate from current application EngineBridge; unchanged-source success is not a repair.89AC1–4/DoD1–3 supported; DoD4 waits for normal report integration/push.46 stays ToDo/unassigned/unchecked;108/47/M4 remain open.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Independently reconciled all six original MSH-46 acceptance obligations against current contracts, production source, component/game evidence and the preserved dependency graph. Reviewed integration 3bcaf013b7e9ea7d37a5a542700de8a1ea041b2b; reused exact tested runtime/platform source bc92bfe5e3b20e9e999df12cbf54b91682c71b8d. Two fresh read-only source/evidence reviewers and a separate fresh findings/matrix/DAG reviewer approved. No material shared-contract blocker was found.
+
+Corrected four stale GameKind rustdoc descriptions and clarified current-file Load installation versus admitted New paths under one controller. No executable behavior, rule, schema, limit, profile selection or milestone scope changed. Native Chess M2/Full and console/live-desktop scopes remain explicit; intentionally retired development formats remain retired. Complete native actions/history, immutable Tenjiku profiles, exact execution identity, cancellation, saveability, actual ending/Close reservations and platform provenance are supported.
+
+Focused native boundary 11/11, explicit Backlog1.55.1 doctor, original AC/DoD/dependency comparisons across19 records/103 resolved graph nodes, formatting/diff/link checks passed. Independent audits verified the unchanged MSH-88 record and all202 evidence hashes, six successful exact-source jobs, original Windows/Linux49/49 GUI reports and package identities. Local macOS27 gameplay stays distinct from hosted macOS15 CI. No broad CI/GUI/conformance campaign or playing-strength claim. MSH-112 remains an unfixed, separately owned functional diagnostic race; later green retries are not a repair or M5 reclassification.
+
+Report docs/m4/shared-integration/contract-review-89.md and its compact review index were normally committed/pushed to codex/rewrite at22b4f409f738cd7dec45a78ab7ecc4cf9661322b before final DoD4/Done closure. The existing platform record was not rewritten or duplicated. Original MSH-46 six criteria/all16 dependencies and ownership remain unchanged and unchecked; its handoff is current. MSH-46 is now dependency-satisfied, remains To Do/unassigned and has not started. MSH-108/47 and M4 remain open. Stop after89.
+<!-- SECTION:FINAL_SUMMARY:END -->

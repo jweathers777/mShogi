@@ -2,8 +2,9 @@
 
 Verdict: **all six original MSH-46 obligations have supporting evidence;
 no material shared-contract blocker was found**. The fresh independent review of
-this consolidated report is approved. Normal publication/integration remains
-the completion gate. MSH-46 remains To Do and unchecked; this review does not
+this consolidated report is approved. The report was normally committed and
+pushed at `22b4f409f738cd7dec45a78ab7ecc4cf9661322b`; MSH-89 is Done.
+MSH-46 remains To Do and unchecked; this review does not
 perform its completion workflow, MSH-108 or MSH-47/M4 closure.
 
 The reviewed integration is `3bcaf013b7e9ea7d37a5a542700de8a1ea041b2b`.

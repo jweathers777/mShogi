@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "task": "MSH-108",
+  "status": "In Review",
+  "reviewed_source": "1d3920227bc376b5cc1694928597e7b5a1d5a864",
+  "integration_branch": "codex/rewrite",
+  "report": "../../architecture-health-108.md",
+  "scope": "Six-game architecture diagnostic only; no runtime, schema, rules, limits, reserves or behavior changes. No new platform ledger.",
+  "environment": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.11.0",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)"
+  },
+  "backlog_version": "1.55.1",
+  "required_new_ci_jobs": [],
+  "new_product_tests": [],
+  "checks": [
+    {
+      "command": "cargo metadata --locked --offline --no-deps --format-version 1 (root and desktop/src-tauri)",
+      "result": "pass",
+      "scope": "both workspaces dependency direction; no compile/test execution",
+      "packages": 8
+    },
+    {
+      "command": "git diff bc92bfe5e3b20e9e999df12cbf54b91682c71b8d 1d3920227bc376b5cc1694928597e7b5a1d5a864 -- crates desktop .github Cargo.toml Cargo.lock",
+      "result": "pass",
+      "scope": "runtime/test/host/frontend/observer/workflow equivalence except four GameKind rustdoc comments"
+    },
+    {
+      "command": "git diff a8581f09107648d03e3016786b41c267ace88bca 1d3920227bc376b5cc1694928597e7b5a1d5a864 -- five prior native directories, five search .rs files, search.rs, tori_session.rs, chu_session.rs",
+      "result": "pass",
+      "scope": "five prior native/search responsibility maps have unchanged inspected source",
+      "paths": [
+        "crates/mshogi-core/src/chess",
+        "crates/mshogi-core/src/shogi",
+        "crates/mshogi-core/src/xiangqi",
+        "crates/mshogi-core/src/tori",
+        "crates/mshogi-core/src/chu",
+        "crates/mshogi-search/src/chess.rs",
+        "crates/mshogi-search/src/shogi.rs",
+        "crates/mshogi-search/src/xiangqi.rs",
+        "crates/mshogi-search/src/tori.rs",
+        "crates/mshogi-search/src/chu.rs",
+        "crates/mshogi-search/src/search.rs",
+        "crates/mshogi-console/src/tori_session.rs",
+        "crates/mshogi-console/src/chu_session.rs"
+      ]
+    },
+    {
+      "command": "Python3 hashlib.sha256 against MSH88 verification.json/evidence_files and accepted record digests",
+      "result": "pass",
+      "scope": "unchanged master88 and202 immutable evidence hashes; references keep original provenance",
+      "files": 202
+    },
+    {
+      "command": "Python3 SHA256 comparison of four current native Tenjiku files to shared-verification.json/measured_source_hashes",
+      "result": "pass",
+      "scope": "all four native files match accepted shared measured sources; outer document/session/presentation timings remain source-qualified",
+      "matched_files": {
+        "crates/mshogi-core/src/tenjiku/position.rs": "3dd041837676f50a7fc930c590d5e9a71f03b62a156f560f306f7118c341d399",
+        "crates/mshogi-core/src/tenjiku/legal.rs": "59fa4f19862f3b75112e9644da81dfe416d0e9711b4b1d1ea5f2ea9fd3137ba1",
+        "crates/mshogi-core/src/tenjiku/game.rs": "35111c6a01fb96077e1a4870e5be842a251692770c28e37bc6a62360f6cc288c",
+        "crates/mshogi-core/src/tenjiku/record.rs": "127db6688bfe43665760102d9b37ccc5f80d23e44de6a1134596a381134f17f9"
+      }
+    },
+    {
+      "command": "Backlog1.55.1 task JSON comparison to starting records; task dependency and owner inspection",
+      "result": "pass",
+      "scope": "108 original8AC/4DoD and47 original scope/dependencies/ownership intact; prerequisites Done;47 unstarted"
+    },
+    {
+      "command": "Python3 local Markdown file-target resolution",
+      "result": "pass",
+      "scope": "all existing diagnostic-report local link targets resolve",
+      "targets": 21,
+      "verification_record_checked_after_creation": true
+    },
+    {
+      "command": "backlog1.55.1 doctor",
+      "result": "pass",
+      "scope": "no duplicate IDs, self-dependencies or cycles",
+      "output": "No duplicate IDs, self-referential dependencies, or dependency cycles found."
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass",
+      "scope": "documentation/task working diff whitespace"
+    },
+    {
+      "command": "Python3 current source-anchor assertions + report/roadmap local link resolution; git diff --check; production/accepted-evidence diff",
+      "result": "pass",
+      "source_anchor_count": 30,
+      "local_link_target_count": 29,
+      "scope": "Selected exact native/Tenjiku/application/frontend symbol anchors and all new-report/current-roadmap file links; no runtime or accepted shared-evidence diff"
+    },
+    {
+      "command": [
+        "rg",
+        "-n",
+        "fn desktop_snapshot\\b|fn desktop_command\\b|fn submit_shared\\b|fn submit_chess\\b|function useNativeSession\\b|enum ArchiveV2\\b|enum WireRequest\\b|enum WireResponse\\b",
+        "crates",
+        "desktop/src",
+        "desktop/src-tauri/src",
+        "--glob",
+        "!**/target/**",
+        "--glob",
+        "!**/node_modules/**"
+      ],
+      "result": "pass",
+      "scope": "No removed production handler/paired execution/legacy-hook/archive/wire-family declarations under current source roots; expected surviving owner declarations and ProductApp single hook mount checked separately",
+      "exit_code": 1,
+      "interpretation": "rg exit1 means zero matches, not failed product work",
+      "surviving_owner_markers": {
+        "crates/mshogi-desktop-session/src/lib.rs": [
+          "pub struct DesktopController {",
+          "pub(crate) enum ActiveDocument {",
+          "pub struct RuntimeMetadata {"
+        ],
+        "crates/mshogi-engine/src/bridge.rs": [
+          "pub struct EngineBridge {"
+        ],
+        "desktop/src/product/ProductApp.tsx": [
+          "const session = useGameSession()"
+        ],
+        "desktop/src/product/useGameSession.ts": [
+          "export function useGameSession()"
+        ],
+        "desktop/src/interaction/useNativeChoiceController.ts": [
+          "export function useNativeChoiceController("
+        ]
+      }
+    }
+  ],
+  "dependency_metadata": {
+    "workspace": {
+      "command": [
+        "cargo",
+        "metadata",
+        "--locked",
+        "--offline",
+        "--no-deps",
+        "--format-version",
+        "1"
+      ],
+      "cwd": "/Users/johnweathers/Development/Personal/mShogi",
+      "exit_code": 0,
+      "packages": [
+        {
+          "name": "mshogi-core",
+          "dependencies": [
+            {
+              "name": "serde",
+              "kind": "normal"
+            },
+            {
+              "name": "serde_json",
+              "kind": "normal"
+            },
+            {
+              "name": "mshogi-conformance",
+              "kind": "dev"
+            }
+          ]
+        },
+        {
+          "name": "mshogi-conformance",
+          "dependencies": [
+            {
+              "name": "serde",
+              "kind": "normal"
+            },
+            {
+              "name": "serde_json",
+              "kind": "normal"
+            },
+            {
+              "name": "sha2",
+              "kind": "normal"
+            }
+          ]
+        },
+        {
+          "name": "mshogi-console",
+          "dependencies": [
+            {
+              "name": "mshogi-core",
+              "kind": "normal"
+            },
+            {
+              "name": "mshogi-engine",
+              "kind": "normal"
+            },
+            {
+              "name": "mshogi-search",
+              "kind": "normal"
+            },
+            {
+              "name": "serde_json",
+              "kind": "normal"
+            },
+            {
+              "name": "mshogi-desktop-session",
+              "kind": "dev"
+            }
+          ]
+        },
+        {
+          "name": "mshogi-engine",
+          "dependencies": [
+            {
+              "name": "mshogi-core",
+              "kind": "normal"
+            },
+            {
+              "name": "mshogi-search",
+              "kind": "normal"
+            },
+            {
+              "name": "serde",
+              "kind": "normal"
+            },
+            {
+              "name": "serde_json",
+              "kind": "normal"
+            }
+          ]
+        },
+        {
+          "name": "mshogi-search",
+          "dependencies": [
+            {
+              "name": "mshogi-core",
+              "kind": "normal"
+            },
+            {
+              "name": "serde_json",
+              "kind": "dev"
+            }
+          ]
+        },
+        {
+          "name": "mshogi-desktop-session",
+          "dependencies": [
+            {
+              "name": "mshogi-core",
+              "kind": "normal"
+            },
+            {
+              "name": "mshogi-engine",
+              "kind": "normal"
+            },
+            {
+              "name": "serde",
+              "kind": "normal"
+            },
+            {
+              "name": "serde_json",
+              "kind": "normal"
+            }
+          ]
+        },
+        {
+          "name": "mshogi-runner",
+          "dependencies": [
+            {
+              "name": "mshogi-core",
+              "kind": "normal"
+            },
+            {
+              "name": "serde",
+              "kind": "normal"
+            },
+            {
+              "name": "serde_json",
+              "kind": "normal"
+            },
+            {
+              "name": "sha2",
+              "kind": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    "tauri": {
+      "command": [
+        "cargo",
+        "metadata",
+        "--locked",
+        "--offline",
+        "--no-deps",
+        "--format-version",
+        "1"
+      ],
+      "cwd": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri",
+      "exit_code": 0,
+      "packages": [
+        {
+          "name": "mshogi-desktop",
+          "dependencies": [
+            {
+              "name": "mshogi-desktop-session",
+              "kind": "normal"
+            },
+            {
+              "name": "tauri",
+              "kind": "normal"
+            },
+            {
+              "name": "tauri-plugin-dialog",
+              "kind": "normal"
+            },
+            {
+              "name": "tauri-build",
+              "kind": "build"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "reused_evidence_sha256": {
+    "docs/m4/shared-integration/verification.json": "097118de9a7c9507900f554da7c91dde97ad35729bce73c9f491b52a7a9cd985",
+    "docs/m4/shared-integration/contract-review-89.md": "1047ed48a6658609ffa5a8b5b4533b87471d4b52b8def95672b9a967d848c2fb",
+    "docs/m4/shared-integration/contract-review-89.json": "099c91dd0482a34ca245ea873f3b8eb0c3069ee7df02f0988ec661d8b8426b0b",
+    "docs/m4/shared-integration/README.md": "50c129891e4ee3724d40d03086a655fd80f72714f0cdf10db7fce3508dc45d93",
+    "docs/m4/tenjiku/native-verification.json": "ed6a265b574f52a300a90acf4f4b0de79759c05eb9e52fbda8161b836bcdab3b",
+    "docs/m4/tenjiku/shared-verification.json": "316fec4e7480dd339733a13a325c1c640bda947a356e09bcf8dc46c950030c80",
+    "docs/m4/tenjiku/product-verification.json": "451ed6cb22e0fcc88c84f55f7f6f3f3a888c6ee04d4e0f7a0e42c60c3f977d18"
+  },
+  "accepted_platform_runtime_source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+  "reused_evidence_qualification": "Existing records retain exact original source/environment/attempt, actual versus synthetic method, failed and superseded provenance. No new GUI/native/performance/strength execution.",
+  "researchers": [
+    {
+      "name": "msh108_native_map",
+      "independent_chat_context": true,
+      "read_only": true,
+      "verdict": "No material blocker; source-qualified five-game map and advisory cost/cancellation findings."
+    },
+    {
+      "name": "msh108_tenjiku_stress",
+      "independent_chat_context": true,
+      "read_only": true,
+      "verdict": "No demonstrated Tenjiku architectural blocker; partial old-finding improvements and precisely qualified historical measurements."
+    }
+  ],
+  "final_independent_assessment": {
+    "name": "msh108_final_assessment",
+    "status": "approved",
+    "read_only": true,
+    "fresh_context": true,
+    "reviewed_source": "1d3920227bc376b5cc1694928597e7b5a1d5a864",
+    "verdict": "All8 original AC supported, DoD1\u20133 supported after recording this review; no material factual/coverage gap or architectural blocker. DoD4 conditional on ordinary integration/push and durable summary.",
+    "candidate_sha256": {
+      "docs/review/architecture-health-108.md": "0cd2ebb3c850c4e82042ac51bbb7fe0d1f54450bbc9b2f5604890918486397f1",
+      "docs/review/evidence/msh108/verification.json": "d121c4276f92dedc4e2e6fba016e933f3b7d0ae7fea2c06d2c9f33cbb6de0bcf",
+      "docs/architecture-health-roadmap.md": "500594cca0f46665d3d45b83b04f2d908f9f422c62e11b69c6fc569df47980c4",
+      "MSH-108 task": "c6d2fbb0279f16732b6145866c787255d9a41e914372d96a04935e960b8b7a38",
+      "MSH-47 task": "04aace5ea9c1cac7ac8b3306055e18b870d160c331b32c893bce78251024149b"
+    },
+    "actual_checks": [
+      "Pinned Backlog overview/version1.55.1/original108 task",
+      "Git status/HEAD/remotes/worktrees/log/bounded diffs",
+      "Acceptedbc92 runtime diff only4neutralrustdoccomments",
+      "Previous107 fivegame native/search/console unchanged source",
+      "rg/sed/nl actual source/dependency/ownership/reserve/runner inspection",
+      "Python SHA256 sevenaccepted references and fourcurrent nativeTenjikumeasuredhashes",
+      "22 report local targetlinks resolve",
+      "Original108/47AC/DoD unchanged",
+      "git diff --check"
+    ],
+    "environment": {
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "machine": "arm64",
+      "python": "3.11.0",
+      "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)"
+    },
+    "not_run": [
+      "product tests",
+      "builds",
+      "GUI",
+      "CI",
+      "benchmarks",
+      "refactoring"
+    ],
+    "final_integration_condition": "pending normal evidence commit/push; no further architecture review required for supported verdict/status wording unless substantive changes"
+  },
+  "finding_dispositions": {
+    "F01": "advisory, moderate; Chu undo retention remains; Tenjiku already avoids ordinary retained undo",
+    "F02": "advisory, moderate; native cooperation improved but supervisor response decode remains synchronous",
+    "F03": "advisory, moderate; measured finite samples narrow unmeasured UI/latency risks",
+    "F04": "advisory, low; narrow syntax/mailbox duplication and remaining temporal comments"
+  },
+  "known_unfixed_issue": "MSH-112 remains separately owned unfixed functional runner diagnostic race, no new architectural blocker established.",
+  "not_run": [
+    "new native conformance or search test campaign",
+    "new frontend tests or packaged GUI/CI campaign",
+    "new performance/peak-memory/worst-case cancellation measurements",
+    "competitive strength",
+    "future larger-variant implementation"
+  ],
+  "downstream": "MSH-47 remains unstarted; preserve all prerequisites. M5 pilot48/diagnostic109 gates unchanged.",
+  "source_anchor_assertions": {
+    "crates/mshogi-core/src/native.rs": {
+      "41": "pub enum RulesProfile",
+      "165": "pub enum CanonicalRecord",
+      "271": "pub fn from_json_with_stop"
+    },
+    "crates/mshogi-core/src/tenjiku/game.rs": {
+      "243": "pub struct GameUndo",
+      "282": "pub struct Game",
+      "287": "snapshots: Vec<Arc<HistorySnapshot>>",
+      "460": "pub fn record_prefix_with_stop",
+      "507": "pub fn legal_actions_with_stop",
+      "546": "fn copy_for_transaction",
+      "566": "pub fn submit_with_stop",
+      "779": "fn capacity_usage_with_stop",
+      "848": "pub fn undo",
+      "944": "fn adjudicate"
+    },
+    "crates/mshogi-desktop-session/src/lib.rs": {
+      "290": "pub struct RuntimeMetadata",
+      "346": "pub(crate) enum ActiveDocument",
+      "1207": "pub struct DesktopController"
+    },
+    "crates/mshogi-desktop-session/src/tenjiku_document.rs": {
+      "294": "pub struct ValidatedTenjikuDocument",
+      "330": "pub fn decode",
+      "665": "pub(crate) fn with_reserved_close",
+      "688": "fn validate",
+      "941": "fn reserve"
+    },
+    "crates/mshogi-desktop-session/src/shared_tenjiku_presentation.rs": {
+      "121": "fn choice",
+      "169": "fn inspect",
+      "252": "fn tenjiku_snapshot"
+    },
+    "desktop/src-tauri/src/main.rs": {
+      "195": "fn game_inspection",
+      "202": "fn inspect_game",
+      "425": "fn with_controller"
+    },
+    "desktop/src/interaction/useNativeChoiceController.ts": {
+      "44": "export function useNativeChoiceController",
+      "93": "const activeChoices",
+      "108": "function submit"
+    }
+  },
+  "task_integrity_baseline": {
+    "MSH-108": {
+      "path": "backlog/tasks/msh-108 - Review-all-six-game-architectural-health-before-M4-closure.md",
+      "baseline_git_revision": "1d3920227bc376b5cc1694928597e7b5a1d5a864",
+      "dependencies": [
+        "MSH-46",
+        "MSH-106",
+        "MSH-107"
+      ],
+      "original_ac_count": 8,
+      "original_ac_text_sha256": "1f32d44665e7b666b28ad05e450064ec6d4a49cf71c6f03a1f56899e8f37c651",
+      "original_dod_count": 4,
+      "original_dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-47": {
+      "path": "backlog/tasks/msh-47 - Independently-verify-integrated-six-game-delivery-and-close-M4.md",
+      "baseline_git_revision": "1d3920227bc376b5cc1694928597e7b5a1d5a864",
+      "dependencies": [
+        "MSH-26",
+        "MSH-39",
+        "MSH-41",
+        "MSH-42",
+        "MSH-43",
+        "MSH-44",
+        "MSH-45",
+        "MSH-46",
+        "MSH-108"
+      ],
+      "original_ac_count": 4,
+      "original_ac_text_sha256": "e65ed8773016d1c56277a098ed104c66882565f1e6c36c8b549bd7439352335b",
+      "original_dod_count": 4,
+      "original_dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    }
+  },
+  "accepted_architecture_diagnostic": true
+}

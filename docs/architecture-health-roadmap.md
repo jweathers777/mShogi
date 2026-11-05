@@ -1,3 +1,13 @@
+> Current six-game diagnostic — MSH-108, 2026-11-05: the
+> [architecture map and findings](review/architecture-health-108.md) inspect
+> accepted source `1d3920227bc376b5cc1694928597e7b5a1d5a864` after MSH-46.
+> The six-game ownership model remains coherent; no material architectural
+> blocker is demonstrated. Earlier findings are reconciled individually,
+> including Tenjiku improvements and the remaining advisory replay/cooperation/
+> inspection risks. Fresh final independent assessment is approved; normal integration
+> and final task closure are pending. This does not begin47/M5, authorize a refactor or close M4;
+> the older checkpoint records below retain their historical scope.
+
 > Current five-game checkpoint — MSH-107, 2026-11-03: the
 > [post-Chu architecture map and assessment](review/architecture-health-107.md)
 > reviews exact accepted source `a8581f09107648d03e3016786b41c267ace88bca`.

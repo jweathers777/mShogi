@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "task": "MSH-89",
-  "status": "In Review",
+  "status": "Done",
   "reviewed_integration": "3bcaf013b7e9ea7d37a5a542700de8a1ea041b2b",
   "reviewed_runtime_and_platform_source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
   "review_at_utc": "2026-11-05T20:58:08.215942+00:00",
@@ -569,7 +569,7 @@
     "M6": "Accepted product/accessibility/distribution polish, not a waiver of current functional behavior."
   },
   "new_broad_ci_or_gui_campaign": false,
-  "completion": "Final independent review approved; publication and MSH46handoff prepared. Normal integration/push remains DoD4 gate.",
+  "completion": "All89AC1\u20134 andDoD1\u20134 supported; approved report and MSH46handoff committed/pushed22b4f40 before final task closure. MSH46 remainsToDo/unassigned/unchecked, nextdependency-satisfied after89; no46/108/47/M5 orM4closure.",
   "tooling": {
     "project_baseline": "Backlog.md1.55.1",
     "compatible_executable": "/private/tmp/mshogi-bootstrap-npm-cache/_npx/749414256ca1c44f/node_modules/backlog.md-darwin-arm64/backlog",
@@ -577,5 +577,80 @@
     "global_version_observed": "1.55.0",
     "resolution": "Used explicit compatible cached1.55.1 for every record operation and doctor; global1.55.0 never used for mutation. No global installation/settings changed."
   },
-  "accepted_contract_review": true
+  "accepted_contract_review": true,
+  "integration_revision": "22b4f409f738cd7dec45a78ab7ecc4cf9661322b",
+  "integration_branch": "codex/rewrite",
+  "post_completion_dependency_audit": {
+    "MSH-46": {
+      "status": "To Do",
+      "assignees": [],
+      "dependencies": [
+        "MSH-39",
+        "MSH-41",
+        "MSH-42",
+        "MSH-43",
+        "MSH-44",
+        "MSH-45",
+        "MSH-69",
+        "MSH-72",
+        "MSH-73",
+        "MSH-76",
+        "MSH-77",
+        "MSH-78",
+        "MSH-79",
+        "MSH-88",
+        "MSH-89",
+        "MSH-90"
+      ],
+      "isReady": true
+    },
+    "MSH-89": {
+      "status": "Done",
+      "assignees": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-88"
+      ],
+      "isReady": false
+    },
+    "MSH-108": {
+      "status": "Ready",
+      "assignees": [],
+      "dependencies": [
+        "MSH-46",
+        "MSH-106",
+        "MSH-107"
+      ],
+      "isReady": false
+    },
+    "MSH-47": {
+      "status": "To Do",
+      "assignees": [],
+      "dependencies": [
+        "MSH-26",
+        "MSH-39",
+        "MSH-41",
+        "MSH-42",
+        "MSH-43",
+        "MSH-44",
+        "MSH-45",
+        "MSH-46",
+        "MSH-108"
+      ],
+      "isReady": false
+    },
+    "MSH-90": {
+      "status": "Done",
+      "assignees": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-68",
+        "MSH-69",
+        "MSH-70"
+      ],
+      "isReady": false
+    }
+  }
 }

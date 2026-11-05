@@ -5,8 +5,9 @@
 > MSH-88 platform record, focused native11/11 and dependency/criterion audits
 > passed. Four stale rustdoc comments and Load/New wording were corrected;
 > no executable behavior, accepted limit or compatibility policy changed.
-> Independent consolidated findings review is approved; normal publication and
-> integration follow. MSH-112 remains separately open, and46/108/47/M4 are not closed.
+> Independent consolidated findings review is approved; the report was normally
+> integrated/pushed at `22b4f40` and MSH-89 is Done. MSH-112 remains separately
+> open, and46/108/47/M4 are not closed.
 > Earlier status snapshots below retain their original source scope.
 
 > MSH-88 current integration map — see the [six-game ownership and original

@@ -1,0 +1,581 @@
+{
+  "schema_version": 1,
+  "task": "MSH-89",
+  "status": "In Review",
+  "reviewed_integration": "3bcaf013b7e9ea7d37a5a542700de8a1ea041b2b",
+  "reviewed_runtime_and_platform_source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+  "review_at_utc": "2026-11-05T20:58:08.215942+00:00",
+  "report": "contract-review-89.md",
+  "scope": "Fresh independent originalMSH46AC1\u20136 contract/evidence/DAG reconciliation. Compact review index only; existing platform record is referenced without a second campaign or duplicated raw data.",
+  "base_platform_record": {
+    "path": "verification.json",
+    "sha256": "097118de9a7c9507900f554da7c91dde97ad35729bce73c9f491b52a7a9cd985",
+    "task": "MSH-88",
+    "evidence_revision": "e68e8e3d1787f2d029e3601259070807bdbab180",
+    "tested_source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+    "required_receipts": 6,
+    "retained_file_hashes_checked": 202,
+    "new_platform_execution": false
+  },
+  "source_equivalence": {
+    "bc_to_review_start_executable_inputs": "No diff in crates, frontend, host, observer or workflows.",
+    "current_review_diff": "Only four GameKind rustdoc comments (8changed lines); no executable behavior/API/schema/limit change.",
+    "changed_source_file": "crates/mshogi-core/src/native.rs",
+    "new_package_or_binary_identity_claim": false
+  },
+  "reviewers": [
+    {
+      "name": "msh89_native_contracts",
+      "independent": true,
+      "fresh_history": true,
+      "mode": "read-only",
+      "scope": "Native profiles/records/complete actions/history/outcomes/identity/cancellation/current document installation/per-game admission/resources.",
+      "verdict": "No material blocker; one stale-rustdoc advisory. Correctly distinguish Load install_document from admitted New swaps under same controller."
+    },
+    {
+      "name": "msh89_consumers_platforms",
+      "independent": true,
+      "fresh_history": true,
+      "mode": "read-only",
+      "scope": "Console/machine/frontend session/shell/choice/native renderers and actual original platform/package evidence.",
+      "verdict": "No material blocker; independently confirmed202evidence hashes, six exactsource job/step receipts, Windows/Linux49/49 raw reports and sevenprofile crossgame/nativeprocess facts, qualified Mac. Same stale-rustdoc advisory."
+    }
+  ],
+  "final_independent_review": {
+    "reviewer": "msh89_findings_review",
+    "fresh_history": true,
+    "mode": "read-only",
+    "verdict": "Approved, no material blockers.89AC1\u20134 and original46AC1\u20136 supported;DoD1supported,DoD2whenrecorded,DoD3ordinarypublication/handoff,DoD4normalintegration/push. No46/108/47/M4closure.",
+    "independently_verified": [
+      "Base verification SHA unchanged;all202 evidence hashes match.",
+      "Both originalWin/Linuxreport hashes/sourceBC/49phases/no failures and13normalphasepackage identities perOS.",
+      "Six raw successful CI jobs and required executed steps atBC.",
+      "All19 selected tasks preserveAC/DoDtext and exactdependencies against3bc;103reachablegraphnodes resolve withoutunknownIDs.",
+      "No executable-input diffBC\u21923bc; currentRustchangesfourcomments only.",
+      "NativeChesscompatibility/currentformats/twoTenjiku identity/historicalstoppedLoad/currentBridge checks/source112disposition supported."
+    ],
+    "commands": [
+      "git diff",
+      "Python read-only baseline/hash/raw-report audits",
+      "explicitBacklog1.55.1 --version and doctor",
+      "cargo fmt --all -- --check",
+      "git diff --check"
+    ],
+    "environment": "macOS27.0.1/26A434 arm64 Rust1.99.1",
+    "optional_improvement": "Precise capacity/Close/deadline/retirement section independently approved; Chess production policy pointer654\u2013737 and current MSH90/MSH110 console temporal-policy clarification independently confirmed. No further blocker or correction."
+  },
+  "checks": [
+    {
+      "command": "cargo test --locked -p mshogi-core --test native_envelope --test native_tenjiku_envelope",
+      "source": "3bcaf013b7e9ea7d37a5a542700de8a1ea041b2b",
+      "environment": "macOS27.0.1 (26A434), arm64, rustc1.99.1",
+      "result": "pass",
+      "passed": 11,
+      "failed": 0,
+      "scope": "6sharednative envelope +5 both-profile Tenjiku strict identity/ordered effect/admission/replay boundary tests. Executed before rustdoc-only correction; not new Windows/Linux execution."
+    },
+    {
+      "command": "backlog1.55.1 doctor",
+      "result": "pass",
+      "output": "No duplicate IDs, self-referential dependencies, or dependency cycles found.",
+      "read_only": true
+    },
+    {
+      "command": "CLI task JSON graph/original criterion audit against Git3bcaf01",
+      "result": "pass",
+      "selected_records": 19,
+      "unknown_graph_nodes": 0,
+      "expected_dependency_sets": {
+        "MSH-46": [
+          "MSH-39",
+          "MSH-41",
+          "MSH-42",
+          "MSH-43",
+          "MSH-44",
+          "MSH-45",
+          "MSH-69",
+          "MSH-72",
+          "MSH-73",
+          "MSH-76",
+          "MSH-77",
+          "MSH-78",
+          "MSH-79",
+          "MSH-88",
+          "MSH-89",
+          "MSH-90"
+        ],
+        "MSH-89": [
+          "MSH-88"
+        ],
+        "MSH-47": [
+          "MSH-26",
+          "MSH-39",
+          "MSH-41",
+          "MSH-42",
+          "MSH-43",
+          "MSH-44",
+          "MSH-45",
+          "MSH-46",
+          "MSH-108"
+        ],
+        "MSH-108": [
+          "MSH-46",
+          "MSH-106",
+          "MSH-107"
+        ]
+      },
+      "criteria_text_preserved": true
+    },
+    {
+      "command": "Independent original evidence reconciliation",
+      "result": "pass",
+      "record": "verification.json",
+      "files": 202,
+      "windows_phases": 49,
+      "linux_phases": 49,
+      "failed_phases": 0,
+      "scope": "Raw report SHA/source/context/observation/stoppedLoad/retainedTakeback/gatePID assertions and package hashes; localMac inventory/AX/JPEG/actual archive qualification retained."
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "result": "pass",
+      "scope": "After four rustdoc corrections."
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "task_integrity_baseline": {
+    "MSH-41": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-39",
+        "MSH-63",
+        "MSH-69",
+        "MSH-72",
+        "MSH-73",
+        "MSH-75"
+      ],
+      "original_ac_count": 8,
+      "original_ac_text_sha256": "f2fa60c1843ecbf5cb6832d400e9ffc84b1160d5237fe9b9eb49d5f8bb7884c0",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "6a01be912f3b41a865c70954b5b08ad8e0a4bbc3",
+      "path": "backlog/tasks/msh-41 - Deliver-complete-shogi-rules-and-functional-product-integration.md"
+    },
+    "MSH-42": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@Codex"
+      ],
+      "dependencies": [
+        "MSH-39",
+        "MSH-72",
+        "MSH-73",
+        "MSH-77",
+        "MSH-81",
+        "MSH-85"
+      ],
+      "original_ac_count": 8,
+      "original_ac_text_sha256": "4e62b57cb4b3b4a7c8d660f4cc8b41a043cf740ce45e6bb777b9ed7e27e5db28",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "c9de1e3e5b96e391101b4e5ff5fe673189c1ab97",
+      "path": "backlog/tasks/msh-42 - Deliver-complete-tori-shogi-rules-and-functional-product-integration.md"
+    },
+    "MSH-43": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@Codex"
+      ],
+      "dependencies": [
+        "MSH-39",
+        "MSH-72",
+        "MSH-73",
+        "MSH-78",
+        "MSH-82",
+        "MSH-86"
+      ],
+      "original_ac_count": 8,
+      "original_ac_text_sha256": "0250c3e7185cc3731c141372428b97d520acf6709a96f93557713e0ac59695f8",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "7deb8870142f1b1de4fb22489b32516cb99d05e8",
+      "path": "backlog/tasks/msh-43 - Deliver-complete-chu-shogi-rules-and-functional-product-integration.md"
+    },
+    "MSH-44": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-39",
+        "MSH-72",
+        "MSH-73",
+        "MSH-79",
+        "MSH-83",
+        "MSH-87"
+      ],
+      "original_ac_count": 8,
+      "original_ac_text_sha256": "54a063ba5b61afed70a825c95685fc9ac58f405dfa15b4d1ad36b41609cfd27d",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "48e5207ed461534dddc49298d59817f2ceeffe30",
+      "path": "backlog/tasks/msh-44 - Deliver-complete-tenjiku-shogi-rules-and-functional-product-integration.md"
+    },
+    "MSH-45": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-39",
+        "MSH-72",
+        "MSH-73",
+        "MSH-76",
+        "MSH-80",
+        "MSH-84",
+        "MSH-103",
+        "MSH-105"
+      ],
+      "original_ac_count": 8,
+      "original_ac_text_sha256": "0b2660bade9b99ba60cd672396deb388f438594a8a0e102d9c0073102bfc08f7",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "b7a385fc895af8fe3b2df7e3f652f53bab680751",
+      "path": "backlog/tasks/msh-45 - Deliver-complete-xiangqi-rules-and-functional-product-integration.md"
+    },
+    "MSH-46": {
+      "status_at_review": "To Do",
+      "assignees_at_review": [],
+      "dependencies": [
+        "MSH-39",
+        "MSH-41",
+        "MSH-42",
+        "MSH-43",
+        "MSH-44",
+        "MSH-45",
+        "MSH-69",
+        "MSH-72",
+        "MSH-73",
+        "MSH-76",
+        "MSH-77",
+        "MSH-78",
+        "MSH-79",
+        "MSH-88",
+        "MSH-89",
+        "MSH-90"
+      ],
+      "original_ac_count": 6,
+      "original_ac_text_sha256": "f456ae081fcb37006e7051360bcdd6a4c29bc5b7d1d278a6667c3a6d3e7a1021",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "51d5b6293a098e3301828ddbecba0e7d1efd981b",
+      "path": "backlog/tasks/msh-46 - Deliver-shared-six-game-integration-across-console-engine-records-and-desktop.md"
+    },
+    "MSH-47": {
+      "status_at_review": "To Do",
+      "assignees_at_review": [],
+      "dependencies": [
+        "MSH-26",
+        "MSH-39",
+        "MSH-41",
+        "MSH-42",
+        "MSH-43",
+        "MSH-44",
+        "MSH-45",
+        "MSH-46",
+        "MSH-108"
+      ],
+      "original_ac_count": 4,
+      "original_ac_text_sha256": "1521a6657bd2918d96502342d6090f80fc2e117ddfb0a200e6e9dfb7e14ebebe",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "59f5061d1522be7af6c76748e83b3f97138a9f29",
+      "path": "backlog/tasks/msh-47 - Independently-verify-integrated-six-game-delivery-and-close-M4.md"
+    },
+    "MSH-69": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-67",
+        "MSH-62"
+      ],
+      "original_ac_count": 5,
+      "original_ac_text_sha256": "15bd36ff66344dab75b14cabbdbd70ac971f5f066f248bb7cc3d62bdcc38a163",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "c20a6621e1b34ab7ab7aa7da04ea47360f3eef34",
+      "path": "backlog/tasks/msh-69 - Extend-shared-native-context-and-routing-for-real-chess-and-shogi-consumers.md"
+    },
+    "MSH-72": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-69",
+        "MSH-70"
+      ],
+      "original_ac_count": 5,
+      "original_ac_text_sha256": "521247c12ceb9b4068663bfe4e3a4dc3d488342acda5d3a358d1e10cd135a104",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "023fd07e8f09b14f55fef1a1f5bd1efcc672026b",
+      "path": "backlog/tasks/msh-72 - Extend-shared-native-sessions-sides-and-complete-choice-presentation-for-chess-and-shogi.md"
+    },
+    "MSH-73": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-72",
+        "MSH-69"
+      ],
+      "original_ac_count": 5,
+      "original_ac_text_sha256": "a478426478ec695ffb3aa8468e0ce71eed861dece158ffa80f41519ece507c09",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "0d0a00904b80b5e6c780698c6712ec2e7f5497d6",
+      "path": "backlog/tasks/msh-73 - Extend-shared-canonical-archives-compatibility-and-lossless-admission-for-chess-and-shogi.md"
+    },
+    "MSH-76": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-69",
+        "MSH-72",
+        "MSH-73",
+        "MSH-84",
+        "MSH-95",
+        "MSH-98",
+        "MSH-99"
+      ],
+      "original_ac_count": 5,
+      "original_ac_text_sha256": "9cb179b29342e240c605d2d3929c205e751fe67d5e94426289dfd4f497c064c7",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "6e35029af54960cccbf2e43bd3c76c43713280c7",
+      "path": "backlog/tasks/msh-76 - Extend-shared-contracts-for-real-xiangqi-intersection-board-consumers.md"
+    },
+    "MSH-77": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@Codex"
+      ],
+      "dependencies": [
+        "MSH-69",
+        "MSH-72",
+        "MSH-73",
+        "MSH-85",
+        "MSH-130",
+        "MSH-131",
+        "MSH-132"
+      ],
+      "original_ac_count": 4,
+      "original_ac_text_sha256": "451e67274c75cf85cddeca9e03c762380b1d4f7e6cd02d7d5c01bf3ce23d9d64",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "436717fa55f7640eb56ca208d9d620021fce8d07",
+      "path": "backlog/tasks/msh-77 - Extend-shared-contracts-for-real-tori-shogi-consumers.md"
+    },
+    "MSH-78": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@Codex"
+      ],
+      "dependencies": [
+        "MSH-69",
+        "MSH-72",
+        "MSH-73",
+        "MSH-86"
+      ],
+      "original_ac_count": 4,
+      "original_ac_text_sha256": "68243345d5ca0e3b8fcdbd9bb0ceae1d00cfe679752bc5ca207d7c40c8528a19",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "a4c6d6e54272683905e193c44a763f613dfd037f",
+      "path": "backlog/tasks/msh-78 - Extend-shared-contracts-for-real-chu-shogi-compound-and-royal-consumers.md"
+    },
+    "MSH-79": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-69",
+        "MSH-72",
+        "MSH-73",
+        "MSH-87",
+        "MSH-78"
+      ],
+      "original_ac_count": 4,
+      "original_ac_text_sha256": "2e5ffe30e3f92b2b202ae2f1d2e68c97fcd17b724c1c97f5b62eb83cdef9365d",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "69dd687d4d8c688ea7f9411526401732b00cf141",
+      "path": "backlog/tasks/msh-79 - Extend-shared-contracts-for-real-tenjiku-shogi-consumers.md"
+    },
+    "MSH-88": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-41",
+        "MSH-42",
+        "MSH-43",
+        "MSH-44",
+        "MSH-45",
+        "MSH-69",
+        "MSH-72",
+        "MSH-73",
+        "MSH-76",
+        "MSH-77",
+        "MSH-78",
+        "MSH-79"
+      ],
+      "original_ac_count": 4,
+      "original_ac_text_sha256": "2438d2084ae1d4a04792af7111536dc54dac9d93f1aeba063549a9ddb4464261",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "acfb7df724908740658af6ca220890be373cf2a2",
+      "path": "backlog/tasks/msh-88 - Verify-final-six-game-shared-integration-in-packaged-applications.md"
+    },
+    "MSH-89": {
+      "status_at_review": "In Progress",
+      "assignees_at_review": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-88"
+      ],
+      "original_ac_count": 4,
+      "original_ac_text_sha256": "68cb38d0c345b4478cc2332ae9cf192416ac33dc507a52eb2d60d817422e8b59",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "7dce9632fbc28a5fe088cf01fb28270b61e2a218",
+      "path": "backlog/tasks/msh-89 - Independently-review-shared-six-game-contracts-and-reconcile-MSH46.md"
+    },
+    "MSH-90": {
+      "status_at_review": "Done",
+      "assignees_at_review": [
+        "@codex"
+      ],
+      "dependencies": [
+        "MSH-68",
+        "MSH-69",
+        "MSH-70"
+      ],
+      "original_ac_count": 5,
+      "original_ac_text_sha256": "38514ca43287914ae6df26cc1ba15be1f4edf8f30ab6b1deb31d23950c9670ac",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "0ba342a86580d47224854e759ea8bbb98d586641",
+      "path": "backlog/tasks/msh-90 - Unify-game-selected-console-commands-and-compact-shogi-board-output.md"
+    },
+    "MSH-108": {
+      "status_at_review": "Ready",
+      "assignees_at_review": [],
+      "dependencies": [
+        "MSH-46",
+        "MSH-106",
+        "MSH-107"
+      ],
+      "original_ac_count": 8,
+      "original_ac_text_sha256": "f07d9ba19d9d95a7abf359b845fdfb914a4bed6afacbf7011b6719dc942e7dd7",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "bdd5a7bef87d0538ec81388fe81fd2ea8f78d949",
+      "path": "backlog/tasks/msh-108 - Review-all-six-game-architectural-health-before-M4-closure.md"
+    },
+    "MSH-112": {
+      "status_at_review": "To Do",
+      "assignees_at_review": [],
+      "dependencies": [],
+      "original_ac_count": 3,
+      "original_ac_text_sha256": "057896afcae532c8b3397b81487dab8f4cef8cb8f01313df7948886869920e58",
+      "original_dod_text_sha256": "83a1c0c86411da922c61f65c12e53c123a1b441abd6168cf6dee7b901c0a646b",
+      "baseline_git_blob": "70fdae3e6da1e7934127d7a7e239880b557dc399",
+      "path": "backlog/tasks/msh-112 - Investigate-early-exit-runner-failure-classification-race.md"
+    }
+  },
+  "historical_dispositions": {
+    "MSH-112": {
+      "status": "To Do",
+      "fixed": false,
+      "blocking_shared_application_acceptance": false,
+      "scope": "Known independent Chess match-runner early-exit failure-category race. Current shared application uses EngineBridge, not mshogi-runner runtime; failures remain unscored, no repaired-race claim, no new gate/M2 reopening or M5 relabel. Existing112controlled reproduction/fix/independent platform expectations retained.",
+      "current_source": [
+        "crates/mshogi-runner/src/run.rs:295",
+        "crates/mshogi-runner/src/process.rs:215",
+        "crates/mshogi-runner/tests/runner.rs:153"
+      ],
+      "preserved_failure_records": [
+        "docs/review/evidence/msh119/runner-112-recurrence.json",
+        "docs/review/evidence/msh121/checks/native176-linux-failure.log.gz"
+      ]
+    },
+    "review_audit_attempt": {
+      "result": "corrected",
+      "observation": "Consumer reviewer initially assumed Windows role key in Linux process receipts; selected exact executable paths from actual receipt schema, then both audits passed. No application or source correction, no CI retry."
+    }
+  },
+  "findings": [
+    {
+      "id": "D89-01",
+      "severity": "low",
+      "state": "resolved",
+      "source": "crates/mshogi-core/src/native.rs:30\u201336",
+      "required": "Current native identity descriptions must not retain obsolete delivery gates.",
+      "observed": "Xiangqi/Tori/Chu/Tenjiku comments still said unavailable/gated/unsupported.",
+      "affected": [
+        "xiangqi",
+        "tori",
+        "chu",
+        "tenjiku-adams",
+        "tenjiku-muller"
+      ],
+      "blocks_MSH46": false,
+      "correction": "Only four rustdoc comments replaced by neutral current native-profile descriptions.",
+      "verification": "Both fresh source reviews found it; actual capabilities/server/normal consumers support games; formatting/diff after comment correction. No behavior suite needed."
+    },
+    {
+      "id": "D89-02",
+      "severity": "low",
+      "state": "clarified",
+      "source": "docs/m4/shared-integration/README.md current owners paragraph",
+      "required": "Describe one owner without falsely requiring every replacement to use one file-install function.",
+      "observed": "Generic wording could overstate install_document scope.",
+      "affected": [
+        "all six games"
+      ],
+      "blocks_MSH46": false,
+      "correction": "Explicit current-file Load transaction versus pergame admitted New paths under same controller; no refactor.",
+      "verification": "shared_archive.rs:1602/shared_xiangqi_archive.rs:1656 and existing combined native/GUI transitions."
+    }
+  ],
+  "original46_verdict": {
+    "1": "Supported by fresh independent source/evidence and consolidated findings review; MSH46 owns its separate closure.",
+    "2": "Supported by fresh independent source/evidence and consolidated findings review; MSH46 owns its separate closure.",
+    "3": "Supported by fresh independent source/evidence and consolidated findings review; MSH46 owns its separate closure.",
+    "4": "Supported by fresh independent source/evidence and consolidated findings review; MSH46 owns its separate closure.",
+    "5": "Supported by fresh independent source/evidence and consolidated findings review; MSH46 owns its separate closure.",
+    "6": "Supported by fresh independent source/evidence and consolidated findings review; MSH46 owns its separate closure."
+  },
+  "limits": [
+    "760\u00d7650 hard minimum unchanged; dense Tenjiku kanji/secondary badge limits accepted; around960\u00d71000 recommended only.",
+    "No comprehensive screen-reader/audio certification, release-signing/notarization or competitive-strength claim.",
+    "Mandatory successful resource journeys remain distinct from permitted precise near-limit deadline refusals.",
+    "Gate retirement/new-document stability is not delivered obsolete-response proof; deterministic native stale-admission tests are separate.",
+    "Local macOS27 actual interaction and hostedmacOS15 CI retain their source/package distinctions."
+  ],
+  "milestone_ownership": {
+    "MSH-46": "To Do/unassigned/unchecked; all original6criteria/dependencies preserved; separate completion after89.",
+    "MSH-108": "Architecture diagnostic after46/106/107, before47; not started.",
+    "MSH-47": "Independent wholeM4 closure, not started.",
+    "M5": "Measured strength/learning/optimization remain later; unfinished M4 not moved there.",
+    "M6": "Accepted product/accessibility/distribution polish, not a waiver of current functional behavior."
+  },
+  "new_broad_ci_or_gui_campaign": false,
+  "completion": "Final independent review approved; publication and MSH46handoff prepared. Normal integration/push remains DoD4 gate.",
+  "tooling": {
+    "project_baseline": "Backlog.md1.55.1",
+    "compatible_executable": "/private/tmp/mshogi-bootstrap-npm-cache/_npx/749414256ca1c44f/node_modules/backlog.md-darwin-arm64/backlog",
+    "version_observed": "1.55.1",
+    "global_version_observed": "1.55.0",
+    "resolution": "Used explicit compatible cached1.55.1 for every record operation and doctor; global1.55.0 never used for mutation. No global installation/settings changed."
+  },
+  "accepted_contract_review": true
+}

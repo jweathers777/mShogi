@@ -1,3 +1,14 @@
+> MSH-89 contract review — 2026-11-05: the fresh independent
+> [original MSH-46 AC1–6 reconciliation](shared-integration/contract-review-89.md)
+> and [compact review index](shared-integration/contract-review-89.json) support
+> all six obligations without completing MSH-46. Source inspection, the unchanged
+> MSH-88 platform record, focused native11/11 and dependency/criterion audits
+> passed. Four stale rustdoc comments and Load/New wording were corrected;
+> no executable behavior, accepted limit or compatibility policy changed.
+> Independent consolidated findings review is approved; normal publication and
+> integration follow. MSH-112 remains separately open, and46/108/47/M4 are not closed.
+> Earlier status snapshots below retain their original source scope.
+
 > MSH-88 integrated verification — 2026-11-05: the [current original MSH-46
 > ownership/acceptance matrix](shared-integration/README.md) and
 > [single structured record](shared-integration/verification.json) reconcile

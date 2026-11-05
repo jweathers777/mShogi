@@ -27,13 +27,13 @@ pub enum GameKind {
     Chess,
     /// Standard shogi under the approved CSA profile.
     Shogi,
-    /// Xiangqi under the approved WXF profile; execution is separately unavailable.
+    /// Xiangqi under the approved WXF profile.
     Xiangqi,
-    /// Tori native rules, records and bounded execution; finished desktop play stays gated.
+    /// Tori Shogi under the approved modern profile.
     Tori,
-    /// Chu native rules and records; execution remains unsupported until MSH-43.
+    /// Chu Shogi under the approved JCSA profile.
     Chu,
-    /// Two authoritative Tenjiku profiles; execution is explicitly unsupported.
+    /// Tenjiku Shogi, with its immutable whole profile selected separately.
     Tenjiku,
 }
 /// Immutable profile identity, never inferred from board dimensions or sides.

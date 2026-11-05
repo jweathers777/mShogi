@@ -7,6 +7,12 @@ required. Existing six-game strength commitments and MSH-55's required learned
 evaluator/improvement remain intact. MSH-59's optional full policy/value engine
 research is a different question and is not a prerequisite.
 
+The [deferred historical-variant roadmap](../design.md#deferred-larger-historical-shogi-expansion-2026-11-05)
+does not expand this experiment or M5. Every target game below means the existing
+six games. Completing M4, then improving their actual playing strength, efficiency
+and engine quality through M5 remains the priority; prospective expansion needs
+separate future owner authorization and adds no task prerequisite or new target.
+
 ## Per-game arms and purpose
 
 For every target game establish a meaningful, justified subset and record why

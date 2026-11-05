@@ -144,6 +144,10 @@ Future multi-character native abbreviations use lowercase native owner prefixes
 without colons and stable cells sized for their tokens. This display policy does
 not change native rules, notation, records or game-specific board geometry.
 
+Future boards beyond the six-game delivery scope follow the deferred
+[large-board UX direction](#deferred-larger-historical-shogi-expansion-2026-11-05).
+It does not change current full-board presentation or minimum-window policy.
+
 ### A-08. Learning remains an independently measurable track
 
 Establish a correct rules implementation, a search baseline, and reproducible matches before substantial training. Training and deployed inference must agree on ruleset, feature encoding, and model identity.
@@ -499,6 +503,113 @@ separate behavior-preserving tasks and focused differential/regression evidence.
 The reviews do not replace game delivery, independent conformance or milestone
 acceptance, and create no current refactor obligation.
 
+### Deferred larger historical Shogi expansion (2026-11-05)
+
+John intends eventual expansion beyond the current six games. **Deferred,
+non-actionable direction; future owner authorization is required.** The immediate
+priority remains completing M4, then improving actual playing strength,
+efficiency and engine quality for all six existing games through M5. Existing
+M4/M5 scope, tasks, acceptance criteria, dependencies, milestone ownership and
+critical path remain unchanged, as do required M6 delivery commitments. This
+initiative is outside those committed milestones, without a delivery date,
+new milestone, implementation tickets or additional closure gate.
+
+The exploratory sequence and board dimensions below are provisional planning
+assumptions supplied by the owner, not ratified historical rules, approved
+playing profiles, supported games or fixed delivery commitments:
+
+| Provisional order | Prospective historical variant | Provisional board |
+| --- | --- | --- |
+| 1 | Dai Shogi | 15×15 |
+| 2 | Dai Dai Shogi | 17×17 |
+| 3 | Maka Dai Dai Shogi | 19×19 |
+| 4 | Tai Shogi | 25×25 |
+| 5, conditional | Taikyoku Shogi | 36×36; subject to feasibility and future owner approval |
+
+Future decisions may change the order based on available historical rules,
+implementation complexity, usability and engine performance. Recording this
+intent authorizes no historical source acquisition or rules research, game
+implementation, UX prototype, engine optimization or architectural restructuring.
+Do not add these variants to the normal game selector or advertise support before
+playable implementation and appropriate verification.
+
+#### Prospective large-board UX
+
+Start from the existing shared application shell, game-session architecture and
+shared native-choice interaction controller (A-10/A-11). Investigate these
+approximate presentation bands only when expansion is authorized:
+
+- Up to approximately 16×16: retain the existing full-board presentation.
+- Approximately 17×17 through 19×19: investigate maximizing the window,
+  responsive layout and optional zoom and panning.
+- 25×25 and larger: investigate a full-board overview alongside a magnified,
+  navigable playing region, with a clear indication of the visible region and
+  click or drag navigation through the overview. Provide accessible zoom/pan
+  controls and keyboard access; show native legal destinations, including
+  destinations outside the detailed viewport, and enable reliable selection of
+  long-range targets. Investigate optional follow-last-move behavior, easy
+  return to the last move or selected piece, and clear piece names and movement
+  information. Preserve native complete-action identities throughout navigation
+  and selection, including distinct routes with identical endpoints.
+
+The owner is comfortable requiring a maximized window for sufficiently large
+future variants. Maximizing alone is unlikely to make 25×25 or 36×36 comfortably
+readable; the entire board need not be readable at full detail simultaneously.
+Exact thresholds and interaction design require future usability testing and
+owner approval. This direction changes neither the current minimum-window
+policy nor any existing game's accepted presentation, including Tenjiku.
+
+#### Native and shared ownership
+
+Each game owns authoritative rules, legal complete actions, derived effects,
+history and adjudication. Shared application infrastructure owns session
+lifecycle, persistence, execution supervision and presentation. The frontend
+consumes native legal choices and metadata; navigation, zoom and viewport
+transformations must not duplicate movement rules. New variants should extend
+the existing shared owners rather than require independent application shells
+or session owners. Explicit immutable rules profiles remain available for
+historically disputed conventions; profile selection must preserve history and
+complete-action identity.
+
+This direction designs no universal variant-rules framework. Large historical
+games need not share identical native position, action or search implementations.
+Justify future reuse with real shared semantics and measured consumer needs,
+consistent with A-01–A-05 and A-10 and the architecture health review contract.
+
+#### Engine and resource investigations
+
+Prospective demands include hundreds or thousands of squares, large initial
+piece populations, many distinct piece identities, high branching factors,
+long-range movement, complex capture/promotion rules, expensive history and
+repetition reconstruction, large records and memory footprints, increased
+inspection/presentation costs, and search cancellation/responsiveness challenges.
+Evaluate these against the actual results of M5 engine work before selecting
+future engineering changes.
+
+Potential investigations include incremental state transitions, efficient move
+generation, search ordering, selective search, evaluation architecture, memory
+allocation and bounded resource admission. These are investigation topics,
+not authorized changes, new performance requirements or optimization tasks for
+the existing six games. No representation, search algorithm or resource limit
+is selected here.
+
+#### Future rules profiles and complete delivery
+
+Surviving historical rules may be incomplete, disputed or inconsistent. Each
+future game delivery will require a coherent named/versioned playing profile,
+explicit treatment of consequential historical alternatives and owner decisions
+where appropriate; independently expected conformance fixtures; authoritative
+native rules and complete actions; honest functional native engine support;
+actual playable desktop integration; and appropriate product/platform verification.
+These are prospective delivery expectations, not a new rules-research campaign.
+
+Retain the [engine-independent conformance policy](testing/conformance-policy.md),
+including meaningful property, metamorphic and negative checks and independent
+review. No mandatory third-party engine comparison, original-facsimile acquisition
+gate or historical reconstruction obligation is introduced into current
+milestones. Any future activation must be separately scoped and owner-authorized;
+no existing task waits on this initiative.
+
 ## 6. Verification contract
 
 Owner correction2026-11-01: all six games must be independently verifiable from
@@ -567,6 +678,7 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-19 | Accepted post-R4 desktop UX, 2026-10-31 | John approves sourced two-column Moves/native event mapping, origin/destination last-move cues, Analysis/Game Actions/Moves order, supported-only dropdown with unchanged native side buttons, Shogi branding, nonintrusive support, Save/Load and intentional atomic replacement, concise Quit, direct Resign and one-step browse-only Return to live. Five supplemental clarifications supersede conflicting attachment wording. See A-11 and the [bounded contract](desktop/post-r4-ux.md);123/124/125 are future tasks and121 gains their completion gates. No implementation starts by recording approval. |
 | D-20 | Accepted Chu direction, 2026-11-02 | John directs faithful modern JCSA `mshogi.chu.jcsa2019.v1`: capture-based movement and finite immediate-threat mate; responsible side must vary before fourth through admission; narrow sourced material exhaustion, immediate response and agreement-based draw. Withdraw automatic-forfeit/automatic-draw/quiet-immobility-loss proposals. Resolve faithful deterministic details from independent sources/fixtures, escalate only material remaining conflicts. See [decision record](m4/chu/decisions.md). MSH-82 ratifies profile/data only;86→78→43 retain actual implementation and delivery ownership. |
 | D-21 | Accepted Tenjiku profile selection, 2026-11-04 | John requests support for choosing option1 Adams1999 Modern or option2 Muller. MSH-83 ratifies two distinct immutable whole profiles, with explicit source differences, Adams general-game supplements for Muller and labelled software completions. New Game selects the profile; records/replay/search preserve it. No independent rule toggles or in-place reinterpretation of game history. See [profile family](m4/tenjiku/README.md) and [decisions](m4/tenjiku/decisions.md). Native87, shared79 and finished44 delivery remain unimplemented here. |
+| D-22 | Accepted deferred direction only, 2026-11-05 | John intends prospective Dai → Dai Dai → Maka Dai Dai → Tai, with Taikyoku conditional on feasibility and future owner approval. Ordering, board dimensions and UX bands are provisional; no rules profile, implementation, research or restructuring is approved. Complete M4 then prioritize six-game M5 strength, efficiency and quality; preserve current milestones, dependencies, six-game contracts and minimum-window policy. See [deferred roadmap](#deferred-larger-historical-shogi-expansion-2026-11-05). |
 
 Accepted records reflect actual owner direction. Working defaults are implementation proposals consistent with it, not fabricated owner decisions. Deferred questions only block work that depends on their resolution. A routine choice within accepted requirements does not need a new approval ceremony.
 

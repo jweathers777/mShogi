@@ -62,6 +62,22 @@ before the checkpoint. Future refinement may isolate earlier measurement-only
 work, preserving the explicit gate on substantial optimization. No model,
 numeric strength target or mandatory restructuring is selected here.
 
+## Deferred larger-variant direction — 2026-11-05
+
+The [authoritative future roadmap](design.md#deferred-larger-historical-shogi-expansion-2026-11-05)
+records prospective larger historical Shogi after the current M4/M5 priorities,
+pending separate owner authorization. Reuse the accepted shared shell, session
+owners and native-choice controller as the starting point; preserve game-owned
+rules/actions/effects/history/adjudication. Viewport navigation consumes native
+choices and metadata rather than implementing movement rules. Identical native
+position/action/search representations and a universal rules framework are not
+prescribed; future reuse needs actual shared semantics and measured needs.
+
+The UX and engine/resource topics there are prospective investigations, not
+additional requirements for MSH-108/109, new refactors or performance tasks.
+Assess future demands against actual M5 results when expansion is authorized.
+All checkpoint scopes, milestones, prerequisites and consumers above stay intact.
+
 ## Review contract
 
 At each checkpoint publish a current architecture map tied to an exact source

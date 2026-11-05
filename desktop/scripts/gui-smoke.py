@@ -1595,7 +1595,7 @@ class Journey:
         w.click('[data-side="'+{'chess':'white','xiangqi':'red'}.get(game,'sente')+'"]')
         if replacing_work:
             assert w.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]'), 'source work must still be active immediately before New commits'
-            self.record('Replace genuinely active native work through ordinary New',{'target_game':game,'target_profile':profile,'processes':self.native.processes()})
+            self.record('Replace genuinely active native work through ordinary New',{'target_game':game,'target_profile':profile})
         w.click('[data-start-game]')
         wait(lambda:not w.has('.new-game-dialog') and w.has('.shell-'+game),'new cross-game document installed')
         wait(lambda:w.has('.moves-root:not(:disabled)'),'new root controls available')
@@ -1615,7 +1615,7 @@ class Journey:
         host_pid=self.native.pid
         choices=[('chess',None),('shogi',None),('xiangqi',None),('tori',None),('chu',None),('tenjiku','adams'),('tenjiku','muller'),('tenjiku','adams'),('chess',None)]
         saved={};previous=self.native_diagnostics()
-        for game,profile in choices:
+        for index,(game,profile) in enumerate(choices):
             self.cross_game_new(game,profile)
             fresh=self.native_diagnostics()
             assert fresh['token']['document']>previous['token']['document']
@@ -1631,11 +1631,11 @@ class Journey:
             assert observation['context']['game']['game_kind']==game
             assert observation['context']['game']['rules_profile']==played['profile']
             assert observation['context']['purpose']['kind']=='engine_turn'
-            key=profile or game;path=self.args.output/f'cross-game-{key}.mshogi'
+            key=profile or game;path=self.args.output/f'cross-game-{index}-{key}.mshogi'
             archive=self.save_current(path);desktop_document_payload(archive,game)
             saved[key]=(path,played)
-            self.capture('saved-'+key)
-            w.click('.moves-root')
+            self.capture(f'saved-{index}-{key}')
+            w.keyboard_activate('.moves-root')
             wait(lambda:w.read("document.querySelector('.game-shell').dataset.historical")=='true','historical source before cross-game New')
             w.click(point(origin))
             previous=self.native_diagnostics()
@@ -1653,7 +1653,7 @@ class Journey:
             assert not w.has('.inspection-marker,.square.target,.shogi-square.target,.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
             w.focused_button('Resume play')
             wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','explicit cross-game stopped Load Resume')
-            w.click('.moves-root');wait(lambda:w.read("document.querySelector('.game-shell').dataset.historical")=='true','loaded native historical prefix')
+            w.keyboard_activate('.moves-root');wait(lambda:w.read("document.querySelector('.game-shell').dataset.historical")=='true','loaded native historical prefix')
             w.focused_button('Return to live')
             wait(lambda:w.read("document.querySelector('.game-shell').dataset.historical")=='false','loaded Return to live')
             assert self.native_diagnostics()['context']==played['context']

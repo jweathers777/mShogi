@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-05T12:33:00Z'
+updated_date: '2026-11-05T12:39:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -72,4 +72,6 @@ Primary builder/integrator: Codex in the primary codex/rewrite checkout; clean o
 Startup2026-11-05: CLI1.55.1 matches recorded baseline. c1aee938 HEAD/origin/FETCH_HEAD aligned; no dirty or untracked work. MSH88 Ready/unassigned/all dependenciesDone; no competing active implementer. Codex claims88 only in primaryrewrite; MSH133 remains independentlyInReview and its worktree plusfour other unrelated worktrees untouched. Owner request114b0252 requires integrated acceptance, actual all-six-game GUI on eachOS, two immutableTenjiku profiles, original46AC1–5 traceability and later89/47 ownership. Accepted44productionECA/6CI/47GUIbaseline reused only for unchanged scope; cross-game and all-six normalmacOS gaps to audit before implementation.
 
 Focused integrated checkpoint: added one same-controller seven-profile New/reverse-current-Load ring, stale command/inspection/replacement/Open/execution rejection and malformed-Load authority/prior-file preservation (manual execution, explicitly not subprocess evidence); default and all-feature focused native test each passed. Added actual normal same-host seven-profile New/play/Save/reverse-Load/history/Resume/Take back journey and separately labeled delayed real-engine cross-game/profile New/Load retirement journey. Fresh independent source review approved after correcting verifier process classification to exclude persistent WebKit children; negative observer regression added. Final actual platform evidence remains pending; no production rules, architecture, supported formats, budgets or UI minimum changed.
+
+Pre-campaign verifier correction: source9dd173f runs Rust42028250037 and Desktop42028250101 were proactively cancelled after code inspection found repeated fresh-document Save targets (Adams/Chess) could trigger an unhandled GTK overwrite confirmation. All six jobs had runners and ended cancelled; preserve raw receipts, not passes, in final structured record. Corrected distinct per-visit Save/capture names and used existing real keyboard activation for nested Moves controls; no product fix or unrelated race correction is claimed. Fresh independent review approved the correction; 176 external verifier tests pass. Both superseded runs reached terminal cancellation before starting a replacement campaign.
 <!-- SECTION:NOTES:END -->

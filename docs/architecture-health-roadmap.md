@@ -4,8 +4,9 @@
 > The six-game ownership model remains coherent; no material architectural
 > blocker is demonstrated. Earlier findings are reconciled individually,
 > including Tenjiku improvements and the remaining advisory replay/cooperation/
-> inspection risks. Fresh final independent assessment is approved; normal integration
-> and final task closure are pending. This does not begin47/M5, authorize a refactor or close M4;
+> inspection risks. Fresh final independent assessment is approved; MSH-108 is Done. The
+> accepted evidence was normally integrated/pushed at `12fc1cab114dd3f2570973f75e7edc1d06a9a9d5`.
+> MSH-47 is now dependency-satisfied, unassigned and unstarted. This does not begin47/M5, authorize a refactor or close M4;
 > the older checkpoint records below retain their historical scope.
 
 > Current five-game checkpoint — MSH-107, 2026-11-03: the

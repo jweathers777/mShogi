@@ -1,3 +1,13 @@
+> MSH-44 accepted delivery — 2026-11-05: the sixth game and both immutable
+> Tenjiku profiles now use the existing native runtime, document, frontend,
+> choice controller and supervised engine family. Shared friendly names and
+> above-piece capture outlines are verified across all six games. The
+> [final evidence](tenjiku/product-verification.json) binds all six required CI
+> jobs and actual three-platform gameplay to production source
+> `eca9f9cfd43cf83ff4e3489292f6c25f8951bb30`. MSH-88 is dependency-ready after
+> MSH-44 completion; no shared integration or M4 milestone closure is implied.
+> Earlier mapping and status snapshots below remain historical evidence.
+
 > MSH-43 Done — complete fifth-game delivery: owner visual approval is recorded;
 > Chu is normally playable as the fifth game through the accepted application
 > owners. [Final reconciliation](chu/delivery-review.md) distinguishes actual

@@ -1,3 +1,13 @@
+> MSH-44 accepted delivery — 2026-11-05: Tenjiku is normally playable as the
+> sixth game with both immutable profiles, native search/execution, console and
+> complete notation. The [final product record](tenjiku/product-verification.json)
+> reconciles all six required Rust/Desktop jobs at
+> `eca9f9cfd43cf83ff4e3489292f6c25f8951bb30`, Linux/Windows 47-journey GUI campaigns,
+> actual macOS play and independent acceptance. The owner retains 760×650 with
+> the documented small-kanji limitation; about 960×1000 is recommended only.
+> MSH-88 is the next dependency-ready M4 work; MSH-46/89/108/47 and M4 closure
+> remain separate. Historical planning/status snapshots below retain their scope.
+
 > Deferred expansion direction — 2026-11-05: the authoritative
 > [future historical Shogi roadmap](../design.md#deferred-larger-historical-shogi-expansion-2026-11-05)
 > records provisional larger variants outside M4/M5 and pending future owner

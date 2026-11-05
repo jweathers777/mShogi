@@ -27,9 +27,16 @@ profiles and normal Load preserves the saved profile.
 Actual normal macOS [Adams capture targets](evidence/msh44-final-macos/normal-adams-great-general-captures.png),
 [Muller capture targets](evidence/msh44-final-macos/normal-muller-gote-great-general-captures.png)
 and [partial-route identification](evidence/msh44-final-macos/normal-adams-compound-partial-name.png)
-supplement the earlier QA gallery. Final artifact/source reconciliation and the
-required final six-job/platform campaign remain pending in the single
-[product record](product-verification.json).
+supplement the earlier QA gallery. At final tested source
+`eca9f9cfd43cf83ff4e3489292f6c25f8951bb30`, all six required Rust/Desktop jobs
+passed on Linux, macOS and Windows; Linux and Windows each passed all 47 installed
+normal/QA phases. Those campaigns include both profiles' dense standard capture
+pixel/paint-order/hit-test checks and actual minimum-window/compound-footer
+measurements. The genuine local normal macOS package is
+[byte-identical to the final rebuilt package](evidence/msh44-final-macos/final-eca9f9c-package-equivalence.json).
+The single [product record](product-verification.json) carries exact platform,
+artifact, source and acceptance receipts. These results support the retained
+owner-approved presentation, including its documented small-window limitations.
 
 ## Traditional names and source alignment
 
@@ -241,7 +248,7 @@ The [genuine gallery](evidence/msh44-macos/gallery.md),
 [artifact provenance](evidence/msh44-macos/artifact-manifest.json) and single
 [product record](product-verification.json) distinguish the component assignment
 above from actual native rendering and interaction. The final reviewed production
-source is `2c00e2107ac74334bce5d55813e5be25666d7c46`; the final captured package
+source for that working checkpoint is `2c00e2107ac74334bce5d55813e5be25666d7c46`; the captured package
 hashes equal the exact postcommit rebuild. Earlier all-faces/tall comparisons
 retain their explicitly recorded source scope.
 
@@ -269,5 +276,5 @@ the gallery. Native readable effect descriptions accompany accessible Moves,
 including simultaneous burn batches and promotion/original identity. Canonical
 actions, effects and outcomes still come only from Rust. Owner visual approval
 and normal selector activation were pending at that checkpoint; the continuation
-above supersedes those status statements. Final platform/product acceptance
-remains pending.
+above supersedes those status statements and supplies the final platform/product
+technical evidence. This preserves the earlier captures' exact source scope.

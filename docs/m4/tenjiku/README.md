@@ -36,8 +36,16 @@ pieces. The minimum remains 760×650: the board fits, but small kanji and second
 route badges are not all comfortably readable. About 960×1000 is recommended,
 not required. See the [recorded owner decision](../../design.md#owner-acceptance-of-tenjiku-visuals-and-shared-identification-2026-11-05).
 
-Actual normal macOS journeys now include both profiles and native royal-capture
-complete games. Final source reconciliation, all six required Rust/Desktop CI
-jobs and final three-platform product acceptance remain pending; MSH-44 is
-unfinished. The earlier QA gallery retains its original source and scope.
-No additional planning hierarchy, automatic refactor or M5 work starts here.
+The delivered normal product is verified at source
+`eca9f9cfd43cf83ff4e3489292f6c25f8951bb30`: all six required Rust/Desktop CI jobs
+passed on Linux, macOS and Windows. Linux and Windows each passed all 47 actual
+installed normal/QA GUI phases, including both Tenjiku profiles. Genuine local
+normal macOS journeys include both profiles and native royal-capture complete
+games; the final rebuilt package is byte-identical to the captured package.
+The original eight criteria and applicable DoD have complete technical evidence;
+the single product record carries exact receipts and final acceptance disposition.
+The earlier QA gallery retains its original source and scope.
+
+The next eligible task is MSH-88. Standard-root tests establish bounded smoke,
+while limited native diagrams establish complete games; competitive playing
+strength remains MSH-53/M5 work.

@@ -706,3 +706,11 @@ minimum. Piece-name identification helps and does not resolve every small-window
 accessibility limitation. Normal activation of both immutable profiles and final
 three-platform packaged verification are authorized as the remainder of MSH-44;
 no artwork redesign, rules change, architecture refactor or M5 work is implied.
+
+MSH-44's final technical acceptance is recorded in the
+[product evidence](m4/tenjiku/product-verification.json) at production source
+`eca9f9cfd43cf83ff4e3489292f6c25f8951bb30`: normal two-profile selection, both
+shared presentation refinements, all six required CI jobs and actual packaged
+gameplay on all three platforms are supported by independent review. The owner
+decisions and reading limitations above are unchanged. Shared M4 integration
+and milestone closure remain separate work.

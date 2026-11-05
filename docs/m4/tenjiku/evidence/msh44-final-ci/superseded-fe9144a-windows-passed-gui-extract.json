@@ -1,0 +1,263 @@
+{
+  "source_revision": "fe9144a49e6dc1aa811ae4b6f316fe93f2be5dfb",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/42013800230",
+  "started_at_utc": "2026-11-05T11:02:35.657176+00:00",
+  "finished_at_utc": "2026-11-05T11:22:08.268433+00:00",
+  "status": "passed",
+  "environment": {
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "python": "3.12.10",
+    "runner_image": "20261026.347.1",
+    "runner_os": "Windows",
+    "renderer_environment": {
+      "GDK_BACKEND": null,
+      "WEBKIT_DISABLE_COMPOSITING_MODE": null,
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+  "phase_failures": [],
+  "qualification": "ActualpassedFEWindows47phasecampaign retainedasunchangedproductevidence. The overallFEcampaignwassupersededforLinuxverifierfailures; thisisnotanECAjobreceipt.",
+  "artifact_id": 13409274132,
+  "archive_digest": "sha256:5c0e00348012f53f6e81b0fdbd8f94325c7642be310e0ddfe5abad29692505a8",
+  "raw_report_bytes": 140096780,
+  "raw_report_sha256": "7cd420e956749eebefd5eb792b6e3a849a3e01a9247f00281ce6f759038d6be3",
+  "phases": [
+    {
+      "phase": "normal",
+      "status": "passed",
+      "events": 245
+    },
+    {
+      "phase": "normal-shogi",
+      "status": "passed",
+      "events": 292
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "status": "passed",
+      "events": 82
+    },
+    {
+      "phase": "normal-xiangqi",
+      "status": "passed",
+      "events": 309
+    },
+    {
+      "phase": "normal-tori",
+      "status": "passed",
+      "events": 282
+    },
+    {
+      "phase": "normal-tori-native",
+      "status": "passed",
+      "events": 189
+    },
+    {
+      "phase": "normal-chu",
+      "status": "passed",
+      "events": 297
+    },
+    {
+      "phase": "normal-chu-native",
+      "status": "passed",
+      "events": 630
+    },
+    {
+      "phase": "normal-tenjiku-adams",
+      "status": "passed",
+      "events": 253
+    },
+    {
+      "phase": "normal-tenjiku-adams-native",
+      "status": "passed",
+      "events": 409
+    },
+    {
+      "phase": "normal-tenjiku-muller",
+      "status": "passed",
+      "events": 270
+    },
+    {
+      "phase": "normal-tenjiku-muller-native",
+      "status": "passed",
+      "events": 409
+    },
+    {
+      "phase": "verification-standard",
+      "status": "passed",
+      "events": 15
+    },
+    {
+      "phase": "verification-promotion",
+      "status": "passed",
+      "events": 14
+    },
+    {
+      "phase": "verification-claim",
+      "status": "passed",
+      "events": 9
+    },
+    {
+      "phase": "verification-current-claim",
+      "status": "passed",
+      "events": 9
+    },
+    {
+      "phase": "verification-concluded",
+      "status": "passed",
+      "events": 16
+    },
+    {
+      "phase": "verification-full-unknown-cancel",
+      "status": "passed",
+      "events": 19
+    },
+    {
+      "phase": "verification-capacity",
+      "status": "passed",
+      "events": 21
+    },
+    {
+      "phase": "verification-synthetic",
+      "status": "passed",
+      "events": 52
+    },
+    {
+      "phase": "verification-pending-chess",
+      "status": "passed",
+      "events": 59
+    },
+    {
+      "phase": "verification-pending-shogi",
+      "status": "passed",
+      "events": 59
+    },
+    {
+      "phase": "verification-pending-xiangqi",
+      "status": "passed",
+      "events": 59
+    },
+    {
+      "phase": "verification-pending-tori",
+      "status": "passed",
+      "events": 59
+    },
+    {
+      "phase": "verification-tori-recovery",
+      "status": "passed",
+      "events": 28
+    },
+    {
+      "phase": "verification-pending-chu",
+      "status": "passed",
+      "events": 59
+    },
+    {
+      "phase": "verification-chu-recovery",
+      "status": "passed",
+      "events": 27
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "status": "passed",
+      "events": 16
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "status": "passed",
+      "events": 15
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "status": "passed",
+      "events": 12
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "status": "passed",
+      "events": 56
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "status": "passed",
+      "events": 19
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "status": "passed",
+      "events": 23
+    },
+    {
+      "phase": "verification-xiangqi-warning",
+      "status": "passed",
+      "events": 50
+    },
+    {
+      "phase": "verification-xiangqi-fourth",
+      "status": "passed",
+      "events": 40
+    },
+    {
+      "phase": "verification-xiangqi-count",
+      "status": "passed",
+      "events": 49
+    },
+    {
+      "phase": "verification-xiangqi-offer",
+      "status": "passed",
+      "events": 40
+    },
+    {
+      "phase": "verification-xiangqi-agreed",
+      "status": "passed",
+      "events": 40
+    },
+    {
+      "phase": "verification-xiangqi-fast-proof",
+      "status": "passed",
+      "events": 40
+    },
+    {
+      "phase": "verification-xiangqi-resigned",
+      "status": "passed",
+      "events": 40
+    },
+    {
+      "phase": "verification-xiangqi-capacity",
+      "status": "passed",
+      "events": 43
+    },
+    {
+      "phase": "verification-xiangqi-failure",
+      "status": "passed",
+      "events": 44
+    },
+    {
+      "phase": "verification-xiangqi-exact-evidence",
+      "status": "passed",
+      "events": 44
+    },
+    {
+      "phase": "verification-pending-tenjiku-adams",
+      "status": "passed",
+      "events": 65
+    },
+    {
+      "phase": "verification-recovery-tenjiku-adams",
+      "status": "passed",
+      "events": 30
+    },
+    {
+      "phase": "verification-pending-tenjiku-muller",
+      "status": "passed",
+      "events": 65
+    },
+    {
+      "phase": "verification-recovery-tenjiku-muller",
+      "status": "passed",
+      "events": 30
+    }
+  ]
+}

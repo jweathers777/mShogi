@@ -149,8 +149,8 @@
       "sha256": "80f765aca84522d7d6c0f1e72c35190f6b0d7d1f54b91ea17bd629f407c61771"
     },
     "gallery.md": {
-      "bytes": 5679,
-      "sha256": "19d5a76a6339f87bf552adf3b1684cf71d96a57dc1cdc5c45e52301504a57923"
+      "bytes": 6185,
+      "sha256": "6900b3f90b05f6e1262a1bd5f46e6aa60876eae7819c45b55e4c066c6c1941fe"
     },
     "normal-muller-gote-profile-chooser.ax.txt": {
       "bytes": 1028,
@@ -320,6 +320,11 @@
       "bytes": 973,
       "sha256": "9890af49bc5890c8d87dd2ebad26ee3fcb05f0d0e6e1f9af53ab217fa9d2403d",
       "source_revision": "fe9144a49e6dc1aa811ae4b6f316fe93f2be5dfb"
+    },
+    "final-eca9f9c-package-equivalence.json": {
+      "bytes": 915,
+      "sha256": "c6388f6a3ba2f07df7ff2b4e4bb7bc88740de4df33bec8d777dd704d52afd2a4",
+      "source_revision": "eca9f9cfd43cf83ff4e3489292f6c25f8951bb30"
     }
   },
   "capture_groups": {
@@ -331,7 +336,9 @@
       "source_revision": "241807f647583e5ccf87eb3d5e8e8ca2aa192675",
       "host_sha256": "4e3719fe779a78f7800a31a827fa605dff4e1182f0ac26a41842a7e5e2c35c80",
       "qualification": "OnlyAboutstringchangedinproduct; currenthostcoldlaunchandactualbothprofileterminal/densecaptures.",
-      "equivalent_final_source_revision": "fe9144a49e6dc1aa811ae4b6f316fe93f2be5dfb"
+      "equivalent_final_source_revision": "eca9f9cfd43cf83ff4e3489292f6c25f8951bb30"
     }
-  }
+  },
+  "accepted_production_revision": "eca9f9cfd43cf83ff4e3489292f6c25f8951bb30",
+  "final_acceptance": "Independent approval; all6CI/currentLinuxWindows47GUIeach and4-fileequivalentnormalMac evidence; capturegroupsretainactualsources."
 }

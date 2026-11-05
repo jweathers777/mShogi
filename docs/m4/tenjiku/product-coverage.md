@@ -1,10 +1,10 @@
-# Tenjiku functional product coverage — MSH-44 working checkpoint
+# Tenjiku functional product coverage — MSH-44 technical acceptance
 
 This maps the original eight MSH-44 acceptance criteria to the functional visual
-checkpoint and its owner-authorized normal-product continuation. It does not check criteria or declare final
-acceptance. The single MSH-44 execution/evidence record is
-[product-verification.json](product-verification.json); this document is its
-requirements map, not another results ledger.
+checkpoint and completed owner-authorized normal-product delivery. Technical
+evidence supports all eight criteria and applicable DoD. The single MSH-44
+[execution/evidence record](product-verification.json) holds exact receipts,
+final reconciliation and task disposition; this document is its requirements map.
 
 The earlier working implementation was integrated on `codex/rewrite` at
 `aecdccd6152df9cef8736e83ef74d8bc81ae39b2`. Its final pushed visual checkpoint was
@@ -16,10 +16,12 @@ On 5 November John approved the artwork, retained the 760×650 minimum and
 authorized normal activation. Normal sixth-game New with both explicit profile
 choices and ordinary profile-preserving Load are now implemented. The current
 continuation includes shared piece-name footer and occupied capture-overlay
-corrections. Exact final source, artifact reconciliation, six required CI jobs
-and three-platform acceptance for the reviewed normal-product source
-`0a2fb9d72a2ed59bf896d7a350794896b2885936` remain pending in the single product record.
-MSH-44 remains unfinished; AC7, AC8 and the definition of done are not complete.
+corrections. Final tested source
+`eca9f9cfd43cf83ff4e3489292f6c25f8951bb30` passed all six required Rust/Desktop
+jobs on Linux, macOS and Windows. Linux and Windows each passed all 47 actual
+installed normal/QA GUI phases; local normal macOS captures are bound to the final
+source through byte-identical rebuilt package files. The single product record
+preserves exact receipts, bounded independent reviews and superseded failures.
 
 Both owner-selected whole profiles remain required:
 `mshogi.tenjiku.adams1999-modern.v1` and
@@ -37,8 +39,8 @@ switch nor reinterpretation of a record is part of this checkpoint.
 | **AC4 — independently usable console and complete notation** | [Notation/console contract](notation.md), core `tenjiku::notation`, `tenjiku_session.rs` and [CLI tests](../../../crates/mshogi-console/tests/tenjiku_cli.rs) cover explicit whole-profile selection, standard/custom roots, complete ordered travel/returns, igui target, original/promoted identity, promotion choice, exact history/undo/outcomes, canonical Save/Load and read-only analysis. Native full-Game perft/divide preserves history/endings. Human shell and structured `internal-search` remain separate. | Labels are a documented mShogi adapter, not a claimed historical standard or a replacement canonical record. Typed refusal never becomes a partial exact diagnostic or an inferred result. |
 | **AC5 — functional native engine, supervised safety and reproducible smoke** | [Engine contract and measurements](engine-v1.md), [search tests](../../../crates/mshogi-search/src/tenjiku/tests.rs), [protocol tests](../../../crates/mshogi-engine/tests/tenjiku_protocol.rs), [routing tests](../../../crates/mshogi-engine/tests/tenjiku_routing.rs) and actual [child/controller journeys](../../../crates/mshogi-console/tests/tenjiku_internal.rs) cover full history/profile, legal complete PV, native terminal scores, zero/partial work, limits, cancellation and stale contexts. [Self-play tests](../../../crates/mshogi-console/tests/tenjiku_selfplay.rs) repeat a bounded four-ply standard-root smoke and an independently solved tactical complete game for both profiles in release. | The standard-root smoke is not a completed standard-root game or strength evidence. Debug functional journeys explicitly use an independent sparse diagram; mandatory release execution uses all 156 initial standard pieces on every CI platform. No test is silently skipped. MSH-53/M5 retains playing-strength ownership. |
 | **AC6 — lossless canonical records and replay** | Native schema1 and the existing desktop envelope preserve whole profile/edition, initial state, rights, complete commands/actions/effects, settings, exact selected history, observations and retired Take back branches. [Document execution tests](../../../crates/mshogi-desktop-session/src/tenjiku_document/execution_tests.rs) require an engine observation immediately followed by its exact Play; analysis records no Play. Genuine contexts/PVs are re-admitted and charged before installation. Existing file and controller tests cover atomic failure, fresh stopped Open and prior-file integrity. | Current-format saveability and ending/Close reserves remain mandatory. Unsupported profiles, foreign contexts, forged PV/score and lossy data reject. Common schema migration stays within MSH-46. |
-| **AC7 — actual desktop play, inspection, analysis, actions, readable presentation and recovery** | Native-backed 16×16 rendering, [owner-approved licensed artwork](desktop-art.md), actual engine/analysis capabilities, normal two-profile selection/Load, complete-choice entry and shared document/history controls are implemented. The footer uses native piece names across all six games; capture outlines paint above occupied pieces. Actual normal macOS journeys supplement the earlier QA captures and component/native tests. | **Open.** The owner retains 760×650 despite the documented small-kanji/route-badge reading limitation; around 960×1000 is recommended only. Final normal/QA packaged journeys and exact-source six-job/platform acceptance remain required. Fit does not establish comfortable reading of every glyph. |
-| **AC8 — complete coverage and independent review, visible integration findings** | This map links the original scope to the three earlier accepted evidence records and the single current [product verification record](product-verification.json). Bounded independent reviews cover search, engine/context/PV, document admission, console/notation, shared presentation, the packaged harness and explicitly extended native diagrams. | **Open.** Reconcile the final continuation's exact source, artifacts and all six required CI/platform receipts, then obtain final product acceptance. Preserve earlier passed campaigns and current findings in MSH-46/MSH-47 and the existing MSH-88/89 campaign. No required behavior is relabeled optional or deferred to strength work. |
+| **AC7 — actual desktop play, inspection, analysis, actions, readable presentation and recovery** | Native-backed 16×16 rendering, [owner-approved licensed artwork](desktop-art.md), actual engine/analysis capabilities, normal two-profile selection/Load, complete-choice entry and shared document/history controls are implemented. The footer uses native piece names across all six games; capture outlines paint above occupied pieces. Exact-source Linux/Windows installed campaigns each passed all 47 phases, including both profiles, alongside genuine byte-equivalent normal macOS journeys. | **Technical evidence complete.** All six required jobs passed at eca9f9c. The owner retains 760×650 with the documented small-kanji/route-badge limitation; around 960×1000 is recommended only. Fit is not a claim of comfortable reading of every glyph. |
+| **AC8 — complete coverage and independent review, visible integration findings** | This map links the original scope to the three earlier accepted evidence records and the single current [product verification record](product-verification.json). Bounded independent reviews cover search, engine/context/PV, document admission, console/notation, shared presentation, the packaged harness, explicitly extended native diagrams and observed harness corrections. | **Technical evidence complete.** The exact-source six-job receipts, real platform artifacts and review disposition are retained in the single record. Superseded successes and failures retain their source/scope; shared MSH-88/89 and MSH-46/47 work remains visible. No required behavior is relabeled optional or deferred to strength work. |
 
 Repository links above are paths relative to this document. Detailed commands,
 source identities, passed/failed/not-run outcomes and platform receipts belong in
@@ -94,8 +96,10 @@ fresh native analysis identities, save/open/history/Take back, cancellation and
 replacement, sidecar recovery and native terminal diagrams. Dense standard
 Great General captures require real PNG stroke pixels, SVG paint order and
 pointer hit tests, while partial-route footer checks measure actual clipping.
-Harness implementation and local tests do not establish that these final
-platform campaigns have executed successfully.
+At eca9f9c both installed campaigns actually executed and passed all 47 phases,
+including all eight Tenjiku normal/native/pending/recovery phases. The final
+record distinguishes those executions from harness-only tests and preserves
+the earlier observer failures and their bounded corrections.
 
 ## Retained minimum and recommended playing size
 
@@ -155,10 +159,18 @@ failure and cancellations are preserved there. Earlier MSH-79 evidence and
 local macOS captures do not substitute for these executions. Rust explicitly
 includes release subprocess and full-standard-root tests on every platform.
 
-Those six terminal receipts are reconciled in the single product record and
-remain evidence for their exact earlier source. The current continuation requires
-its own final exact-source Rust and Desktop executions on Linux, macOS and Windows,
-including both-profile installed normal/QA journeys. Owner artwork approval and
-normal activation are implemented; final game/platform acceptance remains pending.
-Original AC7/AC8 and DoD remain open. Existing
-MSH-46/47/88/89 integration ownership is preserved; MSH-53/M5 retains strength work.
+Those six terminal receipts remain evidence for their exact earlier source. The
+normal-product continuation has its own successful exact-source campaigns:
+[Rust CI42019954391](https://github.com/jweathers777/mShogi/actions/runs/42019954391)
+and [Desktop CI42019954646](https://github.com/jweathers777/mShogi/actions/runs/42019954646),
+all six required jobs at `eca9f9cfd43cf83ff4e3489292f6c25f8951bb30`.
+Linux and Windows each passed all 47 installed normal/QA phases with zero phase
+failures. The local normal macOS captures retain their actual source and package
+identity; the [final package comparison](evidence/msh44-final-macos/final-eca9f9c-package-equivalence.json)
+proves byte equality after rebuilding at eca9f9c. macOS CI package/native checks
+and local actual GUI interaction are separately identified.
+
+Owner artwork approval, normal activation and the original eight criteria and
+applicable DoD are supported by complete technical evidence in the single product
+record. The next eligible task is MSH-88; broader MSH-46/47/89 integration scopes
+remain as recorded. MSH-53/M5 retains measured playing strength.

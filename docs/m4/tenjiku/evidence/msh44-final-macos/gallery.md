@@ -1,8 +1,8 @@
 # Normal Tenjiku desktop continuation
 
-Actual normal `org.mshogi.desktop` application on macOS 27.0.1, arm64. These are native screenshots and accessibility captures, not web mockups. The exact package hashes and tested source are reconciled in [product-verification.json](../../product-verification.json); final cross-platform receipts remain pending there until the campaign completes. Each image has an accompanying `.ax.txt` capture and an entry in [artifact-manifest.json](artifact-manifest.json).
+Actual normal `org.mshogi.desktop` application on macOS 27.0.1, arm64. These are native screenshots and accessibility captures, not web mockups. The exact package hashes and tested source are reconciled in [product-verification.json](../../product-verification.json); all six final cross-platform receipts passed at `eca9f9c` and are reconciled there. Each image has an accompanying `.ax.txt` capture and an entry in [artifact-manifest.json](artifact-manifest.json).
 
-The owner approved the traditional-kanji design. The hard application minimum remains 760×650; approximately 960×1000 is a recommended playing size when the display permits. The whole 16×16 board fits at the minimum, but some kanji and secondary route badges remain too small for comfortable reading. Friendly piece names help identification without resolving every small-window accessibility limitation. These normal application captures do not claim fresh minimum-size DOM measurements. Prior fixed-slot QA measurements are preserved; final Linux/Windows native-frame checks remain pending.
+The owner approved the traditional-kanji design. The hard application minimum remains 760×650; approximately 960×1000 is a recommended playing size when the display permits. The whole 16×16 board fits at the minimum, but some kanji and secondary route badges remain too small for comfortable reading. Friendly piece names help identification without resolving every small-window accessibility limitation. These normal application captures do not claim fresh minimum-size DOM measurements. Prior fixed-slot QA measurements are preserved; final Linux/Windows native-frame checks passed and retain their separately measured content sizes.
 
 ## Normal activation and shared presentation
 
@@ -68,4 +68,6 @@ Before these supplemental captures, an older running process was detected from i
 
 ![Final Muller native friendly name and occupied capture outlines](final-241807f-muller-dense-capture-name.png)
 
-Both final-source royal games used ordinary stopped Open, explicit Resume, a genuine supervised `FiD8jx8g`, native RoyalCapture and Save. Both standard files were opened through normal Load and retained their original bytes. The application was cleanly quit and its process absence verified after the final captures. Final CI/platform acceptance remains pending in the product record.
+Both final-source royal games used ordinary stopped Open, explicit Resume, a genuine supervised `FiD8jx8g`, native RoyalCapture and Save. Both standard files were opened through normal Load and retained their original bytes. The application was cleanly quit and its process absence verified after the final captures. Final CI/platform acceptance passed at `eca9f9c` and is recorded in the product record.
+
+The final accepted production revision is `eca9f9cfd43cf83ff4e3489292f6c25f8951bb30`. Its post-commit normal package rebuild reproduced all four files of this actual macOS capture package byte for byte; see [the equivalence receipt](final-eca9f9c-package-equivalence.json). No new GUI execution is inferred from that comparison. Required macOS 15 CI and Linux/Windows installed 47-journey campaigns passed separately at that exact source.

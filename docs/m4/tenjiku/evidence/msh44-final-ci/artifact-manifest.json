@@ -1,0 +1,217 @@
+{
+  "schema": "mshogi.tenjiku.ci-artifact-manifest.v1",
+  "accepted_production_revision": "eca9f9cfd43cf83ff4e3489292f6c25f8951bb30",
+  "qualification": "Rawreceipts/extracts retain theirownsourceandhistoricalqualification. Compiledpackages/fullGUIreports remaininidentifiedGitHubartifacts; currentacceptedreceipts areeca9f9c-prefixed. Noother-sourcepassinferred.",
+  "files": {
+    "superseded-0a2fb9d-windows-gui-extract.json": {
+      "bytes": 166003,
+      "sha256": "719f835983d75cf852712b4fb8e00314b8028037cd0bea32ef3391b7fd6909f1",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "eca9f9c-linux-normal-package-manifest.json": {
+      "bytes": 1789,
+      "sha256": "f10a2c5270fb0f310b4c7fb9b02d58c11cf539f132683dba28dd8385a22959b7",
+      "scope": "currentacceptedsource"
+    },
+    "241807f-macos-normal-package-manifest.json": {
+      "bytes": 675,
+      "sha256": "c5ec277d4eff44cd4c7302e1dfd44cd0852541cdd8824b9252f94c8cefec960a",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "macos-package-smoke.json": {
+      "bytes": 153152,
+      "sha256": "cce9dc6b206cf19bbd864abc87f147c3e5a78b69582fd0199b6b712e8002d79f",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "eca9f9c-windows-normal-tenjiku-muller-great-general-native-minimum-paint.png": {
+      "bytes": 122418,
+      "sha256": "520a905cfa4d9812a10988014c0a09384563c13d05d80f25dc9311c96d699395",
+      "scope": "currentacceptedsource"
+    },
+    "eca9f9c-linux-normal-tenjiku-adams-great-general-1180-paint.png": {
+      "bytes": 163062,
+      "sha256": "6b18cc655e3c002074ee15c66189b45a5e8f22769dd0474794f0249630ad264d",
+      "scope": "currentacceptedsource"
+    },
+    "eca9f9c-linux-passed-gui-extract.json": {
+      "bytes": 224670,
+      "sha256": "ba8be066b17822970b7526d015bdf18fddc00eb2514a8601b34fe499362ab835",
+      "scope": "currentacceptedsource"
+    },
+    "241807f-macos-package-smoke.json": {
+      "bytes": 153152,
+      "sha256": "8dd4c5310e3e83768d45a0f71c7507e8262e7936125093b330617044c480a14b",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "windows-rust-release.txt": {
+      "bytes": 1782,
+      "sha256": "779db6a477cb41c0096cf3df89d30175bafd5683c6ef9588829523d29855483a",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "superseded-fe9144a-normal-shogi-reopened.desktop.png": {
+      "bytes": 145662,
+      "sha256": "ad7f9c676c11dae2279e3ea5c8c2a56dfdd46c389c936ec0c8973e26c3c32751",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "eca9f9c-macos-package-smoke.json": {
+      "bytes": 153152,
+      "sha256": "bb6a41eca8fe0b53ce5a354f8dabeda9b10b071c1d91cdedb605819c4a007e85",
+      "scope": "currentacceptedsource"
+    },
+    "eca9f9c-linux-normal-tenjiku-muller-great-general-native-minimum-paint.png": {
+      "bytes": 136838,
+      "sha256": "2d2d8333a688aee8f74b8c54144c4ba7f4f24c74c7c234560f8288c57f2835e8",
+      "scope": "currentacceptedsource"
+    },
+    "eca9f9c-linux-rust-release.txt": {
+      "bytes": 1774,
+      "sha256": "6a86681c4fa9eeb62817b4bb92f8ae56c002187821419ac8761ec873b54cf5d2",
+      "scope": "currentacceptedsource"
+    },
+    "superseded-linux-empty-picker-native.json": {
+      "bytes": 1134,
+      "sha256": "e36ce06c159dee5fd83fef27ca372defad625348ebef87775482d0b34390e191",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "superseded-0a2fb9d-linux-gui-extract.json": {
+      "bytes": 168405,
+      "sha256": "cea381d2c7a5bbb50372bef0b3682b85c54302cca900fb75357f989ed2e78fd4",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "eca9f9c-windows-rust-release.txt": {
+      "bytes": 1782,
+      "sha256": "a26c9e163eb168b907aef0e7289d7deef1391ec77c776edb6e117127e5de5d2d",
+      "scope": "currentacceptedsource"
+    },
+    "eca9f9c-macos-rust-release.txt": {
+      "bytes": 1775,
+      "sha256": "2c88835d78dedfef55a34bd6fd4db2122e6b009d1efb441fccb4d51b81f58759",
+      "scope": "currentacceptedsource"
+    },
+    "eca9f9c-linux-normal-tenjiku-adams-great-general-native-minimum-paint.png": {
+      "bytes": 137095,
+      "sha256": "998940d857a658476e014028869d165af6b2482578908e01c1f5037341044987",
+      "scope": "currentacceptedsource"
+    },
+    "eca9f9c-windows-normal-tenjiku-muller-great-general-1180-paint.png": {
+      "bytes": 159767,
+      "sha256": "3e0a8f2683b3186f2c281253326db4301c52dfe2f6efe4c925cb321f1ea04c3a",
+      "scope": "currentacceptedsource"
+    },
+    "superseded-241807f-linux-diagnostics-close.png": {
+      "bytes": 107397,
+      "sha256": "c090d7dc10a4491956ffaf7dc4012fc808d710a3997f14ef6f19a614c788cfb3",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "eca9f9c-linux-normal-tenjiku-muller-great-general-1180-paint.png": {
+      "bytes": 162835,
+      "sha256": "174a9cb1d37f34d6e5645a034152123a07a46d92b2706f24d82b3bafbaeaa0f2",
+      "scope": "currentacceptedsource"
+    },
+    "superseded-241807f-windows-passed-gui-extract.json": {
+      "bytes": 225252,
+      "sha256": "94297b4235b32ee35fed072639ac2ceb92532187fd66b8a02ef9c0abec972ebd",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "linux-rust-release.txt": {
+      "bytes": 1774,
+      "sha256": "1d8f151c8383941b072da8ebc50f439e7250f86f1f4259035c0e593bae6952af",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "superseded-fe9144a-windows-passed-gui-extract.json": {
+      "bytes": 6098,
+      "sha256": "a4a4d28eebcebe53a6763480721e16e4b8bbe1f99c1923dbf8d53f7405bd853d",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "eca9f9c-linux-package-smoke.json": {
+      "bytes": 153260,
+      "sha256": "99c2daa01f07090e56dbbea0ba328c8305405c21c15448b5577c71d5659d9644",
+      "scope": "currentacceptedsource"
+    },
+    "fe9144a-macos-rust-release.txt": {
+      "bytes": 1774,
+      "sha256": "f0488cbb69c5ec152bae546ce6304f54d821b4ee4244a4118568462b776412ca",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "eca9f9c-windows-normal-tenjiku-adams-great-general-1180-paint.png": {
+      "bytes": 159959,
+      "sha256": "1c025e479e4e8fafca939aff5da97dbf3179260ca0af65a9059f22b6b7f95ff6",
+      "scope": "currentacceptedsource"
+    },
+    "eca9f9c-windows-normal-package-manifest.json": {
+      "bytes": 300,
+      "sha256": "ff6f18a4466f3fc898d5b9826746db189f4b3c8aac867d601fdb683d2d1dcccf",
+      "scope": "currentacceptedsource"
+    },
+    "macos-normal-package-manifest.json": {
+      "bytes": 675,
+      "sha256": "5007753178e87dd5e30c9cecb73af722a3c54c66b5bd22e34a5c959b3e9bf318",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "superseded-fe9144a-verification-pending-chess.desktop.png": {
+      "bytes": 118723,
+      "sha256": "4d8a98c6722be8aa9db978e4f88b7411a87166177d17af411c3f84dcb632d3ec",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "superseded-fe9144a-verification-pending-chess.dom.json": {
+      "bytes": 4371,
+      "sha256": "c59aac3450826c28dd0b98189089416085eb3df138d72c470b68b36e28489675",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "eca9f9c-macos-normal-package-manifest.json": {
+      "bytes": 675,
+      "sha256": "6040c75fe33d44664a59e3f2af36e9b6e4570551ee90ba2c7cfb93dcf5564ceb",
+      "scope": "currentacceptedsource"
+    },
+    "superseded-linux-empty-picker.png": {
+      "bytes": 156031,
+      "sha256": "402db829a4aab0d9ee75527491d2a225658e7fafff1b1a85bcb5415402435ebc",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "eca9f9c-windows-passed-gui-extract.json": {
+      "bytes": 225165,
+      "sha256": "84f317a23c9c994beef67b74d68ee7aec4024644445417fac9a42feab110f322",
+      "scope": "currentacceptedsource"
+    },
+    "superseded-fe9144a-linux-gui-extract.json": {
+      "bytes": 11133,
+      "sha256": "c44539e1b993759a7f4d388ad0eaa430a59b8905f0197c450ef8eef4c8e980a5",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "fe9144a-macos-package-smoke.json": {
+      "bytes": 153152,
+      "sha256": "4320c0f92de872a2ff0c6122d506ba7a5b4b31bc99dd71cbbf2f970482e7793e",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "fe9144a-macos-normal-package-manifest.json": {
+      "bytes": 675,
+      "sha256": "a06a6a507303e8123c79b66fc7a10860f98aa2a29683fb94f6e984def6166532",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "eca9f9c-windows-package-smoke.json": {
+      "bytes": 159022,
+      "sha256": "4cbae4ef9e4d2775d6ea02015be0b2f069b9ada878af94bbcae9a36be2d1df09",
+      "scope": "currentacceptedsource"
+    },
+    "eca9f9c-windows-normal-tenjiku-adams-great-general-native-minimum-paint.png": {
+      "bytes": 122603,
+      "sha256": "b6d73e7b96490b6ae242d71f60eba555daec66267258f37f46e855ab5c239978",
+      "scope": "currentacceptedsource"
+    },
+    "fe9144a-windows-rust-release.txt": {
+      "bytes": 1782,
+      "sha256": "a5abd3d0f288b7ce975a1fdc56e9d5b7b4e105e1ae56404b84a3dae4bdf55eaf",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "superseded-fe9144a-normal-shogi-reopened.dom.json": {
+      "bytes": 2048,
+      "sha256": "e486b8e37fe0480d58ec62cbbfe207e618f3b5b83c9e31cb448c6233c238e244",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    },
+    "superseded-241807f-linux-gui-extract.json": {
+      "bytes": 12113,
+      "sha256": "4997b852b9571405a797208fbf7ef0dcd046b5153c1067ec8404743b18ec7e90",
+      "scope": "historicalqualifiedsource_or_supersededattempt"
+    }
+  }
+}

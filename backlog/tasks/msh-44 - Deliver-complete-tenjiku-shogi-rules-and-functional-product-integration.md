@@ -1,11 +1,11 @@
 ---
 id: MSH-44
 title: Deliver complete tenjiku shogi rules and functional product integration
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-05T11:31:00Z'
+updated_date: '2026-11-05T12:12:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -15,6 +15,9 @@ dependencies:
   - MSH-79
   - MSH-83
   - MSH-87
+references:
+  - https://github.com/jweathers777/mShogi/actions/runs/42019954391
+  - https://github.com/jweathers777/mShogi/actions/runs/42019954646
 documentation:
   - docs/design.md
   - docs/m4/delivery-plan.md
@@ -32,6 +35,8 @@ documentation:
   - docs/m4/tenjiku/notation.md
   - docs/m4/tenjiku/desktop-art.md
   - docs/m4/tenjiku/evidence/msh44-macos/gallery.md
+  - docs/m4/tenjiku/evidence/msh44-final-macos/gallery.md
+  - docs/m4/tenjiku/evidence/msh44-final-ci/artifact-manifest.json
 ordinal: 44000
 ---
 
@@ -51,14 +56,14 @@ Open design questions (D-07/D-08): Resolve the authoritative historical conventi
 - [x] #4 The independently usable console can select and inspect tenjiku shogi, list and apply complete actions, undo, report history/outcomes and run appropriate diagnostics with honest coverage and separate human/machine output. Game-specific command/notation adapters preserve the authoritative semantics.
 - [x] #5 The native mShogi engine can search and play tenjiku shogi using the same authoritative rules/history, with legal complete results, correct terminal/claim handling, request identity, limits, cancellation and stale-result safety. A functional baseline and reproducible self-play/match smoke evidence are recorded without claiming competitive strength.
 - [x] #6 Canonical saved tenjiku shogi records preserve profile/version, initial state, necessary history, complete actions and applicable match policies/settings/events. Replay restores semantics exactly, and unsupported profiles or lossy notation/adapters fail explicitly. This ticket owns game-specific encoding/replay coverage; common schema migration belongs to MSH-46.
-- [ ] #7 The desktop supports actual tenjiku shogi human/engine play and bounded inspection/analysis, complete action entry, readable accessible presentation, outcomes/recovery, save/reopen and history inspection through the authoritative native session. Game-specific end-to-end evidence exists; common infrastructure, cross-game regression and packaged three-platform acceptance are owned by MSH-46 and verified at MSH-47.
-- [ ] #8 The game coverage ledger and independent review show all required tenjiku shogi scope satisfied, with no required behavior relabeled as optional or deferred to M5. Shared integration findings remain visible in MSH-46 and block M4 closure in MSH-47.
+- [x] #7 The desktop supports actual tenjiku shogi human/engine play and bounded inspection/analysis, complete action entry, readable accessible presentation, outcomes/recovery, save/reopen and history inspection through the authoritative native session. Game-specific end-to-end evidence exists; common infrastructure, cross-game regression and packaged three-platform acceptance are owned by MSH-46 and verified at MSH-47.
+- [x] #8 The game coverage ledger and independent review show all required tenjiku shogi scope satisfied, with no required behavior relabeled as optional or deferred to M5. Shared integration findings remain visible in MSH-46 and block M4 closure in MSH-47.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
 - [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
@@ -127,14 +132,20 @@ Corrected reviewed source241807f647583e5ccf87eb3d5e8e8ca2aa192675 committed/push
 Final reviewed sourcefe9144a49e6dc1aa811ae4b6f316fe93f2be5dfb committed/pushed normally. Onlyexternalverifiercleanup/tests/actualrawpayloadfixtures changed from241; production/workflows unchanged. Localnormalpackage rebuiltaftercommitwhileappstopped: all4bundlefilesbyteidenticaltoactual241captures (host4e3719fe,enginea3c0cda3). Independent127focusedsuite/raw4caseprovenance/finite256entryreviewPASS; full163observerPASS. Rust42013800198/Desktop42013800230 startedat exacthead underonecompletion-awaremonitor25426; earliercampaignsfullyterminal. ActualWindows241all47PASS retainedbutnotcallednewheadacceptance. Finalall6receipts/3platformreconciliation andDone remainpending.
 
 FEcampaignfullyterminal: Rustall3+DesktopMac/Windowspassed; Linux45/47passedincludingALL8Tenjiphases (bothprofilesplay/analysis/nativeendings/pending/recovery). Twootherfailuresactualtraced: legacyShogiResumeclippedaboveinspector; newgenericAboutfocusassertioninvalidduringasynchronousadmission anddelayingpurposeobservation. No native/productfailureinferred. Minimalexternalfix restoresoriginalpointerentry/read, keepskeyboardcollapse/Escape+requiredclosure, recordsactualfocuswithoutuniversalclaim; onlyobservedShogiResumeusesexistingactualTabfocus/visibilitybeforeoneclick. DedicatedstableAboutfocusproof/nativeidentity/state assertionsunchanged. Independent128focusedPASS/full164PASS; raw4CIpayloadfixturesunchanged. Allfailedreceipts/PNG/DOM/sourcepreserved. Coherentnewheadfreeze/all6requiredCI/finalacceptance pending; nooverlap/noDone.
+
+Reviewed head eca9f9cfd43cf83ff4e3489292f6c25f8951bb30 committed/pushed normally. Minimalexternalreader/observedShogiResume corrections only; production/workflows unchangedfrom241, rebuiltall4normalbundlefilesbyteidentical (host4e3719fe,enginea3c0cda3), currentequivalencereceiptpreserved. Independent128focused/full164tests pass; raw4CIpayloadfixturesunchanged. Rust42019954391/Desktop42019954646 at exacthead underoneboundedcompletionmonitor26932; allpreviouscampaignsfullyterminal/exited. Finalall6receipts/requiredplatformacceptance andindependentclosure pending; noDone.
+
+Final independent acceptance APPROVED exactECA: all8AC/4DoD supported, all6requiredjobs/source/steps/runners reconciled, LinuxWindows47/47each/8Tenjiphases, actualMacbundle4-fileequivalence, allhistoricalfailurespreserved. Finalfourdocs and128localreferences checked. Required source/tests/workflows remain unchanged afterECA; finalmetadata normalcommit/push only. NextReady88notstarted.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Working visual checkpoint, unfinished. Both accepted Tenjiku profiles now have authoritative history-aware evaluation/search, actual supervised execution, native observation/PV/action admission, complete console/notation and licensed44-face/30-promotion traditional-kanji16x16 presentation in the existing controller/document/shell. Final production source2c00e2107ac74334bce5d55813e5be25666d7c46 is integrated/pushed on codex/rewrite; all6 required Rust/Desktop Linux/macOS15/Windows jobs passed in41925013605/41925013611. Final independent source/interaction/actual-visual/evidence reviews pass within the working-checkpoint scope. Full frontend511tests and actual release child/controller/selfplay/native-conformance regressions pass. Native1MiB/1024events/512M and desktop160M/15s policies unchanged.
+Delivered functional Tenjiku play for both immutable profiles through the authoritative native Game, existing supervised engine/runtime, console and complete notation, normal sixth-game New/Load, traditional-kanji16x16 board and shared native choice controller. Friendly selected names and above-piece decorative capture outlines cover all six games; no rules, resource budget, session architecture or hard-minimum change.
 
-OriginalAC1–6 supported; AC7/8 and DoD1/2 stay open. Actual minimum-size kanji and secondary route badges are not accepted for comfortable reading. Measured Tenjiku-only960x1000 proposal improves live/history lettering, requires owner decision and does not alone fix tiny badges. No minimum policy changed. Owner must review genuine gallery/artwork and readability concerns before normal two-profile New/Load/selector activation and final six-game product/platform acceptance. No Done, M4 closure or M5 work.
+Accepted production source: eca9f9cfd43cf83ff4e3489292f6c25f8951bb30 on codex/rewrite. Rust42019954391 and Desktop42019954646 each passed all three required platform jobs at that exact source, attempt1. Mandatory release6subprocess/controller+2selfplay tests passed on all3OS; frontend567/42 and shared30-case regression coverage pass. Externalobserver164 tests pass. Linux and Windows each executed47/47 genuine installed/packaged GUI journeys, including8Tenjiku phases/bothprofiles: real engine/analysis, exact action/effect/terminal admission, normal files/history/Takeback, fresh stopped Open, replacement/cancellation/recovery. Actual normal macOS27 both-profile play/visual/lifecycle evidence is separately qualified from hostedmacOS15CI; final post-commit package rebuild matches all4 captured package files byte-for-byte. Independent complete tactical games/native conclusions support functional delivery, not competitive strength or a completed standard-root game.
 
-Single evidence record: docs/m4/tenjiku/product-verification.json; original-criteria map product-coverage.md; genuine macOS gallery/manifest evidence/msh44-macos/gallery.md. Exact committed QA app rebuilt/staged in fixed identity, strict signature verified and fresh Adams standard selected while stopped. Additional Gote GUI journeys were blocked by Mac lock; actual release subprocess/controller tests verify both human assignments. Prior failed/cancelled/superseded CI and debug-performance observations are preserved. Four unrelated worktrees retained; no own temporary worktree exists. STOP for owner visual/minimum review.
+Independent reviewer approved all8originalAC and all4DoD technical evidence; actual final Windows/Linux reports, source/runner/step receipts, PNG pixels/hit tests, native replay and preserved failed/superseded attempts are reconciled in docs/m4/tenjiku/product-verification.json, evidence revision MSH44-FINAL-2026-11-05. Three superseded continuation campaigns and the older checkpoint retain actual failures/source/provenance. No remaining material finding. Owner-approved760x650 minimum remains; around960x1000 is recommended only. Small kanji and secondary badges remain limited; piece names do not solve every accessibility limitation.
+
+Normal integration branch codex/rewrite; completion evidence/docs/Backlog are finalized in the subsequent normal metadata commit without another product campaign. MSH-88 is the next dependency-ready M4 task and is not started. MSH46/89/108/47 retain shared integration/milestone ownership; MSH53/M5 retain measured strength. STOP after44 acceptance.
 <!-- SECTION:FINAL_SUMMARY:END -->

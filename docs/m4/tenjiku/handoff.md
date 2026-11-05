@@ -302,16 +302,25 @@ pixels as well as SVG paint order/pointer hit tests; compound-footer checks
 measure viewport and ancestor clipping. Fresh analysis proof requires a newly
 appended native observation with fresh execution identity for the exact selected
 prefix, rather than an old UI status. The harness and derived fixture correction
-have bounded independent review; platform execution is a separate obligation.
+have bounded independent review. The final Linux and Windows installed campaigns
+each actually passed all 47 phases, including both profiles' normal, native,
+pending and recovery journeys; these results are separate from harness-only tests.
 
-Final source/artifact reconciliation, all six required Rust/Desktop jobs on
-Linux/macOS/Windows and final game/platform acceptance remain pending. The
-previous successful six-job checkpoint applies to its recorded source, not this
-new activation/presentation/harness continuation. Use the single
-[product record](product-verification.json) for exact final source, required
-steps, receipts and verdict. AC7/AC8 and applicable DoD remain open until supported
-by that evidence; no Backlog status or criterion is changed by this prose.
+Final tested source `eca9f9cfd43cf83ff4e3489292f6c25f8951bb30` passed all six
+required Rust/Desktop jobs on Linux, macOS and Windows:
+[Rust CI42019954391](https://github.com/jweathers777/mShogi/actions/runs/42019954391)
+and [Desktop CI42019954646](https://github.com/jweathers777/mShogi/actions/runs/42019954646).
+The previous successful six-job checkpoint retains its own recorded source and
+scope. The genuine local normal macOS GUI package is
+[byte-identical to the final rebuilt package](evidence/msh44-final-macos/final-eca9f9c-package-equivalence.json);
+macOS CI package/native checks and local GUI journeys remain separately identified.
+All eight original MSH-44 criteria and applicable DoD now have complete technical
+evidence. Use the single [product record](product-verification.json) for exact
+source, required steps, artifact hashes, review reconciliation and final acceptance
+disposition. The later evidence/documentation integration commit is recorded only
+when it exists.
 The desktop campaign's configured 75-minute orchestration budget accommodates the
 larger actual installed campaign; the product's independent 15-second worker
-deadline and native/whole-document limits remain unchanged. MSH-46/47/88/89 keep
-their shared platform scope, and MSH-53/M5 keeps measured playing strength.
+deadline and native/whole-document limits remain unchanged. The next eligible
+task is MSH-88. MSH-46/47/89 keep their broader shared integration/platform scope,
+and MSH-53/M5 keeps measured playing strength.

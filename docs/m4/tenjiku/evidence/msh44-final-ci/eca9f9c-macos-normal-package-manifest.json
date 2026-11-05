@@ -1,0 +1,10 @@
+{
+  "source_revision": "eca9f9cfd43cf83ff4e3489292f6c25f8951bb30",
+  "files": {
+    "package-smoke.json": "bb6a41eca8fe0b53ce5a354f8dabeda9b10b071c1d91cdedb605819c4a007e85",
+    "bundle/macos/mShogi.app/Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+    "bundle/macos/mShogi.app/Contents/MacOS/mshogi-desktop": "fcc03a53df8f7039c6703d1e1e8c2fe13483e858c60d1d1d0bb2616936fc115c",
+    "bundle/macos/mShogi.app/Contents/MacOS/mshogi": "fac2c1461d6fd03ed4c38831d3d707f7c36ae84b473895b50932ee62fdfed517",
+    "bundle/macos/mShogi.app/Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+  }
+}

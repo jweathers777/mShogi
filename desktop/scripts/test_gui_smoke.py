@@ -17,6 +17,19 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
 
+class CrossGameProcessEvidenceTests(unittest.TestCase):
+    def test_only_exact_engine_and_gate_executables_count_as_retired_search(self):
+        engine=Path('/tmp/msh88/bin/mshogi')
+        gate=Path('/tmp/msh88/r6-engine-gate')
+        rows=[{'pid':1,'executable':'/tmp/msh88/bin/mshogi-desktop'},
+              {'pid':2,'executable':'/usr/lib/WebKitNetworkProcess'},
+              {'pid':3,'executable':str(engine)},
+              {'pid':4,'path':str(gate),'role':'external-verification-gate'},
+              {'pid':5,'path':'/other/mshogi','role':'engine'}]
+        self.assertEqual([p['pid'] for p in module.engine_processes(rows,engine,[gate])],[3,4])
+        self.assertEqual(module.engine_processes(rows[:2],engine,[gate]),[])
+
+
 class ReplacementAnalysisAuthorityTests(unittest.TestCase):
     def source(self, game='chess'):
         return {'token': {'document': 7, 'version': 8}, 'context': {'native_history': [1, 2]},
@@ -555,7 +568,7 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
             'xiangqi-offer', 'xiangqi-agreed', 'xiangqi-fast-proof', 'xiangqi-resigned',
             'xiangqi-capacity', 'xiangqi-failure', 'xiangqi-exact-evidence'})
         self.assertTrue(set(xiangqi) <= set(actual))
-        self.assertEqual(module.selected_gui_phases('normal'), previous[:4] + ['normal-tori', 'normal-tori-native', 'normal-chu', 'normal-chu-native', 'normal-tenjiku-adams', 'normal-tenjiku-adams-native', 'normal-tenjiku-muller', 'normal-tenjiku-muller-native'])
+        self.assertEqual(module.selected_gui_phases('normal'), previous[:4] + ['normal-tori', 'normal-tori-native', 'normal-chu', 'normal-chu-native', 'normal-tenjiku-adams', 'normal-tenjiku-adams-native', 'normal-tenjiku-muller', 'normal-tenjiku-muller-native', 'normal-cross-game'])
         self.assertEqual(module.selected_gui_phases('normal-tori'), ['normal-tori', 'normal-tori-native'])
         self.assertEqual(module.selected_gui_phases('verification-tori'), ['pending-tori', 'tori-recovery'])
         self.assertEqual(module.selected_gui_phases('normal-shogi'), previous[1:3])

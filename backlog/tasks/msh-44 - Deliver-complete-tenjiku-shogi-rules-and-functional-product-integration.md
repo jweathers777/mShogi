@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-05T09:22:00Z'
+updated_date: '2026-11-05T10:00:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -77,6 +77,8 @@ E. Owner-approved continuation5November2026 at a4bb78c, Codex primary builder on
 F. Enable normal sixth-gameTenjiku with explicit Adams1999Modern/MullerCompleted whole-profile selection and normal immutable-profile Load/commands; inspect/update all gating consumers and host tests early. Preserve rules, search, budgets,760x650 minimum and shared architecture.
 G. Extend existing packaged GUI campaign for bothprofiles, genuine engine/analysis/files/history/Takeback/endings/close; actual macOS normal/QA fixedslots via existing helper. Independent source/review and actual renderedSVG/paint evidence. Reuse unchanged accepted native conformance and complete-game evidence.
 H. One coherent final reviewed-source Rust/Desktop three-platform campaign, one completion-aware monitor, precise failed/superseded provenance. Reconcile original8AC/DoD, owner-approved minimum readability limitation/recommended960x1000 and final independent acceptance. MarkDone onlywhen allsupported; normallyintegrate/push and reportexactnextdependency-readyM4work; STOP, noM5/refactor/historyresearch.
+
+I. Resolve actual final-campaign observer findings against captured public diagnostics and native UI, preserving strict state/identity/terminal/path assertions. Re-review bounded verifier fixes and the omitted About six-game wording; preserve first campaign receipts and failed/superseded attempts, then run one coherent corrected final-source campaign. No native/search/profile/budget/window/architecture change.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -113,6 +115,10 @@ Final source-matched verification supersedes prior pending-CI notes: all6 jobs a
 Owner5November2026 approves overallTenjiku board/art/traditionalkanji and retains760x650 applicationminimum. Around960x1000 is recommended, notmandatory; document smallwindowkanji/secondarycue limits withoutclaimingnamefooter solvesallaccessibility. Requires allsixgames sharedfriendlypiecenamefooter and legalcapturemarker paintaboveoccupiedpiece, preservingnativeidentities/controller/inspection/focus/partialroutes. Explicitlyauthorizes normalbothprofileactivation, genuinepackagedTenjiku gameplay onmacOS/Windows/Linux andMSH44finalacceptance/Doneonlyifallcriteria supported. Supersedespriorownerapproval/minimumdecisionpendingnotes; previousevidence/historypreserved.
 
 Continuation source freeze independently approved: six-game native friendly names and above-piece capture outlines, both normal immutable Tenjiku choices and ordinary native Open. Full frontend567/42, normalhost8, QAhost17 and focused native cross-profile Open pass. Actual normal macOS27 both human assignments, genuine engine/analysis, Save/Open stopped, history/Takeback, dirtyQuitCancel, compound name and both guarded RoyalCapture games captured. Finalpackage rebuild reproduces host7d53083f/enginea3c0cda3 bytes. Historical legitimate bare-royal probe preserved; only2derived terminal roots independently guarded withremotePawn1a, frozen corpus unchanged. Declared final exactsource campaign Rust+Desktop ubuntu24.04/macOS15/windows2022 includes both-profile actual normalGUI on Linux/Windows; pending allsix receipts and final evidence review, no Done yet.
+
+Reviewed final source0a2fb9d72a2ed59bf896d7a350794896b2885936 committed and pushed normally. Required Rust run42001930699 and Desktop run42001931107 started at exactsource; single boundedcompletion monitor active. No acceptance inferred before requiredreceipts. Concurrent independently integrated roadmap-only commits2ac32c0/9326489 preserved; no unrelatedworktree changed.
+
+First finalsource0a2fb9d campaign: all3Rustjobs andDesktopmacOS15 passed. LinuxDesktop failed actualGUI with externalobserverdiagnostic-shape KeyError, terminalOpen wronglyexpecting nonterminalResume banner, downstreamMuller missingAdamsfile, andexistingChuGTKemptyfilenameCopytimeout. ActualbothnativeRoyalCapturegames reached/saved/reopened; firstcampaignnotaccepted. Captured47phase report/artifact13404602463 retained. Boundedfixes consumeactualpublicdiagnosticshape andnativepaused/outcomeauthority; Linux allows one bound input-only replacement withfresh exactCopy beforeanyOpen/Save. Independent21pickernegative/unit tests pass. MissingTenjikuinAboutlist correctedonlydisplaytext. CurrentWindowscampaigncontinues to retainactualresults; nooverlappingretrycampaign.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

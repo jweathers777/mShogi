@@ -311,7 +311,7 @@ new activation/presentation/harness continuation. Use the single
 [product record](product-verification.json) for exact final source, required
 steps, receipts and verdict. AC7/AC8 and applicable DoD remain open until supported
 by that evidence; no Backlog status or criterion is changed by this prose.
-The desktop campaign's proposed 75-minute orchestration budget accommodates the
+The desktop campaign's configured 75-minute orchestration budget accommodates the
 larger actual installed campaign; the product's independent 15-second worker
 deadline and native/whole-document limits remain unchanged. MSH-46/47/88/89 keep
 their shared platform scope, and MSH-53/M5 keeps measured playing strength.

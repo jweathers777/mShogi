@@ -26,6 +26,7 @@ it.each([chess,shogi,xiangqi])("keeps common support outside the sidebar and ret
  expect(container.textContent).not.toMatch(/UNTIMED|Hollow rings|reconstructed|Native rules/);
  fireEvent.click(support);
  const dialog=screen.getByRole("dialog",{name:"About mShogi"});
+ expect(dialog.textContent).toContain("Chess, Shogi, Xiangqi, Tori Shogi, Chu Shogi and Tenjiku Shogi");
  expect(container.querySelector(".shell-content")?.hasAttribute("inert")).toBe(true);
  expect(within(dialog).getByText("Diagnostics")).toBeTruthy();
  expect(dialog.querySelector("[data-native-diagnostics]")).toBeNull();

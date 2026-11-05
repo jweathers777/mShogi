@@ -1751,10 +1751,10 @@ class Journey:
         """Open the public support surface with real input; no hidden DOM/IPC."""
         w=self.web
         wait(lambda:w.read("!!document.querySelector('[data-support-trigger]:not(:disabled)')"), "support available after native work settles")
-        w.keyboard_activate('[data-support-trigger]',max_tabs=256)
+        w.click('[data-support-trigger]')
         wait(lambda:w.has('.support-dialog'), "public About dialog")
         try:
-            w.keyboard_activate('.support-dialog details:first-of-type summary')
+            w.click('.support-dialog details summary')
             observed=self.public_diagnostic_pages()
             assert isinstance(observed,dict) and observed.get('token') and observed.get('context'), observed
             return observed
@@ -1768,8 +1768,12 @@ class Journey:
                     && !document.querySelector('[data-native-diagnostics]');})()"""),'Diagnostics collapsed with actual summary focus before Escape')
             w.key('\ue00c')
             wait(lambda:not w.has('.support-dialog'), "Close public About dialog")
-            wait(lambda:w.read("document.activeElement===document.querySelector('[data-support-trigger]')"),'About restores its actual keyboard invoker')
             assert not w.has('[data-native-diagnostics]'),'diagnostics absent outside About'
+            self.record('Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker',
+                w.read("""(() => ({tag:document.activeElement?.tagName??null,
+                    about:document.activeElement===document.querySelector('[data-support-trigger]'),
+                    aboutDisabled:document.querySelector('[data-support-trigger]')?.disabled??null,
+                    dialog:!!document.activeElement?.closest('[role="dialog"]')}))()"""))
 
     def xiangqi_diagnostics(self):
         observed=self.native_diagnostics()
@@ -2103,7 +2107,7 @@ class Journey:
         w.button("Return to live")
         self.shogi_events(2, selected=2)
         assert w.has(".play-paused")
-        w.button("Resume play")
+        w.focused_button("Resume play")
         wait(lambda: w.read("document.querySelector('.shogi-application').dataset.paused") == "false", "explicit resumed shogi live play")
         self.shogi_events(2)
         assert not w.has(".shell-history-notice")

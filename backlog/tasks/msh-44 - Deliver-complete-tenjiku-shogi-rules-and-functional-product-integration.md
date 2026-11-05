@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-05T10:48:00Z'
+updated_date: '2026-11-05T11:31:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -123,6 +123,10 @@ First finalsource0a2fb9d campaign: all3Rustjobs andDesktopmacOS15 passed. LinuxD
 Corrected reviewed source241807f647583e5ccf87eb3d5e8e8ca2aa192675 committed/pushed. Prior0a2 campaignfullyterminal: Rustall3+DesktopMacpassed, DesktopLinux/Windowsfailedexternalobservers (5/4phasefailures respectively); preservedall6receipts/artifacthashes andactual47phaseextracts. No overlappingcampaign. CorrectedRust42007477229/Desktop42007477090 activeunderonecompletionmonitor. Full externalobserver160passed1.779s; About5passed1.95s; independent124observer+21pickerreviewPASS. Rebuiltfixednormalpackagehost4e3719fe/enginea3c0cda3; coldlaunchconfirmedAboutsixgamelist, bothgenuineRoyalCapturegamesanddenseGGfooters/outlinescapturedatfinalsource. Olderfullnormaljourneysreusedonlyunchangedscope; earlierprocessAboutprobeexplicitlysuperseded. Finalacceptancependingexactsourceall6jobs/3platformjourneys andfinalreview.
 
 241807f campaign fullyterminal: all3Rust andDesktopMac/Windows passed; Windowsall47requiredGUIjourneys includedbothnormalTenjiprofiles, realengine/analysis/lifecycle/nativeendings/pending/recovery. Linux45/47phasespassed; failedwhenexternalobserverpointerClosewasbelowAboutmodalviewportat760×625 aftercompletepublicdiagnosticsread, plusMullercascadefrommissingAdamsoutput. PreservedactualPNG/trace/source/receipts; no rule/analysisfailure inferred. Finalexternalhelperusesrealboundedkeyboardentry/summarycollapse/singleEscape/closure+invokerrestore; currentproductsupportsalreadypresent. Full163observercheckspass, fouractualraw2pagediagnosticspreserved/tested. Finalsourcefreeze/requiredall6campaign pendingreview; nooverlap/noDone.
+
+Final reviewed sourcefe9144a49e6dc1aa811ae4b6f316fe93f2be5dfb committed/pushed normally. Onlyexternalverifiercleanup/tests/actualrawpayloadfixtures changed from241; production/workflows unchanged. Localnormalpackage rebuiltaftercommitwhileappstopped: all4bundlefilesbyteidenticaltoactual241captures (host4e3719fe,enginea3c0cda3). Independent127focusedsuite/raw4caseprovenance/finite256entryreviewPASS; full163observerPASS. Rust42013800198/Desktop42013800230 startedat exacthead underonecompletion-awaremonitor25426; earliercampaignsfullyterminal. ActualWindows241all47PASS retainedbutnotcallednewheadacceptance. Finalall6receipts/3platformreconciliation andDone remainpending.
+
+FEcampaignfullyterminal: Rustall3+DesktopMac/Windowspassed; Linux45/47passedincludingALL8Tenjiphases (bothprofilesplay/analysis/nativeendings/pending/recovery). Twootherfailuresactualtraced: legacyShogiResumeclippedaboveinspector; newgenericAboutfocusassertioninvalidduringasynchronousadmission anddelayingpurposeobservation. No native/productfailureinferred. Minimalexternalfix restoresoriginalpointerentry/read, keepskeyboardcollapse/Escape+requiredclosure, recordsactualfocuswithoutuniversalclaim; onlyobservedShogiResumeusesexistingactualTabfocus/visibilitybeforeoneclick. DedicatedstableAboutfocusproof/nativeidentity/state assertionsunchanged. Independent128focusedPASS/full164PASS; raw4CIpayloadfixturesunchanged. Allfailedreceipts/PNG/DOM/sourcepreserved. Coherentnewheadfreeze/all6requiredCI/finalacceptance pending; nooverlap/noDone.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

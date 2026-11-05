@@ -1,11 +1,11 @@
 ---
 id: MSH-88
 title: Verify final six-game shared integration in packaged applications
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-05T13:49:00Z'
+updated_date: '2026-11-05T13:54:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -59,7 +59,7 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -83,3 +83,15 @@ Reviewed sourcebc92bfe5e3b20e9e999df12cbf54b91682c71b8d: Rust42028972679 passed 
 
 Fresh independent finalMSH88review approved: all6 rawjob/step receipts success exactbc92bfe, sixCIlogs and default/allfeature newnative sevenprofiletest passes independently verified; Linux+Windows49/49 actualGUI reports/rawhashes and normal/QA inventories audited. Linux normalPID173199 and pendingPID260519 prove9New/7profiles/7stoppedLoad contexts+realobservations/retainedTakeback and8exact retired gates with no postgate authority/observation mutation; Windows equivalentPID1940/8008 independentlyapproved. Mac71capture references/eightactualarchives/normal4file byteequivalence/unchangedsealedQA identity validated. No material blocker. OriginalAC1–4 andDoD1–3 now supported; DoD4 intentionally waits for normal evidence commit/push, then final closure. Currentcompiled production/test inputs unchanged from fullytestedbc source; no new campaign for documentation/evidence bookkeeping.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Verified all six delivered games and both immutable Tenjiku profiles through the existing shared owners. Added a same-controller seven-profile stale-authority/document regression and two actual packaged cross-game GUI journeys. Production rules, search, architecture, budgets and the 760×650 minimum are unchanged.
+
+Exact tested source bc92bfe5e3b20e9e999df12cbf54b91682c71b8d passed all six required Rust/Desktop platform jobs (Rust 42028972679; Desktop 42028972586). Windows and Linux each passed 49/49 actual GUI phases. Local macOS27 seven-profile normal/QA play and document journeys are explicitly separated from hosted macOS15 CI; the rebuilt normal bundle matches all four actual GUI bundle files byte-for-byte. Accepted unchanged game conformance/resource measurements are reused. Complete actions, real engine observations, stopped Load, retained branches, cancellation, stale authority, native outcomes and atomic refusal have evidence.
+
+Fresh independent final review approved all four original acceptance criteria and applicable completion items. The complete evidence packet was normally committed and pushed to codex/rewrite at e68e8e3d1787f2d029e3601259070807bdbab180 before the final DoD4/Done closure. docs/m4/shared-integration/verification.json is the single exact-source record; README.md maps every original MSH-46 AC1–5 and preserves AC6 ownership. Failed, cancelled and excluded observer attempts remain explicit. Dense Tenjiku text limitations remain documented; no complete screen-reader accessibility or competitive-strength claim is made.
+
+MSH-89 is the next dependency-ready M4 task and has not started. MSH-46/108/47 and M4 remain open. The primary checkout was reused; this assignment created or removed no worktrees.
+<!-- SECTION:FINAL_SUMMARY:END -->

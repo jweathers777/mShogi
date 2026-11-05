@@ -6,7 +6,8 @@
 > Windows/Linux each passed49 actual packaged GUI phases, and local macOS27
 > completed the seven-profile normal/QA journeys with explicit source/package
 > qualifications. Fresh independent functional/platform review is approved;
-> normal evidence integration/task closure follows. MSH-89 retains independent
+> normal evidence is integrated at `e68e8e3` and MSH-88 is Done.
+> MSH-89 retains independent
 > shared-contract acceptance; MSH-46/108/47 and M4 remain open.
 > Earlier planning/status snapshots below retain their historical source scope.
 

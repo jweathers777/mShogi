@@ -1,8 +1,8 @@
 # Six-game shared integration — MSH-88
 
 MSH-88 verifies the delivered games together. Its single structured record is
-[verification.json](verification.json). Final independent functional/platform
-reconciliation is approved; normal evidence integration and task closure follow. MSH-89 retains the later
+[verification.json](verification.json). MSH-88 is Done after final independent review and normal evidence integration
+at `e68e8e3d1787f2d029e3601259070807bdbab180`. MSH-89 retains the later
 independent shared-contract acceptance; MSH-46 and MSH-47 remain open. This
 current map supersedes the implementation assumptions in the preserved
 pre-R1 Shogi planning tables, without reviving retired development readers.
@@ -59,6 +59,6 @@ the new controller and actual cross-game paths supply additional evidence.
 
 The final record must preserve cancelled/superseded attempts and failed checks,
 exact source and package identity, native terminal versus incomplete/failure
-results, and local/hosted macOS separation. All required receipts and fresh independent final reconciliation now support
-functional/platform acceptance. Final evidence integration/task closure remains
-separate from the later MSH-89/46/47 gates.
+results, and local/hosted macOS separation. All required receipts and fresh independent final reconciliation support
+functional/platform acceptance. The complete packet was normally committed and
+pushed at `e68e8e3`; MSH-88 is Done. The later MSH-89/46/47 gates remain open.

@@ -1,10 +1,11 @@
 ---
 id: MSH-46
 title: Deliver shared six-game integration across console engine records and desktop
-status: To Do
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-05T21:12:00Z'
+updated_date: '2026-11-05T21:53:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -28,6 +29,10 @@ documentation:
   - docs/design.md
   - docs/m4/delivery-plan.md
   - docs/m4/implementation-map.md
+  - docs/m4/shared-integration/README.md
+  - docs/m4/shared-integration/verification.json
+  - docs/m4/shared-integration/contract-review-89.md
+  - docs/m4/shared-integration/contract-review-89.json
 ordinal: 46000
 ---
 
@@ -41,21 +46,27 @@ Delivery may coordinate with game tickets before their completion; dependencies 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Shared library/console/structured engine/session boundaries select and carry explicit rules profile/version, complete actions and rules-relevant state/history for all six games. They preserve atomicity, claim versus board-action distinctions, identity/cancellation/stale-result safety and bounded reporting without frontend legality or Python/node round trips.
-- [ ] #2 Common canonical-record/version compatibility and save/reopen plumbing preserve all six games and reject unsupported or lossy conversions explicitly; game-specific encodings and expectations remain owned by MSH-41 through MSH-45. Previously supported chess records and adjudication modes have regression evidence.
-- [ ] #3 Shared desktop mechanisms support the real square/intersection and large-board presentations, multi-stage complete-action choices, promotions/drops or other profile choices, keyboard and readable textual interaction required by the implemented profiles. Partial selection never commits a partial turn.
-- [ ] #4 An ownership/coverage matrix ties each shared mechanism to this task and each game-specific adaptation to its game ticket. Cross-game library, console, native engine, saved-record and actual desktop flows run together; chess regressions and transitions between games/profile versions are exercised.
-- [ ] #5 Installed packaged applications with their bundled native engines demonstrate the required six-game flows on Windows, macOS and Linux, including cancellation/stale work, persistence, outcomes, recovery and accessibility. Actual revisions, environments, commands and failures are recorded; synthetic fixtures or browser-only tests do not establish this acceptance.
-- [ ] #6 Independent integration review resolves material shared-boundary findings and updates public contracts and coverage honestly. Functional delivery makes no playing-strength claim and does not move M5 targets into this task.
+- [x] #1 Shared library/console/structured engine/session boundaries select and carry explicit rules profile/version, complete actions and rules-relevant state/history for all six games. They preserve atomicity, claim versus board-action distinctions, identity/cancellation/stale-result safety and bounded reporting without frontend legality or Python/node round trips.
+- [x] #2 Common canonical-record/version compatibility and save/reopen plumbing preserve all six games and reject unsupported or lossy conversions explicitly; game-specific encodings and expectations remain owned by MSH-41 through MSH-45. Previously supported chess records and adjudication modes have regression evidence.
+- [x] #3 Shared desktop mechanisms support the real square/intersection and large-board presentations, multi-stage complete-action choices, promotions/drops or other profile choices, keyboard and readable textual interaction required by the implemented profiles. Partial selection never commits a partial turn.
+- [x] #4 An ownership/coverage matrix ties each shared mechanism to this task and each game-specific adaptation to its game ticket. Cross-game library, console, native engine, saved-record and actual desktop flows run together; chess regressions and transitions between games/profile versions are exercised.
+- [x] #5 Installed packaged applications with their bundled native engines demonstrate the required six-game flows on Windows, macOS and Linux, including cancellation/stale work, persistence, outcomes, recovery and accessibility. Actual revisions, environments, commands and failures are recorded; synthetic fixtures or browser-only tests do not establish this acceptance.
+- [x] #6 Independent integration review resolves material shared-boundary findings and updates public contracts and coverage honestly. Functional delivery makes no playing-strength claim and does not move M5 targets into this task.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Primary integrator Codex in the primary codex/rewrite checkout, clean and origin-aligned at91115368c6e99f344dee002d9264f4d0b62cc76b. Aggregate closure only: (1) reconcile each original46AC1–6/DoD with the existing shared ownership matrix, exact tested runtimebc92bfe5e3b20e9e999df12cbf54b91682c71b8d, MSH88 actual packaged/platform record and MSH89 independent contract assessment; inspect source equivalence, immutable evidence hashes, original criteria and all16 prerequisite identities/statuses. (2) Update the existing shared README as the final delivery record and current108/47 handoffs, retaining all original dependencies, game ownership, retired-format policy, capacities/ending reserves, accessibility/platform qualifications and open MSH112 diagnostic. (3) Obtain a fresh independent read-only completion review; run proportionate hash/link/matrix/DAG/diff checks only, without a repeated broad product/CI campaign. (4) Check only supported criteria/DoD, integrate and push normally to codex/rewrite, then close46 with durable summary. Leave108 and47 unstarted, M4 open; stop after46.
+<!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 
@@ -69,4 +80,6 @@ MSH88 final shared packaged integration accepted2026-11-05, evidence e68e8e3d178
 MSH-89 independent contract reconciliation approved 2026-11-05; publication/integration and89DoD4 closure follow. Report docs/m4/shared-integration/contract-review-89.md and compact review index contract-review-89.json independently support every original46AC1–6. Reviewed integration3bcaf013b7e9ea7d37a5a542700de8a1ea041b2b, reused exact tested runtime/platform sourcebc92bfe5e3b20e9e999df12cbf54b91682c71b8d and unchanged88record; two fresh source/evidence reviewers plus distinct findings/DAG reviewer approved. All original46sixcriteria and16dependencies including90 remain intact and unchecked; no46activation or owner claim. Current nativeChessM2/Full/console/live-desktop scopes and deliberately retired development formats are distinguished; all6games/two immutableTenjiku profiles use existing owners, game-specific resource accounting and actualplatform evidence. No material blocker remains for shared acceptance. Only stale rustdoc/Load-install wording corrected.112 remains a separately owned unfixed functional diagnostic race, not M5 optimization or repaired by later retries. After89Done,46 is the next dependency-satisfied M4 task and still requires its own activation, criteria/DoD reconciliation and normal integration;108/47/M4 are not completed here.
 
 MSH-89 is Done. Independent original46AC1–6 contract reconciliation/report and compact review index were normally integrated/pushed on codex/rewrite at22b4f409f738cd7dec45a78ab7ecc4cf9661322b before final89closure. All six obligations have supporting evidence, with no material shared-contract blocker; current source/compatibility/resource/platform qualifications and the separate unfixed112 disposition remain explicit. Original46criteria/dependencies, ToDo status, unassigned ownership and unchecked items are preserved. With89Done all16dependencies are satisfied;46 is the next M4 task and still requires its own authorized activation, final criteria/DoD reconciliation and normal completion.108/47/M4 remain open; none started here.
+
+MSH-46 final reconciliation2026-11-05: all original6AC and DoD1–3 independently supported; durable current record docs/m4/shared-integration/README.md maps every original obligation to source, original88receipts and89assessment, with no criterion/dependency/ownership removed. Fresh fork-none read-only reviewer msh46_completion_review approved at91115368c6e99f344dee002d9264f4d0b62cc76b plus six-file candidate diff SHA25627e8e364e59b2a4b1bab3f09b6225d837cd5b991ea1b55f9d5761cced28c8322, no material blocker; DoD4 remains pending ordinary commit/push. LocalmacOS27arm64 Python3 closure checks pass: unchanged master88SHA097118de9a7c9507900f554da7c91dde97ad35729bce73c9f491b52a7a9cd985/all202filehashes; six raw sourcebc92bfe jobs+attempt1+runners+stepconclusions; originaldecompressedWindows/LinuxreportSHAs49/49passed/no failures; source equivalence (only4neutralrustdoccomments since testedbc);19originalAC/DoD/dependency/non46owner comparisons againstGit9111536; full16prerequisite statuses allDone;113resolvedgraphnodes;86local linktargets; compatible1.55.1doctor;gitdiff--check. Initial audit harness omitted39 from selected dictionary and raisedKeyError; corrected complete prerequisite lookup passes, no application failure or source change. Existing native11/11 and platform/actualGUI checks reused at actual sources; no new broad campaign. Native gameconformance/search/performance/strength/shared integration remain distinct. BothwholeTenjiku IDs, current/retiredformat meanings, resource/actualendingClose reserves, normalQA identity/signature/accessibility limitations and MSH112separatelyunfixedfunctionaldiagnostic disposition preserved.108/47handoffs appended without claiming/starting them;108 remains next after46Done and47stillwaits108. Evidence integration/push and finalDoD4/Done closure follow.
 <!-- SECTION:NOTES:END -->

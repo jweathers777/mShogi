@@ -4,7 +4,7 @@ title: Independently verify integrated six-game delivery and close M4
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-10-27T20:26:00Z'
+updated_date: '2026-11-05T21:51:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -19,6 +19,7 @@ dependencies:
   - MSH-108
 documentation:
   - docs/design.md
+  - docs/m4/shared-integration/README.md
 ordinal: 47000
 ---
 
@@ -43,3 +44,9 @@ M4 was shown as complete from one completed ticket while five promised games wer
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-46 final shared-delivery handoff2026-11-05 (closure pending): original46AC1–6 are reconciled in docs/m4/shared-integration/README.md against the immutable88platform record and89independent contract assessment, not merely child statuses. Exact tested runtime/platformbc92bfe5e3b20e9e999df12cbf54b91682c71b8d; MSH89final integration91115368c6e99f344dee002d9264f4d0b62cc76b changes no executable behavior. All6 required jobs and actual Windows/Linux49/49 packaged phases/localmacOS27 seven-profile normal/QA behavior retain exact source/OS/signature/accessibility qualifications. Original47dependencies26/39/41/42/43/44/45/46/108 and four criteria/DoD remain unchanged;47 stays ToDo/unassigned/unstarted and must wait for independent108architecture diagnostic as well as46Done. M4 is not closed here.112 remains ToDo/unfixed and separately owned functional diagnostics; keep recurrence/no-retry-fix/nonblocking shared-contract rationale explicit. No unfinished M4 work is transferred to M5; no strength/release signing/fullscreenreader claim.
+<!-- SECTION:NOTES:END -->

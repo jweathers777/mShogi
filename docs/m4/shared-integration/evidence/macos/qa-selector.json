@@ -1,0 +1,5 @@
+{
+  "selector": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/qa.fixture",
+  "fixture": "standard",
+  "effect": "Next QA launch only; signed app unchanged"
+}

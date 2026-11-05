@@ -71,6 +71,12 @@ or grant access. Optional externally delayed-engine preparation stays QA-only;
 record its real bundled-engine and gate identities. Never replace a running
 bundle or change a running session by rewriting its selector.
 
+Bind input/capture helpers to the explicit slot's app handle and verify the
+observed app identity. A helper captured from the normal slot is not a QA helper
+after another variable is reassigned. MSH-88 preserves and excludes that actual
+observer mistake. After native Quit, establish process absence with a separate
+OS observation; refreshing the stopped app handle can relaunch it.
+
 Computer Use's saved app approvals and macOS Accessibility/Screen Recording
 permissions are separate. The read-only R6 investigation found actual saved
 `approvedBundleIdentifiers` in the CUAService app-approval record, including the

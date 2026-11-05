@@ -1,0 +1,162 @@
+Window: "mShogi Verification — standard (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical", App: mShogi Verification.
+0 standard window Secondary Actions: Raise, mShogi Verification — standard (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container
+				4 heading mShogi, Value: 1
+					5 text mShogi
+				6 button About mShogi
+				7 text CHESS
+				8 text Analyzing selected position
+				9 container Game file
+					10 text UNSAVED
+					11 heading Untitled game, Value: 2
+						12 text Untitled game
+				13 button New game
+				14 button Save
+				15 button Load
+				16 container Live game
+					17 text YOUR GAME
+					18 text White to move
+					19 text You play White against mShogi
+					20 button Flip board; currently White at bottom
+					21 text mShogiBlack
+					22 text Your opponent
+					23 container Chess board, white at bottom
+						24 image
+						25 toggle button Description: a8, Black rook, Value: off
+						26 toggle button Description: b8, Black knight, Value: off
+						27 toggle button Description: c8, Black bishop, Value: off
+						28 toggle button Description: d8, Black queen, Value: off
+						29 toggle button Description: e8, Black king, Value: off
+						30 toggle button Description: f8, Black bishop, Value: off
+						31 toggle button Description: g8, Black knight, Value: off
+						32 toggle button Description: h8, Black rook, Value: off
+						33 toggle button Description: a7, Black pawn, Value: off
+						34 toggle button Description: b7, Black pawn, Value: off
+						35 toggle button Description: c7, Black pawn, Value: off
+						36 toggle button Description: d7, Black pawn, Value: off
+						37 toggle button Description: e7, Black pawn, Value: off
+						38 toggle button Description: f7, Black pawn, Value: off
+						39 toggle button Description: g7, Black pawn, Value: off
+						40 toggle button Description: h7, Black pawn, Value: off
+						41 toggle button Description: a6, empty, Value: off
+						42 toggle button Description: b6, empty, Value: off
+						43 toggle button Description: c6, empty, Value: off
+						44 toggle button Description: d6, empty, Value: off
+						45 toggle button Description: e6, empty, Value: off
+						46 toggle button Description: f6, empty, Value: off
+						47 toggle button Description: g6, empty, Value: off
+						48 toggle button Description: h6, empty, Value: off
+						49 toggle button Description: a5, empty, Value: off
+						50 toggle button Description: b5, empty, Value: off
+						51 toggle button Description: c5, empty, Value: off
+						52 toggle button Description: d5, empty, Value: off
+						53 toggle button Description: e5, empty, Value: off
+						54 toggle button Description: f5, empty, Value: off
+						55 toggle button Description: g5, empty, Value: off
+						56 toggle button Description: h5, empty, Value: off
+						57 toggle button Description: a4, empty, Value: off
+						58 toggle button Description: b4, empty, Value: off
+						59 toggle button Description: c4, empty, Value: off
+						60 toggle button Description: d4, empty, Value: off
+						61 toggle button Description: e4, empty, Value: off
+						62 toggle button Description: f4, empty, Value: off
+						63 toggle button Description: g4, empty, Value: off
+						64 toggle button Description: h4, empty, Value: off
+						65 toggle button Description: a3, empty, Value: off
+						66 toggle button Description: b3, empty, Value: off
+						67 toggle button Description: c3, empty, Value: off
+						68 toggle button Description: d3, empty, Value: off
+						69 toggle button Description: e3, empty, Value: off
+						70 toggle button Description: f3, empty, Value: off
+						71 toggle button Description: g3, empty, Value: off
+						72 toggle button Description: h3, empty, Value: off
+						73 toggle button Description: a2, White pawn, Value: off
+						74 toggle button Description: b2, White pawn, Value: off
+						75 toggle button Description: c2, White pawn, Value: off
+						76 toggle button Description: d2, White pawn, Value: off
+						77 toggle button Description: e2, White pawn, Value: off
+						78 toggle button Description: f2, White pawn, Value: off
+						79 toggle button Description: g2, White pawn, Value: off
+						80 toggle button Description: h2, White pawn, Value: off
+						81 toggle button Description: a1, White rook, Value: off
+						82 toggle button Description: b1, White knight, Value: off
+						83 toggle button Description: c1, White bishop, Value: off
+						84 toggle button Description: d1, White queen, Value: off
+						85 toggle button Description: e1, White king, Value: off
+						86 toggle button Description: f1, White bishop, Value: off
+						87 toggle button Description: g1, White knight, Value: off
+						88 toggle button Description: h1, White rook, Value: off
+					89 text YouWhite
+					90 text Human player To move
+					91 text Arrows: move focus · Enter/Space: select · Esc: cancel
+					92 text Play paused · resume explicitly to continue Live position · 0 plies
+				93 container Game controls and inspection
+					94 text Play is paused.
+					95 button Resume play
+					96 heading Analysis, Value: 2
+						97 text Analysis
+					98 container Inspector view
+						99 toggle button Play details, Value: off
+						100 toggle button Analyze position, Value: on
+					101 container Engine analysis
+						102 text Move analysis
+						103 text Selected event 1 · White perspective
+						104 container
+							105 text Depth
+							106 number field (settable) Depth, Value: 8
+								107 stepper 0
+									108 unknown
+									109 unknown
+							110 text Node limit
+							111 number field (settable) Node limit, Value: 5000000
+								112 stepper 0
+									113 unknown
+									114 unknown
+							115 button Replace analysis
+							116 button Cancel analysis
+						117 text Analyzing the selected position…
+						118 summary Advanced: Full mating reachability, Value: off
+							119 text Advanced: Full mating reachability
+						120 container Analysis status
+							121 text Move analysis started for Live position after 0 plies, White to move. Read-only suggestions will not be played. Waiting for a completed result.
+						122 container Analysis result
+							123 heading Live position after 0 plies, Value: 3
+								124 text Live position after 0 plies
+							125 text White perspective · Bounded move search
+							126 text Recorded limit: depth 8, 5,000,000 nodes.
+							127 text Waiting for a completed result.
+					128 heading Game Actions, Value: 2
+						129 text Game Actions
+					130 container
+						131 button (disabled) Take back
+						132 button Resign
+					133 container Moves
+						134 heading Moves, Value: 2
+							135 text Moves
+						136 text 0 moves
+						137 button Starting position
+						138 text Moves from the starting position
+						139 table
+							140 row (selectable) Move number
+White
+Black
+						141 text No moves in known history.
+						142 container (expanded) Secondary Actions: Collapse
+							143 summary Position events (1), Value: on
+								144 text Position events (1)
+							145 button 1 Match started
+		146 scroll bar (settable, float) 0
+	147 close button
+	148 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	149 minimize button
+	150 text mShogi Verification — standard (test state) — content 1180.0 × 820.0 logical · frame 1180.0 × 820.0 logical
+151 menu bar
+	152 mShogi Verification
+	153 Edit
+	154 View
+	155 Window
+	156 Verification window size
+
+The focused UI element is 2 HTML content Description: mShogi, URL: tauri://localhost

@@ -16,6 +16,10 @@ Every field is required. Unknown/duplicate fields reject. `game_kind`,
 | Chess | `mshogi.chess.match.v1` |1, M2 untimed live restoration |
 | Shogi | `mshogi.shogi.csa36.v1` |1, native untimed ledger |
 | Xiangqi | `mshogi.xiangqi.wxf2018.v1` |1, native WXF ledger |
+| Tori Shogi | `mshogi.tori.modern.v1` |1, native complete-action ledger |
+| Chu Shogi | `mshogi.chu.jcsa2019.v1` |1, native routes/effects/royal ledger |
+| Tenjiku Shogi | `mshogi.tenjiku.adams1999-modern.v1` |1, native profile-qualified routes/effects/history |
+| Tenjiku Shogi | `mshogi.tenjiku.muller-completed.v1` |1, distinct immutable whole profile |
 
 `profile_edition` is the exact immutable native `RulesProfile::edition()` value.
 `payload` is captured as `RawValue`, never an intermediate map. Its original
@@ -54,6 +58,17 @@ witness paths receive bounded native verification.
 
 ## Observation, resource and file guarantees
 
+Tori, Chu and both Tenjiku payloads retain their concrete native initial/current
+records, full complete actions and derived effects, settings, selected prefixes,
+administrative journals, observations and abandoned Take back branches. Their
+native replay and resource admission remain game-specific. The
+[current six-game map](../m4/shared-integration/README.md) links each accepted
+native/shared/product contract; the earlier three-game examples below remain
+valid for their stated game scope. Tenjiku retains its1MiB/1,024-event/512M native
+limits,160M document reconstruction budget,15-second worker and ending/Close
+reserves. A whole-profile mismatch rejects; no individual rule toggle migrates
+an existing document.
+
 Durable `ExecutionObservation` schema1 retains full context, exact original
 history/purpose/target, perspective, identities, limits and native result. Saved
 observations are historical evidence, never resumable pending execution. Native
@@ -76,7 +91,9 @@ Save still uses a bounded cancellable worker, same-directory temporary file,
 flush/sync and atomic replacement. Failure/interruption retains the previous
 valid file and dirty state. Open validates off-path before guarded installation;
 corrupt/unknown/oversized/resource-limited/stale input cannot replace the live
-accepted document. Unsaved replacement and native close guards remain active.
+accepted document. Intentional New Game/Load replaces only on valid atomic
+success and adds no separate unsaved warning. Native Quit/window-close retains
+the Save/Discard/Cancel guard for never-saved or dirty documents.
 Successful reopen assigns fresh runtime request/session/selection/process
 identities with work stopped. Return to live and explicit Resume remain separate.
 
@@ -111,9 +128,9 @@ returns validated native data to one guarded `install_document` transaction,
 which installs exactly one active native document with common runtime metadata.
 See the [current native application contract](native-application.md).
 
-The remaining finite frontend-shape/IPC forwarder owns no native state and reads
-no obsolete document format; MSH-119/R4 deletes it with its actual callers.
-It is separate from the deleted R2 codec installation bridge.
+The historical finite frontend-shape/IPC forwarder owned no native state and
+read no obsolete document format. MSH-119/R4 subsequently deleted it with its
+actual callers, separately from the deleted R2 codec installation bridge.
 
 ## Verification fixtures
 

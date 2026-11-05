@@ -1,0 +1,11 @@
+{
+  "observed_at_utc": "2026-11-05T12:57:24.439768+00:00",
+  "command": [
+    "ps",
+    "-axo",
+    "pid,lstart,comm"
+  ],
+  "matching_processes": [],
+  "result": "pass",
+  "qualification": "Separate OS process observation after native normal and fixed-QA Quit, including unintended normal relaunch closed through native Discard; no driver teardown or process kill counted as Quit."
+}

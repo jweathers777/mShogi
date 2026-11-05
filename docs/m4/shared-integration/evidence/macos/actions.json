@@ -1,0 +1,448 @@
+[
+  {
+    "time": "2026-11-05T12:31:50.721Z",
+    "name": "01-chess-keyboard-real-engine",
+    "ax": "01-chess-keyboard-real-engine.ax.txt",
+    "screenshot": "01-chess-keyboard-real-engine.jpg"
+  },
+  {
+    "time": "2026-11-05T12:32:41.525Z",
+    "name": "02-chess-saved",
+    "ax": "02-chess-saved.ax.txt",
+    "screenshot": "02-chess-saved.jpg"
+  },
+  {
+    "time": "2026-11-05T12:34:23.018Z",
+    "name": "03-shogi-keyboard-real-engine",
+    "ax": "03-shogi-keyboard-real-engine.ax.txt",
+    "screenshot": "03-shogi-keyboard-real-engine.jpg"
+  },
+  {
+    "time": "2026-11-05T12:34:26.964Z",
+    "name": "04-shogi-historical-prefix",
+    "ax": "04-shogi-historical-prefix.ax.txt",
+    "screenshot": "04-shogi-historical-prefix.jpg"
+  },
+  {
+    "time": "2026-11-05T12:35:20.170Z",
+    "name": "05-xiangqi-keyboard-real-engine",
+    "ax": "05-xiangqi-keyboard-real-engine.ax.txt",
+    "screenshot": "05-xiangqi-keyboard-real-engine.jpg"
+  },
+  {
+    "time": "2026-11-05T12:35:24.147Z",
+    "name": "06-xiangqi-read-only-enemy-inspection",
+    "ax": "06-xiangqi-read-only-enemy-inspection.ax.txt",
+    "screenshot": "06-xiangqi-read-only-enemy-inspection.jpg"
+  },
+  {
+    "time": "2026-11-05T12:36:38.256Z",
+    "name": "07-tori-keyboard-reply-hands",
+    "ax": "07-tori-keyboard-reply-hands.ax.txt",
+    "screenshot": "07-tori-keyboard-reply-hands.jpg"
+  },
+  {
+    "time": "2026-11-05T12:37:30.988Z",
+    "name": "08-chu-keyboard-real-engine",
+    "ax": "08-chu-keyboard-real-engine.ax.txt",
+    "screenshot": "08-chu-keyboard-real-engine.jpg"
+  },
+  {
+    "time": "2026-11-05T12:37:34.697Z",
+    "name": "09-chu-friendly-name-selection",
+    "ax": "09-chu-friendly-name-selection.ax.txt",
+    "screenshot": "09-chu-friendly-name-selection.jpg"
+  },
+  {
+    "time": "2026-11-05T12:38:02.864Z",
+    "name": "10-tenjiku-adams-keyboard-real-engine",
+    "ax": "10-tenjiku-adams-keyboard-real-engine.ax.txt",
+    "screenshot": "10-tenjiku-adams-keyboard-real-engine.jpg"
+  },
+  {
+    "time": "2026-11-05T12:38:34.333Z",
+    "name": "11-tenjiku-muller-keyboard-real-engine",
+    "ax": "11-tenjiku-muller-keyboard-real-engine.ax.txt",
+    "screenshot": "11-tenjiku-muller-keyboard-real-engine.jpg"
+  },
+  {
+    "time": "2026-11-05T12:39:22.204Z",
+    "name": "12-tenjiku-muller-to-adams-gote-real-engine",
+    "ax": "12-tenjiku-muller-to-adams-gote-real-engine.ax.txt",
+    "screenshot": "12-tenjiku-muller-to-adams-gote-real-engine.jpg"
+  },
+  {
+    "time": "2026-11-05T12:39:38.991Z",
+    "name": "13-tenjiku-to-loaded-chess-stopped",
+    "ax": "13-tenjiku-to-loaded-chess-stopped.ax.txt",
+    "screenshot": "13-tenjiku-to-loaded-chess-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:07.310Z",
+    "name": "load-chess-opposite-orientation",
+    "ax": "load-chess-opposite-orientation.ax.txt",
+    "screenshot": "load-chess-opposite-orientation.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:08.851Z",
+    "name": "load-chess-history",
+    "ax": "load-chess-history.ax.txt",
+    "screenshot": "load-chess-history.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:10.526Z",
+    "name": "load-chess-takeback-stopped",
+    "ax": "load-chess-takeback-stopped.ax.txt",
+    "screenshot": "load-chess-takeback-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:11.384Z",
+    "name": "load-chess-retained-branch-saved",
+    "ax": "load-chess-retained-branch-saved.ax.txt",
+    "screenshot": "load-chess-retained-branch-saved.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:31.882Z",
+    "name": "load-muller-stopped",
+    "ax": "load-muller-stopped.ax.txt",
+    "screenshot": "load-muller-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:33.306Z",
+    "name": "load-muller-opposite-orientation",
+    "ax": "load-muller-opposite-orientation.ax.txt",
+    "screenshot": "load-muller-opposite-orientation.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:35.640Z",
+    "name": "load-muller-history",
+    "ax": "load-muller-history.ax.txt",
+    "screenshot": "load-muller-history.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:37.941Z",
+    "name": "load-muller-takeback-stopped",
+    "ax": "load-muller-takeback-stopped.ax.txt",
+    "screenshot": "load-muller-takeback-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:39.323Z",
+    "name": "load-muller-retained-branch-saved",
+    "ax": "load-muller-retained-branch-saved.ax.txt",
+    "screenshot": "load-muller-retained-branch-saved.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:45.936Z",
+    "name": "load-shogi-stopped",
+    "ax": "load-shogi-stopped.ax.txt",
+    "screenshot": "load-shogi-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:46.936Z",
+    "name": "load-shogi-opposite-orientation",
+    "ax": "load-shogi-opposite-orientation.ax.txt",
+    "screenshot": "load-shogi-opposite-orientation.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:48.842Z",
+    "name": "load-shogi-history",
+    "ax": "load-shogi-history.ax.txt",
+    "screenshot": "load-shogi-history.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:50.533Z",
+    "name": "load-shogi-takeback-stopped",
+    "ax": "load-shogi-takeback-stopped.ax.txt",
+    "screenshot": "load-shogi-takeback-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:40:51.402Z",
+    "name": "load-shogi-retained-branch-saved",
+    "ax": "load-shogi-retained-branch-saved.ax.txt",
+    "screenshot": "load-shogi-retained-branch-saved.jpg"
+  },
+  {
+    "time": "2026-11-05T12:41:30.237Z",
+    "name": "load-chu-stopped",
+    "ax": "load-chu-stopped.ax.txt",
+    "screenshot": "load-chu-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:41:31.415Z",
+    "name": "load-chu-opposite-orientation",
+    "ax": "load-chu-opposite-orientation.ax.txt",
+    "screenshot": "load-chu-opposite-orientation.jpg"
+  },
+  {
+    "time": "2026-11-05T12:41:33.488Z",
+    "name": "load-chu-history",
+    "ax": "load-chu-history.ax.txt",
+    "screenshot": "load-chu-history.jpg"
+  },
+  {
+    "time": "2026-11-05T12:41:35.498Z",
+    "name": "load-chu-takeback-stopped",
+    "ax": "load-chu-takeback-stopped.ax.txt",
+    "screenshot": "load-chu-takeback-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:41:36.665Z",
+    "name": "load-chu-retained-branch-saved",
+    "ax": "load-chu-retained-branch-saved.ax.txt",
+    "screenshot": "load-chu-retained-branch-saved.jpg"
+  },
+  {
+    "time": "2026-11-05T12:41:43.535Z",
+    "name": "load-xiangqi-stopped",
+    "ax": "load-xiangqi-stopped.ax.txt",
+    "screenshot": "load-xiangqi-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:41:44.392Z",
+    "name": "load-xiangqi-opposite-orientation",
+    "ax": "load-xiangqi-opposite-orientation.ax.txt",
+    "screenshot": "load-xiangqi-opposite-orientation.jpg"
+  },
+  {
+    "time": "2026-11-05T12:41:46.126Z",
+    "name": "load-xiangqi-history",
+    "ax": "load-xiangqi-history.ax.txt",
+    "screenshot": "load-xiangqi-history.jpg"
+  },
+  {
+    "time": "2026-11-05T12:41:48.093Z",
+    "name": "load-xiangqi-takeback-stopped",
+    "ax": "load-xiangqi-takeback-stopped.ax.txt",
+    "screenshot": "load-xiangqi-takeback-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:41:48.966Z",
+    "name": "load-xiangqi-retained-branch-saved",
+    "ax": "load-xiangqi-retained-branch-saved.ax.txt",
+    "screenshot": "load-xiangqi-retained-branch-saved.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:10.413Z",
+    "name": "load-tori-stopped",
+    "ax": "load-tori-stopped.ax.txt",
+    "screenshot": "load-tori-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:11.273Z",
+    "name": "load-tori-opposite-orientation",
+    "ax": "load-tori-opposite-orientation.ax.txt",
+    "screenshot": "load-tori-opposite-orientation.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:13.081Z",
+    "name": "load-tori-history",
+    "ax": "load-tori-history.ax.txt",
+    "screenshot": "load-tori-history.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:14.881Z",
+    "name": "load-tori-takeback-stopped",
+    "ax": "load-tori-takeback-stopped.ax.txt",
+    "screenshot": "load-tori-takeback-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:15.798Z",
+    "name": "load-tori-retained-branch-saved",
+    "ax": "load-tori-retained-branch-saved.ax.txt",
+    "screenshot": "load-tori-retained-branch-saved.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:22.736Z",
+    "name": "load-adams-stopped",
+    "ax": "load-adams-stopped.ax.txt",
+    "screenshot": "load-adams-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:24.203Z",
+    "name": "load-adams-opposite-orientation",
+    "ax": "load-adams-opposite-orientation.ax.txt",
+    "screenshot": "load-adams-opposite-orientation.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:26.802Z",
+    "name": "load-adams-history",
+    "ax": "load-adams-history.ax.txt",
+    "screenshot": "load-adams-history.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:29.143Z",
+    "name": "load-adams-takeback-stopped",
+    "ax": "load-adams-takeback-stopped.ax.txt",
+    "screenshot": "load-adams-takeback-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:30.422Z",
+    "name": "load-adams-retained-branch-saved",
+    "ax": "load-adams-retained-branch-saved.ax.txt",
+    "screenshot": "load-adams-retained-branch-saved.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:41.598Z",
+    "name": "14-adams-native-resignation-with-retained-history",
+    "ax": "14-adams-native-resignation-with-retained-history.ax.txt",
+    "screenshot": "14-adams-native-resignation-with-retained-history.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:47.949Z",
+    "name": "15-dirty-native-quit-guard",
+    "ax": "15-dirty-native-quit-guard.ax.txt",
+    "screenshot": "15-dirty-native-quit-guard.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:49.250Z",
+    "name": "16-native-quit-cancel-preserves-game",
+    "ax": "16-native-quit-cancel-preserves-game.ax.txt",
+    "screenshot": "16-native-quit-cancel-preserves-game.jpg"
+  },
+  {
+    "time": "2026-11-05T12:43:50.650Z",
+    "name": "17-native-conclusion-saved-clean",
+    "ax": "17-native-conclusion-saved-clean.ax.txt",
+    "screenshot": "17-native-conclusion-saved-clean.jpg"
+  },
+  {
+    "time": "2026-11-05T12:45:38.602Z",
+    "name": "qa18-real-chess-analysis-active",
+    "ax": "qa18-real-chess-analysis-active.ax.txt",
+    "screenshot": "qa18-real-chess-analysis-active.jpg",
+    "excluded": "Pre-correction observer helpers bound to normal app; not QA or cross-game acceptance evidence."
+  },
+  {
+    "time": "2026-11-05T12:45:39.536Z",
+    "name": "qa19-real-analysis-cancelled",
+    "ax": "qa19-real-analysis-cancelled.ax.txt",
+    "screenshot": "qa19-real-analysis-cancelled.jpg",
+    "excluded": "Pre-correction observer helpers bound to normal app; not QA or cross-game acceptance evidence."
+  },
+  {
+    "time": "2026-11-05T12:47:01.783Z",
+    "name": "qa20-chess-analysis-to-shogi-New",
+    "ax": "qa20-chess-analysis-to-shogi-New.ax.txt",
+    "screenshot": "qa20-chess-analysis-to-shogi-New.jpg",
+    "excluded": "Pre-correction observer helpers bound to normal app; not QA or cross-game acceptance evidence."
+  },
+  {
+    "name": "qa-chess-analysis-to-chess-New",
+    "qualification": "Native menu did not select intended Shogi; actual installed target remained Chess. Not counted as cross-game verification.",
+    "source_active": true,
+    "time": "2026-11-05T12:48:43.608Z",
+    "excluded": "Pre-correction observer helpers bound to normal app; not QA or cross-game acceptance evidence."
+  },
+  {
+    "time": "2026-11-05T12:50:01.007Z",
+    "name": "qa21-actual-QA-honest-analysis-failure-no-outcome",
+    "role": "fixed-QA",
+    "ax": "qa21-actual-QA-honest-analysis-failure-no-outcome.ax.txt",
+    "screenshot": "qa21-actual-QA-honest-analysis-failure-no-outcome.jpg"
+  },
+  {
+    "time": "2026-11-05T12:51:07.282Z",
+    "name": "qa22-adams-analysis-active",
+    "role": "fixed-QA",
+    "ax": "qa22-adams-analysis-active.ax.txt",
+    "screenshot": "qa22-adams-analysis-active.jpg"
+  },
+  {
+    "time": "2026-11-05T12:51:08.533Z",
+    "name": "qa23-adams-analysis-replaced",
+    "role": "fixed-QA",
+    "ax": "qa23-adams-analysis-replaced.ax.txt",
+    "screenshot": "qa23-adams-analysis-replaced.jpg"
+  },
+  {
+    "time": "2026-11-05T12:51:09.815Z",
+    "name": "qa24-adams-analysis-cancelled",
+    "role": "fixed-QA",
+    "ax": "qa24-adams-analysis-cancelled.ax.txt",
+    "screenshot": "qa24-adams-analysis-cancelled.jpg"
+  },
+  {
+    "name": "qa-Adams-active-analysis-to-Muller-New",
+    "time": "2026-11-05T12:51:26.650Z",
+    "input_duration_ms": 3477,
+    "source_active": true,
+    "selected_profile": "Muller Completed"
+  },
+  {
+    "time": "2026-11-05T12:51:27.057Z",
+    "name": "qa25-active-adams-replaced-by-muller",
+    "role": "fixed-QA",
+    "ax": "qa25-active-adams-replaced-by-muller.ax.txt",
+    "screenshot": "qa25-active-adams-replaced-by-muller.jpg"
+  },
+  {
+    "time": "2026-11-05T12:51:52.591Z",
+    "name": "qa26-muller-root-after-old-gate",
+    "role": "fixed-QA",
+    "ax": "qa26-muller-root-after-old-gate.ax.txt",
+    "screenshot": "qa26-muller-root-after-old-gate.jpg"
+  },
+  {
+    "time": "2026-11-05T12:51:54.801Z",
+    "name": "qa27-muller-real-engine-pending",
+    "role": "fixed-QA",
+    "ax": "qa27-muller-real-engine-pending.ax.txt",
+    "screenshot": "qa27-muller-real-engine-pending.jpg"
+  },
+  {
+    "time": "2026-11-05T12:51:58.643Z",
+    "name": "qa28-muller-pending-replaced-by-adams",
+    "role": "fixed-QA",
+    "ax": "qa28-muller-pending-replaced-by-adams.ax.txt",
+    "screenshot": "qa28-muller-pending-replaced-by-adams.jpg"
+  },
+  {
+    "time": "2026-11-05T12:52:49.173Z",
+    "name": "qa29-adams-root-remains-after-retired-muller-gate",
+    "role": "fixed-QA",
+    "ax": "qa29-adams-root-remains-after-retired-muller-gate.ax.txt",
+    "screenshot": "qa29-adams-root-remains-after-retired-muller-gate.jpg"
+  },
+  {
+    "time": "2026-11-05T12:52:52.009Z",
+    "name": "qa30-adams-fresh-readonly-analysis-active",
+    "role": "fixed-QA",
+    "ax": "qa30-adams-fresh-readonly-analysis-active.ax.txt",
+    "screenshot": "qa30-adams-fresh-readonly-analysis-active.jpg"
+  },
+  {
+    "time": "2026-11-05T12:53:42.042Z",
+    "name": "qa31-adams-readonly-analysis-complete",
+    "role": "fixed-QA",
+    "ax": "qa31-adams-readonly-analysis-complete.ax.txt",
+    "screenshot": "qa31-adams-readonly-analysis-complete.jpg"
+  },
+  {
+    "time": "2026-11-05T12:54:03.709Z",
+    "name": "qa32-real-analysis-saved",
+    "role": "fixed-QA",
+    "ax": "qa32-real-analysis-saved.ax.txt",
+    "screenshot": "qa32-real-analysis-saved.jpg"
+  },
+  {
+    "time": "2026-11-05T12:54:28.258Z",
+    "name": "qa33-adams-to-stopped-tori-Load",
+    "role": "fixed-QA",
+    "ax": "qa33-adams-to-stopped-tori-Load.ax.txt",
+    "screenshot": "qa33-adams-to-stopped-tori-Load.jpg"
+  },
+  {
+    "time": "2026-11-05T12:54:34.469Z",
+    "name": "qa34-cross-game-reopened-analysis-historical-stopped",
+    "role": "fixed-QA",
+    "ax": "qa34-cross-game-reopened-analysis-historical-stopped.ax.txt",
+    "screenshot": "qa34-cross-game-reopened-analysis-historical-stopped.jpg"
+  },
+  {
+    "time": "2026-11-05T12:55:09.881Z",
+    "name": "qa35-reopened-readonly-analysis-evidence",
+    "role": "fixed-QA",
+    "ax": "qa35-reopened-readonly-analysis-evidence.ax.txt",
+    "screenshot": "qa35-reopened-readonly-analysis-evidence.jpg"
+  }
+]

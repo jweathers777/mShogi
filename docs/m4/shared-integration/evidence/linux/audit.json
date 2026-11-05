@@ -1,0 +1,3275 @@
+{
+  "source_revision": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+  "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/42028972586",
+  "status": "passed",
+  "phases": 49,
+  "failed_phases": 0,
+  "environment": {
+    "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "runner_image": "20261026.354.1",
+    "runner_os": "Linux",
+    "renderer_environment": {
+      "GDK_BACKEND": "x11",
+      "WEBKIT_DISABLE_COMPOSITING_MODE": "1",
+      "WEBKIT_DISABLE_DMABUF_RENDERER": null,
+      "LIBGL_ALWAYS_SOFTWARE": null
+    }
+  },
+  "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+  "driver_identity": {
+    "path": "/home/runner/work/_temp/mshogi-gui-driver/tauri-driver",
+    "sha256": "94e7345a51842e7a3f78bbd2194b1675cc02f86a9b7ae7ca986b0bf447b754ab",
+    "version": ""
+  },
+  "original_report_sha256": "bac2331dab5e21b4ef1cac97e43a592af14b4c42a06e2eef806f4454adf17d40",
+  "original_report_bytes": 143825482,
+  "normal_host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+  "normal_engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+  "manifest_audit": [
+    {
+      "kind": "normal",
+      "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+      "files_verified": 13,
+      "manifest_sha256": "89c36f866ca1e30a90fd6f59d1ae8e19709bd22acfd7482c9b29b15d0c676860",
+      "form": "producer file inventory"
+    },
+    {
+      "kind": "verification",
+      "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+      "files_verified": 2,
+      "manifest_sha256": "660260218fa1d48d99b03727ee9da885a109532b7a48de34995fd4ad70d0339d",
+      "form": "Linux producer extracted-QA package receipt; actual host/engine hashes are in GUI report"
+    }
+  ],
+  "phase_receipts": [
+    {
+      "phase": "normal",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:16:40.350668+00:00",
+      "finished_at_utc": "2026-11-05T13:17:24.042921+00:00"
+    },
+    {
+      "phase": "normal-shogi",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:17:24.082290+00:00",
+      "finished_at_utc": "2026-11-05T13:18:18.285676+00:00"
+    },
+    {
+      "phase": "normal-shogi-reopened",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:18:18.321141+00:00",
+      "finished_at_utc": "2026-11-05T13:18:36.281713+00:00"
+    },
+    {
+      "phase": "normal-xiangqi",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:18:36.315754+00:00",
+      "finished_at_utc": "2026-11-05T13:19:36.849419+00:00"
+    },
+    {
+      "phase": "normal-tori",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:19:36.883007+00:00",
+      "finished_at_utc": "2026-11-05T13:20:31.258125+00:00"
+    },
+    {
+      "phase": "normal-tori-native",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:20:31.290174+00:00",
+      "finished_at_utc": "2026-11-05T13:21:09.792990+00:00"
+    },
+    {
+      "phase": "normal-chu",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:21:09.883521+00:00",
+      "finished_at_utc": "2026-11-05T13:22:06.977232+00:00"
+    },
+    {
+      "phase": "normal-chu-native",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:22:07.013505+00:00",
+      "finished_at_utc": "2026-11-05T13:24:43.938850+00:00"
+    },
+    {
+      "phase": "normal-tenjiku-adams",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:24:43.993165+00:00",
+      "finished_at_utc": "2026-11-05T13:25:29.817986+00:00"
+    },
+    {
+      "phase": "normal-tenjiku-adams-native",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:25:29.880370+00:00",
+      "finished_at_utc": "2026-11-05T13:26:59.563180+00:00"
+    },
+    {
+      "phase": "normal-tenjiku-muller",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:26:59.597038+00:00",
+      "finished_at_utc": "2026-11-05T13:27:51.567099+00:00"
+    },
+    {
+      "phase": "normal-tenjiku-muller-native",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:27:51.602574+00:00",
+      "finished_at_utc": "2026-11-05T13:29:17.982350+00:00"
+    },
+    {
+      "phase": "normal-cross-game",
+      "fixture": null,
+      "status": "passed",
+      "host": "/usr/bin/mshogi-desktop",
+      "host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+      "engine": "/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:29:18.018278+00:00",
+      "finished_at_utc": "2026-11-05T13:30:58.497488+00:00"
+    },
+    {
+      "phase": "verification-standard",
+      "fixture": "standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:30:58.545600+00:00",
+      "finished_at_utc": "2026-11-05T13:31:01.753276+00:00"
+    },
+    {
+      "phase": "verification-promotion",
+      "fixture": "promotion",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:31:01.787239+00:00",
+      "finished_at_utc": "2026-11-05T13:31:03.826504+00:00"
+    },
+    {
+      "phase": "verification-claim",
+      "fixture": "claim",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:31:03.860187+00:00",
+      "finished_at_utc": "2026-11-05T13:31:05.417951+00:00"
+    },
+    {
+      "phase": "verification-current-claim",
+      "fixture": "current-claim",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:31:05.451262+00:00",
+      "finished_at_utc": "2026-11-05T13:31:06.997594+00:00"
+    },
+    {
+      "phase": "verification-concluded",
+      "fixture": "concluded",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:31:07.035842+00:00",
+      "finished_at_utc": "2026-11-05T13:31:09.517815+00:00"
+    },
+    {
+      "phase": "verification-full-unknown-cancel",
+      "fixture": "standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:31:09.550599+00:00",
+      "finished_at_utc": "2026-11-05T13:31:17.440339+00:00"
+    },
+    {
+      "phase": "verification-capacity",
+      "fixture": "capacity",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:31:17.474211+00:00",
+      "finished_at_utc": "2026-11-05T13:31:23.976497+00:00"
+    },
+    {
+      "phase": "verification-synthetic",
+      "fixture": "synthetic",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:31:24.010649+00:00",
+      "finished_at_utc": "2026-11-05T13:31:31.487844+00:00"
+    },
+    {
+      "phase": "verification-pending-chess",
+      "fixture": "standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:31:31.524705+00:00",
+      "finished_at_utc": "2026-11-05T13:31:48.658286+00:00"
+    },
+    {
+      "phase": "verification-pending-shogi",
+      "fixture": "shogi-standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:31:48.692339+00:00",
+      "finished_at_utc": "2026-11-05T13:32:05.984542+00:00"
+    },
+    {
+      "phase": "verification-pending-xiangqi",
+      "fixture": "xiangqi-standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:32:06.018215+00:00",
+      "finished_at_utc": "2026-11-05T13:32:24.110495+00:00"
+    },
+    {
+      "phase": "verification-pending-tori",
+      "fixture": "tori-standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:32:24.149994+00:00",
+      "finished_at_utc": "2026-11-05T13:32:41.540105+00:00"
+    },
+    {
+      "phase": "verification-tori-recovery",
+      "fixture": "tori-standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:32:41.574289+00:00",
+      "finished_at_utc": "2026-11-05T13:32:47.142540+00:00"
+    },
+    {
+      "phase": "verification-pending-chu",
+      "fixture": "chu-standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:32:47.179771+00:00",
+      "finished_at_utc": "2026-11-05T13:33:04.902698+00:00"
+    },
+    {
+      "phase": "verification-chu-recovery",
+      "fixture": "chu-standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:33:04.936327+00:00",
+      "finished_at_utc": "2026-11-05T13:33:10.787558+00:00"
+    },
+    {
+      "phase": "verification-shogi-hands",
+      "fixture": "shogi-hands",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:33:10.821388+00:00",
+      "finished_at_utc": "2026-11-05T13:33:14.928546+00:00"
+    },
+    {
+      "phase": "verification-shogi-promotion",
+      "fixture": "shogi-promotion",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:33:14.965070+00:00",
+      "finished_at_utc": "2026-11-05T13:33:18.168182+00:00"
+    },
+    {
+      "phase": "verification-shogi-forced",
+      "fixture": "shogi-forced",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:33:18.201316+00:00",
+      "finished_at_utc": "2026-11-05T13:33:21.046069+00:00"
+    },
+    {
+      "phase": "verification-shogi-declaration",
+      "fixture": "shogi-declaration",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:33:21.082664+00:00",
+      "finished_at_utc": "2026-11-05T13:33:33.380343+00:00"
+    },
+    {
+      "phase": "verification-shogi-concluded",
+      "fixture": "shogi-concluded",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:33:33.416750+00:00",
+      "finished_at_utc": "2026-11-05T13:33:37.150616+00:00"
+    },
+    {
+      "phase": "verification-shogi-capacity",
+      "fixture": "shogi-capacity",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:33:37.184552+00:00",
+      "finished_at_utc": "2026-11-05T13:33:46.723924+00:00"
+    },
+    {
+      "phase": "verification-xiangqi-warning",
+      "fixture": "xiangqi-warning",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:33:46.759121+00:00",
+      "finished_at_utc": "2026-11-05T13:33:59.083761+00:00"
+    },
+    {
+      "phase": "verification-xiangqi-fourth",
+      "fixture": "xiangqi-fourth",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:33:59.120278+00:00",
+      "finished_at_utc": "2026-11-05T13:34:10.414031+00:00"
+    },
+    {
+      "phase": "verification-xiangqi-count",
+      "fixture": "xiangqi-count",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:34:10.450294+00:00",
+      "finished_at_utc": "2026-11-05T13:34:23.417392+00:00"
+    },
+    {
+      "phase": "verification-xiangqi-offer",
+      "fixture": "xiangqi-offer",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:34:23.451732+00:00",
+      "finished_at_utc": "2026-11-05T13:34:34.991652+00:00"
+    },
+    {
+      "phase": "verification-xiangqi-agreed",
+      "fixture": "xiangqi-agreed",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:34:35.024845+00:00",
+      "finished_at_utc": "2026-11-05T13:34:46.411067+00:00"
+    },
+    {
+      "phase": "verification-xiangqi-fast-proof",
+      "fixture": "xiangqi-fast-proof",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:34:46.444716+00:00",
+      "finished_at_utc": "2026-11-05T13:34:57.632265+00:00"
+    },
+    {
+      "phase": "verification-xiangqi-resigned",
+      "fixture": "xiangqi-resigned",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:34:57.665832+00:00",
+      "finished_at_utc": "2026-11-05T13:35:08.843210+00:00"
+    },
+    {
+      "phase": "verification-xiangqi-capacity",
+      "fixture": "xiangqi-capacity",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:35:08.877772+00:00",
+      "finished_at_utc": "2026-11-05T13:35:26.753324+00:00"
+    },
+    {
+      "phase": "verification-xiangqi-failure",
+      "fixture": "xiangqi-failure",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:35:26.795160+00:00",
+      "finished_at_utc": "2026-11-05T13:35:38.565434+00:00"
+    },
+    {
+      "phase": "verification-xiangqi-exact-evidence",
+      "fixture": "xiangqi-exact-evidence",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:35:38.602435+00:00",
+      "finished_at_utc": "2026-11-05T13:35:50.391642+00:00"
+    },
+    {
+      "phase": "verification-pending-tenjiku-adams",
+      "fixture": "tenjiku-adams-standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:35:50.426474+00:00",
+      "finished_at_utc": "2026-11-05T13:36:10.371713+00:00"
+    },
+    {
+      "phase": "verification-recovery-tenjiku-adams",
+      "fixture": "tenjiku-adams-standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:36:10.405434+00:00",
+      "finished_at_utc": "2026-11-05T13:36:17.368548+00:00"
+    },
+    {
+      "phase": "verification-pending-tenjiku-muller",
+      "fixture": "tenjiku-muller-standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:36:17.406248+00:00",
+      "finished_at_utc": "2026-11-05T13:36:37.367698+00:00"
+    },
+    {
+      "phase": "verification-recovery-tenjiku-muller",
+      "fixture": "tenjiku-muller-standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:36:37.403734+00:00",
+      "finished_at_utc": "2026-11-05T13:36:44.466814+00:00"
+    },
+    {
+      "phase": "verification-pending-cross-game",
+      "fixture": "standard",
+      "status": "passed",
+      "host": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi-desktop",
+      "host_sha256": "74c2968e5ea384c38d0159d57173f7c7485a091a7fcfad6fc26aefe3f1baf4ee",
+      "engine": "/home/runner/work/mShogi/mShogi/gui-extracted/usr/bin/mshogi",
+      "engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+      "started_at_utc": "2026-11-05T13:36:44.500893+00:00",
+      "finished_at_utc": "2026-11-05T13:37:43.619276+00:00"
+    }
+  ],
+  "cross_game_events": [
+    {
+      "phase": "normal-cross-game",
+      "operations": [
+        {
+          "at_utc": "2026-11-05T13:29:18.763260+00:00",
+          "operation": "Launch actual packaged application"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:19.636821+00:00",
+          "operation": "Resize actual application content"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:19.726011+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:19.767966+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:20.019229+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:20.058151+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:20.060019+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:20.077140+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:20.554912+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:20.596126+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:20.647553+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:20.688461+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:20.738927+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:20.780834+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:23.317805+00:00",
+          "operation": "Native save choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:23.372955+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:23.412648+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:23.412714+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:23.683664+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:23.750937+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:23.895069+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:23.967698+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:24.006358+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:24.006508+00:00",
+          "operation": "Same normal host New/play/Save/history before next game replacement"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:24.272584+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:24.327539+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:24.329533+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:24.351624+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:24.859689+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:24.905683+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:24.960910+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:25.006982+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:25.062093+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:25.107357+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:27.660467+00:00",
+          "operation": "Native save choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:27.719586+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:27.768161+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:27.768257+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:28.037203+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:28.138066+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:28.259400+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:28.337762+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:28.382119+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:28.382258+00:00",
+          "operation": "Same normal host New/play/Save/history before next game replacement"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:28.693857+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:28.758980+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:28.760847+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:28.791343+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:29.295066+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:29.360900+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:29.433457+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:29.498861+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:29.571614+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:29.639037+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:32.241430+00:00",
+          "operation": "Native save choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:32.317216+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:32.383828+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:32.383910+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:32.725101+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:32.859535+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:32.983755+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:33.074949+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:33.141161+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:33.141320+00:00",
+          "operation": "Same normal host New/play/Save/history before next game replacement"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:33.465849+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:33.509089+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:33.510833+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:33.531048+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:33.911528+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:33.955704+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:34.009811+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:34.054256+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:34.108057+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:34.152473+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:36.705099+00:00",
+          "operation": "Native save choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:36.760844+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:36.807923+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:36.808064+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:37.081004+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:37.256113+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:37.375411+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:37.448154+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:37.490282+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:37.490447+00:00",
+          "operation": "Same normal host New/play/Save/history before next game replacement"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:37.800337+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:37.850386+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:37.852344+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:37.884128+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:38.396772+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:38.449604+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:38.527429+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:38.581187+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:38.651321+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:38.703666+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:41.271526+00:00",
+          "operation": "Native save choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:41.341277+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:41.394974+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:41.395164+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:41.668904+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:41.858650+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:41.981430+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:42.080254+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:42.131285+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:42.131460+00:00",
+          "operation": "Same normal host New/play/Save/history before next game replacement"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:42.677040+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:42.728507+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:42.730546+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:42.758641+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:43.705636+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:43.756962+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:43.962213+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:44.013101+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:44.220040+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:44.272401+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:46.869934+00:00",
+          "operation": "Native save choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:47.068784+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:47.119911+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:47.120176+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:47.399340+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:47.618131+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:47.770847+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:47.999512+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:48.049096+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:48.049281+00:00",
+          "operation": "Same normal host New/play/Save/history before next game replacement"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:48.586520+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:48.645782+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:48.647680+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:48.681188+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:49.542276+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:49.592993+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:49.798857+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:49.849361+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:50.056570+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:50.109427+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:52.690969+00:00",
+          "operation": "Native save choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:52.893186+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:52.944363+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:52.944620+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:53.235181+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:53.476429+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:53.620109+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:53.857136+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:53.906617+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:53.906799+00:00",
+          "operation": "Same normal host New/play/Save/history before next game replacement"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:54.451526+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:54.501576+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:54.503330+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:54.532399+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:55.505842+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:55.556703+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:55.763625+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:55.815076+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:56.019564+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:56.072219+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:58.651284+00:00",
+          "operation": "Native save choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:58.852975+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:58.905362+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:58.905633+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:59.219359+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:59.492922+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:59.636947+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:59.864106+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:59.913463+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:29:59.913655+00:00",
+          "operation": "Same normal host New/play/Save/history before next game replacement"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:00.238063+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:00.277553+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:00.279018+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:00.294719+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:00.870697+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:00.909968+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:00.957703+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:00.996442+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:01.043408+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:01.082442+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:03.694169+00:00",
+          "operation": "Native save choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:03.746838+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:03.788258+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:03.788340+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:04.160695+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:04.389616+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:04.511874+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:04.578676+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:04.617937+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:04.618074+00:00",
+          "operation": "Same normal host New/play/Save/history before next game replacement"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:04.663759+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:04.702878+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:04.748221+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:04.786740+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.317642+00:00",
+          "operation": "Native open choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.521272+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.573449+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.573740+00:00",
+          "operation": "Observe native accepted Open receipt and stopped document"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.780208+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.832163+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.836160+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.849387+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.853252+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.856907+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.870835+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.883124+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.893602+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:08.893640+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.048604+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.179768+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.184900+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.189369+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.195526+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.205782+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.209435+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.212188+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.226280+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.238694+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.238738+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.592702+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.645566+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.647419+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.657922+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.660730+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.663395+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.676284+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.689150+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.698867+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.703718+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.708016+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:09.708045+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:10.050520+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:10.101289+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:10.306240+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:10.356363+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:10.560444+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:10.613077+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:11.171357+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:11.229927+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:11.546034+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:11.598208+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:11.598475+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:12.026596+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:12.032090+00:00",
+          "operation": "Cross-game native Load/stopped Resume/history/Return/Take back and complete Save"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:12.426118+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:12.477504+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:12.682659+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:12.733421+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.307268+00:00",
+          "operation": "Native open choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.379629+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.431204+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.431388+00:00",
+          "operation": "Observe native accepted Open receipt and stopped document"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.497898+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.549341+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.552679+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.566040+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.569324+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.572026+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.583097+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.594187+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.603709+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.603743+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.748591+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.871510+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.876710+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.881463+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.887406+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.896211+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.899140+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.901861+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.913145+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.922507+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:16.922544+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.110553+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.161537+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.163000+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.173784+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.176679+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.179214+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.189769+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.200453+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.209405+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.213754+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.217845+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.217876+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.407411+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.457285+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.522940+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.573077+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.639008+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.694406+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:17.951980+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:18.005835+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:18.173524+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:18.225411+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:18.225592+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:18.690660+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:18.695833+00:00",
+          "operation": "Cross-game native Load/stopped Resume/history/Return/Take back and complete Save"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:18.970515+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:19.021451+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:19.088731+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:19.141953+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.273764+00:00",
+          "operation": "Native open choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.331567+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.377925+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.377996+00:00",
+          "operation": "Observe native accepted Open receipt and stopped document"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.431144+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.477100+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.480461+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.491140+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.494395+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.497035+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.507850+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.518658+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.527846+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.527887+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.667816+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.795488+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.800324+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.804557+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.810797+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.819527+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.822163+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.824809+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.835295+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.844399+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:24.844436+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.013628+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.058514+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.060642+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.070281+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.073056+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.075876+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.086790+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.097074+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.106060+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.111088+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.115457+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.115489+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.289135+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.335627+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.387667+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.432203+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.484775+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.529892+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.697029+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.741845+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.896188+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.940858+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:25.940916+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:26.440778+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:26.445954+00:00",
+          "operation": "Cross-game native Load/stopped Resume/history/Return/Take back and complete Save"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:26.716710+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:26.762326+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:26.814378+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:26.861059+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.402069+00:00",
+          "operation": "Native open choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.601675+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.652566+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.652882+00:00",
+          "operation": "Observe native accepted Open receipt and stopped document"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.859878+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.911649+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.915623+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.929024+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.932745+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.935488+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.948858+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.962908+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.972703+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:30.972741+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.122870+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.264248+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.269180+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.273498+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.279964+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.290198+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.293422+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.296993+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.309425+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.323479+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.323520+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.683739+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.736830+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.738833+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.749702+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.753346+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.755996+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.769351+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.783567+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.794559+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.799814+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.805054+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:31.805089+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:32.148084+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:32.200608+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:32.405156+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:32.456046+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:32.660521+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:32.711181+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:33.383974+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:33.435332+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:33.743693+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:33.793191+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:33.793441+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:34.329462+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:34.334983+00:00",
+          "operation": "Cross-game native Load/stopped Resume/history/Return/Take back and complete Save"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:34.797263+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:34.848020+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:35.052140+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:35.102200+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.680167+00:00",
+          "operation": "Native open choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.750663+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.814414+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.814484+00:00",
+          "operation": "Observe native accepted Open receipt and stopped document"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.878913+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.943896+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.947271+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.959254+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.962778+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.965357+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.977855+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:38.989980+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.000420+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.000461+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.144024+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.266415+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.271787+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.276123+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.282339+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.291112+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.294455+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.297197+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.308239+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.318525+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.318569+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.497544+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.560981+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.562399+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.573065+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.575807+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.578785+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.591024+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.603145+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.613655+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.617957+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.621981+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.625954+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.625982+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.819812+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.886088+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:39.950593+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:40.015097+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:40.080789+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:40.145009+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:40.357361+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:40.420556+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:40.420617+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:41.048903+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:41.053982+00:00",
+          "operation": "Cross-game native Load/stopped Resume/history/Return/Take back and complete Save"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:41.400412+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:41.464188+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:41.531026+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:41.595242+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.718965+00:00",
+          "operation": "Native open choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.774861+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.819732+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.819857+00:00",
+          "operation": "Observe native accepted Open receipt and stopped document"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.872494+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.916542+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.920521+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.931108+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.933804+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.936780+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.947049+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.958480+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.968862+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.979384+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.990998+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:46.991036+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.144023+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.263524+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.268368+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.272574+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.278637+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.286582+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.290092+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.292767+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.302018+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.310544+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.310578+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.476997+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.521229+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.523062+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.532792+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.535973+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.538601+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.548677+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.559828+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.570543+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.580635+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.592585+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.597001+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.601025+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.601052+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.779208+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.823352+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.874703+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.917450+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:47.969441+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:48.012290+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:48.297866+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:48.343372+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:48.495989+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:48.538508+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:48.538642+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:49.178626+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:49.183513+00:00",
+          "operation": "Cross-game native Load/stopped Resume/history/Return/Take back and complete Save"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:49.534180+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:49.577088+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:49.630025+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:49.673554+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.639210+00:00",
+          "operation": "Native open choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.689892+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.729563+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.729623+00:00",
+          "operation": "Observe native accepted Open receipt and stopped document"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.776546+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.816002+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.820650+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.830287+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.833278+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.836051+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.845273+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.853953+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.861860+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:55.861892+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.008245+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.128215+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.133199+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.137497+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.141737+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.147935+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.154937+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.157729+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.160383+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.169130+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.176682+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.176714+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.247053+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.287020+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.288679+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.297632+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.300803+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.303449+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.312530+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.321181+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.328870+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.333348+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.337906+00:00",
+          "operation": "Observe keyboard control precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.337936+00:00",
+          "operation": "Keyboard control focused and visible before one click"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.502754+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.541238+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.587971+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.626366+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.673036+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.711663+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.926199+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:56.964672+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:57.111731+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:57.150047+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:57.150103+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:57.821975+00:00",
+          "operation": "Observe shared analysis and historical action slots"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:57.827271+00:00",
+          "operation": "Cross-game native Load/stopped Resume/history/Return/Take back and complete Save"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:58.191389+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:58.230338+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:58.469826+00:00",
+          "operation": "Native Quit request"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:58.497440+00:00",
+          "operation": "Observe native shutdown before driver teardown"
+        },
+        {
+          "at_utc": "2026-11-05T13:30:58.497493+00:00",
+          "operation": "Clean native Quit completes without an unsaved guard"
+        }
+      ]
+    },
+    {
+      "phase": "verification-pending-cross-game",
+      "operations": [
+        {
+          "at_utc": "2026-11-05T13:36:45.376734+00:00",
+          "operation": "Launch actual packaged application"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:46.240080+00:00",
+          "operation": "Resize actual application content"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:46.326893+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:46.368861+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:46.420674+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:46.460201+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:49.010990+00:00",
+          "operation": "Native save choose file"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:49.060023+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:49.102506+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:49.102564+00:00",
+          "operation": "Observe native accepted save path and settled file controls"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:49.149745+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:49.189356+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:49.190949+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:49.209818+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:49.417926+00:00",
+          "operation": "Replace genuinely active native work through ordinary New"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:49.607939+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:49.658198+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:54.911794+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:54.956492+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:54.964204+00:00",
+          "operation": "Cross-game/profile replacement retires real process and preserves exact new authority beyond gate"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:55.015416+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:55.061517+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:55.063278+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:55.088174+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:55.358290+00:00",
+          "operation": "Replace genuinely active native work through ordinary New"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:55.557592+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:36:55.618611+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:00.887095+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:00.947934+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:00.955553+00:00",
+          "operation": "Cross-game/profile replacement retires real process and preserves exact new authority beyond gate"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:01.020236+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:01.080147+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:01.081837+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:01.112783+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:01.413439+00:00",
+          "operation": "Replace genuinely active native work through ordinary New"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:01.604469+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:01.650370+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:06.902120+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:06.945357+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:06.953604+00:00",
+          "operation": "Cross-game/profile replacement retires real process and preserves exact new authority beyond gate"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:07.012717+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:07.056089+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:07.057717+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:07.077094+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:07.332991+00:00",
+          "operation": "Replace genuinely active native work through ordinary New"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:07.530382+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:07.579983+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:12.847113+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:12.898753+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:12.906632+00:00",
+          "operation": "Cross-game/profile replacement retires real process and preserves exact new authority beyond gate"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:12.971285+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:13.022448+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:13.024938+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:13.040492+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:13.364926+00:00",
+          "operation": "Replace genuinely active native work through ordinary New"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:13.749667+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:13.803168+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:19.203945+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:19.255773+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:19.264353+00:00",
+          "operation": "Cross-game/profile replacement retires real process and preserves exact new authority beyond gate"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:19.460396+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:19.511872+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:19.513739+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:19.541953+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:19.925829+00:00",
+          "operation": "Replace genuinely active native work through ordinary New"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:20.257765+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:20.309248+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:25.703471+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:25.753847+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:25.762398+00:00",
+          "operation": "Cross-game/profile replacement retires real process and preserves exact new authority beyond gate"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:25.980222+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:26.030860+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:26.032655+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:26.063540+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:26.431994+00:00",
+          "operation": "Replace genuinely active native work through ordinary New"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:26.763137+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:26.813802+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:32.209892+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:32.261254+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:32.269683+00:00",
+          "operation": "Cross-game/profile replacement retires real process and preserves exact new authority beyond gate"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:32.470359+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:32.521111+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:32.523269+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:32.551966+00:00",
+          "operation": "Observe board pointer precondition"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:37.817096+00:00",
+          "operation": "Replace active Tenjiku work with native Chess Load"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:37.867620+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:37.906542+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:37.906598+00:00",
+          "operation": "Observe native accepted Open receipt and stopped document"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:37.951732+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:37.991028+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:43.240742+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:43.280539+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:43.288206+00:00",
+          "operation": "Cross-game/profile replacement retires real process and preserves exact new authority beyond gate"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:43.335137+00:00",
+          "operation": "Actual Tab reaches visible target before one Enter"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:43.373569+00:00",
+          "operation": "Observe actual focus after public Diagnostics closes; asynchronous admission may change its invoker"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:43.596015+00:00",
+          "operation": "Native Quit request"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:43.619229+00:00",
+          "operation": "Observe native shutdown before driver teardown"
+        },
+        {
+          "at_utc": "2026-11-05T13:37:43.619281+00:00",
+          "operation": "Clean native Quit completes without an unsaved guard"
+        }
+      ]
+    }
+  ],
+  "qualification": "Full original report retained losslessly compressed. Raw public diagnostics, actual actions/processes/guarded shutdown and native OS evidence remain in that report; this extraction does not supply rules or fabricate input/results."
+}

@@ -1,0 +1,753 @@
+{
+  "schema_version": 1,
+  "task": "MSH-88",
+  "status": "In Review",
+  "accepted": true,
+  "tested_source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+  "starting_integration": "c1aee938e8057c5a2c1ec48e86ad87716f18c811",
+  "unchanged_accepted_production": "eca9f9cfd43cf83ff4e3489292f6c25f8951bb30",
+  "scope": "Integrated acceptance of six games and seven immutable whole profiles. No production rules, search, resource, persistence, session ownership or minimum-size change. New native tests are cfg(test); other executable changes are external verification scripts.",
+  "profiles": [
+    {
+      "game": "chess",
+      "profile": "mshogi.chess.match.v1"
+    },
+    {
+      "game": "shogi",
+      "profile": "mshogi.shogi.csa36.v1"
+    },
+    {
+      "game": "xiangqi",
+      "profile": "mshogi.xiangqi.wxf2018.v1"
+    },
+    {
+      "game": "tori",
+      "profile": "mshogi.tori.modern.v1"
+    },
+    {
+      "game": "chu",
+      "profile": "mshogi.chu.jcsa2019.v1"
+    },
+    {
+      "game": "tenjiku",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1"
+    },
+    {
+      "game": "tenjiku",
+      "profile": "mshogi.tenjiku.muller-completed.v1"
+    }
+  ],
+  "required_jobs": [
+    "Rust (ubuntu-24.04)",
+    "Rust (macos-15)",
+    "Rust (windows-2022)",
+    "Desktop (ubuntu-24.04)",
+    "Desktop (macos-15)",
+    "Desktop (windows-2022)"
+  ],
+  "ci": {
+    "current_runs": [
+      42028972679,
+      42028972586
+    ],
+    "current_receipts": "evidence/ci/bc92bfe-runs-jobs.json.gz",
+    "acceptance_pending": false,
+    "monitor": "One bounded completion-aware gh REST monitor per campaign; superseded monitor ended before replacement campaign began.",
+    "superseded": [
+      {
+        "source": "9dd173f97ba78ab1f3df1c1baa1963d67e35a215",
+        "runs": [
+          42028250037,
+          42028250101
+        ],
+        "conclusion": "cancelled",
+        "receipts": "evidence/ci/9dd173f-runs-jobs.json.gz",
+        "reason": "Proactively superseded before GUI execution after inspection identified repeated fresh-document Save paths and screenshot names. Distinct per-visit paths/captures and actual keyboard Moves activation corrected external verifier assumptions. All six jobs acquired runners and ended cancelled; no pass or product/race correction claimed."
+      }
+    ],
+    "artifact_metadata": "evidence/ci/artifacts.json",
+    "linux_dependency_observation": "First current-attempt dependency step ran unusually long, then completed successfully and advanced. Completed-log endpoint returned404 while running; no cause or product defect inferred, no reschedule/retry performed.",
+    "required_receipts": [
+      {
+        "run_id": 42028972679,
+        "run_attempt": 1,
+        "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "job_id": 127250225640,
+        "name": "Rust (macos-15)",
+        "conclusion": "success",
+        "started_at": "2026-11-05T12:39:17Z",
+        "completed_at": "2026-11-05T13:01:51Z",
+        "runner_id": 1000002679,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42028972679/job/127250225640"
+      },
+      {
+        "run_id": 42028972679,
+        "run_attempt": 1,
+        "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "job_id": 127250225725,
+        "name": "Rust (ubuntu-24.04)",
+        "conclusion": "success",
+        "started_at": "2026-11-05T12:39:17Z",
+        "completed_at": "2026-11-05T12:57:32Z",
+        "runner_id": 1000002677,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42028972679/job/127250225725"
+      },
+      {
+        "run_id": 42028972679,
+        "run_attempt": 1,
+        "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "job_id": 127250225944,
+        "name": "Rust (windows-2022)",
+        "conclusion": "success",
+        "started_at": "2026-11-05T12:39:18Z",
+        "completed_at": "2026-11-05T13:11:56Z",
+        "runner_id": 1000002678,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42028972679/job/127250225944"
+      },
+      {
+        "run_id": 42028972586,
+        "run_attempt": 1,
+        "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "job_id": 127250225410,
+        "name": "Desktop (ubuntu-24.04)",
+        "conclusion": "success",
+        "started_at": "2026-11-05T12:39:17Z",
+        "completed_at": "2026-11-05T13:38:01Z",
+        "runner_id": 1000002676,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42028972586/job/127250225410"
+      },
+      {
+        "run_id": 42028972586,
+        "run_attempt": 1,
+        "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "job_id": 127250225967,
+        "name": "Desktop (windows-2022)",
+        "conclusion": "success",
+        "started_at": "2026-11-05T12:39:17Z",
+        "completed_at": "2026-11-05T13:21:32Z",
+        "runner_id": 1000002681,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42028972586/job/127250225967"
+      },
+      {
+        "run_id": 42028972586,
+        "run_attempt": 1,
+        "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "job_id": 127250226038,
+        "name": "Desktop (macos-15)",
+        "conclusion": "success",
+        "started_at": "2026-11-05T12:39:17Z",
+        "completed_at": "2026-11-05T12:48:25Z",
+        "runner_id": 1000002680,
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42028972586/job/127250226038"
+      }
+    ],
+    "monitor_result": "Stopped automatically with exit0 immediately when both required runs became completed/success. No subsequent campaign or retry.",
+    "log_receipts": [
+      "evidence/ci/msh88-bc92bfe-desktop-linux.log.gz",
+      "evidence/ci/msh88-bc92bfe-desktop-macos.log.gz",
+      "evidence/ci/msh88-bc92bfe-desktop-windows.log.gz",
+      "evidence/ci/msh88-bc92bfe-rust-linux.log.gz",
+      "evidence/ci/msh88-bc92bfe-rust-macos.log.gz",
+      "evidence/ci/msh88-bc92bfe-rust-windows.log.gz"
+    ]
+  },
+  "focused_verification": [
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session seven_profile_new_and_current_load_rings -- --nocapture",
+      "result": "pass",
+      "tests": 1,
+      "duration_seconds": 10.21,
+      "environment": "local macOS27 arm64",
+      "source_checkpoint": "9dd173f native test unchanged at bc92bfe",
+      "scope": "Manual native execution allocation, seven-profile same-controller New/reverse-current-Load, fresh stopped installs, stale command/inspection/replacement/Open/result rejection, malformed-Load pending-authority and prior-file preservation. Not real subprocess or GUI evidence."
+    },
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session --all-features seven_profile_new_and_current_load_rings -- --nocapture",
+      "result": "pass",
+      "tests": 1,
+      "duration_seconds": 10.14,
+      "environment": "local macOS27 arm64",
+      "source_checkpoint": "9dd173f native test unchanged at bc92bfe"
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "result": "pass"
+    },
+    {
+      "command": "python3 -B -m unittest discover -s desktop/scripts -p 'test_*.py'",
+      "result": "pass",
+      "tests": 176,
+      "evidence": "evidence/observer-tests.txt",
+      "qualification": "External observer boundary tests, not packaged gameplay."
+    }
+  ],
+  "macos": {
+    "environment": "macOS27.0.1 (26A434), arm64; native WKWebView; CUA actual native pointer/keyboard and OS file panels; Node24.22.1/Rust1.99.1 build environment.",
+    "normal_bundle": {
+      "identity": "org.mshogi.desktop",
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+      "host_sha256": "4e3719fe779a78f7800a31a827fa605dff4e1182f0ac26a41842a7e5e2c35c80",
+      "files": {
+        "Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+        "Contents/MacOS/mshogi": "a3c0cda3e4da2b00b931e0100000387fa9d34835d0e6565587a02f7750dd1567",
+        "Contents/MacOS/mshogi-desktop": "4e3719fe779a78f7800a31a827fa605dff4e1182f0ac26a41842a7e5e2c35c80",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+      },
+      "identity_evidence": "evidence/macos/normal-current.json",
+      "actual_gui_build": "eca9f9cfd43cf83ff4e3489292f6c25f8951bb30",
+      "rebuilt_at_tested_source": true,
+      "four_file_byte_equivalence": true,
+      "equivalence_scope": "Exact current normal bundle file equality before and after rebuilding bc92bfe; all production implementation unchanged. Source-qualified actual interaction is not relabelled as hosted macOS15 GUI.",
+      "stock_strict_codesign_exit": 1,
+      "signature_qualification": "Known stock Tauri linker ad-hoc signature is not a resource-sealed Developer ID/notarized release. Normal inspect strict verification reports1 as in accepted ECA evidence. No signing or platform-policy bypass."
+    },
+    "normal_journey": {
+      "host_pid": 50108,
+      "launch_time_local": "2026-11-05 13:31:20",
+      "same_process": true,
+      "new_sequence": [
+        "chess",
+        "shogi",
+        "xiangqi",
+        "tori",
+        "chu",
+        "adams",
+        "muller",
+        "adams-gote"
+      ],
+      "real_play": "Keyboard-entered e2e4,7g7f,a3a4,Sw3dx3c,GB9h-9g,P16l-16k for both profiles, each followed by real bundled-engine reply; Adams fresh humanGote gets genuine first engine action.",
+      "load_sequence": [
+        "chess",
+        "muller",
+        "shogi",
+        "chu",
+        "xiangqi",
+        "tori",
+        "adams"
+      ],
+      "per_load": "Native current-envelope Load over other game, stopped2ply state, opposite orientation, explicit Resume, root history, Return to live, Take back0paused, complete ordinary Save retaining abandoned history/observation.",
+      "quit": "Native Adams resignation with retained branch; dirtyCmdQ Save/Discard/Cancel guard, Cancel preserved game; ordinarySave then cleanCmdQ; separate OS process absence.",
+      "actions": "evidence/macos/actions.json"
+    },
+    "qa_bundle": {
+      "identity": "org.mshogi.desktop.verification.r6.shogipromotion",
+      "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/mShogi Verification.app",
+      "files": {
+        "Contents/Info.plist": "2517ef0511d8dd0cab6e176041960c6d1b1a54ae878de47713fa9538774b39ff",
+        "Contents/MacOS/mshogi": "45e61e3d2dcbff4e9b6d7d4fe7767b831b697f0d01454a827090deb91f8cc4b3",
+        "Contents/MacOS/mshogi-desktop": "53eb8001a206c6831ef4ca41c02d25570c0a04da08a66bb851de0eccf4ebe091",
+        "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc",
+        "Contents/_CodeSignature/CodeResources": "9b3d15a240094f670cd90755239fe922f4968b1374c88f4de7c8ed1c8dea4321"
+      },
+      "strict_codesign_exit": 0,
+      "unchanged_after_journeys": true,
+      "fixed_selector": "standard",
+      "external_gate": "desktop/scripts/verification/engine-gate.rs, fixed staging r6-engine-gate,5000ms maximum; forwards to unchanged bundled engine, no fabricated reply.",
+      "identity_evidence": "evidence/macos/qa-inspection.json",
+      "approval_observation": "Fixed existing QA identity reused for rebuilt source; no new approval prompt observed. No approval/security stores edited and no future reuse guarantee.",
+      "external_gate_identity": {
+        "source": "desktop/scripts/verification/engine-gate.rs",
+        "source_sha256": "54ad48a917aa34c78575849617787034459c1cf0004ce2e6bf4d1263be1548d2",
+        "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/verification/macos/r6-engine-gate",
+        "sha256_observed_after_journeys": "c6567c1341304ad4cbf2b4c5b8609ea6860d4813ed8866de5209e8a1e99dac6a",
+        "compile_command": "rustc --edition=2024 desktop/scripts/verification/engine-gate.rs -o desktop/src-tauri/target/verification/macos/r6-engine-gate",
+        "compiler_observed": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+        "real_engine_sha256": "45e61e3d2dcbff4e9b6d7d4fe7767b831b697f0d01454a827090deb91f8cc4b3",
+        "delay_ms": 5000,
+        "qualification": "Fixed QA-only external gate, actual hash read after journeys. Real bundled-engine play/completed analysis separately observed; paused gate is not relabelled as an already computing bundled engine."
+      }
+    },
+    "qa_journey": {
+      "host_pid": 54098,
+      "actual_captures": "qa21\u2013qa35 in evidence/macos/actions.json",
+      "checks": [
+        "Genuine bounded analysis failure displays no accepted result and assigns no Chess outcome; precise child diagnostic not captured before replacement.",
+        "Adams actual active analysis replaced, cancelled unscored with0plies.",
+        "Adams source analysis observed active before New; fresh Muller chosen and installed0plies.",
+        "Muller actual human1ply/engine-thinking source replaced by fresh Adams0plies; new root stable after old external gate interval.",
+        "Fresh Adams1depth/1024-node analysis completed, native score/perspective and No move was played at0plies.",
+        "Actual Save of real observation; cross-game Load Tori then reopened Adams remains stopped0plies with one Recorded search, no restored pending work.",
+        "Clean nativeQAQuit and separate process absence."
+      ],
+      "activity_qualification": "Local source-active assertions are pre-input observations, not exact activity at Start/Load commit or obsolete response delivery. Current Windows/Linux phase asserts work still active immediately before New commit and native deterministic test directly submits obsolete authorities.",
+      "excluded_attempts": "qa18\u2013qa20 and unintended ChessNew entries explicitly excluded in actions.json: a captured closure retained normal app handle; normal app relaunched PID54157, did not provide intended QA/cross-game evidence, subsequently closed through native Quit/Discard. Corrected helpers validate exact QA app identity on each observation. Also one unsupported Space key spelling rejected before input; corrected lowercase space."
+    },
+    "records": [
+      {
+        "path": "evidence/macos/records/msh88-adams.mshogi",
+        "sha256": "6011e7a00cf47ffafaae10919c4ebdee6a9b6c5e110d1ac609fee5754a67a05a",
+        "game": "tenjiku",
+        "profile": "mshogi.tenjiku.adams1999-modern.v1",
+        "observations": 1,
+        "controls": 7
+      },
+      {
+        "path": "evidence/macos/records/msh88-chess.mshogi",
+        "sha256": "c8eac7207fe2f136fe6fffe5121c97a86e8f54856fcd22315d4cfb43702b1d47",
+        "game": "chess",
+        "profile": "mshogi.chess.match.v1",
+        "observations": 1,
+        "controls": 5
+      },
+      {
+        "path": "evidence/macos/records/msh88-chu.mshogi",
+        "sha256": "e37de55e7256ce26e50a736a078d1eb9857d2f1e6769de90bb68d6b700806c32",
+        "game": "chu",
+        "profile": "mshogi.chu.jcsa2019.v1",
+        "observations": 1,
+        "controls": 5
+      },
+      {
+        "path": "evidence/macos/records/msh88-muller.mshogi",
+        "sha256": "a7cbda51e4968d3d0bfac713e9e6dae468d39d6607cc50dd0c3a861931d4faf0",
+        "game": "tenjiku",
+        "profile": "mshogi.tenjiku.muller-completed.v1",
+        "observations": 1,
+        "controls": 5
+      },
+      {
+        "path": "evidence/macos/records/msh88-qa-adams-analysis.mshogi",
+        "sha256": "30d16c01eb02bcb12169aee5055d21c0afd4d3c2603fcc5a0cd436ae32ea3ef2",
+        "game": "tenjiku",
+        "profile": "mshogi.tenjiku.adams1999-modern.v1",
+        "observations": 1,
+        "controls": 1
+      },
+      {
+        "path": "evidence/macos/records/msh88-shogi.mshogi",
+        "sha256": "f86a35f1873104de75e9ed6173f8c29a7266d1e1ce90c37e24d593ad98c9922c",
+        "game": "shogi",
+        "profile": "mshogi.shogi.csa36.v1",
+        "observations": 1,
+        "controls": 9
+      },
+      {
+        "path": "evidence/macos/records/msh88-tori.mshogi",
+        "sha256": "d16a34219c19f4cd7a48e85d92c8b328be7ab5ed00b06b6b31d4d78429db6424",
+        "game": "tori",
+        "profile": "mshogi.tori.modern.v1",
+        "observations": 1,
+        "controls": 5
+      },
+      {
+        "path": "evidence/macos/records/msh88-xiangqi.mshogi",
+        "sha256": "b23c929f74bb7adf558de1767df4ea63f268255abe17912a89e4ca57412baa8a",
+        "game": "xiangqi",
+        "profile": "mshogi.xiangqi.wxf2018.v1",
+        "observations": 1,
+        "controls": 9
+      }
+    ],
+    "readability": "All six games keyboard/pointer and both orientations exercised. Unchanged minimum760x650 and accepted dense Tenjiku small-kanji/badge limitation preserved; prior byte-identical minimum screenshots reused with original provenance. About960x1000 remains recommendation only. No complete screen-reader/audio/release-signing claim.",
+    "final_process_absence_receipt": "evidence/macos/process-cleanup.json",
+    "local_build_qualification": "Builds performed at bc92bfe HEAD with only documentation/evidence working-tree additions; normal bundle bytes exactly match the actual GUI build. No production dirty source.",
+    "capture_format": "Original native CUA JPEG bytes retained unchanged with .jpg extensions; AX text and action references identify each capture. Initial .png filename suffixes were normalized without modifying image bytes."
+  },
+  "reused_evidence": [
+    {
+      "path": "docs/m4/tenjiku/product-verification.json",
+      "scope": "Accepted ECA all6CI and47Windows/Linux isolated real GUI journeys, bothTenjiku complete actions/burn/stationary/native outcomes, recovery/incomplete/resource and current Mac minimum/normal visual evidence; unchanged production only."
+    },
+    {
+      "path": "docs/m4/tenjiku/shared-verification.json",
+      "scope": "Both profiles current native envelope/records/history/effects, limits/reserves and measured successful resource/refusal journeys."
+    },
+    {
+      "path": "docs/m4/chu/shared-verification.json",
+      "scope": "Unchanged authoritative complete routes/royals/effects/current document and admission."
+    },
+    {
+      "path": "docs/m4/chu/delivery-review.md",
+      "scope": "Unchanged Chu conformance/search/console/notation/special-action/product evidence."
+    },
+    {
+      "path": "docs/m4/tori/delivery-review.md",
+      "scope": "Unchanged native hands/promotion/repetition/search/console/notation/resources/real product evidence."
+    },
+    {
+      "path": "docs/m4/xiangqi/delivery-acceptance.md",
+      "scope": "Unchanged intersections/WXF warnings/claims/exact evidence/records/native outcomes/product."
+    },
+    {
+      "path": "docs/m4/shogi-delivery-review.md",
+      "scope": "Unchanged full Shogi native moves/drops/promotions/declarations/search/USI/records/product."
+    },
+    {
+      "path": "docs/review/architecture-acceptance-121.md",
+      "scope": "Accepted single-owner architecture and Chess M2/Full/claims/atomic current documents; intentionally retired development readers remain retired."
+    }
+  ],
+  "resource_policy": {
+    "changed": false,
+    "tenjiku_native_bytes": 1048576,
+    "tenjiku_native_events": 1024,
+    "tenjiku_native_deterministic_units": 512000000,
+    "tenjiku_document_reconstruction_units": 160000000,
+    "worker_seconds": 15,
+    "ending_close_reserves": "unchanged; mandatory measured representative successful journeys and typed near-limit refusals retained separately",
+    "new_measurement_scope": "Same-controller and actual cross-game document/work transitions only; no repeated complete native rules or strength campaign."
+  },
+  "ownership_matrix": "README.md",
+  "independent_review": {
+    "reviewer": "fresh agent /root/msh88_fresh_review, independent of implementation",
+    "source_verdict": "approved",
+    "independent_observer_command": "python3 -B -m unittest discover -s desktop/scripts -p test_gui_smoke.py",
+    "independent_observer_passed": 129,
+    "resolved_findings": [
+      "Exclude persistent Linux WebKit children from exact-engine retirement proof; negative test covers unrelated same-name binaries.",
+      "Distinct per-visit Save/capture paths and keyboard Moves preconditions.",
+      "Remove stale unsaved New/Load guard claim; require immutable profile identity in game_new contract."
+    ],
+    "final_platform_verdict": "Approved: no material blockers. All original MSH88AC1\u20134 and DoD1\u20133 supported; DoD4 awaits normal evidence commit/push then final task closure. This is bounded88review, not89/46/47 acceptance.",
+    "windows_verdict": {
+      "verdict": "approved",
+      "exact_source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+      "raw_report_sha256": "81e919cedfe2cbdf0c7a6bf580fc072fb9431f4e61339c68eb1f6feec2df9917",
+      "phases_passed": 49,
+      "normal_ring_host_pid": 1940,
+      "new_visits": 9,
+      "profiles": 7,
+      "cross_game_loads": 7,
+      "pending_ring_host_pid": 8008,
+      "exact_gate_processes_retired": 8,
+      "pending_target_sequence": [
+        "shogi",
+        "xiangqi",
+        "tori",
+        "chu",
+        "tenjiku-adams",
+        "tenjiku-muller",
+        "tenjiku-adams",
+        "chess-load"
+      ],
+      "checks": "Independent original-report decompression/hash, fresh native identities, exact context+real observations preserved on seven stopped Loads, historical flags, retained Take back observation, precommit activity markers, new root unchanged beyond old gate, all retired gate PIDs absent, native graceful shutdown and matching normal package hashes. Retirement is not delivered-response rejection; native deterministic tests supply that separately."
+    },
+    "linux_verdict": {
+      "verdict": "approved",
+      "raw_report_sha256": "bac2331dab5e21b4ef1cac97e43a592af14b4c42a06e2eef806f4454adf17d40",
+      "phases_passed": 49,
+      "normal_ring_host_pid": 173199,
+      "new_visits": 9,
+      "profiles": 7,
+      "cross_game_loads": 7,
+      "pending_ring_host_pid": 260519,
+      "exact_gate_processes_retired": 8,
+      "checks": "Independent raw-report/source/hash; all13 normal phase hashes match packageSmoke;13normal inventory files and2actual QApackage copies match producer receipts; seven original contexts+real observations reopen stopped/historical with fresh authority; retainedTakeback evidence; exact gatePIDs retired while persistentWebKit survives; every new token/zero-observation context stable past gate; graceful nativeQuit host/engine absence."
+    }
+  },
+  "original_criteria": {
+    "MSH-88": {
+      "AC1": "Supported: all6 native library/console/execution/session/document/desktop boundaries and seven profiles, accepted unchanged per-game conformance plus current mandatory native/release/frontend/host suites and actual GUI.",
+      "AC2": "Supported: same-controller seven-profile stale-authority/malformed-file atomicity regression, current actual cross-game New/Load/saveable history/Takeback/observations/engine retirement; existing unchanged Chess modes/strict current formats/capacity/refusal evidence reused.",
+      "AC3": "Supported: actual Windows/Linux49of49 each and current-byte-equivalent normal macOS27 seven-profile same-host gameplay/lifecycle plus fixedQA real-engine journeys. HostedmacOS15 build/native/package receipts remain separately labelled.",
+      "AC4": "Supported: exactbc source, all6successful job/step receipts, manifests/package+engine/report hashes, actual actions/environments and failed/cancelled/excluded attempts retained; original46AC1\u20135/ownership mapped, later89/46/47 responsibilities preserved."
+    },
+    "MSH-46": "OriginalAC1\u20135 mapped in README;AC6 belongs89.46 and47 remain unfinished."
+  },
+  "next_gate": "MSH-89 after88Done; do not begin89/46/108/47/M5 or closeM4.",
+  "local_development_attempts": [
+    {
+      "result": "failed",
+      "scope": "Uncommitted native test scaffolding",
+      "observations": [
+        "E0616 private pending fields: corrected cfg(test) module placement under shared.rs without widening production visibility.",
+        "Manual Chess pending fixture had already allocated work: helper uses actual existing pending context.",
+        "Failed Load legitimately updates snapshot I/O revision: retention assertions compare exact operation/session/selection authority and complete accepted native content, pending work, dirty/path/observations and prior file bytes, not unrelated progress revision."
+      ]
+    },
+    {
+      "result": "failed",
+      "scope": "External observer phase-inventory expectation",
+      "observation": "Initial128-test focused observer run had one expectation that normal phases omit new cross-game phase; updated inventory expectation; final129focused/176all verifier tests pass."
+    },
+    {
+      "result": "failed",
+      "scope": "Post-pass Windows evidence extraction",
+      "observation": "Initial retention helper assumed QA manifest had a files inventory; actual producer Windows receipt has installer/sha256/installation. Corrected audit to validate that exact schema and all actual matching installer bytes against producer SHA, retaining installed host/engine hashes from the real GUI report. No source/product/test rerun or inferred file count."
+    }
+  ],
+  "native_console_boundary_contract": {
+    "campaign_commands": [
+      "cargo test --workspace --locked",
+      "cargo test --release --locked -p mshogi-console --test tenjiku_internal --test tenjiku_selfplay",
+      "cargo test --locked -p mshogi-desktop-session --all-features",
+      "cargo build --workspace --locked"
+    ],
+    "exact_test_examples": [
+      "mshogi-desktop-session::seven_profile_new_and_current_load_rings_retire_all_prior_authorities_atomically",
+      "desktop_shared::real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids",
+      "desktop_shared::product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_paths",
+      "desktop_tori::real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement",
+      "tenjiku_internal::actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded",
+      "tenjiku_internal::actual_engine_turns_for_both_player_assignments_admit_observation_then_action",
+      "tenjiku_internal::actual_child_incomplete_work_has_no_fallback_score_or_conclusion",
+      "tenjiku_internal::real_historical_analysis_saves_exact_prefix_and_reopens_stopped_without_future"
+    ],
+    "console_smoke_scope": "Workflow ordinary Chess/Shogi profile/shell/USI commands; workspace tests retain all-six console/notation/external protocol contracts. These are different from the real GUI campaign."
+  },
+  "windows": {
+    "result": "pass",
+    "actual_gui_phases": 49,
+    "failed_phases": 0,
+    "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+    "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/42028972586",
+    "audit": "evidence/windows/audit.json",
+    "full_original_report": "evidence/windows/gui-report.json.gz",
+    "original_report_sha256": "81e919cedfe2cbdf0c7a6bf580fc072fb9431f4e61339c68eb1f6feec2df9917",
+    "manifest_audit": [
+      {
+        "kind": "normal",
+        "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "files_verified": 2,
+        "manifest_sha256": "c21321d76ab250d10a9b2714b2d2b959fba09aeaf38587863ca2c1ecc92af225",
+        "form": "producer file inventory"
+      },
+      {
+        "kind": "verification",
+        "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "files_verified": 2,
+        "manifest_sha256": "c5ad4cedcaf028ad343a523eb9034cb7e9f54a44306ea8915c03da0108487ceb",
+        "form": "Windows producer installer receipt; actual installed host/engine hashes are in GUI report"
+      }
+    ],
+    "normal_host_sha256": "c40ed60acc608564451cef010ce60739ccbe368f9b387c770cea7e2801a01745",
+    "normal_engine_sha256": "422b1e01070fa47cf40ff33ae14db63050f115626b49a3eddc04c97b77dccabe",
+    "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+    "scope": "Actual normal and separately labelled QA NSIS-installed native applications, interactive Windows desktop, real WebView2/native pickers/keyboard/pointer, all49phases including normal seven-profile same-host lifecycle and real-child cross-game/profile retirement. Normal distributables exclude instrumentation."
+  },
+  "linux": {
+    "result": "pass",
+    "actual_gui_phases": 49,
+    "failed_phases": 0,
+    "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+    "workflow_url": "https://github.com/jweathers777/mShogi/actions/runs/42028972586",
+    "audit": "evidence/linux/audit.json",
+    "full_original_report": "evidence/linux/gui-report.json.gz",
+    "original_report_sha256": "bac2331dab5e21b4ef1cac97e43a592af14b4c42a06e2eef806f4454adf17d40",
+    "manifest_audit": [
+      {
+        "kind": "normal",
+        "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "files_verified": 13,
+        "manifest_sha256": "89c36f866ca1e30a90fd6f59d1ae8e19709bd22acfd7482c9b29b15d0c676860",
+        "form": "producer file inventory"
+      },
+      {
+        "kind": "verification",
+        "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "files_verified": 2,
+        "manifest_sha256": "660260218fa1d48d99b03727ee9da885a109532b7a48de34995fd4ad70d0339d",
+        "form": "Linux producer extracted-QA package receipt; actual host/engine hashes are in GUI report"
+      }
+    ],
+    "normal_host_sha256": "862f1a5d9d6fdb30520a4cd316d2b64e0b4d80317dab71b580f8dbc3d3bc19f5",
+    "normal_engine_sha256": "f5ac2fcf1713d51a4ff524d7bb3ce5873a46dc51d3fd440fdf2681e5b3159daa",
+    "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
+    "scope": "Actual apt-installed normal Debian application with bundled engine, separately extracted labeled QA package, X11/Openbox/native WebKitGTK/native pickers,49passed phases including both new real cross-game sequences. No browser/synthetic substitution for seven-profile play."
+  },
+  "completion_gate": "Functional/platform acceptance approved; normal evidence commit/push and final Backlog DoD4 closure pending.",
+  "evidence_files": {
+    "evidence/ci/9dd173f-runs-jobs.json.gz": "8d00d2ace53dee1c55a278bba767b13d83eacfa9a9fced5a40b684aad97053a4",
+    "evidence/ci/artifacts.json": "a5b9a7ded681f7171eb25d5e6cef0d21bc5d40888bddcb0ef619d4dc7d0c8c31",
+    "evidence/ci/bc92bfe-macos-gui-packages-normal-manifest.json": "4597efaa471eb3dd272f845060b422c9b81e613ac413b441fee575a8c1728918",
+    "evidence/ci/bc92bfe-macos-gui-packages-normal-package-smoke.json": "865080433e8cf832fd0cfc194053b0decdffffddca02e9ad094f18276cb25f8b",
+    "evidence/ci/bc92bfe-macos-package-smoke.json": "865080433e8cf832fd0cfc194053b0decdffffddca02e9ad094f18276cb25f8b",
+    "evidence/ci/bc92bfe-runs-jobs.json.gz": "20ea743c2c0805b3f6dcfeae689fa7bfe3973cea04c6d35a08fec6dc2f518b40",
+    "evidence/ci/msh88-bc92bfe-desktop-linux.log.gz": "e2ec51e0a30fbc6e8d1339b78073f71c387f4c2d977cc7432e529c21611c81ab",
+    "evidence/ci/msh88-bc92bfe-desktop-macos.log.gz": "fdf8c59f898dbd9556e4c7ebf425dbfc0daf60ef61c55592cb44422c8efc64fb",
+    "evidence/ci/msh88-bc92bfe-desktop-windows.log.gz": "97a560a152ce36d48cf64cb3d5dee768054ffdd451a4d7f3e6031a6eb674c1b1",
+    "evidence/ci/msh88-bc92bfe-rust-linux.log.gz": "93057979acdeb07486dbc332e48d3069a6fb85711f185d3a8eda99334f846820",
+    "evidence/ci/msh88-bc92bfe-rust-macos.log.gz": "9ca1e5cfb0ba375679c959b06fd18fd66a199995442eb383145345b4c79df7ea",
+    "evidence/ci/msh88-bc92bfe-rust-windows.log.gz": "58d000a03abc2ead6de4a41061dada5689b4df4ae2234e19df365d782b044905",
+    "evidence/linux/audit.json": "2eecc0e97535d8b985d7939d132b5a3029a156fde0c1966623ad48552cb63f09",
+    "evidence/linux/gui-packages-normal-manifest.json": "89c36f866ca1e30a90fd6f59d1ae8e19709bd22acfd7482c9b29b15d0c676860",
+    "evidence/linux/gui-packages-normal-package-smoke.json": "e7a6c9ac5deddde7d89b99549e22e4e22b8d806a244ab00970ea06320532d253",
+    "evidence/linux/gui-packages-verification-manifest.json": "660260218fa1d48d99b03727ee9da885a109532b7a48de34995fd4ad70d0339d",
+    "evidence/linux/gui-report.json.gz": "2c80a4cb9968b0b85cf499fe3693aaab78d05b3ae6c223e92cfb018a4c79440b",
+    "evidence/linux/normal-cross-game-loaded-and-taken-back-chess.desktop.png": "1e69b3de8b430a00595be8045f3f3647a739724a64ec69d2804a6d95e9f8b5b5",
+    "evidence/linux/normal-cross-game-loaded-and-taken-back-chess.dom.json": "47682ede831044faac071d8261457ac738b8e893006bab5dc72f4aed52d6be4f",
+    "evidence/linux/normal-cross-game-loaded-and-taken-back-chess.webview.png": "33e7124c64527f8469080fb244517726461ed2cd5e88b3471df8ca20abf638ee",
+    "evidence/linux/normal-cross-game-loaded-and-taken-back-muller.desktop.png": "92ba082556c1939d8c5ef7594168bc04abb534834e1da75639a632e6272e6e24",
+    "evidence/linux/normal-cross-game-loaded-and-taken-back-muller.dom.json": "041ffe3b61951b22afc4eee815898d998b2712beb4af632370ae9a55dc70dfba",
+    "evidence/linux/normal-cross-game-loaded-and-taken-back-muller.webview.png": "bdb3397105346b5f351da3d609602a20950a03674efd3fd9d41da5a32ad5c46f",
+    "evidence/linux/normal-cross-game-saved-5-adams.desktop.png": "90a034181570b097774d8294de0cb3477af3dafed90b8b1ab42fbcf1bcfe05ef",
+    "evidence/linux/normal-cross-game-saved-5-adams.dom.json": "ebc24db5fa045882c661d73b84cd95eb2532cbfe4eae68523134648c59f41628",
+    "evidence/linux/normal-cross-game-saved-5-adams.webview.png": "ffe7b1dcc9bef8216bae0d39622f661dd0c913607a208b259334bb6da3143f0f",
+    "evidence/linux/package-smoke.json": "e7a6c9ac5deddde7d89b99549e22e4e22b8d806a244ab00970ea06320532d253",
+    "evidence/macos/01-chess-keyboard-real-engine.ax.txt": "89524e312bcd6483c798a60bcfda61a6b612d15bb866cf7ec8ac15f0245fc0b5",
+    "evidence/macos/01-chess-keyboard-real-engine.jpg": "ea17496a6d3453d6e9edc6b127679b60f8b1695d5043bfa8a2d27026ce5674b4",
+    "evidence/macos/02-chess-saved.ax.txt": "c9b104f3330498ab025e831f83ade487ed0ec6b19286f24283972d0d0a87a431",
+    "evidence/macos/02-chess-saved.jpg": "eccf55638c37c6e82597d26e205a8d35c2b51aec4e0b07154bea4ec648c06dd8",
+    "evidence/macos/03-shogi-keyboard-real-engine.ax.txt": "8237fb899b85140872b0c791444987edb92eb918a2674843793c25468e9675d0",
+    "evidence/macos/03-shogi-keyboard-real-engine.jpg": "c4b8f8485832b03439621c0fc43a9ba88c0ae8a1a8ffc282b646fe9e481ff1fa",
+    "evidence/macos/04-shogi-historical-prefix.ax.txt": "6614f98acddd9d6500cb3a6a9cc4f0a58c164d84d74a72df72a7f8a79c573012",
+    "evidence/macos/04-shogi-historical-prefix.jpg": "a2daf54a9c0754b0580dc20cc5b48d8a9edb830184b0957894f23d35d2c3f2a8",
+    "evidence/macos/05-xiangqi-keyboard-real-engine.ax.txt": "a56ea8ab09a4dd5d65d1f87cec478cade5d2928cb6308e2e9f587e62ed5f075a",
+    "evidence/macos/05-xiangqi-keyboard-real-engine.jpg": "3b63b29fbc200cc6c0921478c79a064e656ac98eab070d69450ad7a674bc824d",
+    "evidence/macos/06-xiangqi-read-only-enemy-inspection.ax.txt": "987edb9ef7da188909b5235121b70cd3bff9e8ef67997610b38b626642204e18",
+    "evidence/macos/06-xiangqi-read-only-enemy-inspection.jpg": "a1149313b5e33d22f39f2d9d721877c4e23b6001cbe5d439df8d0cdf54f5c40a",
+    "evidence/macos/07-tori-keyboard-reply-hands.ax.txt": "0c4748abaded8c4690da9f47bea938b9d5fb6dc6ed6a787b197b19b774b68687",
+    "evidence/macos/07-tori-keyboard-reply-hands.jpg": "83094091be7abdda95c554059826c610862d4e5c51a1d1de94e8bb16b3050be6",
+    "evidence/macos/08-chu-keyboard-real-engine.ax.txt": "e5df15ea7b53058969bfb133ea4a144db7864c9611fb4e62a22a91f32cad4a09",
+    "evidence/macos/08-chu-keyboard-real-engine.jpg": "77f70daf3a6e3642254bac41cfe19f087ba65b1f26503354ec63bcc3d0e94f8d",
+    "evidence/macos/09-chu-friendly-name-selection.ax.txt": "a23ee338433b67f7b554bf91829e97c8ca9b3ed65f087400830c156d5a5b5887",
+    "evidence/macos/09-chu-friendly-name-selection.jpg": "d58ca56b9ce766e7440137d47bc6b8a61bb0d4198c55a775b3e964691aa82c22",
+    "evidence/macos/10-tenjiku-adams-keyboard-real-engine.ax.txt": "50244a1be935c2a3b0e41c55bf02969268cc4db2d1fd9eec8e0a3172c5ad88c5",
+    "evidence/macos/10-tenjiku-adams-keyboard-real-engine.jpg": "45d4aad36f60ad76d26ee1d83a5775a581268db00dfd313c988435cbcb9036f0",
+    "evidence/macos/11-tenjiku-muller-keyboard-real-engine.ax.txt": "bffe7e1f857af5858089dcc9e0a50ead484b8bd34ccfc4c0c59eb62b3049a919",
+    "evidence/macos/11-tenjiku-muller-keyboard-real-engine.jpg": "b41f97587319e90e99bec9388c80f9e85b92d992ef0faf1ac38045be9ef10b88",
+    "evidence/macos/12-tenjiku-muller-to-adams-gote-real-engine.ax.txt": "8b884c1f0ab3f35b959f2ede1b0e871e42a4d3192e50ccf87420b89d818450b4",
+    "evidence/macos/12-tenjiku-muller-to-adams-gote-real-engine.jpg": "7a1af970bd6e3410d736f83d67d35bdbd282f08d6a4d99cf59e5416562d84eb7",
+    "evidence/macos/13-tenjiku-to-loaded-chess-stopped.ax.txt": "6a6933ba1ea01be76ca58c3cde83539968c4663e4455677459158dc727f57d62",
+    "evidence/macos/13-tenjiku-to-loaded-chess-stopped.jpg": "d8686da27f77ef700063894e485a32c794a283f99952ca4c21f5d8a16beaeaf7",
+    "evidence/macos/14-adams-native-resignation-with-retained-history.ax.txt": "cd89b6d1083cf2a15af5ef0624eeb565ce96606a97cb12ecf1e01b2e82401efd",
+    "evidence/macos/14-adams-native-resignation-with-retained-history.jpg": "28824f2a9dfb7947f2d24d28bcd7a5a50449c978ef86ae9853d2ab0e749afb19",
+    "evidence/macos/15-dirty-native-quit-guard.ax.txt": "b6b1e9400cfc0f1f29f1a0ea377375adf8afaffaa6e398a61792ec20fcc3c274",
+    "evidence/macos/15-dirty-native-quit-guard.jpg": "bb70466563742cbb2b2d26e99d04729955ff1e87030d330c3738cd56f0be19f8",
+    "evidence/macos/16-native-quit-cancel-preserves-game.ax.txt": "cd89b6d1083cf2a15af5ef0624eeb565ce96606a97cb12ecf1e01b2e82401efd",
+    "evidence/macos/16-native-quit-cancel-preserves-game.jpg": "d959bcba122fc8e965be36484ca3c5d087e123b614a6c9e7bacef00656dbcace",
+    "evidence/macos/17-native-conclusion-saved-clean.ax.txt": "6f455de762a7e56f54a6f0852e304d6b92821036591fbf89b34e3092ad226eb1",
+    "evidence/macos/17-native-conclusion-saved-clean.jpg": "6cb46c50d8780e433d872ee7dba5af972ea2714f42e6b5180d808e13e5e5fd41",
+    "evidence/macos/actions.json": "b0428f617ebaac8b36b804b70aa426613045ed9a9c24ebf7fe120a0ccdd974cc",
+    "evidence/macos/load-adams-history.ax.txt": "63b654063c269780424a38a77e4f5631dc0658390872ed3522f4134eb625034e",
+    "evidence/macos/load-adams-history.jpg": "234c093d6352b0cf655f3f82d9e328716ec24655df54f4ff05db355947fbacd9",
+    "evidence/macos/load-adams-opposite-orientation.ax.txt": "26f7a6842f2f6b0e7cf5c951608f4fc998547c964d548c87d02d6ad75fe90249",
+    "evidence/macos/load-adams-opposite-orientation.jpg": "ae807a3da7b43016127258e603407d0fb9f5e009670e600b06d5ec9bce8be0a1",
+    "evidence/macos/load-adams-retained-branch-saved.ax.txt": "1f189ce409e10802bb06588abf3e8ff48808484ee1e036b44b3374c0425a7e6b",
+    "evidence/macos/load-adams-retained-branch-saved.jpg": "05cd0b9617b6e06f8da206d98e07e5c8609692c9028f29f0781c83dde55ce7c6",
+    "evidence/macos/load-adams-stopped.ax.txt": "6d974ae0713042fd0f6ec02012585b4ee9c0113519faa16e7ca52feb837ba77a",
+    "evidence/macos/load-adams-stopped.jpg": "4c439020ba23a9e766bd0ba26c92f54ccf924867d288f86f4bab1937d982c535",
+    "evidence/macos/load-adams-takeback-stopped.ax.txt": "8c7f9500aa2fe2ab991c49468b3c15659ad6468156f5760f370d4362075acaf9",
+    "evidence/macos/load-adams-takeback-stopped.jpg": "184741692f91d3b4d928cc904f50fe0fcada894f57a363a9e75896028de948f5",
+    "evidence/macos/load-chess-history.ax.txt": "706167ca6455329835eaf755b4ef98a01c4ea06f35050bc4cfad5ba1bc870560",
+    "evidence/macos/load-chess-history.jpg": "45bc89b8e2a3e05c51bdc312e7a2b4505d8f53a4c4346ebad666c4810a2e60e8",
+    "evidence/macos/load-chess-opposite-orientation.ax.txt": "e435d7f14cea1aeb13847f462d67f00f4ea0dc3f2cfbb3e4ee1b31f1aa26b65c",
+    "evidence/macos/load-chess-opposite-orientation.jpg": "9e7ec7dee75b2bb9cd04a12d87b5addb3444b17cd1d691f8b77e6d1dfb43d7b4",
+    "evidence/macos/load-chess-retained-branch-saved.ax.txt": "d392fdd08cee144227423f42758844bd38c93a313ac7f60754335cc25e51060e",
+    "evidence/macos/load-chess-retained-branch-saved.jpg": "ada026ed980b8b2a76432b0167587abf1249b222e1d4112211960b44429e3a0f",
+    "evidence/macos/load-chess-takeback-stopped.ax.txt": "55c83ea25fe476a7adc88264a1e5ee721896187a8644af435d4d1a13d9f7df86",
+    "evidence/macos/load-chess-takeback-stopped.jpg": "bc056ac357997fa5f7b109d35e05b16634bbed042126c8bdfbbf3e905bc1c6ec",
+    "evidence/macos/load-chu-history.ax.txt": "7b6281a90cd5c7fe97db35194eabb7e169ac531eec6f5bb74a00e882db68f419",
+    "evidence/macos/load-chu-history.jpg": "42b3e0d24a1c91b4414aa87feedf2099dca3f0920358653299e786a31d041ec5",
+    "evidence/macos/load-chu-opposite-orientation.ax.txt": "255f20caabe610671e65d03c58f8c36dda8ce4e64761b396432fbbb076e7212d",
+    "evidence/macos/load-chu-opposite-orientation.jpg": "476657e551df6e82d4469dac300e7c2d244eca8787576a8b147f11595475f6e0",
+    "evidence/macos/load-chu-retained-branch-saved.ax.txt": "b0b65085a357b49c37d135d9a3c09aa3e8b41b5c923f55ea698fb978c24c5117",
+    "evidence/macos/load-chu-retained-branch-saved.jpg": "a31efc87554cd04d461882986d251f14a71f6c48417b235147468d86b75b9b61",
+    "evidence/macos/load-chu-stopped.ax.txt": "a557f735d6b4c475e4f239ab1c9cea64962566a33780faf1c36f76bfd06d45ad",
+    "evidence/macos/load-chu-stopped.jpg": "6c1e4339a2c1afae279586fa0c9bd3d20d505735a8a8a9d20a1a6473d1167c9c",
+    "evidence/macos/load-chu-takeback-stopped.ax.txt": "c4e06ebeca90ae653ced4a07ef30b19dfca85398819c956bb9055ee33b23a872",
+    "evidence/macos/load-chu-takeback-stopped.jpg": "71a0abcb3f4d0f116f1568f2ac2b582d2d02fdf0c4d77fc4709ec3baf5282347",
+    "evidence/macos/load-muller-history.ax.txt": "fea730120bc7d82390bbd521cc0d80e93b59d1e483e0635a4bc6e3486ffc73ef",
+    "evidence/macos/load-muller-history.jpg": "47b2b645396f3f4d2b360235b5c619b034b3272fdb536cf60282af777c3d5dd0",
+    "evidence/macos/load-muller-opposite-orientation.ax.txt": "9e3a881a6dfbeae5e1f2bc5198f472b841c41aa8e100c42200350b5847b35951",
+    "evidence/macos/load-muller-opposite-orientation.jpg": "3f02926375eb5c91fba5b4e25ed13ee531af7f67d893e8042c25ed43fdafe1b3",
+    "evidence/macos/load-muller-retained-branch-saved.ax.txt": "a01ac416b8416b1965ef97245b16f3283ed06a194ead7bea4c5d43908c99e409",
+    "evidence/macos/load-muller-retained-branch-saved.jpg": "a232f5250738abddc2083a9ebb851fa4423b6939397ff860573a388f54b413f3",
+    "evidence/macos/load-muller-stopped.ax.txt": "1da9d935425635e36245fc18fad90b5e48f2e27616f7a43c766be014954b2250",
+    "evidence/macos/load-muller-stopped.jpg": "2dd0f4dd9a9ec13dd974098b2270970630ce5a5963776fc5d7650e10e632c20a",
+    "evidence/macos/load-muller-takeback-stopped.ax.txt": "6eda7e41dc53bf3901121b29e4d5507505e2d69f0911e9e48cfd64bc359f00ce",
+    "evidence/macos/load-muller-takeback-stopped.jpg": "19419d707b0988d7d4a3fb750c1c9a622b71ff59a9b2a660d06084a921c49b3d",
+    "evidence/macos/load-shogi-history.ax.txt": "d7215bfb0ce759edc136a741f5ed5c8cfb0cf2aea3d2dbf10ae8d3b42738e080",
+    "evidence/macos/load-shogi-history.jpg": "af29e51c07e33dab513d0eba6076bc23819c6b7bd2941b4c5a9c0bb9db200874",
+    "evidence/macos/load-shogi-opposite-orientation.ax.txt": "63e8e3dd8cc2293cd8864bedc585f29f1368019bebd7a7f77f4afc86840b70e7",
+    "evidence/macos/load-shogi-opposite-orientation.jpg": "3e923afacb33af7835a24426c42272bf302a57f9366c1773f9abe428400124cc",
+    "evidence/macos/load-shogi-retained-branch-saved.ax.txt": "d623b0e667ac65b79e36eb722d818bc8f5b83a37a697b880d540aacdd71c1ffe",
+    "evidence/macos/load-shogi-retained-branch-saved.jpg": "a2e6327f1946afe119ef262539e78c162a4ef66dc8a8891e61a6e9ad7f273422",
+    "evidence/macos/load-shogi-stopped.ax.txt": "5293277336b8b4cbfee93b53384475ba67fce5341dbda8e1b79e2c8d76dc6de8",
+    "evidence/macos/load-shogi-stopped.jpg": "45e1c7943ea11bbc8164bc783d56218896ce7fe923f4b42807b69e2189bea8f7",
+    "evidence/macos/load-shogi-takeback-stopped.ax.txt": "ce2ddfcc5c1832fe9e53700f7877ae8b54f0374191b4e43f8dddeedf104ed77e",
+    "evidence/macos/load-shogi-takeback-stopped.jpg": "219b7c2e6ec76a98c808f32e1108e2827588b62cc0e9970663285905d9f991dc",
+    "evidence/macos/load-tori-history.ax.txt": "e19af94cf00b8075373d1016f1366d5399aa1066081581a8b2b47b692c35120b",
+    "evidence/macos/load-tori-history.jpg": "868c5cbc16b354358d0d13441dba0d03dfa20609bbe93e85c4eeabea1672a685",
+    "evidence/macos/load-tori-opposite-orientation.ax.txt": "19951fb80573c6076bd108944c1d401da7607ea6dd306207789777b71e5f4721",
+    "evidence/macos/load-tori-opposite-orientation.jpg": "04307e431862a00519b1cb82bf6b0c71a26f45ea93b6e9b8fc64c1378e698df3",
+    "evidence/macos/load-tori-retained-branch-saved.ax.txt": "c4a12dfd2f0a518e6392ded7c98be275a451c3b5cc547104e6f2a1273d839ebb",
+    "evidence/macos/load-tori-retained-branch-saved.jpg": "8afbb99f23721455704a96fd307b2cb007a37b6b5b6e59e475af765a50e9870b",
+    "evidence/macos/load-tori-stopped.ax.txt": "beba9505622d284a235a915f7a4ab98f330ff1f708395e9349ef8d267040ded2",
+    "evidence/macos/load-tori-stopped.jpg": "a71335159d4144e1f91f035efd16dbfca8e78fe83eec1f26ea2b646cba393a25",
+    "evidence/macos/load-tori-takeback-stopped.ax.txt": "180564586ea4f3335ab4a647d0fc91bbf0f1c0785e84ae34dcdcf1d342a0f2a1",
+    "evidence/macos/load-tori-takeback-stopped.jpg": "e7475fbc96b54743cd0e4dd20ab886eb325e4a30c6a2fddf05cdbbcad77f68f4",
+    "evidence/macos/load-xiangqi-history.ax.txt": "4c740c63db7ad8017b37c2671bf012fd3c9f073d5a4b5bff24e7a871c222c009",
+    "evidence/macos/load-xiangqi-history.jpg": "b6ce125604df5017763fc3488b22e64aa907dc5173d480cb1da3bf3f18aaef18",
+    "evidence/macos/load-xiangqi-opposite-orientation.ax.txt": "f460eef2fc974d18e41c146753498e22759328ffee02ae7bc09c95ffd188f9cb",
+    "evidence/macos/load-xiangqi-opposite-orientation.jpg": "9dc88924d00b6fecae6062f6f74446d15b15dc7d6a6396ca5cc48e2769d35af3",
+    "evidence/macos/load-xiangqi-retained-branch-saved.ax.txt": "5a124715173d2beb15c37a0a9c76e104f353453a76baef43983ed1cfdf908fea",
+    "evidence/macos/load-xiangqi-retained-branch-saved.jpg": "7be91000a54876bc59a2f86dc7cbe46ad520e0e852f3caf440252bd30acb3fc2",
+    "evidence/macos/load-xiangqi-stopped.ax.txt": "b76fe6a1500c196485865c1b25977ab45a898a5d44599b0cce93d90e2c4bd8c4",
+    "evidence/macos/load-xiangqi-stopped.jpg": "0a7461e67653d0420ad3c7065a2cdc6ef3a8088a03723e5d54a17e30f58310ea",
+    "evidence/macos/load-xiangqi-takeback-stopped.ax.txt": "0aa07b84c2433465223aa09b82f8a3fad785abe65e27169df5a2ea9a67b39194",
+    "evidence/macos/load-xiangqi-takeback-stopped.jpg": "682ded0b4ae85cf4840555c1717fa26bea9a927cb6fcd8e64c5e29fb601fc126",
+    "evidence/macos/normal-before-rebuild.json": "15ceffb75e60c51d67c920f9aa38b02d3bde22d098453895abb6698d1da4d1b3",
+    "evidence/macos/normal-build.txt": "8c99453d7b386e1631303d25f77da245f68d8353119fbb2aec546324c7e7d291",
+    "evidence/macos/normal-current.json": "15ceffb75e60c51d67c920f9aa38b02d3bde22d098453895abb6698d1da4d1b3",
+    "evidence/macos/process-cleanup.json": "7056bb0e261acebac8804567aa5ae1be8c3418edcbdec3b6aa5264b9af162f28",
+    "evidence/macos/qa-adams-active-before-profile-New.ax.txt": "eb72b56cc22b54328cea2ded5c8664ac39efd724b09c0aacec1ed5de6ae65dd3",
+    "evidence/macos/qa-after.json": "0fdb41d2f67d6a03b62169e37f80301738a2b5ab31618df063c9ab1478231005",
+    "evidence/macos/qa-build.txt": "aa7676822319fe9460b816e3056d881fee68dccc53254180df18ecbd40e62469",
+    "evidence/macos/qa-chess-source-before-New.ax.txt": "803cbf8dd5c5c8578b8e15043a427062a4e82e5a1222120b741bc01a99081931",
+    "evidence/macos/qa-identity.json": "0fdb41d2f67d6a03b62169e37f80301738a2b5ab31618df063c9ab1478231005",
+    "evidence/macos/qa-inspection.json": "0fdb41d2f67d6a03b62169e37f80301738a2b5ab31618df063c9ab1478231005",
+    "evidence/macos/qa-selector.json": "d5c579d9d94e6a93a0881865590d9188722e739628045e5d7f0e3aac0f1c46fe",
+    "evidence/macos/qa18-real-chess-analysis-active.ax.txt": "a1ca3d7aa7fb9926e792649c5893f0a75aab9b780a283dd52f96e8ba04d0b61e",
+    "evidence/macos/qa18-real-chess-analysis-active.jpg": "326b01ab46d455bdd5118136222a0570a75d1fd3a0482ab65c27ed13c360743d",
+    "evidence/macos/qa19-real-analysis-cancelled.ax.txt": "8c348cf68b701bb2bfabd3a563ded17005724d7f24d292517a9f4ad05734344f",
+    "evidence/macos/qa19-real-analysis-cancelled.jpg": "6c2f1b8f46db014fe08fa75a964cf8f7339ab4ec0ec36a65f841ff72eb77dc6d",
+    "evidence/macos/qa20-chess-analysis-to-shogi-New.ax.txt": "89f9b603a022bcab0f6eaa4e70d1c60282067e68a9783d5abb94f5dfe714a157",
+    "evidence/macos/qa20-chess-analysis-to-shogi-New.jpg": "c713315d014d162a1a8d7d7d5c21f5f5b4438d9d844abd998e66b9ade66b559f",
+    "evidence/macos/qa21-actual-QA-honest-analysis-failure-no-outcome.ax.txt": "a4e9c63059841f2064470475574f1a3a0e9fab7953eaa6904db6553309e1cf72",
+    "evidence/macos/qa21-actual-QA-honest-analysis-failure-no-outcome.jpg": "05702b4ef724568dfb6a36d58248a0b2bd2bd90672e3a79fb7c91fe8bf944770",
+    "evidence/macos/qa22-adams-analysis-active.ax.txt": "eb72b56cc22b54328cea2ded5c8664ac39efd724b09c0aacec1ed5de6ae65dd3",
+    "evidence/macos/qa22-adams-analysis-active.jpg": "383b296a302776f4dd30fefc75a20ba184b470339da82cc336547113b180b408",
+    "evidence/macos/qa23-adams-analysis-replaced.ax.txt": "eb72b56cc22b54328cea2ded5c8664ac39efd724b09c0aacec1ed5de6ae65dd3",
+    "evidence/macos/qa23-adams-analysis-replaced.jpg": "e240889046a8bcf785847f82b87364c9a4cee8b6b49a06f8c4ca276eac6ab254",
+    "evidence/macos/qa24-adams-analysis-cancelled.ax.txt": "75834f10d2bb7ac1640296eac050672ae460565d369a1616bb63061e394db4ae",
+    "evidence/macos/qa24-adams-analysis-cancelled.jpg": "c08e19708d6be71100af5d387f83a4fe874b66ecb47d613d821fbdfa7063eaf8",
+    "evidence/macos/qa25-active-adams-replaced-by-muller.ax.txt": "40650d18aecb4702355244266ed14a24da59d909bf005afae9fab7f789048099",
+    "evidence/macos/qa25-active-adams-replaced-by-muller.jpg": "90f10c37d647e32899310964ed6e5da72167e7b3418fc2fa7be68dd015ad0ce9",
+    "evidence/macos/qa26-muller-root-after-old-gate.ax.txt": "40650d18aecb4702355244266ed14a24da59d909bf005afae9fab7f789048099",
+    "evidence/macos/qa26-muller-root-after-old-gate.jpg": "174555d5337d45a4e0d08bc3554a475e8f180d89fed7aa617addd4ebd4b47f7c",
+    "evidence/macos/qa27-muller-real-engine-pending.ax.txt": "d470ac4c49af7c4246361f6b910ec77a320ddcd03aabe47c21429513a4ebbf79",
+    "evidence/macos/qa27-muller-real-engine-pending.jpg": "da13f8f17c4dc32ca3adc1bfdc228fde394316b7a1f9cfaeacef33f13c79eb6e",
+    "evidence/macos/qa28-muller-pending-replaced-by-adams.ax.txt": "068bb12cce79741ec11c70a12792b9b716e1ddff6465cf9d3677ba10bba720bc",
+    "evidence/macos/qa28-muller-pending-replaced-by-adams.jpg": "14e5d9ae5f063a1dfddb00a5d614304f5d4adc2e8746788ed5cae284aba88190",
+    "evidence/macos/qa29-adams-root-remains-after-retired-muller-gate.ax.txt": "068bb12cce79741ec11c70a12792b9b716e1ddff6465cf9d3677ba10bba720bc",
+    "evidence/macos/qa29-adams-root-remains-after-retired-muller-gate.jpg": "f56dc9fc346480e1f0184166496602f71deda9c1c3bc3b11036fe60b84ad1c21",
+    "evidence/macos/qa30-adams-fresh-readonly-analysis-active.ax.txt": "eb72b56cc22b54328cea2ded5c8664ac39efd724b09c0aacec1ed5de6ae65dd3",
+    "evidence/macos/qa30-adams-fresh-readonly-analysis-active.jpg": "c77da7e3483515942e1c8c98c9d0560037c75e4c304750e901131dc7647c903a",
+    "evidence/macos/qa31-adams-readonly-analysis-complete.ax.txt": "489f00f0610d4a3ddf3882f85d55636ca44b1919548251dc2ab5684f5c429996",
+    "evidence/macos/qa31-adams-readonly-analysis-complete.jpg": "fbd474918b87e352a9257c06cfe37932f142ad0636664118550c52e26ef19193",
+    "evidence/macos/qa32-real-analysis-saved.ax.txt": "75a20874f3b832a4b7f5764a73eea2c34bea00107d18908c3b0de7a2ef573649",
+    "evidence/macos/qa32-real-analysis-saved.jpg": "e186d8ad5de1405dde7c5a1662060ac2716ee45e2346c567efcf89fe2b512aaa",
+    "evidence/macos/qa33-adams-to-stopped-tori-Load.ax.txt": "583ad6c2fc9551c3c33d97473922f5a9550a658354eeb862448380766c7cfbcd",
+    "evidence/macos/qa33-adams-to-stopped-tori-Load.jpg": "a832253b65d44725c53b974e38cecd56ef98238234d33ab82803a59c38bb1fa3",
+    "evidence/macos/qa34-cross-game-reopened-analysis-historical-stopped.ax.txt": "0f3c0e9a3fc6254a49f0c0d46182c20fb302bc64d51fa7af341e97d7dbec9894",
+    "evidence/macos/qa34-cross-game-reopened-analysis-historical-stopped.jpg": "f048b2a50935acdac242adec85678ef941361ee5edffe3178207660051fafb03",
+    "evidence/macos/qa35-reopened-readonly-analysis-evidence.ax.txt": "053bbb4ab57301e2e534637498ad1c2d0314b232e754b0c7e4ed8115d3e58bfc",
+    "evidence/macos/qa35-reopened-readonly-analysis-evidence.jpg": "c94bda895ccd4aa1d4eb425aefad49d02e461ead5d9e9fdb36b58cba821edfaf",
+    "evidence/macos/records/msh88-adams.mshogi": "6011e7a00cf47ffafaae10919c4ebdee6a9b6c5e110d1ac609fee5754a67a05a",
+    "evidence/macos/records/msh88-chess.mshogi": "c8eac7207fe2f136fe6fffe5121c97a86e8f54856fcd22315d4cfb43702b1d47",
+    "evidence/macos/records/msh88-chu.mshogi": "e37de55e7256ce26e50a736a078d1eb9857d2f1e6769de90bb68d6b700806c32",
+    "evidence/macos/records/msh88-muller.mshogi": "a7cbda51e4968d3d0bfac713e9e6dae468d39d6607cc50dd0c3a861931d4faf0",
+    "evidence/macos/records/msh88-qa-adams-analysis.mshogi": "30d16c01eb02bcb12169aee5055d21c0afd4d3c2603fcc5a0cd436ae32ea3ef2",
+    "evidence/macos/records/msh88-shogi.mshogi": "f86a35f1873104de75e9ed6173f8c29a7266d1e1ce90c37e24d593ad98c9922c",
+    "evidence/macos/records/msh88-tori.mshogi": "d16a34219c19f4cd7a48e85d92c8b328be7ab5ed00b06b6b31d4d78429db6424",
+    "evidence/macos/records/msh88-xiangqi.mshogi": "b23c929f74bb7adf558de1767df4ea63f268255abe17912a89e4ca57412baa8a",
+    "evidence/observer-tests.txt": "18da82a568756643745f1605b2ad317344fbe4d0e9a62cdb335eb326dc089103",
+    "evidence/windows/audit.json": "cbed21cc52fd23a1b672d4f61e0b810b2faf02f8981fca93fc2578f1f55d3985",
+    "evidence/windows/gui-packages-normal-manifest.json": "c21321d76ab250d10a9b2714b2d2b959fba09aeaf38587863ca2c1ecc92af225",
+    "evidence/windows/gui-packages-normal-package-smoke.json": "efb23ae0c6b152dfd3de5e85ede6c1be58bbe40680a4602e86977bb8d3acbfdb",
+    "evidence/windows/gui-packages-verification-manifest.json": "c5ad4cedcaf028ad343a523eb9034cb7e9f54a44306ea8915c03da0108487ceb",
+    "evidence/windows/gui-report.json.gz": "8c15facd38fe00797788212df78bd358a2ab55c997340c180ff4b92bc9162e37",
+    "evidence/windows/normal-cross-game-loaded-and-taken-back-chess.desktop.png": "3530ce87b1131b44264f27018b9a09eb80912f9f2ece921f71d2d31f1d6362ff",
+    "evidence/windows/normal-cross-game-loaded-and-taken-back-chess.dom.json": "fdc6625c05c6b900b974a6862eb83d0d98da64284029f9bc27f621b38d00a001",
+    "evidence/windows/normal-cross-game-loaded-and-taken-back-chess.webview.png": "fe46b4458be29f19b7b898f7586daec63cd300cca41ad56e7aa74da44d4111da",
+    "evidence/windows/normal-cross-game-loaded-and-taken-back-muller.desktop.png": "38c755bbb51f317d1c19a2c72eb1911a3e620903fa47b3bbd18304b9877d5a49",
+    "evidence/windows/normal-cross-game-loaded-and-taken-back-muller.dom.json": "a14d4efbb5d054db5763bedaa40e587dc86ef257648d1d1b2433a5f80d27565f",
+    "evidence/windows/normal-cross-game-loaded-and-taken-back-muller.webview.png": "61dcd04e4bddb2ee226a160994f2d73e97f5b7130898c64fd5aef29d116e7f86",
+    "evidence/windows/normal-cross-game-saved-5-adams.desktop.png": "510a4852080c9d411d053e1e1d99f920cf14bd983812400cf7210635824fdbf9",
+    "evidence/windows/normal-cross-game-saved-5-adams.dom.json": "0d48631071ee2fcad48031a35d749a96f2a0d0eb39ae6d2513e44bc3a3a96258",
+    "evidence/windows/normal-cross-game-saved-5-adams.webview.png": "0b07d7d2c6924671e0f2f8a63e760864f23886988dc4e0ac12ac20f7c4e89900",
+    "evidence/windows/package-smoke.json": "efb23ae0c6b152dfd3de5e85ede6c1be58bbe40680a4602e86977bb8d3acbfdb",
+    "evidence/windows/webview-driver.json": "886df16b41f6394b017986d82af136ab0e5d912d915c03553edc6b95327cf3bc"
+  }
+}

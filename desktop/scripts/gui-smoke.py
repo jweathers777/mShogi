@@ -12,6 +12,7 @@ import hashlib
 import http.client
 import importlib
 import json
+import math
 import os
 from pathlib import Path
 import platform
@@ -19,10 +20,12 @@ import re
 import signal
 import shutil
 import subprocess
+import struct
 import time
 import traceback
 import urllib.error
 import urllib.request
+import zlib
 
 
 def stamp():
@@ -31,6 +34,69 @@ def stamp():
 
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def capture_png_pixels(path):
+    """Decode a genuine noninterlaced8-bit WebDriver PNG for paint evidence.
+
+    This deliberately supports only actual RGB/RGBA screenshot formats; unknown
+    encodings fail rather than treating DOM/class assertions as pixel evidence.
+    """
+    data=Path(path).read_bytes();assert data[:8]==b'\x89PNG\r\n\x1a\n','not a PNG screenshot'
+    offset=8;compressed=[];header=None
+    while offset<len(data):
+        length=struct.unpack('>I',data[offset:offset+4])[0];kind=data[offset+4:offset+8]
+        body=data[offset+8:offset+8+length];offset+=12+length
+        if kind==b'IHDR':header=struct.unpack('>IIBBBBB',body)
+        elif kind==b'IDAT':compressed.append(body)
+        elif kind==b'IEND':break
+    width,height,depth,color,compression,filtering,interlace=header
+    assert depth==8 and color in (2,6) and compression==filtering==interlace==0,header
+    channels=3 if color==2 else 4;stride=width*channels
+    raw=zlib.decompress(b''.join(compressed));assert len(raw)==height*(stride+1)
+    rows=[];prior=bytearray(stride);offset=0
+    for _ in range(height):
+        method=raw[offset];offset+=1;row=bytearray(raw[offset:offset+stride]);offset+=stride
+        for x in range(stride):
+            left=row[x-channels] if x>=channels else 0;up=prior[x];upper_left=prior[x-channels] if x>=channels else 0
+            if method==1:predict=left
+            elif method==2:predict=up
+            elif method==3:predict=(left+up)//2
+            elif method==4:
+                estimate=left+up-upper_left;distances=[abs(estimate-v) for v in (left,up,upper_left)]
+                predict=(left,up,upper_left)[distances.index(min(distances))]
+            else:assert method==0,method;predict=0
+            row[x]=(row[x]+predict)&255
+        rows.append(row);prior=row
+    return width,height,lambda x,y:tuple(rows[y][x*channels:x*channels+3])
+
+
+def capture_ring_pixel_evidence(path, observation):
+    """Require distributed green stroke pixels on real occupied-piece rings."""
+    width,height,pixel=capture_png_pixels(path);viewport=observation['viewport']
+    sx,sy=width/viewport['width'],height/viewport['height']
+    assert abs(sx-sy)<=0.03,(width,height,viewport)
+    evidence=[]
+    for marker in observation['markers']:
+        box=marker['rect'];cx=marker['center']['x']*sx;cy=marker['center']['y']*sy
+        radius=marker['radius']*sx;stroke=marker['strokeWidth']*marker['scale']*sx
+        assert radius>=4 and abs(box['width']-box['height'])<=1,marker
+        seen=set();quadrants=set();octants=set();top=bottom=0
+        for y in range(max(0,int(cy-radius-stroke-2)),min(height,int(cy+radius+stroke+3))):
+            for x in range(max(0,int(cx-radius-stroke-2)),min(width,int(cx+radius+stroke+3))):
+                distance=math.hypot(x+0.5-cx,y+0.5-cy)
+                if abs(distance-radius)>max(1.5,stroke):continue
+                red,green,blue=pixel(x,y)
+                if green-red>=8 and green-blue>=8 and green<=180:
+                    seen.add((x,y));quadrants.add((x>=cx,y>=cy));octants.add(int((math.atan2(y+0.5-cy,x+0.5-cx)+2*math.pi)%(2*math.pi)/(math.pi/4)))
+                    top+=y+0.5<cy-radius*0.6;bottom+=y+0.5>cy+radius*0.6
+        item={'square':marker['square'],'greenStrokePixels':len(seen),'quadrants':len(quadrants),'octants':len(octants),'topStrokePixels':top,'bottomStrokePixels':bottom,'radiusPixels':radius,'strokePixels':stroke}
+        # A hidden behind-piece circle can leave tiny antialiased fringes. It
+        # cannot establish a visible full outline distributed around the piece.
+        assert len(seen)>=6 and len(quadrants)>=3 and len(octants)>=6 and top>0 and bottom>0,item
+        evidence.append(item)
+    assert evidence,'no occupied destination capture rings'
+    return {'png':str(path),'sha256':digest(path),'dimensions':[width,height],'scale':[sx,sy],'rings':evidence}
 
 
 def assert_shared_native_card_flow(current, previous):
@@ -62,7 +128,16 @@ def desktop_document_payload(document, game_kind):
         "tori": ("mshogi.tori.modern.v1", "MSH81-MODERN-2026-11-01"),
         "chu": ("mshogi.chu.jcsa2019.v1", "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02"),
     }
-    profile, edition = profiles[game_kind]
+    if game_kind == 'tenjiku':
+        tenjiku = {
+            'mshogi.tenjiku.adams1999-modern.v1': 'ADAMS1999-MODERN+MSH83-2026-11-04',
+            'mshogi.tenjiku.muller-completed.v1': 'MULLER+ADAMS-COMPLETION+MSH83-2026-11-04',
+        }
+        profile = document['rules_profile']
+        assert profile in tenjiku, document
+        edition = tenjiku[profile]
+    else:
+        profile, edition = profiles[game_kind]
     assert set(document) == {
         "envelope_version", "format", "game_kind", "rules_profile",
         "profile_edition", "native_schema_version", "payload"}, document
@@ -101,10 +176,12 @@ def selected_gui_phases(choice):
              "shogi-concluded", "shogi-capacity"]
     xiangqi = ["xiangqi-warning", "xiangqi-fourth", "xiangqi-count", "xiangqi-offer", "xiangqi-agreed", "xiangqi-fast-proof", "xiangqi-resigned", "xiangqi-capacity", "xiangqi-failure", "xiangqi-exact-evidence"]
     normal = [None, "normal-shogi", "normal-shogi-reopened", "normal-xiangqi", "normal-tori", "normal-tori-native", "normal-chu", "normal-chu-native"]
-    return {"normal": normal, "normal-shogi": normal[1:3],
-            "normal-xiangqi": ["normal-xiangqi"], "normal-tori": normal[4:6], "normal-chu": normal[6:],
-            "verification": [*chess, *shogi, *xiangqi], "verification-shogi": shogi,
-            "verification-xiangqi": xiangqi, "verification-tori": ["pending-tori", "tori-recovery"], "verification-chu": ["pending-chu", "chu-recovery"], "all": [*normal, *chess, *shogi, *xiangqi]}[choice]
+    tenjiku_normal = [f'normal-tenjiku-{profile}{suffix}' for profile in ('adams','muller') for suffix in ('','-native')]
+    tenjiku_verification = [f'{kind}-tenjiku-{profile}' for profile in ('adams','muller') for kind in ('pending','recovery')]
+    return {"normal": [*normal,*tenjiku_normal], "normal-shogi": normal[1:3],
+            "normal-xiangqi": ["normal-xiangqi"], "normal-tori": normal[4:6], "normal-chu": normal[6:], "normal-tenjiku": tenjiku_normal,
+            "verification": [*chess, *shogi, *xiangqi,*tenjiku_verification], "verification-shogi": shogi,
+            "verification-xiangqi": xiangqi, "verification-tori": ["pending-tori", "tori-recovery"], "verification-chu": ["pending-chu", "chu-recovery"], "verification-tenjiku": tenjiku_verification, "all": [*normal,*tenjiku_normal,*chess,*shogi,*xiangqi,*tenjiku_verification]}[choice]
 
 
 def replacement_analysis_accepted(game, before, after, analyzing):
@@ -124,7 +201,31 @@ def replacement_analysis_accepted(game, before, after, analyzing):
                     and old['purpose']['kind'] == 'move_analysis'
                     and (new['request_id'], new['session_version'], new['process_generation'])
                     != (old['request_id'], old['session_version'], old['process_generation']))
-    return game in ('shogi', 'xiangqi', 'tori', 'chu')
+    return game in ('shogi', 'xiangqi', 'tori', 'chu', 'tenjiku')
+
+
+def completed_tenjiku_analysis(before, after, request_floor, generation_floor, depth=1, nodes=1024):
+    """A retained old result/status cannot prove a newly requested analysis."""
+    try:
+        previous=before['observations'];current=after['observations']
+        if (len(current)!=len(previous)+1 or [item['observation'] for item in current[:-1]]!=[item['observation'] for item in previous]
+                or after['profile']!=before['profile'] or after['context']!=before['context']
+                or after['token']['document']!=before['token']['document'] or after['token']['version']<=before['token']['version']
+                or after['tenjiku']['live']!=before['tenjiku']['live'] or after['events']!=before['events']):return False
+        observation=current[-1]['observation'];context=observation['context'];purpose=context['purpose'];target=purpose['target']
+        result=observation['result'];value=result['result'];telemetry=value['telemetry']
+        return (observation['schema_version']==1 and after['analysis']['observation']==observation
+            and context['request_id']>request_floor and context['process_generation']>generation_floor
+            and context['session_version']>=before['token']['version'] and target['session_version']==context['session_version']
+            and purpose['kind']=='move_analysis' and context['game']==before['context']
+            and context['limits']=={'depth':depth,'nodes':nodes}
+            and target['event_index']==before['event_index'] and target['board_ply']==before['board_ply'] and target['turn']==before['turn']['id']
+            and result['kind']=='tenjiku' and value['kind']=='choice' and telemetry['completed_depth']==depth
+            and telemetry['perspective']==before['turn']['id']['side'] and type(telemetry['score']) is int
+            and 0<telemetry['nodes']<=nodes and telemetry['principal_variation'][0]==value['action']
+            and telemetry['evaluator_id']=='mshogi.tenjiku.material.v1' and telemetry['search_id']=='mshogi.tenjiku.full-width.v1')
+    except (KeyError,TypeError,IndexError):
+        return False
 
 
 def warning_prefix_transition(earlier, warned):
@@ -173,7 +274,7 @@ def chu_capacity_resignation_matches(before, after):
 
 def retained_pending_takeback(game, body, action):
     """Inspect native archive lineage without inventing a uniform save schema."""
-    if game in ('tori', 'chu'):
+    if game in ('tori', 'chu', 'tenjiku'):
         controls = body['controls']
         rewind = next((i for i, item in enumerate(controls)
                        if item.get('kind') == 'rewind' and item.get('reason') == 'take_back'), None)
@@ -315,6 +416,14 @@ def native_action_identity_matches(observed, expected):
                 and isinstance(action["route"], list) and 1 <= len(action["route"]) <= 2
                 and all(coordinate(step) for step in action["route"]))
         return chu_shape(wanted) and chu_shape(actual) and actual == wanted
+    if wanted.get('kind') in ('travel','igui'):
+        def tenjiku_shape(action):
+            coordinate=lambda value:isinstance(value,list) and len(value)==2 and all(type(n) is int and 1<=n<=16 for n in value)
+            if not isinstance(action,dict) or not coordinate(action.get('from')) or type(action.get('promote')) is not bool or not isinstance(action.get('route'),list):return False
+            if action.get('kind')=='travel':
+                return set(action)=={'kind','from','route','promote'} and 1<=len(action['route'])<=3 and all(coordinate(step) for step in action['route'])
+            return set(action)=={'kind','from','route','promote','target'} and action.get('kind')=='igui' and action['route']==[] and action['promote'] is False and coordinate(action.get('target'))
+        return tenjiku_shape(wanted) and tenjiku_shape(actual) and actual==wanted
     fields = ({"kind", "from", "to", "result_face"} if wanted.get("kind") == "move"
               else {"kind", "face", "to"} if wanted.get("kind") == "drop" else None)
     return bool(fields and set(wanted) == fields and actual == wanted)
@@ -1047,9 +1156,9 @@ class Journey:
     def choose_game(self, game):
         """Actual native-select/radio keys, at normal and minimum dimensions."""
         w=self.web
-        expected=['chess','shogi','xiangqi','tori','chu']
+        expected=['chess','shogi','xiangqi','tori','chu','tenjiku']
         observed=w.read("[...document.querySelector('[data-game-select]').options].map(e=>({value:e.value,label:e.textContent,disabled:e.disabled}))")
-        assert observed==[{'value':k,'label':label,'disabled':False} for k,label in zip(expected,['Chess','Shogi','Xiangqi','Tori Shogi','Chu Shogi'])],observed
+        assert observed==[{'value':k,'label':label,'disabled':False} for k,label in zip(expected,['Chess','Shogi','Xiangqi','Tori Shogi','Chu Shogi','Tenjiku Shogi'])],observed
         def select(kind):
             w.click('[data-game-select]');w.key('\ue011')  # Home
             for _ in range(expected.index(kind)):w.key('\ue015')  # ArrowDown
@@ -1059,7 +1168,7 @@ class Journey:
             self.viewport(width,height)
             for kind in expected:
                 select(kind)
-                sides={'chess':['White','Black','Random'],'shogi':['Sente','Gote','Random'],'xiangqi':['Red','Black','Random'],'tori':['Sente','Gote','Random'],'chu':['Sente','Gote','Random']}[kind]
+                sides={'chess':['White','Black','Random'],'shogi':['Sente','Gote','Random'],'xiangqi':['Red','Black','Random'],'tori':['Sente','Gote','Random'],'chu':['Sente','Gote','Random'],'tenjiku':['Sente','Gote','Random']}[kind]
                 buttons=w.read("[...document.querySelectorAll('.side-choices button')].map(e=>({label:e.textContent,role:e.getAttribute('role'),selected:e.getAttribute('aria-checked'),chosen:e.classList.contains('chosen')}))")
                 assert [e['label'] for e in buttons]==sides and all(e['role']=='radio' for e in buttons),buttons
                 assert sum(e['chosen'] and e['selected']=='true' for e in buttons)==1,buttons
@@ -1083,7 +1192,7 @@ class Journey:
             const theme=s=>{const e=document.querySelector(s);if(!e)return null;const c=getComputedStyle(e);return Object.fromEntries(['backgroundColor','color','borderTopColor','borderTopWidth','borderRadius','fontSize','fontFamily','colorScheme'].map(k=>[k,c[k]]));};
             const visible=e=>{if(!e)return false;const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;};
             const squares=[...document.querySelectorAll('.square,.shogi-square,.xiangqi-point')];
-            return {game:root?.classList.contains('shell-chu')?'chu':root?.classList.contains('shell-tori')?'tori':root?.classList.contains('shell-xiangqi')?'xiangqi':root?.classList.contains('shell-shogi')?'shogi':'chess',viewport:{width:innerWidth,height:innerHeight},
+            return {game:root?.classList.contains('shell-tenjiku')?'tenjiku':root?.classList.contains('shell-chu')?'chu':root?.classList.contains('shell-tori')?'tori':root?.classList.contains('shell-xiangqi')?'xiangqi':root?.classList.contains('shell-shogi')?'shogi':'chess',viewport:{width:innerWidth,height:innerHeight},
                 themeIdentity:root?.dataset.theme,
                 themes:Object.fromEntries(['.game-shell','.shell-header','.shell-card','.shell-section-title','.shell-file-actions .primary','.shell-file-actions .quiet','.inspector-switch button[aria-pressed="true"]'].map(s=>[s,theme(s)])),
                 header:rect('.shell-header'),document:rect('.shell-document'),actions:rect('.shell-file-actions'),
@@ -1109,13 +1218,13 @@ class Journey:
         })()""")
         assert layout['game'] == game and layout['sections'] == ['analysis','actions','history'], layout
         assert layout['themeIdentity'] == 'mshogi-dark' and all(layout['themes'].values()), layout
-        assert layout['squareCount']=={'chess': 64, 'shogi': 81, 'xiangqi': 90, 'tori': 49, 'chu': 144}[game] and layout['allSquaresVisible'] and layout['pageWidth']<=layout['viewport']['width']+1, layout
+        assert layout['squareCount']=={'chess': 64, 'shogi': 81, 'xiangqi': 90, 'tori': 49, 'chu': 144,'tenjiku':256}[game] and layout['allSquaresVisible'] and layout['pageWidth']<=layout['viewport']['width']+1, layout
         assert layout['inspectorButtons'] == [{'label':'Play details','pressed':'true'}, {'label':'Analyze position','pressed':'false'}], layout
         assert [slot['name'] for slot in layout['slots']] == ['upper-player','board','lower-player','footer'], layout
         assert layout['help'] and layout['help']['height'] > 0 and layout['helpVisible'] and layout['footnoteVisible'], ('live help belongs visibly in the shared footer',layout)
         assert layout['documentState'] == 'unsaved', layout
         assert layout['positionStatus'] == 'Your turnLive position · 0 plies', layout
-        expected_depth, expected_nodes = {'chess': (2, 20000), 'shogi': (2, 5000), 'xiangqi': (1, 128), 'tori': (2, 2000), 'chu': (1, 512)}[game]
+        expected_depth, expected_nodes = {'chess': (2, 20000), 'shogi': (2, 5000), 'xiangqi': (1, 128), 'tori': (2, 2000), 'chu': (1, 512),'tenjiku':(1,1024)}[game]
         assert play_limit_matches(layout['playLimits'], expected_depth, expected_nodes), layout
         assert layout['documentInHeader'] and layout['flipInHeading'] and layout['supportOutsideSidebar'] and layout['rawDiagnosticsAbsent'], layout
         assert layout['brand'] == '歩' and layout['gameLabel'] == ({'tori':'TORI SHOGI'}.get(game,game.upper())), layout
@@ -1138,7 +1247,7 @@ class Journey:
             assert layout['themes']==previous['themes'],('shared chrome/panel/control theme differs',previous,layout)
             assert abs(layout['help']['top']-previous['help']['top'])<=3, ('live help moved across games',previous,layout)
             for collection in ['slots','cards']:
-                if collection == 'cards' and 'chu' in (game,previous['game']):
+                if collection == 'cards' and any(kind in (game,previous['game']) for kind in ('chu','tenjiku')):
                     assert_shared_native_card_flow(layout['cards'],previous['cards'])
                     continue
                 for current,prior in zip(layout[collection],previous[collection]):
@@ -1178,7 +1287,7 @@ class Journey:
     def inspect_piece(self, game, origin, destination, label):
         """Real native query through normal UI; completing a route stays read-only."""
         w=self.web; native_before=self.native_diagnostics(); before=self.inspection_state()
-        square=self.square if game=='chess' else self.xiangqi_point if game=='xiangqi' else self.chu_square if game=='chu' else self.shogi_square
+        square=self.square if game=='chess' else self.xiangqi_point if game=='xiangqi' else self.chu_square if game in ('chu','tenjiku') else self.shogi_square
         w.click(square(origin))
         wait(lambda: f'Inspecting {label}' in w.text('.movement-inspection-status'), 'native opponent movement inspection')
         # Shogi/Xiangqi have a separate keyboard-hint span in this row; Chess
@@ -2161,6 +2270,291 @@ class Journey:
         self.capture("result")
         self.quit()
 
+    def tenjiku_events(self, count, selected=None, historical=False):
+        root="document.querySelector('.game-shell')"
+        wait(lambda:self.web.read(root+'?.dataset.liveEvents')==str(count),f'Tenjiku exact live event {count}')
+        if selected is not None:wait(lambda:self.web.read(root+'?.dataset.currentEvent')==str(selected),f'Tenjiku selected prefix {selected}')
+        wait(lambda:self.web.read(root+'?.dataset.historical')==str(historical).lower(),f'Tenjiku read-only history {historical}')
+
+    def tenjiku_profile_id(self, profile):
+        return {'adams':'mshogi.tenjiku.adams1999-modern.v1','muller':'mshogi.tenjiku.muller-completed.v1'}[profile]
+
+    def new_tenjiku(self, profile, side):
+        """Use the normal sixth-game and explicit whole-profile native selects."""
+        w=self.web;before=self.native_diagnostics()
+        w.button('New game');wait(lambda:w.has('[aria-label="New game"]'),'normal New Game dialog')
+        options=w.read("[...document.querySelector('[data-game-select]').options].map(e=>({value:e.value,label:e.textContent,disabled:e.disabled}))")
+        assert options==[{'value':value,'label':label,'disabled':False} for value,label in zip(['chess','shogi','xiangqi','tori','chu','tenjiku'],['Chess','Shogi','Xiangqi','Tori Shogi','Chu Shogi','Tenjiku Shogi'])],options
+        w.click('[data-game-select]');w.key('\ue011')
+        for _ in range(5):w.key('\ue015')
+        w.key('\ue007');wait(lambda:w.has('[data-profile-select]'),'visible Tenjiku whole-profile picker')
+        choices=w.read("[...document.querySelector('[data-profile-select]').options].map(e=>({value:e.value,label:e.textContent,disabled:e.disabled}))")
+        assert choices==[{'value':self.tenjiku_profile_id(key),'label':label,'disabled':False} for key,label in [('adams','Adams 1999 Modern'),('muller','Muller Completed')]],choices
+        expected_default=before['profile'] if before['context']['game_kind']=='tenjiku' else self.tenjiku_profile_id('adams')
+        assert w.read("document.querySelector('[data-profile-select]').value")==expected_default
+        w.click('[data-profile-select]');w.key('\ue011')
+        if profile=='muller':w.key('\ue015')
+        w.key('\ue007');wait(lambda:w.read("document.querySelector('[data-profile-select]').value")==self.tenjiku_profile_id(profile),'explicit native profile selection')
+        w.click(f'[data-side="{side}"]');w.click('[data-start-game]')
+        wait(lambda:w.has('.shell-tenjiku') and not w.has('[aria-label="New game"]'),'normal Tenjiku document installed')
+        wait(lambda:not w.has('.shogi-analysis[data-phase="thinking"]') and w.read("!!document.querySelector('.moves-root:not(:disabled)')"),'initial actual Tenjiku engine/admission settled',45)
+        self.tenjiku_events(0 if side=='sente' else 1)
+        native=self.native_diagnostics()
+        assert native['profile']==self.tenjiku_profile_id(profile) and native['context']['rules_profile']==native['profile']
+        assert native['token']['document']>before['token']['document']
+        assert w.read("document.querySelector('.game-shell').dataset.orientation")==side
+        assert w.read("document.querySelector('[data-rules-profile]').dataset.rulesProfile")==native['profile']
+        assert sum(piece is not None for piece in native['context']['payload']['root']['board'])==156
+        if side=='gote':assert native['observations'][0]['observation']['result']['kind']=='tenjiku'
+        self.record('Normal sixth-game New with explicit immutable Tenjiku profile and real player assignment',{'profile':profile,'side':side,'picker':choices,'default_before_explicit_selection':expected_default,'native':native})
+        return native
+
+    def tenjiku_native_minimum(self):
+        # Request the unchanged native application minimum directly. Do not
+        # silently enlarge its outer window to manufacture a650px WebView.
+        native=self.native.resize(760,650);time.sleep(0.2)
+        viewport=self.web.read("({width:innerWidth,height:innerHeight,dpr:devicePixelRatio})")
+        self.record('Request retained760x650 native window minimum and measure actual content separately',{'native':native,'viewport':viewport,'limitation':'Full board fit does not make every Tenjiku kanji comfortably readable; larger windows remain recommended, not mandatory.'})
+        return viewport
+
+    def tenjiku_board_fits(self):
+        w=self.web
+        wait(lambda:w.read("[...document.fonts].some(f=>f.family.replaceAll('\"','').replaceAll(\"'\",'')==='mShogi Tenjiku Pieces'&&f.status==='loaded')"),'bundled Tenjiku font loaded')
+        observed=w.read("""(() => {const board=document.querySelector('.tenjiku-board-frame .chess-board'),cells=[...document.querySelectorAll('.tenjiku-board-frame .square')];
+            const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};};
+            const visible=e=>{if(!e)return false;const r=rect(e),clip={left:0,top:0,right:innerWidth,bottom:innerHeight};for(let p=e.parentElement;p;p=p.parentElement){const c=getComputedStyle(p),b=rect(p);if(/^(auto|scroll|hidden|clip)$/.test(c.overflowX)){clip.left=Math.max(clip.left,b.left);clip.right=Math.min(clip.right,b.right);}if(/^(auto|scroll|hidden|clip)$/.test(c.overflowY)){clip.top=Math.max(clip.top,b.top);clip.bottom=Math.min(clip.bottom,b.bottom);}}return r.width>0&&r.height>0&&r.left>=clip.left-1&&r.top>=clip.top-1&&r.right<=clip.right+1&&r.bottom<=clip.bottom+1;};
+            return {viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},board:board?rect(board):null,cells:cells.length,visibleCells:cells.filter(visible).length,boardVisible:visible(board),cell:cells[0]?rect(cells[0]):null,glyphCount:document.querySelectorAll('.tenjiku-face text').length,minimumGlyphEm:Math.min(...[...document.querySelectorAll('.tenjiku-face text')].map(e=>parseFloat(getComputedStyle(e).fontSize)*Math.hypot(e.getScreenCTM().a,e.getScreenCTM().b))),orientation:document.querySelector('.game-shell')?.dataset.orientation,fontLoaded:document.fonts.check('16px "mShogi Tenjiku Pieces"'),pageWidth:document.documentElement.scrollWidth,hands:document.querySelectorAll('[aria-label="Native hands"],.hand-piece').length};})()""")
+        assert observed['cells']==observed['visibleCells']==256 and observed['boardVisible'] and observed['fontLoaded'] and observed['glyphCount']>0 and observed['minimumGlyphEm']>0 and not observed['hands'],observed
+        assert observed['pageWidth']<=observed['viewport']['width']+1 and observed['cell']['width']>0,observed
+        self.record('Actual responsive16x16 fit and glyph measurements; small-window fit is not all-kanji reading comfort',observed)
+        return observed
+
+    def selected_footer_fits(self, label, require_route=False):
+        observed=self.web.read("""(() => {const rect=e=>{if(!e)return null;const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height};};
+            const visible=e=>{if(!e)return false;const r=rect(e),clip={left:0,top:0,right:innerWidth,bottom:innerHeight};for(let p=e.parentElement;p;p=p.parentElement){const c=getComputedStyle(p),b=rect(p);if(/^(auto|scroll|hidden|clip)$/.test(c.overflowX)){clip.left=Math.max(clip.left,b.left);clip.right=Math.min(clip.right,b.right);}if(/^(auto|scroll|hidden|clip)$/.test(c.overflowY)){clip.top=Math.max(clip.top,b.top);clip.bottom=Math.min(clip.bottom,b.bottom);}}return getComputedStyle(e).display!=='none'&&r.width>0&&r.height>0&&r.left>=clip.left-1&&r.top>=clip.top-1&&r.right<=clip.right+1&&r.bottom<=clip.bottom+1;};
+            const selected=document.querySelector('.selected-piece-status'),route=document.querySelector('.route-selection'),position=document.querySelector('[data-position-status]');
+            return {viewport:{width:innerWidth,height:innerHeight},selected:{text:selected?.textContent,visible:visible(selected),rect:rect(selected)},route:{text:route?.textContent,visible:visible(route),rect:rect(route),buttons:[...route?.querySelectorAll('button')??[]].map(e=>({text:e.textContent,visible:visible(e),rect:rect(e)}))},position:{text:position?.textContent,visible:visible(position),rect:rect(position)}};})()""")
+        assert observed['selected']['text']==label and observed['selected']['visible'] and observed['position']['visible'],observed
+        if require_route:assert observed['route']['visible'] and observed['route']['buttons'] and all(button['visible'] for button in observed['route']['buttons']),observed
+        self.record('Actual native selected-piece name, route controls and position footer fit without ancestor clipping',observed)
+        return observed
+
+    def tenjiku_capture_paint(self, profile, width):
+        w=self.web;before=self.native_diagnostics()
+        w.click(self.square('9m'))
+        wait(lambda:w.text('.selected-piece-status')=='Selected 9m, Sente Great General · Esc clears','native friendly Great General name in stable footer')
+        self.selected_footer_fits('Selected 9m, Sente Great General · Esc clears')
+        observed=w.read("""(() => {const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,width:r.width,height:r.height};};
+            return {viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio},footer:document.querySelector('.selected-piece-status')?.textContent,
+            markers:[...document.querySelectorAll('.tenjiku-board-frame circle.capture-marker')].map(marker=>{const square=marker.closest('.square'),piece=square.querySelector('[data-tenjiku-piece]'),matrix=marker.getScreenCTM(),center=new DOMPoint(marker.cx.baseVal.value,marker.cy.baseVal.value).matrixTransform(matrix),point=new DOMPoint(90,50).matrixTransform(matrix),hit=document.elementFromPoint(point.x,point.y),style=getComputedStyle(marker);
+                return {square:square.getAttribute('aria-label').split(',')[0],label:square.getAttribute('aria-label'),occupied:!!piece,pieceFace:piece?.dataset.tenjikuFace,afterPiece:!!piece&&!!(piece.compareDocumentPosition(marker)&Node.DOCUMENT_POSITION_FOLLOWING),pointerEvents:style.pointerEvents,ariaHidden:marker.getAttribute('aria-hidden'),fill:style.fill,stroke:style.stroke,strokeWidth:parseFloat(style.strokeWidth),scale:Math.hypot(matrix.a,matrix.b),center:{x:center.x,y:center.y},radius:marker.r.baseVal.value*Math.hypot(matrix.a,matrix.b),rect:rect(marker),hitSquare:hit?.closest('.square')?.getAttribute('aria-label')?.split(',')[0],markerIntercepted:hit===marker||marker.contains(hit)};})};})()""")
+        assert sorted(marker['square'] for marker in observed['markers'])==['1e','9a','9b','9c','9d','9e'],observed
+        for marker in observed['markers']:
+            assert marker['occupied'] and 'Gote' in marker['label'] and marker['afterPiece'] and marker['pointerEvents']=='none' and marker['ariaHidden']=='true',marker
+            assert marker['hitSquare']==marker['square'] and not marker['markerIntercepted'],marker
+            assert marker['rect']['left']>=0 and marker['rect']['top']>=0 and marker['rect']['left']+marker['rect']['width']<=observed['viewport']['width']+1,marker
+        png=self.args.output/f'{self.phase}-great-general-{width}-paint.png';w.screenshot(png)
+        pixels=capture_ring_pixel_evidence(png,observed)
+        self.record('Actual occupied capture markers paint above native pieces, remain green in PNG pixels, and preserve square hit testing',{'profile':profile,'svg':observed,'pixels':pixels})
+        self.capture(f'great-general-{width}-friendly-name-capture-outlines')
+        w.key('\ue00c');wait(lambda:not w.has('.selected-piece-status,.capture-marker'),'Escape clears actionable friendly selection')
+        assert self.native_diagnostics()['context']==before['context']
+
+    def tenjiku_save(self, path, profile):
+        archive=self.save_current(path);body=desktop_document_payload(archive,'tenjiku')
+        assert archive['rules_profile']==self.tenjiku_profile_id(profile) and body['current']['rules_profile']==archive['rules_profile']
+        self.record('Save native complete Tenjiku profile/history/actions/observations/branches',{'profile':profile,'path':str(path),'sha256':digest(path),'bytes':path.stat().st_size,'observations':len(body['observations']),'retired':len(body['retired'])})
+        return body
+
+    def tenjiku_reopen_saved(self, evidence_path, profile):
+        before=self.native_diagnostics();actual=Path(before['document']['path'])
+        assert actual.is_file() and digest(actual)==digest(evidence_path)
+        self.file('open',actual);self.wait_opened(actual);after=self.native_diagnostics()
+        assert after['profile']==self.tenjiku_profile_id(profile) and after['context']==before['context']
+        assert after['token']['document']>before['token']['document'] and all(item['historical'] for item in after['observations'])
+        assert self.web.has('.play-paused') and not self.web.has('.shogi-analysis[data-phase="thinking"],.shogi-analysis[data-phase="analyzing"]')
+        return after
+
+    def tenjiku_analysis(self):
+        w=self.web
+        if not w.has('[data-analysis-start="tenjiku"]'):w.button('Analyze position')
+        wait(lambda:w.has('[data-analysis-start="tenjiku"]'),'native Tenjiku bounded analysis inputs')
+        w.set('.shogi-analysis input[name="depth"]',1);w.set('.shogi-analysis input[name="nodes"]',1024)
+        before=self.native_diagnostics()
+        request_floor=max((item['observation']['context']['request_id'] for item in before['observations']),default=0)
+        generation_floor=max((item['observation']['context']['process_generation'] for item in before['observations']),default=0)
+        self.record('Capture pre-click native Tenjiku analysis identity floor and exact selected source',{'observations':len(before['observations']),'request_floor':request_floor,'generation_floor':generation_floor,'source':before['context'],'selected_event':before['event_index'],'board_ply':before['board_ply'],'token':before['token']})
+        w.click('[data-analysis-start="tenjiku"]')
+        def newly_completed():
+            after=self.native_diagnostics()
+            assert completed_tenjiku_analysis(before,after,request_floor,generation_floor),{'observations':len(after['observations']),'expected_count':len(before['observations'])+1,'phase':after['phase'],'diagnostic':after['diagnostic'],'latest_result':after['observations'][-1]['observation']['result'] if after['observations'] else None}
+            return after
+        after=wait(newly_completed,'new genuine Tenjiku move-analysis observation for exact selected prefix with fresh execution identity',45)
+        assert 'Analysis result available' in w.text('.shogi-analysis-state') and 'No move was played.' in w.text('.shogi-analysis')
+        self.record('New real read-only analysis appends exact-context observation without changing live or selected native game',{'before_count':len(before['observations']),'after':after,'request_floor':request_floor,'generation_floor':generation_floor})
+        return after
+
+    def tenjiku_load_fixture(self, profile, name):
+        source=Path(__file__).with_name('fixtures')/f'tenjiku-{profile}-{name}.mshogi'
+        path=self.args.output/f'{self.phase}-{name}-source.mshogi';shutil.copyfile(source,path)
+        before=self.native_diagnostics();self.file('open',path);self.wait_opened(path)
+        wait(lambda:self.web.has('.shell-tenjiku'),'ordinary normal-package Tenjiku Load')
+        after=self.native_diagnostics();expected=desktop_document_payload(json.loads(source.read_text()),'tenjiku')
+        assert after['context']==expected['current'] and after['profile']==self.tenjiku_profile_id(profile) and after['token']['document']>before['token']['document']
+        assert self.web.has('.play-paused') and not after['observations']
+        self.record('Normal OS file-picker Load of independent native Tenjiku current document',{'profile':profile,'fixture':name,'source_sha256':digest(source),'native':after})
+        return after
+
+    def tenjiku_reject_cross_profile(self, profile):
+        before=self.native_diagnostics();actual=Path(before['document']['path']);accepted_hash=digest(actual)
+        wire=json.loads(actual.read_text(encoding='utf-8'));other='muller' if profile=='adams' else 'adams'
+        # A deliberately malformed file changes only its envelope profile/edition,
+        # leaving the complete payload under the original immutable profile.
+        wire['rules_profile']=self.tenjiku_profile_id(other)
+        wire['profile_edition']='ADAMS1999-MODERN+MSH83-2026-11-04' if other=='adams' else 'MULLER+ADAMS-COMPLETION+MSH83-2026-11-04'
+        path=self.args.output/f'{self.phase}-deliberate-cross-profile-conflict.mshogi';path.write_text(json.dumps(wire),encoding='utf-8')
+        self.file('open',path)
+        def rejected():
+            current=self.native_diagnostics()
+            return current if current['io']['id']>before['io']['id'] and current['io']['phase']=='failed' else None
+        after=wait(rejected,'normal Load rejects conflicting whole-profile envelope atomically')
+        assert retained_document_state(after)==retained_document_state(before) and digest(actual)==accepted_hash
+        self.record('Deliberately conflicting profile Load preserves accepted native context, identities, dirty state and prior file',{'before':before,'after':after,'accepted_sha256':accepted_hash})
+        self.capture('cross-profile-conflict-rejected-without-reinterpretation')
+
+    def tenjiku_action(self, origin, steps, count, promote=None, igui=False):
+        w=self.web;w.click(self.square(origin))
+        selected=w.text('.selected-piece-status');assert 'Selected ' in selected and origin in selected
+        for index,step in enumerate(steps):
+            w.click(self.square(step))
+            if index+1<len(steps):
+                self.tenjiku_events(count-1)
+                assert w.text('.selected-piece-status')==selected and 'No action submitted' in w.text('.route-selection')
+        if promote is not None:
+            wait(lambda:w.has('.promotion-dialog'),'native Tenjiku promotion alternatives');self.assert_chu_promotion_choices();w.button('Promote' if promote else 'Do not promote')
+        if w.has('.route-selection') and not igui:w.focused_button('Complete action here')
+        self.tenjiku_events(count);native=self.native_diagnostics();actual=native['context']['payload']['events'][-1]['command']['action']
+        coordinate=lambda square:[int(square[:-1]),ord(square[-1])-ord('a')+1]
+        expected={'kind':'igui' if igui else 'travel','from':coordinate(origin),'route':[] if igui else [coordinate(step) for step in steps],'promote':bool(promote)}
+        if igui:expected['target']=coordinate(steps[-1])
+        assert actual==expected,(actual,expected)
+        self.assert_completed_cue(json.dumps(expected,separators=(',',':')),count,[origin],[] if igui else [steps[-1]],None if igui or len(steps)==1 else '>'.join([origin,*steps]))
+        return native
+
+    def normal_tenjiku(self, profile):
+        self.start(product=f'tenjiku-{profile}');w=self.web
+        if profile=='muller':
+            previous=self.args.output/'normal-tenjiku-adams-concluded.mshogi'
+            self.file('open',previous);self.wait_opened(previous)
+            assert self.native_diagnostics()['profile']==self.tenjiku_profile_id('adams')
+        self.new_tenjiku(profile,'gote');self.tenjiku_board_fits();self.capture('normal-gote-real-engine')
+        self.new_tenjiku(profile,'sente');self.viewport(1180,820);self.shared_shell('tenjiku');self.tenjiku_board_fits();self.tenjiku_capture_paint(profile,1180)
+        self.tenjiku_native_minimum();self.shared_shell('tenjiku');self.tenjiku_board_fits();self.tenjiku_capture_paint(profile,'native-minimum');self.viewport(1180,820)
+        self.inspect_piece('tenjiku','16e','16f','Gote Pawn');self.intentional_replacement_failures('tenjiku')
+        for origin,destination,count in [('16l','16k',2),('16k','16j',4)]:
+            w.click(self.square(origin));wait(lambda:'Sente Pawn' in w.text('.selected-piece-status'),'friendly native Pawn identification');w.key('\ue00c')
+            w.click(self.square(origin));w.click(self.square(destination))
+            self.tenjiku_events(count);native=self.native_diagnostics();events=native['context']['payload']['events']
+            coordinate=lambda square:[int(square[:-1]),ord(square[-1])-ord('a')+1]
+            assert events[count-2]['command']['action']=={'kind':'travel','from':coordinate(origin),'route':[coordinate(destination)],'promote':False}
+            assert native['profile']==self.tenjiku_profile_id(profile) and len(native['observations'])==count//2
+            assert native['observations'][-1]['observation']['result']['kind']=='tenjiku'
+            self.record('Genuine packaged human/engine Tenjiku complete turn pair',{'profile':profile,'native':native})
+        self.capture('normal-four-ply-real-progression');w.focused_button('Take back');self.tenjiku_events(2)
+        taken=self.native_diagnostics();assert taken['context']['payload']['events']==events[:2] and w.has('.play-paused')
+        w.keyboard_activate('.moves-table button[data-event="1"]');self.tenjiku_events(2,selected=1,historical=True);self.assert_historical_notice(1)
+        self.tenjiku_analysis();selected=self.native_diagnostics();assert selected['context']['payload']['events']==events[:1]
+        self.capture('historical-exact-prefix-readonly-analysis');w.button('Return to live');self.tenjiku_events(2,selected=2)
+        assert w.has('.play-paused')
+        path=self.args.output/f'normal-tenjiku-{profile}-complete.mshogi';body=self.tenjiku_save(path,profile)
+        assert body['retired'] and len(body['observations'])>=3 and body['observations'][-1]['context']['game']['payload']['events']==events[:1]
+        reopened=self.tenjiku_reopen_saved(path,profile);self.capture('normal-reopened-stopped')
+        w.button('Resume play');wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','explicit Tenjiku Resume after Load')
+        self.tenjiku_analysis();assert self.native_diagnostics()['context']==reopened['context']
+        w.button('Play details');self.direct_resign('tenjiku');concluded=self.native_diagnostics()
+        assert concluded['context']['payload']['conclusion']=={'kind':'resignation','winner':'gote'}
+        self.tenjiku_save(self.args.output/f'normal-tenjiku-{profile}-concluded.mshogi',profile)
+        dirty=self.dirty_native_close_source('Tenjiku');self.record('Actual dirty Tenjiku native close',self.native.close_window())
+        wait(lambda:w.has('.document-guard'),'dirty Tenjiku Quit protected');w.button('Cancel');wait(lambda:not w.has('.document-guard'),'dirty Tenjiku Quit Cancel')
+        assert self.native.alive() and self.native_diagnostics()['context']==concluded['context']
+        self.capture('normal-dirty-quit-cancel');self.quit(save=True)
+        saved_path=Path(dirty['document']['path']);saved=json.loads(saved_path.read_text(encoding='utf-8'));saved_body=desktop_document_payload(saved,'tenjiku')
+        assert saved['rules_profile']==self.tenjiku_profile_id(profile) and saved_body['current']==concluded['context']
+        assert saved_body['settings']==dirty['document']['settings']['settings']
+        assert saved_body['observations']==[item['observation'] for item in dirty['observations']]
+        self.record('Actual dirty Quit Save retains native profile, complete game/history, settings and observations on disk',{'profile':profile,'path':str(saved_path),'sha256':digest(saved_path),'settings':saved_body['settings'],'observations':len(saved_body['observations'])})
+
+    def normal_tenjiku_native(self, profile):
+        self.start(product=f'tenjiku-{profile}-native');w=self.web
+        self.tenjiku_load_fixture(profile,'compound');self.tenjiku_reject_cross_profile(profile)
+        self.tenjiku_load_fixture(profile,'compound');self.tenjiku_events(0);self.tenjiku_native_minimum();self.tenjiku_board_fits()
+        w.click(self.square('8h'));selected=w.text('.selected-piece-status');assert 'Lion Hawk' in selected
+        w.click(self.square('9h'));self.tenjiku_events(0);assert w.text('.selected-piece-status')==selected and 'No action submitted' in w.text('.route-selection')
+        self.selected_footer_fits(selected,require_route=True);self.capture('compound-partial-friendly-name-retained');w.key('\ue00c');wait(lambda:not w.has('.selected-piece-status'),'compound Escape restores footer')
+        self.viewport(1180,820);captured=self.tenjiku_action('8h',['9h','10h'],1)
+        assert [phase['victim']['square'] for phase in captured['context']['payload']['events'][0]['effects']['phases']]==[[9,8],[10,8]]
+        self.capture('complete-two-ordered-captures');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-compound.mshogi',profile)
+        self.tenjiku_load_fixture(profile,'igui');iguied=self.tenjiku_action('8h',['9h'],1,igui=True)
+        assert 'stationary origin 8h' in w.read("document.querySelector('.moves-table button[data-event=\"1\"]')?.getAttribute('aria-label')??''")
+        assert iguied['context']['payload']['current_position']['board'][7*16+7]['base']=='ChS'
+        self.capture('stationary-capture-accessible-effects')
+        self.tenjiku_load_fixture(profile,'promotion');promoted=self.tenjiku_action('8f',['8e'],1,promote=True)
+        assert w.read("document.querySelector('.square[aria-label^=\"8e,\"] [data-tenjiku-face=G][data-promoted=true]')!==null")
+        assert promoted['context']['payload']['conclusion'] is None;self.capture('native-optional-promotion-identity')
+        self.tenjiku_load_fixture(profile,'burn');burned=self.tenjiku_action('8j',['7i','7h','8h'],1)
+        phases=burned['context']['payload']['events'][0]['effects']['phases']
+        assert [phase['phase'] for phase in phases]==(['burn','mover_dies'] if profile=='adams' else ['mover_dies'])
+        if profile=='adams':assert [victim['square'] for victim in phases[0]['victims']]==[[8,7]]
+        effects=w.read("document.querySelector('.moves-table button[data-event=\"1\"]')?.getAttribute('aria-label')??''")
+        assert 'Sente Fire Demon destroyed at 8h' in effects and ('Burned together: Gote Pawn at 8g' in effects)==(profile=='adams')
+        self.capture('three-stage-demon-native-burn-death-and-accessible-phases')
+        for name,origin,steps,conclusion in [('simultaneous','8i',['8h'],{'kind':'simultaneous_royal_loss'}),('bare-loss','5a',['5j'],{'kind':'bare_royal_loss','winner':'gote'})]:
+            self.tenjiku_load_fixture(profile,name);ended=self.tenjiku_action(origin,steps,1)
+            assert ended['context']['payload']['conclusion']==conclusion and w.has('.outcome-card')
+            self.capture(f'independent-native-terminal-{name}');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-{name}-concluded.mshogi',profile)
+        self.tenjiku_load_fixture(profile,'no-actions');unscored=self.native_diagnostics()
+        assert unscored['context']['payload']['conclusion'] is None and not w.has('.outcome-card')
+        w.click(self.square('1a'));wait(lambda:'Sente King' in w.text('.movement-inspection-status'),'friendly no-action piece identified read-only')
+        w.key('\ue00c');assert self.native_diagnostics()['context']==unscored['context'];self.capture('no-actions-unscored-friendly-inspection')
+        w.focused_button('Offer draw…');w.button('Offer draw');self.tenjiku_events(1)
+        offered=self.native_diagnostics();assert offered['context']['payload']['draw_offer']=='sente' and offered['context']['payload']['conclusion'] is None
+        assert offered['context']['payload']['current_position']['accepted_plies']==0
+        self.capture('no-actions-still-allows-native-unscored-draw-offer')
+        self.tenjiku_load_fixture(profile,'agreement');w.focused_button('Decline draw');self.tenjiku_events(2)
+        declined=self.native_diagnostics();assert declined['context']['payload']['draw_offer'] is None and declined['context']['payload']['conclusion'] is None
+        self.tenjiku_load_fixture(profile,'agreement');w.focused_button('Accept draw…');w.button('Accept draw');self.tenjiku_events(2)
+        agreed=self.native_diagnostics();assert agreed['context']['payload']['conclusion']=={'kind':'agreement'} and agreed['context']['payload']['current_position']['accepted_plies']==0
+        self.capture('opposing-actor-native-agreement-independent-of-board-turn');self.tenjiku_save(self.args.output/f'tenjiku-{profile}-agreement-complete.mshogi',profile)
+
+        self.tenjiku_load_fixture(profile,'repetition3');self.tenjiku_events(3);before=self.native_diagnostics()
+        w.click(self.square('2a'));assert not w.read("document.querySelector('.square[aria-label^=\"1a,\"]')?.classList.contains('target')")
+        w.key('\ue00c');assert self.native_diagnostics()['context']==before['context'];self.capture('first-recurrence-forbidden-without-invented-result')
+        self.tenjiku_load_fixture(profile,'royal-engine');w.button('Resume play');self.tenjiku_events(1)
+        wait(lambda:w.has('.outcome-card'),'actual engine naturally completes independently specified royal game',45)
+        complete=self.native_diagnostics();assert complete['context']['payload']['conclusion']=={'kind':'royal_capture','winner':'sente'}
+        assert len(complete['observations'])==1 and complete['observations'][0]['observation']['result']['result']['kind']=='choice'
+        self.record('Actual installed bundled engine completes native diagram game',{'profile':profile,'native':complete,'qualification':'Independent limited source diagram, real supervised Choice/native action and outcome; not standard-root selfplay or strength evidence.'})
+        self.capture('real-engine-native-royal-complete-game');path=self.args.output/f'tenjiku-{profile}-natural-engine-complete.mshogi'
+        self.tenjiku_save(path,profile);self.tenjiku_reopen_saved(path,profile);self.capture('native-complete-game-fresh-stopped-reopen');self.quit()
+
+    def tenjiku_recovery(self, profile):
+        self.start(f'tenjiku-{profile}-standard',phase_name=f'verification-recovery-tenjiku-{profile}');w=self.web
+        engine=self.args.verification_engine;held=engine.with_name(engine.name+'.gui-verification-held');original=digest(engine)
+        assert not held.exists()
+        try:
+            engine.rename(held);w.button('Resume play');wait(lambda:w.read("document.querySelector('.game-shell').dataset.paused")=='false','Tenjiku Resume before missing real sidecar')
+            w.click(self.square('16l'));w.click(self.square('16k'))
+            wait(lambda:'Engine connection failed' in w.text('.shell-notices'),'genuine Tenjiku missing-sidecar failure');self.tenjiku_events(1)
+            assert not w.has('.outcome-card');self.capture('missing-sidecar-unscored')
+        finally:
+            if held.exists():held.rename(engine)
+        assert digest(engine)==original
+        w.button('Retry engine turn');self.tenjiku_events(2)
+        wait(lambda:w.has('[data-search-purpose="engine_turn"]'),'actual Tenjiku retry admitted',45)
+        self.tenjiku_save(self.args.output/f'tenjiku-{profile}-recovery-complete.mshogi',profile)
+        self.record('Actual missing engine restored identically before explicit Retry',{'profile':profile,'engine_sha256':original,'native':self.native_diagnostics()})
+        self.capture('real-sidecar-retry-preserves-history');self.quit()
+
     def chu_events(self, count, selected=None, historical=False):
         root = "document.querySelector('.game-shell')"
         wait(lambda: self.web.read(root + '?.dataset.liveEvents') == str(count), f'native Chu history has {count} exact events')
@@ -2790,23 +3184,23 @@ class Journey:
         self.record('Observe active analysis controls before setting work limits', ready)
         return ready
 
-    def pending(self, game):
+    def pending(self, game, tenjiku_profile=None):
         """Actual QA supervisor with bounded external delay; no fake responses."""
-        fixture = 'standard' if game == 'chess' else f'{game}-standard'
-        self.start(fixture, gated=True, phase_name=f'verification-pending-{game}')
+        fixture = f'tenjiku-{tenjiku_profile}-standard' if game=='tenjiku' else 'standard' if game == 'chess' else f'{game}-standard'
+        self.start(fixture, gated=True, phase_name=f'verification-pending-{game}'+(f'-{tenjiku_profile}' if tenjiku_profile else ''))
         w = self.web
-        if game in ('tori', 'chu'):
+        if game in ('tori', 'chu', 'tenjiku'):
             w.button('Resume play')
             wait(lambda: w.read("document.querySelector('.game-shell').dataset.paused") == 'false', 'native Resume before pending human action')
-        origin, destination = {'chess': ('e2', 'e4'), 'shogi': ('7g', '7f'), 'xiangqi': ('a3', 'a4'), 'tori': ('3d', '3c'), 'chu': ('9h', '9g')}[game]
-        point = self.square if game == 'chess' else self.shogi_square if game in ('shogi', 'tori') else self.chu_square if game == 'chu' else self.xiangqi_point
+        origin, destination = {'chess': ('e2', 'e4'), 'shogi': ('7g', '7f'), 'xiangqi': ('a3', 'a4'), 'tori': ('3d', '3c'), 'chu': ('9h', '9g'),'tenjiku':('16l','16k')}[game]
+        point = self.square if game == 'chess' else self.shogi_square if game in ('shogi', 'tori') else self.chu_square if game in ('chu','tenjiku') else self.xiangqi_point
         w.click(point(origin)); w.click(point(destination))
         wait(lambda: w.has('.shogi-analysis[data-phase="thinking"]') and w.has('.shell-notices button'), 'actual pending engine decision')
         # Chess desktop history includes its native Match Start event.
         human_event, restored_event = (2, 1) if game == 'chess' else (1, 0)
         before = self.native_diagnostics()
         cue_action = (json.dumps(before['context']['payload']['events'][-1]['command']['action'], separators=(',', ':'))
-                      if game in ('tori', 'chu') else origin + destination)
+                      if game in ('tori', 'chu', 'tenjiku') else origin + destination)
         self.assert_completed_cue(cue_action, human_event, [origin], [destination])
         assert len(before['context']['payload']['events']) >= 1
         self.capture('real-engine-pending')
@@ -2829,7 +3223,7 @@ class Journey:
         self.capture('takeback-pending-stopped')
         self.resume_pending_analysis(game)
         w.set('.shogi-analysis input[name="depth"]', 1)
-        w.set('.shogi-analysis input[name="nodes"]', 128 if game == 'xiangqi' else 512 if game == 'chu' else 1000)
+        w.set('.shogi-analysis input[name="nodes"]', 128 if game == 'xiangqi' else 1024 if game == 'tenjiku' else 512 if game == 'chu' else 1000)
         w.click(f'[data-analysis-start="{game}"]')
         wait(lambda: w.has('.shogi-analysis[data-phase="analyzing"]'), 'actual delayed read-only analysis')
         first = self.native_diagnostics()
@@ -2844,10 +3238,10 @@ class Journey:
         cancelled = self.native_diagnostics()
         assert cancelled['context'] == restored['context'], 'no analysis move was played'
         self.capture('analysis-replaced-cancelled')
-        path = self.args.output / f'pending-{game}-complete.mshogi'
+        path = self.args.output / (f'pending-{game}'+(f'-{tenjiku_profile}' if tenjiku_profile else '')+'-complete.mshogi')
         archive = self.save_current(path)
         body = desktop_document_payload(archive, game)
-        action = before['context']['payload']['events'][-1]['command']['action'] if game in ('tori','chu') else origin + destination
+        action = before['context']['payload']['events'][-1]['command']['action'] if game in ('tori','chu','tenjiku') else origin + destination
         assert retained_pending_takeback(game, body, action), 'native archive retains abandoned board action before Take back'
         old_token = cancelled['token']
         self.file('open', path); self.wait_opened(path)
@@ -2859,7 +3253,7 @@ class Journey:
         self.record('Real pending browse Return / Take back / analysis replacement cancellation', {
             'game': game, 'before': before, 'returned': returned, 'restored': restored,
             'first_analysis': first, 'replacement_analysis': replacement, 'cancelled': cancelled,
-            'saved_sha256': digest(path), 'reopened': reopened, 'native_takeback_controls': sum(entry.get('kind') == 'rewind' and entry.get('reason') == 'take_back' if game in ('tori','chu') else (entry.get('command') or {}).get('kind') == 'take_back' for entry in body['controls'])})
+            'saved_sha256': digest(path), 'reopened': reopened, 'native_takeback_controls': sum(entry.get('kind') == 'rewind' and entry.get('reason') == 'take_back' if game in ('tori','chu','tenjiku') else (entry.get('command') or {}).get('kind') == 'take_back' for entry in body['controls'])})
         self.quit()
 
     def chess_full(self):
@@ -3169,7 +3563,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--driver", default="tauri-driver")
     parser.add_argument("--native-driver")
-    parser.add_argument("--phase", choices=["normal", "normal-shogi", "normal-xiangqi", "normal-tori", "normal-chu", "verification", "verification-shogi", "verification-xiangqi", "verification-tori", "verification-chu", "all"], default="all")
+    parser.add_argument("--phase", choices=["normal", "normal-shogi", "normal-xiangqi", "normal-tori", "normal-chu", "verification", "verification-shogi", "verification-xiangqi", "verification-tori", "verification-chu", "normal-tenjiku", "verification-tenjiku", "all"], default="all")
     args = parser.parse_args()
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=True)
@@ -3214,6 +3608,14 @@ def main():
                     journey.normal_chu()
                 elif fixture == "normal-chu-native":
                     journey.normal_chu_native()
+                elif fixture.startswith('normal-tenjiku-'):
+                    profile=fixture.removeprefix('normal-tenjiku-').removesuffix('-native')
+                    if fixture.endswith('-native'):journey.normal_tenjiku_native(profile)
+                    else:journey.normal_tenjiku(profile)
+                elif fixture.startswith('pending-tenjiku-'):
+                    journey.pending('tenjiku',fixture.removeprefix('pending-tenjiku-'))
+                elif fixture.startswith('recovery-tenjiku-'):
+                    journey.tenjiku_recovery(fixture.removeprefix('recovery-tenjiku-'))
                 elif fixture == "chu-recovery":
                     journey.chu_recovery()
                 elif fixture == "tori-recovery":

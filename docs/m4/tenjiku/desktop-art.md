@@ -2,9 +2,34 @@
 
 MSH-44, 4 November 2026. Implementation starts from `84d7aa8` on
 `codex/rewrite`. This document records artwork naming, asset provenance and
-the bounded verification scope. It does not establish owner visual approval,
-normal chooser activation, complete product delivery or historical-facsimile
-agreement.
+the bounded verification scope. The original component/QA evidence below retains
+its source and date. The 5 November continuation records subsequent owner visual
+approval and normal activation; final product acceptance remains separate from
+asset approval and historical-facsimile agreement.
+
+## Current owner-approved continuation — 5 November 2026
+
+John approved the overall traditional-kanji artwork and existing shared board
+presentation. The [recorded decision](../../design.md#owner-acceptance-of-tenjiku-visuals-and-shared-identification-2026-11-05)
+retains the 760×650 application minimum. All 256 Tenjiku cells fit, while dense
+kanji and secondary route badges remain too small for comfortable reading in
+some cases. Around 960×1000 is a recommended playing size when the display
+permits, not a new minimum. No glyph, artwork, zoom or minimum-size change is
+part of this continuation.
+
+The existing footer now identifies the selected piece using the native label
+across all six games, and retains it through compound selection. Occupied legal
+capture destinations have decorative outlined markers painted above the piece
+artwork; the markers ignore pointer events. Inspection remains distinct from a
+playable selection. The normal sixth-game chooser exposes both named immutable
+profiles and normal Load preserves the saved profile.
+
+Actual normal macOS [Adams capture targets](evidence/msh44-final-macos/normal-adams-great-general-captures.png),
+[Muller capture targets](evidence/msh44-final-macos/normal-muller-gote-great-general-captures.png)
+and [partial-route identification](evidence/msh44-final-macos/normal-adams-compound-partial-name.png)
+supplement the earlier QA gallery. Final artifact/source reconciliation and the
+required final six-job/platform campaign remain pending in the single
+[product record](product-verification.json).
 
 ## Traditional names and source alignment
 
@@ -231,7 +256,9 @@ retain their explicitly recorded source scope.
 Each measured view retains all256 cells and the bundled font. Independent visual
 review found the current minimum insufficient for comfortable dense-kanji reading;
 it found the concrete taller proposal materially clearer in both orientations.
-This is an unresolved owner product decision. No minimum, three-character name,
+At that QA checkpoint this was an unresolved owner product decision; the
+5 November decision above retains the original minimum and recommends the taller
+playing size. No minimum, three-character name,
 no-scroll/no-zoom requirement or shared layout architecture has changed. The
 QA-only tall native preset permits review without implementing that policy.
 
@@ -240,5 +267,7 @@ choice/refusal, paired profile-specific Fire Demon burns/mover destruction, engi
 reply, read-only analysis, history and file/recovery controls are represented in
 the gallery. Native readable effect descriptions accompany accessible Moves,
 including simultaneous burn batches and promotion/original identity. Canonical
-actions, effects and outcomes still come only from Rust. Owner visual approval,
-normal selector activation and final acceptance remain pending.
+actions, effects and outcomes still come only from Rust. Owner visual approval
+and normal selector activation were pending at that checkpoint; the continuation
+above supersedes those status statements. Final platform/product acceptance
+remains pending.

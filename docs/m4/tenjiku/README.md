@@ -1,8 +1,9 @@
 # Modern Tenjiku Shogi profile family
 
 MSH-83 ratifies two owner-selected whole profiles. MSH-87 supplies the native
-implementation and executable conformance described below. No Tenjiku
-engine/console/desktop capability is delivered by the native handoff.
+implementation and executable conformance described below. MSH-44 subsequently
+adds the engine, console and desktop consumer delivery; the earlier native
+handoff remains evidence for its own bounded scope.
 
 - [Complete rules and immutable identities](profile.md)
 - [Owner decisions and profile differences](decisions.md)
@@ -21,11 +22,21 @@ acquisition gate or proof of agreement among historical and modern witnesses.
 
 Native source/acceptance evidence is recorded in `native-verification.json`;
 MSH-79 consumes the actual handoff;
-MSH-44 now supplies a functional two-profile working visual checkpoint: see
+MSH-44 now implements normal sixth-game selection with two explicit whole-profile
+choices and ordinary profile-preserving Load: see
 [engine](engine-v1.md), [notation/console](notation.md), [artwork](desktop-art.md),
 [original-criteria coverage](product-coverage.md), the single
 [product evidence record](product-verification.json) and
 [genuine macOS gallery](evidence/msh44-macos/gallery.md).
-Owner visual/readability approval, normal activation and final acceptance remain
-pending; MSH-44 is unfinished.
+On 5 November the owner approved the traditional-kanji artwork and authorized
+normal activation. The shared footer identifies the selected native piece across
+all six games, including compound entry; capture outlines paint above occupied
+pieces. The minimum remains 760×650: the board fits, but small kanji and secondary
+route badges are not all comfortably readable. About 960×1000 is recommended,
+not required. See the [recorded owner decision](../../design.md#owner-acceptance-of-tenjiku-visuals-and-shared-identification-2026-11-05).
+
+Actual normal macOS journeys now include both profiles and native royal-capture
+complete games. Final source reconciliation, all six required Rust/Desktop CI
+jobs and final three-platform product acceptance remain pending; MSH-44 is
+unfinished. The earlier QA gallery retains its original source and scope.
 No additional planning hierarchy, automatic refactor or M5 work starts here.

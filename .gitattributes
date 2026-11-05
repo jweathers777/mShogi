@@ -6,3 +6,5 @@
 /docs/m4/chu/sources.json text eol=lf
 /docs/m4/tenjiku/fixtures.json text eol=lf
 /docs/m4/tenjiku/profile.json text eol=lf
+/desktop/scripts/fixtures/tenjiku-*.mshogi text eol=lf
+/desktop/scripts/fixtures/tenjiku-native-fixtures.json text eol=lf

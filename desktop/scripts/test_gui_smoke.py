@@ -553,7 +553,7 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
             'xiangqi-offer', 'xiangqi-agreed', 'xiangqi-fast-proof', 'xiangqi-resigned',
             'xiangqi-capacity', 'xiangqi-failure', 'xiangqi-exact-evidence'})
         self.assertTrue(set(xiangqi) <= set(actual))
-        self.assertEqual(module.selected_gui_phases('normal'), previous[:4] + ['normal-tori', 'normal-tori-native', 'normal-chu', 'normal-chu-native'])
+        self.assertEqual(module.selected_gui_phases('normal'), previous[:4] + ['normal-tori', 'normal-tori-native', 'normal-chu', 'normal-chu-native', 'normal-tenjiku-adams', 'normal-tenjiku-adams-native', 'normal-tenjiku-muller', 'normal-tenjiku-muller-native'])
         self.assertEqual(module.selected_gui_phases('normal-tori'), ['normal-tori', 'normal-tori-native'])
         self.assertEqual(module.selected_gui_phases('verification-tori'), ['pending-tori', 'tori-recovery'])
         self.assertEqual(module.selected_gui_phases('normal-shogi'), previous[1:3])
@@ -1613,6 +1613,95 @@ class ToriDirtyCloseAdmissionTests(unittest.TestCase):
         journey.web.click.assert_called_once_with('.flip-button')
         journey.web.read.assert_not_called()
         journey.native.close_window.assert_not_called()
+
+
+class TenjikuPackagedEvidenceTests(unittest.TestCase):
+    """Observer/input integrity tests; genuine installed GUI runs remain required."""
+    def test_both_normal_profiles_and_real_pending_recovery_are_mandatory(self):
+        normal=['normal-tenjiku-adams','normal-tenjiku-adams-native','normal-tenjiku-muller','normal-tenjiku-muller-native']
+        verification=['pending-tenjiku-adams','recovery-tenjiku-adams','pending-tenjiku-muller','recovery-tenjiku-muller']
+        self.assertEqual(module.selected_gui_phases('normal-tenjiku'),normal)
+        self.assertEqual(module.selected_gui_phases('verification-tenjiku'),verification)
+        self.assertTrue(set(normal+verification)<=set(module.selected_gui_phases('all')))
+        for profile in ('adams','muller'):
+            for method,suffix in ((module.Journey.normal_tenjiku,''),(module.Journey.normal_tenjiku_native,'-native')):
+                journey=object.__new__(module.Journey);journey.start=Mock(side_effect=RuntimeError('normal launch'))
+                with self.assertRaisesRegex(RuntimeError,'normal launch'):method(journey,profile)
+                journey.start.assert_called_once_with(product=f'tenjiku-{profile}{suffix}')
+
+    def test_native_documents_keep_both_profiles_exact_and_have_no_fabricated_observations(self):
+        directory=Path(__file__).with_name('fixtures');manifest=json.loads((directory/'tenjiku-native-fixtures.json').read_text())
+        self.assertEqual(len(manifest['cases']),20)
+        for case in manifest['cases']:
+            document=json.loads((directory/case['file']).read_text());body=module.desktop_document_payload(document,'tenjiku')
+            self.assertEqual(document['rules_profile'],case['profile'])
+            self.assertEqual(body['initial'],body['current']);self.assertEqual(body['observations'],[]);self.assertEqual(body['controls'],[])
+            self.assertIsNone(body['current']['payload']['conclusion'])
+            if 'repetition3' in case['file']:self.assertEqual(len(body['current']['payload']['events']),3)
+            elif 'agreement' in case['file']:
+                self.assertEqual(len(body['current']['payload']['events']),1);self.assertEqual(body['human'],'gote');self.assertEqual(body['current']['payload']['draw_offer'],'sente');self.assertEqual(body['current']['payload']['current_position']['side'],'sente')
+            else:self.assertEqual(body['current']['payload']['events'],[])
+            for mutate in (lambda d:d.update(rules_profile='unknown'),lambda d:d.update(profile_edition='other-profile-edition')):
+                bad=copy.deepcopy(document);mutate(bad)
+                with self.assertRaises(AssertionError):module.desktop_document_payload(bad,'tenjiku')
+        self.assertEqual({case['profile'] for case in manifest['cases']},{'mshogi.tenjiku.adams1999-modern.v1','mshogi.tenjiku.muller-completed.v1'})
+
+    def test_complete_tenjiku_route_and_igui_identity_is_not_collapsed_to_endpoints(self):
+        travel={'kind':'travel','from':[8,10],'route':[[7,9],[7,8],[8,8]],'promote':False}
+        igui={'kind':'igui','from':[8,8],'route':[],'promote':False,'target':[9,8]}
+        for expected in (travel,igui):
+            self.assertTrue(module.native_action_identity_matches(json.dumps(expected),json.dumps(expected)))
+            for changed in ({**expected,'promote':True},{**expected,'from':[17,8]},{**expected,'route':[] if expected['kind']=='travel' else [[9,8]]},{**expected,'victims':['invented']}):
+                self.assertFalse(module.native_action_identity_matches(json.dumps(changed),json.dumps(expected)))
+        changed=copy.deepcopy(travel);changed['route'][0:2]=reversed(changed['route'][0:2])
+        self.assertFalse(module.native_action_identity_matches(json.dumps(changed),json.dumps(travel)))
+        for bad in ({**travel,'target':None},{**igui,'target':None},{**travel,'from':[True,8]}):
+            self.assertFalse(module.native_action_identity_matches(json.dumps(bad),json.dumps(bad)))
+
+    def test_repeated_analysis_requires_new_observation_fresh_identity_and_exact_selected_prefix(self):
+        action={'kind':'travel','from':[1,3],'route':[[1,4]],'promote':False}
+        native={'game_kind':'tenjiku','rules_profile':'mshogi.tenjiku.adams1999-modern.v1','payload':{'events':[{'native':'prefix1'}]}}
+        old={'schema_version':1,'context':{'request_id':5,'process_generation':6},'result':{'kind':'retained-prior-analysis'}}
+        before={'profile':native['rules_profile'],'context':native,'token':{'document':4,'version':8},'event_index':1,'board_ply':1,'turn':{'id':{'game_kind':'tenjiku','side':'gote'}},'tenjiku':{'live':{'event_index':2,'identities':'native-live'}},'events':[{'native':'event1'},{'native':'event2'}],'observations':[{'observation':old}]}
+        observation={'schema_version':1,'context':{'request_id':10,'process_generation':11,'session_version':9,'game':copy.deepcopy(native),'limits':{'depth':1,'nodes':1024},'purpose':{'kind':'move_analysis','target':{'event_index':1,'board_ply':1,'session_version':9,'turn':copy.deepcopy(before['turn']['id'])}}},'result':{'kind':'tenjiku','result':{'kind':'choice','action':action,'telemetry':{'completed_depth':1,'perspective':'gote','score':0,'nodes':5,'principal_variation':[action],'evaluator_id':'mshogi.tenjiku.material.v1','search_id':'mshogi.tenjiku.full-width.v1'}}}}
+        after=copy.deepcopy(before);after['token']['version']=10;after['observations'].append({'observation':observation});after['analysis']={'observation':observation}
+        self.assertTrue(module.completed_tenjiku_analysis(before,after,5,6))
+        self.assertFalse(module.completed_tenjiku_analysis(before,before,5,6),'old available UI/status/native result is insufficient')
+        for mutate in (lambda a:a['observations'].pop(),lambda a:a['observations'][0]['observation'].update(result={'rewritten':'prior result'}),
+                       lambda a:a['analysis']['observation']['context'].update(request_id=5),lambda a:a['analysis']['observation']['context'].update(process_generation=6),
+                       lambda a:a['analysis']['observation']['context'].update(session_version=7),lambda a:a['analysis']['observation']['context']['purpose']['target'].update(event_index=2),
+                       lambda a:a['analysis']['observation']['context']['purpose']['target'].update(board_ply=2),lambda a:a['analysis']['observation']['context']['purpose'].update(kind='engine_turn'),
+                       lambda a:a['analysis']['observation']['context']['game']['payload']['events'].append({'future':'event2'}),lambda a:a['context']['payload']['events'].append({'played':'move'}),
+                       lambda a:a['tenjiku']['live'].update(identities='changed-live-game'),lambda a:a.update(profile='mshogi.tenjiku.muller-completed.v1'),
+                       lambda a:a['analysis']['observation']['result']['result']['telemetry'].update(score=None),lambda a:a['analysis']['observation']['result'].update(kind='chu')):
+            changed=copy.deepcopy(after);mutate(changed)
+            self.assertFalse(module.completed_tenjiku_analysis(before,changed,5,6))
+
+    def png(self,path,pixels,rgba=False):
+        import struct,zlib
+        def chunk(kind,body):return struct.pack('>I',len(body))+kind+body+struct.pack('>I',zlib.crc32(kind+body)&0xffffffff)
+        width=height=64;channels=4 if rgba else 3
+        raw=b''.join(b'\0'+b''.join(bytes(pixels(x,y)+(255,) if rgba else pixels(x,y)) for x in range(width)) for y in range(height))
+        path.write_bytes(b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>IIBBBBB',width,height,8,6 if rgba else 2,0,0,0))+chunk(b'IDAT',zlib.compress(raw))+chunk(b'IEND',b''))
+
+    def test_capture_proof_requires_real_distributed_green_pixels_not_dom_class_names(self):
+        observation={'viewport':{'width':64,'height':64},'markers':[{'square':'9e','rect':{'left':12,'top':12,'width':40,'height':40},'strokeWidth':2,'scale':1,'center':{'x':32,'y':32},'radius':20}]}
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'actual.png'
+            for rgba in (False,True):
+                self.png(path,lambda x,y:(53,94,66) if 19<=((x+0.5-32)**2+(y+0.5-32)**2)**0.5<=21 else (248,227,184),rgba)
+                evidence=module.capture_ring_pixel_evidence(path,observation)
+                self.assertGreater(evidence['rings'][0]['greenStrokePixels'],50);self.assertEqual(evidence['rings'][0]['quadrants'],4)
+            self.png(path,lambda x,y:(248,227,184)) # Identical DOM but artwork occludes the stroke.
+            with self.assertRaises(AssertionError):module.capture_ring_pixel_evidence(path,observation)
+            self.png(path,lambda x,y:(53,94,66) if y<13 and abs(x-32)<3 else (248,227,184))
+            with self.assertRaises(AssertionError):module.capture_ring_pixel_evidence(path,observation)
+            # A behind-art circle can leave left/right fringes across all four
+            # quadrants. Neither top nor bottom stroke is actually visible.
+            self.png(path,lambda x,y:(53,94,66) if abs(x-32)>18 and abs(y-32)<8 else (248,227,184))
+            with self.assertRaises(AssertionError):module.capture_ring_pixel_evidence(path,observation)
+            path.write_bytes(b'not a screenshot')
+            with self.assertRaises(AssertionError):module.capture_ring_pixel_evidence(path,observation)
 
 
 if __name__ == '__main__':

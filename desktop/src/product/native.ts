@@ -3,15 +3,16 @@ import type { AnalysisOperation, AnalysisState, Claim, ChessResult, Color, Match
 import type { NativeBoardSnapshot } from "../NativeBoard";
 import type { CompletedActionGeometry } from "../boardPresentation";
 export type GameKind = "chess" | "shogi" | "xiangqi" | "tori" | "chu" | "tenjiku";
-export type PlayableGameKind = Exclude<GameKind, "tenjiku">;
+export type PlayableGameKind = GameKind;
 export type TenjikuProfile = "mshogi.tenjiku.adams1999-modern.v1" | "mshogi.tenjiku.muller-completed.v1";
 export type RulesProfile = "mshogi.chess.match.v1" | "mshogi.shogi.csa36.v1" | "mshogi.xiangqi.wxf2018.v1" | "mshogi.tori.modern.v1" | "mshogi.chu.jcsa2019.v1" | TenjikuProfile;
 export const playableProfiles: Record<PlayableGameKind, RulesProfile> = {
   chess: "mshogi.chess.match.v1", shogi: "mshogi.shogi.csa36.v1", xiangqi: "mshogi.xiangqi.wxf2018.v1",
   tori: "mshogi.tori.modern.v1", chu: "mshogi.chu.jcsa2019.v1",
+  tenjiku: "mshogi.tenjiku.adams1999-modern.v1",
 };
 export const tenjikuProfiles = [
-  { id: "mshogi.tenjiku.adams1999-modern.v1", label: "Adams Modern" },
+  { id: "mshogi.tenjiku.adams1999-modern.v1", label: "Adams 1999 Modern" },
   { id: "mshogi.tenjiku.muller-completed.v1", label: "Muller Completed" },
 ] as const;
 export type NativeSide = { game_kind: "chess"; side: "white" | "black" }

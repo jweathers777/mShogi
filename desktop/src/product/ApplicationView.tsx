@@ -5,7 +5,7 @@ import { GameActions, type Confirmation } from "./GameCapabilities";
 import { NativeAnalysis, NativeHistory, NativeRecovery, nativeCapacityReached } from "./NativeSessionPanels";
 import { Dialog } from "./Dialog";
 import { useApplicationFocus } from "./useApplicationFocus";
-import type { GameSnapshot, Operation } from "./native";
+import { tenjikuProfiles, type GameSnapshot, type Operation } from "./native";
 import type { GameSession } from "./useGameSession";
 import { gameStatus } from "../presentation";
 import { SupportDialog } from "./SupportDialog";
@@ -46,7 +46,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       <button className="quiet" onClick={onOpen} disabled={disabled}>Load</button></>}
     heading={<LiveGameHeading eyebrow={snapshot.historical ? "HISTORY · READ ONLY" : snapshot.status.concluded ? "GAME CONCLUDED" : "YOUR GAME"}
       status={snapshot.historical ? "Viewing history" : thinking ? "mShogi is thinking" : (snapshot.game === "chess" ? gameStatus({ conclusion: snapshot.chess.selected_conclusion, turn: snapshot.turn.id.side, in_check: snapshot.chess.in_check }) : snapshot.status.label)}
-      player={<>You play {snapshot.human.label} against mShogi</>}
+      player={<>You play {snapshot.human.label} against mShogi{snapshot.game === "tenjiku" && <> · <span data-rules-profile={snapshot.profile}>{tenjikuProfiles.find(profile => profile.id === snapshot.profile)!.label}</span></>}</>}
       flip={<button className="quiet flip-button" disabled={disabled} aria-label={`Flip board; currently ${side.label} at bottom`} onClick={() => { void flip(); }}>↕ <span>Flip board</span></button>} />}
     positionNotice={snapshot.historical && <HistoricalNotice action={<button disabled={disabled} onClick={() => { void command({ kind: "return_live" }); }}>Return to live</button>}>
       <p>Your live game is unchanged.</p></HistoricalNotice>}

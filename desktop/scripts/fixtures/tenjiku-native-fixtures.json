@@ -1,0 +1,515 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "capture_squares": [
+          "9h",
+          "10h"
+        ],
+        "conclusion": null,
+        "origin": "8h",
+        "steps": [
+          "9h",
+          "10h"
+        ]
+      },
+      "file": "tenjiku-adams-compound.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1",
+      "source_fixture": "TEN-LIONHAWK-DOUBLE-CAPTURE",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9560,
+        "observations": 0,
+        "replay_work": 19448,
+        "reserved_bytes": 945,
+        "reserved_work": 43040,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "conclusion": null,
+        "origin": "8h",
+        "stationary": true,
+        "target": "9h"
+      },
+      "file": "tenjiku-adams-igui.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1",
+      "source_fixture": "TEN-TETRARCH-IGUI",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9264,
+        "observations": 0,
+        "replay_work": 18856,
+        "reserved_bytes": 945,
+        "reserved_work": 41708,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "conclusion": null,
+        "face": "G",
+        "origin": "8f",
+        "promote": true,
+        "steps": [
+          "8e"
+        ]
+      },
+      "file": "tenjiku-adams-promotion.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1",
+      "source_fixture": "TEN-PROMOTION-CONCRETE-P-YES",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9044,
+        "observations": 0,
+        "replay_work": 18416,
+        "reserved_bytes": 945,
+        "reserved_work": 40718,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "burned": [
+          "8g"
+        ],
+        "conclusion": null,
+        "mover_dies": "8h",
+        "origin": "8j",
+        "steps": [
+          "7i",
+          "7h",
+          "8h"
+        ]
+      },
+      "file": "tenjiku-adams-burn.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1",
+      "source_fixture": "TEN-BURN-DYING",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9524,
+        "observations": 0,
+        "replay_work": 19376,
+        "reserved_bytes": 945,
+        "reserved_work": 42878,
+        "retained_events": 0
+      }
+    },
+    {
+      "diagram_extension": {
+        "added": {
+          "at": [
+            1,
+            1
+          ],
+          "id": "5",
+          "original": "P",
+          "promoted": false,
+          "side": "gote"
+        },
+        "development_observation": "Before this extension the actual normal macOS engine legally chose 8j-1c and won by bare_royal_loss; that was a fixture expectation gap, not a product defect.",
+        "proof": "From 8j the Fire Demon's long diagonal can end at 1c or 2d and burn Pawn 2c, but neither endpoint burns remote Pawn 1a; its at-most-three-step area route cannot remove both Pawns. Any one-ply win must therefore remove King 8g.",
+        "qualification": "Explicit extension of the cited frozen root, not an exact corpus-root identity; the frozen corpus is unchanged.",
+        "reason": "Exclude the independently identified alternative one-ply bare-royal win while retaining RoyalCapture expectation."
+      },
+      "expected": {
+        "conclusion": {
+          "kind": "royal_capture",
+          "winner": "sente"
+        },
+        "engine_to_move": "sente",
+        "qualification": "Actual UI Resume must obtain a real engine choice and commit a native terminal game, not a fabricated observation."
+      },
+      "file": "tenjiku-adams-royal-engine.mshogi",
+      "human": "gote",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1",
+      "source_fixture": "TEN-BURN-ENEMY-ROYAL",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9693,
+        "observations": 0,
+        "replay_work": 19720,
+        "reserved_bytes": 945,
+        "reserved_work": 43652,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "conclusion": {
+          "kind": "simultaneous_royal_loss"
+        },
+        "origin": "8i",
+        "steps": [
+          "8h"
+        ]
+      },
+      "file": "tenjiku-adams-simultaneous.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1",
+      "source_fixture": "TEN-BURN-SIMULTANEOUS-ROYALS",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9056,
+        "observations": 0,
+        "replay_work": 18440,
+        "reserved_bytes": 945,
+        "reserved_work": 40772,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "conclusion": {
+          "kind": "bare_royal_loss",
+          "winner": "gote"
+        },
+        "origin": "5a",
+        "steps": [
+          "5j"
+        ]
+      },
+      "file": "tenjiku-adams-bare-loss.mshogi",
+      "human": "gote",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1",
+      "source_fixture": "TEN-BARE-CONCRETE-LOSS",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9009,
+        "observations": 0,
+        "replay_work": 18352,
+        "reserved_bytes": 945,
+        "reserved_work": 40574,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "conclusion": null,
+        "legal_actions": [],
+        "qualification": "No actions is unscored, never an invented draw/loss."
+      },
+      "file": "tenjiku-adams-no-actions.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1",
+      "source_fixture": "TEN-NO-ACTIONS-CONCRETE",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9280,
+        "observations": 0,
+        "replay_work": 18888,
+        "reserved_bytes": 945,
+        "reserved_work": 41780,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "accepting_actor": "gote",
+        "board_plies": 0,
+        "command_source": "TEN-COMMAND-OFFER_DRAW/TEN-COMMAND-ACCEPT_OPPOSING_OFFER/TEN-COMMAND-DECLINE_DRAW",
+        "conclusion_after_accept": {
+          "kind": "agreement"
+        },
+        "known_events": 1,
+        "offered_by": "sente"
+      },
+      "file": "tenjiku-adams-agreement.mshogi",
+      "human": "gote",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1",
+      "source_fixture": "TEN-REPETITION-CONCRETE",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9101,
+        "observations": 0,
+        "replay_work": 34356,
+        "reserved_bytes": 946,
+        "reserved_work": 41006,
+        "retained_events": 2
+      }
+    },
+    {
+      "expected": {
+        "conclusion": null,
+        "forbidden_destination": "1a",
+        "forbidden_origin": "2a",
+        "known_events": 3
+      },
+      "file": "tenjiku-adams-repetition3.mshogi",
+      "human": "gote",
+      "profile": "mshogi.tenjiku.adams1999-modern.v1",
+      "source_fixture": "TEN-REPETITION-CONCRETE",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 11869,
+        "observations": 0,
+        "replay_work": 90216,
+        "reserved_bytes": 946,
+        "reserved_work": 53453,
+        "retained_events": 6
+      }
+    },
+    {
+      "expected": {
+        "capture_squares": [
+          "9h",
+          "10h"
+        ],
+        "conclusion": null,
+        "origin": "8h",
+        "steps": [
+          "9h",
+          "10h"
+        ]
+      },
+      "file": "tenjiku-muller-compound.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.muller-completed.v1",
+      "source_fixture": "TEN-LIONHAWK-DOUBLE-CAPTURE",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9595,
+        "observations": 0,
+        "replay_work": 19476,
+        "reserved_bytes": 945,
+        "reserved_work": 43103,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "conclusion": null,
+        "origin": "8h",
+        "stationary": true,
+        "target": "9h"
+      },
+      "file": "tenjiku-muller-igui.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.muller-completed.v1",
+      "source_fixture": "TEN-TETRARCH-IGUI",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9299,
+        "observations": 0,
+        "replay_work": 18884,
+        "reserved_bytes": 945,
+        "reserved_work": 41771,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "conclusion": null,
+        "face": "G",
+        "origin": "8f",
+        "promote": true,
+        "steps": [
+          "8e"
+        ]
+      },
+      "file": "tenjiku-muller-promotion.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.muller-completed.v1",
+      "source_fixture": "TEN-PROMOTION-CONCRETE-P-YES",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9079,
+        "observations": 0,
+        "replay_work": 18444,
+        "reserved_bytes": 945,
+        "reserved_work": 40781,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "burned": [],
+        "conclusion": null,
+        "mover_dies": "8h",
+        "origin": "8j",
+        "steps": [
+          "7i",
+          "7h",
+          "8h"
+        ]
+      },
+      "file": "tenjiku-muller-burn.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.muller-completed.v1",
+      "source_fixture": "TEN-BURN-DYING",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9559,
+        "observations": 0,
+        "replay_work": 19404,
+        "reserved_bytes": 945,
+        "reserved_work": 42941,
+        "retained_events": 0
+      }
+    },
+    {
+      "diagram_extension": {
+        "added": {
+          "at": [
+            1,
+            1
+          ],
+          "id": "5",
+          "original": "P",
+          "promoted": false,
+          "side": "gote"
+        },
+        "development_observation": "Before this extension the actual normal macOS engine legally chose 8j-1c and won by bare_royal_loss; that was a fixture expectation gap, not a product defect.",
+        "proof": "From 8j the Fire Demon's long diagonal can end at 1c or 2d and burn Pawn 2c, but neither endpoint burns remote Pawn 1a; its at-most-three-step area route cannot remove both Pawns. Any one-ply win must therefore remove King 8g.",
+        "qualification": "Explicit extension of the cited frozen root, not an exact corpus-root identity; the frozen corpus is unchanged.",
+        "reason": "Exclude the independently identified alternative one-ply bare-royal win while retaining RoyalCapture expectation."
+      },
+      "expected": {
+        "conclusion": {
+          "kind": "royal_capture",
+          "winner": "sente"
+        },
+        "engine_to_move": "sente",
+        "qualification": "Actual UI Resume must obtain a real engine choice and commit a native terminal game, not a fabricated observation."
+      },
+      "file": "tenjiku-muller-royal-engine.mshogi",
+      "human": "gote",
+      "profile": "mshogi.tenjiku.muller-completed.v1",
+      "source_fixture": "TEN-BURN-ENEMY-ROYAL",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9728,
+        "observations": 0,
+        "replay_work": 19748,
+        "reserved_bytes": 945,
+        "reserved_work": 43715,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "conclusion": {
+          "kind": "simultaneous_royal_loss"
+        },
+        "origin": "8i",
+        "steps": [
+          "8h"
+        ]
+      },
+      "file": "tenjiku-muller-simultaneous.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.muller-completed.v1",
+      "source_fixture": "TEN-BURN-SIMULTANEOUS-ROYALS",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9091,
+        "observations": 0,
+        "replay_work": 18468,
+        "reserved_bytes": 945,
+        "reserved_work": 40835,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "conclusion": {
+          "kind": "bare_royal_loss",
+          "winner": "gote"
+        },
+        "origin": "5a",
+        "steps": [
+          "5j"
+        ]
+      },
+      "file": "tenjiku-muller-bare-loss.mshogi",
+      "human": "gote",
+      "profile": "mshogi.tenjiku.muller-completed.v1",
+      "source_fixture": "TEN-BARE-CONCRETE-LOSS",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9044,
+        "observations": 0,
+        "replay_work": 18380,
+        "reserved_bytes": 945,
+        "reserved_work": 40637,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "conclusion": null,
+        "legal_actions": [],
+        "qualification": "No actions is unscored, never an invented draw/loss."
+      },
+      "file": "tenjiku-muller-no-actions.mshogi",
+      "human": "sente",
+      "profile": "mshogi.tenjiku.muller-completed.v1",
+      "source_fixture": "TEN-NO-ACTIONS-CONCRETE",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9315,
+        "observations": 0,
+        "replay_work": 18916,
+        "reserved_bytes": 945,
+        "reserved_work": 41843,
+        "retained_events": 0
+      }
+    },
+    {
+      "expected": {
+        "accepting_actor": "gote",
+        "board_plies": 0,
+        "command_source": "TEN-COMMAND-OFFER_DRAW/TEN-COMMAND-ACCEPT_OPPOSING_OFFER/TEN-COMMAND-DECLINE_DRAW",
+        "conclusion_after_accept": {
+          "kind": "agreement"
+        },
+        "known_events": 1,
+        "offered_by": "sente"
+      },
+      "file": "tenjiku-muller-agreement.mshogi",
+      "human": "gote",
+      "profile": "mshogi.tenjiku.muller-completed.v1",
+      "source_fixture": "TEN-REPETITION-CONCRETE",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 9136,
+        "observations": 0,
+        "replay_work": 34412,
+        "reserved_bytes": 946,
+        "reserved_work": 41069,
+        "retained_events": 2
+      }
+    },
+    {
+      "expected": {
+        "conclusion": null,
+        "forbidden_destination": "1a",
+        "forbidden_origin": "2a",
+        "known_events": 3
+      },
+      "file": "tenjiku-muller-repetition3.mshogi",
+      "human": "gote",
+      "profile": "mshogi.tenjiku.muller-completed.v1",
+      "source_fixture": "TEN-REPETITION-CONCRETE",
+      "usage": {
+        "controls": 0,
+        "encoded_bytes": 11904,
+        "observations": 0,
+        "replay_work": 90328,
+        "reserved_bytes": 946,
+        "reserved_work": 53516,
+        "retained_events": 6
+      }
+    }
+  ],
+  "generator": "write_tenjiku_gui_fixtures",
+  "qualification": "Current native desktop documents admitted/replayed by public Rust APIs. Unproved diagrams, no fabricated observations, no normal host fixture/IPC activation.",
+  "schema": "mshogi.tenjiku.packaged-fixtures.v1",
+  "source": "docs/m4/tenjiku/fixtures.json frozen MSH83/87 independently authored roots and expectations",
+  "source_sha256": "2005e098b507f73248b8f9bd442f7ffe0c2c0c5ae205428d9a3d2371a7c08e82"
+}

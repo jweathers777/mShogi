@@ -25,7 +25,7 @@
 .tenjiku-board-frame .native-selected-route circle { fill:#203e37; stroke:#f8e9bc; stroke-width:2; }
 .tenjiku-board-frame .native-selected-route text { fill:#fff5d6; font:600 19px system-ui,sans-serif; }
 .game-shell .tenjiku-board-help .board-help { margin:0; padding-top:3px; font-size:10px; line-height:1.2; }
-.game-shell .tenjiku-board-help:has(.route-selection) .board-help:not(.movement-inspection-status) { display:none; }
+.game-shell .tenjiku-board-help:has(.route-selection) .board-help:not(.movement-inspection-status):not(.selected-piece-status) { display:none; }
 .tenjiku-board-help .route-selection { display:flex; align-items:center; gap:6px; margin:0; padding:2px 0; border:0; font-size:10px; }
 .tenjiku-board-help .route-selection p { margin:0; line-height:1.2; }
 .tenjiku-board-help .route-selection button { flex-shrink:0; padding:3px 6px; margin:0; font-size:10px; }

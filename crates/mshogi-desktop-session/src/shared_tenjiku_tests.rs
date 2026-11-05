@@ -843,8 +843,8 @@ fn raw_mixed_profile_forged_effects_and_duplicate_commands_never_reach_the_insta
 }
 
 #[test]
-fn stopped_shared_reopen_product_gate_and_failed_files_preserve_prior_file_and_dirty_state() {
-    // TEN-CONSUMER-SAVED_PROFILE_REOPEN_STOPPED; normal playable Load stays gated.
+fn stopped_product_reopen_and_failed_files_preserve_whole_profile_prior_file_and_dirty_state() {
+    // TEN-CONSUMER-SAVED_PROFILE_REOPEN_STOPPED; ordinary product Load restores the saved whole profile.
     let directory = TestDirectory::new();
     let mut ctl = controller();
     for (index, profile) in c::Profile::ALL.into_iter().enumerate() {
@@ -856,17 +856,14 @@ fn stopped_shared_reopen_product_gate_and_failed_files_preserve_prior_file_and_d
         let saved = save(&mut ctl, &path);
         assert!(!saved.document.dirty);
         let prior_file = fs::read(&path).unwrap();
-        let prior_document = document_bytes(&ctl);
-        let id = ctl
-            .queue_product_open(path.clone(), ctl.shared_open_token())
-            .unwrap();
-        assert_eq!(wait_file(&mut ctl, id).io.phase, IoPhase::Failed);
-        assert_eq!(document_bytes(&ctl), prior_document);
-        assert_eq!(record(&ctl), live);
-        assert_eq!(fs::read(&path).unwrap(), prior_file);
-        let id = ctl
-            .queue_shared_open(path.clone(), ctl.shared_open_token())
-            .unwrap();
+        let other = if profile == c::Profile::AdamsModern {
+            c::Profile::MullerCompleted
+        } else {
+            c::Profile::AdamsModern
+        };
+        replace(&mut ctl, &c::Game::standard(other), c::Side::Gote);
+        let before_open = ctl.shared_open_token();
+        let id = ctl.queue_product_open(path.clone(), before_open).unwrap();
         let reopened = wait_file(&mut ctl, id);
         assert_eq!(
             reopened.io.phase,
@@ -874,9 +871,11 @@ fn stopped_shared_reopen_product_gate_and_failed_files_preserve_prior_file_and_d
             "{:?}",
             reopened.io.message
         );
-        assert!(reopened.token.document > saved.token.document);
+        assert!(reopened.token.document > before_open.document);
         assert_eq!(reopened.profile, RulesProfile::from(profile));
         assert!(reopened.paused && reopened.historical);
+        assert_eq!(reopened.human.id, saved.human.id);
+        assert_eq!(fs::read(&path).unwrap(), prior_file);
         assert_eq!(reopened.event_index, 0);
         assert!(ctl.session.tenjiku().unwrap().pending.is_none());
         assert_eq!(record(&ctl), live);

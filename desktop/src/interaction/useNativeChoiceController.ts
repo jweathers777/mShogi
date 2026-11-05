@@ -206,7 +206,8 @@ export function useNativeChoiceController(options: ChoiceControllerOptions) {
     }
   }
   return {
-    ...state, focused, destinations, terminals, continuation, completionRef,
+    ...state, selectedLabel: origins.find(origin => origin.key === state.selected)?.label,
+    focused, destinations, terminals, continuation, completionRef,
     completionTarget: returnFocus.current, interactionDisabled: (disabled && (inspectionDisabled || !onInspect)) || state.completions.length > 0,
     register: (key: string, element: SVGGElement | HTMLButtonElement | null) => { if (element) elements.current.set(key, element); else elements.current.delete(key); },
     onFocus: (key: string) => { setFocused(key); hadFocus.current = true; },

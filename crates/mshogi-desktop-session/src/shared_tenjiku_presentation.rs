@@ -282,7 +282,7 @@ impl DesktopController {
                 intersections: None,
                 files: files.clone(),
                 ranks: ranks.clone(),
-                label: "Tenjiku Shogi 16×16 verification board".into(),
+                label: "Tenjiku Shogi 16×16 board".into(),
                 initial_focus: "8i".into(),
             },
             orientations: vec![

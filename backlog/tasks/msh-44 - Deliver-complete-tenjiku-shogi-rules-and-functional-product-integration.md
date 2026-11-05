@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-05T10:00:00Z'
+updated_date: '2026-11-05T10:48:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -119,6 +119,10 @@ Continuation source freeze independently approved: six-game native friendly name
 Reviewed final source0a2fb9d72a2ed59bf896d7a350794896b2885936 committed and pushed normally. Required Rust run42001930699 and Desktop run42001931107 started at exactsource; single boundedcompletion monitor active. No acceptance inferred before requiredreceipts. Concurrent independently integrated roadmap-only commits2ac32c0/9326489 preserved; no unrelatedworktree changed.
 
 First finalsource0a2fb9d campaign: all3Rustjobs andDesktopmacOS15 passed. LinuxDesktop failed actualGUI with externalobserverdiagnostic-shape KeyError, terminalOpen wronglyexpecting nonterminalResume banner, downstreamMuller missingAdamsfile, andexistingChuGTKemptyfilenameCopytimeout. ActualbothnativeRoyalCapturegames reached/saved/reopened; firstcampaignnotaccepted. Captured47phase report/artifact13404602463 retained. Boundedfixes consumeactualpublicdiagnosticshape andnativepaused/outcomeauthority; Linux allows one bound input-only replacement withfresh exactCopy beforeanyOpen/Save. Independent21pickernegative/unit tests pass. MissingTenjikuinAboutlist correctedonlydisplaytext. CurrentWindowscampaigncontinues to retainactualresults; nooverlappingretrycampaign.
+
+Corrected reviewed source241807f647583e5ccf87eb3d5e8e8ca2aa192675 committed/pushed. Prior0a2 campaignfullyterminal: Rustall3+DesktopMacpassed, DesktopLinux/Windowsfailedexternalobservers (5/4phasefailures respectively); preservedall6receipts/artifacthashes andactual47phaseextracts. No overlappingcampaign. CorrectedRust42007477229/Desktop42007477090 activeunderonecompletionmonitor. Full externalobserver160passed1.779s; About5passed1.95s; independent124observer+21pickerreviewPASS. Rebuiltfixednormalpackagehost4e3719fe/enginea3c0cda3; coldlaunchconfirmedAboutsixgamelist, bothgenuineRoyalCapturegamesanddenseGGfooters/outlinescapturedatfinalsource. Olderfullnormaljourneysreusedonlyunchangedscope; earlierprocessAboutprobeexplicitlysuperseded. Finalacceptancependingexactsourceall6jobs/3platformjourneys andfinalreview.
+
+241807f campaign fullyterminal: all3Rust andDesktopMac/Windows passed; Windowsall47requiredGUIjourneys includedbothnormalTenjiprofiles, realengine/analysis/lifecycle/nativeendings/pending/recovery. Linux45/47phasespassed; failedwhenexternalobserverpointerClosewasbelowAboutmodalviewportat760×625 aftercompletepublicdiagnosticsread, plusMullercascadefrommissingAdamsoutput. PreservedactualPNG/trace/source/receipts; no rule/analysisfailure inferred. Finalexternalhelperusesrealboundedkeyboardentry/summarycollapse/singleEscape/closure+invokerrestore; currentproductsupportsalreadypresent. Full163observercheckspass, fouractualraw2pagediagnosticspreserved/tested. Finalsourcefreeze/requiredall6campaign pendingreview; nooverlap/noDone.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

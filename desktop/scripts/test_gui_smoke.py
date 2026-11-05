@@ -1,6 +1,8 @@
 """External driver boundary tests; these do not establish actual packaged GUI results."""
 import ast
 import copy
+import gzip
+import hashlib
 import http.client
 import importlib.util
 import json
@@ -314,6 +316,16 @@ class MovesKeyboardEvidenceTests(unittest.TestCase):
             self.web.keyboard_activate(".moves-root")
         self.web.key.assert_called_once_with("\ue007")
 
+    def test_about_entry_bound_covers_actual100_move_history_but_remains_finite(self):
+        unfocused={**self.ready,'focused':False}
+        self.web.read.side_effect=[unfocused]*101+[self.ready]
+        self.web.keyboard_activate('[data-support-trigger]',max_tabs=256)
+        self.assertEqual(self.web.key.call_args_list,[unittest.mock.call('\ue004')]*101+[unittest.mock.call('\ue007')])
+        self.web.key.reset_mock();self.web.read.side_effect=None;self.web.read.return_value=unfocused
+        with self.assertRaisesRegex(AssertionError,'unreachable'):
+            self.web.keyboard_activate('[data-support-trigger]',max_tabs=256)
+        self.assertEqual(self.web.key.call_args_list,[unittest.mock.call('\ue004')]*256)
+
     def test_focused_target_waits_for_readonly_paint_without_tabbing_away(self):
         self.web.read.side_effect = [{**self.ready, "visible": False}, self.ready]
         self.web.keyboard_activate(".moves-root")
@@ -603,10 +615,10 @@ class XiangqiRuntimeEvidenceTests(unittest.TestCase):
         journey = object.__new__(module.Journey)
         journey.web = Mock()
         diagnostics = {**self.diagnostics(), 'error': ''}
-        journey.web.read.side_effect = [True, {'text':json.dumps(diagnostics),'page':0,'pages':1}]
-        journey.web.has.side_effect = [True, True, False]
+        journey.web.read.side_effect = [True, {'text':json.dumps(diagnostics),'page':0,'pages':1}, True, True]
+        journey.web.has.side_effect = [True, True, False, False]
         self.assertEqual(journey.xiangqi_diagnostics(), diagnostics)
-        expression = journey.web.read.call_args.args[0]
+        expression = journey.web.read.call_args_list[1].args[0]
         self.assertIn('text:e.textContent',expression)
         self.assertNotIn('JSON.parse(',expression)
         journey.web.command.assert_not_called()
@@ -1196,40 +1208,91 @@ class PublicSupportDiagnosticsTests(unittest.TestCase):
     def test_native_diagnostics_require_public_actual_input_and_always_close(self):
         journey=object.__new__(module.Journey);journey.web=Mock()
         native={'token':{'document':7},'context':{'game_kind':'shogi'}}
-        journey.web.read.side_effect=[True,{'text':json.dumps(native),'page':0,'pages':1}]
-        journey.web.has.side_effect=[True,True,False]
+        journey.web.read.side_effect=[True,{'text':json.dumps(native),'page':0,'pages':1},True,True]
+        journey.web.has.side_effect=[True,True,False,False]
         self.assertEqual(journey.native_diagnostics(),native)
-        self.assertEqual(journey.web.click.call_args_list,[unittest.mock.call('[data-support-trigger]'),
-            unittest.mock.call('.support-dialog details summary'),unittest.mock.call('.support-dialog [data-cancel]')])
+        self.assertEqual(journey.web.keyboard_activate.call_args_list,[unittest.mock.call('[data-support-trigger]',max_tabs=256),
+            unittest.mock.call('.support-dialog details:first-of-type summary'),unittest.mock.call('.support-dialog details:first-of-type summary')])
+        journey.web.key.assert_called_once_with('\ue00c');journey.web.click.assert_not_called()
         for call in journey.web.read.call_args_list:
             for forbidden in ('invoke(', 'dispatchEvent(', '.click(', '.focus('):
                 self.assertNotIn(forbidden,call.args[0])
 
     def test_bad_diagnostic_payload_still_closes_public_dialog(self):
         journey=object.__new__(module.Journey);journey.web=Mock()
-        journey.web.read.side_effect=[True,{'text':'null','page':0,'pages':1}];journey.web.has.side_effect=[True,True,False]
-        with self.assertRaises(AssertionError):journey.native_diagnostics()
-        self.assertEqual(journey.web.click.call_args_list[-1],unittest.mock.call('.support-dialog [data-cancel]'))
+        for text,error in (('null',AssertionError),('{',json.JSONDecodeError)):
+            journey.web=Mock();journey.web.read.side_effect=[True,{'text':text,'page':0,'pages':1},True,True];journey.web.has.side_effect=[True,True,False,False]
+            with self.assertRaises(error):journey.native_diagnostics()
+            self.assertEqual(journey.web.keyboard_activate.call_args_list[-1],unittest.mock.call('.support-dialog details:first-of-type summary'))
+            journey.web.key.assert_called_once_with('\ue00c');journey.web.click.assert_not_called()
+
+    def test_diagnostic_cleanup_failure_propagates_without_replaying_any_input(self):
+        native={'token':{'document':7},'context':{'game_kind':'tenjiku'}}
+        for failure in ('summary','escape','restore'):
+            journey=object.__new__(module.Journey);journey.web=Mock()
+            journey.web.read.side_effect=[True,{'text':json.dumps(native),'page':0,'pages':1},True,failure!='restore']
+            journey.web.has.side_effect=[True,True,False,False]
+            if failure=='summary':journey.web.keyboard_activate.side_effect=[None,None,RuntimeError('summary delivery unknown')]
+            if failure=='escape':journey.web.key.side_effect=RuntimeError('Escape delivery unknown')
+            def required(check,*args):
+                value=check()
+                if not value:raise AssertionError('required observation absent')
+                return value
+            with patch.object(module,'wait',side_effect=required),self.assertRaises((RuntimeError,AssertionError)):
+                journey.native_diagnostics()
+            journey.web.click.assert_not_called()
+            self.assertEqual(journey.web.keyboard_activate.call_count,3)
+            self.assertEqual(journey.web.key.call_count,0 if failure=='summary' else 1)
 
     def test_public_diagnostic_pages_reconstruct_exact_context_through_real_buttons(self):
         journey=object.__new__(module.Journey);journey.web=Mock()
         native={'token':{'document':7},'context':{'game_kind':'chu','history':['same board','different history']}}
         text=json.dumps(native);split=len(text)//2
         journey.web.read.side_effect=[True,{'text':text[:split],'page':0,'pages':2},1,
-            {'text':text[split:],'page':1,'pages':2}]
-        journey.web.has.side_effect=[True,True,False]
+            {'text':text[split:],'page':1,'pages':2},True,True]
+        journey.web.has.side_effect=[True,True,False,False]
         self.assertEqual(journey.native_diagnostics(),native)
         journey.web.button.assert_called_once_with('Next diagnostics page')
-        self.assertEqual(journey.web.click.call_args_list[-1],unittest.mock.call('.support-dialog [data-cancel]'))
+        journey.web.key.assert_called_once_with('\ue00c');journey.web.click.assert_not_called()
+
+    def test_whole_reader_preserves_actual_retained_linux_before_and_reopened_diagnostics(self):
+        directory=Path(__file__).with_name('fixtures')
+        provenance=json.loads((directory/'public-diagnostics-tenjiku-linux-241807f.provenance.json').read_text())
+        data=(directory/provenance['archive']).read_bytes()
+        self.assertEqual(hashlib.sha256(data).hexdigest(),provenance['archive_sha256'])
+        captured=json.loads(gzip.decompress(data))
+        self.assertEqual(captured['source_revision'],'241807f647583e5ccf87eb3d5e8e8ca2aa192675')
+        self.assertEqual({(case['profile'],case['captured_field']) for case in captured['cases']},
+                         {('adams','before'),('adams','reopened'),('muller','before'),('muller','reopened')})
+        for case in captured['cases']:
+            native=case['native'];text=json.dumps(native,ensure_ascii=False,separators=(',',':'))
+            self.assertEqual(hashlib.sha256(text.encode()).hexdigest(),case['canonical_public_json_sha256'])
+            self.assertEqual(len(text.encode('utf-16-le'))//2,case['utf16_units'])
+            self.assertTrue(all(ord(c)<=65535 for c in text)) # These actual captures contain no surrogate pairs.
+            pages=[text[i:i+65536] for i in range(0,len(text),65536)]
+            self.assertEqual(len(pages),2);self.assertEqual(case['pages'],2)
+            reads=[True]
+            for page,chunk in enumerate(pages):
+                reads.append({'text':chunk,'page':page,'pages':len(pages)})
+                if page+1<len(pages):reads.append(page+1)
+            reads.extend([True,True])
+            journey=object.__new__(module.Journey);journey.web=Mock()
+            journey.web.read.side_effect=reads;journey.web.has.side_effect=[True,True,False,False]
+            self.assertEqual(journey.native_diagnostics(),native)
+            journey.web.keyboard_activate.assert_any_call('[data-support-trigger]',max_tabs=256)
+            journey.web.button.assert_called_once_with('Next diagnostics page')
+            journey.web.key.assert_called_once_with('\ue00c');journey.web.click.assert_not_called()
+            for call in journey.web.read.call_args_list:
+                for forbidden in ('invoke(', 'dispatchEvent(', '.click(', '.focus(', 'scrollIntoView('):self.assertNotIn(forbidden,call.args[0])
 
     def test_public_diagnostic_page_identity_and_size_are_bounded(self):
         for page in ({'text':'{}','page':1,'pages':2},{'text':'x'*65537,'page':0,'pages':1},
                      {'text':'{}','page':0,'pages':513}):
             journey=object.__new__(module.Journey);journey.web=Mock()
-            journey.web.read.side_effect=[True,page];journey.web.has.side_effect=[True,True,False]
+            journey.web.read.side_effect=[True,page,True,True];journey.web.has.side_effect=[True,True,False,False]
             with self.assertRaises(AssertionError):journey.native_diagnostics()
             journey.web.button.assert_not_called()
-            self.assertEqual(journey.web.click.call_args_list[-1],unittest.mock.call('.support-dialog [data-cancel]'))
+            journey.web.key.assert_called_once_with('\ue00c');journey.web.click.assert_not_called()
 
     def test_lightweight_inspection_observer_never_opens_support_or_invents_native_token(self):
         journey=object.__new__(module.Journey);journey.web=Mock()

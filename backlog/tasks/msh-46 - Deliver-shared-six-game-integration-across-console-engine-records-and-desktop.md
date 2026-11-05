@@ -4,7 +4,7 @@ title: Deliver shared six-game integration across console engine records and des
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-10-26T16:47:00Z'
+updated_date: '2026-11-05T13:54:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -63,4 +63,6 @@ Delivery may coordinate with game tickets before their completion; dependencies 
 MSH62 planning refinement2026-10-26: original identity,status,AC and DoD remain intact. This complete-delivery record now depends explicitly on its required bounded component/shared work; docs/m4/delivery-plan.md traces each original criterion and single ownership. No game implementation or delivery completion occurred. Earlier M3-context wording remains historical; current authorization is planning-only. Early shared69/72/73 depend on concrete shogi native consumers, not this final record or all five game deliveries. Later game-specific shared extensions76-79 wait on native handoffs84-87 and profile research80-83, not their aggregate delivery. Final integrated packaged acceptance88 and fresh shared review89 retain all original final obligations; MSH47 still gates M4 closure.
 
 MSH-90 is the required bounded common-console follow-up to MSH-68/69/70, owned once under MSH-46. Added to this final acceptance gate without removing existing dependencies or changing criteria. MSH-71/72 remain unstarted.
+
+MSH88 final shared packaged integration accepted2026-11-05, evidence e68e8e3d1787f2d029e3601259070807bdbab180 pushed to codex/rewrite; tested codebc92bfe5e3b20e9e999df12cbf54b91682c71b8d, all6 required platform jobs pass and Windows/Linux49/49 actualGUI phases plus separately qualified localmacOS27 actualall6/seven-profile journeys. Current ownership/originalAC1–5 mapping: docs/m4/shared-integration/README.md; single exact-source record verification.json in that directory. All current native/library/console/engine/session/document/frontend owners are exercised together; no production rules/limits/architecture or minimum changed, no retired reader revived. Fresh88independent review approved functional/platform evidence. Original46AC6 remains MSH89; no46criteria are checked or narrowed by this handoff,46 remains ToDo/unassigned, and108/47/M4 are not closed.89 is dependency-ready but not begun.
 <!-- SECTION:NOTES:END -->

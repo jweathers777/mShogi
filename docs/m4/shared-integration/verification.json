@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "task": "MSH-88",
-  "status": "In Review",
+  "status": "Done",
   "accepted": true,
   "tested_source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
   "starting_integration": "c1aee938e8057c5a2c1ec48e86ad87716f18c811",
@@ -398,7 +398,7 @@
       "Distinct per-visit Save/capture paths and keyboard Moves preconditions.",
       "Remove stale unsaved New/Load guard claim; require immutable profile identity in game_new contract."
     ],
-    "final_platform_verdict": "Approved: no material blockers. All original MSH88AC1\u20134 and DoD1\u20133 supported; DoD4 awaits normal evidence commit/push then final task closure. This is bounded88review, not89/46/47 acceptance.",
+    "final_platform_verdict": "Approved with no material blockers: originalMSH88AC1\u20134 andDoD1\u20133 supported. Reviewer conditionDoD4 subsequently satisfied by normal evidence commit/push e68e8e3 before final task closure.",
     "windows_verdict": {
       "verdict": "approved",
       "exact_source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
@@ -545,7 +545,6 @@
     "method": "Actual installed/packaged GUI via W3C pointer/keyboard and native OS dialogs/close, external to distributables. Read-only DOM inspection; no direct IPC or injected input events.",
     "scope": "Actual apt-installed normal Debian application with bundled engine, separately extracted labeled QA package, X11/Openbox/native WebKitGTK/native pickers,49passed phases including both new real cross-game sequences. No browser/synthetic substitution for seven-profile play."
   },
-  "completion_gate": "Functional/platform acceptance approved; normal evidence commit/push and final Backlog DoD4 closure pending.",
   "evidence_files": {
     "evidence/ci/9dd173f-runs-jobs.json.gz": "8d00d2ace53dee1c55a278bba767b13d83eacfa9a9fced5a40b684aad97053a4",
     "evidence/ci/artifacts.json": "a5b9a7ded681f7171eb25d5e6cef0d21bc5d40888bddcb0ef619d4dc7d0c8c31",
@@ -749,5 +748,30 @@
     "evidence/windows/normal-cross-game-saved-5-adams.webview.png": "0b07d7d2c6924671e0f2f8a63e760864f23886988dc4e0ac12ac20f7c4e89900",
     "evidence/windows/package-smoke.json": "efb23ae0c6b152dfd3de5e85ede6c1be58bbe40680a4602e86977bb8d3acbfdb",
     "evidence/windows/webview-driver.json": "886df16b41f6394b017986d82af136ab0e5d912d915c03553edc6b95327cf3bc"
+  },
+  "evidence_revision": "e68e8e3d1787f2d029e3601259070807bdbab180",
+  "completion": {
+    "acceptance_criteria_complete": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "definition_of_done_complete": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "evidence_commit_pushed": "e68e8e3d1787f2d029e3601259070807bdbab180",
+    "integration_branch": "codex/rewrite",
+    "tested_source_unchanged": true,
+    "followup": "MSH89 Ready/unassigned after88Done; MSH46/108/47 andM4 remain open; no follow-up work started."
+  },
+  "workspace": {
+    "primary_checkout_reused": true,
+    "created_or_removed_task_worktrees": false,
+    "final_unrelated_worktree_observed": "/Users/johnweathers/.codex/worktrees/tenjiku-historical-access/mShogi",
+    "qualification": "Startup showed five unrelated worktrees; final inspection shows one. This assignment created/removed none and did not modify their branches or work. No unrelated code integrated."
   }
 }

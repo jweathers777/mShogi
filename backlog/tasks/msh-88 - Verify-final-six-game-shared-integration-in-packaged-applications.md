@@ -1,11 +1,11 @@
 ---
 id: MSH-88
 title: Verify final six-game shared integration in packaged applications
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-26T07:44:00Z'
-updated_date: '2026-11-05T12:39:00Z'
+updated_date: '2026-11-05T13:49:00Z'
 labels:
   - m4
   - owner-msh-46
@@ -30,6 +30,8 @@ references:
 documentation:
   - docs/m4/implementation-map.md
   - docs/m4/delivery-plan.md
+  - docs/m4/shared-integration/README.md
+  - docs/m4/shared-integration/verification.json
 type: task
 ordinal: 88000
 ---
@@ -46,17 +48,17 @@ Planning-only batch MSH-62 creates this future work; no implementation or game-d
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 All six real game profiles run through shared library/console/engine/session/record/desktop boundaries with complete game-specific actions/history and honest capability/limit metadata.
-- [ ] #2 Game switching,cancellation/stale results,analysis/outcomes/recovery,save/reopen/history and per-profile capacity admission have cross-game regression evidence including preserved chess/M2 modes and old documents.
-- [ ] #3 Actual installed or packaged GUI+bundled-engine journeys on Windows,macOS and Linux cover real games and readable keyboard/accessibility interactions; build-only,protocol-only,browser-only or synthetic evidence is not substituted.
-- [ ] #4 Exact revisions/packages/environments/commands and failures are durable,normal distributables exclude instrumentation,and ownership/coverage maps reconcile every original MSH46AC1-5 without weakening game scopes.
+- [x] #1 All six real game profiles run through shared library/console/engine/session/record/desktop boundaries with complete game-specific actions/history and honest capability/limit metadata.
+- [x] #2 Game switching,cancellation/stale results,analysis/outcomes/recovery,save/reopen/history and per-profile capacity admission have cross-game regression evidence including preserved chess/M2 modes and old documents.
+- [x] #3 Actual installed or packaged GUI+bundled-engine journeys on Windows,macOS and Linux cover real games and readable keyboard/accessibility interactions; build-only,protocol-only,browser-only or synthetic evidence is not substituted.
+- [x] #4 Exact revisions/packages/environments/commands and failures are durable,normal distributables exclude instrumentation,and ownership/coverage maps reconcile every original MSH46AC1-5 without weakening game scopes.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -74,4 +76,10 @@ Startup2026-11-05: CLI1.55.1 matches recorded baseline. c1aee938 HEAD/origin/FET
 Focused integrated checkpoint: added one same-controller seven-profile New/reverse-current-Load ring, stale command/inspection/replacement/Open/execution rejection and malformed-Load authority/prior-file preservation (manual execution, explicitly not subprocess evidence); default and all-feature focused native test each passed. Added actual normal same-host seven-profile New/play/Save/reverse-Load/history/Resume/Take back journey and separately labeled delayed real-engine cross-game/profile New/Load retirement journey. Fresh independent source review approved after correcting verifier process classification to exclude persistent WebKit children; negative observer regression added. Final actual platform evidence remains pending; no production rules, architecture, supported formats, budgets or UI minimum changed.
 
 Pre-campaign verifier correction: source9dd173f runs Rust42028250037 and Desktop42028250101 were proactively cancelled after code inspection found repeated fresh-document Save targets (Adams/Chess) could trigger an unhandled GTK overwrite confirmation. All six jobs had runners and ended cancelled; preserve raw receipts, not passes, in final structured record. Corrected distinct per-visit Save/capture names and used existing real keyboard activation for nested Moves controls; no product fix or unrelated race correction is claimed. Fresh independent review approved the correction; 176 external verifier tests pass. Both superseded runs reached terminal cancellation before starting a replacement campaign.
+
+Actual local macOS27 normal package verified in one hostPID50108 across all6games/7profiles: native keyboard humanmoves+real replies, normal New and Adams↔Muller fresh-profile choices, native seven-file cross-game Load stopped2plies→flip→Resume→root history→Return→Take back0paused→complete retained-branch Save, nativeAdamsResign and dirtyQuitCancel→Save→cleanQuit. Rebuilt bc92bfe normal bundle matches all4 actual ECA bundle files byte-for-byte. Fixed QA identity rebuilt/staged once: genuine bounded analysis Replace/Cancel, profile replacements, fresh1depth/1024node read-only Adams result at0plies, real observation Save→ToriLoad→AdamsLoad stopped. Separate OS process receipt confirms no hosts/gates/engines. Local qa18–20 helperbinding attempt reached unintended normal app; artifacts explicitly excluded and corrected explicit-QA helpers used. Current structured record docs/m4/shared-integration/verification.json and original46AC1–5 ownership matrix are drafts, acceptancefalse pending remaining exact-source CI/actualWindowsLinux GUI receipts and fresh independent final reconciliation. No production semantics/limits/minimum or acceptance requirement changed.
+
+Reviewed sourcebc92bfe5e3b20e9e999df12cbf54b91682c71b8d: Rust42028972679 passed Ubuntu24/macOS15/Windows2022 jobs127250225725/127250225640/127250225944. Desktop42028972586 macOS15 job127250226038 passed; Windows job127250225967 passed actual49/49 GUI phases with0failures, original reportSHA81e919cedfe2cbdf0c7a6bf580fc072fb9431f4e61339c68eb1f6feec2df9917, normal/QA producer inventories verified against downloaded files. Windows includes both new single-host cross-game phases and bothTenjiku profiles. Linux job127250225410 has finished its long successful dependency step and is executing actualGUI; required receipt and independent final platform verdict remain pending. No unchanged-source retry, required-check/test change or product fix claimed. Status InReview; originalAC/DoD remain unchecked until final reconciliation.
+
+Fresh independent finalMSH88review approved: all6 rawjob/step receipts success exactbc92bfe, sixCIlogs and default/allfeature newnative sevenprofiletest passes independently verified; Linux+Windows49/49 actualGUI reports/rawhashes and normal/QA inventories audited. Linux normalPID173199 and pendingPID260519 prove9New/7profiles/7stoppedLoad contexts+realobservations/retainedTakeback and8exact retired gates with no postgate authority/observation mutation; Windows equivalentPID1940/8008 independentlyapproved. Mac71capture references/eightactualarchives/normal4file byteequivalence/unchangedsealedQA identity validated. No material blocker. OriginalAC1–4 andDoD1–3 now supported; DoD4 intentionally waits for normal evidence commit/push, then final closure. Currentcompiled production/test inputs unchanged from fullytestedbc source; no new campaign for documentation/evidence bookkeeping.
 <!-- SECTION:NOTES:END -->

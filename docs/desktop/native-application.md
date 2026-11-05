@@ -1,15 +1,19 @@
 # Current native desktop application contract
 
-MSH-118/R3 replaces the always-present Chess session and optional Shogi/Xiangqi
-overlays. Native rules, profiles, histories, actions and results remain owned by
-their existing game implementations. This document does not authorize R4 or R5.
+MSH-118/R3 replaced the always-present Chess session and optional Shogi/Xiangqi
+overlays. Subsequent delivered games extend the same owner; the
+[current six-game map](../m4/shared-integration/README.md) records their accepted
+adaptations. Native rules, profiles, histories, actions and results remain owned
+by their existing game implementations. Historical R3/R4/R5 staging references
+below retain their original source scope.
 
 ## State and authority
 
 The application controller holds exactly one `ActiveDocument` variant: Chess,
-Shogi or Xiangqi. Only that variant's native match/game, settings, journal,
+Shogi, Xiangqi, Tori, Chu or Tenjiku (with one of two immutable profiles).
+Only that variant's native match/game, settings, journal,
 observations, retained Take back branches and historical selection exist in the
-accepted live state. Shogi and Xiangqi do not retain a dormant Chess game.
+accepted live state. Other games do not retain a dormant Chess game.
 
 `RuntimeMetadata` owns common document/session/selection revisions, document
 epoch and identity, monotonic request floor, saved/content revisions, path and
@@ -40,7 +44,7 @@ duplicate fields must not disappear through an intermediate object map.
 | --- | --- |
 | `game_snapshot` | Native-tagged snapshot, exact token, game-specific geometry/capabilities/history/results, document state, file state and resource facts |
 | `game_command` | Exact rendered `SessionToken`, explicit game and typed native/common operation; stable admission receipt |
-| `game_new` | Exact `SharedOpenToken`, native game and human side; native replacement admission |
+| `game_new` | Exact `SharedOpenToken`, explicit immutable rules profile and native-qualified human side; derived game/edition must agree, native replacement admission |
 | `game_inspection` | Native read-only complete movement inspection with exact selection authority |
 | `game_file` | Product Save/Load via internal save/save_as/open operations, native pickers, bounded validation and atomic replacement |
 | `game_request_close` | Request native unsaved confirmation and stop the active game without inventing a result |

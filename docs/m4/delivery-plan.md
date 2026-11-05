@@ -1,3 +1,15 @@
+> MSH-88 integrated verification — 2026-11-05: the [current original MSH-46
+> ownership/acceptance matrix](shared-integration/README.md) and
+> [single structured record](shared-integration/verification.json) reconcile
+> all six games/seven immutable profiles. Tested source
+> `bc92bfe5e3b20e9e999df12cbf54b91682c71b8d` passed all six required CI jobs;
+> Windows/Linux each passed49 actual packaged GUI phases, and local macOS27
+> completed the seven-profile normal/QA journeys with explicit source/package
+> qualifications. Fresh independent functional/platform review is approved;
+> normal evidence integration/task closure follows. MSH-89 retains independent
+> shared-contract acceptance; MSH-46/108/47 and M4 remain open.
+> Earlier planning/status snapshots below retain their historical source scope.
+
 > MSH-44 accepted delivery — 2026-11-05: Tenjiku is normally playable as the
 > sixth game with both immutable profiles, native search/execution, console and
 > complete notation. The [final product record](tenjiku/product-verification.json)

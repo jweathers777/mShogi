@@ -1,3 +1,10 @@
+> MSH-88 current integration map — see the [six-game ownership and original
+> MSH-46 acceptance matrix](shared-integration/README.md). It names the current
+> single owners, supported formats and verification scope. Earlier first-Shogi
+> transport/archive compatibility proposals below are historical and do not
+> override the accepted R1–R6 retirement policy. MSH-88 functional/platform acceptance is independently approved at `bc92bfe`;
+> evidence integration/task closure follows without closing89/46/47.
+
 > MSH-44 accepted delivery — 2026-11-05: the sixth game and both immutable
 > Tenjiku profiles now use the existing native runtime, document, frontend,
 > choice controller and supervised engine family. Shared friendly names and

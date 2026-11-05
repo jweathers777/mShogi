@@ -16,7 +16,8 @@ unchanged functional contracts. See [R1 evidence](../review/execution-migration-
   version or pending-execution meaning.
 - `ExecutionResponse`: `{ protocol: 4, observation: ExecutionObservation }`.
 
-One `EngineBridge::submit` and `poll` serve all three games. The one-shot
+One `EngineBridge::submit` and `poll` serve all six games and seven immutable
+profiles. The one-shot
 `mshogi internal-search` child parses this request and emits this response.
 There is no version negotiation, legacy-shape fallback, Chess transport adapter,
 paired polling API or second rules/search model. Strict typed parsing preserves
@@ -37,7 +38,8 @@ selection identity, complete native `event_index`, known `board_ply`, session
 version, native label and game-qualified side. Same board placement is not a
 substitute for exact canonical context/history.
 
-The result tag selects native `ChessResult`, `ShogiResult` or `XiangqiResult`,
+The result tag selects native `ChessResult`, `ShogiResult`, `XiangqiResult`,
+`ToriResult`, `ChuResult` or `TenjikuResult`,
 or a bounded unscored `Failure`. Chess retains move versus intended/current
 claim, concluded root, incomplete work, actual telemetry and Full cooperative
 proof/Unknown. Shogi retains complete move/drop/promotion, formal declaration,
@@ -54,6 +56,16 @@ purpose and native command admission. Ordinary analysis uses a separate read-onl
 acceptance handler and cannot issue a live move or claim.
 
 ## Execution safety and bounds
+
+Completed Tori, Chu and Tenjiku delivery uses this same family for real bounded
+engine turns and read-only move analysis. Native complete ordered routes,
+stationary captures, promotion/refusal rights, derived effects and conclusions
+remain game/profile-owned. Both Tenjiku whole profiles retain exact identity at
+every node and observation; cancellation, cross-game or cross-profile replacement
+cannot reuse a request. See the [current shared integration map](../m4/shared-integration/README.md)
+and linked game contracts for native scoring, limits and accepted evidence.
+The earlier Chess/Shogi/Xiangqi result descriptions are examples, not an exclusion
+of the three subsequently delivered games.
 
 Request and response equality includes full history, selection/purpose, request,
 session/process identities and actual limits. Replacement/cancellation retires
@@ -86,9 +98,11 @@ and reserved stop/close headroom remain tested. No archive/resource constant is
 raised. The Xiangqi payload now records `observation_schema_version: 1` instead
 of coupling durable data to an engine protocol number.
 
-R2/MSH-117 owns the new single current outer desktop envelope and deletion of
-old desktop version/read branches. R3 owns native runtime/document ownership;
-R4 owns the single frontend session and removal of the remaining Chess product
-projection. R1 introduces no temporary transport adapter and does not start any
-of those tasks. Native Chess presentation types remain meaningful domain data,
-not an alternate engine execution interface.
+Subsequent MSH-117/R2 delivered the sole current outer desktop envelope and
+deleted old desktop version/read branches. MSH-118/R3 and MSH-119/R4 delivered
+the native runtime/document owner and single frontend session, deleting the
+finite installation/forwarding stages and remaining Chess product projection.
+See the [current document](document-v1.md) and [native application](native-application.md)
+contracts. R1 introduced no permanent transport adapter. Native Chess
+presentation types remain meaningful domain data, not an alternate engine
+execution interface.

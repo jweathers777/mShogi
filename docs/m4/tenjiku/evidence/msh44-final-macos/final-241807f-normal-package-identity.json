@@ -1,0 +1,23 @@
+{
+  "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+  "bundle_id": "org.mshogi.desktop",
+  "expected_bundle_id": "org.mshogi.desktop",
+  "environment": {},
+  "files": {
+    "Contents/Info.plist": "343be4b5b0ce533854424094072924e4695b92c95e1c220e1cd7ec09b5a8ce90",
+    "Contents/MacOS/mshogi": "a3c0cda3e4da2b00b931e0100000387fa9d34835d0e6565587a02f7750dd1567",
+    "Contents/MacOS/mshogi-desktop": "4e3719fe779a78f7800a31a827fa605dff4e1182f0ac26a41842a7e5e2c35c80",
+    "Contents/Resources/icon.icns": "930e0c522903d5d6e73ff91546707e36e1f9c8b2d3c3344ab35b90cca996eecc"
+  },
+  "signatures": {
+    "display": {
+      "exit_code": 0,
+      "output": "# designated => cdhash H\"82e6b424abc2e29f66a9d9d762f176c980e1b274\"\nExecutable=/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app/Contents/MacOS/mshogi-desktop\nIdentifier=mshogi_desktop-5d1fd20094c6a138\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=152568 flags=0x20002(adhoc,linker-signed) hashes=4764+0 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1769472\nHash type=sha256 size=32\nCandidateCDHash sha256=82e6b424abc2e29f66a9d9d762f176c980e1b274\nCandidateCDHashFull sha256=82e6b424abc2e29f66a9d9d762f176c980e1b2742524a787cb31e1dd8e9f7c1a\nHash choices=sha256\nCMSDigest=82e6b424abc2e29f66a9d9d762f176c980e1b2742524a787cb31e1dd8e9f7c1a\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=12812288\nExecutable Segment flags=0x1\nPage size=4096\nCDHash=82e6b424abc2e29f66a9d9d762f176c980e1b274\nSignature=adhoc\nInfo.plist=not bound\nTeamIdentifier=not set\nSealed Resources=none\n"
+    },
+    "strict_verify": {
+      "exit_code": 1,
+      "output": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app: code has no resources but signature indicates they must be present\n"
+    }
+  },
+  "qualification": "Ad-hoc signatures may change on rebuild; no approval persistence is inferred"
+}

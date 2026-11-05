@@ -1,0 +1,25 @@
+Window: "mShogi", App: mShogi.
+0 standard window mShogi, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container About mShogi
+				4 heading About mShogi, Value: 2
+					5 text About mShogi
+				6 text mShogi 0.1.0 · Chess, Shogi, Xiangqi, Tori Shogi and Chu Shogi
+				7 summary Diagnostics, Value: off
+					8 text Diagnostics
+				9 summary Font license, Value: off
+					10 text Font license
+				11 button Quit application
+				12 button Close
+	13 close button
+	14 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	15 minimize button
+	16 text mShogi
+17 menu bar
+	18 mShogi
+	19 Edit
+	20 View
+	21 Window
+
+The focused UI element is 12 button Close

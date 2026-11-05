@@ -1751,16 +1751,25 @@ class Journey:
         """Open the public support surface with real input; no hidden DOM/IPC."""
         w=self.web
         wait(lambda:w.read("!!document.querySelector('[data-support-trigger]:not(:disabled)')"), "support available after native work settles")
-        w.click('[data-support-trigger]')
+        w.keyboard_activate('[data-support-trigger]',max_tabs=256)
         wait(lambda:w.has('.support-dialog'), "public About dialog")
         try:
-            w.click('.support-dialog details summary')
+            w.keyboard_activate('.support-dialog details:first-of-type summary')
             observed=self.public_diagnostic_pages()
             assert isinstance(observed,dict) and observed.get('token') and observed.get('context'), observed
             return observed
         finally:
-            w.click('.support-dialog [data-cancel]')
+            # At the native minimum, expanded multi-page diagnostics can put
+            # Close below the modal's scroll clip. Use the ordinary keyboard
+            # path, keeping focus inside the dialog before its supported Escape.
+            w.keyboard_activate('.support-dialog details:first-of-type summary')
+            wait(lambda:w.read("""(() => {const d=document.querySelector('.support-dialog details:first-of-type');
+                return !!d && !d.open && document.activeElement===d.querySelector('summary')
+                    && !document.querySelector('[data-native-diagnostics]');})()"""),'Diagnostics collapsed with actual summary focus before Escape')
+            w.key('\ue00c')
             wait(lambda:not w.has('.support-dialog'), "Close public About dialog")
+            wait(lambda:w.read("document.activeElement===document.querySelector('[data-support-trigger]')"),'About restores its actual keyboard invoker')
+            assert not w.has('[data-native-diagnostics]'),'diagnostics absent outside About'
 
     def xiangqi_diagnostics(self):
         observed=self.native_diagnostics()

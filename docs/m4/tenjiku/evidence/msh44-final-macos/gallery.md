@@ -51,3 +51,21 @@ These explicitly imported diagrams have no claim of a complete standard-opening 
 ![Muller native royal-capture conclusion](normal-muller-engine-royal-capture.png)
 
 The earlier unextended diagram also allowed the legitimate winning move `FiD8j-1c`, burning Gote's last nonroyal Pawn and ending by BareRoyalLoss. The [superseded capture](superseded-adams-royal-probe-bare-loss.png) preserves that actual observation. The two derived royal-engine fixtures add a remote Gote Pawn at 1a, with explicit independent provenance, to isolate the intended royal-capture case. The frozen rules corpus and native rules are unchanged. The old observation is not counted as a passed RoyalCapture expectation.
+
+## Final-source supplement — 241807f
+
+The original normal journeys above were captured at `0a2fb9d`. The corrected final source is `241807f647583e5ccf87eb3d5e8e8ca2aa192675`: its sole product change is the About six-game list. External verifier corrections follow the actual failed CI observations; native rules, search, session, rendering, New/Load and budgets are unchanged. Earlier complete journeys remain evidence for that unchanged scope.
+
+Before these supplemental captures, an older running process was detected from its five-game About text. That [probe](superseded-running-previous-package-about.png) is explicitly superseded. Native Quit and a read-only process check confirmed it had stopped; the rebuilt normal package was then cold-launched from its exact bundle path. The final host SHA256 is `4e3719fe779a78f7800a31a827fa605dff4e1182f0ac26a41842a7e5e2c35c80`; the engine remains `a3c0cda3e4da2b00b931e0100000387fa9d34835d0e6565587a02f7750dd1567`. The manifest distinguishes the two capture groups.
+
+![Final package lists all six games](final-241807f-six-game-about.png)
+
+![Final Adams real engine royal-capture conclusion](final-241807f-adams-engine-royal-capture.png)
+
+![Final Muller real engine royal-capture conclusion](final-241807f-muller-engine-royal-capture.png)
+
+![Final Adams native friendly name and occupied capture outlines](final-241807f-adams-dense-capture-name.png)
+
+![Final Muller native friendly name and occupied capture outlines](final-241807f-muller-dense-capture-name.png)
+
+Both final-source royal games used ordinary stopped Open, explicit Resume, a genuine supervised `FiD8jx8g`, native RoyalCapture and Save. Both standard files were opened through normal Load and retained their original bytes. The application was cleanly quit and its process absence verified after the final captures. Final CI/platform acceptance remains pending in the product record.

@@ -4,7 +4,7 @@ title: Independently verify integrated six-game delivery and close M4
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-05T21:55:00Z'
+updated_date: '2026-11-05T22:28:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -20,6 +20,8 @@ dependencies:
 documentation:
   - docs/design.md
   - docs/m4/shared-integration/README.md
+  - docs/review/architecture-health-108.md
+  - docs/review/evidence/msh108/verification.json
 ordinal: 47000
 ---
 
@@ -51,4 +53,6 @@ M4 was shown as complete from one completed ticket while five promised games wer
 MSH-46 final shared-delivery handoff2026-11-05 (closure pending): original46AC1–6 are reconciled in docs/m4/shared-integration/README.md against the immutable88platform record and89independent contract assessment, not merely child statuses. Exact tested runtime/platformbc92bfe5e3b20e9e999df12cbf54b91682c71b8d; MSH89final integration91115368c6e99f344dee002d9264f4d0b62cc76b changes no executable behavior. All6 required jobs and actual Windows/Linux49/49 packaged phases/localmacOS27 seven-profile normal/QA behavior retain exact source/OS/signature/accessibility qualifications. Original47dependencies26/39/41/42/43/44/45/46/108 and four criteria/DoD remain unchanged;47 stays ToDo/unassigned/unstarted and must wait for independent108architecture diagnostic as well as46Done. M4 is not closed here.112 remains ToDo/unfixed and separately owned functional diagnostics; keep recurrence/no-retry-fix/nonblocking shared-contract rationale explicit. No unfinished M4 work is transferred to M5; no strength/release signing/fullscreenreader claim.
 
 MSH-46 is Done after original6AC/4DoD reconciliation, fresh independent completion approval and approved evidence normal commit/push90e1222d8db27ede3212b794e877a975a068c35d; final delivery record docs/m4/shared-integration/README.md. Exact tested runtime/platform source remainsbc92bfe5e3b20e9e999df12cbf54b91682c71b8d, immutable88record/89review unchanged.108 is now dependency-ready but unstarted;47stillwaits108 and retains whole-M4 independent closure with all original dependencies/criteria.47remainsToDo/unassigned/unstarted; M4 is not closed.112remainsseparatelyunfixedfunctionaldiagnostics with original nonblocking shared-contract disposition, no strength/accessibility/release-signing claim.
+
+MSH-108 current six-game architecture diagnostic handoff2026-11-05 (finalreview/integration pending): docs/review/architecture-health-108.md maps all6 native/search/application/console boundaries and reconciles106/115/107 against exactsource1d3920227bc376b5cc1694928597e7b5a1d5a864. No material architectural blocker demonstrated; four bounded advisory findings retain concrete consumers, benefit/risk/verification scope. Chu ordinary replay full-undo retention remains; Tenjiku avoids it and has native cooperative APIs plus actual scoped measurements, while supervisor echoedcontext decode still has a synchronous stop boundary. One accepted controller/document/execution/current-envelope/frontend/shell/choice owner remains, game-owned complete semantics unchanged. Two immutableTenjiku profiles and actual native/document budgets/endingClose reserves preserved; timings retain originalsource/synthetic/local qualifications. New diagnostic index docs/review/evidence/msh108/verification.json reuses unchanged88/89/46 evidence without broadtests/CI/GUI.112 remains separatelyownedunfixedfunctionalrunnerdiagnostics, no new redesign gate inferred. After108Done all existing47prerequisites26/39/41–46/108 will be satisfied;47 remains ToDo/unassigned/unstarted and still requires its own original4AC/DoD/independent wholeM4 closure. No downstreamplan/activation or M4/M5 closure here.
 <!-- SECTION:NOTES:END -->

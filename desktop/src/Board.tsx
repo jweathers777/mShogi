@@ -51,13 +51,13 @@ export function Board({ pieces, choices, orientation, version, disabled,
   const columns = geometry.files.length, rows = geometry.ranks.length;
   const interaction = useNativeChoiceController({
     contextKey: JSON.stringify([version, profile, geometry, orientation, nativeOrientation, inspectionContextKey]),
-    choices, origins: [...pieces.map(piece => ({ key: piece.square, owner: "owner" in piece ? piece.owner : piece.color, inspectable: true })),
-      ...hands.map(hand => ({ key: hand.origin, owner: hand.owner, inspectable: hand.count > 0 }))],
+    choices, origins: [...pieces.map(piece => ({ key: piece.square, label: piece.label, owner: "owner" in piece ? piece.owner : piece.color, inspectable: true })),
+      ...hands.map(hand => ({ key: hand.origin, label: hand.label, owner: hand.owner, inspectable: hand.count > 0 }))],
     humanOwner, disabled, inspectionDisabled, onInspect, onPlay, initialFocus: geometry.initialFocus, boardKeys: squares,
     handGroups: [...new Set(hands.map(hand => hand.owner))].map(owner => hands.filter(hand => hand.owner === owner && hand.count > 0).map(hand => hand.origin)),
     neighbor: (key, direction) => gridNeighbor(squares, columns, key, direction),
   });
-  const { selected, prefix, completions, inspection, inspectionPending, destinations } = interaction;
+  const { selected, selectedLabel, prefix, completions, inspection, inspectionPending, destinations } = interaction;
   const selectedChoices = (inspection?.choices ?? choices).filter(choice => choice.from === selected && prefix.every((step,index) => choice.steps[index] === step));
   const stationarySelection = selectedChoices.length > 0 && selectedChoices.every(choice => choice.tenjiku?.kind === "stationary_capture");
   const promotionDialog = completions.length > 0 && profile === "chess" && completions.every(choice => choice.completion !== null);
@@ -65,7 +65,7 @@ export function Board({ pieces, choices, orientation, version, disabled,
   const displayRanks = nativeOrientation?.ranks ?? (orientation === "white" ? [...geometry.ranks].reverse() : geometry.ranks);
   const padding = coordinateFrame ? 40 : 20;
   const width = padding * 2 + columns * 100, height = padding * 2 + rows * 100;
-  const help = <p className={`board-help${inspection || inspectionPending ? " movement-inspection-status" : ""}`}>{inspection ? inspectionStatus(inspection.label) : inspectionPending ? "Loading read-only movement inspection…" : "Arrows: move focus · Enter/Space: select · Esc: cancel"}</p>;
+  const help = <p className={`board-help${inspection || inspectionPending ? " movement-inspection-status" : selectedLabel ? " selected-piece-status" : ""}`}>{inspection ? inspectionStatus(inspection.label) : inspectionPending ? "Loading read-only movement inspection…" : selectedLabel ? `Selected ${selectedLabel} · Esc clears` : "Arrows: move focus · Enter/Space: select · Esc: cancel"}</p>;
   const routeControls = interaction.continuation && <div className="route-selection" role="group" aria-label="Partial route selection" onKeyDown={event => { if (event.key === "Escape") { event.preventDefault(); interaction.cancel(); } }}>
     <p>Selected route: {selected} → {prefix.join(" → ")}. No action submitted.</p>
     {interaction.terminals.length > 0 && !inspection && <button disabled={disabled} onClick={interaction.completeHere}>Complete action here</button>}
@@ -91,8 +91,9 @@ export function Board({ pieces, choices, orientation, version, disabled,
             className={`square ${(row + column) % 2 === 0 ? "light" : "dark"} ${selected === square && !inspection && !inspectionPending ? "selected" : ""} ${target && !inspection ? "target" : ""} ${available && !disabled ? "available" : ""}`}
             onFocus={() => interaction.onFocus(square)} onClick={() => interaction.select(square)} onKeyDown={event => interaction.keyDown(event, square)}>
             <rect width="100" height="100" className="square-fill" />
-            {target && !inspection && <circle cx="50" cy="50" r={piece ? "40" : "12"} className={piece ? "capture-marker" : "move-marker"} />}
+            {target && !inspection && !piece && <circle cx="50" cy="50" r="12" className="move-marker" aria-hidden="true" pointerEvents="none" />}
             {piece && (renderNativePiece && "owner" in piece ? renderNativePiece(piece, piece.owner !== nativeOrientation?.bottomOwner) : <text x="50" y="74" textAnchor="middle" data-owner={"owner" in piece ? piece.owner : piece.color} className={`piece ${"owner" in piece ? (piece.owner === nativeFirstOwner ? "native-first-owner" : "native-second-owner") : piece.color}`} aria-hidden="true">{"text" in piece ? piece.text : glyphs[piece.kind] ?? chessGlyphs[piece.kind] ?? "?"}</text>)}
+            {target && !inspection && piece && <circle cx="50" cy="50" r="40" className="capture-marker" aria-hidden="true" pointerEvents="none" />}
             {inspection?.origin === square && <rect className="inspection-origin-ring" x="7" y="7" width="86" height="86" rx="5" aria-hidden="true" />}
             {target && inspection && <circle cx="50" cy="50" r={piece ? "43" : "19"} className="inspection-marker" aria-hidden="true" />}
             {!coordinateFrame && column === 0 && <text x="7" y="20" className="coordinate" aria-hidden="true">{displayRanks[row]}</text>}

@@ -3,7 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { nativeSnapshotIsNewer } from "../NativeBoard";
 import type { GameKind, RulesProfile, GameSnapshot, NativeSide, OpenToken, Operation } from "./native";
-export function useGameSession(verification = false) {
+export function useGameSession() {
   const [snapshot, setSnapshot] = useState<GameSnapshot | null>(null);
   const latest = useRef<GameSnapshot | null>(null);
   const alive = useRef(false), operating = useRef(false);
@@ -56,8 +56,8 @@ export function useGameSession(verification = false) {
   const command = (source: GameSnapshot, operation: Operation) => perform("game_command", {
     commandJson: JSON.stringify({ expected: source.token, game: source.game, operation }),
   });
-  const file = (source: GameSnapshot, action: "save" | "save_as" | "open") => perform("game_file", { action, expected: source.open_token, ...(verification ? { verification: true } : {}) });
-  const newGame = (expected: OpenToken, game: GameKind, human: NativeSide, profile: RulesProfile) => perform("game_new", { expected, game, profile, human, ...(verification ? { verification: true } : {}) });
+  const file = (source: GameSnapshot, action: "save" | "save_as" | "open") => perform("game_file", { action, expected: source.open_token });
+  const newGame = (expected: OpenToken, game: GameKind, human: NativeSide, profile: RulesProfile) => perform("game_new", { expected, game, profile, human });
   const cancelClose = async () => {
     try { await invoke("game_cancel_close"); setCloseRequested(false); accept(await invoke<GameSnapshot>("game_snapshot")); return true; }
     catch (e) { setError(String(e)); return false; }

@@ -5,6 +5,9 @@ documented in [native-v1.md](native-v1.md); structured acceptance evidence lives
 `native-verification.json`. The planning checkpoints below retain their original
 traceability; shared and product implementation remain separate.
 Original87/79/44 criteria and complete-delivery ownership remain intact.
+The [5 November normal-product continuation](#msh-44-owner-authorized-normal-product-continuation--5-november-2026)
+below is the current handoff; earlier unsupported/activation/approval statements
+retain their historical checkpoint scope.
 
 ## MSH-87 — native assignment and retained checkpoint traceability
 
@@ -257,3 +260,58 @@ No final-product or owner visual acceptance is claimed. The fixed QA app is
 stopped and prepared for a fresh Adams standard launch; the gallery contains the
 launch command and both-profile selection instructions. Final source CI monitor
 exited successfully; no retry/monitor campaign remains active.
+
+## MSH-44 owner-authorized normal-product continuation — 5 November 2026
+
+John approved the existing traditional-kanji artwork and shared presentation,
+retained the 760×650 application minimum and authorized normal activation plus
+final packaged verification. The board fits that minimum, but not every dense
+kanji or secondary route badge is comfortably readable there. Around 960×1000
+is recommended when the display permits, not enforced. The
+[recorded decision](../../design.md#owner-acceptance-of-tenjiku-visuals-and-shared-identification-2026-11-05)
+supersedes the earlier open artwork/minimum decision without changing lettering,
+rules, resource policy or the other five games' minimums.
+
+Normal New now exposes Tenjiku as the sixth game and explicitly names both whole
+profiles; ordinary Load preserves the saved profile. The existing shared footer
+identifies a playable selected piece from its native label across all six games
+and retains the name through compound entry. Legal occupied capture destinations
+paint an outlined decorative marker above piece artwork without intercepting
+input. Inspection remains distinct and the same native choice/controller owner
+continues to decide complete actions.
+
+The actual fixed normal macOS app has exercised both profile choices, both human
+assignments, real engine replies, read-only analysis, history, stopped reopen,
+Take back and dirty Quit protection. Genuine screenshots/accessibility captures
+are in [the normal macOS evidence directory](evidence/msh44-final-macos/), with
+examples linked from [product coverage](product-coverage.md#normal-product-continuation--5-november-2026).
+Both profiles also completed independently specified limited native diagrams by
+FiD8j×8g and final royal destruction. The two engine-choice roots explicitly add
+remote Gote Pawn id5 at1a to the cited frozen diagram, excluding a legitimate
+alternative one-ply bare-royal win. The frozen corpus remains unchanged; the
+[fixture manifest](../../../desktop/scripts/fixtures/tenjiku-native-fixtures.json)
+records this extension, its hand proof and the retained development observation.
+Actual bundled-engine play/analysis action/PVs replay through public native Game
+APIs to RoyalCapture Sente. No standard-root complete-game or strength claim is
+made.
+
+The Linux/Windows installed normal/QA campaign now includes both profiles and
+real engine, analysis, persistence, history, ending, replacement, cancellation
+and recovery journeys. Dense standard capture checks require actual screenshot
+pixels as well as SVG paint order/pointer hit tests; compound-footer checks
+measure viewport and ancestor clipping. Fresh analysis proof requires a newly
+appended native observation with fresh execution identity for the exact selected
+prefix, rather than an old UI status. The harness and derived fixture correction
+have bounded independent review; platform execution is a separate obligation.
+
+Final source/artifact reconciliation, all six required Rust/Desktop jobs on
+Linux/macOS/Windows and final game/platform acceptance remain pending. The
+previous successful six-job checkpoint applies to its recorded source, not this
+new activation/presentation/harness continuation. Use the single
+[product record](product-verification.json) for exact final source, required
+steps, receipts and verdict. AC7/AC8 and applicable DoD remain open until supported
+by that evidence; no Backlog status or criterion is changed by this prose.
+The desktop campaign's proposed 75-minute orchestration budget accommodates the
+larger actual installed campaign; the product's independent 15-second worker
+deadline and native/whole-document limits remain unchanged. MSH-46/47/88/89 keep
+their shared platform scope, and MSH-53/M5 keeps measured playing strength.

@@ -1,0 +1,225 @@
+{
+  "scope": "Genuine normal macOS desktop continuation captures; source identity reconciled in product-verification.json. Old unextended royal probe is explicitly superseded.",
+  "artifacts": {
+    "normal-muller-readonly-analysis.ax.txt": {
+      "bytes": 20228,
+      "sha256": "17b69e672530cba70658cd720f18f668abfd460ed67ca00478e1c234d46dbe6d"
+    },
+    "normal-adams-engine-royal-capture.png": {
+      "bytes": 329490,
+      "sha256": "ac49fbead363465521e80b098e16aae958352f7bb02a5ea18a38c5711ddda3ab"
+    },
+    "normal-muller-dirty-quit-guard.png": {
+      "bytes": 284556,
+      "sha256": "514cb80b6e1ba8ca220fc9ce25357ac4acdae511902864b08d69c808e8d70375"
+    },
+    "normal-muller-history.ax.txt": {
+      "bytes": 19710,
+      "sha256": "262dcc570fd886d7d4a4d3a540a4262ee99d7bd8ebffc26a1c0b20572f5ecc46"
+    },
+    "normal-muller-takeback-retained.png": {
+      "bytes": 517586,
+      "sha256": "97c0a60cc4dd4597025e934375eacee95c72a9b530d03b752bfdd58226cfac51"
+    },
+    "normal-adams-standard.ax.txt": {
+      "bytes": 19064,
+      "sha256": "bec1cc6020b32c6fcbb2920a888bb5ebc4ec7ba34a9e2fd1b33501ac1d20a00f"
+    },
+    "superseded-adams-royal-probe-bare-loss.png": {
+      "bytes": 323694,
+      "sha256": "1fb5718e9b7248fa00035e307bc8dcb047e26c5276ae9f0357ab0bcc19c10c26"
+    },
+    "normal-adams-saved.ax.txt": {
+      "bytes": 20160,
+      "sha256": "fc7d9f1e4ea67374631c69b22abc5a062893be648dd5e5d56ee935868b6a15d9"
+    },
+    "normal-adams-compound-cancelled.png": {
+      "bytes": 300800,
+      "sha256": "4b624e6ab3b6076994f553d63c8e430d10a73bdbfe0df5822967d107b2ec569c"
+    },
+    "normal-adams-great-general-captures.png": {
+      "bytes": 495122,
+      "sha256": "896ad59c2256d15236ec274c9d92423fcf037bafbe90b37839de8bc42420ffd5"
+    },
+    "normal-muller-gote-great-general-captures.ax.txt": {
+      "bytes": 19719,
+      "sha256": "f86a53abd76de549c99fd01ee0f8f4d797919b1e87b328a7ebe76780e282c62c"
+    },
+    "normal-muller-dirty-quit-guard.ax.txt": {
+      "bytes": 517,
+      "sha256": "0e97a4231808aa425ba354447ed41179968048e08718a6e8d6eac6f70181ad0b"
+    },
+    "normal-muller-gote-profile-chooser.png": {
+      "bytes": 275404,
+      "sha256": "7a99b56aad25f1d38716f9f161a4c8d7e1fcdf2222c154f20bb03d76d01a0397"
+    },
+    "normal-adams-history.ax.txt": {
+      "bytes": 19506,
+      "sha256": "b7555028bde2d135ddcc31aabb989e8d2e4d585906e0949925dedc38bb708eba"
+    },
+    "normal-muller-engine-royal-capture.png": {
+      "bytes": 326641,
+      "sha256": "aacf07c92be9404f72c36e392b17d2d2aa823b66e16e85e20a593589607d76b7"
+    },
+    "normal-adams-readonly-analysis.ax.txt": {
+      "bytes": 20063,
+      "sha256": "09e084843fa8d686a81165e023c6cc4d7c7e573fbbf61bf42ec4f3dd181b7b06"
+    },
+    "normal-adams-reopened-retained-branch.ax.txt": {
+      "bytes": 19279,
+      "sha256": "65dfc5061e7834c4814e70f658fcb9467ec8165e8617dd8ec8bd3842d982b2eb"
+    },
+    "superseded-adams-royal-probe-bare-loss.ax.txt": {
+      "bytes": 18011,
+      "sha256": "bf6ddee50eef8500162744c476ea6db4ace4ba1f8fefb2e64828d3a9a2b14cfa"
+    },
+    "normal-adams-compound-completed-engine-reply.png": {
+      "bytes": 310189,
+      "sha256": "ce3e94d385b13b2b9ecc4f1bdc1be5aa1c7dc644db6a8e538b2c24892f3df4d9"
+    },
+    "normal-adams-takeback-retained.ax.txt": {
+      "bytes": 19258,
+      "sha256": "5c6df3db915270ac0b4c9bb5e3cc10599a62eb8c0ba2148ddaa614a5fd6e73d6"
+    },
+    "normal-adams-compound-completed-engine-reply.ax.txt": {
+      "bytes": 18012,
+      "sha256": "b247091277267262e1b3c348af446e71d9a7c653a76c6746c42adc21dea5647b"
+    },
+    "normal-adams-great-general-captures.ax.txt": {
+      "bytes": 19276,
+      "sha256": "efc0fc169969d33d1c5b44d8c8cf76cc5f456fd6d1d3ceccfad4fa22c7037c66"
+    },
+    "normal-adams-compound-partial-name.png": {
+      "bytes": 314601,
+      "sha256": "e312e7abd42ff4f8ef001d3370d2838af0d2e2e853755c5ed6255d80dc0b3afa"
+    },
+    "normal-muller-guarded-royal-root.ax.txt": {
+      "bytes": 17740,
+      "sha256": "b4d19e3ff082977d0dff0331ef3394baa9a57d5a9222cdf49524ed01edad53b7"
+    },
+    "normal-adams-takeback-retained.png": {
+      "bytes": 520008,
+      "sha256": "9c25c7186759e256ec5873be527e1894b0018606d49d4aac713555eed9d0f9a1"
+    },
+    "normal-adams-human-engine-reply.ax.txt": {
+      "bytes": 19522,
+      "sha256": "50244a1be935c2a3b0e41c55bf02969268cc4db2d1fd9eec8e0a3172c5ad88c5"
+    },
+    "normal-adams-reopened-stopped.ax.txt": {
+      "bytes": 19517,
+      "sha256": "89010bfe6509dd1aa3bf705ed57b5329ebe793b2c8e5128fd58499ad9a72e8d7"
+    },
+    "normal-muller-history.png": {
+      "bytes": 465809,
+      "sha256": "bf4f1476725e37bd6b984f4b19b9e0e2882a7488ee0f430446ba02fe894a6139"
+    },
+    "normal-adams-guarded-royal-root.ax.txt": {
+      "bytes": 17738,
+      "sha256": "80f765aca84522d7d6c0f1e72c35190f6b0d7d1f54b91ea17bd629f407c61771"
+    },
+    "gallery.md": {
+      "bytes": 3736,
+      "sha256": "1b4961a202ae69bd3a7016d46df97e5777245c10d852ee8b8edb4151a2d0c539"
+    },
+    "normal-muller-gote-profile-chooser.ax.txt": {
+      "bytes": 1028,
+      "sha256": "6ac6db47782a3be84ea811d7a68399ab5decf3b32d89485400d124af66357f29"
+    },
+    "normal-muller-reopened-stopped.png": {
+      "bytes": 520108,
+      "sha256": "4c485f6f19677fc7e92a90a3b340aae403934fc2c98607c9832aed09dee85f75"
+    },
+    "normal-muller-takeback-retained.ax.txt": {
+      "bytes": 19488,
+      "sha256": "bb9ad5904db653a2a7e616618aeca64607e406d0c2fa6e74bfbe7a11e1d2ace5"
+    },
+    "normal-adams-independent-royal-root.png": {
+      "bytes": 314708,
+      "sha256": "378875a45e8f84c8d722b4e0f02b98e5303e4e3b1c1df3f350a999f8d81fb5e0"
+    },
+    "normal-muller-engine-royal-capture.ax.txt": {
+      "bytes": 18113,
+      "sha256": "9e540ef2bbe35e2b8279ddb963ff82fb5c21d3f3041880817f4c63fa50f2c5aa"
+    },
+    "normal-muller-reopened-stopped.ax.txt": {
+      "bytes": 19687,
+      "sha256": "9a77dac62a43d2804ac50351982bf45cd261c5add3b5c9598cb04692fc56cb1b"
+    },
+    "normal-adams-readonly-analysis.png": {
+      "bytes": 513921,
+      "sha256": "24790586cab9832d4de4420de0ef3d0eee70f40323460cf35e489c29f4408010"
+    },
+    "normal-sixth-game-adams-profile-chooser.ax.txt": {
+      "bytes": 1080,
+      "sha256": "959bbf127d10734b7fb25889d5d00553504f4650a41f4c158e2c764519b1fba2"
+    },
+    "normal-adams-independent-royal-root.ax.txt": {
+      "bytes": 17649,
+      "sha256": "cbcde664d50942f83661ec385512b18f8d1e81eaa12cd0bffde0996756485ebe"
+    },
+    "normal-adams-engine-royal-capture.ax.txt": {
+      "bytes": 18116,
+      "sha256": "9710220638df70d4d2b5b66e94823e0fcbb9c70afdb358c819f6c8d6eedbedd0"
+    },
+    "normal-adams-reopened-stopped.png": {
+      "bytes": 520700,
+      "sha256": "527265bae847ba2ca472e69143f69b71387a7174457c154f5b9446ac8c17dcc1"
+    },
+    "normal-adams-standard.png": {
+      "bytes": 496390,
+      "sha256": "d8ed21bc4daaf4db4d7224577db86d20ee93c7e21a12b3a4ac94f92a44f7125f"
+    },
+    "normal-muller-guarded-royal-root.png": {
+      "bytes": 315481,
+      "sha256": "01ed5952225397d9e8a8030c3e04fb42958956e189be00609202b266b2c2042a"
+    },
+    "normal-muller-human-gote-engine-reply.ax.txt": {
+      "bytes": 19686,
+      "sha256": "4ea31b6e5ea616032aa24c90554ffa960bb037d76cf767287c9a5f19b2d097fd"
+    },
+    "normal-adams-reopened-retained-branch.png": {
+      "bytes": 518767,
+      "sha256": "c17e319b45e3dea8836bac8b397c0d947d1951ee471d689cfb94ab6849f7d8ed"
+    },
+    "normal-adams-guarded-royal-root.png": {
+      "bytes": 315939,
+      "sha256": "0f1598bfbb112699536d92377e3cb6f2d0d902c83a94a27d1fb3cf81d2909409"
+    },
+    "normal-muller-gote-great-general-captures.png": {
+      "bytes": 503848,
+      "sha256": "3654d040fe60a74db9ab389c4c602fadb983d02e8c1c2d0f00e82d45f1c77989"
+    },
+    "normal-adams-saved.png": {
+      "bytes": 519419,
+      "sha256": "d247555d51c97a4a94b8bc8b56aa17987abb81bf0e2756f1619309638c4c3305"
+    },
+    "normal-adams-human-engine-reply.png": {
+      "bytes": 506054,
+      "sha256": "fe2652a3d9f8f80a5aa5b969b4c3256d4db73a3dc5253a5bab79729a7940f1a2"
+    },
+    "normal-adams-compound-cancelled.ax.txt": {
+      "bytes": 17679,
+      "sha256": "53a0045c9ee2ba7be9ae7a573587e6cd66c0cc382dfd663ed6e0f9147944206d"
+    },
+    "normal-adams-history.png": {
+      "bytes": 461781,
+      "sha256": "2ac3d41ecc565841b2d23be75d9d7353e2cbe0c8a811ae6162006d2e5974c7a3"
+    },
+    "normal-muller-human-gote-engine-reply.png": {
+      "bytes": 504512,
+      "sha256": "c1b72950546dfeeeb9651c6df80aa2f21f1de9e17a83e8ecd8761a9922eadf3d"
+    },
+    "normal-adams-compound-partial-name.ax.txt": {
+      "bytes": 18154,
+      "sha256": "7e1faa623433d827fba8b9730f5979f028fc83fe708f219c971c60cc750a2548"
+    },
+    "normal-sixth-game-adams-profile-chooser.png": {
+      "bytes": 226841,
+      "sha256": "2300ad57ad5d9d374a4ac1ade93edfcfe5d0e04f2ffaa48b60bea1d1f6238539"
+    },
+    "normal-muller-readonly-analysis.png": {
+      "bytes": 511489,
+      "sha256": "acc90884f903471eafd79d76757b5759f43d073bae0b144bcf873a04767cbb9d"
+    }
+  }
+}

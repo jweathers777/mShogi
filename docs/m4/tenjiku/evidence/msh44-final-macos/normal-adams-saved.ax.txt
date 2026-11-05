@@ -1,0 +1,354 @@
+Window: "mShogi", App: mShogi.
+0 standard window mShogi, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container
+				4 heading mShogi, Value: 1
+					5 text mShogi
+				6 button About mShogi
+				7 text TENJIKU
+				8 text Local engine
+				9 container Game file
+					10 text UNMODIFIED
+					11 heading msh44-final-adams-standard.mshogi, Help: /private/tmp/msh44-final-adams-standard.mshogi, Value: 2
+						12 text msh44-final-adams-standard.mshogi
+				13 button New game
+				14 button Save
+				15 button Load
+				16 container Live game
+					17 text YOUR GAME
+					18 text Sente to move
+					19 text You play Sente against mShogi · Adams 1999 Modern
+					20 button Flip board; currently Sente at bottom
+					21 text mShogiGote
+					22 text Your opponent
+					23 container Tenjiku Shogi 16×16 board, Sente at bottom
+						24 image
+						25 toggle button Description: 16a, Gote Lance, Value: off
+						26 toggle button Description: 15a, Gote Knight, Value: off
+						27 toggle button Description: 14a, Gote Ferocious Leopard, Value: off
+						28 toggle button Description: 13a, Gote Iron General, Value: off
+						29 toggle button Description: 12a, Gote Copper General, Value: off
+						30 toggle button Description: 11a, Gote Silver General, Value: off
+						31 toggle button Description: 10a, Gote Gold General, Value: off
+						32 toggle button Description: 9a, Gote Drunk Elephant, Value: off
+						33 toggle button Description: 8a, Gote King, Value: off
+						34 toggle button Description: 7a, Gote Gold General, Value: off
+						35 toggle button Description: 6a, Gote Silver General, Value: off
+						36 toggle button Description: 5a, Gote Copper General, Value: off
+						37 toggle button Description: 4a, Gote Iron General, Value: off
+						38 toggle button Description: 3a, Gote Ferocious Leopard, Value: off
+						39 toggle button Description: 2a, Gote Knight, Value: off
+						40 toggle button Description: 1a, Gote Lance, Value: off
+						41 toggle button Description: 16b, Gote Reverse Chariot, Value: off
+						42 toggle button Description: 15b, empty, Value: off
+						43 toggle button Description: 14b, Gote Chariot Soldier, Value: off
+						44 toggle button Description: 13b, Gote Chariot Soldier, Value: off
+						45 toggle button Description: 12b, empty, Value: off
+						46 toggle button Description: 11b, Gote Blind Tiger, Value: off
+						47 toggle button Description: 10b, Gote Phoenix, Value: off
+						48 toggle button Description: 9b, Gote Free King, Value: off
+						49 toggle button Description: 8b, Gote Lion, Value: off
+						50 toggle button Description: 7b, Gote Kirin, Value: off
+						51 toggle button Description: 6b, Gote Blind Tiger, Value: off
+						52 toggle button Description: 5b, empty, Value: off
+						53 toggle button Description: 4b, Gote Chariot Soldier, Value: off
+						54 toggle button Description: 3b, Gote Chariot Soldier, Value: off
+						55 toggle button Description: 2b, empty, Value: off
+						56 toggle button Description: 1b, Gote Reverse Chariot, Value: off
+						57 toggle button Description: 16c, Gote Side Soldier, Value: off
+						58 toggle button Description: 15c, Gote Vertical Soldier, Value: off
+						59 toggle button Description: 14c, Gote Bishop, Value: off
+						60 toggle button Description: 13c, Gote Dragon Horse, Value: off
+						61 toggle button Description: 12c, Gote Dragon King, Value: off
+						62 toggle button Description: 11c, Gote Water Buffalo, Value: off
+						63 toggle button Description: 10c, Gote Fire Demon, Value: off
+						64 toggle button Description: 9c, Gote Free Eagle, Value: off
+						65 toggle button Description: 8c, Gote Lion Hawk, Value: off
+						66 toggle button Description: 7c, Gote Fire Demon, Value: off
+						67 toggle button Description: 6c, Gote Water Buffalo, Value: off
+						68 toggle button Description: 5c, Gote Dragon King, Value: off
+						69 toggle button Description: 4c, Gote Dragon Horse, Value: off
+						70 toggle button Description: 3c, Gote Bishop, Value: off
+						71 toggle button Description: 2c, Gote Vertical Soldier, Value: off
+						72 toggle button Description: 1c, Gote Side Soldier, Value: off
+						73 toggle button Description: 16d, Gote Side Mover, Value: off
+						74 toggle button Description: 15d, Gote Vertical Mover, Value: off
+						75 toggle button Description: 14d, Gote Rook, Value: off
+						76 toggle button Description: 13d, Gote Horned Falcon, Value: off
+						77 toggle button Description: 12d, Gote Soaring Eagle, Value: off
+						78 toggle button Description: 11d, Gote Bishop General, Value: off
+						79 toggle button Description: 10d, Gote Rook General, Value: off
+						80 toggle button Description: 9d, Gote Vice General, Value: off
+						81 toggle button Description: 8d, Gote Great General, Value: off
+						82 toggle button Description: 7d, Gote Rook General, Value: off
+						83 toggle button Description: 6d, empty, Value: off
+						84 toggle button Description: 5d, Gote Soaring Eagle, Value: off
+						85 toggle button Description: 4d, Gote Horned Falcon, Value: off
+						86 toggle button Description: 3d, Gote Rook, Value: off
+						87 toggle button Description: 2d, Gote Vertical Mover, Value: off
+						88 toggle button Description: 1d, Gote Side Mover, Value: off
+						89 toggle button Description: 16e, Gote Pawn, Value: off
+						90 toggle button Description: 15e, Gote Pawn, Value: off
+						91 toggle button Description: 14e, Gote Pawn, Value: off
+						92 toggle button Description: 13e, Gote Pawn, Value: off
+						93 toggle button Description: 12e, Gote Pawn, Value: off
+						94 toggle button Description: 11e, Gote Pawn, Value: off
+						95 toggle button Description: 10e, Gote Pawn, Value: off
+						96 toggle button Description: 9e, Gote Pawn, Value: off
+						97 toggle button Description: 8e, Gote Pawn, Value: off
+						98 toggle button Description: 7e, Gote Pawn, Value: off
+						99 toggle button Description: 6e, Gote Pawn, Value: off
+						100 toggle button Description: 5e, Gote Pawn, Value: off
+						101 toggle button Description: 4e, Gote Pawn, Value: off
+						102 toggle button Description: 3e, Gote Pawn, Value: off
+						103 toggle button Description: 2e, Gote Pawn, Value: off
+						104 toggle button Description: 1e, Gote Pawn, Value: off
+						105 toggle button Description: 16f, empty, Value: off
+						106 toggle button Description: 15f, empty, Value: off
+						107 toggle button Description: 14f, empty, Value: off
+						108 toggle button Description: 13f, empty, Value: off
+						109 toggle button Description: 12f, Gote Dog, Value: off
+						110 toggle button Description: 11f, empty, Value: off
+						111 toggle button Description: 10f, empty, Value: off
+						112 toggle button Description: 9f, empty, Value: off
+						113 toggle button Description: 8f, empty, Value: off
+						114 toggle button Description: 7f, empty, Value: off
+						115 toggle button Description: 6f, empty, Value: off
+						116 toggle button Description: 5f, Gote Dog, Value: off
+						117 toggle button Description: 4f, empty, Value: off
+						118 toggle button Description: 3f, empty, Value: off
+						119 toggle button Description: 2f, empty, Value: off
+						120 toggle button Description: 1f, empty, Value: off
+						121 toggle button Description: 16g, empty, Value: off
+						122 toggle button Description: 15g, empty, Value: off
+						123 toggle button Description: 14g, empty, Value: off
+						124 toggle button Description: 13g, empty, Value: off
+						125 toggle button Description: 12g, empty, Value: off
+						126 toggle button Description: 11g, empty, Value: off
+						127 toggle button Description: 10g, empty, Value: off
+						128 toggle button Description: 9g, empty, Value: off
+						129 toggle button Description: 8g, empty, Value: off
+						130 toggle button Description: 7g, empty, Value: off
+						131 toggle button Description: 6g, empty, Value: off
+						132 toggle button Description: 5g, empty, Value: off
+						133 toggle button Description: 4g, empty, Value: off
+						134 toggle button Description: 3g, empty, Value: off
+						135 toggle button Description: 2g, empty, Value: off
+						136 toggle button Description: 1g, empty, Value: off
+						137 toggle button Description: 16h, empty, Value: off
+						138 toggle button Description: 15h, empty, Value: off
+						139 toggle button Description: 14h, empty, Value: off
+						140 toggle button Description: 13h, empty, Value: off
+						141 toggle button Description: 12h, empty, Value: off
+						142 toggle button Description: 11h, empty, Value: off
+						143 toggle button Description: 10h, empty, Value: off
+						144 toggle button Description: 9h, empty, Value: off
+						145 toggle button Description: 8h, empty, Value: off
+						146 toggle button Description: 7h, empty, Value: off
+						147 toggle button Description: 6h, empty, Value: off
+						148 toggle button Description: 5h, empty, Value: off
+						149 toggle button Description: 4h, empty, Value: off
+						150 toggle button Description: 3h, empty, Value: off
+						151 toggle button Description: 2h, empty, Value: off
+						152 toggle button Description: 1h, empty, Value: off
+						153 toggle button Description: 16i, empty, Value: off
+						154 toggle button Description: 15i, empty, Value: off
+						155 toggle button Description: 14i, empty, Value: off
+						156 toggle button Description: 13i, empty, Value: off
+						157 toggle button Description: 12i, empty, Value: off
+						158 toggle button Description: 11i, empty, Value: off
+						159 toggle button Description: 10i, empty, Value: off
+						160 toggle button Description: 9i, empty, Value: off
+						161 toggle button Description: 8i, empty, Value: off
+						162 toggle button Description: 7i, empty, Value: off
+						163 toggle button Description: 6i, empty, Value: off
+						164 toggle button Description: 5i, empty, Value: off
+						165 toggle button Description: 4i, empty, Value: off
+						166 toggle button Description: 3i, empty, Value: off
+						167 toggle button Description: 2i, empty, Value: off
+						168 toggle button Description: 1i, empty, Value: off
+						169 toggle button Description: 16j, empty, Value: off
+						170 toggle button Description: 15j, empty, Value: off
+						171 toggle button Description: 14j, empty, Value: off
+						172 toggle button Description: 13j, empty, Value: off
+						173 toggle button Description: 12j, empty, Value: off
+						174 toggle button Description: 11j, empty, Value: off
+						175 toggle button Description: 10j, empty, Value: off
+						176 toggle button Description: 9j, empty, Value: off
+						177 toggle button Description: 8j, empty, Value: off
+						178 toggle button Description: 7j, empty, Value: off
+						179 toggle button Description: 6j, empty, Value: off
+						180 toggle button Description: 5j, empty, Value: off
+						181 toggle button Description: 4j, empty, Value: off
+						182 toggle button Description: 3j, empty, Value: off
+						183 toggle button Description: 2j, empty, Value: off
+						184 toggle button Description: 1j, empty, Value: off
+						185 toggle button Description: 16k, Sente Pawn, Value: off
+						186 toggle button Description: 15k, empty, Value: off
+						187 toggle button Description: 14k, empty, Value: off
+						188 toggle button Description: 13k, empty, Value: off
+						189 toggle button Description: 12k, Sente Dog, Value: off
+						190 toggle button Description: 11k, empty, Value: off
+						191 toggle button Description: 10k, empty, Value: off
+						192 toggle button Description: 9k, empty, Value: off
+						193 toggle button Description: 8k, empty, Value: off
+						194 toggle button Description: 7k, empty, Value: off
+						195 toggle button Description: 6k, empty, Value: off
+						196 toggle button Description: 5k, Sente Dog, Value: off
+						197 toggle button Description: 4k, empty, Value: off
+						198 toggle button Description: 3k, empty, Value: off
+						199 toggle button Description: 2k, empty, Value: off
+						200 toggle button Description: 1k, empty, Value: off
+						201 toggle button Description: 16l, empty, Value: off
+						202 toggle button Description: 15l, Sente Pawn, Value: off
+						203 toggle button Description: 14l, Sente Pawn, Value: off
+						204 toggle button Description: 13l, Sente Pawn, Value: off
+						205 toggle button Description: 12l, Sente Pawn, Value: off
+						206 toggle button Description: 11l, Sente Pawn, Value: off
+						207 toggle button Description: 10l, Sente Pawn, Value: off
+						208 toggle button Description: 9l, Sente Pawn, Value: off
+						209 toggle button Description: 8l, Sente Pawn, Value: off
+						210 toggle button Description: 7l, Sente Pawn, Value: off
+						211 toggle button Description: 6l, Sente Pawn, Value: off
+						212 toggle button Description: 5l, Sente Pawn, Value: off
+						213 toggle button Description: 4l, Sente Pawn, Value: off
+						214 toggle button Description: 3l, Sente Pawn, Value: off
+						215 toggle button Description: 2l, Sente Pawn, Value: off
+						216 toggle button Description: 1l, Sente Pawn, Value: off
+						217 toggle button Description: 16m, Sente Side Mover, Value: off
+						218 toggle button Description: 15m, Sente Vertical Mover, Value: off
+						219 toggle button Description: 14m, Sente Rook, Value: off
+						220 toggle button Description: 13m, Sente Horned Falcon, Value: off
+						221 toggle button Description: 12m, Sente Soaring Eagle, Value: off
+						222 toggle button Description: 11m, Sente Bishop General, Value: off
+						223 toggle button Description: 10m, Sente Rook General, Value: off
+						224 toggle button Description: 9m, Sente Great General, Value: off
+						225 toggle button Description: 8m, Sente Vice General, Value: off
+						226 toggle button Description: 7m, Sente Rook General, Value: off
+						227 toggle button Description: 6m, Sente Bishop General, Value: off
+						228 toggle button Description: 5m, Sente Soaring Eagle, Value: off
+						229 toggle button Description: 4m, Sente Horned Falcon, Value: off
+						230 toggle button Description: 3m, Sente Rook, Value: off
+						231 toggle button Description: 2m, Sente Vertical Mover, Value: off
+						232 toggle button Description: 1m, Sente Side Mover, Value: off
+						233 toggle button Description: 16n, Gote Vice General (promoted Bishop General), Value: off
+						234 toggle button Description: 15n, Sente Vertical Soldier, Value: off
+						235 toggle button Description: 14n, Sente Bishop, Value: off
+						236 toggle button Description: 13n, Sente Dragon Horse, Value: off
+						237 toggle button Description: 12n, Sente Dragon King, Value: off
+						238 toggle button Description: 11n, Sente Water Buffalo, Value: off
+						239 toggle button Description: 10n, Sente Fire Demon, Value: off
+						240 toggle button Description: 9n, Sente Lion Hawk, Value: off
+						241 toggle button Description: 8n, Sente Free Eagle, Value: off
+						242 toggle button Description: 7n, Sente Fire Demon, Value: off
+						243 toggle button Description: 6n, Sente Water Buffalo, Value: off
+						244 toggle button Description: 5n, Sente Dragon King, Value: off
+						245 toggle button Description: 4n, Sente Dragon Horse, Value: off
+						246 toggle button Description: 3n, Sente Bishop, Value: off
+						247 toggle button Description: 2n, Sente Vertical Soldier, Value: off
+						248 toggle button Description: 1n, Sente Side Soldier, Value: off
+						249 toggle button Description: 16o, Sente Reverse Chariot, Value: off
+						250 toggle button Description: 15o, empty, Value: off
+						251 toggle button Description: 14o, Sente Chariot Soldier, Value: off
+						252 toggle button Description: 13o, Sente Chariot Soldier, Value: off
+						253 toggle button Description: 12o, empty, Value: off
+						254 toggle button Description: 11o, Sente Blind Tiger, Value: off
+						255 toggle button Description: 10o, Sente Kirin, Value: off
+						256 toggle button Description: 9o, Sente Lion, Value: off
+						257 toggle button Description: 8o, Sente Free King, Value: off
+						258 toggle button Description: 7o, Sente Phoenix, Value: off
+						259 toggle button Description: 6o, Sente Blind Tiger, Value: off
+						260 toggle button Description: 5o, empty, Value: off
+						261 toggle button Description: 4o, Sente Chariot Soldier, Value: off
+						262 toggle button Description: 3o, Sente Chariot Soldier, Value: off
+						263 toggle button Description: 2o, empty, Value: off
+						264 toggle button Description: 1o, Sente Reverse Chariot, Value: off
+						265 toggle button Description: 16p, Sente Lance, Value: off
+						266 toggle button Description: 15p, Sente Knight, Value: off
+						267 toggle button Description: 14p, Sente Ferocious Leopard, Value: off
+						268 toggle button Description: 13p, Sente Iron General, Value: off
+						269 toggle button Description: 12p, Sente Copper General, Value: off
+						270 toggle button Description: 11p, Sente Silver General, Value: off
+						271 toggle button Description: 10p, Sente Gold General, Value: off
+						272 toggle button Description: 9p, Sente King, Value: off
+						273 toggle button Description: 8p, Sente Drunk Elephant, Value: off
+						274 toggle button Description: 7p, Sente Gold General, Value: off
+						275 toggle button Description: 6p, Sente Silver General, Value: off
+						276 toggle button Description: 5p, Sente Copper General, Value: off
+						277 toggle button Description: 4p, Sente Iron General, Value: off
+						278 toggle button Description: 3p, Sente Ferocious Leopard, Value: off
+						279 toggle button Description: 2p, Sente Knight, Value: off
+						280 toggle button Description: 1p, Sente Lance, Value: off
+					281 text YouSente
+					282 text Human player To move
+					283 text Arrows: move focus · Enter/Space: select · Esc: cancel
+					284 text Play paused · resume explicitly to continue Live position · 2 plies
+				285 container Game controls and inspection
+					286 text Play is paused.
+					287 button Resume play
+					288 heading Analysis, Value: 2
+						289 text Analysis
+					290 container Inspector view
+						291 toggle button Play details, Value: off
+						292 toggle button Analyze position, Value: on
+					293 container Engine analysis
+						294 text Move analysis
+						295 text Selected event 2 · Sente perspective
+						296 container
+							297 text Depth
+							298 number field (settable) Depth, Value: 1
+								299 stepper 0
+									300 unknown
+									301 unknown
+							302 text Node limit
+							303 number field (settable) Node limit, Value: 1024
+								304 stepper 0
+									305 unknown
+									306 unknown
+							307 button Start move analysis
+						308 text Analysis result available
+						309 text Move analysis · event 2
+						310 text +9.00 Pawns
+						311 text Sente perspective · Complete
+						312 description list
+							313 text Completed depth
+							314 text 1
+							315 text Nodes
+							316 text 76
+						317 text Continuation 16m→16n
+						318 text No move was played.
+						319 summary Recorded searches (2), Value: off
+							320 text Recorded searches (2)
+					321 heading Game Actions, Value: 2
+						322 text Game Actions
+					323 container
+						324 button Take back
+						325 button Offer draw…
+						326 button Resign
+					327 container Moves
+						328 heading Moves, Value: 2
+							329 text Moves
+						330 text 2 moves
+						331 button Starting position
+						332 text mShogi Tenjiku complete-action notation · known-root move pairs · declared root plies 0 · earlier history known
+						333 table
+							334 row (selectable) Move number
+Sente
+Gote
+							335 row (selectable)
+								336 cell (selectable) 1.
+								337 cell (selectable) 1. Sente: P16l-16k
+								338 cell (selectable) 1. Gote: BGn6dx16n^; Captured Sente Side Soldier at 16n; Promoted Gote Bishop General to Gote Vice General (promoted Bishop General) at 16n
+		339 scroll bar (settable, float) 0
+	340 close button
+	341 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	342 minimize button
+	343 text mShogi
+344 menu bar
+	345 mShogi
+	346 Edit
+	347 View
+	348 Window
+
+The focused UI element is 2 HTML content Description: mShogi, URL: tauri://localhost

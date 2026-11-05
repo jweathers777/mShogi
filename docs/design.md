@@ -689,3 +689,20 @@ Accepted records reflect actual owner direction. Working defaults are implementa
 - Backlog.md CLI reference: https://github.com/MrLesk/Backlog.md/blob/v1.55.1/CLI-INSTRUCTIONS.md
 - Backlog.md configuration: https://github.com/MrLesk/Backlog.md/blob/v1.55.1/ADVANCED-CONFIG.md
 - Future rule fixtures must add their own precise primary rule references. This design is not a substitute for the rules of any game.
+
+### Owner acceptance of Tenjiku visuals and shared identification (2026-11-05)
+
+John approves the overall Tenjiku traditional-kanji board design and existing
+shared presentation. Selecting a playable friendly piece must display its native
+piece name in the existing board footer across all six games, including during
+compound selection. Legal capture indicators paint above occupied destination
+pieces as outlined decorative overlays; native inspection remains distinct.
+These refinements reuse the one shared interaction owner and native labels.
+
+The application minimum remains760×650. The entire Tenjiku board fits there,
+but not every kanji or secondary route badge is comfortably readable. Around
+960×1000 is a recommended playing size when the display permits, not a hard
+minimum. Piece-name identification helps and does not resolve every small-window
+accessibility limitation. Normal activation of both immutable profiles and final
+three-platform packaged verification are authorized as the remainder of MSH-44;
+no artwork redesign, rules change, architecture refactor or M5 work is implied.

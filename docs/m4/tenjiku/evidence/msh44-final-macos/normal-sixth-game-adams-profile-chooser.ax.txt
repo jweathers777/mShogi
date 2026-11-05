@@ -1,0 +1,32 @@
+Window: "mShogi", App: mShogi.
+0 standard window mShogi, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: mShogi, URL: tauri://localhost
+			3 container New game
+				4 heading New game, Value: 2
+					5 text New game
+				6 container
+					7 text Game
+					8 pop up button (collapsed) Game, Value: Tenjiku Shogi, Secondary Actions: Expand
+				9 container
+					10 text Rules profile
+					11 pop up button (collapsed) Rules profile, Value: Adams 1999 Modern, Secondary Actions: Expand
+				12 heading Your side, Value: 3
+					13 text Your side
+				14 (settable, unknown) Your side
+					15 radio button Sente, Value: 1
+					16 radio button Gote, Value: 0
+					17 radio button Random, Value: 0
+				18 button Cancel
+				19 button Start game
+	20 close button
+	21 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	22 minimize button
+	23 text mShogi
+24 menu bar
+	25 mShogi
+	26 Edit
+	27 View
+	28 Window
+
+The focused UI element is 8 pop up button (collapsed) Game, Value: Tenjiku Shogi, Secondary Actions: Expand

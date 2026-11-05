@@ -169,7 +169,6 @@ pub(crate) enum NativeWork {
     Open {
         path: PathBuf,
         token: SharedOpenToken,
-        allow_tenjiku: bool,
     },
 }
 pub(crate) enum OpenedNative {
@@ -1214,16 +1213,9 @@ pub(crate) fn execute(
                 identity,
             })
         }
-        NativeWork::Open {
-            path,
-            token,
-            allow_tenjiku,
-        } => {
+        NativeWork::Open { path, token } => {
             let bytes = read(&path, stopped)?;
             let value = crate::document::DocumentEnvelope::parse(&bytes)?;
-            if value.game_kind == GameKind::Tenjiku && !allow_tenjiku {
-                return Err("Tenjiku documents are available only in the labeled verification route until playable delivery.".into());
-            }
             let game = match value.game_kind {
                 GameKind::Tenjiku => {
                     OpenedNative::Tenjiku(Box::new(tenjiku::TenjikuSession::restore(
@@ -1359,7 +1351,7 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        self.queue_open_admission(path, token, true)
+        self.queue_open_admission(path, token)
     }
     /// Product Open uses the same strict native dispatch and stopped restoration.
     pub fn queue_product_open(
@@ -1367,13 +1359,12 @@ impl DesktopController {
         path: PathBuf,
         token: SharedOpenToken,
     ) -> Result<u64, String> {
-        self.queue_open_admission(path, token, false)
+        self.queue_open_admission(path, token)
     }
     fn queue_open_admission(
         &mut self,
         path: PathBuf,
         token: SharedOpenToken,
-        allow_tenjiku: bool,
     ) -> Result<u64, String> {
         if self.lifecycle.close_requested() {
             return Err("Close is pending. Cancel close before opening another document.".into());
@@ -1382,14 +1373,8 @@ impl DesktopController {
             return Err("Stale Open: review the current document again.".into());
         }
         let id = self.next_native_io(IoPhase::Opening)?;
-        self.files.submit(
-            id,
-            Work::Native(Box::new(NativeWork::Open {
-                path,
-                token,
-                allow_tenjiku,
-            })),
-        );
+        self.files
+            .submit(id, Work::Native(Box::new(NativeWork::Open { path, token })));
         Ok(id)
     }
     pub(crate) fn retire_native_files(&mut self) -> Result<(), String> {

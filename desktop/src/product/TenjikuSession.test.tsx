@@ -37,12 +37,12 @@ it("accepts actual native fresh New profile epochs and resetting to the first pr
   expect(nativeSnapshotIsNewer(adams, muller)).toBe(true);
   expect(nativeSnapshotIsNewer(muller, reset)).toBe(true);
   vi.mocked(invoke).mockResolvedValueOnce(adams).mockResolvedValueOnce(muller).mockResolvedValueOnce(reset);
-  const { result } = renderHook(() => useGameSession(true)); await flush();
+  const { result } = renderHook(() => useGameSession()); await flush();
   await act(async () => { expect(await result.current.newGame(adams.open_token, "tenjiku", adams.human.id, muller.profile)).toBe(muller); });
-  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: adams.open_token, game: "tenjiku", profile: muller.profile, human: adams.human.id, verification: true });
+  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: adams.open_token, game: "tenjiku", profile: muller.profile, human: adams.human.id });
   expect(result.current.snapshot).toBe(muller);
   await act(async () => { expect(await result.current.newGame(muller.open_token, "tenjiku", muller.human.id, reset.profile)).toBe(reset); });
-  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: muller.open_token, game: "tenjiku", profile: reset.profile, human: muller.human.id, verification: true });
+  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: muller.open_token, game: "tenjiku", profile: reset.profile, human: muller.human.id });
   expect(result.current.snapshot).toBe(reset);
 });
 
@@ -50,19 +50,19 @@ it.each(cases)("rejects a same-epoch $source.profile response carrying the other
   const forged = { ...other, token: { ...other.token, document: source.token.document, revision: source.token.revision + 1 } };
   expect(nativeSnapshotIsNewer(source, forged)).toBe(false);
   vi.mocked(invoke).mockResolvedValueOnce(source).mockResolvedValueOnce(forged);
-  const { result } = renderHook(() => useGameSession(true)); await flush();
+  const { result } = renderHook(() => useGameSession()); await flush();
   await act(async () => { expect(await result.current.command(source, { kind: "resume" })).toBeNull(); });
   expect(result.current.snapshot).toBe(source);
   expect(result.current.error).toContain("immutable rules profile");
 });
 
-it.each(cases)("keeps exact $source.profile rendered command and verification file authority", async ({ source }) => {
+it.each(cases)("keeps exact $source.profile rendered command and normal file authority", async ({ source }) => {
   vi.mocked(invoke).mockResolvedValue(source);
-  const { result } = renderHook(() => useGameSession(true)); await flush();
+  const { result } = renderHook(() => useGameSession()); await flush();
   await act(async () => { await result.current.command(source, { kind: "resume" }); });
   expect(invoke).toHaveBeenLastCalledWith("game_command", { commandJson: JSON.stringify({ expected: source.token, game: "tenjiku", operation: { kind: "resume" } }) });
   await act(async () => { await result.current.file(source, "open"); });
-  expect(invoke).toHaveBeenLastCalledWith("game_file", { action: "open", expected: source.open_token, verification: true });
+  expect(invoke).toHaveBeenLastCalledWith("game_file", { action: "open", expected: source.open_token });
 });
 
 it.each(cases)("does not let a delayed $source.profile receipt restore an earlier profile after fresh New", async ({ source, other }) => {
@@ -70,7 +70,7 @@ it.each(cases)("does not let a delayed $source.profile receipt restore an earlie
   expect(fresh.token.document).toBeGreaterThan(source.token.document);
   const receipt = deferred<GameSnapshot>(), poll = deferred<GameSnapshot>();
   vi.mocked(invoke).mockResolvedValueOnce(source).mockReturnValueOnce(receipt.promise).mockReturnValueOnce(poll.promise);
-  const { result } = renderHook(() => useGameSession(true)); await flush();
+  const { result } = renderHook(() => useGameSession()); await flush();
   let pending!: Promise<GameSnapshot | null>;
   act(() => { pending = result.current.command(source, { kind: "resume" }); });
   await act(async () => { await vi.advanceTimersByTimeAsync(180); poll.resolve(fresh); await Promise.resolve(); });

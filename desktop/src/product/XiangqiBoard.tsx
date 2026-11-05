@@ -32,12 +32,12 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
   const interaction = useNativeChoiceController({
     contextKey: JSON.stringify([snapshot.game, snapshot.profile, snapshot.edition, snapshot.token, bottom]),
     choices: snapshot.choices,
-    origins: snapshot.pieces.map((piece) => ({ key: piece.square, owner: piece.owner, inspectable: true })),
+    origins: snapshot.pieces.map((piece) => ({ key: piece.square, label: piece.label, owner: piece.owner, inspectable: true })),
     humanOwner: snapshot.human.key, disabled, inspectionDisabled, onInspect, onPlay,
     initialFocus: snapshot.board.initial_focus, boardKeys: points,
     neighbor: (key, direction) => gridNeighbor(points, columns, key, direction),
   });
-  const { selected, prefix, focused, inspection, inspectionPending: loading, announcement, destinations, completions, continuation, terminals } = interaction;
+  const { selected, selectedLabel, prefix, focused, inspection, inspectionPending: loading, announcement, destinations, completions, continuation, terminals } = interaction;
   if (!topology) return <p role="alert">The native intersection board is unavailable.</p>;
 
   const position = (point: string): [number, number] => {
@@ -83,7 +83,7 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
             <text textAnchor="middle" y="18">{xiangqiGlyph(piece.kind, owner?.id.side === "red")}</text>
           </g>}
           {selected === point && !inspection && !loading && <circle className="xiangqi-selected" r="46" aria-hidden="true" />}
-          {target && !inspection && <g className="xiangqi-destination" aria-hidden="true">{piece ? <circle r="46" /> : <circle r="10" />}</g>}
+          {target && !inspection && <g className="xiangqi-destination" aria-hidden="true" pointerEvents="none">{piece ? <circle r="46" /> : <circle r="10" />}</g>}
           {inspection?.origin === point && <circle className="inspection-origin-ring" r="46" aria-hidden="true" />}
           {target && inspection && <circle className="inspection-marker" r={piece ? "47" : "19"} aria-hidden="true" />}
           <circle className="xiangqi-focus" r="49" aria-hidden="true" />
@@ -96,8 +96,8 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
     </div>}
   </div>;
   const footer = <>
-    <div className="shell-board-help"><div className={`board-help xiangqi-help${inspection || loading ? " movement-inspection-status" : ""}`}>
-      <span>{inspection ? inspectionStatus(inspection.label) : loading ? "Loading read-only movement inspection…" : "Arrows: move focus · Enter/Space: select · Esc: cancel"}</span>
+    <div className="shell-board-help"><div className={`board-help xiangqi-help${inspection || loading ? " movement-inspection-status" : selectedLabel ? " selected-piece-status" : ""}`}>
+      <span>{inspection ? inspectionStatus(inspection.label) : loading ? "Loading read-only movement inspection…" : selectedLabel ? `Selected ${selectedLabel} · Esc clears` : "Arrows: move focus · Enter/Space: select · Esc: cancel"}</span>
     </div></div>
     {continuation && <div className="shogi-route xiangqi-route" onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); interaction.cancel(); } }}><p>{announcement}</p>{terminals.length > 0 && !inspection && <button onClick={interaction.completeHere}>Complete action here</button>}<button onClick={interaction.cancel}>Cancel selection</button></div>}
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>

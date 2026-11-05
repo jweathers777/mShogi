@@ -25,22 +25,40 @@ beforeEach(() => {
 });
 afterEach(cleanup);
 
-it.each([adams, muller])("keeps $profile out of the normal five-game chooser and renders no QA controls", source => {
+it.each([adams, muller])("selects normal sixth-game New with the saved $profile as its explicit default", async source => {
   session.snapshot = source;
   render(<ProductApp />);
   expect(screen.queryByRole("complementary", { name: "Tenjiku contract verification" })).toBeNull();
+  expect(document.querySelector(`[data-rules-profile="${source.profile}"]`)).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "New game" }));
-  expect(screen.getAllByRole("option").map(option => (option as HTMLOptionElement).value)).toEqual(["chess", "shogi", "xiangqi", "tori", "chu"]);
-  expect((screen.getByRole("combobox", { name: "Game" }) as HTMLSelectElement).value).toBe("chess");
-  expect(session.newGame).not.toHaveBeenCalled();
+  const game = screen.getByRole("combobox", { name: "Game" }) as HTMLSelectElement;
+  expect(within(game).getAllByRole("option").map(option => (option as HTMLOptionElement).value)).toEqual(["chess", "shogi", "xiangqi", "tori", "chu", "tenjiku"]);
+  expect(game.value).toBe("tenjiku");
+  const profile = screen.getByRole("combobox", { name: "Rules profile" }) as HTMLSelectElement;
+  expect(profile.value).toBe(source.profile);
+  expect(within(profile).getAllByRole("option").map(option => option.textContent)).toEqual(["Adams 1999 Modern", "Muller Completed"]);
+  fireEvent.click(screen.getByRole("button", { name: "Start game" }));
+  await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(source.open_token, "tenjiku", { game_kind: "tenjiku", side: source.human.id.side }, source.profile));
+});
+
+it.each([adams, muller])("allows a deliberate other-profile fresh game from $profile without live profile mutation", async source => {
+  session.snapshot = source;
+  const other = source.profile === adams.profile ? muller.profile : adams.profile;
+  render(<ProductApp />);
+  fireEvent.click(screen.getByRole("button", { name: "New game" }));
+  fireEvent.change(screen.getByRole("combobox", { name: "Rules profile" }), { target: { value: other } });
+  fireEvent.click(screen.getByRole("radio", { name: "Gote" }));
+  expect(session.snapshot?.profile).toBe(source.profile);
+  fireEvent.click(screen.getByRole("button", { name: "Start game" }));
+  await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(source.open_token, "tenjiku", { game_kind: "tenjiku", side: "gote" }, other));
 });
 
 it.each([adams, muller])("sends both explicit QA profile New/reset requests from exact $profile replacement authority", source => {
   session.snapshot = source;
   render(<ProductApp verification verificationControls={TenjikuControls} />);
-  expect(useGameSession).toHaveBeenCalledWith(true);
+  expect(useGameSession).toHaveBeenCalledWith();
   const qa = screen.getByRole("complementary", { name: "Tenjiku contract verification" });
-  for (const [label, profile] of [["Adams Modern", "mshogi.tenjiku.adams1999-modern.v1"], ["Muller Completed", "mshogi.tenjiku.muller-completed.v1"]] as const) {
+  for (const [label, profile] of [["Adams 1999 Modern", "mshogi.tenjiku.adams1999-modern.v1"], ["Muller Completed", "mshogi.tenjiku.muller-completed.v1"]] as const) {
     fireEvent.click(within(qa).getByRole("button", { name: `New ${label} game` }));
     expect(session.newGame).toHaveBeenLastCalledWith(source.open_token, "tenjiku", { game_kind: "tenjiku", side: source.human.id.side }, profile);
   }
@@ -73,7 +91,7 @@ it.each([adams, muller])("blocks $profile QA replacement while a modal or native
   fireEvent.click(screen.getByRole("button", { name: "New game" }));
   const qa = screen.getByRole("complementary", { name: "Tenjiku contract verification" });
   for (const button of within(qa).getAllByRole("button")) expect((button as HTMLButtonElement).disabled).toBe(true);
-  fireEvent.click(within(qa).getByRole("button", { name: "New Adams Modern game" }));
+  fireEvent.click(within(qa).getByRole("button", { name: "New Adams 1999 Modern game" }));
   expect(session.newGame).not.toHaveBeenCalled();
   fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
   session = { ...session, busy: true };

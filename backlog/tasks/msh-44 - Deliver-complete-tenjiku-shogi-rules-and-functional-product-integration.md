@@ -1,11 +1,11 @@
 ---
 id: MSH-44
 title: Deliver complete tenjiku shogi rules and functional product integration
-status: In Review
+status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-04T23:12:00Z'
+updated_date: '2026-11-05T09:22:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -72,6 +72,11 @@ B. Add common Rust notation, console selection/diagnostics and genuine engine-ob
 C. Replace the technical QA board with licensed traditional-kanji faces and native identity/effect/route presentation in the existing shell. Preserve normal chooser activation gates through owner approval. Measure representative engine, files, history, inspection, choices and cancellation journeys.
 D. Independently review coherent source; run required Rust and Desktop Linux/macOS15/Windows CI once per coherent tested checkpoint using one monitor. Reuse fixed macOS QA identity for actual play/files/analysis and a genuine screenshot gallery at normal/minimum sizes and orientations. Integrate and push reviewed checkpoint, present supported launch command and request owner visual approval; STOP with MSH-44 unfinished. Later normal six-game activation/final acceptance remain pending approval.
 No rules/profile, persistence-budget, session-architecture or M5 changes. Preserve original eight AC and DoD; distinguish native conformance, smoke, responsiveness and strength.
+
+E. Owner-approved continuation5November2026 at a4bb78c, Codex primary builder on codex/rewrite; clean/aligned startup and4unrelated worktrees preserved. Shared Board/Xiangqi footer uses existing authoritative labels and existing choice lifetime; paint legalcapture outline after nativepiece with decorative pointer-events none. Focused six-game SVG/interaction regressions, including bothTenjiku profiles and denseGreatGeneral targets.
+F. Enable normal sixth-gameTenjiku with explicit Adams1999Modern/MullerCompleted whole-profile selection and normal immutable-profile Load/commands; inspect/update all gating consumers and host tests early. Preserve rules, search, budgets,760x650 minimum and shared architecture.
+G. Extend existing packaged GUI campaign for bothprofiles, genuine engine/analysis/files/history/Takeback/endings/close; actual macOS normal/QA fixedslots via existing helper. Independent source/review and actual renderedSVG/paint evidence. Reuse unchanged accepted native conformance and complete-game evidence.
+H. One coherent final reviewed-source Rust/Desktop three-platform campaign, one completion-aware monitor, precise failed/superseded provenance. Reconcile original8AC/DoD, owner-approved minimum readability limitation/recommended960x1000 and final independent acceptance. MarkDone onlywhen allsupported; normallyintegrate/push and reportexactnextdependency-readyM4work; STOP, noM5/refactor/historyresearch.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -104,6 +109,10 @@ ReviewedCI-only change integrated normally as83cdd2c via existingGitHubapp (CLI 
 MSH-44 reviewed production checkpoint is now integrated/pushed at 2c00e2107ac74334bce5d55813e5be25666d7c46 (main implementation aecdccd; test-only host correction ae3e397; profile tests de77909). Independent actual GUI review required native ordered effect descriptions in accessible Moves; fixed with shared core/console formatter and independently re-reviewed. Native 9 notation tests, CLI8, focused frontend48 and final frontend511/41 pass; native consumer14 pass, hostQA18 pass. Final source Rust41925013605/Desktop41925013611 all6 jobs acquired runners, one completion-aware monitor; terminal acceptance pending. Prior campaigns stopped before final push; all failures/cancellations preserved in product-verification.json. Genuine fixed-slot macOS gallery covers both profiles/orientations/three sizes, all44faces/all30promoted originals, real engine/analysis/files/history/Takeback/dirtyQuit, compound keyboard, paired3-stage Demon, igui, promotion/refusal. Actual760 minimum is not practically accepted: 16.548px cells and5.295px smallest allfaces engraving. Concrete QA-only960x1000 proposal measured960x968WebView, live35.595cell/11.390em; History31.786/10.171 bothorientations. No minimum changed; owner visual/readability decision remains. Mac locked after required captures; manualunlock requested for extra GUI journeys, backend release bothassignments already verified. Exact committed QA app rebuilt/staged in same fixed identity, strict signature verified. One ledger, coverage map and gallery/manifest being finalized. OriginalAC/DoD remain unchecked pending final reconciliation; normal activation off; no Done/M5 work.
 
 Final source-matched verification supersedes prior pending-CI notes: all6 jobs actually executed and passed at2c00e2107ac74334bce5d55813e5be25666d7c46. Rust41925013605 attempt1: Linux126906997809, macOS15.8.2 arm64 126906997512, Windows126906997773. Desktop41925013611 attempt1: Linux126906998508, macOS15.8.2 arm64 126906997820, Windows126906998265. BothrunconclusionsSUCCESS. Required3OSrelease6internal+2selfplay and applicable actual5gameLinux/WindowsGUI steps passed; monitor exited0. Independent final evidence reconciliation PASS via liveGitHub and165artifacthashes; no production/workflow changes since testedsource. Original8AC/4DoD preserved; checkonlyAC1–6 andDoD3/4. InReview, notDone: currentminimumreadability, tinysecondaryroutebadges, ownerartwork/minimum decision, normaltwo-profileactivation andfinal6gameacceptance remainopen. Detailed current evidence/coverage/gallery supersede earlier historical implementationpending notes. No furtherbroadcampaign for bookkeeping.
+
+Owner5November2026 approves overallTenjiku board/art/traditionalkanji and retains760x650 applicationminimum. Around960x1000 is recommended, notmandatory; document smallwindowkanji/secondarycue limits withoutclaimingnamefooter solvesallaccessibility. Requires allsixgames sharedfriendlypiecenamefooter and legalcapturemarker paintaboveoccupiedpiece, preservingnativeidentities/controller/inspection/focus/partialroutes. Explicitlyauthorizes normalbothprofileactivation, genuinepackagedTenjiku gameplay onmacOS/Windows/Linux andMSH44finalacceptance/Doneonlyifallcriteria supported. Supersedespriorownerapproval/minimumdecisionpendingnotes; previousevidence/historypreserved.
+
+Continuation source freeze independently approved: six-game native friendly names and above-piece capture outlines, both normal immutable Tenjiku choices and ordinary native Open. Full frontend567/42, normalhost8, QAhost17 and focused native cross-profile Open pass. Actual normal macOS27 both human assignments, genuine engine/analysis, Save/Open stopped, history/Takeback, dirtyQuitCancel, compound name and both guarded RoyalCapture games captured. Finalpackage rebuild reproduces host7d53083f/enginea3c0cda3 bytes. Historical legitimate bare-royal probe preserved; only2derived terminal roots independently guarded withremotePawn1a, frozen corpus unchanged. Declared final exactsource campaign Rust+Desktop ubuntu24.04/macOS15/windows2022 includes both-profile actual normalGUI on Linux/Windows; pending allsix receipts and final evidence review, no Done yet.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

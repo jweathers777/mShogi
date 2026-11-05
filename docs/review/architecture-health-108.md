@@ -2,9 +2,12 @@
 
 Reviewed production/source integration: **`1d3920227bc376b5cc1694928597e7b5a1d5a864`**,
 primary `codex/rewrite`, 5 November 2026. This is a diagnostic review. It changes
-documentation and task evidence only. Fresh final independent assessment is
-**approved**; normal evidence integration and final task closure are pending.
-The findings below do not authorize a refactor or close M4.
+documentation and task evidence only. MSH-108 is **Done**, with all eight original
+criteria and four completion items supported. Fresh final independent assessment
+is **approved**. The accepted diagnostic evidence was normally committed and
+pushed to `codex/rewrite` at `12fc1cab114dd3f2570973f75e7edc1d06a9a9d5` before
+the final DoD4/status update. The findings below do not authorize a refactor or
+close M4.
 
 ## Verdict and scope
 
@@ -457,8 +460,11 @@ candidate SHA256 was
 `0cd2ebb3c850c4e82042ac51bbb7fe0d1f54450bbc9b2f5604890918486397f1`.
 Actual read-only commands, environment and candidate file hashes are recorded in
 the diagnostic index. No test/build/GUI/CI/benchmark was run by this reviewer.
-DoD4 remains conditional on ordinary evidence integration/push and the durable
-completion summary, rather than another product verification campaign.
+The review's DoD4 condition is now satisfied by normal evidence integration/push
+at `12fc1cab114dd3f2570973f75e7edc1d06a9a9d5` and the durable MSH-108 completion
+summary. DoD1 is supported by the criterion map and source-qualified evidence;
+DoD2 by the independent assessment; DoD3 by current documentation and the47
+handoff. No additional product verification campaign was needed.
 
 | Original108 criterion | Evidence supplied by this report |
 | --- | --- |
@@ -471,7 +477,7 @@ completion summary, rather than another product verification campaign.
 |7 diagnostic-only boundary | Documentation/task-only diff; no rule/contract/limit/behavior changes or substantial restructuring. |
 |8 actual checks/reuse/independence/limitations | Structured diagnostic record, research and fresh final independent review, exact reused source/platform/measurement qualifications, explicit checks not run. |
 
-MSH-47 remains To Do/unassigned/unstarted. After108 is Done it becomes
+MSH-47 remains To Do/unassigned/unstarted. With108 Done it is now
 dependency-satisfied under its unchanged26/39/41–46/108 prerequisites and still
 owns independent whole-M4 acceptance. This report does not perform47's review,
 close M4, start M5 or authorize any recommendation's implementation.

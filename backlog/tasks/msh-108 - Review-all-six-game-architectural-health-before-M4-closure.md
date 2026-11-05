@@ -1,11 +1,11 @@
 ---
 id: MSH-108
 title: Review all-six-game architectural health before M4 closure
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-27T20:26:00Z'
-updated_date: '2026-11-05T22:30:00Z'
+updated_date: '2026-11-05T22:33:00Z'
 labels:
   - architecture-review
   - planning
@@ -50,7 +50,7 @@ Future diagnostic work only. Intent, scope, acceptance and verification expectat
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -71,4 +71,22 @@ MSH-46 is now Done, all original6AC/4DoD supported after fresh independent compl
 Current-source six-game diagnostic report and single new diagnostic verification index published in working tree; read-only native and Tenjiku researchers report no material blocker. Original8criteria/4DoD unchanged and unchecked pending fresh final assessment. Offline metadata bothworkspaces, production sourceequivalence (4rustdoccomments only since acceptedbc92), unchanged priorfivegame native/searchsource since107,202immutableevidencehashes, fourcurrentnativeTenjikuhashes vs79measuredsource, originaltaskdependency/criteria and ownership, localfilelinks, Backlog1.55.1doctor anddiff checks pass. New broad product/native/frontend/GUI/CI/performance/strength work not run.47handoff appended without changing status/owner/dependencies/criteria or starting it.
 
 Fresh independent read-only msh108_final_assessment approved the complete current-source report/index at1d3920227bc376b5cc1694928597e7b5a1d5a864, reviewed reportSHA2560cd2ebb3c850c4e82042ac51bbb7fe0d1f54450bbc9b2f5604890918486397f1. All8originalAC and DoD1–3 supported, no material factual/coverage gap or demonstrated architecture blocker. Reviewer independently inspected native/shared/frontend/source/capacity/measurements/priorfindings; checked sourceequivalence, previousfivegameunchangedsource,7acceptedrecordhashes/4nativeTenjikuhashes,original108/47criteria/DoD,22reportfilelinks,diff; no product tests/builds/GUI/CI/benchmarks. Root offline metadata bothworkspaces plus11focusedstaticchecks pass, including202immutableevidencehashes,30exactsourceanchors/29report+roadmaplinks,retireddeclarationnegativeinventory and Backlog1.55.1doctor. Diagnostic verdict: coherent accepted6gameowners; no material architecture change recommended beforeM4/pilot. Four advisory P1–P4 scopes are report recommendations only, no newtasks/dependencies. Existing M5pilot48/diagnostic109 gates unchanged, no strengthclaim.112 separatelyunfixedfunctionaldiagnostics disposition retained. All8AC/DoD1–3 nowchecked; DoD4 pending actual ordinary evidencecommit/push.47stillunstarted; no source/rules/schema/limit/reserve/minwindowbehavior change.
+
+Normal integration condition satisfied: accepted diagnostic evidence12fc1cab114dd3f2570973f75e7edc1d06a9a9d5 was committed/pushed to origin/codex/rewrite and verified HEAD/origin aligned before DoD4/Done. All8AC/4DoD complete; final metadata/docs commit follows normally. No source/contract changes or next-task activation.
+
+Fresh independent final post-push reconciliation approved by msh108_final_assessment: actual accepted evidence12fc1cab114dd3f2570973f75e7edc1d06a9a9d5 verified at localHEAD/origin; durable summary present and DoD4condition satisfied. Read-onlydiff/Python checks preserve original108/47AC/DoD/dependencies,108Done8AC/4DoD,47ToDo/unassigned/no plan; closing edits have no substantive architecture/source claim change;gitdiff--check passes. Ordinary finalmetadata integration/push follows; no further architecturecampaign or nexttask started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed the final six-game architecture-health diagnostic at exact reviewed integration1d3920227bc376b5cc1694928597e7b5a1d5a864. docs/review/architecture-health-108.md maps native state/original-promoted identities, complete actions/effects, generation/movement/legality/applyundo, history/adjudication/replay/diagnostics/evaluation/search, actual console/protocol consumers and shared dispatch/execution/controller/document/capacity/capability/frontend/shell/choice/dependency boundaries. Both immutable Tenjiku profiles and all156initialpieces/16x16 stress cases retain native authority. All8originalAC/4DoD supported; original task/47scope and dependencies preserved.
+
+Verdict: coherent accepted architecture, no material architecture change recommended before M4closure or the existing M5pilot. Reconciled106/115/107 andR1–R6 individually: duplicate frontend/session/interaction/runtime ownership and string-derived resource facts resolved; actualChu/Tenjiku compoundhand-off delivered; accepted prerelease retirements retained. Tenjiku ordinary replay avoids retainedundo and supports fine native cancellation, but remaining synchronous supervisor response decode is explicit. Four advisory findings retain concrete consumers/benefits/risks/focused validation: Chu retainedfullundo/context costs; cooperationgranularity; measured-and-qualified inspection/choice risks; narrow JSON/mailbox duplication and commentdrift. No new tasks/refactor/gates or M5strength claim.
+
+Source-qualified native/shared/product timing, syntheticdense/context data, offline mutex/jsdom versus actualWebView, finitework versus measuredstrength, and native512M versus document160M/15s policy are distinguished. Actual ending/Close reservations, typednear-limit refusals, minimum760x650/accessibility/signing limitations preserved. MSH112 remains separately owned ToDo/unfixed functionalrunnerdiagnostics; later green retries are not a fix or architectural redesign proof.
+
+Fresh fork-none read-only native and Tenjiku researchers supplied maps; separate fresh msh108_final_assessment approved fullcoverage/findings/AC1–8/DoD1–3, no factual/materialgap. New focused checks pass offlineCargometadata bothworkspaces, exactruntime sourceequivalence, prior5gameunchangedsource since107,202immutableevidencehashes/7acceptedreferencehashes,4currentnativeTenjikumeasuredhashes,30exactsourceanchors,29report+roadmaplinks,retiredproductiondeclaration inventory/survivingowners,original108/47criteria/DoD/dependencies/ownership,compatibleBacklog1.55.1doctor andgitdiff--check. No native/frontend/conformance/GUI/CI/performance/strength campaign ran. Accepted88/89/46evidence remains unchanged at actualruntime/platform sourcebc92bfe5e3b20e9e999df12cbf54b91682c71b8d; later4rustdoccomments only, not new binaryexecution.
+
+Single new diagnostic index docs/review/evidence/msh108/verification.json; no duplicateplatformledger. Approved report/evidence/handoff normally committed and pushed to codex/rewrite at12fc1cab114dd3f2570973f75e7edc1d06a9a9d5 before finalDoD4/Done. MSH47handoff updated; all original26/39/41–46/108 prerequisites nowDone, so47is dependency-ready while ToDo/unassigned/unstarted. It retains independentwholeM4closure. Existing48/109 M5pilot/diagnostic gates unchanged; M4/M5/refactoring not begun/closed here. Primarycheckout reused, unrelatedhistorical-accessworktree preserved; no taskworktree created/removed. Stop after108.
+<!-- SECTION:FINAL_SUMMARY:END -->

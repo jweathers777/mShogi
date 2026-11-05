@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "task": "MSH-108",
-  "status": "In Review",
+  "status": "Done",
   "reviewed_source": "1d3920227bc376b5cc1694928597e7b5a1d5a864",
   "integration_branch": "codex/rewrite",
   "report": "../../architecture-health-108.md",
@@ -384,7 +384,19 @@
       "benchmarks",
       "refactoring"
     ],
-    "final_integration_condition": "pending normal evidence commit/push; no further architecture review required for supported verdict/status wording unless substantive changes"
+    "final_integration_condition": "Satisfied by actual normal evidence commit/push12fc1cab114dd3f2570973f75e7edc1d06a9a9d5 and durable tasksummary; final metadata commit follows normally.",
+    "post_push_reconciliation": {
+      "status": "approved",
+      "evidence_revision": "12fc1cab114dd3f2570973f75e7edc1d06a9a9d5",
+      "checks": [
+        "HEAD/origin codex/rewrite aligned at accepted evidence revision",
+        "Durable final summary present; DoD4condition satisfied",
+        "Original108/47AC/DoD wording/dependencies intact",
+        "108Done8AC/4DoD;47ToDo/unassigned/no plan",
+        "Closing changes contain no substantive architecture claim/source changes",
+        "git diff --check pass"
+      ]
+    }
   },
   "finding_dispositions": {
     "F01": "advisory, moderate; Chu undo retention remains; Tenjiku already avoids ordinary retained undo",
@@ -481,5 +493,16 @@
       "original_dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
     }
   },
-  "accepted_architecture_diagnostic": true
+  "accepted_architecture_diagnostic": true,
+  "evidence_integration_revision": "12fc1cab114dd3f2570973f75e7edc1d06a9a9d5",
+  "completion": {
+    "original_ac_supported": 8,
+    "definition_of_done_supported": 4,
+    "independent_verdict": "approved, no material blocker",
+    "integration_branch": "codex/rewrite",
+    "evidence_committed_and_pushed_before_done": "12fc1cab114dd3f2570973f75e7edc1d06a9a9d5",
+    "production_or_contract_changes": false,
+    "downstream": "MSH47 ToDo/unassigned/unstarted; all existing prerequisites nowDone; no M4closure or M5/refactor begun.",
+    "worktrees": "Primary checkout reused; unrelated historical-access worktree preserved; none created/removed."
+  }
 }

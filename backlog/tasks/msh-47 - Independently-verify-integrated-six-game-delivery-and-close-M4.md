@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-06T07:37:00Z'
+updated_date: '2026-11-06T09:48:00Z'
 labels: []
 milestone: m-4
 dependencies:
@@ -74,6 +74,8 @@ Fresh final independent msh47_final_acceptance approves the closure-withheld rep
 Review evidence a666763ff65d8a30c0e6f9f10d8438d3cda4c643 was normally committed/pushed to origin/codex/rewrite, verified HEAD/origin equal. DoD4 records integration of blocked review only.47remainsInReview withAC3/DoD1/2unchecked;M4active75/77;112unchangedToDo/unassigned/m4. Finalmetadata commit follows normally, no task/milestoneclosure or correctiveimplementation.
 
 Fresh final post-push reconciliation approved by msh47_final_acceptance after actual evidencepush a666763ff65d8a30c0e6f9f10d8438d3cda4c643 (HEAD/origin verifiedequal). Verified47InReview,AC3/DoD1/2unchecked;AC1/2/4+DoD3/4supported asblockedreview/handoffonly;M4active75/77/noacceptancearchiveorassignmentchanges;original47/112criteria/deps/all133membership intact;112ToDo/unassigned/append-onlyhandoff/noimplementation;acceptedcomponents/F47-01unchanged;diffcheckpasses. Reviewed finalmetadatadiffSHAb752159bfacf760548f7df8e68c715dd762659a4f1ad12c964837c7bab9bc7ff. Reviewer firstcomparedactive47owner topreassignmentbaseline; correctedintegratedownership comparisonpassed, no product/recorddefect. Normal finalmetadata commit/push follows, thenstop withformalM4closurewithheldpending112.
+
+MSH-112 is Done after independent technical/final evidence approval and normal publication6aabc97e92676af32856f5166ecfb1ef52b5e2e7 on codex/rewrite. Exact corrected/tested production44c86b01428ca5f0de56fdb96cbe7e5b013677ea resolves F47-01 early-write/exit classification: provisional missing status finalizes with definitive natural exit before bounded cleanup intervention, preserving actual exit diagnostics, receipt/clock identity, strict unscored failure and reaping. Controlled original-source/mutation failures plus actual Linux controlled orderings and3OS stress/native regressions support the correction. Rust42190693190 success: actual Ubuntu127801682198/macOS15 127801682340 attempt1, Windows127812835546 attempt2, all8 required steps and11 critical cases per platform pass. Source/evidence and final verdict: docs/review/runner-exit-112.md and docs/review/evidence/msh112/verification.json. Historical failures/superseded attempts retained; Windows initial127801682025 unrelated async view-test failure is separately tracked in Ready/unassigned/unstarted MSH-134, not fixed by its sole passing retry. No game/desktop/package/requirement change or broad GUI campaign. This append-only blocker handoff permits47 to resume final independent M4 acceptance;47 remains In Review with all original acceptance/DoD checks and dependencies unchanged, its accepted closure-withheld reports untouched, and M4 remains open. No47 acceptance/closure or further task is performed by112.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "task": "MSH-112",
-  "status": "In Review",
+  "status": "Done",
   "starting_integration": "92a751d3e1df0ef4c4b9610cc55ec42e5e673770",
   "tested_source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
   "source_inputs_sha256": {
@@ -163,8 +163,9 @@
     "earlier_checkpoint_diff_sha256": "9196a9e7b0bbe2238481ef8d327f6810cca0459bf0dcd483ae3901775cf520b9",
     "reviewed_source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
     "pre_windows_evidence_reconciliation": "Independent read-only reviewer verified all6 source hashes,17 indexed evidence hashes,3 protected47 hashes, source/origin44c86b0, full Ubuntu/macOS step receipts and11 named critical passing cases in each rawlog. AC1/2 supported; AC3/DoD1/4 pending Windows and durable final integration.",
-    "final_verdict": "Approve MSH-112 technical acceptance at44c86b01428ca5f0de56fdb96cbe7e5b013677ea; no remaining source or evidence defect. All3 original AC and DoD1\u20133 supported; DoD4 awaits normal final publication/push. Does not accept47 or closeM4.",
-    "final_reconciliation": "Reviewer independently verified final runattempt2 success,3 actual accepted platform jobs with all8 required steps,all11 critical cases in each rawlog,6 source hashes,19 evidence-file hashes,3 protected47 hashes and empty source diff to44. Failed/superseded/carry-forward receipts qualified."
+    "final_verdict": "Independent technical/evidence acceptance approved, no source/evidence defect. Publication condition subsequently satisfied by observed normal push6aabc97e92676af32856f5166ecfb1ef52b5e2e7 (integrator verification); no further source change.",
+    "final_reconciliation": "Reviewer independently verified final runattempt2 success,3 actual accepted platform jobs with all8 required steps,all11 critical cases in each rawlog,6 source hashes,19 evidence-file hashes,3 protected47 hashes and empty source diff to44. Failed/superseded/carry-forward receipts qualified.",
+    "review_verdict_before_publication": "Approve MSH-112 technical acceptance at44c86b01428ca5f0de56fdb96cbe7e5b013677ea; no remaining source or evidence defect. All3 original AC and DoD1\u20133 supported; DoD4 awaits normal final publication/push. Does not accept47 or closeM4."
   },
   "ci": {
     "required_jobs": [
@@ -356,7 +357,21 @@
     "DoD1": "supported",
     "DoD2": "supported",
     "DoD3": "supported: report/index current; unrelated MSH-134 Ready/unassigned and not implemented.",
-    "DoD4": "pending normal evidence publication/push; production source44c86b0 already integrated and pushed."
+    "DoD4": "supported: exact production44c86b0 and approved evidence6aabc97e92676af32856f5166ecfb1ef52b5e2e7 integrated/pushed normally on codex/rewrite, origin-aligned."
   },
-  "remaining_nondeterminism": "No observed regression remains under tested orderings. Arbitrarily delayed OS exit status is not promised: after the unchanged bounded natural-observation policy, unknown stays honest; supervisor-induced exit is separate. MSH-134 remains an unrelated view-test synchronization defect, not repaired by its one passing retry."
+  "remaining_nondeterminism": "No observed regression remains under tested orderings. Arbitrarily delayed OS exit status is not promised: after the unchanged bounded natural-observation policy, unknown stays honest; supervisor-induced exit is separate. MSH-134 remains an unrelated view-test synchronization defect, not repaired by its one passing retry.",
+  "publication": {
+    "branch": "codex/rewrite",
+    "production_integration": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
+    "accepted_evidence_revision": "6aabc97e92676af32856f5166ecfb1ef52b5e2e7",
+    "normal_push_verified": true,
+    "subsequent_changes": "Final task status and authorized append-only47 blocker handoff; no source/required-check change."
+  },
+  "msh47_handoff": {
+    "status": "In Review, acceptance/DoD/dependencies unchanged; M4 open",
+    "permitted_change": "Implementation notes appended and updated_date only; normalized full task compared against starting92a751d; both47 reports unchanged.",
+    "task_sha256_after_append": "17d1a4901a8e9c54239607a137c77c0beaa9dd5b9388dc5dc16719a21a7c3140",
+    "can_resume_final_acceptance": true,
+    "automatic_closure": false
+  }
 }

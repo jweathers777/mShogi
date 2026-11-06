@@ -4,8 +4,9 @@ Starting integration: `92a751d3e1df0ef4c4b9610cc55ec42e5e673770`,
 `codex/rewrite`, 6 November 2026. Corrected tested source:
 `44c86b01428ca5f0de56fdb96cbe7e5b013677ea`. Local correction, independent source
 review and all three required native CI jobs pass. Independent final evidence
-reconciliation approves technical acceptance; normal publication precedes task
-completion.
+reconciliation approves acceptance. Evidence was committed and pushed normally
+at `6aabc97e92676af32856f5166ecfb1ef52b5e2e7`; MSH-112 is Done with all three
+original acceptance criteria and four Definition of Done items checked.
 MSH-47 and M4 are not accepted or closed by this assignment.
 
 ## Original failure and established ordering defect
@@ -231,8 +232,10 @@ Independent final read-only reconciliation approves all three original112
 acceptance criteria and DoD1–3 with no remaining source or evidence defect.
 It independently verified all six source hashes,19 indexed evidence hashes,
 three protected47 hashes, all required native steps and all11 critical cases in
-each platform log. AC1–3 and DoD1–3 are checked; DoD4 remains only normal durable
-publication and push. The production correction is already integrated/pushed
-at44c86b0. MSH-47 stays In Review with its acceptance items unchanged; only its
-owner-authorized blocker handoff may be appended after112 acceptance.
+each platform log. AC1–3 and DoD1–4 are checked following normal durable
+publication and push at6aabc97. The production correction is integrated/pushed
+at44c86b0, unchanged by evidence bookkeeping. The owner-authorized47 blocker
+handoff is appended; its status, original acceptance/DoD checks, dependencies
+and closure-withheld reports remain unchanged. MSH-47 can resume independent
+final M4 acceptance; this assignment does not perform that acceptance.
 M4 remains open. No MSH-48/109, M5, M6, variant development or refactor starts.

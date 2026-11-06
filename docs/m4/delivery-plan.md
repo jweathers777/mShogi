@@ -1,3 +1,13 @@
+> MSH-47 final acceptance review — 2026-11-06: the
+> [current M4 delivery report](final-delivery.md) supports the six-game and
+> shared delivery evidence but withholds formal milestone closure. Existing
+> MSH-112 still has an unresolved production match-runner failure-contract
+> mismatch; earlier shared-contract/architecture nonblocking verdicts do not
+> waive whole-M4 console acceptance. Fresh final independent assessment approves this
+> closure-withheld verdict, not M4 acceptance. MSH-47 remains In Review and M4 active; no task is reassigned,
+> archived or falsely completed, and no M5 work begins. Earlier snapshots
+> retain their original source/status scope.
+
 > MSH-46 final shared-delivery reconciliation — 2026-11-05: the current
 > [six-criterion completion record](shared-integration/README.md) supports the
 > original obligations using unchanged tested runtime/platform source

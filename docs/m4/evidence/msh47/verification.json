@@ -1,0 +1,619 @@
+{
+  "schema_version": 1,
+  "task": "MSH-47",
+  "status": "In Review",
+  "review_date": "2026-11-06",
+  "reviewed_integration": "07f1bac4c366c0a327dd7f31e9528ee9aa444b5b",
+  "runtime_platform_source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+  "report": "../../final-delivery.md",
+  "integration_branch": "codex/rewrite",
+  "closure_eligibility": "withheld: existing MSH-112 meaningful failure contract unresolved; fresh independent final review approved blocked verdict, not M4 acceptance",
+  "formal_m4_status": "active; no milestone archive/reassignment/deletion/completion operation",
+  "material_finding": {
+    "id": "F47-01",
+    "task": "MSH-112",
+    "scope": "Production console/match runner failureclassification/exitdiagnostics; original47AC3 failedcheckgate",
+    "demonstrated": "Repeated existing exitfixture expectedUnexpectedExit with coded non-success exit, observedMissingResponse/Brokenpipe/exitNone; unfixed",
+    "not_established": [
+      "new controlled reproduction/rootcause",
+      "fabricatedscore",
+      "native ruledefect",
+      "broken ordinarydesktopplay",
+      "architecturalredesign requirement"
+    ],
+    "preserved_narrower_verdicts": "89/46sharedapplicationcontracts and108architecturaldiagnostic remain accepted; no wholemilestonewaiver inferred",
+    "next_action": "Existing112controlled diagnosis/correction/independent actual-platformverification, thenresume47unchanged."
+  },
+  "live_ci_reconciliation": [
+    {
+      "run_id": 42028972679,
+      "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "workflow_path": ".github/workflows/rust.yml",
+      "jobs": [
+        {
+          "job_id": 127250225640,
+          "name": "Rust (macos-15)",
+          "status": "completed",
+          "conclusion": "success",
+          "step_count": 13,
+          "steps_successful_or_platform_skipped": true
+        },
+        {
+          "job_id": 127250225725,
+          "name": "Rust (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "step_count": 13,
+          "steps_successful_or_platform_skipped": true
+        },
+        {
+          "job_id": 127250225944,
+          "name": "Rust (windows-2022)",
+          "status": "completed",
+          "conclusion": "success",
+          "step_count": 13,
+          "steps_successful_or_platform_skipped": true
+        }
+      ],
+      "method": "Live GitHub connector GET workflow run and workflow-run jobs; original full receipts remain in MSH88 master record."
+    },
+    {
+      "run_id": 42028972586,
+      "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "workflow_path": ".github/workflows/desktop.yml",
+      "jobs": [
+        {
+          "job_id": 127250225410,
+          "name": "Desktop (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "step_count": 25,
+          "steps_successful_or_platform_skipped": true
+        },
+        {
+          "job_id": 127250225967,
+          "name": "Desktop (windows-2022)",
+          "status": "completed",
+          "conclusion": "success",
+          "step_count": 26,
+          "steps_successful_or_platform_skipped": true
+        },
+        {
+          "job_id": 127250226038,
+          "name": "Desktop (macos-15)",
+          "status": "completed",
+          "conclusion": "success",
+          "step_count": 25,
+          "steps_successful_or_platform_skipped": true
+        }
+      ],
+      "method": "Live GitHub connector GET workflow run and workflow-run jobs; original full receipts remain in MSH88 master record."
+    }
+  ],
+  "platform_record": "../../shared-integration/verification.json",
+  "platform_audits": {
+    "windows": {
+      "original_raw_report_sha256": "81e919cedfe2cbdf0c7a6bf580fc072fb9431f4e61339c68eb1f6feec2df9917",
+      "phases": 49,
+      "failed_phases": 0,
+      "normal_host_engine_pairs": 13,
+      "retained_manifest_audit": [
+        {
+          "kind": "normal",
+          "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+          "files_verified": 2,
+          "manifest_sha256": "c21321d76ab250d10a9b2714b2d2b959fba09aeaf38587863ca2c1ecc92af225",
+          "form": "producer file inventory"
+        },
+        {
+          "kind": "verification",
+          "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+          "files_verified": 2,
+          "manifest_sha256": "c5ad4cedcaf028ad343a523eb9034cb7e9f54a44306ea8915c03da0108487ceb",
+          "form": "Windows producer installer receipt; actual installed host/engine hashes are in GUI report"
+        }
+      ],
+      "qualification": "New receipt/hash reconciliation only; original package payload verification reused at its original source, not a new artifact download or installed GUI campaign."
+    },
+    "linux": {
+      "original_raw_report_sha256": "bac2331dab5e21b4ef1cac97e43a592af14b4c42a06e2eef806f4454adf17d40",
+      "phases": 49,
+      "failed_phases": 0,
+      "normal_host_engine_pairs": 13,
+      "retained_manifest_audit": [
+        {
+          "kind": "normal",
+          "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+          "files_verified": 13,
+          "manifest_sha256": "89c36f866ca1e30a90fd6f59d1ae8e19709bd22acfd7482c9b29b15d0c676860",
+          "form": "producer file inventory"
+        },
+        {
+          "kind": "verification",
+          "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+          "files_verified": 2,
+          "manifest_sha256": "660260218fa1d48d99b03727ee9da885a109532b7a48de34995fd4ad70d0339d",
+          "form": "Linux producer extracted-QA package receipt; actual host/engine hashes are in GUI report"
+        }
+      ],
+      "qualification": "New receipt/hash reconciliation only; original package payload verification reused at its original source, not a new artifact download or installed GUI campaign."
+    }
+  },
+  "reused_evidence_sha256": {
+    "docs/m4/shared-integration/README.md": "50c129891e4ee3724d40d03086a655fd80f72714f0cdf10db7fce3508dc45d93",
+    "docs/m4/shared-integration/verification.json": "097118de9a7c9507900f554da7c91dde97ad35729bce73c9f491b52a7a9cd985",
+    "docs/m4/shared-integration/contract-review-89.md": "1047ed48a6658609ffa5a8b5b4533b87471d4b52b8def95672b9a967d848c2fb",
+    "docs/m4/shared-integration/contract-review-89.json": "099c91dd0482a34ca245ea873f3b8eb0c3069ee7df02f0988ec661d8b8426b0b",
+    "docs/review/architecture-health-108.md": "f21cca88ed5575c0651139fe5bccb040b047c42edc2986b3a15343f7e9dcad33",
+    "docs/review/evidence/msh108/verification.json": "86e7e22ea1e8c42eaad22720f1801ef512a4540c17ce23e9d2ac2c00be469fa4",
+    "docs/m4/shogi-delivery-review.md": "05e65fbbe6cd88c069662fc98a54be64d11e8475424ad308c81496cf37423d52",
+    "docs/m4/xiangqi/delivery-acceptance.md": "441ef4f63703946aa19cd319281f829c9f1060aebbe0cebc429c781f3e8965b8",
+    "docs/m4/tori/delivery-review.md": "88c14a27704a93526d6996520a1bbf9b10d270a0c96b8e21ea664021c599e002",
+    "docs/m4/chu/delivery-review.md": "a16f3d8e40ceb9c376a15ab536518b45f05a72a45686ca282c5519eb921d965e",
+    "docs/m4/tenjiku/product-verification.json": "451ed6cb22e0fcc88c84f55f7f6f3f3a888c6ee04d4e0f7a0e42c60c3f977d18",
+    "docs/review/m3-closure.md": "d6e0e67ab79a5aea92138f7b8b25780d0a0c253c7b41c51129c32a9fb5b8d889",
+    "docs/rules/chess-completeness.md": "c2e7ac1b7c7ad8094088da613cbde42abb15f511e451c47aea2bfafc6cd4fda1"
+  },
+  "original_task_baseline": {
+    "MSH-47": {
+      "path": "backlog/tasks/msh-47 - Independently-verify-integrated-six-game-delivery-and-close-M4.md",
+      "status": "To Do",
+      "assignees": [],
+      "milestone": "m-4",
+      "dependencies": [
+        "MSH-26",
+        "MSH-39",
+        "MSH-41",
+        "MSH-42",
+        "MSH-43",
+        "MSH-44",
+        "MSH-45",
+        "MSH-46",
+        "MSH-108"
+      ],
+      "ac_count": 4,
+      "ac_text_sha256": "e65ed8773016d1c56277a098ed104c66882565f1e6c36c8b549bd7439352335b",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-26": {
+      "path": "backlog/tasks/msh-26 - Complete-chess-dead-position-and-possible-mate-adjudication.md",
+      "status": "Done",
+      "assignees": [
+        "@completeness-builder"
+      ],
+      "milestone": "m-4",
+      "dependencies": [
+        "MSH-17",
+        "MSH-18"
+      ],
+      "ac_count": 2,
+      "ac_text_sha256": "c28b8a62d5537c64d18a0f98e20eec76970c33e1f17b2a03edba05a490991bf1",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-39": {
+      "path": "backlog/tasks/msh-39 - Independently-review-and-close-the-M3-desktop-vertical-slice.md",
+      "status": "Done",
+      "assignees": [
+        "@codex"
+      ],
+      "milestone": "m-3",
+      "dependencies": [
+        "MSH-27",
+        "MSH-28",
+        "MSH-29",
+        "MSH-30",
+        "MSH-31",
+        "MSH-32",
+        "MSH-33",
+        "MSH-34",
+        "MSH-35",
+        "MSH-36",
+        "MSH-37",
+        "MSH-38",
+        "MSH-61"
+      ],
+      "ac_count": 3,
+      "ac_text_sha256": "8db399c00e8b4b8f654e4220961caa667103221502deca61ce1949d5f112acbc",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-41": {
+      "path": "backlog/tasks/msh-41 - Deliver-complete-shogi-rules-and-functional-product-integration.md",
+      "status": "Done",
+      "assignees": [
+        "@codex"
+      ],
+      "milestone": "m-4",
+      "dependencies": [
+        "MSH-39",
+        "MSH-63",
+        "MSH-69",
+        "MSH-72",
+        "MSH-73",
+        "MSH-75"
+      ],
+      "ac_count": 8,
+      "ac_text_sha256": "e19a3e31d21e27b640604a12062eb8f57d5bd76d713afeae8b2768b9b758ca2f",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-42": {
+      "path": "backlog/tasks/msh-42 - Deliver-complete-tori-shogi-rules-and-functional-product-integration.md",
+      "status": "Done",
+      "assignees": [
+        "@Codex"
+      ],
+      "milestone": "m-4",
+      "dependencies": [
+        "MSH-39",
+        "MSH-72",
+        "MSH-73",
+        "MSH-77",
+        "MSH-81",
+        "MSH-85"
+      ],
+      "ac_count": 8,
+      "ac_text_sha256": "87490c10922259cb3291d8dc84a59408689836c14e90979c55dd2b08f53fd779",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-43": {
+      "path": "backlog/tasks/msh-43 - Deliver-complete-chu-shogi-rules-and-functional-product-integration.md",
+      "status": "Done",
+      "assignees": [
+        "@Codex"
+      ],
+      "milestone": "m-4",
+      "dependencies": [
+        "MSH-39",
+        "MSH-72",
+        "MSH-73",
+        "MSH-78",
+        "MSH-82",
+        "MSH-86"
+      ],
+      "ac_count": 8,
+      "ac_text_sha256": "fb5a5b44a66a9ebc613367d8fb6632d3a95485b23f8e4ffaf2585454862e129f",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-44": {
+      "path": "backlog/tasks/msh-44 - Deliver-complete-tenjiku-shogi-rules-and-functional-product-integration.md",
+      "status": "Done",
+      "assignees": [
+        "@codex"
+      ],
+      "milestone": "m-4",
+      "dependencies": [
+        "MSH-39",
+        "MSH-72",
+        "MSH-73",
+        "MSH-79",
+        "MSH-83",
+        "MSH-87"
+      ],
+      "ac_count": 8,
+      "ac_text_sha256": "8225975998a2c6a51722da0ee444de2e7d5592af43fe369410ec1c82882153e9",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-45": {
+      "path": "backlog/tasks/msh-45 - Deliver-complete-xiangqi-rules-and-functional-product-integration.md",
+      "status": "Done",
+      "assignees": [
+        "@codex"
+      ],
+      "milestone": "m-4",
+      "dependencies": [
+        "MSH-39",
+        "MSH-72",
+        "MSH-73",
+        "MSH-76",
+        "MSH-80",
+        "MSH-84",
+        "MSH-103",
+        "MSH-105"
+      ],
+      "ac_count": 8,
+      "ac_text_sha256": "9d40ec29891bc30839bd818bcb0abc1d1884fb07d3c48cddb137c782b6285a26",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-46": {
+      "path": "backlog/tasks/msh-46 - Deliver-shared-six-game-integration-across-console-engine-records-and-desktop.md",
+      "status": "Done",
+      "assignees": [
+        "@codex"
+      ],
+      "milestone": "m-4",
+      "dependencies": [
+        "MSH-39",
+        "MSH-41",
+        "MSH-42",
+        "MSH-43",
+        "MSH-44",
+        "MSH-45",
+        "MSH-69",
+        "MSH-72",
+        "MSH-73",
+        "MSH-76",
+        "MSH-77",
+        "MSH-78",
+        "MSH-79",
+        "MSH-88",
+        "MSH-89",
+        "MSH-90"
+      ],
+      "ac_count": 6,
+      "ac_text_sha256": "51f72df130418e5b25559a0001fb272a6a51521d1134208e27cb960c07f42594",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-88": {
+      "path": "backlog/tasks/msh-88 - Verify-final-six-game-shared-integration-in-packaged-applications.md",
+      "status": "Done",
+      "assignees": [
+        "@codex"
+      ],
+      "milestone": "m-4",
+      "dependencies": [
+        "MSH-41",
+        "MSH-42",
+        "MSH-43",
+        "MSH-44",
+        "MSH-45",
+        "MSH-69",
+        "MSH-72",
+        "MSH-73",
+        "MSH-76",
+        "MSH-77",
+        "MSH-78",
+        "MSH-79"
+      ],
+      "ac_count": 4,
+      "ac_text_sha256": "43542906a410c84a33ca595de9873e428235d00994a2ee8efc9cdb9ef7d0b3cf",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-89": {
+      "path": "backlog/tasks/msh-89 - Independently-review-shared-six-game-contracts-and-reconcile-MSH46.md",
+      "status": "Done",
+      "assignees": [
+        "@codex"
+      ],
+      "milestone": "m-4",
+      "dependencies": [
+        "MSH-88"
+      ],
+      "ac_count": 4,
+      "ac_text_sha256": "8efb71c4fdf7121d9b1b79e6a9009ae829dff217d556ade489ca8ac162406b52",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-108": {
+      "path": "backlog/tasks/msh-108 - Review-all-six-game-architectural-health-before-M4-closure.md",
+      "status": "Done",
+      "assignees": [
+        "@codex"
+      ],
+      "milestone": "m-4",
+      "dependencies": [
+        "MSH-46",
+        "MSH-106",
+        "MSH-107"
+      ],
+      "ac_count": 8,
+      "ac_text_sha256": "1f32d44665e7b666b28ad05e450064ec6d4a49cf71c6f03a1f56899e8f37c651",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-48": {
+      "path": "backlog/tasks/msh-48 - Establish-shared-reproducible-strength-and-learning-experiment-infrastructure.md",
+      "status": "To Do",
+      "assignees": [],
+      "milestone": "m-5",
+      "dependencies": [
+        "MSH-25"
+      ],
+      "ac_count": 4,
+      "ac_text_sha256": "ce813040a8b2a95dcce5e9eba950ec71a4ceeccfba4490b95ab9e0e6c4e546ad",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-109": {
+      "path": "backlog/tasks/msh-109 - Review-architecture-before-substantial-M5-learned-and-strength-optimization.md",
+      "status": "Ready",
+      "assignees": [],
+      "milestone": "m-5",
+      "dependencies": [
+        "MSH-108",
+        "MSH-48"
+      ],
+      "ac_count": 8,
+      "ac_text_sha256": "25b78a3acb101e34be822e4ca4d447b99c4895060644c4bdda7a2be89b675268",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    },
+    "MSH-112": {
+      "path": "backlog/tasks/msh-112 - Investigate-early-exit-runner-failure-classification-race.md",
+      "status": "To Do",
+      "assignees": [],
+      "milestone": "m-4",
+      "dependencies": [],
+      "ac_count": 3,
+      "ac_text_sha256": "528025ed68d231f1920ac2257e0ca747a7abf21adb29f6c8e029fb8e052d1c33",
+      "dod_text_sha256": "5a6acd7af2adfa62eafcd84420b6fa1d0ba01279b48d13d0ae05db8ca196727a"
+    }
+  },
+  "milestone_integrity": {
+    "m4_id": "m-4",
+    "definition_path": "backlog/milestones/m-4 - m4---variant-expansion-and-conformance.md",
+    "definition_sha256": "fa0a0e879bc57668acc0f12e243e34f893860fda84de7d5b6ee4463d8a384f2c",
+    "all133task_milestone_membership_sha256": "42b6902d02474c8e50c3011328a4b634c084f2f709933631f522d5c45a192caa",
+    "assigned_m4_tasks": 77,
+    "done_at_start": 75,
+    "unfinished_at_start": [
+      "MSH-47",
+      "MSH-112"
+    ],
+    "percentage_is_not_acceptance": true
+  },
+  "environment": {
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.11.0",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "backlog": "1.55.1"
+  },
+  "checks": [
+    {
+      "command": "Python3 hashlib.sha256 master verification.json and every evidence_files entry",
+      "result": "pass",
+      "scope": "unchanged MSH88master and202 retained evidence hashes",
+      "files": 202
+    },
+    {
+      "command": "GitHub connector fetch_workflow_run_jobs for42028972679/42028972586 plus fetch GET actions/runs/{id}; compare original raw receipts",
+      "result": "pass",
+      "scope": "six actual live successful jobs/runs and steps, exactsource attempt1; original runner provenance preserved",
+      "checked_date": "2026-11-06"
+    },
+    {
+      "command": "Python3 gzip raw-report SHA/source/49phase +13 normal host/engine pairs vs package-smoke; producer manifest SHA vs retained original audit",
+      "result": "pass",
+      "scope": "windows original actual GUI/package receipts reconcile",
+      "phases": 49,
+      "normal_pairs": 13
+    },
+    {
+      "command": "Python3 gzip raw-report SHA/source/49phase +13 normal host/engine pairs vs package-smoke; producer manifest SHA vs retained original audit",
+      "result": "pass",
+      "scope": "linux original actual GUI/package receipts reconcile",
+      "phases": 49,
+      "normal_pairs": 13
+    },
+    {
+      "command": "Python3 retained normal-before-rebuild/current/master inventory comparison",
+      "result": "pass",
+      "scope": "four localmacOS27 actual-GUI bundle files match localtested-source rebuild; not hosted15 byte equality"
+    },
+    {
+      "command": "git diff bc92bfe5e3b20e9e999df12cbf54b91682c71b8d 07f1bac4c366c0a327dd7f31e9528ee9aa444b5b -- crates desktop .github Cargo.toml Cargo.lock rust-toolchain.toml",
+      "result": "pass",
+      "scope": "runtime/test/frontend/host/observer/workflow equivalence except4neutralrustdoccomments"
+    },
+    {
+      "command": "PinnedBacklog1.55.1 task JSON, milestone list --show-completed --plain and milestone archive --help",
+      "result": "pass",
+      "scope": "nine original47prerequisitesDone;M4active75/77 with47/112 unfinished; archive notcompletion; original membership retained"
+    },
+    {
+      "command": "Python3 unquoted local Markdown file-target resolution",
+      "result": "pass",
+      "scope": "all report target files resolve",
+      "targets": 33
+    },
+    {
+      "command": "backlog1.55.1 doctor",
+      "result": "pass",
+      "scope": "no duplicate IDs/selfdependencies/cycles",
+      "output": "No duplicate IDs, self-referential dependencies, or dependency cycles found."
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass",
+      "scope": "working diff whitespace"
+    },
+    {
+      "command": "PinnedBacklog task JSON vs original15record criterion/DoD/dependency/status/membership baseline + all133milestone membership digest; acceptedrecordSHA; root/runtime/milestone/config diff; local links",
+      "result": "pass",
+      "scope": "Original taskcriteria/dependencies/milestoneassignments intact; non47status/owners unchanged; all133membership preserved; no source/acceptedrecord/milestone/config edits",
+      "local_link_targets": 83
+    },
+    {
+      "command": "git diff --stat 9749eec0ffdbfffbcc040b6a56c5bb2c90616a1f HEAD -- crates/mshogi-runner; inspect current runner fixture/assertion and production caller",
+      "result": "pass",
+      "scope": "Read-only source check completed; no runner diff from latest recorded112failure source. This is not a product-test pass or new reproduction."
+    }
+  ],
+  "audit_observations": [
+    {
+      "result": "initial audit assertion failed",
+      "cause": "Assumed producer package inventories existed in raw GUI report files map; those are separate retained producer/audit receipts. Corrected to actual file SHA/producer-manifest/original-audit schema and preserved13 normal GUI host/engine checks.",
+      "disposition": "Corrected audit passes; no product failure, source change, new package verification or GUI retry claimed."
+    }
+  ],
+  "research_reviews": [
+    {
+      "reviewer": "msh47_game_conformance",
+      "fresh_context": true,
+      "read_only": true,
+      "verdict": "Game/native/conformance/consumer scopes supported, no new missinggamebehavior; precise fixturequalifications."
+    },
+    {
+      "reviewer": "msh47_scope_blockers",
+      "fresh_context": true,
+      "read_only": true,
+      "verdict": "WholeM4closure unsupported due unresolved meaningfulrunnerfailurecontract; earlier narrower acceptances preserved."
+    }
+  ],
+  "final_independent_review": {
+    "reviewer": "msh47_final_acceptance",
+    "fresh_context": true,
+    "read_only": true,
+    "status": "approved closure-withheld report, not milestone acceptance",
+    "reviewed_source": "07f1bac4c366c0a327dd7f31e9528ee9aa444b5b",
+    "reviewed_candidate_sha256": {
+      "docs/m4/final-delivery.md": "24787ffa595a47beeb79868118bad42001d9f5364f90649009cc89564fc74146",
+      "docs/m4/evidence/msh47/verification.json": "9caa2ac13ecfb0530ca3cc07dd199dd125a3a6eeff459bd1668fd648f3851f0c",
+      "docs/m4/delivery-plan.md": "12b6e9b4ca56697820ead92567c6f4b06e9b97be579406be6e11fb8d0aa53807",
+      "docs/m4/implementation-map.md": "7a77db42613a53cc511444be94676f9e38233366e1e4e117a3f4eafbe5549879"
+    },
+    "subsequent_changes": "Runner locator-only clarification, additional completed static-check receipts and supported verdict/handoff wording; no source or acceptance change.",
+    "verdict": "Original47AC3 prevents wholeM4closure; meaningful runnerexitcategory/diagnostic assertion remains unresolved in actual headless consumer. Narrower89/46/108verdicts preserved. All6game/shared/platformcoverage supported; no additional materialgap.",
+    "checks": [
+      "Original47/112requirements,currentproductionCLI/run_experiment,exit7fixture/assertions,writeerrorstatuscode andhistory",
+      "Sourcebc92\u219207f fourrustdoccomments only",
+      "13reuseddocumenthashes and202masterevidencehashes",
+      "Six originalCIjob/source/attempt/steps",
+      "WindowsLinux rawSHA/source49passed/0failed/13normalhostenginepairs",
+      "Nineoriginal47prerequisitesDone/checked;47/112AC/DoDtext unchanged",
+      "M4active75/77,archiveisnotcompletion",
+      "git diff --check"
+    ],
+    "environment": {
+      "os": "macOS-27.0.1-arm64-arm-64bit",
+      "machine": "arm64",
+      "python": "3.11.0",
+      "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+      "backlog": "1.55.1"
+    },
+    "not_run": [
+      "builds",
+      "tests",
+      "CI",
+      "GUI",
+      "benchmarks",
+      "controlled112reproduction"
+    ]
+  },
+  "new_product_campaigns": [],
+  "required_new_ci_jobs": [],
+  "not_run": [
+    "nativeconformancecampaign",
+    "frontendcampaign",
+    "packagedGUI/CIcampaign",
+    "benchmark/strength",
+    "controlled112reproduction/fix"
+  ],
+  "handoff": {
+    "immediate_corrective_assignment": "MSH-112 (notstartedhere)",
+    "next_m5_after_m4_acceptance": "MSH-48 (ToDo/unassigned/unstarted)",
+    "MSH-109": "still waits48; no M5optimization started",
+    "MSH-57/58": "existingrequiredM6polish/accessibility/distribution;notbegun"
+  },
+  "acceptance_disposition": {
+    "AC1": "supported",
+    "AC2": "supported",
+    "AC3": "blocked by unresolved112 failurecontract",
+    "AC4": "supported as explicitblockedclosureverdict, not positiveM4acceptance",
+    "DoD1": "unchecked while requiredacceptance unsupported",
+    "DoD2": "unchecked unresolvedmaterialfinding",
+    "DoD3": "current docs and112handoff supported",
+    "DoD4": "pending actual integration ofreviewevidence"
+  }
+}

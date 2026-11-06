@@ -4,7 +4,7 @@ title: Investigate early-exit runner failure classification race
 status: To Do
 assignee: []
 created_date: '2026-10-29T12:53:00Z'
-updated_date: '2026-11-04T11:27:00Z'
+updated_date: '2026-11-06T07:32:00Z'
 labels:
   - native-ci
   - runner
@@ -52,4 +52,6 @@ MSH-86 native CI recurrence at source136f89260090d21bafea3f67b036b3354729e4be: L
 MSH87corrected-source recurrence at9749eec0ffdbfffbcc040b6a56c5bb2c90616a1f: UbuntuRustrun41816309261 job126527815548 workspaceTest runner.rs172 expectedUnexpectedExit forfixtureexit7, observedMissingResponse engine0 handshake Brokenpipe(os32), exitNone, at_ns2246915. Matches existing112sameearlywrite-error/exitobservation race; runner/engine/desktop-session/workflow sources unchanged from87starta7f9205 (gitdiffempty). Nativeconformance/core164 andpublicconsumer2passed onUbuntu before unrelatedrunnerfailure. Rawjoblog/private/tmp/msh87-ubuntu-corrected.log anddurable native-verification.json retainprovenance. No assertion/timeout/productrunner change, no112ownership/status/implementation. RequiredCI will retryfailedUbuntu onunchanged9749source; greenretry wouldnotestablish112fix.
 
 MSH87unchanged-source Ubuntu-only retry succeeded in correctedRustcampaign41816309261 at9749eec, finaljob126537522942 allstepsPASS13m53s; requiredmacOS/Windowssuccess retained. This establishes current87CIacceptance only, not an112fix. OriginalfailedUbuntu126527815548 andexactsignature remainin87native-verification.json; no112assertion/timeout/productchange orimplementation, statusremainsToDo.
+
+MSH47wholeM4 acceptance review2026-11-06 at07f1bac4c366c0a327dd7f31e9528ee9aa444b5b identifies existing112 as unresolved original47AC3 failure-contract blocker, with fresh independent scope/final review support. docs/m4/final-delivery.md F47-01 traces actual production mshogi-match run→run_experiment and original documented UnexpectedExit/exitdiagnostic assertion; repeated historical MissingResponse/Brokenpipe/exitNone persists, runner source unchanged since9749eec. No new controlled reproduction/rootcause/productversusfixture decision or fix claimed. Earlier89/46nonblocking sharedapplicationcontracts and108noarchitecturalredesign verdicts remain valid, not a wholeM4waiver; M2/native/gameacceptances not reopened. Existing112AC1–3 remain the narrow correction: controlled writeerror/EOF/exit diagnosis, contract-preserving product/fixture correction, meaningful categories/unscored outcomes/boundedcleanup and focused independent actualplatformverification, thenresume47. No112implementation plan, status, owner, milestone, dependencies, assertion or timeout changed; remainsToDo/unassigned/m4. No M5reclassification or newtaskhierarchy.
 <!-- SECTION:NOTES:END -->

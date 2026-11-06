@@ -177,7 +177,17 @@ fn process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored() {
                     .as_ref()
                     .is_some_and(|s| !s.success && s.code.is_some())
             );
+            assert_eq!(
+                f.exit.as_ref().unwrap().code,
+                Some(if mode == "exit" { 7 } else { 11 })
+            );
         }
+        assert!(
+            g.engines
+                .iter()
+                .all(|engine| engine.cleanup_failures.is_empty()),
+            "{mode}"
+        );
         assert_eq!(r.summaries[0].unscored, 1);
         assert_eq!(r.summaries[0].failures, 1);
         assert_eq!(r.replay().unwrap()[0].game().history().ply_count(), 0);
@@ -203,6 +213,99 @@ fn process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored() {
     );
     assert!(r.engine_identities[0].executable.error.is_some());
     assert!(!r.deterministic_rerun_eligible);
+}
+#[test]
+fn partial_streams_and_early_stderr_preserve_precise_failure_and_reaping() {
+    for (mode, kind, code) in [
+        ("partial_exit", FailureKind::UnexpectedExit, 7),
+        ("partial_clean_eof", FailureKind::MissingResponse, 0),
+    ] {
+        let mut c = config("mate");
+        c.engines[0].args = vec![mode.into()];
+        let report = run(&c);
+        let game = &report.games[0];
+        assert_eq!(game.stop, GameStop::Failure);
+        assert_eq!(game.conclusion, None);
+        assert_eq!(game.failure.as_ref().unwrap().kind, kind);
+        assert_eq!(
+            game.failure.as_ref().unwrap().exit.as_ref().unwrap().code,
+            Some(code)
+        );
+        assert!(game.engines[0].stderr.text.contains("fixture diagnostic"));
+        assert!(
+            game.engines
+                .iter()
+                .all(|e| e.exit.is_some() && e.cleanup_failures.is_empty())
+        );
+        assert_eq!(report.summaries[0].unscored, 1);
+    }
+    let mut c = config("mate");
+    c.engines[0].args = vec!["malformed".into()];
+    let report = run(&c);
+    assert_eq!(
+        report.games[0].failure.as_ref().unwrap().kind,
+        FailureKind::InvalidResponse
+    );
+    assert_eq!(report.games[0].conclusion, None);
+    assert!(
+        report.games[0]
+            .engines
+            .iter()
+            .all(|e| e.cleanup_failures.is_empty())
+    );
+}
+#[test]
+fn aborted_startup_retires_and_reaps_already_spawned_child() {
+    let mut c = config("silent");
+    c.engines[1].path = "no-such-mshogi-startup-cancellation-fixture".into();
+    let report = run(&c);
+    let game = &report.games[0];
+    assert_eq!(game.stop, GameStop::Failure);
+    assert_eq!(game.conclusion, None);
+    assert_eq!(
+        game.failure.as_ref().unwrap().kind,
+        FailureKind::ProcessStartFailure
+    );
+    assert_eq!(game.failure.as_ref().unwrap().engine, 1);
+    assert_eq!(game.engines.len(), 1);
+    assert!(game.engines[0].exit.is_some());
+    assert!(game.engines[0].cleanup_failures.is_empty());
+    assert_eq!(report.summaries[0].unscored, 1);
+    assert_eq!(report.replay().unwrap()[0].game().history().ply_count(), 0);
+}
+#[test]
+fn repeated_immediate_and_yielded_partial_exits_remain_precise() {
+    // Supplemental stress, not the controlled ordering proof. Both modes exit7;
+    // the latter also yields and closes a partial line after early stderr.
+    for trial in 0..20 {
+        let mut c = config("mate");
+        c.engines[0].args = vec![
+            if trial % 2 == 0 {
+                "exit"
+            } else {
+                "partial_exit"
+            }
+            .into(),
+        ];
+        let report = run(&c);
+        let game = &report.games[0];
+        assert_eq!(
+            game.failure.as_ref().unwrap().kind,
+            FailureKind::UnexpectedExit,
+            "trial={trial}"
+        );
+        assert_eq!(
+            game.failure.as_ref().unwrap().exit.as_ref().unwrap().code,
+            Some(7)
+        );
+        assert_eq!(game.conclusion, None);
+        assert!(
+            game.engines
+                .iter()
+                .all(|e| e.exit.is_some() && e.cleanup_failures.is_empty())
+        );
+        assert_eq!(report.summaries[0].unscored, 1);
+    }
 }
 #[test]
 fn separate_watchdog_and_chess_clock_expiry_preserve_observations() {

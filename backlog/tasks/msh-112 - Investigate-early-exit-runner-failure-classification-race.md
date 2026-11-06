@@ -1,10 +1,11 @@
 ---
 id: MSH-112
 title: Investigate early-exit runner failure classification race
-status: To Do
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-10-29T12:53:00Z'
-updated_date: '2026-11-06T07:32:00Z'
+updated_date: '2026-11-06T08:25:00Z'
 labels:
   - native-ci
   - runner
@@ -16,6 +17,8 @@ references:
     https://github.com/jweathers777/mShogi/actions/runs/41816309261/job/126527815548
 documentation:
   - docs/m4/evidence/msh102/completion-2026-10-29/README.md
+  - docs/review/runner-exit-112.md
+  - docs/review/evidence/msh112/verification.json
 priority: medium
 type: bug
 ordinal: 112000
@@ -42,6 +45,14 @@ Intermediate MSH-102 Linux CI40874033735 at6dec5ab failed process_start_nonzero_
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Primary builder/integrator Codex, primary codex/rewrite clean/origin-aligned at92a751d3e1df0ef4c4b9610cc55ec42e5e673770; preserve unrelated historical-access worktree and MSH133 review. MSH47 record/evidence must remain untouched. (1) Trace actual runner stdin/stdout/stderr/write acknowledgements/exit/cleanup and original25 isolated-awaited-engine evidence; construct controlled ordering reproducer with exact nonzero/clean-EOF/idle-exit assertions and failure timestamps, without merely rerunning untilgreen. (2) Correct the smallest actual product/fixture defect under existing bounded failure contract; keep meaningful failure categories/codedexit diagnostics, unscored/no-conclusion semantics, originalwatchdogs/cleanup bounds, crossconsumerbehavior and protocol/records/rules/desktop unchanged. Add deterministic ordering regression plus portable realprocess coverage, including clean/live pipeclosure, stdout/stderr and forcedcleanup distinctions as needed. (3) Focused runner/process/handshake/timing/replay/shogi/xiangqi regressions; fresh independent review of rootcause, fix and tests. Freeze coherent source; required CI Rust ubuntu24.04/macOS15/windows2022 only, onecompletion-awaremonitor, preserve failures/retries; no packagedGUI campaign for unaffected desktop. (4) One structured112verification record with controlled before/after, commands/environment/exacttestedsource/platformreceipts and historicalrecurrences; alloriginal3AC/DoD onlywhen supported, normal commit/push/Done112. Do not modify/close47 or formalM4, startM5/refactor/unrelatedwork. User message tail currently truncated; continue independent diagnosis while awaiting any remaining constraints.
+
+Owner supplied remaining instructions: add controlled single-sample negative control on everynativeCI OS (includingLinux), fast/slower gatedstatus orderings,20real immediate/yielded partial-exit stress trials as supplemental evidence, earlystderr/malformed/partialstreams, startupabort cleanup/reaping and relevant existingcancellation coverage. No newpubliccancellationAPI. Final append-only MSH47blockerhandoff nowexplicitlyauthorized; neverchange47status/criteria orcloseM4.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -54,4 +65,6 @@ MSH87corrected-source recurrence at9749eec0ffdbfffbcc040b6a56c5bb2c90616a1f: Ubu
 MSH87unchanged-source Ubuntu-only retry succeeded in correctedRustcampaign41816309261 at9749eec, finaljob126537522942 allstepsPASS13m53s; requiredmacOS/Windowssuccess retained. This establishes current87CIacceptance only, not an112fix. OriginalfailedUbuntu126527815548 andexactsignature remainin87native-verification.json; no112assertion/timeout/productchange orimplementation, statusremainsToDo.
 
 MSH47wholeM4 acceptance review2026-11-06 at07f1bac4c366c0a327dd7f31e9528ee9aa444b5b identifies existing112 as unresolved original47AC3 failure-contract blocker, with fresh independent scope/final review support. docs/m4/final-delivery.md F47-01 traces actual production mshogi-match run→run_experiment and original documented UnexpectedExit/exitdiagnostic assertion; repeated historical MissingResponse/Brokenpipe/exitNone persists, runner source unchanged since9749eec. No new controlled reproduction/rootcause/productversusfixture decision or fix claimed. Earlier89/46nonblocking sharedapplicationcontracts and108noarchitecturalredesign verdicts remain valid, not a wholeM4waiver; M2/native/gameacceptances not reopened. Existing112AC1–3 remain the narrow correction: controlled writeerror/EOF/exit diagnosis, contract-preserving product/fixture correction, meaningful categories/unscored outcomes/boundedcleanup and focused independent actualplatformverification, thenresume47. No112implementation plan, status, owner, milestone, dependencies, assertion or timeout changed; remainsToDo/unassigned/m4. No M5reclassification or newtaskhierarchy.
+
+Controlledoriginal-source regression andsingle-sample mutation reproduceMissingResponse vsUnexpectedExit withrealchildexit7; restoredexisting10mssettlement/typedhardwritecause andearlyreceipt capture pass. PortableCI negativecontrolwillreproduceone-sampleorderingonLinux; positive1/2/9/10visibility,clean/unavailablestatus,timeout/cleanup/clock,partialstderr/malformed/startupabort and20realstress cases added. Localrunner55pass0fail/1parentignoredfixtureexercisedaschild; Clippyalltargets andengineBridge2pass. Fresh independentread-onlyfixreview andincrementalowner-tailreview approved,no blockers,diffSHA9196a9e7b0bbe2238481ef8d327f6810cca0459bf0dcd483ae3901775cf520b9. docs/review/runner-exit-112.md andsingleevidenceindex retainnegativefailures/original25rationale/historicalrecurrences; no stagepassesrelabeledfix. Required existingRust3OSCI pending freeze/commit; no broadGUI needed. MSH47 acceptance/status/criteria untouched; finalowner-authorizedappendonlyblockerhandoff followsonly112acceptance. No112AC/DoD checked beforeplatformreconciliation.
 <!-- SECTION:NOTES:END -->

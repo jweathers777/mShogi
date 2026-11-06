@@ -1,6 +1,6 @@
 //! Serialized controller: protocol failures cannot fabricate chess outcomes.
 use crate::{
-    process::{Engine, Output, escaped},
+    process::{Engine, Output, WriteFailure, escaped},
     report::summaries,
     *,
 };
@@ -284,6 +284,7 @@ impl<'a> GameRun<'a> {
             .as_mut()
             .expect("spawned engine")
             .write(bytes, duration);
+        let observed_at = self.now();
         self.log.record(TranscriptEntry {
             sequence: 0,
             engine: index,
@@ -295,28 +296,58 @@ impl<'a> GameRun<'a> {
             truncated: false,
             write_completed: Some(result.is_ok()),
         });
-        if let Err(detail) = result {
-            let _ = self.engines[index].as_mut().unwrap().observe_exit();
-            let kind = if self.engines[index]
-                .as_ref()
-                .unwrap()
-                .exit
-                .as_ref()
-                .is_some_and(|s| !s.success)
-            {
-                FailureKind::UnexpectedExit
-            } else if detail.contains("timed out") || detail.contains("did not complete") {
-                FailureKind::ResponseTimeout
-            } else {
-                FailureKind::MissingResponse
-            };
-            let mut failure = self.failure(kind, index, phase, detail, Some(timeout_ms));
-            if kind == FailureKind::ResponseTimeout {
-                failure.deadline_ns = at.checked_add(timeout_ms * 1_000_000);
-            }
-            return Err(Box::new(failure));
+        if let Err(error) = result {
+            return Err(Box::new(self.write_failure(
+                index,
+                phase,
+                error,
+                timeout_ms,
+                at,
+                observed_at,
+            )));
         }
         Ok(())
+    }
+    fn write_failure(
+        &mut self,
+        index: usize,
+        phase: &str,
+        error: WriteFailure,
+        timeout_ms: u64,
+        dispatched_at: u64,
+        observed_at: u64,
+    ) -> RunnerFailure {
+        let timed_out = error.timed_out();
+        if !timed_out && phase != "cleanup" {
+            // A hard pipe failure can precede OS exit-status visibility, just
+            // like stdout EOF. Reuse that existing bounded settlement period.
+            self.engines[index].as_mut().unwrap().settle_exit();
+        } else {
+            // Never add settlement waits to cleanup's stop/quit write budget
+            // or reinterpret a live blocked writer as having exited.
+            let _ = self.engines[index].as_mut().unwrap().observe_exit();
+        }
+        let kind = if self.engines[index]
+            .as_ref()
+            .unwrap()
+            .exit
+            .as_ref()
+            .is_some_and(|s| !s.success)
+        {
+            FailureKind::UnexpectedExit
+        } else if timed_out {
+            FailureKind::ResponseTimeout
+        } else {
+            FailureKind::MissingResponse
+        };
+        let mut failure = self.failure(kind, index, phase, error, Some(timeout_ms));
+        // Diagnostic acquisition must not move an earlier write failure
+        // beyond a later native chess-clock deadline.
+        failure.at_ns = observed_at;
+        if kind == FailureKind::ResponseTimeout {
+            failure.deadline_ns = dispatched_at.checked_add(timeout_ms * 1_000_000);
+        }
+        failure
     }
     fn expired_await(
         &self,
@@ -407,7 +438,7 @@ impl<'a> GameRun<'a> {
             match output {
                 Err(RecvTimeoutError::Timeout) => continue,
                 Err(RecvTimeoutError::Disconnected) | Ok(Output::Eof) => {
-                    self.engines[index].as_mut().unwrap().exit_after_eof();
+                    self.engines[index].as_mut().unwrap().settle_exit();
                     let kind = if self.engines[index]
                         .as_ref()
                         .unwrap()
@@ -824,6 +855,231 @@ pub fn run_experiment(config: &ExperimentConfig) -> Result<ExperimentReport, Run
 #[cfg(test)]
 mod tests {
     use super::*;
+    // Invoked as a real subprocess of this test executable, never as an engine
+    // opponent. Normal test discovery must not terminate its own test process.
+    #[test]
+    #[ignore = "subprocess fixture, exercised by controlled_early_write_failure"]
+    fn controlled_nonzero_exit_child() {
+        eprintln!("controlled runner child exits with code7");
+        std::process::exit(7);
+    }
+    fn exited_child(nonzero: bool) -> Engine {
+        let engine = EngineConfig {
+            path: std::env::current_exe()
+                .unwrap()
+                .to_string_lossy()
+                .into_owned(),
+            args: if nonzero {
+                vec![
+                    "--ignored".into(),
+                    "--exact".into(),
+                    "run::tests::controlled_nonzero_exit_child".into(),
+                    "--nocapture".into(),
+                ]
+            } else {
+                // A zero-match libtest invocation exits successfully.
+                vec!["--exact".into(), "no_such_controlled_child_test".into()]
+            },
+            options: vec![],
+            model_path: None,
+            model_identity: None,
+            deterministic: true,
+        };
+        let mut child = Engine::spawn(0, &engine, IoLimits::default()).unwrap();
+        let deadline = Instant::now() + Duration::from_secs(5);
+        while child.observe_exit().unwrap().is_none() {
+            assert!(Instant::now() < deadline, "controlled child did not exit");
+            std::thread::sleep(Duration::from_millis(1));
+        }
+        assert_eq!(
+            child.exit.as_ref().unwrap().code,
+            Some(if nonzero { 7 } else { 0 })
+        );
+        child.defer_exit_observations(2);
+        child
+    }
+    #[test]
+    fn controlled_early_write_failure_keeps_nonzero_exit_diagnostics() {
+        let c = config();
+        let game = ChessMatch::new(
+            AdjudicatedGame::from_fen("7k/8/5KQ1/8/8/8/8/8 w - - 0 1", ClaimPolicy::AutoClaim)
+                .unwrap(),
+            TimeControl::Untimed,
+        )
+        .unwrap();
+        let mut run = GameRun {
+            config: &c,
+            game,
+            engines: [Some(exited_child(true)), None],
+            origin: Instant::now(),
+            last_match_ns: 0,
+            log: Log::new(4096),
+        };
+        let before = run.game.record().clone();
+        // Real closed stdin yields a real failed write; two subsequent exit
+        // observations are unavailable. Old send_at/failed froze MissingResponse.
+        let failure = run.send(0, "uci", "handshake").unwrap_err();
+        let (stop, failure, diagnostics) = run.failed(failure);
+        let failure = failure.unwrap();
+        assert_eq!(stop, GameStop::Failure);
+        assert!(diagnostics.is_empty());
+        assert_eq!(failure.kind, FailureKind::UnexpectedExit);
+        assert_eq!(failure.exit.as_ref().unwrap().code, Some(7));
+        assert_eq!(failure.engine, 0);
+        assert_eq!(failure.phase, "handshake");
+        assert_eq!(run.game.conclusion(), None);
+        let observations = run.cleanup();
+        assert!(
+            observations[0]
+                .stderr
+                .text
+                .contains("controlled runner child")
+        );
+        assert!(observations[0].cleanup_failures.is_empty());
+        assert_eq!(run.game.record(), &before);
+        assert_eq!(before.replay().unwrap(), run.game);
+    }
+    fn controlled_run(c: &ExperimentConfig, child: Engine) -> GameRun<'_> {
+        GameRun {
+            config: c,
+            game: ChessMatch::new(
+                AdjudicatedGame::from_fen("7k/8/5KQ1/8/8/8/8/8 w - - 0 1", ClaimPolicy::AutoClaim)
+                    .unwrap(),
+                c.time_control,
+            )
+            .unwrap(),
+            engines: [Some(child), None],
+            origin: Instant::now(),
+            last_match_ns: 0,
+            log: Log::new(4096),
+        }
+    }
+    #[test]
+    fn controlled_clean_write_failure_is_missing_response() {
+        let c = config();
+        let mut run = controlled_run(&c, exited_child(false));
+        let failure = run.send(0, "uci", "handshake").unwrap_err();
+        let (stop, failure, _) = run.failed(failure);
+        let failure = failure.unwrap();
+        assert_eq!(stop, GameStop::Failure);
+        assert_eq!(failure.kind, FailureKind::MissingResponse);
+        assert!(failure.exit.as_ref().unwrap().success);
+        assert_eq!(failure.exit.as_ref().unwrap().code, Some(0));
+        assert_eq!(run.game.conclusion(), None);
+        assert!(run.cleanup()[0].cleanup_failures.is_empty());
+    }
+    #[test]
+    fn controlled_unavailable_status_is_not_invented_or_reclassified_by_cleanup() {
+        let c = config();
+        let mut child = exited_child(true);
+        child.defer_exit_observations(usize::MAX);
+        let mut run = controlled_run(&c, child);
+        let failure = run.send(0, "uci", "handshake").unwrap_err();
+        let (_, failure, _) = run.failed(failure);
+        let failure = failure.unwrap();
+        assert_eq!(failure.kind, FailureKind::MissingResponse);
+        assert_eq!(failure.exit, None);
+        run.engines[0].as_mut().unwrap().defer_exit_observations(0);
+        assert_eq!(run.cleanup()[0].exit.as_ref().unwrap().code, Some(7));
+        assert_eq!(failure.kind, FailureKind::MissingResponse);
+        assert_eq!(failure.exit, None);
+    }
+    #[test]
+    fn controlled_single_sample_negative_control_reproduces_missing_response() {
+        let c = config();
+        let mut child = exited_child(true);
+        child.single_exit_sample_control();
+        let mut run = controlled_run(&c, child);
+        // Run on every native CI platform: the original one-sample ordering
+        // freezes the wrong category despite this child's actual exit7.
+        let failure = run.send(0, "uci", "handshake").unwrap_err();
+        let (_, failure, _) = run.failed(failure);
+        let failure = failure.unwrap();
+        assert_eq!(failure.kind, FailureKind::MissingResponse);
+        assert_eq!(failure.exit, None);
+        let actual = run.cleanup();
+        assert_eq!(actual[0].exit.as_ref().unwrap().code, Some(7));
+        assert!(actual[0].cleanup_failures.is_empty());
+        assert_eq!(run.game.conclusion(), None);
+    }
+    #[test]
+    fn controlled_fast_and_slow_status_visibility_within_existing_bound() {
+        let c = config();
+        for lag in [1, 2, 9, 10] {
+            let mut child = exited_child(true);
+            child.defer_exit_observations(lag);
+            let mut run = controlled_run(&c, child);
+            let failure = run.send(0, "uci", "handshake").unwrap_err();
+            assert_eq!(failure.kind, FailureKind::UnexpectedExit, "lag={lag}");
+            assert_eq!(failure.exit.as_ref().unwrap().code, Some(7));
+            assert!(run.cleanup()[0].cleanup_failures.is_empty());
+        }
+    }
+    #[test]
+    fn controlled_write_failure_receipt_and_clock_precedence_are_preserved() {
+        let c = config();
+        for observed_at in [49_000_000, 60_000_000] {
+            let mut run = controlled_run(&c, exited_child(true));
+            run.submit(0, Color::White, MatchCommand::Start);
+            let failure = run.write_failure(
+                0,
+                "go",
+                WriteFailure::Transport("closed pipe".into()),
+                100,
+                40_000_000,
+                observed_at,
+            );
+            assert_eq!(failure.at_ns, observed_at);
+            assert_eq!(failure.kind, FailureKind::UnexpectedExit);
+            let (stop, failure, diagnostics) = run.failed(failure);
+            if observed_at == 49_000_000 {
+                assert_eq!(stop, GameStop::Failure);
+                assert!(failure.is_some());
+                assert_eq!(run.game.conclusion(), None);
+            } else {
+                assert_eq!(stop, GameStop::ChessConclusion);
+                assert!(failure.is_none());
+                assert_eq!(diagnostics[0].at_ns, observed_at);
+                assert!(run.game.conclusion().is_some());
+            }
+            assert!(run.cleanup()[0].cleanup_failures.is_empty());
+        }
+    }
+    #[test]
+    fn controlled_timeout_and_cleanup_do_not_settle_or_guess_from_error_text() {
+        let c = config();
+        for (phase, error, expected) in [
+            (
+                "options",
+                WriteFailure::Timeout("acknowledgement deadline".into()),
+                FailureKind::ResponseTimeout,
+            ),
+            (
+                "options",
+                WriteFailure::Transport("peer says timed out".into()),
+                FailureKind::MissingResponse,
+            ),
+            (
+                "cleanup",
+                WriteFailure::Transport("closed pipe".into()),
+                FailureKind::MissingResponse,
+            ),
+        ] {
+            let mut child = exited_child(true);
+            child.defer_exit_observations(if phase == "cleanup" { 2 } else { usize::MAX });
+            let mut run = controlled_run(&c, child);
+            let failure = run.write_failure(0, phase, error, 10, 40_000_000, 60_000_000);
+            assert_eq!(failure.kind, expected);
+            assert_eq!(failure.at_ns, 60_000_000);
+            assert_eq!(failure.exit, None);
+            assert_eq!(
+                failure.deadline_ns,
+                (expected == FailureKind::ResponseTimeout).then_some(50_000_000)
+            );
+            run.engines[0].as_mut().unwrap().defer_exit_observations(0);
+            assert!(run.cleanup()[0].cleanup_failures.is_empty());
+        }
+    }
     fn config() -> ExperimentConfig {
         let engine = EngineConfig {
             path: "unused".into(),

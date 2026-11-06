@@ -296,8 +296,16 @@ impl Engine {
     pub(crate) fn single_exit_sample_control(&mut self) {
         self.single_exit_sample = true;
     }
+    #[cfg(test)]
+    pub(crate) fn close_stdin_for_test(&mut self) {
+        self.writer.take();
+    }
     /// Existing bounded pipe-failure/status settlement; no wait() or kill.
     pub fn settle_exit(&mut self) -> Option<ProcessExit> {
+        self.observe_exit_for(EXIT_SETTLEMENT)
+    }
+    /// Observe natural exit before any cleanup protocol/kill intervention.
+    pub(crate) fn observe_exit_for(&mut self, budget: Duration) -> Option<ProcessExit> {
         // Controlled tests use the same loop with virtual elapsed time. The
         // status is still from a real child; only its visibility is gated.
         #[cfg(test)]
@@ -306,7 +314,7 @@ impl Engine {
             let limit = if self.single_exit_sample {
                 Duration::ZERO
             } else {
-                EXIT_SETTLEMENT
+                budget
             };
             return settle_exit_poll(
                 || self.observe_exit().ok().flatten(),
@@ -314,7 +322,7 @@ impl Engine {
                 || elapsed.set(elapsed.get() + Duration::from_millis(1)),
             );
         }
-        let deadline = Instant::now() + EXIT_SETTLEMENT;
+        let deadline = Instant::now() + budget;
         settle_exit_poll(
             || self.observe_exit().ok().flatten(),
             || Instant::now() >= deadline,
@@ -322,12 +330,23 @@ impl Engine {
         )
     }
     pub fn cleanup(&mut self, cleanup_ms: u64) -> EngineObservation {
+        self.cleanup_with_grace(cleanup_ms, true)
+    }
+    /// The controller already consumed this cleanup's natural-exit grace.
+    pub(crate) fn cleanup_after_exit_grace(&mut self, cleanup_ms: u64) -> EngineObservation {
+        self.cleanup_with_grace(cleanup_ms, false)
+    }
+    fn cleanup_with_grace(&mut self, cleanup_ms: u64, grace_allowed: bool) -> EngineObservation {
         let deadline = Instant::now() + Duration::from_millis(cleanup_ms);
         let mut problems = Vec::new();
         if self.observe_exit().ok().flatten().is_none() {
             // The controller records and attempts quit before entering cleanup.
             // This function never writes hidden protocol commands.
-            let grace = Instant::now() + Duration::from_millis((cleanup_ms / 4).min(100));
+            let grace = if grace_allowed {
+                Instant::now() + Duration::from_millis((cleanup_ms / 4).min(100))
+            } else {
+                Instant::now()
+            };
             while Instant::now() < grace && Instant::now() < deadline {
                 if self.observe_exit().ok().flatten().is_some() {
                     break;

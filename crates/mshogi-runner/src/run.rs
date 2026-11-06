@@ -183,6 +183,7 @@ struct GameRun<'a> {
     origin: Instant,
     last_match_ns: u64,
     log: Log,
+    pending_pipe_exit: Option<usize>,
 }
 impl<'a> GameRun<'a> {
     fn now(&self) -> u64 {
@@ -340,6 +341,10 @@ impl<'a> GameRun<'a> {
         } else {
             FailureKind::MissingResponse
         };
+        if !timed_out && phase != "cleanup" && self.engines[index].as_ref().unwrap().exit.is_none()
+        {
+            self.pending_pipe_exit = Some(index);
+        }
         let mut failure = self.failure(kind, index, phase, error, Some(timeout_ms));
         // Diagnostic acquisition must not move an earlier write failure
         // beyond a later native chess-clock deadline.
@@ -439,6 +444,9 @@ impl<'a> GameRun<'a> {
                 Err(RecvTimeoutError::Timeout) => continue,
                 Err(RecvTimeoutError::Disconnected) | Ok(Output::Eof) => {
                     self.engines[index].as_mut().unwrap().settle_exit();
+                    if self.engines[index].as_ref().unwrap().exit.is_none() {
+                        self.pending_pipe_exit = Some(index);
+                    }
                     let kind = if self.engines[index]
                         .as_ref()
                         .unwrap()
@@ -568,6 +576,16 @@ impl<'a> GameRun<'a> {
             && failure.exit.is_none()
         {
             failure.exit = engine.observe_exit().ok().flatten();
+        }
+        if self.pending_pipe_exit == Some(failure.engine)
+            && let Some(status) = failure.exit.as_ref()
+        {
+            failure.kind = if status.success {
+                FailureKind::MissingResponse
+            } else {
+                FailureKind::UnexpectedExit
+            };
+            self.pending_pipe_exit = None;
         }
         if self.game.conclusion().is_some() {
             (GameStop::ChessConclusion, None, vec![failure])
@@ -768,7 +786,7 @@ impl<'a> GameRun<'a> {
             }
         }
     }
-    fn cleanup(&mut self) -> Vec<EngineObservation> {
+    fn cleanup(&mut self, mut failure: Option<&mut RunnerFailure>) -> Vec<EngineObservation> {
         let mut observations = Vec::new();
         for index in 0..2 {
             if self.engines[index].is_some() {
@@ -776,9 +794,40 @@ impl<'a> GameRun<'a> {
                 // failures, even when a game or process has already concluded.
                 let started = Instant::now();
                 let budget = self.config.watchdogs.cleanup_ms;
+                let pending = self.pending_pipe_exit == Some(index)
+                    && failure.as_ref().is_some_and(|f| f.engine == index);
+                if pending {
+                    // Move (do not duplicate) the existing cleanup grace before
+                    // stop/quit/kill. Only definitive, pre-intervention status
+                    // can finalize the original pipe failure.
+                    let left = Duration::from_millis(budget).saturating_sub(started.elapsed());
+                    let grace = Duration::from_millis((budget / 4).min(100)).min(left);
+                    let status = self.engines[index]
+                        .as_mut()
+                        .unwrap()
+                        .observe_exit_for(grace);
+                    if let Some(status) = status {
+                        let f = failure.as_deref_mut().unwrap();
+                        f.kind = if status.success {
+                            FailureKind::MissingResponse
+                        } else {
+                            FailureKind::UnexpectedExit
+                        };
+                        f.exit = Some(status);
+                    } else {
+                        failure
+                            .as_deref_mut()
+                            .unwrap()
+                            .detail
+                            .push_str("; exit status unavailable before cleanup intervention");
+                    }
+                    self.pending_pipe_exit = None;
+                }
                 let write_budget = (budget / 4).max(1);
-                if self.game.conclusion().is_none() {
-                    let _ = self.send_with_timeout(index, "stop", "cleanup", write_budget);
+                let left = budget.saturating_sub(started.elapsed().as_millis() as u64);
+                if left != 0 && self.game.conclusion().is_none() {
+                    let _ =
+                        self.send_with_timeout(index, "stop", "cleanup", write_budget.min(left));
                 }
                 let left = budget.saturating_sub(started.elapsed().as_millis() as u64);
                 if left != 0 {
@@ -786,7 +835,12 @@ impl<'a> GameRun<'a> {
                         self.send_with_timeout(index, "quit", "cleanup", write_budget.min(left));
                 }
                 let left = budget.saturating_sub(started.elapsed().as_millis() as u64);
-                observations.push(self.engines[index].as_mut().unwrap().cleanup(left));
+                let engine = self.engines[index].as_mut().unwrap();
+                observations.push(if pending {
+                    engine.cleanup_after_exit_grace(left)
+                } else {
+                    engine.cleanup(left)
+                });
             }
         }
         observations
@@ -818,10 +872,11 @@ pub fn run_experiment(config: &ExperimentConfig) -> Result<ExperimentReport, Run
                 origin: Instant::now(),
                 last_match_ns: 0,
                 log: Log::new(config.io.transcript_bytes),
+                pending_pipe_exit: None,
             };
             let engines_by_color = if pairing == 0 { [0, 1] } else { [1, 0] };
-            let (stop, failure, diagnostic_failures) = run.play(engines_by_color);
-            let engines = run.cleanup();
+            let (stop, mut failure, mut diagnostic_failures) = run.play(engines_by_color);
+            let engines = run.cleanup(failure.as_mut().or_else(|| diagnostic_failures.first_mut()));
             games.push(GameReport {
                 opening_index,
                 opening_id: opening.id.clone(),
@@ -862,6 +917,11 @@ mod tests {
     fn controlled_nonzero_exit_child() {
         eprintln!("controlled runner child exits with code7");
         std::process::exit(7);
+    }
+    #[test]
+    #[ignore = "live subprocess fixture, exercised by controlled cleanup test"]
+    fn controlled_live_child() {
+        std::thread::sleep(Duration::from_secs(60));
     }
     fn exited_child(nonzero: bool) -> Engine {
         let engine = EngineConfig {
@@ -914,6 +974,7 @@ mod tests {
             origin: Instant::now(),
             last_match_ns: 0,
             log: Log::new(4096),
+            pending_pipe_exit: None,
         };
         let before = run.game.record().clone();
         // Real closed stdin yields a real failed write; two subsequent exit
@@ -928,7 +989,7 @@ mod tests {
         assert_eq!(failure.engine, 0);
         assert_eq!(failure.phase, "handshake");
         assert_eq!(run.game.conclusion(), None);
-        let observations = run.cleanup();
+        let observations = run.cleanup(None);
         assert!(
             observations[0]
                 .stderr
@@ -952,6 +1013,7 @@ mod tests {
             origin: Instant::now(),
             last_match_ns: 0,
             log: Log::new(4096),
+            pending_pipe_exit: None,
         }
     }
     #[test]
@@ -966,23 +1028,95 @@ mod tests {
         assert!(failure.exit.as_ref().unwrap().success);
         assert_eq!(failure.exit.as_ref().unwrap().code, Some(0));
         assert_eq!(run.game.conclusion(), None);
-        assert!(run.cleanup()[0].cleanup_failures.is_empty());
+        assert!(run.cleanup(None)[0].cleanup_failures.is_empty());
     }
     #[test]
-    fn controlled_unavailable_status_is_not_invented_or_reclassified_by_cleanup() {
+    fn controlled_late_natural_exit_finalizes_before_cleanup_intervention() {
         let c = config();
-        let mut child = exited_child(true);
-        child.defer_exit_observations(usize::MAX);
+        for nonzero in [true, false] {
+            let mut child = exited_child(nonzero);
+            // Unavailable through the10ms immediate settlement and failed(),
+            // then definitive during the EXISTING cleanup grace.
+            child.defer_exit_observations(12);
+            let mut run = controlled_run(&c, child);
+            let failure = run.send(0, "uci", "handshake").unwrap_err();
+            let (_, failure, _) = run.failed(failure);
+            let mut failure = failure.unwrap();
+            assert_eq!(failure.kind, FailureKind::MissingResponse);
+            assert_eq!(failure.exit, None);
+            let receipt = failure.at_ns;
+            let observations = run.cleanup(Some(&mut failure));
+            let expected = if nonzero {
+                FailureKind::UnexpectedExit
+            } else {
+                FailureKind::MissingResponse
+            };
+            assert_eq!(failure.kind, expected);
+            assert_eq!(
+                failure.exit.as_ref().unwrap().code,
+                Some(if nonzero { 7 } else { 0 })
+            );
+            assert_eq!(failure.at_ns, receipt);
+            assert_eq!(observations[0].exit, failure.exit);
+            assert!(observations[0].cleanup_failures.is_empty());
+            assert_eq!(run.game.conclusion(), None);
+        }
+    }
+    #[test]
+    fn controlled_live_closed_stdin_does_not_treat_supervisor_kill_as_original_exit() {
+        let mut c = config();
+        c.watchdogs.cleanup_ms = 100;
+        let fixture = EngineConfig {
+            path: std::env::current_exe()
+                .unwrap()
+                .to_string_lossy()
+                .into_owned(),
+            args: vec![
+                "--ignored".into(),
+                "--exact".into(),
+                "run::tests::controlled_live_child".into(),
+            ],
+            options: vec![],
+            model_path: None,
+            model_identity: None,
+            deterministic: true,
+        };
+        let mut child = Engine::spawn(0, &fixture, c.io).unwrap();
+        assert!(child.observe_exit().unwrap().is_none());
+        child.close_stdin_for_test();
         let mut run = controlled_run(&c, child);
         let failure = run.send(0, "uci", "handshake").unwrap_err();
         let (_, failure, _) = run.failed(failure);
-        let failure = failure.unwrap();
+        let mut failure = failure.unwrap();
+        let receipt = failure.at_ns;
+        let observations = run.cleanup(Some(&mut failure));
         assert_eq!(failure.kind, FailureKind::MissingResponse);
         assert_eq!(failure.exit, None);
-        run.engines[0].as_mut().unwrap().defer_exit_observations(0);
-        assert_eq!(run.cleanup()[0].exit.as_ref().unwrap().code, Some(7));
+        assert_eq!(failure.at_ns, receipt);
+        assert!(!observations[0].exit.as_ref().unwrap().success);
+        assert!(observations[0].cleanup_failures.is_empty());
+        assert_eq!(run.game.conclusion(), None);
+    }
+    #[test]
+    fn controlled_late_stdout_eof_status_finalizes_before_intervention() {
+        let c = config();
+        let mut child = exited_child(true);
+        child.defer_exit_observations(12);
+        let mut run = controlled_run(&c, child);
+        let awaited = run.await_reply(0, "handshake", 2000, "uciok");
+        let Await::Failure(failure) = awaited else {
+            panic!("expected required-response EOF")
+        };
+        let (_, failure, _) = run.failed(failure);
+        let mut failure = failure.unwrap();
         assert_eq!(failure.kind, FailureKind::MissingResponse);
-        assert_eq!(failure.exit, None);
+        let receipt = failure.at_ns;
+        let observations = run.cleanup(Some(&mut failure));
+        assert_eq!(failure.kind, FailureKind::UnexpectedExit);
+        assert_eq!(failure.exit.as_ref().unwrap().code, Some(7));
+        assert_eq!(failure.at_ns, receipt);
+        assert!(observations[0].cleanup_failures.is_empty());
+        assert_eq!(run.game.conclusion(), None);
     }
     #[test]
     fn controlled_single_sample_negative_control_reproduces_missing_response() {
@@ -994,12 +1128,14 @@ mod tests {
         // freezes the wrong category despite this child's actual exit7.
         let failure = run.send(0, "uci", "handshake").unwrap_err();
         let (_, failure, _) = run.failed(failure);
-        let failure = failure.unwrap();
+        let mut failure = failure.unwrap();
         assert_eq!(failure.kind, FailureKind::MissingResponse);
         assert_eq!(failure.exit, None);
-        let actual = run.cleanup();
+        let actual = run.cleanup(Some(&mut failure));
         assert_eq!(actual[0].exit.as_ref().unwrap().code, Some(7));
         assert!(actual[0].cleanup_failures.is_empty());
+        assert_eq!(failure.kind, FailureKind::UnexpectedExit);
+        assert_eq!(failure.exit.as_ref().unwrap().code, Some(7));
         assert_eq!(run.game.conclusion(), None);
     }
     #[test]
@@ -1012,37 +1148,46 @@ mod tests {
             let failure = run.send(0, "uci", "handshake").unwrap_err();
             assert_eq!(failure.kind, FailureKind::UnexpectedExit, "lag={lag}");
             assert_eq!(failure.exit.as_ref().unwrap().code, Some(7));
-            assert!(run.cleanup()[0].cleanup_failures.is_empty());
+            assert!(run.cleanup(None)[0].cleanup_failures.is_empty());
         }
     }
     #[test]
     fn controlled_write_failure_receipt_and_clock_precedence_are_preserved() {
         let c = config();
-        for observed_at in [49_000_000, 60_000_000] {
-            let mut run = controlled_run(&c, exited_child(true));
-            run.submit(0, Color::White, MatchCommand::Start);
-            let failure = run.write_failure(
-                0,
-                "go",
-                WriteFailure::Transport("closed pipe".into()),
-                100,
-                40_000_000,
-                observed_at,
-            );
-            assert_eq!(failure.at_ns, observed_at);
-            assert_eq!(failure.kind, FailureKind::UnexpectedExit);
-            let (stop, failure, diagnostics) = run.failed(failure);
-            if observed_at == 49_000_000 {
-                assert_eq!(stop, GameStop::Failure);
-                assert!(failure.is_some());
-                assert_eq!(run.game.conclusion(), None);
-            } else {
-                assert_eq!(stop, GameStop::ChessConclusion);
-                assert!(failure.is_none());
-                assert_eq!(diagnostics[0].at_ns, observed_at);
-                assert!(run.game.conclusion().is_some());
+        for lag in [2, 12] {
+            for observed_at in [49_000_000, 60_000_000] {
+                let mut child = exited_child(true);
+                child.defer_exit_observations(lag);
+                let mut run = controlled_run(&c, child);
+                run.submit(0, Color::White, MatchCommand::Start);
+                let failure = run.write_failure(
+                    0,
+                    "go",
+                    WriteFailure::Transport("closed pipe".into()),
+                    100,
+                    40_000_000,
+                    observed_at,
+                );
+                assert_eq!(failure.at_ns, observed_at);
+                let (stop, mut failure, mut diagnostics) = run.failed(failure);
+                let observations =
+                    run.cleanup(failure.as_mut().or_else(|| diagnostics.first_mut()));
+                let finalized = failure.as_ref().or_else(|| diagnostics.first()).unwrap();
+                assert_eq!(finalized.kind, FailureKind::UnexpectedExit);
+                assert_eq!(finalized.exit.as_ref().unwrap().code, Some(7));
+                assert_eq!(finalized.at_ns, observed_at);
+                if observed_at == 49_000_000 {
+                    assert_eq!(stop, GameStop::Failure);
+                    assert!(failure.is_some());
+                    assert_eq!(run.game.conclusion(), None);
+                } else {
+                    assert_eq!(stop, GameStop::ChessConclusion);
+                    assert!(failure.is_none());
+                    assert_eq!(diagnostics[0].at_ns, observed_at);
+                    assert!(run.game.conclusion().is_some());
+                }
+                assert!(observations[0].cleanup_failures.is_empty());
             }
-            assert!(run.cleanup()[0].cleanup_failures.is_empty());
         }
     }
     #[test]
@@ -1077,7 +1222,7 @@ mod tests {
                 (expected == FailureKind::ResponseTimeout).then_some(50_000_000)
             );
             run.engines[0].as_mut().unwrap().defer_exit_observations(0);
-            assert!(run.cleanup()[0].cleanup_failures.is_empty());
+            assert!(run.cleanup(None)[0].cleanup_failures.is_empty());
         }
     }
     fn config() -> ExperimentConfig {
@@ -1163,6 +1308,7 @@ mod tests {
             origin: Instant::now(),
             last_match_ns: 0,
             log: Log::new(1024),
+            pending_pipe_exit: None,
         };
         run.submit(0, Color::White, MatchCommand::Start);
         let (line, receipt) = run
@@ -1219,6 +1365,7 @@ mod tests {
                 origin: Instant::now(),
                 last_match_ns: 0,
                 log: Log::new(1024),
+                pending_pipe_exit: None,
             };
             run.submit(0, Color::White, MatchCommand::Start);
             let deadline = 50_000_000;

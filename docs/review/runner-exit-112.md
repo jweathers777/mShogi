@@ -1,9 +1,11 @@
 # MSH-112: bounded early-exit classification correction
 
 Starting integration: `92a751d3e1df0ef4c4b9610cc55ec42e5e673770`,
-`codex/rewrite`, 6 November 2026. Local correction and independent source review
-pass; exact corrected-source Linux/macOS15/Windows native CI is pending.
-MSH-112 remains In Review until its required platform evidence is reconciled.
+`codex/rewrite`, 6 November 2026. Corrected tested source:
+`44c86b01428ca5f0de56fdb96cbe7e5b013677ea`. Local correction, independent source
+review and all three required native CI jobs pass. Independent final evidence
+reconciliation approves technical acceptance; normal publication precedes task
+completion.
 MSH-47 and M4 are not accepted or closed by this assignment.
 
 ## Original failure and established ordering defect
@@ -95,6 +97,24 @@ No timeout was increased. A natural status observed during the existing grace
 is used, not prematurely discarded; genuinely unavailable or intervention-tainted
 status is not guessed. The tests distinguish these cases explicitly.
 
+The existing failure distinctions remain:
+
+| Observation | Report meaning |
+| --- | --- |
+| Child cannot spawn | Process-start failure for that engine. |
+| Definitive natural nonzero exit | UnexpectedExit with available native status and diagnostics. |
+| Clean exit without required reply | MissingResponse with successful exit status. |
+| Hard transport failure, natural status unavailable through bounded observation | MissingResponse with an explicit unknown-status diagnostic; later intervention status is separate. |
+| Live child misses its reply/write watchdog | ResponseTimeout and the established deadline. |
+| Malformed protocol / native-illegal move | InvalidResponse / InvalidMove. |
+| Resource refusal or cleanup failure | Existing distinct resource/cleanup evidence; no invented game result. |
+
+Explicit cancellation keeps the existing cancellation/retirement contracts on
+surfaces that support it. Process failure supplies no move, resignation, score or
+timeout victory. Independently established native clock expiry retains its
+existing precedence and original receipt time; exit-metadata collection cannot
+create or move that deadline.
+
 ## Controlled reproduction, countercases and supplemental stress
 
 The controlled regression spawns this unit-test executable as an actual child
@@ -157,8 +177,44 @@ distinguishing natural0/7/unknown/forced-intervention tests, with no blocker.
 Incremental source diff SHA256 againstd835c7c:
 `358bce6c855d4cd3ebb7228792b08171de2749e343673ea1f3a3640122f4f789`.
 It inspected the additional finalization mutation failure, exact grace/remaining
-budget and receipt/clock invariants without duplicating tests. Replacement native
-platform receipt reconciliation remains required before completion.
+budget and receipt/clock invariants without duplicating tests.
+
+At corrected source `44c86b01428ca5f0de56fdb96cbe7e5b013677ea`, native
+run42190693190 Windows job127801682025 failed before reaching the runner suite:
+unchanged desktop-session test
+`shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues`
+asserted the historical root before asynchronous view reconstruction completed.
+The failed log is retained. Independent read-only review traced Chess Inspect
+to `queue_view`: it submits Work::View without an admission receipt, while the
+test helper treats the immediate admission receipt as completed view work.
+The helper can return before `poll_files` installs Completed::Viewed. A fresh
+snapshot after receipt completion alone would not establish view completion.
+Desktop-session, engine and workflows are unchanged from the starting source;
+desktop-session has no dependency on the runner. Separate unassigned MSH-134
+records this synchronization defect; its implementation is outside112.
+
+One supported Windows-only retry at the identical source passed as
+job127812835546, attempt2. No healthy platform was rerun. This establishes
+platform execution evidence and does not correct MSH-134. Both attempts and
+their source identities are preserved.
+
+Required Rust run42190693190 finished successfully at the exact source above:
+
+| Actual execution | Attempt | Job | Result |
+| --- | --- | --- | --- |
+| Ubuntu24.04.5 | 1 | [127801682198](https://github.com/jweathers777/mShogi/actions/runs/42190693190/job/127801682198) | All required steps passed |
+| macOS15.8.2 | 1 | [127801682340](https://github.com/jweathers777/mShogi/actions/runs/42190693190/job/127801682340) | All required steps passed |
+| Windows2022 | 2 | [127812835546](https://github.com/jweathers777/mShogi/actions/runs/42190693190/job/127812835546) | All required steps passed |
+
+Each completed raw log independently contains all11 critical named controlled,
+original-regression, stream, startup and20-trial stress cases passing. Linux
+executes the portable single-sample negative ordering and corrected finalization;
+success is not inferred from local macOS27. All eight required verification
+steps pass on each platform. Raw packets retain native runner identities,
+timestamps, source and every failed/superseded attempt. GitHub attempt2 issued
+carry-forward Ubuntu127812836773 and macOS127812882169 receipt aliases with the
+same original timestamps/runners; these are not new executions. The sole retry
+was Windows. Sequential completion-aware monitors ended at each terminal run.
 
 The single [verification record](evidence/msh112/verification.json) contains
 source input hashes, actual commands/logs/outcomes, historical recurrences,
@@ -171,8 +227,12 @@ workflow is explicitly identified/cancelled rather than reported passed.
 
 ## Completion boundary
 
-Original112 AC1–3 and DoD are evaluated only after controlled Linux execution,
-all required native-platform jobs and final evidence reconciliation. CI is
-currently pending. MSH-47 stays In Review with its acceptance items unchanged;
-only its owner-authorized blocker handoff may be appended after112 acceptance.
+Independent final read-only reconciliation approves all three original112
+acceptance criteria and DoD1–3 with no remaining source or evidence defect.
+It independently verified all six source hashes,19 indexed evidence hashes,
+three protected47 hashes, all required native steps and all11 critical cases in
+each platform log. AC1–3 and DoD1–3 are checked; DoD4 remains only normal durable
+publication and push. The production correction is already integrated/pushed
+at44c86b0. MSH-47 stays In Review with its acceptance items unchanged; only its
+owner-authorized blocker handoff may be appended after112 acceptance.
 M4 remains open. No MSH-48/109, M5, M6, variant development or refactor starts.

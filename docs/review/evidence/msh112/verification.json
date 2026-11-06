@@ -3,7 +3,7 @@
   "task": "MSH-112",
   "status": "In Review",
   "starting_integration": "92a751d3e1df0ef4c4b9610cc55ec42e5e673770",
-  "tested_source": null,
+  "tested_source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
   "source_inputs_sha256": {
     "crates/mshogi-runner/src/process.rs": "775d034657d549bcd85ee9b16f73bd6edebec5a14995f69124bd3e97a5b39618",
     "crates/mshogi-runner/src/run.rs": "04661b8dd0142a515594d16fb9bfc9bccc516fbf421a250b560180a5d29bcff8",
@@ -21,7 +21,7 @@
   },
   "report": "../../runner-exit-112.md",
   "original_failure": "awaited nonzeroexit7, expectedUnexpectedExit/codedexit; observedMissingResponse/handshake/Brokenpipe32/exitNone",
-  "root_cause": "hard-write failure froze classification after one exit sample; EOF already allowed bounded10ms settlement. A later status could not repair frozen category. Distinct from25 competing-child fixture race.",
+  "root_cause": "An early hard-write failure froze MissingResponse after one exit-status sample. A natural nonzero status arriving later, including during cleanup, could be collected without repairing the primary category. This differs from the MSH-25 competing-child fixture race.",
   "correction": "Typed writecauses/fixedreceipt plus provisional hardwrite/awaitedEOF classification; existingquartercleanup/max100msgrace moves BEFOREprotocol/kill, definitive natural0/7 finalizes primary, unknown/interventionstatusseparate. No doublegrace or timeoutincrease; originalscore/stop/history untouched.",
   "controls": {
     "original_before": {
@@ -49,7 +49,7 @@
       "fixed_run_rs_sha256": "47295995be1222d620404216ae29a55eff635dd6de6f0c001bc17ce60a07b816",
       "mutant_run_rs_sha256": "f0d026c3ec149061e9e4735faae157f3cece3f9c37f1d3a64022d8be2880b82b"
     },
-    "portable_linux_negative": "Preliminaryone-sampleMissing/exitNone reproduced, then newpreinterventionfinalizer usesactual7 andrepairsprimary; requiredLinuxCIpending.",
+    "portable_linux_negative": "Passed on actual Ubuntu24.04 job127801682198 at44c86b0: preliminary original single-sample MissingResponse/exitNone reproduced, then definitive natural7 repairs the primary failure before intervention.",
     "positive_visibility_lags": [
       1,
       2,
@@ -89,32 +89,37 @@
       "failed": 0,
       "ignored": 1,
       "ignored_role": "subprocessfixture explicitlyinvoked byregressions",
-      "log": "runner-final.log"
+      "log": "runner-final.log",
+      "source_checkpoint": "d835c7ce36d2afd718147ef953b4f81879bc39f6 (superseded full-contract checkpoint)"
     },
     {
       "command": "cargo clippy --locked -p mshogi-runner --all-targets -- -D warnings",
       "result": "pass",
-      "log": "clippy.log"
+      "log": "clippy.log",
+      "source_checkpoint": "d835c7ce36d2afd718147ef953b4f81879bc39f6"
     },
     {
       "command": "cargo test --locked -p mshogi-engine --lib bridge::tests",
       "result": "pass",
       "passed": 2,
-      "log": "engine-bridge.log"
+      "log": "engine-bridge.log",
+      "qualification": "Local check at earlier checkpoint; engine/bridge source unchanged. Final44c86b0 native workspace CI also executes the engine tests."
     },
     {
-      "command": "cargo test --locked -p mshogi-runner (revised full-tail source)",
+      "command": "cargo test --locked -p mshogi-runner",
       "result": "pass",
       "passed": 57,
       "failed": 0,
       "ignored": 2,
       "ignored_role": "actualsubprocessfixtures explicitlyexercised byregressions",
-      "log": "runner-cleanup-final.log"
+      "log": "runner-cleanup-final.log",
+      "source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea"
     },
     {
-      "command": "cargo clippy --locked -p mshogi-runner --all-targets -- -D warnings (revisedsource)",
+      "command": "cargo clippy --locked -p mshogi-runner --all-targets -- -D warnings",
       "result": "pass",
-      "log": "cleanup-clippy.log"
+      "log": "cleanup-clippy.log",
+      "source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea"
     }
   ],
   "development_observations": [
@@ -124,7 +129,7 @@
   "historical_failures": [
     {
       "run_id": 40874033735,
-      "source": "6dec5ab",
+      "source": "6dec5abd2cc1c5da985ec9814029c6b2099831b5",
       "scope": "Original102Linuxrace"
     },
     {
@@ -150,12 +155,16 @@
     "read_only": true,
     "fresh_context": true,
     "verdict": "approved revisedfull-tail source,no blockers; earlierimmediatesettlementapproval superseded",
-    "source_diff_sha256": "9196a9e7b0bbe2238481ef8d327f6810cca0459bf0dcd483ae3901775cf520b9",
-    "actual_execution": "none; inspected rootnegativeoutputs/source to avoid duplicatecampaign",
+    "actual_execution": "No duplicate tests; independent read-only source, root negative-control outputs, raw completed platform logs and exact-source receipts reviewed.",
     "qualification": "Naturalstatusisobserved beforecleanupintervention usingexisting quarterbudget/max100msgrace, notentirecleanupdeadline. Laterinterventionstatusnotguessed; no publicUCIcallerCancellationAPI.",
     "initial_verdict_superseded": true,
     "incremental_base": "d835c7ce36d2afd718147ef953b4f81879bc39f6",
-    "incremental_diff_sha256": "358bce6c855d4cd3ebb7228792b08171de2749e343673ea1f3a3640122f4f789"
+    "incremental_diff_sha256": "358bce6c855d4cd3ebb7228792b08171de2749e343673ea1f3a3640122f4f789",
+    "earlier_checkpoint_diff_sha256": "9196a9e7b0bbe2238481ef8d327f6810cca0459bf0dcd483ae3901775cf520b9",
+    "reviewed_source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
+    "pre_windows_evidence_reconciliation": "Independent read-only reviewer verified all6 source hashes,17 indexed evidence hashes,3 protected47 hashes, source/origin44c86b0, full Ubuntu/macOS step receipts and11 named critical passing cases in each rawlog. AC1/2 supported; AC3/DoD1/4 pending Windows and durable final integration.",
+    "final_verdict": "Approve MSH-112 technical acceptance at44c86b01428ca5f0de56fdb96cbe7e5b013677ea; no remaining source or evidence defect. All3 original AC and DoD1\u20133 supported; DoD4 awaits normal final publication/push. Does not accept47 or closeM4.",
+    "final_reconciliation": "Reviewer independently verified final runattempt2 success,3 actual accepted platform jobs with all8 required steps,all11 critical cases in each rawlog,6 source hashes,19 evidence-file hashes,3 protected47 hashes and empty source diff to44. Failed/superseded/carry-forward receipts qualified."
   },
   "ci": {
     "required_jobs": [
@@ -163,9 +172,139 @@
       "Rust (macos-15)",
       "Rust (windows-2022)"
     ],
-    "status": "pending replacementsource",
-    "monitor": "onecompletionawaremonitor foronefrozen source; stopatallterminal; no broadGUIcampaign",
-    "automatic_desktop": "Iftriggered, cancelasnotrequired runner-only campaign; preservestatus/provenance."
+    "status": "success",
+    "monitor": "One completion-aware monitor per sequential campaign:15083 ended terminal attempt1,53716 ended terminal attempt2. No active monitor or further retry.",
+    "automatic_desktop": "Automatic unrelated Desktop42190693214 intentionally cancelled, all3 runners acquired; retained receipt, not counted as passing native or GUI evidence.",
+    "rust_run_id": 42190693190,
+    "required_job_ids": [
+      127801682198,
+      127801682340,
+      127812835546
+    ],
+    "unrequired_desktop_run_id": 42190693214,
+    "source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
+    "retry_campaigns": 1,
+    "unrequired_desktop_receipts": "ci/44c86b0-unrequired-desktop.json.gz",
+    "attempt1_windows": {
+      "job_id": 127801682025,
+      "conclusion": "failure",
+      "runner_acquired": true,
+      "failure": "Unchanged desktop-session shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues, shared_moves_tests.rs174 historical/last_action assertion; runner suite not reached.",
+      "log": "ci/44c86b0-windows-attempt1.log.gz",
+      "independent_assessment": "Chess Inspect queues async Work::View without admission receipt; helper can return before matching view completes. Existing independent test synchronization race, no runner dependency.",
+      "follow_up": "MSH-134",
+      "retry_policy": "At most one Windows-only unchanged-source retry after initial run terminal; preserve failure. If repeated, stop blind retries.",
+      "retry_outcome": "Single Windows-only unchanged-source retry127812835546 passed. Does not correct MSH-134."
+    },
+    "retry": "Only unsuccessful Windows127801682025 rerun after terminal attempt1; no Linux/macOS rerun. New single monitor53716; prior15083 ended.",
+    "windows_retry_job_id": 127812835546,
+    "carried_forward_receipt_aliases": [
+      {
+        "job_id": 127812836773,
+        "original_executed_job_id": 127801682198,
+        "platform": "ubuntu-24.04",
+        "run_attempt": 2,
+        "meaning": "GitHub carry-forward receipt: exact same original08:51:36\u201309:17:48 execution timestamps and runner1000002708; not a second Linux execution."
+      },
+      {
+        "job_id": 127812882169,
+        "original_executed_job_id": 127801682340,
+        "platform": "macos-15",
+        "run_attempt": 2,
+        "meaning": "GitHub carry-forward receipt with exact original08:51:37\u201309:12:06 timestamps and runner1000002709; not a second macOS execution."
+      }
+    ],
+    "windows_retry_workspace_test": "success; final Windows job and every required step also success",
+    "accepted_jobs": [
+      {
+        "platform": "ubuntu-24.04",
+        "job_id": 127801682198,
+        "run_attempt": 1,
+        "source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
+        "conclusion": "success",
+        "runner_id": 1000002708,
+        "runner_name": "GitHub Actions 1000002708",
+        "runner_acquired": true,
+        "started_at": "2026-11-06T08:51:36Z",
+        "completed_at": "2026-11-06T09:17:48Z",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42190693190/job/127801682198",
+        "actual_os": [
+          "Ubuntu",
+          "24.04.5",
+          "LTS"
+        ],
+        "log": "ci/44c86b0-linux-attempt1.log.gz",
+        "critical_cases_passed": 11,
+        "all_required_steps": "success"
+      },
+      {
+        "platform": "macos-15",
+        "job_id": 127801682340,
+        "run_attempt": 1,
+        "source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
+        "conclusion": "success",
+        "runner_id": 1000002709,
+        "runner_name": "GitHub Actions 1000002709",
+        "runner_acquired": true,
+        "started_at": "2026-11-06T08:51:37Z",
+        "completed_at": "2026-11-06T09:12:06Z",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42190693190/job/127801682340",
+        "actual_os": [
+          "macOS",
+          "15.8.2",
+          "24H232"
+        ],
+        "log": "ci/44c86b0-macos-attempt1.log.gz",
+        "critical_cases_passed": 11,
+        "all_required_steps": "success"
+      },
+      {
+        "platform": "windows-2022",
+        "job_id": 127812835546,
+        "run_attempt": 2,
+        "source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
+        "conclusion": "success",
+        "runner_id": 1000002711,
+        "runner_name": "GitHub Actions 1000002711",
+        "runner_acquired": true,
+        "started_at": "2026-11-06T09:18:43Z",
+        "completed_at": "2026-11-06T09:44:56Z",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42190693190/job/127812835546",
+        "actual_os": [
+          "Microsoft Windows Server 2022",
+          "10.0.20348",
+          "Datacenter"
+        ],
+        "log": "ci/44c86b0-windows-attempt2.log.gz",
+        "critical_cases_passed": 11,
+        "all_required_steps": "success"
+      }
+    ],
+    "run_attempt": 2,
+    "final_receipts": "ci/44c86b0-rust-attempt2.json.gz",
+    "critical_case_names": [
+      "controlled_early_write_failure_keeps_nonzero_exit_diagnostics",
+      "controlled_late_natural_exit_finalizes_before_cleanup_intervention",
+      "controlled_late_stdout_eof_status_finalizes_before_intervention",
+      "controlled_single_sample_negative_control_reproduces_missing_response",
+      "controlled_live_closed_stdin_does_not_treat_supervisor_kill_as_original_exit",
+      "controlled_fast_and_slow_status_visibility_within_existing_bound",
+      "controlled_write_failure_receipt_and_clock_precedence_are_preserved",
+      "process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored",
+      "partial_streams_and_early_stderr_preserve_precise_failure_and_reaping",
+      "aborted_startup_retires_and_reaps_already_spawned_child",
+      "repeated_immediate_and_yielded_partial_exits_remain_precise"
+    ],
+    "required_steps": [
+      "Format",
+      "Lint",
+      "Test",
+      "Verify production Tenjiku subprocess and standard-root journeys",
+      "Verify isolated desktop QA constructors",
+      "Verify native desktop snapshot fixtures",
+      "Build",
+      "Console smoke"
+    ]
   },
   "protected_msh47_start_sha256": {
     "backlog/tasks/msh-47 - Independently-verify-integrated-six-game-delivery-and-close-M4.md": "cbc8e05a8654f5c5fbc568f620554966582c79fd28b3a6568a8a37f0d5916642",
@@ -186,7 +325,14 @@
     "runner-cleanup-final.log": "9c6961533605c65682572caac121494cd6c22d494620c09adc7ed8730d01e48a",
     "cleanup-clippy.log": "ad09d9e0fd9392759fa133b0e19c693274265708a4d3d932de42611d7ec186cc",
     "ci/d835c7c-superseded-rust.json.gz": "96df652ecf7326966766646ef5737113563a89ad3642b622734c7a60f9bc6ccb",
-    "ci/d835c7c-unrequired-desktop.json.gz": "a46ffd7d7f298a9061f163f3f8cdc8226e9432c777c135351a3489df027af58d"
+    "ci/d835c7c-unrequired-desktop.json.gz": "a46ffd7d7f298a9061f163f3f8cdc8226e9432c777c135351a3489df027af58d",
+    "ci/44c86b0-unrequired-desktop.json.gz": "fe70df30e209f28e7ab2246ace440b3d587139c5dd94d26e5a37ebc192b4ac32",
+    "ci/44c86b0-windows-attempt1.log.gz": "6f8516e112cd1a0e8a2f32340a56f08102bf89053346a6a5c78bc83b2b10be3b",
+    "ci/44c86b0-macos-attempt1.log.gz": "6b84ea3a73fc570763680dfaa2b5e7cd9912d5c47a32ab1d8ef4e8a3df49dcaf",
+    "ci/44c86b0-linux-attempt1.log.gz": "afcff56b7c55f6fa8ee29ece9bca8e2845443c3ebcce53f5f6ad93f5475b09c0",
+    "ci/44c86b0-rust-attempt1.json.gz": "89fe75cc8d3b22fd3ebc89f924bd9ee084b80bd78db3f233d468ff9ae18e2034",
+    "ci/44c86b0-windows-attempt2.log.gz": "eb85629dc684cfd8d650ca7c638666247774a067363aefeede08725443f3982c",
+    "ci/44c86b0-rust-attempt2.json.gz": "caa9bb907b62e0b81ed83e29b11da6d86d0da8d37a27c37ac1d161b15d3bc570"
   },
   "superseded_checkpoints": [
     {
@@ -202,5 +348,15 @@
       "local_ignored_parent_fixtures": 1,
       "local_success_was_not_full_contract_acceptance": true
     }
-  ]
+  ],
+  "acceptance": {
+    "AC1": "supported: controlled original-source/single-sample and mutation failures, ordering diagnosis, historical25 rationale and failed CI retained; actual Linux portable control passes.",
+    "AC2": "supported: natural-status finalization before intervention, precise0/7/unknown distinction, fixed receipts, bounded cleanup, separate forced reaping, strict unscored failures.",
+    "AC3": "supported: focused57-test local runner suite, engineBridge2,meaningful controls/stress, independent final review and required actual3OS native CI at44c86b0.",
+    "DoD1": "supported",
+    "DoD2": "supported",
+    "DoD3": "supported: report/index current; unrelated MSH-134 Ready/unassigned and not implemented.",
+    "DoD4": "pending normal evidence publication/push; production source44c86b0 already integrated and pushed."
+  },
+  "remaining_nondeterminism": "No observed regression remains under tested orderings. Arbitrarily delayed OS exit status is not promised: after the unchanged bounded natural-observation policy, unknown stays honest; supervisor-induced exit is separate. MSH-134 remains an unrelated view-test synchronization defect, not repaired by its one passing retry."
 }

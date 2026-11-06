@@ -589,7 +589,23 @@
       "GUI",
       "benchmarks",
       "controlled112reproduction"
-    ]
+    ],
+    "post_push_reconciliation": {
+      "status": "approved closure-withheld metadata, not milestone acceptance",
+      "evidence_revision": "a666763ff65d8a30c0e6f9f10d8438d3cda4c643",
+      "head_and_origin_alignment_verified": true,
+      "final_metadata_diff_sha256": "b752159bfacf760548f7df8e68c715dd762659a4f1ad12c964837c7bab9bc7ff",
+      "report_candidate_sha256": "a120eb23636bb25c812b554a3ebbfa950f9de7aa95366f23e62f421a989556d5",
+      "checks": [
+        "47InReview withAC3/DoD1/2unchecked and supported blockedreviewAC1/2/4+DoD3/4",
+        "M4active75/77 withoutacceptance/archival/reassignment",
+        "Original47/112criteria/dependencies andall133memberships preserved",
+        "112ToDo/unassigned;appendonlyhandoff/noimplementation",
+        "Game/shared/architecture accepted evidence andF47-01unchanged",
+        "git diff --check"
+      ],
+      "audit_observation": "Initial reviewer comparison used preassignment baseline for active47assignee; corrected integratedactiveownership comparison passes. Audit assumption, not product/record defect."
+    }
   },
   "new_product_campaigns": [],
   "required_new_ci_jobs": [],
@@ -614,6 +630,33 @@
     "DoD1": "unchecked while requiredacceptance unsupported",
     "DoD2": "unchecked unresolvedmaterialfinding",
     "DoD3": "current docs and112handoff supported",
-    "DoD4": "pending actual integration ofreviewevidence"
+    "DoD4": "supported: reviewevidence actuallycommitted/pushed and durableblockedreviewsummary;not task/milestoneacceptance"
+  },
+  "review_evidence_integration_revision": "a666763ff65d8a30c0e6f9f10d8438d3cda4c643",
+  "integration_handoff": {
+    "evidence_revision": "a666763ff65d8a30c0e6f9f10d8438d3cda4c643",
+    "branch": "codex/rewrite",
+    "evidence_push_confirmed_before_integration_check": true,
+    "task_status": "In Review",
+    "m4_status": "active75/77;47and112unfinished",
+    "checked_ac": [
+      1,
+      2,
+      4
+    ],
+    "unchecked_ac": [
+      3
+    ],
+    "checked_dod": [
+      3,
+      4
+    ],
+    "unchecked_dod": [
+      1,
+      2
+    ],
+    "milestone_archive_reassignment_or_completion": false,
+    "next_immediate_task": "MSH-112 (not started)",
+    "next_m5_after_m4_acceptance": "MSH-48 (not started)"
   }
 }

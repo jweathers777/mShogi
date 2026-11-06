@@ -5,6 +5,10 @@ Review date: **6 November 2026**. Reviewed integration:
 Accepted runtime/platform source:
 **`bc92bfe5e3b20e9e999df12cbf54b91682c71b8d`**.
 
+This independently reviewed evidence was normally committed and pushed to
+`codex/rewrite` at **`a666763ff65d8a30c0e6f9f10d8438d3cda4c643`**. Publication
+integrates the review and handoff; it does not complete MSH-47 or close M4.
+
 ## Verdict: closure withheld
 
 **The six complete games and shared desktop delivery have supporting evidence.
@@ -356,8 +360,9 @@ documentation review: none;112's later correction has its own verification scope
 MSH-47 remains **In Review**; M4 remains **open/active**. AC1/2/4 have evidence;
 AC3 remains unchecked. DoD1/2 remain unchecked while required acceptance and the
 material finding are unresolved. DoD3 covers the current documentation/112
-handoff; DoD4 may be checked only after normal integration of this review and
-durable handoff. A completed report is not completed milestone acceptance.
+handoff; DoD4 is supported by the actual normal review-evidence integration/push
+at `a666763ff65d8a30c0e6f9f10d8438d3cda4c643` and durable task summary.
+A completed report is not completed milestone acceptance.
 Independent review of this blocked verdict does not accept the still-failing
 requirement.
 

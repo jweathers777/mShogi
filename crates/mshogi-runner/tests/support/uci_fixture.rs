@@ -8,6 +8,15 @@ fn main() {
     if mode == "clean_eof" {
         return;
     }
+    if mode == "partial_exit" || mode == "partial_clean_eof" {
+        eprintln!("fixture diagnostic before partial stdout closes");
+        print!("id name partial");
+        let _ = io::stdout().flush();
+        for _ in 0..32 {
+            std::thread::yield_now();
+        }
+        std::process::exit(if mode == "partial_exit" { 7 } else { 0 });
+    }
     if mode == "silent" || mode == "blocked" {
         std::thread::sleep(std::time::Duration::from_secs(60));
         return;
@@ -19,6 +28,10 @@ fn main() {
             Err(_) => break,
         };
         if line == "uci" {
+            if mode == "malformed" {
+                let _ = io::stdout().write_all(b"\xff\n");
+                let _ = io::stdout().flush();
+            }
             if mode == "id_flood" {
                 for _ in 0..1000 {
                     println!("id name repeated fixture identity");

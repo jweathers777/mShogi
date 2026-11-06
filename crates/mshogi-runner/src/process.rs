@@ -42,6 +42,40 @@ struct WriteRequest {
     bytes: Vec<u8>,
     ack: SyncSender<Result<(), String>>,
 }
+/// Internal transport cause, independent of platform-specific error wording.
+#[derive(Debug)]
+pub(crate) enum WriteFailure {
+    Transport(String),
+    Timeout(String),
+}
+impl WriteFailure {
+    pub fn timed_out(&self) -> bool {
+        matches!(self, Self::Timeout(_))
+    }
+}
+impl From<WriteFailure> for String {
+    fn from(error: WriteFailure) -> Self {
+        match error {
+            WriteFailure::Transport(detail) | WriteFailure::Timeout(detail) => detail,
+        }
+    }
+}
+const EXIT_SETTLEMENT: Duration = Duration::from_millis(10);
+fn settle_exit_poll(
+    mut observe: impl FnMut() -> Option<ProcessExit>,
+    mut expired: impl FnMut() -> bool,
+    mut pause: impl FnMut(),
+) -> Option<ProcessExit> {
+    loop {
+        if let Some(status) = observe() {
+            return Some(status);
+        }
+        if expired() {
+            return None;
+        }
+        pause();
+    }
+}
 #[derive(Default)]
 struct ErrorBuffer {
     diagnostic: Diagnostic,
@@ -58,6 +92,12 @@ pub(crate) struct Engine {
     pub identity_truncated: bool,
     pub last_output: Option<String>,
     pub exit: Option<ProcessExit>,
+    // A real reaped child's status can be withheld to control observation order
+    // in unit regressions. No synthesized exit or production timing hook.
+    #[cfg(test)]
+    deferred_exit: Option<(usize, ProcessExit)>,
+    #[cfg(test)]
+    single_exit_sample: bool,
 }
 fn bounded_line(reader: &mut impl BufRead, cap: usize) -> io::Result<Option<Result<Vec<u8>, ()>>> {
     let mut bytes = Vec::new();
@@ -183,6 +223,10 @@ impl Engine {
             identity_truncated: false,
             last_output: None,
             exit: None,
+            #[cfg(test)]
+            deferred_exit: None,
+            #[cfg(test)]
+            single_exit_sample: false,
         };
         if let Some(e) = thread_error {
             let _ = engine.cleanup(100);
@@ -191,19 +235,29 @@ impl Engine {
         Ok(engine)
     }
     /// Bounded queue and acknowledgement; blocked child reads never block caller.
-    pub fn write(&mut self, bytes: Vec<u8>, timeout: Duration) -> Result<(), String> {
+    pub fn write(&mut self, bytes: Vec<u8>, timeout: Duration) -> Result<(), WriteFailure> {
         let (send, receive) = mpsc::sync_channel(1);
         let Some(writer) = &self.writer else {
-            return Err("stdin closed".into());
+            return Err(WriteFailure::Transport("stdin closed".into()));
         };
         match writer.try_send(WriteRequest { bytes, ack: send }) {
             Ok(()) => {}
-            Err(TrySendError::Full(_)) => return Err("stdin writer queue is full".into()),
-            Err(TrySendError::Disconnected(_)) => return Err("stdin writer closed".into()),
+            Err(TrySendError::Full(_)) => {
+                return Err(WriteFailure::Transport("stdin writer queue is full".into()));
+            }
+            Err(TrySendError::Disconnected(_)) => {
+                return Err(WriteFailure::Transport("stdin writer closed".into()));
+            }
         }
-        receive
-            .recv_timeout(timeout)
-            .map_err(|e| format!("stdin write did not complete: {e}"))?
+        match receive.recv_timeout(timeout) {
+            Ok(result) => result.map_err(WriteFailure::Transport),
+            Err(mpsc::RecvTimeoutError::Timeout) => Err(WriteFailure::Timeout(
+                "stdin write did not complete: timed out waiting on channel".into(),
+            )),
+            Err(mpsc::RecvTimeoutError::Disconnected) => Err(WriteFailure::Transport(
+                "stdin writer acknowledgement channel closed".into(),
+            )),
+        }
     }
     pub fn receive(&self, timeout: Duration) -> Result<Output, mpsc::RecvTimeoutError> {
         self.output
@@ -212,6 +266,14 @@ impl Engine {
             .recv_timeout(timeout)
     }
     pub fn observe_exit(&mut self) -> Result<Option<ProcessExit>, String> {
+        #[cfg(test)]
+        if let Some((remaining, _)) = &mut self.deferred_exit {
+            if *remaining != 0 {
+                *remaining -= 1;
+                return Ok(None);
+            }
+            self.exit = self.deferred_exit.take().map(|(_, status)| status);
+        }
         if self.exit.is_none() {
             self.exit = self
                 .child
@@ -221,18 +283,43 @@ impl Engine {
         }
         Ok(self.exit.clone())
     }
-    /// Brief bounded EOF/status race resolution; no wait() is used.
-    pub fn exit_after_eof(&mut self) -> Option<ProcessExit> {
-        let deadline = Instant::now() + Duration::from_millis(10);
-        loop {
-            if let Ok(Some(s)) = self.observe_exit() {
-                return Some(s);
-            }
-            if Instant::now() >= deadline {
-                return None;
-            }
-            thread::sleep(Duration::from_millis(1));
+    #[cfg(test)]
+    pub(crate) fn defer_exit_observations(&mut self, count: usize) {
+        let status = self
+            .exit
+            .take()
+            .or_else(|| self.deferred_exit.take().map(|(_, status)| status))
+            .expect("test first reaped actual child");
+        self.deferred_exit = Some((count, status));
+    }
+    #[cfg(test)]
+    pub(crate) fn single_exit_sample_control(&mut self) {
+        self.single_exit_sample = true;
+    }
+    /// Existing bounded pipe-failure/status settlement; no wait() or kill.
+    pub fn settle_exit(&mut self) -> Option<ProcessExit> {
+        // Controlled tests use the same loop with virtual elapsed time. The
+        // status is still from a real child; only its visibility is gated.
+        #[cfg(test)]
+        if self.deferred_exit.is_some() {
+            let elapsed = std::cell::Cell::new(Duration::ZERO);
+            let limit = if self.single_exit_sample {
+                Duration::ZERO
+            } else {
+                EXIT_SETTLEMENT
+            };
+            return settle_exit_poll(
+                || self.observe_exit().ok().flatten(),
+                || elapsed.get() >= limit,
+                || elapsed.set(elapsed.get() + Duration::from_millis(1)),
+            );
         }
+        let deadline = Instant::now() + EXIT_SETTLEMENT;
+        settle_exit_poll(
+            || self.observe_exit().ok().flatten(),
+            || Instant::now() >= deadline,
+            || thread::sleep(Duration::from_millis(1)),
+        )
     }
     pub fn cleanup(&mut self, cleanup_ms: u64) -> EngineObservation {
         let deadline = Instant::now() + Duration::from_millis(cleanup_ms);

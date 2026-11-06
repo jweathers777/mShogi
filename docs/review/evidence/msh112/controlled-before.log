@@ -1,0 +1,21 @@
+   Compiling mshogi-runner v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-runner)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.12s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_runner-047c2aa734e876fe)
+
+running 1 test
+
+thread 'run::tests::controlled_early_write_failure_keeps_nonzero_exit_diagnostics' (46135095) panicked at crates/mshogi-runner/src/run.rs:874:9:
+assertion `left == right` failed
+  left: MissingResponse
+ right: UnexpectedExit
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test run::tests::controlled_early_write_failure_keeps_nonzero_exit_diagnostics ... FAILED
+
+failures:
+
+failures:
+    run::tests::controlled_early_write_failure_keeps_nonzero_exit_diagnostics
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p mshogi-runner --lib`

@@ -1,0 +1,11 @@
+   Compiling mshogi-search v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-search)
+   Compiling mshogi-engine v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-engine)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.76s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_engine-e313d3accf279618)
+
+running 2 tests
+test bridge::tests::blocked_pipe_cleanup_is_explicit_bounded_and_does_not_join_unfinished_work ... ok
+test bridge::tests::cancel_and_replace_discard_even_an_already_published_completion ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.01s
+

@@ -734,7 +734,7 @@ impl Controller<'_> {
                     ));
                 }
                 Ok(Output::Eof) => {
-                    let status = engine.exit_after_eof();
+                    let status = engine.settle_exit();
                     let kind = if status.is_some_and(|s| !s.success) {
                         FailureKind::UnexpectedExit
                     } else {

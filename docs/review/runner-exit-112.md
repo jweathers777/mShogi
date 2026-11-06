@@ -57,6 +57,18 @@ Sources are limited to `crates/mshogi-runner`:
   yields UnexpectedExit and actual code/signal; successful exit yields
   MissingResponse; unavailable status remains honestly unavailable. Broken pipe
   alone never establishes a nonzero exit.
+- An unavailable hard-write/awaited-EOF status remains **provisional**, rather
+  than freezing the primary report. `failed()` attaches/classifies definitive
+  status if already observable. Otherwise `GameRun::cleanup` moves the existing
+  cleanup grace (one quarter of cleanup_ms, capped at100ms and remaining budget)
+  before any stop/quit/kill intervention for that pending failure. Natural exit7
+  finalizes UnexpectedExit/code7; natural clean0 retains MissingResponse/code0.
+  The same original failure/diagnostic object is updated without changing its
+  receipt timestamp, stop reason, native match or score.
+- The pending path calls `Engine::cleanup_after_exit_grace` so it does **not**
+  receive another grace period. Grace, stop and quit all consume the existing
+  remaining cleanup budget; kill/reap/worker cleanup use only what remains.
+  Other Engine.cleanup consumers retain their existing policy.
 - Acknowledgement timeouts retain ResponseTimeout/deadline handling and do not
   add settlement waits. Cleanup stop/quit writes also skip settlement, preserving
   their existing total budget. Cleanup retains its original grace/kill/reap and
@@ -69,16 +81,19 @@ Sources are limited to `crates/mshogi-runner`:
   helper calls are mechanically renamed; no new game/protocol semantics result.
   Idle-other-engine exit behavior and MSH-25's isolation remain unchanged.
 
-Failure classification is not deferred to cleanup: a quit response or a
-supervisor kill must not retroactively manufacture evidence of the original
-nonzero failure. Actual successful protocol actions, native game records, bounded
+Only **natural status observed before cleanup intervention** can finalize the
+pending classification. A quit response or supervisor kill cannot manufacture
+evidence of the original nonzero failure. If status stays unavailable, the
+primary failure records that fact; post-intervention exit diagnostics remain
+separately available in EngineObservation. Successful protocol actions, game records, bounded
 stdout/stderr/identity retention, schema1 reports and unscored failures remain.
 
-The finite10ms policy cannot promise that every arbitrarily delayed future OS
-status will become observable. Its bounds were not increased. If status is still
-unavailable, diagnostics and MissingResponse remain honest; later cleanup evidence
-is separate. This is bounded uncertainty, not acceptance of either label when
-the tested ordering makes a nonzero status available within that policy.
+Neither the immediate10ms phase nor the existing pre-intervention cleanup grace
+promises arbitrary future OS status visibility. This is not an uninterrupted
+natural wait for all cleanup_ms: termination/reaping still require budget.
+No timeout was increased. A natural status observed during the existing grace
+is used, not prematurely discarded; genuinely unavailable or intervention-tainted
+status is not guessed. The tests distinguish these cases explicitly.
 
 ## Controlled reproduction, countercases and supplemental stress
 
@@ -99,9 +114,10 @@ No test hooks exist in normal product builds.
 | --- | --- |
 | Original production + test-only gate | Actual failure before the fix: MissingResponse instead of UnexpectedExit. Expected regression failure retained. |
 | Deliberate single-observation mutation | Replacing only the new hard-write settlement with the original single sample makes the unchanged regression fail, cargo exit101. Restoring the fix passes. |
-| Portable single-sample negative control | Same actual send/failure pipeline with a test-only zero polling budget reproduces MissingResponse/exitNone while cleanup reveals actual exit7. Native CI runs this on Linux and the other hosts; this is a negative control, not a passing product classification. |
+| Portable single-sample negative control | Same actual send/failure pipeline with a test-only zero polling budget reproduces preliminary MissingResponse/exitNone. The new finalizer then uses natural exit7 before intervention and repairs the primary failure. Native CI runs both assertions on Linux and other hosts; the preliminary mismatch is a negative control, not accepted final behavior. |
 | Corrected fast/slower visibility | Real status hidden for1/2/9/10 virtual polling intervals yields exact UnexpectedExit/code7 within the existing bound. This measures no wall-clock latency. |
-| Clean exit / unavailable status | Clean0 stays MissingResponse with success diagnostics. Status withheld beyond the bound is not guessed; later cleanup evidence cannot rewrite the frozen failure. |
+| Late natural0/7 and EOF | Actual status hidden beyond immediate settlement becomes definitive during the existing pre-intervention grace; primary failure gets exact0/7 classification/diagnostics with unchanged receipt. Suppressing only this finalization makes the unchanged late-exit regression fail, cargo exit101. |
+| Live closed stdin / unavailable status / forced termination | A real live child with parent-side stdin closed remains MissingResponse/unknown through natural observation. Supervisor kill/reap is recorded separately, not relabelled as the original failure. No unsafe descriptor closure or invented exit status is used. |
 | Timeout, cleanup and misleading error text | Typed timeout keeps ResponseTimeout/deadline. Hard error text mentioning timeout cannot invent that category. Cleanup takes no extra settlement polls. |
 | Clock precedence / native state | Fixed49ms receipt precedes50ms native deadline;60ms receipt observes established flag precedence. Metadata never changes receipt. Native history/replay remain exact; failures remain unscored. |
 | Partial/closed output / early stderr | Actual unterminated id line plus early stderr then0/7 exit retains precise MissingResponse/UnexpectedExit, diagnostics and successful reaping. Non-ASCII protocol output remains InvalidResponse; illegal move remains InvalidMove. |
@@ -119,8 +135,8 @@ cancellation surfaces; they are not relabelled as a new UCI cancellation API.
 
 Local macOS27.0.1 arm64, Rust1.99.1, compatible Backlog1.55.1:
 
-- Full `cargo test --locked -p mshogi-runner`: **55 passed,0 failed**, one
-  subprocess-only fixture ignored in parent discovery and invoked by regressions.
+- Full `cargo test --locked -p mshogi-runner`: **57 passed,0 failed**, two
+  subprocess-only fixtures ignored in parent discovery and invoked by regressions.
   Includes real Chess/Shogi/Xiangqi process, recorded-report/replay and lifecycle tests.
 - `cargo clippy --locked -p mshogi-runner --all-targets -- -D warnings`: pass.
 - `cargo test --locked -p mshogi-engine --lib bridge::tests`: **2 passed**.
@@ -128,13 +144,21 @@ Local macOS27.0.1 arm64, Rust1.99.1, compatible Backlog1.55.1:
   corrected-source successes. An initial new-test borrow error and an incorrect
   `--test bridge` selector were corrected; neither is a product test pass.
 
-Fresh read-only `msh112_fix_review` approved the initial correction and re-reviewed
-the owner-requested Linux negative-control/partial-stream/startup/stress additions,
-with no blocking finding. Final six-file source diff SHA256 against92a751d:
-`9196a9e7b0bbe2238481ef8d327f6810cca0459bf0dcd483ae3901775cf520b9`.
-The reviewer inspected both negative failures, native/typed failure and timestamp
-semantics, bounded cleanup and test-only hooks; it did not duplicate the active
-test campaign. Platform receipt reconciliation remains required before completion.
+Fresh read-only `msh112_fix_review` initially approved immediate settlement, then
+**superseded that approval** after the full owner cleanup wording arrived. The
+late-status counterexample showed the primary report still froze too early.
+Checkpoint `d835c7ce36d2afd718147ef953b4f81879bc39f6` and Rust42187775585 were
+deliberately superseded/cancelled for this correctness gap, not runner capacity.
+All three native jobs acquired runners. The automatic Desktop42187775810 was
+cancelled as unrelated runner-only verification. Actual receipts are retained.
+
+The reviewer subsequently approved the revised pending/finalization policy and
+distinguishing natural0/7/unknown/forced-intervention tests, with no blocker.
+Incremental source diff SHA256 againstd835c7c:
+`358bce6c855d4cd3ebb7228792b08171de2749e343673ea1f3a3640122f4f789`.
+It inspected the additional finalization mutation failure, exact grace/remaining
+budget and receipt/clock invariants without duplicating tests. Replacement native
+platform receipt reconciliation remains required before completion.
 
 The single [verification record](evidence/msh112/verification.json) contains
 source input hashes, actual commands/logs/outcomes, historical recurrences,

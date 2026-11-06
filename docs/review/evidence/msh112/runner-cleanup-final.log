@@ -1,0 +1,115 @@
+   Compiling mshogi-runner v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-runner)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.94s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_runner-047c2aa734e876fe)
+
+running 15 tests
+test run::tests::controlled_live_child ... ignored, live subprocess fixture, exercised by controlled cleanup test
+test run::tests::controlled_nonzero_exit_child ... ignored, subprocess fixture, exercised by controlled_early_write_failure
+test run::tests::delayed_clock_detection_records_observation_time_in_all_paths ... ok
+test run::tests::earliest_deadline_wins_even_if_controller_wakes_after_both ... ok
+test run::tests::fixed_reply_receipt_precedes_later_processing_and_status_collection ... ok
+test run::tests::go_projects_elapsed_transport_without_mutating_or_double_charging_clock ... ok
+test run::tests::controlled_late_stdout_eof_status_finalizes_before_intervention ... ok
+test run::tests::controlled_clean_write_failure_is_missing_response ... ok
+test run::tests::controlled_single_sample_negative_control_reproduces_missing_response ... ok
+test run::tests::controlled_early_write_failure_keeps_nonzero_exit_diagnostics ... ok
+test run::tests::controlled_late_natural_exit_finalizes_before_cleanup_intervention ... ok
+test run::tests::controlled_timeout_and_cleanup_do_not_settle_or_guess_from_error_text ... ok
+test run::tests::controlled_write_failure_receipt_and_clock_precedence_are_preserved ... ok
+test run::tests::controlled_fast_and_slow_status_visibility_within_existing_bound ... ok
+test run::tests::controlled_live_closed_stdin_does_not_treat_supervisor_kill_as_original_exit ... ok
+
+test result: ok. 13 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running unittests src/main.rs (target/debug/deps/mshogi_match-3f0a8c6f2a68d04e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/recorded_evidence.rs (target/debug/deps/recorded_evidence-795ca9858ce46ab5)
+
+running 4 tests
+test runner_clock_expiry_shuts_down_outstanding_real_uci_search_unscored ... ok
+test actual_claim_and_engine_failure_have_distinct_meanings ... ok
+test documented_work_limited_reruns_repeat_commands_and_conclusions ... ok
+test all_twenty_one_recorded_games_replay_with_complete_diagnostics ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+     Running tests/runner.rs (target/debug/deps/runner-4577e987d7d1dbe3)
+
+running 13 tests
+test aborted_startup_retires_and_reaps_already_spawned_child ... ok
+test ply_limit_is_a_distinct_unscored_experiment_stop ... ok
+test explicit_auto_claim_uses_known_history_before_any_go ... ok
+test strict_configuration_and_replay_reject_inconsistent_or_oversized_evidence ... ok
+test complete_scripted_pair_records_commands_identity_colors_results_and_replays ... ok
+test partial_streams_and_early_stderr_preserve_precise_failure_and_reaping ... ok
+test non_utf8_cli_arguments_fail_normally_without_panicking ... ok
+test nonregular_identity_paths_are_rejected_without_opening_a_fifo ... ok
+test all_stream_and_metadata_buffers_are_bounded_with_truncation_markers ... ok
+test silent_and_blocked_stdin_children_cannot_block_cleanup ... ok
+test separate_watchdog_and_chess_clock_expiry_preserve_observations ... ok
+test process_start_nonzero_exit_clean_missing_and_invalid_move_are_unscored ... ok
+test repeated_immediate_and_yielded_partial_exits_remain_precise ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.34s
+
+     Running tests/shogi_recorded.rs (target/debug/deps/shogi_recorded-63b63bfecfb0e14a)
+
+running 1 test
+test recorded_games_and_intentional_retirement_regression_have_explicit_verdicts ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+
+     Running tests/shogi_runner.rs (target/debug/deps/shogi_runner-43fb447f5c8de035)
+
+running 14 tests
+test imported_counter_and_complete_prefix_survive_terminal_precheck_and_replay ... ok
+test accepted_ascii_whitespace_reply_roundtrips_raw_and_escaped_traffic ... ok
+test exact_27point_false_declaration_retains_admission_evidence ... ok
+test clocks_and_unsupported_profiles_reject_before_spawning ... ok
+test bounded_traffic_failure_is_explicit_and_keeps_native_prefix ... ok
+test strict_replay_rejects_context_limits_traffic_and_native_payload_tampering ... ok
+test resignation_and_false_declaration_are_native_conclusions_not_transport_failures ... ok
+test valid_entering_king_declaration_uses_accepted_28point_fixture ... ok
+test all_reported_options_must_be_advertised_with_supported_values ... ok
+test actual_move_drop_promotion_and_action_cutoff_are_not_invented_outcomes ... ok
+test post_reply_process_and_cleanup_failures_cannot_commit_candidates ... ok
+test malformed_illegal_missing_crashed_and_resource_replies_stay_unscored ... ok
+test watchdog_and_late_reply_retirement_preserve_native_game_and_reap_children ... ok
+test missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.03s
+
+     Running tests/xiangqi_recorded.rs (target/debug/deps/xiangqi_recorded-73637c2e57dbcf7a)
+
+running 3 tests
+test actual_own_engine_zero_work_remains_incomplete_and_unscored ... ok
+test failed_incompatible_network_is_preserved_as_unscored_failure_not_admission ... ok
+test actual_selfplay_independent_opponent_and_repeat_have_native_replay_evidence ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.18s
+
+     Running tests/xiangqi_runner.rs (target/debug/deps/xiangqi_runner-835d2c5a4dd86650)
+
+running 9 tests
+test actual_action_preserves_full_warned_history_and_native_fourth_occurrence ... ok
+test replay_requires_actual_supported_advertisement_for_each_configured_option ... ok
+test unsupported_policy_dialects_limits_and_live_nonboard_history_reject_losslessly ... ok
+test accepted_generation_replay_rejects_retired_duplicate_and_reordered_responses ... ok
+test resignation_is_native_same_ply_and_clean_protocol_replays_without_processes ... ok
+test options_retention_and_transcript_or_native_record_tampering_are_rejected ... ok
+test watchdog_cancels_and_retires_late_result_then_reaps_child ... ok
+test claimant_specific_auto_claim_concludes_before_any_child_is_started ... ok
+test malformed_illegal_missing_crash_null_duplicate_and_incomplete_stay_unscored ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.19s
+
+   Doc-tests mshogi_runner
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

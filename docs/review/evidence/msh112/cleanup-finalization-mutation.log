@@ -1,0 +1,21 @@
+
+running 1 test
+test run::tests::controlled_late_natural_exit_finalizes_before_cleanup_intervention ... FAILED
+
+failures:
+
+failures:
+    run::tests::controlled_late_natural_exit_finalizes_before_cleanup_intervention
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 14 filtered out; finished in 0.01s
+
+   Compiling mshogi-runner v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-runner)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.41s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_runner-047c2aa734e876fe)
+
+thread 'run::tests::controlled_late_natural_exit_finalizes_before_cleanup_intervention' (46282793) panicked at crates/mshogi-runner/src/run.rs:1048:13:
+assertion `left == right` failed
+  left: MissingResponse
+ right: UnexpectedExit
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p mshogi-runner --lib`

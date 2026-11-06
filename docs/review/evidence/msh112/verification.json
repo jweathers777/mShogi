@@ -5,14 +5,14 @@
   "starting_integration": "92a751d3e1df0ef4c4b9610cc55ec42e5e673770",
   "tested_source": null,
   "source_inputs_sha256": {
-    "crates/mshogi-runner/src/process.rs": "e5c6d5b40d47b4b35c1fc4b21f26b0d545933e33d2ab2a02514e3e6352c79c19",
-    "crates/mshogi-runner/src/run.rs": "7196892b8eeb35cc8b0ac54c5cba00ba4251df4820edf5ce45d238a25b88b240",
+    "crates/mshogi-runner/src/process.rs": "775d034657d549bcd85ee9b16f73bd6edebec5a14995f69124bd3e97a5b39618",
+    "crates/mshogi-runner/src/run.rs": "04661b8dd0142a515594d16fb9bfc9bccc516fbf421a250b560180a5d29bcff8",
     "crates/mshogi-runner/src/shogi.rs": "77f1815949f83381351ea5d9a2824420b828bb32beef5d5420803fd54721e9c3",
     "crates/mshogi-runner/src/xiangqi.rs": "b6baf749f1914e8b3d47e165668d9b2693567f5098f253547387ed3a496bf528",
     "crates/mshogi-runner/tests/runner.rs": "1fc74b914abea194d436a8a3427c03d61299bcd79091c0d6c12cec63804c1848",
     "crates/mshogi-runner/tests/support/uci_fixture.rs": "901f4e3578f8431aa9cc32d644db6e4a44c8322384b202c16e7b8fa435c12135"
   },
-  "source_diff_review_sha256": "9196a9e7b0bbe2238481ef8d327f6810cca0459bf0dcd483ae3901775cf520b9",
+  "source_diff_review_sha256": "358bce6c855d4cd3ebb7228792b08171de2749e343673ea1f3a3640122f4f789",
   "environment": {
     "platform": "macOS-27.0.1-arm64-arm-64bit",
     "python": "3.11.0",
@@ -22,7 +22,7 @@
   "report": "../../runner-exit-112.md",
   "original_failure": "awaited nonzeroexit7, expectedUnexpectedExit/codedexit; observedMissingResponse/handshake/Brokenpipe32/exitNone",
   "root_cause": "hard-write failure froze classification after one exit sample; EOF already allowed bounded10ms settlement. A later status could not repair frozen category. Distinct from25 competing-child fixture race.",
-  "correction": "Private typed writecause; existing10ms settlement forhardwriteerror exceptcleanup, unchangedtimeout/deadline/idleexit/cleanup policy, receipt capturedbeforelog/status. No score/schema/protocol/rules/search/budget change.",
+  "correction": "Typed writecauses/fixedreceipt plus provisional hardwrite/awaitedEOF classification; existingquartercleanup/max100msgrace moves BEFOREprotocol/kill, definitive natural0/7 finalizes primary, unknown/interventionstatusseparate. No doublegrace or timeoutincrease; originalscore/stop/history untouched.",
   "controls": {
     "original_before": {
       "result": "expected regression failure0passed1failed",
@@ -49,7 +49,7 @@
       "fixed_run_rs_sha256": "47295995be1222d620404216ae29a55eff635dd6de6f0c001bc17ce60a07b816",
       "mutant_run_rs_sha256": "f0d026c3ec149061e9e4735faae157f3cece3f9c37f1d3a64022d8be2880b82b"
     },
-    "portable_linux_negative": "Actual send/failure path, actual realchildexit7/writeerror, test-onlysingle-observation budget recreatesMissingResponse/exitNone; executed by requirednativeCI includingLinux, pending receipts.",
+    "portable_linux_negative": "Preliminaryone-sampleMissing/exitNone reproduced, then newpreinterventionfinalizer usesactual7 andrepairsprimary; requiredLinuxCIpending.",
     "positive_visibility_lags": [
       1,
       2,
@@ -58,7 +58,28 @@
     ],
     "virtual_clock_qualification": "Same pollingloop with controlled elapsedtime/statusvisibility; not syntheticexit or latency measurement.",
     "stress_trials_per_platform": 20,
-    "stress_scope": "Real immediate/yieldedpartialexit7; supplementalnotsoleproof"
+    "stress_scope": "Real immediate/yieldedpartialexit7; supplementalnotsoleproof",
+    "cleanup_finalization_mutation": {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "mshogi-runner",
+        "--lib",
+        "run::tests::controlled_late_natural_exit_finalizes_before_cleanup_intervention",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "cargo_exit_code": 101,
+      "mutation": "Suppress only pre-intervention finalization of primary failure while still collecting actual natural status",
+      "result": "expected regression failure",
+      "fixed_run_rs_sha256": "04661b8dd0142a515594d16fb9bfc9bccc516fbf421a250b560180a5d29bcff8",
+      "mutant_run_rs_sha256": "8c084b242fee94ad0e6701f2ee33b0eaaba2df95ea4b2627e6477507084eceda"
+    },
+    "late_natural_status": "hidden12observations, becomesavailable during existingcleanup grace;exact0/7 finalizesprimary",
+    "forced_intervention": "actual livechild withparentstdinclosed, no naturalstatus beforeintervention, forcedreapingstatus not originalfailure"
   },
   "checks": [
     {
@@ -80,6 +101,20 @@
       "result": "pass",
       "passed": 2,
       "log": "engine-bridge.log"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-runner (revised full-tail source)",
+      "result": "pass",
+      "passed": 57,
+      "failed": 0,
+      "ignored": 2,
+      "ignored_role": "actualsubprocessfixtures explicitlyexercised byregressions",
+      "log": "runner-cleanup-final.log"
+    },
+    {
+      "command": "cargo clippy --locked -p mshogi-runner --all-targets -- -D warnings (revisedsource)",
+      "result": "pass",
+      "log": "cleanup-clippy.log"
     }
   ],
   "development_observations": [
@@ -114,10 +149,13 @@
     "reviewer": "msh112_fix_review",
     "read_only": true,
     "fresh_context": true,
-    "verdict": "approved,no blockers; original and incrementalsource/testreview",
+    "verdict": "approved revisedfull-tail source,no blockers; earlierimmediatesettlementapproval superseded",
     "source_diff_sha256": "9196a9e7b0bbe2238481ef8d327f6810cca0459bf0dcd483ae3901775cf520b9",
     "actual_execution": "none; inspected rootnegativeoutputs/source to avoid duplicatecampaign",
-    "qualification": "Finite10ms cannotguarantee arbitraryfutureOSdelay; startupabort isnotpubliccallerCancellationAPI."
+    "qualification": "Naturalstatusisobserved beforecleanupintervention usingexisting quarterbudget/max100msgrace, notentirecleanupdeadline. Laterinterventionstatusnotguessed; no publicUCIcallerCancellationAPI.",
+    "initial_verdict_superseded": true,
+    "incremental_base": "d835c7ce36d2afd718147ef953b4f81879bc39f6",
+    "incremental_diff_sha256": "358bce6c855d4cd3ebb7228792b08171de2749e343673ea1f3a3640122f4f789"
   },
   "ci": {
     "required_jobs": [
@@ -125,7 +163,7 @@
       "Rust (macos-15)",
       "Rust (windows-2022)"
     ],
-    "status": "pending",
+    "status": "pending replacementsource",
     "monitor": "onecompletionawaremonitor foronefrozen source; stopatallterminal; no broadGUIcampaign",
     "automatic_desktop": "Iftriggered, cancelasnotrequired runner-only campaign; preservestatus/provenance."
   },
@@ -134,7 +172,7 @@
     "docs/m4/final-delivery.md": "a120eb23636bb25c812b554a3ebbfa950f9de7aa95366f23e62f421a989556d5",
     "docs/m4/evidence/msh47/verification.json": "1cc57d89234d80dc596559691695935a0a36d1d146cb58e39f84f09ca115782b"
   },
-  "limits": "Unobservedstatus remainsunknown atboundedsettlement; no inferrednonzeroexit, no cleanupreclassification or publicUCIcallerCancellationAPI.",
+  "limits": "Immediate10ms plus existingquartercleanup/max100ms naturalobservation, boundedbyremainingcleanup; no doubledgrace, no guessedstatus afterintervention or inventedpubliccancelAPI.",
   "scope": "Only existingrunner boundary andtests/docs/task112; ownerfulltail permitsappendonly47blockerhandoffwithoutacceptancestatuschange. No M4closure/newmilestone/refactor.",
   "evidence_files": {
     "controlled-before.log": "a95ead45556ebacb4a06105ea5c0eb86d4d7f9e2bb077b352ae71c0c6c902d6e",
@@ -142,6 +180,27 @@
     "single-sample-mutation.log": "0e019ea7029ea528a6b19744200f9603261ab5f740183e99670b8acb3ed86918",
     "runner-final.log": "3195cdc1c49818b8350dc037c3b704b96932562c797648d6a23f7f4f773a099a",
     "clippy.log": "bef03e245f148f8f4b9ba75060444564bd49e114f412cae0d42586236bdd4a7e",
-    "engine-bridge.log": "99291903fc3f43f4da78dc34eb13f2685d143ede3e5284196a65f8417df29686"
-  }
+    "engine-bridge.log": "99291903fc3f43f4da78dc34eb13f2685d143ede3e5284196a65f8417df29686",
+    "cleanup-controlled.log": "696b395b60c3fe56216ed6ec397435796135a9d9831cb8e10b797187e3a934dd",
+    "cleanup-finalization-mutation.log": "0690362a1980e889d066f16231da1c5c0186cd0bc16fe7d0eaf52c2f6fb75947",
+    "runner-cleanup-final.log": "9c6961533605c65682572caac121494cd6c22d494620c09adc7ed8730d01e48a",
+    "cleanup-clippy.log": "ad09d9e0fd9392759fa133b0e19c693274265708a4d3d932de42611d7ec186cc",
+    "ci/d835c7c-superseded-rust.json.gz": "96df652ecf7326966766646ef5737113563a89ad3642b622734c7a60f9bc6ccb",
+    "ci/d835c7c-unrequired-desktop.json.gz": "a46ffd7d7f298a9061f163f3f8cdc8226e9432c777c135351a3489df027af58d"
+  },
+  "superseded_checkpoints": [
+    {
+      "source": "d835c7ce36d2afd718147ef953b4f81879bc39f6",
+      "reason": "Full owner cleanup wording exposed natural exit7 observedduringcleanup but frozen primaryMissingResponse; immediate10msfix insufficient. Initialreviewapproval superseded.",
+      "rust_run": 42187775585,
+      "rust_receipts": "ci/d835c7c-superseded-rust.json.gz",
+      "rust_conclusion": "cancelled intentionally;3runnersacquired",
+      "desktop_run": 42187775810,
+      "desktop_receipts": "ci/d835c7c-unrequired-desktop.json.gz",
+      "desktop_conclusion": "cancelled intentionally as runner-onlyscope;3runnersacquired",
+      "local_runner_passed": 55,
+      "local_ignored_parent_fixtures": 1,
+      "local_success_was_not_full_contract_acceptance": true
+    }
+  ]
 }

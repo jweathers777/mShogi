@@ -1,0 +1,19 @@
+   Compiling mshogi-runner v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-runner)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.97s
+     Running unittests src/lib.rs (target/debug/deps/mshogi_runner-047c2aa734e876fe)
+
+running 11 tests
+test run::tests::controlled_live_child ... ignored, live subprocess fixture, exercised by controlled cleanup test
+test run::tests::controlled_nonzero_exit_child ... ignored, subprocess fixture, exercised by controlled_early_write_failure
+test run::tests::controlled_early_write_failure_keeps_nonzero_exit_diagnostics ... ok
+test run::tests::controlled_single_sample_negative_control_reproduces_missing_response ... ok
+test run::tests::controlled_clean_write_failure_is_missing_response ... ok
+test run::tests::controlled_late_stdout_eof_status_finalizes_before_intervention ... ok
+test run::tests::controlled_late_natural_exit_finalizes_before_cleanup_intervention ... ok
+test run::tests::controlled_timeout_and_cleanup_do_not_settle_or_guess_from_error_text ... ok
+test run::tests::controlled_write_failure_receipt_and_clock_precedence_are_preserved ... ok
+test run::tests::controlled_fast_and_slow_status_visibility_within_existing_bound ... ok
+test run::tests::controlled_live_closed_stdin_does_not_treat_supervisor_kill_as_original_exit ... ok
+
+test result: ok. 9 passed; 0 failed; 2 ignored; 0 measured; 4 filtered out; finished in 0.04s
+

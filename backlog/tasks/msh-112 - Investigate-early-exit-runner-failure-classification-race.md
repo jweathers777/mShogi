@@ -1,11 +1,11 @@
 ---
 id: MSH-112
 title: Investigate early-exit runner failure classification race
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-29T12:53:00Z'
-updated_date: '2026-11-06T09:47:00Z'
+updated_date: '2026-11-06T09:48:00Z'
 labels:
   - native-ci
   - runner
@@ -42,7 +42,7 @@ Intermediate MSH-102 Linux CI40874033735 at6dec5ab failed process_start_nonzero_
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -74,3 +74,15 @@ Actual44c86b0 native attempt1 Ubuntu127801682198 and macOS15 127801682340 passed
 
 Final independent read-only acceptance approves44c86b01428ca5f0de56fdb96cbe7e5b013677ea, no source/evidence defect. Rust42190693190 attempt2 success: actual Ubuntu127801682198/macOS15 127801682340 attempt1 and Windows127812835546 attempt2 each all8 required steps success; all3 completed rawlogs independently contain all11 critical cases pass, including Linux original-ordering control and20 stress trials per platform. Reviewer verifies6 source hashes,19 evidence hashes,3 protected47 hashes and no source diff. AC1–3/DoD1–3 supported and checked. DoD4/statusDone wait only normal durable final evidence publication+push; product44 already integrated/pushed. Windows original127801682025 failed unchanged view-test helper before runner; sole Windows retry passed, not an MSH-134 fix. Raw failed/superseded/carry-forward receipts retained. Main report docs/review/runner-exit-112.md and single index docs/review/evidence/msh112/verification.json. No active monitor; no further campaign. MSH47 acceptance/status/reports unchanged and M4 open.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Corrected the production runner early-exit classification race on codex/rewrite. An early hard write failure could freeze MissingResponse after one exit sample while later cleanup collected nonzero exit7. Typed write causes and fixed receipt times now share the existing10ms settlement policy; unresolved hard-write/awaited-EOF failures remain provisional through the existing quarter-cleanup/max100ms natural-exit grace before intervention. Definitive natural0/7 finalizes the primary category/diagnostics; unknown stays honest and supervisor-induced exit remains separate. No timeout, rule, search, protocol identity, schema, desktop architecture or resource budget changed.
+
+Original3 AC and4 DoD are supported. Local corrected runner57 pass/0 fail (2 parent-only subprocess fixtures explicitly exercised), Clippy and EngineBridge2 pass. Controlled original-source/mutation failures, Linux portable negative ordering, late0/7/EOF, live closed stdin/forced reaping, receipt/clock, partial/malformed/early-stderr/startup-abort and20 supplemental stress trials per native platform preserve strict unscored/replay/cleanup assertions. Fresh independent read-only source and final evidence review approve with no remaining source/evidence defect.
+
+Exact tested/integrated production source44c86b01428ca5f0de56fdb96cbe7e5b013677ea. Native Rust42190693190: Ubuntu127801682198 and macOS15 127801682340 attempt1, Windows127812835546 attempt2 all8 required steps and11 critical cases pass. Windows initial127801682025 failed unchanged async view-test synchronization before the runner; one exact-source Windows-only retry passed, not a fix for separate unassigned Ready MSH-134. Failed/superseded/carry-forward receipts remain preserved. Arbitrarily delayed natural status beyond bounded observation is not guessed; no new public caller-cancellation API was invented.
+
+Approved bounded evidence/report/index and follow-up published normally in6aabc97e92676af32856f5166ecfb1ef52b5e2e7, origin-aligned, production unchanged from tested44c86b0. docs/review/runner-exit-112.md and docs/review/evidence/msh112/verification.json are the durable handoff. MSH-47 can resume its independent final M4 acceptance; only its blocker notes are appended, acceptance/status/reports unchanged. M4 stays open. No47 closure,134 implementation,48/M5/M6 or unrelated work begun. Stop112.
+<!-- SECTION:FINAL_SUMMARY:END -->

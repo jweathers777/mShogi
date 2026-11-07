@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "task": "MSH-134",
-  "status": "In Review",
+  "status": "Done",
   "starting_integration": "816f670d1bacc95c73eae7c62dfa7b1e3b132edb",
   "tested_source": "f426c67e73af53b40aee6b9491a2d8cbde55bfb5",
   "source_inputs_sha256": {
@@ -192,7 +192,9 @@
     "evidence_verdict": "Final ACCEPT atf426c67, no material source/evidence findings. Reviewer independently verified all3actualjobs/all8requiredsteps,all5criticalcases2executions perplatform,2source/14evidence hashes, historical/mutation/developmentqualification and test-only scope.",
     "no_duplicate_tests": true,
     "preliminary_evidence_verdict": "accepted:source/diff and local log hashes/counts, mutation/development failures, original Windows failure/retry and current Desktop cancellation independently verified; no material finding",
-    "completion_condition": "All3originalAC/DoD1\u20133 supported; DoD4 normal final evidence/task publication/push with actual commit."
+    "completion_condition": "All3originalAC/DoD1\u20133 supported; DoD4 normal final evidence/task publication/push with actual commit.",
+    "publication_condition": "Subsequently satisfied by observed normal evidence push89abb3f beforeDone134 (integrator verification).",
+    "post_publication_verdict": "ACCEPT:no remaining finding. Reviewer observed HEAD/origin89abb3f, accepted evidence published,Done134/all3AC4DoD,original7criteriontexts unchanged,sourceeqf426,2source/14evidence hashes intact. Finaldiff completion metadata only; no47task/milestone/index change orM5activation; normalfinalpush allowed."
   },
   "ci": {
     "required_jobs": [
@@ -317,6 +319,14 @@
     "DoD1": "supported",
     "DoD2": "supported: fresh source and final evidence approval, no material findings",
     "DoD3": "supported: report/index and dated current M4 handoff notices preserve historical checkpoint",
-    "DoD4": "pending normal final evidence/task publication/push; corrected source already integrated/pushed atf426c67"
+    "DoD4": "supported: approved evidence89abb3fe36f57cbe2d48f60beb830f0cb149bf5d integrated/pushed and origin-aligned beforeDone134"
+  },
+  "accepted": true,
+  "publication": {
+    "branch": "codex/rewrite",
+    "tested_source": "f426c67e73af53b40aee6b9491a2d8cbde55bfb5",
+    "accepted_evidence_revision": "89abb3fe36f57cbe2d48f60beb830f0cb149bf5d",
+    "normal_push_verified_before_done": true,
+    "remaining_changes": "Final taskstatus/current-handoff publication metadata only; no changed source input."
   }
 }

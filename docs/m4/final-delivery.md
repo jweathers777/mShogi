@@ -1,10 +1,12 @@
-> MSH-134 verification update — 2026-11-07: the test-only history-view
+> MSH-134 completion update — 2026-11-07: the test-only history-view
 > synchronization correction at `f426c67e73af53b40aee6b9491a2d8cbde55bfb5`
 > has passed all three required native CI jobs and focused independent source
-> review and final evidence reconciliation. Normal publication is pending; see the
+> review and final evidence reconciliation. MSH-134 is Done after normal
+> evidence publication `89abb3f`; see the
 > [correction record](../review/history-view-134.md). Earlier MSH-47 references to
 > open134 describe its acceptance checkpoint. M4 remains completed; no product
-> behavior or original milestone verdict changed. No M5 work starts here.
+> behavior or original milestone verdict changed. MSH-48 remains next planned,
+> unstarted M5 work.
 
 # Final M4 delivery acceptance — MSH-47
 

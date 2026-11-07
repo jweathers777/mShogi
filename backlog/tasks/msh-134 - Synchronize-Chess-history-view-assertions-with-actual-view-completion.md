@@ -1,11 +1,11 @@
 ---
 id: MSH-134
 title: Synchronize Chess history-view assertions with actual view completion
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-06T09:06:00Z'
-updated_date: '2026-11-07T21:34:00Z'
+updated_date: '2026-11-07T21:36:00Z'
 labels: []
 dependencies: []
 references:
@@ -37,7 +37,7 @@ MSH-112 native Windows CI at unchanged desktop source44c86b01428ca5f0de56fdb96cb
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -54,4 +54,18 @@ Private shared Moves helper now waits admission plus exact requested Chess View 
 Independent source and preliminary evidence review accepted with no materialfindings. Frozen f426c67e73af53b40aee6b9491a2d8cbde55bfb5 two source hashes/diff match; all local41logs and expectedmutation101 verified, historicalfailed/retrylogs reread, automaticDesktop42413689587 terminalcancelledreceipt retained. AC1/2 now supported andchecked; AC3/allDoD remainpending requiredactual3OS nativeCI and finalpublication. Rust42413689537 Ubuntu128527069550/macOS15 128527069747/Windows128527069788 allrunnersacquired/Test; one completionmonitor71273, no dirty source or newcampaign. No successinferredfromlocalMac.
 
 Final independent read-only msh134_review ACCEPT atf426c67e73af53b40aee6b9491a2d8cbde55bfb5,no materialfindings. Actual Rust42413689537 attempt1 Linux128527069550/macOS15128527069747/Windows128527069788 all8requiredsteps pass; all5criticalcases exactly2passes ineachrawlog(default/allfeature). Reviewer independently verifies2source/14evidence hashes, originalfailed/retryrecords, mutation101, qualifieddraftfailures, twofiletest-onlyscope and datedM4handoff preservation. All3originalAC/DoD1–3 nowchecked. DoD4/statusDone awaitnormalfinal evidencepublication/push; codef426alreadyintegrated. No retry,newtests,campaign,productbehavior,M4reopening orM5work. Structuredrecord/docs retainactualIDs/source; current M4handoff annotations supersedeopen134snapshotwithoutrewriting47verdict.
+
+Independent post-publication reconciliation ACCEPT,no remainingfindings. Actualpublished evidence89abb3f HEAD/origin equal,Done134/all3AC4DoD; original7criteriontexts/sourceeqf426/all2source14evidencehashes unchanged. Finaldiff onlytask/report/index/3datedcurrent-handoffcompletion metadata;47task/milestone/acceptedindex unchanged,M4stillCompleted77/77. Ready--readyempty,48ToDo/unstarted. Normalfinalmetadatacommitpush follows,no moretestsorotherwork.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+MSH-134 complete on codex/rewrite. Corrected only the private shared Moves test helper: Chess Inspect admission is distinct from asynchronous View completion, so the helper now waits for the returned exact I/O id, Complete and requested native event, and refuses failed/superseded work under the unchanged20-second deadline. Original historical-root/cue/known-row assertions remain strict. A cfg(test)-only FileWorker result-observation hold leaves actual native replay/worker execution and normal product behavior unchanged.
+
+Four controlled cases exercise delayed1/4 observations from live/prior historical prefixes, repeated root/new I/O, actual supersession and real token-invalidated completion. Disabling only the new wait reproduces the old helper failure deterministically (cargo101,Viewing vsComplete); restored exactsource passes. Local focused Moves7/projection4/persistence19/workflow11=41tests pass, all-target/all-featureClippy and formatting pass. Initial new-test compile/expected-context errors are preserved as development observations, distinct from final success.
+
+Exact tested/integrated sourcef426c67e73af53b40aee6b9491a2d8cbde55bfb5; actual Rust42413689537 attempt1 Linux128527069550/macOS15 job128527069747/Windows128527069788 all8requiredsteps PASS,no retry. Each5criticalcases passed twice perplatform(default andallfeature). Original Windows127801682025 failure and unchangedretry127812835546 at44c86b0 remain preserved as historical, notthefix; unrelatedautomaticDesktop42413689587 intentionallycancelled withreceipt. Fresh independent read-only source+finalevidence review approves all3originalAC/DoD1–3,no materialfindings,verifies2source/14evidencehashes. No timingsoruniversalflake-freepromise follows from observation control.
+
+Approved evidence published normally at89abb3fe36f57cbe2d48f60beb830f0cb149bf5d and origin-aligned beforeDone/DoD4. All3AC/4DoD are supported. Report docs/review/history-view-134.md and single index docs/review/evidence/msh134/verification.json retain commands, negative proof and exactsource/platformreceipts. Current M4handoff notes distinguish this completed quality correction from47's earlier open134snapshot; M4remainsCompleted77/77, no requirements/runtime/rules/search/protocol/schema/budget change. Unrelated133/historical-accessworktree preserved; none created. MSH-48 remains nextplanned M5item,unstarted; no othertask implemented.
+<!-- SECTION:FINAL_SUMMARY:END -->

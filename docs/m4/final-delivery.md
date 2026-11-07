@@ -1,4 +1,175 @@
-# Final M4 delivery acceptance review — MSH-47
+# Final M4 delivery acceptance — MSH-47
+
+Resumed review: **7 November 2026**, primary `codex/rewrite`, starting integration
+**`68fef9f07760a7670f5d591705274ab4e078bd80`**. The original six-game/seven-profile
+audit below is reused, with its exact source and environment qualifications.
+
+## Current verdict: acceptance supported; final publication pending
+
+All four original MSH-47 obligations have supporting evidence. F47-01 is resolved
+by the independently accepted MSH-112 correction. The separately identified
+MSH-134 history-view test synchronization defect is real and remains unfixed,
+but the source and independent retained behavioral evidence establish no missing
+original M4 function or material coverage gap. This is not a conclusion drawn
+from its passing retry. Fresh independent final review approves acceptance; normal publication must
+precede Done47 and formal M4 completion; neither M5 nor M6 starts here.
+
+The **6 November closure-withheld finding and review remain historical evidence**
+at `92a751d3e1df0ef4c4b9610cc55ec42e5e673770` and in the dated chapter below.
+They were correct at that checkpoint. The compact existing
+[acceptance index](evidence/msh47/verification.json) retains that verdict and
+records the changed facts, rather than overwriting the failure history or
+creating another platform ledger.
+
+## F47-01 — resolved by the actual MSH-112 correction
+
+Exact corrected and tested production:
+**`44c86b01428ca5f0de56fdb96cbe7e5b013677ea`**. MSH-112's approved evidence was
+published at `6aabc97e92676af32856f5166ecfb1ef52b5e2e7`; its final integration is
+`68fef9f07760a7670f5d591705274ab4e078bd80`. See the
+[bounded correction report](../review/runner-exit-112.md) and its
+[single structured record](../review/evidence/msh112/verification.json).
+
+Source inspection corroborates the accepted independent assessment:
+
+- `run.rs::write_failure` distinguishes typed transport failures from timeouts,
+  preserves the original receipt and uses the existing10ms exit settlement.
+- An unknown hard-write/awaited-EOF status remains provisional. `cleanup` moves
+  the existing quarter-budget/max100ms grace before stop/quit/kill, consuming
+  the same cleanup budget. A definitive natural nonzero exit finalizes
+  UnexpectedExit with diagnostics; clean exit without a required response
+  remains MissingResponse. Unknown status stays explicit and honest.
+- Supervisor-induced termination is separate evidence, never an invented
+  natural nonzero exit. No timeout or cleanup allowance increased, no second
+  grace was added, and the final failure is serialized after cleanup.
+- Native history/clock precedence, failure receipt, strict unscored failed
+  experiments and bounded reaping are preserved. Controlled original-source
+  and mutation failures, late natural0/7/EOF, live-child/forced-exit separation,
+  stream/startup cases and20 real supplemental trials per platform support this
+  correction. MSH-47 revalidates their records; it does not rerun that campaign.
+
+Live GitHub reconciliation confirms run **42190693190**, corrected source above,
+completed successfully. These are the actual accepted executions:
+
+| Platform | Attempt | Job | Required verification |
+| --- | --- | --- | --- |
+| Ubuntu24.04 | 1 | [127801682198](https://github.com/jweathers777/mShogi/actions/runs/42190693190/job/127801682198) | All8 steps passed |
+| macOS15 | 1 | [127801682340](https://github.com/jweathers777/mShogi/actions/runs/42190693190/job/127801682340) | All8 steps passed |
+| Windows2022 | 2 | [127812835546](https://github.com/jweathers777/mShogi/actions/runs/42190693190/job/127812835546) | All8 steps passed |
+
+Each completed raw log contains all11 critical runner cases passing. Original
+historical failures, the superseded insufficient correction, Windows attempt1
+job127801682025 and both intentional automatic-Desktop cancellations remain
+retained. Attempt2 Ubuntu/macOS carry-forward receipt aliases preserve the
+original execution timestamps/runners; they are not reruns of healthy platforms.
+No native or GUI evidence is inferred from a different operating system.
+
+## MSH-134 — unfixed test synchronization defect; nonblocking disposition
+
+The failed Windows assertion was
+`shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues`,
+`shared_moves_tests.rs:174`. Its required historical-root/cue/row semantics remain
+valid. The helper at lines12–29 waits for **admission**, then returns a snapshot.
+Chess Inspect instead queues asynchronous Work::View in
+`persistence.rs::queue_view` (1559–1611). It has no admission transaction receipt,
+so `shared_archive.rs::shared_command_with_receipt` (1828–1838) supplies immediate admission success.
+That does not promise view completion. The helper can return the still-live
+snapshot before `poll_files` applies Completed::Viewed.
+
+The production path has a distinct completion contract: current I/O id and
+document token guard installation in `poll_files` (1613–1664), then it publishes
+Complete and advances revision. The frontend polls fresh snapshots
+(`useGameSession.ts:19–25`); `ApplicationView.tsx:19,43` treats Viewing as busy and
+shows the pending-position status. It does not promise an immediately historical
+snapshot or use this test helper. No production historical-view defect is
+established by the failed assertion.
+
+The regression reliability concern was explicitly challenged against original
+AC3, P-05 and required current-format/history behavior. Three independent lines
+of evidence cover the exact semantics despite this faulty helper:
+
+1. `moves/tests.rs:24–48` derives actual native Chess projections, retains known
+   move rows and verifies that selecting root cannot invent a last-action cue.
+2. `persistence.rs:1858–1868,2037–2077` waits for the exact view I/O id and checks
+   historical prefix/conclusion/native-record preservation, Save/reopen and
+   Return to live. It does not confuse admission with completed view work.
+3. Original MSH-88 Windows **and** Linux `normal-cross-game` raw reports each
+   contain two completed Chess root observations: I/O ids3 and14 are Complete,
+   the native selected root has zero events, two known e4/a5 rows remain, and
+   `last_action` is null. Reverse Chess Load/Return/Take back preserves native
+   context and retained observations; Take back has zero rows and no cue.
+   The original GUI driver also waits for settled Moves selection before root
+   cue assertions (`gui-smoke.py:984–1042`). These are actual packaged consumers,
+   not only build statuses, synthetic boards or the faulty helper.
+
+Thus no material missing original behavior or coverage guarantee was found.
+Treating every diagnosed false early assertion as a new universal no-flake M4
+gate would add scope; treating its green retry as a fix would hide a real defect.
+The accepted disposition does neither. Required native steps passed at the
+corrected source, the strict assertion and failed receipt are preserved, and
+the independent evidence above supports its intended completed-state meaning.
+No failure-rate estimate or promise of universally deterministic CI is made.
+
+**MSH-134 remains Ready, unassigned and unimplemented**, with its original three
+criteria intact. It is the recommended next narrow quality correction before
+starting new M5 work, not transferred unfinished M4 product functionality and
+not marked Done or waived by this acceptance. This assignment does not fix it.
+
+## Reused scope, sources, limitations and closure action
+
+The original AC1/2 game/shared/architecture audit below remains supported. All
+six games and both immutable Tenjiku profiles retain their sourced conformance,
+authoritative effects/history/outcomes, functional supervised search, console/
+notation, strict records, Save/Load, Take back/history, actual desktop behavior,
+cross-game isolation and accepted architecture evidence. All13 referenced
+acceptance-record hashes and all202 immutable MSH-88 evidence hashes revalidate.
+
+Packaged/shared source remains **`bc92bfe5e3b20e9e999df12cbf54b91682c71b8d`**:
+Rust42028972679 and Desktop42028972586, all six original jobs/required steps
+reconfirmed live. Actual Windows/Linux49-phase reports and qualified local
+macOS27 interaction remain at that source. Hosted macOS15 verification is
+distinct. From that checkpoint, four neutral core rustdoc comments and the
+bounded MSH-112 runner change are the only changed runtime-tree inputs; the
+desktop/session/frontend/engine/search/rules/protocol/workflow inputs are
+unchanged. Current integration has no input diff from corrected44c86b0. New
+native correction evidence supplements the original package evidence; no new
+package built or actual GUI executed at an evidence-only revision is claimed.
+
+Dense minimum-window Tenjiku kanji/badges, incomplete comprehensive screen-reader
+verification, release signing/notarization/distribution, bounded search depth,
+unmeasured competitive strength and advisory architecture investigations retain
+their original classifications below. Natural exit status beyond bounded
+observation can remain unknown;134 retains bounded test nondeterminism. No rule,
+schema, budget, accepted owner visual decision or original M4 criterion changed.
+
+| Original MSH-47 criterion | Resumed verdict |
+| --- | --- |
+| AC1 — preserved26/39 and complete41–46 | Supported by unchanged accepted detailed evidence. |
+| AC2 — independent complete six-game trace | Supported; previous audit reused, changed facts independently reviewed. |
+| AC3 — reproducible integrated/platform evidence; no material required gap | Supported by112 correction/actual CI and explicit source-supported134 assessment above, independently approved; normal publication pending. |
+| AC4 — durable scope/verdict/limitations and honest handoff | Supported by this current decision plus preserved closure-withheld history; no unfinished original functionality moves to M5/M6. |
+
+Backlog1.55.1 has no independent milestone-completion mutation: completion is
+derived from assigned task statuses. Before finalization M4 is active76/77,
+with47 the sole unfinished assigned task. After approved evidence publication,
+Done47 and its original four AC/four DoD checks must make supported
+`milestone list --show-completed --plain` report **Completed77/77**. Archival is
+retirement only and is not a closure substitute; no milestone assignment,
+dependency or original milestone definition will change. MSH-133 and the
+unrelated historical-access worktree remain untouched.
+
+MSH-134 is recommended next; the first actual M5 assignment remains MSH-48,
+followed by the existing109 gate before substantial optimization. Neither is
+started or replanned here. This review adds no game implementation, test change,
+broad native/frontend/GUI/CI campaign, refactor or new task hierarchy.
+
+## Preserved closure-withheld review — 6 November 2026
+
+Everything in this dated chapter describes the earlier review checkpoint. Its
+unresolved112/status/count statements are historical, superseded by the explicit
+resumed assessment above. The original report bytes and compact index remain in
+Git at92a751d; failed CI provenance and independent blocked-review verdicts stay
+retained. The unchanged six-game audit and environment qualifications are reused.
 
 Review date: **6 November 2026**. Reviewed integration:
 **`07f1bac4c366c0a327dd7f31e9528ee9aa444b5b`**, primary `codex/rewrite`.
@@ -9,7 +180,7 @@ This independently reviewed evidence was normally committed and pushed to
 `codex/rewrite` at **`a666763ff65d8a30c0e6f9f10d8438d3cda4c643`**. Publication
 integrates the review and handoff; it does not complete MSH-47 or close M4.
 
-## Verdict: closure withheld
+### Verdict: closure withheld
 
 **The six complete games and shared desktop delivery have supporting evidence.
 Formal M4 closure is not yet supported.** The existing, unfixed MSH-112 runner
@@ -24,7 +195,7 @@ bounded verdicts from final whole-milestone acceptance. No implementation or
 acceptance contract was changed in this review. A fresh independent final
 assessment **approves this closure-withheld report, not M4 acceptance**.
 
-## Original scope and acceptance authority
+### Original scope and acceptance authority
 
 The [original milestone definition](../../backlog/milestones/m-4%20-%20m4---variant-expansion-and-conformance.md)
 requires complete Shogi, Tori, Chu, Tenjiku and Xiangqi against explicit sourced
@@ -52,7 +223,7 @@ reconstructed from original criteria and the preserved
 [delivery plan](delivery-plan.md)/[implementation map](implementation-map.md),
 then checked against actual consumers rather than only final task summaries.
 
-## Six games and seven immutable profiles
+### Six games and seven immutable profiles
 
 The current native/search responsibility map is source-qualified in
 [MSH-108](../review/architecture-health-108.md); this acceptance sampled the
@@ -75,7 +246,7 @@ is exact finite traversal given sufficient resources, not a universal practical
 runtime promise. Bounded/cancelled proof remains Unknown and cannot invent a
 timeout/resignation result. No strength conclusion follows from functional play.
 
-## Independent conformance reconciliation
+### Independent conformance reconciliation
 
 The [engine-independent policy](../testing/conformance-policy.md) remains binding:
 selected profiles, independently established expectations, complete-set/transition
@@ -106,7 +277,7 @@ shared record has12 applicable consumer rows plus five then-pending44 rows;
 current44/source completes execution, notation/art and normal activation.
 The native corpus/earlier reports remain immutable evidence of their own stage.
 
-## Console, functional engines and actual conclusions
+### Console, functional engines and actual conclusions
 
 `mshogi-console/src/main.rs:239/273` selects real games and isolates machine
 protocol output. Game sessions expose complete notation/actions, native commands,
@@ -134,7 +305,7 @@ source/test/actual-product evidence. The separate match-runner diagnostics remai
 the unresolved finding below; desktop EngineBridge independence is not a blanket
 acceptance of every console consumer.
 
-## Desktop, persistence and bounded resources
+### Desktop, persistence and bounded resources
 
 Actual New/Load, either human side, real engine replies, native choices and
 special actions, analysis/cancel/replacement, outcomes/recovery, exact history,
@@ -170,7 +341,7 @@ supported. Unsupported/lossy restoration rejects explicitly. Development desktop
 archives1/2/3 and internal execution1/2/3 remain retired under A-09/A-10; protocol4
 and durable observation schema1 are current. No compatibility reader is revived.
 
-## Original six shared-integration criteria
+### Original six shared-integration criteria
 
 The [46 matrix](shared-integration/README.md) and [independent89 AC1–6 source assessment](shared-integration/contract-review-89.md)
 are independently corroborated at current consumers:
@@ -192,7 +363,7 @@ ApplicationView/ApplicationShell`, `GameBoard` and
 Native semantics remain game-owned; no second frontend legality engine or
 universal variant framework exists or is required.
 
-## Exact packaged-platform receipts and qualifications
+### Exact packaged-platform receipts and qualifications
 
 Live GitHub connector GETs on6 November confirm both runs completed/success at
 exact source `bc92bfe5e3b20e9e999df12cbf54b91682c71b8d`, attempt1, with the six
@@ -234,7 +405,7 @@ Prior superseded/cancelled/failed runs, capacity cancellations, driver/fixture
 corrections and unsuccessful runner assertions remain preserved. The current
 six successful jobs establish those campaign results, not an MSH-112 repair.
 
-## Material finding F47-01: unresolved runner failure-contract mismatch
+### Material finding F47-01: unresolved runner failure-contract mismatch
 
 **Blocks whole-M4 closure, not accepted native game/shared architecture delivery.**
 This is an existing failed correctness assertion, not a new requirement created
@@ -289,7 +460,7 @@ Then resume47 at its unchanged original criteria. Do not implement112 in this
 review, weaken the assertion, rerun until green, move it to M5/optional research,
 archive it, or reopen completed M2/native game acceptance.
 
-## Other limitations and milestone classifications
+### Other limitations and milestone classifications
 
 | Issue | Classification and consequential rationale |
 | --- | --- |
@@ -302,7 +473,7 @@ archive it, or reopen completed M2/native game acceptance.
 | 108F01–F04 replay/cooperation/inspection/helper recommendations |Advisory architecture/performance investigations with concrete verification expectations. No demonstrated original M4 contract failure or required refactor established by those recommendations. |
 | Future large historical variants |Deferred owner direction outside current six-game M4/M5; no new rules-acquisition, generalization or product gate. |
 
-## Task, dependency and milestone integrity
+### Task, dependency and milestone integrity
 
 Original47 dependencies remain26/39/41/42/43/44/45/46/108. Original46 retains all16
 prerequisites39/41–45/69/72/73/76–79/88/89/90; game-specific ownership remains41–45.
@@ -323,7 +494,7 @@ task statuses; it has no separate completion mutation. `milestone archive`
 only moves a milestone file to the archive and is not a substitute acceptance
 decision. No milestone file, assignment or status is changed to conceal112.
 
-## Independent assessment and focused verification
+### Independent assessment and focused verification
 
 Two fresh read-only researchers without integrator chat history independently
 examined game/conformance coverage (`msh47_game_conformance`) and original scope/
@@ -348,7 +519,7 @@ No new native conformance, comprehensive frontend, packaged GUI, CI, strength,
 benchmark or controlled112 reproduction ran. Required new CI jobs for this
 documentation review: none;112's later correction has its own verification scope.
 
-## Original MSH-47 acceptance and completion verdict
+### Original MSH-47 acceptance and completion verdict
 
 | Original criterion | Current disposition |
 | --- | --- |
@@ -366,7 +537,7 @@ A completed report is not completed milestone acceptance.
 Independent review of this blocked verdict does not accept the still-failing
 requirement.
 
-## Corrective and M5/M6 handoff
+### Corrective and M5/M6 handoff
 
 The immediate narrow prerequisite to a new closure decision is **existing
 MSH-112**, not another planning hierarchy or broad game campaign. After its

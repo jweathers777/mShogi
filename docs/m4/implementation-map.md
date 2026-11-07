@@ -4,7 +4,8 @@
 > remains an unfixed asynchronous history-view test-helper defect; independent
 > native/exact-I/O and original actual packaged evidence establish no material
 > missing M4 behavior or coverage. Its passing retry is not a fix. Final
-> independent review is approved; normal publication precedes Done47/formal M4 completion.
+> independent review is approved; evidence was published at `4731800`.
+> MSH-47 is Done and supported Backlog completion is **M4 Completed77/77**.
 > MSH-134 is recommended next; the first M5 assignment remains MSH-48 and
 > subsequent MSH-109 still has its original gate. No M5/M6 or134 work starts
 > here. Earlier dated snapshots below retain their original source/status scope.

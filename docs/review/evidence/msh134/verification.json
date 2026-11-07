@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "task": "MSH-134",
+  "status": "In Review",
+  "starting_integration": "816f670d1bacc95c73eae7c62dfa7b1e3b132edb",
+  "tested_source": null,
+  "source_inputs_sha256": {
+    "crates/mshogi-desktop-session/src/persistence.rs": "953bf7822909bf78d18685a3c71a1d2db7ced51abc416e60469ea325ebf43673",
+    "crates/mshogi-desktop-session/src/shared_moves_tests.rs": "fe03373d3203418833a209b5fb92224d8c8f4bd4514a43c1d2b16d678792b1e1"
+  },
+  "source_diff_sha256": "628fbdf49a766df35380219697a11259d18773dcaee418ce1a256b4d67b1a569",
+  "report": "../../history-view-134.md",
+  "environment": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "backlog": "1.55.1"
+  },
+  "root_cause": "Chess Inspect admits immediately but completes through separate exact-I/O Work::View. Shared Moves test helper treated completed admission as completed history reconstruction.",
+  "correction": "Only the private test helper waits for matching returned I/O id, Complete and requested event, rejecting failed/superseded work under unchanged20s deadline. Test-only FileWorker result observation hold leaves actual worker/native replay unmodified.",
+  "controls": {
+    "delays": "1 and4 held actual snapshot observations, from live and prior historical prefixes; native two-move fixture, retained rows/cues/live history exact.",
+    "repeated_target": "Same selected root still requires new exact I/O completion.",
+    "negative_cases": [
+      "real superseding View request",
+      "real Completed::Viewed token invalidation -> Failed"
+    ],
+    "mutation": {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "mshogi-desktop-session",
+        "--lib",
+        "shared::moves_tests::controlled_chess_view_waits_beyond_admission_from_live_and_historical_prefixes",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "cargo_exit_code": 101,
+      "expected_result": "failure: Viewing instead of Complete from original admission-only return",
+      "fixed_test_source_sha256": "fe03373d3203418833a209b5fb92224d8c8f4bd4514a43c1d2b16d678792b1e1",
+      "mutant_test_source_sha256": "55437ad14d58fe72ece04e153b07a907493328238ab9dc1c913ab9b315df9b93",
+      "restored": true
+    },
+    "qualification": "Gate withholds result observation, not native data or an invented completion; it models different scheduler orderings without timing-rate claims."
+  },
+  "checks": [
+    {
+      "name": "focused",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "mshogi-desktop-session",
+        "--lib",
+        "shared::moves_tests"
+      ],
+      "exit_code": 0,
+      "seconds": 4.132,
+      "log": "focused-final.log",
+      "passed": 7,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "projection",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "mshogi-desktop-session",
+        "--lib",
+        "moves::tests"
+      ],
+      "exit_code": 0,
+      "seconds": 0.082,
+      "log": "projection-final.log",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "persistence",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "mshogi-desktop-session",
+        "--lib",
+        "persistence::tests"
+      ],
+      "exit_code": 0,
+      "seconds": 4.013,
+      "log": "persistence-final.log",
+      "passed": 19,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "workflow",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "mshogi-desktop-session",
+        "--lib",
+        "workflow_tests"
+      ],
+      "exit_code": 0,
+      "seconds": 1.231,
+      "log": "workflow-final.log",
+      "passed": 11,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "mshogi-desktop-session",
+        "--all-targets",
+        "--all-features",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 5.271,
+      "log": "clippy-final.log"
+    },
+    {
+      "name": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 1.095,
+      "log": "fmt-final.log"
+    }
+  ],
+  "local_tests_passed": 41,
+  "development_observations": [
+    {
+      "result": "compile failed before tests",
+      "log": "initial-compile.log",
+      "cause": "New test compared cue DTOs without PartialEq; corrected to existing exact serialized comparison, no product trait change."
+    },
+    {
+      "result": "6pass1failed in initial new test",
+      "log": "initial-assertion.log",
+      "cause": "New ReturnLive assertion incorrectly compared full live context to a preceding historical prefix. Corrected expectation to preserved original full live context; native history/cue assertions retained."
+    }
+  ],
+  "historical_ci": [
+    {
+      "run_id": 42190693190,
+      "job_id": 127801682025,
+      "run_attempt": 1,
+      "source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
+      "conclusion": "failure",
+      "signature": "shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues historical-root assertion; premature snapshot",
+      "retained_log": "../msh112/ci/44c86b0-windows-attempt1.log.gz"
+    },
+    {
+      "run_id": 42190693190,
+      "job_id": 127812835546,
+      "run_attempt": 2,
+      "source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
+      "conclusion": "success",
+      "unchanged_retry_was_not_fix": true,
+      "retained_log": "../msh112/ci/44c86b0-windows-attempt2.log.gz"
+    }
+  ],
+  "independent_review": {
+    "reviewer": "msh134_review",
+    "fresh_context": true,
+    "read_only": true,
+    "source_verdict": "accepted; no material findings",
+    "evidence_verdict": "pending exact-source3OS final reconciliation",
+    "no_duplicate_tests": true
+  },
+  "ci": {
+    "required_jobs": [
+      "Rust (ubuntu-24.04)",
+      "Rust (macos-15)",
+      "Rust (windows-2022)"
+    ],
+    "status": "pending source freeze",
+    "monitor_policy": "One completion-aware monitor; stop on terminal required condition, no overlapping campaigns. Preserve failed/retry receipts; no blind retries.",
+    "automatic_desktop": "Cancel unrelated automatic Desktop and preserve provenance; no required packaged GUI campaign for unchanged product behavior."
+  },
+  "scope": "Test synchronization plus cfg(test) observation control only; no rule/search/runtime/protocol/schema/budget change; no M4 reopening or M5 implementation.",
+  "evidence_files": {
+    "initial-assertion.log": "554c6334bb9f49f74cc8dd50beb05f31bf91967eb99d94d95c96a8927f9b9395",
+    "clippy-final.log": "6b8f36278089bf3b83f6be972063610fc07360455fb09b338ff8a3bac0fcc207",
+    "old-helper-mutation.log": "4e24674f23817a37e91340e52b25c863b0324c17f54629ab6352433ab77df5cf",
+    "workflow-final.log": "1a9aacfdf77de0dd3378316341bd77c422dba943e6a5f257b36a4ba6103f813d",
+    "focused-final.log": "33e1c3440d8ac261c709871cf72c134788f654a81d44fbf549315590fe12b056",
+    "projection-final.log": "4c978ff9b330f8b997b1260979517d295a1ad26438de82a3eabfd2b1dbf3c338",
+    "fmt-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "initial-compile.log": "dc523cf307782e6aa35925fe15a2c5dc773ec8fef90328826deea16ebe4e11aa",
+    "persistence-final.log": "c0b23cd7ccbf1feb4f27dfecb578dcf36f8ca4a72b06ba00604b5521ed60da24"
+  }
+}

@@ -258,6 +258,9 @@ pub(super) struct WorkerShared {
 }
 pub(super) struct FileWorker {
     pub(super) shared: Arc<WorkerShared>,
+    // Hold only result observation; the real worker still executes normally.
+    #[cfg(test)]
+    hold_results: AtomicBool,
 }
 impl FileWorker {
     pub(super) fn new() -> io::Result<Self> {
@@ -303,7 +306,11 @@ impl FileWorker {
                 }
                 worker.exited.store(true, Ordering::Release);
             })?;
-        Ok(Self { shared })
+        Ok(Self {
+            shared,
+            #[cfg(test)]
+            hold_results: AtomicBool::new(false),
+        })
     }
     pub(super) fn cancel(&self) {
         let mut state = self.shared.state.lock().expect("document worker metadata");
@@ -333,12 +340,20 @@ impl FileWorker {
         drop(retired);
     }
     pub(super) fn poll(&self) -> Option<(u64, Result<Completed, OperationFailure>)> {
+        #[cfg(test)]
+        if self.hold_results.load(Ordering::Relaxed) {
+            return None;
+        }
         self.shared
             .state
             .lock()
             .expect("document worker metadata")
             .result
             .take()
+    }
+    #[cfg(test)]
+    pub(super) fn hold_results_for_test(&self, hold: bool) {
+        self.hold_results.store(hold, Ordering::Relaxed);
     }
     pub(super) fn shutdown(&self) {
         let mut state = self.shared.state.lock().expect("document worker metadata");

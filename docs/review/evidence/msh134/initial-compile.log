@@ -1,0 +1,46 @@
+   Compiling mshogi-engine v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-engine)
+   Compiling mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+error[E0369]: binary operation `==` cannot be applied to type `std::option::Option<moves::CompletedActionGeometry>`
+   --> crates/mshogi-desktop-session/src/shared_moves_tests.rs:105:25
+    |
+105 |                         assert_eq!(snapshot.moves.last_action, before.moves.last_action);
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |                         |
+    |                         std::option::Option<moves::CompletedActionGeometry>
+    |                         std::option::Option<moves::CompletedActionGeometry>
+    |
+note: an implementation of `PartialEq` might be missing for `moves::CompletedActionGeometry`
+   --> crates/mshogi-desktop-session/src/moves.rs:83:1
+    |
+ 83 | pub struct CompletedActionGeometry {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ must implement `PartialEq`
+help: consider annotating `moves::CompletedActionGeometry` with `#[derive(PartialEq)]`
+   --> crates/mshogi-desktop-session/src/moves.rs:83:1
+    |
+ 83 + #[derive(PartialEq)]
+ 84 | pub struct CompletedActionGeometry {
+    |
+
+error[E0369]: binary operation `==` cannot be applied to type `std::option::Option<moves::CompletedActionGeometry>`
+   --> crates/mshogi-desktop-session/src/shared_moves_tests.rs:124:13
+    |
+124 |             assert_eq!(live.moves.last_action, before.moves.last_action);
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |             |
+    |             std::option::Option<moves::CompletedActionGeometry>
+    |             std::option::Option<moves::CompletedActionGeometry>
+    |
+note: an implementation of `PartialEq` might be missing for `moves::CompletedActionGeometry`
+   --> crates/mshogi-desktop-session/src/moves.rs:83:1
+    |
+ 83 | pub struct CompletedActionGeometry {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ must implement `PartialEq`
+help: consider annotating `moves::CompletedActionGeometry` with `#[derive(PartialEq)]`
+   --> crates/mshogi-desktop-session/src/moves.rs:83:1
+    |
+ 83 + #[derive(PartialEq)]
+ 84 | pub struct CompletedActionGeometry {
+    |
+
+For more information about this error, try `rustc --explain E0369`.
+error: could not compile `mshogi-desktop-session` (lib test) due to 2 previous errors

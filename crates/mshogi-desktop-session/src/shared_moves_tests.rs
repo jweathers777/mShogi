@@ -10,22 +10,206 @@ fn controller() -> DesktopController {
 }
 
 fn send(c: &mut DesktopController, operation: SessionOperation) -> Result<SharedSnapshot, String> {
+    send_with_poll(c, operation, |c, _| c.shared_snapshot())
+}
+
+fn send_with_poll(
+    c: &mut DesktopController,
+    operation: SessionOperation,
+    mut poll: impl FnMut(&mut DesktopController, &AdmissionReceipt) -> SharedSnapshot,
+) -> Result<SharedSnapshot, String> {
+    let deadline = Instant::now() + std::time::Duration::from_secs(20);
     let game = c.shared_snapshot().game;
-    let (_, receipt) = c.shared_command_with_receipt(SharedDesktopCommand {
+    let view_event = match &operation {
+        SessionOperation::Inspect { event_index } if game == GameKind::Chess => Some(*event_index),
+        _ => None,
+    };
+    let (started, receipt) = c.shared_command_with_receipt(SharedDesktopCommand {
         expected: c.shared_token(),
         game,
         operation,
     })?;
-    let deadline = Instant::now() + std::time::Duration::from_secs(20);
     loop {
-        let snapshot = c.shared_snapshot();
+        let snapshot = poll(c, &receipt);
         if let Some(result) = receipt.completion() {
             result?;
-            return Ok(snapshot);
+            if let Some(event) = view_event {
+                if snapshot.io.id != started.io.id {
+                    return Err("Requested history view I/O was superseded.".into());
+                }
+                match snapshot.io.phase {
+                    IoPhase::Complete => {
+                        if snapshot.event_index != event {
+                            return Err("Completed history view has the wrong event prefix.".into());
+                        }
+                        return Ok(snapshot);
+                    }
+                    IoPhase::Failed => {
+                        return Err(snapshot.io.message.unwrap_or("History view failed.".into()));
+                    }
+                    IoPhase::Viewing => {}
+                    _ => return Err("Requested history view is not pending or complete.".into()),
+                }
+            } else {
+                return Ok(snapshot);
+            }
         }
-        assert!(Instant::now() < deadline, "Moves admission deadline");
+        assert!(Instant::now() < deadline, "Moves admission/view deadline");
         std::thread::sleep(std::time::Duration::from_millis(1));
     }
+}
+
+fn chess_history() -> DesktopController {
+    let mut game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+    for action in ["e2e4", "e7e5"] {
+        game.apply(action.parse().unwrap()).unwrap();
+    }
+    let mut c = controller();
+    let replaced = replace(
+        &mut c,
+        CanonicalRecord::chess(game.record()),
+        NativeSide::Chess(Color::White),
+    );
+    assert!(replaced.paused && replaced.moves.entries.len() == 2);
+    c
+}
+
+#[test]
+fn controlled_chess_view_waits_beyond_admission_from_live_and_historical_prefixes() {
+    for prior_history in [false, true] {
+        for held_polls in [1, 4] {
+            let mut c = chess_history();
+            let live_before = c.shared_snapshot();
+            if prior_history {
+                let selected = send(&mut c, SessionOperation::Inspect { event_index: 1 }).unwrap();
+                assert!(selected.historical);
+            }
+            let before = c.shared_snapshot();
+            let native = c.session.chess().game.record().to_json();
+            c.files.hold_results_for_test(true);
+            let mut polls = 0;
+            let mut io_id = None;
+            let root = send_with_poll(
+                &mut c,
+                SessionOperation::Inspect { event_index: 0 },
+                |c, receipt| {
+                    let snapshot = c.shared_snapshot();
+                    polls += 1;
+                    if polls <= held_polls {
+                        // Original helper would return this actual stale prefix:
+                        // admission succeeds while the real View result is held.
+                        assert_eq!(receipt.completion(), Some(Ok(())));
+                        assert_eq!(snapshot.io.phase, IoPhase::Viewing);
+                        assert_eq!(snapshot.event_index, before.event_index);
+                        assert_ne!(snapshot.event_index, 0);
+                        assert_eq!(snapshot.historical, prior_history);
+                        assert_eq!(
+                            serde_json::to_value(&snapshot.moves.last_action).unwrap(),
+                            serde_json::to_value(&before.moves.last_action).unwrap()
+                        );
+                        assert_eq!(*io_id.get_or_insert(snapshot.io.id), snapshot.io.id);
+                        if polls == held_polls {
+                            c.files.hold_results_for_test(false);
+                        }
+                    }
+                    snapshot
+                },
+            )
+            .unwrap();
+            assert_eq!(root.io.id, io_id.unwrap());
+            assert_eq!(root.io.phase, IoPhase::Complete);
+            assert_eq!(root.event_index, 0);
+            assert!(root.historical && root.moves.last_action.is_none());
+            assert!(polls > held_polls);
+            assert_eq!(root.moves.entries.len(), 2);
+            assert_eq!(c.session.chess().game.record().to_json(), native);
+            let live = send(&mut c, SessionOperation::ReturnLive {}).unwrap();
+            assert_eq!(live.context, live_before.context);
+            assert_eq!(
+                serde_json::to_value(&live.moves.last_action).unwrap(),
+                serde_json::to_value(&live_before.moves.last_action).unwrap()
+            );
+        }
+    }
+}
+
+#[test]
+fn controlled_repeated_chess_root_requires_new_io_completion() {
+    let mut c = chess_history();
+    let old = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
+    assert_eq!(old.io.phase, IoPhase::Complete);
+    c.files.hold_results_for_test(true);
+    let mut pending = false;
+    let root = send_with_poll(
+        &mut c,
+        SessionOperation::Inspect { event_index: 0 },
+        |c, receipt| {
+            let snapshot = c.shared_snapshot();
+            if !pending {
+                assert_eq!(receipt.completion(), Some(Ok(())));
+                assert!(snapshot.io.id > old.io.id);
+                assert_eq!(snapshot.io.phase, IoPhase::Viewing);
+                assert!(snapshot.historical && snapshot.event_index == 0);
+                assert!(snapshot.moves.last_action.is_none());
+                pending = true;
+                c.files.hold_results_for_test(false);
+            }
+            snapshot
+        },
+    )
+    .unwrap();
+    assert!(pending && root.io.id > old.io.id);
+    assert_eq!(root.io.phase, IoPhase::Complete);
+    assert!(root.historical && root.moves.last_action.is_none());
+    assert_eq!(root.moves.entries.len(), 2);
+}
+
+#[test]
+fn controlled_chess_view_refuses_superseded_io() {
+    let mut c = chess_history();
+    c.files.hold_results_for_test(true);
+    let error = send_with_poll(
+        &mut c,
+        SessionOperation::Inspect { event_index: 0 },
+        |c, _| {
+            c.queue_view(c.session.version, 1).unwrap();
+            c.shared_snapshot()
+        },
+    )
+    .unwrap_err();
+    assert_eq!(error, "Requested history view I/O was superseded.");
+    c.files.hold_results_for_test(false);
+}
+
+#[test]
+fn controlled_chess_view_reports_real_failed_completion() {
+    let mut c = chess_history();
+    let native = c.session.chess().game.record().to_json();
+    c.files.hold_results_for_test(true);
+    let mut invalidated = false;
+    let error = send_with_poll(
+        &mut c,
+        SessionOperation::Inspect { event_index: 0 },
+        |c, _| {
+            if !invalidated {
+                // Invalidate the actual worker's saved token before installation.
+                c.session.version += 1;
+                c.files.hold_results_for_test(false);
+                invalidated = true;
+            }
+            c.shared_snapshot()
+        },
+    )
+    .unwrap_err();
+    assert_eq!(
+        error,
+        "The game changed during historical reconstruction; view was not applied."
+    );
+    let snapshot = c.shared_snapshot();
+    assert_eq!(snapshot.io.phase, IoPhase::Failed);
+    assert!(!snapshot.historical);
+    assert_eq!(snapshot.moves.entries.len(), 2);
+    assert_eq!(c.session.chess().game.record().to_json(), native);
 }
 
 fn replace(

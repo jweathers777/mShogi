@@ -1,8 +1,12 @@
 # MSH-134: synchronize Chess history-view assertions
 
 Starting integration: `816f670d1bacc95c73eae7c62dfa7b1e3b132edb`, primary
-`codex/rewrite`. Source review and local focused verification pass; required
-Linux/macOS/Windows native CI remains pending. MSH-134 is In Review.
+`codex/rewrite`. Source review, local focused verification and all required
+Linux/macOS/Windows native jobs pass. MSH-134 remains In Review until final
+evidence publication; final independent reconciliation is approved.
+
+Frozen source: `f426c67e73af53b40aee6b9491a2d8cbde55bfb5`.
+Required native run42413689537 uses that identical source for all three jobs.
 
 ## Cause and narrow correction
 
@@ -68,15 +72,30 @@ Local macOS27.0.1 arm64, Rust1.99.1, compatible Backlog1.55.1:
 Fresh read-only `msh134_review` accepts the narrow source and mutation proof with
 no material finding. It verifies exact I/O/target semantics, failure handling,
 unchanged strict original assertions and normal-build exclusion of the gate.
-Final acceptance still requires all three actual native CI jobs at the same
-source and independent evidence reconciliation. No packaged GUI campaign is
+All three actual native jobs now pass at the identical frozen source. Fresh final independent evidence reconciliation approves acceptance; only
+normal publication remains. No packaged GUI campaign is
 required or claimed for this test-only correction. Historical M4 acceptance and
 the earlier nonblocking134 disposition remain valid at their recorded checkpoint.
 
 ## Completion boundary
 
-Original three acceptance criteria and four completion items remain unchecked
-until supported. Required existing Rust jobs: Ubuntu24.04, macOS15 and Windows2022.
+Native Rust run42413689537 completed successfully, attempt1 with no retry:
+
+| Platform | Actual job | Result |
+| --- | --- | --- |
+| Ubuntu24.04 | [128527069550](https://github.com/jweathers777/mShogi/actions/runs/42413689537/job/128527069550) | All8 required steps passed |
+| macOS15 | [128527069747](https://github.com/jweathers777/mShogi/actions/runs/42413689537/job/128527069747) | All8 required steps passed |
+| Windows2022 | [128527069788](https://github.com/jweathers777/mShogi/actions/runs/42413689537/job/128527069788) | All8 required steps passed |
+
+Every completed raw log contains the four controlled cases and original strict
+regression passing twice: default workspace tests and the all-feature constructor
+suite. The single completion-aware monitor ended. Automatic Desktop42413689587
+was intentionally cancelled at the same source and its raw receipt retained;
+no passing GUI/package campaign is claimed.
+
+All three original criteria and DoD1–3 are independently supported and checked.
+DoD4 remains normal final evidence/task publication; sourcef426c67 is already
+integrated and pushed. Required existing Rust jobs: Ubuntu24.04, macOS15 and Windows2022.
 One completion-aware monitor observes the frozen source; automatic unrelated
 Desktop runs are cancelled with their provenance retained. No new M5 work or
 other task implementation is part of this assignment.

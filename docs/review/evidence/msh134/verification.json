@@ -3,7 +3,7 @@
   "task": "MSH-134",
   "status": "In Review",
   "starting_integration": "816f670d1bacc95c73eae7c62dfa7b1e3b132edb",
-  "tested_source": null,
+  "tested_source": "f426c67e73af53b40aee6b9491a2d8cbde55bfb5",
   "source_inputs_sha256": {
     "crates/mshogi-desktop-session/src/persistence.rs": "953bf7822909bf78d18685a3c71a1d2db7ced51abc416e60469ea325ebf43673",
     "crates/mshogi-desktop-session/src/shared_moves_tests.rs": "fe03373d3203418833a209b5fb92224d8c8f4bd4514a43c1d2b16d678792b1e1"
@@ -41,7 +41,8 @@
       "expected_result": "failure: Viewing instead of Complete from original admission-only return",
       "fixed_test_source_sha256": "fe03373d3203418833a209b5fb92224d8c8f4bd4514a43c1d2b16d678792b1e1",
       "mutant_test_source_sha256": "55437ad14d58fe72ece04e153b07a907493328238ab9dc1c913ab9b315df9b93",
-      "restored": true
+      "restored": true,
+      "replacement": "In shared_moves_tests.rs only: if let Some(event) = view_event { -> if let Some(event) = view_event.filter(|_| false) {. This restores the original immediate admission-only return; native/control assertions unchanged."
     },
     "qualification": "Gate withholds result observation, not native data or an invented completion; it models different scheduler orderings without timing-rate claims."
   },
@@ -188,8 +189,10 @@
     "fresh_context": true,
     "read_only": true,
     "source_verdict": "accepted; no material findings",
-    "evidence_verdict": "pending exact-source3OS final reconciliation",
-    "no_duplicate_tests": true
+    "evidence_verdict": "Final ACCEPT atf426c67, no material source/evidence findings. Reviewer independently verified all3actualjobs/all8requiredsteps,all5criticalcases2executions perplatform,2source/14evidence hashes, historical/mutation/developmentqualification and test-only scope.",
+    "no_duplicate_tests": true,
+    "preliminary_evidence_verdict": "accepted:source/diff and local log hashes/counts, mutation/development failures, original Windows failure/retry and current Desktop cancellation independently verified; no material finding",
+    "completion_condition": "All3originalAC/DoD1\u20133 supported; DoD4 normal final evidence/task publication/push with actual commit."
   },
   "ci": {
     "required_jobs": [
@@ -197,9 +200,98 @@
       "Rust (macos-15)",
       "Rust (windows-2022)"
     ],
-    "status": "pending source freeze",
+    "status": "success",
     "monitor_policy": "One completion-aware monitor; stop on terminal required condition, no overlapping campaigns. Preserve failed/retry receipts; no blind retries.",
-    "automatic_desktop": "Cancel unrelated automatic Desktop and preserve provenance; no required packaged GUI campaign for unchanged product behavior."
+    "automatic_desktop": "Cancel unrelated automatic Desktop and preserve provenance; no required packaged GUI campaign for unchanged product behavior.",
+    "run_id": 42413689537,
+    "run_attempt": 1,
+    "source": "f426c67e73af53b40aee6b9491a2d8cbde55bfb5",
+    "unrequired_desktop_run": 42413689587,
+    "unrequired_desktop_reason": "Cancelled intentionally as unrelated to test-only correction; receipts retained by same monitor.",
+    "required_job_ids": [
+      128527069550,
+      128527069747,
+      128527069788
+    ],
+    "unrequired_desktop_receipts": "ci/f426c67-unrequired-desktop.json.gz",
+    "accepted_jobs": [
+      {
+        "platform": "linux",
+        "job_id": 128527069550,
+        "run_attempt": 1,
+        "source": "f426c67e73af53b40aee6b9491a2d8cbde55bfb5",
+        "conclusion": "success",
+        "runner_name": "GitHub Actions 1000002720",
+        "runner_id": 1000002720,
+        "started_at": "2026-11-07T20:59:50Z",
+        "completed_at": "2026-11-07T21:22:54Z",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42413689537/job/128527069550",
+        "all8_required_steps": "success",
+        "critical_case_execution_counts": {
+          "controlled_chess_view_waits_beyond_admission_from_live_and_historical_prefixes": 2,
+          "controlled_repeated_chess_root_requires_new_io_completion": 2,
+          "controlled_chess_view_refuses_superseded_io": 2,
+          "controlled_chess_view_reports_real_failed_completion": 2,
+          "shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues": 2
+        },
+        "log": "ci/f426c67-linux.log.gz"
+      },
+      {
+        "platform": "macos",
+        "job_id": 128527069747,
+        "run_attempt": 1,
+        "source": "f426c67e73af53b40aee6b9491a2d8cbde55bfb5",
+        "conclusion": "success",
+        "runner_name": "GitHub Actions 1000002717",
+        "runner_id": 1000002717,
+        "started_at": "2026-11-07T20:59:51Z",
+        "completed_at": "2026-11-07T21:22:45Z",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42413689537/job/128527069747",
+        "all8_required_steps": "success",
+        "critical_case_execution_counts": {
+          "controlled_chess_view_waits_beyond_admission_from_live_and_historical_prefixes": 2,
+          "controlled_repeated_chess_root_requires_new_io_completion": 2,
+          "controlled_chess_view_refuses_superseded_io": 2,
+          "controlled_chess_view_reports_real_failed_completion": 2,
+          "shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues": 2
+        },
+        "log": "ci/f426c67-macos.log.gz"
+      },
+      {
+        "platform": "windows",
+        "job_id": 128527069788,
+        "run_attempt": 1,
+        "source": "f426c67e73af53b40aee6b9491a2d8cbde55bfb5",
+        "conclusion": "success",
+        "runner_name": "GitHub Actions 1000002719",
+        "runner_id": 1000002719,
+        "started_at": "2026-11-07T20:59:50Z",
+        "completed_at": "2026-11-07T21:31:45Z",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42413689537/job/128527069788",
+        "all8_required_steps": "success",
+        "critical_case_execution_counts": {
+          "controlled_chess_view_waits_beyond_admission_from_live_and_historical_prefixes": 2,
+          "controlled_repeated_chess_root_requires_new_io_completion": 2,
+          "controlled_chess_view_refuses_superseded_io": 2,
+          "controlled_chess_view_reports_real_failed_completion": 2,
+          "shared_moves_chess_real_admission_reopen_and_takeback_do_not_fabricate_cues": 2
+        },
+        "log": "ci/f426c67-windows.log.gz"
+      }
+    ],
+    "final_receipts": "ci/f426c67-rust-attempt1.json.gz",
+    "required_steps": [
+      "Format",
+      "Lint",
+      "Test",
+      "Verify production Tenjiku subprocess and standard-root journeys",
+      "Verify isolated desktop QA constructors",
+      "Verify native desktop snapshot fixtures",
+      "Build",
+      "Console smoke"
+    ],
+    "retry_campaigns": 0,
+    "monitor_result": "Single monitor71273 ended terminal success; all3 native jobs attempt1, no retries. Desktop separately terminalcancelled, not a passing GUI claim."
   },
   "scope": "Test synchronization plus cfg(test) observation control only; no rule/search/runtime/protocol/schema/budget change; no M4 reopening or M5 implementation.",
   "evidence_files": {
@@ -211,6 +303,20 @@
     "projection-final.log": "4c978ff9b330f8b997b1260979517d295a1ad26438de82a3eabfd2b1dbf3c338",
     "fmt-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "initial-compile.log": "dc523cf307782e6aa35925fe15a2c5dc773ec8fef90328826deea16ebe4e11aa",
-    "persistence-final.log": "c0b23cd7ccbf1feb4f27dfecb578dcf36f8ca4a72b06ba00604b5521ed60da24"
+    "persistence-final.log": "c0b23cd7ccbf1feb4f27dfecb578dcf36f8ca4a72b06ba00604b5521ed60da24",
+    "ci/f426c67-unrequired-desktop.json.gz": "98a858ea87f2b0ba26eb25cc8a1ddc4db69eb246c66cd1affcf019b9410b9afd",
+    "ci/f426c67-linux.log.gz": "e6396121bf11abf9f06ac2ce4419bb182bff22937db17e31f51c6ca4f173a9d8",
+    "ci/f426c67-macos.log.gz": "b9fb1ca768a8c0fb111b1e8525280fdd040087b0b241376906640c315f2385ba",
+    "ci/f426c67-rust-attempt1.json.gz": "28429201cc25c3617cbf25e425c0279dfb4d28de433a04d153e4274677f6a731",
+    "ci/f426c67-windows.log.gz": "4278727ef2ff9c46154d62bb87aa7ca7c64ee81f8d1d8560b93b141cc483fae3"
+  },
+  "acceptance": {
+    "AC1": "supported: exact returned I/O id/Complete/target, strict original assertions retained",
+    "AC2": "supported: actual worker observation controls and admission-only mutation fail deterministically, fixed source restored/passes",
+    "AC3": "supported: actual3OS required jobs pass and fresh final independent evidence review approves",
+    "DoD1": "supported",
+    "DoD2": "supported: fresh source and final evidence approval, no material findings",
+    "DoD3": "supported: report/index and dated current M4 handoff notices preserve historical checkpoint",
+    "DoD4": "pending normal final evidence/task publication/push; corrected source already integrated/pushed atf426c67"
   }
 }

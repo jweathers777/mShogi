@@ -2,27 +2,20 @@
   "schema_version": 1,
   "task": "MSH-47",
   "status": "In Review",
-  "review_date": "2026-11-06",
-  "reviewed_integration": "07f1bac4c366c0a327dd7f31e9528ee9aa444b5b",
+  "review_date": "2026-11-07",
+  "reviewed_integration": "68fef9f07760a7670f5d591705274ab4e078bd80",
   "runtime_platform_source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
   "report": "../../final-delivery.md",
   "integration_branch": "codex/rewrite",
-  "closure_eligibility": "withheld: existing MSH-112 meaningful failure contract unresolved; fresh independent final review approved blocked verdict, not M4 acceptance",
-  "formal_m4_status": "active; no milestone archive/reassignment/deletion/completion operation",
+  "closure_eligibility": "approved: all original obligations supported; normal evidence publication and Done47/derived completed77/77 remain",
+  "formal_m4_status": "active76/77 until Done47 after final independent review and normal evidence publication",
   "material_finding": {
     "id": "F47-01",
     "task": "MSH-112",
-    "scope": "Production console/match runner failureclassification/exitdiagnostics; original47AC3 failedcheckgate",
-    "demonstrated": "Repeated existing exitfixture expectedUnexpectedExit with coded non-success exit, observedMissingResponse/Brokenpipe/exitNone; unfixed",
-    "not_established": [
-      "new controlled reproduction/rootcause",
-      "fabricatedscore",
-      "native ruledefect",
-      "broken ordinarydesktopplay",
-      "architecturalredesign requirement"
-    ],
-    "preserved_narrower_verdicts": "89/46sharedapplicationcontracts and108architecturaldiagnostic remain accepted; no wholemilestonewaiver inferred",
-    "next_action": "Existing112controlled diagnosis/correction/independent actual-platformverification, thenresume47unchanged."
+    "status": "resolved",
+    "resolution_source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
+    "evidence": "docs/review/evidence/msh112/verification.json",
+    "reason": "Provisional early pipe/EOF status finalizes with definitive natural exit before bounded intervention; strict diagnostics/unscored failure preserved, no timeout increase; independent source review and required3OS CI."
   },
   "live_ci_reconciliation": [
     {
@@ -528,6 +521,22 @@
       "command": "git diff --stat 9749eec0ffdbfffbcc040b6a56c5bb2c90616a1f HEAD -- crates/mshogi-runner; inspect current runner fixture/assertion and production caller",
       "result": "pass",
       "scope": "Read-only source check completed; no runner diff from latest recorded112failure source. This is not a product-test pass or new reproduction."
+    },
+    {
+      "command": "python3 /private/tmp/msh47-resume-audit.py",
+      "result": "pass",
+      "scope": "Read-only assertions summarized in resumed_acceptance:13 accepted records/202shared hashes,6native source/19native evidence hashes,11 named cases per3OS, source equivalence, direct raw root/TakeBack observations,134 task/M4 membership. No product campaign.",
+      "source": "68fef9f07760a7670f5d591705274ab4e078bd80"
+    },
+    {
+      "command": "GitHub connector GET runs and filter=all jobs:42190693190,42028972679,42028972586",
+      "result": "pass",
+      "scope": "Live exact source/conclusion/attempt/required-step receipts, original failedWindows and carry-forward aliases retained."
+    },
+    {
+      "command": "Backlog1.55.1 doctor; milestone list --show-completed --plain; git diff --check",
+      "result": "pass",
+      "scope": "No duplicate/self/cycle task issues; M4active76/77 beforeclosure; no assignment/definition change."
     }
   ],
   "audit_observations": [
@@ -535,6 +544,11 @@
       "result": "initial audit assertion failed",
       "cause": "Assumed producer package inventories existed in raw GUI report files map; those are separate retained producer/audit receipts. Corrected to actual file SHA/producer-manifest/original-audit schema and preserved13 normal GUI host/engine checks.",
       "disposition": "Corrected audit passes; no product failure, source change, new package verification or GUI retry claimed."
+    },
+    {
+      "result": "candidate evidence correction",
+      "cause": "Shallow-copy alias changed the historical acceptance-disposition subobject while updating the current verdict. Independent reviewer detected the contradiction; restored exact92a751d historical object and compared all preserved historical fields.",
+      "scope": "Report/index preparation only; no product/test failure or campaign."
     }
   ],
   "research_reviews": [
@@ -552,60 +566,22 @@
     }
   ],
   "final_independent_review": {
-    "reviewer": "msh47_final_acceptance",
+    "reviewer": "msh47_post112_review",
     "fresh_context": true,
     "read_only": true,
-    "status": "approved closure-withheld report, not milestone acceptance",
-    "reviewed_source": "07f1bac4c366c0a327dd7f31e9528ee9aa444b5b",
+    "status": "approved corrected candidate, no remaining material source/evidence finding",
+    "reviewed_source": "68fef9f07760a7670f5d591705274ab4e078bd80",
+    "provisional_challenge": "Initially queried whether known required native Test race must blockAC3. Explicitly challenged against independent exact-IO/native projection and original actual packaged observations; revised to nonblocking after establishing no missing original function/coverage. Red/green alone not accepted as disposition.",
+    "unchanged_audit_reused": true,
+    "no_tests_or_mutations": true,
     "reviewed_candidate_sha256": {
-      "docs/m4/final-delivery.md": "24787ffa595a47beeb79868118bad42001d9f5364f90649009cc89564fc74146",
-      "docs/m4/evidence/msh47/verification.json": "9caa2ac13ecfb0530ca3cc07dd199dd125a3a6eeff459bd1668fd648f3851f0c",
-      "docs/m4/delivery-plan.md": "12b6e9b4ca56697820ead92567c6f4b06e9b97be579406be6e11fb8d0aa53807",
-      "docs/m4/implementation-map.md": "7a77db42613a53cc511444be94676f9e38233366e1e4e117a3f4eafbe5549879"
+      "docs/m4/final-delivery.md": "dde65a9e503997e578255ea4627fc0cf0b4ee72d962f15d40140f26869771444",
+      "docs/m4/evidence/msh47/verification.json": "79c9d246af1578c5952b43d942513add84303d9aa99ce882198de56d8aac9dd2",
+      "docs/m4/delivery-plan.md": "0cb59c98ee0c2cb86d0305295804c73d3ee86c3442f3b000ceb90d1f645db670",
+      "docs/m4/implementation-map.md": "5e3c82b4603e37833f9f706507b0209f98d2f689d8006054768d0f8ca1aea219"
     },
-    "subsequent_changes": "Runner locator-only clarification, additional completed static-check receipts and supported verdict/handoff wording; no source or acceptance change.",
-    "verdict": "Original47AC3 prevents wholeM4closure; meaningful runnerexitcategory/diagnostic assertion remains unresolved in actual headless consumer. Narrower89/46/108verdicts preserved. All6game/shared/platformcoverage supported; no additional materialgap.",
-    "checks": [
-      "Original47/112requirements,currentproductionCLI/run_experiment,exit7fixture/assertions,writeerrorstatuscode andhistory",
-      "Sourcebc92\u219207f fourrustdoccomments only",
-      "13reuseddocumenthashes and202masterevidencehashes",
-      "Six originalCIjob/source/attempt/steps",
-      "WindowsLinux rawSHA/source49passed/0failed/13normalhostenginepairs",
-      "Nineoriginal47prerequisitesDone/checked;47/112AC/DoDtext unchanged",
-      "M4active75/77,archiveisnotcompletion",
-      "git diff --check"
-    ],
-    "environment": {
-      "os": "macOS-27.0.1-arm64-arm-64bit",
-      "machine": "arm64",
-      "python": "3.11.0",
-      "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
-      "backlog": "1.55.1"
-    },
-    "not_run": [
-      "builds",
-      "tests",
-      "CI",
-      "GUI",
-      "benchmarks",
-      "controlled112reproduction"
-    ],
-    "post_push_reconciliation": {
-      "status": "approved closure-withheld metadata, not milestone acceptance",
-      "evidence_revision": "a666763ff65d8a30c0e6f9f10d8438d3cda4c643",
-      "head_and_origin_alignment_verified": true,
-      "final_metadata_diff_sha256": "b752159bfacf760548f7df8e68c715dd762659a4f1ad12c964837c7bab9bc7ff",
-      "report_candidate_sha256": "a120eb23636bb25c812b554a3ebbfa950f9de7aa95366f23e62f421a989556d5",
-      "checks": [
-        "47InReview withAC3/DoD1/2unchecked and supported blockedreviewAC1/2/4+DoD3/4",
-        "M4active75/77 withoutacceptance/archival/reassignment",
-        "Original47/112criteria/dependencies andall133memberships preserved",
-        "112ToDo/unassigned;appendonlyhandoff/noimplementation",
-        "Game/shared/architecture accepted evidence andF47-01unchanged",
-        "git diff --check"
-      ],
-      "audit_observation": "Initial reviewer comparison used preassignment baseline for active47assignee; corrected integratedactiveownership comparison passes. Audit assumption, not product/record defect."
-    }
+    "verdict": "All4 original AC and DoD1\u20133 support acceptance; DoD4 normal final publication/push contingent. Source112 resolved,134 nonblocking with real native/exact-I/O/packaged coverage; no universal no-flake claim. Pinned1.55.1 confirms Done47 derives completed77/77, no archival/reassignment.",
+    "historical_integrity": "Independent reviewer rechecked all9 preserved historical fields after correcting alias error."
   },
   "new_product_campaigns": [],
   "required_new_ci_jobs": [],
@@ -617,7 +593,7 @@
     "controlled112reproduction/fix"
   ],
   "handoff": {
-    "immediate_corrective_assignment": "MSH-112 (notstartedhere)",
+    "immediate_corrective_assignment": "MSH-134 recommended nonblocking quality correction; not started",
     "next_m5_after_m4_acceptance": "MSH-48 (ToDo/unassigned/unstarted)",
     "MSH-109": "still waits48; no M5optimization started",
     "MSH-57/58": "existingrequiredM6polish/accessibility/distribution;notbegun"
@@ -625,38 +601,421 @@
   "acceptance_disposition": {
     "AC1": "supported",
     "AC2": "supported",
-    "AC3": "blocked by unresolved112 failurecontract",
-    "AC4": "supported as explicitblockedclosureverdict, not positiveM4acceptance",
-    "DoD1": "unchecked while requiredacceptance unsupported",
-    "DoD2": "unchecked unresolvedmaterialfinding",
-    "DoD3": "current docs and112handoff supported",
-    "DoD4": "supported: reviewevidence actuallycommitted/pushed and durableblockedreviewsummary;not task/milestoneacceptance"
+    "AC3": "supported:112 corrected-source3OS native verification plus independently source/actual-behavior-qualified134 nonblocking disposition",
+    "AC4": "supported current positive eligibility plus preserved closure-withheld historical verdict",
+    "DoD1": "supported: all original criteria have qualified evidence",
+    "DoD2": "supported: fresh final independent approval; material evidence error resolved",
+    "DoD3": "current report/index/roadmap handoff;134 accurately open and recommended next",
+    "DoD4": "prior blocked-review publication preserved; resumed final acceptance publication pending"
   },
-  "review_evidence_integration_revision": "a666763ff65d8a30c0e6f9f10d8438d3cda4c643",
+  "review_evidence_integration_revision": null,
   "integration_handoff": {
-    "evidence_revision": "a666763ff65d8a30c0e6f9f10d8438d3cda4c643",
-    "branch": "codex/rewrite",
-    "evidence_push_confirmed_before_integration_check": true,
     "task_status": "In Review",
-    "m4_status": "active75/77;47and112unfinished",
-    "checked_ac": [
-      1,
-      2,
-      4
+    "m4_status": "active76/77",
+    "publication": "resumed acceptance pending final candidate review/push",
+    "no_implementation": true
+  },
+  "historical_reviews": [
+    {
+      "review_date": "2026-11-06",
+      "reviewed_integration": "07f1bac4c366c0a327dd7f31e9528ee9aa444b5b",
+      "closure_eligibility": "withheld: existing MSH-112 meaningful failure contract unresolved; fresh independent final review approved blocked verdict, not M4 acceptance",
+      "formal_m4_status": "active; no milestone archive/reassignment/deletion/completion operation",
+      "material_finding": {
+        "id": "F47-01",
+        "task": "MSH-112",
+        "scope": "Production console/match runner failureclassification/exitdiagnostics; original47AC3 failedcheckgate",
+        "demonstrated": "Repeated existing exitfixture expectedUnexpectedExit with coded non-success exit, observedMissingResponse/Brokenpipe/exitNone; unfixed",
+        "not_established": [
+          "new controlled reproduction/rootcause",
+          "fabricatedscore",
+          "native ruledefect",
+          "broken ordinarydesktopplay",
+          "architecturalredesign requirement"
+        ],
+        "preserved_narrower_verdicts": "89/46sharedapplicationcontracts and108architecturaldiagnostic remain accepted; no wholemilestonewaiver inferred",
+        "next_action": "Existing112controlled diagnosis/correction/independent actual-platformverification, thenresume47unchanged."
+      },
+      "final_independent_review": {
+        "reviewer": "msh47_final_acceptance",
+        "fresh_context": true,
+        "read_only": true,
+        "status": "approved closure-withheld report, not milestone acceptance",
+        "reviewed_source": "07f1bac4c366c0a327dd7f31e9528ee9aa444b5b",
+        "reviewed_candidate_sha256": {
+          "docs/m4/final-delivery.md": "24787ffa595a47beeb79868118bad42001d9f5364f90649009cc89564fc74146",
+          "docs/m4/evidence/msh47/verification.json": "9caa2ac13ecfb0530ca3cc07dd199dd125a3a6eeff459bd1668fd648f3851f0c",
+          "docs/m4/delivery-plan.md": "12b6e9b4ca56697820ead92567c6f4b06e9b97be579406be6e11fb8d0aa53807",
+          "docs/m4/implementation-map.md": "7a77db42613a53cc511444be94676f9e38233366e1e4e117a3f4eafbe5549879"
+        },
+        "subsequent_changes": "Runner locator-only clarification, additional completed static-check receipts and supported verdict/handoff wording; no source or acceptance change.",
+        "verdict": "Original47AC3 prevents wholeM4closure; meaningful runnerexitcategory/diagnostic assertion remains unresolved in actual headless consumer. Narrower89/46/108verdicts preserved. All6game/shared/platformcoverage supported; no additional materialgap.",
+        "checks": [
+          "Original47/112requirements,currentproductionCLI/run_experiment,exit7fixture/assertions,writeerrorstatuscode andhistory",
+          "Sourcebc92\u219207f fourrustdoccomments only",
+          "13reuseddocumenthashes and202masterevidencehashes",
+          "Six originalCIjob/source/attempt/steps",
+          "WindowsLinux rawSHA/source49passed/0failed/13normalhostenginepairs",
+          "Nineoriginal47prerequisitesDone/checked;47/112AC/DoDtext unchanged",
+          "M4active75/77,archiveisnotcompletion",
+          "git diff --check"
+        ],
+        "environment": {
+          "os": "macOS-27.0.1-arm64-arm-64bit",
+          "machine": "arm64",
+          "python": "3.11.0",
+          "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+          "backlog": "1.55.1"
+        },
+        "not_run": [
+          "builds",
+          "tests",
+          "CI",
+          "GUI",
+          "benchmarks",
+          "controlled112reproduction"
+        ],
+        "post_push_reconciliation": {
+          "status": "approved closure-withheld metadata, not milestone acceptance",
+          "evidence_revision": "a666763ff65d8a30c0e6f9f10d8438d3cda4c643",
+          "head_and_origin_alignment_verified": true,
+          "final_metadata_diff_sha256": "b752159bfacf760548f7df8e68c715dd762659a4f1ad12c964837c7bab9bc7ff",
+          "report_candidate_sha256": "a120eb23636bb25c812b554a3ebbfa950f9de7aa95366f23e62f421a989556d5",
+          "checks": [
+            "47InReview withAC3/DoD1/2unchecked and supported blockedreviewAC1/2/4+DoD3/4",
+            "M4active75/77 withoutacceptance/archival/reassignment",
+            "Original47/112criteria/dependencies andall133memberships preserved",
+            "112ToDo/unassigned;appendonlyhandoff/noimplementation",
+            "Game/shared/architecture accepted evidence andF47-01unchanged",
+            "git diff --check"
+          ],
+          "audit_observation": "Initial reviewer comparison used preassignment baseline for active47assignee; corrected integratedactiveownership comparison passes. Audit assumption, not product/record defect."
+        }
+      },
+      "acceptance_disposition": {
+        "AC1": "supported",
+        "AC2": "supported",
+        "AC3": "blocked by unresolved112 failurecontract",
+        "AC4": "supported as explicitblockedclosureverdict, not positiveM4acceptance",
+        "DoD1": "unchecked while requiredacceptance unsupported",
+        "DoD2": "unchecked unresolvedmaterialfinding",
+        "DoD3": "current docs and112handoff supported",
+        "DoD4": "supported: reviewevidence actuallycommitted/pushed and durableblockedreviewsummary;not task/milestoneacceptance"
+      },
+      "review_evidence_integration_revision": "a666763ff65d8a30c0e6f9f10d8438d3cda4c643",
+      "integration_handoff": {
+        "evidence_revision": "a666763ff65d8a30c0e6f9f10d8438d3cda4c643",
+        "branch": "codex/rewrite",
+        "evidence_push_confirmed_before_integration_check": true,
+        "task_status": "In Review",
+        "m4_status": "active75/77;47and112unfinished",
+        "checked_ac": [
+          1,
+          2,
+          4
+        ],
+        "unchecked_ac": [
+          3
+        ],
+        "checked_dod": [
+          3,
+          4
+        ],
+        "unchecked_dod": [
+          1,
+          2
+        ],
+        "milestone_archive_reassignment_or_completion": false,
+        "next_immediate_task": "MSH-112 (not started)",
+        "next_m5_after_m4_acceptance": "MSH-48 (not started)"
+      },
+      "preserved_at_revision": "92a751d3e1df0ef4c4b9610cc55ec42e5e673770"
+    }
+  ],
+  "corrected_native_source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
+  "resumed_acceptance": {
+    "starting_integration": "68fef9f07760a7670f5d591705274ab4e078bd80",
+    "source_equivalence_to_corrected_native": "no changed production/test/frontend/host/workflow/toolchain inputs",
+    "msh112_published_evidence": "6aabc97e92676af32856f5166ecfb1ef52b5e2e7",
+    "msh112_final_integration": "68fef9f07760a7670f5d591705274ab4e078bd80",
+    "checks": {
+      "starting_integration": "68fef9f07760a7670f5d591705274ab4e078bd80",
+      "reused_accepted_record_hashes": 13,
+      "immutable_msh88_evidence_hashes": 202,
+      "msh112_source_hashes": 6,
+      "msh112_evidence_hashes": 19,
+      "critical_cases_per_native_platform": 11,
+      "source_equivalence_to_corrected44": "no changed production/test/frontend/host/workflow/toolchain inputs",
+      "task_count": 134,
+      "m4_before": {
+        "assigned": 77,
+        "done": 76,
+        "unfinished": [
+          "MSH-47"
+        ]
+      }
+    },
+    "live_ci_revalidation": [
+      {
+        "run_id": 42190693190,
+        "head_sha": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 2,
+        "jobs": [
+          {
+            "id": 127801682025,
+            "name": "Rust (windows-2022)",
+            "attempt": 1,
+            "status": "completed",
+            "conclusion": "failure",
+            "started_at": "2026-11-06T08:51:34Z",
+            "completed_at": "2026-11-06T09:02:18Z",
+            "runner_name": "GitHub Actions 1000002710",
+            "steps": [
+              {
+                "name": "Test",
+                "conclusion": "failure"
+              }
+            ],
+            "successful_step_count": 7
+          },
+          {
+            "id": 127801682198,
+            "name": "Rust (ubuntu-24.04)",
+            "attempt": 1,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-06T08:51:36Z",
+            "completed_at": "2026-11-06T09:17:48Z",
+            "runner_name": "GitHub Actions 1000002708",
+            "steps": [],
+            "successful_step_count": 13
+          },
+          {
+            "id": 127801682340,
+            "name": "Rust (macos-15)",
+            "attempt": 1,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-06T08:51:37Z",
+            "completed_at": "2026-11-06T09:12:06Z",
+            "runner_name": "GitHub Actions 1000002709",
+            "steps": [],
+            "successful_step_count": 13
+          },
+          {
+            "id": 127812835546,
+            "name": "Rust (windows-2022)",
+            "attempt": 2,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-06T09:18:43Z",
+            "completed_at": "2026-11-06T09:44:56Z",
+            "runner_name": "GitHub Actions 1000002711",
+            "steps": [],
+            "successful_step_count": 13
+          },
+          {
+            "id": 127812836773,
+            "name": "Rust (ubuntu-24.04)",
+            "attempt": 2,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-06T08:51:36Z",
+            "completed_at": "2026-11-06T09:17:48Z",
+            "runner_name": "GitHub Actions 1000002708",
+            "steps": [],
+            "successful_step_count": 13
+          },
+          {
+            "id": 127812882169,
+            "name": "Rust (macos-15)",
+            "attempt": 2,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-06T08:51:37Z",
+            "completed_at": "2026-11-06T09:12:06Z",
+            "runner_name": "GitHub Actions 1000002709",
+            "steps": [],
+            "successful_step_count": 13
+          }
+        ]
+      },
+      {
+        "run_id": 42028972679,
+        "head_sha": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "jobs": [
+          {
+            "id": 127250225640,
+            "name": "Rust (macos-15)",
+            "attempt": 1,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-05T12:39:17Z",
+            "completed_at": "2026-11-05T13:01:51Z",
+            "runner_name": "GitHub Actions 1000002679",
+            "steps": [],
+            "successful_step_count": 13
+          },
+          {
+            "id": 127250225725,
+            "name": "Rust (ubuntu-24.04)",
+            "attempt": 1,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-05T12:39:17Z",
+            "completed_at": "2026-11-05T12:57:32Z",
+            "runner_name": "GitHub Actions 1000002677",
+            "steps": [],
+            "successful_step_count": 13
+          },
+          {
+            "id": 127250225944,
+            "name": "Rust (windows-2022)",
+            "attempt": 1,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-05T12:39:18Z",
+            "completed_at": "2026-11-05T13:11:56Z",
+            "runner_name": "GitHub Actions 1000002678",
+            "steps": [],
+            "successful_step_count": 13
+          }
+        ]
+      },
+      {
+        "run_id": 42028972586,
+        "head_sha": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "jobs": [
+          {
+            "id": 127250225410,
+            "name": "Desktop (ubuntu-24.04)",
+            "attempt": 1,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-05T12:39:17Z",
+            "completed_at": "2026-11-05T13:38:01Z",
+            "runner_name": "GitHub Actions 1000002676",
+            "steps": [],
+            "successful_step_count": 18
+          },
+          {
+            "id": 127250225967,
+            "name": "Desktop (windows-2022)",
+            "attempt": 1,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-05T12:39:17Z",
+            "completed_at": "2026-11-05T13:21:32Z",
+            "runner_name": "GitHub Actions 1000002681",
+            "steps": [],
+            "successful_step_count": 18
+          },
+          {
+            "id": 127250226038,
+            "name": "Desktop (macos-15)",
+            "attempt": 1,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-05T12:39:17Z",
+            "completed_at": "2026-11-05T12:48:25Z",
+            "runner_name": "GitHub Actions 1000002680",
+            "steps": [],
+            "successful_step_count": 13
+          }
+        ]
+      }
     ],
-    "unchecked_ac": [
-      3
-    ],
-    "checked_dod": [
-      3,
-      4
-    ],
-    "unchecked_dod": [
-      1,
-      2
-    ],
-    "milestone_archive_reassignment_or_completion": false,
-    "next_immediate_task": "MSH-112 (not started)",
-    "next_m5_after_m4_acceptance": "MSH-48 (not started)"
+    "msh134": {
+      "classification": "unfixed test synchronization defect; no demonstrated production defect or material missing originalM4 function/coverage",
+      "closure_blocking": false,
+      "failed_job": 127801682025,
+      "successful_retry_job": 127812835546,
+      "retry_is_not_a_fix": true,
+      "source_cause": "shared_moves_tests send waits admission; Chess Inspect queues async Work::View without admission receipt. It may return before matching view IO completes. Production polls Viewing and token/id guards completion.",
+      "independent_coverage": [
+        "moves/tests.rs24\u201348 native selected-root cue/retained projection",
+        "persistence.rs1858\u20131868,2037\u20132077 exact-IO wait/native prefix/conclusion/history/current-format roundtrip",
+        "MSH88 actual Windows/Linux normal-cross-game completed Chess root and reverse-Load/Return/TakeBack observations"
+      ],
+      "actual_packaged_evidence": {
+        "windows": {
+          "phase": "normal-cross-game",
+          "roots": [
+            {
+              "event_index_in_phase": 25,
+              "io_id": 3,
+              "io_phase": "complete",
+              "native_root_events": 0,
+              "retained_move_rows": 2,
+              "last_action": null
+            },
+            {
+              "event_index_in_phase": 199,
+              "io_id": 14,
+              "io_phase": "complete",
+              "native_root_events": 0,
+              "retained_move_rows": 2,
+              "last_action": null
+            }
+          ],
+          "load_return_takeback": [
+            {
+              "event_index_in_phase": 596,
+              "retained_move_rows": 0,
+              "last_action": null,
+              "retained_observations": 1
+            }
+          ],
+          "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+          "raw_report_sha256": "81e919cedfe2cbdf0c7a6bf580fc072fb9431f4e61339c68eb1f6feec2df9917"
+        },
+        "linux": {
+          "phase": "normal-cross-game",
+          "roots": [
+            {
+              "event_index_in_phase": 23,
+              "io_id": 3,
+              "io_phase": "complete",
+              "native_root_events": 0,
+              "retained_move_rows": 2,
+              "last_action": null
+            },
+            {
+              "event_index_in_phase": 183,
+              "io_id": 14,
+              "io_phase": "complete",
+              "native_root_events": 0,
+              "retained_move_rows": 2,
+              "last_action": null
+            }
+          ],
+          "load_return_takeback": [
+            {
+              "event_index_in_phase": 565,
+              "retained_move_rows": 0,
+              "last_action": null,
+              "retained_observations": 1
+            }
+          ],
+          "source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
+          "raw_report_sha256": "bac2331dab5e21b4ef1cac97e43a592af14b4c42a06e2eef806f4454adf17d40"
+        }
+      },
+      "regression_reliability": "Known false-early assertion remains quality work, with strict completed-state expectation preserved. Independent exact-boundary/native/actual-product evidence covers original behavior; no demonstrated material coverage gap or universal flake-free CI promise.",
+      "task_status": "Ready, unassigned, no milestone, unimplemented, original criteria unchanged",
+      "recommended_next": "MSH-134 before newM5 work; first actualM5 assignment remains48, no task started.",
+      "task_sha256_at_review": "959dffcfbcdea254cabdcd6fe15e738b71d3507b13cc8c31ae3889d41afbf002"
+    },
+    "new_campaigns": [],
+    "milestone_membership_sha256": "78d62746460fd4abf7d307f36b9c4de2a80afcc48f8cb037e1cac429586dc5ec",
+    "formal_workflow": "PinnedCLI1.55.1 derives completed milestone when all77 assigned tasksDone. Done47 only after review/publication; verify milestone list --show-completed. No archival/reassignment/definition change."
   }
 }

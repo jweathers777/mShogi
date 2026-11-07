@@ -1,3 +1,14 @@
+> MSH-47 resumed final acceptance — 2026-11-07: the
+> [current delivery verdict](final-delivery.md) supports all original M4
+> obligations after the accepted MSH-112 correction at `44c86b0`. MSH-134
+> remains an unfixed asynchronous history-view test-helper defect; independent
+> native/exact-I/O and original actual packaged evidence establish no material
+> missing M4 behavior or coverage. Its passing retry is not a fix. Final
+> independent review is approved; normal publication precedes Done47/formal M4 completion.
+> MSH-134 is recommended next; the first M5 assignment remains MSH-48 and
+> subsequent MSH-109 still has its original gate. No M5/M6 or134 work starts
+> here. Earlier dated snapshots below retain their original source/status scope.
+
 > MSH-47 final acceptance review — 2026-11-06: the
 > [current M4 delivery report](final-delivery.md) supports the six-game and
 > shared delivery evidence but withholds formal milestone closure. Existing

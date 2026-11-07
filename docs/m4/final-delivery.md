@@ -4,15 +4,18 @@ Resumed review: **7 November 2026**, primary `codex/rewrite`, starting integrati
 **`68fef9f07760a7670f5d591705274ab4e078bd80`**. The original six-game/seven-profile
 audit below is reused, with its exact source and environment qualifications.
 
-## Current verdict: acceptance supported; final publication pending
+## Current verdict: accepted — M4 complete
 
 All four original MSH-47 obligations have supporting evidence. F47-01 is resolved
 by the independently accepted MSH-112 correction. The separately identified
 MSH-134 history-view test synchronization defect is real and remains unfixed,
 but the source and independent retained behavioral evidence establish no missing
 original M4 function or material coverage gap. This is not a conclusion drawn
-from its passing retry. Fresh independent final review approves acceptance; normal publication must
-precede Done47 and formal M4 completion; neither M5 nor M6 starts here.
+from its passing retry. Fresh independent final review approves acceptance. Approved evidence was
+normally committed and pushed at **`4731800ac3459b88de200f57a4728d06d9e54852`**
+before Done47. MSH-47 is **Done**, all four original criteria and four completion
+items are checked, and the supported milestone list reports **M4 Completed77/77**.
+Neither M5 nor M6 starts here.
 
 The **6 November closure-withheld finding and review remain historical evidence**
 at `92a751d3e1df0ef4c4b9610cc55ec42e5e673770` and in the dated chapter below.
@@ -146,16 +149,17 @@ schema, budget, accepted owner visual decision or original M4 criterion changed.
 | --- | --- |
 | AC1 — preserved26/39 and complete41–46 | Supported by unchanged accepted detailed evidence. |
 | AC2 — independent complete six-game trace | Supported; previous audit reused, changed facts independently reviewed. |
-| AC3 — reproducible integrated/platform evidence; no material required gap | Supported by112 correction/actual CI and explicit source-supported134 assessment above, independently approved; normal publication pending. |
+| AC3 — reproducible integrated/platform evidence; no material required gap | Supported by112 correction/actual CI and explicit source-supported134 assessment above, independently approved and published. |
 | AC4 — durable scope/verdict/limitations and honest handoff | Supported by this current decision plus preserved closure-withheld history; no unfinished original functionality moves to M5/M6. |
 
 Backlog1.55.1 has no independent milestone-completion mutation: completion is
-derived from assigned task statuses. Before finalization M4 is active76/77,
-with47 the sole unfinished assigned task. After approved evidence publication,
-Done47 and its original four AC/four DoD checks must make supported
-`milestone list --show-completed --plain` report **Completed77/77**. Archival is
-retirement only and is not a closure substitute; no milestone assignment,
-dependency or original milestone definition will change. MSH-133 and the
+derived from assigned task statuses. Before finalization M4 was active76/77,
+with47 the sole unfinished assigned task. After approved evidence publication
+at4731800, supported `task edit MSH-47 --status Done` completed the final assigned
+task. `milestone list --show-completed --plain` then reported **Completed77/77**.
+This records the independently established outcome; a percentage alone remains
+insufficient acceptance. Archival is retirement only; no archival, milestone
+assignment, dependency or original milestone definition changed. MSH-133 and the
 unrelated historical-access worktree remain untouched.
 
 MSH-134 is recommended next; the first actual M5 assignment remains MSH-48,

@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "task": "MSH-47",
-  "status": "In Review",
+  "status": "Done",
   "review_date": "2026-11-07",
   "reviewed_integration": "68fef9f07760a7670f5d591705274ab4e078bd80",
   "runtime_platform_source": "bc92bfe5e3b20e9e999df12cbf54b91682c71b8d",
   "report": "../../final-delivery.md",
   "integration_branch": "codex/rewrite",
-  "closure_eligibility": "approved: all original obligations supported; normal evidence publication and Done47/derived completed77/77 remain",
-  "formal_m4_status": "active76/77 until Done47 after final independent review and normal evidence publication",
+  "closure_eligibility": "accepted: all original4 criteria/4DoD supported, independent final review approved and normal evidence publication completed",
+  "formal_m4_status": "Completed77/77 verified by pinnedBacklog1.55.1 milestone list --show-completed --plain after supported Done47",
   "material_finding": {
     "id": "F47-01",
     "task": "MSH-112",
@@ -438,12 +438,16 @@
     "definition_sha256": "fa0a0e879bc57668acc0f12e243e34f893860fda84de7d5b6ee4463d8a384f2c",
     "all133task_milestone_membership_sha256": "42b6902d02474c8e50c3011328a4b634c084f2f709933631f522d5c45a192caa",
     "assigned_m4_tasks": 77,
-    "done_at_start": 75,
+    "done_at_start": 76,
     "unfinished_at_start": [
-      "MSH-47",
-      "MSH-112"
+      "MSH-47"
     ],
-    "percentage_is_not_acceptance": true
+    "percentage_is_not_acceptance": true,
+    "done_after_acceptance": 77,
+    "unfinished_after_acceptance": [],
+    "formal_status": "Completed",
+    "all134task_milestone_membership_sha256": "78d62746460fd4abf7d307f36b9c4de2a80afcc48f8cb037e1cac429586dc5ec",
+    "supported_completion_action": "Pinned1.55.1 task edit MSH-47 --status Done after independently accepted normal evidence publication; milestone list --show-completed --plain confirms Completed77/77. No separate close mutation or archival."
   },
   "environment": {
     "os": "macOS-27.0.1-arm64-arm-64bit",
@@ -569,7 +573,7 @@
     "reviewer": "msh47_post112_review",
     "fresh_context": true,
     "read_only": true,
-    "status": "approved corrected candidate, no remaining material source/evidence finding",
+    "status": "approved final completion reconciliation, no material issue",
     "reviewed_source": "68fef9f07760a7670f5d591705274ab4e078bd80",
     "provisional_challenge": "Initially queried whether known required native Test race must blockAC3. Explicitly challenged against independent exact-IO/native projection and original actual packaged observations; revised to nonblocking after establishing no missing original function/coverage. Red/green alone not accepted as disposition.",
     "unchanged_audit_reused": true,
@@ -581,7 +585,10 @@
       "docs/m4/implementation-map.md": "5e3c82b4603e37833f9f706507b0209f98d2f689d8006054768d0f8ca1aea219"
     },
     "verdict": "All4 original AC and DoD1\u20133 support acceptance; DoD4 normal final publication/push contingent. Source112 resolved,134 nonblocking with real native/exact-I/O/packaged coverage; no universal no-flake claim. Pinned1.55.1 confirms Done47 derives completed77/77, no archival/reassignment.",
-    "historical_integrity": "Independent reviewer rechecked all9 preserved historical fields after correcting alias error."
+    "historical_integrity": "Independent reviewer rechecked all9 preserved historical fields after correcting alias error.",
+    "post_publication_verdict": "Independently verified actual evidence4731800 HEAD/origin equality, Done47, pinnedCLI Completed77/77, original criteria/DoD/deps/ownership/all134assignments unchanged,134byte-identicalReady/unimplemented,all10 historical fields/originalreportSHA/13acceptedhashes match. Finaldiff completion/publication only; normal metadata push may proceed.",
+    "reviewed_publication": "4731800ac3459b88de200f57a4728d06d9e54852",
+    "reviewed_final_metadata_diff_sha256": "ce99fe4f40beae3b5a0bac8c22e8e21e70f53c9a8a4cfe24855ac1ea18dd2a7b"
   },
   "new_product_campaigns": [],
   "required_new_ci_jobs": [],
@@ -601,19 +608,36 @@
   "acceptance_disposition": {
     "AC1": "supported",
     "AC2": "supported",
-    "AC3": "supported:112 corrected-source3OS native verification plus independently source/actual-behavior-qualified134 nonblocking disposition",
-    "AC4": "supported current positive eligibility plus preserved closure-withheld historical verdict",
-    "DoD1": "supported: all original criteria have qualified evidence",
-    "DoD2": "supported: fresh final independent approval; material evidence error resolved",
-    "DoD3": "current report/index/roadmap handoff;134 accurately open and recommended next",
-    "DoD4": "prior blocked-review publication preserved; resumed final acceptance publication pending"
+    "AC3": "supported:112 resolved and134 independently nonblocking with direct native/exact-I/O/actual packaged coverage",
+    "AC4": "supported current accepted closure verdict plus preserved earlier withheld verdict",
+    "DoD1": "checked; all original criteria have qualified evidence",
+    "DoD2": "checked; fresh final independent approval and resolved material evidence finding",
+    "DoD3": "checked; current report/index/roadmap and accurate open134 handoff",
+    "DoD4": "checked; approved final evidence integrated/pushed at4731800 beforeDone47"
   },
-  "review_evidence_integration_revision": null,
+  "review_evidence_integration_revision": "4731800ac3459b88de200f57a4728d06d9e54852",
   "integration_handoff": {
-    "task_status": "In Review",
-    "m4_status": "active76/77",
-    "publication": "resumed acceptance pending final candidate review/push",
-    "no_implementation": true
+    "evidence_revision": "4731800ac3459b88de200f57a4728d06d9e54852",
+    "branch": "codex/rewrite",
+    "evidence_push_confirmed_before_done": true,
+    "task_status": "Done",
+    "m4_status": "Completed77/77",
+    "checked_ac": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "unchecked_ac": [],
+    "checked_dod": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "unchecked_dod": [],
+    "no_implementation": true,
+    "next_recommended_task": "MSH-134, stillReady/unassigned/unstarted; actualM5pilot48 not begun"
   },
   "historical_reviews": [
     {
@@ -729,7 +753,21 @@
         "next_immediate_task": "MSH-112 (not started)",
         "next_m5_after_m4_acceptance": "MSH-48 (not started)"
       },
-      "preserved_at_revision": "92a751d3e1df0ef4c4b9610cc55ec42e5e673770"
+      "preserved_at_revision": "92a751d3e1df0ef4c4b9610cc55ec42e5e673770",
+      "milestone_integrity": {
+        "m4_id": "m-4",
+        "definition_path": "backlog/milestones/m-4 - m4---variant-expansion-and-conformance.md",
+        "definition_sha256": "fa0a0e879bc57668acc0f12e243e34f893860fda84de7d5b6ee4463d8a384f2c",
+        "all133task_milestone_membership_sha256": "42b6902d02474c8e50c3011328a4b634c084f2f709933631f522d5c45a192caa",
+        "assigned_m4_tasks": 77,
+        "done_at_start": 75,
+        "unfinished_at_start": [
+          "MSH-47",
+          "MSH-112"
+        ],
+        "percentage_is_not_acceptance": true
+      },
+      "original_report_sha256": "a120eb23636bb25c812b554a3ebbfa950f9de7aa95366f23e62f421a989556d5"
     }
   ],
   "corrected_native_source": "44c86b01428ca5f0de56fdb96cbe7e5b013677ea",
@@ -1016,6 +1054,20 @@
     },
     "new_campaigns": [],
     "milestone_membership_sha256": "78d62746460fd4abf7d307f36b9c4de2a80afcc48f8cb037e1cac429586dc5ec",
-    "formal_workflow": "PinnedCLI1.55.1 derives completed milestone when all77 assigned tasksDone. Done47 only after review/publication; verify milestone list --show-completed. No archival/reassignment/definition change."
+    "formal_workflow": "PinnedCLI1.55.1 derives completed milestone when all77 assigned tasksDone. Done47 only after review/publication; verify milestone list --show-completed. No archival/reassignment/definition change.",
+    "formal_workflow_result": {
+      "completed": true,
+      "command": "Backlog1.55.1 milestone list --show-completed --plain",
+      "output": "Active milestones (2):\n  m-5: M5 - Strength and learned evaluation (0/11 done)\n  m-6: M6 - Further research and product polish (0/4 done)\n\nCompleted milestones (5):\n  m-0: M0 - Repository bootstrap (1/1 done)\n  m-1: M1 - Chess rules kernel and verification console (13/13 done)\n  m-2: M2 - Search and match baseline (11/11 done)\n  m-3: M3 - Desktop vertical slice (14/14 done)\n  m-4: M4 - Variant expansion and conformance (77/77 done)\n",
+      "actual_mutation": "task edit MSH-47 --status Done",
+      "milestone_file_changed": false,
+      "archived": false,
+      "task_membership_changed": false
+    },
+    "publication": {
+      "evidence_revision": "4731800ac3459b88de200f57a4728d06d9e54852",
+      "normal_push_verified": true,
+      "subsequent_changes": "Final task/milestone status receipts and roadmap publication wording only; no source or acceptance change."
+    }
   }
 }

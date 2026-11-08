@@ -1,7 +1,7 @@
 # Bounded Chess search cost checkpoint (MSH-136)
 
 John requested this engineering checkpoint after MSH-49.2 and before conventional
-Shogi/Xiangqi transfer. It makes no further Chess matches or strength claims.
+Shogi/Xiangqi transfer. It runs no additional Chess match experiment or strength study.
 Four fixed positions use depth8/20,000 visits without a clock; three before/after
 rounds compare the same work. A short CPU stack sample identifies major costs.
 All profiling producers together executed72 native search queries in27.43 seconds
@@ -48,8 +48,8 @@ fixed-work timing comparison ran before those broad checks.
 | Sparse endgame |94.1ms|93.2ms|Essentially unchanged; tiny difference is noise-sized |
 
 All12 paired rows are identical in every field except elapsed time: score,
-selected decision, full PV, completed/selective depth, node count and every
-algorithm/TT counter. Input Games restore exactly and all PV actions replay
+selected decision, full PV, completed/selective depth, node count and all recorded
+SEE/TT counters. Input Games restore exactly and all PV actions replay
 natively. This supports removal of redundant work, not stronger play, optimality,
 a population speed estimate or a guarantee of equal gains in other games.
 
@@ -74,7 +74,9 @@ the measured redundant work in this bounded checkpoint.
 
 ## Correctness, evidence and transfer
 
-New independently expected destination-query fixtures cover pins, unsafe king
+New destination-query expectations follow the selected
+[Chess position profile](../rules/chess-position-v1.md), with independently
+reviewed fixtures for pins, unsafe king
 captures, legal and horizontally pinned EP, promotion captures and castling
 through attack. Exact counter-overflow refusal is distinct from position legality.
 Every-square projections along up to40 native positions match the complete native list
@@ -94,6 +96,14 @@ the verification record. Normal product code introduces no profiling timers.
 
 For **Shogi (MSH-50) and Xiangqi (MSH-54)**:
 
+At this checkpoint, Shogi's `NativeTree` calls `Game::submit/undo`, whose undo
+token retains before/after Games and whose submission clones the Game for
+atomic admission. Measure that native transaction/history cost early before
+scaling search work; it is source-inspection evidence, not a measured Shogi
+bottleneck yet. Xiangqi already uses a native checkpoint transaction and has
+pending-adjudication, no-win and natural-count obligations before ordinary
+search choices. Preserve those obligations when adapting cached turn queries.
+
 - Make search queries express the native subset actually needed before expensive
   legality validation; retain complete native action/effect and adjudication
   ownership. Captures, drops, promotions and game-specific tactical dependencies
@@ -110,3 +120,13 @@ For **Shogi (MSH-50) and Xiangqi (MSH-54)**:
 No major owner tradeoff is needed for these corrections. MSH-49.2 remains complete
 and unchanged. Shogi/Xiangqi follow this checkpoint; deeper Chess strength
 analysis stays in the later learned-evaluation phase.
+
+Required [native CI](https://github.com/jweathers777/mShogi/actions/runs/42519269011)
+passed all13 steps on Ubuntu24.04, macOS15 and Windows2022 at exact corrected
+source `d9147713aa5ad5044a4e25a41d5142f6834a2685`, attempt1. Unchanged frontend
+and packaged GUI evidence is reused. Final documentation/evidence integration
+is identified by Git history and the completion report.
+
+Independent final acceptance approved all four MSH-136 criteria and completion
+items after reconciling the exact source, all three platform receipts, artifact
+hashes and transfer facts. No technical or owner-decision blocker remains.

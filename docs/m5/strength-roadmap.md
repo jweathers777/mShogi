@@ -25,6 +25,12 @@ learning result; it remains a separate experiment, not a shared-model dependency
 MSH-56 still requires all six strength deliveries, initial learned improvement
 and the opening-knowledge experiment. No completed M4/M5 prerequisite is reopened.
 
+Owner follow-on: complete the bounded [Chess search cost checkpoint](chess-search-costs.md)
+(MSH-136) before transferring the foundation to Shogi/Xiangqi. This is native
+profiling/correctness and practical redundant-work correction, with no further
+Chess matches, strength study or speculative optimization. Carry the measured
+query/transition/quiescence/TT lessons into the existing game tasks.
+
 ## Verification and measurements
 
 During engineering, use independently expected search/tactical/endgame tests,

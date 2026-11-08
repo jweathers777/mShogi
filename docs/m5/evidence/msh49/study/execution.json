@@ -1,0 +1,297 @@
+{
+  "schema": 1,
+  "protocol_sha256": "757d97e97d48f150c5bed164301c2baaf22cc76b2096b3344267624825b32a49",
+  "spent_seconds": 971.4862487493083,
+  "calibration_charged_seconds": 54,
+  "runs": [
+    {
+      "id": 0,
+      "phase": "development",
+      "arm": "relative",
+      "catalog_sha256": "b58dcc500348d51bee445e37bf7206db5660943e1f487e78cea98a6799030489",
+      "executables_sha256": {
+        "candidate": "06b26e5e567b2f224d5cf838c96bfdf71521769e94504831b22810f9cbe965cf",
+        "baseline": "a3c0cda3e4da2b00b931e0100000387fa9d34835d0e6565587a02f7750dd1567",
+        "stockfish": "8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5",
+        "runner": "eee9af58891741998791d91775c8cc65dd910dc4fffeafe26e4dd5a01b8af70d"
+      },
+      "pairs": [
+        {
+          "key": "development-relative-000-candidate",
+          "sample": 0,
+          "participant": "candidate",
+          "seconds": 168.56950150011107,
+          "returncode": 0,
+          "stderr": "",
+          "eligible": true,
+          "halfpoints": 4,
+          "reasons": [],
+          "report_sha256": "61b4ecaad69b3110463a860e11a21df71ec2857ebf68e252946f7610dfce7f2d",
+          "report": "development-relative-000-candidate.external.json.gz",
+          "summary": [
+            {
+              "opening_id": "development-000",
+              "games": 2,
+              "wins": [
+                2,
+                0
+              ],
+              "draws": 0,
+              "unscored": 0,
+              "failures": 0
+            }
+          ]
+        },
+        {
+          "key": "development-relative-001-candidate",
+          "sample": 1,
+          "participant": "candidate",
+          "seconds": 101.40303370775655,
+          "returncode": 0,
+          "stderr": "",
+          "eligible": true,
+          "halfpoints": 4,
+          "reasons": [],
+          "report_sha256": "38314c4f823b1a0ed9d42cbb665a5e59b24e0a23cb7c70aa03173b90b9d6c12a",
+          "report": "development-relative-001-candidate.external.json.gz",
+          "summary": [
+            {
+              "opening_id": "development-001",
+              "games": 2,
+              "wins": [
+                2,
+                0
+              ],
+              "draws": 0,
+              "unscored": 0,
+              "failures": 0
+            }
+          ]
+        },
+        {
+          "key": "development-relative-002-candidate",
+          "sample": 2,
+          "participant": "candidate",
+          "seconds": 118.16113291680813,
+          "returncode": 0,
+          "stderr": "",
+          "eligible": true,
+          "halfpoints": 4,
+          "reasons": [],
+          "report_sha256": "7f95b36eda7a5410c8ce3d7c228471c515e060a471539f5e02c670cc6914df13",
+          "report": "development-relative-002-candidate.external.json.gz",
+          "summary": [
+            {
+              "opening_id": "development-002",
+              "games": 2,
+              "wins": [
+                2,
+                0
+              ],
+              "draws": 0,
+              "unscored": 0,
+              "failures": 0
+            }
+          ]
+        },
+        {
+          "key": "development-relative-003-candidate",
+          "sample": 3,
+          "participant": "candidate",
+          "seconds": 165.4945337078534,
+          "returncode": 0,
+          "stderr": "",
+          "eligible": true,
+          "halfpoints": 4,
+          "reasons": [],
+          "report_sha256": "0de5fa12f6ba5b68c8430d1b64e621251ca5312c0f07984067f10163fbe38a1c",
+          "report": "development-relative-003-candidate.external.json.gz",
+          "summary": [
+            {
+              "opening_id": "development-003",
+              "games": 2,
+              "wins": [
+                2,
+                0
+              ],
+              "draws": 0,
+              "unscored": 0,
+              "failures": 0
+            }
+          ]
+        }
+      ],
+      "complete": true,
+      "output": "/private/tmp/msh49/development/v1-relative"
+    },
+    {
+      "id": 1,
+      "phase": "development",
+      "arm": "external",
+      "catalog_sha256": "b58dcc500348d51bee445e37bf7206db5660943e1f487e78cea98a6799030489",
+      "executables_sha256": {
+        "candidate": "06b26e5e567b2f224d5cf838c96bfdf71521769e94504831b22810f9cbe965cf",
+        "baseline": "a3c0cda3e4da2b00b931e0100000387fa9d34835d0e6565587a02f7750dd1567",
+        "stockfish": "8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5",
+        "runner": "eee9af58891741998791d91775c8cc65dd910dc4fffeafe26e4dd5a01b8af70d"
+      },
+      "pairs": [
+        {
+          "key": "development-external-000-baseline",
+          "sample": 0,
+          "participant": "baseline",
+          "seconds": 55.97794029163197,
+          "returncode": 0,
+          "stderr": "",
+          "eligible": true,
+          "halfpoints": 0,
+          "reasons": [],
+          "report_sha256": "ef8a7325f895cc6fe5e422de11e9287ea0a4072f73621547c5b199eb8b91d90a",
+          "report": "development-external-000-baseline.external.json.gz",
+          "summary": [
+            {
+              "opening_id": "development-000",
+              "games": 2,
+              "wins": [
+                0,
+                2
+              ],
+              "draws": 0,
+              "unscored": 0,
+              "failures": 0
+            }
+          ]
+        },
+        {
+          "key": "development-external-000-candidate",
+          "sample": 0,
+          "participant": "candidate",
+          "seconds": 60.75971358316019,
+          "returncode": 0,
+          "stderr": "",
+          "eligible": true,
+          "halfpoints": 1,
+          "reasons": [],
+          "report_sha256": "e37e315a530e6eeaaca18f9ddf6f2dd2ecbc6bd707c84002d2e40db8873aed2e",
+          "report": "development-external-000-candidate.external.json.gz",
+          "summary": [
+            {
+              "opening_id": "development-000",
+              "games": 2,
+              "wins": [
+                0,
+                1
+              ],
+              "draws": 1,
+              "unscored": 0,
+              "failures": 0
+            }
+          ]
+        },
+        {
+          "key": "development-external-001-baseline",
+          "sample": 1,
+          "participant": "baseline",
+          "seconds": 61.95413879211992,
+          "returncode": 0,
+          "stderr": "",
+          "eligible": true,
+          "halfpoints": 0,
+          "reasons": [],
+          "report_sha256": "e7e8b06e81c44382413f0443bdddee9cec723d44ceb7742ff92c0768fe13c2a5",
+          "report": "development-external-001-baseline.external.json.gz",
+          "summary": [
+            {
+              "opening_id": "development-001",
+              "games": 2,
+              "wins": [
+                0,
+                2
+              ],
+              "draws": 0,
+              "unscored": 0,
+              "failures": 0
+            }
+          ]
+        },
+        {
+          "key": "development-external-001-candidate",
+          "sample": 1,
+          "participant": "candidate",
+          "seconds": 94.96064983308315,
+          "returncode": 0,
+          "stderr": "",
+          "eligible": true,
+          "halfpoints": 2,
+          "reasons": [],
+          "report_sha256": "679e84d3094ac64af6b233950ac0197cc3f0fc63c4b67d4c0fa12951828f07e2",
+          "report": "development-external-001-candidate.external.json.gz",
+          "summary": [
+            {
+              "opening_id": "development-001",
+              "games": 2,
+              "wins": [
+                0,
+                0
+              ],
+              "draws": 2,
+              "unscored": 0,
+              "failures": 0
+            }
+          ]
+        }
+      ],
+      "complete": true,
+      "output": "/private/tmp/msh49/development/v1-external"
+    },
+    {
+      "id": 2,
+      "phase": "development",
+      "arm": "relative",
+      "catalog_sha256": "b58dcc500348d51bee445e37bf7206db5660943e1f487e78cea98a6799030489",
+      "executables_sha256": {
+        "candidate": "9ba4dbd6c2539f78dde97f51e7c3932209640332a1c227b89d4ad4481e286793",
+        "baseline": "a3c0cda3e4da2b00b931e0100000387fa9d34835d0e6565587a02f7750dd1567",
+        "stockfish": "8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5",
+        "runner": "c7f14a0a9293ebb6bb637c4b78f027294cdf39a169f5f26e140fc1ad97a7993b"
+      },
+      "executables_paths": {
+        "candidate": "/private/tmp/msh49/development/candidate-v3/mshogi",
+        "baseline": "/private/tmp/msh49/baseline/mshogi",
+        "stockfish": "/private/tmp/msh49/opponent/stockfish/stockfish-macos-universal",
+        "runner": "/private/tmp/msh49/development/candidate-v3/mshogi-match"
+      },
+      "pairs": [
+        {
+          "key": "development-relative-000-candidate",
+          "sample": 0,
+          "participant": "candidate",
+          "seconds": 90.2056044167839,
+          "returncode": 0,
+          "stderr": "",
+          "eligible": true,
+          "halfpoints": 4,
+          "reasons": [],
+          "report_sha256": "00009d3d2f7568d9368b7ccbd2c0c0fe83b74f8b4f502f98ddc61d3033887938",
+          "summary": [
+            {
+              "opening_id": "development-000",
+              "games": 2,
+              "wins": [
+                2,
+                0
+              ],
+              "draws": 0,
+              "unscored": 0,
+              "failures": 0
+            }
+          ],
+          "report": "development-relative-000-candidate.external.json.gz"
+        }
+      ],
+      "complete": true,
+      "output": "/private/tmp/msh49/development/v3-relative"
+    }
+  ],
+  "inflight": null
+}

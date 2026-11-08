@@ -7,7 +7,7 @@ import type {
   Telemetry,
 } from "./native";
 import { colorName } from "./presentation";
-// Native full-width-v1 score contract: material is below MATE_SCORE-MAX_DEPTH.
+// Native Chess score contract: material is below MATE_SCORE-MAX_DEPTH.
 const MATE_SCORE = 1_000_000;
 const MAX_NATIVE_DEPTH = 128;
 export function scoreDescription(

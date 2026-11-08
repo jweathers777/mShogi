@@ -1,17 +1,19 @@
 {
   "schema": 1,
   "task": "MSH-49",
-  "status": "in_progress_owner_target_pending",
+  "status": "in_progress_approved_study",
   "starting_revision": "05eeba326341fb65efa0e60f2641795c5276e863",
   "branch": "codex/rewrite",
-  "scope": "Common claim-aware comparison preparation and bounded pre-target calibration, no search/evaluation improvement or strength acceptance yet",
+  "scope": "Owner-approved conventional Chess candidate and frozen paired study; prior claim-admission correction retains exact source evidence; no strength acceptance yet",
   "owner_decision": {
-    "status": "pending",
+    "status": "approved2026-11-08",
     "authority": "OriginalMSH49AC2/AC4 anddesignD09 require explicit owner release-strength/uncertainty target; dependency readiness does not decide it",
-    "question": "Choose first measured conventional release versus club-level/other target and material compute conditions; initialasyncquestionpending",
-    "no_target_assumed": true,
+    "question": "Concrete first measured release-strength bar selected explicitly after baseline calibration",
     "concrete_proposal": "docs/m5/chess-strength.md:64relativepairs,atleast70%scoreandone-sidedexactpairedp<=.05;32externalmatchedrootsagainstexplicitdepth2Stockfishreference,atleast25%candidate score+positivemeanandsign-testgain;equalmShogi10kvisit/depth8ceilings;independentheldoutsamplerfrozenbeforeevaluation;allgameseligible;2hourlocalmatchbudget;nopaidcompute/noratingclaim",
-    "latest_question": "Concreteproposalnowpresented asynchronously; no response orapproval received. Earlierdirectionquestion superseded bythisproposal."
+    "latest_question": "Answered explicitly; original64/32paired thresholds,exacttests and2hourlocalbudget approved; no replacementpending",
+    "reply": "Okay. Let\u2019s proceed with your first option for question2.",
+    "selection": "Approve this initial bar and match budget",
+    "protocol": "docs/m5/evidence/msh49/study/protocol-v1.json"
   },
   "baseline_build": {
     "source": "05eeba326341fb65efa0e60f2641795c5276e863",
@@ -258,7 +260,7 @@
     ]
   },
   "ci": {
-    "status": "in_progress",
+    "status": "passed",
     "required": [
       "Rust(ubuntu24.04)",
       "Rust(macos15)",
@@ -268,7 +270,7 @@
     "source": "926ae8f60eee1a05f02fb7cff36b7bd1d924a992",
     "run_id": 42464154960,
     "url": "https://github.com/jweathers777/mShogi/actions/runs/42464154960",
-    "monitor": "One bounded completion-aware observer, no retries. Live cache /private/tmp/msh49/ci/{run,jobs}.json; reconcile actual completion on resume.",
+    "monitor": "Single completion-aware observer finished; live GitHub API reconciled completion and exact source on2026-11-08. No retries.",
     "unrequired_desktop_run": 42464154953,
     "desktop_status": "cancellation_requested; no GUI campaign required for this runner-only correction",
     "initial_jobs": [
@@ -305,24 +307,78 @@
           "windows-2022"
         ]
       }
+    ],
+    "final_jobs": [
+      {
+        "id": 128679669239,
+        "name": "Rust (macos-15)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-08T08:43:51Z",
+        "completed_at": "2026-11-08T09:11:43Z",
+        "runner_id": 1000002735,
+        "runner_name": "GitHub Actions 1000002735",
+        "labels": [
+          "macos-15"
+        ],
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42464154960/job/128679669239",
+        "head_sha": "926ae8f60eee1a05f02fb7cff36b7bd1d924a992",
+        "attempt": 1
+      },
+      {
+        "id": 128679669333,
+        "name": "Rust (ubuntu-24.04)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-08T08:43:50Z",
+        "completed_at": "2026-11-08T09:14:03Z",
+        "runner_id": 1000002733,
+        "runner_name": "GitHub Actions 1000002733",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42464154960/job/128679669333",
+        "head_sha": "926ae8f60eee1a05f02fb7cff36b7bd1d924a992",
+        "attempt": 1
+      },
+      {
+        "id": 128679669348,
+        "name": "Rust (windows-2022)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-08T08:43:50Z",
+        "completed_at": "2026-11-08T09:17:49Z",
+        "runner_id": 1000002737,
+        "runner_name": "GitHub Actions 1000002737",
+        "labels": [
+          "windows-2022"
+        ],
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42464154960/job/128679669348",
+        "head_sha": "926ae8f60eee1a05f02fb7cff36b7bd1d924a992",
+        "attempt": 1
+      }
     ]
   },
   "acceptance": {
-    "1": "partial: frozenbaseline+oneactualindependentimplementation andcalibration; finalpool/protocolnotselected",
-    "2": "pendingownerstrength/uncertainty/stopping/budgetdecision",
-    "3": "notmet: no search/evaluationimprovement oragreedstrengthverdict",
-    "4": "pendingfinalsource/actualmatchcriterion/independentacceptance; currentevidencepreliminary"
+    "1": "Baseline/opponent/settings/frozenprotocol established; formal finalpool execution pending",
+    "2": "Original numericbar/uncertainty/sampling/2hourbudget ownerapproved andfrozen beforedevelopment. Prospectivebudgetamendment awaitingowner; nochangeinferred.",
+    "3": "Development gain only; fixed heldoutcriteria NOT established",
+    "4": "Reviewedsource anddurabledevelopment reports; finalstrength/source/platform/evidencereconciliation pending"
   },
   "not_run": [
-    "candidateoptimization",
-    "acceptedstrengthstudy",
-    "training/modelwork",
-    "newGUIcampaign"
+    "formal held-out study",
+    "final candidate three-platform native CI",
+    "training/modelwork (out of scope)",
+    "new packaged GUIcampaign (not required)"
   ],
   "development_failures": [
     {
       "command": "Python3.11tarfile.extractall(filter=data)",
       "outcome": "Unsupportedkeyword; extractionhadnotstarted. Retriedonlyaftervalidatingeverymemberregularfile/directoryandrelativepath,no symlinks/parentescape; officialarchivehashmatched."
+    },
+    {
+      "command": "cargo test -p mshogi-core --locked --test adjudication --test game_history (new claim-catalog fixture, first attempt)",
+      "outcome": "New exhaustive test included EP target with nonzero halfmove clock; native FEN admission correctly rejected EnPassantState before assertion. Corrected test population to structurally valid EP clock0, kept99/100 captures/pawn/promotion cases separately; all9adjudication+5history tests then passed. No production relaxation."
     }
   ],
   "references": [
@@ -331,11 +387,68 @@
     "tests/fixtures/matches/README.md"
   ],
   "handoff": {
-    "owner_decision": "Unanswered concrete target/budget proposal blocks AC2/3/finalacceptance; do not infer approval from generic next-task authorization.",
-    "next_action": "Reconcile current nativeCI and owner reply; record selected criteria before candidate implementation/evaluation. Remainunfinished if either required evidence or target is unavailable.",
-    "production_progress": "Only reviewed claim-tail admission correction, not a search/evaluation strength candidate. Frozenbaseline and all12calibrationreports retained.",
+    "owner_decision": "Explicitapproval received; proceed approvedstudy, no furtherbar/budgetapproval required unless scopechanges",
+    "next_action": "Complete candidate/harness correctness anddevelopment, freezecandidate+sampler+protocol+dev artifacts, thenonefixedheldoutstudywithinbudget; no postholdout tuning",
+    "production_progress": "Alpha-beta/transparent positional candidate implemented in shared Chess coordinator; per-participant existingUCIlimits and native claim-query prerequisite optimization under focused independent review; no release-strength verdict.",
     "branch": "codex/rewrite",
     "integrated_common_checkpoint": "926ae8f60eee1a05f02fb7cff36b7bd1d924a992",
     "no_other_tasks_started": true
+  },
+  "candidate_preformal": {
+    "search": "mshogi.chess.alpha-beta-capture-order.v1",
+    "evaluator": "mshogi.chess.tapered-position.v1",
+    "source_state": "Working production source based on7004d47; exact overrides/executable hashes in development/v3-artifacts.json. Clean integration source to be recorded after commit.",
+    "local_environment": "macOS27.0.1 AppleM1Pro arm64; rustc1.99.1; Node24.21.0 satisfies desktop package24.x range",
+    "checks": [
+      {
+        "command": "cargo test --locked -p mshogi-search -p mshogi-engine",
+        "passed": 154,
+        "failed": 0,
+        "ignored": 1
+      },
+      {
+        "command": "cargo test --locked -p mshogi-console --test internal --test shared_internal --test uci --test chess_claim_admission",
+        "passed": 20,
+        "failed": 0
+      },
+      {
+        "command": "cargo test -p mshogi-runner --locked",
+        "passed": 80,
+        "failed": 0,
+        "ignored": 2,
+        "scope": "Unchanged finalrunner source; includes all21historicalgames and new per-participant limit/replay mutations"
+      },
+      {
+        "command": "cargo test -p mshogi-core --locked --test adjudication --test game_history",
+        "passed": 14,
+        "failed": 0
+      },
+      {
+        "command": "cargo clippy --locked -p mshogi-core -p mshogi-search -p mshogi-runner -p mshogi-console --all-targets -- -D warnings",
+        "outcome": "Passed before tacticalordering; finalordering separately lib/tests clippy passed"
+      },
+      {
+        "command": "cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__",
+        "outcome": "Passed; only actualChess depth1analysis fixture changes a2a3/0 to b1c3/+44,21visits unchanged"
+      },
+      {
+        "command": "npm run check; npm test -- src/product/NativeSessionPanels.test.tsx src/analysisPresentation.test.ts",
+        "outcome": "Passed typecheck and36tests; Node24.21.0"
+      }
+    ],
+    "independent_review": {
+      "reviewer": "Fresh read-only msh49_candidate_review session",
+      "verdict": "Approved, no material findings",
+      "scope": "Exactsearch/evaluation/completeactions/history/claims/restoration/limits; finalcaptureordering andhand-derivedtests; nativequeryshortcut andexhaustiveorderedvalidation; actualrouting; per-participantlimit/replay; offlineaudit/inference/budget",
+      "limitation": "Source/evidence inspection, not achievedstrength or finalplatform verdict"
+    },
+    "development": {
+      "initial_v1": "8/8wins relative;0W3D1L vsSF andbaseline0W0D4L; all16eligiblegames",
+      "final_v3": "2/2wins atsame firstdevelopmentroot in90.206s vs168.570s original; all eligible",
+      "charged_seconds": 971.4862487493083,
+      "ledger": "study/execution.json",
+      "formal_seed_generated": false,
+      "budget_feasibility": "Point forecast exceeds approved7200s; ownerasked about14400s total before anyholdout. No amendment inferred."
+    }
   }
 }

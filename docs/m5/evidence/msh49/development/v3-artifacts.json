@@ -1,0 +1,27 @@
+{
+  "purpose": "Development only, not acceptance source",
+  "head_at_manifest": "7004d47c4a857d11b56d4985ed596c70fd7c01aa",
+  "executables": {
+    "mshogi": "9ba4dbd6c2539f78dde97f51e7c3932209640332a1c227b89d4ad4481e286793",
+    "mshogi-match": "c7f14a0a9293ebb6bb637c4b78f027294cdf39a169f5f26e140fc1ad97a7993b"
+  },
+  "source_sha256": {
+    "crates/mshogi-console/src/uci.rs": "c9d38e990dabf8cc6adc3341d08453475a856d9b041d4432b56f38984bbd1f01",
+    "crates/mshogi-console/tests/internal.rs": "b7fdb3b97d4591c8c1c1823947782eeadfe85fe89057668b429e9d5c536bad75",
+    "crates/mshogi-console/tests/shared_internal.rs": "d2496ecaa08cf92f2f3d09a4a6f9dcbd84c61bf98e69015ad30212683d50b798",
+    "crates/mshogi-console/tests/uci.rs": "f959d0f7dd2085effbea97010059237075e16b928d031e75f02385426bb228ae",
+    "crates/mshogi-core/src/chess/adjudication.rs": "01df8dbead124637fa2f29c0bf09dadc2f326b94f4d8cfbc1a3a4480824da875",
+    "crates/mshogi-core/src/chess/game.rs": "c31155cca37eb55776ee5741fe53a012e227de431f53cefcef548dd68c052e09",
+    "crates/mshogi-core/tests/adjudication.rs": "c194fd5822bfbe34eaf0603440294809623c3e7c9ddb41e5114f150f0fad1bc9",
+    "crates/mshogi-runner/src/config.rs": "498d1209f1152ab3b52ed39df5e48cddd67c63cef2b5081419db38ce7acba060",
+    "crates/mshogi-runner/src/report.rs": "e439033e291bf4f7de1e7afc6b704e9c03b9d698519f6b7fd2fa2588677b9437",
+    "crates/mshogi-runner/src/run.rs": "f92682f383262cc2a10a812c1be2b51b5bde3d707313e9a09318c458d4dfce9d",
+    "crates/mshogi-runner/tests/runner.rs": "286b02232b8d76ecf6ea2c1289831b2db3f3c514fefac7851197ec01fd8ac1dc",
+    "crates/mshogi-search/src/coordination.rs": "1fcee431ac733411ec3e8b26b97166fc03b14b6d81e78891ed174bf14cf0c060",
+    "crates/mshogi-search/src/lib.rs": "c1278380a567d66fbfe313de28066c501c0865af0e5a573992521d865f4b360e",
+    "crates/mshogi-search/tests/coordination.rs": "3ab59fd90fbbfe5663b5981d4c5d35501d169a7fb533f2be9e544414f320d553",
+    "crates/mshogi-search/src/chess_candidate.rs": "c28d907372fd7998f3fc3d94f4fde0ba0e594542dcd90b813c31412fabd3e2c9"
+  },
+  "search_id": "mshogi.chess.alpha-beta-capture-order.v1",
+  "evaluator_id": "mshogi.chess.tapered-position.v1"
+}

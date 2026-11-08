@@ -194,7 +194,7 @@ fn optional_claim_channel_limitation_and_recorded_auto_policy_are_explicit() {
     legal(fen, &fallback);
     assert!(info[0].contains("score cp 0"));
     engine.send("setoption name ClaimPolicy value explicit\nposition fen 7k/8/8/8/8/8/8/KR6 b - - 98 1\ngo depth 1\n");
-    assert!(engine.best().1[0].contains("score cp -500"));
+    assert!(losing_rook_score(&engine.best().1[0]));
     engine.send("setoption name ClaimPolicy value auto\nposition fen 7k/8/8/8/8/8/8/KR6 b - - 98 1\ngo depth 1\n");
     assert!(
         engine.best().1[0].contains("score cp 0"),
@@ -208,7 +208,7 @@ fn same_fen_with_different_known_repetition_history_changes_search() {
     engine.send("position fen 6nk/8/8/8/8/8/8/KR4N1 b - - 0 1 moves g8f6 g1f3 f6g8 f3g1 g8f6 g1f3 f6g8 f3g1\ngo depth 1\n");
     assert!(engine.best().1[0].contains("score cp 0"));
     engine.send("position fen 6nk/8/8/8/8/8/8/KR4N1 b - - 8 5\ngo depth 1\n");
-    assert!(engine.best().1[0].contains("score cp -500"));
+    assert!(losing_rook_score(&engine.best().1[0]));
     assert!(engine.finish().contains("draw claim available"));
 }
 #[test]
@@ -320,4 +320,14 @@ fn descendant_search_representation_failure_exits_without_fabricated_result() {
 #[test]
 fn infinite_search_failure_exits_immediately_without_waiting_for_stop() {
     assert_representation_failure("go infinite");
+}
+
+// Independent material fixture: Black is down a rook without a valid claim.
+// Positional terms may change centipawns; they must not turn that into a draw.
+fn losing_rook_score(info: &str) -> bool {
+    info.split("score cp ")
+        .nth(1)
+        .and_then(|s| s.split_whitespace().next())
+        .and_then(|s| s.parse::<i32>().ok())
+        .is_some_and(|score| score < -400)
 }

@@ -402,9 +402,14 @@ impl ExperimentReport {
                         "readiness" => entry.text == "isready",
                         "position" => entry.text == context.0,
                         "go" => {
-                            entry.text
+                            context.2.is_some_and(|side| {
+                                g.engines_by_color
+                                    [usize::from(side == mshogi_core::chess::Color::Black)]
+                                    == entry.engine
+                            }) && entry.text
                                 == crate::run::go_command(
                                     &self.config,
+                                    entry.engine,
                                     context.1,
                                     context.2,
                                     context.3,

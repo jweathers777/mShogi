@@ -1,5 +1,8 @@
 //! One bounded native search worker, request identity and stale-result checking.
-use crate::search::{SearchError, SearchLimits, SearchResult, search_with_stop};
+use crate::{
+    chess_candidate::search_with_stop,
+    search::{SearchError, SearchLimits, SearchResult},
+};
 use mshogi_core::chess::{AdjudicatedGame, GameRecord};
 use std::{
     error::Error,

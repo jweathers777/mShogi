@@ -768,15 +768,15 @@
         "kind": "chess",
         "result": {
           "kind": "move",
-          "action": "a2a3",
+          "action": "b1c3",
           "telemetry": {
-            "score": 0,
+            "score": 44,
             "completed_depth": 1,
             "nodes": 21,
             "principal_variation": [
               {
                 "kind": "move",
-                "action": "a2a3"
+                "action": "b1c3"
               }
             ],
             "status": "complete"
@@ -826,15 +826,15 @@
           "kind": "chess",
           "result": {
             "kind": "move",
-            "action": "a2a3",
+            "action": "b1c3",
             "telemetry": {
-              "score": 0,
+              "score": 44,
               "completed_depth": 1,
               "nodes": 21,
               "principal_variation": [
                 {
                   "kind": "move",
-                  "action": "a2a3"
+                  "action": "b1c3"
                 }
               ],
               "status": "complete"
@@ -854,11 +854,11 @@
       "board_ply": 0,
       "perspective": "White",
       "engine": "mShogi",
-      "score": "+0.00 pawns",
+      "score": "+0.44 pawns",
       "completed_depth": 1,
       "nodes": 21,
       "variation": [
-        "a2a3"
+        "b1c3"
       ],
       "status": "Complete",
       "historical": false,
@@ -922,15 +922,15 @@
       },
       "result": {
         "kind": "move",
-        "action": "a2a3",
+        "action": "b1c3",
         "telemetry": {
-          "score": 0,
+          "score": 44,
           "completed_depth": 1,
           "nodes": 21,
           "principal_variation": [
             {
               "kind": "move",
-              "action": "a2a3"
+              "action": "b1c3"
             }
           ],
           "status": "complete"

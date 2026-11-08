@@ -183,6 +183,13 @@ impl Game {
         if self.automatic_outcome().is_some() {
             return Vec::new();
         }
+        // One intended action adds at most one halfmove and one occurrence.
+        // Without either prerequisite, neither current nor intended claims
+        // can qualify. Keep the full native validator/order for every other
+        // case, including imported counters and previously repeated identities.
+        if self.position().halfmove_clock() < 99 && !self.has_repeated_identity() {
+            return Vec::new();
+        }
         let actor = self.position().side_to_move();
         let mut claims = Vec::new();
         for reason in [DrawClaim::Threefold, DrawClaim::FiftyMove] {

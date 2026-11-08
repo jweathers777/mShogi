@@ -1,8 +1,9 @@
 # MSH-49: Chess baseline and release-strength decision
 
-**Unfinished: owner target selection is pending.** This record contains bounded
-pre-target calibration and a necessary comparison-harness correction. It is not
-a Chess release-strength verdict, a search improvement or M5 acceptance.
+**In Progress: the owner-approved first-release study is being implemented.**
+This record preserves pre-target calibration and the necessary comparison-harness
+correction, followed by the approved protocol and candidate work. It is not
+a Chess release-strength verdict or M5 acceptance.
 The original four MSH-49 criteria remain unchanged and unchecked.
 
 ## Frozen baseline and actual independent opponent
@@ -97,13 +98,15 @@ Rules, search/evaluation, protocol identities and other games were not changed.
 Required native Ubuntu/macOS 15/Windows verification for the frozen correction
 checkpoint remains separately recorded in the ledger.
 
-## Concrete first-release proposal — not yet approved
+## Owner-approved first-release criteria — 8 November 2026
 
 MSH-49 AC2/AC4 and design D-09 explicitly require an owner-selected release bar
-and uncertainty criteria. The initial direction question was followed by this
-reviewable proposal after calibration; neither question has been answered.
+and uncertainty criteria. After calibration, John selected the first option in the concrete second
+question: “Okay. Let’s proceed with your first option for question 2.” This
+explicitly approves the criteria and budget below; it supersedes the earlier
+unanswered/replacement state.
 
-Proposed first measured conventional-engine release, with **no human-Elo claim**:
+Approved first measured conventional-engine release, with **no human-Elo claim**:
 
 1. Candidate versus frozen engine: 64 held-out opening pairs, score at least 70%,
    and one-sided exact paired win/loss test `p <= 0.05`. Both mShogi participants
@@ -133,14 +136,15 @@ Proposed first measured conventional-engine release, with **no human-Elo claim**
    independent review and required native CI remain separate obligations. If the
    bar or budget is unmet, preserve unfinished status rather than lower it.
 
-This proposal needs owner selection; its feasibility is not established by the
-small calibration. A stronger external/club-level target requires a different
+Feasibility is not established by the small calibration. The approved bar
+remains binding if a candidate fails it. A stronger external/club-level target requires a different
 explicit benchmark and measured implementation/budget scope. Current material
 and full-width code are not presented as meeting either target.
 
-The current Chess external adapter has one shared WorkLimit, so implementing
-this proposed per-participant study requires a narrow effective-limit/report
-extension. The native experiment path already supports per-participant limits
+The Chess external adapter now accepts optional per-participant effective limits,
+indexed by participant across color swaps; omitted limits preserve the historical
+shared configuration and digest. Strict replay binds each actual go command to
+the correct native actor and limit. The native experiment path already supports per-participant limits
 but has no Stockfish adapter. These are real consumer requirements, not a reason
 to introduce another engine protocol or application runtime. Current UCI can
 emit a labelled legal fallback when no iteration completes; strength eligibility
@@ -149,12 +153,49 @@ completed search. Native internal execution retains honest Incomplete results.
 
 ## Handoff
 
-MSH-49 remains unfinished while the owner decision is pending. No candidate
-search/evaluation improvement, accepted-strength study, learned evaluator,
-training or other game task has begun. The bounded baseline and reviewed
+### Development observations; excluded from acceptance
+
+The protocol, sampler and12-root public development catalog were frozen at
+`7004d47` before candidate match evaluation. No formal seed or roots have been
+generated. Initial lexical alpha-beta plus the original positional evaluator
+won8/8 games against the frozen baseline on the first4 development roots.
+On the first2 roots against the pinned depth2 Stockfish, it scored0W3D1L (37.5%);
+the frozen baseline scored0W0D4L. All16 development games concluded natively,
+with completed-search observations and no protocol, cleanup or eligibility
+failure. These small selected development results are not acceptance estimates.
+
+The [development source reports](evidence/msh49/development/) retain the actual
+results, executable hashes and exact7 production-source overrides verified
+against their pre-match manifest. Candidate development matches consumed827.281s;
+with the conservatively charged54s calibration, total charged work is881.281s.
+Most time was native claim enumeration and immutable baseline search. The
+current candidate adds capture/promotion ordering; its static evaluator is
+unchanged. A native necessary-condition shortcut avoids projecting all intended
+claims below halfmove99 when every known identity has occurred only once.
+Independent proofs and complete ordered-catalog tests preserve all claim
+semantics, history/undo/replay, threshold/EP/rights and overflow behavior.
+
+The old claim-admission correction at `926ae8f` actually passed required native
+Linux/macOS15/Windows CI; this does not cover the subsequent candidate source.
+Independent source review approved candidate search/evaluation, production
+routing, native shortcut, per-participant limits and strict offline study audit.
+Final source platform receipts and the fixed held-out strength study remain
+required.
+
+MSH-49 remains unfinished until the approved criteria and verification pass.
+A native alpha-beta/positional candidate is implemented and under independent
+review; formal holdout roots and acceptance matches have not yet been generated.
+No learned evaluator, training or other game task has begun. The bounded baseline and reviewed
 claim-tail correction are useful preparation, not substitute acceptance.
 
-After selection, record the decided bar before evaluation, implement the minimum
+The immutable protocol/sampler/development freeze is recorded in
+[study/protocol-freeze.json](evidence/msh49/study/protocol-freeze.json), with the
+[full approved test rules](evidence/msh49/study/protocol-v1.json). The sign tests
+concern positive versus negative nonzero paired differences, not a mean-score
+confidence interval; score floors and positive external mean are separate gates.
+Total charged match time above 7,200 seconds makes the study ineligible.
+
+Implement the minimum
 measured conventional improvement using native history/claims/terminal/undo,
 verify it with independent oracles and actual execution, and run the approved
 study. Preserve the frozen baseline and historical reports. MSH-50–55/104 remain

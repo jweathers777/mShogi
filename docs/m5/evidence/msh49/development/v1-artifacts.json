@@ -1,0 +1,19 @@
+{
+  "purpose": "Development only; candidate working source uncommitted, not acceptance source",
+  "head_at_manifest": "7004d47c4a857d11b56d4985ed596c70fd7c01aa",
+  "executables": {
+    "mshogi": "06b26e5e567b2f224d5cf838c96bfdf71521769e94504831b22810f9cbe965cf",
+    "mshogi-match": "eee9af58891741998791d91775c8cc65dd910dc4fffeafe26e4dd5a01b8af70d"
+  },
+  "source_sha256": {
+    "crates/mshogi-search/src/chess_candidate.rs": "a7d2169c38c29d6b6d7672a79bf73019b2e0cb575a037cc6375a9d1235d66485",
+    "crates/mshogi-search/src/coordination.rs": "1fcee431ac733411ec3e8b26b97166fc03b14b6d81e78891ed174bf14cf0c060",
+    "crates/mshogi-search/src/lib.rs": "c1278380a567d66fbfe313de28066c501c0865af0e5a573992521d865f4b360e",
+    "crates/mshogi-console/src/uci.rs": "c9d38e990dabf8cc6adc3341d08453475a856d9b041d4432b56f38984bbd1f01",
+    "crates/mshogi-runner/src/config.rs": "498d1209f1152ab3b52ed39df5e48cddd67c63cef2b5081419db38ce7acba060",
+    "crates/mshogi-runner/src/run.rs": "f92682f383262cc2a10a812c1be2b51b5bde3d707313e9a09318c458d4dfce9d",
+    "crates/mshogi-runner/src/report.rs": "e439033e291bf4f7de1e7afc6b704e9c03b9d698519f6b7fd2fa2588677b9437"
+  },
+  "search_id": "mshogi.chess.alpha-beta.v1",
+  "evaluator_id": "mshogi.chess.tapered-position.v1"
+}

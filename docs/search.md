@@ -1,4 +1,25 @@
-# Full-width chess search baseline
+# Chess search
+
+## MSH-49 conventional candidate
+
+The active `SearchCoordinator`, shared by UCI and supervised native execution,
+uses `chess_candidate::{search, search_with_stop}`: `mshogi.chess.alpha-beta-capture-order.v1`
+with `mshogi.chess.tapered-position.v1`. This is an exact fail-soft alpha-beta
+backup with the same native history, outcome, claim, terminal score,
+completed-iteration, visit-budget and restoration contracts described below.
+Already legal native actions are ordered by a static capture/promotion priority,
+then lexically by UCI text; equal backed-up scores keep the first ordered action.
+Native optional claims retain precedence on zero-score ties. This candidate
+ordering intentionally differs from the frozen baseline's lexical-only order.
+It has no transposition table, quiescence or selective pruning. The evaluator
+adds transparent untrained positional terms; see [evaluation](evaluation.md).
+The frozen full-width/material API and tests remain unchanged as a reference.
+
+Candidate correctness is separate from playing strength. The bounded study in
+[MSH-49](m5/chess-strength.md) records the approved release bar and actual results;
+implementation or tactical tests alone do not establish that bar.
+
+## Frozen full-width baseline
 
 MSH-20 exposes `mshogi_search::search::{search, search_with_stop}` over an immutable `AdjudicatedGame`. Search clones the complete rules-owned context, including known history, initial FEN, claim policy and any exercised claim. Branching uses checked live apply/undo on that private clone. It does not cache scores by board identity. Identity: `mshogi.chess.full-width.v1`; evaluator: `mshogi.chess.material.v1`.
 

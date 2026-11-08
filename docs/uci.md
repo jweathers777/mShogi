@@ -11,7 +11,7 @@ Supported commands:
 | `ucinewgame` | Cancel/supersede old work and reset to the standard position under the selected policy |
 | `position startpos [moves ...]` | Replay complete UCI actions from the standard start |
 | `position fen <six fields> [moves ...]` | Import supplied counters and start known repetition history there; replay following actions |
-| `go depth N`, `go nodes N` | Deterministic full-width search limits; depth 1–128, nodes any u64 including zero; combined limits stop at the first reached |
+| `go depth N`, `go nodes N` | Deterministic search limits; depth 1–128, nodes any u64 including zero; combined limits stop at the first reached |
 | `go movetime MS` | Cooperative elapsed-time budget, measured from command acceptance |
 | `go wtime MS btime MS [winc MS] [binc MS] [movestogo N]` | Basic clock allocation for the side to move; see below |
 | `go infinite` | Search privately and retain any completed result until `stop`; even a mate/terminal root does not emit bestmove early |

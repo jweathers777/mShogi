@@ -594,3 +594,20 @@ fn non_utf8_cli_arguments_fail_normally_without_panicking() {
     assert!(error.contains("arguments must be valid UTF-8"));
     assert!(!error.contains("panicked"));
 }
+
+#[test]
+fn shared_experiment_wrapper_uses_actual_existing_adapter_and_replays() {
+    use mshogi_runner::experiments::{ExternalProtocol, ExternalReport, run_external};
+    let config = config("mate");
+    let wrapped = run_external(
+        ExternalProtocol::Uci,
+        &serde_json::to_string(&config).unwrap(),
+    )
+    .unwrap();
+    wrapped.validate().unwrap();
+    let mut decoded: ExternalReport =
+        serde_json::from_str(&serde_json::to_string(&wrapped).unwrap()).unwrap();
+    decoded.validate().unwrap();
+    decoded.report_json.push(' ');
+    assert!(decoded.validate().is_err());
+}

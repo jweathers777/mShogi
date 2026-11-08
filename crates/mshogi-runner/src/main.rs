@@ -21,6 +21,33 @@ fn execute() -> Result<(), String> {
         })
         .collect::<Result<_, _>>()?;
     match args.as_slice() {
+        [_, command, executable, output] if command == "experiment-template" => {
+            let c=mshogi_runner::experiments::template(executable).map_err(|e|e.to_string())?;
+            write_new(output,&serde_json::to_string_pretty(&c).map_err(|e|e.to_string())?)
+        }
+        [_, command, input, output] if command == "experiment-run" => {
+            let c=mshogi_runner::experiments::Config::from_json(&read(input,1_048_576)?).map_err(|e|e.to_string())?;
+            let r=mshogi_runner::experiments::run(&c).map_err(|e|e.to_string())?;
+            write_new(output,&r.to_json().map_err(|e|e.to_string())?)?;
+            println!("{}",serde_json::to_string(&r.summaries().map_err(|e|e.to_string())?).map_err(|e|e.to_string())?);Ok(())
+        }
+        [_, command, input] if command == "experiment-replay" => {
+            let r=mshogi_runner::experiments::Report::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;
+            println!("replayed {} native experiment games",r.games.len());Ok(())
+        }
+        [_, command, input, output] if command == "experiment-data" => {
+            let r=mshogi_runner::experiments::Report::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;
+            write_new(output,&r.data_jsonl().map_err(|e|e.to_string())?)
+        }
+        [_, command, protocol, input, output] if command == "experiment-external" => {
+            use mshogi_runner::experiments::{ExternalProtocol as P,run_external};
+            let p=match protocol.as_str(){"uci"=>P::Uci,"usi"=>P::Usi,"xiangqi-uci09"=>P::XiangqiUci09,_=>return Err("unsupported actual external adapter".into())};
+            let r=run_external(p,&read(input,1_048_576)?).map_err(|e|e.to_string())?;
+            write_new(output,&r.to_json().map_err(|e|e.to_string())?)
+        }
+        [_, command, input] if command == "experiment-external-replay" => {
+            let r=mshogi_runner::experiments::ExternalReport::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;r.validate().map_err(|e|e.to_string())?;println!("replayed actual external adapter evidence");Ok(())
+        }
         [_, command, config, output] if command == "xiangqi-run" => {
             let config = mshogi_runner::xiangqi::Config::from_json(&read(config, 1_048_576)?)
                 .map_err(|e| e.to_string())?;
@@ -91,10 +118,24 @@ fn execute() -> Result<(), String> {
             Ok(())
         }
         _ => Err(
-            "usage: mshogi-match run CONFIG.json REPORT.json | mshogi-match replay REPORT.json | mshogi-match shogi-run CONFIG.json REPORT.json | mshogi-match shogi-replay REPORT.json | mshogi-match xiangqi-run CONFIG.json REPORT.json | mshogi-match xiangqi-replay REPORT.json"
+            "usage: mshogi-match experiment-template EXE CONFIG | experiment-run CONFIG REPORT | experiment-replay REPORT | experiment-data REPORT JSONL | experiment-external uci|usi|xiangqi-uci09 CONFIG REPORT | experiment-external-replay REPORT | run CONFIG REPORT | replay REPORT | shogi-run CONFIG REPORT | shogi-replay REPORT | xiangqi-run CONFIG REPORT | xiangqi-replay REPORT"
                 .into(),
         ),
     }
+}
+fn write_new(path: &str, text: &str) -> Result<(), String> {
+    use std::io::Write;
+    let mut f = fs::OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(path)
+        .map_err(|e| e.to_string())?;
+    if let Err(e) = f.write_all(text.as_bytes()).and_then(|_| f.sync_all()) {
+        drop(f);
+        let _ = fs::remove_file(path);
+        return Err(e.to_string());
+    }
+    Ok(())
 }
 fn main() -> ExitCode {
     match execute() {

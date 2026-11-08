@@ -1,11 +1,11 @@
 ---
 id: MSH-48
 title: Establish shared reproducible strength and learning experiment infrastructure
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-08T01:02:00Z'
+updated_date: '2026-11-08T01:07:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -49,4 +49,6 @@ Primary builder/integrator Codex on clean/origin-aligned primary codex/rewrite a
 
 <!-- SECTION:NOTES:BEGIN -->
 Implemented existing-runner native experiment path for all6games/7wholeprofiles, paired seeded finite catalogs/multiple baselines, exact protocol4 observations and native history replay, grouped JSONL data with missing terminal labels, and actual existing external adapter wrappers. Initial independent review found Chess/later Shogi-Xiangqi PV admission, typed observation cap and post-action representation crossing gaps; corrected before acceptance. Actual production-child tactical test completed14/14 games across7profiles; zero-work/cancel/corruption controls passed. Preliminary dirty-source debug standard-turn measurements range13.59ms–7373.18ms; these only inform release pilot limits and are not final source evidence. Real near1MiB MatchObserve capacity refusal regression passed; routine regression now uses controlled smaller injected bound through same refusal path to avoid96s fixture construction. Required existing native CI remainsUbuntu24/macOS15/Windows2022; desktop/game rules/source untouched. Final release pilots, frozen-source receipts and evidence reconciliation pending.
+
+Frozen implementation9a164eb4379231dcb4fca484adb7ec5597e7c991 normally pushed. Clean release build+actual56-game main pilot+56-game deterministic repeat+8-game Tenjiku supplement passed native evidence replay. Main20concluded/28caps/8incomplete; supplement8concluded at619visits first iteration, depth2/2000 preserves completeddepth1 per existing contract. Generated84JSONLrows,76appliedtargets,20terminal labels; independent reviewer verified allrow bindings/root chains/splits/labels/exe SHA and durable compressed reports. No remaining material source/pilot blockers. docs/m5/experiments.md and single verification.json ledger retain allconditions/limitations, no training/strength inference. Required frozen-source RustCI42432584001 currentlyrunning actualUbuntu24/macOS15/Windows2022 jobs128584504212/128584504413/128584504572, all acquired runners; no retry campaign. Automatic unrelatedDesktop42432584003 cancellation requested. Final AC/DoD and final evidence reconciliation remain pending successful3OS receipts.
 <!-- SECTION:NOTES:END -->

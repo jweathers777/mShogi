@@ -95,9 +95,9 @@ with the prior state and actual observation retained. Imported observations use
 the existing duplicate-aware bounded decoder. Profiles/history are never reduced
 to board-only identities.
 
-Experiment bounds: config1MiB, report/data32MiB, at most16 roots,4 participants,
-16 cycles,128 games,512 commands/game and4096 scheduled requests. Existing native
-search limits,1MiB request/2MiB response and native record budgets still apply.
+Experiment bounds: config 1 MiB, report/data 32 MiB, at most 16 roots, 4 participants,
+16 cycles, 128 games, 512 commands/game and 4096 scheduled requests. Existing native
+search limits, 1 MiB request/2 MiB response and native record budgets still apply.
 Before search, the harness reserves bounded transition evidence capacity. Artifact
 exhaustion ends remaining work honestly. Watchdog and cleanup use EngineBridge;
 no alternate supervisor is introduced. Cancellation is polled before/while child
@@ -158,3 +158,55 @@ lifecycle; MSH-104 owns later research exploration. No substantial training ran.
 See [the structured MSH-48 verification record](evidence/msh48/verification.json)
 for exact tested source, measured pilot conditions/outcomes, platform receipts and
 independent review. It is the single acceptance evidence ledger.
+
+## First bounded pilot at 9a164eb
+
+The clean release build used pinned rustc 1.99.1 on Apple M1 Pro/aarch64,
+macOS 27.0.1, 10 logical CPUs, no custom flags and an unpinned shared host.
+The finite catalog contains seven standard roots and seven authored live tactical
+predecessors. It uses one seeded cycle and three instances of the same executable
+with different work settings, not three independent opponents.
+
+The 56-game main pilot compared depth 1 / 512 visits against depth 1 / 128 and
+depth 2 / 512, with two accepted commands/game, a 120 s cooperative whole-run budget,
+15 s request watchdog and 250 ms cleanup interval. Preliminary debug standard-turn
+measurements at depth 1 / 512 ranged 13.59–7373.18 ms, supporting these conservative
+work caps before the release run. The release pilot recorded 20 native conclusions,
+28 unscored action caps and 8 unscored Tenjiku first-iteration exhaustions. All 84
+actual observations were retained. Its 76 accepted commands generated 76 action
+targets; only 20 rows have terminal value labels. No capped game was called a draw.
+
+| Profile | Median observed turn ms | Maximum observed turn ms |
+| --- | ---: | ---: |
+| Chess | 7.57 | 67.51 |
+| Shogi | 7.56 | 185.28 |
+| Xiangqi | 31.64 | 310.61 |
+| Tori | 7.56 | 19.63 |
+| Chu | 16.61 | 88.35 |
+| Tenjiku Adams | 268.18 | 1880.13 |
+| Tenjiku Muller | 286.95 | 1881.99 |
+
+These mix standard/tactical roots, colors and effective work, and include process
+launch/transport/search/receipt. They are neither pure search benchmarks nor
+cross-game strength comparisons. Exact individual limits, work and timing are
+in the replayable reports; descriptive aggregates are in
+[pilot-metrics.json](evidence/msh48/pilot-metrics.json).
+
+Because 128/512 visits did not finish the selected Tenjiku tactical iteration, an
+explicit eight-game supplement used the existing 2,000 visit native ceiling with
+one-command cap. Candidate and peer requested depth 1; the third baseline requested
+depth 2. All eight games reached genuine native royal-capture conclusions in both
+profiles and reversed assignments. Six searches completed depth 1 at 619 visits;
+two exhausted 2,000 visits during the later iteration and retained the earlier
+completed depth 1 choice exactly as permitted by the existing result contract.
+The initial incomplete report remains preserved. Neither native defaults nor
+production limits changed.
+
+A second full 56-game run reproduced pairings, requests, observations, accepted
+histories, outcomes, stop reasons and cleanup diagnostics exactly after excluding
+measured elapsed time. Independent review checked all 84 exported rows against the
+full reports, source/config/executable hashes, lineage/split identities and final
+roots. Compressed source reports are small durable evidence; the 2.6 MB JSONL can
+be regenerated with `experiment-data` rather than committing a generated training
+set. This establishes usable bounded infrastructure and exposes performance and
+sample limitations before any substantial training or strength study.

@@ -14,9 +14,9 @@ pub const MIDDLE_PHASE: i32 = 6_400;
 ///
 /// Validated native positions have at most16pieces and8pawns per color, one
 /// king each. Bounding each color's material by14400, placement by1728, pawn
-/// terms by1944, activity by1636, king safety by4500, threats by896 and conversion
-/// by88 bounds a color's absolute contribution below26000; their difference is
-/// therefore below52000. The larger100000 ceiling leaves conservative slack.
+/// terms by4000, activity by1636, king safety by6500, threats by896 and conversion
+/// by144 bounds a color's absolute contribution below30000; their difference is
+/// therefore below60000. The larger100000 ceiling leaves conservative slack.
 pub const MAX_ABS_STATIC_SCORE: i32 = 100_000;
 
 /// One inspectable term's middle-game and endgame contributions in centipawns.
@@ -52,7 +52,7 @@ pub struct Terms {
     pub pawns: Tapered,
     /// Geometric activity, safe-from-pawn mobility and rook/bishop activity.
     pub mobility: Tapered,
-    /// Shelter/open king files and weighted opposing king-ring pressure.
+    /// Shelter, pawn storms, ring pressure and geometrically safe checking threats.
     pub king_safety: Tapered,
     /// Attacked undefended or more valuable enemy pieces; geometric estimates.
     pub threats: Tapered,
@@ -248,6 +248,8 @@ struct Features {
     men: Vec<Man>,
     occupied: [u64; 2],
     attacks: [u64; 2],
+    double_attacks: [u64; 2],
+    nonking_attacks: [u64; 2],
     pawn_attacks: [u64; 2],
     pawn_files: [[u8; 8]; 2],
     pawn_ranks: [[u8; 8]; 2],
@@ -261,6 +263,8 @@ impl Features {
             men: Vec::with_capacity(32),
             occupied: [0; 2],
             attacks: [0; 2],
+            double_attacks: [0; 2],
+            nonking_attacks: [0; 2],
             pawn_attacks: [0; 2],
             pawn_files: [[0; 8]; 2],
             pawn_ranks: [[0; 8]; 2],
@@ -277,7 +281,11 @@ impl Features {
             let attacks = position.attacks_from(sq);
             f.men.push(Man { piece, sq, attacks });
             f.occupied[i] |= bit(sq);
+            f.double_attacks[i] |= f.attacks[i] & attacks;
             f.attacks[i] |= attacks;
+            if piece.kind != PieceKind::King {
+                f.nonking_attacks[i] |= attacks;
+            }
             match piece.kind {
                 PieceKind::Pawn => {
                     f.pawn_files[i][usize::from(sq.file())] += 1;
@@ -291,6 +299,54 @@ impl Features {
             }
         }
         f
+    }
+    fn backward(&self, man: &Man) -> bool {
+        let i = side(man.piece.color);
+        let file = usize::from(man.sq.file());
+        let mut neighbors = (file.saturating_sub(1)..=(file + 1).min(7)).filter(|j| *j != file);
+        let behind_or_level = if man.piece.color == Color::White {
+            ((1u16 << (man.sq.rank() + 1)) - 1) as u8
+        } else {
+            (0xffu16 << man.sq.rank()) as u8
+        };
+        let has_neighbor = neighbors.clone().any(|j| self.pawn_files[i][j] != 0);
+        let rear_support = neighbors.any(|j| self.pawn_ranks[i][j] & behind_or_level != 0);
+        let next = if man.piece.color == Color::White {
+            man.sq.rank() + 1
+        } else {
+            man.sq.rank() - 1
+        };
+        let front = Square::new(man.sq.file(), next).expect("validated pawn rank");
+        has_neighbor && !rear_support && self.pawn_attacks[1 - i] & bit(front) != 0
+    }
+    fn pawn_storm(&self, king: &Man) -> i32 {
+        let i = side(king.piece.color);
+        let mut penalty = 0;
+        for pawn in self
+            .men
+            .iter()
+            .filter(|m| m.piece.kind == PieceKind::Pawn && m.piece.color != king.piece.color)
+        {
+            if pawn.sq.file().abs_diff(king.sq.file()) > 1 {
+                continue;
+            }
+            let forward = if king.piece.color == Color::White {
+                i32::from(pawn.sq.rank()) - i32::from(king.sq.rank())
+            } else {
+                i32::from(king.sq.rank()) - i32::from(pawn.sq.rank())
+            };
+            if !(1..=3).contains(&forward) {
+                continue;
+            }
+            let next = if pawn.piece.color == Color::White {
+                pawn.sq.rank() + 1
+            } else {
+                pawn.sq.rank() - 1
+            };
+            let blocked = self.pawn_ranks[i][usize::from(pawn.sq.file())] & (1 << next) != 0;
+            penalty += (4 - forward) * if blocked { 3 } else { 6 };
+        }
+        penalty
     }
 }
 
@@ -362,24 +418,39 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
                 };
                 let front =
                     Square::new(man.sq.file(), next_rank).expect("validated pawn not on last rank");
-                if passed {
+                if passed && f.pawn_ranks[i][file] & ahead == 0 {
                     let middle = 4 + 3 * advance * advance;
                     let end = 10 + 7 * advance * advance;
                     let blocked = position.piece_at(front).is_some();
                     let escort =
                         4 * (distance(f.kings[other], front) - distance(f.kings[i], front));
+                    let mut path = 0u64;
+                    let mut path_rank = i32::from(next_rank);
+                    let step = if man.piece.color == Color::White {
+                        1
+                    } else {
+                        -1
+                    };
+                    while (0..8).contains(&path_rank) {
+                        path |= bit(Square::new(man.sq.file(), path_rank as u8).unwrap());
+                        path_rank += step;
+                    }
+                    // Defending the destination does not prevent capture:
+                    // a contested promotion square remains unsafe.
+                    let unsafe_path = path & f.attacks[other] != 0;
+                    let clear = path & (f.occupied[i] | f.occupied[other]) == 0;
+                    let runway = if advance >= 3 && clear && !unsafe_path {
+                        4 * advance * advance
+                    } else {
+                        0
+                    };
                     terms[i].pawns.add(Tapered::new(
                         middle,
-                        if blocked { end / 2 } else { end } + escort,
+                        if blocked { end / 2 } else { end } + escort + runway
+                            - if unsafe_path { end / 4 } else { 0 },
                     ));
                 }
-                // Backward only if no adjacent pawn is level with/ahead of this
-                // pawn and the square directly ahead is under enemy pawn attack.
-                let support_ahead = adjacent.filter(|&j| j != file).any(|j| {
-                    let level_and_ahead = ahead | (1 << man.sq.rank());
-                    f.pawn_ranks[i][j] & level_and_ahead != 0
-                });
-                if !isolated && !support_ahead && f.pawn_attacks[other] & bit(front) != 0 {
+                if f.backward(man) {
                     terms[i].pawns.add(Tapered::new(-8, -6));
                 }
             }
@@ -431,6 +502,7 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
                 let ring = man.attacks | bit(man.sq);
                 let mut pressure = 0;
                 let mut attackers = 0i32;
+                let mut checks = 0;
                 for enemy in f
                     .men
                     .iter()
@@ -446,9 +518,32 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
                     };
                     pressure += attacked * weight;
                     attackers += i32::from(attacked != 0);
+                    if !matches!(enemy.piece.kind, PieceKind::Pawn | PieceKind::King) {
+                        // Hypothetical checking origins are native attack maps
+                        // from the king. A candidate is reachable geometrically,
+                        // not friendly occupied or defended by a non-king; near
+                        // the king it must have a second attacking supporter.
+                        // Pins/discovered lines remain search's responsibility.
+                        let origins = position.attacks_as(enemy.piece, man.sq);
+                        let safe = !f.occupied[other]
+                            & !f.nonking_attacks[i]
+                            & (!man.attacks | f.double_attacks[other]);
+                        let count = (origins & enemy.attacks & safe).count_ones().min(2) as i32;
+                        let check_weight = match enemy.piece.kind {
+                            PieceKind::Knight => 14,
+                            PieceKind::Bishop => 12,
+                            PieceKind::Rook => 16,
+                            PieceKind::Queen => 12,
+                            _ => unreachable!(),
+                        };
+                        checks += count * check_weight;
+                    }
                 }
                 terms[i].king_safety.add(Tapered::new(
-                    shelter + 20 * i32::from(castled) - pressure * (2 + attackers.min(4)),
+                    shelter + 20 * i32::from(castled)
+                        - pressure * (2 + attackers.min(4))
+                        - checks
+                        - f.pawn_storm(man),
                     0,
                 ));
             }
@@ -482,7 +577,18 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
             // A conversion preference, not an assertion that a mate is forced.
             let edge = 6 - center(f.kings[1 - i].file(), f.kings[1 - i].rank());
             let approach = 7 - distance(f.kings[i], f.kings[1 - i]);
-            term.endgame.end = 10 * edge + 4 * approach;
+            let bare_defender = f
+                .men
+                .iter()
+                .all(|man| side(man.piece.color) == i || man.piece.kind == PieceKind::King);
+            term.endgame.end = if bare_defender {
+                // Generic endgame centrality must not oppose approaching a
+                // cornered bare king. Cancel that king-only placement term,
+                // then use confinement/proximity as original mop-up heuristics.
+                10 * edge + 12 * approach - 14 * center(f.kings[i].file(), f.kings[i].rank())
+            } else {
+                10 * edge + 4 * approach
+            };
         }
     }
     Evaluation {
@@ -547,11 +653,11 @@ mod tests {
         assert_eq!(e.white.material, 100);
         assert_eq!(e.white.pawns.end, 22);
         assert_eq!(e.score_for(Color::White), 122);
-        // A6 pawn:40placement,-8isolated+122passed+4escort =118pawnterm.
+        // A6 pawn:40placement,-8isolated+122passed+4escort+64clear runway.
         let e = evaluate(&position("7k/8/P7/8/8/8/8/K7 w - - 0 1"));
         assert_eq!(e.white.placement.end, 40);
-        assert_eq!(e.white.pawns.end, 118);
-        assert_eq!(e.score_for(Color::White), 258);
+        assert_eq!(e.white.pawns.end, 182);
+        assert_eq!(e.score_for(Color::White), 322);
         // RookA1 attacks14squares, oneoccupiedbyownKh1 excluded:13mobility.
         let e = evaluate(&position("7k/8/8/8/8/8/8/R6K w - - 0 1"));
         assert_eq!(e.white.mobility, Tapered::new(13 * 2 + 16, 13 * 4 + 12));
@@ -574,6 +680,86 @@ mod tests {
         // Undefended queenA7 attacked by rookA1 gives900/16=56, once per victim.
         let e = evaluate(&position("7k/q7/8/8/8/8/8/R6K w - - 0 1"));
         assert_eq!(e.white.threats, Tapered::new(56, 56));
+    }
+    #[test]
+    fn backward_pawn_support_direction_and_passed_pawn_runway_are_explicit() {
+        // D3 cannot safely advance to d4, which e5 attacks. C4 is ahead and
+        // cannot come back to support it; c2 can advance toward that support.
+        for (fen, backward) in [
+            ("7k/8/8/4p3/2P5/3P4/8/K7 w - - 0 1", true),
+            ("7k/8/8/4p3/8/3P4/2P5/K7 w - - 0 1", false),
+        ] {
+            let p = position(fen);
+            let f = Features::new(&p);
+            let man = f.men.iter().find(|m| m.sq == square(19)).unwrap(); // d3
+            assert_eq!(f.backward(man), backward);
+            let mirror = reflect(&p);
+            let m = Features::new(&mirror);
+            let man = m.men.iter().find(|m| m.sq == square(43)).unwrap(); // d6
+            assert_eq!(m.backward(man), backward);
+        }
+        let behind = evaluate(&position("7k/8/8/4p3/2P5/3P4/8/K7 w - - 0 1"));
+        let supported = evaluate(&position("7k/8/8/4p3/8/3P4/2P5/K7 w - - 0 1"));
+        assert_eq!(behind.white.pawns, Tapered::new(19, 54));
+        assert_eq!(supported.white.pawns, Tapered::new(13, 36));
+        // A6's clear, unattacked runway gets64end cp; a rook onb8 controls a8,
+        // suppressing that bonus and discounting the122cp base by122/4=30.
+        let clear = evaluate(&position("7k/8/P7/8/8/8/8/K7 w - - 0 1"));
+        let controlled = evaluate(&position("1r5k/8/P7/8/8/8/8/K7 w - - 0 1"));
+        assert_eq!(clear.white.pawns.end - controlled.white.pawns.end, 64 + 30);
+        let supported = position("1r5k/8/P7/8/8/8/6B1/6K1 w - - 0 1");
+        let f = Features::new(&supported);
+        assert_ne!(f.attacks[0] & bit(square(56)), 0); // Bg2 supports a8
+        assert_ne!(f.attacks[1] & bit(square(56)), 0); // Rb8 controls a8
+        assert_eq!(
+            evaluate(&supported).white.pawns.end,
+            controlled.white.pawns.end
+        );
+        // A2 behind A3 is doubled, not a second independently running passer.
+        let rear = evaluate(&position("7k/8/8/8/8/P7/P7/K7 w - - 0 1"));
+        // doubled-16, isolated-16, onlyA3passed17+escort16 =>1.
+        assert_eq!(rear.white.pawns.end, 1);
+    }
+    #[test]
+    fn king_safety_counts_geometric_check_support_and_blocked_pawn_storms() {
+        for (fen, expected) in [
+            ("7k/8/8/8/8/6p1/8/6K1 w - - 0 1", 12),
+            ("7k/8/8/8/8/6p1/6P1/6K1 w - - 0 1", 6),
+            ("7k/8/8/6p1/8/8/8/6K1 w - - 0 1", 0),
+        ] {
+            let p = position(fen);
+            let f = Features::new(&p);
+            let king = f
+                .men
+                .iter()
+                .find(|m| m.piece.kind == PieceKind::King && m.piece.color == Color::White)
+                .unwrap();
+            assert_eq!(f.pawn_storm(king), expected);
+            let mirror = reflect(&p);
+            let reflected = evaluate(&mirror);
+            assert_eq!(evaluate(&p).white.king_safety, reflected.black.king_safety);
+        }
+        // Kf6 supportsQg7; a loneQ without support cannot safely check beside
+        // Kh8. Explicit attack-map facts back this heuristic, never mate proof.
+        let p = position("7k/8/5KQ1/8/8/8/8/8 w - - 0 1");
+        let f = Features::new(&p);
+        let g7 = bit(square(54));
+        assert_ne!(f.double_attacks[0] & g7, 0);
+        assert_eq!(f.nonking_attacks[1] & g7, 0);
+        assert_ne!(
+            p.attacks_as(
+                Piece {
+                    color: Color::White,
+                    kind: PieceKind::Queen
+                },
+                square(63)
+            ) & g7,
+            0
+        );
+        assert!(evaluate(&p).black.king_safety.middle < -100);
+        let mirrored = evaluate(&reflect(&p));
+        assert_eq!(evaluate(&p).white, mirrored.black);
+        assert_eq!(evaluate(&p).black, mirrored.white);
     }
     #[test]
     fn symmetry_and_no_history_turn_or_outcome_inference() {
@@ -697,6 +883,32 @@ mod tests {
             minor.score_for(Color::White) > 0,
             "native search, not static value, owns dead-position draws"
         );
+    }
+
+    #[test]
+    fn bare_king_mop_up_does_not_reward_staying_central_over_approach() {
+        for major in ["Q", "R"] {
+            let central = position(&format!("7k/8/8/8/3K4/8/8/{major}7 w - - 0 1"));
+            let near = position(&format!("7k/8/5K2/8/8/8/8/{major}7 w - - 0 1"));
+            let a = evaluate(&central);
+            let b = evaluate(&near);
+            // Both have the same cornered defender. Cancelling generic king
+            // centrality leaves the two-distance-step approach worth24end cp.
+            assert_eq!(
+                b.white.placement.end + b.white.endgame.end
+                    - a.white.placement.end
+                    - a.white.endgame.end,
+                24
+            );
+            assert!(b.score_for(Color::White) > a.score_for(Color::White));
+            assert_eq!(evaluate(&reflect(&near)).black, b.white);
+            assert!(
+                AdjudicatedGame::from_fen(&near.to_fen(), ClaimPolicy::ExplicitOnly)
+                    .unwrap()
+                    .outcome()
+                    .is_none()
+            );
+        }
     }
 
     #[test]

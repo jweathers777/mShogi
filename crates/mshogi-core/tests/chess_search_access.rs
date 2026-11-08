@@ -151,6 +151,234 @@ fn keys_distinguish_imports_policies_counters_modes_and_exact_prefixes() {
 }
 
 #[test]
+fn irreversible_boundaries_allow_exact_future_context_transpositions() {
+    for (fen, first, second, reset) in [
+        (
+            STANDARD_START_FEN,
+            ["g1f3", "g8f6", "b1c3", "b8c6"],
+            ["b1c3", "b8c6", "g1f3", "g8f6"],
+            "e2e4", // pawn move; earlier pawn ranks cannot recur
+        ),
+        (
+            "rn2k1nr/8/8/8/8/8/8/RN2K1NR w KQkq - 0 1",
+            ["g1f3", "g8f6", "b1c3", "b8c6"],
+            ["b1c3", "b8c6", "g1f3", "g8f6"],
+            "e1f1", // rights loss, despite a nonzero halfmove clock
+        ),
+        (
+            "1n2k1n1/8/8/8/8/2p5/8/1N2K1N1 w - - 0 1",
+            ["g1f3", "g8f6", "e1f1", "b8c6"],
+            ["e1f1", "b8c6", "g1f3", "g8f6"],
+            "b1c3", // capture; the missing pawn cannot be restored
+        ),
+    ] {
+        let original = game(fen);
+        let mut a = SearchCursor::new(&original);
+        let mut b = SearchCursor::new(&original);
+        for text in first {
+            a.push(action(text)).unwrap();
+        }
+        for text in second {
+            b.push(action(text)).unwrap();
+        }
+        assert_eq!(a.position(), b.position());
+        assert_ne!(a.key(), b.key(), "different reversible count maps");
+        a.push(action(reset)).unwrap();
+        b.push(action(reset)).unwrap();
+        assert_ne!(a.game(), b.game(), "canonical histories stay complete");
+        assert_eq!(a.position(), b.position());
+        assert_eq!(
+            a.key(),
+            b.key(),
+            "{reset} makes prior identities unreachable"
+        );
+        assert_eq!(a.key().unwrap().hash64(), b.key().unwrap().hash64());
+        assert_eq!(a.node(), b.node());
+        let key = a.key();
+        for next in a.node().actions.clone() {
+            let prepared = a
+                .preview(next)
+                .unwrap()
+                .expect("claim-free native transposition");
+            a.push(next).unwrap();
+            b.push_preview(prepared).unwrap();
+            assert_eq!(a.key(), b.key());
+            assert_eq!(a.node(), b.node());
+            assert_ne!(
+                a.game(),
+                b.game(),
+                "prepared effects do not replace canonical histories"
+            );
+            assert!(a.pop() && b.pop());
+            assert_eq!(a.key(), key);
+        }
+        while a.pop() {}
+        while b.pop() {}
+        assert_eq!(a.game(), Some(&original));
+        assert_eq!(b.game(), Some(&original));
+        assert_eq!(a.key(), b.key());
+    }
+}
+
+#[test]
+fn full_mode_keeps_prefix_identity_even_after_an_irreversible_action() {
+    let original = AdjudicatedGame::from_fen_with_mode(
+        STANDARD_START_FEN,
+        ClaimPolicy::ExplicitOnly,
+        AdjudicationMode::Full {
+            limits: ReachabilityLimits {
+                max_positions: Some(0),
+                max_transitions: Some(0),
+            },
+        },
+    )
+    .unwrap();
+    let mut a = SearchCursor::new(&original);
+    let mut b = SearchCursor::new(&original);
+    for text in ["g1f3", "g8f6", "b1c3", "b8c6", "e2e4"] {
+        a.push(action(text)).unwrap();
+    }
+    for text in ["b1c3", "b8c6", "g1f3", "g8f6", "e2e4"] {
+        b.push(action(text)).unwrap();
+    }
+    assert_eq!(a.position(), b.position());
+    assert_ne!(a.key(), b.key(), "Full proof provenance stays conservative");
+}
+
+#[test]
+fn unkeyed_real_subtrees_preserve_native_history_and_restore_parent_identity() {
+    let original = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+    let mut cursor = SearchCursor::new(&original);
+    let key = cursor.key();
+    let hash = cursor.position_hash();
+    let node = cursor.node().clone();
+    assert!(cursor.push_unkeyed(action("e2e5")).is_err());
+    assert_eq!(cursor.key(), key, "failed push cannot disable parent key");
+    cursor.push_unkeyed(action("e2e4")).unwrap();
+    assert!(cursor.key().is_none());
+    assert!(!cursor.is_synthetic());
+    let mut native = original.clone();
+    native.apply(action("e2e4")).unwrap();
+    assert_eq!(cursor.game(), Some(&native));
+    cursor.push(action("e7e5")).unwrap();
+    native.apply(action("e7e5")).unwrap();
+    assert!(
+        cursor.key().is_none(),
+        "ordinary push cannot revive stale key"
+    );
+    assert_eq!(cursor.game(), Some(&native));
+    assert_eq!(cursor.node().claims, native.available_claims());
+    assert_eq!(cursor.node().outcome, native.outcome());
+    assert!(cursor.pop());
+    assert!(cursor.key().is_none());
+    assert!(cursor.pop());
+    assert_eq!(cursor.game(), Some(&original));
+    assert_eq!(cursor.key(), key);
+    assert_eq!(cursor.position_hash(), hash);
+    assert_eq!(cursor.node(), &node);
+}
+
+#[test]
+fn lazy_turn_summaries_equal_full_native_semantics_at_sensitive_boundaries() {
+    for fen in [
+        STANDARD_START_FEN,
+        "7k/6Q1/5K2/8/8/8/8/8 b - - 0 1", // mate before thresholds
+        "7k/5K2/6Q1/8/8/8/8/8 b - - 0 1", // stalemate, no stand pat
+        "7k/8/8/8/8/8/8/K7 w - - 0 1",    // native death
+        "7k/8/8/8/8/8/8/KR6 w - - 99 1",  // intended fifty-move
+        "7k/8/8/8/8/8/8/KR6 w - - 150 1", // automatic draw
+        "7k/8/8/8/8/8/8/KR6 b - - 99 4294967295", // intended claim ignores unplayed overflow
+        "4k3/8/8/r4pPK/8/8/8/8 w - f6 0 9", // pinned EP
+    ] {
+        let original = game(fen);
+        let mut cursor = SearchCursor::new(&original);
+        let summary = cursor.turn().clone();
+        assert_eq!(summary.classification, original.position().classify());
+        assert_eq!(summary.outcome, original.outcome());
+        assert_eq!(summary.claims, original.available_claims());
+        assert_eq!(&cursor.node().turn, &summary);
+        assert_eq!(cursor.game(), Some(&original));
+    }
+    let mut cursor = SearchCursor::new(&game("6nk/8/8/8/8/8/8/KR4N1 w - - 0 1"));
+    for text in ["g1f3", "g8f6", "f3g1", "f6g8", "g1f3", "g8h6", "f3g1"] {
+        cursor.push(action(text)).unwrap();
+        let expected = cursor.game().unwrap().available_claims();
+        assert_eq!(cursor.turn().claims, expected);
+    }
+    assert!(
+        cursor
+            .turn()
+            .claims
+            .iter()
+            .any(|c| c.intended == Some(action("h6g8")))
+    );
+}
+
+#[test]
+fn prepared_native_transitions_equal_regular_games_and_preserve_sensitive_fallbacks() {
+    for fen in [
+        STANDARD_START_FEN,
+        "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1",
+        "4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 9",
+        "7k/2P5/6K1/8/8/8/8/8 w - - 0 1",
+        "7k/8/8/8/8/8/8/KR6 w - - 97 1",
+    ] {
+        let original = game(fen);
+        let mut cursor = SearchCursor::new(&original);
+        let key = cursor.key();
+        let hash = cursor.position_hash();
+        for action in original.position().legal_actions() {
+            let prepared = cursor.preview(action).unwrap().expect("safe M2 prefix");
+            assert_eq!(cursor.game(), Some(&original));
+            assert_eq!(cursor.depth(), 0);
+            let mut native = original.clone();
+            native.apply(action).unwrap();
+            assert_eq!(prepared.position(), native.position());
+            assert_eq!(prepared.turn().classification, native.position().classify());
+            assert_eq!(prepared.turn().outcome, native.outcome());
+            assert_eq!(prepared.turn().claims, native.available_claims());
+            cursor.push_preview(prepared).unwrap();
+            assert_eq!(cursor.game(), Some(&native));
+            assert_eq!(cursor.turn().claims, native.available_claims());
+            assert_eq!(cursor.turn().outcome, native.outcome());
+            assert!(cursor.pop());
+            assert_eq!(cursor.key(), key);
+            assert_eq!(cursor.position_hash(), hash);
+            assert_eq!(cursor.game(), Some(&original));
+        }
+    }
+    let original = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+    let mut cursor = SearchCursor::new(&original);
+    for a in ["g1f3", "g8f6", "f3g1"] {
+        cursor.push(action(a)).unwrap();
+    }
+    // A child's second occurrence does not let its opposite-side intended
+    // action claim threefold; exact native catalog confirms the side argument.
+    let prepared = cursor.preview(action("f6g8")).unwrap().unwrap();
+    cursor.push_preview(prepared).unwrap();
+    assert_eq!(cursor.game().unwrap().history().current_occurrences(), 2);
+    assert!(cursor.turn().claims.is_empty());
+    assert!(cursor.preview(action("e2e4")).unwrap().is_none());
+    for clock in [98, 99, 100] {
+        let mut cursor = SearchCursor::new(&game(&format!("7k/8/8/8/8/8/8/KR6 w - - {clock} 1")));
+        assert!(cursor.preview(action("b1b2")).unwrap().is_none());
+    }
+    let mut cursor = SearchCursor::new(&original);
+    let token = cursor.preview(action("e2e4")).unwrap().unwrap();
+    cursor.push(action("d2d4")).unwrap();
+    let before = cursor.game().unwrap().clone();
+    assert_eq!(
+        cursor.push_preview(token),
+        Err(PlayError::Action(ActionError::WrongSide))
+    );
+    assert_eq!(
+        cursor.game(),
+        Some(&before),
+        "stale effects are never committed"
+    );
+}
+
+#[test]
 fn native_repetition_catalog_and_undo_cross_the_first_repeated_identity() {
     let original = game("6nk/8/8/8/8/8/8/KR4N1 w - - 0 1");
     let mut cursor = SearchCursor::new(&original);
@@ -185,6 +413,9 @@ fn null_is_a_detached_position_never_a_game_or_history_key() {
     let original = game("4k3/8/8/3pP3/8/8/8/R3K3 w - d6 0 9");
     let record = original.record();
     let mut cursor = SearchCursor::new(&original);
+    let summary = cursor.turn().clone();
+    assert_eq!(summary.outcome, original.outcome());
+    assert_eq!(summary.classification, original.position().classify());
     let cache = cursor.node().clone();
     let key = cursor.key();
     let hash = cursor.position_hash();
@@ -196,6 +427,10 @@ fn null_is_a_detached_position_never_a_game_or_history_key() {
     );
     assert!(cursor.game().is_none());
     assert!(cursor.key().is_none());
+    let expected_classification = cursor.position().classify();
+    assert_eq!(cursor.turn().classification, expected_classification);
+    assert!(cursor.turn().outcome.is_none());
+    assert!(cursor.turn().claims.is_empty());
     assert!(cursor.node().outcome.is_none());
     assert!(cursor.node().claims.is_empty());
     assert!(!cursor.push_null());
@@ -213,6 +448,7 @@ fn null_is_a_detached_position_never_a_game_or_history_key() {
     assert_eq!(cursor.key(), key);
     assert_eq!(cursor.position_hash(), hash);
     assert_eq!(cursor.node(), &cache);
+    assert_eq!(cursor.turn(), &summary);
     assert_eq!(cursor.game().unwrap(), &original);
     assert_eq!(
         original.record(),
@@ -237,6 +473,9 @@ fn complete_mode_cached_proof_and_claimed_root_are_preserved() {
     )
     .unwrap();
     let mut cursor = SearchCursor::new(&original);
+    let summary = cursor.turn().clone();
+    assert_eq!(summary.outcome, original.outcome());
+    assert_eq!(summary.claims, original.available_claims());
     let before = cursor.node().clone();
     let key = cursor.key();
     assert!(
@@ -247,6 +486,7 @@ fn complete_mode_cached_proof_and_claimed_root_are_preserved() {
     assert!(cursor.pop());
     assert_eq!(cursor.game(), Some(&original));
     assert_eq!(cursor.node(), &before);
+    assert_eq!(cursor.turn(), &summary);
     assert_eq!(cursor.key(), key);
     let mut claimed = game("7k/8/8/8/8/8/8/KR6 w - - 100 1");
     let claim = claimed.available_claims()[0];

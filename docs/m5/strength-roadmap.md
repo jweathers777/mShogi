@@ -12,7 +12,7 @@ historical evidence; they establish no release-strength acceptance.
 | --- | --- |
 | 1. Chess search foundation | Build on the current native engine: efficient make/unmake and incremental state; history-safe transposition bounds; iterative deepening, principal-variation search, aspiration re-search, staged move ordering, SEE/history heuristics and bounded quiescence with legal check evasions. Retain an exact diagnostic mode. |
 | 2. Complete conventional Chess | Integrate guarded null-move pruning, late-move reductions/re-search, conservative futility/SEE pruning and bounded extensions. Assess ProbCut and singular extensions in that architecture. Complete tapered material/piece placement, pawn structure, mobility, king safety, threats and endgame evaluation, plus reliable thinking-time allocation and real product execution. These are coherent engineering increments within the conventional implementation task, not statistical milestones per technique. |
-| 3. Initial Chess diagnostic baseline | Owner-authorized MSH-49.2: 8–12 games from paired openings, equal one-second thinking time against full-strength Stockfish 19, at most30 minutes total match work. Report results, depths, performance limitations and representative losses. No significance study, confidence interval or Elo estimate. Then continue Shogi/Xiangqi rather than repeatedly benchmarking small Chess improvements; deeper Chess analysis returns during learned evaluation. |
+| 3. Initial Chess diagnostic baseline | Owner-authorized MSH-49.2: 8–12 games from paired openings, equal one-second thinking time against full-strength Stockfish 19, at most30 minutes total match work. Report results, depths, performance limitations and representative losses. No significance study, confidence interval or Elo estimate. This diagnostic is complete and remains historical evidence. It does not establish classical-engine maturity; continue the engineering stage below before cross-game transfer. No repeated expensive Chess studies. |
 | 4. Other conventional engines | Adapt to Shogi and Xiangqi first, then Tori, Chu and both accepted Tenjiku profiles. Reuse proven techniques where their semantics apply, with game-specific evaluation, tactical ordering, quiescence, pruning guards and history identities. Each substantially complete engine can justify its own approved major evaluation; an unavailable compatible opponent remains an honest limitation. |
 | 5. Chess learned evaluation | After the six conventional engines are established, research and integrate a complete learned approach in Chess, including data provenance, training, export, verified native inference and product integration. NNUE-style incremental evaluation is a researched starting candidate, not a predetermined shared model. Approve substantial training resources and the later strength study before running them. |
 | 6. Extend validated learning | Adapt the validated approach to the other five games, preserving both Tenjiku profiles. Refine actual model/data requirements game by game. This is tracked follow-on work; it does not silently add all-game learned delivery to the existing M5 closure gate. |
@@ -25,11 +25,20 @@ learning result; it remains a separate experiment, not a shared-model dependency
 MSH-56 still requires all six strength deliveries, initial learned improvement
 and the opening-knowledge experiment. No completed M4/M5 prerequisite is reopened.
 
-Owner follow-on: complete the bounded [Chess search cost checkpoint](chess-search-costs.md)
-(MSH-136) before transferring the foundation to Shogi/Xiangqi. This is native
-profiling/correctness and practical redundant-work correction, with no further
-Chess matches, strength study or speculative optimization. Carry the measured
-query/transition/quiescence/TT lessons into the existing game tasks.
+Owner correction after MSH-136: conventional Chess is **not complete** because
+major algorithms are present. Preserve completed MSH-49/49.1/49.2/136 and all
+receipts. MSH-137 continues coherent practical Chess development before MSH-50
+Shogi and MSH-54 Xiangqi; learned evaluation stays later. Its bounded increments
+cover native overhead (137.1), collision-checked future-state TT reuse (137.2),
+and integrated search/classical-evaluation refinement (137.3). These are engineering
+checkpoints, not statistical studies. Reassess significant remaining opportunities
+from current evidence; add justified work rather than treating this list as a
+completion checklist. Transfer only after independent engineering assessment finds
+remaining opportunities predominantly diminishing-return refinements, speculative
+research or disproportionate effort. Routine research, algorithms, tests and
+profiling need no owner approval; escalate actual major architectural/resource
+tradeoffs. No new match study is planned. The existing 15-minute aggregate routine
+match allowance applies across the coherent work, without subtask resets.
 
 ## Verification and measurements
 

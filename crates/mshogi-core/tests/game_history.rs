@@ -226,3 +226,86 @@ fn fixed_seed_games_restore_positions_history_and_occurrence_tables() {
     assert!(total > 700, "unexpected loss of sequence coverage: {total}");
     println!("MSH-16 fixed-seed plies: {total}");
 }
+
+#[test]
+fn checked_game_transition_matches_full_position_errors_effects_and_atomicity() {
+    use mshogi_core::chess::{Action, Promotion, Square};
+    for fen in [
+        STANDARD_START_FEN,
+        "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1",
+        "4kr2/8/8/8/8/8/8/4K2R w K - 0 1",        // transit attack
+        "4k3/8/8/r4pPK/8/8/8/8 w - f6 0 9",       // EP pin
+        "4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 9",      // legal EP
+        "1r5k/2P5/8/8/8/8/8/K7 w - - 0 1",        // all promotions
+        "7k/8/8/8/8/8/8/KR6 b - - 99 4294967295", // fullmove overflow
+        "7k/8/8/8/8/8/8/KR6 w - - 4294967295 1",  // halfmove overflow
+    ] {
+        let original = Game::from_fen(fen, ClaimPolicy::ExplicitOnly).unwrap();
+        for from in 0..64 {
+            for to in 0..64 {
+                for promotion in [
+                    None,
+                    Some(Promotion::Queen),
+                    Some(Promotion::Rook),
+                    Some(Promotion::Bishop),
+                    Some(Promotion::Knight),
+                ] {
+                    let a = Action {
+                        from: Square::new(from % 8, from / 8).unwrap(),
+                        to: Square::new(to % 8, to / 8).unwrap(),
+                        promotion,
+                    };
+                    let mut position = original.position().clone();
+                    let expected = position.apply(a).map(|_| ());
+                    let mut actual = original.clone();
+                    assert_eq!(actual.apply(a), expected, "{fen}: {a:?}");
+                    if expected.is_ok() {
+                        assert_eq!(actual.position(), &position);
+                        assert_eq!(
+                            position,
+                            Position::from_fen(&position.to_fen()).unwrap(),
+                            "derived occupancy rebuild at {a:?}"
+                        );
+                        assert_eq!(actual.undo(), Some(a));
+                    }
+                    assert_eq!(actual, original, "exact rejection/undo at {a:?}");
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn repetition_hash_collisions_retain_exact_identities_and_equivalent_ep_counts() {
+    use std::{
+        collections::HashMap,
+        hash::{BuildHasherDefault, Hasher},
+    };
+    #[derive(Default)]
+    struct Collision;
+    impl Hasher for Collision {
+        fn write(&mut self, _: &[u8]) {}
+        fn finish(&self) -> u64 {
+            0
+        }
+    }
+    let mut counts = HashMap::<_, usize, BuildHasherDefault<Collision>>::default();
+    for fen in [
+        STANDARD_START_FEN,
+        "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+        "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 8 2",
+        "4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 9",
+        "4k3/8/8/3pP3/8/8/8/4K3 w - - 0 9",
+    ] {
+        *counts
+            .entry(Position::from_fen(fen).unwrap().repetition_identity())
+            .or_default() += 1;
+    }
+    assert_eq!(
+        counts.len(),
+        4,
+        "uncapturable raw EP alone is equivalent; legal EP is not"
+    );
+    assert_eq!(counts.values().copied().sum::<usize>(), 5);
+    assert_eq!(counts.values().filter(|&&count| count == 2).count(), 1);
+}

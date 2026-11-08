@@ -123,17 +123,8 @@ impl Game {
         &self,
         classification: Classification,
     ) -> Option<ChessOutcome> {
-        match classification {
-            Classification::Checkmate => {
-                return Some(ChessOutcome::Checkmate {
-                    winner: self.position().side_to_move().opponent(),
-                });
-            }
-            Classification::Stalemate => return Some(ChessOutcome::Draw(DrawReason::Stalemate)),
-            _ => {}
-        }
-        if self.position().dead_recognition() == DeadRecognition::ProvenDead {
-            return Some(ChessOutcome::Draw(DrawReason::DeadPosition));
+        if let Some(outcome) = self.position().position_outcome(classification) {
+            return Some(outcome);
         }
         if self.current_occurrences() >= 5 {
             return Some(ChessOutcome::Draw(DrawReason::Fivefold));
@@ -143,7 +134,25 @@ impl Game {
         }
         None
     }
-
+}
+impl Position {
+    pub(super) fn position_outcome(&self, classification: Classification) -> Option<ChessOutcome> {
+        match classification {
+            Classification::Checkmate => {
+                return Some(ChessOutcome::Checkmate {
+                    winner: self.side_to_move().opponent(),
+                });
+            }
+            Classification::Stalemate => return Some(ChessOutcome::Draw(DrawReason::Stalemate)),
+            _ => {}
+        }
+        if self.dead_recognition() == DeadRecognition::ProvenDead {
+            return Some(ChessOutcome::Draw(DrawReason::DeadPosition));
+        }
+        None
+    }
+}
+impl Game {
     fn validate_claim_without_outcome(&self, request: ClaimRequest) -> Result<(), ClaimError> {
         if request.actor != self.position().side_to_move() {
             return Err(ClaimError::WrongActor);
@@ -437,11 +446,24 @@ impl AdjudicatedGame {
         (classification, outcome, claims)
     }
 
+    pub(super) fn search_needs_claim_actions(&self) -> bool {
+        self.position().halfmove_clock() >= 99 || self.history.has_repeated_identity()
+    }
+
+    pub(super) fn search_outcome(&self, classification: Classification) -> Option<ChessOutcome> {
+        self.outcome_with_classification(classification)
+    }
+
     pub(super) fn apply_for_search(
         &mut self,
         action: Action,
+        prepared: Option<Position>,
     ) -> Result<Option<MateReachability>, PlayError> {
-        self.history.apply(action).map_err(PlayError::Action)?;
+        if let Some(after) = prepared {
+            self.history.commit_after(action, after);
+        } else {
+            self.history.apply(action).map_err(PlayError::Action)?;
+        }
         let previous = self.dead_analysis.take();
         self.refresh_dead_analysis();
         Ok(previous)

@@ -76,6 +76,19 @@ fn destination_projection_equals_full_native_list_at_every_square_along_real_wal
                         .filter(|a| a.to == square)
                         .collect::<Vec<_>>();
                     assert_eq!(p.legal_actions_to(square), expected);
+                    let captures: Vec<_> = p
+                        .captures_and_promotions()
+                        .into_iter()
+                        .filter(|a| {
+                            a.to == square
+                                && (p.piece_at(a.to).is_some()
+                                    || a.from.file() != a.to.file()
+                                        && p.piece_at(a.from).is_some_and(|piece| {
+                                            piece.kind == mshogi_core::chess::PieceKind::Pawn
+                                        }))
+                        })
+                        .collect();
+                    assert_eq!(p.legal_captures_to(square), captures);
                 }
             }
             assert_eq!(p, before);
@@ -85,5 +98,114 @@ fn destination_projection_equals_full_native_list_at_every_square_along_real_wal
             let action = all[(ply * 17 + 3) % all.len()];
             p.apply(action).unwrap();
         }
+    }
+}
+
+#[test]
+fn native_candidate_query_matches_full_checked_public_transition_on_corpus_walks() {
+    let corpus: serde_json::Value =
+        serde_json::from_str(include_str!("../../../tests/fixtures/chess/corpus.json")).unwrap();
+    let mut positions = 0;
+    for case in corpus["cases"].as_array().unwrap() {
+        let Some(fen) = case["input"]["fen"].as_str() else {
+            continue;
+        };
+        let Ok(mut p) = Position::from_fen(fen) else {
+            continue;
+        };
+        for ply in 0..16 {
+            // The public transition retains complete structural validation and
+            // Undo snapshots. Normalize only representation counters, as the
+            // native query contract requires; retain all geometry and rights.
+            let fen = p.to_fen();
+            let mut fields: Vec<_> = fen.split_whitespace().collect();
+            fields[4] = "0";
+            fields[5] = "1";
+            let base = Position::from_fen(&fields.join(" ")).unwrap();
+            let expected: Vec<_> = base
+                .candidates()
+                .into_iter()
+                .filter(|a| base.clone().apply(*a).is_ok())
+                .collect();
+            let before = p.clone();
+            assert_eq!(p.legal_actions(), expected, "{} ply{ply}", case["id"]);
+            assert_eq!(p.has_legal_action(), !expected.is_empty());
+            let tactical: Vec<_> = expected
+                .iter()
+                .copied()
+                .filter(|a| {
+                    a.promotion.is_some()
+                        || base.piece_at(a.to).is_some()
+                        || (a.from.file() != a.to.file()
+                            && base.piece_at(a.from).is_some_and(|piece| {
+                                piece.kind == mshogi_core::chess::PieceKind::Pawn
+                            }))
+                })
+                .collect();
+            assert_eq!(p.captures_and_promotions(), tactical);
+            assert_eq!(p, before);
+            positions += 1;
+            if expected.is_empty() {
+                break;
+            }
+            // Advance the independently full-validated copy, not the optimized
+            // query's published transition, so an unsafe candidate is exposed.
+            p = base;
+            p.apply(expected[(ply * 19 + 7) % expected.len()]).unwrap();
+        }
+    }
+    assert!(positions >= 500, "lost corpus/walk coverage: {positions}");
+}
+
+#[test]
+fn tactical_projection_keeps_ep_and_all_quiet_promotions_without_quiet_slides() {
+    for (fen, expected) in [
+        ("4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 9", vec!["e5d6"]),
+        (
+            "7k/2P5/6K1/8/8/8/8/8 w - - 0 1",
+            vec!["c7c8b", "c7c8n", "c7c8q", "c7c8r"],
+        ),
+        ("4k3/8/8/r4pPK/8/8/8/8 w - f6 0 9", vec![]),
+    ] {
+        let p = Position::from_fen(fen).unwrap();
+        let mut actual: Vec<_> = p
+            .captures_and_promotions()
+            .iter()
+            .map(ToString::to_string)
+            .collect();
+        actual.sort();
+        assert_eq!(actual, expected);
+    }
+}
+
+#[test]
+fn direct_capture_target_queries_have_independent_pin_ep_and_promotion_expectations() {
+    for (fen, at, expected) in [
+        (
+            "4k3/8/8/8/8/8/3p4/3RK3 w - - 0 1",
+            "d2",
+            vec!["d1d2", "e1d2"],
+        ),
+        ("3r3k/8/8/8/8/8/3p4/3RK3 w - - 0 1", "d2", vec!["d1d2"]),
+        ("4r2k/8/8/8/8/8/4Rp2/4K3 w - - 0 1", "f2", vec!["e1f2"]),
+        ("4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 9", "d6", vec!["e5d6"]),
+        ("4k3/8/8/r4pPK/8/8/8/8 w - f6 0 9", "f6", vec![]),
+        (
+            "1r5k/2P5/8/8/8/8/8/K7 w - - 0 1",
+            "b8",
+            vec!["c7b8b", "c7b8n", "c7b8q", "c7b8r"],
+        ),
+        ("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1", "g1", vec![]),
+    ] {
+        let p = Position::from_fen(fen).unwrap();
+        let b = at.as_bytes();
+        let square = Square::new(b[0] - b'a', b[1] - b'1').unwrap();
+        let mut actual: Vec<_> = p
+            .legal_captures_to(square)
+            .iter()
+            .map(ToString::to_string)
+            .collect();
+        actual.sort();
+        assert_eq!(actual, expected, "{fen}: {at}");
     }
 }

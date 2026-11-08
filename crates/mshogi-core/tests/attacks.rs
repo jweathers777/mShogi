@@ -206,3 +206,168 @@ fn attack_maps_follow_occupancy_changes_from_checked_actions() {
         ["a2"]
     );
 }
+
+fn reflect_colors(position: &Position) -> Position {
+    // Rank reflection and color swap preserve Chess attacks, including pawn
+    // direction. Retain rights/EP so the reflected diagram is validated too.
+    let fen = position.to_fen();
+    let mut fields: Vec<String> = fen.split_whitespace().map(str::to_owned).collect();
+    fields[0] = fields[0]
+        .split('/')
+        .rev()
+        .map(|row| {
+            row.chars()
+                .map(|c| {
+                    if c.is_ascii_uppercase() {
+                        c.to_ascii_lowercase()
+                    } else {
+                        c.to_ascii_uppercase()
+                    }
+                })
+                .collect::<String>()
+        })
+        .collect::<Vec<_>>()
+        .join("/");
+    fields[1] = if fields[1] == "w" { "b" } else { "w" }.into();
+    if fields[2] != "-" {
+        fields[2] = [('K', 'k'), ('Q', 'q'), ('k', 'K'), ('q', 'Q')]
+            .into_iter()
+            .filter_map(|(to, from)| fields[2].contains(from).then_some(to))
+            .collect();
+    }
+    if fields[3] != "-" {
+        let bytes = fields[3].as_bytes();
+        fields[3] = format!("{}{}", bytes[0] as char, (b'9' - bytes[1] + b'0') as char);
+    }
+    Position::from_fen(&fields.join(" ")).unwrap()
+}
+
+#[test]
+fn target_queries_match_origin_scan_and_color_reflection_during_native_walks() {
+    let mut seed = 0x1371_a77a_c654_u64;
+    let mut positions = 0;
+    for fen in [
+        mshogi_core::chess::STANDARD_START_FEN,
+        "r3k2r/ppp2ppp/2npbn2/3qp3/3PP3/2N1BN2/PPP2PPP/R2QK2R w KQkq - 0 9",
+        "7k/8/8/r4pPK/8/8/8/8 w - f6 0 1", // horizontal EP pin
+        "4k3/P7/8/8/8/8/7p/4K3 w - - 0 1", // promotions/edges
+    ] {
+        let mut position = Position::from_fen(fen).unwrap();
+        let root = position.clone();
+        let mut undos = Vec::new();
+        for _ in 0..40 {
+            let reflected = reflect_colors(&position);
+            let before = position.clone();
+            assert_eq!(
+                position,
+                Position::from_fen(&position.to_fen()).unwrap(),
+                "incremental occupancy equals native full rebuild"
+            );
+            for by in [Color::White, Color::Black] {
+                for target in all_squares() {
+                    let expected: Vec<_> = position.attackers(target, by).collect();
+                    assert_eq!(
+                        position.is_square_attacked(target, by),
+                        !expected.is_empty(),
+                        "{position}: {by:?} at {target}"
+                    );
+                    assert_eq!(
+                        reflected.is_square_attacked(
+                            Square::new(target.file(), 7 - target.rank()).unwrap(),
+                            by.opponent()
+                        ),
+                        !expected.is_empty(),
+                        "rank/color reflection at {target}"
+                    );
+                }
+            }
+            assert_eq!(position, before);
+            positions += 1;
+            let actions = position.legal_actions();
+            if actions.is_empty() {
+                break;
+            }
+            seed ^= seed << 13;
+            seed ^= seed >> 7;
+            seed ^= seed << 17;
+            undos.push(
+                position
+                    .apply(actions[seed as usize % actions.len()])
+                    .unwrap(),
+            );
+        }
+        for undo in undos.iter().rev() {
+            position.undo(undo).unwrap();
+        }
+        assert_eq!(position, root);
+    }
+    assert!(positions >= 120, "lost walk coverage: {positions}");
+}
+
+#[test]
+fn supported_contact_mate_candidates_and_pass_threats_still_require_game_admission() {
+    use mshogi_core::chess::{
+        ActionError, AdjudicatedGame, ChessOutcome, ClaimPolicy, Classification,
+    };
+    for fen in [
+        "7k/8/5KQ1/8/8/8/8/8 w - - 0 1",
+        "8/8/8/8/8/5kq1/8/7K b - - 0 1",
+    ] {
+        let p = Position::from_fen(fen).unwrap();
+        let before = p.clone();
+        let mate = p.queen_contact_mate().unwrap();
+        let mut played = p.clone();
+        played.apply(mate).unwrap();
+        assert_eq!(played.classify(), Classification::Checkmate);
+        assert_eq!(p, before);
+    }
+    let p = Position::from_fen("8/8/8/8/8/5kq1/8/7K b - - 0 4294967295").unwrap();
+    let mate = p.queen_contact_mate().unwrap();
+    let mut failed = p.clone();
+    assert!(matches!(
+        failed.apply(mate),
+        Err(ActionError::CounterOverflow)
+    ));
+    assert_eq!(
+        failed, p,
+        "position-legal mate does not erase representability"
+    );
+    let mut g = AdjudicatedGame::from_fen(
+        "rn3rk1/p4ppp/3bpP2/1Q6/3P4/2q2N2/5PPP/R1B2RK1 b - - 0 15",
+        ClaimPolicy::ExplicitOnly,
+    )
+    .unwrap();
+    for text in ["c3a1", "b5g5"] {
+        g.apply(text.parse().unwrap()).unwrap();
+    }
+    assert!(g.position().has_queen_contact_mate_threat());
+    assert!(
+        g.outcome().is_none(),
+        "hypothetical threat is not a conclusion"
+    );
+    for text in ["g7g6", "g5h6", "d6h2"] {
+        g.apply(text.parse().unwrap()).unwrap();
+    }
+    assert_eq!(g.position().classify(), Classification::Check);
+    assert!(
+        !g.position().has_queen_contact_mate_threat(),
+        "a pass from check is unavailable"
+    );
+    assert!(
+        g.position().queen_contact_mate().is_none(),
+        "a mate candidate must resolve own check"
+    );
+    g.apply("f3h2".parse().unwrap()).unwrap();
+    assert!(g.position().has_queen_contact_mate_threat());
+    assert!(g.outcome().is_none());
+    g.apply("a1d4".parse().unwrap()).unwrap();
+    let mate = g.position().queen_contact_mate().unwrap();
+    assert_eq!(mate.to_string(), "h6g7");
+    g.apply(mate).unwrap();
+    assert_eq!(
+        g.outcome(),
+        Some(ChessOutcome::Checkmate {
+            winner: Color::White
+        })
+    );
+}

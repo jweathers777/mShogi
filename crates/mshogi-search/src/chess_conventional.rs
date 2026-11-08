@@ -12,7 +12,7 @@ use crate::{
 };
 use mshogi_core::chess::{
     Action, AdjudicatedGame, AdjudicationMode, ChessOutcome, ClaimPolicy, Classification, Color,
-    PieceKind, Position, Promotion, SearchCursor, SearchKey, Square,
+    PieceKind, Position, Promotion, SearchCursor, SearchKey, SearchPreview, Square,
 };
 use std::{
     cmp::Reverse,
@@ -27,6 +27,7 @@ const INF: i32 = MATE_SCORE + 1;
 const MATE_BAND: i32 = MATE_SCORE - MAX_PLY as i32;
 const Q_PLIES: u16 = 16;
 const TABLE_ENTRIES: usize = 4096;
+const MAX_TABLE_ENTRIES: usize = 16_384;
 
 /// Soft iteration boundary and hard cooperative deadline, independent of watchdogs.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -61,7 +62,7 @@ pub struct SearchOptions {
     pub mode: SearchMode,
     /// Optional soft/hard wall-time allocation.
     pub time: Option<TimeBudget>,
-    /// Direct-mapped entries, clamped to4096; zero disables table reuse.
+    /// Entries in buckets of up to four, clamped to16384; zero disables reuse.
     pub table_entries: usize,
 }
 impl Default for SearchOptions {
@@ -80,17 +81,33 @@ pub struct SearchStats {
     pub main_nodes: u64,
     /// Quiescence visits.
     pub q_nodes: u64,
-    /// Exact-context transposition hits.
+    /// Exact native future-context transposition hits.
     pub tt_hits: u64,
     /// Real main-node table lookups, including empty slots.
     pub tt_probes: u64,
     /// Occupied lookups whose complete position hash matches (hint eligibility).
     pub tt_position_hits: u64,
-    /// Lookups with exact full-history equality, before depth/extension checks.
+    /// Lookups with exact native future-context equality, before depth/extension checks.
     pub tt_context_hits: u64,
     /// Completed real-node entries stored, including replacements.
     pub tt_stores: u64,
-    /// Bound cutoffs using an exact full-history key.
+    /// Quiescence-entry lookups at keyed real horizon nodes.
+    pub q_tt_probes: u64,
+    /// Exact native-context and remaining-q-budget hits.
+    pub q_tt_hits: u64,
+    /// Bound cutoffs from compatible quiescence entries.
+    pub q_tt_cutoffs: u64,
+    /// Completed quiescence entries stored in the shared bounded table.
+    pub q_tt_stores: u64,
+    /// Occupied slots replaced with a different native context or search phase.
+    pub tt_replacements: u64,
+    /// New shallow stores declined to retain useful current-generation entries.
+    pub tt_store_refusals: u64,
+    /// Native checked child previews offered without changing Game history.
+    pub prepared_moves: u64,
+    /// Pruned prepared children that never needed Game/evaluation push or pop.
+    pub prepared_pruned: u64,
+    /// Bound cutoffs using a collision-checked native future-context key.
     pub tt_cutoffs: u64,
     /// Aspiration-window widening/re-searches.
     pub aspiration_researches: u64,
@@ -106,6 +123,16 @@ pub struct SearchStats {
     pub null_abandoned: u64,
     /// Bounded check extensions.
     pub extensions: u64,
+    /// One-ply extensions after an existing null probe observes a mating threat.
+    pub threat_extensions: u64,
+    /// Quiet main moves protected from reductions/omission by a native-confirmed mating threat.
+    pub threat_protected_moves: u64,
+    /// Quiescent turns that must investigate real defences to a contact-mate threat.
+    pub queen_threat_nodes: u64,
+    /// Native-confirmed immediate contact mates admitted at a quiescent node.
+    pub queen_contact_mates: u64,
+    /// Quiet moves creating a confirmed contact-mate threat inside quiescence.
+    pub quiet_threat_moves: u64,
     /// Conservative late quiet/futility omissions.
     pub futility_pruned: u64,
     /// Guarded late quiet omissions after the shallow move-count threshold.
@@ -183,12 +210,13 @@ pub fn search_with_options(
             seldepth: 0,
         },
         mode: options.mode,
-        table: vec![None; options.table_entries.min(TABLE_ENTRIES)],
+        table: vec![None; options.table_entries.min(MAX_TABLE_ENTRIES)],
         history: vec![0; 2 * 64 * 64],
         continuation: vec![0; 64 * 64],
         captures: vec![0; 2 * 6 * 64],
         killers: vec![[None; 2]; usize::from(MAX_PLY) + 1],
         stats: SearchStats::default(),
+        generation: 0,
     };
     let mut result = SearchResult {
         decision: None,
@@ -199,6 +227,7 @@ pub fn search_with_options(
         status: SearchStatus::Complete,
     };
     for depth in 1..=limits.depth {
+        engine.generation = depth;
         let mut width = if depth >= 3 && result.score.is_some_and(|s| s.abs() < MATE_BAND) {
             40
         } else {
@@ -329,6 +358,7 @@ struct Entry {
     score: i32,
     bound: Bound,
     value: Value,
+    generation: u16,
 }
 struct Engine<'a> {
     cursor: SearchCursor,
@@ -341,6 +371,7 @@ struct Engine<'a> {
     captures: Vec<i32>,
     killers: Vec<[Option<Action>; 2]>,
     stats: SearchStats,
+    generation: u16,
 }
 #[derive(Clone, Copy)]
 struct Ordered {
@@ -349,6 +380,43 @@ struct Ordered {
     gain: i32,
     see: i32,
     quiet_quality: i32,
+}
+struct MovePicker {
+    hint: Option<Action>,
+    pending: Option<Vec<Action>>,
+    rest: std::vec::IntoIter<Ordered>,
+}
+impl MovePicker {
+    fn new(mut actions: Vec<Action>, hint: Option<Action>) -> Self {
+        let hint = hint.filter(|a| actions.contains(a));
+        if let Some(hint) = hint {
+            actions.retain(|a| *a != hint);
+        }
+        Self {
+            hint,
+            pending: Some(actions),
+            rest: Vec::new().into_iter(),
+        }
+    }
+    fn next(
+        &mut self,
+        engine: &mut Engine<'_>,
+        ply: u16,
+        previous: Option<Action>,
+    ) -> Result<Option<Ordered>, Halt> {
+        // Admit the TT hint from the actual native list. Do no exchange work
+        // for unrelated moves until this first move fails to produce a cutoff.
+        if let Some(hint) = self.hint.take() {
+            return Ok(engine.ordered(vec![hint], None, ply, previous)?.pop());
+        }
+        if let Some(actions) = self.pending.take() {
+            self.rest = engine.ordered(actions, None, ply, previous)?.into_iter();
+        }
+        Ok(self.rest.next())
+    }
+}
+fn history_update(slot: &mut i32, bonus: i32) {
+    *slot = (*slot + bonus - bonus.abs() * *slot / 16_000).clamp(-16_000, 16_000);
 }
 fn square_index(s: Square) -> usize {
     usize::from(s.rank()) * 8 + usize::from(s.file())
@@ -419,7 +487,7 @@ fn exchange(position: &Position, a: Action, left: u8, work: &mut Work<'_>) -> Re
     if after.apply(a).is_err() {
         return Ok(0);
     } // Actual search push reports representation errors.
-    let reply = after.legal_actions_to(a.to).into_iter().min_by_key(|r| {
+    let reply = after.legal_captures_to(a.to).into_iter().min_by_key(|r| {
         (
             after.piece_at(r.from).map_or(0, |p| {
                 if p.kind == PieceKind::King {
@@ -447,7 +515,7 @@ impl Engine<'_> {
     }
     fn terminal(&mut self, ply: u16) -> Option<Value> {
         let side = self.cursor.position().side_to_move();
-        let node = self.cursor.node();
+        let node = self.cursor.turn();
         if let Some(outcome) = node.outcome {
             return Some(Value::leaf(match outcome {
                 ChessOutcome::Draw(_) => 0,
@@ -461,7 +529,12 @@ impl Engine<'_> {
             }));
         }
         // Hypothetical null probes cannot report a native Game conclusion.
-        if node.synthetic && node.actions.is_empty() {
+        if node.synthetic
+            && matches!(
+                node.classification,
+                Classification::Checkmate | Classification::Stalemate
+            )
+        {
             return Some(Value::leaf(
                 if node.classification == Classification::Checkmate {
                     -MATE_SCORE + i32::from(ply)
@@ -478,16 +551,30 @@ impl Engine<'_> {
             .game()
             .is_some_and(|g| g.history().claim_policy() == ClaimPolicy::AutoClaim);
         self.cursor
-            .node()
+            .turn()
             .claims
             .first()
             .copied()
             .map(|c| (SearchChoice::Claim(c), forced))
     }
     fn push(&mut self, a: Action) -> Result<(), Halt> {
+        self.push_with_key(a, true)
+    }
+    fn push_with_key(&mut self, a: Action, keyed: bool) -> Result<(), Halt> {
+        let before = self.cursor.position().clone();
+        let result = if keyed {
+            self.cursor.push(a)
+        } else {
+            self.cursor.push_unkeyed(a)
+        };
+        result.map_err(|e| Halt::Error(SearchError::Transition(e)))?;
+        self.eval.push(&before, self.cursor.position());
+        Ok(())
+    }
+    fn push_preview(&mut self, preview: SearchPreview) -> Result<(), Halt> {
         let before = self.cursor.position().clone();
         self.cursor
-            .push(a)
+            .push_preview(preview)
             .map_err(|e| Halt::Error(SearchError::Transition(e)))?;
         self.eval.push(&before, self.cursor.position());
         Ok(())
@@ -497,7 +584,66 @@ impl Engine<'_> {
         assert!(self.cursor.pop());
     }
     fn table_index(&self, hash: u64) -> Option<usize> {
-        (!self.table.is_empty()).then(|| (hash as usize) % self.table.len())
+        (!self.table.is_empty()).then(|| (hash as usize % self.table.len().div_ceil(4)) * 4)
+    }
+    fn table_range(&self, hash: u64) -> std::ops::Range<usize> {
+        let start = self.table_index(hash).unwrap_or(0);
+        start..(start + 4).min(self.table.len())
+    }
+    fn entry_index(
+        &self,
+        hash: u64,
+        key: Option<&SearchKey>,
+        q_depth: Option<i32>,
+    ) -> Option<usize> {
+        self.table_range(hash)
+            .filter(|&i| self.table[i].as_ref().is_some_and(|e| e.hash == hash))
+            .max_by_key(|&i| {
+                let e = self.table[i].as_ref().unwrap();
+                (
+                    Some(&e.key) == key,
+                    q_depth.map_or(e.depth > 0, |d| e.depth == d),
+                    e.depth.max(0),
+                )
+            })
+    }
+    fn store(&mut self, entry: Entry, quiet: bool) {
+        let range = self.table_range(entry.hash);
+        if range.is_empty() {
+            return;
+        }
+        let same = range.clone().find(|&i| {
+            self.table[i].as_ref().is_some_and(|old| {
+                old.hash == entry.hash
+                    && old.key == entry.key
+                    && old.extensions == entry.extensions
+                    && (old.depth > 0 && entry.depth > 0 || old.depth == entry.depth)
+            })
+        });
+        let empty = range.clone().find(|&i| self.table[i].is_none());
+        let victim = same.or(empty).unwrap_or_else(|| {
+            range
+                .min_by_key(|&i| {
+                    let old = self.table[i].as_ref().unwrap();
+                    old.depth.max(0) - 8 * i32::from(self.generation.saturating_sub(old.generation))
+                })
+                .unwrap()
+        });
+        if let Some(old) = &self.table[victim] {
+            if old.generation == self.generation
+                && (entry.depth < 0 && old.depth > 0 || old.depth.max(0) > entry.depth.max(0) + 2)
+            {
+                self.stats.tt_store_refusals += 1;
+                return;
+            }
+            self.stats.tt_replacements += u64::from(same.is_none());
+        }
+        if quiet {
+            self.stats.q_tt_stores += 1;
+        } else {
+            self.stats.tt_stores += 1;
+        }
+        self.table[victim] = Some(entry);
     }
     fn ordered(
         &mut self,
@@ -560,7 +706,7 @@ impl Engine<'_> {
         Ok(moves.into_iter().map(|(_, m)| m).collect())
     }
     fn reward(&mut self, m: Ordered, depth: i32, ply: u16, previous: Option<Action>) {
-        if self.cursor.node().synthetic {
+        if self.cursor.turn().synthetic {
             return;
         }
         let side = color_index(self.cursor.position().side_to_move());
@@ -580,12 +726,31 @@ impl Engine<'_> {
             }
             if let Some(p) = previous {
                 let s = &mut self.continuation[square_index(p.to) * 64 + square_index(m.action.to)];
-                *s = (*s + bonus).min(16_000);
+                history_update(s, bonus);
             }
             &mut self.history
                 [(side * 64 + square_index(m.action.from)) * 64 + square_index(m.action.to)]
         };
-        *slot = (*slot + bonus - bonus * slot.abs() / 16_000).clamp(-16_000, 16_000);
+        history_update(slot, bonus);
+    }
+    fn penalize_quiets(&mut self, actions: &[Action], depth: i32, previous: Option<Action>) {
+        if self.cursor.is_synthetic() {
+            return;
+        }
+        let side = color_index(self.cursor.position().side_to_move());
+        let malus = -(depth * depth * 16).min(1000);
+        for a in actions {
+            history_update(
+                &mut self.history[(side * 64 + square_index(a.from)) * 64 + square_index(a.to)],
+                malus,
+            );
+            if let Some(p) = previous {
+                history_update(
+                    &mut self.continuation[square_index(p.to) * 64 + square_index(a.to)],
+                    malus,
+                );
+            }
+        }
     }
 
     fn probe_null(
@@ -636,7 +801,7 @@ impl Engine<'_> {
         mut depth: i32,
         ply: u16,
         mut alpha: i32,
-        beta: i32,
+        mut beta: i32,
         pv: bool,
         allow_null: bool,
         mut extensions: u8,
@@ -657,6 +822,17 @@ impl Engine<'_> {
                 pv: vec![choice],
             });
         }
+        if let Some((choice, _)) = claim.filter(|_| beta <= 0) {
+            return Ok(Value {
+                score: 0,
+                pv: vec![choice],
+            });
+        }
+        alpha = alpha.max(-MATE_SCORE + i32::from(ply));
+        beta = beta.min(MATE_SCORE - i32::from(ply) - 1);
+        if alpha >= beta {
+            return Ok(Value::leaf(alpha));
+        }
         if depth <= 0 || ply >= MAX_PLY {
             let static_score = self.evaluate();
             return Ok(if let Some((c, _)) = claim.filter(|_| static_score <= 0) {
@@ -668,7 +844,7 @@ impl Engine<'_> {
                 Value::leaf(static_score)
             });
         }
-        let node = self.cursor.node();
+        let node = self.cursor.turn();
         let in_check = matches!(
             node.classification,
             Classification::Check | Classification::Checkmate
@@ -691,7 +867,8 @@ impl Engine<'_> {
             None
         } else {
             self.stats.tt_probes += u64::from(!self.table.is_empty());
-            self.table_index(hash).and_then(|i| self.table[i].as_ref())
+            self.entry_index(hash, key.as_ref(), None)
+                .and_then(|i| self.table[i].as_ref())
         };
         let same_context = entry.as_ref().is_some_and(|e| Some(&e.key) == key.as_ref());
         self.stats.tt_position_hits += u64::from(entry.as_ref().is_some_and(|e| e.hash == hash));
@@ -725,6 +902,7 @@ impl Engine<'_> {
         // Native outcome/claim admission stays before TT reuse. Dynamic static
         // evaluation and action copies are unnecessary for a reusable cutoff.
         let static_score = self.evaluate();
+        let mut threat_extension = 0;
         if self.mode == SearchMode::Conventional
             && allow_null
             && !pv
@@ -740,24 +918,29 @@ impl Engine<'_> {
             && null_material(self.cursor.position())
         {
             let reduced = (depth - 3 - depth / 5).max(0);
-            if let Some(probe) = self.probe_null(reduced, ply, beta, extensions, previous)?
-                && -probe.score >= beta
-                && probe.score.abs() < MATE_BAND
-            {
-                // Always verify on the real history, never declare a null mate.
-                let verified = self.main(
-                    reduced,
-                    ply,
-                    beta - 1,
-                    beta,
-                    false,
-                    false,
-                    extensions,
-                    previous,
-                )?;
-                if verified.score >= beta && verified.score.abs() < MATE_BAND {
-                    self.stats.null_verified += 1;
-                    return Ok(verified);
+            if let Some(probe) = self.probe_null(reduced, ply, beta, extensions, previous)? {
+                // A hypothetical mate never becomes a real score/outcome.
+                // Spend at most one of the shared bounded extension credits
+                // investigating real defences to the detected threat instead.
+                if probe.score >= MATE_BAND && extensions > 0 {
+                    threat_extension = 1;
+                    self.stats.threat_extensions += 1;
+                } else if -probe.score >= beta && probe.score.abs() < MATE_BAND {
+                    // Always verify on the real history, never declare a null mate.
+                    let verified = self.main(
+                        reduced,
+                        ply,
+                        beta - 1,
+                        beta,
+                        false,
+                        false,
+                        extensions,
+                        previous,
+                    )?;
+                    if verified.score >= beta && verified.score.abs() < MATE_BAND {
+                        self.stats.null_verified += 1;
+                        return Ok(verified);
+                    }
                 }
             }
         }
@@ -772,28 +955,68 @@ impl Engine<'_> {
             }
         }
         let actions = self.cursor.node().actions.clone();
-        let moves = self.ordered(actions, hint, ply, previous)?;
+        let mut moves = MovePicker::new(actions, hint);
         let mut searched = 0;
         let mut quiet_seen = 0;
-        for (index, m) in moves.into_iter().enumerate() {
+        let mut index = 0;
+        let mut failed_quiets = Vec::new();
+        while let Some(m) = moves.next(self, ply, previous)? {
+            let move_index = index;
+            index += 1;
             if !m.tactical {
                 quiet_seen += 1;
             }
-            self.push(m.action)?;
-            let child_node = self.cursor.node();
+            self.work.poll()?;
+            let preview = self
+                .cursor
+                .preview(m.action)
+                .map_err(|e| Halt::Error(SearchError::Transition(e)))?;
+            let pushed = preview.is_none();
+            self.stats.prepared_moves += u64::from(!pushed);
+            let child_node = if let Some(preview) = &preview {
+                preview.turn().clone()
+            } else {
+                self.push(m.action)?;
+                self.cursor.turn().clone()
+            };
             let gives_check = matches!(
                 child_node.classification,
                 Classification::Check | Classification::Checkmate
             );
-            let critical = child_node.outcome.is_some()
+            let mut critical = child_node.outcome.is_some()
                 || !child_node.claims.is_empty()
-                || child_node.actions.is_empty();
+                || matches!(
+                    child_node.classification,
+                    Classification::Checkmate | Classification::Stalemate
+                );
+            let child_has_null_material = self.mode == SearchMode::Conventional
+                && threat_extension == 0
+                && !critical
+                && !in_check
+                && !gives_check
+                && null_material(
+                    preview
+                        .as_ref()
+                        .map_or_else(|| self.cursor.position(), SearchPreview::position),
+                );
+            if child_has_null_material
+                && !m.tactical
+                && (depth <= 2 || move_index >= 3)
+                && preview
+                    .as_ref()
+                    .map_or_else(|| self.cursor.position(), SearchPreview::position)
+                    .has_queen_contact_mate_threat()
+            {
+                critical = true;
+                self.stats.threat_protected_moves += 1;
+            }
             let selective = self.mode == SearchMode::Conventional
+                && threat_extension == 0
                 && !critical
                 && !pv
                 && !in_check
                 && !gives_check
-                && null_material(self.cursor.position())
+                && child_has_null_material
                 && searched > 0
                 && alpha.abs() < MATE_BAND;
             if selective
@@ -805,12 +1028,20 @@ impl Engine<'_> {
                 && !self.killers[usize::from(ply)].contains(&Some(m.action))
             {
                 self.stats.late_move_pruned += 1;
-                self.pop();
+                if pushed {
+                    self.pop();
+                } else {
+                    self.stats.prepared_pruned += 1;
+                }
                 continue;
             }
             if selective && !m.tactical && depth <= 2 && static_score + 140 * depth <= alpha {
                 self.stats.futility_pruned += 1;
-                self.pop();
+                if pushed {
+                    self.pop();
+                } else {
+                    self.stats.prepared_pruned += 1;
+                }
                 continue;
             }
             if selective
@@ -820,23 +1051,32 @@ impl Engine<'_> {
                 && m.see < -100 * depth
             {
                 self.stats.see_pruned += 1;
-                self.pop();
+                if pushed {
+                    self.pop();
+                } else {
+                    self.stats.prepared_pruned += 1;
+                }
                 continue;
             }
+            if let Some(preview) = preview {
+                self.push_preview(preview)?;
+            }
             let reduction = if self.mode == SearchMode::Conventional
+                && threat_extension == 0
                 && !critical
                 && !in_check
                 && !gives_check
                 && !m.tactical
-                && null_material(self.cursor.position())
+                && child_has_null_material
                 && depth >= 3
-                && index >= 3
+                && move_index >= 3
             {
-                1 + i32::from(depth >= 6 && index >= 8)
+                1 + i32::from(depth >= 6 && move_index >= 8)
             } else {
                 0
             };
-            let full_depth = depth - 1;
+            let full_depth = depth - 1 + threat_extension;
+            let child_extensions = extensions - threat_extension as u8;
             let child = if searched == 0 || depth == 1 {
                 self.main(
                     full_depth,
@@ -845,7 +1085,7 @@ impl Engine<'_> {
                     -alpha,
                     pv,
                     true,
-                    extensions,
+                    child_extensions,
                     Some(m.action),
                 )
             } else {
@@ -859,7 +1099,7 @@ impl Engine<'_> {
                     -alpha,
                     false,
                     true,
-                    extensions,
+                    child_extensions,
                     Some(m.action),
                 );
                 match first {
@@ -872,7 +1112,7 @@ impl Engine<'_> {
                             -alpha,
                             false,
                             true,
-                            extensions,
+                            child_extensions,
                             Some(m.action),
                         )
                     }
@@ -888,7 +1128,7 @@ impl Engine<'_> {
                             -alpha,
                             true,
                             true,
-                            extensions,
+                            child_extensions,
                             Some(m.action),
                         )
                     } else {
@@ -905,12 +1145,15 @@ impl Engine<'_> {
             alpha = alpha.max(best.as_ref().unwrap().score);
             if alpha >= beta {
                 self.reward(m, depth, ply, previous);
+                self.penalize_quiets(&failed_quiets, depth, previous);
                 break;
+            }
+            if !m.tactical {
+                failed_quiets.push(m.action);
             }
         }
         let best = best.expect("native nonterminal legal actions");
-        if let (Some(key), Some(index)) = (key, self.table_index(hash)) {
-            self.stats.tt_stores += 1;
+        if let Some(key) = key {
             let bound = if best.score <= original_alpha {
                 Bound::Upper
             } else if best.score >= beta {
@@ -918,15 +1161,19 @@ impl Engine<'_> {
             } else {
                 Bound::Exact
             };
-            self.table[index] = Some(Entry {
-                key,
-                hash,
-                depth,
-                extensions,
-                score: to_table(best.score, ply),
-                bound,
-                value: best.clone(),
-            });
+            self.store(
+                Entry {
+                    key,
+                    hash,
+                    depth,
+                    extensions,
+                    score: to_table(best.score, ply),
+                    bound,
+                    value: best.clone(),
+                    generation: self.generation,
+                },
+                false,
+            );
         }
         Ok(best)
     }
@@ -935,7 +1182,7 @@ impl Engine<'_> {
         &mut self,
         ply: u16,
         mut alpha: i32,
-        beta: i32,
+        mut beta: i32,
         left: u16,
         previous: Option<Action>,
     ) -> Result<Value, Halt> {
@@ -951,16 +1198,106 @@ impl Engine<'_> {
                 pv: vec![c],
             });
         }
+        if let Some((choice, _)) = claim.filter(|_| beta <= 0) {
+            return Ok(Value {
+                score: 0,
+                pv: vec![choice],
+            });
+        }
+        alpha = alpha.max(-MATE_SCORE + i32::from(ply));
+        beta = beta.min(MATE_SCORE - i32::from(ply) - 1);
+        if alpha >= beta {
+            return Ok(Value::leaf(alpha));
+        }
+        let key = (ply < MAX_PLY).then(|| self.cursor.key()).flatten();
+        let hash = self.cursor.position_hash();
+        // Negative depths tag q entries and encode their exact remaining budget;
+        // they never satisfy a main-search depth request or another q horizon.
+        let q_depth = -1 - i32::from(left);
+        if let Some(key) = &key {
+            self.stats.q_tt_probes += u64::from(!self.table.is_empty());
+            if let Some(i) = self.entry_index(hash, Some(key), Some(q_depth)) {
+                let e = self.table[i].as_ref().unwrap();
+                if e.key == *key && e.depth == q_depth {
+                    self.stats.q_tt_hits += 1;
+                    let score = from_table(e.score, ply);
+                    if matches!(e.bound, Bound::Exact)
+                        || matches!(e.bound, Bound::Lower) && score >= beta
+                        || matches!(e.bound, Bound::Upper) && score <= alpha
+                    {
+                        self.stats.q_tt_cutoffs += 1;
+                        return Ok(Value {
+                            score,
+                            pv: e.value.pv.clone(),
+                        });
+                    }
+                }
+            }
+        }
+        let original_alpha = alpha;
+        let value = self.quiescence_expand(ply, alpha, beta, left, previous, claim)?;
+        if let Some(key) = key {
+            let bound = if value.score <= original_alpha {
+                Bound::Upper
+            } else if value.score >= beta {
+                Bound::Lower
+            } else {
+                Bound::Exact
+            };
+            self.store(
+                Entry {
+                    key,
+                    hash,
+                    depth: q_depth,
+                    extensions: 0,
+                    score: to_table(value.score, ply),
+                    bound,
+                    value: value.clone(),
+                    generation: self.generation,
+                },
+                true,
+            );
+        }
+        Ok(value)
+    }
+    fn quiescence_expand(
+        &mut self,
+        ply: u16,
+        mut alpha: i32,
+        beta: i32,
+        left: u16,
+        previous: Option<Action>,
+        claim: Option<(SearchChoice, bool)>,
+    ) -> Result<Value, Halt> {
         let in_check = matches!(
-            self.cursor.node().classification,
+            self.cursor.turn().classification,
             Classification::Check | Classification::Checkmate
         );
+        if ply < MAX_PLY
+            && let Some(action) = self.cursor.position().queen_contact_mate()
+        {
+            // The positional query is only a candidate. Actual native Game
+            // admission and terminal scoring remain mandatory, including
+            // representation errors, claims, cancellation and restoration.
+            self.push_with_key(action, false)?;
+            let child =
+                self.quiescence(ply + 1, -beta, -alpha, left.saturating_sub(1), Some(action));
+            self.pop();
+            self.stats.queen_contact_mates += 1;
+            return Ok(Value::prepend(action, child?));
+        }
+        let threatened = ply < MAX_PLY
+            && left > 0
+            && !in_check
+            && self.cursor.position().has_queen_contact_mate_threat();
+        self.stats.queen_threat_nodes += u64::from(threatened);
+        let unsettled = in_check || threatened;
         let score = self.evaluate();
         let mut best = claim.map(|(c, _)| Value {
             score: 0,
             pv: vec![c],
         });
-        if ply >= MAX_PLY || !in_check {
+        if ply >= MAX_PLY || !unsettled {
             if best.as_ref().is_none_or(|b| score > b.score) {
                 best = Some(Value::leaf(score));
             }
@@ -975,34 +1312,74 @@ impl Engine<'_> {
             }
         }
         // Stand-pat cutoffs do not need an owned copy of every native action.
-        let actions = self
-            .cursor
-            .node()
-            .actions
-            .clone()
-            .into_iter()
-            .filter(|a| in_check || gain(self.cursor.position(), *a) > 0 || a.promotion.is_some())
-            .collect();
+        let near_queen = left > 0
+            && self
+                .cursor
+                .position()
+                .queen_in_attack_zone(self.cursor.position().side_to_move());
+        let candidates = if unsettled || left >= Q_PLIES - 1 || near_queen {
+            self.cursor.node().actions.clone()
+        } else {
+            self.cursor.position().captures_and_promotions()
+        };
+        let mut actions = Vec::new();
+        let mut quiet_queen_probes = 0;
+        for a in candidates {
+            if unsettled || gain(self.cursor.position(), a) > 0 || a.promotion.is_some() {
+                actions.push(a);
+            } else if left >= Q_PLIES - 1
+                || near_queen
+                    && quiet_queen_probes < 16
+                    && self
+                        .cursor
+                        .position()
+                        .piece_at(a.from)
+                        .is_some_and(|p| p.kind == PieceKind::Queen)
+            {
+                // Only the first two q plies consider quiet checks. Native
+                // resolution derives discovered/castling effects; no separate
+                // checking-move geometry or legal-move approximation lives here.
+                self.work.poll()?;
+                quiet_queen_probes += u32::from(
+                    self.cursor
+                        .position()
+                        .piece_at(a.from)
+                        .is_some_and(|p| p.kind == PieceKind::Queen),
+                );
+                let mut projected = self.cursor.position().clone();
+                projected.apply(a).map_err(|e| {
+                    Halt::Error(SearchError::Transition(
+                        mshogi_core::chess::PlayError::Action(e),
+                    ))
+                })?;
+                let checking = projected.in_check();
+                let threat = !checking && left > 0 && projected.has_queen_contact_mate_threat();
+                if checking && left >= Q_PLIES - 1 || threat {
+                    actions.push(a);
+                    self.stats.quiet_threat_moves += u64::from(threat);
+                }
+            }
+        }
         let moves = self.ordered(actions, None, ply, previous)?;
         for m in moves {
-            if !in_check && !m.tactical {
-                continue;
-            }
-            self.push(m.action)?;
-            let child_node = self.cursor.node();
+            self.push_with_key(m.action, false)?;
+            let child_node = self.cursor.turn();
             let checking = matches!(
                 child_node.classification,
                 Classification::Check | Classification::Checkmate
             );
             let critical = child_node.outcome.is_some()
                 || !child_node.claims.is_empty()
-                || child_node.actions.is_empty();
-            if !in_check
+                || matches!(
+                    child_node.classification,
+                    Classification::Checkmate | Classification::Stalemate
+                );
+            if !unsettled
                 && !critical
                 && !checking
                 && m.action.promotion.is_none()
-                && m.see < 0
-                && score + m.gain + 140 < alpha
+                && (m.see < 0 || score + m.gain + 140 < alpha)
+                && m.tactical
                 && alpha.abs() < MATE_BAND
             {
                 self.stats.see_pruned += 1;

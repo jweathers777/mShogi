@@ -130,7 +130,7 @@ impl Error for ActionError {
 /// Opaque in-memory restoration record for one successful action.
 ///
 /// Full before/after snapshots deliberately favor clarity over compression.
-/// There are no derived caches yet. This is not a serialized game record or a
+/// Derived occupancy maps restore with their canonical board. This is not a serialized game record or a
 /// proof of history/origin. Callers keep records in LIFO order and correct game
 /// context. Restoration checks complete saved-state equality against `after`;
 /// an identical post-state in another context is not distinguished by this API.
@@ -245,6 +245,48 @@ impl Position {
         }
         *self = record.before.clone();
         Ok(())
+    }
+
+    // Native legal-query path, only from an already validated Position. The
+    // same resolver checks ownership, geometry, captures, castling transit,
+    // promotion and counters; the same effect primitive builds the candidate.
+    // Those effects preserve king/piece counts, pawn ranks, rights and EP
+    // structure. Only the mover's king safety can newly fail. Queries need no
+    // public Undo snapshots or repeated FEN-structure scan for every candidate.
+    pub(super) fn permits_candidate(&self, action: Action, king: Square) -> bool {
+        let Ok(resolved) = self.resolve(action, true) else {
+            return false;
+        };
+        let king = if resolved.moving.kind == PieceKind::King {
+            action.to
+        } else {
+            king
+        };
+        let mut candidate = self.clone();
+        candidate.apply_resolved(resolved);
+        !candidate.is_square_attacked(king, self.side_to_move.opponent())
+    }
+
+    // Checked native Game transition from a validated position, without public
+    // Undo snapshots that Game would immediately discard. Like legal queries,
+    // resolution/effects preserve structure; every new king-safety failure
+    // still obtains its exact diagnostic from the complete validator. Public
+    // Position::apply remains the independent full-validation boundary.
+    pub(super) fn checked_after(&self, action: Action) -> Result<Self, ActionError> {
+        let resolved = self.resolve(action, true)?;
+        let king = if resolved.moving.kind == PieceKind::King {
+            action.to
+        } else {
+            self.king_square(self.side_to_move)
+        };
+        let mut candidate = self.clone();
+        candidate.apply_resolved(resolved);
+        if candidate.is_square_attacked(king, self.side_to_move.opponent()) {
+            candidate
+                .validate_structure()
+                .map_err(ActionError::IllegalPosition)?;
+        }
+        Ok(candidate)
     }
 
     fn publish(&mut self, resolved: Resolved) -> Result<Undo, ActionError> {
@@ -447,16 +489,18 @@ impl Position {
     // geometry and counter bounds. Runs only on a candidate; the checked public
     // callers validate its resulting local invariants before publishing it.
     fn apply_resolved(&mut self, resolved: Resolved) {
-        self.board[resolved.action.from.index()] = None;
+        self.set_piece(resolved.action.from, None);
         if let Some((square, piece)) = resolved.captured {
-            self.board[square.index()] = None;
+            self.set_piece(square, None);
             if piece.kind == PieceKind::Rook {
                 self.remove_home_rook_right(piece.color, square);
             }
         }
-        self.board[resolved.action.to.index()] = Some(resolved.placed);
+        self.set_piece(resolved.action.to, Some(resolved.placed));
         if let Some((rook_from, rook_to)) = resolved.rook {
-            self.board[rook_to.index()] = self.board[rook_from.index()].take();
+            let rook = self.piece_at(rook_from);
+            self.set_piece(rook_from, None);
+            self.set_piece(rook_to, rook);
         }
         if resolved.moving.kind == PieceKind::King {
             let color = resolved.moving.color.index();
@@ -470,6 +514,10 @@ impl Position {
         self.halfmove_clock = resolved.halfmove_clock;
         self.fullmove_number = resolved.fullmove_number;
         self.side_to_move = self.side_to_move.opponent();
+        debug_assert_eq!(
+            self.attacks,
+            super::attack_cache::AttackCache::from_board(&self.board)
+        );
     }
 
     fn remove_home_rook_right(&mut self, color: Color, square: Square) {

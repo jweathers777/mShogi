@@ -1,11 +1,12 @@
 //! Rules-owned action history. Adjudication is added by MSH-17/18.
 
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-
-use super::{
-    Action, ActionError, CastlingRights, Color, FenError, Piece, PieceKind, Position, Square,
+use std::{
+    collections::HashMap,
+    hash::{Hash, Hasher},
 };
+
+use super::{Action, ActionError, Color, FenError, PieceKind, Position, Square};
 
 /// Standard initial chess state, shared by the game constructor and adapters.
 pub const STANDARD_START_FEN: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -34,33 +35,52 @@ pub enum ClaimPolicy {
 ///
 /// Counters and uncapturable raw EP are excluded; all castling permissions stay.
 /// Hashing is only an index: the entire identity is compared on collisions.
-#[derive(Clone, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct RepetitionIdentity {
-    board: [Option<Piece>; 64],
-    side: Color,
-    castling: CastlingRights,
-    legal_ep: Option<Square>,
+    // Lossless canonical34bytes: two piece codes per byte, side/rights flags,
+    // legal EP (64=None). This is the identity itself, not a probabilistic hash
+    // or public saved-state encoding. Full equality checks every encoded field.
+    packed: [u8; 34],
+}
+impl Hash for RepetitionIdentity {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        state.write(&self.packed);
+    }
+}
+impl RepetitionIdentity {
+    fn from_position(position: &Position, legal_ep: Option<Square>) -> Self {
+        let mut bytes = [0u8; 34];
+        for (index, occupant) in position.board.iter().enumerate() {
+            let code = occupant.map_or(0, |piece| {
+                let kind = match piece.kind {
+                    PieceKind::Pawn => 1,
+                    PieceKind::Knight => 2,
+                    PieceKind::Bishop => 3,
+                    PieceKind::Rook => 4,
+                    PieceKind::Queen => 5,
+                    PieceKind::King => 6,
+                };
+                kind + if piece.color == Color::Black { 6 } else { 0 }
+            });
+            bytes[index / 2] |= code << ((index % 2) * 4);
+        }
+        bytes[32] = u8::from(position.side_to_move == Color::Black)
+            | (u8::from(position.castling_rights.kingside(Color::White)) << 1)
+            | (u8::from(position.castling_rights.queenside(Color::White)) << 2)
+            | (u8::from(position.castling_rights.kingside(Color::Black)) << 3)
+            | (u8::from(position.castling_rights.queenside(Color::Black)) << 4);
+        bytes[33] = legal_ep.map_or(64, |square| square.0);
+        Self { packed: bytes }
+    }
 }
 
 impl Position {
     /// Rule-equivalent identity using **legal**, counter-independent en passant.
     pub fn repetition_identity(&self) -> RepetitionIdentity {
-        let legal_ep = self.en_passant_target.filter(|&target| {
-            self.legal_actions().iter().any(|action| {
-                action.to == target
-                    && action.from.file() != target.file()
-                    && self.piece_at(target).is_none()
-                    && self
-                        .piece_at(action.from)
-                        .is_some_and(|p| p.kind == PieceKind::Pawn)
-            })
-        });
-        RepetitionIdentity {
-            board: self.board,
-            side: self.side_to_move,
-            castling: self.castling_rights,
-            legal_ep,
-        }
+        let legal_ep = self
+            .en_passant_target
+            .filter(|&target| !self.legal_captures_to(target).is_empty());
+        RepetitionIdentity::from_position(self, legal_ep)
     }
 }
 
@@ -174,11 +194,33 @@ impl Game {
         self.occurrences.values().any(|&count| count >= 2)
     }
 
+    // Search-only context, excluding the current identity. Complete canonical
+    // history and the public occurrence table remain untouched. A pawn move,
+    // capture or loss of castling rights makes every preceding identity
+    // unreachable: material/pawns/rights cannot be restored by later actions.
+    pub(super) fn reversible_prior_identities(&self) -> Vec<RepetitionIdentity> {
+        let mut prior = Vec::new();
+        let mut after = &self.position;
+        for step in self.steps.iter().rev() {
+            if after.halfmove_clock == 0 || step.before.castling_rights != after.castling_rights {
+                break;
+            }
+            prior.push(step.previous_identity.clone());
+            after = &step.before;
+        }
+        prior
+    }
+
     /// Check one action and atomically update position, history and occurrences.
     /// Failure, including counter overflow, leaves the entire game unchanged.
     pub fn apply(&mut self, action: Action) -> Result<(), ActionError> {
-        let mut after = self.position.clone();
-        after.apply(action)?;
+        let after = self.position.checked_after(action)?;
+        self.commit_after(action, after);
+        Ok(())
+    }
+
+    // Only native checked resolution/prepared tokens supply `after`.
+    pub(super) fn commit_after(&mut self, action: Action, after: Position) {
         let identity = after.repetition_identity();
         self.steps.push(Step {
             action,
@@ -186,7 +228,6 @@ impl Game {
             previous_identity: std::mem::replace(&mut self.current_identity, identity.clone()),
         });
         *self.occurrences.entry(identity).or_default() += 1;
-        Ok(())
     }
 
     /// Restore the last whole action's position and every history field.

@@ -4,7 +4,7 @@ title: Establish and meet measured xiangqi engine strength criteria
 status: Ready
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-08T20:55:00Z'
+updated_date: '2026-11-08T21:49:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -13,6 +13,7 @@ dependencies:
   - MSH-109
   - MSH-49
   - MSH-136
+  - MSH-137
 documentation:
   - docs/design.md
   - docs/m5/strength-roadmap.md
@@ -57,4 +58,6 @@ Owner requests bounded Chess engineering-performance checkpoint136 beforecross-g
 136 transfer lesson: native subset queries before expensive validation, exact cached turn state and deferred copies are practical patterns; do not transfer Chess rates/constants/SEE or board-only TT scores. Xiangqi already uses native checkpoint transactions and pending/no-win/natural-count guards; preserve these before search shortcuts. Measure native transitions/query/quiescence work and TT position/context/depth eligibility separately. Dependency136 still awaits3OS acceptance; no Xiangqi implementation started.
 
 MSH-136 is Done. Corrected Chess source d9147713aa5ad5044a4e25a41d5142f6834a2685 passed actual Linux, macOS 15 and Windows native CI 42519269011 and independent final review. This task is dependency-ready, with Shogi first in the roadmap. Carry forward native subset queries, cached turn reuse and staged history-safe TT counters while preserving Xiangqi pending/no-win/natural-count guards; see docs/m5/chess-search-costs.md and its canonical verification record. No additional Chess match studies; routine local engine-match experiments retain the 15-minute cumulative task limit.
+
+Owner correction after MSH-136: wait for continued conventional Chess engineering and practical-maturity review in MSH-137. Algorithm presence and the initial Stockfish diagnostic are foundations, not a maturity verdict. Preserve prior completed evidence; this supersedes the immediate transfer handoff. No Xiangqi work starts until MSH-137 is accepted.
 <!-- SECTION:NOTES:END -->

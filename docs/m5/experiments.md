@@ -161,7 +161,7 @@ independent review. It is the single acceptance evidence ledger.
 
 ## First bounded pilot at 9a164eb
 
-The clean release build used pinned rustc 1.99.1 on Apple M1 Pro/aarch64,
+The release build from clean source used pinned rustc 1.99.1 on Apple M1 Pro/aarch64,
 macOS 27.0.1, 10 logical CPUs, no custom flags and an unpinned shared host.
 The finite catalog contains seven standard roots and seven authored live tactical
 predecessors. It uses one seeded cycle and three instances of the same executable

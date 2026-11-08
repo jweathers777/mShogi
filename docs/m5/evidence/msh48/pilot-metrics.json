@@ -337,5 +337,17 @@
     "usable_action_targets": 76,
     "terminal_labels": 20,
     "retained_artifact": "regenerate with experiment-data from compressed source report; no generated training dataset committed"
+  },
+  "supplement_data": {
+    "sha256": "9aef440cc43edd0b771fb77af469db17b8b8a85aeb8a447474a5e9cdaaa75540",
+    "bytes": 168110,
+    "rows": 8,
+    "usable_action_targets": 8,
+    "terminal_labels": 8,
+    "profiles": [
+      "mshogi.tenjiku.adams1999-modern.v1",
+      "mshogi.tenjiku.muller-completed.v1"
+    ],
+    "retained_artifact": "regenerate with experiment-data from supplement-report.json.gz; dataset not committed"
   }
 }

@@ -3,8 +3,9 @@
 The active native engine is `mshogi.chess.conventional.v1`, with evaluator
 `mshogi.chess.conventional-tapered.v1`. UCI, supervised play and read-only analysis
 use the same search coordinator. This implements the conventional architecture
-stage of the [strength roadmap](strength-roadmap.md); competitive strength is
-not established until the separately approved MSH-49.2 milestone.
+stage of the [strength roadmap](strength-roadmap.md). MSH-49.2 supplies the
+owner-authorized small practical diagnostic; it establishes no rating or
+statistically validated competitive-strength claim.
 
 ## Components and contracts
 
@@ -107,8 +108,9 @@ One timed self-play pair consumed 49.6924 of the task's 900-second allowance.
 One game reached a native mate; the other reached the 192-ply cap and remains
 unscored. Both histories replayed, without process or cleanup failures. These
 are development regressions, not a playing-strength estimate. MSH-49.2 owns the
-next unrestricted Stockfish comparison; its material budget and comparison
-conditions require owner approval before formal execution.
+now-authorized8–12-game unrestricted Stockfish diagnostic at one second per move
+within30 minutes. Shogi/Xiangqi follow that baseline; deeper Chess strength
+analysis returns during learned evaluation.
 
 Algorithm research used the primary [Stockfish classical search](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/search.cpp),
 [ordering](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/movepick.cpp)

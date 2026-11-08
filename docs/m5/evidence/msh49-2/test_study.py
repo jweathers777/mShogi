@@ -24,10 +24,10 @@ class Controls(unittest.TestCase):
     def test_time_controls_have_no_hidden_node_depth_or_skill_handicap(self):
         opening = {'id': 'control', 'fen': None, 'moves': ['e2e4']}
         c = study.configuration(self.protocol, self.build, opening)
-        self.assertEqual(c['work'], {'depth': None, 'nodes': None, 'movetime_ms': 500})
+        self.assertEqual(c['work'], {'depth': None, 'nodes': None, 'movetime_ms': 1000})
         self.assertNotIn('engine_work', c)
         self.assertTrue(c['paired'])
-        self.assertEqual(c['max_plies'], 512)
+        self.assertEqual(c['max_plies'], 256)
         options = {o['name']: o['value'] for o in c['engines'][1]['options']}
         for name, value in [('Threads', '1'), ('Skill Level', '20'), ('UCI_LimitStrength', 'false'), ('Ponder', 'false'), ('nodestime', '0')]:
             self.assertEqual(options[name], value)
@@ -35,25 +35,13 @@ class Controls(unittest.TestCase):
         self.assertEqual(c['openings'], [opening])
         self.assertEqual(study.configuration(self.protocol, self.build, opening, True)['max_plies'], 4)
 
-    def test_formal_execution_refuses_missing_or_different_protocol_approval(self):
+    def test_diagnostic_execution_refuses_missing_or_different_protocol_approval(self):
         for approval in [None, {'owner': 'John', 'approved_protocol_sha256': 'different'}, {'owner': 'Codex', 'approved_protocol_sha256': study.digest(HERE/'protocol.json')}]:
             ledger = {'approval': approval, 'budget': {'runs': [], 'charged_seconds': 0, 'inflight': None}}
             with patch.object(study, 'read', side_effect=[self.protocol, self.build, ledger]), patch.object(study, 'verify_build'), patch.object(study.subprocess, 'Popen') as launch:
                 with self.assertRaisesRegex(ValueError, 'Explicit owner approval'):
-                    study.main('formal')
+                    study.main('diagnostic')
                 launch.assert_not_called()
-
-    def test_paired_uncertainty_never_treats_all_losses_as_zero_uncertainty(self):
-        result = study.interval([0] * 16)
-        self.assertEqual(result['lower'], 0)
-        self.assertAlmostEqual(result['upper'], 0.339525, places=5)
-        result = study.interval([0.5] * 16)
-        self.assertAlmostEqual(result['mean'], 0.5)
-        self.assertLess(result['lower'], 0.2)
-        self.assertGreater(result['upper'], 0.8)
-        for bad in [[], [-1], [1.1], [float('nan')]]:
-            with self.assertRaises(ValueError):
-                study.interval(bad)
 
     def test_tampered_executable_is_refused_before_launch(self):
         wrong = copy.deepcopy(self.build)

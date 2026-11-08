@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One MSH-49.2 measurement, using the existing native external runner unchanged."""
+"""One MSH-49.2 initial diagnostic, using the existing native external runner unchanged."""
 import datetime
 import gzip
 import hashlib
@@ -79,22 +79,13 @@ def audit_report(outer, expected, build):
             healthy &= child['stderr']['observed_bytes'] == 0 and not child['stderr']['truncated']
             healthy &= bool(child['exit'] and child['exit']['success'])
         commands = [e['text'] for e in game['transcript']['entries'] if e['direction'] == 'command' and e['text'].startswith('go')]
-        if not commands or any(c != 'go movetime 500' for c in commands):
+        if not commands or any(c != f"go movetime {expected['work']['movetime_ms']}" for c in commands):
             raise ValueError('Missing/different effective time controls')
     summary = report['summaries'][0]
     complete = healthy and all(g['stop'] == 'chess_conclusion' for g in report['games']) and summary['unscored'] == 0 and sum(summary['wins']) + summary['draws'] == 2
     return {'healthy': bool(healthy), 'complete': bool(complete), 'summary': summary,
             'pair_score': (summary['wins'][0] + summary['draws'] / 2) / 2 if complete else None,
             'stops': [g['stop'] for g in report['games']]}
-
-
-def interval(scores):
-    if not scores or any(not 0 <= s <= 1 for s in scores):
-        raise ValueError('Invalid bounded pair scores')
-    mean = sum(scores) / len(scores)
-    radius = math.sqrt(math.log(40) / (2 * len(scores)))
-    return {'mean': mean, 'lower': max(0, mean-radius), 'upper': min(1, mean+radius), 'radius': radius,
-            'method': '95% two-sided Hoeffding over independent bounded pair scores, conditional on sampled population/stable execution; no Elo'}
 
 
 def audit_budget(ledger):
@@ -185,43 +176,37 @@ def main(mode):
         receipt = invoke(protocol, build, ledger, config, 'routine_smoke', HERE/'smoke', min(15, 900-ledger['budget']['charged_seconds']))
         print(json.dumps(receipt, indent=2))
         return
-    if mode != 'formal':
-        raise ValueError('Use smoke or formal')
+    if mode != 'diagnostic':
+        raise ValueError('Use diagnostic (the formal study is superseded)')
     approval = ledger['approval']
     if not approval or approval.get('owner') != 'John' or approval.get('approved_protocol_sha256') != digest(HERE/'protocol.json'):
         raise ValueError('Explicit owner approval of this exact budget/protocol is required')
-    if ledger['budget']['inflight'] or any(r['phase'] == 'formal' for r in ledger['budget']['runs']):
-        raise ValueError('Prior formal work cannot be automatically repeated/replaced')
+    if ledger['budget']['inflight'] or any(r['phase'] == 'diagnostic' for r in ledger['budget']['runs']):
+        raise ValueError('Prior diagnostic work cannot be automatically repeated/replaced')
     if subprocess.check_output(['git', 'diff', '--binary', build['source'], '--', 'crates', 'Cargo.toml', 'Cargo.lock', 'rust-toolchain.toml'], cwd=REPO):
         raise ValueError('Production source differs from accepted frozen build')
     frozen_inputs = [str(HERE/name) for name in ['study.py', 'test_study.py', 'protocol.json', 'build.json']]
     if subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=all', '--', *frozen_inputs], cwd=REPO):
-        raise ValueError('Commit reviewed study inputs before formal execution')
-    exclusions = REPO/protocol['population']['exclusions']
-    if digest(exclusions) != protocol['population']['exclusions_sha256']:
-        raise ValueError('Changed development exclusions')
+        raise ValueError('Commit reviewed study inputs before diagnostic execution')
     freeze = {'protocol_sha256': digest(HERE/'protocol.json'), 'build_sha256': digest(HERE/'build.json'), 'study_code_sha256': digest(__file__), 'study_source': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=REPO, text=True).strip(), 'approval': approval}
     with (HERE/'freeze.json').open('x') as f:
         json.dump(freeze, f, indent=2)
-    seed = os.urandom(32).hex()
-    with (HERE/'seed.txt').open('x') as f:
-        f.write(seed+'\n')
     catalog = HERE/'roots.json'
-    subprocess.run([build['artifacts']['sampler']['path'], seed, 'msh492-formal', str(protocol['pairs']), str(catalog), str(exclusions)], check=True, timeout=30)
-    ledger['formal_roots'] = {'path': str(catalog), 'sha256': digest(catalog), 'seed': seed}
+    save(catalog, protocol['population']['openings'])
+    ledger['diagnostic_roots'] = {'path': str(catalog), 'sha256': digest(catalog), 'selection': 'Authored prefixes, no random sampler or seed'}
     save(HERE/'verification.json', ledger)
-    scores = []
-    for index, sample in enumerate(read(catalog)['samples']):
+    receipts = []
+    for index, opening in enumerate(read(catalog)):
         remaining = protocol['stopping']['budget_seconds'] - ledger['budget']['charged_seconds']
-        if remaining < 600:
+        if remaining < 60:
             break
-        receipt = invoke(protocol, build, ledger, configuration(protocol, build, sample['opening']), 'formal', HERE/f'pair-{index:03}', remaining-5)
-        if not receipt['complete']:
+        receipt = invoke(protocol, build, ledger, configuration(protocol, build, opening), 'diagnostic', HERE/f'pair-{index:03}', remaining-5)
+        receipts.append(receipt)
+        if not receipt['healthy']:
             break
-        scores.append(receipt['pair_score'])
-    ledger['formal_results'] = {'complete_pairs': len(scores), 'planned_pairs': protocol['pairs'], 'pair_scores': scores, 'interval': interval(scores) if len(scores) == protocol['pairs'] else None, 'acceptance_inference': 'Pending independent full evidence review' if len(scores) == protocol['pairs'] else 'None: incomplete/failed study'}
+    ledger['diagnostic_results'] = {'attempted_pairs': len(receipts), 'planned_pairs': protocol['pairs'], 'completed_pairs': sum(r['complete'] for r in receipts), 'summaries': [r.get('summary') for r in receipts], 'scope': 'Descriptive initial diagnostic; no statistical significance/interval/Elo or numerical strength acceptance.'}
     save(HERE/'verification.json', ledger)
-    print(json.dumps(ledger['formal_results'], indent=2))
+    print(json.dumps(ledger['diagnostic_results'], indent=2))
 
 
 if __name__ == '__main__':

@@ -6,9 +6,12 @@ depth2Stockfish thresholds and pendingfour-hour request are historical and no
 longer authorize execution. No new matches run in this reassessment.
 
 Follow the [revised strength roadmap](strength-roadmap.md): develop a substantially
-complete conventional engine first (MSH-49.1), then a separately approved
-equal-thinking-time unrestricted Stockfish milestone (MSH-49.2). MSH-49 remains
-unfinished. Useful code, independent reviews, baselines, immutable frozen study
+complete conventional engine first (MSH-49.1), then the owner-authorized
+[initial diagnostic against unrestricted Stockfish](chess-unrestricted-comparison.md)
+(MSH-49.2):8–12 paired games, equal one-second thinking time,30-minute ceiling,
+practical observations without significance or Elo. Shogi/Xiangqi follow;
+deeper Chess analysis returns during learned evaluation. Useful code,
+independent reviews, baselines, immutable frozen study
 files and actual971.486s development/calibration accounting are retained below.
 The new15-minute routine match cap is prospective; it does not rewrite previously
 authorized runtime or authorize another allowance for this stopped study.

@@ -1,0 +1,54 @@
+{
+  "source": "0b3b4585c48619f1c9781eb3e623fb6d873342bc",
+  "production_sources_clean": true,
+  "command": "cargo build --release --locked -p mshogi-console --bin mshogi -p mshogi-runner --bin mshogi-match --example chess_study_roots",
+  "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "target": "aarch64-apple-darwin",
+  "profile": "release",
+  "flags": "ordinary release, no custom RUSTFLAGS",
+  "environment": {
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "cpu": "Apple M1 Pro",
+    "logical_cpus": 10,
+    "memory_gib": 32,
+    "execution": "local, shared/unpinned machine; sequential games, no concurrent match campaign"
+  },
+  "artifacts": {
+    "mshogi": {
+      "path": "/private/tmp/msh492/build/mshogi",
+      "sha256": "4250eb9e5ec6be844fc73530a1183c84a05d89dc48948b3335ef5ee5877d4e9b"
+    },
+    "runner": {
+      "path": "/private/tmp/msh492/build/runner",
+      "sha256": "b21ce346ecd49ad2e900c472628c8ad509d1e4235a778d526a0b663ff88b56e4"
+    },
+    "sampler": {
+      "path": "/private/tmp/msh492/build/sampler",
+      "sha256": "b786cb1c67ef2b3361ee5350be30dbd6fba39cb6b178124675076c3b862778b3"
+    },
+    "stockfish": {
+      "path": "/private/tmp/msh49/opponent/stockfish/stockfish-macos-universal",
+      "sha256": "8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5"
+    },
+    "network": {
+      "path": "/private/tmp/msh492/nn-1a298aa575a0.nnue",
+      "sha256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2"
+    }
+  },
+  "stockfish": {
+    "version": "Stockfish19",
+    "release": "https://github.com/official-stockfish/Stockfish/releases/tag/sf_19",
+    "path": "/private/tmp/msh49/opponent/stockfish/stockfish-macos-universal",
+    "executable_sha256": "8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5",
+    "archive_sha256": "a1f0e3bcc5a6927a11fe6fc8e54a779754645f3c2bae2cf13420fd1957adaa77",
+    "embedded_network": {
+      "name": "nn-1a298aa575a0.nnue",
+      "sha256": "1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2",
+      "bytes": 98511183,
+      "method": "Official export_net from frozen release executable; embedded default also pinned by executable hash"
+    },
+    "uci_advertisement": "Stockfish 19 by the Stockfish developers (see AUTHORS file)\nid name Stockfish 19\nid author the Stockfish developers (see AUTHORS file)\n\noption name Debug Log File type string default <empty>\noption name NumaPolicy type string default auto\noption name Threads type spin default 1 min 1 max 1024\noption name Hash type spin default 16 min 1 max 33554432\noption name Clear Hash type button\noption name Ponder type check default false\noption name MultiPV type spin default 1 min 1 max 256\noption name Skill Level type spin default 20 min 0 max 20\noption name Move Overhead type spin default 10 min 0 max 5000\noption name nodestime type spin default 0 min 0 max 10000\noption name UCI_Chess960 type check default false\noption name UCI_LimitStrength type check default false\noption name UCI_Elo type spin default 1320 min 1320 max 3190\noption name UCI_ShowWDL type check default false\noption name SyzygyPath type string default <empty>\noption name SyzygyProbeDepth type spin default 1 min 1 max 100\noption name Syzygy50MoveRule type check default true\noption name SyzygyProbeLimit type spin default 7 min 0 max 7\noption name EvalFile type string default nn-1a298aa575a0.nnue\nuciok\n",
+    "export_stdout": "\nNetwork saved successfully to /private/tmp/msh492/nn-1a298aa575a0.nnue\n",
+    "environment": "macOS-27.0.1-arm64-arm-64bit"
+  }
+}

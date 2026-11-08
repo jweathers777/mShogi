@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "msh49-2-unrestricted-equal-time-v1",
+  "status": "proposed; owner approval required before formal roots or matches",
+  "profile": "mshogi.chess.match.v1",
+  "claim_policy": "auto_claim",
+  "pairs": 16,
+  "time": {
+    "control": "equal per-move allowance; untimed native MatchRecord",
+    "movetime_ms": 500,
+    "depth": null,
+    "nodes": null,
+    "meaning": "Each engine receives go movetime 500 only. Natural early finish and own time-management policy are retained. Not equal completed depth/nodes or guaranteed identical actual CPU use."
+  },
+  "resources": {
+    "hardware": "Same Apple M1 Pro/32GiB macOS27 host; sequential games, one search thread per engine, no pondering",
+    "mshogi": "Frozen conventional/classical engine, internal4096-entry TT, no external book/model/tablebases",
+    "stockfish_options": {
+      "Threads": "1",
+      "Hash": "16",
+      "MultiPV": "1",
+      "Skill Level": "20",
+      "UCI_LimitStrength": "false",
+      "Ponder": "false",
+      "nodestime": "0",
+      "UCI_Chess960": "false",
+      "SyzygyPath": "",
+      "Move Overhead": "10",
+      "EvalFile": "/private/tmp/msh492/nn-1a298aa575a0.nnue"
+    },
+    "memory": "Modest native cache policies are recorded, not claimed byte-equal: mShogi4096 TT entries vs Stockfish16MB Hash plus embedded98.5MB NNUE. No swapping/large memory handicap intended. Stockfish defaults remain full strength."
+  },
+  "population": {
+    "sampler": "crates/mshogi-runner/examples/chess_study_roots.rs",
+    "id": "msh49-six-families-uniform-native-4to8-material100-v1",
+    "selection": "Independent draws with replacement; six authored orthodox opening families, uniform native legal4..8-ply continuations; reject nonlive/claimable/material imbalance>100cp and fixed12 old development prefixes. Family/length held fixed during rejection. Not a tournament-book or all-Chess population. No candidate/Stockfish evaluation filter. Duplicate draws retained.",
+    "exclusions": "docs/m5/evidence/msh49/study/development-roots.json",
+    "exclusions_sha256": "b58dcc500348d51bee445e37bf7206db5660943e1f487e78cea98a6799030489",
+    "seed": "Fresh OS-random32-byte seed generated once after protocol/build/code freeze and explicit approval; no rerolls",
+    "pairing": "For each draw run adjacent two games, mShogi White then Black; preserve complete orthodox-start native prefix."
+  },
+  "stopping": {
+    "fixed_pairs": 16,
+    "max_total_plies_per_game": 512,
+    "protocol_watchdog_ms": 10000,
+    "budget_seconds": 3600,
+    "budget_includes": "All routine smoke and formal active match invocation wall time, failed attempts and bounded cleanup. No parallel invocations. CPU billing is not measured; sequential1-search-thread engines keep compute of same order as elapsed. Setup/build/replay/review excluded. No paid compute or third-party fees.",
+    "admission": "Stop new pairs when less than600s remain; hard outer process-group deadline at remaining allowance, with at most5s reap overhead recorded. Preserve partial artifacts/unscored interruption. No automatic budget extension or replacement pair.",
+    "failure": "Stop on first invalid/incomplete formal pair; retain all failures/caps/cleanup/stderr/diagnostic evidence. No reruns on unchanged source to select favorable results. No early stop based on score, no per-technique study."
+  },
+  "analysis": {
+    "score": "W/D/L and mShogi score fraction over32 games; 16 paired scores (win+halfdraw)/2 are sampling units",
+    "uncertainty": "For complete eligible16-pair sample only, two-sided95% Hoeffding interval for mean pair score: mean +/- sqrt(log(40)/(2*16)), clipped[0,1]. Broad interval; assumes independent sampled roots/stable conditions. No binomial32-independent-games assumption, no Elo conversion. Incomplete study has descriptive observed counts only, no acceptance inference.",
+    "acceptance_proposal": "Accept a complete, reproducible, independently reviewed measurement/report, regardless of observed score. No numerical release-strength bar or parity/human-Elo claim. A decisive loss is reported honestly; further engineering belongs in separately scoped work."
+  },
+  "references": [
+    "https://github.com/official-stockfish/Stockfish/releases/tag/sf_19",
+    "https://official-stockfish.github.io/docs/stockfish-wiki/UCI-Protocol-and-Stockfish-Commands.html"
+  ]
+}

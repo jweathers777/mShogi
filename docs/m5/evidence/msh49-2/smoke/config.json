@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "id": "msh49-2-unrestricted-equal-time-v1-smoke-startup",
+  "engines": [
+    {
+      "path": "/private/tmp/msh492/build/mshogi",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "mshogi.chess.conventional.v1 / mshogi.chess.conventional-tapered.v1",
+      "deterministic": false
+    },
+    {
+      "path": "/private/tmp/msh49/opponent/stockfish/stockfish-macos-universal",
+      "args": [],
+      "options": [
+        {
+          "name": "Threads",
+          "value": "1"
+        },
+        {
+          "name": "Hash",
+          "value": "16"
+        },
+        {
+          "name": "MultiPV",
+          "value": "1"
+        },
+        {
+          "name": "Skill Level",
+          "value": "20"
+        },
+        {
+          "name": "UCI_LimitStrength",
+          "value": "false"
+        },
+        {
+          "name": "Ponder",
+          "value": "false"
+        },
+        {
+          "name": "nodestime",
+          "value": "0"
+        },
+        {
+          "name": "UCI_Chess960",
+          "value": "false"
+        },
+        {
+          "name": "SyzygyPath",
+          "value": ""
+        },
+        {
+          "name": "Move Overhead",
+          "value": "10"
+        },
+        {
+          "name": "EvalFile",
+          "value": "/private/tmp/msh492/nn-1a298aa575a0.nnue"
+        }
+      ],
+      "model_path": "/private/tmp/msh492/nn-1a298aa575a0.nnue",
+      "model_identity": "Stockfish19 pinned default nn-1a298aa575a0.nnue",
+      "deterministic": false
+    }
+  ],
+  "openings": [
+    {
+      "id": "startup",
+      "fen": null,
+      "moves": []
+    }
+  ],
+  "paired": true,
+  "claim_policy": "auto_claim",
+  "time_control": "untimed",
+  "work": {
+    "depth": null,
+    "nodes": null,
+    "movetime_ms": 500
+  },
+  "max_plies": 4,
+  "watchdogs": {
+    "handshake_ms": 5000,
+    "ready_ms": 5000,
+    "response_ms": 10000,
+    "write_ms": 2000,
+    "cleanup_ms": 1000
+  },
+  "io": {
+    "line_bytes": 4096,
+    "queued_lines": 32,
+    "transcript_bytes": 2097152,
+    "stderr_bytes": 16384,
+    "command_bytes": 4096
+  }
+}

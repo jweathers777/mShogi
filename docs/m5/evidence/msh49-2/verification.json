@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "task": "MSH-49.2",
+  "status": "awaiting_owner_approval",
+  "starting_revision": "0b3b4585c48619f1c9781eb3e623fb6d873342bc",
+  "production_implementation": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
+  "accepted_tested_source": "b8cc85167f85eb031830d5f5268c1f94520f8a25",
+  "prior_acceptance": "../msh49-1/verification.json",
+  "source_changes": "None to production code; separate offline measurement preparation only",
+  "approval": null,
+  "budget": {
+    "routine_limit_seconds": 900,
+    "proposed_total_seconds": 3600,
+    "charged_seconds": 5.840419957879931,
+    "inflight": null,
+    "runs": [
+      {
+        "phase": "routine_smoke",
+        "folder": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/smoke",
+        "timeout_seconds": 15,
+        "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/smoke/report.json.gz",
+        "healthy": true,
+        "complete": false,
+        "returncode": 0,
+        "stdout": "",
+        "stderr": "",
+        "seconds": 5.840419957879931,
+        "report_sha256": "6b69c780e0ad7fbadfb9ba81c89abc483c2e45b04bb64670dba3805a5ae5530a",
+        "summary": {
+          "opening_id": "startup",
+          "games": 2,
+          "wins": [
+            0,
+            0
+          ],
+          "draws": 0,
+          "unscored": 2,
+          "failures": 0
+        },
+        "pair_score": null,
+        "stops": [
+          "ply_limit",
+          "ply_limit"
+        ],
+        "replay_returncode": 0,
+        "replay_stderr": ""
+      }
+    ],
+    "accounting": "Single invocation wall time, including failed/interrupted launch/cleanup; no concurrentmatches. Setup/build/replay/offlinecontroltests not match experiments. Routinecap900s remains until explicit approvedformalbudget."
+  },
+  "formal_roots": null,
+  "formal_results": null,
+  "independent_review": {
+    "reviewer": "msh492_protocol_review, fresh read-only review",
+    "verdict": "Approved preparation; no remaining technical finding. Actual study and final acceptance remain pending.",
+    "verified": "All5artifact hashes, source byte-equivalence, raw+inner smoke digests, harness0b3b458 clean fingerprint,8 go movetime500 commands,2intentionalunscoredcaps, clean exits/no stderr/failures, exact5.840419957879931s charge; no formal seed/roots/freeze/approval.",
+    "tests": "Independently ran all7offlinecontroltests and gitdiffcheck; passed. Shared5s cleanupdeadline correction resolves finding.",
+    "interpretation": "16iid paired sampling units/95%Hoeffding radius0.339525, memorydifferences explicit, noElo/strengthclaim, owner mustapprove3600s and measurement-only acceptance regardlessscore."
+  },
+  "acceptance": {
+    "1": "Prepared source/build/opponent/network/resource pins independently verified; actual formal execution still pending.",
+    "2": "Pending owner approval of exactprotocol hash,3600-second total local budget andmeasurement-only acceptance regardlessscore.",
+    "3": "Formal study not run; smoke evidence preserved honestly unscored.",
+    "4": "Preparation review passed; final actual-results reconciliation not run."
+  },
+  "next": "Await explicit John approval of proposedprotocol/budget/interpretation. If approved, record actual reply +approved_protocol_sha256, reactivate task ownership, commit decision, then run formal once using reviewed committed staticinputs. No formal run or rootdraw untilapproval. If different conditions requested, revise/review protocol before execution. No other task started.",
+  "local_checks": [
+    {
+      "command": "cargo build --release --locked -p mshogi-console --bin mshogi -p mshogi-runner --bin mshogi-match --example chess_study_roots",
+      "outcome": "passed; clean production sources at0b3b458, same engine SHA as accepted49.1; newrunner includes actual0b3b458 buildmetadata"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s docs/m5/evidence/msh49-2 -p test_*.py -v",
+      "outcome": "7passed; explicit noapprovalgate, no node/depth handicap, artifact mutation, actualsmoke response/control mutation, charge preservation and controlled sharedcleanupdeadline"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 docs/m5/evidence/msh49-2/study.py smoke",
+      "outcome": "passed actualtransport/replay health; intentionally capped4plies each of2games, unscored; no formalstrength data"
+    },
+    {
+      "command": "Stockfish19 uci; export_net pinned default; quit",
+      "outcome": "passed; official executable/archive SHA match historical verifiedpins, exported networksha1a298aa575a085434d29027978dc36867fe9c5bcea9376654b7a8eba1e52dfc2"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 docs/m5/evidence/msh49-2/study.py formal (negative test)",
+      "outcome": "Expected exit1 Explicit owner approval required; no engine launched, freeze/seed/roots/lock absent afterward."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/m5/evidence/msh49-2/build.log.gz",
+      "sha256_uncompressed": "df3faab2ed8ca67e54132e9bf02d4098db4d32492b6d465c01d53c16778b0339"
+    },
+    {
+      "path": "docs/m5/evidence/msh49-2/tests.log.gz",
+      "sha256_uncompressed": "49dbc08a2f2702f5054137138a2f394b90eb6dee1fa8edd92ddc3ab38bb449d9"
+    },
+    {
+      "path": "docs/m5/evidence/msh49-2/approval-refusal.log.gz",
+      "sha256_uncompressed": "c5e9041807bbeecb6a229c4eb9ac374b4509e6dc15cf809d2965169fab3ce525"
+    }
+  ],
+  "historical_preparation_findings": [
+    "Independent review identified nested communicate timeouts could reset cleanup from5s to8s. Corrected to one shared5s monotonic cleanup deadline; reserve5s fromremainingbudget and deterministic staged timeout test. No formal run occurred under earlier wrapper."
+  ],
+  "ci": "No production source changed; reuse acceptednative3OS atb8cc851, source/codeequivalence in49.1record. This task adds only offline measurement orchestration/protocol/docs, verifiedlocally; opponent remains optional outsidethisowner-requested study, notCI dependency.",
+  "proposed_protocol_sha256": "02361bbe2e1ae33121527097aa4c287ea32b62ce66d2cd6437cbcc28771bed77"
+}

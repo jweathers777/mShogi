@@ -1,3 +1,13 @@
+> Current pre-optimization diagnostic — MSH-109, 2026-11-08: the
+> [current architecture map and findings](review/architecture-health-109.md)
+> inspect source `e161cef2935cd9b33449757699dba4ccfa0874dd` after MSH-48.
+> Six-game ownership remains coherent; no prerequisite architectural redesign
+> is demonstrated. Replay/cooperation/UI costs, a qualified Chu cutoff coverage
+> question and future model/identity/offline-teacher obligations remain explicit.
+> Independent final assessment is approved; MSH-109 is Done. No refactor or
+> strength/training work was performed. M4 and MSH-48 are complete; older checkpoint wording
+> below retains its historical stage and scope.
+
 > Current six-game diagnostic — MSH-108, 2026-11-05: the
 > [architecture map and findings](review/architecture-health-108.md) inspect
 > accepted source `1d3920227bc376b5cc1694928597e7b5a1d5a864` after MSH-46.

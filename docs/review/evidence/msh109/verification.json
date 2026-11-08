@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "task": "MSH-109",
+  "status": "Done",
+  "date": "2026-11-08",
+  "reviewed_source": "e161cef2935cd9b33449757699dba4ccfa0874dd",
+  "production_tested_source": "9a164eb4379231dcb4fca484adb7ec5597e7c991",
+  "prior_reviewed_source": "1d3920227bc376b5cc1694928597e7b5a1d5a864",
+  "integration_branch": "codex/rewrite",
+  "report": "docs/review/architecture-health-109.md",
+  "scope": "Diagnostic source/consumer/evidence assessment only; no production, rules, protocol, schema, budget, test or milestone acceptance changes.",
+  "backlog_version": "1.55.1 (PATH1.55.0 not used for mutations)",
+  "required_new_ci_jobs": [],
+  "new_product_tests": "not run; documentation/diagnostic only",
+  "new_benchmarks": "not run; actual48/108 measurements reused with their exact sources and scope",
+  "checks": {
+    "outcome": "passed",
+    "reviewed_source": "e161cef2935cd9b33449757699dba4ccfa0874dd",
+    "prior_source": "1d3920227bc376b5cc1694928597e7b5a1d5a864",
+    "reused_tested_source": "9a164eb4379231dcb4fca484adb7ec5597e7c991",
+    "unchanged_git_trees": {
+      "crates/mshogi-core": "70539630893f79995de055f6885477c4c3dd0333",
+      "crates/mshogi-search": "a861c06c6c9139f045f1a6a37cb08cc6bac7549b",
+      "crates/mshogi-engine": "e2cc977684f9ccff278425d4547ede36560064c8",
+      "desktop/src": "485699ea307895c1e5f067c647acdd213103ebe9",
+      "desktop/src-tauri": "bafd3bebbbd388afc6a58dad539395cf0c43362e"
+    },
+    "metadata": {
+      "workspace": {
+        "mshogi-core": {
+          "normal": [
+            "serde",
+            "serde_json"
+          ],
+          "dev": [
+            "mshogi-conformance"
+          ],
+          "build": []
+        },
+        "mshogi-conformance": {
+          "normal": [
+            "serde",
+            "serde_json",
+            "sha2"
+          ],
+          "dev": [],
+          "build": []
+        },
+        "mshogi-console": {
+          "normal": [
+            "mshogi-core",
+            "mshogi-engine",
+            "mshogi-search",
+            "serde_json"
+          ],
+          "dev": [
+            "mshogi-desktop-session",
+            "mshogi-runner"
+          ],
+          "build": []
+        },
+        "mshogi-engine": {
+          "normal": [
+            "mshogi-core",
+            "mshogi-search",
+            "serde",
+            "serde_json"
+          ],
+          "dev": [],
+          "build": []
+        },
+        "mshogi-search": {
+          "normal": [
+            "mshogi-core"
+          ],
+          "dev": [
+            "serde_json"
+          ],
+          "build": []
+        },
+        "mshogi-desktop-session": {
+          "normal": [
+            "mshogi-core",
+            "mshogi-engine",
+            "serde",
+            "serde_json"
+          ],
+          "dev": [],
+          "build": []
+        },
+        "mshogi-runner": {
+          "normal": [
+            "mshogi-core",
+            "mshogi-engine",
+            "mshogi-search",
+            "serde",
+            "serde_json",
+            "sha2"
+          ],
+          "dev": [],
+          "build": [
+            "sha2"
+          ]
+        }
+      },
+      "tauri": {
+        "mshogi-desktop": {
+          "normal": [
+            "mshogi-desktop-session",
+            "tauri",
+            "tauri-plugin-dialog"
+          ],
+          "dev": [],
+          "build": [
+            "tauri-build"
+          ]
+        }
+      }
+    },
+    "protected_evidence_sha256": {
+      "docs/design.md": "0687df4f10d569fb2b9c86dcfab672e1b86c2d7754fd4591beb085973b9afc9d",
+      "docs/testing/conformance-policy.md": "e2507473d94bde4e39c2803575a405427fb486106ffe166d60e4adb6eed56892",
+      "docs/review/architecture-health-108.md": "f21cca88ed5575c0651139fe5bccb040b047c42edc2986b3a15343f7e9dcad33",
+      "docs/review/evidence/msh108/verification.json": "86e7e22ea1e8c42eaad22720f1801ef512a4540c17ce23e9d2ac2c00be469fa4",
+      "docs/review/runner-exit-112.md": "618f35cf2ebd23c0d3fa8ecd54f674e9cf43d2407c60abc50248a574a93a8085",
+      "docs/review/evidence/msh112/verification.json": "ba6f5d24ea39aa232d4ee88ae513cdc4fb747c143c6c69295b1ffe2c25fa2a21",
+      "docs/review/history-view-134.md": "92478d00d7a2b3d22bc5f402732a1689ee68ee807ed32058b4294bbc2e5fae04",
+      "docs/review/evidence/msh134/verification.json": "064d4cd16a24e4d2a69101cffab96285de6007eb56dbbe31ecff03a2b412ce8e",
+      "docs/m4/final-delivery.md": "ebbef4fc21e27ca4ff256d3425ef77815d6ed4fbd077dfc6c301004850a908d2",
+      "docs/m4/evidence/msh47/verification.json": "5a0ac4c9028393181c6cc483bf5ba5e076a9f136287ade582ecdccb15abb223e",
+      "docs/m5/experiments.md": "c0a1aa935db212d42898ae08ccc1ea7f149c377bf0d1093ff952fee8a15279f3",
+      "docs/m5/evidence/msh48/verification.json": "deb906bf6c4958a3490abee96c82fe1dc6a181d7fbf4b6b8819c3ebb644ae06a",
+      "docs/m5/evidence/msh48/pilot-metrics.json": "d4f43c06a172c36a24d11e82afe729301205a76ff3b43c86451d31a5b3698d29"
+    },
+    "anchor_assertions": 15,
+    "report_local_links": [
+      "evidence/msh109/verification.json",
+      "../testing/conformance-policy.md",
+      "runner-exit-112.md",
+      "history-view-134.md",
+      "../m4/final-delivery.md",
+      "../m5/evidence/msh48/verification.json",
+      "evidence/msh109/check.py"
+    ],
+    "checks": [
+      "production source preservation",
+      "unchanged prior native/application surfaces",
+      "normal/dev/build dependency boundaries",
+      "exact-source retained three-platform CI",
+      "compressed pilot hashes/counts/semantic repeat",
+      "all other tasks preserved",
+      "original109description/AC/DoD preserved",
+      "protected design/evidence unchanged",
+      "current symbol anchor spot checks"
+    ],
+    "environment": {
+      "system": "Darwin",
+      "release": "27.0.0",
+      "machine": "arm64",
+      "python": "3.11.0",
+      "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+      "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+      "git": "git version 2.55.0"
+    },
+    "new_product_tests": "not run; diagnostic/documentation only",
+    "new_ci_jobs": [],
+    "new_benchmarks": "not run; retained measurements remain source-qualified"
+  },
+  "commands": [
+    {
+      "command": "git status --short --branch; git remote -v; git worktree list; git log -5 --oneline; credential-aware normal git fetch origin; git rev-list --left-right --count HEAD...origin/codex/rewrite",
+      "outcome": "clean primary codex/rewrite at e161cef; origin alignment0/0; unrelated historical-access checkoutbe93699 preserved"
+    },
+    {
+      "command": "pinned Backlog instructions overview/task-execution; task list InProgress; task list Ready --ready; task view109; dependency record reads108/48",
+      "outcome": "no active owner;109soleReadydependency-satisfied;108/48Done; original8AC/4DoD retained"
+    },
+    {
+      "command": "cargo metadata --offline --locked --no-deps --format-version 1; cargo metadata --offline --locked --no-deps --format-version 1 --manifest-path desktop/src-tauri/Cargo.toml",
+      "outcome": "passed both; normal/dev/build edges in checks.metadata"
+    },
+    {
+      "command": "git diff108..e161 --affected production paths; bounded rg/source reads; read-only Python/Git evidence checks",
+      "outcome": "native/search/engine/frontend/Tauri unchanged;112runnerfix,134test-onlysync and48experiments isolated"
+    },
+    {
+      "command": "python3 docs/review/evidence/msh109/check.py",
+      "outcome": "passed: production/tree/source preservation, bothdependencygraphs, retained3OS receipts, pilotartifact hashes/counts/repetition, original109scope andother-task integrity,15symbolanchor checks and allreportlocal links"
+    },
+    {
+      "command": "pinned Backlog1.55.1 doctor",
+      "outcome": "passed: no duplicate IDs,self-referential dependencies or cycles"
+    },
+    {
+      "command": "git diff --check",
+      "outcome": "passed"
+    }
+  ],
+  "reused_evidence": {
+    "msh48": "docs/m5/evidence/msh48/verification.json",
+    "msh108": "docs/review/evidence/msh108/verification.json",
+    "m4": "docs/m4/evidence/msh47/verification.json",
+    "msh112": "docs/review/evidence/msh112/verification.json",
+    "msh134": "docs/review/evidence/msh134/verification.json",
+    "qualification": "Unchanged exact-source native3OS coverage at9a164eb and historical acceptedM4packaged/diagnostic/conformance records, not newly performed109 runtime/strength/OS checks."
+  },
+  "finding_dispositions": {
+    "F01": "moderate advisory: repeated offline replay/evidence work amplifies real consumer costs; Chu ordinary undo retention remains specific unprofiled memory risk",
+    "F02": "moderate advisory: live supervisor and offline host synchronous units remain finite, not hard wall-time/cancel guarantees",
+    "F03": "moderate qualified advisory: oldUI inspection/choice costs not measured by48turn timing",
+    "F04": "low advisory: narrow syntax/mailbox duplication and stale comments; native models/searchdifferences justified",
+    "F05": "unproven Chu cutoff coverage/contract question; no reachable offending leaf or incorrect committed outcome established; investigate under52 before changing semantics",
+    "F06": "existing downstream feature/model/candidate-ID/data/deep-teacher readiness work, not an imposed model/API/budget or prerequisite refactor"
+  },
+  "researchers": [
+    "Root primary M5consumer/pilot/dependency analysis",
+    "Independent read-only msh109_native_map native/search map and cutoff qualifications",
+    "Independent read-only msh109_app_map application/shared map and112/134 reconciliation"
+  ],
+  "independent_assessment": {
+    "reviewer": "fresh independent read-only msh109_assessment",
+    "status": "approved; no remaining material findings",
+    "coverage": "All8originalAC supported; exact reviewed/retained sources,15selectedanchors,13protectedhashes,reportlinks,dependency names,originalAC/DoD texts,pilotcounts/hash/repetition and3OS receipts independently verified; candidateID/deepteacher constraints explicit; Chu cutoff qualified unproven.",
+    "not_performed": "No builds,Cargo,network,product tests or mutations during assessment",
+    "completion": "DoD1\u20133 supported; normal final commit/push records accepted result and satisfiesDoD4."
+  },
+  "acceptance_coverage": {
+    "1": "Report prior-finding reconciliation, actual48consumer and future55/104 readiness obligations",
+    "2": "Native6game/7profile state/action/movement/legality/undo/history/records/diagnostics/search map plus shared app/transport/capabilities/frontend/dependency map at exactsource",
+    "3": "F01/F04/F06 concrete real-consumer duplication versus justified native semantics; no universal abstractions assumed",
+    "4": "Ownership and independenttestability assessed; large modules not treated asautomaticdefects",
+    "5": "F01\u2013F06 qualifiedsource-backed findings with severity/risks, acceptableareas and distinct correctness/performance/strength/integration claims",
+    "6": "P1\u2013P6 suggested bounded followup scopes/benefits/consumers/risks/focusedchecks; no newtaskIDs or mandatoryrefactorgates",
+    "7": "Diagnostic only: zero production changes and no downstreamtask activation",
+    "8": "Fresh metadata/source/hash/task/link checks and independent assessment; exactreused receipts and not-run checks explicit"
+  },
+  "downstream": {
+    "architecture_verdict": "No demonstrated material architectural blocker or prerequisite redesign",
+    "handoff": "After109Done,49\u201355/104 retain original ToDo scope/owner decisions and actual experiment-specific blockers. No optimization/training/opening work performed.",
+    "unresolved": "D09targets/models/features/compute, rights/opponents, coordinatedcandidateidentity and unsupporteddeepteacherlimits remain owning-task questions, not resolved by this diagnostic."
+  },
+  "not_run": [
+    "newnative/conformance/searchtests",
+    "newperformancemicrobenchmarks orRSS/cancel/UIlatencyprobe",
+    "training/inference/opponentmatches",
+    "newGitHubCI orpackagedGUIcampaign",
+    "newbinding/modelorrefactorimplementation"
+  ],
+  "report_sha256": "2b627fddd953216afe380e399f5e8e3189e73a6831b961002520984e0974fd56",
+  "check_script_sha256": "6352edbe9cb8562f7dbd8a95d16fa223998a548c264e6bca623c2311ae05d5c9",
+  "completion": {
+    "criteria": "All original8AC and4DoD supported; no descriptions/dependencies/criteria weakened",
+    "integration_branch": "codex/rewrite",
+    "reviewed_source": "e161cef2935cd9b33449757699dba4ccfa0874dd",
+    "publication": "Normal final diagnostic/task/evidence commit and push; actual commit is in Git history, no future hash fabricated",
+    "source_changes": "No production,test,workflow oraccepted evidence inputs changed",
+    "worktree": "No disposable worktree created; unrelated historical-access checkout remains untouched",
+    "stop": "Stop after109; no49\u201355/104 implementation orM5 closure performed"
+  }
+}

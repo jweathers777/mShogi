@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-08T08:43:00Z'
+updated_date: '2026-11-08T08:45:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -51,4 +51,6 @@ Primary builder/integrator Codex, clean origin-aligned primary codex/rewrite at0
 
 <!-- SECTION:NOTES:BEGIN -->
 Pre-target common preparation: frozen clean production baseline05eeba3 built/captured with exactexeSHA; officialSF19 archive/exec hashes independently matched historicalpins andnotices retained in temporary storage only. Actual6fixedauthoredprefixpairs atcommondepth2/10knodes128plycap:0W2D10L,all12nativeconclusions,353completeddepth2requests,nofallback/process/truncation/cleanupfailures. Independent read-only review recheckedhashes/context and replayed6reports. Found/reproduced necessaryharness correction: valid depth1PV Move+terminalClaim wasrefused by total-command depthguard; countboardMoves<=depth plus atmostoneClaimtail with fullnativevalidation. Actualchild red/green andextraboardnegative+9admissionregressions+fullrunner+clippypassed; independentfixreview approved. docs/m5/chess-strength.md andevidence/msh49/verification.json retain baseline/correction/proposal; no search/eval candidate orstrengthacceptance yet. OwnerD09/AC2 decision pending concrete first-releaseproposal:64relativepairs70%+exactpairedp<=.05,32externalmatchedroots25%+positive/significantgain vsdepth2SFreference,equalmShogi10k/depth8ceilings,holdoutprotocolfrozen,2hourlocalmatchbudget,noratingclaim. No answer inferred. Alloriginalcriteria remainunchecked; taskunfinished. Commoncorrection frozen-source required3OSCI pending; no GUIcampaignneeded.
+
+Common preparation/correction normally integrated+pushed at926ae8f60eee1a05f02fb7cff36b7bd1d924a992; task49 remainsInProgress withall4AC/4DoDunchecked. RequirednativeCI42464154960 running atthat exactsource withoneboundedcompletion-awareobserver (no retries); livecache/private/tmp/msh49/ci/{run,jobs}.json andobserverexecsession48956 are localresume conveniences, GitHubrun/source are durableauthority. UnrequiredDesktop42464154953 cancellationrequested because noUI boundarychanged. Explicitownerproposal nowin docs/m5/chess-strength.md, latestasyncquestion supersedesbroad directionquestion. Noresponse/approvalreceived: stopdependentcandidate/strengthwork untilownerselectsbar/budget; originalAC2/AC4+D09requirethismaterialdecision. Onresume reconcileCI+ownerreply, preservebaseline05e andallactualcalibration/admissionreceipts. Do notmarkDone fromcommonfixorpilot. Noother taskbegun.
 <!-- SECTION:NOTES:END -->

@@ -183,8 +183,21 @@ Final source platform receipts and the fixed held-out strength study remain
 required.
 
 MSH-49 remains unfinished until the approved criteria and verification pass.
-A native alpha-beta/positional candidate is implemented and under independent
-review; formal holdout roots and acceptance matches have not yet been generated.
+The reviewed conventional candidate is integrated and pushed at
+`7818c3371758cee8e9624b58b0edb1073c32c89d`.
+Its [clean-source artifact freeze](evidence/msh49/study/candidate-freeze.json)
+precedes any held-out seed. The new development pair won both games in90.206s,
+versus168.570s initially; total charged work is now971.486s. Independent review
+reconciled all9development pairs and source/artifact identities. The final
+runner has its own artifact hash, distinct from the development runner.
+
+Required native [CI42469534590](https://github.com/jweathers777/mShogi/actions/runs/42469534590)
+is running at that exact source, with all3hosted runners acquired. Its outcome
+is pending. No formal holdout roots or acceptance matches have been generated.
+Measured costs still project beyond the approved two-hour budget. John has been
+asked to amend only the total local match budget to four hours, including work
+already charged, before held-out sampling. No amendment is inferred; the
+two-hour cap remains binding pending that decision.
 No learned evaluator, training or other game task has begun. The bounded baseline and reviewed
 claim-tail correction are useful preparation, not substitute acceptance.
 

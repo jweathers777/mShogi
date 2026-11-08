@@ -1,16 +1,16 @@
 {
   "schema": 1,
   "task": "MSH-49",
-  "status": "in_progress_budget_amendment_pending_and_native_ci_running",
+  "status": "historical_study_stopped_conventional_engine_reassessment",
   "starting_revision": "05eeba326341fb65efa0e60f2641795c5276e863",
   "branch": "codex/rewrite",
-  "scope": "Owner-approved conventional Chess candidate and frozen paired study; prior claim-admission correction retains exact source evidence; no strength acceptance yet",
+  "scope": "Owner-directed conventional-engine-first roadmap reassessment; useful starting candidate/source/platform evidence preserved; no formal strength verdict.",
   "owner_decision": {
-    "status": "approved2026-11-08",
+    "status": "historical approval superseded by later owner strategy2026-11-08",
     "authority": "OriginalMSH49AC2/AC4 anddesignD09 require explicit owner release-strength/uncertainty target; dependency readiness does not decide it",
     "question": "Concrete first measured release-strength bar selected explicitly after baseline calibration",
     "concrete_proposal": "docs/m5/chess-strength.md:64relativepairs,atleast70%scoreandone-sidedexactpairedp<=.05;32externalmatchedrootsagainstexplicitdepth2Stockfishreference,atleast25%candidate score+positivemeanandsign-testgain;equalmShogi10kvisit/depth8ceilings;independentheldoutsamplerfrozenbeforeevaluation;allgameseligible;2hourlocalmatchbudget;nopaidcompute/noratingclaim",
-    "latest_question": "Answered explicitly; original64/32paired thresholds,exacttests and2hourlocalbudget approved; no replacementpending",
+    "latest_question": "Old first-release study and proposed4hour amendment stopped/superseded; no pending amendment decision or execution authority.",
     "reply": "Okay. Let\u2019s proceed with your first option for question2.",
     "selection": "Approve this initial bar and match budget",
     "protocol": "docs/m5/evidence/msh49/study/protocol-v1.json"
@@ -360,16 +360,16 @@
     ]
   },
   "acceptance": {
-    "1": "Baseline/opponent/settings/frozenprotocol established; formal finalpool execution pending",
-    "2": "Original numericbar/uncertainty/sampling/2hourbudget ownerapproved andfrozen beforedevelopment. Prospectivebudgetamendment awaitingowner; nochangeinferred.",
-    "3": "Development gain only; fixed heldoutcriteria NOT established",
-    "4": "Reviewedsource anddurabledevelopment reports; finalstrength/source/platform/evidencereconciliation pending"
+    "1": "New mature conventional package not implemented; MSH-49.1 Ready. Existing startingcandidate correctness/platform evidence preserved.",
+    "2": "New equal-time unrestricted reference direction selected; actual major-study budget/protocol/interpretation approved later viaMSH-49.2 afterengine readiness. Old64/32/depth2criteria inactive.",
+    "3": "No mature-engine formalstrength study or release verdict; unfinished.",
+    "4": "Historical evidence andstrategyrevision retained; finalmatureengine/source/studyacceptance pending."
   },
   "not_run": [
-    "formal held-out study (blocked pending owner budget decision before seed)",
-    "final candidate native CI completion (running, not passed yet)",
-    "training/modelwork (out of scope)",
-    "new packaged GUIcampaign (not required)"
+    "Formal held-out study: STOPPED before anyseed/roots/games",
+    "Mature conventional engine implementation: nexttask49.1",
+    "Training/modelwork: futureafterconventionalphase",
+    "New packagedGUIcampaign: notrequiredforthisdocumentationreassessment"
   ],
   "development_failures": [
     {
@@ -387,15 +387,16 @@
     "tests/fixtures/matches/README.md"
   ],
   "handoff": {
-    "owner_decision": "Explicitapproval received; proceed approvedstudy, no furtherbar/budgetapproval required unless scopechanges",
-    "next_action": "Reconcile nativeCI42469534590 actual source/jobs; await owner reply to prospective4hour total-budget amendment. Original2hour cap remains binding. No formal seed/roots generated. If approved preserve original frozen protocol/history and explicitly record prospectivebudget-only amendment before onefresh fixedstudy. If notapproved retainunfinished status; never lower samples/gates/visits or use development asacceptance.",
-    "production_progress": "Conventionalcandidate integrated+pushed at7818c3371758cee8e9624b58b0edb1073c32c89d; correctness/source/provenance independently approved; no strength acceptance yet.",
+    "owner_decision": "New conventional-first strategy supersedes old study and4hourquestion; no budgetanswer required tostart routineengineering.",
+    "next_action": "Activate MSH-49.1 and inspect current source toplan coherent conventional increments. Do not resume old study. Later49.2 requires its own approved major-study resources/protocol; no newformal benchmark is authorized now.",
+    "production_progress": "Starting candidate7818c33 passed3nativeplatforms, reviewed/provenance reconciled; stilllacks substantially complete conventional package.",
     "branch": "codex/rewrite",
     "integrated_common_checkpoint": "926ae8f60eee1a05f02fb7cff36b7bd1d924a992",
     "no_other_tasks_started": true,
     "source_checkpoint": "7818c3371758cee8e9624b58b0edb1073c32c89d",
     "candidate_freeze": "study/candidate-freeze.json",
-    "charged_seconds": 971.4862487493083
+    "charged_seconds": 971.4862487493083,
+    "reassessment_scope": "Futurebacklog revised; no otherengineimplementation ormatches started."
   },
   "candidate_preformal": {
     "search": "mshogi.chess.alpha-beta-capture-order.v1",
@@ -455,7 +456,7 @@
       "charged_seconds": 971.4862487493083,
       "ledger": "study/execution.json",
       "formal_seed_generated": false,
-      "budget_feasibility": "Point forecast exceeds approved7200s; ownerasked about14400s total before anyholdout. No amendment inferred."
+      "historical_budget_feasibility": "Point forecast exceeds approved7200s; ownerasked about14400s total before anyholdout. No amendment inferred. Superseded: owner stoppedstudy andpendingamendment."
     },
     "source": "7818c3371758cee8e9624b58b0edb1073c32c89d",
     "freeze": "study/candidate-freeze.json",
@@ -468,7 +469,7 @@
   },
   "candidate_ci": {
     "source": "7818c3371758cee8e9624b58b0edb1073c32c89d",
-    "status": "in_progress",
+    "status": "passed",
     "run_id": 42469534590,
     "url": "https://github.com/jweathers777/mShogi/actions/runs/42469534590",
     "attempt": 1,
@@ -478,6 +479,62 @@
       "Rust(windows-2022)"
     ],
     "jobs": [
+      {
+        "id": 128696846118,
+        "name": "Rust (macos-15)",
+        "status": "completed",
+        "conclusion": "success",
+        "runner_id": 1000002739,
+        "runner_name": "GitHub Actions 1000002739",
+        "labels": [
+          "macos-15"
+        ],
+        "started_at": "2026-11-08T10:00:18Z",
+        "completed_at": "2026-11-08T10:24:24Z",
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42469534590/job/128696846118",
+        "head_sha": "7818c3371758cee8e9624b58b0edb1073c32c89d",
+        "attempt": 1
+      },
+      {
+        "id": 128696846383,
+        "name": "Rust (windows-2022)",
+        "status": "completed",
+        "conclusion": "success",
+        "runner_id": 1000002741,
+        "runner_name": "GitHub Actions 1000002741",
+        "labels": [
+          "windows-2022"
+        ],
+        "started_at": "2026-11-08T10:00:19Z",
+        "completed_at": "2026-11-08T10:26:50Z",
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42469534590/job/128696846383",
+        "head_sha": "7818c3371758cee8e9624b58b0edb1073c32c89d",
+        "attempt": 1
+      },
+      {
+        "id": 128696846507,
+        "name": "Rust (ubuntu-24.04)",
+        "status": "completed",
+        "conclusion": "success",
+        "runner_id": 1000002743,
+        "runner_name": "GitHub Actions 1000002743",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "started_at": "2026-11-08T10:00:18Z",
+        "completed_at": "2026-11-08T10:29:57Z",
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42469534590/job/128696846507",
+        "head_sha": "7818c3371758cee8e9624b58b0edb1073c32c89d",
+        "attempt": 1
+      }
+    ],
+    "monitor": "Single completion-aware observer finished; live GitHub API reconciled exact source andall3successfuljobs on2026-11-08. No retries or newcampaigns. Useful sourceverification only, notstrengthacceptance.",
+    "unrequired_desktop": {
+      "run_id": 42469534578,
+      "status": "cancellation_requested",
+      "reason": "No new packagedGUIcampaign required; actual analysisfixture andaffected frontend/typechecks passed; native3OS is declared required gate"
+    },
+    "initial_jobs": [
       {
         "id": 128696846118,
         "name": "Rust (macos-15)",
@@ -515,11 +572,35 @@
         "head_sha": "7818c3371758cee8e9624b58b0edb1073c32c89d"
       }
     ],
-    "monitor": "One bounded completion-aware observer, local execsession85021; /private/tmp/msh49/monitor-final.py andci-final/{run,jobs}.json. Check completion before further wait; no retries started. Source/run are durableauthority.",
-    "unrequired_desktop": {
-      "run_id": 42469534578,
-      "status": "cancellation_requested",
-      "reason": "No new packagedGUIcampaign required; actual analysisfixture andaffected frontend/typechecks passed; native3OS is declared required gate"
+    "conclusion": "success"
+  },
+  "strategy_revision": {
+    "authority": "Owner explicitly stops currentMSH49formal study and chooses mature conventional Chess then equal-thinking-time unrestricted Stockfish milestone; adapt conventional techniques toother5games before Chess learned evaluation and later other-game learned extensions.",
+    "roadmap": "docs/m5/strength-roadmap.md",
+    "routine_policy": "15minutes cumulative routine local engine-match compute per task unless explicitly extended; no multi-hour benchmarks or substantial/formal studies without explicit approval at substantially complete game-engine/new-evaluation milestones. Routine algorithms are implementer decisions.",
+    "formal_seed_roots_games_generated": false,
+    "current_matches_running": false,
+    "historical_runtime_seconds": 971.4862487493083,
+    "historical_runtime_disposition": "Previously authorized calibration/development remains as recorded; no further match work in this reassessment and no retroactive15minute failure claim.",
+    "preserved_work": "Native alpha-beta/capture ordering/positional evaluation; claim-tail admission, native claim-query shortcut; per-participant work/replay; correctness tests/reviews; baseline/opponent identity andallsource reports.",
+    "new_tasks": {
+      "conventional_engine": "MSH-49.1",
+      "unrestricted_equal_time_milestone": "MSH-49.2",
+      "learned_other_games_followon": "MSH-135"
+    },
+    "msh49_status": "Ready/unassigned unfinished umbrella;49.1Ready is nextdependency-ready engineering work.",
+    "independent_review": {
+      "reviewer": "Fresh read-only strength_roadmap_review",
+      "verdict": "Approved, no remaining findings",
+      "scope": "Conventional-first sequencing, research selections/native safeguards, budget/milestone distinctions, task/dependency identities, unchangedM5closure scope, stoppedstudy/runtime/hash preservation andfinalsourceCI reconciliation",
+      "checks": "Backlogdoctor no duplicates/selfrefs/cycles;5frozenartifactSHA+HEADbyteidentity independentlychecked; gitdiffcheckpasses; no builds/matches/newCI fordocumentation-only reassessment"
     }
+  },
+  "preserved_study_artifacts": {
+    "docs/m5/evidence/msh49/study/protocol-v1.json": "757d97e97d48f150c5bed164301c2baaf22cc76b2096b3344267624825b32a49",
+    "docs/m5/evidence/msh49/study/protocol-freeze.json": "21cdb09a40c895591e6bf17f119a3746ba679ea2df81488d9c7714db0f214e4b",
+    "docs/m5/evidence/msh49/study/development-roots.json": "b58dcc500348d51bee445e37bf7206db5660943e1f487e78cea98a6799030489",
+    "docs/m5/evidence/msh49/study/candidate-freeze.json": "c37aa9a77a0013407aa8a90dff7a25dd74eaab2d1f4219b109e14d5da06da2a0",
+    "docs/m5/evidence/msh49/study/execution.json": "a11bc08da926d7958762299c67cbfe14047620dbdae7cf6f9bab3cdebc96d831"
   }
 }

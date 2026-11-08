@@ -1,5 +1,14 @@
 # Reproducible native experiments (MSH-48)
 
+Current use follows the [owner-selected strength roadmap](strength-roadmap.md)
+and AGENTS.md: engineering tests/tactics/profiling and small development matches
+support coherent conventional-engine implementation. Routine local matches have
+a 15-minute cumulative compute allowance per task; substantial/formal studies and
+multi-hour benchmarks require explicit owner approval at major engine/evaluation
+milestones. These tools and historical pilots are not instructions to run a
+formal study after every technique. The earlier MSH-49 depth-handicapped study
+is stopped; preserve its evidence rather than resume it.
+
 The existing `mshogi-match` runner now supports offline experiments with mShogi's
 actual supervised internal-search executable. It does not add a second rules
 engine, engine protocol, application runtime or Python dependency. The concrete
@@ -57,7 +66,7 @@ remain responsible for detecting related diagrams imported as distinct roots.
 
 | Game / whole profile | Native choices and conclusions | Score interpretation / independent-opponent status |
 | --- | --- | --- |
-| Chess `mshogi.chess.match.v1` | Native moves/claims in an untimed M2 match | Root-side material/mate-distance telemetry; existing actual UCI adapter available |
+| Chess `mshogi.chess.match.v1` | Native moves/claims in an untimed M2 match | Root-side static-evaluation/mate-distance telemetry; actual UCI adapter also supports existing clocked matches. Current own evaluator adds positional terms to material. |
 | Shogi `mshogi.shogi.csa36.v1` | Moves/drops/promotions and formal declaration | Native root-side heuristic/command-edge win distance; existing actual USI adapter available |
 | Xiangqi `mshogi.xiangqi.wxf2018.v1` | Moves, claims, native pending adjudication | Native root-side score; pending stays unscored; existing actual Xiangqi UCI0–9 adapter available |
 | Tori `mshogi.tori.modern.v1` | Complete native actions and conclusions | Native perspective/score retained; compatible independent opponent not established |

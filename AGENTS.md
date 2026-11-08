@@ -69,6 +69,22 @@ independently established expectations, meaningful property/metamorphic/negative
 checks and independent review. External game engines are optional investigations,
 never ordinary build/test/CI/conformance/milestone/release prerequisites. Preserve
 historical observations without requiring another engine for future variants.
+Owner-requested opponent strength comparisons, such as MSH-49.2, are separate
+measurement tasks; they do not make an external engine a normal product, rules
+conformance or CI dependency.
+
+For engine-strength development, implement researched conventional techniques in
+coherent increments using correctness/tactical tests, bounded profiling and small
+development matches. Routine local engine-match experiments have a **15-minute
+cumulative compute allowance per task** unless John explicitly authorizes more;
+record aggregate active run time including failures and concurrent runs. Do not
+reset the allowance by relabeling experiments or artificially splitting tasks.
+Do not run multi-hour benchmarks, substantial statistical campaigns or formal
+strength studies without explicit owner approval. Those studies belong at a
+substantially complete conventional engine for a game, or a substantially complete
+new evaluation approach integrated into it, not at individual optimizations or
+small groups of changes. Routine algorithm choices remain the implementer's job.
+Follow the owner-selected sequence in `docs/m5/strength-roadmap.md`.
 
 For macOS GUI verification, reuse the fixed normal/QA/synthetic application slots
 and identities documented in `docs/desktop/packaged-gui-verification.md`, using

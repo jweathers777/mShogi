@@ -341,10 +341,22 @@ Do not invent a nodes-per-second target before measuring the first correct imple
 | M2. Search and match baseline | Complete the needed chess match semantics; add a transparent evaluator, independently checked full-width search, cancellation, replayable self-play and independent-engine matches, and UCI as the first protocol adapter. The bounded match policy is specified by MSH-15; MSH-25 closes the actual integrated M2 path. |
 | M3. Desktop vertical slice | Play and inspect a game through the actual native engine; test cancellation/stale results, save/reload, an 8x8 and 16x16 presentation, compound-action selection, and packaged installation on all three systems. |
 | M4. Variant expansion and conformance | Complete the remaining games with sourced rules profiles and coverage evidence; validate materially different state/move semantics before deep common-engine optimization. |
-| M5. Strength and learned evaluation | Establish per-game opponent pools and strength targets; tune search and evaluation; demonstrate a reproducible improvement from an initial learned evaluator. |
+| M5. Strength and learned evaluation | Build mature conventional Chess, then Shogi/Xiangqi and the historical-variant engines; conduct approved major strength evaluations, principally equal-time unrestricted Stockfish for Chess; then demonstrate a reproducible improvement from an initial Chess learned evaluator. |
 | M6. Further engine research and polish | Deliver required analysis/accessibility, product-quality and distribution polish; keep policy/value search and budgeted learning as optional research. |
 
 The milestone names establish direction, not an obligation to serialize every independent activity. An early bounded desktop or variant-contract experiment can resolve a concrete risk. Do not turn that allowance into an unbounded second implementation effort.
+
+Owner strength direction, 2026-11-08: follow the concise
+[conventional-engine roadmap](m5/strength-roadmap.md). Build mature conventional
+Chess in coherent increments, measure it against unrestricted Stockfish under
+comparable resources principally equal thinking time, then adapt conventional
+techniques to Shogi/Xiangqi and the historical variants. Initial learned evaluation
+returns to Chess after the conventional engines are established; other-game
+learned extensions follow. Routine technical decisions are autonomous, routine
+local matches have a 15-minute cumulative compute allowance per task, and
+substantial/formal studies or multi-hour benchmarks require explicit owner
+approval at substantially complete engine/new-evaluation milestones. The old
+MSH-49 weak-baseline study is stopped with its evidence retained.
 
 M2 is refined in MSH-15–25 against the actual M1 implementation. The [match/history profile](rules/chess-match-v1.md) records the approved 2026-10-24 policy; MSH-26 supplies an opt-in exact dead-position/side-specific reachability algorithm, with explicit resource uncertainty and unchanged M2 defaults. M2 is closed with its [integration evidence](review/m2-closure.md). M3 is delivered through MSH-27–39 and persistence follow-up MSH-61 against the [desktop contract](desktop/m3-design.md), including all eleven desktop work areas and the historical initial untimed play batch (MSH-27–32). Its [integration verdict](review/m3-closure.md) and MSH-39 record the independent review, actual three-platform application evidence and final closure checks. Next work is M4 scope refinement; all six games and strong engines remain the product target.
 
@@ -396,9 +408,10 @@ M4 engine support means legal, history-aware functional search/play, safe
 requests/cancellation and product integration. Measured playing strength belongs
 to the six explicit M5 game tasks. Targets, opponent pools and fair comparison
 conditions remain game-specific D-09 questions; no numeric targets are invented
-here. MSH-55 requires an initial learned evaluator's reproducible improvement,
-not one predetermined architecture for all six games. Its initial game(s),
-features, model/export choices and compute budget remain empirical decisions.
+here. MSH-55 requires an initial Chess learned evaluator's reproducible improvement
+after conventional development across all six games, not one predetermined
+architecture for all six games. Features, model/export choices and compute
+budget remain empirical decisions.
 NNUE-style evaluation remains a candidate; optional policy/value/MCTS research
 is not a prerequisite for the promised engines or product delivery.
 
@@ -665,7 +678,7 @@ When code reveals a design problem, report the specific conflict and a proposed 
 | D-06 | Working default | M0 and M1 sequencing and the initial ticket decomposition in this package. Refine technical task boundaries without weakening their outcomes. |
 | D-07 | Deferred | Exact disputed historical rules, versioned conventions, and full conformance criteria for each game. Resolve before implementing affected behavior or claiming conformance. |
 | D-08 | Deferred | Specific public API/ABI, board and action encodings, generic trait hierarchy, and complete wire/save schemas. Implement only the needed stable semantic contracts. |
-| D-09 | Partially decided, 2026-11-08 | John approved the [MSH-49 first measured Chess release study](m5/chess-strength.md): frozen-baseline gain plus a pinned, explicitly depth-handicapped independent opponent, fixed paired held-out samples, exact tests, complete eligible games and a two-hour local match budget; no human-Elo claim. Other games' targets, learned-evaluator architecture/training hardware and remaining compute decisions remain deferred pending their baselines and pilots. |
+| D-09 | Revised owner direction, 2026-11-08 | [Conventional engines first](m5/strength-roadmap.md): mature Chess engineering, then an approved equal-thinking-time unrestricted Stockfish milestone; adapt to the other five games before initial Chess learned evaluation and later learned extensions. The earlier weak-baseline/depth2 study and pending4hour request are stopped, with evidence preserved. Routine local matches:15minutes cumulative compute/task unless explicitly extended; no substantial/formal studies or multi-hour benchmarks without approval at a complete engine/new-evaluation milestone. Algorithms are implementer decisions; future material study/training budgets and release criteria return to John. |
 | D-11 | Accepted | John 2026-10-24: optional core claims with recorded unattended auto-claim policy, FEN-limited known history, sound incomplete M2 dead recognition with MSH-26 M4 completion, explicit unscored mating uncertainty, untimed/increment clocks and ordered replayable match events. Evaluation adjudication stays disabled. UCI plus an independent-engine match and focused MSH-25 integration closure are required in M2. See [match v1](rules/chess-match-v1.md). |
 | D-10 | Deferred | Release licensing, redistribution choices, minimum OS policy, and signing/update arrangements. Preserve existing notices; resolve applicable choices before copying restricted dependencies or distributing releases. |
 | D-12 | Accepted | John 2026-10-26: bounded M4 planning only, standard shogi first; provisional later order xiangqi, tori, chu, tenjiku with independent source research possible. Preserve complete MSH-41–47 obligations and closed M2/M3; stop for concrete profile discussion before affected implementation. |

@@ -4,7 +4,7 @@ title: Independently verify strength and learned evaluation delivery and close M
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-10-27T16:18:00Z'
+updated_date: '2026-11-08T13:08:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -21,6 +21,7 @@ dependencies:
 documentation:
   - docs/design.md
   - docs/m5/opening-knowledge.md
+  - docs/m5/strength-roadmap.md
 ordinal: 56000
 ---
 
@@ -50,4 +51,6 @@ M5 must account for every promised game-specific strength obligation and the ini
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner-approved roadmap addition2026-10-27: MSH104 next availableID is future scope-level opening-knowledge experiment including first-class compactteacher-distilledpolicy arm distinctfrom55evaluator and59optionalpolicy/value. All original AC1–3,DoD and47–55dependencies preserved; adds104 and experiment-completion criterion, not mechanism-adoption requirement. No M5implementation/runtimePython dependency introduced.
+
+Owner strength strategy2026-11-08 changes engineering/measurement sequencing, not original M5 closure scope: six conventional game-strength obligations, initialChesslearned improvement and all-game opening-knowledge research remain required. Dependencies unchanged. MSH-135 is a separately tracked later learned-extension direction, not an additional hiddenM5gate. Majorengine/evaluation studiesrequireownerapproval; smallengineeringincrements do not triggerformalstudies.
 <!-- SECTION:NOTES:END -->

@@ -4,7 +4,7 @@ title: Establish and meet measured xiangqi engine strength criteria
 status: Ready
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-08T19:52:00Z'
+updated_date: '2026-11-08T20:55:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -16,6 +16,7 @@ dependencies:
 documentation:
   - docs/design.md
   - docs/m5/strength-roadmap.md
+  - docs/m5/chess-search-costs.md
 ordinal: 54000
 ---
 
@@ -52,4 +53,8 @@ Owner sequence2026-11-08: after the mature Chess milestone, adapt and develop es
 Owner follow-on2026-11-08: after initial Chess diagnostic49.2, prioritize conventional Shogi/Xiangqi development rather than repeated small Chess benchmarking. Adapt49.1 techniques to native tactics/history/outcomes; do not copy Chess constants or pruning assumptions. Routine algorithm/verification choices are autonomous, with meaningful correctness/tactical tests, profiling and15minutes cumulative routine matches/task unless explicitlyextended. Material release targets or substantial formal studies return toowner whenappropriate; they do not block ordinary conventional engineering. Preserve selectednativeprofiles andallfiveAC. No implementation ofthisfuturetask starts in49.2.
 
 Owner requests bounded Chess engineering-performance checkpoint136 beforecross-game transfer. No additionalChessmatches. Carry measurednative query/transition,SEE/quiescence andhistory-safe TT lessons into conventionalXiangqi;136 dependency prospectivelyadded, not reopening49/49.2.
+
+136 transfer lesson: native subset queries before expensive validation, exact cached turn state and deferred copies are practical patterns; do not transfer Chess rates/constants/SEE or board-only TT scores. Xiangqi already uses native checkpoint transactions and pending/no-win/natural-count guards; preserve these before search shortcuts. Measure native transitions/query/quiescence work and TT position/context/depth eligibility separately. Dependency136 still awaits3OS acceptance; no Xiangqi implementation started.
+
+MSH-136 is Done. Corrected Chess source d9147713aa5ad5044a4e25a41d5142f6834a2685 passed actual Linux, macOS 15 and Windows native CI 42519269011 and independent final review. This task is dependency-ready, with Shogi first in the roadmap. Carry forward native subset queries, cached turn reuse and staged history-safe TT counters while preserving Xiangqi pending/no-win/natural-count guards; see docs/m5/chess-search-costs.md and its canonical verification record. No additional Chess match studies; routine local engine-match experiments retain the 15-minute cumulative task limit.
 <!-- SECTION:NOTES:END -->

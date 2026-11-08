@@ -1,10 +1,10 @@
 ---
 id: MSH-49
 title: Build and evaluate a mature conventional Chess engine
-status: Ready
+status: Done
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-08T18:45:00Z'
+updated_date: '2026-11-08T19:02:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -27,17 +27,17 @@ Build a mature conventional Chess engine through MSH-49.1 and establish the owne
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 A substantially complete conventional Chess search/evaluation/time-management engine is delivered through MSH-49.1, with independent correctness, native history/action/restoration, execution and platform evidence. Small baseline gains or completion of one optimization do not establish this milestone.
-- [ ] #2 MSH-49.2 records the explicitly owner-authorized diagnostic conditions:8–12 paired games against pinned unrestricted Stockfish19, equal1second thinking time,30minute total match-work cap, transparent resources and failure handling. The superseded weak-baseline and32-game formal protocols remain inactive.
-- [ ] #3 The initial conventional Chess diagnostic is executed under those conditions and reports actual results, search depths, practical performance limitations and representative loss mechanisms. No statistical significance, confidence interval, Elo/parity or numerical release-strength claim is inferred; incomplete/failed work stays explicit.
-- [ ] #4 The integrated independently reviewed report preserves historical evidence and exact sources/artifacts/receipts, establishes the practical conventional baseline and hands off to Shogi/Xiangqi. Deeper Chess strength analysis is deferred to learned-evaluation research; M5 and other game delivery remain unfinished.
+- [x] #2 MSH-49.2 records the explicitly owner-authorized diagnostic conditions:8–12 paired games against pinned unrestricted Stockfish19, equal1second thinking time,30minute total match-work cap, transparent resources and failure handling. The superseded weak-baseline and32-game formal protocols remain inactive.
+- [x] #3 The initial conventional Chess diagnostic is executed under those conditions and reports actual results, search depths, practical performance limitations and representative loss mechanisms. No statistical significance, confidence interval, Elo/parity or numerical release-strength claim is inferred; incomplete/failed work stays explicit.
+- [x] #4 The integrated independently reviewed report preserves historical evidence and exact sources/artifacts/receipts, establishes the practical conventional baseline and hands off to Shogi/Xiangqi. Deeper Chess strength analysis is deferred to learned-evaluation research; M5 and other game delivery remain unfinished.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -70,4 +70,14 @@ Owner-directed strategy reassessment complete; umbrella remains unfinished with 
 Conventional engineering checkpoint MSH49.1 nowDone withall6AC/4DoD supported andindependentfinalacceptance. Implementation eb4601d0fd33e790ac9905309fb011400aeafb5c, exactcorrectedfixture/testedsource b8cc85167f85eb031830d5f5268c1f94520f8a25 integrated codex/rewrite. RequirednativeCI42492362033 attempt1 passed Windows128767302041/Linux128767302175/macOS15128767302193 allsteps. Canonicalengineeringrecord docs/m5/evidence/msh49-1/verification.json anddocs/m5/chess-conventional.md; parentAC1 supported/checked only. Parent49 remainsReady/unfinished; AC2-4 andDoD notclaimed. MSH49.2 notbegun; next materialdecision isconcreteunrestricted/equal-thinking-time Stockfish protocol/interpretation andtotalstudybudget beforeformalexecution. No competitive-strength estimateorreleaseclaim fromcorrectness/profiles/49.6924s selfplay (native mate+unscoredplycap); oldhandicapped64/32study and4hourquestion remainstopped/superseded.
 
 Latest owner decision prospectively replaces the unapproved32game formal comparison with proportionate8–12game diagnostic at1s/30min, no significance/Elo. Updated current acceptance around actual conventional implementation +initialdiagnostic, without changing completed49.1. Practical gap versusfullSF is an honest useful outcome, not a reason to handicap/repeatbenchmark. Shogi/Xiangqi engineering follows; deeperChessanalysis returnsduringlearned research. Task49.2 executingboundeddiagnostic; parentremainsunfinished untilactualevidence/review/integration.
+
+Owner-rescoped initialconventionalChess checkpoint complete:49.1Done implementation+native3OSreview and49.2Done actual8game/1s/1800sdiagnostic. Actual0W0D8L allnativeSFmates; exact494.88940828992054s inclprior5.8404ssmoke, zero process/cleanupfailures;4rootreplay+4independentreplay passes. Finalindependentreview explicitlyapprovedparent49 all4AC/4DoD asowner-retargeted BEFOREgames. This establishesinitialpracticalbaseline, notcompetitiveparity/rating/numericreleasebar. Historicalweak-baseline/oldformalproposal artifacts remaininactive/preserved. Executionsourcecc2ec7c/build0b3b458/acceptednativeb8cc851, reportdocs/m5/chess-unrestricted-comparison.md andcanonicalrecorddocs/m5/evidence/msh49-2/verification.json. Finalnormal evidenceintegration/push follows. Handoff50Shogi/54Xiangqi conventionalengineering, deeperChessanalysisduring55; no repeatedsmallChessbenchmark orM5Doneclaim.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Delivered the owner-selected conventional Chess milestone through49.1 and49.2. The mature conventional search/classical evaluation/timed execution architecture passed independent correctness/integration review and required native3OS checks. The subsequent proportionate diagnostic against unrestricted Stockfish19 at equal1s produced0W/0D/8L, all native mates, within8min14.9s total match work. Exact source/artifact/control/history/replay/cleanup and useful depth/loss observations are preserved in docs/m5/evidence/msh49-2/verification.json and docs/m5/chess-unrestricted-comparison.md; independent final acceptance approved both child task and parent criteria.
+
+This closes the prospectively owner-rescoped initial conventional baseline, with no significance, confidence interval, Elo/parity or minimum-strength claim. Old weak-baseline study and unapproved32-game proposal remain historical. Execution sourcecc2ec7c, participant/runner build0b3b458, accepted native equivalenceb8cc851; final evidence-only integration is recorded by Git history/completion report. Proceed to conventional Shogi50 andXiangqi54; deeper Chess strength analysis belongs in learned evaluation55. All other-game/learned/M5 requirements remain unfinished.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -6,7 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-08T13:08:00Z'
+updated_date: '2026-11-08T18:49:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -47,3 +47,9 @@ Routine correctness/tactical tests and bounded profiling accompany coherent incr
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner refinement2026-11-08: deeper Chess strength analysis returns during learned-evaluation research, after initialconventionaldiagnostic49.2 andconventionaldevelopment acrossgames. Do not repeatedlybenchmark small Chess improvements beforeShogi/Xiangqi. Any later substantial training/strengthstudy stillneeds explicitmaterialresourceapproval; this note authorizes no training, compute or implementation in49.2.
+<!-- SECTION:NOTES:END -->

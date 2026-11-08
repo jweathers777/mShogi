@@ -1,10 +1,10 @@
 ---
 id: MSH-50
 title: Establish and meet measured shogi engine strength criteria
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-08T13:08:00Z'
+updated_date: '2026-11-08T19:02:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -44,3 +44,9 @@ Owner sequence2026-11-08: after the mature Chess milestone, adapt and develop es
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner follow-on2026-11-08: after initial Chess diagnostic49.2, prioritize conventional Shogi/Xiangqi development rather than repeated small Chess benchmarking. Adapt49.1 techniques to native tactics/history/outcomes; do not copy Chess constants or pruning assumptions. Routine algorithm/verification choices are autonomous, with meaningful correctness/tactical tests, profiling and15minutes cumulative routine matches/task unless explicitlyextended. Material release targets or substantial formal studies return toowner whenappropriate; they do not block ordinary conventional engineering. Preserve selectednativeprofiles andallfiveAC. No implementation ofthisfuturetask starts in49.2.
+<!-- SECTION:NOTES:END -->

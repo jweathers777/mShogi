@@ -1,0 +1,9 @@
+{
+  "production_source": "b005f80a21fc3d187f1ad8c22565dc4e7efe9062",
+  "overlay": "Observational TT counters and fixedwork diagnostic only; no algorithm change before baseline. Patch +example source preserved.",
+  "executable_sha256": "745953ea077d075ff261018504f1956f0f5299e380d12c92237f3d05ab149e94",
+  "example_sha256": "618069412c623a2d4c65badf566b9f1a9ba5cc82ba1321a3c859466c1f9fd988",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "command": "cargo build --release --locked -p mshogi-search --example chess_cost_profile",
+  "work": "4fixedpositions,depth8/20kvisits,no deadline;3timingrounds then4rounds for one3secondCPU sample; no matches"
+}

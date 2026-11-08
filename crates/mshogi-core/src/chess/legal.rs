@@ -70,6 +70,22 @@ impl Position {
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn legal_actions(&self) -> Vec<Action> {
+        self.legal_actions_matching(|_| true)
+    }
+
+    /// Every legal action ending on `target`, with the same checked native
+    /// resolution, order and counter-independent legality as `legal_actions`.
+    ///
+    /// Query consumers such as exchange estimation need one destination only.
+    /// Filter native candidates before their checked transitions, rather than
+    /// validating every unrelated destination and discarding it afterwards.
+    /// This includes quiet moves, EP and all promotion choices where applicable;
+    /// it is not a geometric attackers list or an unchecked transition path.
+    pub fn legal_actions_to(&self, target: Square) -> Vec<Action> {
+        self.legal_actions_matching(|action| action.to == target)
+    }
+
+    fn legal_actions_matching(&self, keep: impl Fn(&Action) -> bool) -> Vec<Action> {
         // Counters never affect rule legality; normalize them on a private
         // clone so that only representation overflow is excluded from `apply`.
         // Sound while resolution reads counters only for overflow and structure
@@ -80,6 +96,7 @@ impl Position {
         base.fullmove_number = 1;
         base.candidates()
             .into_iter()
+            .filter(keep)
             .filter(|&action| base.clone().apply(action).is_ok())
             .collect()
     }

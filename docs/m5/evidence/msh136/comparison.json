@@ -1,0 +1,30 @@
+[
+  {
+    "case": "standard",
+    "before_ms": 444.84299999999996,
+    "after_ms": 379.76091699999995,
+    "speedup": 1.1713764636817539,
+    "same_result_pv_nodes_and_algorithm_counters": true
+  },
+  {
+    "case": "developed",
+    "before_ms": 844.62075,
+    "after_ms": 423.318834,
+    "speedup": 1.9952354635844056,
+    "same_result_pv_nodes_and_algorithm_counters": true
+  },
+  {
+    "case": "recapture",
+    "before_ms": 164.804792,
+    "after_ms": 164.794666,
+    "speedup": 1.0000614461635546,
+    "same_result_pv_nodes_and_algorithm_counters": true
+  },
+  {
+    "case": "endgame",
+    "before_ms": 94.098291,
+    "after_ms": 93.19870800000001,
+    "speedup": 1.0096523119183154,
+    "same_result_pv_nodes_and_algorithm_counters": true
+  }
+]

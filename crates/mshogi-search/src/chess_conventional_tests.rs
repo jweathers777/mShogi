@@ -564,3 +564,63 @@ fn board_hash_collision_never_admits_a_foreign_history_bound_or_claim() {
     assert!(matches!(v.pv.first(), Some(SearchChoice::Move(_))));
     assert_eq!(e.cursor.game(), Some(&imported));
 }
+
+#[test]
+fn destination_filtered_exchange_matches_previous_full_query_on_native_special_tactics() {
+    // Reference retains the prior full-list/filter implementation. Hand-solved
+    // SEE cases above and the native target-query fixtures supply independent
+    // expectations; this additionally checks unchanged selection/tie ordering.
+    fn previous(p: &Position, a: Action, left: u8) -> i32 {
+        let immediate = gain(p, a);
+        if left == 0 {
+            return immediate;
+        }
+        let mut after = p.clone();
+        if after.apply(a).is_err() {
+            return 0;
+        }
+        let reply = after
+            .legal_actions()
+            .into_iter()
+            .filter(|r| r.to == a.to)
+            .min_by_key(|r| {
+                (
+                    after.piece_at(r.from).map_or(0, |p| {
+                        if p.kind == PieceKind::King {
+                            20_000
+                        } else {
+                            piece_value(p.kind)
+                        }
+                    }),
+                    lexical(*r),
+                )
+            });
+        immediate - reply.map_or(0, |r| previous(&after, r, left - 1).max(0))
+    }
+    for fen in [
+        "r1bq1rk1/ppp2ppp/2np1n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQ1RK1 w - - 0 1",
+        "4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 9",
+        "1r5k/2P5/8/8/8/8/8/K7 w - - 0 1",
+        "4r2k/8/8/8/8/8/4Rp2/4K3 w - - 0 1",
+    ] {
+        let p = Position::from_fen(fen).unwrap();
+        let before = p.clone();
+        let mut stop = || false;
+        let mut work = Work {
+            nodes: 0,
+            limit: None,
+            start: Instant::now(),
+            time: None,
+            stop: &mut stop,
+            seldepth: 0,
+        };
+        for a in p.legal_actions() {
+            assert_eq!(
+                exchange(&p, a, 16, &mut work).ok(),
+                Some(previous(&p, a, 16)),
+                "{fen}: {a}"
+            );
+        }
+        assert_eq!(p, before);
+    }
+}

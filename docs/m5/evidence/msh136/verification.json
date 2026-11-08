@@ -1,0 +1,322 @@
+{
+  "schema": 1,
+  "task": "MSH-136",
+  "status": "in_review_localchecks_passed_source_ci_pending",
+  "starting_revision": "b005f80a21fc3d187f1ad8c22565dc4e7efe9062",
+  "tested_source": null,
+  "integration_revision": null,
+  "owner_scope": "Bounded engineering performance checkpoint before50Shogi/54Xiangqi; no additionalChessmatches orstrength/statisticalprogram, no speculativeoptimization. Escalateonlymajorarchitecturaltradeoff.",
+  "environment": {
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "hardware": "Apple M1 Pro/10logicalCPUs/32GiB, shared/unpinned local host",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "build": "ordinaryCargo release,locked; no customRUSTFLAGS"
+  },
+  "workload": {
+    "example": "crates/mshogi-search/examples/chess_cost_profile.rs",
+    "positions": [
+      "standard",
+      "developed",
+      "recapture",
+      "endgame"
+    ],
+    "bounds": "depth8/20000visits,no clock; inputGame unchanged andPV nativelyreplayed eachquery",
+    "timing": "3rounds x4positions before andafter; descriptive medians only, no statisticalconfidence/strengthinfererence",
+    "sampling": "One successful3s CPU sample before andafter,4producer rounds each. One initial sandbox-deniedsampleattempt andits4producerrounds preserved; retryoutside toolsandbox succeeded withoutsudo/settingchange. No more profiling planned.",
+    "total_native_profile_queries": 72,
+    "total_recorded_query_seconds": 27.432418878000007,
+    "limitations": "Short mixed-position stack samples, optimized inlining and differing within-window positionmix; afterCPUproducer overlappedworkspace checks. Walltimingcomparison wasseparatebeforebroadchecks. CPU percentages are sampled weights, notexacttimings orcausalablation."
+  },
+  "matches": {
+    "count": 0,
+    "seconds": 0,
+    "no_external_engine": "No Stockfish/opponent orotherengine matches in136;49.2 remainsaccepted unchanged."
+  },
+  "baseline_provenance": {
+    "source": "b005f80 plus preservedobservational TTcounterpatch anddiagnosticexample, no searchpolicychange",
+    "manifest": "baseline-manifest.json",
+    "original_example": "baseline-example.rs.gz",
+    "formatting_proof": "formatting-proof.json",
+    "explanation": "Manifest SHA618069... corresponds to originalunformattedexample. Exactoriginalbytes preserved fromrecordedtoolinput andhash-verified. rustfmt edition2024 body is byte-identical current950f97... source. No resultorprofilingrerun required forformatting."
+  },
+  "performance": [
+    {
+      "case": "standard",
+      "before_ms": 444.84299999999996,
+      "after_ms": 379.76091699999995,
+      "speedup": 1.1713764636817539,
+      "same_result_pv_nodes_and_algorithm_counters": true
+    },
+    {
+      "case": "developed",
+      "before_ms": 844.62075,
+      "after_ms": 423.318834,
+      "speedup": 1.9952354635844056,
+      "same_result_pv_nodes_and_algorithm_counters": true
+    },
+    {
+      "case": "recapture",
+      "before_ms": 164.804792,
+      "after_ms": 164.794666,
+      "speedup": 1.0000614461635546,
+      "same_result_pv_nodes_and_algorithm_counters": true
+    },
+    {
+      "case": "endgame",
+      "before_ms": 94.098291,
+      "after_ms": 93.19870800000001,
+      "speedup": 1.0096523119183154,
+      "same_result_pv_nodes_and_algorithm_counters": true
+    }
+  ],
+  "same_work_equivalence": "All12pairedrows identical in everyfield exceptelapsed_ms: results/PV/score/depth/selective depth/node/SEE/TT counters. Native query/SEE correctness tests retainindependent expected cases aswellascomparativechecks.",
+  "cpu_before": {
+    "sampled_stack_weight": 2375,
+    "buckets": {
+      "native_queries": {
+        "weight": 935,
+        "percent": 39.36842105263158
+      },
+      "quiescence_inclusive": {
+        "weight": 1360,
+        "percent": 57.26315789473684
+      },
+      "other": {
+        "weight": 56,
+        "percent": 2.357894736842105
+      },
+      "exchange": {
+        "weight": 955,
+        "percent": 40.21052631578947
+      },
+      "native_transition_undo": {
+        "weight": 371,
+        "percent": 15.621052631578948
+      },
+      "evaluation": {
+        "weight": 58,
+        "percent": 2.442105263157895
+      }
+    },
+    "notes": "First5buckets mutuallyexclusive by deepest broad purpose; quiescence inclusive overlaps. Short mixed-position sample; inlining/partial coverage prevents exact per-operation timings."
+  },
+  "cpu_after": {
+    "sampled_stack_weight": 2343,
+    "buckets": {
+      "native_queries": {
+        "weight": 1478,
+        "percent": 63.08151941954759
+      },
+      "other": {
+        "weight": 105,
+        "percent": 4.481434058898848
+      },
+      "quiescence_inclusive": {
+        "weight": 952,
+        "percent": 40.63166880068289
+      },
+      "native_transition_undo": {
+        "weight": 502,
+        "percent": 21.425522833973538
+      },
+      "evaluation": {
+        "weight": 101,
+        "percent": 4.310712761416987
+      },
+      "exchange": {
+        "weight": 157,
+        "percent": 6.700810926163038
+      }
+    },
+    "notes": "First5buckets mutuallyexclusive by deepest broad purpose; quiescence inclusive overlaps. Short mixed-position sample; inlining/partial coverage prevents exact per-operation timings."
+  },
+  "corrections": [
+    "Native legal_actions_to filters existingnativecandidates before identical normalizedcheckedapply; SEE keepssameleastlegalattacker selection/tie behavior withoutvalidating unrelateddestinations.",
+    "Borrow occupiedTT entries; clonePV onlyfor eligiblecutoff. Deferdynamicstatic evaluation/actionlistcopy untilafterTTcutoff, retainingnativeoutcome/claim checks first.",
+    "Quiescence defers actionlistcopy untilafterstandpat checks; fullnativequery remainsauthoritative andcached. Searchheuristics, budgets, identifiers andnative schemas unchanged."
+  ],
+  "tt_analysis": {
+    "index": "Completepositionhash inclrawEP/castling/counters; hints require matchinghash andnativelegalordering",
+    "bound_identity": "Exactroot+fullactionprefix equality, matchingextensions+depth; no board-onlyboundreuse orreplacement-policychange",
+    "denominator": "RealmainTTprobes, notallnodes (qhasnoTTlookup)",
+    "cases": [
+      {
+        "case": "standard",
+        "main_nodes": 7246,
+        "q_nodes": 12754,
+        "see_probes": 7338,
+        "tt_probes": 7234,
+        "tt_position_hits": 1375,
+        "tt_context_hits": 1083,
+        "tt_depth_hits": 514,
+        "tt_cutoffs": 409,
+        "tt_stores": 6819
+      },
+      {
+        "case": "developed",
+        "main_nodes": 1368,
+        "q_nodes": 18632,
+        "see_probes": 35798,
+        "tt_probes": 1367,
+        "tt_position_hits": 460,
+        "tt_context_hits": 441,
+        "tt_depth_hits": 287,
+        "tt_cutoffs": 260,
+        "tt_stores": 1103
+      },
+      {
+        "case": "recapture",
+        "main_nodes": 5922,
+        "q_nodes": 14078,
+        "see_probes": 1676,
+        "tt_probes": 5900,
+        "tt_position_hits": 4106,
+        "tt_context_hits": 642,
+        "tt_depth_hits": 0,
+        "tt_cutoffs": 0,
+        "tt_stores": 5893
+      },
+      {
+        "case": "endgame",
+        "main_nodes": 4126,
+        "q_nodes": 15874,
+        "see_probes": 438,
+        "tt_probes": 4126,
+        "tt_position_hits": 1984,
+        "tt_context_hits": 462,
+        "tt_depth_hits": 62,
+        "tt_cutoffs": 32,
+        "tt_stores": 4088
+      }
+    ],
+    "interpretation": "Usefuldepth-compatible cutoffs exist; manypositionmatches are history/depthineligible bydesign. Recapture0cutoffs isnot a proof TTbroken. Broaderhistoryequivalence/replacement orqTTwork isdeferred; no requiredownertradeoffforcurrentredundant-workcorrection."
+  },
+  "local_checks": [
+    {
+      "command": "cargo test --locked -p mshogi-core --test chess_target_queries",
+      "outcome": "3passed; exactCounterOverflow tightenedafterreview, finalworkspace rechecks."
+    },
+    {
+      "command": "cargo test --locked -p mshogi-search chess_conventional --lib",
+      "outcome": "19passed/1intentionalignored; newSEEequivalence plus existing independentoracles/claims/history/undo/cancel/null tests."
+    },
+    {
+      "command": "cargo test --workspace --locked",
+      "outcome": "passed",
+      "passed": 1138,
+      "failed": 0,
+      "ignored": 11,
+      "groups": 102
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "outcome": "passed"
+    }
+  ],
+  "independent_review": {
+    "reviewer": "msh136_review, read-only",
+    "status": "Narrow source/focusedcomparison/report/provenance approved, no unresolvedfindings; actual correctedsource3OS receipts/finalacceptance pending.",
+    "resolved_findings": [
+      "ExactCounterOverflow assertion instead of anyerror.",
+      "Baselineexample originalSHA/formattingdelta reconciled with exactoriginalbytes/proof.",
+      "All3sampledproducerJSONLs preservedcompressed/hashes fordurable72query27.43s accounting.",
+      "Property coverage accurately statesup to40nativewalkpositions (maystop early atnoactions)."
+    ],
+    "notes": "PreservefullhistoryTTbound identity; pergamepartialnativequeries andeligibility-stagecounters aretransferable, no majorownertradeoff required."
+  },
+  "historical_failures": [
+    "DefaulttoolsandboxblockedBacklogcreate.gitlock; supportedCLI rerunwithroutineescalation created136.",
+    "FirstCPU sampledeniedbytoolsandbox; oneunsandboxedownprocesssample succeeded withoutsudo/securitychange.",
+    "Newtestcompileerrors Square lacksFromStr/Halt lacksDebug fixed usingexplicitnativeSquare coordinates andSome(reference) comparison; no semanticexpectationweakened."
+  ],
+  "ci": {
+    "required": [
+      "Rust(ubuntu-24.04)",
+      "Rust(macos-15)",
+      "Rust(windows-2022)"
+    ],
+    "status": "not_started",
+    "scope": "Nativecore/query+search change; noIPC/tag/UI/documentschema change. FullnativeCIrequired, affectedconsumerpreflight foundnoexplicitSearchStats construction. Existingfrontend/packaged GUIevidence reused; no broadGUIcampaign."
+  },
+  "artifacts": [
+    {
+      "path": "docs/m5/evidence/msh136/baseline-example.rs.gz",
+      "sha256_uncompressed": "618069412c623a2d4c65badf566b9f1a9ba5cc82ba1321a3c859466c1f9fd988"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/baseline-diagnostic-source.patch.gz",
+      "sha256_uncompressed": "74e6a87be1cd81becdcd8f9906cbd0d6cb6bbc11b7063c1807da2cce228e04ed"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/baseline-cpu.txt.gz",
+      "sha256_uncompressed": "f693562f50499c2cd718ba97d8a36c2571e3a49c093e15e3d80ea9cbe900e362"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/after-cpu.txt.gz",
+      "sha256_uncompressed": "0ee923d20d3338a1de098148ee70b7397d51f6f89007c01e26b17b8b484de935"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/summarize_sample.py.gz",
+      "sha256_uncompressed": "f83f9216f7009819de7396502ee0d28564a3a463906a829f5c95c89537430307"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/sample.log.gz",
+      "sha256_uncompressed": "0a5be148523255f1bd136a19e4609bc68ddfb4e33a539faa83c3a7e2be391a01"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/sample-unsandboxed.log.gz",
+      "sha256_uncompressed": "56f2e08fa862c9157040191b0749e5e20331d041050c28b3203a8b0936716bd0"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/after-sample.log.gz",
+      "sha256_uncompressed": "d86734bb0b1e2dd51d840c2a4a805af176dfc3b719b3090fce37f112a92963c2"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/native-focused.log.gz",
+      "sha256_uncompressed": "e8eb38348e2f821a2c16683dd42b21c66ed523dc7505623a940b6804d475259d"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/search-focused-final.log.gz",
+      "sha256_uncompressed": "92bb57470d4aa5232ffa529395d8f72e335e39cf3f4332e6366387e5f36246ca"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/baseline-build.log.gz",
+      "sha256_uncompressed": "8471e7244d9649c1b268a748e0c927e6c932b7b1c4abc374dc2f2f71035d842a"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/after-build.log.gz",
+      "sha256_uncompressed": "cbb2ce40a559a99b05e1ce4d445ff14ed89466102080e16d6e3b9ade72b4c7a2"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/baseline-sampled.jsonl.gz",
+      "sha256_uncompressed": "d7ffe938a2c1e4e1d0409ea9e27753b6166b8b803fa689385d8832a5d1e8dbf8",
+      "purpose": "Producer receipts for bounded CPU sampling, including denied initialsample; not timingcomparison data"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/baseline-sampled-unsandboxed.jsonl.gz",
+      "sha256_uncompressed": "bbbd3208b38355b49d69e566f23663e525ef94456cec29907cb60e033fd8b2cc",
+      "purpose": "Producer receipts for bounded CPU sampling, including denied initialsample; not timingcomparison data"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/after-sampled.jsonl.gz",
+      "sha256_uncompressed": "a86e07a14dd12a78f65236b33e06b2b0b5f1571cfda5afc15b3bb524e911f13e",
+      "purpose": "Producer receipts for bounded CPU sampling, including denied initialsample; not timingcomparison data"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/workspace-tests.log.gz",
+      "sha256_uncompressed": "7a8991fb9ebd36fd99d8fdfab9331a73337226fe1ca87c7e1ef03b889d8f028d"
+    },
+    {
+      "path": "docs/m5/evidence/msh136/workspace-clippy.log.gz",
+      "sha256_uncompressed": "c2d016b412c8d5dfc157ae757f4a31a723bd8ace8050c5e1be37ba2f01c5265d"
+    }
+  ],
+  "acceptance": {
+    "1": "Implemented/focusedreview supported; finalnative3OS/report/sourceacceptance pending",
+    "2": "Implemented/focusedreview supported; finalnative3OS/report/sourceacceptance pending",
+    "3": "Implemented/focusedreview supported; finalnative3OS/report/sourceacceptance pending",
+    "4": "Implemented/focusedreview supported; finalnative3OS/report/sourceacceptance pending"
+  },
+  "next": "Normallycommit/push coherentsource, record actualrevision andrequired3OSCI, onecompletionawaremonitor. Sourcechangesstop; no moreprofiling/matches. Finalreceipt/ACreview thenintegrate136 andcontinue50/54roadmap.",
+  "after_profile_executable_sha256": "941acdc3ebb68780a183cd539b05143a96f3eb9a86280f0eccdf30de9e643cd0"
+}

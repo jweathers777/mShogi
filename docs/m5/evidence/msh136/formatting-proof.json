@@ -1,0 +1,5 @@
+{
+  "baseline_example_sha256": "618069412c623a2d4c65badf566b9f1a9ba5cc82ba1321a3c859466c1f9fd988",
+  "current_formatted_example_sha256": "950f974732d19de0d0f5e1a43fb4fa723231297f200334f53a51b92d8742b0ee",
+  "proof": "Exact original baseline bytes recovered from original recorded tool input match baseline manifest SHA. rustfmt edition2024 (excluding stdout filename banner) produces byte-identical current checked-in example. No semantic source change or timing rerun."
+}

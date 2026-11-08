@@ -82,6 +82,14 @@ pub struct SearchStats {
     pub q_nodes: u64,
     /// Exact-context transposition hits.
     pub tt_hits: u64,
+    /// Real main-node table lookups, including empty slots.
+    pub tt_probes: u64,
+    /// Occupied lookups whose complete position hash matches (hint eligibility).
+    pub tt_position_hits: u64,
+    /// Lookups with exact full-history equality, before depth/extension checks.
+    pub tt_context_hits: u64,
+    /// Completed real-node entries stored, including replacements.
+    pub tt_stores: u64,
     /// Bound cutoffs using an exact full-history key.
     pub tt_cutoffs: u64,
     /// Aspiration-window widening/re-searches.
@@ -411,22 +419,18 @@ fn exchange(position: &Position, a: Action, left: u8, work: &mut Work<'_>) -> Re
     if after.apply(a).is_err() {
         return Ok(0);
     } // Actual search push reports representation errors.
-    let reply = after
-        .legal_actions()
-        .into_iter()
-        .filter(|r| r.to == a.to)
-        .min_by_key(|r| {
-            (
-                after.piece_at(r.from).map_or(0, |p| {
-                    if p.kind == PieceKind::King {
-                        20_000
-                    } else {
-                        piece_value(p.kind)
-                    }
-                }),
-                lexical(*r),
-            )
-        });
+    let reply = after.legal_actions_to(a.to).into_iter().min_by_key(|r| {
+        (
+            after.piece_at(r.from).map_or(0, |p| {
+                if p.kind == PieceKind::King {
+                    20_000
+                } else {
+                    piece_value(p.kind)
+                }
+            }),
+            lexical(*r),
+        )
+    });
     Ok(immediate
         - if let Some(reply) = reply {
             exchange(&after, reply, left - 1, work)?.max(0)
@@ -653,8 +657,8 @@ impl Engine<'_> {
                 pv: vec![choice],
             });
         }
-        let static_score = self.evaluate();
         if depth <= 0 || ply >= MAX_PLY {
+            let static_score = self.evaluate();
             return Ok(if let Some((c, _)) = claim.filter(|_| static_score <= 0) {
                 Value {
                     score: 0,
@@ -664,16 +668,17 @@ impl Engine<'_> {
                 Value::leaf(static_score)
             });
         }
-        let node = self.cursor.node().clone();
+        let node = self.cursor.node();
         let in_check = matches!(
             node.classification,
             Classification::Check | Classification::Checkmate
         );
+        let synthetic = node.synthetic;
         if self.mode == SearchMode::Conventional
             && in_check
             && ply > 0
             && extensions > 0
-            && !node.synthetic
+            && !synthetic
         {
             depth += 1;
             extensions -= 1;
@@ -682,11 +687,15 @@ impl Engine<'_> {
         let original_alpha = alpha;
         let key = self.cursor.key();
         let hash = self.cursor.position_hash();
-        let entry = if node.synthetic {
+        let entry = if synthetic {
             None
         } else {
-            self.table_index(hash).and_then(|i| self.table[i].clone())
+            self.stats.tt_probes += u64::from(!self.table.is_empty());
+            self.table_index(hash).and_then(|i| self.table[i].as_ref())
         };
+        let same_context = entry.as_ref().is_some_and(|e| Some(&e.key) == key.as_ref());
+        self.stats.tt_position_hits += u64::from(entry.as_ref().is_some_and(|e| e.hash == hash));
+        self.stats.tt_context_hits += u64::from(same_context);
         let hint = entry
             .as_ref()
             .filter(|e| e.hash == hash)
@@ -696,7 +705,7 @@ impl Engine<'_> {
                 _ => None,
             });
         if let Some(e) = entry.filter(|e| {
-            Some(&e.key) == key.as_ref()
+            same_context
                 && e.extensions == extensions
                 && (e.depth == depth || self.mode == SearchMode::Conventional && e.depth >= depth)
         }) {
@@ -709,17 +718,20 @@ impl Engine<'_> {
                 self.stats.tt_cutoffs += 1;
                 return Ok(Value {
                     score,
-                    pv: e.value.pv,
+                    pv: e.value.pv.clone(),
                 });
             }
         }
+        // Native outcome/claim admission stays before TT reuse. Dynamic static
+        // evaluation and action copies are unnecessary for a reusable cutoff.
+        let static_score = self.evaluate();
         if self.mode == SearchMode::Conventional
             && allow_null
             && !pv
             && ply > 0
             && depth >= 4
             && !in_check
-            && !node.synthetic
+            && !synthetic
             && claim.is_none()
             && static_score >= beta
             && matches!(self.cursor.adjudication_mode(), AdjudicationMode::M2)
@@ -759,7 +771,8 @@ impl Engine<'_> {
                 return Ok(value.clone());
             }
         }
-        let moves = self.ordered(node.actions, hint, ply, previous)?;
+        let actions = self.cursor.node().actions.clone();
+        let moves = self.ordered(actions, hint, ply, previous)?;
         let mut searched = 0;
         let mut quiet_seen = 0;
         for (index, m) in moves.into_iter().enumerate() {
@@ -897,6 +910,7 @@ impl Engine<'_> {
         }
         let best = best.expect("native nonterminal legal actions");
         if let (Some(key), Some(index)) = (key, self.table_index(hash)) {
+            self.stats.tt_stores += 1;
             let bound = if best.score <= original_alpha {
                 Bound::Upper
             } else if best.score >= beta {
@@ -937,9 +951,8 @@ impl Engine<'_> {
                 pv: vec![c],
             });
         }
-        let node = self.cursor.node().clone();
         let in_check = matches!(
-            node.classification,
+            self.cursor.node().classification,
             Classification::Check | Classification::Checkmate
         );
         let score = self.evaluate();
@@ -961,8 +974,12 @@ impl Engine<'_> {
                 return Ok(best.unwrap());
             }
         }
-        let actions = node
+        // Stand-pat cutoffs do not need an owned copy of every native action.
+        let actions = self
+            .cursor
+            .node()
             .actions
+            .clone()
             .into_iter()
             .filter(|a| in_check || gain(self.cursor.position(), *a) > 0 || a.promotion.is_some())
             .collect();

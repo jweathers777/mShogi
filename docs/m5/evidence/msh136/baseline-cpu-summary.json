@@ -1,0 +1,30 @@
+{
+  "sampled_stack_weight": 2375,
+  "buckets": {
+    "native_queries": {
+      "weight": 935,
+      "percent": 39.36842105263158
+    },
+    "quiescence_inclusive": {
+      "weight": 1360,
+      "percent": 57.26315789473684
+    },
+    "other": {
+      "weight": 56,
+      "percent": 2.357894736842105
+    },
+    "exchange": {
+      "weight": 955,
+      "percent": 40.21052631578947
+    },
+    "native_transition_undo": {
+      "weight": 371,
+      "percent": 15.621052631578948
+    },
+    "evaluation": {
+      "weight": 58,
+      "percent": 2.442105263157895
+    }
+  },
+  "notes": "First5buckets mutuallyexclusive by deepest broad purpose; quiescence inclusive overlaps. Short mixed-position sample; inlining/partial coverage prevents exact per-operation timings."
+}

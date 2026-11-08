@@ -40,6 +40,7 @@ fn request(id: u64, game: &xq::Game) -> ExecutionRequest {
             game: CanonicalRecord::xiangqi(xq::GameRecord::from_game(game).unwrap()),
             // Measured native Xiangqi ordinary-search limits.
             limits: WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 128,
             },
@@ -68,6 +69,7 @@ fn chess_request(id: u64) -> ExecutionRequest {
                 chess::AdjudicatedGame::new(chess::ClaimPolicy::ExplicitOnly).record(),
             ),
             limits: WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 1000,
             },
@@ -416,6 +418,7 @@ fn real_child_cancellation_and_cross_game_replacement_retire_search_work() {
     assert!(wait(&bridge).matches(&warm));
     let mut old = request(41, &game);
     old.context.limits = WorkLimits {
+        time_ms: None,
         depth: mshogi_search::xiangqi::MAX_DEPTH,
         nodes: mshogi_search::xiangqi::MAX_NODES,
     };
@@ -435,6 +438,7 @@ fn real_child_cancellation_and_cross_game_replacement_retire_search_work() {
     // Replace actual Chess work with native Xiangqi analysis; target remains exact.
     let mut retired = chess_request(43);
     retired.context.limits = WorkLimits {
+        time_ms: None,
         depth: 6,
         nodes: u64::MAX,
     };

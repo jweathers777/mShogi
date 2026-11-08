@@ -516,8 +516,9 @@
   "event_index": 1,
   "board_ply": 0,
   "play_limits": {
-    "depth": 2,
-    "nodes": 20000
+    "depth": 128,
+    "nodes": 20000,
+    "time_ms": 1000
   },
   "historical": false,
   "paused": true,
@@ -576,7 +577,8 @@
           "telemetry": {
             "score": 999999,
             "completed_depth": 1,
-            "nodes": 24,
+            "selective_depth": 2,
+            "nodes": 29,
             "principal_variation": [
               {
                 "kind": "move",
@@ -634,7 +636,8 @@
             "telemetry": {
               "score": 999999,
               "completed_depth": 1,
-              "nodes": 24,
+              "selective_depth": 2,
+              "nodes": 29,
               "principal_variation": [
                 {
                   "kind": "move",
@@ -660,7 +663,8 @@
       "engine": "mShogi",
       "score": "mate in 1 plies",
       "completed_depth": 1,
-      "nodes": 24,
+      "selective_depth": 2,
+      "nodes": 29,
       "variation": [
         "g6g7"
       ],
@@ -730,7 +734,8 @@
         "telemetry": {
           "score": 999999,
           "completed_depth": 1,
-          "nodes": 24,
+          "selective_depth": 2,
+          "nodes": 29,
           "principal_variation": [
             {
               "kind": "move",

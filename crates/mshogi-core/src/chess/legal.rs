@@ -102,7 +102,11 @@ impl Position {
     /// although complete chess rules would end that game. Counter values never
     /// change the result.
     pub fn classify(&self) -> Classification {
-        match (self.in_check(), !self.legal_actions().is_empty()) {
+        self.classify_with_actions(&self.legal_actions())
+    }
+
+    pub(super) fn classify_with_actions(&self, actions: &[Action]) -> Classification {
+        match (self.in_check(), !actions.is_empty()) {
             (false, true) => Classification::Quiet,
             (true, true) => Classification::Check,
             (true, false) => Classification::Checkmate,

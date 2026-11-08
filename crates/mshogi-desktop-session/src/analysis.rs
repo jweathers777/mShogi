@@ -113,7 +113,11 @@ impl DesktopSession {
                 ExecutionPurpose::MoveAnalysis {
                     target: target.clone(),
                 },
-                WorkLimits { depth, nodes },
+                WorkLimits {
+                    time_ms: None,
+                    depth,
+                    nodes,
+                },
             ),
             AnalysisOperation::FullReachability {
                 target: mate,
@@ -285,6 +289,9 @@ impl DesktopSession {
         }
         self.retire_analysis();
         self.pending = None;
+        if self.play_limits == PRIOR_PLAY_LIMITS {
+            self.play_limits = PLAY_LIMITS;
+        }
         self.play_paused = false;
         self.engine.status = EnginePhase::Idle;
         self.engine.message = None;
@@ -304,6 +311,7 @@ mod tests {
             ChessResult::Move {
                 action,
                 telemetry: Telemetry {
+                    selective_depth: None,
                     score: Some(0),
                     completed_depth: 1,
                     nodes: 21,
@@ -571,6 +579,7 @@ mod tests {
             ChessResult::Claim {
                 claim,
                 telemetry: Telemetry {
+                    selective_depth: None,
                     score: Some(0),
                     completed_depth: 1,
                     nodes: 1,

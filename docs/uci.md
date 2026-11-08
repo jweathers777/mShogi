@@ -34,13 +34,32 @@ UCI has no standard draw-claim command or intended-move claim channel. If core s
 
 A search stopped before its first completed iteration also returns the first legal move, with an explicit stderr diagnostic and `info depth 0` without a fabricated score. Rules representation/search failures terminate the engine with a nonzero exit and an explicit stderr diagnostic. They emit neither bestmove nor fabricated info/statistics for that request. Infinite mode also reports accepted search failures immediately, without waiting for stop; only successful completions can be held. A controller must record the failed process/search as an engine failure, not a chess result. For an already concluded root no fallback is played and bestmove is `0000`.
 
-For clock allocation, choose the moving side's remaining time `R` and increment `I` (missing increment means zero). With positive `movestogo G`, or default `G=30`, spend at most `min(R/G + I, R - min(R/20, 50ms))`, using integer milliseconds and saturating arithmetic. If own-side time is missing, an apparent clock-only request is rejected; it cannot silently become infinite. With an explicit depth/node limit (or explicit infinite), missing own-side time imposes no additional clock limit. `movetime` overrides clock allocation. A zero time budget imposes zero search nodes. Depth/node/time combinations stop at their earliest selected limit; `infinite` plus a wall-clock budget is rejected as conflicting. A `go` with no effective limit behaves like infinite and awaits stop. Search can complete early at its selected work limit or terminal position; a timed request does not delay an already completed finite result to consume the entire allocation.
+For clock allocation, choose the moving side's remaining time `R` and increment
+`I` (missing increment means zero). With positive `movestogo G`, or default
+`G=30`, reserve `min(R/20,50ms)` and set the nominal soft allocation to
+`min(R/G + I, spendable)`. The hard allocation is
+`min(3*soft, spendable)`, using integer milliseconds and saturating arithmetic.
+The native engine can stop at an iteration boundary after its soft allocation;
+the hard bound interrupts further node/ordering work. `movetime` overrides clock
+allocation with the requested hard interval and a conservative70% soft interval.
+If own-side time is missing, a clock-only request is rejected; an explicit
+depth/node limit (or infinite) remains independently meaningful. Zero time
+imposes zero search nodes. Depth/node/time combinations stop at their earliest
+selected limit; infinite plus a wall-clock budget rejects as conflicting. A
+request with no effective limit behaves like infinite and awaits stop. A timed
+request never delays an already completed finite result merely to consume time.
 
-Clock stopping is cooperative. The event loop checks deadlines at each command and at a 2ms idle tick, then the worker acknowledges at its next node boundary/unwind. OS scheduling, one node's rules work, and pipe I/O can add latency. This is basic time management, not a hard real-time deadline guarantee. Actual match clocks/adjudication live in the rules match layer, not the protocol parser. Timed runs preserve their settings and observed timing; identical reruns are not promised. Deterministic depth/node runs preserve engine/evaluator identity, game context and work limits as described in [search.md](search.md).
+Clock stopping is cooperative. The native conventional search owns soft/hard
+time checks; the event loop additionally checks the hard deadline at commands
+and a2ms idle tick. OS scheduling, one native operation and pipe I/O can add
+latency; this is not hard realtime. Actual match clocks/adjudication remain in
+the native match layer. Timed runs preserve configured allocations and observed
+timing without promising identical reruns. Deterministic depth/node work retains
+its source/evaluator/context identity as described in [search.md](search.md).
 
 ## Channels and bounds
 
-Protocol stdout contains only `id`, `option`, `uciok`, `readyok`, one final bounded `info` line per completed search, and `bestmove`. Every message is newline terminated and flushed. Scores use UCI centipawns or mate distances in moves; a mate-distance search score is converted from plies. The final info preserves actual completed depth, attempted nodes, elapsed milliseconds and the board-action portion of the variation. Diagnostic errors and fallback explanations go to stderr. No human shell prompts, command echoes or rules dumps enter stdout.
+Protocol stdout contains only `id`, `option`, `uciok`, `readyok`, one final bounded `info` line per completed search, and `bestmove`. Every message is newline terminated and flushed. Scores use UCI centipawns or mate distances in moves; a mate-distance search score is converted from plies. Final info preserves nominal completed `depth`, actual deepest attempted `seldepth`, attempted nodes, elapsed milliseconds and the board-action PV. Extensions and quiescence can make the PV longer than nominal depth, within the128-ply native bound. Diagnostic errors and fallback explanations go to stderr. No human shell prompts, command echoes or rules dumps enter stdout.
 
 One input-reader thread feeds a `sync_channel(32)`; lines are limited to 4096 bytes, and oversized lines are drained without retaining their remainder. Non-ASCII/control-byte input is rejected and the next line remains usable. One search worker has one pending and one result slot, with no progress stream. The event loop processes commands while thinking and owns all protocol output. A normal final variation contains at most 128 actions, bounding each final info line. As with any pipe protocol, the controller must drain stdout/stderr; a blocked OS pipe can block its writer. Quit/EOF do not wait for the stdin reader or search thread to join.
 

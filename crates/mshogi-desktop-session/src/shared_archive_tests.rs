@@ -571,6 +571,7 @@ fn concurrent_save_as_keeps_new_admission_dirty_and_open_retires_it() {
     let settings = ShogiSettings {
         orientation: s::Side::Gote,
         analysis_defaults: WorkLimits {
+            time_ms: None,
             depth: 2,
             nodes: 12,
         },
@@ -652,6 +653,7 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     let settings = ShogiSettings {
         orientation: s::Side::Gote,
         analysis_defaults: WorkLimits {
+            time_ms: None,
             depth: 3,
             nodes: 77,
         },
@@ -674,7 +676,11 @@ fn persisted_preferences_keep_exact_pending_execution_and_original_limits() {
     assert_eq!(state.settings, settings);
     assert_eq!(
         state.observations[0].observation.context.limits,
-        WorkLimits { depth: 1, nodes: 0 }
+        WorkLimits {
+            time_ms: None,
+            depth: 1,
+            nodes: 0
+        }
     );
     assert!(state.observations[0].historical);
     fs::remove_file(file).unwrap();

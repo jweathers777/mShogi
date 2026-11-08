@@ -19,6 +19,7 @@ fn request(id: u64) -> ExecutionRequest {
             process_generation: id,
             game: CanonicalRecord::chess(AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record()),
             limits: WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 1000,
             },
@@ -77,14 +78,16 @@ fn real_bundled_entrypoint_echoes_context_and_plays_an_actual_legal_move() {
     };
     let game = AdjudicatedGame::replay_record(record).unwrap();
     assert!(game.position().legal_actions().contains(&action));
-    // Independently derived positional preference: Nb1-c3 increases its
-    // middle-game centrality contribution by44cp; lexical ties choose b1c3.
+    // Independently derived Nb1-c3 preference:44cp piece placement,
+    // 15cp safe knight mobility and2cp rook mobility, for61cp total.
+    // Lexical ties choose b1c3.
     // This also proves the actual supervised child uses the active candidate,
     // rather than accidentally retaining the material/full-width coordinator.
     assert_eq!(action.to_string(), "b1c3");
     assert_eq!(telemetry.completed_depth, 1);
-    assert_eq!(telemetry.nodes, 21);
-    assert_eq!(telemetry.score, Some(44));
+    // Root plus20 legal leaves are required; PVS may re-search improved moves.
+    assert!(telemetry.nodes >= 21 && telemetry.nodes <= context.context.limits.nodes);
+    assert_eq!(telemetry.score, Some(61));
     assert_eq!(
         telemetry.principal_variation,
         vec![EngineChoice::Move { action }]
@@ -105,6 +108,35 @@ fn real_entrypoint_preserves_incomplete_search_instead_of_fallback_move() {
     };
     assert_eq!(telemetry.score, None);
     assert_eq!(telemetry.nodes, 0);
+    stop(&bridge);
+}
+
+#[test]
+fn real_entrypoint_echoes_zero_thinking_budget_without_inventing_a_move() {
+    let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(15));
+    let mut context = request(12);
+    context.context.limits = WorkLimits {
+        depth: 128,
+        nodes: 20_000,
+        time_ms: Some(0),
+    };
+    bridge.submit(context.clone()).unwrap();
+    let response = wait(&bridge);
+    assert!(response.matches(&context));
+    let mut wrong_time = context;
+    wrong_time.context.limits.time_ms = Some(1);
+    assert!(!response.matches(&wrong_time));
+    let ExecutionResult::Chess {
+        result: ChessResult::Incomplete { telemetry },
+    } = response.observation.result
+    else {
+        panic!("zero thinking time fabricated work: {response:?}")
+    };
+    assert_eq!(telemetry.completed_depth, 0);
+    assert_eq!(telemetry.nodes, 0);
+    assert_eq!(telemetry.selective_depth, Some(0));
+    assert_eq!(telemetry.score, None);
+    assert!(telemetry.principal_variation.is_empty());
     stop(&bridge);
 }
 #[test]

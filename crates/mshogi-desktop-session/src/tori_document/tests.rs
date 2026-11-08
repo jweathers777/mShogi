@@ -135,7 +135,11 @@ fn observation(doc: &ValidatedToriDocument, n: u64) -> ExecutionObservation {
             session_version: n,
             process_generation: n,
             game,
-            limits: WorkLimits { depth: 1, nodes: 1 },
+            limits: WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 1,
+            },
         },
         ExecutionResult::Failure {
             failure: EngineFailure {
@@ -1266,6 +1270,7 @@ fn runtime_floor_width_reservation_survives_consumed_close_and_exact_byte_bounda
 fn actual_observation(doc: &ValidatedToriDocument, n: u64, analysis: bool) -> ExecutionObservation {
     let mut context = observation(doc, n).context;
     context.limits = WorkLimits {
+        time_ms: None,
         depth: 1,
         nodes: 1000,
     };

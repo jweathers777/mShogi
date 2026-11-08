@@ -116,7 +116,14 @@ impl Game {
     /// Automatic outcome of the current history snapshot, not proof that every
     /// past action was valid live play. AdjudicatedGame validates the live path.
     pub fn automatic_outcome(&self) -> Option<ChessOutcome> {
-        match self.position().classify() {
+        self.automatic_outcome_with_classification(self.position().classify())
+    }
+
+    fn automatic_outcome_with_classification(
+        &self,
+        classification: Classification,
+    ) -> Option<ChessOutcome> {
+        match classification {
             Classification::Checkmate => {
                 return Some(ChessOutcome::Checkmate {
                     winner: self.position().side_to_move().opponent(),
@@ -180,9 +187,18 @@ impl Game {
     /// All available claims in profile policy order: current threefold/fifty,
     /// then intended threefold/fifty, with actions sorted by square and q/r/b/n.
     pub fn available_claims(&self) -> Vec<ClaimRequest> {
-        if self.automatic_outcome().is_some() {
+        let actions = self.position().legal_actions();
+        let classification = self.position().classify_with_actions(&actions);
+        if self
+            .automatic_outcome_with_classification(classification)
+            .is_some()
+        {
             return Vec::new();
         }
+        self.claims_with_actions(&actions)
+    }
+
+    fn claims_with_actions(&self, actions: &[Action]) -> Vec<ClaimRequest> {
         // One intended action adds at most one halfmove and one occurrence.
         // Without either prerequisite, neither current nor intended claims
         // can qualify. Keep the full native validator/order for every other
@@ -193,6 +209,11 @@ impl Game {
         let actor = self.position().side_to_move();
         let mut claims = Vec::new();
         for reason in [DrawClaim::Threefold, DrawClaim::FiftyMove] {
+            if reason == DrawClaim::Threefold && !self.has_repeated_identity()
+                || reason == DrawClaim::FiftyMove && self.position().halfmove_clock() < 99
+            {
+                continue;
+            }
             let r = ClaimRequest {
                 actor,
                 reason,
@@ -202,7 +223,7 @@ impl Game {
                 claims.push(r);
             }
         }
-        let mut actions = self.position().legal_actions();
+        let mut actions = actions.to_vec();
         actions.sort_by_key(|a| {
             (
                 a.from.rank() * 8 + a.from.file(),
@@ -217,6 +238,11 @@ impl Game {
             )
         });
         for reason in [DrawClaim::Threefold, DrawClaim::FiftyMove] {
+            if reason == DrawClaim::Threefold && !self.has_repeated_identity()
+                || reason == DrawClaim::FiftyMove && self.position().halfmove_clock() < 99
+            {
+                continue;
+            }
             for &action in &actions {
                 let r = ClaimRequest {
                     actor,
@@ -369,6 +395,13 @@ impl AdjudicatedGame {
     }
     /// Actual concluded result, independent of optional opportunities.
     pub fn outcome(&self) -> Option<ChessOutcome> {
+        if let Some(c) = self.claimed {
+            return Some(ChessOutcome::Draw(DrawReason::Claimed(c.reason)));
+        }
+        self.outcome_with_classification(self.position().classify())
+    }
+
+    fn outcome_with_classification(&self, classification: Classification) -> Option<ChessOutcome> {
         // Checkmate/stalemate retain precedence. Full death precedes history draws.
         if self.claimed.is_none()
             && matches!(
@@ -376,7 +409,7 @@ impl AdjudicatedGame {
                 Some(MateReachability::Impossible { .. })
             )
             && !matches!(
-                self.position().classify(),
+                classification,
                 Classification::Checkmate | Classification::Stalemate
             )
         {
@@ -384,7 +417,40 @@ impl AdjudicatedGame {
         }
         self.claimed
             .map(|c| ChessOutcome::Draw(DrawReason::Claimed(c.reason)))
-            .or_else(|| self.history.automatic_outcome())
+            .or_else(|| {
+                self.history
+                    .automatic_outcome_with_classification(classification)
+            })
+    }
+
+    pub(super) fn search_state(
+        &self,
+        actions: &[Action],
+    ) -> (Classification, Option<ChessOutcome>, Vec<ClaimRequest>) {
+        let classification = self.position().classify_with_actions(actions);
+        let outcome = self.outcome_with_classification(classification);
+        let claims = if outcome.is_none() {
+            self.history.claims_with_actions(actions)
+        } else {
+            Vec::new()
+        };
+        (classification, outcome, claims)
+    }
+
+    pub(super) fn apply_for_search(
+        &mut self,
+        action: Action,
+    ) -> Result<Option<MateReachability>, PlayError> {
+        self.history.apply(action).map_err(PlayError::Action)?;
+        let previous = self.dead_analysis.take();
+        self.refresh_dead_analysis();
+        Ok(previous)
+    }
+
+    pub(super) fn undo_for_search(&mut self, previous: Option<MateReachability>) -> Option<Action> {
+        let action = self.history.undo()?;
+        self.dead_analysis = previous;
+        Some(action)
     }
     /// Available optional claims; empty after any conclusion.
     pub fn available_claims(&self) -> Vec<ClaimRequest> {

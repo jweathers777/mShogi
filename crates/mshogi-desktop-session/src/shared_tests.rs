@@ -160,6 +160,7 @@ fn presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events
     assert_eq!(
         initial.play_limits,
         WorkLimits {
+            time_ms: None,
             depth: 2,
             nodes: 5000
         }

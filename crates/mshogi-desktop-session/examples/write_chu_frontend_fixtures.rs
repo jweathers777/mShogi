@@ -110,8 +110,15 @@ fn main() {
             let before = c.shared_snapshot().context;
             for (file, nodes) in [("analysis-complete", 512), ("analysis-incomplete", 1)] {
                 let count = c.shared_snapshot().observations.len();
-                c.verify_chu_execution(mshogi_engine::WorkLimits { depth: 1, nodes }, true)
-                    .unwrap();
+                c.verify_chu_execution(
+                    mshogi_engine::WorkLimits {
+                        time_ms: None,
+                        depth: 1,
+                        nodes,
+                    },
+                    true,
+                )
+                .unwrap();
                 let end = std::time::Instant::now() + std::time::Duration::from_secs(20);
                 let snapshot = loop {
                     let snapshot = c.shared_snapshot();

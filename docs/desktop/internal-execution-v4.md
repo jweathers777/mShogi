@@ -26,6 +26,17 @@ unknown, missing and conflicting fields reject. Unsupported versions never
 execute. A parseable current-shaped request with an unsupported version returns
 an explicit unscored InvalidRequest response; an old flat shape is malformed.
 
+MSH-49.1 adds optional Chess fields within this same family. `WorkLimits` keeps
+mandatory `depth` and `nodes`, with optional `time_ms` (0–60,000 milliseconds)
+for ordinary Chess engine turns or move analysis. The exact time limit is part
+of context equality, request replacement and durable observations. Other games
+and Chess Full refuse this field. Omission serializes exactly as before, so
+existing deterministic requests and observation digests retain their encoding.
+An older strict child may reject the new timed field; the host does not retry
+with downgraded limits or a different protocol. Bundled host/child are built
+together. The process watchdog is separate and must accommodate the requested
+thinking interval plus transport and cleanup; it is never a chess clock result.
+
 `CanonicalRecord` explicitly carries game, immutable profile/edition, native
 schema and native root/provenance/complete known history. This does not flatten
 native states, sides, actions, rule-dependent commands or score meanings.
@@ -54,6 +65,28 @@ unsupported Full live restoration before replay. It never creates a retired
 Chess request. The authoritative desktop owner checks exact current context,
 purpose and native command admission. Ordinary analysis uses a separate read-only
 acceptance handler and cannot issue a live move or claim.
+
+Chess's conventional search reports nominal `completed_depth`, all attempted
+`nodes` and optional `selective_depth`: the deepest actually visited board ply
+including extensions and quiescence. A completed iteration's PV can therefore
+exceed its nominal depth, bounded by the recorded selective depth and the native
+128-ply path cap. Every complete action and terminal claim is still re-admitted
+by the native owner; a claim's intended move is not played. Old observations
+without selective metadata keep their nominal-depth board-PV bound, plus a
+possible final claim command. A terminal root or root claim can have selective
+depth0, while a first incomplete iteration can have nonzero attempted depth.
+Neither selective depth nor a search score establishes a native game outcome.
+
+The coordinator carries the exact optional soft/hard allocation with its request.
+Soft time stops new iterations; hard time and cancellation are polled during
+search. Only the last completed iteration can supply a choice. Zero thinking
+time remains honestly incomplete, with no fallback action or invented score.
+UCI and supervised Chess use this same native timed search. Current live desktop
+defaults are a128 nominal depth ceiling,20,000 visits and1,000ms hard time; analysis
+defaults and all other game budgets are unchanged. Current-stage documents with
+the prior fixed depth2/20,000-visit untimed defaults still open stopped, preserving
+their records and observations. Explicit Resume selects the new defaults for
+future live work; opening or resuming never rewrites the original file.
 
 ## Execution safety and bounds
 

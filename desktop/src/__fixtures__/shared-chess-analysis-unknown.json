@@ -713,8 +713,9 @@
   "event_index": 1,
   "board_ply": 0,
   "play_limits": {
-    "depth": 2,
-    "nodes": 20000
+    "depth": 128,
+    "nodes": 20000,
+    "time_ms": 1000
   },
   "historical": false,
   "paused": true,

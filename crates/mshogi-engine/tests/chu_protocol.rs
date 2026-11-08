@@ -218,6 +218,7 @@ fn zero_budget_incomplete_and_native_agreement_are_distinct() {
 fn historical_unsupported_failures_survive_and_current_limits_stay_finite() {
     let mut c = context(&game());
     c.limits = WorkLimits {
+        time_ms: None,
         depth: CHU_MAX_DEPTH + 1,
         nodes: CHU_MAX_NODES + 1,
     };

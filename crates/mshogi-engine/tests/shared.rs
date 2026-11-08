@@ -12,6 +12,7 @@ fn request(game: &AdjudicatedGame) -> ExecutionContext {
         process_generation: 3,
         game: CanonicalRecord::chess(game.record()),
         limits: WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 10_000,
         },
@@ -206,6 +207,7 @@ fn actual_shogi_records_have_only_implemented_native_operations() {
             FULL_SENTINEL
         } else {
             WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 10,
             }

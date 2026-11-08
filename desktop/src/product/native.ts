@@ -26,6 +26,7 @@ export interface OpenToken { document: number; version: number; document_revisio
 export interface SearchView {
   selected: boolean; observation_index: number; purpose: string; event_index: number; board_ply: number;
   perspective: string; engine: string; score: string | null; completed_depth: number | null;
+  selective_depth?: number;
   nodes: number | null; variation: string[]; status: string; historical: boolean;
 }
 export interface MovesPresentation {
@@ -49,7 +50,7 @@ interface GameSnapshotBase extends Omit<NativeBoardSnapshot, "game" | "orientati
   status: { concluded: boolean; label: string; score_half_points: number[] | null };
   events: { index: number; board_ply: number; label: string }[];
   moves: MovesPresentation;
-  event_index: number; board_ply: number; play_limits: { depth: number; nodes: number }; historical: boolean; paused: boolean;
+  event_index: number; board_ply: number; play_limits: { depth: number; nodes: number; time_ms?: number }; historical: boolean; paused: boolean;
   phase: "idle" | "thinking" | "cancelled" | "failed" | "incomplete" | "paused";
   diagnostic: string | null;
   execution_purpose: string | null;

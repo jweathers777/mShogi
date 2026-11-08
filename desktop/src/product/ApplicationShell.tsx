@@ -8,11 +8,11 @@ export function DocumentState({ document }: { document: { path: string | null; d
 }
 
 export function NativeEnginePanel({ status, limits, children }: {
-  status: string; limits: { depth: number; nodes: number }; children: ReactNode;
+  status: string; limits: { depth: number; nodes: number; time_ms?: number }; children: ReactNode;
 }) {
   return <section className="card engine-card">
     <div className="card-title"><h2>Engine</h2><span className="engine-phase" role="status" aria-label="Engine turn status">{status}</span></div>
-    <p className="caption" data-play-limits>Play limit: depth {limits.depth} · {limits.nodes.toLocaleString()} nodes</p>
+    <p className="caption" data-play-limits>Play limit: depth {limits.depth} · {limits.nodes.toLocaleString()} nodes{limits.time_ms != null ? ` · ${limits.time_ms.toLocaleString()} ms` : ""}</p>
     {children}
   </section>;
 }

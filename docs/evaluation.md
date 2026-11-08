@@ -1,22 +1,60 @@
 # Chess static evaluation
 
-## MSH-49 positional candidate
+## Active conventional evaluator
 
-The active Chess coordinator uses `chess_candidate::evaluate`, identity
-`mshogi.chess.tapered-position.v1`. It retains the material values below and
-returns separate material and positional contributions for each color. All
-parameters are original arithmetic heuristics, without trained weights or copied
-piece-square tables. Remaining non-pawn material determines a middle/endgame
-blend capped at the initial6400cp total.
+The Chess coordinator's conventional search uses
+`chess_conventional_eval::evaluate`, identity
+`mshogi.chess.conventional-tapered.v1`. `Evaluation` exposes each color's material
+and tapered piece-placement, pawn-structure, mobility/activity, king-safety,
+threat and endgame-conversion contributions. `score_for(Color)` subtracts the
+opponent's contribution; positive centipawns favor the requested color.
+The [conventional engine checkpoint](m5/chess-conventional.md) records the associated
+engineering evidence. This evaluator has no trained parameters or copied
+piece-square tables, and its coefficients are not measured exchange values.
 
-Terms cover knight/bishop central development, pawn advancement, isolated and
-doubled pawns, passed pawns, open/semi-open rook files, seventh-rank rooks, bishop
-pairs, middle-game king shelter/castling and endgame king centrality. Early queen
-development has a small penalty. The implementation documents each coefficient.
-These are static estimates only: native history, outcomes and claim policy take
-precedence in search. Color/rank reflection, hand-derived arithmetic, unchanged
-state and native terminal/claim regressions verify this separation. They do not
-measure strength; [MSH-49](m5/chess-strength.md) owns that evidence.
+Material retains the values below. Original arithmetic placement rewards central
+minor pieces and development, pawn advancement, appropriate king placement and
+endgame king activity. Pawn terms cover isolated, doubled, connected, backward and
+passed pawns, including a simple king-escort estimate. Activity includes bishop
+pairs, rook files/seventh rank and geometric mobility excluding friendly occupancy
+and enemy pawn attacks. King safety combines pawn shelter/open files with weighted
+opposing attacks into the king ring. Threats estimate attacked undefended or
+higher-valued pieces; a major-material conversion term encourages king proximity
+and driving the opposing king to the edge. Each coefficient is inspectable in the
+implementation.
+
+Remaining non-pawn, non-king material controls the middle/endgame blend, capped at
+the initial 6400cp total; raw phase can rise above that after promotion and is
+retained exactly for undo. Material, arithmetic piece placement and raw phase form
+a reversible incremental base in `EvalState`. `push(before, after)` compares native
+position snapshots and updates changed cells; `pop()` restores the saved base.
+Pawn, activity, safety, threat and conversion terms recompute from current native
+geometry. Hand-derived arithmetic, color/rank reflection and rebuild-equivalence
+checks over native opening, castling, en-passant, capture, promotion and undo
+sequences test the decomposition and state restoration.
+
+`Position::attacks_from` supplies geometric attacks, including a slider's first
+occupied blocker. Mobility, defended-piece and pressure features are heuristics:
+they do not filter pinned pieces or count legal actions. The evaluator owns no
+move generator, effect resolution, outcome recognizer or history policy. Native
+outcomes and claims take precedence in search. Static estimates remain below the
+100,000cp conservative bound, far below the 1,000,000 mate-score band. A zero score
+proves no draw, a large score proves no win, and positional tests or call timings
+make no playing-strength claim.
+
+## Historical positional candidate
+
+The retained `chess_candidate::evaluate` API has identity
+`mshogi.chess.tapered-position.v1`. It combines the material values below with
+original untrained arithmetic placement: knight/bishop development, pawn
+advancement and isolated/doubled/passed pawns, rook files/seventh rank, bishop
+pairs, middle-game king shelter/castling squares and endgame king centrality,
+with a small early queen-development penalty. The middle/endgame blend is capped
+at the initial 6400cp of non-pawn material. This historical reference has no trained
+weights or copied piece-square tables. Its arithmetic, reflection and native
+terminal/claim separation checks remain in the suite; the owner-stopped
+[earlier study](m5/chess-strength.md) is historical evidence, not an active
+playing-strength requirement.
 
 ## Frozen material baseline
 

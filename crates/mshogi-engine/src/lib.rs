@@ -35,14 +35,19 @@ pub const MAX_RESPONSE_BYTES: usize = 2 * 1024 * 1024;
 /// Maximum retained stderr bytes per child.
 pub const MAX_STDERR_BYTES: usize = 4096;
 
-/// Explicit deterministic limits; a node limit is mandatory.
+/// Explicit finite work limits; an optional Chess time budget is nondeterministic.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct WorkLimits {
-    /// Maximum completed depth in plies.
+    /// Maximum nominal completed depth; selective continuations have their own
+    /// recorded native path bound.
     pub depth: u16,
     /// Maximum attempted node visits, including discarded iterations.
     pub nodes: u64,
+    /// Optional Chess-only per-request hard thinking budget, in milliseconds.
+    /// Omission preserves the exact historical deterministic wire encoding.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub time_ms: Option<u64>,
 }
 /// Serializable native draw claim, including an optional unplayed intended move.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -113,17 +118,62 @@ pub enum StopReason {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Telemetry {
-    /// Root side-to-move perspective, in material points (pawn=100).
+    /// Root side-to-move heuristic perspective in centipawn units (pawn=100).
     /// Mate scores use the native MATE_SCORE distance convention.
     pub score: Option<i32>,
     /// Last completed depth; zero means no completed iteration.
     pub completed_depth: u16,
+    /// Deepest actually visited board ply, including extensions/quiescence.
+    /// Old observations omit this and retain their nominal-depth PV bound.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub selective_depth: Option<u16>,
     /// All attempted node visits, including discarded iterations.
     pub nodes: u64,
     /// Continuation from the completed iteration, potentially ending in a claim.
     pub principal_variation: Vec<EngineChoice>,
     /// Observed completion/limit/stop reason.
     pub status: StopReason,
+}
+impl Telemetry {
+    /// Admitted board-ply bound for a continuation. A terminal claim may add
+    /// one command without playing its intended move. Legacy observations retain
+    /// their nominal bound; selective observations must state a finite real bound.
+    pub fn variation_depth_bound(&self) -> Option<u16> {
+        match self.selective_depth {
+            Some(depth) if depth <= mshogi_search::chess_conventional::MAX_PLY => Some(depth),
+            Some(_) => None,
+            None => Some(self.completed_depth),
+        }
+    }
+
+    fn valid_selective_shape(&self, limits: WorkLimits) -> bool {
+        let Some(bound) = self.variation_depth_bound() else {
+            return false;
+        };
+        let board_plies = self
+            .principal_variation
+            .iter()
+            .filter(|choice| matches!(choice, EngineChoice::Move { .. }))
+            .count();
+        self.completed_depth <= limits.depth
+            && self.nodes <= limits.nodes
+            && self.score.is_some() == (self.completed_depth > 0)
+            && self
+                .score
+                .is_none_or(|score| score.unsigned_abs() <= 1_000_000)
+            && board_plies <= usize::from(bound)
+            && self.principal_variation.len() <= usize::from(bound) + 1
+            && self
+                .principal_variation
+                .iter()
+                .enumerate()
+                .all(|(i, choice)| {
+                    !matches!(choice, EngineChoice::Claim { .. })
+                        || i + 1 == self.principal_variation.len()
+                })
+            && (self.completed_depth == 0 || self.nodes > 0)
+            && (self.completed_depth > 0 || self.principal_variation.is_empty())
+    }
 }
 /// Explicit process, transport, context or native-search failure.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -218,10 +268,11 @@ impl ChessResult {
             failure: EngineFailure { kind, message },
         }
     }
-    pub(crate) fn searched(result: SearchResult) -> Self {
+    pub(crate) fn searched(result: SearchResult, selective_depth: Option<u16>) -> Self {
         let telemetry = Telemetry {
             score: result.score,
             completed_depth: result.completed_depth,
+            selective_depth,
             nodes: result.nodes,
             principal_variation: result
                 .principal_variation

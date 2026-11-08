@@ -237,8 +237,9 @@
   "event_index": 0,
   "board_ply": 0,
   "play_limits": {
-    "depth": 2,
-    "nodes": 20000
+    "depth": 128,
+    "nodes": 20000,
+    "time_ms": 1000
   },
   "historical": false,
   "paused": true,
@@ -301,6 +302,7 @@
           "telemetry": {
             "score": -1000000,
             "completed_depth": 1,
+            "selective_depth": 0,
             "nodes": 1,
             "principal_variation": [],
             "status": "complete"
@@ -358,6 +360,7 @@
             "telemetry": {
               "score": -1000000,
               "completed_depth": 1,
+              "selective_depth": 0,
               "nodes": 1,
               "principal_variation": [],
               "status": "complete"
@@ -379,6 +382,7 @@
       "engine": "mShogi",
       "score": "−mate in 0 plies",
       "completed_depth": 1,
+      "selective_depth": 0,
       "nodes": 1,
       "variation": [],
       "status": "Complete",
@@ -463,6 +467,7 @@
         "telemetry": {
           "score": -1000000,
           "completed_depth": 1,
+          "selective_depth": 0,
           "nodes": 1,
           "principal_variation": [],
           "status": "complete"

@@ -24,6 +24,7 @@ mod matchplay;
 mod notation;
 mod perft;
 mod record;
+mod search_access;
 pub use action::{Action, ActionError, Promotion, Undo, UndoError};
 pub use adjudication::*;
 pub use completeness::*;
@@ -34,6 +35,7 @@ pub use matchplay::*;
 pub use notation::ActionParseError;
 pub use perft::{DivideEntry, PerftError};
 pub use record::*;
+pub use search_access::{SearchCursor, SearchKey, SearchNode};
 
 /// One of the two colors in orthodox chess.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]

@@ -51,6 +51,7 @@ fn played(case: &str, game: &t::Game) -> (t::Game, t::Action, TenjikuTelemetry) 
     assert_eq!(
         request.context.limits,
         WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 1024
         }

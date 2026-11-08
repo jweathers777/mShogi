@@ -10,6 +10,7 @@ fn request(game: &AdjudicatedGame) -> ExecutionContext {
         process_generation: 3,
         game: mshogi_core::native::CanonicalRecord::chess(game.record()),
         limits: WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 10_000,
         },
@@ -269,6 +270,7 @@ fn analysis_requires_exact_provenance_supported_mode_and_explicit_limits() {
         target: analysis_target(&live),
     };
     invalid.limits = WorkLimits {
+        time_ms: None,
         depth: MAX_ANALYSIS_DEPTH + 1,
         nodes: 1,
     };

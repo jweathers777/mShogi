@@ -1,0 +1,175 @@
+{
+  "schema": 1,
+  "task": "MSH-49.1",
+  "branch": "codex/rewrite",
+  "status": "implementation_reviewed_local_checks_passed_platform_pending",
+  "starting_revision": "a4ad03a297801922d8c9d3a0fd660e05b0ab2ebe",
+  "tested_source": null,
+  "integration_revision": null,
+  "scope": "Complete selected conventional Chess architecture; no49.2formal study or competitive strength claim",
+  "identities": {
+    "search": "mshogi.chess.conventional.v1",
+    "evaluation": "mshogi.chess.conventional-tapered.v1",
+    "profile": "mshogi.chess.match.v1"
+  },
+  "environment": {
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "hardware": "AppleM1Pro,10logicalCPUs,32GiB,shared/unpinnedlocalhost",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "node": "24.21.0 cached supported24.x runtime",
+    "flags": "ordinary Cargo release/debug asrecorded, no customflags"
+  },
+  "local_checks": [
+    {
+      "command": "cargo test --workspace --locked",
+      "outcome": "passed",
+      "passed": 1134,
+      "failed": 0,
+      "ignored": 11,
+      "suite_count": 101,
+      "scope": "Includes existing21historicalgames, complete6game/native/session/process/runner regressions, new27nativecursor/query tests, classical evaluator, exact/conventional/clock/admission/archive tests"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "outcome": "passed"
+    },
+    {
+      "command": "cargo check --manifest-path desktop/src-tauri/Cargo.toml --locked",
+      "outcome": "passed",
+      "warnings": "Existingtaodependencywarnings retained; no productcompilererror"
+    },
+    {
+      "command": "cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__ (twice)",
+      "outcome": "passed;17Chessfixtures byte-identical onrepeat;16changedfromolddefault/oldtelemetry snapshots"
+    },
+    {
+      "command": "npm run check; npm test; npm run build (Node24.21.0)",
+      "outcome": "passed;568frontend tests beforefinaltime-caption addition"
+    },
+    {
+      "command": "npm run check; npm test -- src/product/ApplicationShell.test.tsx; npm run build",
+      "outcome": "passed;15affectedcomponenttests including2newtimecaptioncases afterdisplayedtimeceilings"
+    }
+  ],
+  "profiles": {
+    "search": "search-profile.json",
+    "native_cursor": "native-profile.log.gz",
+    "evaluator": "evaluator-profile.log.gz",
+    "scope": "Boundedlocaldiagnostics, notstrength evidence. Search4positions atdepth8/20kvisits/1s hard700mssoft, nativequerywalkidenticalnodes, evaluator5000fixedcalls. No matches ormulti-hourbenchmark."
+  },
+  "routine_matches": {
+    "limit_seconds": 900,
+    "charged_seconds": 0,
+    "runs": [],
+    "purpose": "One shorttimedself-play regression aftercleansourcefreeze; noexternal/weak-baseline superiority/statisticalbar",
+    "no_formal_study": true,
+    "paid_compute": false
+  },
+  "independent_review": {
+    "reviewer": "Freshread-only chess_conventional_review",
+    "status": "sourceapproved; finalsource/evidence/platformreconciliationpending",
+    "findings_resolved": [
+      "Pruning/reduction afterpush nowprotectsnative terminal/claim children",
+      "Syntheticnull CounterOverflow abandons onlyhypothesis; realerrors/cancellationpropagate andstate restored",
+      "Separateboundedlate-move pruning branch andcontrolledregression, notjustLMRlabel"
+    ],
+    "notes": "Nativeauthorseparately reviewed rootsearch; independentfreshreviewcovered allcomponents. FullhistoryTT intentionallyconservative; absoluteqply horizonapproximate/nonterminal."
+  },
+  "compatibility": {
+    "wire": "Optionaltime_ms/selective_depth; oldmissingfields serializebyte-identically andkeepnominalPVbound; currentnewlongPVsnativelyreadmitted",
+    "saves": "Exactlyprior fixedChessplaylimitacceptedstopped/unchanged; explicitResumeupgradesfutureworkonly",
+    "time": "OrdinaryChess/M2 only; Fulltimed requests refused. PublictimedFullconventionalsearch returnsTimedFullUnsupported; untimedFullnativework governedbyitsconfiguredsolverlimits",
+    "defaults": "LiveChess128nominalceiling/20kvisits/1000mshard; othergamebudgets anduseranalysisdefaultsunmodified"
+  },
+  "implementation_limits": [
+    "TTbounds requireidenticalcompletehistoryprefix; cross-historypositionhints only",
+    "SEElegal least-attacker sequencebounded16captures, aheuristic",
+    "Q16tacticalplies pluslegalevasions toabsolute128boardplycap; statichorizonatcapneveradjudicates",
+    "ProbCut/singularextensions excluded: q/SEEdominatesboundedprofiles; no calibratedprobabilisticmargins orreusabledeep-bound evidence tojustifyextra history-sensitive verification cost"
+  ],
+  "historical_local_failures": [
+    {
+      "state": "Intermediateworkingdiffbaseda4ad03a, notfinaltestedrevision",
+      "signature": "Oldexact21visit/depthceilingassertions failedwithnewPVS/timedwork (24visits; completed5 versus128ceiling)",
+      "resolution": "Actualmove/score/nativePV andexacttime/session/history/limits stillrequired; testsassertcompleted>0<=ceiling, correctNodeLimit/Stoppedsemantics andindependentlyinsufficient20nodefixture. Depth1firstpassfullwindowlaterreducesresearchcost."
+    },
+    {
+      "state": "Intermediateworkingdiff",
+      "signature": "Collapsibleif Clippy lint innewnullhelper",
+      "resolution": "Narrowed/simplified conditional; finalworkspaceClippy passed"
+    },
+    {
+      "state": "Independentreview beforefinalsource",
+      "signature": "Possiblequietnative terminal/claim omission; synthetic-onlycountererror propagation",
+      "resolution": "Controlledterminal/claim protection andnull-overflow/restoration/cancellation regressions added; no rules/failuresemanticsweakened."
+    }
+  ],
+  "ci": {
+    "required": [
+      "Rust(ubuntu-24.04)",
+      "Rust(macos-15)",
+      "Rust(windows-2022)"
+    ],
+    "status": "not_started_until_clean_source_checkpoint",
+    "desktop": "AffectedDOM/type/build andstandalonehostcheckedlocally; broadpackagedGUIcampaignnotrequired forthisengineboundary",
+    "run_id": null,
+    "jobs": []
+  },
+  "acceptance": {
+    "1": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending",
+    "2": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending",
+    "3": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending",
+    "4": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending",
+    "5": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending",
+    "6": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending"
+  },
+  "artifacts": [
+    {
+      "label": "workspace-tests",
+      "path": "docs/m5/evidence/msh49-1/workspace-tests.log.gz",
+      "sha256_uncompressed": "5e49e7482f7f8077f69a339175f9a83089b521729813a25f3fbeed569279762c"
+    },
+    {
+      "label": "workspace-clippy",
+      "path": "docs/m5/evidence/msh49-1/workspace-clippy.log.gz",
+      "sha256_uncompressed": "e618b2056f0a3d66b06bf6f41176b098fc889cb754fd54197112c204fed0e242"
+    },
+    {
+      "label": "host-check",
+      "path": "docs/m5/evidence/msh49-1/host-check.log.gz",
+      "sha256_uncompressed": "5f11e85c8a4cf1ee2f54e05d5abd979fc7b8b375ce47675fb11e80ea22e3867a"
+    },
+    {
+      "label": "frontend-all",
+      "path": "docs/m5/evidence/msh49-1/frontend-all.log.gz",
+      "sha256_uncompressed": "178cee63f63106bb62e1be61b9f8b5b8d81b7d130e16a48cbadbf6ea69790729"
+    },
+    {
+      "label": "frontend-time",
+      "path": "docs/m5/evidence/msh49-1/frontend-time.log.gz",
+      "sha256_uncompressed": "d1c7eac8b37dabfdadf1c8c32b20b5dfadf68d29478db514253409a643fa07a2"
+    },
+    {
+      "label": "native-focused",
+      "path": "docs/m5/evidence/msh49-1/native-focused.log.gz",
+      "sha256_uncompressed": "9aaf1237bc5e298aaee943ed20410402df86fdb4e97435240b3290eb43c1651e"
+    },
+    {
+      "label": "search-focused",
+      "path": "docs/m5/evidence/msh49-1/search-focused.log.gz",
+      "sha256_uncompressed": "1ba048b4fb4f8191005686a7c3c8f6e6e45930156848fd00a05c3bd0419a2611"
+    },
+    {
+      "label": "native-profile",
+      "path": "docs/m5/evidence/msh49-1/native-profile.log.gz",
+      "sha256_uncompressed": "a43015c9a27601579ec6cd5230796e7e97d6729fe53a98c8ab4cb26e11efa6be"
+    },
+    {
+      "label": "evaluator-profile",
+      "path": "docs/m5/evidence/msh49-1/evaluator-profile.log.gz",
+      "sha256_uncompressed": "696b147af88f2ff8c086ff287a7548a377a3bb4dbb0ffbb89d2d4558fbffda58"
+    }
+  ],
+  "next": "Freeze/pushcoherentsource, actual3OSnativeCI oneobserver, boundedtimedselfplay chargedcumulatively; finalindependent evidenceacceptance beforeDone. DoNOTstart49.2."
+}

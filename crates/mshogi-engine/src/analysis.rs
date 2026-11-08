@@ -11,7 +11,11 @@ pub const MAX_FULL_POSITIONS: u64 = 100_000;
 /// Maximum generated reachability transitions.
 pub const MAX_FULL_TRANSITIONS: u64 = 1_000_000;
 /// Full operations perform no minimax work; their actual budgets are in purpose.
-pub const FULL_SENTINEL: WorkLimits = WorkLimits { depth: 1, nodes: 0 };
+pub const FULL_SENTINEL: WorkLimits = WorkLimits {
+    time_ms: None,
+    depth: 1,
+    nodes: 0,
+};
 /// Cooperative target; this does not assert a forced mate.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]

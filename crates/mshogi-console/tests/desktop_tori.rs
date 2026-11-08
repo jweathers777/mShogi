@@ -76,6 +76,7 @@ fn real_internal_tori_analysis_save_reopen_stopped_then_explicit_analysis_and_re
     let context = c
         .verify_tori_execution(
             WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 100,
             },
@@ -178,7 +179,14 @@ fn started(context: &ExecutionContext) -> std::path::PathBuf {
 fn real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement() {
     let mut c = controller(env!("CARGO_BIN_EXE_mshogi-internal-fixture"));
     let failed = c
-        .verify_tori_execution(WorkLimits { depth: 1, nodes: 1 }, false)
+        .verify_tori_execution(
+            WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 1,
+            },
+            false,
+        )
         .unwrap();
     let observed = observation(&mut c);
     assert_eq!(observed.context, failed);
@@ -192,7 +200,14 @@ fn real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement
         }
     ));
     let slow = c
-        .verify_tori_execution(WorkLimits { depth: 1, nodes: 7 }, true)
+        .verify_tori_execution(
+            WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 7,
+            },
+            true,
+        )
         .unwrap();
     let marker = started(&slow);
     let started_at = Instant::now();
@@ -212,7 +227,14 @@ fn real_supervised_tori_failure_cancel_replace_cleanup_and_cross_game_retirement
         )
     }));
     let replacement = c
-        .verify_tori_execution(WorkLimits { depth: 1, nodes: 7 }, true)
+        .verify_tori_execution(
+            WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 7,
+            },
+            true,
+        )
         .unwrap();
     assert!(replacement.request_id > slow.request_id);
     assert!(replacement.process_generation > slow.process_generation);

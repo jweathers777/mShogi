@@ -33,6 +33,7 @@ export type EngineChoice =
 export interface Telemetry {
   score: number | null;
   completed_depth: number;
+  selective_depth?: number;
   nodes: number;
   principal_variation: EngineChoice[];
   status: "complete" | "node_limit" | "stopped";
@@ -92,7 +93,7 @@ export interface ExecutionContext {
   session_version: number;
   process_generation: number;
   game: unknown;
-  limits: { depth: number; nodes: number };
+  limits: { depth: number; nodes: number; time_ms?: number };
   purpose:
     | { kind: "engine_turn" }
     | { kind: "move_analysis"; target: ExecutionTarget }

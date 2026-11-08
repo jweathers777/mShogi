@@ -854,6 +854,7 @@ fn display_observation(
         _ => unreachable!(),
     };
     PresentedSearchObservation {
+        selective_depth: None,
         observation_index: index,
         purpose,
         event_index,

@@ -85,20 +85,24 @@ fn execute_chess(context: &ExecutionContext) -> ChessResult {
         Ok(coordinator) => coordinator,
         Err(error) => return ChessResult::failure(FailureKind::Search, error),
     };
-    if let Err(error) = coordinator.submit(
+    if let Err(error) = coordinator.submit_with_time(
         &game,
         context.session_version,
         SearchLimits {
             depth: context.limits.depth,
             nodes: Some(context.limits.nodes),
         },
+        context
+            .limits
+            .time_ms
+            .map(mshogi_search::chess_conventional::TimeBudget::from_hard_ms),
     ) {
         return ChessResult::failure(FailureKind::Search, error);
     }
     loop {
         if let Some(completion) = coordinator.poll() {
             return match completion.result() {
-                Ok(result) => ChessResult::searched(result.clone()),
+                Ok(result) => ChessResult::searched(result.clone(), completion.selective_depth()),
                 Err(error) => ChessResult::failure(FailureKind::Search, error),
             };
         }

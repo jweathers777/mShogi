@@ -222,7 +222,14 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
     assert_eq!(reopened.context, native);
     std::fs::remove_file(path).unwrap();
     let retired = ctl
-        .verify_chu_execution(WorkLimits { depth: 1, nodes: 1 }, true)
+        .verify_chu_execution(
+            WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 1,
+            },
+            true,
+        )
         .unwrap();
     // Exact history selection retires pending work; returning to an identical
     // diagram does not revive the old request or process authority.
@@ -230,7 +237,14 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
     send(&mut ctl, SessionOperation::ReturnLive {});
     assert!(!ctl.accept_shared(failure(retired)));
     let retired = ctl
-        .verify_chu_execution(WorkLimits { depth: 1, nodes: 1 }, false)
+        .verify_chu_execution(
+            WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 1,
+            },
+            false,
+        )
         .unwrap();
     let action = c::Game::standard().legal_actions()[0].clone();
     send(
@@ -244,12 +258,26 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
     assert_eq!(ctl.shared_snapshot().context, native);
     assert!(!ctl.accept_shared(failure(retired)));
     let retired = ctl
-        .verify_chu_execution(WorkLimits { depth: 1, nodes: 1 }, false)
+        .verify_chu_execution(
+            WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 1,
+            },
+            false,
+        )
         .unwrap();
     send(&mut ctl, SessionOperation::Cancel {});
     assert!(!ctl.accept_shared(failure(retired)));
     let retired = ctl
-        .verify_chu_execution(WorkLimits { depth: 1, nodes: 1 }, true)
+        .verify_chu_execution(
+            WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 1,
+            },
+            true,
+        )
         .unwrap();
     send(
         &mut ctl,
@@ -412,7 +440,14 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
         },
     );
     let slow = ctl
-        .verify_chu_execution(WorkLimits { depth: 1, nodes: 7 }, true)
+        .verify_chu_execution(
+            WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 7,
+            },
+            true,
+        )
         .unwrap();
     let first = started(&slow);
     let at = Instant::now();
@@ -422,7 +457,14 @@ fn actual_slow_child_cancellation_replacement_cross_game_and_cleanup_are_bounded
     assert!(!ctl.accept_shared(failure(slow.clone())));
     std::fs::remove_file(first).unwrap();
     let replacement = ctl
-        .verify_chu_execution(WorkLimits { depth: 1, nodes: 7 }, true)
+        .verify_chu_execution(
+            WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 7,
+            },
+            true,
+        )
         .unwrap();
     assert!(replacement.request_id > slow.request_id);
     assert!(replacement.process_generation > slow.process_generation);

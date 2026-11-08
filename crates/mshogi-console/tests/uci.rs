@@ -151,10 +151,26 @@ fn deterministic_depth_and_node_limits_return_legal_bestmoves() {
     let (best, info) = engine.best();
     assert_eq!(best, "a2a3", "zero-work deterministic legal fallback");
     assert!(info[0].contains("depth 0 nodes 0"));
-    engine.send("go depth 1 nodes 21\n");
+    engine.send("go depth 1 nodes 20\n");
     let (best, info) = engine.best();
     legal(START, &best);
-    assert!(info[0].contains("depth 1 nodes 21"));
+    assert!(
+        info[0].contains("depth 0 nodes 20"),
+        "root plus20 legal leaves require at least21 visits"
+    );
+    assert!(!info[0].contains("score "));
+    engine.send("go depth 1 nodes 1000\n");
+    let (best, info) = engine.best();
+    legal(START, &best);
+    let fields: Vec<_> = info[0].split_whitespace().collect();
+    assert_eq!(&fields[..4], &["info", "depth", "1", "nodes"]);
+    let visits: u64 = fields[4].parse().unwrap();
+    assert!(
+        (21..=1000).contains(&visits),
+        "PVS counts root/leaves plus any re-search"
+    );
+    assert!(info[0].contains("seldepth 1"));
+    assert!(info[0].contains("score cp 61"));
     assert!(engine.finish().contains("no completed iteration"));
 }
 #[test]

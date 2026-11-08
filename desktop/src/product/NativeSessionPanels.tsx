@@ -20,7 +20,7 @@ export function Observation({ view, game = "shogi", rejected = false }: { view: 
     <p className="search-target">{view.historical ? "Saved observation" : view.purpose === "engine_turn" ? "Last engine turn" : view.purpose === "chess_full_reachability" ? "Full cooperative reachability" : "Move analysis"} · event {view.event_index}</p>
     <p className="shogi-evaluation">{view.score ?? "No completed evaluation"}</p>
     <p className="analysis-perspective">{view.perspective} perspective · {view.status}</p>
-    <dl className="shogi-telemetry"><div><dt>Completed depth</dt><dd>{view.completed_depth ?? "—"}</dd></div><div><dt>Nodes</dt><dd>{view.nodes?.toLocaleString() ?? "—"}</dd></div></dl>
+    <dl className="shogi-telemetry"><div><dt>Completed depth</dt><dd>{view.completed_depth ?? "—"}</dd></div>{view.selective_depth !== undefined && <div><dt>Selective depth</dt><dd>{view.selective_depth}</dd></div>}<div><dt>Nodes</dt><dd>{view.nodes?.toLocaleString() ?? "—"}</dd></div></dl>
     {game !== "tori" && view.variation.length > 0 && <p className="shogi-pv"><span>Continuation</span>{view.variation.join(" · ")}</p>}
     {view.purpose === "move_analysis" && <p className="analysis-readonly">{(game === "tori" || game === "chu" || game === "tenjiku") ? "No move was played." : `No move or ${game === "shogi" ? "declaration" : "claim"} was played.`}</p>}
   </div>;

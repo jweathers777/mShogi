@@ -21,7 +21,10 @@ impl Default for XiangqiSettings {
     }
 }
 fn valid_limits(limits: WorkLimits) -> Result<(), String> {
-    if !(1..=3).contains(&limits.depth) || !(1..=512).contains(&limits.nodes) {
+    if !(1..=3).contains(&limits.depth)
+        || !(1..=512).contains(&limits.nodes)
+        || limits.time_ms.is_some()
+    {
         return Err(
             "Xiangqi analysis requires depth1–3 and1–512 visits; no downgrade was applied.".into(),
         );
@@ -719,7 +722,7 @@ impl XiangqiSession {
             SessionOperation::Analyze { operation: AnalysisOperation::Moves { depth, nodes } } => {
                 if self.viewed.is_some() && self.viewed_game.is_none() { return Err("This immutable event is inside an atomic native command. Analysis requires a committed command boundary; view and movement inspection remain available.".into()); }
                 if self.viewed.is_none() { self.browse_running=false; }
-                let limits = WorkLimits { depth, nodes }; valid_limits(limits)?;
+                let limits = WorkLimits { time_ms: None, depth, nodes }; valid_limits(limits)?;
                 self.ensure_observation_capacity()?;
                 self.retire(); self.paused = true; self.settings.analysis_defaults = limits;
                 self.analysis_intent = Some((self.record(), limits)); analysis = Some(limits);

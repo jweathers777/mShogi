@@ -1,6 +1,7 @@
 //! Bounded UCI adapter; protocol output belongs only to this event loop.
 use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy, Color};
 use mshogi_search::{
+    chess_conventional::TimeBudget,
     coordination::{RequestContext, SearchCompletion, SearchCoordinator},
     search::{MATE_SCORE, MAX_DEPTH, SearchChoice, SearchDecision, SearchLimits},
 };
@@ -186,8 +187,8 @@ impl Adapter {
                     out,
                     "id name mShogi {} {} {}",
                     env!("CARGO_PKG_VERSION"),
-                    mshogi_search::chess_candidate::SEARCH_ID,
-                    mshogi_search::chess_candidate::EVALUATOR_ID
+                    mshogi_search::chess_conventional::SEARCH_ID,
+                    mshogi_search::chess_conventional_eval::EVALUATOR_ID
                 )?;
                 writeln!(out, "id author John Weathers")?;
                 writeln!(
@@ -228,7 +229,7 @@ impl Adapter {
                     .transpose()?;
                 let context = self
                     .worker
-                    .submit(&self.game, self.version, go.limits)
+                    .submit_with_time(&self.game, self.version, go.limits, go.time)
                     .map_err(|e| e.to_string())?;
                 self.running = Some(Running {
                     context,
@@ -322,6 +323,9 @@ impl Adapter {
                     "info depth {} nodes {} time {elapsed}",
                     result.completed_depth, result.nodes
                 );
+                if let Some(selective_depth) = completion.selective_depth() {
+                    info.push_str(&format!(" seldepth {selective_depth}"));
+                }
                 if let Some(score) = result.score {
                     if score.abs() >= MATE_SCORE - i32::from(MAX_DEPTH) {
                         let plies = MATE_SCORE - score.abs();
@@ -403,6 +407,7 @@ fn parse_position(args: &[&str], policy: ClaimPolicy) -> Result<AdjudicatedGame,
 struct Go {
     limits: SearchLimits,
     budget: Option<Duration>,
+    time: Option<TimeBudget>,
     infinite: bool,
 }
 fn number(text: &str) -> Result<u64, String> {
@@ -469,14 +474,22 @@ fn parse_go(args: &[&str], side: Color) -> Result<Go, String> {
         }
     }
     let own = usize::from(side == Color::Black);
-    let millis = movetime.or_else(|| {
+    let thinking = movetime.map(TimeBudget::from_hard_ms).or_else(|| {
         time[own].map(|remaining| {
             let spendable = remaining.saturating_sub((remaining / 20).min(50));
-            (remaining / moves_to_go)
+            let soft = (remaining / moves_to_go)
                 .saturating_add(increment[own])
-                .min(spendable)
+                .min(spendable);
+            // A normal iteration may use the nominal allocation; an unstable
+            // root can use additional time, always below the safe clock reserve.
+            let hard = soft.saturating_mul(3).min(spendable);
+            TimeBudget {
+                soft: Duration::from_millis(soft),
+                hard: Duration::from_millis(hard),
+            }
         })
     });
+    let millis = thinking.map(|time| time.hard.as_millis() as u64);
     let clock_controls = seen
         .iter()
         .any(|token| matches!(*token, "wtime" | "btime" | "winc" | "binc" | "movestogo"));
@@ -496,6 +509,7 @@ fn parse_go(args: &[&str], side: Color) -> Result<Go, String> {
             nodes: if millis == Some(0) { Some(0) } else { nodes },
         },
         budget: millis.map(Duration::from_millis),
+        time: thinking,
         infinite,
     })
 }
@@ -521,13 +535,15 @@ mod tests {
             Color::Black,
         )
         .unwrap();
-        assert_eq!(go.budget, Some(Duration::from_millis(450)));
+        assert_eq!(go.time.unwrap().soft, Duration::from_millis(450));
+        assert_eq!(go.budget, Some(Duration::from_millis(760)));
         let go = parse_go(
             &["wtime", "10000", "winc", "100", "movestogo", "10"],
             Color::White,
         )
         .unwrap();
-        assert_eq!(go.budget, Some(Duration::from_millis(1100)));
+        assert_eq!(go.time.unwrap().soft, Duration::from_millis(1100));
+        assert_eq!(go.budget, Some(Duration::from_millis(3300)));
         let go = parse_go(&["wtime", "0"], Color::White).unwrap();
         assert_eq!(go.budget, Some(Duration::ZERO));
         assert_eq!(go.limits.nodes, Some(0));

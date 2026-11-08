@@ -14,6 +14,7 @@ pub use mshogi_search::tori::MAX_NODES as TORI_MAX_NODES;
 use serde::{Deserialize, Serialize};
 /// Measured finite native Tori interactive work settings.
 pub const TORI_PLAY_LIMITS: crate::WorkLimits = crate::WorkLimits {
+    time_ms: None,
     depth: TORI_DEFAULT_LIMITS.depth,
     nodes: TORI_DEFAULT_LIMITS.nodes,
 };

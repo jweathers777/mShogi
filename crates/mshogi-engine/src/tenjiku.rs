@@ -14,6 +14,7 @@ pub use mshogi_search::tenjiku::MAX_NODES as TENJIKU_MAX_NODES;
 use serde::{Deserialize, Serialize};
 /// Measured finite native Tenjiku interactive work settings.
 pub const TENJIKU_PLAY_LIMITS: crate::WorkLimits = crate::WorkLimits {
+    time_ms: None,
     depth: TENJIKU_DEFAULT_LIMITS.depth,
     nodes: TENJIKU_DEFAULT_LIMITS.nodes,
 };

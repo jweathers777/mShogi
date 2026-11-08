@@ -14,6 +14,7 @@ pub use mshogi_search::chu::MAX_NODES as CHU_MAX_NODES;
 use serde::{Deserialize, Serialize};
 /// Measured finite native Chu interactive work settings.
 pub const CHU_PLAY_LIMITS: crate::WorkLimits = crate::WorkLimits {
+    time_ms: None,
     depth: CHU_DEFAULT_LIMITS.depth,
     nodes: CHU_DEFAULT_LIMITS.nodes,
 };

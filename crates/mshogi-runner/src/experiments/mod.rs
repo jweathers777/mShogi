@@ -36,7 +36,7 @@ pub fn template(executable: &str) -> Result<Config, RunnerError> {
         .to_str()
         .ok_or_else(|| err("executable path must be UTF8"))?
         .to_owned();
-    let players=[("candidate",1,512),("baseline-low",1,128),("baseline-deeper",2,512)].into_iter().map(|(id,depth,nodes)|Player{id:id.into(),executable:executable.clone(),build_provenance:"unverified declaration: replace with actual source/compiler/build receipt; executable SHA is observed automatically".into(),limits:PROFILES.iter().map(|p|ProfileLimits{profile:*p,work:WorkLimits{depth,nodes}}).collect()}).collect();
+    let players=[("candidate",1,512),("baseline-low",1,128),("baseline-deeper",2,512)].into_iter().map(|(id,depth,nodes)|Player{id:id.into(),executable:executable.clone(),build_provenance:"unverified declaration: replace with actual source/compiler/build receipt; executable SHA is observed automatically".into(),limits:PROFILES.iter().map(|p|ProfileLimits{profile:*p,work:WorkLimits{ time_ms: None,depth,nodes}}).collect()}).collect();
     let openings = PROFILES
         .iter()
         .map(|p| {
@@ -291,6 +291,12 @@ impl Player {
     }
 }
 fn valid_work(profile: RulesProfile, work: WorkLimits) -> bool {
+    // This existing experiment format promises deterministic depth/node work.
+    // Timed Chess execution is available through the child and UCI contracts;
+    // it must not silently become a deterministic native experiment.
+    if work.time_ms.is_some() {
+        return false;
+    }
     let (depth, nodes) = match profile.game() {
         mshogi_core::native::GameKind::Tori => {
             (mshogi_engine::TORI_MAX_DEPTH, mshogi_engine::TORI_MAX_NODES)

@@ -16,7 +16,11 @@ fn request() -> ExecutionRequest {
             session_version: 7,
             process_generation: 3,
             game: CanonicalRecord::chess(AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record()),
-            limits: WorkLimits { depth: 1, nodes: 0 },
+            limits: WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 0,
+            },
         },
     }
 }

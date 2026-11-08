@@ -1,4 +1,24 @@
-# Chess static evaluation baseline
+# Chess static evaluation
+
+## MSH-49 positional candidate
+
+The active Chess coordinator uses `chess_candidate::evaluate`, identity
+`mshogi.chess.tapered-position.v1`. It retains the material values below and
+returns separate material and positional contributions for each color. All
+parameters are original arithmetic heuristics, without trained weights or copied
+piece-square tables. Remaining non-pawn material determines a middle/endgame
+blend capped at the initial6400cp total.
+
+Terms cover knight/bishop central development, pawn advancement, isolated and
+doubled pawns, passed pawns, open/semi-open rook files, seventh-rank rooks, bishop
+pairs, middle-game king shelter/castling and endgame king centrality. Early queen
+development has a small penalty. The implementation documents each coefficient.
+These are static estimates only: native history, outcomes and claim policy take
+precedence in search. Color/rank reflection, hand-derived arithmetic, unchanged
+state and native terminal/claim regressions verify this separation. They do not
+measure strength; [MSH-49](m5/chess-strength.md) owns that evidence.
+
+## Frozen material baseline
 
 MSH-19 adds the native `mshogi-search` crate. `chess::evaluate(&Position)` returns White and Black material contributions; `Evaluation::score_for(Color)` subtracts the opponent's contribution. Positive scores favor the requested side. For a side-to-move score, pass `position.side_to_move()` explicitly. Identity: `mshogi.chess.material.v1`.
 

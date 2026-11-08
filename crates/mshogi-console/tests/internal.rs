@@ -77,9 +77,14 @@ fn real_bundled_entrypoint_echoes_context_and_plays_an_actual_legal_move() {
     };
     let game = AdjudicatedGame::replay_record(record).unwrap();
     assert!(game.position().legal_actions().contains(&action));
+    // Independently derived positional preference: Nb1-c3 increases its
+    // middle-game centrality contribution by44cp; lexical ties choose b1c3.
+    // This also proves the actual supervised child uses the active candidate,
+    // rather than accidentally retaining the material/full-width coordinator.
+    assert_eq!(action.to_string(), "b1c3");
     assert_eq!(telemetry.completed_depth, 1);
     assert_eq!(telemetry.nodes, 21);
-    assert_eq!(telemetry.score, Some(0));
+    assert_eq!(telemetry.score, Some(44));
     assert_eq!(
         telemetry.principal_variation,
         vec![EngineChoice::Move { action }]

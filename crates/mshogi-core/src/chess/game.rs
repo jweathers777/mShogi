@@ -168,6 +168,12 @@ impl Game {
         self.occurrences(&self.current_identity)
     }
 
+    // Necessary, not sufficient, for any current or intended threefold claim.
+    // Inspect the existing exact identity table; no additional cached state.
+    pub(super) fn has_repeated_identity(&self) -> bool {
+        self.occurrences.values().any(|&count| count >= 2)
+    }
+
     /// Check one action and atomically update position, history and occurrences.
     /// Failure, including counter overflow, leaves the entire game unchanged.
     pub fn apply(&mut self, action: Action) -> Result<(), ActionError> {

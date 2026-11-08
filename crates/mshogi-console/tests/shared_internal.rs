@@ -74,7 +74,8 @@ fn real_entrypoint_executes_both_native_games() {
             .contains(&action)
     );
     assert_eq!(telemetry.nodes, 21);
-    assert_eq!(telemetry.score, Some(0));
+    assert_eq!(action.to_string(), "b1c3");
+    assert_eq!(telemetry.score, Some(44));
     let shogi = context(2, true);
     bridge.submit(shogi.clone()).unwrap();
     let response = wait(&bridge);

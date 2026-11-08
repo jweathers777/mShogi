@@ -38,7 +38,7 @@ fn request_and_result_keep_exact_context_without_mutating_caller() {
     assert_eq!(completion.context(), &context);
     assert_eq!(
         completion.result().as_ref().unwrap(),
-        &search(&game, limits(1)).unwrap()
+        &mshogi_search::chess_candidate::search(&game, limits(1)).unwrap()
     );
     assert_eq!(coordinator.accept_result(&completion, &game, 42), Ok(()));
     assert!(coordinator.poll().is_none(), "single result consumed once");

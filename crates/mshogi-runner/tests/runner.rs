@@ -25,6 +25,7 @@ fn config(mode: &str) -> ExperimentConfig {
         paired: false,
         claim_policy: ClaimPolicy::AutoClaim,
         time_control: TimeControl::Untimed,
+        engine_work: None,
         work: WorkLimit {
             depth: Some(2),
             nodes: Some(1000),
@@ -610,4 +611,68 @@ fn shared_experiment_wrapper_uses_actual_existing_adapter_and_replays() {
     decoded.validate().unwrap();
     decoded.report_json.push(' ');
     assert!(decoded.validate().is_err());
+}
+
+#[test]
+fn participant_limits_follow_engine_across_color_pairs_and_replay() {
+    let mut c = config("mate");
+    c.paired = true;
+    c.engine_work = Some([
+        WorkLimit {
+            depth: Some(1),
+            nodes: Some(37),
+            movetime_ms: None,
+        },
+        WorkLimit {
+            depth: Some(3),
+            nodes: Some(997),
+            movetime_ms: None,
+        },
+    ]);
+    let encoded = serde_json::to_string(&c).unwrap();
+    assert_eq!(ExperimentConfig::from_json(&encoded).unwrap(), c);
+    let r = run(&c);
+    for g in &r.games {
+        let commands: Vec<_> = g
+            .transcript
+            .entries
+            .iter()
+            .filter(|e| e.phase == "go" && e.direction == TransportDirection::Command)
+            .collect();
+        assert_eq!(commands.len(), 2);
+        for entry in commands {
+            let w = c.work_for(entry.engine).unwrap();
+            assert_eq!(
+                entry.text,
+                format!("go depth {} nodes {}", w.depth.unwrap(), w.nodes.unwrap())
+            );
+        }
+    }
+    let mut wrong = r.clone();
+    let e = wrong.games[0]
+        .transcript
+        .entries
+        .iter_mut()
+        .find(|e| e.phase == "go")
+        .unwrap();
+    e.engine = 1 - e.engine;
+    let w = c.work_for(e.engine).unwrap();
+    e.text = format!("go depth {} nodes {}", w.depth.unwrap(), w.nodes.unwrap());
+    assert!(
+        wrong.replay().is_err(),
+        "a valid other-participant limit cannot authorize this actor"
+    );
+    let mut wrong = c.clone();
+    wrong.engine_work.as_mut().unwrap()[1].depth = Some(0);
+    assert!(wrong.validate().is_err());
+    let mut wrong = c.clone();
+    wrong.engine_work.as_mut().unwrap()[1] = WorkLimit {
+        depth: None,
+        nodes: None,
+        movetime_ms: None,
+    };
+    assert!(wrong.validate().is_err());
+    c.engine_work.as_mut().unwrap()[1].movetime_ms = Some(1);
+    assert!(!c.rerun_determinism_eligible());
+    assert_eq!(c.work_for(2), None);
 }

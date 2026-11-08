@@ -127,19 +127,21 @@ pub(crate) fn config_digest(config: &ExperimentConfig) -> String {
 }
 pub(crate) fn go_command(
     config: &ExperimentConfig,
+    engine: usize,
     remaining: Option<[u64; 2]>,
     active: Option<Color>,
     last_at: u64,
     dispatch: u64,
 ) -> String {
+    let work = config.work_for(engine).expect("admitted participant");
     let mut go = String::from("go");
-    if let Some(n) = config.work.depth {
+    if let Some(n) = work.depth {
         go.push_str(&format!(" depth {n}"));
     }
-    if let Some(n) = config.work.nodes {
+    if let Some(n) = work.nodes {
         go.push_str(&format!(" nodes {n}"));
     }
-    if let Some(n) = config.work.movetime_ms {
+    if let Some(n) = work.movetime_ms {
         go.push_str(&format!(" movetime {n}"));
     }
     if let (Some(mut balances), TimeControl::Increment { increment_ns, .. }) =
@@ -734,6 +736,7 @@ impl<'a> GameRun<'a> {
             let dispatch = self.now();
             let go = go_command(
                 self.config,
+                index,
                 self.game.remaining_ns(),
                 self.game.active(),
                 self.last_match_ns,
@@ -1245,6 +1248,7 @@ mod tests {
                 initial_ns: [50_000_000, 50_000_000],
                 increment_ns: 2_000_000,
             },
+            engine_work: None,
             work: WorkLimit {
                 depth: Some(2),
                 nodes: Some(1000),
@@ -1260,13 +1264,14 @@ mod tests {
         let c = config();
         let balances = [50_000_000, 50_000_000];
         assert_eq!(
-            go_command(&c, Some(balances), Some(Color::White), 0, 49_000_000),
+            go_command(&c, 0, Some(balances), Some(Color::White), 0, 49_000_000),
             "go depth 2 nodes 1000 wtime 1 btime 50 winc 2 binc 2"
         );
         assert_eq!(balances, [50_000_000, 50_000_000]);
         assert_eq!(
             go_command(
                 &c,
+                0,
                 Some([1_000_000, 50_000_000]),
                 Some(Color::White),
                 49_000_000,
@@ -1275,7 +1280,7 @@ mod tests {
             "go depth 2 nodes 1000 wtime 1 btime 50 winc 2 binc 2"
         );
         assert_eq!(
-            go_command(&c, Some(balances), Some(Color::Black), 0, 50_000_000),
+            go_command(&c, 0, Some(balances), Some(Color::Black), 0, 50_000_000),
             "go depth 2 nodes 1000 wtime 50 btime 0 winc 2 binc 2"
         );
     }

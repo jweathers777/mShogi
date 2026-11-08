@@ -182,7 +182,13 @@ impl Adapter {
         let args = &tokens[index + 1..];
         let result: Result<(), String> = match tokens[index] {
             "uci" => {
-                writeln!(out, "id name mShogi {}", env!("CARGO_PKG_VERSION"))?;
+                writeln!(
+                    out,
+                    "id name mShogi {} {} {}",
+                    env!("CARGO_PKG_VERSION"),
+                    mshogi_search::chess_candidate::SEARCH_ID,
+                    mshogi_search::chess_candidate::EVALUATOR_ID
+                )?;
                 writeln!(out, "id author John Weathers")?;
                 writeln!(
                     out,

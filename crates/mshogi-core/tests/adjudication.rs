@@ -329,3 +329,104 @@ fn policy_returns_the_exact_profile_priority_and_square_order() {
         })
     );
 }
+
+#[test]
+fn claim_catalog_prerequisite_shortcut_matches_individually_validated_requests() {
+    // The independent public single-request validator does not use the catalog
+    // shortcut. Exhaust every current/intended candidate in profile order.
+    fn check(g: &Game) {
+        let before = g.clone();
+        let mut actions = g.position().legal_actions();
+        actions.sort_by_key(|a| {
+            (
+                a.from.rank(),
+                a.from.file(),
+                a.to.rank(),
+                a.to.file(),
+                match a.promotion {
+                    None => 0,
+                    Some(Promotion::Queen) => 1,
+                    Some(Promotion::Rook) => 2,
+                    Some(Promotion::Bishop) => 3,
+                    Some(Promotion::Knight) => 4,
+                },
+            )
+        });
+        let mut expected = Vec::new();
+        for reason in [DrawClaim::Threefold, DrawClaim::FiftyMove] {
+            let req = request(g, reason, None);
+            if g.validate_claim(req).is_ok() {
+                expected.push(req);
+            }
+        }
+        for reason in [DrawClaim::Threefold, DrawClaim::FiftyMove] {
+            for &action in &actions {
+                let req = request(g, reason, Some(action));
+                if g.validate_claim(req).is_ok() {
+                    expected.push(req);
+                }
+            }
+        }
+        assert_eq!(g.available_claims(), expected, "{}", g.position().to_fen());
+        let replayed = g.record().replay_history().unwrap().game;
+        assert_eq!(replayed, *g);
+        assert_eq!(replayed.available_claims(), expected);
+        assert_eq!(*g, before);
+    }
+    // Independently established threshold, reset, promotion, EP, terminal and
+    // fullmove-overflow cases. At98 no one-step fifty claim; at99 quiet moves
+    // qualify; captures/pawns reset rather than increment the counter.
+    for clock in [0, 98, 99, 100, 149, 150] {
+        for board in [
+            "7k/8/8/8/8/8/8/KR6 w - -",
+            "7k/P7/8/8/8/8/8/KR6 w - -",
+            "7k/8/8/8/8/8/n7/KR6 w - -",
+            "7k/8/8/3pP3/8/8/8/KR6 w - d6",
+            "7k/8/8/8/8/8/8/KR6 b - -",
+            "7k/6Q1/5K2/8/8/8/8/8 b - -",
+        ] {
+            // A structurally admitted EP target requires the preceding pawn
+            // move's zero counter; it cannot coexist with clock99.
+            if board.ends_with("d6") && clock != 0 {
+                continue;
+            }
+            check(
+                &Game::from_fen(
+                    &format!("{board} {clock} 4294967295"),
+                    ClaimPolicy::AutoClaim,
+                )
+                .unwrap(),
+            );
+        }
+    }
+    // The seventh ply permits an intended third occurrence at halfmove7.
+    // Imports with the same complete FEN have no known earlier occurrences.
+    let mut g = Game::new(ClaimPolicy::ExplicitOnly);
+    check(&g);
+    for _ in 0..4 {
+        for text in ["g1f3", "g8f6", "f3g1", "f6g8"] {
+            g.apply(a(text)).unwrap();
+            check(&g);
+            check(&Game::from_fen(&g.position().to_fen(), ClaimPolicy::ExplicitOnly).unwrap());
+        }
+    }
+    while g.undo().is_some() {
+        check(&g);
+    }
+    assert_eq!(g, Game::new(ClaimPolicy::ExplicitOnly));
+    // Earlier identities may be repeated even when CURRENT identity is not.
+    let mut g =
+        Game::from_fen("6nk/8/8/8/8/8/8/KR4N1 w - - 0 1", ClaimPolicy::ExplicitOnly).unwrap();
+    for text in ["g1f3", "g8f6", "f3g1", "f6g8", "g1f3", "g8h6", "f3g1"] {
+        g.apply(a(text)).unwrap();
+    }
+    assert_eq!(g.current_occurrences(), 1);
+    assert!(
+        g.available_claims()
+            .contains(&request(&g, DrawClaim::Threefold, Some(a("h6g8"))))
+    );
+    check(&g);
+    for case in data()["cases"].as_array().unwrap() {
+        check(&fixture(case));
+    }
+}

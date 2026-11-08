@@ -131,8 +131,12 @@ pub struct ExperimentConfig {
     pub claim_policy: ClaimPolicy,
     /// Untimed or injected monotonic Fischer clocks.
     pub time_control: TimeControl,
-    /// Limits sent to each engine on each turn.
+    /// Shared default limits; `engine_work`, when present, supplies effective limits.
     pub work: WorkLimit,
+    /// Optional effective per-participant limits, indexed by engine, not color.
+    /// Absent preserves the shared limit and its historical configuration digest.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub engine_work: Option<[WorkLimit; 2]>,
     /// Total action-ply cap including the opening prefix, at most 512.
     #[serde(default = "default_plies")]
     pub max_plies: u32,
@@ -187,18 +191,20 @@ impl ExperimentConfig {
         if games * per_game > 120 * 1024 * 1024 {
             return err("aggregate report bound exceeds 120 MiB; reduce games or I/O caps");
         }
-        if self.work.depth.is_some_and(|n| n == 0 || n > 128) {
-            return err("depth must be 1..=128");
-        }
-        if self.work.movetime_ms.is_some_and(|n| n > 3_600_000) {
-            return err("movetime exceeds one hour");
-        }
-        if self.time_control == TimeControl::Untimed
-            && self.work.depth.is_none()
-            && self.work.nodes.is_none()
-            && self.work.movetime_ms.is_none()
-        {
-            return err("untimed experiments require a finite work/movetime limit");
+        for work in std::iter::once(self.work).chain(self.engine_work.into_iter().flatten()) {
+            if work.depth.is_some_and(|n| n == 0 || n > 128) {
+                return err("depth must be 1..=128");
+            }
+            if work.movetime_ms.is_some_and(|n| n > 3_600_000) {
+                return err("movetime exceeds one hour");
+            }
+            if self.time_control == TimeControl::Untimed
+                && work.depth.is_none()
+                && work.nodes.is_none()
+                && work.movetime_ms.is_none()
+            {
+                return err("untimed experiments require a finite work/movetime limit");
+            }
         }
         if let TimeControl::Increment { initial_ns, .. } = self.time_control
             && initial_ns.contains(&0)
@@ -238,9 +244,15 @@ impl ExperimentConfig {
     /// Eligibility only: engines must additionally honor their declarations.
     pub fn rerun_determinism_eligible(&self) -> bool {
         self.time_control == TimeControl::Untimed
-            && self.work.movetime_ms.is_none()
-            && (self.work.depth.is_some() || self.work.nodes.is_some())
+            && (0..2).all(|i| {
+                let work = self.work_for(i).expect("two participants");
+                work.movetime_ms.is_none() && (work.depth.is_some() || work.nodes.is_some())
+            })
             && self.engines.iter().all(|e| e.deterministic)
+    }
+    /// Actual effective limit for an admitted participant, independent of color.
+    pub fn work_for(&self, engine: usize) -> Option<WorkLimit> {
+        (engine < 2).then(|| self.engine_work.map_or(self.work, |limits| limits[engine]))
     }
 }
 

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "open-game",
+    "fen": null,
+    "moves": [
+      "e2e4",
+      "e7e5",
+      "g1f3",
+      "b8c6"
+    ]
+  },
+  {
+    "id": "queens-gambit",
+    "fen": null,
+    "moves": [
+      "d2d4",
+      "d7d5",
+      "c2c4",
+      "e7e6"
+    ]
+  },
+  {
+    "id": "english",
+    "fen": null,
+    "moves": [
+      "c2c4",
+      "e7e5",
+      "b1c3",
+      "g8f6"
+    ]
+  },
+  {
+    "id": "french",
+    "fen": null,
+    "moves": [
+      "e2e4",
+      "e7e6",
+      "d2d4",
+      "d7d5"
+    ]
+  }
+]

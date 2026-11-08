@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "task": "MSH-49.2",
-  "status": "approved_diagnostic_preparing",
+  "status": "done",
   "starting_revision": "0b3b4585c48619f1c9781eb3e623fb6d873342bc",
   "production_implementation": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
   "accepted_tested_source": "b8cc85167f85eb031830d5f5268c1f94520f8a25",
@@ -15,7 +15,7 @@
   },
   "budget": {
     "routine_limit_seconds": 900,
-    "charged_seconds": 5.840419957879931,
+    "charged_seconds": 494.88940828992054,
     "inflight": null,
     "runs": [
       {
@@ -48,6 +48,130 @@
         ],
         "replay_returncode": 0,
         "replay_stderr": ""
+      },
+      {
+        "phase": "diagnostic",
+        "folder": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-000",
+        "timeout_seconds": 1789.15958004212,
+        "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-000/report.json.gz",
+        "healthy": true,
+        "complete": true,
+        "returncode": 0,
+        "stdout": "",
+        "stderr": "",
+        "seconds": 142.34799579204991,
+        "report_sha256": "bf19b0562970470ed4dc3394bdde78ca83de088d8ecb6552bb5e44cddd847a2a",
+        "summary": {
+          "opening_id": "open-game",
+          "games": 2,
+          "wins": [
+            0,
+            2
+          ],
+          "draws": 0,
+          "unscored": 0,
+          "failures": 0
+        },
+        "pair_score": 0.0,
+        "stops": [
+          "chess_conclusion",
+          "chess_conclusion"
+        ],
+        "replay_returncode": 0,
+        "replay_stderr": ""
+      },
+      {
+        "phase": "diagnostic",
+        "folder": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-001",
+        "timeout_seconds": 1646.8115842500702,
+        "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-001/report.json.gz",
+        "healthy": true,
+        "complete": true,
+        "returncode": 0,
+        "stdout": "",
+        "stderr": "",
+        "seconds": 112.6472520828247,
+        "report_sha256": "95b683c9718c61b26c1b40b29a80f7ae50a46e2a71e0a2f1b10098fef4e694b5",
+        "summary": {
+          "opening_id": "queens-gambit",
+          "games": 2,
+          "wins": [
+            0,
+            2
+          ],
+          "draws": 0,
+          "unscored": 0,
+          "failures": 0
+        },
+        "pair_score": 0.0,
+        "stops": [
+          "chess_conclusion",
+          "chess_conclusion"
+        ],
+        "replay_returncode": 0,
+        "replay_stderr": ""
+      },
+      {
+        "phase": "diagnostic",
+        "folder": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-002",
+        "timeout_seconds": 1534.1643321672454,
+        "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-002/report.json.gz",
+        "healthy": true,
+        "complete": true,
+        "returncode": 0,
+        "stdout": "",
+        "stderr": "",
+        "seconds": 104.85011016624048,
+        "report_sha256": "92d58de3a91e81decfadb29bffc2ea6ed25e7052a311c24ba3a43093b5456a0b",
+        "summary": {
+          "opening_id": "english",
+          "games": 2,
+          "wins": [
+            0,
+            2
+          ],
+          "draws": 0,
+          "unscored": 0,
+          "failures": 0
+        },
+        "pair_score": 0.0,
+        "stops": [
+          "chess_conclusion",
+          "chess_conclusion"
+        ],
+        "replay_returncode": 0,
+        "replay_stderr": ""
+      },
+      {
+        "phase": "diagnostic",
+        "folder": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-003",
+        "timeout_seconds": 1429.314222001005,
+        "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-003/report.json.gz",
+        "healthy": true,
+        "complete": true,
+        "returncode": 0,
+        "stdout": "",
+        "stderr": "",
+        "seconds": 129.2036302909255,
+        "report_sha256": "9b109d87382c77586fb614fa228f68f5da3e480fb2773d46dac4dfc1ca4c1443",
+        "summary": {
+          "opening_id": "french",
+          "games": 2,
+          "wins": [
+            0,
+            2
+          ],
+          "draws": 0,
+          "unscored": 0,
+          "failures": 0
+        },
+        "pair_score": 0.0,
+        "stops": [
+          "chess_conclusion",
+          "chess_conclusion"
+        ],
+        "replay_returncode": 0,
+        "replay_stderr": ""
       }
     ],
     "accounting": "Approved1800s aggregate active local match invocation wall time, including all prior5.840419957879931s smoke and failures; no reset or concurrentmatches. Setup/build/replay/inspection notmatchwork.",
@@ -57,12 +181,12 @@
   "formal_roots": null,
   "formal_results": null,
   "acceptance": {
-    "1": "Owner-rescoped diagnostic pending actualgames/finalreview",
-    "2": "Owner-rescoped diagnostic pending actualgames/finalreview",
-    "3": "Owner-rescoped diagnostic pending actualgames/finalreview",
-    "4": "Owner-rescoped diagnostic pending actualgames/finalreview"
+    "1": "Supported: accepted49.1 engine/exactpins/resources andactualall522 go movetime1000 requests, no externaldepth/node handicap.",
+    "2": "Supported: explicitownerrescope to8\u201312diagnosticgames/1s/1800s,no statistics;8gamesactual,494.8894saggregateincloldsmoke.",
+    "3": "Supported:4exactreports/nativehistories/hash/controls/processcleanup, root+independent4native replay passes; all8SFmates, smokeunscoredseparate.",
+    "4": "Supported: finaldescriptivereport, practicallimitations/representative nativeverified lossmechanisms andShogi/Xiangqi handoff independentlyapproved; no ratings/statisticalclaims."
   },
-  "next": "Commit reviewed diagnostic inputs, execute fourpaired openings once within1800s including prior smoke, inspect results/depths/representative loss positions, independent review andnormal integration.",
+  "next": "MSH49.2 andparent49 initialconventionalbaseline complete. NextReady engineering tasks50Shogi/54Xiangqi (Shogifirst byordinal); deeperChessanalysis during55learnedphase. No furthermatches/Chessoptimization orothergameimplementation inthisassignment.",
   "local_checks": [
     {
       "command": "cargo build --release --locked -p mshogi-console --bin mshogi -p mshogi-runner --bin mshogi-match --example chess_study_roots",
@@ -105,6 +229,31 @@
     {
       "path": "docs/m5/evidence/msh49-2/diagnostic-controls.log.gz",
       "sha256_uncompressed": "e878759cd56c8cceb585504306c1ea49671ddd730f5bb33347cb8fc328936fbb"
+    },
+    {
+      "path": "docs/m5/evidence/msh49-2/observations.json.gz",
+      "sha256_uncompressed": "b3e5b98ccd32280371ab2304ca08363b795c465c558fad4ed255ec36a076bbcc",
+      "purpose": "Descriptive rawrequest/depth/time/move extraction; source_report_sha256 binds eachgame to report"
+    },
+    {
+      "path": "docs/m5/evidence/msh49-2/open-black-native.txt.gz",
+      "sha256_uncompressed": "57b0ad9e29c452fa2db29de713bf8e785540bd7ffb53a2f9bead487f7f79472d",
+      "purpose": "Authoritative nativeconsole replay/boardinspection only, no search/matches"
+    },
+    {
+      "path": "docs/m5/evidence/msh49-2/open-black-commands.txt.gz",
+      "sha256_uncompressed": "8a1da25782793bb6e2b1f0f32b27ed80c7760e9281dd453c04a2a481c0b0e924",
+      "purpose": "Authoritative nativeconsole replay/boardinspection only, no search/matches"
+    },
+    {
+      "path": "docs/m5/evidence/msh49-2/queen-black-native.txt.gz",
+      "sha256_uncompressed": "7f3f69b7b46f7a0769e1606554348067378a2fa52f535e05df76991b2d1984d7",
+      "purpose": "Authoritative nativeconsole replay/boardinspection only, no search/matches"
+    },
+    {
+      "path": "docs/m5/evidence/msh49-2/queen-black-commands.txt.gz",
+      "sha256_uncompressed": "5ceaa417d15caf867b0e16b11c12e87c1cf691fdd722bc3090ba8e213e79e63d",
+      "purpose": "Authoritative nativeconsole replay/boardinspection only, no search/matches"
     }
   ],
   "historical_preparation_findings": [
@@ -112,13 +261,134 @@
     "Owner rejected32game formal proposal before anyexecution; replaced with8game/1s/1800s diagnostic. Removed statistical branch/sampler and adapted existing launcher; no newproductionframework orenginechanges."
   ],
   "ci": "No production source changed; reuse acceptednative3OS atb8cc851, source/codeequivalence in49.1record. This task adds only offline measurement orchestration/protocol/docs, verifiedlocally; opponent remains optional outsidethisowner-requested study, notCI dependency.",
-  "proposed_protocol_sha256": "02361bbe2e1ae33121527097aa4c287ea32b62ce66d2cd6437cbcc28771bed77",
   "superseded_proposal": {
     "revision": "47f2383ca9e2355bd5ce3e2175ec35cc075f1e76",
     "protocol_sha256": "02361bbe2e1ae33121527097aa4c287ea32b62ce66d2cd6437cbcc28771bed77",
     "scope": "Unapproved32games/500ms/3600s formal statistical proposal superseded by explicit ownerreply; no formal seed/roots/results ever generated."
   },
-  "diagnostic_results": null,
+  "diagnostic_results": {
+    "attempted_pairs": 4,
+    "planned_pairs": 4,
+    "completed_pairs": 4,
+    "summaries": [
+      {
+        "opening_id": "open-game",
+        "games": 2,
+        "wins": [
+          0,
+          2
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      {
+        "opening_id": "queens-gambit",
+        "games": 2,
+        "wins": [
+          0,
+          2
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      {
+        "opening_id": "english",
+        "games": 2,
+        "wins": [
+          0,
+          2
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      {
+        "opening_id": "french",
+        "games": 2,
+        "wins": [
+          0,
+          2
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      }
+    ],
+    "scope": "Descriptive initial diagnostic; no statistical significance/interval/Elo or numerical strength acceptance.",
+    "mshogi_wins": 0,
+    "draws": 0,
+    "stockfish_wins": 8,
+    "unscored_diagnostic_games": 0,
+    "all_native_checkmates": true,
+    "diagnostic_match_seconds": 489.0489883320406,
+    "total_including_prior_smoke_seconds": 494.88940828992054,
+    "actual_uci_requests": 522,
+    "mshogi_requests": 259,
+    "stockfish_requests": 263,
+    "aggregate_cp_scored_turns": {
+      "0": {
+        "requests": 259,
+        "cp_scored_requests": 231,
+        "depth": {
+          "min": 2,
+          "median": 5,
+          "max": 7
+        },
+        "seldepth": {
+          "min": 12,
+          "median": 18,
+          "max": 22
+        },
+        "nodes": {
+          "min": 12984,
+          "median": 22139,
+          "max": 116018
+        },
+        "time": {
+          "min": 702,
+          "median": 1000,
+          "max": 1005
+        },
+        "wall_ms_all": {
+          "min": 703.143458,
+          "median": 1001.474792,
+          "max": 1006.108833
+        }
+      },
+      "1": {
+        "requests": 263,
+        "cp_scored_requests": 204,
+        "depth": {
+          "min": 17,
+          "median": 22.0,
+          "max": 36
+        },
+        "seldepth": {
+          "min": 19,
+          "median": 36.0,
+          "max": 56
+        },
+        "nodes": {
+          "min": 780626,
+          "median": 1003846.0,
+          "max": 1692100
+        },
+        "time": {
+          "min": 1000,
+          "median": 1000.0,
+          "max": 1002
+        },
+        "wall_ms_all": {
+          "min": 1.884666,
+          "median": 999.899666,
+          "max": 1011.3995
+        }
+      }
+    },
+    "interpretation": "Substantial practical gap in these eight games at equal1s allowance; descriptive only, no significance/interval/Elo/parity or generalized strength estimate."
+  },
   "previous_preparation_review": {
     "reviewer": "msh492_protocol_review, fresh read-only review",
     "verdict": "Approved preparation; no remaining technical finding. Actual study and final acceptance remain pending.",
@@ -128,8 +398,43 @@
   },
   "independent_review": {
     "reviewer": "msh492_protocol_review, read-only diagnostic delta review",
-    "verdict": "Preexecution diagnostic setup approved, no findings; final results/diagnostic observations still pending.",
+    "verdict": "Final acceptance approved for49.2 andowner-rescoped parent49; all4AC+applicable4DoD supported, no remaining findings. Normal evidence integration/push follows.",
     "checks": "Independently ran6offline tests/diffcheck; approvedprotocolsha matches,8planned games/1000ms/no depth-node handicap,1800s includesprior5.8404s smoke, pairedauthoredprefixes/no sampler/statisticalbranch, fullSF19pins unchanged.",
-    "source": "Reviewed working delta from47f2383, staticinputs to be committed beforeexecution."
-  }
+    "source": "Reviewed working delta from47f2383, staticinputs to be committed beforeexecution.",
+    "actual_receipts": "Read-only review independently reconciled all8games/fourpairs, raw+inner hashes, freeze/static/build/protocol source, allgo1000commands/no externaldepth/node cap, allnativeSFmates, cleanexits/zero failures/stderr/truncation. Independently replayed eachof4reports with nativeexperiment-external-replay in temporaryfolder; all exit0/no stderr, noengine launches. Exact494.88940828992054s inclprior5.840419957879931s smoke/no inflight. Finalreport/handoff review pending.",
+    "final_report": "Independently reconciled all8table plycounts/depthmedians and231/204 cp-turn metrics, all522 go1000commands, exact494.8894s charge/noinflight,9compressedartifacthashes andfreeze code/protocol/buildhashes. Verified bothnativeinspected losssequences/scoretransitions plusc-pawnpromotionmate; constrainedinterpretations exclude first/avoidableblunder andsingle-technique attribution. No significance/interval/Elo. Roadmap50/54/55handoff aligned.",
+    "executed": "Reviewer ran6offlinecontrols preexecution, read-only extraction/hash checks and4nativeoffline replaycommands; no matches/builds/CI."
+  },
+  "diagnostic_roots": {
+    "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/roots.json",
+    "sha256": "3baaed5b999da23c69c0bd2aab7dc36bb51fd720206f54f26ae0e5241b119780",
+    "selection": "Authored prefixes, no random sampler or seed"
+  },
+  "diagnostic_source": "cc2ec7c19655fa008b211039f49e1f7a75b9c8c0",
+  "source_equivalence": "All production code unchanged from accepted49.1. Pinned engine SHA identical4250eb9e...; runner buildsource0b3b458 metadata/sha retained. Currentmatchconfig/launcher frozenatcc2ec7c; final report/evidence edits do not alter tested engine/runner.",
+  "loss_observations": [
+    {
+      "game": "open-game/1, mShogiBlack",
+      "native_fen_after_17_Rfe8": "r3r1k1/2p2p1p/p2qb1pB/1p1p4/1b5Q/2NB4/PP3PPP/R3R1K1 w - - 3 18",
+      "sequence": "17...Rfe8 18.Qf6 Qf8 19.Bxf8 Bxf8",
+      "observation": "Queen conceded for bishop under kingside pressure; ownroot score changes -207cp(depth4) beforeQf6 to-640cp(depth5) atQf8. PreviousPV already includesQf6; listingmoveinPV didnotmeanaccuratelyvaluingconsequences.",
+      "limit": "Not proven first/avoidable mistake; no ablation or forced-best-defense analysis attributes searchpruning versus evaluation."
+    },
+    {
+      "game": "queens-gambit/1, mShogiBlack",
+      "native_fen_before_15_Qxa1": "rn3rk1/p4ppp/3bpP2/1Q6/3P4/2q2N2/5PPP/R1B2RK1 b - - 0 15",
+      "sequence": "15...Qxa1 16.Qg5 g6 17.Qh6 Bh2+ 18.Nxh2 Qd4 19.Qg7#",
+      "observation": "Ownrook-grab assessment+239cp(depth6); nextBlackturnreportsmate-3. Nativeboard/replay confirmsactualkingattack andmate.",
+      "limit": "This illustrates late recognition/overoptimistic material assessment, not proofQxa1wasfirstlosingmove oruniquelycausedloss."
+    }
+  ],
+  "definition_of_done": {
+    "1": "All4owner-rescoped AC have actual source/control/match/replay/diagnostic evidence; historicalproposal andunscoredsmoke preserved.",
+    "2": "Independent setup/delta/finalresults/report review approved; cleanupfinding resolved andtested beforematches.",
+    "3": "Currentdesign/roadmap/parent49 andexisting50/54/55 handoff updated toowner-directed sequence. M5 remainsunfinished.",
+    "4": "Reviewed executioninputs integrated/pushed cc2ec7c oncodex/rewrite. Final evidence/task completion is integrated by the commit containingthisrecord; its actualhash is discoverableinGit history/ownercompletionreport."
+  },
+  "integration_revision": "cc2ec7c19655fa008b211039f49e1f7a75b9c8c0",
+  "integration_note": "cc2ec7c is actual frozen diagnostic execution source. Engine/runner build0b3b458 remains unchanged, with acceptednative sourceb8cc851 equivalence. The final evidence-only integration commit is recorded in Git history and ownercompletionreport, not fabricated inside itself.",
+  "resumed_revision": "47f2383ca9e2355bd5ce3e2175ec35cc075f1e76"
 }

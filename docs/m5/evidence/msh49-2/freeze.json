@@ -1,0 +1,12 @@
+{
+  "protocol_sha256": "60d6c1413c354184d941a1a4293053ad051367c3d061090dd81293d47aa8f4ed",
+  "build_sha256": "a48f4614fa618d1017eb02887234318429d444d7e76864a221bdd7f79a697082",
+  "study_code_sha256": "1123ffc47fb52b269cfa05cdfe4a50430f71747c6b8f63a6ad9556c0fa5c3615",
+  "study_source": "cc2ec7c19655fa008b211039f49e1f7a75b9c8c0",
+  "approval": {
+    "owner": "John",
+    "decision": "Conduct initial diagnostic8\u201312games, pairedopenings, equalone-second thinking time, full-strengthStockfish19,30minute TOTAL matchwork. Report useful depths/performance/loss observations; no significance orElo. Then prioritizeShogi/Xiangqi anddeferdeeperChessanalysis tolearnedevaluation. Routine details autonomous.",
+    "selected_details": "8games/four familiar authored orthodox prefixes,1000ms each,noexternaldepth/node limits,existing pinnedengine/opponent/runner; no extraapprovalrequired.",
+    "approved_protocol_sha256": "60d6c1413c354184d941a1a4293053ad051367c3d061090dd81293d47aa8f4ed"
+  }
+}

@@ -24,7 +24,7 @@ const KING_OFFSETS: [(i8, i8); 8] = [
 ];
 const DIAGONALS: [(i8, i8); 4] = [(1, 1), (1, -1), (-1, -1), (-1, 1)];
 const ORTHOGONALS: [(i8, i8); 4] = [(0, 1), (1, 0), (0, -1), (-1, 0)];
-const PROMOTIONS: [Promotion; 4] = [
+pub(super) const PROMOTIONS: [Promotion; 4] = [
     Promotion::Queen,
     Promotion::Rook,
     Promotion::Bishop,

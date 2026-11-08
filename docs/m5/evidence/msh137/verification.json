@@ -1,0 +1,391 @@
+{
+  "schema": 1,
+  "task": "MSH-137",
+  "subtasks": [
+    "MSH-137.1",
+    "MSH-137.2",
+    "MSH-137.3"
+  ],
+  "status": "in_review_pending_actual_platform_ci",
+  "starting_revision": "24512d0f4247752cfb67c7a4e5a908bc0b1e1302",
+  "tested_source": null,
+  "source_manifest": {
+    "base": "24512d0f4247752cfb67c7a4e5a908bc0b1e1302",
+    "patch_sha256": "603ca1d536a909153dd7222db2d4f06d61b2ea35f95ff7c7b48df1523f6eeaed",
+    "source_files": {
+      "crates/mshogi-core/src/chess/action.rs": "aa01e4f43ac6dfbf6bf0475a341b0ce25b5027224c3b17879592c5e9932e3bc6",
+      "crates/mshogi-core/src/chess/adjudication.rs": "a769ff8d556d0cb1923f0eb28fb0dba96a9355b7133637f21345a85af14718e4",
+      "crates/mshogi-core/src/chess/attack.rs": "9d29b1bb5bcc1b903b308fb4518814351d46fd7e7f9f37e599cc85dd10610d4f",
+      "crates/mshogi-core/src/chess/attack_cache.rs": "81e77c5cd47c5ef7d91debfcf12962e9403f4f803ea36489524387ef962d5c70",
+      "crates/mshogi-core/src/chess/fen.rs": "af4ed5387b03b37d0e725bfe60d721cf93ee0dd352d199cde5476dbc8695fcbb",
+      "crates/mshogi-core/src/chess/game.rs": "d97380e75dd99c80132810caf983242dc27dc466fbe3b6cda68593661d4601eb",
+      "crates/mshogi-core/src/chess/generate.rs": "ad4ec3b8ea1608af81c47c68f36d39b3c26a1b8df7bc91ffe9cd02695b4396d9",
+      "crates/mshogi-core/src/chess/legal.rs": "aed75ad338e7abf0a26878d699517d1eecbc16f27255a80f4959ca66ad3a2da5",
+      "crates/mshogi-core/src/chess/mod.rs": "9867a0573af877598b50c3c9147a6cadcfbdf72f39f9a8af9908a004dd01e435",
+      "crates/mshogi-core/src/chess/search_access.rs": "6a2d51103dc189f4dc718ccedfac5532a8a53c1904fb122c07214e0aa8084ef3",
+      "crates/mshogi-core/tests/attacks.rs": "3215f927b34d6eed0e1b2248c5b9a9db3622c90a55a1cdb86830a92b7de1040c",
+      "crates/mshogi-core/tests/chess_search_access.rs": "9803649050312e587b125405baf8eeaa50fed047e249f7c1162b9fc448613c00",
+      "crates/mshogi-core/tests/chess_target_queries.rs": "d50a2730deee16c2b6fb6c1d3959f13f478c73d8041393a7a178063873d5005b",
+      "crates/mshogi-core/tests/game_history.rs": "eeaebde122fefc6b6d62b9d5c28bea9e067387e6cc2ac89b4791ee8a9ea3f051",
+      "crates/mshogi-search/examples/chess_cost_profile.rs": "58673e7dff3fcc8551f6858d22b4131559e7b559d83b43e6794f21793e88c41e",
+      "crates/mshogi-search/src/chess_conventional.rs": "0f8ab0dd32459edd69d361d3f4c459cf967f7d72f4337fb301668acc638a05bd",
+      "crates/mshogi-search/src/chess_conventional_eval.rs": "a5d727485c4f9387a8ff2d580e0ee9e471c8dd8f7acdedb615a44cdcc7d2cb85",
+      "crates/mshogi-search/src/chess_conventional_tests.rs": "2a47025010fca6e26e3fa88958c61d269e940c87ccc8f843b442d7f81effe2ae"
+    },
+    "profile_executable_sha256": "8137ed104daaa7b2f0f918f649fbe3568495d53824579d929c05fa99c36cf8cd"
+  },
+  "integration_branch": "codex/rewrite",
+  "scope": "Continued coherent conventional Chess engineering, owner-directed before cross-game transfer; no new match study. Historical49/49.1/49.2/136 unchanged.",
+  "environment": {
+    "os": "macOS27.0.1/26A434 ARM64",
+    "hardware": "Apple M1 Pro/32GiB shared unpinned local host",
+    "rustc": "1.99.1 (58cf8f9c3)",
+    "build": "ordinary cargo release --locked, no custom RUSTFLAGS"
+  },
+  "local_checks": [
+    {
+      "command": "cargo test --locked -p mshogi-core -p mshogi-search -p mshogi-engine -p mshogi-runner",
+      "exit": 0,
+      "artifact": "accepted-native-tests.log",
+      "passed": 670,
+      "failed": 0,
+      "ignored": 6
+    },
+    {
+      "command": "cargo test --locked -p mshogi-console --test uci",
+      "exit": 0,
+      "artifact": "accepted-uci.log",
+      "passed": 11,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session chess",
+      "exit": 0,
+      "artifact": "accepted-desktop-chess.log",
+      "passed": 29,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "exit": 0,
+      "artifact": "accepted-clippy.log",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "exit": 0,
+      "artifact": "accepted-format.log",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    }
+  ],
+  "earlier_broad_check": {
+    "artifact": "workspace-tests.log",
+    "passed": 1162,
+    "failed": 0,
+    "ignored": 11,
+    "source_manifest": "final-source.json",
+    "scope": "Earlier pre-compact/contact coherent checkpoint; not attributed to final source. Final full workspace coverage is required actual CI."
+  },
+  "correctness": {
+    "native": "29 independent diagrams/155 targeted queries,3712 attack-map expectations, metamorphic native walks, FEN/cache rebuild;163840 action/promotion/error comparisons against full public Position validator; hand-expected special-action/perft/terminal fixtures retained.",
+    "history": "Exact transposed M2 occurrence counts; constant-hash collisions and forced digest rejection; Full/proof/policy/rawEP/counter separation; prepared no-repeat/clock guards; second occurrence/intended claims, stale/foreign/corrupt token, actual history retention, undo/error/cancellation.",
+    "search": "Independent exhaustive exact oracle; actual one-node transposed cutoff; capacities1/3/4/5 and q/main exact budget isolation; mate-distance claims-before-pruning; no-result limits/cancellation/overflow, unkeyed q restoration, engine/UCI/desktop consumers.",
+    "tactical": "Seven independent mating mechanisms, three forced three-ply sacrifices with complete replies, knight fork/promotion/stalemate tests. Historical White plan explores255 positions/allBlack defences afterQxa1 Qg5 provingmate\u22646plies; engine afterQxa1 findsmate\u22647 atdepth4/200k and nativePVcheckmate. Original-root1s nowg7f6/-35cp/complete7.",
+    "evaluation": "Independent backward-support/passers/hostile promotion control/pressure arithmetic; KQ/KR king approach gains24endcp, bound remains<MAX_STATIC."
+  },
+  "profiling": {
+    "commands": [
+      "target/release/examples/chess_cost_profile 3",
+      "target/release/examples/chess_cost_profile 1 --timed",
+      "target/release/examples/chess_cost_profile 3 --depth=6 --nodes=300000 --table=4096",
+      "target/release/examples/chess_cost_profile 3 --depth=6 --nodes=300000 --table=16384"
+    ],
+    "final_bounds": "12queries depth8/20000visits;5timedqueries depth128/1Mvisits hard1000ms soft700ms; exactinputGame equality/nativePVreplay eachquery",
+    "comparison": [
+      {
+        "case": "standard",
+        "starting_median_ms": 379.060291,
+        "final_median_ms": 93.055333,
+        "walltime_ratio": 4.0734934665163145
+      },
+      {
+        "case": "developed",
+        "starting_median_ms": 412.813625,
+        "final_median_ms": 132.602458,
+        "walltime_ratio": 3.1131672159500994
+      },
+      {
+        "case": "recapture",
+        "starting_median_ms": 162.05566599999997,
+        "final_median_ms": 43.43575,
+        "walltime_ratio": 3.730928233079893
+      },
+      {
+        "case": "endgame",
+        "starting_median_ms": 92.08891700000001,
+        "final_median_ms": 32.558667,
+        "walltime_ratio": 2.8283994857651886
+      }
+    ],
+    "interpretation": "Baseline\u2192final policy/evaluation changed: descriptive throughput only, not strict equalwork/strength. Unchanged-policy native/hash/prepared intermediate pairs retain matching recorded result/PV/work; intermediate source completeness varies.",
+    "capacity": "All24queries complete6, samecase scores/PVs;4K\u219216K medianms44.659\u219245.865,80.335\u219279.348,28.599\u219228.745,184.304\u2192185.029;userCPU1.01sboth;RSS3981312\u21926127616. No meaningful gain, default4K retained.",
+    "final_rss_bytes": 4194304,
+    "cpu_samples": "cpu-summary/final-cpu-summary are short mixed-position intermediate stacks, qualitative only; inlining/partial coverage, not exact causal costs. No final CPU sample needed.",
+    "producers": [
+      {
+        "artifact": "accepted-timed.jsonl",
+        "queries": 5,
+        "query_seconds": 4.709944999999999,
+        "use": "final_isolated"
+      },
+      {
+        "artifact": "accepted.jsonl",
+        "queries": 12,
+        "query_seconds": 0.908057167,
+        "use": "final_isolated"
+      },
+      {
+        "artifact": "after.jsonl",
+        "queries": 12,
+        "query_seconds": 2.212655041,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "baseline.jsonl",
+        "queries": 12,
+        "query_seconds": 3.1467928709999997,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "cache-timed.jsonl",
+        "queries": 5,
+        "query_seconds": 4.84079975,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "cache.jsonl",
+        "queries": 12,
+        "query_seconds": 1.534519249,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "capacity-16k.jsonl",
+        "queries": 12,
+        "query_seconds": 1.01728667,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "capacity-4k.jsonl",
+        "queries": 12,
+        "query_seconds": 1.012557251,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "checkpoint-timed.jsonl",
+        "queries": 5,
+        "query_seconds": 5.0010034999999995,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "checkpoint.jsonl",
+        "queries": 12,
+        "query_seconds": 1.515057499,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "coherent.jsonl",
+        "queries": 12,
+        "query_seconds": 2.35884596,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "contended-timed.jsonl",
+        "queries": 5,
+        "query_seconds": 5.002082541,
+        "use": "excluded_contended_timing"
+      },
+      {
+        "artifact": "contended.jsonl",
+        "queries": 12,
+        "query_seconds": 0.9353400430000001,
+        "use": "excluded_contended_timing"
+      },
+      {
+        "artifact": "final-memory.jsonl",
+        "queries": 4,
+        "query_seconds": 0.43471275000000004,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "final-sampled.jsonl",
+        "queries": 48,
+        "query_seconds": 5.574832457000001,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "final-timed.jsonl",
+        "queries": 5,
+        "query_seconds": 4.860316125,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "final.jsonl",
+        "queries": 12,
+        "query_seconds": 1.3023142509999999,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "lazy-after.jsonl",
+        "queries": 12,
+        "query_seconds": 1.6339616670000001,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "memory-after.jsonl",
+        "queries": 4,
+        "query_seconds": 0.7964602089999999,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "memory-before-allowed.jsonl",
+        "queries": 4,
+        "query_seconds": 0.7326083760000001,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "memory-before.jsonl",
+        "queries": 4,
+        "query_seconds": 0.7386793739999999,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "packed.jsonl",
+        "queries": 12,
+        "query_seconds": 1.6530484159999999,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "prepared.jsonl",
+        "queries": 12,
+        "query_seconds": 1.3295993760000002,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "preview.jsonl",
+        "queries": 12,
+        "query_seconds": 1.3032204600000001,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "refined.jsonl",
+        "queries": 12,
+        "query_seconds": 2.382817418,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "sampled.jsonl",
+        "queries": 16,
+        "query_seconds": 3.5780223750000006,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "tactical.jsonl",
+        "queries": 12,
+        "query_seconds": 1.644605292,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "timed.jsonl",
+        "queries": 5,
+        "query_seconds": 4.883761583,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "tt-after.jsonl",
+        "queries": 12,
+        "query_seconds": 2.375486666,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "tt-final.jsonl",
+        "queries": 12,
+        "query_seconds": 2.3316460009999997,
+        "use": "historical_development"
+      },
+      {
+        "artifact": "tt-ordered.jsonl",
+        "queries": 12,
+        "query_seconds": 2.325361793,
+        "use": "historical_development"
+      }
+    ],
+    "total_queries": 338,
+    "total_recorded_query_seconds": 74.07639713100001,
+    "provenance_limits": "accepted/capacity/final source packets contain complete tracked+new module patches and hashes. Earlier cache/preview/prepared patches omit the then-untrackedattack_cache module; exploratory only, no complete reproducibility claim. Baseline uses starting production source plus diagnostic example/counters. Contended batches preserved/excluded from finaltimings. No duplicatecopies counted."
+  },
+  "matches": {
+    "count": 0,
+    "seconds": 0,
+    "aggregate_task_allowance_seconds": 900,
+    "formal_study": false,
+    "paid_compute": false
+  },
+  "historical_failures": [
+    "Reflection test ASCII-rank EP fixture TargetSyntax, corrected character formatting.",
+    "12-ply walk covered448 notasserted500; expanded16plies preservingbar.",
+    "New mate EP fixture incorrectly retainedd7pawn; nativeEnPassantState caught, corrected fixture.",
+    "Review found mate-distance window before claims; reordered native claims first, added99/100current/intendedAuto/Explicit regressions.",
+    "Review found contested promotion control mis-scored withfriendlysupport; hostileattack remainsunsafe, added bishop/rookfixture.",
+    "Suspectedgxf6defence afterQg5 isillegal nativeNonmovingKingAttacked; negative fixture and complete historicalproof replace incorrect assumption.",
+    "Focused intermediate compile/borrow corrections recorded in rawlogs; no failedreceipt overwritten.",
+    "Initialtime-l tool denied kern.clockrate after4validqueries; preservedmemory-before and successfulsameuserapprovedmeasurement.",
+    "Contended final timing batch preserved ascontended*.jsonl; isolatedfinalrerun accepted*.jsonl only."
+  ],
+  "reviews": [
+    {
+      "reviewer": "chess_native_research",
+      "scope": "native/state/history/equivalence",
+      "verdict": "Approved, no remaining native findings; all18manifesthashes matched. Reviewed cache/checkedtransitions/exactfuturecontext/previews/compactidentity/directcaptures/contacthelper. Forced multiplicity collision, duplicatedPath removal, Full/null coverage and incompletecontact docs resolved. No rules/history weakening.",
+      "limitations": "Full conservative prefix; TT ancestry uses additional memory beyond entry storage; contactpattern coverage incomplete. Read-only, no tests run by reviewer."
+    },
+    {
+      "reviewer": "chess_next_refinements",
+      "scope": "search/evaluation/guards/cancellation",
+      "verdict": "Approved, no remaining search/evaluation findings; threefilehashes matched. Claims-before-matewindow, contestedpasser and actualcontactchildcancel/overflow regressions resolve findings. TTphase/budgets/replacement/preview/sharedextensions/unwind coherent. Bounded threat coverage, no strength guarantee. Read-only, no tests run by reviewer."
+    },
+    {
+      "reviewer": "chess_maturity_assessment",
+      "scope": "fresh whole-engine practical maturity/source hashes",
+      "verdict": "approved subjectactual3OSCI/integration;18source hashes matched, no significant remaining architectural gap requiring anotherChessphase",
+      "limitations": [
+        "Bounded incomplete Queen-contact threat coverage",
+        "Selective search and untrained coefficients heuristic",
+        "Full adjudication conservative; game-specific native proof required for transfer",
+        "Four-positionlocal/capacity profiles establish neither universaloptimality nor strength"
+      ]
+    }
+  ],
+  "required_ci": {
+    "workflow": "rust.yml",
+    "jobs": [
+      "Rust (ubuntu-24.04)",
+      "Rust (macos-15)",
+      "Rust (windows-2022)"
+    ],
+    "status": "not_yet_dispatched",
+    "source": null
+  },
+  "unchanged_evidence": "No GUI/IPC/schema/rules/profile/resource-admission change; accepted packaged/game-specific evidence retained. No new GUI campaign.",
+  "remaining": "PlatformCI/final independent evidence reconciliation and normal integration; then Shogi50 followedXiangqi54, with nativehistory equivalence proved pergame. No learned research begun.",
+  "artifact": {
+    "file": "development-artifacts.tar.gz",
+    "sha256": "2b7b6e0fbf66116d7f5ad2ac90c62b1b3fff7dadf33724704c8a1dbe42c85691",
+    "bytes": 591871
+  }
+}

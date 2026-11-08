@@ -368,11 +368,15 @@ returns during learned-evaluation research. This supersedes the unapproved
 32-game formal proposal, without changing the six-game scope or authorizing
 additional formal studies.
 
-Owner follow-on: the bounded [Chess search cost checkpoint](m5/chess-search-costs.md)
-(MSH-136) precedes Shogi/Xiangqi transfer. Profile major native/search costs and
-correct practical redundant work while preserving authoritative rules, exact
-history and cancellation guarantees. It authorizes no further Chess matches,
-strength study, speculative optimization or universal engine redesign.
+Owner correction after MSH-136 (2026-11-08): that completed cost checkpoint does
+not establish conventional Chess maturity. MSH-137 continues native overhead,
+history-safe transposition reuse, selective-search efficiency and classical
+evaluation refinement as a coherent practical engine. Gate Shogi/Xiangqi transfer
+on an independent evidence-based practical-maturity assessment, not an algorithm
+inventory. Preserve completed work and the initial Stockfish diagnostic. No new
+formal study is authorized; routine matches remain bounded by the existing
+15-minute cumulative allowance without subtask resets. See the updated
+[roadmap](m5/strength-roadmap.md).
 
 M2 is refined in MSH-15–25 against the actual M1 implementation. The [match/history profile](rules/chess-match-v1.md) records the approved 2026-10-24 policy; MSH-26 supplies an opt-in exact dead-position/side-specific reachability algorithm, with explicit resource uncertainty and unchanged M2 defaults. M2 is closed with its [integration evidence](review/m2-closure.md). M3 is delivered through MSH-27–39 and persistence follow-up MSH-61 against the [desktop contract](desktop/m3-design.md), including all eleven desktop work areas and the historical initial untimed play batch (MSH-27–32). Its [integration verdict](review/m3-closure.md) and MSH-39 record the independent review, actual three-platform application evidence and final closure checks. Next work is M4 scope refinement; all six games and strong engines remain the product target.
 

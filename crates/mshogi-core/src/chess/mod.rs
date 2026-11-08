@@ -15,6 +15,7 @@ use std::fmt;
 mod action;
 mod adjudication;
 mod attack;
+mod attack_cache;
 mod completeness;
 mod fen;
 mod game;
@@ -35,7 +36,7 @@ pub use matchplay::*;
 pub use notation::ActionParseError;
 pub use perft::{DivideEntry, PerftError};
 pub use record::*;
-pub use search_access::{SearchCursor, SearchKey, SearchNode};
+pub use search_access::{SearchCursor, SearchKey, SearchNode, SearchPreview, SearchTurn};
 
 /// One of the two colors in orthodox chess.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash, Serialize, Deserialize)]
@@ -168,12 +169,14 @@ impl fmt::Display for CastlingRights {
 /// A locally validated analysis position under `mshogi.chess.position.v1`.
 ///
 /// Private state is a direct a1-to-h8 array plus the five remaining FEN fields.
-/// There are no incremental caches yet. `Eq` compares the entire saved-state
+/// Derived occupancy maps accelerate native geometry and restore with the
+/// canonical array. `Eq` compares those invariants and the entire saved-state
 /// tuple, including raw en passant target and both counters. It is **not**
 /// repetition equivalence, match-history equality, or a search-cache identity.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Position {
     board: [Option<Piece>; 64],
+    attacks: attack_cache::AttackCache,
     side_to_move: Color,
     castling_rights: CastlingRights,
     en_passant_target: Option<Square>,
@@ -182,6 +185,12 @@ pub struct Position {
 }
 
 impl Position {
+    fn set_piece(&mut self, square: Square, piece: Option<Piece>) {
+        self.attacks
+            .remove(square.index(), self.board[square.index()]);
+        self.board[square.index()] = piece;
+        self.attacks.insert(square.index(), piece);
+    }
     /// Inspect a piece without exposing mutable board access.
     pub fn piece_at(&self, square: Square) -> Option<Piece> {
         self.board[square.index()]

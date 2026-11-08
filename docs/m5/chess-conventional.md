@@ -1,4 +1,4 @@
-# Conventional Chess engine (MSH-49.1)
+# Conventional Chess engine (MSH-49.1, refined by MSH-136/137)
 
 The active native engine is `mshogi.chess.conventional.v1`, with evaluator
 `mshogi.chess.conventional-tapered.v1`. UCI, supervised play and read-only analysis
@@ -11,11 +11,11 @@ statistically validated competitive-strength claim.
 
 | Component | Implementation |
 | --- | --- |
-| Native search state | `mshogi_core::chess::SearchCursor` owns an exact private Game. One cached legal list feeds the existing native classification, outcome and ordered claim functions. Every board transition uses the same checked native resolution. Cache, history, Full-mode proof, hash and evaluation state restore on pop/error/stop. |
+| Native search state | `mshogi_core::chess::SearchCursor` owns an exact private Game. Lazy native turn metadata uses one legal witness where safe; claim-sensitive turns retain the complete native catalog. Derived occupancy/rays, target-only capture queries and checked prepared transitions avoid unrelated work. Every board transition uses the same checked native resolution. Cache, history, Full-mode proof, hash and evaluation state restore on pop/error/stop. |
 | Exact diagnostic | `SearchMode::Exact` uses PVS, deterministic ordering and collision-checked TT bounds without quiescence, check extensions or selective pruning. Independent exhaustive native fixtures compare exact scores with table reuse enabled/disabled. Original full-width/material and intermediate candidate APIs remain available. |
 | Main search | Iterative deepening, aspiration windows with widening, PVS re-search and TT ordering/bounds. Scores retain root-side perspective and mate-distance normalization. Only completed nominal iterations are published. |
-| Ordering | Legal TT move, good exchanges/promotions, quiet killers, quiet/continuation history, then losing captures; capture history and lexical ties are deterministic. A bounded least-valuable **legal** recapture sequence supplies an exchange estimate, including pins, EP and promotions. It is a heuristic, not exchange minimax or a legality oracle. |
-| Quiescence | Native captures/promotions and all legal check evasions, with guarded delta/SEE omissions. The ordinary tactical budget is16 additional plies; checked nodes continue evasions to the absolute128-board-ply ceiling. At that global ceiling a nonterminal state receives an approximate static horizon score, including in check; it never becomes a native outcome or fabricated evasion. |
+| Ordering | Legal TT move, good exchanges/promotions, quiet killers, quiet/continuation history, then losing captures; capture history and lexical ties are deterministic. Signed history gravity and quiet maluses supplement ordering. An admitted TT move is tried before sorting/SEE for unrelated moves. A bounded least-valuable **legal** recapture sequence supplies an exchange estimate, including pins, EP and promotions. It is a heuristic, not exchange minimax or a legality oracle. |
+| Quiescence | Native captures/promotions, bounded quiet checks and all legal check evasions, with separate guarded delta/SEE omissions. Confirmed supported Queen-contact threats suppress stand-pat and protect real defences; this is bounded coverage, not complete quiet-threat search. The ordinary tactical budget is16 additional plies; checked nodes continue evasions to the absolute128-board-ply ceiling. At that global ceiling a nonterminal state receives an approximate static horizon score, including in check; it never becomes a native outcome or fabricated evasion. |
 | Selectivity | Verified null probes, late quiet reductions with unreduced/PVS re-search, shallow futility, history/killers-guarded late quiet pruning, SEE omissions and up to4 check extensions per path. Check, native terminal/claim children, low material and mate-band guards protect sensitive cases. |
 | Classical evaluation | Inspectable tapered material, piece placement, pawn structure/passed pawns, activity/mobility, king shelter/attack pressure, threats and endgame conversion. Base material/placement/raw phase update incrementally; dynamic features use native geometric attack maps. Geometric mobility is not legal-move admission. No trained parameters, copied tables or model runtime. |
 
@@ -25,13 +25,23 @@ AutoClaim remains mandatory; optional claims compete at zero and win ties.
 An intended claim action is never played. A static zero is not a concluded draw.
 Only a native result at the actual request root can produce `Finished`.
 
-The TT contains at most4096 direct-mapped entries. Bounds require a
-collision-checked **complete root/history plus identical action prefix** and
-compatible extension depth; a position hash alone supplies only a legal ordering
-hint. This conservative choice sacrifices cross-history bound sharing. Persistent
-prefixes share root storage instead of cloning whole Games per entry. A fresh
-table/history starts for each request; incompatible profiles/claims/counters,
-unknown imported history and different engine options cannot share scores.
+The default TT retains4096 entries in buckets of at most four, with depth/age
+replacement and protection of current main entries against q-entry flooding.
+Explicit diagnostic options admit at most16384 entries; the short4K/16K test did
+not justify a larger default. Main and q bounds have separate depth namespaces;
+q bounds require the same remaining tactical budget. Every bound requires exact
+native context equality after fingerprint filtering. M2 retains current Position
+(including raw EP and both counters), immutable root policy/origin and occurrence
+multiplicities since the last pawn move, capture or castling-rights loss. Those
+boundaries make earlier Chess identities unreachable; complete Game history is
+still preserved. Repetition identities use lossless34-byte storage, not hash-only
+equality. Full adjudication retains complete prefix/proof provenance; synthetic
+probes have no bound key. A table starts afresh per request. Board-only matches
+supply ordering hints, never incompatible-history scores.
+
+Prepared children reuse only native checked effects/turn metadata under exact
+context equality and a narrowly proved claim-insensitive guard. Foreign/stale
+tokens re-admit the action normally. See the [refinement argument and evidence](chess-classical-refinement.md).
 
 Null probes use a detached native Position with the side changed and EP cleared.
 The actual Game/history is untouched; synthetic nodes have no canonical action,
@@ -44,7 +54,7 @@ not proof of a native result.
 
 ProbCut and singular extensions are excluded from this checkpoint. Short profiles
 show most work in quiescence/exchanges and relatively few reusable deep bounds;
-the full-history TT deliberately offers limited singular candidates. Adding
+exact history-sensitive excluded-move verification remains expensive. Adding
 calibrated probabilistic margins or excluded-move verification now would increase
 cost and history-sensitive complexity without established benefit. Their omission
 is explicit; the existing pruning package is not described as exact minimax.
@@ -109,8 +119,10 @@ One game reached a native mate; the other reached the 192-ply cap and remains
 unscored. Both histories replayed, without process or cleanup failures. These
 are development regressions, not a playing-strength estimate. MSH-49.2 owns the
 now-authorized8–12-game unrestricted Stockfish diagnostic at one second per move
-within30 minutes. Shogi/Xiangqi follow that baseline; deeper Chess strength
-analysis returns during learned evaluation.
+within30 minutes. The diagnostic is now complete. Owner direction subsequently required MSH-136
+and MSH-137 before cross-game transfer; the baseline alone did not establish
+classical maturity. The current refinement record supersedes the original
+immediate-transfer handoff while preserving all historical evidence.
 
 Algorithm research used the primary [Stockfish classical search](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/search.cpp),
 [ordering](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/movepick.cpp)

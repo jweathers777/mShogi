@@ -85,7 +85,88 @@ impl Position {
         self.legal_actions_matching(|action| action.to == target)
     }
 
+    /// Native legal captures (including EP) and every promotion choice. Filter
+    /// the existing candidates before checked resolution. This is a projection
+    /// of the full legal set, never permission to ignore quiet check evasions,
+    /// terminal classification, claims or other history-dependent admission.
+    pub fn captures_and_promotions(&self) -> Vec<Action> {
+        self.legal_actions_matching(|a| {
+            a.promotion.is_some()
+                || self.piece_at(a.to).is_some()
+                || (a.from.file() != a.to.file()
+                    && self
+                        .piece_at(a.from)
+                        .is_some_and(|p| p.kind == PieceKind::Pawn))
+        })
+    }
+
+    /// Complete legal captures ending on `target`, including EP and all capture
+    /// promotions. Target-centric native attack maps enumerate only possible
+    /// capturers, then the same checked resolver/effects enforce king safety.
+    /// Unlike `legal_actions_to`, this intentionally excludes quiet moves.
+    pub fn legal_captures_to(&self, target: Square) -> Vec<Action> {
+        if self
+            .piece_at(target)
+            .is_some_and(|p| p.color == self.side_to_move || p.kind == PieceKind::King)
+            || self.piece_at(target).is_none() && self.en_passant_target != Some(target)
+        {
+            return Vec::new();
+        }
+        let (base, king) = self.legal_query_base();
+        let mut origins = base.attacker_mask(target, base.side_to_move);
+        let mut result = Vec::new();
+        while origins != 0 {
+            let from = Square(origins.trailing_zeros() as u8);
+            origins &= origins - 1;
+            let piece = base.piece_at(from).expect("native attacker occupied");
+            if base.piece_at(target).is_none() && piece.kind != PieceKind::Pawn {
+                continue;
+            }
+            if piece.kind == PieceKind::Pawn && matches!(target.rank(), 0 | 7) {
+                for promotion in super::generate::PROMOTIONS {
+                    let action = Action {
+                        from,
+                        to: target,
+                        promotion: Some(promotion),
+                    };
+                    if base.permits_candidate(action, king) {
+                        result.push(action);
+                    }
+                }
+            } else {
+                let action = Action {
+                    from,
+                    to: target,
+                    promotion: None,
+                };
+                if base.permits_candidate(action, king) {
+                    result.push(action);
+                }
+            }
+        }
+        result
+    }
+
     fn legal_actions_matching(&self, keep: impl Fn(&Action) -> bool) -> Vec<Action> {
+        self.legal_candidates(keep).collect()
+    }
+
+    /// Whether any rule-legal action exists, using the same native checked
+    /// candidate pipeline as `legal_actions` and stopping at its first witness.
+    /// Counters remain representation-independent, just as for the full list.
+    pub fn has_legal_action(&self) -> bool {
+        self.legal_candidates(|_| true).next().is_some()
+    }
+
+    fn legal_candidates(&self, keep: impl Fn(&Action) -> bool) -> impl Iterator<Item = Action> {
+        let (base, king) = self.legal_query_base();
+        base.candidates()
+            .into_iter()
+            .filter(keep)
+            .filter(move |&action| base.permits_candidate(action, king))
+    }
+
+    fn legal_query_base(&self) -> (Self, Square) {
         // Counters never affect rule legality; normalize them on a private
         // clone so that only representation overflow is excluded from `apply`.
         // Sound while resolution reads counters only for overflow and structure
@@ -94,22 +175,14 @@ impl Position {
         let mut base = self.clone();
         base.halfmove_clock = 0;
         base.fullmove_number = 1;
-        base.candidates()
-            .into_iter()
-            .filter(keep)
-            .filter(|&action| base.clone().apply(action).is_ok())
-            .collect()
+        let king = base.king_square(base.side_to_move);
+        (base, king)
     }
 
     /// Whether the side to move's king is attacked by the opponent.
     pub fn in_check(&self) -> bool {
         let side = self.side_to_move;
-        let king = (0..64u8).map(Square).find(|&square| {
-            self.piece_at(square)
-                .is_some_and(|piece| piece.color == side && piece.kind == PieceKind::King)
-        });
-        // Validated positions always contain exactly one king of each color.
-        king.is_some_and(|square| self.is_square_attacked(square, side.opponent()))
+        self.is_square_attacked(self.king_square(side), side.opponent())
     }
 
     /// Classify the side to move as quiet, check, checkmate or stalemate.
@@ -123,7 +196,11 @@ impl Position {
     }
 
     pub(super) fn classify_with_actions(&self, actions: &[Action]) -> Classification {
-        match (self.in_check(), !actions.is_empty()) {
+        self.classify_with_existence(!actions.is_empty())
+    }
+
+    pub(super) fn classify_with_existence(&self, has_legal_action: bool) -> Classification {
+        match (self.in_check(), has_legal_action) {
             (false, true) => Classification::Quiet,
             (true, true) => Classification::Check,
             (true, false) => Classification::Checkmate,

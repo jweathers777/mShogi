@@ -89,6 +89,15 @@ fn exact_pvs_and_history_checked_table_match_independent_exhaustive_oracle() {
         assert_eq!(native, g);
         replay(&g, &a);
         replay(&g, &b);
+        for entries in [1, 3, 4, 5] {
+            let bounded = exact(&g, depth, entries);
+            assert_eq!(
+                bounded.result.score,
+                Some(want),
+                "{entries}-entry boundary: {fen}"
+            );
+            replay(&g, &bounded);
+        }
     }
     // A hand-solvable three-ply mate forces aspiration widening from centipawns
     // into the terminal band; failed windows must never be published as complete.
@@ -239,6 +248,7 @@ fn engine<'a>(
         captures: vec![0; 768],
         killers: vec![[None; 2]; 129],
         stats: SearchStats::default(),
+        generation: 0,
     }
 }
 #[test]
@@ -448,6 +458,7 @@ fn synthetic_counter_failure_abandons_probe_but_real_mate_and_cancellation_stay_
     let hash = e.cursor.position_hash();
     let index = e.table_index(hash).unwrap();
     e.table[index] = Some(Entry {
+        generation: 0,
         key: key.clone(),
         hash,
         depth: 0,
@@ -545,6 +556,7 @@ fn board_hash_collision_never_admits_a_foreign_history_bound_or_claim() {
     let hash = e.cursor.position_hash();
     let index = e.table_index(hash).unwrap();
     e.table[index] = Some(Entry {
+        generation: 0,
         key: foreign,
         hash,
         depth: 1,
@@ -563,6 +575,681 @@ fn board_hash_collision_never_admits_a_foreign_history_bound_or_claim() {
     assert_eq!(e.stats.tt_cutoffs, 0);
     assert!(matches!(v.pv.first(), Some(SearchChoice::Move(_))));
     assert_eq!(e.cursor.game(), Some(&imported));
+}
+
+#[test]
+fn native_compatible_transposed_history_reuses_a_completed_exact_bound() {
+    let g = game(STANDARD_START_FEN);
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Exact);
+    for text in ["g1f3", "g8f6", "b1c3", "b8c6", "e2e4"] {
+        e.push(text.parse().unwrap()).ok().unwrap();
+    }
+    let key = e.cursor.key();
+    let value = e.main(1, 5, -INF, INF, false, false, 4, None).ok().unwrap();
+    let mut native = e.cursor.game().unwrap().clone();
+    assert_eq!(value.score, oracle(&mut native, 1, 5));
+    for _ in 0..5 {
+        e.pop();
+    }
+    for text in ["b1c3", "b8c6", "g1f3", "g8f6", "e2e4"] {
+        e.push(text.parse().unwrap()).ok().unwrap();
+    }
+    assert_eq!(e.cursor.key(), key);
+    let cutoffs = e.stats.tt_cutoffs;
+    let before_nodes = e.work.nodes;
+    let reused = e.main(1, 5, -INF, INF, false, false, 4, None).ok().unwrap();
+    assert_eq!(reused.score, value.score);
+    assert_eq!(reused.pv, value.pv);
+    assert_eq!(e.stats.tt_cutoffs, cutoffs + 1);
+    assert_eq!(e.work.nodes, before_nodes + 1);
+    let mut replay = e.cursor.game().unwrap().clone();
+    for choice in reused.pv {
+        match choice {
+            SearchChoice::Move(a) => replay.apply(a).unwrap(),
+            SearchChoice::Claim(c) => replay.claim(c).unwrap(),
+        }
+    }
+    for _ in 0..5 {
+        e.pop();
+    }
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
+}
+
+#[test]
+fn quiescence_finds_bounded_quiet_mate_and_prunes_losing_or_hopeless_captures() {
+    let mut stop = || false;
+    for (fen, mate) in [
+        ("7k/8/5KQ1/8/8/8/8/8 w - - 0 1", "g6g7"),
+        ("8/8/8/8/8/5kq1/8/7K b - - 0 1", "g3g2"),
+    ] {
+        let g = game(fen);
+        let mut native = g.clone();
+        native.apply(mate.parse().unwrap()).unwrap();
+        assert_eq!(
+            native.outcome(),
+            Some(ChessOutcome::Checkmate {
+                winner: g.position().side_to_move()
+            })
+        );
+        let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+        let v = e.quiescence(0, -INF, INF, Q_PLIES, None).ok().unwrap();
+        assert_eq!(v.score, MATE_SCORE - 1);
+        let mut replay = g.clone();
+        for choice in v.pv {
+            if let SearchChoice::Move(a) = choice {
+                replay.apply(a).unwrap();
+            }
+        }
+        assert!(matches!(
+            replay.outcome(),
+            Some(ChessOutcome::Checkmate { .. })
+        ));
+        assert_eq!(e.cursor.game(), Some(&g));
+        assert_eq!(e.eval, EvalState::new(g.position()));
+    }
+    // Rxa2 wins100 then loses500 to Ra8: a negative native exchange. It
+    // neither checks nor concludes/claims, so no delta condition is needed.
+    let g = game("r6k/8/8/8/8/8/p7/R6K w - - 0 1");
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    let v = e.quiescence(0, -INF, INF, Q_PLIES - 2, None).ok().unwrap();
+    assert!(v.pv.is_empty());
+    assert_eq!(e.stats.see_pruned, 1);
+    assert_eq!(e.work.nodes, 1);
+    // An unrecaptured pawn still cannot bridge a very high alpha. Delta is
+    // independently useful even though the exchange estimate is positive.
+    let g = game("7k/8/8/8/8/8/p7/R6K w - - 0 1");
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    let v = e.quiescence(0, 5000, 5001, Q_PLIES - 2, None).ok().unwrap();
+    assert!(v.pv.is_empty());
+    assert_eq!(e.stats.see_pruned, 1);
+    assert_eq!(e.work.nodes, 1);
+    assert_eq!(e.cursor.game(), Some(&g));
+}
+
+#[test]
+fn admitted_hint_is_staged_before_unrelated_exchange_work_and_history_is_signed() {
+    let g = game("r6k/8/8/8/8/8/p7/R6K w - - 0 1");
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Exact);
+    let hint: Action = "h1g1".parse().unwrap();
+    let mut picker = MovePicker::new(e.cursor.node().actions.clone(), Some(hint));
+    assert_eq!(
+        picker.next(&mut e, 0, None).ok().flatten().unwrap().action,
+        hint
+    );
+    assert_eq!(e.stats.see_probes, 0, "no work for remaining capture yet");
+    let mut actions = vec![hint];
+    while let Some(m) = picker.next(&mut e, 0, None).ok().flatten() {
+        actions.push(m.action);
+    }
+    assert!(e.stats.see_probes > 0);
+    let expected = g.position().legal_actions();
+    assert_eq!(actions.len(), expected.len());
+    assert!(
+        expected
+            .iter()
+            .all(|a| actions.iter().filter(|b| *b == a).count() == 1)
+    );
+    let illegal: Action = "h1h8".parse().unwrap();
+    let picker = MovePicker::new(expected, Some(illegal));
+    assert!(
+        picker.hint.is_none(),
+        "hash hint is never legality authority"
+    );
+    let mut slot = 0;
+    history_update(&mut slot, 1000);
+    assert_eq!(slot, 1000);
+    history_update(&mut slot, -1000);
+    assert_eq!(slot, -62);
+    for _ in 0..1000 {
+        history_update(&mut slot, -1000);
+    }
+    assert!((-16_000..0).contains(&slot));
+}
+
+#[test]
+fn current_and_intended_claims_precede_mate_distance_window_pruning() {
+    let mut stop = || false;
+    for clock in [99, 100] {
+        for policy in [ClaimPolicy::AutoClaim, ClaimPolicy::ExplicitOnly] {
+            let g =
+                AdjudicatedGame::from_fen(&format!("7k/8/8/8/8/8/8/KR6 w - - {clock} 1"), policy)
+                    .unwrap();
+            for (alpha, beta) in [
+                (-MATE_SCORE, -MATE_SCORE + 1),
+                (MATE_SCORE - 2, MATE_SCORE - 1),
+            ] {
+                if policy == ClaimPolicy::ExplicitOnly && beta > 0 {
+                    continue;
+                }
+                let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+                let main = e
+                    .main(1, 8, alpha, beta, false, false, 4, None)
+                    .ok()
+                    .unwrap();
+                let quiet = e.quiescence(8, alpha, beta, Q_PLIES, None).ok().unwrap();
+                for v in [main, quiet] {
+                    assert_eq!(v.score, 0);
+                    let SearchChoice::Claim(claim) = v.pv[0] else {
+                        panic!("native claim required");
+                    };
+                    let mut native = g.clone();
+                    native.claim(claim).unwrap();
+                    assert!(matches!(
+                        native.outcome(),
+                        Some(ChessOutcome::Draw(DrawReason::Claimed(_)))
+                    ));
+                }
+                assert_eq!(e.cursor.game(), Some(&g));
+            }
+        }
+    }
+}
+
+#[test]
+fn quiescence_table_reuses_only_matching_native_context_and_remaining_budget() {
+    let g = game("6k1/5ppp/8/8/8/8/8/R5K1 w - - 0 1");
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    let first = e.quiescence(0, -INF, INF, Q_PLIES, None).ok().unwrap();
+    assert_eq!(first.score, MATE_SCORE - 1);
+    let nodes = e.work.nodes;
+    let second = e.quiescence(0, -INF, INF, Q_PLIES, None).ok().unwrap();
+    assert_eq!(second.score, first.score);
+    assert_eq!(second.pv, first.pv);
+    assert_eq!(e.work.nodes, nodes + 1);
+    assert_eq!(e.stats.q_tt_cutoffs, 1);
+    // This budget excludes quiet checks, so the earlier mate observation is
+    // not eligible even at the identical complete native history.
+    let limited = e.quiescence(0, -INF, INF, Q_PLIES - 2, None).ok().unwrap();
+    assert!(limited.score < MATE_BAND);
+    assert!(limited.pv.is_empty());
+    assert_eq!(e.stats.q_tt_cutoffs, 1);
+    e.mode = SearchMode::Exact;
+    let before = e.work.nodes;
+    let main = e.main(1, 0, -INF, INF, false, false, 4, None).ok().unwrap();
+    assert_eq!(main.score, MATE_SCORE - 1);
+    assert!(
+        e.work.nodes > before + 1,
+        "q bounds cannot satisfy main depth"
+    );
+    assert_eq!(e.stats.tt_hits, 0);
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
+}
+
+#[test]
+fn bounded_buckets_retain_deep_current_entries_then_retire_old_generations() {
+    let g = game(STANDARD_START_FEN);
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Exact);
+    e.table = vec![None; 4];
+    e.generation = 1;
+    let mut entries = Vec::new();
+    for (i, text) in ["e2e4", "d2d4", "g1f3", "b1c3", "c2c4"]
+        .into_iter()
+        .enumerate()
+    {
+        e.push(text.parse().unwrap()).ok().unwrap();
+        entries.push(Entry {
+            key: e.cursor.key().unwrap(),
+            hash: e.cursor.position_hash(),
+            depth: if i == 4 { 1 } else { 6 + i as i32 },
+            extensions: 4,
+            score: 0,
+            bound: Bound::Upper,
+            value: Value::leaf(0),
+            generation: 1,
+        });
+        e.pop();
+    }
+    for entry in entries.iter().take(4) {
+        e.store(entry.clone(), false);
+    }
+    assert!(e.table.iter().all(Option::is_some));
+    e.store(entries[4].clone(), false);
+    assert_eq!(e.stats.tt_store_refusals, 1);
+    assert_eq!(e.stats.tt_replacements, 0);
+    for entry in entries.iter().take(4) {
+        assert!(e.entry_index(entry.hash, Some(&entry.key), None).is_some());
+    }
+    e.generation = 3;
+    let mut fresh = entries[4].clone();
+    fresh.generation = 3;
+    e.store(fresh.clone(), false);
+    assert_eq!(e.stats.tt_replacements, 1);
+    assert!(e.entry_index(fresh.hash, Some(&fresh.key), None).is_some());
+    assert_eq!(
+        e.table.len(),
+        4,
+        "replacement never expands the admitted budget"
+    );
+    // Q observations may not flood out even shallow current main searches.
+    e.table.fill(None);
+    for mut entry in entries.iter().take(4).cloned() {
+        entry.depth = 1;
+        entry.generation = e.generation;
+        e.store(entry, false);
+    }
+    let refusals = e.stats.tt_store_refusals;
+    fresh.depth = -17;
+    fresh.extensions = 0;
+    e.store(fresh, true);
+    assert_eq!(e.stats.tt_store_refusals, refusals + 1);
+    assert!(
+        e.table
+            .iter()
+            .all(|slot| slot.as_ref().is_some_and(|entry| entry.depth == 1))
+    );
+}
+
+#[test]
+fn diverse_hand_solved_tactics_preserve_complete_native_actions_and_conclusions() {
+    // Original small mechanisms, not sampled strength/ Elo data. Each supplied
+    // witness is independently explained below and natively verified; search
+    // may choose another actual mate at the same distance.
+    for (name, fen, witness) in [
+        ("back rank", "6k1/5ppp/8/8/8/8/8/R5K1 w - - 0 1", "a1a8"),
+        (
+            "smothered knight",
+            "6rk/6pp/8/6N1/8/8/8/K7 w - - 0 1",
+            "g5f7",
+        ),
+        (
+            "discovered rook",
+            "3rkr2/3p1p2/8/8/8/8/4B3/4R1K1 w - - 0 1",
+            "e2b5",
+        ),
+        (
+            "EP discovered rook",
+            "3rkr2/5p2/8/3pP3/6B1/8/8/4R1K1 w - d6 0 1",
+            "e5d6",
+        ),
+        (
+            "castling rook",
+            "4rkr1/4p1p1/8/8/8/8/8/4K2R w K - 0 1",
+            "e1g1",
+        ),
+        ("promotion", "7k/2P5/6K1/8/8/8/8/8 w - - 0 1", "c7c8r"),
+        (
+            "stalemate avoidance",
+            "k7/8/1QK5/8/8/8/8/8 w - - 0 1",
+            "b6b7",
+        ),
+    ] {
+        // The trapped kings have no check evasion: home pawns/pieces obstruct
+        // exits in the first five (Bg4 covers the vacant d7 after EP); Kg6 covers
+        // both seventh-rank escapes in the
+        // promotion case; Kc6 protects Qb7 in the final corner pattern.
+        let g = game(fen);
+        let mut native = g.clone();
+        native.apply(witness.parse().unwrap()).unwrap();
+        assert_eq!(
+            native.outcome(),
+            Some(ChessOutcome::Checkmate {
+                winner: Color::White
+            }),
+            "witness {name}"
+        );
+        let r = search(
+            &g,
+            SearchLimits {
+                depth: 4,
+                nodes: Some(40_000),
+            },
+        )
+        .unwrap();
+        assert_eq!(r.result.score, Some(MATE_SCORE - 1), "{name}");
+        assert!(r.result.completed_depth >= 1);
+        let Some(SearchDecision::Choose(SearchChoice::Move(choice))) = r.result.decision else {
+            panic!("{name}: complete move required");
+        };
+        let mut played = g.clone();
+        played.apply(choice).unwrap();
+        assert_eq!(
+            played.outcome(),
+            Some(ChessOutcome::Checkmate {
+                winner: Color::White
+            }),
+            "selected {name}"
+        );
+        replay(&g, &r);
+    }
+    let mut stale = game("k7/8/1QK5/8/8/8/8/8 w - - 0 1");
+    stale.apply("b6c7".parse().unwrap()).unwrap();
+    assert_eq!(
+        stale.outcome(),
+        Some(ChessOutcome::Draw(DrawReason::Stalemate))
+    );
+    // Nf7+ attacks Kh8 and Qd8. A knight check cannot be blocked; every native
+    // reply moves the king and leaves Nxd8 winning the queen. Pa2 keeps the
+    // resulting material from being a native bare-minor dead-position draw.
+    let g = game("3q3k/8/8/4N3/8/8/P7/K7 w - - 0 1");
+    let fork: Action = "e5f7".parse().unwrap();
+    let mut checked = g.clone();
+    checked.apply(fork).unwrap();
+    assert_eq!(checked.position().classify(), Classification::Check);
+    for reply in checked.position().legal_actions() {
+        assert_eq!(
+            checked.position().piece_at(reply.from).unwrap().kind,
+            PieceKind::King
+        );
+        let mut line = checked.clone();
+        line.apply(reply).unwrap();
+        line.apply("f7d8".parse().unwrap()).unwrap();
+        assert_eq!(
+            line.position()
+                .piece_at(Square::new(3, 7).unwrap())
+                .unwrap()
+                .kind,
+            PieceKind::Knight
+        );
+    }
+    let r = search(
+        &g,
+        SearchLimits {
+            depth: 3,
+            nodes: Some(40_000),
+        },
+    )
+    .unwrap();
+    assert_eq!(
+        r.result.decision,
+        Some(SearchDecision::Choose(SearchChoice::Move(fork)))
+    );
+    assert!(r.result.score.unwrap() > 0);
+    replay(&g, &r);
+}
+
+#[test]
+fn forcing_three_ply_sacrifices_are_proved_against_every_native_defence() {
+    for (name, fen, first, reply, mate) in [
+        // After ...Bxd1 in the Legal pattern, Ne5 protects Bf7, coversd7;
+        // the bishop checks and Ke7 is the sole evasion. Nd5 then coversf6.
+        (
+            "Legal minor coordination",
+            "rn1qkbnr/ppp2p1p/3p2p1/4N3/2B1P3/2N5/PPPP1PPP/R1BbK2R w KQkq - 0 5",
+            "c4f7",
+            "e8e7",
+            "c3d5",
+        ),
+        // Qxf8+ deflects Kg8 onto f8; Re8 is protected by Bb5, so none of
+        // e8/e7/g8 is an escape and f7/g7 remain occupied by Black pawns.
+        (
+            "queen deflection",
+            "5rk1/4Qppp/8/1B6/8/8/8/4R1K1 w - - 0 1",
+            "e7f8",
+            "g8f8",
+            "e1e8",
+        ),
+        // Bc4 protects Qg8 so Kh8 cannot capture it. The forced rook capture
+        // smothers Kh8 behind Rg8/g7/h7, letting Nf7 deliver the final check.
+        (
+            "queen sacrifice smother",
+            "5r1k/6pp/4Q3/6N1/2B5/8/8/6K1 w - - 0 1",
+            "e6g8",
+            "f8g8",
+            "g5f7",
+        ),
+    ] {
+        let g = game(fen);
+        // Independently rule out a faster one-ply mate before asserting the
+        // exact mate-distance score of this forced three-ply witness.
+        for a in g.position().legal_actions() {
+            let mut line = g.clone();
+            line.apply(a).unwrap();
+            assert!(
+                !matches!(line.outcome(), Some(ChessOutcome::Checkmate { .. })),
+                "unexpected faster mate {name}: {a:?}"
+            );
+        }
+        let mut line = g.clone();
+        line.apply(first.parse().unwrap()).unwrap();
+        let replies: Vec<_> = line
+            .position()
+            .legal_actions()
+            .iter()
+            .map(ToString::to_string)
+            .collect();
+        assert_eq!(replies, [reply], "all defences {name}");
+        line.apply(reply.parse().unwrap()).unwrap();
+        line.apply(mate.parse().unwrap()).unwrap();
+        assert_eq!(
+            line.outcome(),
+            Some(ChessOutcome::Checkmate {
+                winner: Color::White
+            })
+        );
+        let r = search(
+            &g,
+            SearchLimits {
+                depth: 4,
+                nodes: Some(80_000),
+            },
+        )
+        .unwrap();
+        assert_eq!(r.result.score, Some(MATE_SCORE - 3), "{name}");
+        assert!(r.result.principal_variation.len() >= 3);
+        replay(&g, &r);
+        let mut played = g.clone();
+        for choice in r.result.principal_variation {
+            if let SearchChoice::Move(a) = choice {
+                played.apply(a).unwrap();
+            }
+        }
+        assert_eq!(
+            played.outcome(),
+            Some(ChessOutcome::Checkmate {
+                winner: Color::White
+            })
+        );
+    }
+}
+
+#[test]
+fn historical_attack_null_mate_threat_only_extends_real_search_within_shared_budget() {
+    let mut g = game("rn3rk1/p4ppp/3bpP2/1Q6/3P4/2q2N2/5PPP/R1B2RK1 b - - 0 15");
+    g.apply("c3a1".parse().unwrap()).unwrap();
+    g.apply("b5g5".parse().unwrap()).unwrap();
+    // This is a threat, not a claimed forced mate: if Black passed, Qxg7#
+    // would be protected by Pf6, and Qg7 coversf8/h8 while f7/h7 are blocked.
+    let mut cursor = SearchCursor::new(&g);
+    assert!(cursor.push_null());
+    assert!(cursor.game().is_none());
+    let mut hypothesis = cursor.position().clone();
+    hypothesis.apply("g5g7".parse().unwrap()).unwrap();
+    assert_eq!(hypothesis.classify(), Classification::Checkmate);
+    assert!(cursor.pop());
+    assert_eq!(cursor.game(), Some(&g));
+    // Capturing Pf6 does not save the position: ...gxf6 would vacate g7
+    // and expose Kg8 directly on Qg5's file. Native admission rejects it.
+    let mut defence = g.clone();
+    assert!(matches!(
+        defence.apply("g7f6".parse().unwrap()),
+        Err(mshogi_core::chess::PlayError::Action(
+            mshogi_core::chess::ActionError::IllegalPosition(_)
+        ))
+    ));
+    assert_eq!(defence, g);
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    let probe = e.probe_null(1, 2, 0, 1, None).ok().flatten().unwrap();
+    assert!(probe.score >= MATE_BAND);
+    assert_eq!(e.cursor.game(), Some(&g));
+    e.work.limit = Some(100_000);
+    let real = e.main(4, 2, -1, 0, false, true, 1, None).ok().unwrap();
+    assert!(e.stats.threat_extensions >= 1);
+    assert!(e.work.seldepth <= MAX_PLY);
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
+    if let Some(SearchChoice::Move(a)) = real.pv.first() {
+        let mut native = g.clone();
+        native.apply(*a).unwrap();
+    }
+    let mut limited = engine(&g, &mut stop, SearchMode::Conventional);
+    let _ = limited.main(4, 2, -1, 0, false, true, 0, None);
+    assert_eq!(
+        limited.stats.threat_extensions, 0,
+        "no credit means no threat extension"
+    );
+    assert_eq!(limited.cursor.game(), Some(&g));
+}
+
+#[test]
+fn practical_pawn_promotion_chooses_material_without_fabricating_a_native_win() {
+    let g = game("7k/P7/K7/8/8/8/8/8 w - - 0 1");
+    let r = search(
+        &g,
+        SearchLimits {
+            depth: 1,
+            nodes: Some(10_000),
+        },
+    )
+    .unwrap();
+    let queen: Action = "a7a8q".parse().unwrap();
+    assert_eq!(
+        r.result.decision,
+        Some(SearchDecision::Choose(SearchChoice::Move(queen)))
+    );
+    let mut played = g.clone();
+    played.apply(queen).unwrap();
+    assert!(
+        played.outcome().is_none(),
+        "a static conversion preference is not adjudication"
+    );
+    replay(&g, &r);
+    let mut minor = g.clone();
+    minor.apply("a7a8n".parse().unwrap()).unwrap();
+    assert_eq!(
+        minor.outcome(),
+        Some(ChessOutcome::Draw(DrawReason::DeadPosition))
+    );
+}
+
+#[test]
+fn historical_quiet_mating_plan_is_proved_against_every_native_defence() {
+    fn prove(g: &AdjudicatedGame, plan: &[Action], left: u8, visits: &mut u32) -> Result<bool, ()> {
+        *visits += 1;
+        if *visits > 20_000 {
+            return Err(());
+        }
+        if let Some(outcome) = g.outcome() {
+            return Ok(outcome
+                == ChessOutcome::Checkmate {
+                    winner: Color::White,
+                });
+        }
+        if left == 0 {
+            return Ok(false);
+        }
+        if g.position().side_to_move() == Color::White {
+            for &a in plan {
+                let mut child = g.clone();
+                if child.apply(a).is_ok() && prove(&child, plan, left - 1, visits)? {
+                    return Ok(true);
+                }
+            }
+            Ok(false)
+        } else {
+            if !g.available_claims().is_empty() {
+                return Ok(false);
+            }
+            for a in g.position().legal_actions() {
+                let mut child = g.clone();
+                child.apply(a).unwrap();
+                if !prove(&child, plan, left - 1, visits)? {
+                    return Ok(false);
+                }
+            }
+            Ok(true)
+        }
+    }
+    let mut g = game("rn3rk1/p4ppp/3bpP2/1Q6/3P4/2q2N2/5PPP/R1B2RK1 b - - 0 15");
+    for a in ["c3a1", "b5g5"] {
+        g.apply(a.parse().unwrap()).unwrap();
+    }
+    let plan: Vec<Action> = ["g5g7", "h6g7", "g5h6", "f3h2"]
+        .iter()
+        .map(|a| a.parse().unwrap())
+        .collect();
+    let mut visits = 0;
+    let result = prove(&g, &plan, 6, &mut visits);
+    println!("historical fixed White plan / all native Black actions: {result:?}, visits={visits}");
+    assert_eq!(
+        result,
+        Ok(true),
+        "explicit White plan covers every native Black reply"
+    );
+}
+
+#[test]
+fn quiet_contact_threat_search_finds_the_proved_historical_mate_without_a_material_fallback() {
+    let mut g = game("rn3rk1/p4ppp/3bpP2/1Q6/3P4/2q2N2/5PPP/R1B2RK1 b - - 0 15");
+    g.apply("c3a1".parse().unwrap()).unwrap();
+    let original = g.clone();
+    let r = search(
+        &g,
+        SearchLimits {
+            depth: 4,
+            nodes: Some(200_000),
+        },
+    )
+    .unwrap();
+    println!("proved historical attack: {:?}, {:?}", r.result, r.stats);
+    assert!(r.result.score.is_some_and(|s| s >= MATE_SCORE - 7));
+    assert!(r.stats.quiet_threat_moves > 0 || r.stats.threat_protected_moves > 0);
+    replay(&g, &r);
+    let mut played = g.clone();
+    for choice in r.result.principal_variation {
+        if let SearchChoice::Move(a) = choice {
+            played.apply(a).unwrap();
+        }
+    }
+    assert_eq!(
+        played.outcome(),
+        Some(ChessOutcome::Checkmate {
+            winner: Color::White
+        })
+    );
+    assert_eq!(g, original);
+}
+
+#[test]
+fn contact_mate_candidates_preserve_child_cancellation_and_actual_counter_errors() {
+    let g = game("7k/8/5KQ1/8/8/8/8/8 w - - 0 1");
+    let mut polls = 0;
+    let mut stop = || {
+        polls += 1;
+        polls >= 2
+    };
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    let key = e.cursor.key();
+    assert!(matches!(
+        e.quiescence(0, -INF, INF, Q_PLIES, None),
+        Err(Halt::Limit(SearchStatus::Stopped))
+    ));
+    assert_eq!(
+        e.work.nodes, 1,
+        "stop at child's poll after native action was admitted"
+    );
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.cursor.key(), key);
+    assert_eq!(e.eval, EvalState::new(g.position()));
+    assert_eq!(e.cursor.depth(), 0);
+    let g = game("8/8/8/8/8/5kq1/8/7K b - - 0 4294967295");
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    assert!(matches!(
+        e.quiescence(0, -INF, INF, Q_PLIES, None),
+        Err(Halt::Error(SearchError::Transition(
+            mshogi_core::chess::PlayError::Action(mshogi_core::chess::ActionError::CounterOverflow)
+        )))
+    ));
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
+    assert_eq!(e.cursor.depth(), 0);
 }
 
 #[test]

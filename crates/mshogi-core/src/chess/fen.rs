@@ -189,6 +189,7 @@ impl Position {
         }
 
         let candidate = Self {
+            attacks: super::attack_cache::AttackCache::from_board(&board),
             board,
             side_to_move,
             castling_rights,

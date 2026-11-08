@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "task": "MSH-49",
-  "status": "in_progress_approved_study",
+  "status": "in_progress_budget_amendment_pending_and_native_ci_running",
   "starting_revision": "05eeba326341fb65efa0e60f2641795c5276e863",
   "branch": "codex/rewrite",
   "scope": "Owner-approved conventional Chess candidate and frozen paired study; prior claim-admission correction retains exact source evidence; no strength acceptance yet",
@@ -366,8 +366,8 @@
     "4": "Reviewedsource anddurabledevelopment reports; finalstrength/source/platform/evidencereconciliation pending"
   },
   "not_run": [
-    "formal held-out study",
-    "final candidate three-platform native CI",
+    "formal held-out study (blocked pending owner budget decision before seed)",
+    "final candidate native CI completion (running, not passed yet)",
     "training/modelwork (out of scope)",
     "new packaged GUIcampaign (not required)"
   ],
@@ -388,16 +388,19 @@
   ],
   "handoff": {
     "owner_decision": "Explicitapproval received; proceed approvedstudy, no furtherbar/budgetapproval required unless scopechanges",
-    "next_action": "Complete candidate/harness correctness anddevelopment, freezecandidate+sampler+protocol+dev artifacts, thenonefixedheldoutstudywithinbudget; no postholdout tuning",
-    "production_progress": "Alpha-beta/transparent positional candidate implemented in shared Chess coordinator; per-participant existingUCIlimits and native claim-query prerequisite optimization under focused independent review; no release-strength verdict.",
+    "next_action": "Reconcile nativeCI42469534590 actual source/jobs; await owner reply to prospective4hour total-budget amendment. Original2hour cap remains binding. No formal seed/roots generated. If approved preserve original frozen protocol/history and explicitly record prospectivebudget-only amendment before onefresh fixedstudy. If notapproved retainunfinished status; never lower samples/gates/visits or use development asacceptance.",
+    "production_progress": "Conventionalcandidate integrated+pushed at7818c3371758cee8e9624b58b0edb1073c32c89d; correctness/source/provenance independently approved; no strength acceptance yet.",
     "branch": "codex/rewrite",
     "integrated_common_checkpoint": "926ae8f60eee1a05f02fb7cff36b7bd1d924a992",
-    "no_other_tasks_started": true
+    "no_other_tasks_started": true,
+    "source_checkpoint": "7818c3371758cee8e9624b58b0edb1073c32c89d",
+    "candidate_freeze": "study/candidate-freeze.json",
+    "charged_seconds": 971.4862487493083
   },
   "candidate_preformal": {
     "search": "mshogi.chess.alpha-beta-capture-order.v1",
     "evaluator": "mshogi.chess.tapered-position.v1",
-    "source_state": "Working production source based on7004d47; exact overrides/executable hashes in development/v3-artifacts.json. Clean integration source to be recorded after commit.",
+    "source_state": "Integrated and pushed exact production source 7818c3371758cee8e9624b58b0edb1073c32c89d; clean release build, artifacts frozen before any holdout in study/candidate-freeze.json.",
     "local_environment": "macOS27.0.1 AppleM1Pro arm64; rustc1.99.1; Node24.21.0 satisfies desktop package24.x range",
     "checks": [
       {
@@ -434,6 +437,10 @@
       {
         "command": "npm run check; npm test -- src/product/NativeSessionPanels.test.tsx src/analysisPresentation.test.ts",
         "outcome": "Passed typecheck and36tests; Node24.21.0"
+      },
+      {
+        "command": "Final clean release sampler12development roots + cmp frozen catalog; cargo test --locked -p mshogi-runner --example chess_study_roots",
+        "outcome": "Byte-identical development roots;2native sampler tests passed. No heldout roots generated."
       }
     ],
     "independent_review": {
@@ -449,6 +456,70 @@
       "ledger": "study/execution.json",
       "formal_seed_generated": false,
       "budget_feasibility": "Point forecast exceeds approved7200s; ownerasked about14400s total before anyholdout. No amendment inferred."
+    },
+    "source": "7818c3371758cee8e9624b58b0edb1073c32c89d",
+    "freeze": "study/candidate-freeze.json",
+    "independent_artifact_reconciliation": {
+      "reviewer": "Fresh read-only msh49_candidate_review followup",
+      "verdict": "Approved/no discrepancy",
+      "scope": "Committed source/tree and all3final frozen artifact hashes; v3source hashes matchcommit; candidatebinary sameasv3, finalrunner distinctfromdevelopmentrunner; all9developmentpairreport raw/inner hashes+identities/summaries/nativeconclusions; ledger recomputes971.4862487493083s",
+      "limitation": "No finalstrength verdict or platform inference"
+    }
+  },
+  "candidate_ci": {
+    "source": "7818c3371758cee8e9624b58b0edb1073c32c89d",
+    "status": "in_progress",
+    "run_id": 42469534590,
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/42469534590",
+    "attempt": 1,
+    "required": [
+      "Rust(ubuntu-24.04)",
+      "Rust(macos-15)",
+      "Rust(windows-2022)"
+    ],
+    "jobs": [
+      {
+        "id": 128696846118,
+        "name": "Rust (macos-15)",
+        "status": "in_progress",
+        "conclusion": null,
+        "runner_id": 1000002739,
+        "runner_name": "GitHub Actions 1000002739",
+        "labels": [
+          "macos-15"
+        ],
+        "head_sha": "7818c3371758cee8e9624b58b0edb1073c32c89d"
+      },
+      {
+        "id": 128696846383,
+        "name": "Rust (windows-2022)",
+        "status": "in_progress",
+        "conclusion": null,
+        "runner_id": 1000002741,
+        "runner_name": "GitHub Actions 1000002741",
+        "labels": [
+          "windows-2022"
+        ],
+        "head_sha": "7818c3371758cee8e9624b58b0edb1073c32c89d"
+      },
+      {
+        "id": 128696846507,
+        "name": "Rust (ubuntu-24.04)",
+        "status": "in_progress",
+        "conclusion": null,
+        "runner_id": 1000002743,
+        "runner_name": "GitHub Actions 1000002743",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "head_sha": "7818c3371758cee8e9624b58b0edb1073c32c89d"
+      }
+    ],
+    "monitor": "One bounded completion-aware observer, local execsession85021; /private/tmp/msh49/monitor-final.py andci-final/{run,jobs}.json. Check completion before further wait; no retries started. Source/run are durableauthority.",
+    "unrequired_desktop": {
+      "run_id": 42469534578,
+      "status": "cancellation_requested",
+      "reason": "No new packagedGUIcampaign required; actual analysisfixture andaffected frontend/typechecks passed; native3OS is declared required gate"
     }
   }
 }

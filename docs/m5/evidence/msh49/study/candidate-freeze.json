@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "purpose": "Final candidate/source/executable freeze BEFORE any heldout seed; budget amendment unresolved, no formal roots/evaluation",
+  "source": "7818c3371758cee8e9624b58b0edb1073c32c89d",
+  "source_tree": "9f36d453285dcc479907d2a6d242ba95c849515e",
+  "frozen_utc": "2026-11-08T10:00:59.940486+00:00",
+  "production_source_clean": true,
+  "command": "cargo build --release --locked -p mshogi-console --bin mshogi -p mshogi-runner --bin mshogi-match --example chess_study_roots",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "flags": "ordinary release, no custom Rust flags",
+  "search": "mshogi.chess.alpha-beta-capture-order.v1",
+  "evaluator": "mshogi.chess.tapered-position.v1",
+  "artifacts": {
+    "candidate": {
+      "path": "/private/tmp/msh49/final/mshogi",
+      "sha256": "9ba4dbd6c2539f78dde97f51e7c3932209640332a1c227b89d4ad4481e286793"
+    },
+    "runner": {
+      "path": "/private/tmp/msh49/final/mshogi-match",
+      "sha256": "9c8598ad4260bb3f88c23d7cdd15346df0ea56b5b7397933a5960d325ace3dcb"
+    },
+    "sampler": {
+      "path": "/private/tmp/msh49/final/chess_study_roots",
+      "sha256": "03fb35718d9bce83220aa4e4943192da8a03efecac21314023e8d9c85a47516a"
+    }
+  }
+}

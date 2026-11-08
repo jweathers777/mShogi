@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-08T09:59:00Z'
+updated_date: '2026-11-08T10:03:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -61,4 +61,6 @@ Approved protocol/sampler/dev roots frozen and pushed at7004d47 before candidate
 Clarification of previous score-only shorthand: actual v1 external candidate results are0W3D1L (37.5%), baseline0W0D4L. The earlier 1W1D2L-equivalent wording described an equal point total, not observed wins; use the actual0W3D1L source receipts.
 
 Finalpreholdout source review approved(no material findings): capture/promotion-first exactalpha-beta with unchanged transparent evaluator; native claim-query prerequisite shortcut; actual shared UCI/internal routing; participant-specificlimits/replay; strict offlineconfig/artifact/work/budget/inference audit. Focused/native relevant regression checkpoint: search+engine154pass/1ignored; actualinternal/shared/UCI/claimconsole20pass; runner80pass/2ignored incl21historicalgames; nativeadjudication/history14pass; lint; regeneratedactualChessanalysisfixture and36frontendtests+typecheck. Finalcandidate devfirstroot2/2wins90.206s(vs168.570sv1); totalcharged971.486s. Exactdevelopmentreports/sourceoverrides/exehashes andonecanonicalexecutionledger retained underdocs/m5/evidence/msh49. Existing2hourbudgetpointforecastinsufficient despiteimprovement; askedownerwhetheramendonlytotalbudgetto4hours BEFOREholdout. No answer/amendment inferred, noformal seed/rootsgenerated. Continueclean-sourceintegration/build/required3OSCI whilepending; noheldoutworkdependentonamendment untilreply.
+
+Normal source checkpoint integrated+pushed7818c3371758cee8e9624b58b0edb1073c32c89d. Clean releasebuild andall3artifactSHA frozen in study/candidate-freeze.json BEFOREanyheldoutseed; newcandidateSHA9ba4dbd6..., finalrunner9c8598ad... distinctfromdevrunner. Finalsampler reproduces12frozendevroots byte-identically;2samplertests pass. Independentfreshread-onlyprovenance reconciliation approved all9devpairs/source/artifacthashes andexact971.4862487493083s ledger, noformal/inflight. Required nativeCI42469534590 exactsource attempt1: macOS15job128696846118, Windows2022job128696846383, Ubuntu24job128696846507, allrunning/acquiredrunners. Oneboundedcompletion-awaremonitor85021 (/private/tmp/msh49/monitor-final.py;ci-final/{run,jobs}.json), checkcompletionbeforeanotherwait; no retrycampaign. UnrequiredDesktop42469534578cancellationrequested. Ownerbudgetamendmentquestionpending:4hTOTALincluding971.486sspent, onlybeforeholdout; original7200sgate remainsbinding, noapprovalinferred. ResumeCIactualreconciliation plusownerreply; nevergenerateholdoutonunapprovedamendment, weakencriteria orclaimDone. Source/evidence in docs/m5/chess-strength.md +singleverificationledger; noothertaskbegun.
 <!-- SECTION:NOTES:END -->

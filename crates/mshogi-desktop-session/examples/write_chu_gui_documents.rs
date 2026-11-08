@@ -261,7 +261,11 @@ fn capacity_document() -> (ValidatedChuDocument, Value) {
         let observation = actual_observation_at_limits(
             &baseline,
             id,
-            mshogi_engine::WorkLimits { depth: 1, nodes: 0 },
+            mshogi_engine::WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 0,
+            },
         );
         assert!(
             matches!(&observation.result,ExecutionResult::Chu {result:ChuResult::Incomplete {telemetry}} if telemetry.score.is_none() && telemetry.nodes==0 && telemetry.principal_variation.is_empty())
@@ -283,8 +287,15 @@ fn capacity_document() -> (ValidatedChuDocument, Value) {
     assert!(d.record().to_game().unwrap().events().is_empty());
     replay(&d);
     let before = d.bytes().to_vec();
-    let next =
-        actual_observation_at_limits(&d, 257, mshogi_engine::WorkLimits { depth: 1, nodes: 0 });
+    let next = actual_observation_at_limits(
+        &d,
+        257,
+        mshogi_engine::WorkLimits {
+            time_ms: None,
+            depth: 1,
+            nodes: 0,
+        },
+    );
     let error = d.with_observation(next, &mut || false).unwrap_err();
     let fact = error.resource.expect("typed observation refusal");
     assert_eq!(

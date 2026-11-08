@@ -54,6 +54,12 @@ fn strict_effective_limits_and_bounded_aggregate_work() {
     let mut bad = c.clone();
     bad.players[0].limits.remove(0);
     assert!(bad.validate().is_err());
+    let mut bad = c;
+    bad.players[0].limits[0].work.time_ms = Some(1_000);
+    assert!(
+        bad.validate().is_err(),
+        "timed work cannot claim deterministic native reruns"
+    );
 }
 #[test]
 fn grouped_roots_cannot_leak_across_dataset_splits() {
@@ -134,6 +140,7 @@ fn chess_move_result(pv: &[&str]) -> mshogi_engine::ExecutionResult {
         result: mshogi_engine::ChessResult::Move {
             action,
             telemetry: mshogi_engine::Telemetry {
+                selective_depth: None,
                 score: Some(0),
                 completed_depth: pv.len() as u16,
                 nodes: 100,
@@ -151,6 +158,7 @@ fn chess_corrupt_pv_incomplete_and_scores_are_not_accepted() {
         mshogi_engine::ExecutionResult::Chess {
             result: mshogi_engine::ChessResult::Incomplete {
                 telemetry: mshogi_engine::Telemetry {
+                    selective_depth: None,
                     score: Some(0),
                     completed_depth: 1,
                     nodes: 1,
@@ -166,6 +174,7 @@ fn chess_corrupt_pv_incomplete_and_scores_are_not_accepted() {
                 &mut state,
                 &result,
                 WorkLimits {
+                    time_ms: None,
                     depth: 2,
                     nodes: 512
                 }
@@ -187,6 +196,7 @@ fn chess_corrupt_pv_incomplete_and_scores_are_not_accepted() {
             &mut state,
             &result,
             WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 512
             }
@@ -205,6 +215,7 @@ fn capacity_crossing_refuses_transition_atomically() {
         &mut state,
         &chess_move_result(&["e2e4"]),
         WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 512,
         },
@@ -227,6 +238,7 @@ fn observation_decoder_keeps_duplicates_and_wire_size_visible() {
         process_generation: 1,
         game: root.record,
         limits: WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 512,
         },
@@ -291,6 +303,7 @@ fn shogi_and_xiangqi_reject_illegal_later_pv_commands_atomically() {
             &mut state,
             &result,
             WorkLimits {
+                time_ms: None,
                 depth: 2,
                 nodes: 512
             }
@@ -331,6 +344,7 @@ fn shogi_and_xiangqi_reject_illegal_later_pv_commands_atomically() {
             &mut state,
             &result,
             WorkLimits {
+                time_ms: None,
                 depth: 2,
                 nodes: 512
             }
@@ -356,6 +370,7 @@ fn terminal_claim_allowance_does_not_admit_extra_board_depth() {
             &mut state,
             &result,
             WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 512
             }

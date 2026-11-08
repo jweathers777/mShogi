@@ -504,7 +504,11 @@ mod tests {
                 game: mshogi_core::native::CanonicalRecord::chess(
                     AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record(),
                 ),
-                limits: WorkLimits { depth: 1, nodes: 1 },
+                limits: WorkLimits {
+                    time_ms: None,
+                    depth: 1,
+                    nodes: 1,
+                },
             },
         }
     }

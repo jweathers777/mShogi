@@ -59,8 +59,16 @@ fn chess_record(record: &CanonicalRecord) -> Result<&GameRecord, String> {
 const MAX_SAFE_ID: u64 = 9_007_199_254_740_991;
 /// Initial interactive work limits; recorded on every engine request.
 pub const PLAY_LIMITS: WorkLimits = WorkLimits {
+    time_ms: Some(1_000),
+    depth: 128,
+    nodes: 20_000,
+};
+// Prior fixed current-stage play configuration. It remains readable as saved
+// configuration; explicit Resume selects the new runtime defaults for new work.
+const PRIOR_PLAY_LIMITS: WorkLimits = WorkLimits {
     depth: 2,
     nodes: 20_000,
+    time_ms: None,
 };
 
 /// Private journalled Chess mutation. The current application transport uses
@@ -1371,7 +1379,14 @@ impl DesktopController {
             }
             if scenario == "unsupported" {
                 let before = controller.shared_snapshot().observations.len();
-                controller.verify_tenjiku_execution(WorkLimits { depth: 1, nodes: 1 }, true)?;
+                controller.verify_tenjiku_execution(
+                    WorkLimits {
+                        time_ms: None,
+                        depth: 1,
+                        nodes: 1,
+                    },
+                    true,
+                )?;
                 let deadline = Instant::now() + std::time::Duration::from_secs(20);
                 while controller.shared_snapshot().observations.len() == before {
                     if Instant::now() >= deadline {
@@ -1774,6 +1789,7 @@ mod tests {
     use mshogi_engine::{StopReason, Telemetry};
     fn telemetry() -> Telemetry {
         Telemetry {
+            selective_depth: None,
             score: Some(0),
             completed_depth: 1,
             nodes: 21,
@@ -2150,6 +2166,7 @@ mod tests {
             } else {
                 ChessResult::Incomplete {
                     telemetry: Telemetry {
+                        selective_depth: None,
                         score: None,
                         completed_depth: 0,
                         nodes: 0,

@@ -1,6 +1,6 @@
 //! One bounded native search worker, request identity and stale-result checking.
 use crate::{
-    chess_candidate::search_with_stop,
+    chess_conventional::{TimeBudget, search_with_time},
     search::{SearchError, SearchLimits, SearchResult},
 };
 use mshogi_core::chess::{AdjudicatedGame, GameRecord};
@@ -33,6 +33,7 @@ pub struct RequestContext {
     version: u64,
     base: GameRecord,
     limits: SearchLimits,
+    time: Option<TimeBudget>,
 }
 impl RequestContext {
     /// Unique request identity.
@@ -51,6 +52,10 @@ impl RequestContext {
     pub const fn limits(&self) -> SearchLimits {
         self.limits
     }
+    /// Exact optional soft/hard thinking limits; absent means deterministic work.
+    pub const fn time(&self) -> Option<TimeBudget> {
+        self.time
+    }
 }
 
 /// Search result or explicit failure, permanently tied to its request snapshot.
@@ -58,6 +63,7 @@ impl RequestContext {
 pub struct SearchCompletion {
     context: Arc<RequestContext>,
     result: Result<SearchResult, SearchError>,
+    selective_depth: Option<u16>,
 }
 impl SearchCompletion {
     /// Exact request identity, version, known history and settings.
@@ -67,6 +73,10 @@ impl SearchCompletion {
     /// Completed search observations or explicit failure.
     pub const fn result(&self) -> &Result<SearchResult, SearchError> {
         &self.result
+    }
+    /// Deepest attempted native board ply, including selective continuation.
+    pub const fn selective_depth(&self) -> Option<u16> {
+        self.selective_depth
     }
 }
 
@@ -79,6 +89,8 @@ pub enum SubmitError {
     ShuttingDown,
     /// Limits fail the same validation as synchronous search.
     Search(SearchError),
+    /// Soft thinking time cannot exceed the hard per-node deadline.
+    InvalidTimeBudget,
 }
 impl fmt::Display for SubmitError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -159,8 +171,23 @@ impl SearchCoordinator {
         version: u64,
         limits: SearchLimits,
     ) -> Result<RequestContext, SubmitError> {
+        self.submit_with_time(game, version, limits, None)
+    }
+
+    /// Submit ordinary native work with an optional exact soft/hard time budget.
+    /// Time is part of the immutable request identity and stale-result checks.
+    pub fn submit_with_time(
+        &self,
+        game: &AdjudicatedGame,
+        version: u64,
+        limits: SearchLimits,
+        time: Option<TimeBudget>,
+    ) -> Result<RequestContext, SubmitError> {
         if !(1..=crate::search::MAX_DEPTH).contains(&limits.depth) {
             return Err(SubmitError::Search(SearchError::InvalidDepth(limits.depth)));
+        }
+        if time.is_some_and(|time| time.soft > time.hard) {
+            return Err(SubmitError::InvalidTimeBudget);
         }
         let id = NEXT_ID
             .try_update(Ordering::Relaxed, Ordering::Relaxed, |id| id.checked_add(1))
@@ -171,6 +198,7 @@ impl SearchCoordinator {
             version,
             base: game.record(),
             limits,
+            time,
         });
         let pending = Pending {
             context: context.clone(),
@@ -307,9 +335,14 @@ fn worker(shared: Arc<Shared>) {
             state.active = Some(pending.context.id);
             pending
         };
-        let result = search_with_stop(&pending.game, pending.context.limits, || {
-            pending.stop.load(Ordering::Acquire)
-        });
+        let searched = search_with_time(
+            &pending.game,
+            pending.context.limits,
+            pending.context.time,
+            || pending.stop.load(Ordering::Acquire),
+        );
+        let selective_depth = searched.as_ref().ok().map(|r| r.selective_depth);
+        let result = searched.map(|r| r.result);
         let mut state = shared.state.lock().expect("search metadata mutex");
         state.active = None;
         if !state.shutdown
@@ -321,6 +354,7 @@ fn worker(shared: Arc<Shared>) {
             state.result = Some(SearchCompletion {
                 context: pending.context,
                 result,
+                selective_depth,
             });
         }
     }
@@ -333,6 +367,57 @@ mod tests {
     use crate::search::{MAX_DEPTH, SearchStatus};
     use mshogi_core::chess::ClaimPolicy;
     use std::time::{Duration, Instant};
+
+    #[test]
+    fn exact_time_identity_rejects_forgery_and_invalid_submission_preserves_current() {
+        let coordinator = SearchCoordinator::new().unwrap();
+        let game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+        let budget = TimeBudget {
+            soft: Duration::ZERO,
+            hard: Duration::ZERO,
+        };
+        let limits = SearchLimits {
+            depth: 128,
+            nodes: Some(20_000),
+        };
+        let request = coordinator
+            .submit_with_time(&game, 1, limits, Some(budget))
+            .unwrap();
+        assert_eq!(request.time(), Some(budget));
+        let deadline = Instant::now() + Duration::from_secs(15);
+        let completion = loop {
+            if let Some(completion) = coordinator.poll() {
+                break completion;
+            }
+            assert!(Instant::now() < deadline);
+            thread::sleep(Duration::from_millis(1));
+        };
+        assert_eq!(completion.selective_depth(), Some(0));
+        assert!(completion.result().as_ref().unwrap().decision.is_none());
+        assert_eq!(coordinator.accept_result(&completion, &game, 1), Ok(()));
+        let mut forged = completion.clone();
+        Arc::make_mut(&mut forged.context).time = Some(TimeBudget {
+            soft: Duration::ZERO,
+            hard: Duration::from_millis(1),
+        });
+        assert_eq!(
+            coordinator.accept_result(&forged, &game, 1),
+            Err(StaleResult::Superseded)
+        );
+        assert_eq!(
+            coordinator.submit_with_time(
+                &game,
+                1,
+                limits,
+                Some(TimeBudget {
+                    soft: Duration::from_millis(2),
+                    hard: Duration::from_millis(1),
+                })
+            ),
+            Err(SubmitError::InvalidTimeBudget)
+        );
+        assert_eq!(coordinator.accept_result(&completion, &game, 1), Ok(()));
+    }
 
     #[test]
     fn already_running_worker_cancels_at_a_node_boundary() {

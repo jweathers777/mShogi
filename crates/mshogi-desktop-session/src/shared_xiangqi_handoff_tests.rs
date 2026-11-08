@@ -57,6 +57,7 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
     let settings = XiangqiSettings {
         orientation: x::Side::Black,
         analysis_defaults: WorkLimits {
+            time_ms: None,
             depth: 2,
             nodes: 64,
         },

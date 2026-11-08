@@ -62,6 +62,18 @@ fn independent_attack_fixtures_match_exact_attacker_sets_and_complete_maps() {
                 "{id}: {by:?} attackers of {target}"
             );
             assert_eq!(
+                names(all_squares().filter(|&from| {
+                    position
+                        .piece_at(from)
+                        .is_some_and(|piece| piece.color == by)
+                        && position.attacks_from(from)
+                            & (1u64 << (target.rank() * 8 + target.file()))
+                            != 0
+                })),
+                expected,
+                "{id}: per-piece map attackers of {target}"
+            );
+            assert_eq!(
                 position.is_square_attacked(target, by),
                 !expected.is_empty(),
                 "{id}: {by:?} attacks {target}"
@@ -79,6 +91,20 @@ fn independent_attack_fixtures_match_exact_attacker_sets_and_complete_maps() {
                 .filter(|&target| position.is_square_attacked(target, by))
                 .collect();
             assert_eq!(names(actual.into_iter()), expected, "{id}: {name} map");
+            let from_maps = all_squares()
+                .filter(|&from| {
+                    position
+                        .piece_at(from)
+                        .is_some_and(|piece| piece.color == by)
+                })
+                .fold(0u64, |bits, from| bits | position.attacks_from(from));
+            assert_eq!(
+                names(all_squares().filter(|target| from_maps
+                    & (1u64 << (target.rank() * 8 + target.file()))
+                    != 0)),
+                expected,
+                "{id}: union of per-piece maps"
+            );
             for target in all_squares() {
                 assert_eq!(
                     position.attackers(target, by).next().is_some(),

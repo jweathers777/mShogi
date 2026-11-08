@@ -712,8 +712,9 @@
   "event_index": 1,
   "board_ply": 0,
   "play_limits": {
-    "depth": 2,
-    "nodes": 20000
+    "depth": 128,
+    "nodes": 20000,
+    "time_ms": 1000
   },
   "historical": false,
   "paused": true,
@@ -770,8 +771,9 @@
           "kind": "move",
           "action": "b1c3",
           "telemetry": {
-            "score": 44,
+            "score": 61,
             "completed_depth": 1,
+            "selective_depth": 1,
             "nodes": 21,
             "principal_variation": [
               {
@@ -828,8 +830,9 @@
             "kind": "move",
             "action": "b1c3",
             "telemetry": {
-              "score": 44,
+              "score": 61,
               "completed_depth": 1,
+              "selective_depth": 1,
               "nodes": 21,
               "principal_variation": [
                 {
@@ -854,8 +857,9 @@
       "board_ply": 0,
       "perspective": "White",
       "engine": "mShogi",
-      "score": "+0.44 pawns",
+      "score": "+0.61 pawns",
       "completed_depth": 1,
+      "selective_depth": 1,
       "nodes": 21,
       "variation": [
         "b1c3"
@@ -924,8 +928,9 @@
         "kind": "move",
         "action": "b1c3",
         "telemetry": {
-          "score": 44,
+          "score": 61,
           "completed_depth": 1,
+          "selective_depth": 1,
           "nodes": 21,
           "principal_variation": [
             {

@@ -42,6 +42,7 @@ fn request(g: &x::Game) -> ExecutionContext {
         game: CanonicalRecord::xiangqi(x::GameRecord::from_game(g).unwrap()),
         // Measured MSH-97 ordinary limits, independent of exact-proof work.
         limits: WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 128,
         },
@@ -174,14 +175,17 @@ fn ordinary_limits_and_zero_work_remain_distinct_from_native_conclusions() {
     );
     for limits in [
         WorkLimits {
+            time_ms: None,
             depth: 0,
             nodes: 128,
         },
         WorkLimits {
+            time_ms: None,
             depth: 4,
             nodes: 128,
         },
         WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 513,
         },
@@ -240,6 +244,7 @@ fn response_acceptance_requires_every_identity_setting_and_full_native_history()
     foreign.result = ExecutionResult::Chess {
         result: ChessResult::Incomplete {
             telemetry: Telemetry {
+                selective_depth: None,
                 score: None,
                 completed_depth: 0,
                 nodes: 0,

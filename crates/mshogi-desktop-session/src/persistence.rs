@@ -590,7 +590,7 @@ fn preflight_reserved(
     reserve_controls: usize,
 ) -> Result<MatchRecord, OperationFailure> {
     archive.settings.analysis_defaults.validate()?;
-    if archive.play_limits != PLAY_LIMITS {
+    if archive.play_limits != PLAY_LIMITS && archive.play_limits != PRIOR_PLAY_LIMITS {
         return Err("Unsupported live play limits; no settings were downgraded.".into());
     }
     if [
@@ -1069,9 +1069,18 @@ fn validate_result(
         | ChessResult::Incomplete { telemetry } => telemetry,
         _ => unreachable!(),
     };
+    let bound = telemetry
+        .variation_depth_bound()
+        .ok_or("Search selective depth exceeds its native bound.")?;
+    let board_plies = telemetry
+        .principal_variation
+        .iter()
+        .filter(|choice| matches!(choice, EngineChoice::Move { .. }))
+        .count();
     if telemetry.completed_depth > context.limits.depth
         || telemetry.nodes > context.limits.nodes
-        || telemetry.principal_variation.len() > usize::from(telemetry.completed_depth)
+        || board_plies > usize::from(bound)
+        || telemetry.principal_variation.len() > usize::from(bound) + 1
         || telemetry.score.is_some() != (telemetry.completed_depth > 0)
         || telemetry
             .score
@@ -1105,14 +1114,19 @@ fn validate_result(
         _ => {}
     }
     let mut continuation = game.clone();
-    for choice in &telemetry.principal_variation {
+    for (index, choice) in telemetry.principal_variation.iter().enumerate() {
         match choice {
             EngineChoice::Move { action } => {
                 continuation.apply(*action).map_err(|e| e.to_string())?
             }
-            EngineChoice::Claim { claim } => continuation
-                .claim((*claim).into())
-                .map_err(|e| e.to_string())?,
+            EngineChoice::Claim { claim } => {
+                if index + 1 != telemetry.principal_variation.len() {
+                    return Err("Search continuation goes beyond a terminal claim.".into());
+                }
+                continuation
+                    .claim((*claim).into())
+                    .map_err(|e| e.to_string())?;
+            }
         }
     }
     Ok(())
@@ -1914,6 +1928,120 @@ mod tests {
         }
     }
     #[test]
+    fn prior_fixed_chess_defaults_open_unchanged_and_only_resume_selects_new_work() {
+        let directory = directory();
+        let path = directory.join("prior-fixed-play-limits.mshogi");
+        let source = controller();
+        let mut saved = archive(source.session.chess());
+        saved.play_limits = PRIOR_PLAY_LIMITS;
+        let bytes = encode_chess(&saved).unwrap();
+        fs::write(&path, &bytes).unwrap();
+        let mut restored = controller();
+        let id = restored
+            .queue_open(path.clone(), restored.open_token())
+            .unwrap();
+        assert_eq!(wait(&mut restored, id).io.phase, IoPhase::Complete);
+        assert_eq!(restored.session.chess().play_limits, PRIOR_PLAY_LIMITS);
+        assert!(restored.session.chess().pending.is_none());
+        assert_eq!(
+            restored
+                .session
+                .chess()
+                .observations
+                .iter()
+                .map(|o| &o.observation)
+                .collect::<Vec<_>>(),
+            saved
+                .observations
+                .iter()
+                .map(|o| &o.observation)
+                .collect::<Vec<_>>(),
+        );
+        assert_eq!(fs::read(&path).unwrap(), bytes);
+        let version = restored.session.version;
+        settled(&mut restored, ChessMutationCommand::Resume { version });
+        assert_eq!(restored.session.chess().play_limits, PLAY_LIMITS);
+        assert_eq!(
+            fs::read(&path).unwrap(),
+            bytes,
+            "Resume never rewrites the prior file"
+        );
+        let mut unknown = saved;
+        unknown.play_limits.depth = 3;
+        assert!(preflight(&unknown).is_err());
+        fs::remove_dir_all(directory).unwrap();
+    }
+
+    #[test]
+    fn saved_selective_continuations_require_explicit_depth_and_native_legal_actions() {
+        // Constructed observations exercise archive admission, not strength.
+        use mshogi_engine::{EngineChoice, StopReason, Telemetry};
+        let game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+        let record = game.record();
+        let mut observation = ArchivedObservation {
+            sequence: 1,
+            label: "Constructed selective admission".into(),
+            analyzed_turn: Color::White,
+            historical: false,
+            application_error: None,
+            observation: ExecutionObservation::new(
+                ExecutionContext {
+                    purpose: mshogi_engine::ExecutionPurpose::EngineTurn {},
+                    request_id: 1,
+                    session_version: 1,
+                    process_generation: 1,
+                    game: CanonicalRecord::chess(record.clone()),
+                    limits: WorkLimits {
+                        depth: 1,
+                        nodes: 100,
+                        time_ms: None,
+                    },
+                },
+                ExecutionResult::Chess {
+                    result: ChessResult::Move {
+                        action: "e2e4".parse().unwrap(),
+                        telemetry: Telemetry {
+                            score: Some(0),
+                            completed_depth: 1,
+                            selective_depth: Some(3),
+                            nodes: 50,
+                            principal_variation: ["e2e4", "e7e5", "g1f3"]
+                                .map(|a| EngineChoice::Move {
+                                    action: a.parse().unwrap(),
+                                })
+                                .to_vec(),
+                            status: StopReason::Complete,
+                        },
+                    },
+                },
+            ),
+        };
+        assert!(validate_observation(&observation, &record, &mut || false).is_ok());
+        for bound in [None, Some(2), Some(129)] {
+            let ExecutionResult::Chess {
+                result: ChessResult::Move { telemetry, .. },
+            } = &mut observation.observation.result
+            else {
+                unreachable!()
+            };
+            telemetry.selective_depth = bound;
+            assert!(validate_observation(&observation, &record, &mut || false).is_err());
+        }
+        let ExecutionResult::Chess {
+            result: ChessResult::Move { telemetry, .. },
+        } = &mut observation.observation.result
+        else {
+            unreachable!()
+        };
+        telemetry.selective_depth = Some(3);
+        telemetry.principal_variation[2] = EngineChoice::Move {
+            action: "g1g4".parse().unwrap(),
+        };
+        assert!(validate_observation(&observation, &record, &mut || false).is_err());
+        assert_eq!(game.record(), record);
+    }
+
+    #[test]
     fn shared_poll_that_commits_shogi_open_publishes_the_matching_game_family() {
         use crate::{SessionOperation, SharedDesktopCommand};
         use mshogi_core::{
@@ -2457,6 +2585,7 @@ mod tests {
                 context,
                 ChessResult::Incomplete {
                     telemetry: mshogi_engine::Telemetry {
+                        selective_depth: None,
                         score: None,
                         completed_depth: 0,
                         nodes: 0,
@@ -2807,6 +2936,7 @@ mod tests {
             ChessResult::Move {
                 action,
                 telemetry: mshogi_engine::Telemetry {
+                    selective_depth: None,
                     score: Some(0),
                     completed_depth: 1,
                     nodes: 21,
@@ -2850,6 +2980,7 @@ mod tests {
                     ChessResult::Move {
                         action,
                         telemetry: mshogi_engine::Telemetry {
+                            selective_depth: None,
                             score: Some(0),
                             completed_depth: 1,
                             nodes: 21,
@@ -2971,6 +3102,7 @@ mod tests {
                 ChessResult::Move {
                     action,
                     telemetry: mshogi_engine::Telemetry {
+                        selective_depth: None,
                         score: Some(0),
                         completed_depth: 1,
                         nodes: 21,

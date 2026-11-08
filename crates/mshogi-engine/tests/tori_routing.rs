@@ -10,6 +10,7 @@ fn context() -> ExecutionContext {
         process_generation: 3,
         game: CanonicalRecord::tori(t::GameRecord::from_game(&t::Game::standard()).unwrap()),
         limits: WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 100,
         },

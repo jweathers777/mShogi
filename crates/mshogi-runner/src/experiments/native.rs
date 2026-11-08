@@ -155,6 +155,9 @@ fn chess_choice(
     telemetry: &mshogi_engine::Telemetry,
     choice: mshogi_engine::EngineChoice,
 ) -> Result<(), String> {
+    let bound = telemetry
+        .variation_depth_bound()
+        .ok_or("Chess selective depth exceeds its native search bound")?;
     if telemetry.completed_depth == 0
         || telemetry.nodes == 0
         || telemetry
@@ -166,8 +169,8 @@ fn chess_choice(
             .iter()
             .filter(|choice| matches!(choice, mshogi_engine::EngineChoice::Move { .. }))
             .count()
-            > usize::from(telemetry.completed_depth)
-        || telemetry.principal_variation.len() > usize::from(telemetry.completed_depth) + 1
+            > usize::from(bound)
+        || telemetry.principal_variation.len() > usize::from(bound) + 1
     {
         return Err("Chess choice has no consistent completed search iteration".into());
     }
@@ -716,6 +719,7 @@ mod tests {
 
     fn telemetry() -> Telemetry {
         Telemetry {
+            selective_depth: None,
             score: None,
             completed_depth: 0,
             nodes: 0,
@@ -726,12 +730,57 @@ mod tests {
 
     fn move_telemetry(action: chess::Action) -> Telemetry {
         Telemetry {
+            selective_depth: None,
             score: Some(0),
             completed_depth: 1,
             nodes: 21,
             principal_variation: vec![mshogi_engine::EngineChoice::Move { action }],
             status: StopReason::Complete,
         }
+    }
+
+    #[test]
+    fn selective_pv_bound_is_explicit_and_every_extra_board_action_is_native() {
+        // Constructed admission machinery, not an actual engine observation.
+        let root = standard_root(RulesProfile::ChessMatchV1).unwrap();
+        let action = "e2e4".parse().unwrap();
+        let mut telemetry = move_telemetry(action);
+        telemetry.principal_variation = ["e2e4", "e7e5", "g1f3"]
+            .map(|a| mshogi_engine::EngineChoice::Move {
+                action: a.parse().unwrap(),
+            })
+            .to_vec();
+        for bound in [None, Some(2), Some(129)] {
+            telemetry.selective_depth = bound;
+            let mut state = NativeState::from_root(&root).unwrap();
+            let result = ExecutionResult::Chess {
+                result: ChessResult::Move {
+                    action,
+                    telemetry: telemetry.clone(),
+                },
+            };
+            assert!(state.admit(&result).is_err());
+            same_root(&root, &state.root().unwrap());
+        }
+        telemetry.selective_depth = Some(3);
+        let mut state = NativeState::from_root(&root).unwrap();
+        let result = ExecutionResult::Chess {
+            result: ChessResult::Move {
+                action,
+                telemetry: telemetry.clone(),
+            },
+        };
+        assert!(matches!(state.admit(&result).unwrap(), Admission::Applied));
+        assert_eq!(state.root().unwrap().record.known_board_actions(), 1);
+        telemetry.principal_variation[2] = mshogi_engine::EngineChoice::Move {
+            action: "g1g4".parse().unwrap(),
+        };
+        let mut state = NativeState::from_root(&root).unwrap();
+        let result = ExecutionResult::Chess {
+            result: ChessResult::Move { action, telemetry },
+        };
+        assert!(state.admit(&result).is_err());
+        same_root(&root, &state.root().unwrap());
     }
 
     #[test]
@@ -824,6 +873,7 @@ mod tests {
             result: ChessResult::Claim {
                 claim,
                 telemetry: Telemetry {
+                    selective_depth: None,
                     score: Some(0),
                     completed_depth: 1,
                     nodes: 1,

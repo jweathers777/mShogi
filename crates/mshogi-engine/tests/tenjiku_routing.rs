@@ -41,6 +41,7 @@ fn context(profile: t::Profile) -> ExecutionContext {
         process_generation: 3,
         game: record(profile),
         limits: WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 512,
         },
@@ -122,6 +123,7 @@ fn actual_internal_entry_point_searches_each_profile_and_rejects_chess_full() {
                 FULL_SENTINEL
             } else {
                 WorkLimits {
+                    time_ms: None,
                     depth: 1,
                     nodes: 512,
                 }

@@ -186,6 +186,7 @@ fn context(c: &DesktopController, n: u64, analysis: bool) -> ExecutionContext {
         process_generation: n,
         game,
         limits: WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 100,
         },
@@ -1490,6 +1491,7 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
                 settings: ShogiSettings {
                     orientation: s::Side::Gote,
                     analysis_defaults: WorkLimits {
+                        time_ms: None,
                         depth: 99,
                         nodes: 100,
                     },
@@ -1514,6 +1516,7 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
                 settings: XiangqiSettings {
                     orientation: mshogi_core::xiangqi::Side::Black,
                     analysis_defaults: WorkLimits {
+                        time_ms: None,
                         depth: 99,
                         nodes: 100,
                     },

@@ -33,7 +33,11 @@ pub(super) fn context(record: &c::GameRecord, id: u64) -> ExecutionContext {
         session_version: id,
         process_generation: id,
         game: CanonicalRecord::tenjiku(record.clone()),
-        limits: WorkLimits { depth: 1, nodes: 1 },
+        limits: WorkLimits {
+            time_ms: None,
+            depth: 1,
+            nodes: 1,
+        },
     }
 }
 #[test]

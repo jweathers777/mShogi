@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
-import { NativeAnalysis, NativeHistory, NativeRecovery } from "./NativeSessionPanels";
-import type { ChessSnapshot, GameSnapshot } from "./native";
+import { NativeAnalysis, NativeHistory, NativeRecovery, Observation } from "./NativeSessionPanels";
+import type { ChessSnapshot, GameSnapshot, SearchView } from "./native";
 import standardJson from "../__fixtures__/shared-chess-standard.json";
 import movesJson from "../__fixtures__/shared-chess-analysis-moves.json";
 import possibleJson from "../__fixtures__/shared-chess-analysis-possible.json";
@@ -134,4 +134,16 @@ it("offers finishing concluded Chess analysis only while an actual analysis exis
   fireEvent.click(screen.getByRole("button", { name: "Finish analysis" }));
   expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "resume" });
   expect(screen.getByLabelText("Game outcome").textContent).toContain("no score is assigned");
+});
+
+
+it("shows reported selective depth including zero while legacy observations omit it", () => {
+  const view: SearchView = { selected: true, observation_index: 0, purpose: "move_analysis", event_index: 0, board_ply: 0, perspective: "White", engine: "mShogi", score: "+0.44 pawns", completed_depth: 1, selective_depth: 5, nodes: 21, variation: ["b1c3"], status: "Complete", historical: false };
+  const { rerender } = render(<Observation view={view} game="chess" />);
+  expect(screen.getByText("Selective depth").nextElementSibling?.textContent).toBe("5");
+  rerender(<Observation view={{ ...view, selective_depth: 0 }} game="chess" />);
+  expect(screen.getByText("Selective depth").nextElementSibling?.textContent).toBe("0");
+  const legacy = { ...view }; delete legacy.selective_depth;
+  rerender(<Observation view={legacy} game="chess" />);
+  expect(screen.queryByText("Selective depth")).toBeNull();
 });

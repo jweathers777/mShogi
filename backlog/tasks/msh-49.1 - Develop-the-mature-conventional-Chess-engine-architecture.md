@@ -1,9 +1,11 @@
 ---
 id: MSH-49.1
 title: Develop the mature conventional Chess engine architecture
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-11-08T13:07:00Z'
+updated_date: '2026-11-08T14:26:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -13,6 +15,7 @@ dependencies:
 documentation:
   - docs/m5/strength-roadmap.md
   - docs/design.md
+  - docs/m5/chess-conventional.md
 parent_task_id: MSH-49
 priority: high
 ordinal: 135000
@@ -41,3 +44,17 @@ Owner direction2026-11-08 replaces weak-baseline acceptance chasing with develop
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Primarybuilder/integrator Codex, primary codex/rewrite a4ad03a clean/origin-aligned; no activeowner, originaldependencies48/25/109Done; historical-access worktree untouched. One49.1assignment, no49.2formalstudy. Currentcandidate has exactalpha-beta/captureordering/taperedterms but noTT/PVS/quiescence/selectivity or internalChess timebudget; strict currentPVadmission counts nominaldepth. (1) Extend native search access only within authoritativeChessowner for efficient exact transitions/context/hash and explicit reversible analysis-onlynull probes; independently verify state/history/counters/claims/restoration. Implement inspectable classicalevaluation andmeasured incremental state withoutanotherlegality/adjudication. (2) Root builds bounded conventionalpackage: iterativePVS/aspiration, context-safeTT, stagedSEE/history/killers ordering, legal-evasionquiescence, guardedverifiednull/LMR/futility/SEEpruning/checkextensions. Keep exactdiagnostic search andtests; justify optionalProbCut/singularinclusion/exclusion from concrete risks/profile. (3) Integrate truthful selective-depth/PV semantics andboundedtimeallocation into existingUCI/supervisedexecutionfamily andnativeadmission, with explicit old-observation compatibility andexactlimit identities. Preflightallaffected consumers inclstandalonehost/frontendearly. (4) Focusedindependentoracles, nativestate/hash/evalundo+null/TT/history/claim/zugzwang/pruning/cancel tests, realprocess/currentproductchecks; boundedrepresentative tactical/profilebenchmarks andatmost900saggregate routinematches forentiretask, recordingallattempts; noformal/multihourstrengthstudy orcompetitiveclaim. Isolatedevaluator/nativeaccess/execution work maybedelegated; rootownssearch/integration, independentreviewearlyandfinal. (5) Coherentsourcechecks andrequiredactualRustLinux/macOS15/WindowsCI (onecompletionawaremonitor); desktopchecks appropriate to affectedtelemetry/host, noautomaticbroadpackagedGUIcampaign. Resolvefindings, completeall6AC/4DoD onlywithsupport, normalcommit/pushDone andhandoff49.2withoutstartingitsstudy.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Ownership2026-11-08: @codex primarybuilder codex/rewrite at a4ad03a297801922d8c9d3a0fd660e05b0ab2ebe, no competing activeworker. Backlog1.55.1 matches projectbaseline. Readyscope isfull49.1coherentenginearchitecture, notoneoptimization orplanningphase. Ownerstrategyallowsroutinealgorithmchoices; preserveallrules/session/nativeprofiles andoriginalstoppedstudyevidence. Routine localmatchallowance900s cumulativetasktime starts0; ordinarycorrectnesschecks/profiling aredistinct, noformalstudy approvalinferred.
+
+Coherent conventional architecture implemented: nativecachedSearchCursor/attackmaps/exactpersistenthistorykeys; incrementalinspectableclassicaleval; PVS/aspiration/4096entryTT/stagedSEE+historyordering/legalq/checkextensions/verifiednull/LMR/futility/LMP/SEE pruning; oldexactdiagnostics preserved. Time/selective metadata additivewithlegacyomissionbytes andexacttimedrequestidentity; actualUCI/internal/desktopworkusesnewengine,128depthceiling/20kvisits/1s liveplay, oldstoppedarchivesunchangeduntilexplicitResume. Independentfreshsource reviewapproved; fixesprotectnative terminal/claim children beforepruning andabandononlysyntheticCounterOverflow withrealgame/cancelrestoration; directtimedFullnative solverrefused. Fullworkspace1134pass/11intentionalignored; workspacealltargetsClippy pass; native17frontendfixtures byte-identicalrepeat; frontend568full +15affectedtime-caption tests/type/build pass; standaloneTauri hostcheckpass. Newcanonicalrecord docs/m5/evidence/msh49-1/verification.json +docs/m5/chess-conventional.md preservescommands/profiles/failures/coverage, sourceplatformandfinalacceptancepending. Shortrelease20kvisit/1s diagnosticscompleted4–6nominalplies; node/worktestsnotenoughforcompetitiveclaim. ProbCut/singularexplicitlyexcludedwithprofile/context-riskrationale. Routine matchbudget0/900sused; plannedsingleboundedtimedself-playpairaftercleansourcefreeze, no49.2study/oldstudyrun. RequiredRustUbuntu24/macOS15/WindowsCI atnextcoherentsourcecheckpoint; onecompletionawaremonitor, affectedUI/hostlocalchecks(no newbroadpackagedGUIcampaign). All6AC/4DoDremainuncheckeduntilactualsourceCIandfinalindependentevidencereconciliation.
+<!-- SECTION:NOTES:END -->

@@ -310,6 +310,7 @@ mod tests {
         native_shogi(&mut c, "4k4/9/9/4P4/9/9/9/9/4K4 b p 17");
         c.start_shogi(
             WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 1000,
             },

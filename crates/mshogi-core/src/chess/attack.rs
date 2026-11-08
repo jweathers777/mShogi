@@ -8,6 +8,74 @@
 use super::{Color, PieceKind, Position, Square};
 
 impl Position {
+    /// Geometric squares attacked by the piece on `from`, as an a1-bit0 map.
+    ///
+    /// This has exactly the attack/defence semantics of [`Position::attackers`]:
+    /// slider rays include their first occupied square and stop there, friendly
+    /// blockers are defended, and pins do not remove attacks. Empty squares
+    /// return zero. Castling, pawn pushes and en passant are not attack effects.
+    /// The map is read-only position data, never permission to play an action.
+    pub fn attacks_from(&self, from: Square) -> u64 {
+        let Some(piece) = self.piece_at(from) else {
+            return 0;
+        };
+        let mut attacked = 0;
+        let mut add = |df: i8, dr: i8, sliding: bool| {
+            let mut file = from.file() as i8 + df;
+            let mut rank = from.rank() as i8 + dr;
+            while (0..8).contains(&file) && (0..8).contains(&rank) {
+                let target = Square::new(file as u8, rank as u8).expect("bounded ray");
+                attacked |= 1u64 << target.index();
+                if !sliding || self.piece_at(target).is_some() {
+                    break;
+                }
+                file += df;
+                rank += dr;
+            }
+        };
+        match piece.kind {
+            PieceKind::Pawn => {
+                let dr = if piece.color == Color::White { 1 } else { -1 };
+                add(-1, dr, false);
+                add(1, dr, false);
+            }
+            PieceKind::Knight => {
+                for (df, dr) in [
+                    (-2, -1),
+                    (-2, 1),
+                    (-1, -2),
+                    (-1, 2),
+                    (1, -2),
+                    (1, 2),
+                    (2, -1),
+                    (2, 1),
+                ] {
+                    add(df, dr, false);
+                }
+            }
+            PieceKind::King | PieceKind::Bishop | PieceKind::Rook | PieceKind::Queen => {
+                for (df, dr) in [
+                    (-1, -1),
+                    (-1, 0),
+                    (-1, 1),
+                    (0, -1),
+                    (0, 1),
+                    (1, -1),
+                    (1, 0),
+                    (1, 1),
+                ] {
+                    if piece.kind == PieceKind::Bishop && (df == 0 || dr == 0)
+                        || piece.kind == PieceKind::Rook && df != 0 && dr != 0
+                    {
+                        continue;
+                    }
+                    add(df, dr, piece.kind != PieceKind::King);
+                }
+            }
+        }
+        attacked
+    }
+
     /// Squares holding a piece of color `by` that attacks `target`, a1 to h8.
     ///
     /// Pawns attack the two forward diagonals for their color whether or not

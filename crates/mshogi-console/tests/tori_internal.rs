@@ -24,6 +24,7 @@ fn real_subprocess_preserves_tori_context_supplies_native_action_and_roundtrips_
             process_generation: 2,
             game: CanonicalRecord::tori(tori::GameRecord::from_game(&game).unwrap()),
             limits: WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 100,
             },

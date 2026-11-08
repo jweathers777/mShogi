@@ -520,6 +520,7 @@ fn strict_payload_context_and_transport_preserve_identity_through_real_execution
         process_generation: 3,
         game: saved.clone(),
         limits: WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 100,
         },

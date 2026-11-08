@@ -19,7 +19,7 @@ fn command(
 fn failure(d: &ValidatedChuDocument, id: u64) -> ExecutionObservation {
     ExecutionObservation::new(ExecutionContext {
         purpose: ExecutionPurpose::EngineTurn {}, request_id: id, process_generation: id, session_version: id,
-        game: CanonicalRecord::chu(d.record().clone()), limits: WorkLimits { depth: 1, nodes: 1 },
+        game: CanonicalRecord::chu(d.record().clone()), limits: WorkLimits { time_ms: None, depth: 1, nodes: 1 },
     }, ExecutionResult::Failure { failure: EngineFailure { kind: FailureKind::UnsupportedMode, message: "Constructed unscored test observation; real supervised behavior is tested separately.".into() } })
 }
 #[test]

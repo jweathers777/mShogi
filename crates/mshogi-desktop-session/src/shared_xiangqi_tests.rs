@@ -234,6 +234,7 @@ fn native_identity_intersection_palaces_river_and_capability_scope() {
     assert_eq!(
         initial.play_limits,
         WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 128
         }

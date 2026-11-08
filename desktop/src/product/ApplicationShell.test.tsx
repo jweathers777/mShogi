@@ -45,6 +45,11 @@ it("keeps actual play limits between native engine status and observations", () 
   expect(screen.getByText("Play limit: depth 3 · 12,345 nodes")).toBeTruthy();
 });
 
+it.each([1000, 0])("shows the native thinking-time ceiling %s without inventing one for other games", (time_ms) => {
+  render(<NativeEnginePanel status="Searching" limits={{ depth: 128, nodes: 20000, time_ms }}><p>No completed observation</p></NativeEnginePanel>);
+  expect(screen.getByText(`Play limit: depth 128 · 20,000 nodes · ${time_ms.toLocaleString()} ms`)).toBeTruthy();
+});
+
 it.each([
   [{ historical: false, concluded: false, paused: false, humanTurn: true, thinking: false }, "Your turn"],
   [{ historical: false, concluded: false, paused: false, humanTurn: false, thinking: true }, "mShogi is searching within fixed work limits"],

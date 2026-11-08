@@ -20,6 +20,7 @@ fn context(id: u64, shogi: bool) -> ExecutionRequest {
                 CanonicalRecord::chess(AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record())
             },
             limits: WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 1000,
             },
@@ -73,9 +74,9 @@ fn real_entrypoint_executes_both_native_games() {
             .legal_actions()
             .contains(&action)
     );
-    assert_eq!(telemetry.nodes, 21);
+    assert!(telemetry.nodes >= 21 && telemetry.nodes <= chess.context.limits.nodes);
     assert_eq!(action.to_string(), "b1c3");
-    assert_eq!(telemetry.score, Some(44));
+    assert_eq!(telemetry.score, Some(61));
     let shogi = context(2, true);
     bridge.submit(shogi.clone()).unwrap();
     let response = wait(&bridge);

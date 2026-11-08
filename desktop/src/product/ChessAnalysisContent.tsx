@@ -74,7 +74,7 @@ export function ChessAnalysisContent({ snapshot, disabled, command, defaults }: 
         {analysis.result?.kind === "move" && <p>Suggested move: {readableAction(analysis.result.action)} · not played</p>}
         {analysis.result?.kind === "claim" && <p>Suggested {choiceDescription({ kind: "claim", claim: analysis.result.claim })} · not exercised</p>}
         {analysis.result?.kind === "finished" && <p>{conclusionName({ chess: analysis.result.outcome })}. This analyzed position is concluded; no live-game command was issued.</p>}
-        {telemetry && <><p className="analysis-score">{scoreDescription(telemetry.score, turn)}</p><dl className="shogi-telemetry"><div><dt>Completed depth</dt><dd>{telemetry.completed_depth}</dd></div><div><dt>Nodes</dt><dd>{telemetry.nodes.toLocaleString()}</dd></div></dl>{telemetry.principal_variation.length > 0 && <p>Suggested continuation · not played: {telemetry.principal_variation.map(choiceDescription).join(" · ")}</p>}</>}
+        {telemetry && <><p className="analysis-score">{scoreDescription(telemetry.score, turn)}</p><dl className="shogi-telemetry"><div><dt>Completed depth</dt><dd>{telemetry.completed_depth}</dd></div>{telemetry.selective_depth !== undefined && <div><dt>Selective depth</dt><dd>{telemetry.selective_depth}</dd></div>}<div><dt>Nodes</dt><dd>{telemetry.nodes.toLocaleString()}</dd></div></dl>{telemetry.principal_variation.length > 0 && <p>Suggested continuation · not played: {telemetry.principal_variation.map(choiceDescription).join(" · ")}</p>}</>}
         {analysis.result?.kind === "reachability" && analysis.operation?.kind === "full_reachability" && <ReachabilityEvidence result={analysis.result.result} target={analysis.operation.target} />}
       </>}
     </div>}

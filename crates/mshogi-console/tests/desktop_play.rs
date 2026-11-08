@@ -1,12 +1,14 @@
 //! The public desktop controller driving actual native engine subprocesses.
 //! GUI/package interaction evidence is separate; these tests use no Tauri hooks.
 use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy, Color};
-use mshogi_core::native::NativeSide;
+use mshogi_core::native::{CanonicalRecord, NativeSide};
 use mshogi_desktop_session::{
     ChessPresentation, SessionOperation, SessionToken, SharedDesktopCommand, SharedOpenToken,
 };
 use mshogi_desktop_session::{DesktopController, EnginePhase, PLAY_LIMITS, SharedSnapshot};
-use mshogi_engine::{ChessResult, EngineChoice, FailureKind, StopReason};
+use mshogi_engine::{
+    ChessResult, EngineChoice, ExecutionPurpose, ExecutionResult, FailureKind, StopReason,
+};
 use std::{
     path::PathBuf,
     thread,
@@ -69,14 +71,25 @@ fn real_observations(snapshot: &SharedSnapshot, perspective: Color, searched_ver
     assert_eq!(chess(snapshot).last_engine_turn, Some(perspective));
     assert_eq!(chess(snapshot).searched_version, Some(searched_version));
     assert_eq!(history(snapshot).last().unwrap(), &action.to_string());
-    assert_eq!(telemetry.completed_depth, PLAY_LIMITS.depth);
+    assert!(telemetry.completed_depth > 0 && telemetry.completed_depth <= PLAY_LIMITS.depth);
     assert!(telemetry.nodes > 0 && telemetry.nodes <= PLAY_LIMITS.nodes);
     assert!(telemetry.score.is_some());
-    assert_eq!(telemetry.status, StopReason::Complete);
-    assert_eq!(
-        telemetry.principal_variation.len(),
-        usize::from(telemetry.completed_depth)
-    );
+    match telemetry.status {
+        StopReason::Complete => assert_eq!(telemetry.completed_depth, PLAY_LIMITS.depth),
+        StopReason::NodeLimit => assert_eq!(telemetry.nodes, PLAY_LIMITS.nodes),
+        StopReason::Stopped => assert_eq!(PLAY_LIMITS.time_ms, Some(1_000)),
+    }
+    let selective_depth = telemetry
+        .selective_depth
+        .expect("actual conventional selective depth");
+    assert!(selective_depth <= mshogi_search::chess_conventional::MAX_PLY);
+    let board_plies = telemetry
+        .principal_variation
+        .iter()
+        .filter(|choice| matches!(choice, EngineChoice::Move { .. }))
+        .count();
+    assert!(board_plies <= usize::from(selective_depth));
+    assert!(telemetry.principal_variation.len() <= usize::from(selective_depth) + 1);
     assert_eq!(
         telemetry.principal_variation[0],
         EngineChoice::Move { action: *action }
@@ -87,6 +100,38 @@ fn real_observations(snapshot: &SharedSnapshot, perspective: Color, searched_ver
     for text in &history(snapshot)[..history(snapshot).len() - 1] {
         before_reply.apply(text.parse().unwrap()).unwrap();
     }
+    let recorded = &snapshot
+        .observations
+        .last()
+        .expect("retained actual observation")
+        .observation;
+    assert!(
+        snapshot
+            .observations
+            .last()
+            .unwrap()
+            .application_error
+            .is_none()
+    );
+    assert!(matches!(
+        recorded.context.purpose,
+        ExecutionPurpose::EngineTurn {}
+    ));
+    assert_eq!(recorded.context.limits, PLAY_LIMITS);
+    assert_eq!(recorded.context.limits.time_ms, Some(1_000));
+    assert_eq!(recorded.context.session_version, searched_version);
+    assert!(recorded.context.request_id > 0 && recorded.context.process_generation > 0);
+    assert_eq!(
+        recorded.context.game,
+        CanonicalRecord::chess(before_reply.record())
+    );
+    assert_eq!(
+        recorded.result,
+        ExecutionResult::Chess {
+            result: chess(snapshot).last_engine_result.clone().unwrap(),
+        }
+    );
+    assert!(recorded.matches(&recorded.context));
     for choice in &telemetry.principal_variation {
         match choice {
             EngineChoice::Move { action } => before_reply.apply(*action).unwrap(),

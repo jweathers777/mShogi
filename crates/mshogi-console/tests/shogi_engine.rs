@@ -27,6 +27,7 @@ fn request(game: &Game, id: u64) -> ExecutionRequest {
             process_generation: id,
             game: CanonicalRecord::shogi(GameRecord::from_game(game)),
             limits: WorkLimits {
+                time_ms: None,
                 depth: search::DEFAULT_LIMITS.depth,
                 nodes: search::DEFAULT_LIMITS.nodes,
             },
@@ -193,6 +194,7 @@ fn actual_cross_game_cancel_replacement_and_historical_selection_retire_old_work
     let game = Game::from_root(root);
     let mut old = request(&game, 1);
     old.context.limits = WorkLimits {
+        time_ms: None,
         depth: search::MAX_DEPTH,
         nodes: search::MAX_NODES,
     };
@@ -214,6 +216,7 @@ fn actual_cross_game_cancel_replacement_and_historical_selection_retire_old_work
         },
     };
     analysis.context.limits = WorkLimits {
+        time_ms: None,
         depth: 1,
         nodes: 1000,
     };
@@ -241,6 +244,7 @@ fn actual_cross_game_cancel_replacement_and_historical_selection_retire_old_work
                 .record(),
             ),
             limits: WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 1000,
             },

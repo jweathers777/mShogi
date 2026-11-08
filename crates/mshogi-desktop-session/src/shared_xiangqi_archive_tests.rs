@@ -345,6 +345,7 @@ fn saved_actual_engine_and_analysis_observations_are_historical_and_old_work_sta
     let settings = XiangqiSettings {
         orientation: x::Side::Black,
         analysis_defaults: WorkLimits {
+            time_ms: None,
             depth: 2,
             nodes: 64,
         },

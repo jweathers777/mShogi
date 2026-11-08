@@ -16,7 +16,8 @@ pub const MAX_DEPTH: u16 = 128;
 /// visits, terminal nodes and leaves. No wall time is part of this contract.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SearchLimits {
-    /// Maximum full-width depth in plies, in 1..=MAX_DEPTH.
+    /// Maximum nominal depth in plies, in 1..=MAX_DEPTH. This baseline is
+    /// full-width; conventional search separately reports actual selective depth.
     pub depth: u16,
     /// Stop before visiting a node beyond this total; zero visits no nodes.
     pub nodes: Option<u64>,
@@ -58,7 +59,7 @@ pub struct SearchResult {
     /// immediate move must choose and label their own legal fallback.
     pub decision: Option<SearchDecision>,
     /// Root side-to-move perspective. Zero evaluates a draw/claim or equal
-    /// material; it does not itself conclude a draw. Wins score MATE_SCORE-ply,
+    /// heuristic balance; it does not itself conclude a draw. Wins score MATE_SCORE-ply,
     /// losses -MATE_SCORE+ply. None when no iteration completed.
     pub score: Option<i32>,
     /// Last fully completed depth; zero when no iteration completed.
@@ -77,6 +78,9 @@ pub struct SearchResult {
 pub enum SearchError {
     /// Depth is outside 1..=MAX_DEPTH.
     InvalidDepth(u16),
+    /// Timed conventional search cannot bound an opt-in Full-mode native solver
+    /// inside a transition. Ordinary execution uses the bounded M2 profile.
+    TimedFullUnsupported,
     /// Rules-generated action could not be represented/applied (e.g. counter
     /// overflow). The caller remains unchanged and no partial score is returned.
     Transition(PlayError),

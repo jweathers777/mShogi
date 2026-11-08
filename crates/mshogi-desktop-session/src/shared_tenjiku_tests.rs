@@ -657,6 +657,7 @@ fn real_search_observations_reject_profile_purpose_and_all_runtime_context_chang
         send(&mut ctl, SessionOperation::Inspect { event_index: 0 }).unwrap();
         ctl.start_tenjiku(
             WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 512,
             },
@@ -769,6 +770,7 @@ fn real_search_observations_reject_profile_purpose_and_all_runtime_context_chang
         send(&mut ctl, SessionOperation::ReturnLive {}).unwrap();
         ctl.start_tenjiku(
             WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 512,
             },

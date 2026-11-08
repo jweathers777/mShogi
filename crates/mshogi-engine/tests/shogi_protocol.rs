@@ -22,6 +22,7 @@ fn request(game: &Game) -> ExecutionContext {
         process_generation: 3,
         game: CanonicalRecord::shogi(GameRecord::from_game(game)),
         limits: WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 5000,
         },
@@ -187,7 +188,11 @@ fn precise_limits_and_incomplete_work_do_not_invent_scores_or_moves() {
         (32, 2, 1, StopReason::NodeLimit),
     ] {
         let mut c = request(&Game::new());
-        c.limits = WorkLimits { depth, nodes };
+        c.limits = WorkLimits {
+            time_ms: None,
+            depth,
+            nodes,
+        };
         let response = run(c.clone());
         assert!(response.matches(&c));
         let ExecutionResult::Shogi { result } = response.result else {
@@ -212,12 +217,18 @@ fn precise_limits_and_incomplete_work_do_not_invent_scores_or_moves() {
         assert_eq!(t.status, status);
     }
     for limits in [
-        WorkLimits { depth: 0, nodes: 1 },
         WorkLimits {
+            time_ms: None,
+            depth: 0,
+            nodes: 1,
+        },
+        WorkLimits {
+            time_ms: None,
             depth: search::MAX_DEPTH + 1,
             nodes: 1,
         },
         WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: search::MAX_NODES + 1,
         },
@@ -279,6 +290,7 @@ fn capabilities_and_result_families_do_not_make_chess_full_a_shogi_operation() {
     );
     c.purpose = ExecutionPurpose::EngineTurn {};
     c.limits = WorkLimits {
+        time_ms: None,
         depth: 1,
         nodes: 1000,
     };

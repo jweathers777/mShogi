@@ -104,7 +104,14 @@ pub fn write_all(dir: &Path) {
             },
         );
         probe
-            .verify_tori_execution(mshogi_engine::WorkLimits { depth: 1, nodes: 1 }, false)
+            .verify_tori_execution(
+                mshogi_engine::WorkLimits {
+                    time_ms: None,
+                    depth: 1,
+                    nodes: 1,
+                },
+                false,
+            )
             .unwrap();
         let pending = probe.verify_tori_pending_snapshot().unwrap();
         assert_eq!(pending.phase, mshogi_desktop_session::EnginePhase::Thinking);
@@ -138,6 +145,7 @@ pub fn write_all(dir: &Path) {
         probe
             .verify_tori_execution(
                 mshogi_engine::WorkLimits {
+                    time_ms: None,
                     depth: 1,
                     nodes: 1000,
                 },

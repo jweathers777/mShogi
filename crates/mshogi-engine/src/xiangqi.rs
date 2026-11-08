@@ -9,6 +9,7 @@ use serde::{Deserialize, Serialize};
 
 /// Measured default for ordinary interactive consumers; derived from the native search.
 pub const XIANGQI_PLAY_LIMITS: crate::WorkLimits = crate::WorkLimits {
+    time_ms: None,
     depth: search::DEFAULT_LIMITS.depth,
     nodes: search::DEFAULT_LIMITS.nodes,
 };

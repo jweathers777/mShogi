@@ -106,6 +106,13 @@ pub struct ExecutionContext {
 impl ExecutionContext {
     /// Cheap bounded static admission. Native live replay stays in the supervised child.
     pub fn valid_limits(&self) -> bool {
+        if self.limits.time_ms.is_some_and(|ms| ms > 60_000)
+            || (self.limits.time_ms.is_some()
+                && (self.game.game_kind() != GameKind::Chess
+                    || matches!(self.purpose, ExecutionPurpose::ChessFullReachability { .. })))
+        {
+            return false;
+        }
         if self.game.game_kind() == GameKind::Chess
             && self.game.event_count() > MAX_SHARED_CHESS_EVENTS
         {
@@ -379,6 +386,38 @@ impl ExecutionObservation {
                 }
                 if let ChessResult::Failure { failure } = result {
                     return failure.message.len() <= MAX_STDERR_BYTES;
+                }
+                // Historical observations have no selective metadata and retain
+                // their existing native replay/admission contract. New results
+                // state an explicit bounded continuation depth and must agree
+                // with the complete request work/choice shape before admission.
+                let telemetry = match result {
+                    ChessResult::Move { telemetry, .. }
+                    | ChessResult::Claim { telemetry, .. }
+                    | ChessResult::Finished { telemetry, .. }
+                    | ChessResult::Incomplete { telemetry } => Some(telemetry),
+                    _ => None,
+                };
+                if let Some(t) = telemetry
+                    && t.selective_depth.is_some()
+                    && (!t.valid_selective_shape(submitted.limits)
+                        || match result {
+                            ChessResult::Move { action, .. } => {
+                                t.principal_variation.first()
+                                    != Some(&crate::EngineChoice::Move { action: *action })
+                            }
+                            ChessResult::Claim { claim, .. } => {
+                                t.principal_variation.first()
+                                    != Some(&crate::EngineChoice::Claim { claim: *claim })
+                            }
+                            ChessResult::Finished { .. } => !t.principal_variation.is_empty(),
+                            ChessResult::Incomplete { .. } => {
+                                t.completed_depth != 0 || t.status == crate::StopReason::Complete
+                            }
+                            _ => false,
+                        })
+                {
+                    return false;
                 }
                 matches!(
                     (&submitted.purpose, result),

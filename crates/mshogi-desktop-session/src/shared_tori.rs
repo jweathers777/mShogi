@@ -194,7 +194,11 @@ impl ToriSession {
                 let AnalysisOperation::Moves { depth, nodes } = operation else {
                     return Err("Unsupported Tori analysis operation; no Chess Full or Xiangqi exact operation is available.".into());
                 };
-                let limits = WorkLimits { depth, nodes };
+                let limits = WorkLimits {
+                    time_ms: None,
+                    depth,
+                    nodes,
+                };
                 validate_limits(limits)?;
                 let stop = if self.viewed.is_some() {
                     self.browse_stop.clone()
@@ -1050,6 +1054,7 @@ fn display_observation(
         _ => None,
     };
     PresentedSearchObservation {
+        selective_depth: None,
         observation_index: index,
         purpose: if matches!(o.context.purpose, ExecutionPurpose::EngineTurn {}) {
             "engine_turn"

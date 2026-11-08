@@ -18,6 +18,7 @@ impl Default for ShogiSettings {
         Self {
             orientation: s::Side::Sente,
             analysis_defaults: WorkLimits {
+                time_ms: None,
                 depth: 1,
                 nodes: 1000,
             },
@@ -230,7 +231,7 @@ pub(super) fn bounded(error: impl ToString) -> String {
 }
 
 fn valid_limits(limits: WorkLimits) -> Result<(), String> {
-    if !(1..=4).contains(&limits.depth) || limits.nodes > 20_000 {
+    if !(1..=4).contains(&limits.depth) || limits.nodes > 20_000 || limits.time_ms.is_some() {
         Err("Unsupported shogi operation/limits: ordinary depth1–4 and at most20,000 nodes; untimed play only.".into())
     } else {
         Ok(())
@@ -512,7 +513,7 @@ impl ShogiSession {
             SessionOperation::Cancel{}=>{self.browse_running=false;self.browse_stop=None;self.retire();self.paused=true;self.phase=EnginePhase::Cancelled;}
             SessionOperation::Analyze{operation:AnalysisOperation::Moves{depth,nodes}}=>{
                 if self.viewed.is_none(){self.browse_running=false;}
-                let limits=WorkLimits{depth,nodes};valid_limits(limits)?;self.retire();self.paused=true;self.settings.analysis_defaults=limits;self.analysis_intent=Some((self.record(),limits));analysis=Some(limits);
+                let limits=WorkLimits{ time_ms: None,depth,nodes};valid_limits(limits)?;self.retire();self.paused=true;self.settings.analysis_defaults=limits;self.analysis_intent=Some((self.record(),limits));analysis=Some(limits);
             }
             SessionOperation::Resume{}|SessionOperation::Retry{}=>{
                 self.browse_running=false;
@@ -611,6 +612,7 @@ impl ShogiSession {
             }
         } else if response.context.limits
             != (WorkLimits {
+                time_ms: None,
                 depth: 2,
                 nodes: 5000,
             })

@@ -30,6 +30,7 @@ pub use xiangqi::{
 
 // The displayed play budget and submitted work use the same native value.
 const SHOGI_PLAY_LIMITS: WorkLimits = WorkLimits {
+    time_ms: None,
     depth: 2,
     nodes: 5000,
 };
@@ -292,6 +293,10 @@ pub struct PresentedSearchObservation {
     pub score: Option<String>,
     /// Actual last completed iteration, absent for process failure.
     pub completed_depth: Option<u16>,
+    /// Actual deepest visited board ply for conventional Chess; absent in old
+    /// observations and profiles without selective-depth telemetry.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub selective_depth: Option<u16>,
     /// Actual admitted visits, absent for process failure.
     pub nodes: Option<u64>,
     /// Readable native complete continuation choices.
@@ -363,6 +368,7 @@ fn display_shogi_observation(
         }
     };
     PresentedSearchObservation {
+        selective_depth: None,
         observation_index: index,
         purpose,
         event_index,
@@ -447,6 +453,9 @@ fn display_chess_observation(
             _ => match telemetry.expect("search telemetry").status {
                 mshogi_engine::StopReason::Complete => "Complete",
                 mshogi_engine::StopReason::NodeLimit => "Node limit reached",
+                mshogi_engine::StopReason::Stopped if context.limits.time_ms.is_some() => {
+                    "Thinking time reached"
+                }
                 mshogi_engine::StopReason::Stopped => "Analysis stopped",
             },
         }
@@ -464,6 +473,7 @@ fn display_chess_observation(
         }
     });
     PresentedSearchObservation {
+        selective_depth: telemetry.and_then(|t| t.selective_depth),
         observation_index: index,
         purpose,
         event_index,

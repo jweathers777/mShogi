@@ -1,23 +1,81 @@
 # Chess search
 
-## MSH-49 conventional candidate
+## Active conventional Chess engine
 
-The active `SearchCoordinator`, shared by UCI and supervised native execution,
-uses `chess_candidate::{search, search_with_stop}`: `mshogi.chess.alpha-beta-capture-order.v1`
-with `mshogi.chess.tapered-position.v1`. This is an exact fail-soft alpha-beta
-backup with the same native history, outcome, claim, terminal score,
-completed-iteration, visit-budget and restoration contracts described below.
-Already legal native actions are ordered by a static capture/promotion priority,
-then lexically by UCI text; equal backed-up scores keep the first ordered action.
-Native optional claims retain precedence on zero-score ties. This candidate
-ordering intentionally differs from the frozen baseline's lexical-only order.
-It has no transposition table, quiescence or selective pruning. The evaluator
-adds transparent untrained positional terms; see [evaluation](evaluation.md).
-The frozen full-width/material API and tests remain unchanged as a reference.
+The `SearchCoordinator`, shared by UCI and supervised native execution, uses
+`chess_conventional::{search, search_with_stop, search_with_time}`: search identity
+`mshogi.chess.conventional.v1`, evaluator
+`mshogi.chess.conventional-tapered.v1`. The implementation and bounded engineering
+evidence are described in [the conventional engine checkpoint](m5/chess-conventional.md).
+This is a classical, selective engine; no playing-strength claim follows from its
+correctness tests or profiling.
 
-Candidate correctness is separate from playing strength. The bounded study in
-[MSH-49](m5/chess-strength.md) records the approved release bar and actual results;
-implementation or tactical tests alone do not establish that bar.
+Iterative deepening combines fail-soft principal-variation search, aspiration
+windows, a bounded transposition table, capture/exchange ordering, killers and
+quiet/capture/continuation history. Conventional mode adds capture/promotion
+quiescence, check extensions, late-move reductions with re-search, guarded
+futility/late-move/exchange pruning and verified null-move probes. Native checked
+transitions resolve every real action. The private native search cursor retains
+history, outcome and claim authority; hypothetical null branches cannot create
+real history or native game conclusions. Null cutoffs require verification on the
+real node, with low-material, claim, check, counter and mate-band guards.
+
+Native outcomes and claims precede static evaluation. Scores use the root side's
+perspective; draws are zero and native mate scores are `±(1_000_000 - ply)`.
+Optional zero-valued claims retain tie precedence; `AutoClaim` remains mandatory.
+A concluded root is visited at actual ply zero, returns `Finished` and an empty
+variation. No static score or search horizon adjudicates a game.
+
+Nominal `completed_depth` records the last completed iterative-deepening target.
+`selective_depth` records the deepest actual visited board ply across all attempted
+iterations, including an interrupted later iteration. Quiescence normally allows
+16 further plies; checked nodes search native evasions beyond that allowance until
+the absolute 128-ply ceiling. At that ceiling, native outcomes and claims still
+precede an approximate static leaf, even in check. It is a finite-work cap, not a
+proof that the position is quiet or a terminal result. A principal variation can
+therefore exceed nominal depth. `SearchStats` exposes the main/quiescence visits
+and algorithm counters.
+
+Depth, total visits, cancellation and optional soft/hard thinking-time limits bound
+work. The soft boundary stops starting new iterations; the hard deadline and stop
+predicate are polled cooperatively at nodes and exchange-ordering work. Only a
+completed iteration supplies a decision, score and variation. Interruption before
+the first completion supplies none; a later interruption preserves the earlier
+completed result. No fallback move or terminal result is invented. Native state
+and the incremental evaluator unwind on success, interruption and errors. Timed
+search explicitly refuses full native mate-reachability mode because its solver
+cannot be interrupted by the search deadline; normal timed consumers use the
+existing bounded M2 adjudication mode.
+
+The table is fresh per request and capped at 4096 entries. A position hash is only
+an index and ordering hint. Bound reuse checks an exact native key containing the
+complete root context and action prefix, plus the remaining extension budget.
+Different histories do not share score bounds, even if their boards match; this
+conservative policy deliberately forgoes compatible transpositions. Synthetic
+null probes have no real-history key. Mate scores are normalized on table storage
+and retrieval.
+
+`SearchMode::Exact` retains PVS, ordering and full-history-checked table reuse, but
+disables quiescence, extensions and selective approximations. It is a diagnostic
+fixed-depth backup with static leaves, tested against an independently written
+exhaustive oracle. Conventional-mode tests cover tactical recaptures and check
+evasions, native terminal/claim precedence, legal exchange estimates, history and
+hash-collision separation, guarded null/selective paths, work limits, cancellation,
+representation failure and restoration. These establish specific engineering
+contracts; they do not establish playing strength.
+
+## Historical positional candidate
+
+The retained `chess_candidate::{search, search_with_stop}` API has search identity
+`mshogi.chess.alpha-beta-capture-order.v1` and evaluator
+`mshogi.chess.tapered-position.v1`. It is exact fail-soft alpha-beta with native
+history, outcomes and claims, capture/promotion priority followed by lexical UCI
+ordering, and no transposition table, quiescence or selective pruning. Its evaluator
+is described in [evaluation](evaluation.md). Equal backed-up scores keep the first
+ordered action, while optional claims retain precedence on zero-score ties.
+The earlier formal study was stopped by owner decision; its preserved observations
+are [historical evidence](m5/chess-strength.md), not the active engine's acceptance
+bar. Both this API and the full-width/material baseline remain reference paths.
 
 ## Frozen full-width baseline
 
@@ -40,13 +98,13 @@ assert_eq!(result.completed_depth, 1);
 # Ok::<(), mshogi_search::search::SearchError>(())
 ```
 
-## Focused correctness evidence
+## Frozen baseline correctness evidence
 
 `cargo test -p mshogi-search --locked` exercises the exact recursive backup against an independently specified synthetic tree: two-ply minimax selects the branch whose worst result is 5 over the branch whose worst result is 3; one-ply static evaluation intentionally chooses the other branch. It also verifies full-width node visits and exact private-state unwind when halted. Chess fixtures derive from hand-solvable diagrams: mate in one for both colors, mate in two (three searched plies), a hanging queen capture, terminal mate/stalemate/dead/75-move outcomes, and score perspective. They replay every returned variation through the public rules boundary.
 
 History regressions start from the same complete current FEN with either recorded knight cycles or imported unknown earlier history. The losing side can claim the third known occurrence; the imported game has no such claim. A fifth occurrence is an automatic result. Further tests distinguish optional claims from mandatory auto-claims even over mate, intended-move claims, policy at leaf boundaries, deterministic completed-iteration retention under work limits, caller immutability and explicit representation failure. These establish bounded search correctness, not playing strength or complete chess adjudication. The transparent evaluator's existing tests remain applicable.
 
-## Measured execution baseline
+## Historical full-width execution baseline
 
 Measured 2026-10-25 local date on the MSH-20 working diff based on `d7eced4` (integration commit to be recorded in MSH-20). Hardware: Apple M1 Pro, 10 cores (8 performance/2 efficiency), 32 GB RAM, MacBookPro18,1. System: macOS 27.0.1 (26A434), arm64. Compiler: rustc 1.89.0 (29483883e), LLVM 20.1.7; ordinary Cargo `--release`, no custom build flags, one search thread. Command: `cargo run -p mshogi-search --release --locked --example search_baseline`. Settings: depth 3, unlimited nodes, `ExplicitOnly`, material v1, no external stop. Each fixture imports its stated FEN and thus has unknown earlier history. Node totals include iterations 1, 2 and 3.
 

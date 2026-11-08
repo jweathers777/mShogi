@@ -12,6 +12,7 @@ fn context(game: &t::Game) -> ExecutionContext {
         process_generation: 3,
         game: CanonicalRecord::tori(t::GameRecord::from_game(game).unwrap()),
         limits: WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: 1000,
         },
@@ -283,12 +284,18 @@ fn full_remains_explicit_unscored_unsupported_and_limits_are_bounded() {
     ));
     assert!(!serde_json::to_string(&obs).unwrap().contains("\"score\""));
     for limits in [
-        WorkLimits { depth: 0, nodes: 1 },
         WorkLimits {
+            time_ms: None,
+            depth: 0,
+            nodes: 1,
+        },
+        WorkLimits {
+            time_ms: None,
             depth: search::MAX_DEPTH + 1,
             nodes: 1,
         },
         WorkLimits {
+            time_ms: None,
             depth: 1,
             nodes: search::MAX_NODES + 1,
         },
@@ -402,6 +409,7 @@ fn same_board_full_history_and_forbidden_departure_require_native_worker_validat
 fn historical_unscored_failure_contexts_survive_new_bounded_execution_limits() {
     let mut c = context(&t::Game::standard());
     c.limits = WorkLimits {
+        time_ms: None,
         depth: search::MAX_DEPTH + 1,
         nodes: search::MAX_NODES + 1,
     };

@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "task": "MSH-48",
-  "status": "in_progress",
+  "status": "verification_in_progress",
   "date": "2026-11-08",
   "integration_branch": "codex/rewrite",
   "starting_revision": "aa68dda38c5a5380bc0faeb095e36aa3b9567ee9",
-  "tested_source": null,
+  "tested_source": "9a164eb4379231dcb4fca484adb7ec5597e7c991",
   "scope": "Existing runner offline experiment infrastructure; no rules/search/protocol/product changes. All six games/seven accepted whole profiles.",
   "required_ci": [
     "Rust (ubuntu-24.04)",
@@ -75,7 +75,9 @@
       13.59,
       7373.18
     ],
-    "purpose": "Choose conservative bounded release pilot; not strength evidence"
+    "purpose": "Choose conservative bounded release pilot; not strength evidence",
+    "report": "docs/m5/evidence/msh48/prelimit-debug-report.json.gz",
+    "sha256": "829f14181bc0d54a08d276e57e447d6a2f8980c815ff047e8d67fa239e1c5bb3"
   },
   "review": {
     "reviewer": "independent msh48_review agent",
@@ -87,10 +89,57 @@
       "atomic post-action record/request capacity refusal",
       "typed report/external wrapper bounds"
     ],
-    "final_evidence_verdict": "pending"
+    "final_evidence_verdict": "pending required3OSCI",
+    "frozen_pilot_data_verdict": "Passed independent bounded read-only inspection: all84row identities,hashes,native root chains,labels,pairings,splits; repeat semantic equality;actualexecutableSHA;8supplementoutcomes"
   },
-  "pilot": null,
-  "ci": null,
+  "pilot": {
+    "metrics": "docs/m5/evidence/msh48/pilot-metrics.json",
+    "main": {
+      "command": "target/release/mshogi-match experiment-run /private/tmp/msh48-release-config.json /private/tmp/msh48-release-report.json",
+      "outcome": "passed execution+native evidence replay;56games,20nativeconclusions,28unscoredstepcaps,8unscoredTenjikuNodeLimit",
+      "actual_requests": 84,
+      "applied_commands": 76,
+      "configuration": "Complete effective config and authored root provenance retained inside release-report.json.gz",
+      "limits": "candidate1/512 vs baseline-low1/128 and baseline-deeper2/512;2commands/game;120s cooperative wall,15s watchdog,250ms cleanup"
+    },
+    "supplement": {
+      "command": "target/release/mshogi-match experiment-run /private/tmp/msh48-supplement-config.json /private/tmp/msh48-supplement-report.json",
+      "outcome": "passed8nativeTenjikuconclusions,bothprofiles,bothcolors,multiplebaselines",
+      "rationale": "Initial128/512visit tactical searches incomplete; bounded supplement under unchanged native2000visit cap, actualcompleteiteration619visits",
+      "limits": "depth1/2000 candidate+peer,depth2/2000 baseline;1command/game;120s cooperative wall; no product/default change"
+    },
+    "repeat": {
+      "outcome": "passed56/56 semantic repeats: exactpairing/request/observation/history/outcome/stop/cleanup equality after excluding measuredelapsed_ns",
+      "command": "target/release/mshogi-match experiment-run /private/tmp/msh48-release-config.json /private/tmp/msh48-repeat-report.json"
+    },
+    "replay": {
+      "command": "target/release/mshogi-match experiment-replay /private/tmp/msh48-release-report.json",
+      "outcome": "passed56nativegames"
+    },
+    "data": {
+      "command": "target/release/mshogi-match experiment-data /private/tmp/msh48-release-report.json /private/tmp/msh48-release-data.jsonl",
+      "outcome": "passed84rows:76appliedtargets,20terminalvaluelabels,64missingvaluelabels;source/config/lineage/participant identities preserved",
+      "regenerate": "gzip -dc docs/m5/evidence/msh48/release-report.json.gz > /private/tmp/msh48-source-report.json; target/release/mshogi-match experiment-data /private/tmp/msh48-source-report.json /private/tmp/msh48-regenerated-data.jsonl"
+    },
+    "training": "not run; no model/learned evaluator/large data acquisition",
+    "strength": "not established; diagnostic finite catalog with unequal work and substantial censored outcomes"
+  },
+  "ci": {
+    "run_id": 42432584001,
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/42432584001",
+    "source": "9a164eb4379231dcb4fca484adb7ec5597e7c991",
+    "status": "in_progress",
+    "required_job_ids": [
+      128584504212,
+      128584504413,
+      128584504572
+    ],
+    "monitor": "single bounded completion-aware root monitor; no retries initiated",
+    "excluded_desktop": {
+      "run_id": 42432584003,
+      "reason": "Automatic unrelated packaged desktop campaign intentionally cancelled; no desktop source/game/product boundary changed; nativeCI retains its existing desktop-session fixture checks"
+    }
+  },
   "acceptance": {
     "1": "pending frozen evidence",
     "2": "pending frozen evidence",
@@ -107,5 +156,25 @@
     "Independent Tori/Chu/Tenjiku opponents not established; exact external binary/model/data rights and substantial compute budgets remain later-task blockers",
     "No Python binding before a concrete training consumer; native JSONL uses authoritative complete actions/history"
   ],
-  "next_task": "MSH-109 architecture review before substantial optimization; not started"
+  "next_task": "MSH-109 architecture review before substantial optimization; not started",
+  "frozen_build": {
+    "command": "cargo build --release --locked -p mshogi-console --bin mshogi -p mshogi-runner --bins --examples",
+    "outcome": "passed",
+    "duration_seconds": 17.06,
+    "source_clean_at_build": true,
+    "harness_revision": "9a164eb4379231dcb4fca484adb7ec5597e7c991",
+    "tracked_dirty_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "participant_executable": {
+      "executable": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/target/release/mshogi",
+        "canonical_path": "/Users/johnweathers/Development/Personal/mShogi/target/release/mshogi",
+        "bytes": 4764480,
+        "sha256": "a3c0cda3e4da2b00b931e0100000387fa9d34835d0e6565587a02f7750dd1567",
+        "error": null
+      },
+      "model": null,
+      "model_identity": "executable-embedded"
+    },
+    "log": "docs/m5/evidence/msh48/release-build.txt"
+  }
 }

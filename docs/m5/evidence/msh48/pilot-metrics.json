@@ -1,0 +1,341 @@
+{
+  "release": {
+    "report": "docs/m5/evidence/msh48/release-report.json.gz",
+    "uncompressed_sha256": "87d3de2a43fcb8b6900149da3d2d9384579b7c5a3ae24b2c4bbbdc7f570195db",
+    "uncompressed_bytes": 1739272,
+    "gzip_sha256": "cf92a1d969efa50e018821a78c4a5184bc37f23c5c289ea898625bba5395e805",
+    "environment": {
+      "harness_revision": "9a164eb4379231dcb4fca484adb7ec5597e7c991",
+      "harness_dirty_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+      "build_profile": "release",
+      "target": "aarch64-apple-darwin",
+      "rustflags": "",
+      "os": "macos",
+      "arch": "aarch64",
+      "available_parallelism": 10
+    },
+    "profiles": {
+      "mshogi.shogi.csa36.v1": {
+        "games": 8,
+        "native_scored": 4,
+        "stops": {
+          "native_concluded": 4,
+          "step_limit": 4
+        },
+        "steps": 12,
+        "applied": 12,
+        "nodes": 1218,
+        "observed_step_ms": {
+          "minimum": 4.522458,
+          "maximum": 185.281875,
+          "median": 7.5610415,
+          "sum": 274.472082
+        }
+      },
+      "mshogi.chess.match.v1": {
+        "games": 8,
+        "native_scored": 4,
+        "stops": {
+          "native_concluded": 4,
+          "step_limit": 4
+        },
+        "steps": 12,
+        "applied": 12,
+        "nodes": 1125,
+        "observed_step_ms": {
+          "minimum": 7.074709,
+          "maximum": 67.514042,
+          "median": 7.5683125,
+          "sum": 210.495919
+        }
+      },
+      "mshogi.tori.modern.v1": {
+        "games": 8,
+        "native_scored": 4,
+        "stops": {
+          "native_concluded": 4,
+          "step_limit": 4
+        },
+        "steps": 12,
+        "applied": 12,
+        "nodes": 1035,
+        "observed_step_ms": {
+          "minimum": 4.520584,
+          "maximum": 19.628334,
+          "median": 7.5640205,
+          "sum": 102.47175000000001
+        }
+      },
+      "mshogi.tenjiku.adams1999-modern.v1": {
+        "games": 8,
+        "native_scored": 0,
+        "stops": {
+          "step_limit": 4,
+          "incomplete:NodeLimit": 4
+        },
+        "steps": 12,
+        "applied": 8,
+        "nodes": 3126,
+        "observed_step_ms": {
+          "minimum": 60.152208,
+          "maximum": 1880.130875,
+          "median": 268.17933400000004,
+          "sum": 6221.104501
+        }
+      },
+      "mshogi.chu.jcsa2019.v1": {
+        "games": 8,
+        "native_scored": 4,
+        "stops": {
+          "step_limit": 4,
+          "native_concluded": 4
+        },
+        "steps": 12,
+        "applied": 12,
+        "nodes": 2034,
+        "observed_step_ms": {
+          "minimum": 13.5705,
+          "maximum": 88.346375,
+          "median": 16.608104,
+          "sum": 352.2620830000001
+        }
+      },
+      "mshogi.tenjiku.muller-completed.v1": {
+        "games": 8,
+        "native_scored": 0,
+        "stops": {
+          "step_limit": 4,
+          "incomplete:NodeLimit": 4
+        },
+        "steps": 12,
+        "applied": 8,
+        "nodes": 3150,
+        "observed_step_ms": {
+          "minimum": 61.702084,
+          "maximum": 1881.989708,
+          "median": 286.9460835,
+          "sum": 6332.263959999999
+        }
+      },
+      "mshogi.xiangqi.wxf2018.v1": {
+        "games": 8,
+        "native_scored": 4,
+        "stops": {
+          "step_limit": 4,
+          "native_concluded": 4
+        },
+        "steps": 12,
+        "applied": 12,
+        "nodes": 1411,
+        "observed_step_ms": {
+          "minimum": 4.519917,
+          "maximum": 310.60775,
+          "median": 31.6400205,
+          "sum": 781.6954989999999
+        }
+      }
+    },
+    "cleanup_diagnostics": []
+  },
+  "supplement": {
+    "report": "docs/m5/evidence/msh48/supplement-report.json.gz",
+    "uncompressed_sha256": "01bf226f209f9084a62992ee397bf2fc3c279c820db45689ec1b84bd41fe6e7c",
+    "uncompressed_bytes": 140815,
+    "gzip_sha256": "1fa32f983c48764ac3490f68d228d7e5d614b39a4dd16f8371fe5314c48cd9d4",
+    "environment": {
+      "harness_revision": "9a164eb4379231dcb4fca484adb7ec5597e7c991",
+      "harness_dirty_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+      "build_profile": "release",
+      "target": "aarch64-apple-darwin",
+      "rustflags": "",
+      "os": "macos",
+      "arch": "aarch64",
+      "available_parallelism": 10
+    },
+    "profiles": {
+      "mshogi.tenjiku.adams1999-modern.v1": {
+        "games": 4,
+        "native_scored": 4,
+        "stops": {
+          "native_concluded": 4
+        },
+        "steps": 4,
+        "applied": 4,
+        "nodes": 3857,
+        "observed_step_ms": {
+          "minimum": 289.822666,
+          "maximum": 1671.334834,
+          "median": 290.996979,
+          "sum": 2543.1514580000003
+        }
+      },
+      "mshogi.tenjiku.muller-completed.v1": {
+        "games": 4,
+        "native_scored": 4,
+        "stops": {
+          "native_concluded": 4
+        },
+        "steps": 4,
+        "applied": 4,
+        "nodes": 3857,
+        "observed_step_ms": {
+          "minimum": 286.691666,
+          "maximum": 1667.094125,
+          "median": 287.8730205,
+          "sum": 2529.531832
+        }
+      }
+    },
+    "cleanup_diagnostics": []
+  },
+  "repeat": {
+    "report": "docs/m5/evidence/msh48/repeat-report.json.gz",
+    "uncompressed_sha256": "ec82de2b54699e3c9edfe19ab6a176578cdd1e3528b76c76a0b282207223ad0e",
+    "uncompressed_bytes": 1739271,
+    "gzip_sha256": "2cf5de835b1af717202389dee29697c7082f2a58aea5353c763c6bc094631bbb",
+    "environment": {
+      "harness_revision": "9a164eb4379231dcb4fca484adb7ec5597e7c991",
+      "harness_dirty_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+      "build_profile": "release",
+      "target": "aarch64-apple-darwin",
+      "rustflags": "",
+      "os": "macos",
+      "arch": "aarch64",
+      "available_parallelism": 10
+    },
+    "profiles": {
+      "mshogi.shogi.csa36.v1": {
+        "games": 8,
+        "native_scored": 4,
+        "stops": {
+          "native_concluded": 4,
+          "step_limit": 4
+        },
+        "steps": 12,
+        "applied": 12,
+        "nodes": 1218,
+        "observed_step_ms": {
+          "minimum": 4.530125,
+          "maximum": 16.631959,
+          "median": 7.5681665,
+          "sum": 99.81708399999998
+        }
+      },
+      "mshogi.chess.match.v1": {
+        "games": 8,
+        "native_scored": 4,
+        "stops": {
+          "native_concluded": 4,
+          "step_limit": 4
+        },
+        "steps": 12,
+        "applied": 12,
+        "nodes": 1125,
+        "observed_step_ms": {
+          "minimum": 7.536875,
+          "maximum": 67.39775,
+          "median": 7.576124999999999,
+          "sum": 210.131374
+        }
+      },
+      "mshogi.tori.modern.v1": {
+        "games": 8,
+        "native_scored": 4,
+        "stops": {
+          "native_concluded": 4,
+          "step_limit": 4
+        },
+        "steps": 12,
+        "applied": 12,
+        "nodes": 1035,
+        "observed_step_ms": {
+          "minimum": 4.518584,
+          "maximum": 19.59725,
+          "median": 7.564166999999999,
+          "sum": 99.757543
+        }
+      },
+      "mshogi.tenjiku.adams1999-modern.v1": {
+        "games": 8,
+        "native_scored": 0,
+        "stops": {
+          "step_limit": 4,
+          "incomplete:NodeLimit": 4
+        },
+        "steps": 12,
+        "applied": 8,
+        "nodes": 3126,
+        "observed_step_ms": {
+          "minimum": 61.445,
+          "maximum": 1887.790167,
+          "median": 267.206458,
+          "sum": 6233.830249999999
+        }
+      },
+      "mshogi.chu.jcsa2019.v1": {
+        "games": 8,
+        "native_scored": 4,
+        "stops": {
+          "step_limit": 4,
+          "native_concluded": 4
+        },
+        "steps": 12,
+        "applied": 12,
+        "nodes": 2034,
+        "observed_step_ms": {
+          "minimum": 13.559208,
+          "maximum": 85.89075,
+          "median": 16.499979500000002,
+          "sum": 352.47912599999995
+        }
+      },
+      "mshogi.tenjiku.muller-completed.v1": {
+        "games": 8,
+        "native_scored": 0,
+        "stops": {
+          "step_limit": 4,
+          "incomplete:NodeLimit": 4
+        },
+        "steps": 12,
+        "applied": 8,
+        "nodes": 3150,
+        "observed_step_ms": {
+          "minimum": 62.445125,
+          "maximum": 1900.673709,
+          "median": 282.2315625,
+          "sum": 6338.314042
+        }
+      },
+      "mshogi.xiangqi.wxf2018.v1": {
+        "games": 8,
+        "native_scored": 4,
+        "stops": {
+          "step_limit": 4,
+          "native_concluded": 4
+        },
+        "steps": 12,
+        "applied": 12,
+        "nodes": 1411,
+        "observed_step_ms": {
+          "minimum": 4.362125,
+          "maximum": 310.477041,
+          "median": 31.6688955,
+          "sum": 779.5227480000001
+        }
+      }
+    },
+    "cleanup_diagnostics": []
+  },
+  "deterministic_repetition": "All56game pairings,requests,observations,accepted histories,outcomes/stops/cleanup identical after excluding observed elapsed_ns; report-byte hashes intentionally differ.",
+  "data": {
+    "sha256": "45b88df9ded063c2cd6479792ba05d3732307b79a50c6090625ca356fb63d2f3",
+    "bytes": 2600467,
+    "rows": 84,
+    "usable_action_targets": 76,
+    "terminal_labels": 20,
+    "retained_artifact": "regenerate with experiment-data from compressed source report; no generated training dataset committed"
+  }
+}

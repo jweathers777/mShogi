@@ -1,0 +1,292 @@
+{
+  "schema": 1,
+  "task": "MSH-49",
+  "status": "in_progress_owner_target_pending",
+  "starting_revision": "05eeba326341fb65efa0e60f2641795c5276e863",
+  "branch": "codex/rewrite",
+  "scope": "Common claim-aware comparison preparation and bounded pre-target calibration, no search/evaluation improvement or strength acceptance yet",
+  "owner_decision": {
+    "status": "pending",
+    "authority": "OriginalMSH49AC2/AC4 anddesignD09 require explicit owner release-strength/uncertainty target; dependency readiness does not decide it",
+    "question": "Choose first measured conventional release versus club-level/other target and material compute conditions; initialasyncquestionpending",
+    "no_target_assumed": true,
+    "concrete_proposal": "docs/m5/chess-strength.md:64relativepairs,atleast70%scoreandone-sidedexactpairedp<=.05;32externalmatchedrootsagainstexplicitdepth2Stockfishreference,atleast25%candidate score+positivemeanandsign-testgain;equalmShogi10kvisit/depth8ceilings;independentheldoutsamplerfrozenbeforeevaluation;allgameseligible;2hourlocalmatchbudget;nopaidcompute/noratingclaim",
+    "latest_question": "Concreteproposalnowpresented asynchronously; no response orapproval received. Earlierdirectionquestion superseded bythisproposal."
+  },
+  "baseline_build": {
+    "source": "05eeba326341fb65efa0e60f2641795c5276e863",
+    "source_diff": "",
+    "command": "cargo build --release --locked -p mshogi-console --bin mshogi -p mshogi-runner --bin mshogi-match",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "executables": {
+      "mshogi-match": {
+        "bytes": 7905024,
+        "sha256": "bed5e47dfb32cd0a142c64187a7f01b3815ee9d299c38939d7e232ef1775e68d"
+      },
+      "mshogi": {
+        "bytes": 4764480,
+        "sha256": "a3c0cda3e4da2b00b931e0100000387fa9d34835d0e6565587a02f7750dd1567"
+      }
+    }
+  },
+  "opponent": {
+    "name": "Stockfish19",
+    "release": "https://github.com/official-stockfish/Stockfish/releases/tag/sf_19",
+    "archive": "https://github.com/official-stockfish/Stockfish/releases/download/sf_19/stockfish-macos-universal.tar.gz",
+    "archive_sha256": "a1f0e3bcc5a6927a11fe6fc8e54a779754645f3c2bae2cf13420fd1957adaa77",
+    "executable_sha256": "8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5",
+    "acquisition": "Downloadedofficialreleaseinto/private/tmp/msh49/opponent; archiveandexe matched historicalM2pinnedSHA beforeexecution; notices/sourcebundle retained separately; notvendored/shipped/builddependency",
+    "license": "SeparateGPLv3opponent, actual licensecommand+bundledCopying/README inspected; no productredistributionchoice made",
+    "network": "embedded nn-1a298aa575a0.nnue identifiedinactualreports,exeSHAincludesit"
+  },
+  "calibration": {
+    "source": "05eeba326341fb65efa0e60f2641795c5276e863",
+    "artifact_source": "Frozen source05e releasebinaries beforeclaim-admissionfix; sourcecode clean atbuild",
+    "settings": "Six fixed authored prefixes, reversedcolors, bothdepth2/nodes10000;AutoClaim,untimed128totalplycap;Threads1/Hash16/MultiPV1/Skill20/LimitStrengthfalse/Ponderfalse",
+    "execution": {
+      "source": "05eeba326341fb65efa0e60f2641795c5276e863",
+      "purpose": "Pre-target bounded calibration only, not strength acceptance; authored fixed catalog, common depth2/nodes10000,128ply cap, nominal120s stop before next pair; no absolute rating",
+      "seconds": 53.11841104179621,
+      "receipts": [
+        {
+          "opening": "standard",
+          "returncode": 0,
+          "seconds": 8.884307874832302,
+          "stderr": "",
+          "report": "/private/tmp/msh49/standard.external.json"
+        },
+        {
+          "opening": "open",
+          "returncode": 0,
+          "seconds": 7.640217375010252,
+          "stderr": "",
+          "report": "/private/tmp/msh49/open.external.json"
+        },
+        {
+          "opening": "queen",
+          "returncode": 0,
+          "seconds": 9.550295833032578,
+          "stderr": "",
+          "report": "/private/tmp/msh49/queen.external.json"
+        },
+        {
+          "opening": "flank",
+          "returncode": 0,
+          "seconds": 7.632541083265096,
+          "stderr": "",
+          "report": "/private/tmp/msh49/flank.external.json"
+        },
+        {
+          "opening": "fianchetto",
+          "returncode": 0,
+          "seconds": 12.21320216730237,
+          "stderr": "",
+          "report": "/private/tmp/msh49/fianchetto.external.json"
+        },
+        {
+          "opening": "french",
+          "returncode": 0,
+          "seconds": 7.194011749699712,
+          "stderr": "",
+          "report": "/private/tmp/msh49/french.external.json"
+        }
+      ]
+    },
+    "artifacts": [
+      {
+        "opening": "standard",
+        "path": "docs/m5/evidence/msh49/calibration/standard.external.json.gz",
+        "sha256": "72a7710723236d5cbf539be3d88e17ab758226a7690de08607226f97131677be",
+        "gzip_sha256": "650fe2e55eb31e2c4f61c835123e24bdcea2d2bc41f35a47f442309f7d144212",
+        "seconds": 8.884307874832302,
+        "summary": [
+          {
+            "opening_id": "authored-standard",
+            "games": 2,
+            "wins": [
+              0,
+              2
+            ],
+            "draws": 0,
+            "unscored": 0,
+            "failures": 0
+          }
+        ]
+      },
+      {
+        "opening": "open",
+        "path": "docs/m5/evidence/msh49/calibration/open.external.json.gz",
+        "sha256": "ddc0d17977ab37ac48d4b3ddbacb316c1daddf438d51aad337058f89b97ac125",
+        "gzip_sha256": "77bd3652ccf95030813409af482dd2a4ebb072fd140a8010251cdf7ccbdca789",
+        "seconds": 7.640217375010252,
+        "summary": [
+          {
+            "opening_id": "authored-open",
+            "games": 2,
+            "wins": [
+              0,
+              2
+            ],
+            "draws": 0,
+            "unscored": 0,
+            "failures": 0
+          }
+        ]
+      },
+      {
+        "opening": "queen",
+        "path": "docs/m5/evidence/msh49/calibration/queen.external.json.gz",
+        "sha256": "e9052d5ed3d14f38b0047b60a3e5c9bb13bcbd364a5360c50c6b10f17406b8d6",
+        "gzip_sha256": "a85f0fe7fc8d181659684d89883039d3918e63ee5bcd87ed14d34a3c25f8c39d",
+        "seconds": 9.550295833032578,
+        "summary": [
+          {
+            "opening_id": "authored-queen",
+            "games": 2,
+            "wins": [
+              0,
+              2
+            ],
+            "draws": 0,
+            "unscored": 0,
+            "failures": 0
+          }
+        ]
+      },
+      {
+        "opening": "flank",
+        "path": "docs/m5/evidence/msh49/calibration/flank.external.json.gz",
+        "sha256": "8cbe24f3c1304dd9f9133136341db400fd0e5cb4fd472c4749ebdf5e587cae69",
+        "gzip_sha256": "b7c4bae6f3e1d810d0d8559172c4815542baf79e2d34305811f0377bf969fda6",
+        "seconds": 7.632541083265096,
+        "summary": [
+          {
+            "opening_id": "authored-flank",
+            "games": 2,
+            "wins": [
+              0,
+              2
+            ],
+            "draws": 0,
+            "unscored": 0,
+            "failures": 0
+          }
+        ]
+      },
+      {
+        "opening": "fianchetto",
+        "path": "docs/m5/evidence/msh49/calibration/fianchetto.external.json.gz",
+        "sha256": "e850a336b5518da21e506345f44e19a4e3c9083a42ec3452905da4925da50acd",
+        "gzip_sha256": "6950484d713d15664ee53c971043994e41d7a606cd0ac7247a33e79cd3a10172",
+        "seconds": 12.21320216730237,
+        "summary": [
+          {
+            "opening_id": "authored-fianchetto",
+            "games": 2,
+            "wins": [
+              0,
+              1
+            ],
+            "draws": 1,
+            "unscored": 0,
+            "failures": 0
+          }
+        ]
+      },
+      {
+        "opening": "french",
+        "path": "docs/m5/evidence/msh49/calibration/french.external.json.gz",
+        "sha256": "3ca8aa1525b9899c729651990ba7e92274c6b6fc557880936273f38f0ad000a2",
+        "gzip_sha256": "44f88b8480ebb5192fdb16f4a40733470a99efe88823539998631967e48a5c25",
+        "seconds": 7.194011749699712,
+        "summary": [
+          {
+            "opening_id": "authored-french",
+            "games": 2,
+            "wins": [
+              0,
+              1
+            ],
+            "draws": 1,
+            "unscored": 0,
+            "failures": 0
+          }
+        ]
+      }
+    ],
+    "results": {
+      "wins": 0,
+      "losses": 10,
+      "draws": 2,
+      "unscored": 0,
+      "failures": 0
+    },
+    "score_fraction": 0.08333333333333333,
+    "mshogi_completed_requests": 353,
+    "mshogi_nodes_min_max": [
+      41,
+      2257
+    ],
+    "fallbacks_or_incomplete": "none: all353recordedmShogi responses completeddepth2; no stderr/truncation/failure/cleanupissues",
+    "interpretation": "Small fixed-catalog calibration, not a population strengthtest, rating, approvedreleasebar or proof improvement; standaloneStockfish settings nothumanElo"
+  },
+  "claim_correction": {
+    "root_cause": "Searchdepthcountsboardplies; validdepth1PV Move+terminalClaim has2commands. Harness incorrectlyboundedallcommandsbydepth. Actualchildreturned16visits,score0,Complete,a1a2+BlackFiftyMoveintendedh8g7; firstactualboardmovewasrefused",
+    "correction": "Atmostcompleted_depthboardMoves andtotalPVdepth+1; existing native looprequires Claimlast/correctactor/fullnativeadmission. No extraordinaryboardplyallowed",
+    "red": "Actualchildregressionfailedbeforefix,1test,2.01s",
+    "green": "Sameactualchildregressionpassedafterfix,1test,2.01s;2pairednativeFiftyMovedrawswithoneplayedboardply",
+    "regressions": "9focusedexperimentadmissiontestspassed,8.81s",
+    "independent_review": "Approvedread-onlymsh49_protocol_research; nativeclaimtailandnegativeextraboardguard sound;6actualexternalreports replayed andhashes/identity/context/colors/353completedrequests/cleanoutcomesverified",
+    "source": "uncommittedcurrentchange pendingfrozencheckpoint/platformverification",
+    "local_checks": [
+      {
+        "command": "cargo test --locked -p mshogi-console --test chess_claim_admission -- --nocapture",
+        "outcome": "passed1actualchildtest,2pairedclaimednative draws"
+      },
+      {
+        "command": "cargo test --locked -p mshogi-runner --lib experiments::tests",
+        "outcome": "passed9focusedtests,8.81s"
+      },
+      {
+        "command": "cargo clippy --locked -p mshogi-runner -p mshogi-console --all-targets -- -D warnings",
+        "outcome": "passed14.20s"
+      },
+      {
+        "command": "cargo test --locked -p mshogi-runner",
+        "outcome": "passedall runnerunit/integration/recordedcorpus/doc suites;2ignored livechildhelperstestfixtures remainintentional"
+      }
+    ]
+  },
+  "ci": {
+    "status": "pendingfrozenclaim-correctioncheckpoint",
+    "required": [
+      "Rust(ubuntu24.04)",
+      "Rust(macos15)",
+      "Rust(windows2022)"
+    ],
+    "desktop": "NoGUIcampaignneeded: runneradmissioncorrection/testonly; noUI/productschema change"
+  },
+  "acceptance": {
+    "1": "partial: frozenbaseline+oneactualindependentimplementation andcalibration; finalpool/protocolnotselected",
+    "2": "pendingownerstrength/uncertainty/stopping/budgetdecision",
+    "3": "notmet: no search/evaluationimprovement oragreedstrengthverdict",
+    "4": "pendingfinalsource/actualmatchcriterion/independentacceptance; currentevidencepreliminary"
+  },
+  "not_run": [
+    "candidateoptimization",
+    "acceptedstrengthstudy",
+    "training/modelwork",
+    "newGUIcampaign"
+  ],
+  "development_failures": [
+    {
+      "command": "Python3.11tarfile.extractall(filter=data)",
+      "outcome": "Unsupportedkeyword; extractionhadnotstarted. Retriedonlyaftervalidatingeverymemberregularfile/directoryandrelativepath,no symlinks/parentescape; officialarchivehashmatched."
+    }
+  ],
+  "references": [
+    "docs/m5/experiments.md",
+    "docs/review/architecture-health-109.md",
+    "tests/fixtures/matches/README.md"
+  ]
+}

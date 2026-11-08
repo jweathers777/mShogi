@@ -161,7 +161,13 @@ fn chess_choice(
             .score
             .is_none_or(|s| i64::from(s).abs() > i64::from(mshogi_search::search::MATE_SCORE))
         || telemetry.principal_variation.first() != Some(&choice)
-        || telemetry.principal_variation.len() > usize::from(telemetry.completed_depth)
+        || telemetry
+            .principal_variation
+            .iter()
+            .filter(|choice| matches!(choice, mshogi_engine::EngineChoice::Move { .. }))
+            .count()
+            > usize::from(telemetry.completed_depth)
+        || telemetry.principal_variation.len() > usize::from(telemetry.completed_depth) + 1
     {
         return Err("Chess choice has no consistent completed search iteration".into());
     }

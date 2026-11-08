@@ -1,10 +1,11 @@
 ---
 id: MSH-49
 title: Establish and meet measured chess engine strength criteria
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-10-27T20:26:00Z'
+updated_date: '2026-11-08T08:43:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -39,3 +40,15 @@ Open D-09 questions: establish meaningful chess opponents and starting positions
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Primary builder/integrator Codex, clean origin-aligned primary codex/rewrite at05eeba326341fb65efa0e60f2641795c5276e863;48/25/109Done, no active worker, historical-access checkout preserved. One bounded Chess strength assignment. (1) Research actual current full-width/material baseline, acceptedM2/48runner/protocol/pilot evidence, available independent opponents and reproducible fair paired starting distributions; use small bounded native measurements to inform conditions. Preserve exact baseline executable/source and allconformance/history/claim/terminal/cancel/no-fallback contracts. (2) Bring concrete release-strength target, uncertainty/stopping rule and material compute/opponent conditions to owner for explicit D09 selection from evidence before claiming success; continue independent bounded baseline/protocol/correctness preparation while pending. Do not invent an Elo target or treat dependency readiness as owner approval. (3) Within selected scope implement measured conventional Chess search/evaluation improvements using authoritative native Game, no board-only history cache or second legality/adjudication; retain a reproducible frozen baseline path, actual execution/console/product integration and truthful identities. Exact implementation follows inspected sources/pilots and approved criteria; no neural work orothergame changes. (4) Meaningful independent search/evaluation oracles and restoration/cancel/claim/history/terminal/strict-result regressions, actual paired multiple-baseline/independent-opponent matches with attrition and uncertainty, one evidence ledger per source, independent review. Required existing native3OSCI for changednative/execution source; fullGUI campaign only if affected appboundary requires it. (5) Complete original4AC/4DoD only when agreed strength criteria and actual verification support them, normal integrate/push; otherwise preserve unfinished status and exact unresolved target/measurement blockers. No49success inferred from tactical/perft/speed/selfplay alone; no50–55/104implementation.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Pre-target common preparation: frozen clean production baseline05eeba3 built/captured with exactexeSHA; officialSF19 archive/exec hashes independently matched historicalpins andnotices retained in temporary storage only. Actual6fixedauthoredprefixpairs atcommondepth2/10knodes128plycap:0W2D10L,all12nativeconclusions,353completeddepth2requests,nofallback/process/truncation/cleanupfailures. Independent read-only review recheckedhashes/context and replayed6reports. Found/reproduced necessaryharness correction: valid depth1PV Move+terminalClaim wasrefused by total-command depthguard; countboardMoves<=depth plus atmostoneClaimtail with fullnativevalidation. Actualchild red/green andextraboardnegative+9admissionregressions+fullrunner+clippypassed; independentfixreview approved. docs/m5/chess-strength.md andevidence/msh49/verification.json retain baseline/correction/proposal; no search/eval candidate orstrengthacceptance yet. OwnerD09/AC2 decision pending concrete first-releaseproposal:64relativepairs70%+exactpairedp<=.05,32externalmatchedroots25%+positive/significantgain vsdepth2SFreference,equalmShogi10k/depth8ceilings,holdoutprotocolfrozen,2hourlocalmatchbudget,noratingclaim. No answer inferred. Alloriginalcriteria remainunchecked; taskunfinished. Commoncorrection frozen-source required3OSCI pending; no GUIcampaignneeded.
+<!-- SECTION:NOTES:END -->

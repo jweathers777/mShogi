@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "purpose": "Protocol/sampler/development freeze before any candidate match evaluation; no formal holdout seed yet",
+  "owner_approved": true,
+  "protocol_sha256": "757d97e97d48f150c5bed164301c2baaf22cc76b2096b3344267624825b32a49",
+  "sampler_sha256": "18b4626265277356d22e1ee488eb9ae5516acdd34ebbffe896481b5591b4de05",
+  "development_catalog_sha256": "b58dcc500348d51bee445e37bf7206db5660943e1f487e78cea98a6799030489",
+  "sampler_checks": "2native sampler tests passed;12development roots repeated byte-for-byte; same seed distinct labels yield distinct streams; full native records and fixed development exclusion checked",
+  "formal_holdout": "Not generated; fresh entropy only after finalcandidate source/executablefreeze",
+  "budget_seconds": 7200,
+  "pretarget_calibration_charged_seconds": 54,
+  "method_review": "Independent read-only msh49_protocol_research approved fixed paired-sign design, sampler/freeze consistency, exact integer gates and explicit budget eligibility before any candidate match"
+}

@@ -1,0 +1,148 @@
+{
+  "schema": 1,
+  "study": "msh49-first-measured-release-v1",
+  "status": "owner-approved; freeze before any candidate match evaluation",
+  "owner_decision": {
+    "date": "2026-11-08",
+    "reply": "Okay. Let's proceed with your first option for question 2.",
+    "selection": "Approve this initial bar and match budget",
+    "scope": "First measured conventional Chess release; no human Elo claim; no paid compute"
+  },
+  "profile": "mshogi.chess.match.v1",
+  "mode": "untimed M2 AutoClaim, orthodox-start full known history",
+  "candidate_and_baseline_limits": {
+    "depth": 8,
+    "nodes": 10000,
+    "movetime_ms": null
+  },
+  "stockfish_limits": {
+    "depth": 2,
+    "nodes": 10000,
+    "movetime_ms": null
+  },
+  "stockfish": {
+    "version": "19",
+    "executable_sha256": "8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5",
+    "settings": {
+      "Threads": "1",
+      "Hash": "16",
+      "MultiPV": "1",
+      "Skill Level": "20",
+      "UCI_LimitStrength": "false",
+      "Ponder": "false"
+    },
+    "interpretation": "Explicit depth handicap; no unrestricted-Stockfish or human rating inference"
+  },
+  "baseline": {
+    "source": "05eeba326341fb65efa0e60f2641795c5276e863",
+    "executable_sha256": "a3c0cda3e4da2b00b931e0100000387fa9d34835d0e6565587a02f7750dd1567",
+    "evaluator": "mshogi.chess.material.v1",
+    "search": "mshogi.chess.full-width.v1"
+  },
+  "population": {
+    "id": "msh49-six-families-uniform-native-4to8-material100-v1",
+    "sampler": "crates/mshogi-runner/examples/chess_study_roots.rs",
+    "families": [
+      [],
+      [
+        "e2e4",
+        "e7e5",
+        "g1f3",
+        "b8c6"
+      ],
+      [
+        "d2d4",
+        "d7d5",
+        "c2c4",
+        "e7e6"
+      ],
+      [
+        "c2c4",
+        "e7e5",
+        "b1c3",
+        "g8f6"
+      ],
+      [
+        "g1f3",
+        "d7d5",
+        "g2g3",
+        "g8f6"
+      ],
+      [
+        "e2e4",
+        "e7e6",
+        "d2d4",
+        "d7d5"
+      ]
+    ],
+    "draws": "IID mixture, balanced in expectation: each root chooses uniform family and independent uniform extra length4..8 once; hold both fixed through rejection attempts",
+    "continuation": "Uniform lexically enumerated authoritative native legal board actions; SHA256 counter/rejection PRNG; no candidate/opponent evaluation",
+    "filter": "Native live outcome, no available AutoClaim, full requested prefix reached, absolute frozen material-v1 white score<=100cp; exclude exact frozen development prefixes",
+    "attempt_cap_per_root": 10000,
+    "exhaustion": "Study ineligible; no widened filter, replacement family or seed retry",
+    "duplicates": "Holdout draws sampled with replacement; retain and report duplicates; do not deduplicate or exclude between the two formal arms",
+    "development": "Separate public seed msh49-development-2026-11-08-v1; 12roots; freeze exact development catalog before tuning; independent holdout sampling excludes that fixed set",
+    "holdout": "After candidate executable/source, protocol, sampler and development hashes freeze, obtain one fresh256-bit entropy seed. Derive relative/external streams by distinct labels; publish seed, full roots and rejection counts; no heldout evaluation before freeze. No outcome-based redraw.",
+    "scope": "Randomized short legal continuations from authored opening families, conditional on fixed filters; not a human-game corpus or general chess population",
+    "random_streams": "SHA256 domain includes population ID, seed, arm label, draw index, fixed u64MAX header or numbered attempt, and counter; little-endian u64 rejection removes modulo bias"
+  },
+  "relative_arm": {
+    "pairs": 64,
+    "games": 128,
+    "candidate_engine_index": 0,
+    "opponent": "frozen baseline",
+    "unit": "Two reversed-color games from one independently sampled root",
+    "candidate_halfpoint_sum_minimum": 180,
+    "score_gate": ">=70%; exact attainable minimum180/256=70.3125%",
+    "sign": "Candidate pair halfpoint sum minus2; ties excluded"
+  },
+  "external_arm": {
+    "matched_roots": 32,
+    "games": 128,
+    "candidate_games": 64,
+    "baseline_games": 64,
+    "opponent": "pinned depth2 Stockfish19",
+    "unit": "Four matched games per root: candidate and baseline each play Stockfish in both colors",
+    "candidate_halfpoint_sum_minimum": 32,
+    "score_gate": ">=25% across64 candidate games",
+    "mean_gate": "Sum of candidate pair halfpoints minus baseline pair halfpoints strictly positive",
+    "sign": "Candidate pair halfpoints minus baseline pair halfpoints at each root; ties excluded"
+  },
+  "inference": {
+    "null": "For each arm, Pr(positive paired difference | difference!=0)<=1/2 under its independently sampled opening distribution",
+    "alternative": "Positive paired difference is more likely than negative conditional on nonzero difference",
+    "pvalue": "Exact one-sided upper Binomial(n,1/2) tail from k positive signs among n non-ties; n=0 gives1",
+    "threshold": "p<=0.05 in BOTH arms, compare integer20*tail_numerator<=2^n",
+    "separate_gates": "Observed score floors and positive external mean are operational gates; sign test is not a confidence bound or hypothesis test on mean score",
+    "multiplicity": "Conjunctive co-primary intersection-union completion: both arms and all eligibility/operational gates must pass. No simultaneous95% mean-interval claim.",
+    "fixed_sample": "Run the two fixed samples once. No optional success stopping, dropped failed pairs, extra roots, fresh-seed retry after failure, or post-holdout candidate tuning. An incomplete study cannot pass.",
+    "assumption": "IID opening draws are an experimental assumption implemented by the specified label-domain pseudorandom sampler; inference is conditional on this declared population, not general human chess"
+  },
+  "eligibility": {
+    "maximum_total_plies_including_prefix": 512,
+    "games": "Every planned game must conclude natively; no process/protocol/cleanup/diagnostic failure, output truncation, work fallback, incomplete response or unscored cap",
+    "search": "Audit every actual go/bestmove for completed depth>0 and score telemetry; reject mShogi fallback diagnostics. Native controller claims may conclude without go; intended claim move is not played.",
+    "records": "Existing strict Rust report replay, exact config/executable/model/history/limits/color identities and intact prior output files",
+    "failure": "Preserve actual reports and mark study ineligible; never score failure as loss/draw or silently omit a pair",
+    "budget": "Total charged match work<=7200seconds is mandatory forPASS; any overrun makes study ineligible even if game scores pass"
+  },
+  "budget": {
+    "local_match_wall_seconds": 7200,
+    "already_spent_pre_target_calibration": "Count54seconds conservatively (ceil of actual calibrated invocation wall time)",
+    "accounting": "Sum measured active match-run invocation wall time, including development, baseline and formal arms; testing/build/CI separate. Stop scheduling new pairs/batches at budget. Existing in-flight match remains bounded by native/protocol/ply and cleanup policies; record any overrun and do not extend budget to force success.",
+    "paid_compute": false
+  },
+  "references": [
+    "https://www.itl.nist.gov/div898/software/dataplot/refman1/auxillar/signtest.htm",
+    "docs/m5/chess-strength.md",
+    "docs/m5/evidence/msh49/verification.json"
+  ],
+  "io": {
+    "line_bytes": 4096,
+    "queued_lines": 32,
+    "transcript_bytes": 2097152,
+    "stderr_bytes": 16384,
+    "command_bytes": 4096
+  },
+  "io_rationale": "Caller-configured within existing admitted bounds:2MiB transcript retains up to512ply full-position commands; oneopeningpair per invocation staysbelowaggregate report cap. No product limits/defaults changed."
+}

@@ -2,9 +2,9 @@
   "schema": 1,
   "task": "MSH-49.1",
   "branch": "codex/rewrite",
-  "status": "implementation_reviewed_local_checks_passed_platform_pending",
+  "status": "in_review_source_pushed_native_ci_pending",
   "starting_revision": "a4ad03a297801922d8c9d3a0fd660e05b0ab2ebe",
-  "tested_source": null,
+  "tested_source": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
   "integration_revision": null,
   "scope": "Complete selected conventional Chess architecture; no49.2formal study or competitive strength claim",
   "identities": {
@@ -50,6 +50,11 @@
     {
       "command": "npm run check; npm test -- src/product/ApplicationShell.test.tsx; npm run build",
       "outcome": "passed;15affectedcomponenttests including2newtimecaptioncases afterdisplayedtimeceilings"
+    },
+    {
+      "command": "cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures (two fixed runs); cargo test --locked -p mshogi-desktop-session --example write_frontend_fixtures; cargo fmt --all -- --check; cargo clippy --locked -p mshogi-desktop-session --example write_frontend_fixtures -- -D warnings",
+      "outcome": "passed; fixture bytes unchanged, both history snapshots Complete/historical/event1",
+      "source_delta": "Only example generator awaits background reconstruction; all product code identical to eb4601d."
     }
   ],
   "profiles": {
@@ -60,21 +65,84 @@
   },
   "routine_matches": {
     "limit_seconds": 900,
-    "charged_seconds": 0,
-    "runs": [],
+    "charged_seconds": 49.692403374705464,
+    "runs": [
+      {
+        "purpose": "Two-game standard-start timedselfplay regression, notstrengthstudy",
+        "seconds": 49.692403374705464,
+        "returncode": 0,
+        "stderr": "",
+        "source": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
+        "max_plies": 192,
+        "work": {
+          "nodes": 20000,
+          "movetime_ms": 150
+        },
+        "same_executable_both_players": true,
+        "report": "selfplay.external.json.gz",
+        "report_sha256": "e4a79832635c898147d7d79122e489e041f9968614ba12657032c2a8afdde58a",
+        "replay_returncode": 0,
+        "replay_stderr": "",
+        "summaries": [
+          {
+            "opening_id": "standard",
+            "games": 2,
+            "wins": [
+              1,
+              0
+            ],
+            "draws": 0,
+            "unscored": 1,
+            "failures": 0
+          }
+        ],
+        "stops": [
+          "chess_conclusion",
+          "ply_limit"
+        ],
+        "failures": [
+          null,
+          null
+        ],
+        "diagnostic_failures": [
+          [],
+          []
+        ],
+        "stderr_observed_bytes": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "truncated": [
+          false,
+          false
+        ],
+        "native_conclusions": false,
+        "strength_inference": "None; identicalplayers, time-limiteddevelopmentonly, no statisticaltest"
+      }
+    ],
     "purpose": "One shorttimedself-play regression aftercleansourcefreeze; noexternal/weak-baseline superiority/statisticalbar",
     "no_formal_study": true,
-    "paid_compute": false
+    "paid_compute": false,
+    "inflight": null,
+    "completion_note": "No furthermatchbatches.1nativeconclusion+1plycap(unscored), no process/diagnostic/stderr/truncationfailure; originaldevelopmentcapandallunscoredreceiptsretained.",
+    "clean_exit_cleanup_verified": true
   },
   "independent_review": {
     "reviewer": "Freshread-only chess_conventional_review",
-    "status": "sourceapproved; finalsource/evidence/platformreconciliationpending",
+    "status": "source anddelta/build/evidence provenanceapproved; finalactualplatformreconciliationpending",
     "findings_resolved": [
       "Pruning/reduction afterpush nowprotectsnative terminal/claim children",
       "Syntheticnull CounterOverflow abandons onlyhypothesis; realerrors/cancellationpropagate andstate restored",
       "Separateboundedlate-move pruning branch andcontrolledregression, notjustLMRlabel"
     ],
-    "notes": "Nativeauthorseparately reviewed rootsearch; independentfreshreviewcovered allcomponents. FullhistoryTT intentionallyconservative; absoluteqply horizonapproximate/nonterminal."
+    "notes": "Nativeauthorseparately reviewed rootsearch; independentfreshreviewcovered allcomponents. FullhistoryTT intentionallyconservative; absoluteqply horizonapproximate/nonterminal.",
+    "delta_review": "Read-onlyreview independentlyverified eb4601dproductionclean, bothbuildhashes,9compressedartifacthashes and1134/0/11workspacecounts; optionaltimecaption/TimedFullrefusal/foreignTThistorypoisonregressionapproved."
   },
   "compatibility": {
     "wire": "Optionaltime_ms/selective_depth; oldmissingfields serializebyte-identically andkeepnominalPVbound; currentnewlongPVsnativelyreadmitted",
@@ -111,10 +179,8 @@
       "Rust(macos-15)",
       "Rust(windows-2022)"
     ],
-    "status": "not_started_until_clean_source_checkpoint",
-    "desktop": "AffectedDOM/type/build andstandalonehostcheckedlocally; broadpackagedGUIcampaignnotrequired forthisengineboundary",
-    "run_id": null,
-    "jobs": []
+    "status": "pending_corrected_source",
+    "desktop": "AffectedDOM/type/build andstandalonehostcheckedlocally; broadpackagedGUIcampaignnotrequired forthisengineboundary"
   },
   "acceptance": {
     "1": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending",
@@ -171,5 +237,78 @@
       "sha256_uncompressed": "696b147af88f2ff8c086ff287a7548a377a3bb4dbb0ffbb89d2d4558fbffda58"
     }
   ],
-  "next": "Freeze/pushcoherentsource, actual3OSnativeCI oneobserver, boundedtimedselfplay chargedcumulatively; finalindependent evidenceacceptance beforeDone. DoNOTstart49.2."
+  "next": "Await actualrequired3OSCI completion at eb4601d; independentfinalevidence/AC reconciliation, onlythenDone/integrateevidence. No furthermatches, no49.2study.",
+  "build": "build.json",
+  "ci_history": [
+    {
+      "required": [
+        "Rust(ubuntu-24.04)",
+        "Rust(macos-15)",
+        "Rust(windows-2022)"
+      ],
+      "status": "completed_failure_generator_race_corrected_pending_new_source",
+      "desktop": "AffectedDOM/type/build andstandalonehostcheckedlocally; broadpackagedGUIcampaignnotrequired forthisengineboundary",
+      "run_id": 42489944021,
+      "jobs": [
+        {
+          "id": 128759926440,
+          "name": "Rust (macos-15)",
+          "status": "completed",
+          "conclusion": "failure",
+          "runner_id": 1000002745,
+          "runner_name": "GitHub Actions 1000002745",
+          "labels": [
+            "macos-15"
+          ],
+          "head_sha": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
+          "started_at": "2026-11-08T14:28:08Z",
+          "completed_at": "2026-11-08T14:49:47Z"
+        },
+        {
+          "id": 128759926534,
+          "name": "Rust (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "runner_id": 1000002747,
+          "runner_name": "GitHub Actions 1000002747",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "head_sha": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
+          "started_at": "2026-11-08T14:28:08Z",
+          "completed_at": "2026-11-08T14:46:33Z"
+        },
+        {
+          "id": 128759926539,
+          "name": "Rust (windows-2022)",
+          "status": "completed",
+          "conclusion": "success",
+          "runner_id": 1000002746,
+          "runner_name": "GitHub Actions 1000002746",
+          "labels": [
+            "windows-2022"
+          ],
+          "head_sha": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
+          "started_at": "2026-11-08T14:28:08Z",
+          "completed_at": "2026-11-08T14:55:04Z"
+        }
+      ],
+      "source": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
+      "attempt": 1,
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/42489944021",
+      "monitor": "One bounded completion-aware observer, session35903, /private/tmp/msh491/monitor.py; cacheci/{run,jobs}.json andci-monitor.log. Check completion before anynewwait. No retries or othernativecampaign.",
+      "unrequired_desktop": {
+        "id": 42489943997,
+        "status": "cancellation_requested",
+        "reason": "BroadpackagedGUIcampaignnotrequired; affectedfront/type/build+standalonehost andactualnativeDesktopControllerjourneys verified."
+      },
+      "failure": {
+        "job": 128759926440,
+        "step": "Verify native desktop snapshot fixtures",
+        "root_cause": "Inspect admission completes before separate historical-prefix reconstruction. Generator published first snapshot while IoPhase Viewing, live tip event2, instead of Complete historical event1. Linux and Windows happened to observe completed worker.",
+        "correction": "Wait using existing exact-operation wait_document(inspection.io.id), same20s bound; assert historical,event_index1. No product/rules/engine/fixture expectation changed.",
+        "checks": "Both post-fix generator runs match all checked-in fixtures exactly; fixture example tests, fmt and Clippy recorded in fixture-fix.log.gz."
+      }
+    }
+  ]
 }

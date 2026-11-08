@@ -1,0 +1,16 @@
+{
+  "source": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
+  "production_source_clean": true,
+  "command": "cargo build --release --locked -p mshogi-console --bin mshogi -p mshogi-runner --bin mshogi-match",
+  "frozen_utc": "2026-11-08T14:30:27.006450+00:00",
+  "executables": {
+    "mshogi": {
+      "path": "/private/tmp/msh491/release/mshogi",
+      "sha256": "4250eb9e5ec6be844fc73530a1183c84a05d89dc48948b3335ef5ee5877d4e9b"
+    },
+    "mshogi-match": {
+      "path": "/private/tmp/msh491/release/mshogi-match",
+      "sha256": "4c8fef860fef3d60f859ec14fcf9af02ac924a572e14c15414f0a1e3f941a460"
+    }
+  }
+}

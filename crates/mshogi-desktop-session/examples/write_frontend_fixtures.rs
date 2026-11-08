@@ -152,7 +152,13 @@ fn main() {
     let mut reopened = wait_document(&mut c, id);
     reopened.document.path = Some("fixture.mshogi".into());
     write_snapshot(&directory, "shared-chess-reopened", &reopened);
-    let mut history = send(&mut c, SessionOperation::Inspect { event_index: 1 });
+    // The admission receipt accepts Inspect, but its file worker reconstructs
+    // the selected prefix separately. Publish only that operation's completed
+    // snapshot, independent of whether the worker won the first-poll race.
+    let inspection = send(&mut c, SessionOperation::Inspect { event_index: 1 });
+    let mut history = wait_document(&mut c, inspection.io.id);
+    assert!(history.historical);
+    assert_eq!(history.event_index, 1);
     history.document.path = Some("fixture.mshogi".into());
     write_snapshot(&directory, "shared-chess-history", &history);
     std::fs::remove_file(temporary).unwrap();

@@ -1,5 +1,7 @@
 //! Reproducible native UCI experiments over the authoritative chess match API.
 mod config;
+/// Reproducible six-game native experiments and data, separate from strength claims.
+pub mod experiments;
 mod process;
 mod report;
 mod run;

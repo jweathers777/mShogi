@@ -385,3 +385,20 @@ fn missing_retirement_eof_cannot_hide_a_delayed_duplicate_bestmove() {
     }
     report.replay().unwrap();
 }
+
+#[test]
+fn shared_experiment_wrapper_uses_actual_existing_adapter_and_replays() {
+    use mshogi_runner::experiments::{ExternalProtocol, ExternalReport, run_external};
+    let config = config("resign");
+    let wrapped = run_external(
+        ExternalProtocol::Usi,
+        &serde_json::to_string(&config).unwrap(),
+    )
+    .unwrap();
+    wrapped.validate().unwrap();
+    let mut decoded: ExternalReport =
+        serde_json::from_str(&serde_json::to_string(&wrapped).unwrap()).unwrap();
+    decoded.validate().unwrap();
+    decoded.report_json.push(' ');
+    assert!(decoded.validate().is_err());
+}

@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "task": "MSH-48",
+  "status": "in_progress",
+  "date": "2026-11-08",
+  "integration_branch": "codex/rewrite",
+  "starting_revision": "aa68dda38c5a5380bc0faeb095e36aa3b9567ee9",
+  "tested_source": null,
+  "scope": "Existing runner offline experiment infrastructure; no rules/search/protocol/product changes. All six games/seven accepted whole profiles.",
+  "required_ci": [
+    "Rust (ubuntu-24.04)",
+    "Rust (macos-15)",
+    "Rust (windows-2022)"
+  ],
+  "local_environment": {
+    "os": "macOS27.0.1 build26A434",
+    "cpu": "Apple M1 Pro",
+    "architecture": "aarch64",
+    "python_shipped": false
+  },
+  "development_checks": [
+    {
+      "command": "cargo test -p mshogi-console --test experiments -- --test-threads=1 --nocapture",
+      "outcome": "passed3tests,14real native tactical conclusions,zero-work,cancel",
+      "duration_seconds": 35.58
+    },
+    {
+      "command": "cargo test --locked -p mshogi-runner",
+      "outcome": "passed29unit+integration suites; frozen-source repetition pending"
+    },
+    {
+      "command": "cargo clippy --locked -p mshogi-runner -p mshogi-console --all-targets -- -D warnings",
+      "outcome": "passed"
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "outcome": "passed"
+    }
+  ],
+  "historical_development_findings": [
+    {
+      "outcome": "failed test compilation",
+      "reason": "Test used wrong Xiangqi native API; corrected to actual to_game/GameRequest/Box APIs; no product semantics changed"
+    },
+    {
+      "outcome": "failed compound test",
+      "reason": "Standard Chu root does not yet have a compound action; independent expected complete routes use accepted authored fixtures instead"
+    },
+    {
+      "outcome": "failed capacity test root",
+      "reason": "Injected clock observations are unsupported as a live match initial record; replaced with actual MatchObserve ledger"
+    },
+    {
+      "outcome": "passed real1MiB MatchObserve capacity crossing test",
+      "duration_seconds": 96.2,
+      "reason": "Atomic refusal preserved prior root. Routine same-path injected capacity test replaces quadratic fixture construction, unchanged product limits"
+    },
+    {
+      "outcome": "clippy failed chunks_exact lint",
+      "reason": "Used pinned toolchain as_chunks API instead; no suppression"
+    }
+  ],
+  "prelimit_measurement": {
+    "source": "uncommitted development at aa68dda; not frozen acceptance source",
+    "build": "debug",
+    "limits": {
+      "depth": 1,
+      "nodes": 512
+    },
+    "games": 14,
+    "standard_roots": 7,
+    "all_accepted_actions": true,
+    "all_unscored_step_caps": true,
+    "milliseconds_min_max": [
+      13.59,
+      7373.18
+    ],
+    "purpose": "Choose conservative bounded release pilot; not strength evidence"
+  },
+  "review": {
+    "reviewer": "independent msh48_review agent",
+    "source_verdict": "No remaining material source blockers after fixes",
+    "resolved": [
+      "full Chess/Shogi/Xiangqi native PV admission",
+      "Chess score/incomplete structural validation",
+      "strict observation decoder and all-refusal2MiB cap",
+      "atomic post-action record/request capacity refusal",
+      "typed report/external wrapper bounds"
+    ],
+    "final_evidence_verdict": "pending"
+  },
+  "pilot": null,
+  "ci": null,
+  "acceptance": {
+    "1": "pending frozen evidence",
+    "2": "pending frozen evidence",
+    "3": "pending frozen evidence",
+    "4": "pending frozen pilot"
+  },
+  "limitations": [
+    "No competitive strength verdict, Elo, confidence interval or trained model",
+    "Internal search exposes no model/options/search seed; exact executable and existing telemetry identify embedded baseline",
+    "Seed controls finite catalog ordering only; unequal-work ablations are diagnostic",
+    "Declared participant build/hardware provenance requires independent receipt verification; hashes are not authentication",
+    "Wall budget is cooperative; synchronous native replay/serialization and bounded cleanup can extend elapsed time",
+    "Data JSONL omits zero-step games; mandatory source report retains their attrition",
+    "Independent Tori/Chu/Tenjiku opponents not established; exact external binary/model/data rights and substantial compute budgets remain later-task blockers",
+    "No Python binding before a concrete training consumer; native JSONL uses authoritative complete actions/history"
+  ],
+  "next_task": "MSH-109 architecture review before substantial optimization; not started"
+}

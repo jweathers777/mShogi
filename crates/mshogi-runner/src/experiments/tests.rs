@@ -339,3 +339,28 @@ fn shogi_and_xiangqi_reject_illegal_later_pv_commands_atomically() {
     );
     assert_eq!(state.root().unwrap(), root);
 }
+
+#[test]
+fn terminal_claim_allowance_does_not_admit_extra_board_depth() {
+    let root = standard_root(RulesProfile::ChessMatchV1).unwrap();
+    let mut state = native::NativeState::from_root(&root).unwrap();
+    let mut result = chess_move_result(&["e2e4", "e7e5"]);
+    if let mshogi_engine::ExecutionResult::Chess {
+        result: mshogi_engine::ChessResult::Move { telemetry, .. },
+    } = &mut result
+    {
+        telemetry.completed_depth = 1;
+    }
+    assert!(
+        admit_bounded(
+            &mut state,
+            &result,
+            WorkLimits {
+                depth: 1,
+                nodes: 512
+            }
+        )
+        .is_err()
+    );
+    assert_eq!(state.root().unwrap(), root);
+}

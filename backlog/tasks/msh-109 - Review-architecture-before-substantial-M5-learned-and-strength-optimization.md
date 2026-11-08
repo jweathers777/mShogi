@@ -1,9 +1,11 @@
 ---
 id: MSH-109
 title: Review architecture before substantial M5 learned and strength optimization
-status: Ready
-assignee: []
+status: Done
+assignee:
+  - '@codex'
 created_date: '2026-10-27T20:26:00Z'
+updated_date: '2026-11-08T07:30:00Z'
 labels:
   - architecture-review
   - planning
@@ -14,6 +16,8 @@ dependencies:
 documentation:
   - docs/architecture-health-roadmap.md
   - docs/design.md
+  - docs/review/architecture-health-109.md
+  - docs/review/evidence/msh109/verification.json
 type: task
 ordinal: 109000
 ---
@@ -28,20 +32,44 @@ Future diagnostic work only. Intent, scope, acceptance and verification expectat
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Reconcile the all-six M4 architecture report with the then-current native experiment/data-generation and evaluator/search interfaces, feature/action/history/model identity boundaries, bindings, reproducibility and intended optimization consumers. Record whether findings remain current and readiness risks before substantial MSH-49–55 or MSH-104 work; MSH-56 remains the separate full strength/learning completion gate.
-- [ ] #2 Publish a current architecture map at an exact source revision identifying native position/state ownership, complete-action representation, candidate generation, attack/movement queries, legality, apply/undo, history and adjudication, canonical records/codecs, perft/diagnostics, evaluator/search boundaries, shared game/profile dispatch, transport/session/archive abstractions, capability discovery, desktop presentation boundaries, frontend/native rules separation and dependency structure. Map responsibilities to actual source symbols and real consumers; explicitly distinguish delivered, unavailable and unchanged coverage.
-- [ ] #3 Assess duplicated logic, game-specific branching in shared code and verification consistency across games using concrete source/examples. Examine both duplicated implementations whose real consumers demonstrate stable shared semantics and premature abstractions that force different game semantics through misleading common models. Apply: "Generalize when multiple real consumers demonstrate the same semantics, not merely similar-looking code."
-- [ ] #4 Judge whether responsibilities are explicit, coherent and independently testable, without requiring identical file layouts. No game needs generate.rs, attack.rs or another filename merely because Chess has one. Very large modules, unclear responsibility boundaries, repeated game-identity conditionals, awkward dependency direction, duplicate serialization and tests difficult to isolate are investigation indicators, not automatic defects.
-- [ ] #5 Produce concrete findings tied to source/examples with risk, severity, evidence, affected consumers and rationale; explicitly record areas reviewed and found acceptable. Distinguish rule correctness, search correctness, execution performance, playing strength and application integration; preserve all six games, accepted profiles/contracts and completed evidence.
-- [ ] #6 For each recommended change, if any, record expected benefit, affected consumers, regression risks and suggested bounded follow-up tickets with focused differential/regression verification expectations. Record decision/disposition and any genuine blocker separately from advisory recommendations. "No material architectural changes recommended" is a valid evidence-supported outcome.
-- [ ] #7 Keep this task diagnostic: completing the review neither requires nor authorizes a refactor. Perform no substantial restructuring here; only a very small correction explicitly required by an existing acceptance criterion may be in scope. Any material refactor becomes a separate bounded task preserving behavior with focused differential/regression evidence, and any product/rules/contract change requires the established owner decision.
-- [ ] #8 Record the report, actual commands/outcomes/environment/source revision and proportionate independent assessment of the findings and coverage. Reuse valid existing evidence with precise references; identify checks not run and unavailable evidence honestly. Complete the full review coverage and record unresolved findings without turning every recommendation into a mandatory refactor.
+- [x] #1 Reconcile the all-six M4 architecture report with the then-current native experiment/data-generation and evaluator/search interfaces, feature/action/history/model identity boundaries, bindings, reproducibility and intended optimization consumers. Record whether findings remain current and readiness risks before substantial MSH-49–55 or MSH-104 work; MSH-56 remains the separate full strength/learning completion gate.
+- [x] #2 Publish a current architecture map at an exact source revision identifying native position/state ownership, complete-action representation, candidate generation, attack/movement queries, legality, apply/undo, history and adjudication, canonical records/codecs, perft/diagnostics, evaluator/search boundaries, shared game/profile dispatch, transport/session/archive abstractions, capability discovery, desktop presentation boundaries, frontend/native rules separation and dependency structure. Map responsibilities to actual source symbols and real consumers; explicitly distinguish delivered, unavailable and unchanged coverage.
+- [x] #3 Assess duplicated logic, game-specific branching in shared code and verification consistency across games using concrete source/examples. Examine both duplicated implementations whose real consumers demonstrate stable shared semantics and premature abstractions that force different game semantics through misleading common models. Apply: "Generalize when multiple real consumers demonstrate the same semantics, not merely similar-looking code."
+- [x] #4 Judge whether responsibilities are explicit, coherent and independently testable, without requiring identical file layouts. No game needs generate.rs, attack.rs or another filename merely because Chess has one. Very large modules, unclear responsibility boundaries, repeated game-identity conditionals, awkward dependency direction, duplicate serialization and tests difficult to isolate are investigation indicators, not automatic defects.
+- [x] #5 Produce concrete findings tied to source/examples with risk, severity, evidence, affected consumers and rationale; explicitly record areas reviewed and found acceptable. Distinguish rule correctness, search correctness, execution performance, playing strength and application integration; preserve all six games, accepted profiles/contracts and completed evidence.
+- [x] #6 For each recommended change, if any, record expected benefit, affected consumers, regression risks and suggested bounded follow-up tickets with focused differential/regression verification expectations. Record decision/disposition and any genuine blocker separately from advisory recommendations. "No material architectural changes recommended" is a valid evidence-supported outcome.
+- [x] #7 Keep this task diagnostic: completing the review neither requires nor authorizes a refactor. Perform no substantial restructuring here; only a very small correction explicitly required by an existing acceptance criterion may be in scope. Any material refactor becomes a separate bounded task preserving behavior with focused differential/regression evidence, and any product/rules/contract change requires the established owner decision.
+- [x] #8 Record the report, actual commands/outcomes/environment/source revision and proportionate independent assessment of the findings and coverage. Reuse valid existing evidence with precise references; identify checks not run and unavailable evidence honestly. Complete the full review coverage and record unresolved findings without turning every recommendation into a mandatory refactor.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Primary analyst/integrator Codex in the clean, origin-aligned primary codex/rewrite checkout at e161cef2935cd9b33449757699dba4ccfa0874dd; prerequisites108/48 Done, no active owner, unrelated historical-access worktree preserved. Diagnostic only. (1) Reconcile MSH-108 findings with the exact current source and accepted48 pilot/evidence; map all native state/actions/generation/legality/apply-undo/history/records/diagnostics/evaluation/search, shared execution/document/session/archive/capability/frontend boundaries and actual dependency direction. Isolated read-only native and application mapping may assist the primary analyst; no competing builder. (2) Inspect real experiment/data/model/feature/identity/reproducibility consumers, duplication versus legitimate native differences, resource/cooperation costs and verification consistency. Separate demonstrated defects, measured cost, future readiness risks and advisory opportunities; no model/target/budget/rules changes. (3) Publish docs/review/architecture-health-109.md and one structured verification record at this source, with prior-finding dispositions, acceptable areas, concrete severity/evidence/consumers, bounded follow-up proposals and regression expectations. No speculative universal abstraction, binding before a real consumer, implementation task activation or refactor. (4) Proportionate read-only source, dependency metadata, evidence/hash/link/Backlog checks and independent fresh report assessment; reuse exact48 native3OS and accepted M4 product evidence where unchanged, no new CI/GUI campaign for diagnostic docs. (5) Evaluate original8AC/4DoD, preserve requirements/graph/completed evidence, record readiness and downstream blockers separately, normally commit/push to codex/rewrite if supported and stop after109.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Current diagnostic drafted at e161cef2935cd9b33449757699dba4ccfa0874dd: docs/review/architecture-health-109.md and one evidence/check record. Native/search/engine/frontend/Tauri trees match108; new48 runner normal dependencies are core/search/engine, console runner edge dev-only. 112 failure race resolved,134 delta test-only. F01–F04 remain qualified advisories; F05 Chu no-action cutoff is an unproven coverage question, not a reproduced defect; F06 records future per-participant evaluator/search/model admission and offline-teacher limits plus feature/data/binding readiness. No prerequisite redesign demonstrated or refactor/strength/training work performed. Fresh locked offline metadata and read-only source/evidence/task/anchor/link checks passed, including retained48 three-OS firstattempt receipts and compressed pilot hashes/repetition. Existing48/M4 conformance/product evidence reused at exact sources; no new CI/GUI/native campaign. Fresh independent final report assessment pending; no new task IDs or dependency changes.
+
+Independent final assessment approved all8originalAC; no material blocker remains. Verified15anchors/13protectedhashes/localreportlinks/dependencies/originalcriteria, unchangedproduction source and retained48 exactsource pilot/3OS receipts. Source e161cef; reviewed result is diagnostic docs/task/evidence only, no new tests/CI/GUI orbenchmarks. No refactor ordownstreamtask begun. Completing normal final publication on codex/rewrite records accepted report andhandoff.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Published the six-game/seven-profile architecture map and MSH-48 consumer/pilot assessment at exact source e161cef2935cd9b33449757699dba4ccfa0874dd. No material architectural blocker or prerequisite redesign was demonstrated. Native/search/engine/frontend/Tauri trees match MSH-108; the MSH-112 runner correction and MSH-134 test synchronization are reconciled. Findings cover replay/evidence costs, synchronous cooperation, UI measurements, narrow duplication, an unproven Chu cutoff coverage question, and future feature/model/candidate-identity/offline-teacher requirements. Each bounded proposal records affected consumers, benefits, risks and verification; none creates a task or mandates a refactor.
+
+All eight original criteria and four completion items have supporting evidence in docs/review/architecture-health-109.md and docs/review/evidence/msh109/verification.json. Fresh locked offline metadata for both workspaces, source/task-integrity checks, 15 selected anchors, 13 protected evidence hashes, report links and pinned Backlog doctor passed. Independent assessment approved the report and evidence with no remaining material finding. MSH-48 pilot hashes, counts, repetition and actual three-platform CI receipts at 9a164eb remain source-qualified reused evidence. No new product test, CI, GUI, benchmark or training campaign was required or claimed.
+
+Integrated through normal publication on codex/rewrite. Production, rules, protocols, schemas, limits, tests, completed evidence and other task records remain unchanged. No model, feature architecture, opponent, strength target, budget or refactor was selected. MSH-49–55/MSH-104 retain their original To Do scope and decisions, with this diagnostic prerequisite satisfied. MSH-49 is next by ordinal for scoping; D-09/D-10 and experiment-specific limitations remain. No downstream task or M5 closure began. Stop after MSH-109.
+<!-- SECTION:FINAL_SUMMARY:END -->

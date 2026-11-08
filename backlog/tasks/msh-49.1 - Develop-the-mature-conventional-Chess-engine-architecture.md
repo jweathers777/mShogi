@@ -1,11 +1,11 @@
 ---
 id: MSH-49.1
 title: Develop the mature conventional Chess engine architecture
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-08T13:07:00Z'
-updated_date: '2026-11-08T14:57:00Z'
+updated_date: '2026-11-08T15:26:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -29,20 +29,20 @@ Owner direction2026-11-08 replaces weak-baseline acceptance chasing with develop
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The integrated conventional search package includes iterative deepening/PVS, aspiration re-search, history-safe bounded transposition reuse, staged TT/capture/quiet ordering with SEE/history heuristics, and bounded quiescence with native legal check evasions; exact diagnostic search remains available for independently solvable correctness comparisons.
-- [ ] #2 Guarded selective search is integrated coherently: verified null-move/zugzwang safeguards, late-move reductions with re-search, conservative futility/SEE/late-move pruning and bounded extensions. The researched inclusion or exclusion of more aggressive techniques such as ProbCut/singular extensions is justified by concrete correctness or profiling evidence, without per-technique formal strength campaigns.
-- [ ] #3 Traditional material/positional evaluation covers tapered piece placement, pawn structure/passed pawns, mobility/activity, king shelter/attack pressure, threats and endgame conversion with inspectable terms; independent arithmetic/position/metamorphic tests and measured incremental-state restoration support it. No trained evaluator is introduced.
-- [ ] #4 Efficient native search-state access, exact make/unmake and hashing/evaluation maintenance are profiled and verified; repetition, claims/counters, mate-distance scores, TT history/context separation and cancellation restore state exactly. Search-only hypothetical/null branches never become legal game actions, played history or native outcomes.
-- [ ] #5 Real UCI and supervised product execution provide reliable bounded thinking-time allocation, hard-stop responsiveness and truthful completed/selective-depth/PV/work telemetry through the existing protocol family with explicit compatibility handling. Stale observations, process failures and incomplete work retain existing honest semantics.
-- [ ] #6 Independent review and appropriate actual native platform/affected-consumer checks approve a substantially complete engine checkpoint. Correctness tests, tactical/endgame regressions, short profiling and cumulative match-time accounting address the changed risks; no strength-release claim is inferred from those checks. The checkpoint is ready for the separate approved unrestricted/equal-time milestone.
+- [x] #1 The integrated conventional search package includes iterative deepening/PVS, aspiration re-search, history-safe bounded transposition reuse, staged TT/capture/quiet ordering with SEE/history heuristics, and bounded quiescence with native legal check evasions; exact diagnostic search remains available for independently solvable correctness comparisons.
+- [x] #2 Guarded selective search is integrated coherently: verified null-move/zugzwang safeguards, late-move reductions with re-search, conservative futility/SEE/late-move pruning and bounded extensions. The researched inclusion or exclusion of more aggressive techniques such as ProbCut/singular extensions is justified by concrete correctness or profiling evidence, without per-technique formal strength campaigns.
+- [x] #3 Traditional material/positional evaluation covers tapered piece placement, pawn structure/passed pawns, mobility/activity, king shelter/attack pressure, threats and endgame conversion with inspectable terms; independent arithmetic/position/metamorphic tests and measured incremental-state restoration support it. No trained evaluator is introduced.
+- [x] #4 Efficient native search-state access, exact make/unmake and hashing/evaluation maintenance are profiled and verified; repetition, claims/counters, mate-distance scores, TT history/context separation and cancellation restore state exactly. Search-only hypothetical/null branches never become legal game actions, played history or native outcomes.
+- [x] #5 Real UCI and supervised product execution provide reliable bounded thinking-time allocation, hard-stop responsiveness and truthful completed/selective-depth/PV/work telemetry through the existing protocol family with explicit compatibility handling. Stale observations, process failures and incomplete work retain existing honest semantics.
+- [x] #6 Independent review and appropriate actual native platform/affected-consumer checks approve a substantially complete engine checkpoint. Correctness tests, tactical/endgame regressions, short profiling and cumulative match-time accounting address the changed risks; no strength-release claim is inferred from those checks. The checkpoint is ready for the separate approved unrestricted/equal-time milestone.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -61,4 +61,20 @@ Coherent conventional architecture implemented: nativecachedSearchCursor/attackm
 Sourcecheckpoint normallyintegrated+pushed eb4601d0fd33e790ac9905309fb011400aeafb5c. Cleansourcereleasebuild frozen build.json, engineSHA4250eb9e..., runner4c8fef86.... Oneboundedtimedselfplaypair at150ms/20kvisits/max192plies consumed49.692403374705464s of900s taskallowance:1nativeconclusion+1plycapunscored, bothnativehistoriesstrictreplay, nofallback/stderr/truncation/process/cleanupfailure. No furthermatchbatches or49.2study. RequirednativeCI42489944021 sourceexact attempt1: macOS15job128759926440, Ubuntu24job128759926534, Windows2022job128759926539 allacquiredrunners/running. Singleboundedcompletionawaremonitor35903 (/private/tmp/msh491/monitor.py;ci/{run,jobs}.json;ci-monitor.log), no redundantcampaign/retry. UnrequiredDesktop42489943997cancellationrequested. Freshindependentread-onlydelta/provenanceaudit approvedeb4601d/code/hash/logs; finalplatform/ACacceptancereconciliationpending. Sourcechangesstop; remainingworkisactualCIandfinalevidence. Productioncheckoutcodeclean; docs/m5/evidence/msh49-1 iscanonicalrecord withallfailures/caps/receipts. LeaveInReview/uncheckeduntilsupported; no successorimplementation.
 
 First nativeCI42489944021 completed: Ubuntu128759926534 andWindows128759926539 passed; macOS128759926440 passedRusttests/lint butfailedsnapshotfixturestep. Historicalreceipt/sourceeb4601d retainedcanonicalrecord/log. Rootcause: Inspect admission receipt acceptscommand, separatefileworker reconstructshistory; generatorpublishedViewing/liveevent2 beforeComplete/historicalevent1. Narrowexample-onlyfixwaitsexactioid usingexisting20scompletionbound andassertsprefix; noengine/product/rule/expectedfixturechange. Twofixedgeneratorrunsmatchchecked-infixtures; focusedexampletests/fmt/Clippy pass. Independentnarrowreviewandnew3OSnativeCI pending. Selfplayandallunchangedsourceevidence reusedatactualeb4601d provenance; noadditionalmatches.
+
+Narrowfixturefixindependentlyapproved(no findings) andnormallypushed b8cc85167f85eb031830d5f5268c1f94520f8a25. Allengine/product sourcesidenticaltoeb4601d; onlyfixtureexample+evidencechanged. RequirednewnativeCI42492362033 attempt1 running Windows128767302041/Linux128767302175/macOS128767302193; onecompletion-awaremonitor53153/cacheci-fixed. UnrequiredDesktop42492362042 cancellationrequested. Oldnativecampaigncompleted, nooverlappingretry. Elevencompressedloghashes/selfplayhash/budget/sourceequivalence reconciled. AC/DoDremainuncheckeduntilnewsourceplatformcompletionandfinalindependentreconciliation.
+
+Final acceptance: requirednativeCI42492362033 attempt1 exactsource b8cc85167f85eb031830d5f5268c1f94520f8a25 completedSUCCESS, Windows128767302041/Linux128767302175/macOS15128767302193 all13steps/job passed onactualhostedrunners. Singlemonitor53153completed, no retry/overlappingcampaign. Independentfreshread-onlyfinalreconciliation APPROVED all6AC+4DoD; no remainingtechnical/platform/ownerblocker. Canonicalledger preserves oldeb4601d failedmacsnapshot/healthyLinuxWindows receipts, correctedfixturemechanism, allsource/build/log/reporthashes, exact49.692403374705464/900s onepair (native mate+honestunscoredplycap), unchangedproductevidence. No formalstrengthstudy orcompetitiveclaim. Allchecksnow evidenced, allcriteria checked, Done. Finalchangesonlydocs/evidence/backlog, normalintegration/push follows; acceptedsourceb8cc851 andimplementationeb4601d remainexplicit.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Delivered conventional Chess search, classical evaluation and bounded timed execution through the existing native, UCI, supervised engine and desktop architecture. Native rules remain authoritative; search preserves exact history, claims, terminal results and undo. Legacy documents and observations retain explicit compatibility handling.
+
+Production implementation: eb4601d0fd33e790ac9905309fb011400aeafb5c. Corrected fixture generator and exact tested source: b8cc85167f85eb031830d5f5268c1f94520f8a25, integrated into codex/rewrite. Native CI run 42492362033, attempt 1, passed every step on Windows job 128767302041, Linux job 128767302175 and macOS 15 job 128767302193. Local verification passed 1,134 workspace tests (11 intentionally ignored), Clippy, affected frontend tests/type/build and standalone host checks. Independent source, fixture and final evidence review approved all six acceptance criteria and four completion items.
+
+The canonical record is docs/m5/evidence/msh49-1/verification.json. It preserves historical failures, source/build hashes, profiles and the complete 49.6924-second development self-play pair: one native mate and one unscored ply cap, with both histories replayed and no process/cleanup failures. History-conservative TT reuse, bounded selective search/SEE and the static absolute-ply horizon remain documented approximations. These checks establish implementation correctness and integration, not measured playing strength.
+
+MSH-49 remains unfinished. MSH-49.2 owns the later unrestricted, principally equal-time Stockfish comparison, with owner approval required for its material budget and comparison conditions. No formal study ran here. The final documentation/evidence/backlog commit integrates this completion summary normally; its actual revision is recorded in Git history and the completion report.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -6,7 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-11-08T13:07:00Z'
-updated_date: '2026-11-08T13:08:00Z'
+updated_date: '2026-11-08T15:25:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -14,6 +14,8 @@ dependencies:
 documentation:
   - docs/m5/strength-roadmap.md
   - docs/design.md
+  - docs/m5/chess-conventional.md
+  - docs/m5/evidence/msh49-1/verification.json
 parent_task_id: MSH-49
 priority: high
 ordinal: 136000
@@ -40,3 +42,9 @@ A meaningful external strength measurement follows the substantially complete co
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+MSH-49.1 handoff: conventionalengine implementation eb4601d0fd33e790ac9905309fb011400aeafb5c and fixture-onlycorrection/testedsource b8cc85167f85eb031830d5f5268c1f94520f8a25 integrated codex/rewrite. RequirednativeCI42492362033 attempt1 passedactualUbuntu24/macOS15/Windows2022; independent source/fixture/provenance reviews approved. Canonicalengineeringevidence docs/m5/evidence/msh49-1/verification.json distinguishes1134localtests/affectedconsumers/profiles from49.6924s selfplay (one native mate, oneunscoredplycap), no strengthestimate. This formalstudyhasnotbegun, noopponenthandicap/threshold/budgetapprovalinferred. PreserveToDo/unassigned untilconcretecomparisonconditions/materialbudgetareselected withJohn perAC2; routinepreparationmaymakeproposalreviewable butmustnotlaunchformal/substantialmatches. Old64/32/depth2SFstudy remainsstopped; do not revivethatprotocol or4hourrequest.
+<!-- SECTION:NOTES:END -->

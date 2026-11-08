@@ -95,6 +95,21 @@ actual required Rust Ubuntu24/macOS15/Windows2022 receipts. Affected frontend an
 standalone host checks accompany native verification. Existing packaged evidence
 is retained; a new broad GUI campaign is not required for this engine boundary.
 
+The implementation was integrated at `eb4601d`; the fixture-generator completion
+correction was integrated at `b8cc851`, with product code unchanged. Required
+[native CI](https://github.com/jweathers777/mShogi/actions/runs/42492362033)
+passed on Ubuntu 24.04, macOS 15 and Windows 2022 at that exact corrected source.
+The earlier macOS snapshot failure remains in the verification record: command
+admission preceded background history reconstruction, so the generator now waits
+for the exact IO operation to finish before publishing its historical prefix.
+
+One timed self-play pair consumed 49.6924 of the task's 900-second allowance.
+One game reached a native mate; the other reached the 192-ply cap and remains
+unscored. Both histories replayed, without process or cleanup failures. These
+are development regressions, not a playing-strength estimate. MSH-49.2 owns the
+next unrestricted Stockfish comparison; its material budget and comparison
+conditions require owner approval before formal execution.
+
 Algorithm research used the primary [Stockfish classical search](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/search.cpp),
 [ordering](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/movepick.cpp)
 and [evaluation](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/evaluate.cpp)

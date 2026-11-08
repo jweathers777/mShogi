@@ -2,10 +2,10 @@
   "schema": 1,
   "task": "MSH-49.1",
   "branch": "codex/rewrite",
-  "status": "in_review_source_pushed_native_ci_pending",
+  "status": "done",
   "starting_revision": "a4ad03a297801922d8c9d3a0fd660e05b0ab2ebe",
-  "tested_source": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
-  "integration_revision": null,
+  "tested_source": "b8cc85167f85eb031830d5f5268c1f94520f8a25",
+  "integration_revision": "b8cc85167f85eb031830d5f5268c1f94520f8a25",
   "scope": "Complete selected conventional Chess architecture; no49.2formal study or competitive strength claim",
   "identities": {
     "search": "mshogi.chess.conventional.v1",
@@ -135,14 +135,17 @@
   },
   "independent_review": {
     "reviewer": "Freshread-only chess_conventional_review",
-    "status": "source anddelta/build/evidence provenanceapproved; finalactualplatformreconciliationpending",
+    "status": "Final acceptance approved; all6AC+4DoD supported, no remaining technical/platform/owner blocker.",
     "findings_resolved": [
       "Pruning/reduction afterpush nowprotectsnative terminal/claim children",
       "Syntheticnull CounterOverflow abandons onlyhypothesis; realerrors/cancellationpropagate andstate restored",
       "Separateboundedlate-move pruning branch andcontrolledregression, notjustLMRlabel"
     ],
     "notes": "Nativeauthorseparately reviewed rootsearch; independentfreshreviewcovered allcomponents. FullhistoryTT intentionallyconservative; absoluteqply horizonapproximate/nonterminal.",
-    "delta_review": "Read-onlyreview independentlyverified eb4601dproductionclean, bothbuildhashes,9compressedartifacthashes and1134/0/11workspacecounts; optionaltimecaption/TimedFullrefusal/foreignTThistorypoisonregressionapproved."
+    "delta_review": "Read-onlyreview independentlyverified eb4601dproductionclean, bothbuildhashes,9compressedartifacthashes and1134/0/11workspacecounts; optionaltimecaption/TimedFullrefusal/foreignTThistorypoisonregressionapproved.",
+    "fixture_fix": "Read-only review approved exact-id wait and preserved20s bound; confirms admission versus worker race, explicit historical/event1 assertions, no changed expectedfixture/productcode.",
+    "preacceptance": "Read-only fresh reviewer independently reconciled AC1-5 source/tests/profiles/integration; AC6 awaits corrected-source3OS completion only. DoD2-3 supported; DoD1 follows AC6; DoD4 final evidence integration/push. No additional technical or owner-decision blocker. Rechecked all11loghashes, bothbinaryhashes/reportinner+raw, cleaneb4601d harnessidentity, exact49.692403374705464/900s ledger, nativeWhite mate +unscoredplycap/no failures orstderr/leak.",
+    "final_receipts": "Read-only fresh reviewer independently matched completed run42492362033 attempt1 to exact b8cc851 and Windows128767302041/Linux128767302175/macOS128767302193: actual hostedrunners, all13steps/job passed. Reverified11artifacthashes, onlyfixtureexample source delta, exact49.6924/900s/noinflight and historicalfailurepreservation. No builds/matches/remotequeries by reviewer."
   },
   "compatibility": {
     "wire": "Optionaltime_ms/selective_depth; oldmissingfields serializebyte-identically andkeepnominalPVbound; currentnewlongPVsnativelyreadmitted",
@@ -179,16 +182,414 @@
       "Rust(macos-15)",
       "Rust(windows-2022)"
     ],
-    "status": "pending_corrected_source",
-    "desktop": "AffectedDOM/type/build andstandalonehostcheckedlocally; broadpackagedGUIcampaignnotrequired forthisengineboundary"
+    "status": "completed",
+    "desktop": "AffectedDOM/type/build andstandalonehostcheckedlocally; broadpackagedGUIcampaignnotrequired forthisengineboundary",
+    "run_id": 42492362033,
+    "source": "b8cc85167f85eb031830d5f5268c1f94520f8a25",
+    "attempt": 1,
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/42492362033",
+    "monitor": "Single bounded completion-aware monitor53153 completed normally; no retry/overlappingcampaign.",
+    "unrequired_desktop": {
+      "id": 42492362042,
+      "source": "b8cc85167f85eb031830d5f5268c1f94520f8a25",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "attempt": 1,
+      "reason": "No broad packaged GUI campaign required at this engine boundary; affected frontend/type/build/host checked locally, real native DesktopController/process tests on3OS."
+    },
+    "jobs": [
+      {
+        "id": 128767302041,
+        "name": "Rust (windows-2022)",
+        "status": "completed",
+        "conclusion": "success",
+        "runner_id": 1000002751,
+        "runner_name": "GitHub Actions 1000002751",
+        "labels": [
+          "windows-2022"
+        ],
+        "head_sha": "b8cc85167f85eb031830d5f5268c1f94520f8a25",
+        "started_at": "2026-11-08T14:57:58Z",
+        "completed_at": "2026-11-08T15:19:48Z",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42492362033/job/128767302041",
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:57:59Z",
+            "completed_at": "2026-11-08T14:57:59Z"
+          },
+          {
+            "number": 2,
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:57:59Z",
+            "completed_at": "2026-11-08T14:58:20Z"
+          },
+          {
+            "number": 3,
+            "name": "Install and identify the pinned toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:20Z",
+            "completed_at": "2026-11-08T14:58:32Z"
+          },
+          {
+            "number": 4,
+            "name": "Format",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:32Z",
+            "completed_at": "2026-11-08T14:58:34Z"
+          },
+          {
+            "number": 5,
+            "name": "Lint",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:34Z",
+            "completed_at": "2026-11-08T14:58:57Z"
+          },
+          {
+            "number": 6,
+            "name": "Test",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:57Z",
+            "completed_at": "2026-11-08T15:10:35Z"
+          },
+          {
+            "number": 7,
+            "name": "Verify production Tenjiku subprocess and standard-root journeys",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:10:35Z",
+            "completed_at": "2026-11-08T15:12:13Z"
+          },
+          {
+            "number": 8,
+            "name": "Verify isolated desktop QA constructors",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:12:13Z",
+            "completed_at": "2026-11-08T15:18:45Z"
+          },
+          {
+            "number": 9,
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:18:45Z",
+            "completed_at": "2026-11-08T15:19:40Z"
+          },
+          {
+            "number": 10,
+            "name": "Build",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:19:40Z",
+            "completed_at": "2026-11-08T15:19:44Z"
+          },
+          {
+            "number": 11,
+            "name": "Console smoke",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:19:44Z",
+            "completed_at": "2026-11-08T15:19:45Z"
+          },
+          {
+            "number": 22,
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:19:45Z",
+            "completed_at": "2026-11-08T15:19:46Z"
+          },
+          {
+            "number": 23,
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:19:46Z",
+            "completed_at": "2026-11-08T15:19:46Z"
+          }
+        ]
+      },
+      {
+        "id": 128767302175,
+        "name": "Rust (ubuntu-24.04)",
+        "status": "completed",
+        "conclusion": "success",
+        "runner_id": 1000002750,
+        "runner_name": "GitHub Actions 1000002750",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "head_sha": "b8cc85167f85eb031830d5f5268c1f94520f8a25",
+        "started_at": "2026-11-08T14:57:58Z",
+        "completed_at": "2026-11-08T15:18:01Z",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42492362033/job/128767302175",
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:57:59Z",
+            "completed_at": "2026-11-08T14:58:00Z"
+          },
+          {
+            "number": 2,
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:00Z",
+            "completed_at": "2026-11-08T14:58:11Z"
+          },
+          {
+            "number": 3,
+            "name": "Install and identify the pinned toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:11Z",
+            "completed_at": "2026-11-08T14:58:20Z"
+          },
+          {
+            "number": 4,
+            "name": "Format",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:20Z",
+            "completed_at": "2026-11-08T14:58:21Z"
+          },
+          {
+            "number": 5,
+            "name": "Lint",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:21Z",
+            "completed_at": "2026-11-08T14:58:36Z"
+          },
+          {
+            "number": 6,
+            "name": "Test",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:36Z",
+            "completed_at": "2026-11-08T15:09:38Z"
+          },
+          {
+            "number": 7,
+            "name": "Verify production Tenjiku subprocess and standard-root journeys",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:09:38Z",
+            "completed_at": "2026-11-08T15:10:56Z"
+          },
+          {
+            "number": 8,
+            "name": "Verify isolated desktop QA constructors",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:10:56Z",
+            "completed_at": "2026-11-08T15:17:14Z"
+          },
+          {
+            "number": 9,
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:17:14Z",
+            "completed_at": "2026-11-08T15:17:55Z"
+          },
+          {
+            "number": 10,
+            "name": "Build",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:17:55Z",
+            "completed_at": "2026-11-08T15:17:58Z"
+          },
+          {
+            "number": 11,
+            "name": "Console smoke",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:17:58Z",
+            "completed_at": "2026-11-08T15:17:59Z"
+          },
+          {
+            "number": 22,
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:17:59Z",
+            "completed_at": "2026-11-08T15:17:59Z"
+          },
+          {
+            "number": 23,
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:17:59Z",
+            "completed_at": "2026-11-08T15:17:59Z"
+          }
+        ]
+      },
+      {
+        "id": 128767302193,
+        "name": "Rust (macos-15)",
+        "status": "completed",
+        "conclusion": "success",
+        "runner_id": 1000002755,
+        "runner_name": "GitHub Actions 1000002755",
+        "labels": [
+          "macos-15"
+        ],
+        "head_sha": "b8cc85167f85eb031830d5f5268c1f94520f8a25",
+        "started_at": "2026-11-08T14:57:59Z",
+        "completed_at": "2026-11-08T15:23:27Z",
+        "url": "https://github.com/jweathers777/mShogi/actions/runs/42492362033/job/128767302193",
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:57:59Z",
+            "completed_at": "2026-11-08T14:58:00Z"
+          },
+          {
+            "number": 2,
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:00Z",
+            "completed_at": "2026-11-08T14:58:14Z"
+          },
+          {
+            "number": 3,
+            "name": "Install and identify the pinned toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:14Z",
+            "completed_at": "2026-11-08T14:58:21Z"
+          },
+          {
+            "number": 4,
+            "name": "Format",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:21Z",
+            "completed_at": "2026-11-08T14:58:22Z"
+          },
+          {
+            "number": 5,
+            "name": "Lint",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:22Z",
+            "completed_at": "2026-11-08T14:58:53Z"
+          },
+          {
+            "number": 6,
+            "name": "Test",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T14:58:53Z",
+            "completed_at": "2026-11-08T15:12:36Z"
+          },
+          {
+            "number": 7,
+            "name": "Verify production Tenjiku subprocess and standard-root journeys",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:12:36Z",
+            "completed_at": "2026-11-08T15:15:23Z"
+          },
+          {
+            "number": 8,
+            "name": "Verify isolated desktop QA constructors",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:15:23Z",
+            "completed_at": "2026-11-08T15:22:32Z"
+          },
+          {
+            "number": 9,
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:22:32Z",
+            "completed_at": "2026-11-08T15:23:20Z"
+          },
+          {
+            "number": 10,
+            "name": "Build",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:23:20Z",
+            "completed_at": "2026-11-08T15:23:23Z"
+          },
+          {
+            "number": 11,
+            "name": "Console smoke",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:23:23Z",
+            "completed_at": "2026-11-08T15:23:24Z"
+          },
+          {
+            "number": 22,
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:23:24Z",
+            "completed_at": "2026-11-08T15:23:25Z"
+          },
+          {
+            "number": 23,
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-11-08T15:23:25Z",
+            "completed_at": "2026-11-08T15:23:26Z"
+          }
+        ]
+      }
+    ],
+    "conclusion": "success",
+    "run_attempt": 1
   },
   "acceptance": {
-    "1": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending",
-    "2": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending",
-    "3": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending",
-    "4": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending",
-    "5": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending",
-    "6": "Implemented/localreviewed; exactsourcefinalchecks/platformreceiptsandfinalreconciliationpending"
+    "1": {
+      "status": "supported",
+      "evidence": "Native SearchCursor/PVS/aspiration/staged TT+legal SEE/killers/history/quiescence; independently exhaustive exact fixtures compare score and legal PV with/without collision-checked TT."
+    },
+    "2": {
+      "status": "supported",
+      "evidence": "Real-history verified null with low-material/claim/clock guards; LMR/unreduced research; distinct bounded LMP; futility/SEE/delta and4check extensions. Controlled guards/research/null-overflow/terminal-child tests. ProbCut/singular exclusions documented against bounded profiles/history context."
+    },
+    "3": {
+      "status": "supported",
+      "evidence": "Inspectable material/placement/pawn/activity/king/threat/endgame middle/end terms, independent+61cp root arithmetic, mirror/material/metamorphic/specialmove/phase-cap restoration tests, short incremental/rebuild profile."
+    },
+    "4": {
+      "status": "supported",
+      "evidence": "27native cursor/geometry tests plus exact search restoration, special moves, imported/complete history/claims/counters/mate-distance/TT collision tests; detached synthetic null never supplies native action/outcome/history/key; cancel/error restores."
+    },
+    "5": {
+      "status": "supported",
+      "evidence": "Actual UCI/internal process/coordinator/controller/archive paths use conventional engine, request-bound optionaltime_ms and truthful selective depth. Legacy omission and stopped-document preservation; stale limits/context rejects; no first completed iteration means Incomplete. Desktop frontend/host checked."
+    },
+    "6": {
+      "status": "supported",
+      "evidence": "Independent source/delta/fixture/provenance review approved; local1134pass/11ignored and affectedconsumers/profiles;49.6924s/900s selfplay yields native mate+honest unscoredplycap. No competitive strength inference. Actual corrected-source RustCI42492362033 attempt1 passed all3 jobs: Windows128767302041/Linux128767302175/macOS128767302193, every step success, exactsource b8cc851, all hostedrunners acquired. Historical eb4601d failedmac fixture retained."
+    }
   },
   "artifacts": [
     {
@@ -235,9 +636,19 @@
       "label": "evaluator-profile",
       "path": "docs/m5/evidence/msh49-1/evaluator-profile.log.gz",
       "sha256_uncompressed": "696b147af88f2ff8c086ff287a7548a377a3bb4dbb0ffbb89d2d4558fbffda58"
+    },
+    {
+      "label": "fixture-fix",
+      "path": "docs/m5/evidence/msh49-1/fixture-fix.log.gz",
+      "sha256_uncompressed": "f2a16b17edf05bbf0207efacb52f343f1352cfb8d1cdac2537ecc1ced03c365a"
+    },
+    {
+      "label": "macos-first-job",
+      "path": "docs/m5/evidence/msh49-1/macos-first-job.log.gz",
+      "sha256_uncompressed": "f6c377a00f7c42aa4fbd8571f0ecd8261c9ba5a8a923751fa25a0ac5d2a329e7"
     }
   ],
-  "next": "Await actualrequired3OSCI completion at eb4601d; independentfinalevidence/AC reconciliation, onlythenDone/integrateevidence. No furthermatches, no49.2study.",
+  "next": "MSH49.1 complete. MSH49 remains unfinished;49.2 needs owner-approved formal comparison protocol/materialbudget before execution. No formal study or further matchcampaign ran in49.1.",
   "build": "build.json",
   "ci_history": [
     {
@@ -262,7 +673,113 @@
           ],
           "head_sha": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
           "started_at": "2026-11-08T14:28:08Z",
-          "completed_at": "2026-11-08T14:49:47Z"
+          "completed_at": "2026-11-08T14:49:47Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:08Z",
+              "completed_at": "2026-11-08T14:28:08Z"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:08Z",
+              "completed_at": "2026-11-08T14:28:29Z"
+            },
+            {
+              "number": 3,
+              "name": "Install and identify the pinned toolchain",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:29Z",
+              "completed_at": "2026-11-08T14:28:35Z"
+            },
+            {
+              "number": 4,
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:35Z",
+              "completed_at": "2026-11-08T14:28:36Z"
+            },
+            {
+              "number": 5,
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:36Z",
+              "completed_at": "2026-11-08T14:28:54Z"
+            },
+            {
+              "number": 6,
+              "name": "Test",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:54Z",
+              "completed_at": "2026-11-08T14:39:40Z"
+            },
+            {
+              "number": 7,
+              "name": "Verify production Tenjiku subprocess and standard-root journeys",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:39:40Z",
+              "completed_at": "2026-11-08T14:41:33Z"
+            },
+            {
+              "number": 8,
+              "name": "Verify isolated desktop QA constructors",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:41:33Z",
+              "completed_at": "2026-11-08T14:48:39Z"
+            },
+            {
+              "number": 9,
+              "name": "Verify native desktop snapshot fixtures",
+              "status": "completed",
+              "conclusion": "failure",
+              "started_at": "2026-11-08T14:48:39Z",
+              "completed_at": "2026-11-08T14:49:42Z"
+            },
+            {
+              "number": 10,
+              "name": "Build",
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-11-08T14:49:42Z",
+              "completed_at": "2026-11-08T14:49:42Z"
+            },
+            {
+              "number": 11,
+              "name": "Console smoke",
+              "status": "completed",
+              "conclusion": "skipped",
+              "started_at": "2026-11-08T14:49:42Z",
+              "completed_at": "2026-11-08T14:49:42Z"
+            },
+            {
+              "number": 22,
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:49:42Z",
+              "completed_at": "2026-11-08T14:49:43Z"
+            },
+            {
+              "number": 23,
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:49:43Z",
+              "completed_at": "2026-11-08T14:49:46Z"
+            }
+          ]
         },
         {
           "id": 128759926534,
@@ -276,7 +793,113 @@
           ],
           "head_sha": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
           "started_at": "2026-11-08T14:28:08Z",
-          "completed_at": "2026-11-08T14:46:33Z"
+          "completed_at": "2026-11-08T14:46:33Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:08Z",
+              "completed_at": "2026-11-08T14:28:09Z"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:09Z",
+              "completed_at": "2026-11-08T14:28:20Z"
+            },
+            {
+              "number": 3,
+              "name": "Install and identify the pinned toolchain",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:20Z",
+              "completed_at": "2026-11-08T14:28:27Z"
+            },
+            {
+              "number": 4,
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:27Z",
+              "completed_at": "2026-11-08T14:28:28Z"
+            },
+            {
+              "number": 5,
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:28Z",
+              "completed_at": "2026-11-08T14:28:41Z"
+            },
+            {
+              "number": 6,
+              "name": "Test",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:41Z",
+              "completed_at": "2026-11-08T14:38:46Z"
+            },
+            {
+              "number": 7,
+              "name": "Verify production Tenjiku subprocess and standard-root journeys",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:38:46Z",
+              "completed_at": "2026-11-08T14:39:46Z"
+            },
+            {
+              "number": 8,
+              "name": "Verify isolated desktop QA constructors",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:39:46Z",
+              "completed_at": "2026-11-08T14:45:51Z"
+            },
+            {
+              "number": 9,
+              "name": "Verify native desktop snapshot fixtures",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:45:51Z",
+              "completed_at": "2026-11-08T14:46:27Z"
+            },
+            {
+              "number": 10,
+              "name": "Build",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:46:27Z",
+              "completed_at": "2026-11-08T14:46:30Z"
+            },
+            {
+              "number": 11,
+              "name": "Console smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:46:30Z",
+              "completed_at": "2026-11-08T14:46:31Z"
+            },
+            {
+              "number": 22,
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:46:31Z",
+              "completed_at": "2026-11-08T14:46:31Z"
+            },
+            {
+              "number": 23,
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:46:31Z",
+              "completed_at": "2026-11-08T14:46:31Z"
+            }
+          ]
         },
         {
           "id": 128759926539,
@@ -290,7 +913,113 @@
           ],
           "head_sha": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
           "started_at": "2026-11-08T14:28:08Z",
-          "completed_at": "2026-11-08T14:55:04Z"
+          "completed_at": "2026-11-08T14:55:04Z",
+          "steps": [
+            {
+              "number": 1,
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:10Z",
+              "completed_at": "2026-11-08T14:28:11Z"
+            },
+            {
+              "number": 2,
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:11Z",
+              "completed_at": "2026-11-08T14:28:27Z"
+            },
+            {
+              "number": 3,
+              "name": "Install and identify the pinned toolchain",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:27Z",
+              "completed_at": "2026-11-08T14:28:41Z"
+            },
+            {
+              "number": 4,
+              "name": "Format",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:41Z",
+              "completed_at": "2026-11-08T14:28:43Z"
+            },
+            {
+              "number": 5,
+              "name": "Lint",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:28:43Z",
+              "completed_at": "2026-11-08T14:29:13Z"
+            },
+            {
+              "number": 6,
+              "name": "Test",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:29:13Z",
+              "completed_at": "2026-11-08T14:43:49Z"
+            },
+            {
+              "number": 7,
+              "name": "Verify production Tenjiku subprocess and standard-root journeys",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:43:49Z",
+              "completed_at": "2026-11-08T14:45:51Z"
+            },
+            {
+              "number": 8,
+              "name": "Verify isolated desktop QA constructors",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:45:51Z",
+              "completed_at": "2026-11-08T14:53:49Z"
+            },
+            {
+              "number": 9,
+              "name": "Verify native desktop snapshot fixtures",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:53:49Z",
+              "completed_at": "2026-11-08T14:54:55Z"
+            },
+            {
+              "number": 10,
+              "name": "Build",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:54:55Z",
+              "completed_at": "2026-11-08T14:55:00Z"
+            },
+            {
+              "number": 11,
+              "name": "Console smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:55:00Z",
+              "completed_at": "2026-11-08T14:55:01Z"
+            },
+            {
+              "number": 22,
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:55:01Z",
+              "completed_at": "2026-11-08T14:55:03Z"
+            },
+            {
+              "number": 23,
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "started_at": "2026-11-08T14:55:03Z",
+              "completed_at": "2026-11-08T14:55:03Z"
+            }
+          ]
         }
       ],
       "source": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
@@ -299,8 +1028,9 @@
       "monitor": "One bounded completion-aware observer, session35903, /private/tmp/msh491/monitor.py; cacheci/{run,jobs}.json andci-monitor.log. Check completion before anynewwait. No retries or othernativecampaign.",
       "unrequired_desktop": {
         "id": 42489943997,
-        "status": "cancellation_requested",
-        "reason": "BroadpackagedGUIcampaignnotrequired; affectedfront/type/build+standalonehost andactualnativeDesktopControllerjourneys verified."
+        "status": "completed",
+        "reason": "BroadpackagedGUIcampaignnotrequired; affectedfront/type/build+standalonehost andactualnativeDesktopControllerjourneys verified.",
+        "conclusion": "cancelled"
       },
       "failure": {
         "job": 128759926440,
@@ -310,5 +1040,19 @@
         "checks": "Both post-fix generator runs match all checked-in fixtures exactly; fixture example tests, fmt and Clippy recorded in fixture-fix.log.gz."
       }
     }
-  ]
+  ],
+  "production_source": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
+  "source_equivalence": {
+    "production": "All product sources unchanged from eb4601d. b8cc851 changes only fixture-example completion waiting and evidence/backlog.",
+    "verification": "git diff eb4601d b8cc851 -- crates shows only write_frontend_fixtures.rs; no expected snapshot changes.",
+    "reuse": "Workspace1134 tests, consumer checks, profiles and49.6924s selfplay retain their actual eb4601d production provenance; new3OS nativeCI verifies b8cc851. No newmatch campaign."
+  },
+  "definition_of_done": {
+    "1": "All6AC supported by tests/review/actual3OSCI; oldfailedcampaign preserved.",
+    "2": "Independent source/delta/fixture/provenance and final exact-source3OSreceipt/AC reviews approved; material findings resolved.",
+    "3": "Implementation docs and existing49.2/parent49 handoff current. Formal study and umbrella remain unfinished.",
+    "4": "Implementation eb4601d+correction b8cc851 integrated/pushed codex/rewrite; this completion record is included in the final evidence-only integration commit, identified by repository history and completion report."
+  },
+  "implementation_revision": "eb4601d0fd33e790ac9905309fb011400aeafb5c",
+  "integration_note": "Accepted implementation eb4601d and corrected testedsource b8cc851 normally integrated/pushed codex/rewrite. The commit containing this final record integrates evidence/backlog/docs only; its actual hash is recorded in Git history and owner completion report, not fabricated inside itself."
 }

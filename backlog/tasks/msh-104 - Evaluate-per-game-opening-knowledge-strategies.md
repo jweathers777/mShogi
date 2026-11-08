@@ -4,15 +4,23 @@ title: Evaluate per-game opening-knowledge strategies
 status: To Do
 assignee: []
 created_date: '2026-10-27T16:10:00Z'
-updated_date: '2026-10-27T20:26:00Z'
+updated_date: '2026-11-08T13:08:00Z'
 labels: []
 milestone: m-5
 dependencies:
   - MSH-48
   - MSH-109
+  - MSH-49
+  - MSH-50
+  - MSH-51
+  - MSH-52
+  - MSH-53
+  - MSH-54
+  - MSH-55
 documentation:
   - docs/m5/opening-knowledge.md
   - docs/design.md
+  - docs/m5/strength-roadmap.md
 ordinal: 104000
 ---
 
@@ -20,6 +28,8 @@ ordinal: 104000
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
 Owner-approved future M5 experiment,2026-10-27. Early-game search may benefit from reusable knowledge, but a book or model must earn its generation/training/inference/maintenance cost. This scope compares per-game strategies; it requires evidence, not adoption or shipping. A dedicated opening-policy model is a first-class experimental arm, separate from MSH-55 learned evaluation and optional MSH-59 full policy/value search. No implementation, Python runtime dependency, training pipeline, architecture, fixed budget or strength target is approved by task creation. Refine game-specific prerequisites against actual functional baselines before starting each arm; native complete actions/history remain authoritative.
+
+Owner sequence2026-11-08 places this substantial opening-knowledge research after conventional engines and the initial Chess learned-evaluation result. MSH-55 is a sequencing prerequisite, not a shared-model or runtime dependency; the distinct compact opening-policy arm, all-game coverage, sparse-corpus investigations and valid evidence-supported non-adoption remain intact. Routine correctness/tactical tests and bounded profiling accompany coherent increments. Aggregate routine local engine-match work is limited to15minutes per task unless John explicitly authorizes more; no per-technique substantial statistical studies or multi-hour benchmarks. Formal studies require owner approval at a substantially complete conventional-engine or new-evaluation milestone. Routine algorithm and implementation choices are autonomous. See AGENTS.md and docs/m5/strength-roadmap.md.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria

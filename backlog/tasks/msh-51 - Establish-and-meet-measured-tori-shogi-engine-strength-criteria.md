@@ -4,15 +4,18 @@ title: Establish and meet measured tori shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-10-27T20:26:00Z'
+updated_date: '2026-11-08T13:08:00Z'
 labels: []
 milestone: m-5
 dependencies:
   - MSH-48
   - MSH-42
   - MSH-109
+  - MSH-50
+  - MSH-54
 documentation:
   - docs/design.md
+  - docs/m5/strength-roadmap.md
 ordinal: 51000
 ---
 
@@ -22,6 +25,8 @@ ordinal: 51000
 Functional tori shogi search/play does not satisfy P-02. This ticket owns the tori shogi-specific opponent pool, transparent baseline, release-strength criteria, search/evaluation improvement and measured verdict, using MSH-48 shared infrastructure. An initial learned evaluator improvement is separately owned by MSH-55; no requirement for an identical neural architecture in every game is inferred.
 
 Open D-09 questions: establish meaningful tori shogi opponents and starting positions, resource/fairness conditions, release-strength targets and uncertainty criteria from baseline/pilot evidence; record owner decisions on material targets before claiming success. Search tuning, evaluator choices and compute budgets remain empirical, not resolved by this planning ticket.
+
+Owner sequence2026-11-08: after the mature Chess milestone, adapt and develop established conventional search/evaluation as a coherent Tori Shogi engine before substantial formal strength evaluation. Shogi/Xiangqi precede the less-studied variants. Transfer useful techniques, not Chess constants, pruning assumptions, royal semantics or repetition identities; preserve the accepted native profile(s). Routine correctness/tactical tests and bounded profiling accompany coherent increments. Aggregate routine local engine-match work is limited to15minutes per task unless John explicitly authorizes more; no per-technique substantial statistical studies or multi-hour benchmarks. Formal studies require owner approval at a substantially complete conventional-engine or new-evaluation milestone. Routine algorithm and implementation choices are autonomous. See AGENTS.md and docs/m5/strength-roadmap.md.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -30,6 +35,7 @@ Open D-09 questions: establish meaningful tori shogi opponents and starting posi
 - [ ] #2 Game-specific tori shogi strength targets and comparison/uncertainty criteria are explicitly decided and documented from baseline evidence before a release-strength verdict. Numeric targets are not fabricated from other games or nodes-per-second results.
 - [ ] #3 The mShogi tori shogi engine has measured search/evaluation improvements and meets the agreed criteria in reproducible matches against the defined pool. Search correctness, legal complete actions, history-aware terminal behavior and regression evidence remain intact; speedups alone do not establish stronger play.
 - [ ] #4 The final tori shogi report records the tested revision, all experimental conditions and uncertainty, actual successes/failures and independent review. Open required targets block completion and M5 closure rather than being absorbed into optional M6 research.
+- [ ] #5 A substantially complete game-specific conventional search/evaluation/execution engine is independently verified before the major strength study; established techniques are adapted to native tactics/history/outcomes and routine development stays within the15minute cumulative match allowance without per-optimization formal studies.
 <!-- AC:END -->
 
 ## Definition of Done

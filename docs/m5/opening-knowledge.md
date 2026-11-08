@@ -74,8 +74,14 @@ must preserve rules, model/action identities, execution limits and save semantic
 
 ## Dependency/ownership boundary
 
-MSH-104 depends on shared experiment infrastructure48 and the pre-optimization
-architectural diagnostic109, not evaluator55 or optional policy/value59.
+Owner sequence2026-11-08 places MSH-104 after shared infrastructure48,
+architectural diagnostic109, all six conventional game-strength tasks49–54 and
+the initial Chess learned evaluator55. The55 edge is a sequencing prerequisite,
+not an evaluator/model/runtime dependency. Optional policy/value59 remains
+independent. This preserves the distinct opening-policy arm and all-game scope;
+it does not authorize substantial experiments before their explicit budget
+approval. Follow the [conventional-engine roadmap](strength-roadmap.md) and
+AGENTS.md's 15-minute cumulative routine match allowance per task.
 The [health-review roadmap](../architecture-health-roadmap.md) intentionally
 places109 after the all-six architecture checkpoint108 and infrastructure48;
 earlier game implementations and48 baseline/pilot work retain their existing

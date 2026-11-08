@@ -1,10 +1,17 @@
-# MSH-49: Chess baseline and release-strength decision
+# MSH-49: conventional Chess development and preserved evidence
 
-**In Progress: the owner-approved first-release study is being implemented.**
-This record preserves pre-target calibration and the necessary comparison-harness
-correction, followed by the approved protocol and candidate work. It is not
-a Chess release-strength verdict or M5 acceptance.
-The original four MSH-49 criteria remain unchanged and unchecked.
+**The initial formal acceptance study is stopped by owner direction,2026-11-08.**
+No formal held-out seed, roots or games were generated. The old64/32 samples,
+depth2Stockfish thresholds and pendingfour-hour request are historical and no
+longer authorize execution. No new matches run in this reassessment.
+
+Follow the [revised strength roadmap](strength-roadmap.md): develop a substantially
+complete conventional engine first (MSH-49.1), then a separately approved
+equal-thinking-time unrestricted Stockfish milestone (MSH-49.2). MSH-49 remains
+unfinished. Useful code, independent reviews, baselines, immutable frozen study
+files and actual971.486s development/calibration accounting are retained below.
+The new15-minute routine match cap is prospective; it does not rewrite previously
+authorized runtime or authorize another allowance for this stopped study.
 
 ## Frozen baseline and actual independent opponent
 
@@ -98,7 +105,7 @@ Rules, search/evaluation, protocol identities and other games were not changed.
 Required native Ubuntu/macOS 15/Windows verification for the frozen correction
 checkpoint remains separately recorded in the ledger.
 
-## Owner-approved first-release criteria — 8 November 2026
+## Historical first-release criteria — stopped before formal evaluation
 
 MSH-49 AC2/AC4 and design D-09 explicitly require an owner-selected release bar
 and uncertainty criteria. After calibration, John selected the first option in the concrete second
@@ -179,37 +186,28 @@ The old claim-admission correction at `926ae8f` actually passed required native
 Linux/macOS15/Windows CI; this does not cover the subsequent candidate source.
 Independent source review approved candidate search/evaluation, production
 routing, native shortcut, per-participant limits and strict offline study audit.
-Final source platform receipts and the fixed held-out strength study remain
-required.
+The subsequent source platform receipts passed as recorded below. The proposed
+fixed held-out study was stopped by the later owner strategy revision.
 
-MSH-49 remains unfinished until the approved criteria and verification pass.
-The reviewed conventional candidate is integrated and pushed at
-`7818c3371758cee8e9624b58b0edb1073c32c89d`.
+MSH-49 remains unfinished under the revised conventional-engine scope.
+The reviewed starting candidate is integrated at
+`7818c3371758cee8e9624b58b0edb1073c32c89d`, with evidence at`5881452`.
 Its [clean-source artifact freeze](evidence/msh49/study/candidate-freeze.json)
 precedes any held-out seed. The new development pair won both games in90.206s,
-versus168.570s initially; total charged work is now971.486s. Independent review
+versus168.570s initially; total charged work remains971.486s. Independent review
 reconciled all9development pairs and source/artifact identities. The final
 runner has its own artifact hash, distinct from the development runner.
 
 Required native [CI42469534590](https://github.com/jweathers777/mShogi/actions/runs/42469534590)
-is running at that exact source, with all3hosted runners acquired. Its outcome
-is pending. No formal holdout roots or acceptance matches have been generated.
-Measured costs still project beyond the approved two-hour budget. John has been
-asked to amend only the total local match budget to four hours, including work
-already charged, before held-out sampling. No amendment is inferred; the
-two-hour cap remains binding pending that decision.
-No learned evaluator, training or other game task has begun. The bounded baseline and reviewed
-claim-tail correction are useful preparation, not substitute acceptance.
+actually passed at that exact source, attempt1: macOS15job128696846118,
+Windows2022job128696846383 and Ubuntu24job128696846507. This preserves source
+correctness/platform evidence; it is not a strong-engine or study-acceptance
+verdict. The observer completed; no further retry campaign is needed.
 
-The immutable protocol/sampler/development freeze is recorded in
-[study/protocol-freeze.json](evidence/msh49/study/protocol-freeze.json), with the
-[full approved test rules](evidence/msh49/study/protocol-v1.json). The sign tests
-concern positive versus negative nonzero paired differences, not a mean-score
-confidence interval; score floors and positive external mean are separate gates.
-Total charged match time above 7,200 seconds makes the study ineligible.
-
-Implement the minimum
-measured conventional improvement using native history/claims/terminal/undo,
-verify it with independent oracles and actual execution, and run the approved
-study. Preserve the frozen baseline and historical reports. MSH-50–55/104 remain
-outside this assignment.
+The next dependency-ready engineering task is MSH-49.1. Its implementation is
+still future work: no TT, PVS/aspiration, quiescence, selective-search package or
+complete conventional evaluator is implied by the present candidate. The
+original frozen study and proposed budget extension must not resume. Routine
+engineering decisions require no additional owner approval; the later complete
+engine milestone needs its own concrete approved resource/comparison conditions.
+No learned evaluator, training or other game implementation began here.

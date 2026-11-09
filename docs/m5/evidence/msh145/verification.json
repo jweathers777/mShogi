@@ -1,13 +1,16 @@
 {
   "task": "MSH-145 (Pawn Threat and Exchange Judgment)",
-  "status": "baseline-preparation",
+  "status": "baseline-complete-evaluation-implementation-in-progress",
   "verification_level": "Level1 portable evaluation; local independent oracle/search/history checks and review; platform and packaging deferred to relevant integration checkpoints",
   "base_revision": "5ef338b",
   "baseline_production_source": "0401b828c472f32759afba1a407093cb99313d5a",
   "position_file_sha256": "ed1a4a998387315cef9a5e0dc000b0000a88d940683583a9b2b8a0db023fdb30",
   "checks": [
     "23zero-budget native history/root/PV cases pass, including complete native legal-set equality with preserved independent tablebase alternatives where supplied",
-    "diagnostic example releasebuild/clippy passed"
+    "diagnostic example releasebuild/clippy passed",
+    "101 release search library tests passed; two pre-existing ignored",
+    "release workspace all-target clippy and fmt passed",
+    "new native mate/repetition/fifty-move/cancellation test and thirteen evaluator tests passed"
   ],
   "scope": [
     "bounded passer interception/tempo risk on extra runway premium",
@@ -19,5 +22,21 @@
     "full platform matrix",
     "GUI campaign"
   ],
-  "preimplementation_review": "endgame_review approved all14new/reused oracle roots/maps, fullhistory/tactical provenance,23conditions31s, complete-native-actionset assertion and bounded heuristic scope; scaling guard/source review still pending"
+  "preimplementation_review": "endgame_review approved all14new/reused oracle roots/maps, fullhistory/tactical provenance,23conditions31s, complete-native-actionset assertion and bounded heuristic scope; scaling guard/source review still pending",
+  "baseline": {
+    "source": "cbca95ca586130bda393610e1e38c882bc4ddac1",
+    "binary_sha256": "062d9595611467feed27fac1cc1e02ec45a6bc861d180cc673654f38e463cf39",
+    "inputs_sha256": "ed1a4a998387315cef9a5e0dc000b0000a88d940683583a9b2b8a0db023fdb30",
+    "command": [
+      "/private/tmp/msh145/baseline-profile",
+      "docs/m5/evidence/msh145/positions.json",
+      "128",
+      "timed",
+      "none"
+    ],
+    "elapsed_seconds": 28.46760212490335,
+    "exit": 0
+  },
+  "baseline_findings": "All independent WDLchoices preserved, including unique a6 race and Ng6 mate; drawn KQKP/KNNK/Philidor still+714/+827/+203. General scaling/leaf-discrimination deficiency, not failures of native rules.",
+  "independent_nearby_nonmate_control": "8/8/8/8/3Q1K2/8/2p5/2k5 w - - 0 1 independently wins DTZ7 without a mate-in-one; remote-king scaling excluded"
 }

@@ -97,6 +97,12 @@ pub enum EndgameKind {
     WrongBishopRookPawn,
     /// Bishop and knight against a bare king: encourage the correct corner.
     BishopKnightConversion,
+    /// Two knights against a bare king: drawish material, not a dead-position proof.
+    TwoKnightsDrawish,
+    /// Remote queen-side king versus a protected advanced rook/bishop-file pawn.
+    QueenPawnFortress,
+    /// Rook/pawn versus rook with an intact third-rank defensive barrier.
+    RookPawnThirdRankDefence,
 }
 
 /// Transparent replacement for generic terms in a narrowly matched ending.
@@ -392,8 +398,8 @@ impl Features {
 /// and defended occupied squares. Mobility discounts own occupancy and enemy
 /// pawn attacks; it is an activity estimate, not a count of legal moves. King
 /// ring and threat estimates likewise never decide check, capture or outcome.
-/// Generic phase blending does not depend on side to move. Specialized KPK
-/// board knowledge includes the turn; clocks, claims and history stay native.
+/// Passer interception estimates and specialized KPK board knowledge use the
+/// turn; clocks, claims and history stay native.
 /// All coefficients are original, transparent untrained arithmetic heuristics.
 pub fn evaluate(position: &Position) -> Evaluation {
     dynamic(position, Accumulator::rebuilt(position))
@@ -477,7 +483,7 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
                     let unsafe_path = path & f.attacks[other] != 0;
                     let clear = path & (f.occupied[i] | f.occupied[other]) == 0;
                     let runway = if advance >= 3 && clear && !unsafe_path {
-                        4 * advance * advance
+                        passer_runway(position, &f, man, 4 * advance * advance)
                     } else {
                         0
                     };
@@ -628,15 +634,65 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
             };
         }
     }
+    let phase = base.phase.min(MIDDLE_PHASE);
     Evaluation {
         white: terms[0],
         black: terms[1],
-        middle_phase: base.phase.min(MIDDLE_PHASE),
-        specialized: specialized(position, &f),
+        middle_phase: phase,
+        specialized: specialized(position, &f, &terms, phase),
     }
 }
 
-fn specialized(position: &Position, f: &Features) -> Option<EndgameEvaluation> {
+/// Only the extra clear-runway premium is discounted. King distance ignores
+/// obstructions, opposition and future checks, so this is risk, never a race
+/// proof. The bounded walk is used only for advanced, currently clear passers.
+fn passer_runway(position: &Position, f: &Features, pawn: &Man, premium: i32) -> i32 {
+    let own = side(pawn.piece.color);
+    let rear = |color| {
+        f.men.iter().any(|man| {
+            man.piece.color == color
+                && matches!(man.piece.kind, PieceKind::Rook | PieceKind::Queen)
+                && man.sq.file() == pawn.sq.file()
+                && (if pawn.piece.color == Color::White {
+                    man.sq.rank() < pawn.sq.rank()
+                } else {
+                    man.sq.rank() > pawn.sq.rank()
+                })
+                && man.attacks & bit(pawn.sq) != 0
+        })
+    };
+    // Today's attack ray stops at the pawn. Rear pressure/support continues as
+    // it advances, although the future file is absent from that attack map.
+    if rear(pawn.piece.color.opponent()) {
+        return premium / 4;
+    }
+    if rear(pawn.piece.color) {
+        return premium;
+    }
+    let extra_king_move = i32::from(position.side_to_move() != pawn.piece.color);
+    let remaining = 7 - relative_rank(pawn.piece, pawn.sq);
+    for pushes in 1..=remaining {
+        let rank = if pawn.piece.color == Color::White {
+            pawn.sq.rank() + pushes
+        } else {
+            pawn.sq.rank() - pushes
+        };
+        let landing = Square::new(pawn.sq.file(), rank).unwrap();
+        if f.attacks[own] & bit(landing) == 0
+            && distance(f.kings[1 - own], landing) <= i32::from(pushes) + extra_king_move
+        {
+            return premium / 4;
+        }
+    }
+    premium
+}
+
+fn specialized(
+    position: &Position,
+    f: &Features,
+    terms: &[Terms; 2],
+    phase: i32,
+) -> Option<EndgameEvaluation> {
     // These material sets cannot retain castling rights. Ignore raw EP targets:
     // with only one pawn no en-passant capture is possible (including immediately
     // after a legal double push). Native Game still owns all history semantics.
@@ -665,8 +721,98 @@ fn specialized(position: &Position, f: &Features) -> Option<EndgameEvaluation> {
             },
         });
     }
+    let attenuated = |kind, strong_side| {
+        let own = side(strong_side);
+        EndgameEvaluation {
+            kind,
+            strong_side,
+            // Retain a small gradient from the original terms, rather than invent
+            // a proved draw or erase native tactical/history-dependent outcomes.
+            score: (terms[own].contribution(phase) - terms[1 - own].contribution(phase)) / 8,
+        }
+    };
+    if nonkings.len() == 2
+        && let Some(queen) = nonkings.iter().find(|m| m.piece.kind == PieceKind::Queen)
+        && let Some(pawn) = nonkings.iter().find(|m| m.piece.kind == PieceKind::Pawn)
+        && queen.piece.color != pawn.piece.color
+    {
+        let strong = side(queen.piece.color);
+        let weak = 1 - strong;
+        let promotion = Square::new(
+            pawn.sq.file(),
+            if pawn.piece.color == Color::White {
+                7
+            } else {
+                0
+            },
+        )
+        .unwrap();
+        if relative_rank(pawn.piece, pawn.sq) == 6
+            && matches!(pawn.sq.file(), 0 | 2 | 5 | 7)
+            && distance(f.kings[weak], pawn.sq) == 1
+            && distance(f.kings[weak], promotion) <= 1
+            && distance(f.kings[strong], pawn.sq) >= 4
+            && f.attacks[strong] & bit(f.kings[weak]) == 0
+            && f.attacks[weak] & (bit(f.kings[strong]) | bit(queen.sq)) == 0
+        {
+            return Some(attenuated(
+                EndgameKind::QueenPawnFortress,
+                queen.piece.color,
+            ));
+        }
+    }
+    if nonkings.len() == 3
+        && let Some(pawn) = nonkings.iter().find(|m| m.piece.kind == PieceKind::Pawn)
+        && let Some(own_rook) = nonkings
+            .iter()
+            .find(|m| m.piece.kind == PieceKind::Rook && m.piece.color == pawn.piece.color)
+        && let Some(enemy_rook) = nonkings
+            .iter()
+            .find(|m| m.piece.kind == PieceKind::Rook && m.piece.color != pawn.piece.color)
+    {
+        let own = side(pawn.piece.color);
+        let weak = 1 - own;
+        let promotion = Square::new(
+            pawn.sq.file(),
+            if pawn.piece.color == Color::White {
+                7
+            } else {
+                0
+            },
+        )
+        .unwrap();
+        let barrier = Square::new(
+            pawn.sq.file(),
+            if pawn.piece.color == Color::White {
+                5
+            } else {
+                2
+            },
+        )
+        .unwrap();
+        if relative_rank(pawn.piece, pawn.sq) <= 4
+            && relative_rank(pawn.piece, f.kings[own]) <= 4
+            && distance(f.kings[weak], promotion) <= 1
+            && relative_rank(pawn.piece, enemy_rook.sq) == 5
+            && enemy_rook.attacks & bit(barrier) != 0
+            && f.attacks[own] & (bit(enemy_rook.sq) | bit(f.kings[weak])) == 0
+            && f.attacks[weak] & (bit(own_rook.sq) | bit(f.kings[own])) == 0
+        {
+            return Some(attenuated(
+                EndgameKind::RookPawnThirdRankDefence,
+                pawn.piece.color,
+            ));
+        }
+    }
     if nonkings.len() != 2 || nonkings[0].piece.color != nonkings[1].piece.color {
         return None;
+    }
+    if nonkings.iter().all(|m| m.piece.kind == PieceKind::Knight) {
+        return Some(EndgameEvaluation {
+            kind: EndgameKind::TwoKnightsDrawish,
+            strong_side: nonkings[0].piece.color,
+            score: 0,
+        });
     }
     let bishop = nonkings
         .iter()
@@ -1094,6 +1240,126 @@ mod tests {
             evaluate(&reflect(&correct)).score_for(Color::Black),
             evaluate(&correct).score_for(Color::White)
         );
+    }
+
+    #[test]
+    fn passer_interception_distinguishes_tempo_escort_and_rear_support() {
+        // Independent Syzygy: only a6 wins on White's turn; Black to move can
+        // draw with Kd6/Kd7/Kd8. Ke7 needs four moves to a8, the pawn three
+        // pushes. The fourth king move exists only when Black starts.
+        let white = position("8/4k2p/8/P7/8/8/8/7K w - - 0 1");
+        let black = position("8/4k2p/8/P7/8/8/8/7K b - - 0 1");
+        let w = evaluate(&white);
+        let b = evaluate(&black);
+        assert!(w.specialized.is_none() && b.specialized.is_none());
+        assert_eq!(w.white.pawns.end - b.white.pawns.end, 27);
+        assert_eq!(w.white.pawns.middle, b.white.pawns.middle);
+        assert_eq!(w.white.material, b.white.material);
+        assert_eq!(w.black, b.black);
+        // Independently winning for White despite Black's first move: Kb7
+        // covers every a-file landing; Ra1 supports the pawn from behind.
+        for fen in [
+            "8/1K2k2p/8/P7/8/8/8/8 b - - 0 1",
+            "8/4k2p/8/P7/8/8/8/R6K b - - 0 1",
+        ] {
+            let p = position(fen);
+            let opposite_turn = position(&fen.replace(" b ", " w "));
+            assert_eq!(
+                evaluate(&p).white.pawns,
+                evaluate(&opposite_turn).white.pawns
+            );
+            assert_eq!(evaluate(&p).white, evaluate(&reflect(&p)).black);
+            assert_eq!(evaluate(&p).black, evaluate(&reflect(&p)).white);
+        }
+        for p in [&white, &black] {
+            assert_eq!(evaluate(p).white, evaluate(&reflect(p)).black);
+            assert_eq!(evaluate(p).black, evaluate(&reflect(p)).white);
+        }
+        // An enemy rook's ray currently stops at a5, but follows the pawn as
+        // it advances. A rook on b1 has no such rear pressure on this passer.
+        let rear = evaluate(&position("7k/8/8/P7/8/8/7K/r7 w - - 0 1"));
+        let side = evaluate(&position("7k/8/8/P7/8/8/7K/1r6 w - - 0 1"));
+        assert_eq!(side.white.pawns.end - rear.white.pawns.end, 27);
+        // An occupied a6 does not earn a runway premium, regardless of tempo.
+        let blocked = evaluate(&position("7k/8/N7/P7/8/8/7K/8 w - - 0 1"));
+        let clear = evaluate(&position("7k/8/8/P7/8/8/7K/8 w - - 0 1"));
+        assert!(blocked.white.pawns.end < clear.white.pawns.end);
+        assert_eq!(blocked.white.pawns.middle, clear.white.pawns.middle);
+    }
+
+    #[test]
+    fn conversion_scales_independent_draws_without_generalizing_to_nearby_wins() {
+        // Independent complete-WDL receipts live under docs/m5/evidence/msh145.
+        // These finite heuristic scales remain separate from native outcomes.
+        for (fen, kind) in [
+            (
+                "8/8/8/8/8/2K5/NN6/7k w - - 0 1",
+                EndgameKind::TwoKnightsDrawish,
+            ),
+            (
+                "7K/8/8/8/3Q4/8/2p5/2k5 w - - 0 1",
+                EndgameKind::QueenPawnFortress,
+            ),
+            (
+                "8/4k3/r7/4K3/4P3/8/8/7R w - - 0 1",
+                EndgameKind::RookPawnThirdRankDefence,
+            ),
+            (
+                "8/4k3/r7/4K3/4P3/8/8/7R b - - 0 1",
+                EndgameKind::RookPawnThirdRankDefence,
+            ),
+        ] {
+            let p = position(fen);
+            let before = p.clone();
+            let e = evaluate(&p);
+            assert_eq!(e.specialized.unwrap().kind, kind);
+            let generic =
+                e.white.contribution(e.middle_phase) - e.black.contribution(e.middle_phase);
+            assert!(e.score_for(Color::White).abs() < generic.abs());
+            assert!(e.score_for(Color::White).abs() < 150);
+            assert_eq!(
+                e.score_for(Color::White),
+                evaluate(&reflect(&p)).score_for(Color::Black)
+            );
+            assert_eq!(e.white, evaluate(&reflect(&p)).black);
+            assert_eq!(p, before);
+            assert!(
+                AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly)
+                    .unwrap()
+                    .outcome()
+                    .is_none()
+            );
+        }
+        // Central pawn and near attacking king win; the advanced Lucena
+        // position wins. A shifted defending king alone need not lose, but
+        // lies outside this deliberately narrow third-rank guard.
+        for fen in [
+            "7K/8/8/8/3Q4/8/3p4/3k4 w - - 0 1",
+            "8/8/8/8/3Q4/3K4/2p5/2k5 w - - 0 1",
+            // Independent win, DTZ7, with no immediate mating move: proximity
+            // matters even when a one-ply mate search cannot explain the guard.
+            "8/8/8/8/3Q1K2/8/2p5/2k5 w - - 0 1",
+            "1K6/1P1k4/8/8/8/8/r7/5R2 w - - 0 1",
+            "8/6k1/r7/4K3/4P3/8/8/7R w - - 0 1",
+            // Undefended or less advanced pawn, extra material, and a hanging
+            // defensive rook cannot inherit an exact-material pattern.
+            "7K/8/8/8/3Q4/8/k1p5/8 w - - 0 1",
+            "7K/8/8/8/3Q4/2p5/2k5/8 w - - 0 1",
+            "7K/8/8/8/3Q4/8/2p4P/2k5 w - - 0 1",
+            "8/8/8/8/8/2K5/NN5p/7k w - - 0 1",
+            "8/4k3/r7/4K3/4P3/8/8/R7 w - - 0 1",
+        ] {
+            let p = position(fen);
+            assert!(evaluate(&p).specialized.is_none(), "{fen}");
+            assert!(evaluate(&reflect(&p)).specialized.is_none(), "{fen}");
+        }
+        let mut hanging = position("8/4k3/r7/4K3/4P3/8/8/R7 w - - 0 1");
+        hanging.apply("a1a6".parse().unwrap()).unwrap();
+        // The queen is checked/capturable by the defending king. Geometric
+        // fortress scaling must not erase this immediate native resource.
+        let mut queen = position("7K/8/8/8/8/8/2p5/2kQ4 b - - 0 1");
+        assert!(evaluate(&queen).specialized.is_none());
+        queen.apply("c1d1".parse().unwrap()).unwrap();
     }
 
     #[test]

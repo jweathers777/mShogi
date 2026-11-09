@@ -1665,6 +1665,116 @@ fn endgame_knowledge_remains_below_native_history_claims_and_terminal_authority(
 }
 
 #[test]
+fn drawish_conversion_scales_preserve_native_mate_claims_and_cancellation() {
+    // Independent Syzygy: two knights are usually drawish, but this board has
+    // exactly one winning action, Ng6#. All other legal actions draw. Static
+    // material knowledge must not become native dead-position adjudication.
+    let mating = game("7k/4NK2/5N2/8/8/8/8/8 w - - 0 1");
+    assert_eq!(
+        evaluation::evaluate(mating.position()).score_for(Color::White),
+        0
+    );
+    assert!(mating.outcome().is_none());
+    let mating_before = mating.clone();
+    let r = search_with_stop(
+        &mating,
+        SearchLimits {
+            depth: 2,
+            nodes: Some(20000),
+        },
+        || false,
+    )
+    .unwrap();
+    assert_eq!(
+        r.result.decision,
+        Some(SearchDecision::Choose(SearchChoice::Move(
+            "e7g6".parse().unwrap()
+        )))
+    );
+    assert_eq!(r.result.score, Some(MATE_SCORE - 1));
+    replay(&mating, &r);
+    assert_eq!(mating, mating_before);
+    let mut terminal = mating.clone();
+    terminal.apply("e7g6".parse().unwrap()).unwrap();
+    assert!(matches!(
+        terminal.outcome(),
+        Some(ChessOutcome::Checkmate {
+            winner: Color::White
+        })
+    ));
+    let r = search(
+        &terminal,
+        SearchLimits {
+            depth: 1,
+            nodes: Some(100),
+        },
+    )
+    .unwrap();
+    assert_eq!(
+        r.result.decision,
+        terminal.outcome().map(SearchDecision::Finished)
+    );
+    assert_eq!(r.result.score, Some(-MATE_SCORE));
+
+    // Full native repetition history still precedes static knowledge and TT.
+    let mut repeated =
+        AdjudicatedGame::from_fen("8/8/8/8/8/2K5/NN6/7k w - - 0 1", ClaimPolicy::AutoClaim)
+            .unwrap();
+    for _ in 0..2 {
+        for action in ["a2c1", "h1g1", "c1a2", "g1h1"] {
+            repeated.apply(action.parse().unwrap()).unwrap();
+        }
+    }
+    let before = repeated.clone();
+    let r = search(
+        &repeated,
+        SearchLimits {
+            depth: 2,
+            nodes: Some(100),
+        },
+    )
+    .unwrap();
+    assert!(matches!(
+        r.result.decision,
+        Some(SearchDecision::Choose(SearchChoice::Claim(_)))
+    ));
+    assert_eq!(r.result.score, Some(0));
+    replay(&repeated, &r);
+    assert_eq!(repeated, before);
+
+    // Automatic fifty-move policy precedes a possible mate-in-one, but never
+    // an already concluded checkmate. A time/owner stop fabricates no choice.
+    let claimed =
+        AdjudicatedGame::from_fen("7k/4NK2/5N2/8/8/8/8/8 w - - 100 1", ClaimPolicy::AutoClaim)
+            .unwrap();
+    let r = search(
+        &claimed,
+        SearchLimits {
+            depth: 2,
+            nodes: Some(100),
+        },
+    )
+    .unwrap();
+    assert!(matches!(
+        r.result.decision,
+        Some(SearchDecision::Choose(SearchChoice::Claim(_)))
+    ));
+    assert_eq!(r.result.score, Some(0));
+    let stopped = search_with_stop(
+        &mating,
+        SearchLimits {
+            depth: 2,
+            nodes: None,
+        },
+        || true,
+    )
+    .unwrap();
+    assert_eq!(stopped.result.completed_depth, 0);
+    assert!(stopped.result.decision.is_none());
+    assert_eq!(mating, mating_before);
+}
+
+#[test]
 fn winning_pawn_endings_progress_without_discarding_the_board_win() {
     // Independently confirmed wins: preserve the WDL while both sides choose
     // actual native moves, then reach safe promotion in a bounded journey.

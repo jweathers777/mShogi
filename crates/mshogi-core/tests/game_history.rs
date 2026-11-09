@@ -257,6 +257,15 @@ fn checked_game_transition_matches_full_position_errors_effects_and_atomicity() 
                     };
                     let mut position = original.position().clone();
                     let expected = position.apply(a).map(|_| ());
+                    let projected = original.position().project(a);
+                    assert_eq!(
+                        projected.as_ref().map(|_| ()).map_err(|e| *e),
+                        expected,
+                        "projection errors: {fen}: {a:?}"
+                    );
+                    if let Ok(after) = projected {
+                        assert_eq!(after, position, "projection complete state: {fen}: {a:?}");
+                    }
                     let mut actual = original.clone();
                     assert_eq!(actual.apply(a), expected, "{fen}: {a:?}");
                     if expected.is_ok() {

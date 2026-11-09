@@ -1513,10 +1513,9 @@ fn frontier_retains_quiet_and_checking_defences_against_contact_mate() {
     }
     assert_eq!(safe.len(), expected.len());
     assert!(expected.iter().all(|a| safe.contains(a)));
-    // The exhausted quiet frontier counterexample is retained for MSH-143;
-    // this assertion covers the full initial frontier, not every horizon.
-    {
-        let left = Q_PLIES;
+    // Both the initial frontier and its last defensive layer must reject
+    // replacing Qg7# with a different immediate mate.
+    for left in [Q_PLIES, Q_DEFENCE_MIN] {
         let mut stop = || false;
         let mut e = engine(&g, &mut stop, SearchMode::Conventional);
         let v = e
@@ -1527,9 +1526,73 @@ fn frontier_retains_quiet_and_checking_defences_against_contact_mate() {
         };
         assert!(safe.contains(&a), "{a:?} left={left}");
         assert!(e.stats.queen_threat_nodes > 0);
+        if left == Q_DEFENCE_MIN {
+            assert!(e.stats.defence_reply_probes > 0);
+        }
         assert_eq!(e.cursor.game(), Some(&g));
         assert_eq!(e.eval, EvalState::new(g.position()));
     }
+}
+
+#[test]
+fn defensive_mate_reply_proof_cancels_and_restores_native_state() {
+    use std::cell::Cell;
+    let g = game("r6k/8/5K2/8/6Q1/8/8/8 b - - 0 1");
+    let polls = Cell::new(0);
+    let enabled = Cell::new(false);
+    let mut stop = || {
+        if !enabled.get() {
+            return false;
+        }
+        polls.set(polls.get() + 1);
+        polls.get() >= 3
+    };
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    e.push_with_key("a8g8".parse().unwrap(), false)
+        .unwrap_or_else(|_| panic!("native defence"));
+    let before = e.cursor.game().unwrap().clone();
+    let eval = e.eval.clone();
+    enabled.set(true);
+    let r = e.quiescence_with_mate_guard(
+        1,
+        -INF,
+        INF,
+        Q_DEFENCE_MIN - 1,
+        Some("a8g8".parse().unwrap()),
+        true,
+    );
+    assert!(matches!(r, Err(Halt::Limit(SearchStatus::Stopped))));
+    assert!(e.stats.defence_reply_probes > 0);
+    assert_eq!(e.cursor.game(), Some(&before));
+    assert_eq!(e.eval, eval);
+    e.pop();
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
+
+    // An automatic-policy fifty-move claim comes before this new board probe,
+    // even though the side to move has an immediate mating continuation.
+    let g = AdjudicatedGame::from_fen("r6k/8/5K2/8/6Q1/8/8/8 b - - 99 1", ClaimPolicy::AutoClaim)
+        .unwrap();
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    e.push_with_key("a8g8".parse().unwrap(), false)
+        .unwrap_or_else(|_| panic!("native defence"));
+    let v = e
+        .quiescence_with_mate_guard(
+            1,
+            -INF,
+            INF,
+            Q_DEFENCE_MIN - 1,
+            Some("a8g8".parse().unwrap()),
+            true,
+        )
+        .unwrap_or_else(|_| panic!("native claim"));
+    assert_eq!(v.score, 0);
+    assert!(matches!(v.pv.as_slice(), [SearchChoice::Claim(_)]));
+    assert_eq!(e.stats.defence_reply_probes, 0);
+    e.pop();
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
 }
 
 #[test]

@@ -63,6 +63,8 @@ pub enum SearchMode {
 /// These controls are not exposed through the product execution protocol.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct SearchDiagnostics {
+    /// Disable verified null-move pruning while retaining the same quiescent frontier.
+    pub disable_null: bool,
     /// Disable late quiet reductions without changing the quiescent frontier.
     pub disable_lmr: bool,
     /// Disable main-search late quiet and static futility omissions.
@@ -975,6 +977,7 @@ impl Engine<'_> {
         let mut threat_extension = 0;
         if self.mode == SearchMode::Conventional
             && allow_null
+            && !self.diagnostics.disable_null
             && !pv
             && ply > 0
             && depth >= 4

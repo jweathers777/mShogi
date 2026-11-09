@@ -1,9 +1,11 @@
 ---
 id: MSH-152
 title: Classical Tactical Forecasting
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-09T22:12:00Z'
+updated_date: '2026-11-09T22:27:00Z'
 labels:
   - handle:classical-tactical-forecasting
 milestone: m-5
@@ -35,3 +37,15 @@ Handle: Classical Tactical Forecasting. MSH-151 fresh games remain near the prio
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Primary builder @codex owns clean codex/rewrite at ed32b24, aligned origin; unrelated historical Tenjiku worktree untouched. Level1 portable search/evaluation investigation and correction: focused local native/search tests, independent expectations and review; no required platform/GUI jobs, broader compatibility deferred to integration/release. First freeze a compact panel spanning MSH-139 (Chess Strength Assessment), MSH-144 (Chess Progress Assessment), MSH-151 (Chess Coherent-Round Assessment) full histories plus independent tactical, strategic and tablebase controls. Audit score/iteration/PV semantics; add only diagnostic controls needed for comparable same-frontier searches (existing Exact mode changes quiescence and extensions; null-off missing). Use a short time/depth screen then selected one-factor contrasts and continuation traces to distinguish evaluation, horizon, selectivity and cost. Measure exact WDL/tactical outcome retention, independently justified continuation decisions, completed-depth/work and forecast changes; static/PV disagreement alone is not an error. Implement only a supported general correction, freeze before/after and check varied independent negatives/native history, restoration and cancellation. Stop a hypothesis after two discriminatory contrasts fail to support it; stop expanding investigation once a reproducible mechanism and independent controls support a bounded correction, or retain uncertainty/follow-up if no mechanism is established. Individual exploratory searches bounded by30seconds or explicit visit limits; initial screen roughlyone minute, selective follow-ups rather than blanket combinations. No opponent matches or automatic adaptive rating study. At a meaningful decision-quality milestone recommend matched earlier/current-version comparison for owner approval, not launch it.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner direction supersedes automatic small adaptive reassessments after each coherent round: favor controlled matched-version comparisons when justified, with substantial/formal study approval before launch. Define decision-quality outcomes and investigation stopping criteria; preserve earlier completed assessment evidence. Principal hypotheses must be separated by controlled tests, not another heuristic chosen from a single game.
+<!-- SECTION:NOTES:END -->

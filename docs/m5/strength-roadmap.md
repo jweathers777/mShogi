@@ -137,3 +137,20 @@ further tournament follows. MSH-152 (Classical Tactical Forecasting) investigate
 repeated exchange/quiet-attack forecast instability using complete histories and
 independent controls before correction. Conventional Chess remains the priority;
 no learned evaluation or cross-game transfer is authorized.
+
+## Owner refinement after MSH-151 (Chess Coherent-Round Assessment)
+
+MSH-152 (Classical Tactical Forecasting) investigates decision quality across
+evaluation, horizon, selectivity and cost, with explicit measurable outcomes and
+bounded stopping conditions. It must not default to another positional heuristic
+or infer an error merely from a PV/score disagreement. Independent tactics and
+endgame truths supplement complete historical game records.
+
+Do not automatically run another small adaptive absolute-rating study after this
+work. At a meaningful improvement milestone, propose a controlled comparison of
+earlier and improved versions using matched openings, conditions and opponents
+where appropriate, with a sample suited to the question. Substantial tournaments
+and formal studies require owner approval before execution. Routine development
+experiments remain autonomous and bounded by the existing resource policy.
+Conventional Chess remains the priority; learned evaluation and cross-game
+transfer remain unapproved. Completed studies and their limitations are preserved.

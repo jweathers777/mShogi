@@ -6,7 +6,9 @@
 //! the history origin; expected_root_fen, when supplied, checks the replayed root.
 use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy, Color, STANDARD_START_FEN};
 use mshogi_search::{
-    chess_conventional::{SearchDiagnostics, SearchOptions, TimeBudget, search_with_options},
+    chess_conventional::{
+        SearchDiagnostics, SearchMode, SearchOptions, TimeBudget, search_with_options,
+    },
     chess_conventional_eval::{self as evaluation, Tapered, Terms},
     search::{MAX_DEPTH, SearchChoice, SearchDecision, SearchLimits, SearchStatus},
 };
@@ -113,8 +115,17 @@ fn main() {
                 v.as_u64().expect("time_ms must be a nonnegative integer")
             })
         });
+        let requested_depth = input.get("depth").map_or(depth, |v| {
+            u16::try_from(v.as_u64().expect("depth must be nonnegative")).unwrap()
+        });
         let options = SearchOptions {
+            mode: match input["mode"].as_str() {
+                Some("exact") => SearchMode::Exact,
+                None | Some("conventional") => SearchMode::Conventional,
+                _ => panic!("unknown search mode"),
+            },
             diagnostics: SearchDiagnostics {
+                disable_null: input["disable_null"].as_bool().unwrap_or(false),
                 disable_lmr: input["disable_lmr"].as_bool().unwrap_or(false),
                 disable_quiet_omissions: input["disable_quiet_omissions"]
                     .as_bool()
@@ -138,8 +149,16 @@ fn main() {
         };
         let root_side = game.position().side_to_move();
         let start = Instant::now();
-        let r =
-            search_with_options(&game, SearchLimits { depth, nodes }, options, || false).unwrap();
+        let r = search_with_options(
+            &game,
+            SearchLimits {
+                depth: requested_depth,
+                nodes,
+            },
+            options,
+            || false,
+        )
+        .unwrap();
         // Exclude reporting, static diagnostic evaluation and PV replay from search time.
         let elapsed_ms = start.elapsed().as_secs_f64() * 1000.0;
         assert_eq!(before, game);
@@ -170,7 +189,7 @@ fn main() {
             "{}",
             json!({
                 "id":input["id"],"fen":game.position().to_fen(),"elapsed_ms":elapsed_ms,
-                "depth_limit":depth,"node_limit":nodes,"timed":timed,"time_ms":time_ms,
+                "depth_limit":requested_depth,"mode":format!("{:?}",options.mode),"node_limit":nodes,"timed":timed,"time_ms":time_ms,
                 "table_entries_requested":options.table_entries,
                 "table_entries":options.table_entries.min(16_384),
                 "diagnostics":format!("{:?}",options.diagnostics),

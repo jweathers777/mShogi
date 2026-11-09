@@ -135,6 +135,20 @@ strength reassessment follows a substantial coherent round, not each optimizatio
 No learned evaluation or Shogi/Xiangqi transfer without owner approval, and no
 conventional-maturity claim from algorithm presence or speed alone.
 
+Owner refinement after MSH-151 (Chess Coherent-Round Assessment), 2026-11-09:
+prioritize systematic decision-quality diagnosis and coherent corrections. Define
+measurable tactical/endgame/continuation outcomes and stopping criteria for bounded
+investigations. Separate evaluation, horizon, selectivity and execution costs using
+comparable conditions; seeing a continuation in a PV does not prove its consequences
+were correctly searched or valued. Do not automatically repeat small adaptive
+rating studies after MSH-152 (Classical Tactical Forecasting) or later increments.
+When meaningful decision improvements justify strength measurement, recommend a
+controlled earlier/current-version comparison with matched openings, conditions
+and opponents where appropriate, and an appropriate sample for the question.
+Substantial tournaments and formal studies require approval before execution;
+routine bounded development experiments retain the existing resource policy.
+No learned evaluation or Shogi/Xiangqi transfer is authorized.
+
 For macOS GUI verification, reuse the fixed normal/QA/synthetic application slots
 and identities documented in `docs/desktop/packaged-gui-verification.md`, using
 the helper in the primary integration checkout even for worktree builds. Never

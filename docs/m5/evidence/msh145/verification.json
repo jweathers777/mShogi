@@ -1,0 +1,23 @@
+{
+  "task": "MSH-145 (Pawn Threat and Exchange Judgment)",
+  "status": "baseline-preparation",
+  "verification_level": "Level1 portable evaluation; local independent oracle/search/history checks and review; platform and packaging deferred to relevant integration checkpoints",
+  "base_revision": "5ef338b",
+  "baseline_production_source": "0401b828c472f32759afba1a407093cb99313d5a",
+  "position_file_sha256": "ed1a4a998387315cef9a5e0dc000b0000a88d940683583a9b2b8a0db023fdb30",
+  "checks": [
+    "23zero-budget native history/root/PV cases pass, including complete native legal-set equality with preserved independent tablebase alternatives where supplied",
+    "diagnostic example releasebuild/clippy passed"
+  ],
+  "scope": [
+    "bounded passer interception/tempo risk on extra runway premium",
+    "narrow advisory KNNK/KQKP/KRPKR conversion scaling with exactKPK precedence and nearby negatives",
+    "no native outcome, game rule, engine protocol or search-frontier policy change"
+  ],
+  "not_run": [
+    "opponent matches",
+    "full platform matrix",
+    "GUI campaign"
+  ],
+  "preimplementation_review": "endgame_review approved all14new/reused oracle roots/maps, fullhistory/tactical provenance,23conditions31s, complete-native-actionset assertion and bounded heuristic scope; scaling guard/source review still pending"
+}

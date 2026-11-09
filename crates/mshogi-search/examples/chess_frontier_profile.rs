@@ -145,7 +145,6 @@ fn main() {
                     .unwrap()
                 },
             ),
-            ..SearchOptions::default()
         };
         let root_side = game.position().side_to_move();
         let start = Instant::now();

@@ -154,3 +154,12 @@ and formal studies require owner approval before execution. Routine development
 experiments remain autonomous and bounded by the existing resource policy.
 Conventional Chess remains the priority; learned evaluation and cross-game
 transfer remain unapproved. Completed studies and their limitations are preserved.
+
+MSH-152's [forecast investigation](chess-tactical-forecasting.md) identifies a
+PV reduced fail-low that suppresses quiet invasion alternatives, and a separate
+promotion-recapture exchange defect. The targeted corrections retain independent
+tactical/WDL decisions but spend more work at PV nodes; no overall strength gain
+is established. Matched-horizon exchange forecasts back up consistently while
+longer search changes their valuation. MSH-153 (Classical Compensation Calibration)
+continues that residual horizon/valuation question with independent controls;
+no further opponent campaign is automatically scheduled.

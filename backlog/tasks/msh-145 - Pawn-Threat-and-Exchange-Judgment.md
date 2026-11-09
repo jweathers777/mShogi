@@ -4,11 +4,13 @@ title: Pawn Threat and Exchange Judgment
 status: Ready
 assignee: []
 created_date: '2026-11-09T19:38:00Z'
+updated_date: '2026-11-09T20:00:00Z'
 labels:
   - handle:pawn-threat-and-exchange-judgment
 milestone: m-5
 dependencies:
   - MSH-144
+  - MSH-147
 documentation:
   - docs/m5/chess-progress-assessment-report.md
 priority: high
@@ -35,3 +37,9 @@ Handle: Pawn Threat and Exchange Judgment. Follow the completed conventional eng
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner course-correction after MSH-144: do not start automatically. MSH-147 (Chess Effectiveness Diagnosis) first compares general search/evaluation effectiveness and increasing thinking time, then determines this task priority. Prospective verification follows MSH-146 (Risk-Based Verification): default Level1 local evidence/review for platform-independent search/evaluation; explicitly escalate only actual platform-sensitive risks. Historical completed acceptance remains unchanged.
+<!-- SECTION:NOTES:END -->

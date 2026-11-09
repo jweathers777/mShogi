@@ -58,7 +58,13 @@ Write meaningful correctness tests with the behavior they exercise. Use independ
 
 Distinguish rule correctness, search correctness, execution performance, playing strength, and application integration. Passing one category does not establish the others.
 
-Run the smallest checks that address the changed behavior and concrete risks. Broaden checks for shared-boundary changes or an integration milestone. Do not run an expensive full platform or end-to-end suite repeatedly for every small task when current evidence already covers unchanged behavior.
+Follow [risk-based verification](docs/testing/verification-levels.md), the durable owner policy of 2026-11-09:
+
+- **Level 1 — routine local (default):** platform-independent search/evaluation, pruning, ordering, algorithmic optimization and isolated native correctness. Run relevant local tests, independent regressions, profiling and review; broaden local coverage for shared rules/consumers. Applicable local checks and independent review permit completion and integration. Production Rust changes alone do not require three-platform CI.
+- **Level 2 — targeted platforms:** material portability, process supervision, concurrency, filesystem/persistence, protocol, dependency/toolchain or platform-sensitive application changes. Select relevant operating systems and the smallest sufficient native/consumer suites from the actual risk; no automatic unrelated packaging or GUI campaign.
+- **Level 3 — full integration/release:** significant integration milestones, major architectural migrations, release candidates and releases. Establish actual supported-platform native and desktop compatibility on Linux, macOS and Windows; reuse earlier valid source/scope evidence honestly.
+
+Record the level, reason, actual environment/source/checks and explicitly deferred broader compatibility checkpoint in the active task. A Level 1 task is not blocked on unrelated hosted-runner capacity. Reconcile obsolete blanket platform obligations explicitly in unfinished task records; preserve historical failures and completed acceptance. Never present deferred or unperformed checks as passed. Ordinary verification selection needs no owner approval.
 
 Use an independent reviewer or fresh review session for meaningful behavior changes and milestone closure. Give the reviewer a bounded diff or question, relevant requirements, and existing evidence. The author rereading their own work is useful but is not independent review. Documentation-only and mechanical changes need proportionate review, not invented test suites.
 
@@ -117,6 +123,18 @@ openings/adaptive references and proportionate approved resource scope. Shogi an
 Xiangqi remain deferred until explicit owner approval. Routine engineering choices
 do not require owner checkpoints.
 
+Owner course-correction after MSH-144 (Chess Progress Assessment), 2026-11-09:
+first diagnose broad conventional Chess effectiveness before automatically taking
+MSH-145 (Pawn Threat and Exchange Judgment). Use representative independent tactical,
+positional and endgame positions, preserved full histories, increasing thinking
+time (for example 1/5/15/30 seconds), controlled search comparisons and profiling.
+Distinguish overhead, useful search depth, frontier/selectivity/ordering/TT behavior,
+evaluation quality and their interactions. Prioritize coherent general improvements
+from findings, not ticket order or isolated historical failures. Later adaptive
+strength reassessment follows a substantial coherent round, not each optimization.
+No learned evaluation or Shogi/Xiangqi transfer without owner approval, and no
+conventional-maturity claim from algorithm presence or speed alone.
+
 For macOS GUI verification, reuse the fixed normal/QA/synthetic application slots
 and identities documented in `docs/desktop/packaged-gui-verification.md`, using
 the helper in the primary integration checkout even for worktree builds. Never
@@ -145,9 +163,10 @@ independent review, acceptance criteria or required platform evidence.
   state, history, identities, dirty state and prior-file integrity as applicable.
 - Start independent review early when useful; re-review substantive changes and
   final source evidence while other required work proceeds.
-- Declare the task's required CI jobs explicitly. Preserve all required platform
-  verification; full packaged GUI campaigns belong at relevant application
-  integration boundaries, not automatically at unrelated native-only checkpoints.
+- Declare the task's verification level and any risk-required CI jobs explicitly.
+  Level 1 local checks/review can complete ordinary native engineering; preserve
+  targeted Level 2 and full Level 3 obligations where their actual risks apply.
+  Full packaged GUI campaigns belong at integration/release boundaries.
 - Use one completion-aware CI monitor. Stop when the required condition is met;
   check available completion before another timed wait. Cancel superseded
   campaigns when appropriate and preserve their failures and provenance.

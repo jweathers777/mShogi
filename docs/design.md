@@ -660,6 +660,16 @@ no existing task waits on this initiative.
 
 ## 6. Verification contract
 
+Owner correction, 2026-11-09: the durable [risk-based verification policy](testing/verification-levels.md)
+sets three levels: routine local verification and independent review for ordinary
+platform-independent engineering; targeted operating-system checks for actual
+platform-sensitive risks; comprehensive native/desktop verification at significant
+integration, migration and release checkpoints. Changing production Rust does not
+itself require the full matrix. Local completion is valid at Level 1; deferred
+platform checks are explicitly not run, never inferred passed. Tests, independent
+expectations and historical acceptance remain unchanged.
+
+
 Owner correction2026-11-01: all six games must be independently verifiable from
 their selected profiles and independently established expectations. Required
 fixtures/history, deterministic regression, exact reversal/replay, meaningful
@@ -775,3 +785,16 @@ product contracts. No arbitrary rating target, learned evaluation or automatic
 Shogi/Xiangqi transfer. Routine technical choices remain autonomous; fresh adaptive
 strength reassessment follows meaningful progress rather than each optimization.
 See the current [roadmap](m5/strength-roadmap.md).
+
+### Owner course-correction after Chess progress assessment (2026-11-09)
+
+MSH-144 (Chess Progress Assessment) did not demonstrate a strength gain from the
+previous conventional increments. Investigate general search effectiveness,
+classical evaluation and computational costs before automatically prioritizing
+MSH-145 (Pawn Threat and Exchange Judgment). Compare representative positions at
+increasing thinking time and use controlled comparisons to distinguish overhead,
+frontier/selectivity, transposition effectiveness and evaluation. Then implement
+coherent, evidence-led conventional improvements autonomously and reassess only
+after substantial progress. Preserve native authority/history/restoration and
+cancellation. No learned evaluation, arbitrary target or cross-game transfer is
+approved; satisfactory practical strength remains to be demonstrated.

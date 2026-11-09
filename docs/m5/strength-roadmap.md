@@ -89,3 +89,18 @@ fresh confirmation, including scouting, failures and cleanup. Routine engineerin
 15-minute allowance; a substantial further campaign requires a concrete resource
 decision. Review actual combined results and remaining opportunities
 before deciding readiness; no per-optimization tournament or automatic transfer.
+
+## Course-correction after MSH-144 (Chess Progress Assessment)
+
+The owner requests a broad explanation of modest conventional strength before
+assuming the next pawn-focused ticket is the best priority. MSH-146 (Risk-Based
+Verification) establishes the permanent local/targeted/full verification policy;
+MSH-147 (Chess Effectiveness Diagnosis) compares representative tactical,
+positional and endgame behavior at increasing thinking time and through controlled
+search/profiling comparisons. Its findings determine the order of coherent
+conventional improvements, including MSH-145 (Pawn Threat and Exchange Judgment).
+No per-optimization tournament or new owner checkpoint is required for ordinary
+engineering. Reassess practical strength after a substantial coherent round.
+Native correctness/history/restoration/cancellation remain binding; algorithm
+presence, speed and deeper search are distinct from decision quality and strength.
+No learned evaluation or Shogi/Xiangqi transfer is approved.

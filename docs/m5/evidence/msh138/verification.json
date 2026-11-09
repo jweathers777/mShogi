@@ -195,8 +195,10 @@
     "monitor": "Onecompletion-awaremonitor; no unrelatedfullsixgameGUIcampaign."
   },
   "packaged_macOS": {
-    "status": "not_run",
-    "scope": "Focusednormalfixedidentityplay/cancel/save/reopen; no newappidentity orsecuritypolicychanges"
+    "status": "clean_source_rebuild_and_gui_pending",
+    "initial_build_source": "a23fb92683012e2697978e788d4630fe293fc5fe",
+    "corrected_smoke_on_unchanged_binary": "passed; native/UCI/allgamepackagechecks",
+    "scope": "Normalfixedidentityorg.mshogi.desktop; no appwasrunningduringbuild, no newlaunchidentity/securitypolicy change. RebuildatverifiercorrectionrevisionbeforefocusedGUI."
   },
   "reviews": [
     {
@@ -232,10 +234,26 @@
     "sha256": "b71602d99a5106edeab026ac8145159df44e7aa16430ef11c7468409aa338e43",
     "bytes": 8701
   },
-  "historical_failures": [],
+  "historical_failures": [
+    {
+      "source": "a23fb92683012e2697978e788d4630fe293fc5fe",
+      "kind": "stale_package_verifier",
+      "package_build_exit": 0,
+      "smoke_exit": 1,
+      "expected_old": "a2a3/score0 materialonlybaseline",
+      "actual_current": "b1c3/score61/depth1/nodes21, independentlyexpected acceptedconventional test",
+      "correction": "Externalverifierconstantsupdatedtoacceptedclassicalfixture, addsPVfirstactioncheck; allcontext/depth/nodes/status/processchecksretained. No productioncode change.",
+      "review": "Independentread-onlyreview approvednarrowcorrection",
+      "artifact": "package-smoke-baseline-failure.log.gz",
+      "sha256": "8cef8e5e7885c5ad605f34bff23563775c616db390c79d3fee48a5d198784531"
+    }
+  ],
   "remaining": [
     "Focused normal packagedmacOS journey",
     "Required actual3OSnativeCI atfrozenintegratedsource",
     "Independentfinalevidencereconciliation andnormalpublication"
-  ]
+  ],
+  "verification_files": {
+    "desktop/scripts/package-smoke.py": "c41df59f83eb5b904bc699908e5a333b087dd0f655d8f5d1761ada3980baefc4"
+  }
 }

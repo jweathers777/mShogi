@@ -577,8 +577,8 @@
           "telemetry": {
             "score": 999999,
             "completed_depth": 1,
-            "selective_depth": 7,
-            "nodes": 65,
+            "selective_depth": 5,
+            "nodes": 48,
             "principal_variation": [
               {
                 "kind": "move",
@@ -636,8 +636,8 @@
             "telemetry": {
               "score": 999999,
               "completed_depth": 1,
-              "selective_depth": 7,
-              "nodes": 65,
+              "selective_depth": 5,
+              "nodes": 48,
               "principal_variation": [
                 {
                   "kind": "move",
@@ -663,8 +663,8 @@
       "engine": "mShogi",
       "score": "mate in 1 plies",
       "completed_depth": 1,
-      "selective_depth": 7,
-      "nodes": 65,
+      "selective_depth": 5,
+      "nodes": 48,
       "variation": [
         "g6g7"
       ],
@@ -734,8 +734,8 @@
         "telemetry": {
           "score": 999999,
           "completed_depth": 1,
-          "selective_depth": 7,
-          "nodes": 65,
+          "selective_depth": 5,
+          "nodes": 48,
           "principal_variation": [
             {
               "kind": "move",

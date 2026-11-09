@@ -4,6 +4,7 @@ title: Classical Endgame Judgment
 status: Ready
 assignee: []
 created_date: '2026-11-09T16:23:00Z'
+updated_date: '2026-11-09T16:34:00Z'
 labels:
   - handle:classical-endgame-judgment
 milestone: m-5
@@ -35,3 +36,9 @@ Handle: Classical Endgame Judgment. Continue owner-authorized conventional Chess
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Bounded independent read-only source audit during MSH-141 (Chess Frontier Reliability) verification: current evaluator has no side-to-move term, material-specific recognizers or scale factors, so static evaluation cannot distinguish the same-board/opposite-turn MSH-139 opposition pair (draw versus pawn-side win). Established classical references support KPK knowledge and wrong-bishop rook-pawn fortress scaling; KRKP rules are heuristic and must not be claimed to prove the unique Re1 win. Source: official-stockfish/Stockfish sf_11 endgame.cpp and bitbase.cpp. No implementation, runtime tablebase dependency, match campaign or task activation occurred; worker must inspect current source and record the implementation plan on activation.
+<!-- SECTION:NOTES:END -->

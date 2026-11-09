@@ -1,6 +1,6 @@
 {
   "task": "MSH-146 (Risk-Based Verification)",
-  "status": "source-review-approved-live-configuration-pending",
+  "status": "accepted",
   "base_revision": "a4432e98beed611983d09c8210d5537380b9b1bc",
   "integration_branch": "codex/rewrite",
   "verification_level": {
@@ -44,7 +44,7 @@
   },
   "review": {
     "reviewer": "endgame_review",
-    "verdict": "Source/policyapproved, no materialfindings; independently8helpertests andfullexistingjobpreservation/sourceaudit. Actualcheapdispatchandnormalintegrationpending."
+    "verdict": "Approved final source and live evidence reconciliation: each intended lightweight job executed and passed at the exact reviewed revision; skipped full/targeted jobs are not claimed. No material findings."
   },
   "unfinished_obligation_reconciliation": "No activeChessverificationleft;141/142/143/144Donehistoryuntouched.145deferredbehind147broad diagnosis. Existing57/58/60fullplatformproduct/releasecriteria remainLevel3; historical50/54platformreceipts unchanged. Currentdevelopmentguide blanketper-behaviorCI requirement supersededprospectively.",
   "not_run": [
@@ -54,11 +54,36 @@
   ],
   "receipts": {
     "actionlint.log.gz": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
-    "helper-tests.log.gz": "0151c76a64b937d0d4eb472e1c7ab26bf0c43fb012bfea212f4ee49134e9e77c"
+    "helper-tests.log.gz": "0151c76a64b937d0d4eb472e1c7ab26bf0c43fb012bfea212f4ee49134e9e77c",
+    "github-runs.json.gz": "5270d36e563b6fbeddc44600cae288893ebcbf80958dab9c11e75e0c8e008257"
   },
   "official_references": [
     "https://github.com/github/docs/blob/main/content/actions/reference/workflows-and-actions/events-that-trigger-workflows.md#workflow_dispatch",
     "https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event",
     "https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks#handling-skipped-but-required-checks"
+  ],
+  "tested_revision": "2b2ea2224b963fa166ef0660051f9f5bd436b3d2",
+  "live_checks": [
+    {
+      "databaseId": 42690428854,
+      "headSha": "2b2ea2224b963fa166ef0660051f9f5bd436b3d2",
+      "conclusion": "success",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/42690428854",
+      "event": "push"
+    },
+    {
+      "databaseId": 42690461347,
+      "headSha": "2b2ea2224b963fa166ef0660051f9f5bd436b3d2",
+      "conclusion": "success",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/42690461347",
+      "event": "workflow_dispatch"
+    },
+    {
+      "databaseId": 42690467077,
+      "headSha": "2b2ea2224b963fa166ef0660051f9f5bd436b3d2",
+      "conclusion": "success",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/42690467077",
+      "event": "workflow_dispatch"
+    }
   ]
 }

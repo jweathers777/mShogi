@@ -4,7 +4,7 @@ title: Chess Strength Qualification
 status: To Do
 assignee: []
 created_date: '2026-11-09T11:26:00Z'
-updated_date: '2026-11-09T11:46:00Z'
+updated_date: '2026-11-09T12:41:00Z'
 labels:
   - handle:chess-strength-qualification
 milestone: m-5
@@ -42,4 +42,6 @@ Handle: Chess Strength Qualification. Owner consolidation2026-11-09 requires dem
 
 <!-- SECTION:NOTES:BEGIN -->
 Research-backed approval proposal is docs/m5/chess-strength-qualification.md: conditional localreferenceindexpoint≥3100/one-sided95%lower≥3000,2independentnearbyfamilies,≤24adaptive scoutgames+64freshconfirmationpairs/128games at1s,6haggregate active cap includingfailed/preflight/qualityanalysisruns, nopaidcompute. Frozen2024CCRL40/15 singleCPU anchors, initialArasan18.3, nearTexel1.07/Arasan21.2. Independentmethod/source review approvedproposal; this is NOT ownerapproval or qualification. No references built/run, no formalgames. RemainsToDo untilJohn approves target/protocol/budget; actualstandardmustlaterbe demonstrated beforeDone/transfer.
+
+MSH-138 (Desktop Search Limits) is Done after actual3OSCI and independent final acceptance atfac34c9. Engineering dependency satisfied, but this task remainsToDo/unassigned because John has not approved the concrete target/protocol/six-hourtotalcap. The written proposal is reviewable; all formal qualification/reference runs remain unperformed. Sourcechanges do notreset budget orauthorize reusingconfirmationroots. MSH-50 (Conventional Shogi) and MSH-54 (Conventional Xiangqi) remain blocked until the agreed strength standard is demonstrated.
 <!-- SECTION:NOTES:END -->

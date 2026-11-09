@@ -2,9 +2,9 @@
   "schema": 1,
   "task": "MSH-138",
   "handle": "Desktop Search Limits",
-  "status": "in_review_pending_packaged_macOS_and_platform_ci",
+  "status": "done",
   "starting_revision": "78a5577ea3def97b5b1c86b81351246d95da8ec1",
-  "tested_source": null,
+  "tested_source": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
   "branch": "codex/rewrite",
   "source_files": {
     ".github/workflows/rust.yml": "873d89a0b0a2f3314263f15f01f6734d214741dcbece5f8df035a6791fb3e274",
@@ -186,19 +186,734 @@
   "required_ci": {
     "workflow": "rust.yml",
     "jobs": [
+      {
+        "id": 129147893398,
+        "run_id": 42613601864,
+        "workflow_name": "Rust workspace",
+        "head_branch": "codex/rewrite",
+        "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42613601864",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOAClwqs8AAAAeEdB2lg",
+        "head_sha": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
+        "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/129147893398",
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42613601864/job/129147893398",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-09T12:01:39Z",
+        "started_at": "2026-11-09T12:06:42Z",
+        "completed_at": "2026-11-09T12:34:11Z",
+        "name": "Rust (macos-15)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-09T12:06:43Z",
+            "completed_at": "2026-11-09T12:06:44Z"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-09T12:06:44Z",
+            "completed_at": "2026-11-09T12:07:02Z"
+          },
+          {
+            "name": "Install and identify the pinned toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-09T12:07:02Z",
+            "completed_at": "2026-11-09T12:07:10Z"
+          },
+          {
+            "name": "Format",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-09T12:07:10Z",
+            "completed_at": "2026-11-09T12:07:11Z"
+          },
+          {
+            "name": "Lint",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-09T12:07:11Z",
+            "completed_at": "2026-11-09T12:07:34Z"
+          },
+          {
+            "name": "Test",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-09T12:07:34Z",
+            "completed_at": "2026-11-09T12:22:28Z"
+          },
+          {
+            "name": "Verify time-primary desktop Chess through actual release subprocesses",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-09T12:22:28Z",
+            "completed_at": "2026-11-09T12:24:07Z"
+          },
+          {
+            "name": "Verify production Tenjiku subprocess and standard-root journeys",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-09T12:24:07Z",
+            "completed_at": "2026-11-09T12:24:39Z"
+          },
+          {
+            "name": "Verify isolated desktop QA constructors",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-09T12:24:39Z",
+            "completed_at": "2026-11-09T12:32:55Z"
+          },
+          {
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-09T12:32:55Z",
+            "completed_at": "2026-11-09T12:33:59Z"
+          },
+          {
+            "name": "Build",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-09T12:33:59Z",
+            "completed_at": "2026-11-09T12:34:05Z"
+          },
+          {
+            "name": "Console smoke",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-11-09T12:34:05Z",
+            "completed_at": "2026-11-09T12:34:06Z"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-11-09T12:34:06Z",
+            "completed_at": "2026-11-09T12:34:07Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-11-09T12:34:07Z",
+            "completed_at": "2026-11-09T12:34:09Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/129147893398",
+        "labels": [
+          "macos-15"
+        ],
+        "runner_id": 1000002786,
+        "runner_name": "GitHub Actions 1000002786",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129147893842,
+        "run_id": 42613601864,
+        "workflow_name": "Rust workspace",
+        "head_branch": "codex/rewrite",
+        "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42613601864",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOAClwqs8AAAAeEdB4Ug",
+        "head_sha": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
+        "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/129147893842",
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42613601864/job/129147893842",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-09T12:01:39Z",
+        "started_at": "2026-11-09T12:01:41Z",
+        "completed_at": "2026-11-09T12:25:33Z",
+        "name": "Rust (ubuntu-24.04)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-09T12:01:42Z",
+            "completed_at": "2026-11-09T12:01:42Z"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-09T12:01:42Z",
+            "completed_at": "2026-11-09T12:01:55Z"
+          },
+          {
+            "name": "Install and identify the pinned toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-09T12:01:55Z",
+            "completed_at": "2026-11-09T12:02:03Z"
+          },
+          {
+            "name": "Format",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-09T12:02:03Z",
+            "completed_at": "2026-11-09T12:02:04Z"
+          },
+          {
+            "name": "Lint",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-09T12:02:04Z",
+            "completed_at": "2026-11-09T12:02:19Z"
+          },
+          {
+            "name": "Test",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-09T12:02:19Z",
+            "completed_at": "2026-11-09T12:15:40Z"
+          },
+          {
+            "name": "Verify time-primary desktop Chess through actual release subprocesses",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-09T12:15:40Z",
+            "completed_at": "2026-11-09T12:16:36Z"
+          },
+          {
+            "name": "Verify production Tenjiku subprocess and standard-root journeys",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-09T12:16:36Z",
+            "completed_at": "2026-11-09T12:16:56Z"
+          },
+          {
+            "name": "Verify isolated desktop QA constructors",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-09T12:16:56Z",
+            "completed_at": "2026-11-09T12:24:48Z"
+          },
+          {
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-09T12:24:48Z",
+            "completed_at": "2026-11-09T12:25:27Z"
+          },
+          {
+            "name": "Build",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-09T12:25:27Z",
+            "completed_at": "2026-11-09T12:25:30Z"
+          },
+          {
+            "name": "Console smoke",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-11-09T12:25:30Z",
+            "completed_at": "2026-11-09T12:25:30Z"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-11-09T12:25:30Z",
+            "completed_at": "2026-11-09T12:25:31Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-11-09T12:25:31Z",
+            "completed_at": "2026-11-09T12:25:31Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/129147893842",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "runner_id": 1000002785,
+        "runner_name": "GitHub Actions 1000002785",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129147893993,
+        "run_id": 42613601864,
+        "workflow_name": "Rust workspace",
+        "head_branch": "codex/rewrite",
+        "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42613601864",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOAClwqs8AAAAeEdB46Q",
+        "head_sha": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
+        "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/129147893993",
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42613601864/job/129147893993",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-09T12:01:39Z",
+        "started_at": "2026-11-09T12:01:41Z",
+        "completed_at": "2026-11-09T12:33:33Z",
+        "name": "Rust (windows-2022)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-09T12:01:42Z",
+            "completed_at": "2026-11-09T12:01:42Z"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-09T12:01:42Z",
+            "completed_at": "2026-11-09T12:02:02Z"
+          },
+          {
+            "name": "Install and identify the pinned toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-09T12:02:02Z",
+            "completed_at": "2026-11-09T12:02:14Z"
+          },
+          {
+            "name": "Format",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-09T12:02:14Z",
+            "completed_at": "2026-11-09T12:02:17Z"
+          },
+          {
+            "name": "Lint",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-09T12:02:17Z",
+            "completed_at": "2026-11-09T12:02:48Z"
+          },
+          {
+            "name": "Test",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-09T12:02:48Z",
+            "completed_at": "2026-11-09T12:19:48Z"
+          },
+          {
+            "name": "Verify time-primary desktop Chess through actual release subprocesses",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-09T12:19:48Z",
+            "completed_at": "2026-11-09T12:21:53Z"
+          },
+          {
+            "name": "Verify production Tenjiku subprocess and standard-root journeys",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-09T12:21:53Z",
+            "completed_at": "2026-11-09T12:22:25Z"
+          },
+          {
+            "name": "Verify isolated desktop QA constructors",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-09T12:22:25Z",
+            "completed_at": "2026-11-09T12:31:59Z"
+          },
+          {
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-09T12:31:59Z",
+            "completed_at": "2026-11-09T12:33:22Z"
+          },
+          {
+            "name": "Build",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-09T12:33:22Z",
+            "completed_at": "2026-11-09T12:33:29Z"
+          },
+          {
+            "name": "Console smoke",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-11-09T12:33:29Z",
+            "completed_at": "2026-11-09T12:33:30Z"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 24,
+            "started_at": "2026-11-09T12:33:30Z",
+            "completed_at": "2026-11-09T12:33:31Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-11-09T12:33:31Z",
+            "completed_at": "2026-11-09T12:33:31Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/129147893993",
+        "labels": [
+          "windows-2022"
+        ],
+        "runner_id": 1000002784,
+        "runner_name": "GitHub Actions 1000002784",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ],
+    "status": "completed",
+    "extra_journey": "cargo test --release --locked -p mshogi-console --test desktop_play",
+    "monitor": "Onecompletion-awaremonitor; no unrelatedfullsixgameGUIcampaign.",
+    "source": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
+    "run_id": 42613601864,
+    "attempt": 1,
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/42613601864",
+    "conclusion": "success",
+    "required_job_names": [
       "Rust (ubuntu-24.04)",
       "Rust (macos-15)",
       "Rust (windows-2022)"
     ],
-    "status": "not_dispatched",
-    "extra_journey": "cargo test --release --locked -p mshogi-console --test desktop_play",
-    "monitor": "Onecompletion-awaremonitor; no unrelatedfullsixgameGUIcampaign."
+    "workspace_summary": {
+      "linux": {
+        "passed": 1171,
+        "failed": 0,
+        "ignored": 11,
+        "groups": 102
+      },
+      "macos": {
+        "passed": 1171,
+        "failed": 0,
+        "ignored": 11,
+        "groups": 102
+      },
+      "windows": {
+        "passed": 1168,
+        "failed": 0,
+        "ignored": 11,
+        "groups": 102
+      }
+    },
+    "release_desktop_journey": "All3 actualjobs passedthe4productionDesktopController/EngineBridge/release-childtests, includingbeyond20k/timeStop/lastcompletelegalPV/cancel/retry/shutdown.",
+    "retries": 0,
+    "artifact": {
+      "file": "native-ci.tar.gz",
+      "sha256": "afd5d42cbbe43193f903d76c13323695aa310778564d842c7c898c1a0537132a",
+      "bytes": 219043
+    }
   },
   "packaged_macOS": {
-    "status": "clean_source_rebuild_and_gui_pending",
-    "initial_build_source": "a23fb92683012e2697978e788d4630fe293fc5fe",
-    "corrected_smoke_on_unchanged_binary": "passed; native/UCI/allgamepackagechecks",
-    "scope": "Normalfixedidentityorg.mshogi.desktop; no appwasrunningduringbuild, no newlaunchidentity/securitypolicy change. RebuildatverifiercorrectionrevisionbeforefocusedGUI."
+    "status": "passed",
+    "source": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
+    "bundle_id": "org.mshogi.desktop",
+    "fixed_path": "desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+    "build": "npm --prefix desktop run desktop:build -- --bundles app,Node24.22.1,clean source",
+    "package_smoke": "All native/UCI packaged checks passed after independently reviewed staleverifier correction",
+    "host_engine_hashes": {
+      "sha256": "c5e8f6319403a0b7308971ef3cdcaca5c4c0139fc690b8e08ebc6ebf6d7b8cf8",
+      "host_sha256": "6d4e757d12f9cdfeb07dd9c43b243fe8ac326fd81989285343574868a4d21193"
+    },
+    "GUI_journey": "ActualCUA e4\u2192Nc6(173750visits,completed8),Nf3\u2192Nf6(158190,8); Bc4 activecancel\u21925plies/noBlackreply;nativeSave;Loadsamefile5pliesstopped/historical;explicitResume\u2192Nxe4(145702,9)at6plies. One-secondthinkingcaptionvisible.",
+    "file_audit": {
+      "saved_sha256": "1f2c80144fb84721d2420346025c9f10b8d4f0b5313fceda32b60ad1e90f6843",
+      "play_limits": {
+        "depth": 128,
+        "nodes": 9007199254740991,
+        "time_ms": 1000
+      },
+      "observations": [
+        {
+          "sequence": 1,
+          "label": "Engine turn after 1 plies",
+          "observation": {
+            "schema_version": 1,
+            "context": {
+              "purpose": {
+                "kind": "engine_turn"
+              },
+              "request_id": 1,
+              "session_version": 2,
+              "process_generation": 1,
+              "game": {
+                "envelope_version": 1,
+                "game_kind": "chess",
+                "rules_profile": "mshogi.chess.match.v1",
+                "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+                "native_schema_version": 1,
+                "payload": {
+                  "schema_version": 1,
+                  "rules_profile": "mshogi.chess.match.v1",
+                  "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                  "history_origin": "standard_start",
+                  "claim_policy": "explicit_only",
+                  "events": [
+                    {
+                      "ply": 0,
+                      "event": {
+                        "kind": "move",
+                        "action": "e2e4"
+                      }
+                    }
+                  ]
+                }
+              },
+              "limits": {
+                "depth": 128,
+                "nodes": 9007199254740991,
+                "time_ms": 1000
+              }
+            },
+            "result": {
+              "kind": "chess",
+              "result": {
+                "kind": "move",
+                "action": "b8c6",
+                "telemetry": {
+                  "score": -21,
+                  "completed_depth": 8,
+                  "selective_depth": 25,
+                  "nodes": 173750,
+                  "principal_variation": [
+                    {
+                      "kind": "move",
+                      "action": "b8c6"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "g1f3"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "g8f6"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "b1c3"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "e7e6"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "e4e5"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "f6d5"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "c3d5"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "e6d5"
+                    }
+                  ],
+                  "status": "stopped"
+                }
+              }
+            }
+          },
+          "historical": false,
+          "analyzed_turn": "black",
+          "application_error": null
+        },
+        {
+          "sequence": 2,
+          "label": "Engine turn after 3 plies",
+          "observation": {
+            "schema_version": 1,
+            "context": {
+              "purpose": {
+                "kind": "engine_turn"
+              },
+              "request_id": 2,
+              "session_version": 4,
+              "process_generation": 2,
+              "game": {
+                "envelope_version": 1,
+                "game_kind": "chess",
+                "rules_profile": "mshogi.chess.match.v1",
+                "profile_edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+                "native_schema_version": 1,
+                "payload": {
+                  "schema_version": 1,
+                  "rules_profile": "mshogi.chess.match.v1",
+                  "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+                  "history_origin": "standard_start",
+                  "claim_policy": "explicit_only",
+                  "events": [
+                    {
+                      "ply": 0,
+                      "event": {
+                        "kind": "move",
+                        "action": "e2e4"
+                      }
+                    },
+                    {
+                      "ply": 1,
+                      "event": {
+                        "kind": "move",
+                        "action": "b8c6"
+                      }
+                    },
+                    {
+                      "ply": 2,
+                      "event": {
+                        "kind": "move",
+                        "action": "g1f3"
+                      }
+                    }
+                  ]
+                }
+              },
+              "limits": {
+                "depth": 128,
+                "nodes": 9007199254740991,
+                "time_ms": 1000
+              }
+            },
+            "result": {
+              "kind": "chess",
+              "result": {
+                "kind": "move",
+                "action": "g8f6",
+                "telemetry": {
+                  "score": -7,
+                  "completed_depth": 8,
+                  "selective_depth": 27,
+                  "nodes": 158190,
+                  "principal_variation": [
+                    {
+                      "kind": "move",
+                      "action": "g8f6"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "b1c3"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "e7e6"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "f1c4"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "d7d5"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "e4d5"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "e6d5"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "c4d3"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "d8e7"
+                    },
+                    {
+                      "kind": "move",
+                      "action": "e1f1"
+                    }
+                  ],
+                  "status": "stopped"
+                }
+              }
+            }
+          },
+          "historical": false,
+          "analyzed_turn": "black",
+          "application_error": null
+        }
+      ],
+      "file_intact_after_open": true,
+      "file_intact_after_resume": true,
+      "source": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
+      "actual_gui": {
+        "first_reply_visits": 173750,
+        "first_completed_depth": 8,
+        "second_reply_visits": 158190,
+        "cancelled_live_ply": 5,
+        "reopened_stable_ply": 5,
+        "post_resume_ply": 6,
+        "post_resume_visits": 145702,
+        "post_resume_completed_depth": 9,
+        "no_automatic_open_move": true
+      },
+      "observer_failure": "First cancellation observer parsed AX diff as fulltext, missed +prefixedCancel index and issuednoCancel; its4plyresult isnotcancellationproof. RetriedusingfullAXobservedactivebutton;5plycancelverified.",
+      "identity": {
+        "bundle_id": "org.mshogi.desktop",
+        "path": "/Users/johnweathers/Development/Personal/mShogi/desktop/src-tauri/target/release/bundle/macos/mShogi.app",
+        "new_identity_created": false,
+        "security_policy_changed": false,
+        "approval_observation": "Existingnormalappslotacceptedrebuiltapp; no permissionpromptobserved. No future-rebuild approvalguarantee."
+      }
+    },
+    "quit": "NativeCmdQ\u2192Saveguard\u2192Discardownunsaved6thply; pgrepnormalbundledhost/enginepath exit1/stderrblank; separateCua appinventoryfalse. Prior5plyfileSHAunchanged.",
+    "identity_observation": "Normalexistingfixedidentityreused; no permissionpromptobserved, no security/approvalstoreedited; notaguaranteeforfuturebuilds.",
+    "limits": "LocalmacOS27doesnotreplaceactualmacOS15CI; no actualcurrentLinux/WindowsGUIinteractionclaimed.",
+    "artifact": {
+      "file": "packaged-macos.tar.gz",
+      "sha256": "ff88f8624999c0cae6f4ab9d766d57ee3bbfbd361314ecbe6439b767a9fecbef",
+      "bytes": 1118693
+    }
   },
   "reviews": [
     {
@@ -210,6 +925,17 @@
       "reviewer": "chess_maturity_assessment",
       "scope": "Qualificationproposal/roadmap/AGENTS/approvalgate",
       "verdict": "Actual written MSH-139 (Chess Strength Qualification) proposal/roadmap/AGENTS independently approved, no material overclaim or added framework. Conditional3100/3000target,familyguards,64freshpairs,6hcap,unapprovedstatus andtransfergates explicit. Clarified no100%puzzlepassbar; exactstatistics frozenbeforeconfirmation."
+    },
+    {
+      "reviewer": "chess_next_refinements",
+      "scope": "Actual normalpackagedGUI/source/artifact/file/processreconciliation",
+      "verdict": "Approved:host/enginehashes/fixedID/signature;3screenshots+AXand5890bytearchive corroborate actualtimeprimaryplay/cancel/pausedopen/Resume/fileintegrity; ownhost/childnotobservedafterQuit. Observermissesexcluded. Read-only,no tests/builds/CIpoll/matches."
+    },
+    {
+      "reviewer": "chess_next_refinements",
+      "scope": "Final independent source/CI/artifact/AC/DoD reconciliation",
+      "verdict": "Approved, no materialfinding:27sourcehashes+verifier matchcommittedfac34c9;allarchivehashes/sizes/historicalfailure verified;actualrun42613601864attempt1/all3runners42stepssuccess,workspace1171/1171/1168zero failed11ignored,4releasecontrollercasesperplatform. Localchecks andnormalGUI/archive/file/processreceipts reconcile. All3AC/applicableDoD supported; normalcompletionpublication only.139stillunapprovedgate,140future,zeroadditionalmatches.",
+      "execution": "Read-only; no builds/tests/CIpoll/GUIlaunch ormatches."
     }
   ],
   "matches": {
@@ -246,14 +972,42 @@
       "review": "Independentread-onlyreview approvednarrowcorrection",
       "artifact": "package-smoke-baseline-failure.log.gz",
       "sha256": "8cef8e5e7885c5ad605f34bff23563775c616db390c79d3fee48a5d198784531"
+    },
+    {
+      "source": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
+      "kind": "external_GUI_observer_errors",
+      "detail": "InitialCancelregexexpectedfullAXbutgot+prefixeddiff; noCancelclicked,4plycompletedbranchnotcancellationevidence. RetriedfullAXfreshCancelbutton\u21925plycancelpassed. QuitguardindexinvalidafterAXrefresh causednoclick; parsedfreshobservedDiscardthenQuitpassed. No productionchange or falsepass inferred."
     }
   ],
-  "remaining": [
-    "Focused normal packagedmacOS journey",
-    "Required actual3OSnativeCI atfrozenintegratedsource",
-    "Independentfinalevidencereconciliation andnormalpublication"
-  ],
+  "remaining": "No MSH-138 (Desktop Search Limits) blocker. Normalcompletionpublication oncodex/rewrite; nextmaterialdecision isownerapprovalofMSH-139 (Chess Strength Qualification) target/protocol/six-hourcap. No qualificationgamesauthorized;140futureconfiguration.",
   "verification_files": {
     "desktop/scripts/package-smoke.py": "c41df59f83eb5b904bc699908e5a333b087dd0f655d8f5d1761ada3980baefc4"
+  },
+  "integration_revision": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
+  "production_integration_revision": "a23fb92683012e2697978e788d4630fe293fc5fe",
+  "integration_transport": {
+    "initial": "HTTPSOAuthpushrefusedworkfloweditwithoutworkflow scope; no remotebranchchange",
+    "resolved": "ExistingconfiguredSSHnormalpushsucceeded, no credentialscopechange/repoaccesschange/forcepush. Bothlocalcommitsintegratednormally."
+  },
+  "unrequired_ci": {
+    "run_id": 42613601600,
+    "source": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
+    "reason": "Canceled automaticbroadall-sixpackaging/GUI campaign; requirednative3OSreleasecontroller,570frontend/standalonehost andfocusednormalMacGUIcomplete; unchangedGUIadapters/platformevidence reused.",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "attempt": 1,
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/42613601600"
+  },
+  "acceptance_coverage": {
+    "1": "Time-primarylimits/fullfixedallowance, meaningfulactualenginezero/low-node/lastcompletedtests, actualdesktopreleasejourneysall3OS andnormalMacGUIobserved173750visits/timeReached.",
+    "2": "Bothpriorconfigsnonemptyhistoricalobservationtests, pausedload/explicitResume/freshidentity/staleerror/replacement/cleanup; unchangedboundedmemory/15swatchdog/schema/othergamelimits. Nativeprocess/OSabsence audit andsavedfileintegrity.",
+    "3": "570frontend/typecheck/standalone8+17/Clippy,16fixtureprojectionchecks; focusednormalpackagedMacjourney withactualsource/hash/ID/signature;3requirednativeplatformjobs. Reviewedroadmap/AGENTShandles,139qualificationgateunapproved,140futureconfig. No playing-strength claim/unapprovedgames."
+  },
+  "completion": {
+    "branch": "codex/rewrite",
+    "tested_integration_revision": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
+    "production_revision": "a23fb92683012e2697978e788d4630fe293fc5fe",
+    "AC": "Allthree supported;allfourdefaultDoD supported withnormalcompletionpublication.",
+    "scope_limit": "Engineering/productdelivery only. NeithersearchspeednorUI/tacticalchecksestablishplayingstrength;139qualificationremainspendingexplicitownerapprovalandactualstandard."
   }
 }

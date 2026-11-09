@@ -65,3 +65,9 @@ plus game-specific [YaneuraOu](https://github.com/yaneurao/YaneuraOu)
 and [Pikafish](https://github.com/official-pikafish/Pikafish) research.
 Independently implement techniques; resolve licensing before copying source,
 tables or weights. No neural model is part of the current conventional candidate.
+
+MSH-138 (Desktop Search Limits) is complete at tested source `fac34c9`, with
+actual three-platform native/release-controller CI and the focused normal macOS
+package journey. Its [engineering record](chess-desktop-time.md) preserves exact
+receipts and limitations. The remaining transfer gate is MSH-139 (Chess Strength
+Qualification), whose target, protocol and overall budget still await owner approval.

@@ -106,7 +106,9 @@ misses remain diagnostic findings.
 **Requested total cap: six hours aggregate active local work**, including
 preflights, smoke/failures, games, tactical/endgame searches, bounded reference
 analysis and cleanup; no paid compute. Maximum 24 scout+128 confirmation games,
-with no additional longer-time match sample. At 100–120 searched plies/game,
+with no additional longer-time match sample. This approval covers one frozen
+candidate campaign; later source changes do not restart its cap or authorize
+reusing confirmation roots for acceptance. At 100–120 searched plies/game,
 search time alone is roughly4.2–5.1 hours; longer games/overhead can exhaust the
 cap. Stop without extending it. Incomplete confirmation is inconclusive. A
 failure or 512-ply cap remains unscored and preserved; do not replace adverse

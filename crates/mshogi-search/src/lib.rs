@@ -8,6 +8,7 @@ pub mod chess;
 pub mod chess_candidate;
 pub mod chess_conventional;
 pub mod chess_conventional_eval;
+mod chess_kpk;
 pub mod chu;
 pub mod shogi;
 pub mod tenjiku;

@@ -128,3 +128,12 @@ passer-interception and conversion-score limitations; MSH-149 follows with
 material-aware king exposure. MSH-151 (Chess Coherent-Round Assessment) records
 the fresh adaptive comparison after this combined round. Its results, not these
 engineering metrics alone, will inform the next conventional-development choice.
+
+The [MSH-151 reassessment](chess-coherent-round-assessment-report.md) completes
+this round: 12 fresh games give5W2D5L, with unchanged Oxidation confirmation and
+better but highly variable Goldfish confirmation. Conditional change intervals
+include gains and regressions; practical improvement is not established. No
+further tournament follows. MSH-152 (Classical Tactical Forecasting) investigates
+repeated exchange/quiet-attack forecast instability using complete histories and
+independent controls before correction. Conventional Chess remains the priority;
+no learned evaluation or cross-game transfer is authorized.

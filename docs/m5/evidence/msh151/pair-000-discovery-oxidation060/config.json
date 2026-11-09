@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "id": "msh151-oxidation060-book-bfff986bb2379c3f",
+  "engines": [
+    {
+      "path": "/private/tmp/msh151/mshogi",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "mshogi.chess.conventional.v1 / mshogi.chess.conventional-tapered.v1; coherent MSH147/148/150/145/149 round source 639b6465be384330c9fd7d49580c13bb0c314bf2",
+      "deterministic": false
+    },
+    {
+      "path": "/private/tmp/msh139/oxidation060/target/release/oxidation",
+      "args": [],
+      "options": [],
+      "model_path": null,
+      "model_identity": "Oxidation0.6.0/46a705b80e7191e7c302838eb8b85053b5994d65",
+      "deterministic": false
+    }
+  ],
+  "openings": [
+    {
+      "id": "book-bfff986bb2379c3f",
+      "fen": null,
+      "moves": [
+        "g1f3",
+        "g7g6",
+        "e2e4",
+        "c7c5",
+        "c2c3",
+        "f8g7",
+        "b1a3",
+        "g8f6",
+        "e4e5",
+        "f6d5",
+        "d2d4",
+        "c5d4",
+        "d1d4",
+        "d5b6",
+        "d4h4",
+        "h7h6"
+      ]
+    }
+  ],
+  "paired": true,
+  "claim_policy": "auto_claim",
+  "time_control": "untimed",
+  "work": {
+    "depth": null,
+    "nodes": null,
+    "movetime_ms": 1000
+  },
+  "max_plies": 512,
+  "watchdogs": {
+    "handshake_ms": 5000,
+    "ready_ms": 5000,
+    "response_ms": 10000,
+    "write_ms": 2000,
+    "cleanup_ms": 1000
+  },
+  "io": {
+    "line_bytes": 4096,
+    "queued_lines": 32,
+    "transcript_bytes": 2097152,
+    "stderr_bytes": 16384,
+    "command_bytes": 4096
+  }
+}

@@ -1,12 +1,253 @@
 {
   "task": "MSH-151 (Chess Coherent-Round Assessment)",
-  "status": "frozen-ready-for-discovery",
+  "status": "accepted",
   "engineering_accepted": true,
-  "resource_cap_seconds": 900,
+  "resource_cap_seconds": 1800,
   "resource_extra_seconds": 0,
-  "resource_total_seconds": 0,
-  "active_seconds": 0,
-  "runs": [],
+  "resource_total_seconds": 1162.665203958284,
+  "active_seconds": 1162.665203958284,
+  "runs": [
+    {
+      "phase": "discovery",
+      "opponent": "oxidation060",
+      "ordinal": 0,
+      "opening": "book-bfff986bb2379c3f",
+      "reason": "First fresh pair against the previously informative independent1943anchor after the accepted coherent round; no presupposed gain.",
+      "started_utc": "2026-11-09T21:49:10.752117+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.75,
+      "folder": "pair-000-discovery-oxidation060",
+      "config_sha256": "d51250be61fdb52e108e0340b4cc1768c97eeae368733f93991b27d93e794c00",
+      "resource_cap_seconds": 900,
+      "remaining_at_admission_seconds": 900,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "d42bdb5c828f6d1cecb73ab205a271534d84f30071f029f19f8961d0f5ef9a50",
+      "summary": {
+        "opening_id": "book-bfff986bb2379c3f",
+        "games": 2,
+        "wins": [
+          1,
+          0
+        ],
+        "draws": 1,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 175.58467870904133,
+      "ended_utc": "2026-11-09T21:52:06.337412+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "discovery",
+      "opponent": "goldfish113",
+      "ordinal": 0,
+      "opening": "book-0745e7e58b179676",
+      "reason": "Oxidation scout scored1win1draw inonepair, too small for a strength-gain or mismatch claim. Test second previouslyinformative independent1982family before routing orconfirmation.",
+      "started_utc": "2026-11-09T21:52:19.754034+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.5,
+      "folder": "pair-001-discovery-goldfish113",
+      "config_sha256": "2fcfd0067d88c6067884fb647ebecc033efe85165b3b2b3c79a26181f717f03f",
+      "resource_cap_seconds": 900,
+      "remaining_at_admission_seconds": 724.4153212909587,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "9b5578ff1dbf1a4ee67bc9778d505f37aeb6da1a7df6e882076a31f0df65102a",
+      "summary": {
+        "opening_id": "book-0745e7e58b179676",
+        "games": 2,
+        "wins": [
+          1,
+          1
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 168.73817754071206,
+      "ended_utc": "2026-11-09T21:55:08.493208+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "oxidation060",
+      "ordinal": 0,
+      "opening": "book-ee3162bd9e7b677b",
+      "reason": "Scouts are competitive against both independentnearbyfamilies (Ox1W1D,Gold1W1L). Fresh confirmationpartition is more informative than routing to mismatchedanchors; no gaininference fromscouts.",
+      "started_utc": "2026-11-09T21:55:32.560199+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.25,
+      "folder": "pair-002-confirmation-oxidation060",
+      "config_sha256": "50a56bf1e5ac70cb18880363622fb453d3cb494d17452652452bf685a3d14f1c",
+      "resource_cap_seconds": 900,
+      "remaining_at_admission_seconds": 555.6771437502466,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "d4bead3b414c5457209f0953b5d043c6b7d1b799409746c8f5926e5c13378ec6",
+      "summary": {
+        "opening_id": "book-ee3162bd9e7b677b",
+        "games": 2,
+        "wins": [
+          0,
+          1
+        ],
+        "draws": 1,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 247.68697475036606,
+      "ended_utc": "2026-11-09T21:59:40.248170+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "goldfish113",
+      "ordinal": 0,
+      "opening": "book-0dcced0888d0a0de",
+      "reason": "Oxfirstconfirmation1D1L reversesfavorable scout; retainindependentGoldfamilyfreshconfirmation. Competitive smallsamples justify predeclared1800secondaggregateextension, not targetchasing or a new allowance.",
+      "started_utc": "2026-11-09T22:00:18.382499+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.0,
+      "folder": "pair-003-confirmation-goldfish113",
+      "config_sha256": "5d551932406d8e213550fb06d2f74e2778c0a60fd17c116f3db829db8c0cca22",
+      "resource_cap_seconds": 1800,
+      "remaining_at_admission_seconds": 1207.9901689998806,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "99b148976c51405d8785a47064d97e76cd2246231806b7e7213c71011f3dee30",
+      "summary": {
+        "opening_id": "book-0dcced0888d0a0de",
+        "games": 2,
+        "wins": [
+          0,
+          2
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 218.38277200004086,
+      "ended_utc": "2026-11-09T22:03:56.766150+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "oxidation060",
+      "ordinal": 1,
+      "opening": "book-0159fff1cc7e3070",
+      "reason": "Firstfreshconfirmationpairs scoreOx.25 andGold0, belowfavorable scouts but onlyoneopening/family. Addoneindependentfreshconfirmationpair each,thenstop withinexistingaggregatecap; no targetchasing orconditionchange.",
+      "started_utc": "2026-11-09T22:04:25.048543+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.5,
+      "folder": "pair-004-confirmation-oxidation060",
+      "config_sha256": "c538e22b04361000eb587e95dc3a080e8464be7eae8ab71e940280a9ed8aec41",
+      "resource_cap_seconds": 1800,
+      "remaining_at_admission_seconds": 989.6073969998397,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "55a5068000f40e9f6205673d6c6dcd043ecad34354fface1048631c4fefe7dae",
+      "summary": {
+        "opening_id": "book-0159fff1cc7e3070",
+        "games": 2,
+        "wins": [
+          1,
+          1
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 235.66521320817992,
+      "ended_utc": "2026-11-09T22:08:20.714728+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "goldfish113",
+      "ordinal": 1,
+      "opening": "book-bdd9252f11decb8e",
+      "reason": "Finalpredeclaredfreshconfirmationpair. Oxconfirmation1W1D2L matchesoldrawscore; Goldfirstpair0W2L needsanotherindependentopening. Stopafterthispair regardlessofscore; no allowance reset or additional tournament.",
+      "started_utc": "2026-11-09T22:08:56.963701+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 1.0,
+      "folder": "pair-005-confirmation-goldfish113",
+      "config_sha256": "351042e6b8b0c3c3314957527e21e62b899ac05fcc064640e29a9f57cf4c775d",
+      "resource_cap_seconds": 1800,
+      "remaining_at_admission_seconds": 753.9421837916598,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "7d37dfe24540ee9a7fbf6b7ca60e90be6c98402cbb0e8142e57c59c234aaf100",
+      "summary": {
+        "opening_id": "book-bdd9252f11decb8e",
+        "games": 2,
+        "wins": [
+          2,
+          0
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 116.60738774994388,
+      "ended_utc": "2026-11-09T22:10:53.571725+00:00",
+      "process_group_settled": true
+    }
+  ],
   "inflight": null,
   "build": {
     "candidate": {
@@ -218,6 +459,12 @@
     {
       "cap_seconds": 900,
       "reason": "Owner requestedfreshadaptive reassessment aftercoherentround; reuseproportionate144scope; cumulative1800maximum onlyifusefulconfirmation."
+    },
+    {
+      "cap_seconds": 1800,
+      "prior_cap_seconds": 900,
+      "used_seconds": 592.0098310001194,
+      "reason": "Competitive scouts but first Oxconfirmation reverses1W1Dto1D1L. Fresh independentfamilyconfirmation and a second paired root each are useful; predeclared proportionateextension, totalnotreset. No change in source/method/options/openings/statistics."
     }
   ],
   "book": {
@@ -307,5 +554,62 @@
     "msh149": "aa2a06b8587aa08d0500c6a0cdfe7e0e9a246ee72e1a24e5ec748ab9fd2da286"
   },
   "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
-  "independent_prelaunch_review": "endgame_review approved minimalhelperdiff,independently11offline tests, code/test/method/candidate/runner/reference/baseline/book hashes,exact34680freshpopulation19excludedroots,currentproductionidentity andcumulativeresourceguards; no materialfindings"
+  "independent_prelaunch_review": "endgame_review approved minimalhelperdiff,independently11offline tests, code/test/method/candidate/runner/reference/baseline/book hashes,exact34680freshpopulation19excludedroots,currentproductionidentity andcumulativeresourceguards; no materialfindings",
+  "stopping": {
+    "reason": "Two fresh confirmationpairs per independentfamily completed; stop predeclared before finaltwo pairs regardlessofscore; broaduncertainty retained ratherthan chasinggain",
+    "total_games": 12,
+    "wins": 5,
+    "draws": 2,
+    "losses": 5,
+    "failures": 0,
+    "all_native_replay_and_cleanup_passed": true,
+    "seconds": 1162.665203958284,
+    "further_games": false
+  },
+  "analysis_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/private/tmp/msh139/confseq/src /private/tmp/msh139/venv/bin/python docs/m5/evidence/msh151/assessment.py analyze",
+  "supplemental_statistics_source": "confseq5ffe733ca2447a2e28c2c91f3b00086173f2ab2c, same pinned local upstream as139/144; initial interimanalysis lackedPYTHONPATHandhonestlyreportedunavailable, finalanalysisusesexistingpinnedsource withoutinstallation",
+  "diagnostics": "18selectedfullhistoryroots,3independentSyzygyresponses allselectedmovespreservealreadydrawn/lostWDL; no additionalenginesearches",
+  "next_task": "MSH-152 (Classical Tactical Forecasting)",
+  "independent_interim_review": "endgame_review reconciled firstfivepairs,conditions,roots,replay/cleanup and1046.057816seconds,900to1800extension withoutreset; finalpair/analysis/report reconciliationpending",
+  "artifacts": {
+    "assessment.py": "ff0d18758a9b0c96e34774b6802870d945d0d3dc153ef419c4853d8103b40c43",
+    "inspect_reports.py": "8d823d6d53ae406c21c39698c2596ab8282359dc909aa303e5b3ebc33cfe5767",
+    "observations.json.gz": "74cad4a626833abe1625ab68b1a22f4cd47308b8c0b7d27ef0662421bc1d5e6d",
+    "offline-helper-tests.log.gz": "747643d5e87c88047e51d3b7ac0b78ec9e4f76d1dd02ed86814cb206315f0573",
+    "build.log.gz": "dd7c93757eb4331ba05277f481160de0e5bcaebb118d52d8874ee7a1796faff8",
+    "diagnostic-oracles.json.gz": "15f57c7d7c3335c4684380f2569d3c623e2e5c54d15c58545de1063185b3d3bc",
+    "diagnostic-selected.json.gz": "204b335ae702f0e20598e24f595823501086427eb73ec3b33f7441165ee03f59",
+    "audit_prior_openings.py": "c273d65305921a0a3be1f59454d0d27c0ddca979b0dbb5f9312698e57da45e05",
+    "analysis.json": "3401de8b0e59c54f739034ab249f512a815c1a08b15aebcc3f919d900add0db2",
+    "query_diagnostic_oracles.py": "af4727a1da6cafbd703b08095a0bda446315e51882329c26a38333fb010867ea",
+    "diagnostic-scouts.json.gz": "cead7a5e3fde6c14ebddd807f40d86e5e0f3d018988f014101d1d30f1a22cee3",
+    "test_assessment.py": "8975743e500ddef77613f819f7d58a4a168d187ea4c0291319e0df4c22569880",
+    "offline-helper-checks.json": "e1542e1024afaf2e18e5c7070c841b462282a1d922900395a3b27e6196532fa8",
+    "prior-openings-audit.json": "1546a315d05156482eae5a8a7b821e67984bd2a2803a47533229c64efee93317",
+    "pair-005-confirmation-goldfish113/config.json": "351042e6b8b0c3c3314957527e21e62b899ac05fcc064640e29a9f57cf4c775d",
+    "pair-005-confirmation-goldfish113/report.json.gz": "958196252299c9f7cb8d54ce697210687a13ceb2418a29525848ebcb7ce80383",
+    "pair-004-confirmation-oxidation060/config.json": "c538e22b04361000eb587e95dc3a080e8464be7eae8ab71e940280a9ed8aec41",
+    "pair-004-confirmation-oxidation060/report.json.gz": "8f29f0ffa07ef67fba2cbabdc4e33832043ed16e121106e458ed5f04d2bc1b60",
+    "pair-001-discovery-goldfish113/config.json": "2fcfd0067d88c6067884fb647ebecc033efe85165b3b2b3c79a26181f717f03f",
+    "pair-001-discovery-goldfish113/report.json.gz": "2318f3f12baf830b2e9c726a6b7ab09d43e67f5b8f7c5274cd139154027bd20a",
+    "pair-000-discovery-oxidation060/config.json": "d51250be61fdb52e108e0340b4cc1768c97eeae368733f93991b27d93e794c00",
+    "pair-000-discovery-oxidation060/report.json.gz": "73b2ed5cc2933d4d87ac090b056f19e52a6a540b1d78e58aa1d7c5a112e58b29",
+    "pair-003-confirmation-goldfish113/config.json": "5d551932406d8e213550fb06d2f74e2778c0a60fd17c116f3db829db8c0cca22",
+    "pair-003-confirmation-goldfish113/report.json.gz": "72bf020a794f02321c2026d14fc59b0811edebd16fe899a93be511dd4cc11559",
+    "pair-002-confirmation-oxidation060/config.json": "50a56bf1e5ac70cb18880363622fb453d3cb494d17452652452bf685a3d14f1c",
+    "pair-002-confirmation-oxidation060/report.json.gz": "0c7db4eba01334483639b513b55507424a6efd26dbf11a04c5e4620bfad9bd7e",
+    "lightweight-ci.json.gz": "d4eb50c7a54be0ce1b87b7a1d9f265e50d30b98649e92ea33fcfad7b72f890b3"
+  },
+  "automatic_lightweight_ci": {
+    "run": 42705575353,
+    "source": "4837f9d6a0428709b3203db47e56294dabaf0f8f",
+    "conclusion": "success",
+    "scope": "Automatic lightweight backstop only; allproduction inputs identicalto639b6465; no fullplatform orGUIclaim"
+  },
+  "independent_final_review": {
+    "reviewer": "endgame_review independent read-only session",
+    "verdict": "approved final MSH-151 acceptance; no material findings; normal integration only remains",
+    "coverage": "exact production639b6465 andemptyproductiondiff, frozenbinaries/method/baseline/engineeringhashes; six rawnativecomplete pairs5W2D5L/replay/cleanup;1162.665204seconds andnonresetguard; pairedposterior/sensitivity/changeintervals;605turntelemetry and18fullhistoryPV diagnostics; complete3oraclelegalsets/WDL,actualRb8pin andtwo-promotionmate",
+    "limitation": "No demonstratedgain/regression,maturity orcrossgametransfer; no additionalengines/builds/campaigns used byreviewer"
+  }
 }

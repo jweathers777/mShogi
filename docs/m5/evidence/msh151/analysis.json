@@ -1,0 +1,490 @@
+{
+  "oxidation060/discovery": {
+    "counts": [
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "prior_per_bin": 0.5,
+    "score_mean": 0.5716283670735757,
+    "score_credible95": [
+      0.24498964580705782,
+      0.829748638999316
+    ],
+    "index_median": 2004.0714583417464,
+    "index_credible95": [
+      1747.4779287987117,
+      2218.1423828195975
+    ],
+    "prior_sensitivity": [
+      {
+        "counts": [
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "prior_per_bin": 0.2,
+        "score_mean": 0.624695542296466,
+        "score_credible95": [
+          0.22815490056268584,
+          0.8757814949721919
+        ],
+        "index_median": 2062.955695473948,
+        "index_credible95": [
+          1731.2798601400236,
+          2282.2837868145425
+        ]
+      },
+      {
+        "counts": [
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "prior_per_bin": 1,
+        "score_mean": 0.5423312232497663,
+        "score_credible95": [
+          0.28188132207171224,
+          0.7737230459611677
+        ],
+        "index_median": 1976.3878070000806,
+        "index_credible95": [
+          1780.5480308306962,
+          2156.578083561165
+        ]
+      }
+    ],
+    "supplemental_anytime_score_bounds": [
+      0.0,
+      1.0
+    ],
+    "pairs": 1,
+    "actual_points": 1.5,
+    "historical_confirmation_comparison": {
+      "baseline_pairs": 2,
+      "fresh_pairs": 1,
+      "prior_per_bin": 0.5,
+      "independent_streams": true,
+      "score_change_median": 0.13725825225746624,
+      "score_change_credible95": [
+        -0.27927523380442015,
+        0.47481759661498957
+      ],
+      "conditional_index_change_median": 99.48412382227792,
+      "conditional_index_change_credible95": [
+        -216.22829129968738,
+        378.69286083869684
+      ],
+      "probability_positive_conditional_change": 0.75262,
+      "fresh_phase": "discovery",
+      "prior_sensitivity": [
+        {
+          "baseline_pairs": 2,
+          "fresh_pairs": 1,
+          "prior_per_bin": 0.2,
+          "independent_streams": true,
+          "score_change_median": 0.23577229051331647,
+          "score_change_credible95": [
+            -0.24527220491149193,
+            0.5406890429584472
+          ],
+          "conditional_index_change_median": 173.616676308601,
+          "conditional_index_change_credible95": [
+            -200.78290652320644,
+            459.51251368209955
+          ],
+          "probability_positive_conditional_change": 0.85185
+        },
+        {
+          "baseline_pairs": 2,
+          "fresh_pairs": 1,
+          "prior_per_bin": 1,
+          "independent_streams": true,
+          "score_change_median": 0.08134124980123392,
+          "score_change_credible95": [
+            -0.2634532652811555,
+            0.3940368939127783
+          ],
+          "conditional_index_change_median": 58.39316999165911,
+          "conditional_index_change_credible95": [
+            -195.5129949527028,
+            300.1646691451671
+          ],
+          "probability_positive_conditional_change": 0.68209
+        }
+      ]
+    }
+  },
+  "oxidation060/confirmation": {
+    "counts": [
+      0,
+      1,
+      1,
+      0,
+      0
+    ],
+    "prior_per_bin": 0.5,
+    "score_mean": 0.44444746191921214,
+    "score_credible95": [
+      0.2251370323447177,
+      0.7045173089912742
+    ],
+    "index_median": 1899.5920797813285,
+    "index_credible95": [
+      1728.2888126001699,
+      2093.943848808749
+    ],
+    "prior_sensitivity": [
+      {
+        "counts": [
+          0,
+          1,
+          1,
+          0,
+          0
+        ],
+        "prior_per_bin": 0.2,
+        "score_mean": 0.41637187298730993,
+        "score_credible95": [
+          0.21070305047979132,
+          0.6891095682791453
+        ],
+        "index_median": 1879.0101846672583,
+        "index_credible95": [
+          1713.5721594463635,
+          2081.27236972003
+        ]
+      },
+      {
+        "counts": [
+          0,
+          1,
+          1,
+          0,
+          0
+        ],
+        "prior_per_bin": 1,
+        "score_mean": 0.46416962925032734,
+        "score_credible95": [
+          0.25875534282789037,
+          0.6898283194166296
+        ],
+        "index_median": 1915.6890822045468,
+        "index_credible95": [
+          1760.1710999694494,
+          2081.8555505089407
+        ]
+      }
+    ],
+    "supplemental_anytime_score_bounds": [
+      0.0,
+      1.0
+    ],
+    "pairs": 2,
+    "actual_points": 1.5,
+    "historical_confirmation_comparison": {
+      "baseline_pairs": 2,
+      "fresh_pairs": 2,
+      "prior_per_bin": 0.5,
+      "independent_streams": true,
+      "score_change_median": -0.0004732957287548467,
+      "score_change_credible95": [
+        -0.33954766609271825,
+        0.33815638403640097
+      ],
+      "conditional_index_change_median": -0.3334332660965096,
+      "conditional_index_change_credible95": [
+        -258.76919576596845,
+        259.0382910254379
+      ],
+      "probability_positive_conditional_change": 0.49892,
+      "fresh_phase": "confirmation",
+      "prior_sensitivity": [
+        {
+          "baseline_pairs": 2,
+          "fresh_pairs": 2,
+          "prior_per_bin": 0.2,
+          "independent_streams": true,
+          "score_change_median": -0.0006274736002960246,
+          "score_change_credible95": [
+            -0.3347947656073314,
+            0.33703371082345307
+          ],
+          "conditional_index_change_median": -0.4698057396577724,
+          "conditional_index_change_credible95": [
+            -259.97632293929064,
+            262.5492752390672
+          ],
+          "probability_positive_conditional_change": 0.49843
+        },
+        {
+          "baseline_pairs": 2,
+          "fresh_pairs": 2,
+          "prior_per_bin": 1,
+          "independent_streams": true,
+          "score_change_median": 0.0005532076320619583,
+          "score_change_credible95": [
+            -0.30534118194059096,
+            0.3063081523955994
+          ],
+          "conditional_index_change_median": 0.39061024315707193,
+          "conditional_index_change_credible95": [
+            -226.68946381389605,
+            227.68069189531582
+          ],
+          "probability_positive_conditional_change": 0.50123
+        }
+      ]
+    }
+  },
+  "goldfish113/discovery": {
+    "counts": [
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "prior_per_bin": 0.5,
+    "score_mean": 0.5002732627845694,
+    "score_credible95": [
+      0.21687688781193676,
+      0.7845777380943599
+    ],
+    "index_median": 1981.7585248455837,
+    "index_credible95": [
+      1758.953292424169,
+      2206.538160026958
+    ],
+    "prior_sensitivity": [
+      {
+        "counts": [
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "prior_per_bin": 0.2,
+        "score_mean": 0.5008614078280426,
+        "score_credible95": [
+          0.18351708520454316,
+          0.818178413078381
+        ],
+        "index_median": 1982.036496906825,
+        "index_credible95": [
+          1722.691760491866,
+          2243.2810291676033
+        ]
+      },
+      {
+        "counts": [
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "prior_per_bin": 1,
+        "score_mean": 0.5002068665220436,
+        "score_credible95": [
+          0.260261881830367,
+          0.7407983081423958
+        ],
+        "index_median": 1982.086273303495,
+        "index_credible95": [
+          1800.5330269913775,
+          2164.424859974349
+        ]
+      }
+    ],
+    "supplemental_anytime_score_bounds": [
+      0.0,
+      1.0
+    ],
+    "pairs": 1,
+    "actual_points": 1.0,
+    "historical_confirmation_comparison": {
+      "baseline_pairs": 2,
+      "fresh_pairs": 1,
+      "prior_per_bin": 0.5,
+      "independent_streams": true,
+      "score_change_median": 0.1141546028676581,
+      "score_change_credible95": [
+        -0.29109012519264116,
+        0.4993911243325642
+      ],
+      "conditional_index_change_median": 84.13865546973636,
+      "conditional_index_change_credible95": [
+        -226.81971467277003,
+        418.42651213967844
+      ],
+      "probability_positive_conditional_change": 0.71581,
+      "fresh_phase": "discovery",
+      "prior_sensitivity": [
+        {
+          "baseline_pairs": 2,
+          "fresh_pairs": 1,
+          "prior_per_bin": 0.2,
+          "independent_streams": true,
+          "score_change_median": 0.16946031933895123,
+          "score_change_credible95": [
+            -0.26579789100227835,
+            0.5742075153453186
+          ],
+          "conditional_index_change_median": 128.071608124381,
+          "conditional_index_change_credible95": [
+            -217.58945874959,
+            553.5344696757528
+          ],
+          "probability_positive_conditional_change": 0.79379
+        },
+        {
+          "baseline_pairs": 2,
+          "fresh_pairs": 1,
+          "prior_per_bin": 1,
+          "independent_streams": true,
+          "score_change_median": 0.07246354053867718,
+          "score_change_credible95": [
+            -0.27092717703194547,
+            0.4054602045991945
+          ],
+          "conditional_index_change_median": 52.35576256524776,
+          "conditional_index_change_credible95": [
+            -201.81975801327454,
+            313.13610521794527
+          ],
+          "probability_positive_conditional_change": 0.6611
+        }
+      ]
+    }
+  },
+  "goldfish113/confirmation": {
+    "counts": [
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    "prior_per_bin": 0.5,
+    "score_mean": 0.4997269329455602,
+    "score_credible95": [
+      0.15851129419576057,
+      0.8418601472996647
+    ],
+    "index_median": 1981.4058003944265,
+    "index_credible95": [
+      1692.0047681900337,
+      2272.479448434055
+    ],
+    "prior_sensitivity": [
+      {
+        "counts": [
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "prior_per_bin": 0.2,
+        "score_mean": 0.5008887169870317,
+        "score_credible95": [
+          0.08822385691895564,
+          0.9132998766770811
+        ],
+        "index_median": 1982.6487380353005,
+        "index_credible95": [
+          1576.2791261290504,
+          2391.037473545428
+        ]
+      },
+      {
+        "counts": [
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "prior_per_bin": 1,
+        "score_mean": 0.5002636663342186,
+        "score_credible95": [
+          0.2277502349333833,
+          0.7732163809005864
+        ],
+        "index_median": 1982.0715756457057,
+        "index_credible95": [
+          1769.8804194240374,
+          2195.075745807291
+        ]
+      }
+    ],
+    "supplemental_anytime_score_bounds": [
+      0.0,
+      1.0
+    ],
+    "pairs": 2,
+    "actual_points": 2.0,
+    "historical_confirmation_comparison": {
+      "baseline_pairs": 2,
+      "fresh_pairs": 2,
+      "prior_per_bin": 0.5,
+      "independent_streams": true,
+      "score_change_median": 0.1135335683192262,
+      "score_change_credible95": [
+        -0.34008085557000445,
+        0.5555738501705777
+      ],
+      "conditional_index_change_median": 85.51072118207694,
+      "conditional_index_change_credible95": [
+        -278.3990257324647,
+        468.5349869578067
+      ],
+      "probability_positive_conditional_change": 0.68186,
+      "fresh_phase": "confirmation",
+      "prior_sensitivity": [
+        {
+          "baseline_pairs": 2,
+          "fresh_pairs": 2,
+          "prior_per_bin": 0.2,
+          "independent_streams": true,
+          "score_change_median": 0.16846305535692715,
+          "score_change_credible95": [
+            -0.36505487748192406,
+            0.6900499918830382
+          ],
+          "conditional_index_change_median": 135.01006766091282,
+          "conditional_index_change_credible95": [
+            -349.9720556242468,
+            664.8919718803353
+          ],
+          "probability_positive_conditional_change": 0.71573
+        },
+        {
+          "baseline_pairs": 2,
+          "fresh_pairs": 2,
+          "prior_per_bin": 1,
+          "independent_streams": true,
+          "score_change_median": 0.07295849539667096,
+          "score_change_credible95": [
+            -0.2962396929243305,
+            0.43014511973287956
+          ],
+          "conditional_index_change_median": 53.17773637045592,
+          "conditional_index_change_credible95": [
+            -225.8174454755381,
+            334.1735320380123
+          ],
+          "probability_positive_conditional_change": 0.64816
+        }
+      ]
+    }
+  }
+}

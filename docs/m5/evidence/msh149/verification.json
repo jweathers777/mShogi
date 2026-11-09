@@ -1,0 +1,16 @@
+{
+  "task": "MSH-149 (Classical King Exposure)",
+  "status": "implementation-in-progress",
+  "baseline_production_source": "846329fb5e4af855c53da83c3edbd4bb1cf5e1d6",
+  "baseline_existing": "../msh145/candidate.jsonl.gz and candidate-receipt.json (23conditions unchanged frozenbinary)",
+  "baseline_additional": "baseline-new.jsonl.gz and receipt (5conditions)",
+  "verification_level": "Level1 portable scalar evaluation, localsearch/nativeindependentcontrols/review; otherOS andpackaging deferredintegration",
+  "scope": "capped material-aware actual danger; unchanged middle/shelter/globalphase/nativeauthority",
+  "not_run": [
+    "opponentmatches",
+    "fullplatformCI",
+    "GUIcampaign"
+  ],
+  "preimplementation_review": "endgame_review independently approved exact23reused+5newconditions, support/capture/defence oracleclaims and boundedscope; source/evidence reviewpending",
+  "inputs_sha256": "8320eab4b994f07e99e98f160f573b618403f842972134c10a77d0d02d1c9060"
+}

@@ -1,0 +1,328 @@
+{
+  "oracle": "python-chess1.11.2 exhaustive native-independent legal moves/checkmate",
+  "rows": [
+    {
+      "id": "queen-supported",
+      "fen": "7k/8/5KQ1/8/8/8/8/8 w - - 0 1",
+      "legal_actions": [
+        "f6e5",
+        "f6e6",
+        "f6e7",
+        "f6f5",
+        "f6f7",
+        "f6g5",
+        "g6b1",
+        "g6c2",
+        "g6d3",
+        "g6e4",
+        "g6e8",
+        "g6f5",
+        "g6f7",
+        "g6g1",
+        "g6g2",
+        "g6g3",
+        "g6g4",
+        "g6g5",
+        "g6g7",
+        "g6g8",
+        "g6h5",
+        "g6h6",
+        "g6h7"
+      ],
+      "mate_in_one": [
+        "g6g7"
+      ],
+      "checking_replies": {
+        "g6g8": [
+          "h8g8"
+        ],
+        "g6e8": [
+          "h8h7"
+        ],
+        "g6h7": [
+          "h8h7"
+        ],
+        "g6g7": [],
+        "g6h6": [
+          "h8g8"
+        ],
+        "g6h5": [
+          "h8g8"
+        ]
+      },
+      "avoids_every_immediate_reply_mate": [
+        "g6g8",
+        "g6e8",
+        "g6h7",
+        "g6g7",
+        "g6f7",
+        "g6h6",
+        "g6h5",
+        "g6g5",
+        "g6f5",
+        "g6g4",
+        "g6e4",
+        "g6g3",
+        "g6d3",
+        "g6g2",
+        "g6c2",
+        "g6g1",
+        "g6b1",
+        "f6f7",
+        "f6e7",
+        "f6e6",
+        "f6g5",
+        "f6f5",
+        "f6e5"
+      ]
+    },
+    {
+      "id": "queen-unsupported",
+      "fen": "7k/8/6Q1/5K2/8/8/8/8 w - - 0 1",
+      "legal_actions": [
+        "f5e4",
+        "f5e5",
+        "f5e6",
+        "f5f4",
+        "f5f6",
+        "f5g4",
+        "f5g5",
+        "g6a6",
+        "g6b6",
+        "g6c6",
+        "g6d6",
+        "g6e6",
+        "g6e8",
+        "g6f6",
+        "g6f7",
+        "g6g1",
+        "g6g2",
+        "g6g3",
+        "g6g4",
+        "g6g5",
+        "g6g7",
+        "g6g8",
+        "g6h5",
+        "g6h6",
+        "g6h7"
+      ],
+      "mate_in_one": [],
+      "checking_replies": {
+        "g6g8": [
+          "h8g8"
+        ],
+        "g6e8": [
+          "h8h7",
+          "h8g7"
+        ],
+        "g6h7": [
+          "h8h7"
+        ],
+        "g6g7": [
+          "h8g7"
+        ],
+        "g6h6": [
+          "h8g8"
+        ],
+        "g6f6": [
+          "h8g8",
+          "h8h7"
+        ],
+        "g6h5": [
+          "h8g8",
+          "h8g7"
+        ]
+      },
+      "avoids_every_immediate_reply_mate": [
+        "g6g8",
+        "g6e8",
+        "g6h7",
+        "g6g7",
+        "g6f7",
+        "g6h6",
+        "g6f6",
+        "g6e6",
+        "g6d6",
+        "g6c6",
+        "g6b6",
+        "g6a6",
+        "g6h5",
+        "g6g5",
+        "g6g4",
+        "g6g3",
+        "g6g2",
+        "g6g1",
+        "f5f6",
+        "f5e6",
+        "f5g5",
+        "f5e5",
+        "f5g4",
+        "f5f4",
+        "f5e4"
+      ]
+    },
+    {
+      "id": "rook-supported",
+      "fen": "7k/R7/6K1/8/8/8/8/8 w - - 0 1",
+      "legal_actions": [
+        "a7a1",
+        "a7a2",
+        "a7a3",
+        "a7a4",
+        "a7a5",
+        "a7a6",
+        "a7a8",
+        "a7b7",
+        "a7c7",
+        "a7d7",
+        "a7e7",
+        "a7f7",
+        "a7g7",
+        "a7h7",
+        "g6f5",
+        "g6f6",
+        "g6f7",
+        "g6g5",
+        "g6h5",
+        "g6h6"
+      ],
+      "mate_in_one": [
+        "a7a8"
+      ],
+      "checking_replies": {
+        "a7a8": [],
+        "a7h7": [
+          "h8g8"
+        ]
+      },
+      "avoids_every_immediate_reply_mate": [
+        "a7a8",
+        "a7h7",
+        "a7g7",
+        "a7f7",
+        "a7e7",
+        "a7d7",
+        "a7c7",
+        "a7b7",
+        "a7a6",
+        "a7a5",
+        "a7a4",
+        "a7a3",
+        "a7a2",
+        "a7a1",
+        "g6f7",
+        "g6h6",
+        "g6f6",
+        "g6h5",
+        "g6g5",
+        "g6f5"
+      ]
+    },
+    {
+      "id": "rook-unsupported",
+      "fen": "7k/R7/8/5K2/8/8/8/8 w - - 0 1",
+      "legal_actions": [
+        "a7a1",
+        "a7a2",
+        "a7a3",
+        "a7a4",
+        "a7a5",
+        "a7a6",
+        "a7a8",
+        "a7b7",
+        "a7c7",
+        "a7d7",
+        "a7e7",
+        "a7f7",
+        "a7g7",
+        "a7h7",
+        "f5e4",
+        "f5e5",
+        "f5e6",
+        "f5f4",
+        "f5f6",
+        "f5g4",
+        "f5g5",
+        "f5g6"
+      ],
+      "mate_in_one": [],
+      "checking_replies": {
+        "a7a8": [
+          "h8h7",
+          "h8g7"
+        ],
+        "a7h7": [
+          "h8g8",
+          "h8h7"
+        ]
+      },
+      "avoids_every_immediate_reply_mate": [
+        "a7a8",
+        "a7h7",
+        "a7g7",
+        "a7f7",
+        "a7e7",
+        "a7d7",
+        "a7c7",
+        "a7b7",
+        "a7a6",
+        "a7a5",
+        "a7a4",
+        "a7a3",
+        "a7a2",
+        "a7a1",
+        "f5g6",
+        "f5f6",
+        "f5e6",
+        "f5g5",
+        "f5e5",
+        "f5g4",
+        "f5f4",
+        "f5e4"
+      ]
+    },
+    {
+      "id": "rook-defence",
+      "fen": "r6k/8/5K2/8/6Q1/8/8/8 b - - 0 1",
+      "legal_actions": [
+        "a8a1",
+        "a8a2",
+        "a8a3",
+        "a8a4",
+        "a8a5",
+        "a8a6",
+        "a8a7",
+        "a8b8",
+        "a8c8",
+        "a8d8",
+        "a8e8",
+        "a8f8",
+        "a8g8",
+        "h8h7"
+      ],
+      "mate_in_one": [],
+      "checking_replies": {
+        "a8f8": [
+          "f6e7",
+          "f6g6",
+          "f6e6",
+          "f6g5",
+          "f6e5"
+        ],
+        "a8a6": [
+          "f6f7",
+          "f6e7",
+          "f6g5",
+          "f6f5",
+          "f6e5",
+          "g4e6"
+        ]
+      },
+      "avoids_every_immediate_reply_mate": [
+        "a8f8",
+        "a8a7",
+        "a8a6"
+      ]
+    }
+  ]
+}

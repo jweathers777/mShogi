@@ -1,0 +1,13 @@
+{
+  "source": "846329fb5e4af855c53da83c3edbd4bb1cf5e1d6",
+  "command": [
+    "/private/tmp/msh145/candidate-profile",
+    "/private/tmp/msh149/new-positions.json",
+    "128",
+    "timed",
+    "none"
+  ],
+  "elapsed_seconds": 1.1641240422613919,
+  "exit": 0,
+  "binary_sha256": "f81023ef3303521884fb1326a24f41d9b0753406e741628aa3db67d528a18f3c"
+}

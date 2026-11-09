@@ -1,0 +1,51 @@
+[
+  {
+    "id": "queen-supported",
+    "fen": "7k/8/5KQ1/8/8/8/8/8 w - - 0 1",
+    "expected_root_fen": "7k/8/5KQ1/8/8/8/8/8 w - - 0 1",
+    "time_ms": 1000,
+    "independent_mate_in_one": [
+      "g6g7"
+    ],
+    "source": "independent-controls.json python-chess1.11.2 exhaustive"
+  },
+  {
+    "id": "queen-unsupported",
+    "fen": "7k/8/6Q1/5K2/8/8/8/8 w - - 0 1",
+    "expected_root_fen": "7k/8/6Q1/5K2/8/8/8/8 w - - 0 1",
+    "time_ms": 1000,
+    "independent_mate_in_one": [],
+    "source": "independent-controls.json python-chess1.11.2 exhaustive"
+  },
+  {
+    "id": "rook-supported",
+    "fen": "7k/R7/6K1/8/8/8/8/8 w - - 0 1",
+    "expected_root_fen": "7k/R7/6K1/8/8/8/8/8 w - - 0 1",
+    "time_ms": 1000,
+    "independent_mate_in_one": [
+      "a7a8"
+    ],
+    "source": "independent-controls.json python-chess1.11.2 exhaustive"
+  },
+  {
+    "id": "rook-unsupported",
+    "fen": "7k/R7/8/5K2/8/8/8/8 w - - 0 1",
+    "expected_root_fen": "7k/R7/8/5K2/8/8/8/8 w - - 0 1",
+    "time_ms": 1000,
+    "independent_mate_in_one": [],
+    "source": "independent-controls.json python-chess1.11.2 exhaustive"
+  },
+  {
+    "id": "rook-defence",
+    "fen": "r6k/8/5K2/8/6Q1/8/8/8 b - - 0 1",
+    "expected_root_fen": "r6k/8/5K2/8/6Q1/8/8/8 b - - 0 1",
+    "time_ms": 1000,
+    "independent_mate_in_one": [],
+    "source": "independent-controls.json python-chess1.11.2 exhaustive",
+    "avoids_immediate_mate": [
+      "a8f8",
+      "a8a7",
+      "a8a6"
+    ]
+  }
+]

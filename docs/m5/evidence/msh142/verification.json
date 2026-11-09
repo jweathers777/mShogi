@@ -1,0 +1,327 @@
+{
+  "task": "MSH-142 (Classical Endgame Judgment)",
+  "status": "independent-review-approved-combined-ci-pending",
+  "base_revision": "d2bfb2be53de493eea059e70de502fb68b614ebd",
+  "production_revision": "50b459acfe681556387022f6a22024d4b6ee585b",
+  "integration_branch": "codex/rewrite",
+  "required_ci": [
+    "Rust (ubuntu-24.04)",
+    "Rust (macos-15)",
+    "Rust (windows-2022)"
+  ],
+  "ci_evidence": "../msh143/verification.json (final combined engineering source; pending)",
+  "environment": {
+    "os": "macOS27.0.1 (26A434)",
+    "hardware": "M1 Pro32GiB",
+    "rust": "1.99.1",
+    "timing": "Sequential frozen binaries, no concurrent local builds/tests/matches; unisolated desktop"
+  },
+  "implementation": [
+    "Original native-generated24KiB KPK advisory win/draw knowledge; clocks/history ignored only by scalar evaluation",
+    "Exactly bishop+one rookpawn vs bare king already on wrong-color promotioncorner:zero scaling",
+    "KBNK finite correct-corner and king-approach conversion preference"
+  ],
+  "kpk": {
+    "states": 196608,
+    "valid": 165676,
+    "edges": 1062815,
+    "seeds": 12749,
+    "wins": 111282,
+    "passes": 30,
+    "bytes": 24576,
+    "sha256": "495e250af704d964f5fae2d37f4214a2ff105ffe52a064b19a0ada25ef6f18be",
+    "generation_seconds": 0.298,
+    "check_seconds": 0.355,
+    "command": "cargo run --release --locked -p mshogi-search --example generate_chess_kpk -- crates/mshogi-search/src/data/chess_kpk.bin --check",
+    "native_authority": "Every enumerated transition native; safe major promotion boundary proven by native capture/stalemate checks. Generated win membership is not actual history-aware adjudication."
+  },
+  "independent_oracles": "14 preserved Syzygy responses; complete move sets independently checked with python-chess;8KPK states independently audited against table bytes; no runtime/network dependency",
+  "review": [
+    {
+      "reviewer": "endgame_research",
+      "verdict": "Established techniques and independent material/opposition/promotion/defence expectations provided."
+    },
+    {
+      "reviewer": "endgame_review",
+      "verdict": "Final endgame source approved, no outstanding material issue; platform verification pending. Reversed/invalid KBN test fixtures corrected; safe-promotion assertion added."
+    }
+  ],
+  "local_checks": [
+    {
+      "command": "cargo test --release --locked -p mshogi-search --lib",
+      "passed": 91,
+      "failed": 0,
+      "ignored": 2,
+      "receipt": "search-final.log.gz"
+    },
+    {
+      "command": "cargo test --locked -p mshogi-core -p mshogi-search -p mshogi-console",
+      "passed": 687,
+      "failed": 0,
+      "ignored": 4,
+      "receipt": "native-tests.log.gz",
+      "context": "Final safe-promotion assertion added after compilation; separately passed final release library tests. Production unchanged."
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "result": "passed",
+      "receipt": "clippy-final.log.gz"
+    },
+    {
+      "command": "cargo test --release --locked -p mshogi-console --test desktop_play",
+      "passed": 4,
+      "failed": 0,
+      "receipt": "desktop-play.log.gz"
+    },
+    {
+      "command": "cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__",
+      "result": "passed, generated fixtures unchanged",
+      "receipt": "fixtures.log.gz"
+    },
+    {
+      "command": "cargo fmt --all -- --check; git diff --check (separate commands)",
+      "result": "passed"
+    }
+  ],
+  "timed_comparison": {
+    "baseline": [
+      {
+        "id": "tb-0",
+        "depth": 12,
+        "score": "Some(260)",
+        "elapsed_ms": 1000.3105
+      },
+      {
+        "id": "tb-1",
+        "depth": 12,
+        "score": "Some(-923)",
+        "elapsed_ms": 1000.2926249999999
+      },
+      {
+        "id": "tb-2",
+        "depth": 17,
+        "score": "Some(0)",
+        "elapsed_ms": 1000.1728750000001
+      },
+      {
+        "id": "tb-3",
+        "depth": 128,
+        "score": "Some(999999)",
+        "elapsed_ms": 0.208417
+      },
+      {
+        "id": "tb-4",
+        "depth": 128,
+        "score": "Some(999999)",
+        "elapsed_ms": 0.20225
+      },
+      {
+        "id": "tb-5",
+        "depth": 17,
+        "score": "Some(0)",
+        "elapsed_ms": 1000.133875
+      },
+      {
+        "id": "tb-6",
+        "depth": 7,
+        "score": "Some(303)",
+        "elapsed_ms": 1000.226708
+      },
+      {
+        "id": "tb-7",
+        "depth": 7,
+        "score": "Some(376)",
+        "elapsed_ms": 1000.2425420000001
+      },
+      {
+        "id": "goldfish-loss-v62",
+        "depth": 7,
+        "score": "Some(70)",
+        "elapsed_ms": 1000.2472499999999
+      },
+      {
+        "id": "goldfish-loss-v66",
+        "depth": 128,
+        "score": "Some(-999994)",
+        "elapsed_ms": 966.89275
+      },
+      {
+        "id": "standard",
+        "depth": 9,
+        "score": "Some(18)",
+        "elapsed_ms": 1000.2085839999999
+      },
+      {
+        "id": "developed",
+        "depth": 8,
+        "score": "Some(18)",
+        "elapsed_ms": 1000.2161249999999
+      },
+      {
+        "id": "recapture",
+        "depth": 8,
+        "score": "Some(-619)",
+        "elapsed_ms": 1000.230209
+      },
+      {
+        "id": "endgame",
+        "depth": 7,
+        "score": "Some(942)",
+        "elapsed_ms": 1000.1709999999999
+      },
+      {
+        "id": "historical-queen-grab",
+        "depth": 7,
+        "score": "Some(-35)",
+        "elapsed_ms": 1000.172292
+      }
+    ],
+    "corrected": [
+      {
+        "id": "tb-0",
+        "depth": 12,
+        "score": "Some(0)",
+        "elapsed_ms": 1000.319334
+      },
+      {
+        "id": "tb-1",
+        "depth": 12,
+        "score": "Some(-923)",
+        "elapsed_ms": 1000.2555420000001
+      },
+      {
+        "id": "tb-2",
+        "depth": 17,
+        "score": "Some(0)",
+        "elapsed_ms": 1000.1407909999999
+      },
+      {
+        "id": "tb-3",
+        "depth": 128,
+        "score": "Some(999999)",
+        "elapsed_ms": 0.199666
+      },
+      {
+        "id": "tb-4",
+        "depth": 128,
+        "score": "Some(999999)",
+        "elapsed_ms": 0.192583
+      },
+      {
+        "id": "tb-5",
+        "depth": 17,
+        "score": "Some(0)",
+        "elapsed_ms": 1000.187167
+      },
+      {
+        "id": "tb-6",
+        "depth": 7,
+        "score": "Some(303)",
+        "elapsed_ms": 1000.211167
+      },
+      {
+        "id": "tb-7",
+        "depth": 7,
+        "score": "Some(376)",
+        "elapsed_ms": 1000.2768339999999
+      },
+      {
+        "id": "goldfish-loss-v62",
+        "depth": 7,
+        "score": "Some(70)",
+        "elapsed_ms": 1000.245542
+      },
+      {
+        "id": "goldfish-loss-v66",
+        "depth": 128,
+        "score": "Some(-999994)",
+        "elapsed_ms": 948.108291
+      },
+      {
+        "id": "standard",
+        "depth": 9,
+        "score": "Some(18)",
+        "elapsed_ms": 1000.208417
+      },
+      {
+        "id": "developed",
+        "depth": 8,
+        "score": "Some(18)",
+        "elapsed_ms": 1000.264167
+      },
+      {
+        "id": "recapture",
+        "depth": 8,
+        "score": "Some(-619)",
+        "elapsed_ms": 1000.2274170000001
+      },
+      {
+        "id": "endgame",
+        "depth": 7,
+        "score": "Some(942)",
+        "elapsed_ms": 1000.1880409999999
+      },
+      {
+        "id": "historical-queen-grab",
+        "depth": 7,
+        "score": "Some(-35)",
+        "elapsed_ms": 1000.2238329999999
+      }
+    ]
+  },
+  "findings": [
+    "Drawn opposition one-second search score+260 becomes0; original root is still an ongoing native game.",
+    "Other14tested positions retain completed-depth/score in this single timed comparison; KRKP failures unchanged.",
+    "Three bounded6depth/20000visit-per-turn journeys convert independently known KPK wins to safe promotion within48plies. No opponent strength result inferred."
+  ],
+  "limitations": [
+    "No exact KRKP knowledge; historical uniqueRe1 miss and optimisticdraw remain.",
+    "Selective search is not complete minimax; the independent Ra7/Rf8/Ra6 defensive fixture passes atinitialqfrontier but fails atleft14 with Rg8/noncontactmate. Failure retained and assignedMSH143.",
+    "Theoretical KPK win can still draw by actual history/clock; search checks native claims/outcomes first.",
+    "No rating gain or maturity claim."
+  ],
+  "development_failures": [
+    "New test initially used incorrect search API names; compile diagnostics retained.",
+    "KBN test initially reversed bishop-color corners and supplied illegal nonmoving-check position; independent review corrected geometry. Nonrookpawn guard fixture also changedb7toc7 to avoid checking nonmovingKa8.",
+    "Initial clippy rejected single-element loop; replaced with explicitblock.",
+    "Defensive boundary regression failed atleft14; not weakened into a claim of success:142onlyinitial-frontier coverage, failingcase retained for143."
+  ],
+  "resources": {
+    "opponent_match_games": 0,
+    "paid_compute": false,
+    "timed_profile_seconds": 25.921176794000004,
+    "bounded_conversion_test_seconds": 0.21
+  },
+  "binaries": {
+    "baseline-profile": "c9b2671122d220795de2f26531967fdeea1c7ad9183c87b7c7f665d66b3bd5c1",
+    "corrected-profile": "4805aee4985c48541097014fda479cb58c75a97bbef07da66459ddad5f1a9f6b"
+  },
+  "artifacts": {
+    "baseline-timed.jsonl": "d956b81c88bc2b4a8b4cea27c6deb56b91019e67a44248d560b15860599f1f92",
+    "clippy-final.log.gz": "0df3a20b3674558809e2830a40fce981e3572f47c485217a48857dd29ae6ae60",
+    "clippy.log.gz": "4dffd348b284a989d9d608e43a3b306d244a6f0a8ddad9b96b0c847f4dacf374",
+    "conversion.log.gz": "fc8588ee1b59e732049f9864220b76023726df525396c4edb1ea2ea34da5dafd",
+    "corrected-timed.jsonl": "b9e9b3192079daf23f4ab80236517d2abe43ba67ccdd329e10fb4af1890ef707",
+    "desktop-play.log.gz": "e565069d1dd10fd84cfa9ef734bf5e1daaf53dac23e03de45bd790fa8b3932ec",
+    "endgame-independent-oracles.json": "e1ae4496b5c6989a24ffce77a18e448b10c27d2dcb85171f021dd04bfe653e34",
+    "fixtures.log.gz": "93a25476ded0e05e857785d594bab5f508b69df921b47f3583fdf70514823ea3",
+    "frontier-defence-failure.log.gz": "2804617af2eb174f05621a02eeb197924fd601ab54600f7cb990c2f0520c7223",
+    "inputs.json": "50cd24f1e50238d3222d013267fee8518b6feaa2fb3dbdcd74735d36a52bad09",
+    "kpk-generation.log.gz": "e4718f7b30b3e144287e2f0ced4c46a3f21ad6e411ac1fd6029ae41ee84b6757",
+    "kpk-regeneration-check.log.gz": "56267ee97005888e372f757fedb6056e944241be3b32d9a572c9e756152b3cf3",
+    "kpk-tests.log.gz": "83d29ced03c35931e3cb9149e253cb4dbf94c563dea5de7e581c29830f5bd1c4",
+    "native-tests.log.gz": "ef8bbcebf3382d8207b6227f06a01d21b255477020bf01f4c4a2a06fb13c5928",
+    "search-final.log.gz": "6de2a9200afe6ccb6809abe8a10e31129ade4ea18867768623fa4fdb7d0d593c",
+    "search-fourth.log.gz": "bc5cf1fb1c1dcc8d53f6002cdc6c03be81b51611a9eba6a1e7a10111700f3308",
+    "search-initial.log.gz": "baed6d3143855c610f81762b44b47099043676f1eb2dd5b0ba6c2c6caa13da00",
+    "search-second.log.gz": "0048ab0a030e79a34bfe0793cb3be75d4c2ccf22bdc723ef581424541b3d154c",
+    "search-third.log.gz": "dc2b997b6dc51eb55fefb536b0b5dd9655a38bd9daff1356c5fa5055cfcfc076"
+  },
+  "source_files_sha256": {
+    "crates/mshogi-search/src/chess_kpk.rs": "206881dc4bee1e2c05b80ab1374b7d4a2073ce634c1c8a5f99f58f22c2686d89",
+    "crates/mshogi-search/src/data/chess_kpk.bin": "495e250af704d964f5fae2d37f4214a2ff105ffe52a064b19a0ada25ef6f18be",
+    "crates/mshogi-search/examples/generate_chess_kpk.rs": "dbe2feb8147c529c3ac3435593b1e80dbdb240b0a993212c9f3539fea809be64",
+    "crates/mshogi-search/src/chess_conventional_eval.rs": "5597175ca199ca6f876dde638179f8eb3fe4e68d8ecfd816390b57281da0f505",
+    "crates/mshogi-search/src/chess_conventional_tests.rs": "dffce2d6dc1928c251e79c22aa0290d048b679f5f99a4e89a2e318e6d9450a53"
+  }
+}

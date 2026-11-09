@@ -89,6 +89,8 @@ pub struct SearchStats {
     pub q_check_nodes: u64,
     /// Expanded quiescent nodes at the exhausted capture horizon.
     pub q_horizon_nodes: u64,
+    /// Checked reply projections at the final quiet-threat defence boundary.
+    pub defence_reply_probes: u64,
     /// Exact native future-context transposition hits.
     pub tt_hits: u64,
     /// Real main-node table lookups, including empty slots.
@@ -514,10 +516,9 @@ fn exchange(position: &Position, a: Action, left: u8, work: &mut Work<'_>) -> Re
     if left == 0 {
         return Ok(immediate);
     }
-    let mut after = position.clone();
-    if after.apply(a).is_err() {
-        return Ok(0);
-    } // Actual search push reports representation errors.
+    let Ok(after) = position.project(a) else {
+        return Ok(0); // Actual search push reports representation errors.
+    };
     let reply = after.legal_captures_to(a.to).into_iter().min_by_key(|r| {
         (
             after.piece_at(r.from).map_or(0, |p| {
@@ -1212,10 +1213,21 @@ impl Engine<'_> {
     fn quiescence(
         &mut self,
         ply: u16,
+        alpha: i32,
+        beta: i32,
+        left: u16,
+        previous: Option<Action>,
+    ) -> Result<Value, Halt> {
+        self.quiescence_with_mate_guard(ply, alpha, beta, left, previous, false)
+    }
+    fn quiescence_with_mate_guard(
+        &mut self,
+        ply: u16,
         mut alpha: i32,
         mut beta: i32,
         left: u16,
         previous: Option<Action>,
+        verify_mate_reply: bool,
     ) -> Result<Value, Halt> {
         self.work.visit(ply)?;
         self.stats.q_nodes += 1;
@@ -1234,6 +1246,36 @@ impl Engine<'_> {
                 score: 0,
                 pv: vec![choice],
             });
+        }
+        if verify_mate_reply && ply < MAX_PLY {
+            // A final-layer defence can replace a contact threat with a remote
+            // or discovered mate. Prove immediate replies only, without another
+            // recursive quiet-threat layer. This caller just pushed an unkeyed
+            // native q action; no differently selective bound is cached.
+            debug_assert!(self.cursor.key().is_none());
+            for action in self.cursor.node().actions.clone() {
+                self.work.poll()?;
+                self.stats.defence_reply_probes += 1;
+                let after = self.cursor.position().project(action).map_err(|e| {
+                    Halt::Error(SearchError::Transition(
+                        mshogi_core::chess::PlayError::Action(e),
+                    ))
+                })?;
+                if after.in_check() && !after.has_legal_action() {
+                    // Board proof is a candidate only. Actual Game admission
+                    // and recursive native terminal/claim handling are retained.
+                    self.push_with_key(action, false)?;
+                    let child = self.quiescence(
+                        ply + 1,
+                        -beta,
+                        -alpha,
+                        left.saturating_sub(1),
+                        Some(action),
+                    );
+                    self.pop();
+                    return Ok(Value::prepend(action, child?));
+                }
+            }
         }
         alpha = alpha.max(-MATE_SCORE + i32::from(ply));
         beta = beta.min(MATE_SCORE - i32::from(ply) - 1);
@@ -1365,8 +1407,7 @@ impl Engine<'_> {
                 // resolution derives discovered/castling effects; no separate
                 // checking-move geometry or legal-move approximation lives here.
                 self.work.poll()?;
-                let mut projected = self.cursor.position().clone();
-                projected.apply(a).map_err(|e| {
+                let projected = self.cursor.position().project(a).map_err(|e| {
                     Halt::Error(SearchError::Transition(
                         mshogi_core::chess::PlayError::Action(e),
                     ))
@@ -1405,12 +1446,13 @@ impl Engine<'_> {
                 self.pop();
                 continue;
             }
-            let child = self.quiescence(
+            let child = self.quiescence_with_mate_guard(
                 ply + 1,
                 -beta,
                 -alpha,
                 left.saturating_sub(1),
                 Some(m.action),
+                threatened && left == Q_DEFENCE_MIN,
             );
             self.pop();
             let value = Value::prepend(m.action, child?);

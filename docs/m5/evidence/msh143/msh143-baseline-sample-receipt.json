@@ -1,0 +1,9 @@
+{
+  "source": "22bf634b268bb99efbd349d1e80c8b2466b24c7a",
+  "binary_sha256": "c9b2671122d220795de2f26531967fdeea1c7ad9183c87b7c7f665d66b3bd5c1",
+  "elapsed_seconds": 5.061556292232126,
+  "exit": 0,
+  "sample_exit": 0,
+  "purpose": "qualitative stack attribution only; root correctness tests may contend; no timing gain claims",
+  "command": "baseline-profile msh143-sample-inputs.json 128 timed; sample PID 4 1 -file msh143-baseline-cpu.txt"
+}

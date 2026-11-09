@@ -1,0 +1,158 @@
+{
+  "task": "MSH-143 (Chess Search Efficiency)",
+  "status": "independent-review-approved-combined-ci-pending",
+  "base_revision": "50b459acfe681556387022f6a22024d4b6ee585b",
+  "tested_source_revision": null,
+  "required_ci": [
+    "Rust (ubuntu-24.04)",
+    "Rust (macos-15)",
+    "Rust (windows-2022)"
+  ],
+  "ci": [],
+  "combined_gate": "Required final native integration source also verifies MSH142; no duplicated full campaign. MSH141separatefrozenmacOSretry remains required.",
+  "environment": {
+    "os": "macOS27.0.1 (26A434)",
+    "hardware": "M1 Pro32GiB",
+    "rust": "1.99.1",
+    "timing": "Sequential frozen binary comparisons, no concurrentlocalbuild/tests/matches. CPU sample separate, contended, qualitative only."
+  },
+  "production_changes": [
+    "Read-only Position::project exposes existing checked native transition path; q/SEEdiscardedprojections avoid fullstructuralvalidation/publicUndo. Actual nativeGame/historyadmission unchanged.",
+    "Only after a final-layer quiet-threat defence, inspect all immediate native replies for mate; no further recursivequietlayer. Actual mate action still admitted and nativelyscored afterterminal/claims; per-candidatecancellation,128plybound, unkeyedbranch retained."
+  ],
+  "measurements": {
+    "qualitative_cpu": "Frozen22bf6345.06s run,2867stackweight, overlappingcategories; structuralvalidation334samples ofwhich263qprojection43SEE; SEEabout3.2percent, keycomparisonabout0.3percent. See rawstack/receipt.",
+    "projection_only_equivalence": "All16positions inall3fixedruns have identical complete result/PV/workstats; initial15positioncheckalsoidentical.",
+    "fixed_total_ms": {
+      "before": [
+        1116.8351619999999,
+        1119.975416,
+        1128.7408320000002
+      ],
+      "projection": [
+        1086.388084,
+        1041.068168,
+        1028.126456
+      ],
+      "corrected": [
+        1069.377793,
+        1080.06504,
+        1050.989709
+      ]
+    },
+    "combined_aggregate_reduction_percent": 4.906146063001304,
+    "timed": "One sequential before/after16position1scomparison; depthsand scores retained or completeddepthhigher, no ratingclaim. Visitsdefinitions unchanged."
+  },
+  "local_checks": [
+    {
+      "command": "cargo test --release --locked -p mshogi-search --lib",
+      "passed": 92,
+      "failed": 0,
+      "ignored": 2,
+      "receipt": "search-final-claims.log.gz"
+    },
+    {
+      "command": "cargo test --release --locked -p mshogi-core --test game_history --test chess_target_queries --test perft --test attacks",
+      "passed": 25,
+      "failed": 0,
+      "ignored": 1,
+      "receipt": "native-chess.log.gz"
+    },
+    {
+      "command": "cargo test --release --locked -p mshogi-console --test desktop_play",
+      "passed": 4,
+      "failed": 0,
+      "receipt": "desktop-play.log.gz"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "result": "passed",
+      "receipt": "clippy.log.gz"
+    },
+    {
+      "command": "cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__",
+      "result": "passed,fixturesunchanged",
+      "receipt": "fixtures.log.gz"
+    },
+    {
+      "command": "cargo fmt --all -- --check; git diff --check (separatecommands)",
+      "result": "passed"
+    }
+  ],
+  "review": [
+    {
+      "reviewer": "endgame_research",
+      "verdict": "Independent measured cost audit recommends native checkedprojection; noTTredesign supported."
+    },
+    {
+      "reviewer": "endgame_review",
+      "verdict": "No material native/search defect; projectionequivalence and boundedmate-replyguard approved subject finalguardedclaimtestandCI. Guardedclaimregression subsequentlypassed in search-final-claims receipt."
+    },
+    {
+      "reviewer": "endgame_review",
+      "verdict": "Final source and measurement interpretation approved; no outstanding material finding, exact-source CI pending.",
+      "verified": [
+        "GuardedAutoClaim100halfmove returnsclaim0 beforemateprobe,0probes,exactrestoration;92testreceipt",
+        "All3x16fixedprojectioncomparisons identicalresults/work andtimingtotals reconcile",
+        "One-second scoresunchanged, depthsretainedorhigher; no inferredstrengthgain"
+      ]
+    }
+  ],
+  "limitations": [
+    "Finite selective q remains incomplete; guard prevents only immediate mate after final-layerdefence, not all longerquiet threats.",
+    "KRKPuniqueRe1failure and optimisticdraw remain; no claimthat one more completeddepthsolves them.",
+    "Recursiveqbounds remainunkeyed; no unsafe board-only reuse.",
+    "Performance sample small/unisolated; no actualstrengthgain inferred."
+  ],
+  "resources": {
+    "opponent_match_games": 0,
+    "paid_compute": false,
+    "fixed_and_timed_profile_seconds": 52.256865450999996,
+    "qualitative_sample_seconds": 5.06
+  },
+  "binaries": {
+    "before": "4805aee4985c48541097014fda479cb58c75a97bbef07da66459ddad5f1a9f6b",
+    "projection-only": "32c18785643cb771e8155487cf6927a0e777fd6f90b9d1a2f167cccbf18736f0",
+    "corrected": "ff5906e4f38e31867935077fcbda76e22bfffe47f7e842d0fd61c7d9afffc4bb"
+  },
+  "source_files_sha256": {
+    "crates/mshogi-core/src/chess/action.rs": "ef7ef9ae6ef5e711cb40f2b92b06068dec666b42ca9966b82fc4cf9c9c78f2f3",
+    "crates/mshogi-core/tests/game_history.rs": "9844396cfd1b67751164c33f58fa6dba7cf858e5c1da65502b54c6da6cfa34a7",
+    "crates/mshogi-search/src/chess_conventional.rs": "c8ff2802211dd3ad04e9c5821584882e47378daf4e2bcd550034fbbc37714a99",
+    "crates/mshogi-search/src/chess_conventional_tests.rs": "5a834804c548f83ae93e9d08247da30fabbab943e86161fdde9f66d14cd81715"
+  },
+  "artifacts": {
+    "before-fixed-0.jsonl": "f5876433064844992b9dc56143522cfd19bc2bbf6428838a13e82ca05ed65007",
+    "before-fixed-1.jsonl": "95bf2499192c45eac78d12eab9e507954141a1d2e8b9afb4addffebc1fd8b8b7",
+    "before-fixed-2.jsonl": "bd01f2e1284010bd8852c8c8194037f5d10c4d9f7df587ac4c9834a791400c1a",
+    "before-fixed.jsonl": "48bf66d28730f7a47c764dc2b2fd797d886a332de6a9938f918382ec57a046ea",
+    "before-timed.jsonl": "202dfad90b64a464949e96c5a0b63e705786df8a8a78d8a9f5ea41abcb279c71",
+    "clippy.log.gz": "2e2f0d0ce4a34f447281f36e42422b690e66d2ecc9232d9925a2b1cb9f93637d",
+    "corrected-fixed-0.jsonl": "c4f571eeb807f72de4f1708b2a7e68dc3742648595c42c070919b987a92ec787",
+    "corrected-fixed-1.jsonl": "fc978f0f00e1ecabd26a5bf5a69947c77a33f8e4e808c7085764494003932b95",
+    "corrected-fixed-2.jsonl": "17fe727fa5956027aa9dd7db6ae22bd4b9b884742e12d67a467df3c68e4d334d",
+    "corrected-timed.jsonl": "01a028e56a68470d25be39eba51a1abf5f925415ca92ca911a941c7c86aabd7d",
+    "desktop-play.log.gz": "869767cf3e608dc0a238b3d2df9e5b70986ad6b39df9ecd48de2c658c62215e9",
+    "fixtures.log.gz": "aae09895d640a4763a1b894436ca17536a18d0714b18813cf0026f8751245afb",
+    "inputs.json": "80bf1d0e15582916f350fba239c69c9f76bc93e79ba8dd27ef6b7378fccf197b",
+    "msh143-activation.txt.gz": "3051fb45617b8432a267534f9383c6d52d58eb55c86de1f851f537de501421fc",
+    "msh143-baseline-cpu-summary.json": "302cf8ec497d1ec775212e53a6370843c92584f941884629570db50070a07dd0",
+    "msh143-baseline-cpu.txt.gz": "0eb65ad98b4fb85449d0072bc10aa56386b57383fb2ce3ba87eea4cb72bc2ff7",
+    "msh143-baseline-sample-receipt.json": "9489f32daab44d36dabc99634be1ace64c06dddb7635323cbb536b8b0501e94a",
+    "msh143-baseline-sampled.jsonl": "4fd12b2615a4c3aed74a325584abfbb393d1fec50a2202242c15d3e2d1094952",
+    "msh143-discovery.txt.gz": "3051fb45617b8432a267534f9383c6d52d58eb55c86de1f851f537de501421fc",
+    "msh143-sample-inputs.json": "1296b6f095fec906f2af018b70fb62eb98a8a5abf92332793d54904ec17e1176",
+    "msh143-sample.log": "e7761c32f40809a1687529db29b9ca1a60918072b3e3ae0e3b37b6666567fb8c",
+    "msh143-summarize.py": "c4816b410bda745397b33fb5e6cdd45b455949aaa981dfd22de9157aa9cc0ff4",
+    "native-chess.log.gz": "37c2a96bb0dd8aee652b7eca25f23bacfbcefda0c9cab73fb884c29716eecf75",
+    "projection-equivalence.log.gz": "aeed7e00a075870bb73dec88b4603811c7f202f75f38b357dc564303bd0c7433",
+    "projection-fixed-0.jsonl": "7c262ce4ad0d1bb83150436024096f1025a3c8e782e152362411140d860e3d1d",
+    "projection-fixed-1.jsonl": "c899d9dd9985c2fa0f2c8636de4bd7a1bcb40c5df6cca264cc91a3e16319a8c5",
+    "projection-fixed-2.jsonl": "6143572b44e1e7d6f60c6b4ae6c5586ec3c864c3c7bb03fb3decb7c8dd087bc5",
+    "projection-fixed.jsonl": "654597b19cccf87ce8cb05867f2ec9f0a65ebacf6cf1ee768537b33c8c5e88e0",
+    "projection-timed.jsonl": "906964e08531e156daf176a7fae7ec1805926f370e3e3bdb74ce573a8ea03160",
+    "search-final-claims.log.gz": "274773932940765cf0e8818ac67e429e768b7d967cbcb934d89bb3ee4d873f96",
+    "search-final.log.gz": "5bc59cc416f526fd542e90eaa083f0a376012b31f007aec104b99d7df2b80ef8",
+    "search-first.log.gz": "6386774d29c433d293ca59d289fb491a782307247b62594ba01c25bb4a76189b"
+  }
+}

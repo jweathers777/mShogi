@@ -1,0 +1,62 @@
+{
+  "sample_weight": 2867,
+  "inclusive_overlapping_buckets": {
+    "quiescence": {
+      "weight": 1581,
+      "percent": 55.14
+    },
+    "native_node": {
+      "weight": 465,
+      "percent": 16.22
+    },
+    "evaluation": {
+      "weight": 393,
+      "percent": 13.71
+    },
+    "alloc": {
+      "weight": 380,
+      "percent": 13.25
+    },
+    "native_apply": {
+      "weight": 367,
+      "percent": 12.8
+    },
+    "native_turn": {
+      "weight": 341,
+      "percent": 11.89
+    },
+    "native_structure": {
+      "weight": 334,
+      "percent": 11.65
+    },
+    "native_preview": {
+      "weight": 296,
+      "percent": 10.32
+    },
+    "native_push": {
+      "weight": 284,
+      "percent": 9.91
+    },
+    "clock": {
+      "weight": 159,
+      "percent": 5.55
+    },
+    "exchange": {
+      "weight": 92,
+      "percent": 3.21
+    },
+    "native_capture_generation": {
+      "weight": 66,
+      "percent": 2.3
+    },
+    "native_mate_queries": {
+      "weight": 25,
+      "percent": 0.87
+    },
+    "key_comparison": {
+      "weight": 8,
+      "percent": 0.28
+    }
+  },
+  "caveat": "Inclusive categories overlap. Inlined functions disappear. 4second wall sample of5 sequential1s searches at22bf634; root correctness tests possibly contended; qualitative only."
+}

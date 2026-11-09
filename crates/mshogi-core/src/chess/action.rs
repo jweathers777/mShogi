@@ -205,6 +205,19 @@ impl Position {
         self.publish(resolved)
     }
 
+    /// Return the checked resulting board without changing this position or
+    /// allocating an undo record. Effects and errors match [`Position::apply`],
+    /// including king safety, castling, promotion, en passant and counter limits.
+    ///
+    /// This reuses the native Game transition path: validated inputs and resolved
+    /// effects preserve structure, so a repeated whole-board structural scan is
+    /// unnecessary. It does not admit a Game action, update history, adjudicate
+    /// outcomes or establish a transposition identity. Search must still use
+    /// its native Game/cursor for actual actions and history-sensitive results.
+    pub fn project(&self, action: Action) -> Result<Self, ActionError> {
+        self.checked_after(action)
+    }
+
     /// Check and apply one ordinary move/capture or explicit promotion atomically.
     ///
     /// The ordinary-only subset of [`Position::apply`]: castling-shaped king

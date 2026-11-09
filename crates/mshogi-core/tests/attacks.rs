@@ -371,3 +371,36 @@ fn supported_contact_mate_candidates_and_pass_threats_still_require_game_admissi
         })
     );
 }
+
+#[test]
+fn contact_mates_recognize_support_uncovered_by_the_queen_move() {
+    use mshogi_core::chess::{AdjudicatedGame, ChessOutcome, ClaimPolicy};
+    // Hand geometry: Qg6 covers h5/h7/g5/g7 and checks Kh6; the newly
+    // uncovered rook/bishop/queen prevents Kxg6. These are not engine opinions.
+    for (fen, expected, winner) in [
+        ("8/8/7k/8/6Q1/8/8/K5R1 w - - 0 1", "g4g6", Color::White),
+        ("8/8/7k/5Q2/8/8/2B5/K7 w - - 0 1", "f5g6", Color::White),
+        ("8/8/7k/8/6Q1/8/8/K5Q1 w - - 0 1", "g4g6", Color::White),
+        ("k5r1/8/8/6q1/8/7K/8/8 b - - 0 1", "g5g3", Color::Black),
+    ] {
+        let mut game = AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).unwrap();
+        let before = game.clone();
+        let found = game.position().queen_contact_mate().expect(fen);
+        assert_eq!(found.to_string(), expected);
+        assert_eq!(game, before);
+        game.apply(found).unwrap();
+        assert_eq!(game.outcome(), Some(ChessOutcome::Checkmate { winner }));
+        game.undo().unwrap();
+        assert_eq!(game, before);
+    }
+    // Unsupported queen can be captured; a supported check with king escapes
+    // is not mate; a pinned queen cannot expose its own king for a mating check.
+    for fen in [
+        "8/8/7k/8/6Q1/8/8/K7 w - - 0 1",
+        "8/8/6k1/8/5Q2/8/8/K4R2 w - - 0 1",
+        "6r1/8/7k/8/6Q1/5B2/8/6K1 w - - 0 1",
+    ] {
+        let position = Position::from_fen(fen).unwrap();
+        assert!(position.queen_contact_mate().is_none(), "{fen}");
+    }
+}

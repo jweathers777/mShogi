@@ -1,0 +1,50 @@
+---
+id: MSH-141
+title: Chess Frontier Reliability
+status: In Review
+assignee:
+  - '@codex'
+created_date: '2026-11-09T16:16:00Z'
+updated_date: '2026-11-09T16:27:00Z'
+labels:
+  - handle:chess-frontier-reliability
+milestone: m-5
+dependencies:
+  - MSH-139
+priority: high
+ordinal: 146000
+---
+
+## Description
+
+<!-- SECTION:DESCRIPTION:BEGIN -->
+Handle: Chess Frontier Reliability. Owner authorizes continued conventional Chess development after MSH-139 (Chess Strength Assessment), beginning with the Goldfish 41...Kh5 depth-1/295113-visit incident. Establish actual work and root cause before optimization; correct general search-frontier defects without position special cases or concealed limits. Preserve native rules/history authority, cancellation, completed-result semantics and product boundaries. No learned evaluation, rating target, substantial opponent study or cross-game transfer.
+<!-- SECTION:DESCRIPTION:END -->
+
+## Acceptance Criteria
+<!-- AC:BEGIN -->
+- [ ] #1 Preserved full-history incident and source telemetry reconcile depth/visit meanings; controlled profiles separate completed/incomplete iterations, main/quiescent work, extensions and repeated work, distinguishing proof from hypotheses.
+- [ ] #2 A general correction addresses any demonstrated significant search-frontier defect with independent tactical expectations, counterexamples and restoration/history/cancellation regression coverage; limits are not adjusted to conceal the problem.
+- [ ] #3 Bounded before/after realistic-time and deterministic work comparisons cover incident plus independent representative positions; limitations and any unresolved behavior are explicit, with no inferred playing-strength gain.
+- [ ] #4 Independent review and relevant native platform verification support the exact integrated source; concise evidence and prioritized conventional follow-up work are recorded while Shogi/Xiangqi remain deferred.
+<!-- AC:END -->
+
+## Definition of Done
+<!-- DOD:BEGIN -->
+- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [ ] #2 Applicable independent review is recorded and material findings are resolved.
+- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+<!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Codex owns primary codex/rewrite at d86dfca, clean and origin-aligned; unrelated historical Tenjiku worktree preserved. Use pinned Backlog1.55.1. Reconstruct exact full-history incident from preserved reports. Add bounded per-iteration/frontier diagnostics and reproduce unchanged behavior before choosing a general correction. Independently research established qsearch/threat techniques, implement and verify focused behavior/history/cancellation cases. Compare deterministic and one-second representative searches, review independently, then run required Rust Linux/macOS15/Windows jobs at coherent source; no GUI campaign for search-only changes. Record subsequent endgame/evaluation and coherent development work separately, preserving owner hold on cross-game transfer.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Reproduced exact295113 visit incident from full81ply history: completeddepth1 at7734visits; only5main and295108q visits,287379 visits in interrupteddepth2;0checkextensions/0aspirationretries. General defects: pre-move support gate misses revealed queen support, and repeated quiet-threat/all-defence expansion turns qsearch into a second broad tree. Corrected after-move native support and finite first2q forcing/3q defence frontier; native immediate mates/checkevasions/history/cancellation/limits unchanged. Fixedwork depth8 now12279visits with losingmate score;3uncapped1s repeats reproduce originaldepth1/+139 and corrected stable losingmate. Prior independent quietmate regression and new mirrored/boundary/native cases pass. Independent code/research review approved; local release search/attacks and workspace clippy pass. Required Rust3OS CI and final nativeconsumer check pending. Single evidence docs/m5/evidence/msh141/verification.json. Follow-ups MSH-142 (Classical Endgame Judgment), MSH-143 (Chess Search Efficiency); no matchgames, learned evaluation, ratingtarget or cross-game transfer.
+<!-- SECTION:NOTES:END -->

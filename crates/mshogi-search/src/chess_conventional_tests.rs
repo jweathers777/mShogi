@@ -1355,3 +1355,132 @@ fn cancellation_after_a_completed_iteration_retains_only_that_iteration() {
     replay(&g, &stopped);
     assert_eq!(g, before);
 }
+
+#[test]
+fn full_history_king_attack_completes_and_recognizes_the_losing_mate() {
+    // The preserved MSH-139 game is already lost here. Independently checked
+    // line after Kh5: Qg4+ permits only Kh6, then Qg6# with revealed Rg1 support.
+    let fixtures: serde_json::Value =
+        serde_json::from_str(include_str!("../../../docs/m5/evidence/msh141/inputs.json")).unwrap();
+    let input = fixtures
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|v| v["id"] == "goldfish-loss-v66")
+        .unwrap();
+    let mut g = AdjudicatedGame::from_fen(STANDARD_START_FEN, ClaimPolicy::AutoClaim).unwrap();
+    for a in input["history"].as_array().unwrap() {
+        g.apply(a.as_str().unwrap().parse().unwrap()).unwrap();
+    }
+    let original = g.clone();
+    for a in ["g6h5", "c4g4"] {
+        g.apply(a.parse().unwrap()).unwrap();
+    }
+    assert_eq!(g.position().legal_actions(), vec!["h5h6".parse().unwrap()]);
+    for a in ["h5h6", "g4g6"] {
+        g.apply(a.parse().unwrap()).unwrap();
+    }
+    assert_eq!(
+        g.outcome(),
+        Some(ChessOutcome::Checkmate {
+            winner: Color::White
+        })
+    );
+    let r = search(
+        &original,
+        SearchLimits {
+            depth: 6,
+            nodes: Some(50_000),
+        },
+    )
+    .unwrap();
+    assert_eq!(
+        r.result.completed_depth, 6,
+        "frontier must not monopolize the budget: {:?}",
+        r.stats
+    );
+    assert!(r.result.score.is_some_and(|s| s <= -MATE_BAND));
+    replay(&original, &r);
+    assert_eq!(r.iterations.last().unwrap().stats, r.stats);
+    assert!(r.iterations.iter().all(|i| i.completed));
+    assert_eq!(r.result.nodes, r.stats.main_nodes + r.stats.q_nodes);
+}
+
+#[test]
+fn quiescence_retains_mate_and_check_evasions_beyond_quiet_forcing_frontier() {
+    let g = game("8/8/7k/8/6Q1/8/8/K5R1 w - - 0 1");
+    for left in [Q_DEFENCE_MIN, Q_DEFENCE_MIN - 1, 0] {
+        let mut stop = || false;
+        let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+        let v = e
+            .quiescence(0, -INF, INF, left, None)
+            .unwrap_or_else(|_| panic!("bounded mate"));
+        assert_eq!(v.score, MATE_SCORE - 1);
+        assert_eq!(v.pv, vec![SearchChoice::Move("g4g6".parse().unwrap())]);
+        assert_eq!(e.cursor.game(), Some(&g));
+        assert_eq!(e.eval, EvalState::new(g.position()));
+    }
+    // King in check cannot stand pat at an exhausted capture horizon.
+    let g = game("8/8/7k/8/7Q/8/8/K7 b - - 0 1");
+    assert_eq!(g.position().classify(), Classification::Check);
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    let v = e
+        .quiescence(0, -INF, INF, 0, None)
+        .unwrap_or_else(|_| panic!("bounded evasion"));
+    assert!(!v.pv.is_empty());
+    let SearchChoice::Move(a) = v.pv[0] else {
+        panic!("expected evasion")
+    };
+    let mut played = g.clone();
+    played.apply(a).unwrap();
+    assert!(e.stats.q_check_nodes > 0);
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
+}
+
+#[test]
+fn independent_quiet_threat_gets_a_defensive_response_at_the_frontier_boundary() {
+    // Qg4! Kh7 (sole reply), Qg7#, supported by Kf6. No immediate mate.
+    for (fen, setup, reply, mate) in [
+        ("7k/8/5K2/8/5Q2/8/8/8 w - - 0 1", "f4g4", "h8h7", "g4g7"),
+        ("8/8/8/5q2/8/5k2/8/7K b - - 0 1", "f5g5", "h1h2", "g5g2"),
+    ] {
+        let g = game(fen);
+        assert!(g.position().queen_contact_mate().is_none());
+        let mut proof = g.clone();
+        proof.apply(setup.parse().unwrap()).unwrap();
+        assert_eq!(
+            proof.position().legal_actions(),
+            vec![reply.parse().unwrap()]
+        );
+        proof.apply(reply.parse().unwrap()).unwrap();
+        proof.apply(mate.parse().unwrap()).unwrap();
+        assert!(matches!(
+            proof.outcome(),
+            Some(ChessOutcome::Checkmate { .. })
+        ));
+        for left in [Q_PLIES, Q_FORCING_MIN] {
+            let mut stop = || false;
+            let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+            let v = e
+                .quiescence(0, -INF, INF, left, None)
+                .unwrap_or_else(|_| panic!("bounded quiet mate"));
+            assert_eq!(v.score, MATE_SCORE - 3);
+            let mut replay = g.clone();
+            for c in v.pv {
+                let SearchChoice::Move(a) = c else {
+                    panic!("no claims")
+                };
+                replay.apply(a).unwrap();
+            }
+            assert!(matches!(
+                replay.outcome(),
+                Some(ChessOutcome::Checkmate { .. })
+            ));
+            assert!(e.stats.queen_threat_nodes > 0);
+            assert_eq!(e.cursor.game(), Some(&g));
+            assert_eq!(e.eval, EvalState::new(g.position()));
+        }
+    }
+}

@@ -81,15 +81,15 @@ impl Position {
             while origins != 0 {
                 let from = Square(origins.trailing_zeros() as u8);
                 origins &= origins - 1;
-                if attackers & !(1 << from.index()) == 0 {
-                    continue;
-                }
                 let action = Action {
                     from,
                     to: target,
                     promotion: None,
                 };
                 if let Ok(after) = base.checked_after(action)
+                    // Moving the queen can uncover her supporting slider. The
+                    // pre-move attack map cannot safely reject that support.
+                    && after.attacker_mask(target, side) != 0
                     && after.in_check()
                     && !after.has_legal_action()
                 {

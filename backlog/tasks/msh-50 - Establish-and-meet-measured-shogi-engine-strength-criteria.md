@@ -4,8 +4,9 @@ title: Establish and meet measured shogi engine strength criteria
 status: Ready
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-09T00:05:00Z'
-labels: []
+updated_date: '2026-11-09T11:26:00Z'
+labels:
+  - handle:conventional-shogi
 milestone: m-5
 dependencies:
   - MSH-48
@@ -15,6 +16,7 @@ dependencies:
   - MSH-136
   - MSH-137
   - MSH-138
+  - MSH-139
 documentation:
   - docs/design.md
   - docs/m5/strength-roadmap.md
@@ -65,4 +67,8 @@ Owner correction after MSH-136: wait for continued conventional Chess engineerin
 MSH-137 reviewed production integrated/pushed at f1484b15f44817e5469a849af28796d844393223; required native3OSCI still pending, dependency not released yet. Transfer lessons: measure native query/transition work, derive caches from canonical state, defer discarded-child work via checked native projections, prove exact history context before TT bounds. Do not copy Chess irreversibility guard: Shogi captures/drops can restore material; Xiangqi lateral pawn/chase/pending/no-win history needs its own native proof. No new Chess opponent studies; conventional-game engineering precedes learned research.
 
 Before cross-game transfer, finish MSH-138 desktop play-budget calibration so ordinary product play can use the refined engine proportionately. This is a scheduling/product-default gate, not a newly discovered search-architecture defect; existing admission ceilings and no-new-Chess-study instruction remain.
+
+Stable task handle: Conventional Shogi. Use MSH-50 (Conventional Shogi) in new conversational reports and development summaries. Historical titles/evidence/status unchanged.
+
+Owner consolidation2026-11-09: MSH-139 (Chess Strength Qualification) is a mandatory prerequisite. MSH-138 (Desktop Search Limits) and MSH-137 (Chess Search Refinement) engineering evidence alone cannot release cross-game transfer. Qualification requires approved target/protocol/budget and demonstrated agreed strength, not just a completed proposal. Preserve existing acceptance/evidence.
 <!-- SECTION:NOTES:END -->

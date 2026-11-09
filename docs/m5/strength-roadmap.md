@@ -1,105 +1,67 @@
-# Conventional engines first
+# Conventional engines and demonstrated strength
 
-Owner direction, 2026-11-08. This supersedes the initial MSH-49 weak-baseline /
-depth-2 Stockfish acceptance study and its pending four-hour budget request.
-That study is stopped, with no formal held-out roots or games generated. Keep
-its code, baseline, development reports, frozen protocol and actual runtime as
-historical evidence; they establish no release-strength acceptance.
+Owner consolidation, 2026-11-09. This supersedes immediate cross-game transfer
+based solely on algorithm presence, the initial Stockfish diagnostic, or an
+engineering-readiness review. Completed work and original evidence remain valid
+at their recorded sources; none establishes an official rating or present
+playing-strength qualification.
 
-## Engineering sequence
-
-| Stage | Delivery and dependency |
+| Stage | Outcome and gate |
 | --- | --- |
-| 1. Chess search foundation | Build on the current native engine: efficient make/unmake and incremental state; history-safe transposition bounds; iterative deepening, principal-variation search, aspiration re-search, staged move ordering, SEE/history heuristics and bounded quiescence with legal check evasions. Retain an exact diagnostic mode. |
-| 2. Complete conventional Chess | Integrate guarded null-move pruning, late-move reductions/re-search, conservative futility/SEE pruning and bounded extensions. Assess ProbCut and singular extensions in that architecture. Complete tapered material/piece placement, pawn structure, mobility, king safety, threats and endgame evaluation, plus reliable thinking-time allocation and real product execution. These are coherent engineering increments within the conventional implementation task, not statistical milestones per technique. |
-| 3. Initial Chess diagnostic baseline | Owner-authorized MSH-49.2: 8–12 games from paired openings, equal one-second thinking time against full-strength Stockfish 19, at most30 minutes total match work. Report results, depths, performance limitations and representative losses. No significance study, confidence interval or Elo estimate. This diagnostic is complete and remains historical evidence. It does not establish classical-engine maturity; continue the engineering stage below before cross-game transfer. No repeated expensive Chess studies. |
-| 4. Other conventional engines | Adapt to Shogi and Xiangqi first, then Tori, Chu and both accepted Tenjiku profiles. Reuse proven techniques where their semantics apply, with game-specific evaluation, tactical ordering, quiescence, pruning guards and history identities. Each substantially complete engine can justify its own approved major evaluation; an unavailable compatible opponent remains an honest limitation. |
-| 5. Chess learned evaluation | After the six conventional engines are established, research and integrate a complete learned approach in Chess, including data provenance, training, export, verified native inference and product integration. NNUE-style incremental evaluation is a researched starting candidate, not a predetermined shared model. Approve substantial training resources and the later strength study before running them. |
-| 6. Extend validated learning | Adapt the validated approach to the other five games, preserving both Tenjiku profiles. Refine actual model/data requirements game by game. This is tracked follow-on work; it does not silently add all-game learned delivery to the existing M5 closure gate. |
+| Continue conventional Chess | Research, profile and refine established search/classical evaluation as a coherent system. MSH-137 (Chess Search Refinement) is a completed engineering checkpoint, not strength qualification. Use observed important weaknesses to direct further conventional development. |
+| Time-primary desktop play | MSH-138 (Desktop Search Limits): spend the allotted thinking time, retain the last completed iteration and preserve native rules/history, cancellation, resource protection, supervision and compatible documents. Only effectively unreachable technical visit/depth safeguards remain. |
+| Demonstrate strong Chess | MSH-139 (Chess Strength Qualification): meaningful, independently grounded full-strength opponent evidence, adaptive paired-opening estimation, tactical/endgame checks and mistake analysis. The [target, protocol and six-hour budget proposal](chess-strength-qualification.md) awaits John's approval; no formal campaign is authorized. Passing the agreed standard is a prerequisite to transfer. Falling short directs further conventional Chess work. |
+| Other conventional engines | Only after qualification, MSH-50 (Conventional Shogi) and MSH-54 (Conventional Xiangqi), then Tori/Chu/both Tenjiku profiles under their existing game tasks. Adapt techniques with native history/action/effect proofs and game-specific evaluation/guards. Do not copy Chess repetition-reset formulas into capture/drop or chase games. |
+| Learned evaluation later | After the conventional engines are established, research a substantially complete Chess learned approach, then extend a validated approach to the other games. Existing learned-evaluator, opening-knowledge and M5 closure requirements remain intact. |
 
-The Chess implementation (MSH-49.1) and initial diagnostic (MSH-49.2) are two bounded
-task records under MSH-49. MSH-135 tracks the later learned extensions. Existing MSH-50/54 own Shogi/Xiangqi, MSH-51/52/53 the historical variants,
-and MSH-55 the initial Chess learned evaluator. MSH-104's distinct all-game
-opening-knowledge research follows the conventional phase and initial Chess
-learning result; it remains a separate experiment, not a shared-model dependency.
-MSH-56 still requires all six strength deliveries, initial learned improvement
-and the opening-knowledge experiment. No completed M4/M5 prerequisite is reopened.
+MSH-140 (Player Thinking Time) records future ordinary Chess time configuration:
+faster responses or stronger play through longer searches. Exposed choices must
+agree with bounded process-supervision deadlines and exact saved/request identities.
+It does not expand the immediate one-second default assignment or implicitly add
+timed execution to every other game.
 
-Owner correction after MSH-136: conventional Chess is **not complete** because
-major algorithms are present. Preserve completed MSH-49/49.1/49.2/136 and all
-receipts. MSH-137 continues coherent practical Chess development before MSH-50
-Shogi and MSH-54 Xiangqi; learned evaluation stays later. Its bounded increments
-cover native overhead (137.1), collision-checked future-state TT reuse (137.2),
-and integrated search/classical-evaluation refinement (137.3). These are engineering
-checkpoints, not statistical studies. Reassess significant remaining opportunities
-from current evidence; add justified work rather than treating this list as a
-completion checklist. Transfer only after independent engineering assessment finds
-remaining opportunities predominantly diminishing-return refinements, speculative
-research or disproportionate effort. Routine research, algorithms, tests and
-profiling need no owner approval; escalate actual major architectural/resource
-tradeoffs. No new match study is planned. The existing 15-minute aggregate routine
-match allowance applies across the coherent work, without subtask resets.
+## Engineering and qualification are different
 
-## Verification and measurements
+Correctness tests, independently expected tactics/endgames, short profiles and
+small development matches are autonomous engineering. Routine local match work
+retains the **15-minute cumulative compute allowance per task**, including failed
+and concurrent runs; do not reset it through task splitting. No substantial
+qualification tournament, multi-hour benchmark or additional paid compute may
+run without John's approval of the target, protocol and total budget.
 
-During engineering, use independently expected search/tactical/endgame tests,
-state/hash/evaluation restoration, history/claim/terminal regressions, selective
-re-search tests, cancellation checks, short profiling and small development
-matches. Exact-mode minimax tests do not prove selective search is exact, and
-neither tactical tests nor throughput establish playing strength. Use independent
-review and proportionate actual platform checks at coherent source checkpoints.
+A major strength milestone is a substantially complete conventional engine for a
+game or a substantially complete new evaluation approach integrated into it.
+Individual optimizations are not invitations to repeat expensive studies. Keep
+progress reports concise: accomplishments, material findings, blockers and actual
+owner decisions. Ordinary algorithms, test cases, representations and routine
+implementation choices remain the implementer's responsibility.
 
-Routine local engine-match experiments are limited to **15 minutes cumulative
-compute per task** unless John explicitly authorizes more. Record aggregate
-active invocation runtime, including failed attempts and concurrent runs; do not
-reset the allowance by relabeling matches or artificially splitting tasks.
-Do not run multi-hour benchmarks, substantial statistical campaigns or formal
-strength studies without explicit owner approval. A major milestone is a
-substantially complete conventional engine for a game, or a substantially
-complete new evaluation approach integrated into it. An optimization or small
-group of techniques is not such a milestone. Ordinary correctness tests are
-engineering verification, not grounds for another expensive match campaign.
+The qualification uses credible independently rated, unweakened opponents from
+one frozen published pool where practical. Equal thinking time is the principal
+comparison, with actual hardware, threads, memory, books/tablebases and elapsed
+work recorded. Adapt the next opponent to current evidence and uncertainty;
+do not treat a few paired games as a definitive rating or use naive bisection.
+Reserve larger fresh samples for nearby independent families. No official CCRL,
+FIDE or USCF rating follows from local tests under different conditions.
 
-## Selected references and technical boundaries
+## Existing evidence and infrastructure
 
-The search/evaluation selections above are engineering recommendations informed
-by the [Stockfish 11 classical evaluator](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/evaluate.cpp),
-[search](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/search.cpp)
-and [move ordering](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/movepick.cpp).
-Current Stockfish uses learned evaluation; its historical classical code supplies
-architecture references, not promised mShogi strength or weights to transplant.
-[Official UCI options](https://official-stockfish.github.io/docs/stockfish-wiki/UCI-Protocol-and-Stockfish-Commands.html)
-define clock/resource controls and explicit strength limiting for the later
-full-strength opponent setup.
+MSH-49.2 (Stockfish Baseline) remains the accepted eight-game initial diagnostic.
+Its losses, depth/throughput observations and bounded budget remain historical;
+its old immediate-transfer handoff is superseded. MSH-137 (Chess Search Refinement)
+retains its actual native three-platform CI, measured costs and controlled tactical
+corrections. Engineering readiness does not substitute for the new strength gate.
 
-[YaneuraOu](https://github.com/yaneurao/YaneuraOu/blob/master/source/engine/yaneuraou-engine/yaneuraou-search.cpp)
-and [Pikafish](https://github.com/official-pikafish/Pikafish/blob/master/src/position.cpp)
-provide concrete Shogi search/history and Xiangqi adjudication references.
-Their profiles are not rules oracles for our accepted native profiles. Board-only
-TT reuse cannot erase claims, counters, repetition or whole-profile identity.
-Quiescence and SEE must respect drops, compound routes, royal survival and fire
-effects where applicable; a search-only null branch never becomes played history.
-Research and independently implement algorithms. Do not copy upstream code,
-tables or weights without resolving the applicable source-license requirements.
+Reuse the [native runner and experiment tools](experiments.md), its UCI adapters,
+paired outcome accounting, bounded artifacts and authoritative native replay.
+No second rules engine, protocol, application runtime or experimentation platform
+is needed. Rules conformance remains [independently established](../testing/conformance-policy.md);
+opponent agreement is not a rules oracle.
 
-## Decisions reserved for John
-
-Routine algorithm choices, representations, guards, test cases and coherent
-implementation sequencing belong to the implementer. Bring back only material
-choices: the actual major-study resource/time budget and comparison/release
-criteria when the engine is ready; substantial training/data/hardware commitments;
-or an actual conflict in product/rules requirements. No new decision is needed
-to begin conventional engineering under this direction.
-
-MSH-138 follows the refined-engine checkpoint before cross-game transfer: calibrate
-ordinary desktop Chess play limits within existing admission ceilings. Faster
-fixed-visit execution may stop before the hard time limit; timed UCI capability
-does not by itself establish ordinary GUI play strength. This is product-default
-work, with no new Chess opponent study or unresolved search-architecture claim.
-
-MSH-137 and its three increments are now complete: independently reviewed native
-cost, history-safe reuse and coherent tactical/classical refinements, with actual
-three-platform native CI at `2a2ff7c`. The [refinement record](chess-classical-refinement.md)
-states measured gains, historical failures and remaining limits. This supports
-practical engineering readiness, not a strength claim. MSH-138 is next;
-MSH-50/54 remain dependent on its desktop-default calibration.
+The architecture references remain primary classical [Stockfish search](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/search.cpp),
+[ordering](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/movepick.cpp)
+and [evaluation](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/evaluate.cpp),
+plus game-specific [YaneuraOu](https://github.com/yaneurao/YaneuraOu)
+and [Pikafish](https://github.com/official-pikafish/Pikafish) research.
+Independently implement techniques; resolve licensing before copying source,
+tables or weights. No neural model is part of the current conventional candidate.

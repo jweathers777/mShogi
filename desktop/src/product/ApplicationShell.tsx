@@ -12,7 +12,9 @@ export function NativeEnginePanel({ status, limits, children }: {
 }) {
   return <section className="card engine-card">
     <div className="card-title"><h2>Engine</h2><span className="engine-phase" role="status" aria-label="Engine turn status">{status}</span></div>
-    <p className="caption" data-play-limits>Play limit: depth {limits.depth} · {limits.nodes.toLocaleString()} nodes{limits.time_ms != null ? ` · ${limits.time_ms.toLocaleString()} ms` : ""}</p>
+    <p className="caption" data-play-limits>{limits.time_ms != null
+      ? `Thinking time: ${(limits.time_ms / 1000).toLocaleString()} s per move`
+      : `Play limit: depth ${limits.depth} · ${limits.nodes.toLocaleString()} nodes`}</p>
     {children}
   </section>;
 }

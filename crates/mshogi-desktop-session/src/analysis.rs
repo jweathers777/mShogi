@@ -289,7 +289,7 @@ impl DesktopSession {
         }
         self.retire_analysis();
         self.pending = None;
-        if self.play_limits == PRIOR_PLAY_LIMITS {
+        if [PRIOR_PLAY_LIMITS, PRIOR_TIMED_PLAY_LIMITS].contains(&self.play_limits) {
             self.play_limits = PLAY_LIMITS;
         }
         self.play_paused = false;

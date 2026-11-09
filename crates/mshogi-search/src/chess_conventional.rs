@@ -38,10 +38,11 @@ pub struct TimeBudget {
     pub hard: Duration,
 }
 impl TimeBudget {
-    /// Conservative allocation within a caller's exact hard per-move allowance.
+    /// Fixed per-move allowance: keep searching until the cooperative deadline.
+    /// Clock allocation can separately supply an earlier soft iteration boundary.
     pub fn from_hard_ms(ms: u64) -> Self {
         Self {
-            soft: Duration::from_millis(ms.saturating_mul(7) / 10),
+            soft: Duration::from_millis(ms),
             hard: Duration::from_millis(ms),
         }
     }

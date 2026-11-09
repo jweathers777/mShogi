@@ -74,11 +74,8 @@ fn real_observations(snapshot: &SharedSnapshot, perspective: Color, searched_ver
     assert!(telemetry.completed_depth > 0 && telemetry.completed_depth <= PLAY_LIMITS.depth);
     assert!(telemetry.nodes > 0 && telemetry.nodes <= PLAY_LIMITS.nodes);
     assert!(telemetry.score.is_some());
-    match telemetry.status {
-        StopReason::Complete => assert_eq!(telemetry.completed_depth, PLAY_LIMITS.depth),
-        StopReason::NodeLimit => assert_eq!(telemetry.nodes, PLAY_LIMITS.nodes),
-        StopReason::Stopped => assert_eq!(PLAY_LIMITS.time_ms, Some(1_000)),
-    }
+    assert_eq!(telemetry.status, StopReason::Stopped);
+    assert!(telemetry.completed_depth < PLAY_LIMITS.depth);
     let selective_depth = telemetry
         .selective_depth
         .expect("actual conventional selective depth");
@@ -212,7 +209,22 @@ fn human_black_gets_an_automatic_native_opening_and_can_answer_it() {
     assert_eq!(thinking.phase, EnginePhase::Thinking);
     assert_eq!(side_to_move(&thinking), Color::White);
     assert!(history(&thinking).is_empty());
+    let started = Instant::now();
     let replied = human_turn(&mut controller);
+    let Some(ChessResult::Move { telemetry, .. }) = &chess(&replied).last_engine_result else {
+        panic!("no real opening")
+    };
+    if !cfg!(debug_assertions) {
+        assert!(
+            telemetry.nodes > 20_000,
+            "release timed search still constrained: {telemetry:?}"
+        );
+    }
+    println!(
+        "time-primary desktop opening: elapsed_ms={}, limits={:?}, telemetry={telemetry:?}",
+        started.elapsed().as_millis(),
+        replied.play_limits
+    );
     assert_eq!(human(&replied), Color::Black);
     assert_eq!(side_to_move(&replied), Color::Black);
     assert_eq!(history(&replied).len(), 1);

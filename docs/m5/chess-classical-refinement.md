@@ -175,3 +175,10 @@ with 11 intentionally ignored on each platform. All later required subprocess,
 desktop-session, fixture, build and smoke steps passed.
 Earlier failed/cancelled campaigns remain historical evidence, not successful
 required jobs. No production code changed after the frozen profile source.
+
+Owner consolidation, 2026-11-09: MSH-138 (Desktop Search Limits) replaces the
+ordinary20,000-visit default with time-primary play. MSH-139 (Chess Strength
+Qualification) adds the independently grounded playing-strength gate before
+MSH-50 (Conventional Shogi) and MSH-54 (Conventional Xiangqi). The completed
+MSH-137 (Chess Search Refinement) evidence above remains an engineering checkpoint;
+it does not itself qualify that new gate. See the current [roadmap](strength-roadmap.md).

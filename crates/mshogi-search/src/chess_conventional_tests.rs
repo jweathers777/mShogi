@@ -1311,3 +1311,47 @@ fn destination_filtered_exchange_matches_previous_full_query_on_native_special_t
         assert_eq!(p, before);
     }
 }
+
+#[test]
+fn cancellation_after_a_completed_iteration_retains_only_that_iteration() {
+    let g = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+    let before = g.clone();
+    let mut first_polls = 0;
+    let first = search_with_stop(
+        &g,
+        SearchLimits {
+            depth: 1,
+            nodes: None,
+        },
+        || {
+            first_polls += 1;
+            false
+        },
+    )
+    .unwrap();
+    assert_eq!(first.result.completed_depth, 1);
+    assert!(first.result.decision.is_some());
+    let mut polls = 0;
+    let stopped = search_with_stop(
+        &g,
+        SearchLimits {
+            depth: MAX_DEPTH,
+            nodes: None,
+        },
+        || {
+            polls += 1;
+            polls > first_polls
+        },
+    )
+    .unwrap();
+    assert_eq!(stopped.result.status, SearchStatus::Stopped);
+    assert_eq!(stopped.result.completed_depth, 1);
+    assert_eq!(stopped.result.decision, first.result.decision);
+    assert_eq!(stopped.result.score, first.result.score);
+    assert_eq!(
+        stopped.result.principal_variation,
+        first.result.principal_variation
+    );
+    replay(&g, &stopped);
+    assert_eq!(g, before);
+}

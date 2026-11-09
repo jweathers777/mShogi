@@ -45,9 +45,10 @@ it("keeps actual play limits between native engine status and observations", () 
   expect(screen.getByText("Play limit: depth 3 · 12,345 nodes")).toBeTruthy();
 });
 
-it.each([1000, 0])("shows the native thinking-time ceiling %s without inventing one for other games", (time_ms) => {
-  render(<NativeEnginePanel status="Searching" limits={{ depth: 128, nodes: 20000, time_ms }}><p>No completed observation</p></NativeEnginePanel>);
-  expect(screen.getByText(`Play limit: depth 128 · 20,000 nodes · ${time_ms.toLocaleString()} ms`)).toBeTruthy();
+it.each([1000, 0])("presents native thinking time %s without exposing technical ceilings", (time_ms) => {
+  render(<NativeEnginePanel status="Searching" limits={{ depth: 128, nodes: Number.MAX_SAFE_INTEGER, time_ms }}><p>No completed observation</p></NativeEnginePanel>);
+  expect(screen.getByText(`Thinking time: ${(time_ms / 1000).toLocaleString()} s per move`)).toBeTruthy();
+  expect(screen.queryByText(/9,007,199,254,740,991/)).toBeNull();
 });
 
 it.each([

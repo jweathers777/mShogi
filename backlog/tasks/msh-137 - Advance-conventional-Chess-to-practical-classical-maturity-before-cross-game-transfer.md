@@ -7,8 +7,9 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-08T21:47:00Z'
-updated_date: '2026-11-09T00:50:00Z'
-labels: []
+updated_date: '2026-11-09T11:16:00Z'
+labels:
+  - handle:chess-search-refinement
 milestone: m-5
 dependencies:
   - MSH-136
@@ -56,6 +57,8 @@ Final frozen source manifest accepted-source.json (patch603ca1d5,18files), indep
 First nativeCI42536624859 atf1484b15 passed all3workspace test suites. macOS128902235827 failed fixture regeneration because existingChessmate snapshot expected29visits/seldepth2 insteadactual65/7; mate1/score/PV unchanged. SupersededLinux/Windowsjobs canceled afterworkspacepass. Regenerated allnativeChess/sharedfixtures: onlyonefile differed;34frontendconsumer tests pass Node24.22.1. No cratesourcechanges. Historicalreceipts preserved; newexact-source3OSCI required, task remainsInReview.
 
 Final source/evidence reconciliation approved. Exact tested source2a2ff7c, actual required3OS native jobs all passed; production unchanged fromf1484b15. Source integrated/pushed normally to codex/rewrite. Completion records/evidence published with this finalization; no further test campaign needed.
+
+Stable task handle: Chess Search Refinement. Use MSH-137 (Chess Search Refinement) in new conversational reports and development summaries. Historical titles/evidence/status unchanged.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

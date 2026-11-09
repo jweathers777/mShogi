@@ -519,6 +519,10 @@ mod tests {
     use super::*;
     #[test]
     fn independent_clock_allocations_and_numeric_limits() {
+        let fixed = parse_go(&["movetime", "1000"], Color::White).unwrap();
+        assert_eq!(fixed.time.unwrap().soft, Duration::from_millis(1000));
+        assert_eq!(fixed.time.unwrap().hard, Duration::from_millis(1000));
+        assert_eq!(fixed.limits.nodes, None);
         let go = parse_go(
             &[
                 "wtime",

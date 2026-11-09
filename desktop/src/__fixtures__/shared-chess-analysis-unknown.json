@@ -714,7 +714,7 @@
   "board_ply": 0,
   "play_limits": {
     "depth": 128,
-    "nodes": 20000,
+    "nodes": 9007199254740991,
     "time_ms": 1000
   },
   "historical": false,

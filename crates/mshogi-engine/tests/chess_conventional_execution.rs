@@ -220,3 +220,35 @@ fn actual_short_timed_search_is_bounded_and_every_returned_command_is_native() {
     }
     assert_eq!(source, before);
 }
+
+#[test]
+fn fixed_time_play_uses_the_full_allowance_and_small_explicit_node_requests_still_stop() {
+    let mut request = context();
+    request.limits.nodes = 9_007_199_254_740_991;
+    request.limits.time_ms = Some(50);
+    let start = Instant::now();
+    let response = execute(request.clone());
+    assert!(start.elapsed() >= Duration::from_millis(50));
+    assert!(start.elapsed() < Duration::from_secs(5));
+    let ExecutionResult::Chess { result } = response.observation.result else {
+        panic!("wrong game")
+    };
+    let telemetry = match result {
+        ChessResult::Move { telemetry, .. } | ChessResult::Incomplete { telemetry } => telemetry,
+        other => panic!("unexpected standard-root result {other:?}"),
+    };
+    assert_eq!(telemetry.status, StopReason::Stopped);
+    assert!(telemetry.completed_depth < request.limits.depth);
+    assert!(telemetry.nodes < request.limits.nodes);
+    request.limits.nodes = 1;
+    let response = execute(request);
+    let ExecutionResult::Chess {
+        result: ChessResult::Incomplete { telemetry },
+    } = response.observation.result
+    else {
+        panic!("one visit invented a completed move");
+    };
+    assert_eq!(telemetry.status, StopReason::NodeLimit);
+    assert_eq!(telemetry.nodes, 1);
+    assert!(telemetry.score.is_none() && telemetry.principal_variation.is_empty());
+}

@@ -57,8 +57,19 @@ fn chess_record(record: &CanonicalRecord) -> Result<&GameRecord, String> {
     }
 }
 const MAX_SAFE_ID: u64 = 9_007_199_254_740_991;
-/// Initial interactive work limits; recorded on every engine request.
+/// Representation guard, not an ordinary search-effort budget. This is the
+/// largest integer preserved exactly by the JSON/JavaScript desktop boundary;
+/// no supported timed search can practically exhaust it.
+pub const PLAY_NODE_CEILING: u64 = MAX_SAFE_ID;
+/// Time-primary Chess play. Depth128 remains the native recursion safeguard;
+/// both technical ceilings are recorded in the exact request identity.
 pub const PLAY_LIMITS: WorkLimits = WorkLimits {
+    time_ms: Some(1_000),
+    depth: 128,
+    nodes: PLAY_NODE_CEILING,
+};
+// Prior timed configuration remains readable without rewriting old evidence.
+const PRIOR_TIMED_PLAY_LIMITS: WorkLimits = WorkLimits {
     time_ms: Some(1_000),
     depth: 128,
     nodes: 20_000,

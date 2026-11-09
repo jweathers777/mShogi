@@ -1,6 +1,6 @@
 {
   "task": "MSH-139 (Chess Strength Assessment)",
-  "status": "accepted_pending_normal_integration",
+  "status": "complete",
   "owner_authorization": "2026-11-09 adaptive assessment, no fixed target/game/hour budget; stop report before next objective",
   "source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
   "build": {
@@ -1368,5 +1368,12 @@
     "scope": "approximate observation time, not continuous monitoring",
     "pmset": "AC Power; 100%; charged"
   },
-  "report_sha256": "2f8ff62c331974a4f8745562bcb3221581d0e9c69e8b7f1a7fdf98e09f9d0194"
+  "report_sha256": "2f8ff62c331974a4f8745562bcb3221581d0e9c69e8b7f1a7fdf98e09f9d0194",
+  "integration": {
+    "branch": "codex/rewrite",
+    "accepted_evidence_revision": "4ee6c4de8e35fb2e3f8bb91b59b040abd65a28bd",
+    "accepted_evidence_pushed": true,
+    "completion": "BacklogAC1-4/DoD1-4checked, taskDone; normalfinalmetadata publication follows",
+    "next_action": "Owner review of findings before next strength target, production development or cross-game transfer; MSH-50/54 remainToDo"
+  }
 }

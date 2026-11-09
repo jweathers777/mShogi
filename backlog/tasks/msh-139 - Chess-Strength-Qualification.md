@@ -1,11 +1,11 @@
 ---
 id: MSH-139
 title: Chess Strength Assessment
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-09T11:26:00Z'
-updated_date: '2026-11-09T15:06:00Z'
+updated_date: '2026-11-09T15:07:00Z'
 labels:
   - handle:chess-strength-assessment
 milestone: m-5
@@ -41,7 +41,7 @@ Then stop for John to choose the next objective. Do not select a final target, d
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -72,4 +72,18 @@ Scouting checkpoint: 8 actual full-strength games, all native replayed and clean
 Measurement complete; no further games planned pending final independent evidence acceptance. 24 eligible games / 12 pairs, every pair native-replayed with successful cleanup, zero failed/capped scored games. Fresh confirmation (8 games each): Oxidation 1W-4D-3L, Goldfish 2W-3D-3L. Conditional pentanomial posterior medians/bands 1883 [1750,2047] and 1952 [1756,2160]; prior sensitivity supports a rough local index around1900 with1700-2200 working span, explicitly not a pooled/joint95% or official/human rating. Independent stopping review approved: another batch would mainly narrow uncertainty rather than change the present decision. Approximately50 minutes measured match/diagnostic execution; build/preparation logs separate, no paid compute. Findings are docs/m5/chess-strength-assessment-report.md and the single verification.json; actual12-test receipt is tests-telemetry.log.gz (older10/11-test receipts retained). All production files remain unchanged from9a509f0 / runtime-equivalent acceptedfac34c9. No target, maturity verdict, production improvement or transfer chosen; MSH-50 (Conventional Shogi) and MSH-54 (Conventional Xiangqi) stay To Do for owner review.
 
 Independent final evidence and wording reviews approve acceptance with no material finding. All15 pair receipts,2978 accepted moves,24 native conclusions, fixed draws/opening lineage, current binary/source identities, derived telemetry and actual12-test receipt reconcile. Stopping is supported by consistent fresh-family estimates and modest central prior sensitivity; no more games justified solely for tighter intervals. Original diagnostic source/probe failures and caps remain preserved; possible early tactical timing interference and author-observed IPC cleanup are explicitly qualified. Production and all consumers are unchanged from acceptedfac34c9; no new product/GUI campaign. AC1-4 and DoD1-3 supported; DoD4 awaits normal commit/push.
+
+Normal integration completed: accepted report and evidence committed/pushed at4ee6c4de8e35fb2e3f8bb91b59b040abd65a28bd on codex/rewrite. All four current AC and four DoD items are supported and checked. This completion is the assessment handoff, with owner review required before choosing any next development objective. Final bookkeeping commit follows without changing measured source, results, requirements or limitations.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Established a conditional current-strength working index around1900, with a rough1700-2200 sensitivity span, through24 complete full-strength equal-one-second games. Fresh8-game results: Oxidation1W-4D-3L and Goldfish2W-3D-3L. Separate95% Bayesian credible bands and prior/pool/condition limitations are reported; no official or human rating is claimed.
+
+All12 scored pairs passed native replay and cleanup. Twelve focused instrumentation tests passed. Independent method, stopping, source/receipt and final-report reviews approved completion. Twenty independent quality positions and bounded reference analysis identify tactical horizon, endgame judgment and search-frontier limitations. No additional match study or production refinement is needed to finish this assessment.
+
+Exact candidate/runner build source9a509f077460e07341d2bccf830e4b02fcb0e95e; production remains equivalent to acceptedfac34c9. Accepted findings/evidence integrated and pushed normally to codex/rewrite at4ee6c4de8e35fb2e3f8bb91b59b040abd65a28bd. Canonical evidence is docs/m5/evidence/msh139/verification.json; findings are docs/m5/chess-strength-assessment-report.md. Historical setup failures, smoke caps and earlier helper versions remain preserved.
+
+Stop for John to review the findings and choose the next objective. No final target, Chess-maturity verdict, further production change or cross-game transfer was selected. MSH-50 (Conventional Shogi) and MSH-54 (Conventional Xiangqi) remain To Do.
+<!-- SECTION:FINAL_SUMMARY:END -->

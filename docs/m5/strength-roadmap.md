@@ -121,3 +121,10 @@ queries still eagerly construct every candidate, despite needing only one legal
 witness. This follows the measured native/allocation costs rather than expanding
 SEE/TT tuning or claiming a strength gain from fewer projections. The evaluation
 round and later adaptive assessment remain required.
+
+MSH-150 now establishes a local 12.26% fixed-work execution-time reduction with
+identical search results and counters. MSH-145 addresses independently exposed
+passer-interception and conversion-score limitations; MSH-149 follows with
+material-aware king exposure. MSH-151 (Chess Coherent-Round Assessment) records
+the fresh adaptive comparison after this combined round. Its results, not these
+engineering metrics alone, will inform the next conventional-development choice.

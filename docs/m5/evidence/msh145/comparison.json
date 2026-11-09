@@ -1,0 +1,3454 @@
+{
+  "rows": [
+    {
+      "id": "queen-bishop-pawn-draw",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "h8g7"
+        },
+        "score": 714,
+        "completed_depth": 5,
+        "nodes": 419297,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -109
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 112,
+              "middle": 69
+            },
+            "placement": {
+              "end": 82,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 900,
+          "root_side": "white",
+          "score_root_side": 740,
+          "score_side_to_move": 740,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 40,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 900,
+            "mobility": {
+              "end": 50,
+              "middle": 25
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 30,
+              "middle": -36
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "d4a1"
+        },
+        "score": 95,
+        "completed_depth": 5,
+        "nodes": 435281,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -109
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 112,
+              "middle": 69
+            },
+            "placement": {
+              "end": 82,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 900,
+          "root_side": "white",
+          "score_root_side": 92,
+          "score_side_to_move": 92,
+          "side_to_move": "white",
+          "specialized": {
+            "kind": "QueenPawnFortress",
+            "score_strong_side": 92,
+            "strong_side": "white"
+          },
+          "white": {
+            "endgame": {
+              "end": 40,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 900,
+            "mobility": {
+              "end": 50,
+              "middle": 25
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 30,
+              "middle": -36
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "queen-central-pawn-win",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "h8g7"
+        },
+        "score": 729,
+        "completed_depth": 5,
+        "nodes": 445002,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -79
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 112,
+              "middle": 69
+            },
+            "placement": {
+              "end": 98,
+              "middle": -46
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 900,
+          "root_side": "white",
+          "score_root_side": 715,
+          "score_side_to_move": 715,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 30,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 900,
+            "mobility": {
+              "end": 50,
+              "middle": 25
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 30,
+              "middle": -36
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "h8g7"
+        },
+        "score": 729,
+        "completed_depth": 5,
+        "nodes": 447332,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -79
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 112,
+              "middle": 69
+            },
+            "placement": {
+              "end": 98,
+              "middle": -46
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 900,
+          "root_side": "white",
+          "score_root_side": 715,
+          "score_side_to_move": 715,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 30,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 900,
+            "mobility": {
+              "end": 50,
+              "middle": 25
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 30,
+              "middle": -36
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "two-knights-draw",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "b2d3"
+        },
+        "score": 827,
+        "completed_depth": 8,
+        "nodes": 528860,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 0,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 0,
+              "middle": -48
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 640,
+          "root_side": "white",
+          "score_root_side": 737,
+          "score_side_to_move": 737,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 640,
+            "mobility": {
+              "end": 24,
+              "middle": 30
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 80,
+              "middle": -12
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "a2b4"
+        },
+        "score": 0,
+        "completed_depth": 8,
+        "nodes": 603996,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 0,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 0,
+              "middle": -48
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 640,
+          "root_side": "white",
+          "score_root_side": 0,
+          "score_side_to_move": 0,
+          "side_to_move": "white",
+          "specialized": {
+            "kind": "TwoKnightsDrawish",
+            "score_strong_side": 0,
+            "strong_side": "white"
+          },
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 640,
+            "mobility": {
+              "end": 24,
+              "middle": 30
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 80,
+              "middle": -12
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "bishop-knight-win",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "c3d3"
+        },
+        "score": 806,
+        "completed_depth": 7,
+        "nodes": 573974,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -52
+            },
+            "material": 0,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 0,
+              "middle": -48
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 650,
+          "root_side": "white",
+          "score_root_side": 842,
+          "score_side_to_move": 842,
+          "side_to_move": "white",
+          "specialized": {
+            "kind": "BishopKnightConversion",
+            "score_strong_side": 842,
+            "strong_side": "white"
+          },
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 650,
+            "mobility": {
+              "end": 51,
+              "middle": 48
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 78,
+              "middle": -17
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "c3d3"
+        },
+        "score": 806,
+        "completed_depth": 7,
+        "nodes": 576827,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -52
+            },
+            "material": 0,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 0,
+              "middle": -48
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 650,
+          "root_side": "white",
+          "score_root_side": 842,
+          "score_side_to_move": 842,
+          "side_to_move": "white",
+          "specialized": {
+            "kind": "BishopKnightConversion",
+            "score_strong_side": 842,
+            "strong_side": "white"
+          },
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 650,
+            "mobility": {
+              "end": 51,
+              "middle": 48
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 78,
+              "middle": -17
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "rook-philidor-draw",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "h1h7"
+        },
+        "score": 203,
+        "completed_depth": 7,
+        "nodes": 466126,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -74
+            },
+            "material": 500,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 64,
+              "middle": -36
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 1000,
+          "root_side": "white",
+          "score_root_side": 139,
+          "score_side_to_move": 139,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -99
+            },
+            "material": 600,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 10,
+              "middle": 6
+            },
+            "placement": {
+              "end": 110,
+              "middle": -64
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "h1h7"
+        },
+        "score": 149,
+        "completed_depth": 7,
+        "nodes": 433337,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -74
+            },
+            "material": 500,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 64,
+              "middle": -36
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 1000,
+          "root_side": "white",
+          "score_root_side": 17,
+          "score_side_to_move": 17,
+          "side_to_move": "white",
+          "specialized": {
+            "kind": "RookPawnThirdRankDefence",
+            "score_strong_side": 17,
+            "strong_side": "white"
+          },
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -99
+            },
+            "material": 600,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 10,
+              "middle": 6
+            },
+            "placement": {
+              "end": 110,
+              "middle": -64
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "rook-lucena-win",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "f1d1"
+        },
+        "score": 383,
+        "completed_depth": 7,
+        "nodes": 399056,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -98
+            },
+            "material": 500,
+            "mobility": {
+              "end": 88,
+              "middle": 60
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 60,
+              "middle": -38
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 1000,
+          "root_side": "white",
+          "score_root_side": 188,
+          "score_side_to_move": 188,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -58
+            },
+            "material": 600,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 92,
+              "middle": 69
+            },
+            "placement": {
+              "end": 74,
+              "middle": -30
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "f1b1"
+        },
+        "score": 357,
+        "completed_depth": 7,
+        "nodes": 438510,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -98
+            },
+            "material": 500,
+            "mobility": {
+              "end": 88,
+              "middle": 60
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 60,
+              "middle": -38
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 1000,
+          "root_side": "white",
+          "score_root_side": 188,
+          "score_side_to_move": 188,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -58
+            },
+            "material": 600,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 92,
+              "middle": 69
+            },
+            "placement": {
+              "end": 74,
+              "middle": -30
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "race-white-tempo",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "a5a6"
+        },
+        "score": 867,
+        "completed_depth": 10,
+        "nodes": 506170,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 8,
+              "middle": -6
+            },
+            "placement": {
+              "end": 56,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 0,
+          "root_side": "white",
+          "score_root_side": 55,
+          "score_side_to_move": 55,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -32
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 89,
+              "middle": 21
+            },
+            "placement": {
+              "end": 30,
+              "middle": 12
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "a5a6"
+        },
+        "score": 867,
+        "completed_depth": 10,
+        "nodes": 507135,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 8,
+              "middle": -6
+            },
+            "placement": {
+              "end": 56,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 0,
+          "root_side": "white",
+          "score_root_side": 55,
+          "score_side_to_move": 55,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -32
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 89,
+              "middle": 21
+            },
+            "placement": {
+              "end": 30,
+              "middle": 12
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "race-black-tempo",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "e7d6"
+        },
+        "score": 0,
+        "completed_depth": 13,
+        "nodes": 576142,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 8,
+              "middle": -6
+            },
+            "placement": {
+              "end": 56,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 0,
+          "root_side": "black",
+          "score_root_side": -55,
+          "score_side_to_move": -55,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -32
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 89,
+              "middle": 21
+            },
+            "placement": {
+              "end": 30,
+              "middle": 12
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "e7d6"
+        },
+        "score": 0,
+        "completed_depth": 13,
+        "nodes": 563823,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 8,
+              "middle": -6
+            },
+            "placement": {
+              "end": 56,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 0,
+          "root_side": "black",
+          "score_root_side": -28,
+          "score_side_to_move": -28,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -32
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 62,
+              "middle": 21
+            },
+            "placement": {
+              "end": 30,
+              "middle": 12
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "race-king-escort",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "h7h5"
+        },
+        "score": -826,
+        "completed_depth": 11,
+        "nodes": 495730,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 14,
+              "middle": -6
+            },
+            "placement": {
+              "end": 56,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 0,
+          "root_side": "black",
+          "score_root_side": -101,
+          "score_side_to_move": -101,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 113,
+              "middle": 21
+            },
+            "placement": {
+              "end": 58,
+              "middle": -48
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "h7h5"
+        },
+        "score": -826,
+        "completed_depth": 11,
+        "nodes": 505934,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 14,
+              "middle": -6
+            },
+            "placement": {
+              "end": 56,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 0,
+          "root_side": "black",
+          "score_root_side": -101,
+          "score_side_to_move": -101,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 113,
+              "middle": 21
+            },
+            "placement": {
+              "end": 58,
+              "middle": -48
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "race-rook-support",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "h7h5"
+        },
+        "score": -1389,
+        "completed_depth": 8,
+        "nodes": 538714,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -76
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 8,
+              "middle": -6
+            },
+            "placement": {
+              "end": 56,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 500,
+          "root_side": "black",
+          "score_root_side": -617,
+          "score_side_to_move": -617,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 24,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -32
+            },
+            "material": 600,
+            "mobility": {
+              "end": 36,
+              "middle": 18
+            },
+            "pawns": {
+              "end": 89,
+              "middle": 21
+            },
+            "placement": {
+              "end": 30,
+              "middle": 12
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "h7h5"
+        },
+        "score": -1389,
+        "completed_depth": 8,
+        "nodes": 564864,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -76
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 8,
+              "middle": -6
+            },
+            "placement": {
+              "end": 56,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 500,
+          "root_side": "black",
+          "score_root_side": -617,
+          "score_side_to_move": -617,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 24,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -32
+            },
+            "material": 600,
+            "mobility": {
+              "end": 36,
+              "middle": 18
+            },
+            "pawns": {
+              "end": 89,
+              "middle": 21
+            },
+            "placement": {
+              "end": 30,
+              "middle": 12
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "queen-pawn-near-king",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "d4a1"
+        },
+        "score": 999999,
+        "completed_depth": 128,
+        "nodes": 261,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -79
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 92,
+              "middle": 69
+            },
+            "placement": {
+              "end": 82,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 900,
+          "root_side": "white",
+          "score_root_side": 826,
+          "score_side_to_move": 826,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 60,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -52
+            },
+            "material": 900,
+            "mobility": {
+              "end": 48,
+              "middle": 24
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 100,
+              "middle": -46
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "d4a1"
+        },
+        "score": 999999,
+        "completed_depth": 128,
+        "nodes": 261,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -79
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 92,
+              "middle": 69
+            },
+            "placement": {
+              "end": 82,
+              "middle": -40
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 900,
+          "root_side": "white",
+          "score_root_side": 826,
+          "score_side_to_move": 826,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 60,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -52
+            },
+            "material": 900,
+            "mobility": {
+              "end": 48,
+              "middle": 24
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 100,
+              "middle": -46
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "two-knights-mate-counterexample",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "e7g6"
+        },
+        "score": 999999,
+        "completed_depth": 128,
+        "nodes": 260,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -102
+            },
+            "material": 0,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 0,
+              "middle": 0
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 640,
+          "root_side": "white",
+          "score_root_side": 799,
+          "score_side_to_move": 799,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 640,
+            "mobility": {
+              "end": 56,
+              "middle": 70
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 106,
+              "middle": 26
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "e7g6"
+        },
+        "score": 999999,
+        "completed_depth": 128,
+        "nodes": 260,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -102
+            },
+            "material": 0,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 0,
+              "middle": 0
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 640,
+          "root_side": "white",
+          "score_root_side": 0,
+          "score_side_to_move": 0,
+          "side_to_move": "white",
+          "specialized": {
+            "kind": "TwoKnightsDrawish",
+            "score_strong_side": 0,
+            "strong_side": "white"
+          },
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -60
+            },
+            "material": 640,
+            "mobility": {
+              "end": 56,
+              "middle": 70
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 106,
+              "middle": 26
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "rook-defence-king-far",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "h1h2"
+        },
+        "score": 183,
+        "completed_depth": 6,
+        "nodes": 445541,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -103
+            },
+            "material": 500,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 36,
+              "middle": -16
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 1000,
+          "root_side": "white",
+          "score_root_side": 167,
+          "score_side_to_move": 167,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -83
+            },
+            "material": 600,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 10,
+              "middle": 6
+            },
+            "placement": {
+              "end": 110,
+              "middle": -64
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "h1f1"
+        },
+        "score": 177,
+        "completed_depth": 7,
+        "nodes": 470072,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -103
+            },
+            "material": 500,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 36,
+              "middle": -16
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 1000,
+          "root_side": "white",
+          "score_root_side": 167,
+          "score_side_to_move": 167,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -83
+            },
+            "material": 600,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 10,
+              "middle": 6
+            },
+            "placement": {
+              "end": 110,
+              "middle": -64
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "rook-defence-opposite-turn",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "a6e6"
+        },
+        "score": -166,
+        "completed_depth": 7,
+        "nodes": 469235,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -74
+            },
+            "material": 500,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 64,
+              "middle": -36
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 1000,
+          "root_side": "black",
+          "score_root_side": -139,
+          "score_side_to_move": -139,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -99
+            },
+            "material": 600,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 10,
+              "middle": 6
+            },
+            "placement": {
+              "end": 110,
+              "middle": -64
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "a6e6"
+        },
+        "score": -29,
+        "completed_depth": 7,
+        "nodes": 490247,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -74
+            },
+            "material": 500,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 64,
+              "middle": -36
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 1000,
+          "root_side": "black",
+          "score_root_side": -17,
+          "score_side_to_move": -17,
+          "side_to_move": "black",
+          "specialized": {
+            "kind": "RookPawnThirdRankDefence",
+            "score_strong_side": 17,
+            "strong_side": "white"
+          },
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -99
+            },
+            "material": 600,
+            "mobility": {
+              "end": 68,
+              "middle": 44
+            },
+            "pawns": {
+              "end": 10,
+              "middle": 6
+            },
+            "placement": {
+              "end": 110,
+              "middle": -64
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "MO2mm",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "d8d5"
+        },
+        "score": 999995,
+        "completed_depth": 128,
+        "nodes": 162152,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -20
+            },
+            "material": 1720,
+            "mobility": {
+              "end": 92,
+              "middle": 71
+            },
+            "pawns": {
+              "end": -28,
+              "middle": -36
+            },
+            "placement": {
+              "end": 146,
+              "middle": 68
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 2650,
+          "root_side": "black",
+          "score_root_side": -65,
+          "score_side_to_move": -65,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -59
+            },
+            "material": 1830,
+            "mobility": {
+              "end": 70,
+              "middle": 44
+            },
+            "pawns": {
+              "end": -14,
+              "middle": -20
+            },
+            "placement": {
+              "end": 70,
+              "middle": 69
+            },
+            "threats": {
+              "end": 25,
+              "middle": 25
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "d8d5"
+        },
+        "score": 999995,
+        "completed_depth": 128,
+        "nodes": 162152,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -20
+            },
+            "material": 1720,
+            "mobility": {
+              "end": 92,
+              "middle": 71
+            },
+            "pawns": {
+              "end": -28,
+              "middle": -36
+            },
+            "placement": {
+              "end": 146,
+              "middle": 68
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 2650,
+          "root_side": "black",
+          "score_root_side": -65,
+          "score_side_to_move": -65,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -59
+            },
+            "material": 1830,
+            "mobility": {
+              "end": 70,
+              "middle": 44
+            },
+            "pawns": {
+              "end": -14,
+              "middle": -20
+            },
+            "placement": {
+              "end": 70,
+              "middle": 69
+            },
+            "threats": {
+              "end": 25,
+              "middle": 25
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "f3apJ",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "d4f3"
+        },
+        "score": 433,
+        "completed_depth": 9,
+        "nodes": 296403,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": 2
+            },
+            "material": 2540,
+            "mobility": {
+              "end": 106,
+              "middle": 87
+            },
+            "pawns": {
+              "end": 37,
+              "middle": 11
+            },
+            "placement": {
+              "end": 253,
+              "middle": 173
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 4080,
+          "root_side": "black",
+          "score_root_side": -109,
+          "score_side_to_move": -109,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -18
+            },
+            "material": 2640,
+            "mobility": {
+              "end": 88,
+              "middle": 71
+            },
+            "pawns": {
+              "end": 51,
+              "middle": 70
+            },
+            "placement": {
+              "end": 207,
+              "middle": 193
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "d4f3"
+        },
+        "score": 407,
+        "completed_depth": 8,
+        "nodes": 292531,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": 2
+            },
+            "material": 2540,
+            "mobility": {
+              "end": 106,
+              "middle": 87
+            },
+            "pawns": {
+              "end": 37,
+              "middle": 11
+            },
+            "placement": {
+              "end": 253,
+              "middle": 173
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 4080,
+          "root_side": "black",
+          "score_root_side": -109,
+          "score_side_to_move": -109,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -18
+            },
+            "material": 2640,
+            "mobility": {
+              "end": 88,
+              "middle": 71
+            },
+            "pawns": {
+              "end": 51,
+              "middle": 70
+            },
+            "placement": {
+              "end": 207,
+              "middle": 193
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "CNWwY",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "c1c8"
+        },
+        "score": 752,
+        "completed_depth": 8,
+        "nodes": 140715,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -72
+            },
+            "material": 600,
+            "mobility": {
+              "end": 64,
+              "middle": 42
+            },
+            "pawns": {
+              "end": 166,
+              "middle": 42
+            },
+            "placement": {
+              "end": 62,
+              "middle": 10
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 1000,
+          "root_side": "black",
+          "score_root_side": 44,
+          "score_side_to_move": 44,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -95
+            },
+            "material": 600,
+            "mobility": {
+              "end": 28,
+              "middle": 14
+            },
+            "pawns": {
+              "end": 114,
+              "middle": 42
+            },
+            "placement": {
+              "end": 114,
+              "middle": -30
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "c1c8"
+        },
+        "score": 752,
+        "completed_depth": 8,
+        "nodes": 145745,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -72
+            },
+            "material": 600,
+            "mobility": {
+              "end": 64,
+              "middle": 42
+            },
+            "pawns": {
+              "end": 166,
+              "middle": 42
+            },
+            "placement": {
+              "end": 62,
+              "middle": 10
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 1000,
+          "root_side": "black",
+          "score_root_side": 44,
+          "score_side_to_move": 44,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -95
+            },
+            "material": 600,
+            "mobility": {
+              "end": 28,
+              "middle": 14
+            },
+            "pawns": {
+              "end": 114,
+              "middle": 42
+            },
+            "placement": {
+              "end": 114,
+              "middle": -30
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "tb-6",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "d1c1"
+        },
+        "score": 303,
+        "completed_depth": 7,
+        "nodes": 496516,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 28,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 500,
+            "mobility": {
+              "end": 60,
+              "middle": 40
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 12,
+              "middle": -42
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 500,
+          "root_side": "black",
+          "score_root_side": 310,
+          "score_side_to_move": 310,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -103
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 113,
+              "middle": 21
+            },
+            "placement": {
+              "end": 92,
+              "middle": -48
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "d1e1"
+        },
+        "score": 303,
+        "completed_depth": 7,
+        "nodes": 517472,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 28,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 500,
+            "mobility": {
+              "end": 60,
+              "middle": 40
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 12,
+              "middle": -42
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 500,
+          "root_side": "black",
+          "score_root_side": 310,
+          "score_side_to_move": 310,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -103
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 113,
+              "middle": 21
+            },
+            "placement": {
+              "end": 92,
+              "middle": -48
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "tb-7",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "d1e1"
+        },
+        "score": 376,
+        "completed_depth": 8,
+        "nodes": 512589,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 28,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 500,
+            "mobility": {
+              "end": 60,
+              "middle": 40
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 12,
+              "middle": -42
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 500,
+          "root_side": "black",
+          "score_root_side": 390,
+          "score_side_to_move": 390,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -103
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 38,
+              "middle": 6
+            },
+            "placement": {
+              "end": 82,
+              "middle": -52
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "d1e1"
+        },
+        "score": 376,
+        "completed_depth": 8,
+        "nodes": 521627,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 28,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -40
+            },
+            "material": 500,
+            "mobility": {
+              "end": 60,
+              "middle": 40
+            },
+            "pawns": {
+              "end": 0,
+              "middle": 0
+            },
+            "placement": {
+              "end": 12,
+              "middle": -42
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 500,
+          "root_side": "black",
+          "score_root_side": 390,
+          "score_side_to_move": 390,
+          "side_to_move": "black",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -103
+            },
+            "material": 100,
+            "mobility": {
+              "end": 0,
+              "middle": 0
+            },
+            "pawns": {
+              "end": 38,
+              "middle": 6
+            },
+            "placement": {
+              "end": 82,
+              "middle": -52
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "goldfish-pawn-exchange-44",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "e4f5"
+        },
+        "score": -65,
+        "completed_depth": 8,
+        "nodes": 462540,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -64
+            },
+            "material": 730,
+            "mobility": {
+              "end": 45,
+              "middle": 36
+            },
+            "pawns": {
+              "end": 34,
+              "middle": 7
+            },
+            "placement": {
+              "end": 82,
+              "middle": 9
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 650,
+          "root_side": "white",
+          "score_root_side": 28,
+          "score_side_to_move": 28,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -46
+            },
+            "material": 620,
+            "mobility": {
+              "end": 32,
+              "middle": 40
+            },
+            "pawns": {
+              "end": 63,
+              "middle": 26
+            },
+            "placement": {
+              "end": 212,
+              "middle": 32
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "e4f5"
+        },
+        "score": -68,
+        "completed_depth": 8,
+        "nodes": 459186,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -64
+            },
+            "material": 730,
+            "mobility": {
+              "end": 45,
+              "middle": 36
+            },
+            "pawns": {
+              "end": 34,
+              "middle": 7
+            },
+            "placement": {
+              "end": 82,
+              "middle": 9
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 650,
+          "root_side": "white",
+          "score_root_side": 28,
+          "score_side_to_move": 28,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -46
+            },
+            "material": 620,
+            "mobility": {
+              "end": 32,
+              "middle": 40
+            },
+            "pawns": {
+              "end": 63,
+              "middle": 26
+            },
+            "placement": {
+              "end": 212,
+              "middle": 32
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "goldfish-pawn-exchange-44",
+      "time_ms": 5000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "e4f5"
+        },
+        "score": -98,
+        "completed_depth": 9,
+        "nodes": 2218216,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -64
+            },
+            "material": 730,
+            "mobility": {
+              "end": 45,
+              "middle": 36
+            },
+            "pawns": {
+              "end": 34,
+              "middle": 7
+            },
+            "placement": {
+              "end": 82,
+              "middle": 9
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 650,
+          "root_side": "white",
+          "score_root_side": 28,
+          "score_side_to_move": 28,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -46
+            },
+            "material": 620,
+            "mobility": {
+              "end": 32,
+              "middle": 40
+            },
+            "pawns": {
+              "end": 63,
+              "middle": 26
+            },
+            "placement": {
+              "end": 212,
+              "middle": 32
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "e4f5"
+        },
+        "score": -88,
+        "completed_depth": 9,
+        "nodes": 2335028,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -64
+            },
+            "material": 730,
+            "mobility": {
+              "end": 45,
+              "middle": 36
+            },
+            "pawns": {
+              "end": 34,
+              "middle": 7
+            },
+            "placement": {
+              "end": 82,
+              "middle": 9
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 650,
+          "root_side": "white",
+          "score_root_side": 28,
+          "score_side_to_move": 28,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -46
+            },
+            "material": 620,
+            "mobility": {
+              "end": 32,
+              "middle": 40
+            },
+            "pawns": {
+              "end": 63,
+              "middle": 26
+            },
+            "placement": {
+              "end": 212,
+              "middle": 32
+            },
+            "threats": {
+              "end": 0,
+              "middle": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "goldfish-queen-rook-31",
+      "time_ms": 1000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "b7a7"
+        },
+        "score": 162,
+        "completed_depth": 8,
+        "nodes": 361380,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -18
+            },
+            "material": 1900,
+            "mobility": {
+              "end": 52,
+              "middle": 31
+            },
+            "pawns": {
+              "end": -56,
+              "middle": -62
+            },
+            "placement": {
+              "end": 92,
+              "middle": 28
+            },
+            "threats": {
+              "end": 37,
+              "middle": 37
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 2720,
+          "root_side": "white",
+          "score_root_side": 160,
+          "score_side_to_move": 160,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": 40
+            },
+            "material": 1920,
+            "mobility": {
+              "end": 76,
+              "middle": 69
+            },
+            "pawns": {
+              "end": 0,
+              "middle": -12
+            },
+            "placement": {
+              "end": 150,
+              "middle": 98
+            },
+            "threats": {
+              "end": 6,
+              "middle": 6
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "b7a7"
+        },
+        "score": 162,
+        "completed_depth": 8,
+        "nodes": 361254,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -18
+            },
+            "material": 1900,
+            "mobility": {
+              "end": 52,
+              "middle": 31
+            },
+            "pawns": {
+              "end": -56,
+              "middle": -62
+            },
+            "placement": {
+              "end": 92,
+              "middle": 28
+            },
+            "threats": {
+              "end": 37,
+              "middle": 37
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 2720,
+          "root_side": "white",
+          "score_root_side": 160,
+          "score_side_to_move": 160,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": 40
+            },
+            "material": 1920,
+            "mobility": {
+              "end": 76,
+              "middle": 69
+            },
+            "pawns": {
+              "end": 0,
+              "middle": -12
+            },
+            "placement": {
+              "end": 150,
+              "middle": 98
+            },
+            "threats": {
+              "end": 6,
+              "middle": 6
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "goldfish-queen-rook-31",
+      "time_ms": 5000,
+      "before": {
+        "decision": {
+          "kind": "move",
+          "uci": "b3a5"
+        },
+        "score": 23,
+        "completed_depth": 9,
+        "nodes": 1738811,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -18
+            },
+            "material": 1900,
+            "mobility": {
+              "end": 52,
+              "middle": 31
+            },
+            "pawns": {
+              "end": -56,
+              "middle": -62
+            },
+            "placement": {
+              "end": 92,
+              "middle": 28
+            },
+            "threats": {
+              "end": 37,
+              "middle": 37
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 2720,
+          "root_side": "white",
+          "score_root_side": 160,
+          "score_side_to_move": 160,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": 40
+            },
+            "material": 1920,
+            "mobility": {
+              "end": 76,
+              "middle": 69
+            },
+            "pawns": {
+              "end": 0,
+              "middle": -12
+            },
+            "placement": {
+              "end": 150,
+              "middle": 98
+            },
+            "threats": {
+              "end": 6,
+              "middle": 6
+            }
+          }
+        }
+      },
+      "after": {
+        "decision": {
+          "kind": "move",
+          "uci": "b3a5"
+        },
+        "score": 23,
+        "completed_depth": 9,
+        "nodes": 1744518,
+        "root_evaluation": {
+          "black": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": -18
+            },
+            "material": 1900,
+            "mobility": {
+              "end": 52,
+              "middle": 31
+            },
+            "pawns": {
+              "end": -56,
+              "middle": -62
+            },
+            "placement": {
+              "end": 92,
+              "middle": 28
+            },
+            "threats": {
+              "end": 37,
+              "middle": 37
+            }
+          },
+          "kind": "static_heuristic_not_native_outcome",
+          "middle_phase": 2720,
+          "root_side": "white",
+          "score_root_side": 160,
+          "score_side_to_move": 160,
+          "side_to_move": "white",
+          "specialized": null,
+          "white": {
+            "endgame": {
+              "end": 0,
+              "middle": 0
+            },
+            "king_safety": {
+              "end": 0,
+              "middle": 40
+            },
+            "material": 1920,
+            "mobility": {
+              "end": 76,
+              "middle": 69
+            },
+            "pawns": {
+              "end": 0,
+              "middle": -12
+            },
+            "placement": {
+              "end": 150,
+              "middle": 98
+            },
+            "threats": {
+              "end": 6,
+              "middle": 6
+            }
+          }
+        }
+      }
+    }
+  ],
+  "oracle_cases": 16,
+  "all_wdl_preserved": true
+}

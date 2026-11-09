@@ -1,6 +1,6 @@
 {
   "task": "MSH-145 (Pawn Threat and Exchange Judgment)",
-  "status": "baseline-complete-evaluation-implementation-in-progress",
+  "status": "accepted",
   "verification_level": "Level1 portable evaluation; local independent oracle/search/history checks and review; platform and packaging deferred to relevant integration checkpoints",
   "base_revision": "5ef338b",
   "baseline_production_source": "0401b828c472f32759afba1a407093cb99313d5a",
@@ -38,5 +38,86 @@
     "exit": 0
   },
   "baseline_findings": "All independent WDLchoices preserved, including unique a6 race and Ng6 mate; drawn KQKP/KNNK/Philidor still+714/+827/+203. General scaling/leaf-discrimination deficiency, not failures of native rules.",
-  "independent_nearby_nonmate_control": "8/8/8/8/3Q1K2/8/2p5/2k5 w - - 0 1 independently wins DTZ7 without a mate-in-one; remote-king scaling excluded"
+  "independent_nearby_nonmate_control": "8/8/8/8/3Q1K2/8/2p5/2k5 w - - 0 1 independently wins DTZ7 without a mate-in-one; remote-king scaling excluded",
+  "tested_source": "846329fb5e4af855c53da83c3edbd4bb1cf5e1d6",
+  "candidate": {
+    "source": "846329fb5e4af855c53da83c3edbd4bb1cf5e1d6",
+    "binary_sha256": "f81023ef3303521884fb1326a24f41d9b0753406e741628aa3db67d528a18f3c",
+    "inputs_sha256": "ed1a4a998387315cef9a5e0dc000b0000a88d940683583a9b2b8a0db023fdb30",
+    "command": [
+      "/private/tmp/msh145/candidate-profile",
+      "docs/m5/evidence/msh145/positions.json",
+      "128",
+      "timed",
+      "none"
+    ],
+    "elapsed_seconds": 28.54509025020525,
+    "exit": 0
+  },
+  "comparison": {
+    "conditions": 23,
+    "distinct_roots": 21,
+    "oracle_choices": 16,
+    "all_oracle_wdl_preserved": true,
+    "all_roots_restored_and_pvs_native_admitted": true,
+    "three_published_tactical_first_moves_retained": true,
+    "drawn_queen_pawn_before_after": [
+      714,
+      95
+    ],
+    "drawn_two_knights_before_after": [
+      827,
+      0
+    ],
+    "drawn_rook_philidor_before_after": [
+      203,
+      149
+    ],
+    "opposite_turn_philidor_before_after": [
+      -166,
+      -29
+    ],
+    "limitations": "No newly corrected WDL choice: baseline also preserved all16. Evaluation calibration improves in selected drawn families; narrow guards do not recognize every drawing continuation. One tactical sample completes one fewer ply but preserves published move. No playing-strength inference."
+  },
+  "artifacts": {
+    "baseline-receipt.json": "eac40216c4c760e59f2dffb2285f63c8f4314558c90a5648437cd0811e4c05be",
+    "harness-clippy.log.gz": "ba09db55fa76f187d5cb3e4df53ac8c9c4828543ddef79abb708aaffe0934fb2",
+    "eval-focused.log.gz": "0733c4e7e6d3ab976b6e1e7b622df834b91f70859e99871ea5a931f6a653f913",
+    "eval-clippy.log.gz": "e047d7602fea499484303f3b96fff07a09e3774214734595ccba18b0be8a4a04",
+    "baseline.jsonl.gz": "12604c9d069d90bcdf5e1f89273c4198433fde260fa4050ed11547ebf30ef64d",
+    "candidate.jsonl.gz": "ee96075e92f8a8b68c360315a8ddfbdd9afa492d4366bc394cd36d46444478b4",
+    "near-king-nonmate-oracles.json.gz": "9699c4484381da354fce9ecbc7c3f496aa6e10196f360cddd6b486a11bff69c0",
+    "candidate-build.log.gz": "6348963bb81d52f89f7256c30486bab38c3f7a8604ae4c592114b1f8817f7bb0",
+    "candidate.stderr.gz": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+    "independent-nearby-oracles.json.gz": "9f72a1fc1d25478815431a6316727fa2951833a37953c88cf858b8b850feabe4",
+    "comparison.json": "40e8389988a93f4526a11d0b0cb67db59bd5d25d4da0aff0f33950895781151f",
+    "search-all.log.gz": "da4fbb25d4270c504ef4686b3ac1685d9494183ea7c568fde2880f9b2ab66d87",
+    "fmt.log.gz": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+    "near-king-guard.log.gz": "f02af9d199735ab8a07eae9167f18f2527e05187ae01d14192b03f24631f3b45",
+    "research.md": "b9d05923d4ec5039a194f38fab6d7617539a59165d6da8b1f0cd610e311a2420",
+    "search-native-priority.log.gz": "49c7e640c1a0d83d23249d53f773edbcd55e9b78c6069c6bccd71fb273a321b1",
+    "smoke.jsonl.gz": "ce7cde1b4deb6b9d3cbbd68bc07398ad7b01784e2f96c87f7ca69d3be0f03faa",
+    "positions.json": "ed1a4a998387315cef9a5e0dc000b0000a88d940683583a9b2b8a0db023fdb30",
+    "workspace-clippy.log.gz": "bfac2ede6018f5605918b38f19d6f110eb6300a6d649154706fd1a99d1d8c505",
+    "baseline.stderr.gz": "3f7ac838cef5616dc967783c1607df0b85e86e2923b3bcdf78eb206d44316af7",
+    "candidate-receipt.json": "bbcceb91c70e30e04eb1124aec20255e252b88047d9739fb78e32acb7bead294"
+  },
+  "environment": {
+    "os": "macOS27.0.1",
+    "architecture": "arm64",
+    "hardware": "AppleM1Pro32GiB",
+    "rust": "1.99.1"
+  },
+  "commands": [
+    "cargo test --release -p mshogi-search --lib",
+    "cargo clippy --release --workspace --all-targets -- -D warnings",
+    "cargo fmt --all -- --check",
+    "cargo build --release -p mshogi-search --example chess_frontier_profile",
+    "baseline/candidate-profile docs/m5/evidence/msh145/positions.json 128 timed none"
+  ],
+  "independent_review": {
+    "reviewer": "endgame_review independent read-only session",
+    "verdict": "approved exact846329fb source and final23condition/evidence reconciliation; no material findings",
+    "coverage": "bounded tempo/rear-support geometry; material/tactical/near-king guards; native mate/history/claims/cancel; incremental and color reflection; allartifact/binary/input hashes;101tests2ignored;16oracleWDL and3tacticalchoices; no invented speed or strength"
+  }
 }

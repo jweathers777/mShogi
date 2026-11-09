@@ -1,0 +1,14 @@
+{
+  "source": "846329fb5e4af855c53da83c3edbd4bb1cf5e1d6",
+  "binary_sha256": "f81023ef3303521884fb1326a24f41d9b0753406e741628aa3db67d528a18f3c",
+  "inputs_sha256": "ed1a4a998387315cef9a5e0dc000b0000a88d940683583a9b2b8a0db023fdb30",
+  "command": [
+    "/private/tmp/msh145/candidate-profile",
+    "docs/m5/evidence/msh145/positions.json",
+    "128",
+    "timed",
+    "none"
+  ],
+  "elapsed_seconds": 28.54509025020525,
+  "exit": 0
+}

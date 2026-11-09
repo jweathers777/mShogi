@@ -1,11 +1,11 @@
 ---
 id: MSH-145
 title: Pawn Threat and Exchange Judgment
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-09T19:38:00Z'
-updated_date: '2026-11-09T21:22:00Z'
+updated_date: '2026-11-09T21:38:00Z'
 labels:
   - handle:pawn-threat-and-exchange-judgment
 milestone: m-5
@@ -28,17 +28,17 @@ Handle: Pawn Threat and Exchange Judgment. Follow the completed conventional eng
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Establish the causes and generality of passed-pawn, king-interception or exchange-judgment errors from full-history reproductions and independent endgame/tactical expectations, distinguishing verified defects from heuristic limitations and engine opinions.
-- [ ] #2 Implement supported general conventional corrections with independently established winning/drawing/losing and negative counterexamples, preserving native authority, draw claims, exact restoration, cancellation and finite search-frontier work.
-- [ ] #3 Focused correctness, realistic-time profiling and tactical/endgame comparisons plus independent review and appropriate native integration evidence support the increment; limitations and further opportunities are recorded without an invented strength gain or another per-optimization tournament.
+- [x] #1 Establish the causes and generality of passed-pawn, king-interception or exchange-judgment errors from full-history reproductions and independent endgame/tactical expectations, distinguishing verified defects from heuristic limitations and engine opinions.
+- [x] #2 Implement supported general conventional corrections with independently established winning/drawing/losing and negative counterexamples, preserving native authority, draw claims, exact restoration, cancellation and finite search-frontier work.
+- [x] #3 Focused correctness, realistic-time profiling and tactical/endgame comparisons plus independent review and appropriate native integration evidence support the increment; limitations and further opportunities are recorded without an invented strength gain or another per-optimization tournament.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -55,4 +55,12 @@ Owner course-correction after MSH-144: do not start automatically. MSH-147 (Ches
 MSH147 broad diagnosis prioritizes MSH148 Deferred Frontier Work first, then this evaluation increment. Baseline avoided historical Ne5 at local depth8 but still showed deeper pessimism; independent queen-pawn, KNNK and rook endings expose broader conversion/scaling ambiguity. Preserve native authority and nearby winning/losing counterexamples. Broad low-material LMR was experimentally rejected after losing unique winningRe1; no blanket pruning/TT change is authorized by that result.
 
 MSH148 removed unused quiet work with exact fixed-work equivalence but neutral aggregate timing. MSH150 Lazy Native Move Queries now precedes this task to address the larger profiled native-query/allocation cost. Evaluation scope and independent counterexamples remain valid; no per-technique tournament.
+
+Candidate846329fb5e4af855c53da83c3edbd4bb1cf5e1d6: bounded passer interception and narrow advisory conversion scaling. 101release searchtests pass2ignored; workspacealltargetclippy/fmt pass. Frozen baselinecbca95c and23condition comparison preserve all16independent WDLchoices, all3published tacticalfirstmoves, nativePV/root/completelegalsets. DrawQKP714→95,KNN827→0,Philidor203→149; baselinealsoWDLcorrect, so no new solvedwin or strengthclaim. Source/evidence independent review pending; canonical docs/m5/evidence/msh145/verification.json. No opponent matches or platform/GUI campaign.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Integrated on codex/rewrite at tested846329fb5e4af855c53da83c3edbd4bb1cf5e1d6; final evidence accompanies completion commit. General bounded passer-tempo/rear-support correction and narrow advisory KNNK/KQKP/KRPKR scaling address independent calibration weaknesses without new legality/adjudication.101release searchtests pass2ignored, workspaceclippy/fmt;23conditions preserve all16oracleWDLchoices and3publishedtacticalmoves, nativePV/root restoration. Drawn scores improve but baselinealreadyWDLcorrect; no new solvedwin, speed or playing-strengthclaim. Independent endgame_review approvedsource andallreceipts/hashes, no materialfindings. Level1localmacOS27arm64 only; no matches/platform/GUI campaign. docs/m5/chess-pawn-conversion.md andevidence/msh145/verification.json. Continue149KingExposure then151CoherentRoundAssessment.
+<!-- SECTION:FINAL_SUMMARY:END -->

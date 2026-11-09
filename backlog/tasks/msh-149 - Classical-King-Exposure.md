@@ -1,9 +1,11 @@
 ---
 id: MSH-149
 title: Classical King Exposure
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-09T20:38:00Z'
+updated_date: '2026-11-09T21:39:00Z'
 labels:
   - handle:classical-king-exposure
 milestone: m-5
@@ -35,3 +37,9 @@ Handle: Classical King Exposure. MSH147 shows queen/rook historical judgments ch
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Root owns integration on codex/rewrite after145accepted4f4fa99. Current king_safety end component is zero, globally fading pressure even when queen/rook checks remain. Freeze independent supported/unsupported queen and rook checks, native defensive resources, safe/blocked/no-major controls plus145oracle/tactical panel. Delegate isolated evaluator/tests: retain exactmiddle/shelter/storm/globalphase and add a modest capped end danger using existing ring/safe-check geometry, including supportedcontact before countingcap, only with participating enemymajor. No leaflegalgeneration, rules/history/searchpolicy/protocolchange. Verify exact component guards, mirror/turn/counter/incremental equality, native mate/claims/cancel, allsearchregressions and short frozen-source timedcomparisons. Level1 portableevaluation; independent source/evidence review, no matches or platform/GUIcampaign. Then151freshadaptiveassessment ofcombinedround.
+<!-- SECTION:PLAN:END -->

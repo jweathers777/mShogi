@@ -63,8 +63,9 @@
       "five diagnostic-filter tests passed (four new Chess controls)",
       "48 conventional-search/evaluation tests passed, one existing ignored",
       "12 positions at30000visits old/new default exact result/PV/work/legacy-counter equality",
-      "workspace all-target clippy and fmt passed"
+      "workspace all-target clippy passed (40.61s); initial fmt check failed on example flag line wrapping, corrected by rustfmt and rerun passed"
     ],
-    "scope": "LMR, quiet omissions, SEE omissions and q delta isolated; optional low-material LMR preserves null and omission guards and native mate-threat protection"
+    "scope": "LMR, quiet omissions, SEE omissions and q delta isolated; optional low-material LMR preserves null and omission guards and native mate-threat protection",
+    "evidence_correction": "The preceding checkpoint was recorded before the combined check command finished. Final receipt replaces its incomplete clippy log and explicitly preserves the initial formatting failure; no algorithm changed."
   }
 }

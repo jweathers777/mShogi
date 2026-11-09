@@ -1,10 +1,10 @@
 ---
 id: MSH-50
 title: Establish and meet measured shogi engine strength criteria
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-09T11:26:00Z'
+updated_date: '2026-11-09T13:28:00Z'
 labels:
   - handle:conventional-shogi
 milestone: m-5
@@ -71,4 +71,6 @@ Before cross-game transfer, finish MSH-138 desktop play-budget calibration so or
 Stable task handle: Conventional Shogi. Use MSH-50 (Conventional Shogi) in new conversational reports and development summaries. Historical titles/evidence/status unchanged.
 
 Owner consolidation2026-11-09: MSH-139 (Chess Strength Qualification) is a mandatory prerequisite. MSH-138 (Desktop Search Limits) and MSH-137 (Chess Search Refinement) engineering evidence alone cannot release cross-game transfer. Qualification requires approved target/protocol/budget and demonstrated agreed strength, not just a completed proposal. Preserve existing acceptance/evidence.
+
+Owner revision2026-11-09: MSH-139 (Chess Strength Assessment) is discovery, not qualification. Even when that assessment isDone, do notactivate MSH-50 (Conventional Shogi) untilJohn reviews findings and explicitly chooses the next objective/transfer direction. Retainfull dependencies and acceptedcriteria. StatusToDo records this unresolvedownerdirection; a completed assessmentalone cannotrelease transfer.
 <!-- SECTION:NOTES:END -->

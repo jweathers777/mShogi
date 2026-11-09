@@ -90,16 +90,19 @@ new evaluation approach integrated into it, not at individual optimizations or
 small groups of changes. Routine algorithm choices remain the implementer's job.
 Follow the owner-selected sequence in `docs/m5/strength-roadmap.md`.
 
-Owner consolidation, 2026-11-09: ordinary desktop Chess is time-primary; retain
-only operational safeguards that do not practically preempt timed search.
-Before conventional Shogi/Xiangqi transfer, require demonstrated Chess playing
-strength against credible, unweakened independently rated opponents. Engineering
-correctness, speed and tactical regressions alone do not qualify the engine.
-Research and prepare the target, adaptive protocol and bounded budget autonomously;
-obtain John's explicit approval of all three before the formal campaign or
-substantial additional compute. Preserve completed engineering evidence. Learned
-evaluation remains later. Player-configurable thinking time is future product
-work, not permission to expand the current desktop-limit assignment.
+Owner revision, 2026-11-09: ordinary desktop Chess is time-primary. MSH-139
+(Chess Strength Assessment) is explicitly authorized to discover current strength
+against full-strength independently rated engines under comparable thinking time.
+There is no approved strength target, fixed tournament size or campaign-hour
+allocation. Adapt opponents and fresh paired confirmation to observed scores and
+uncertainty; use established statistics and stop when findings are useful for the
+next development decision. Track actual resource use, bound individual processes
+and artifacts, and escalate genuinely substantial additional resource needs.
+This authorization supersedes the unapproved qualification proposal and the
+routine 15-minute match allowance for this assessment only. Report findings and
+STOP for John's review before selecting a target, further engine improvements or
+Shogi/Xiangqi transfer. Completed engineering and historical evidence remain valid;
+learned evaluation stays later. Player-configurable time is separate future work.
 
 For macOS GUI verification, reuse the fixed normal/QA/synthetic application slots
 and identities documented in `docs/desktop/packaged-gui-verification.md`, using

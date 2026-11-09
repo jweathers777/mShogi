@@ -37,13 +37,14 @@ its observations remain distinct from independently expected facts. Optional
 opponent-based strength/interoperability experiments retain their stated purpose
 and do not become rules-conformance gates.
 
-Owner clarification, 2026-11-09: independently rated opponents are required for
-the separately approved Chess playing-strength qualification before cross-game
-transfer. This is a strength measurement gate, not a rules-conformance oracle or
-an external-engine dependency in normal product/CI builds. No substantial
-qualification campaign may run before approval of its target, protocol and budget.
-This explicit owner gate supersedes the earlier blanket milestone/release
-wording only for that requested strength qualification.
+Owner revision, 2026-11-09: MSH-139 (Chess Strength Assessment) explicitly
+requires independently rated full-strength opponents to measure current strength.
+The adaptive assessment is authorized, with no predetermined target or fixed
+campaign size/budget. This is measurement, not a rules oracle or external-engine
+normal product/CI dependency. Preserve operational bounds and escalate genuinely
+substantial resource needs. Report findings before an owner decision on further
+Chess objectives or cross-game transfer; the earlier qualification approval
+proposal is superseded.
 
 Historical Chess/Shogi/Xiangqi comparisons and completed reviews remain accurate
 observational evidence at their original revisions; do not erase, rewrite or

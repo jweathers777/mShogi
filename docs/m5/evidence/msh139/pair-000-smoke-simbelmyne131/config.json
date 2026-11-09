@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "id": "msh139-simbelmyne131-book-e5b2fa0d36a9373a",
+  "engines": [
+    {
+      "path": "/private/tmp/msh139/target/release/mshogi",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "mshogi.chess.conventional.v1 / mshogi.chess.conventional-tapered.v1",
+      "deterministic": false
+    },
+    {
+      "path": "/private/tmp/msh139/simbelmyne/target/release/simbelmyne",
+      "args": [],
+      "options": [],
+      "model_path": null,
+      "model_identity": "Simbelmyne1.3.1/ede2b01e408501b4f59a05c2951bba2dec5f6b74",
+      "deterministic": false
+    }
+  ],
+  "openings": [
+    {
+      "id": "book-e5b2fa0d36a9373a",
+      "fen": null,
+      "moves": [
+        "c2c4",
+        "e7e5",
+        "b1c3",
+        "b8c6",
+        "g1f3",
+        "g8f6",
+        "a2a3",
+        "d7d5",
+        "c4d5",
+        "f6d5",
+        "d1c2",
+        "f8e7",
+        "e2e3",
+        "e8g8",
+        "f1e2",
+        "c8e6"
+      ]
+    }
+  ],
+  "paired": true,
+  "claim_policy": "auto_claim",
+  "time_control": "untimed",
+  "work": {
+    "depth": null,
+    "nodes": null,
+    "movetime_ms": 1000
+  },
+  "max_plies": 20,
+  "watchdogs": {
+    "handshake_ms": 5000,
+    "ready_ms": 5000,
+    "response_ms": 10000,
+    "write_ms": 2000,
+    "cleanup_ms": 1000
+  },
+  "io": {
+    "line_bytes": 4096,
+    "queued_lines": 32,
+    "transcript_bytes": 2097152,
+    "stderr_bytes": 16384,
+    "command_bytes": 4096
+  }
+}

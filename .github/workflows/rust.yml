@@ -42,6 +42,8 @@ jobs:
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
       - name: Test
         run: cargo test --workspace --locked
+      - name: Verify time-primary desktop Chess through actual release subprocesses
+        run: cargo test --release --locked -p mshogi-console --test desktop_play
       - name: Verify production Tenjiku subprocess and standard-root journeys
         run: cargo test --release --locked -p mshogi-console --test tenjiku_internal --test tenjiku_selfplay
       - name: Verify isolated desktop QA constructors

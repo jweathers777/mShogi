@@ -7,8 +7,9 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-08T13:07:00Z'
-updated_date: '2026-11-08T19:02:00Z'
-labels: []
+updated_date: '2026-11-09T11:16:00Z'
+labels:
+  - handle:stockfish-baseline
 milestone: m-5
 dependencies:
   - MSH-49.1
@@ -70,6 +71,8 @@ Reviewed owner-authorized diagnostic inputs integrated/pushed cc2ec7c (exactfree
 All8 diagnosticgames completed at frozenexecution sourcecc2ec7c:0W0D8L, allnativeStockfishcheckmates, no failed/unscored/cappedgames, stderr/truncation/cleanupissues. Fourpairs onepass, total494.88940828992054s includingprior5.840419957879931s smoke (diagnostic489.0489883320406s), no inflight/no furtherbatches. All522requests are go movetime1000 only. Native replaypassed4pairs and independentlyrepeated4pairs; exactartifacts/config/hash/freeze/sourceequivalence reconciled. Descriptive cp-turn nominaldepthmedians5(mShogi) vs22(SF), selective18vs36; countersengine-specific, SFmate-depth245excluded. Report docs/m5/chess-unrestricted-comparison.md documents2nativeverified kingattack/materialloss sequences andlimitations. Updatedroadmap/ownercriteria beforegames, no significance/interval/Elo. Finalreport/4AC+DoD independentacceptance pending; then normalintegration andparent49/handoff50/54. No productionchange/newCI orfurtherChesswork.
 
 Final independent acceptance APPROVED (msh492_protocol_review) all4owner-rescopedAC/4DoD andparent49: raw+inner hashes/9compressedartifacts/freeze/source/resourcepins/all522go1000controls, fourindependentnative replaypasses, exact494.88940828992054s/noinflight,8actualnativeSFmates/zero failures andfaithful diagnosticreport reconciled. Finaltable/aggregatecp-depths/engine-specificcaveats andtwo nativeverified losssequences supported; no significance/interval/Elo, firstblunderproof orsingle-technique causalclaim. Allcriteria checked; Done supported. Executioninputs normallypushedcc2ec7c, build0b3b458/unchangedengine4250, priornativeacceptanceb8cc851 reused. Finaldocs/evidence/task normalintegration/push follows; hash inGit history/report. No furthermatches orothergameimplementation. Parent49baselinecomplete;50Shogi/54Xiangqireadyengineeringnext, deeperChessanalysisduring55.
+
+Stable task handle: Stockfish Baseline. Use MSH-49.2 (Stockfish Baseline) in new conversational reports and development summaries. Historical titles/evidence/status unchanged.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

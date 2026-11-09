@@ -39,6 +39,8 @@ Work on one bounded task per session by default. An explicitly requested queue o
 - Keep custom project instructions outside Backlog.md's managed instruction block.
 - Do not create GitHub Issues as an additional task system. A PR may carry a concise summary and link to a repository ticket.
 - Preserve IDs and evidence. Archive completed or cancelled work deliberately; do not delete task history as routine cleanup.
+- Give every new task a concise, stable, descriptive handle (preferably two to five words). Record `Handle: ...` in its description and a `handle:<kebab-case>` label through the CLI. For useful existing tasks, append `Stable task handle: ...` without rewriting historical records. The handle remains stable if the longer title changes.
+- In new conversational reports, development summaries, plans and task references, write `MSH-138 (Desktop Search Limits)`, `MSH-137 (Chess Search Refinement)` or `MSH-49.2 (Stockfish Baseline)`: always ID plus handle. CLI arguments, filenames, machine identities and the managed examples below retain their native syntax. Do not rewrite old evidence just to retrofit handles.
 
 The configured statuses are `To Do`, `Ready`, `In Progress`, `In Review`, and `Done`, with `Done` last.
 
@@ -67,9 +69,11 @@ Backlog.md allows a task to be marked Done with unchecked criteria. Project poli
 Conformance must follow `docs/testing/conformance-policy.md`: selected rules and
 independently established expectations, meaningful property/metamorphic/negative
 checks and independent review. External game engines are optional investigations,
-never ordinary build/test/CI/conformance/milestone/release prerequisites. Preserve
+never rules oracles or ordinary build/test/CI/conformance dependencies. An explicit
+owner-approved playing-strength qualification may require independent opponents
+for that measurement gate; it does not make them product or rules dependencies. Preserve
 historical observations without requiring another engine for future variants.
-Owner-requested opponent strength comparisons, such as MSH-49.2, are separate
+Owner-requested opponent strength comparisons, such as MSH-49.2 (Stockfish Baseline), are separate
 measurement tasks; they do not make an external engine a normal product, rules
 conformance or CI dependency.
 
@@ -85,6 +89,17 @@ substantially complete conventional engine for a game, or a substantially comple
 new evaluation approach integrated into it, not at individual optimizations or
 small groups of changes. Routine algorithm choices remain the implementer's job.
 Follow the owner-selected sequence in `docs/m5/strength-roadmap.md`.
+
+Owner consolidation, 2026-11-09: ordinary desktop Chess is time-primary; retain
+only operational safeguards that do not practically preempt timed search.
+Before conventional Shogi/Xiangqi transfer, require demonstrated Chess playing
+strength against credible, unweakened independently rated opponents. Engineering
+correctness, speed and tactical regressions alone do not qualify the engine.
+Research and prepare the target, adaptive protocol and bounded budget autonomously;
+obtain John's explicit approval of all three before the formal campaign or
+substantial additional compute. Preserve completed engineering evidence. Learned
+evaluation remains later. Player-configurable thinking time is future product
+work, not permission to expand the current desktop-limit assignment.
 
 For macOS GUI verification, reuse the fixed normal/QA/synthetic application slots
 and identities documented in `docs/desktop/packaged-gui-verification.md`, using

@@ -70,13 +70,15 @@ poll the engine deadline inside a transition. Untimed opt-in Full analysis still
 has its separate configured native reachability limits.
 
 Time allocation has a soft iteration boundary and hard per-node/exchange check.
-Per-move allowances use70% soft time; UCI clocks allocate remaining-time/moves and
+Fixed per-move allowances use the full hard duration. UCI clocks separately allocate remaining-time/moves and
 increment with a clock reserve and bounded extra iteration allowance. No first
 completed iteration means honest native Incomplete; UCI alone retains its existing
 explicitly labelled fallback requirement. A later incomplete iteration retains
 only the permitted prior completed observation.
 
-Live Chess uses depth ceiling128,20,000 visits and1,000ms hard time. User analysis
+Live Chess uses 1,000ms hard time with depth128 and 2^53−1 visits as effectively
+unreachable recursion/JSON-representation guards, rather than practical effort
+budgets. See MSH-138 (Desktop Search Limits) in the [desktop time contract](chess-desktop-time.md). User analysis
 defaults/admission bounds remain unchanged. Optional wire `time_ms` is Chess/M2
 only, bound into exact request identity. Optional `selective_depth` states the
 deepest actually visited board ply, including incomplete later work; it can be0
@@ -85,7 +87,8 @@ branch was searched to that depth. Every reported PV is natively re-admitted
 within its explicit selective bound, with at most a final unplayed claim.
 
 Missing optional fields serialize exactly as before and preserve historical
-nominal PV bounds. The prior fixed play settings remain loadable without changing
+nominal PV bounds. Both prior untimed depth2/20,000 and timed1,000ms/depth128/20,000 play settings
+remain loadable without changing
 the stopped document or old observations; explicit Resume adopts the new defaults
 for future work. Current host/worker artifacts support the additive fields; older
 strict binaries refuse unsupported fields rather than silently reinterpret them.
@@ -135,3 +138,8 @@ Algorithm research used the primary [Stockfish classical search](https://github.
 and [evaluation](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/evaluate.cpp)
 as references. Implementations and arithmetic are original; no upstream source,
 tables, fitted weights or engine binary becomes a product dependency.
+
+Owner consolidation, 2026-11-09: MSH-139 (Chess Strength Qualification), not
+engineering readiness alone, now gates transfer to MSH-50 (Conventional Shogi)
+and MSH-54 (Conventional Xiangqi). The [proposal](chess-strength-qualification.md)
+awaits target/protocol/budget approval; no formal qualification campaign ran.

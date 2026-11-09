@@ -590,7 +590,7 @@ fn preflight_reserved(
     reserve_controls: usize,
 ) -> Result<MatchRecord, OperationFailure> {
     archive.settings.analysis_defaults.validate()?;
-    if archive.play_limits != PLAY_LIMITS && archive.play_limits != PRIOR_PLAY_LIMITS {
+    if ![PLAY_LIMITS, PRIOR_PLAY_LIMITS, PRIOR_TIMED_PLAY_LIMITS].contains(&archive.play_limits) {
         return Err("Unsupported live play limits; no settings were downgraded.".into());
     }
     if [
@@ -1928,48 +1928,88 @@ mod tests {
         }
     }
     #[test]
-    fn prior_fixed_chess_defaults_open_unchanged_and_only_resume_selects_new_work() {
-        let directory = directory();
-        let path = directory.join("prior-fixed-play-limits.mshogi");
-        let source = controller();
-        let mut saved = archive(source.session.chess());
-        saved.play_limits = PRIOR_PLAY_LIMITS;
-        let bytes = encode_chess(&saved).unwrap();
-        fs::write(&path, &bytes).unwrap();
-        let mut restored = controller();
-        let id = restored
-            .queue_open(path.clone(), restored.open_token())
-            .unwrap();
-        assert_eq!(wait(&mut restored, id).io.phase, IoPhase::Complete);
-        assert_eq!(restored.session.chess().play_limits, PRIOR_PLAY_LIMITS);
-        assert!(restored.session.chess().pending.is_none());
-        assert_eq!(
-            restored
-                .session
-                .chess()
-                .observations
-                .iter()
-                .map(|o| &o.observation)
-                .collect::<Vec<_>>(),
-            saved
-                .observations
-                .iter()
-                .map(|o| &o.observation)
-                .collect::<Vec<_>>(),
-        );
-        assert_eq!(fs::read(&path).unwrap(), bytes);
-        let version = restored.session.version;
-        settled(&mut restored, ChessMutationCommand::Resume { version });
-        assert_eq!(restored.session.chess().play_limits, PLAY_LIMITS);
-        assert_eq!(
-            fs::read(&path).unwrap(),
-            bytes,
-            "Resume never rewrites the prior file"
-        );
-        let mut unknown = saved;
-        unknown.play_limits.depth = 3;
-        assert!(preflight(&unknown).is_err());
-        fs::remove_dir_all(directory).unwrap();
+    fn prior_chess_defaults_and_observations_open_unchanged_until_explicit_resume() {
+        for limits in [PRIOR_PLAY_LIMITS, PRIOR_TIMED_PLAY_LIMITS] {
+            let directory = directory();
+            let path = directory.join("prior-play-limits.mshogi");
+            let mut source = DesktopSession::new();
+            source.human = Color::Black;
+            source.play_limits = limits;
+            let old = source.engine_request().unwrap().context;
+            let action = "e2e4".parse().unwrap();
+            // Constructed historical observation tests archive compatibility;
+            // actual engine execution is exercised by desktop_play.
+            let response = test_response(
+                old.clone(),
+                ChessResult::Move {
+                    action,
+                    telemetry: mshogi_engine::Telemetry {
+                        score: Some(0),
+                        completed_depth: 1,
+                        selective_depth: Some(1),
+                        nodes: limits.nodes,
+                        principal_variation: vec![mshogi_engine::EngineChoice::Move { action }],
+                        status: mshogi_engine::StopReason::NodeLimit,
+                    },
+                },
+            );
+            assert!(source.accept(response.clone(), 1));
+            let saved = archive(&source);
+            assert_eq!(saved.observations.len(), 1);
+            let bytes = encode_chess(&saved).unwrap();
+            fs::write(&path, &bytes).unwrap();
+            let mut restored = controller();
+            let id = restored
+                .queue_open(path.clone(), restored.open_token())
+                .unwrap();
+            assert_eq!(wait(&mut restored, id).io.phase, IoPhase::Complete);
+            let reopened = restored.session.chess();
+            assert_eq!(reopened.play_limits, limits);
+            assert!(reopened.play_paused && reopened.pending.is_none());
+            assert!(reopened.observations.iter().all(|o| o.historical));
+            assert_eq!(
+                reopened.observations[0].observation,
+                saved.observations[0].observation
+            );
+            assert_eq!(fs::read(&path).unwrap(), bytes);
+            let version = restored.session.version;
+            settled(&mut restored, ChessMutationCommand::Resume { version });
+            assert_eq!(restored.session.chess().play_limits, PLAY_LIMITS);
+            assert_eq!(
+                fs::read(&path).unwrap(),
+                bytes,
+                "Resume never rewrites the prior file"
+            );
+            let session = restored.session.chess_mut();
+            let at_ns = session
+                .game
+                .record()
+                .timestamp_floor()
+                .max(session.controls.iter().map(|c| c.at_ns).max().unwrap_or(0))
+                + 1;
+            session
+                .command(
+                    ChessMutationCommand::Play {
+                        version: session.version,
+                        action: "e7e5".parse().unwrap(),
+                    },
+                    at_ns,
+                )
+                .unwrap();
+            let next = session.engine_request().unwrap().context;
+            assert_eq!(next.limits, PLAY_LIMITS);
+            assert!(next.request_id > old.request_id && next.session_version > old.session_version);
+            assert!(!response.matches(&mshogi_engine::ExecutionRequest {
+                protocol: mshogi_engine::PROTOCOL_VERSION,
+                context: next.clone(),
+            }));
+            assert!(!session.accept(response, at_ns + 1));
+            assert_eq!(session.pending.as_ref(), Some(&next));
+            let mut unknown = saved;
+            unknown.play_limits.depth = 3;
+            assert!(preflight(&unknown).is_err());
+            fs::remove_dir_all(directory).unwrap();
+        }
     }
 
     #[test]

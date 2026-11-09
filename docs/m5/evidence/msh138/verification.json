@@ -1,0 +1,241 @@
+{
+  "schema": 1,
+  "task": "MSH-138",
+  "handle": "Desktop Search Limits",
+  "status": "in_review_pending_packaged_macOS_and_platform_ci",
+  "starting_revision": "78a5577ea3def97b5b1c86b81351246d95da8ec1",
+  "tested_source": null,
+  "branch": "codex/rewrite",
+  "source_files": {
+    ".github/workflows/rust.yml": "873d89a0b0a2f3314263f15f01f6734d214741dcbece5f8df035a6791fb3e274",
+    "crates/mshogi-console/src/uci.rs": "33911dfdddf168a0f2153739477d54b18c77c6755819158ae235f07597c42f04",
+    "crates/mshogi-console/tests/desktop_play.rs": "b8879cf09d0aebb27031f829471d30e3959f4242c74502ec8c890f4daa3ea9e3",
+    "crates/mshogi-desktop-session/src/analysis.rs": "e05f97c114f6841a6dadad252af887030c1d868d49a41bb75bbdc4f8fe350fdd",
+    "crates/mshogi-desktop-session/src/lib.rs": "7e9d9244141d528170118dbde50fdaf3aa4c0fc3e61e3bfe526457f643d5b294",
+    "crates/mshogi-desktop-session/src/persistence.rs": "281ecb757d8267ff41af1332fd9c45615071615bf7867a4ff63aa3112744440c",
+    "crates/mshogi-engine/tests/chess_conventional_execution.rs": "3a1ee54f2864be5b50a9f929152b8ac370ef53df456f1635aa11eb32fff11d08",
+    "crates/mshogi-search/src/chess_conventional.rs": "6fab0d3f99527fc464a117ec581bc38fa0d42d8e0f85cf954fe922e2f79d03b0",
+    "crates/mshogi-search/src/chess_conventional_tests.rs": "a0973c6d0e5b7292ca4ccf45a84445354aa0bfbe7dc919c8167f995c4926a732",
+    "desktop/src/__fixtures__/shared-chess-analysis-cancelled.json": "07f8a9da0b242856a17bb5067e2d33a3ac402eaef7ed5a662c4c37b543dbd975",
+    "desktop/src/__fixtures__/shared-chess-analysis-impossible.json": "f38a4ce1f8ced520ffabde54bc161ae5697b599bc2f5d7e9b9b3baef657cc68e",
+    "desktop/src/__fixtures__/shared-chess-analysis-mate.json": "7af61bf250faff89b8b00f4ae6a6348ee53be316279c78ead9625e2a0103d914",
+    "desktop/src/__fixtures__/shared-chess-analysis-mated.json": "c7481da8b2011348009bc0396d0a99f41394020d21f69e608a5976ad0cf8825a",
+    "desktop/src/__fixtures__/shared-chess-analysis-moves.json": "649c89cea68c0584882ed53f751d1f0236cac21b1dabac2c176690b6d2184e14",
+    "desktop/src/__fixtures__/shared-chess-analysis-possible.json": "687e36662247f7bd1452037120c8d8ff924875e685e0b9fcec13d23adf70f0cb",
+    "desktop/src/__fixtures__/shared-chess-analysis-unknown.json": "3a08edea7d3972570944dfacaf546efc556801b465d7879d17079460f4ba8ba3",
+    "desktop/src/__fixtures__/shared-chess-checkmate.json": "ccaf209fc1356d98294e2916a8148fc37bdf436dddab40b26153ddb6ac915449",
+    "desktop/src/__fixtures__/shared-chess-claim.json": "54da7af77e3cc90a18ab80df67263ac55682d17fa7ddf8d12b5c4a0b7b911f52",
+    "desktop/src/__fixtures__/shared-chess-claimed.json": "8169bc7664710640bb2cc3730964b4f656cabce8fb1e27adf1a44b8269ec03b3",
+    "desktop/src/__fixtures__/shared-chess-current-claim.json": "9af5cc9cec06bcb2dd9effcc833b09084f08618944d1e529077fcdb7a46d408f",
+    "desktop/src/__fixtures__/shared-chess-history.json": "7b1e9a8da8d4f0a3054d9c3ad2107e4d1a4c67f9b77b720043dbe449857c683b",
+    "desktop/src/__fixtures__/shared-chess-promotion.json": "c6eafe55029701b9ab00dc29201ce6e1b106ea194a7b039079e79c30ac4a0ce6",
+    "desktop/src/__fixtures__/shared-chess-reopened.json": "a7ae2d4322d5acdd71b0ebe4e26ee59b6f688dcbac8df35a4f31dcb976e7d9c5",
+    "desktop/src/__fixtures__/shared-chess-standard.json": "5d2d489fd113cb1ad6a1615ee2f398fb8113d663ac5638fd6c05ee7b3a79cbb4",
+    "desktop/src/__fixtures__/shared-chess-unresolved.json": "70407a0cf00d7f57be96ba428ba64a6739c6dcfe4c4bf031b2f5bc671e42d8a9",
+    "desktop/src/product/ApplicationShell.test.tsx": "b959f35e132a7211e64263f0706274024ae81230e65e4dd609afd7822310f6a3",
+    "desktop/src/product/ApplicationShell.tsx": "01c988a14777a795789f1e5884d111b2b05d2118fd1817c32bab960c5bee7119"
+  },
+  "owner_direction": "2026-11-09 consolidation: ordinarydesktoptimeprimary, meaningfulindependentstrengthqualificationbeforeShogi/Xiangqi, approvalrequiredtarget/protocol/budget, stabletaskhandles. No formalcampaignauthorized.",
+  "implementation": {
+    "default": "1000ms fixedhardallowance,depth128 nativestackguard,nodes9007199254740991 exactJSONrepresentationguard; no practical20kcap.",
+    "time": "Fixedfrom_hard_ms soft=hard, alsoUCI movetime; separateclockallocation unchanged. Lastcompletediteration retained, no desktopfallback.",
+    "compatibility": "New,currentprior1s/128/20k andprioruntimed2/20k admitted. Oldfiles/observationsloadstoppedandunchanged; onlyResumeupdatesfuturework; fullidentities/staleresultrejection.",
+    "resources": "Unchanged4096defaultTT/boundednativepaths,1MiBrequest/2MiBresponse/streamcaps,15sprocesswatchdog,cancellation/replacement/cleanup. Explicitsmallnodeandzero-time requests honored; analysis/othergames unchanged.",
+    "presentation": "TimedpanelThinkingtime; untimedpanelsunchanged.16generatedChessfixtures only/play_limits/nodes changes; frontendJSONsafe."
+  },
+  "environment": {
+    "os": "macOS27.0.1 ARM64",
+    "hardware": "Apple M1Pro/32GiB sharedlocalhost",
+    "rustc": "1.99.1 (58cf8f9c3)",
+    "node": "24.22.1",
+    "Backlog": "1.55.1 pinnedbinary; global1.55.0 notusedformutations"
+  },
+  "checks": [
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session prior_chess_defaults -- --nocapture",
+      "artifact": "compatibility.log",
+      "exit": 0,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo test --locked -p mshogi-engine --test chess_conventional_execution",
+      "artifact": "engine.log",
+      "exit": 0,
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo test --locked -p mshogi-search chess_conventional::tests",
+      "artifact": "search.log",
+      "exit": 0,
+      "passed": 25,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo test --locked -p mshogi-search cancellation_after_a_completed_iteration",
+      "artifact": "completed-iteration.log",
+      "exit": 0,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo test --release --locked -p mshogi-console --test desktop_play -- --nocapture",
+      "artifact": "desktop-release.log",
+      "exit": 0,
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo test --locked -p mshogi-desktop-session chess",
+      "artifact": "desktop-chess.log",
+      "exit": 0,
+      "passed": 29,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo test --locked -p mshogi-console --test uci",
+      "artifact": "uci.log",
+      "exit": 0,
+      "passed": 11,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo test --locked -p mshogi-console independent_clock_allocations_and_numeric_limits",
+      "artifact": "uci-allocation.log",
+      "exit": 0,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "artifact": "clippy.log",
+      "exit": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "artifact": "format.log",
+      "exit": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "Node24.22.1 tsc --noEmit (desktop)",
+      "artifact": "frontend-typecheck.log",
+      "exit": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "Node24.22.1 vitest run (desktop)",
+      "artifact": "frontend-all.log",
+      "exit": 0,
+      "passed": 570,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo clippy --manifest-path desktop/src-tauri/Cargo.toml --locked --all-targets -- -D warnings",
+      "artifact": "host-clippy.log",
+      "exit": 0,
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo test --manifest-path desktop/src-tauri/Cargo.toml --locked",
+      "artifact": "host-tests.log",
+      "exit": 0,
+      "passed": 8,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo test --manifest-path desktop/src-tauri/Cargo.toml --locked --features desktop-verification",
+      "artifact": "host-qa-tests.log",
+      "exit": 0,
+      "passed": 17,
+      "failed": 0,
+      "ignored": 0
+    }
+  ],
+  "execution_observation": {
+    "scope": "ActualDesktopController\u2192EngineBridge\u2192productionchild, standardroot, release; productjourney notopponentexperiment/strengthproof",
+    "host_observed_ms": 1194,
+    "visits": 172200,
+    "completed_depth": 9,
+    "selective_depth": 24,
+    "status": "Stopped",
+    "complete_PV": "nativelyreplayedbytest",
+    "limits": "1000ms/128/9007199254740991",
+    "limitations": "Includescontroller/startup/serializedcommandlatency; not puresearchtimingorcrossplatformspeedclaim."
+  },
+  "required_ci": {
+    "workflow": "rust.yml",
+    "jobs": [
+      "Rust (ubuntu-24.04)",
+      "Rust (macos-15)",
+      "Rust (windows-2022)"
+    ],
+    "status": "not_dispatched",
+    "extra_journey": "cargo test --release --locked -p mshogi-console --test desktop_play",
+    "monitor": "Onecompletion-awaremonitor; no unrelatedfullsixgameGUIcampaign."
+  },
+  "packaged_macOS": {
+    "status": "not_run",
+    "scope": "Focusednormalfixedidentityplay/cancel/save/reopen; no newappidentity orsecuritypolicychanges"
+  },
+  "reviews": [
+    {
+      "reviewer": "chess_next_refinements",
+      "scope": "Independentread-onlysource/consumer/16fixture review",
+      "verdict": "Approved,no findings. Timeprimaryfixedallowance,compatibleload/Resume,completeiteration/cancel/zero/low-node/actualcontroller tests meaningful; nativeplatformjobs/packagejourney stillrequired."
+    },
+    {
+      "reviewer": "chess_maturity_assessment",
+      "scope": "Qualificationproposal/roadmap/AGENTS/approvalgate",
+      "verdict": "Actual written MSH-139 (Chess Strength Qualification) proposal/roadmap/AGENTS independently approved, no material overclaim or added framework. Conditional3100/3000target,familyguards,64freshpairs,6hcap,unapprovedstatus andtransfergates explicit. Clarified no100%puzzlepassbar; exactstatistics frozenbeforeconfirmation."
+    }
+  ],
+  "matches": {
+    "additional_Chess_experiments": 0,
+    "seconds": 0,
+    "formal_qualification_started": false,
+    "scope": "Routineactualproduct/nativeprocessregressionsareengineeringverification,notnewstrengthstudies."
+  },
+  "qualification": {
+    "task": "MSH-139",
+    "handle": "Chess Strength Qualification",
+    "status": "To Do",
+    "approval": "Notgiven; target/protocol/six-hourbudget proposedonly",
+    "gates": [
+      "MSH-50 (Conventional Shogi)",
+      "MSH-54 (Conventional Xiangqi)"
+    ]
+  },
+  "future_config": "MSH-140 (Player Thinking Time),notimplementedhere",
+  "artifact": {
+    "file": "local-checks.tar.gz",
+    "sha256": "b71602d99a5106edeab026ac8145159df44e7aa16430ef11c7468409aa338e43",
+    "bytes": 8701
+  },
+  "historical_failures": [],
+  "remaining": [
+    "Focused normal packagedmacOS journey",
+    "Required actual3OSnativeCI atfrozenintegratedsource",
+    "Independentfinalevidencereconciliation andnormalpublication"
+  ]
+}

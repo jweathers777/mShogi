@@ -1,0 +1,44 @@
+{
+  "task": "MSH-147 (Chess Effectiveness Diagnosis)",
+  "status": "instrumentation-reviewed-baseline-pending",
+  "verification_level": "Level1: portable diagnostic example and local measurements; no production behavior changes",
+  "production_revision": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+  "environment": {
+    "os": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434",
+    "machine": "arm64",
+    "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)"
+  },
+  "panel": {
+    "file": "positions.json",
+    "sha256": "e06fae1ed657b171c1872c0fab98eeed61ea6614f90db0177875af2806d74acd",
+    "selection": "12 preselected tactical/strategic/endgame/control/historical positions; complete histories preserved where supplied; STS judgments are not exact WDL proofs",
+    "budgets_ms": [
+      1000,
+      5000,
+      15000,
+      30000
+    ],
+    "nominal_total_seconds": 612,
+    "nodes": null,
+    "depth": 128,
+    "table_entries": 4096
+  },
+  "checks": [
+    "release example build passed",
+    "fmt passed",
+    "12 zero-budget native history/root/expected-line admission and honest incomplete-result cases passed",
+    "release example clippy -D warnings passed"
+  ],
+  "not_run": [
+    "opponent matches",
+    "full platform matrix",
+    "GUI campaign"
+  ],
+  "references": [
+    "https://raw.githubusercontent.com/official-stockfish/Stockfish/sf_11/src/search.cpp",
+    "https://raw.githubusercontent.com/official-stockfish/Stockfish/sf_11/src/movepick.cpp",
+    "https://raw.githubusercontent.com/official-stockfish/Stockfish/sf_11/src/evaluate.cpp",
+    "https://sites.google.com/site/strategictestsuite/about"
+  ],
+  "instrumentation_review": "endgame_review independently approved budgets, source/panel identities, native histories/root assertions, score/PV semantics and no-result smoke receipts; no material findings"
+}

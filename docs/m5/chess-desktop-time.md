@@ -59,8 +59,11 @@ Independent final receipt reconciliation approved all three acceptance criteria
 and the applicable completion checklist. MSH-138 (Desktop Search Limits) is Done
 with normal completion publication on `codex/rewrite`.
 
-MSH-139 (Chess Strength Qualification) separately gates MSH-50 (Conventional Shogi)
-and MSH-54 (Conventional Xiangqi). No qualification match campaign has run here.
+Owner revision, 2026-11-09: [MSH-139 (Chess Strength Assessment)](chess-strength-assessment.md)
+now measures current strength without a predetermined target. Its findings need
+John's review before a next objective or MSH-50 (Conventional Shogi)/MSH-54
+(Conventional Xiangqi) transfer decision. No assessment matches form part of
+this completed MSH-138 (Desktop Search Limits) evidence.
 
 The earlier local package smoke failure is preserved: its external verifier still
 expected the material-only opening `a2a3/+0`. The independently specified current

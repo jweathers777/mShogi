@@ -1,0 +1,492 @@
+{
+  "method": "Each call-tree node count minus immediate-child count gives exclusive residual sample weight. Per-stack roles count weight once even when recursive; overlapping role totals are not additive. Exclusive bins sum to total. Collapsed self symbols crosschecked against sample own report. Symbols may inline/merge, so attribution is approximate, not exact wall time.",
+  "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+  "files": [
+    {
+      "file": "/private/tmp/msh147/cpu-owned-sts-openfiles-001.txt",
+      "sha256": "860ed19255661a0bca21efc51ace0f416f2ff68aa5a29ba9684f6a04d16dbd19",
+      "sample_weight": 2705,
+      "exclusive_residual_weight": 2705,
+      "native_collapsed_self_symbols_crosschecked": 58,
+      "exclusive_self_categories": {
+        "native_other_self": {
+          "samples": 1530,
+          "percent": 56.56
+        },
+        "allocation_self": {
+          "samples": 318,
+          "percent": 11.76
+        },
+        "evaluation_self": {
+          "samples": 277,
+          "percent": 10.24
+        },
+        "history_identity_key_tt_self": {
+          "samples": 221,
+          "percent": 8.17
+        },
+        "clock_self": {
+          "samples": 174,
+          "percent": 6.43
+        },
+        "search_other_self": {
+          "samples": 124,
+          "percent": 4.58
+        },
+        "memory_copy_self": {
+          "samples": 32,
+          "percent": 1.18
+        },
+        "other_self": {
+          "samples": 24,
+          "percent": 0.89
+        },
+        "see_self": {
+          "samples": 5,
+          "percent": 0.18
+        }
+      },
+      "exclusive_context_categories": {
+        "native_other_nonalloc": {
+          "samples": 1381,
+          "percent": 51.05
+        },
+        "evaluation_including_native_nonalloc": {
+          "samples": 369,
+          "percent": 13.64
+        },
+        "allocation_self": {
+          "samples": 318,
+          "percent": 11.76
+        },
+        "identity_key_tt_nonalloc": {
+          "samples": 225,
+          "percent": 8.32
+        },
+        "clock_self": {
+          "samples": 174,
+          "percent": 6.43
+        },
+        "search_other_nonalloc": {
+          "samples": 137,
+          "percent": 5.06
+        },
+        "see_including_native_nonalloc": {
+          "samples": 69,
+          "percent": 2.55
+        },
+        "memory_copy_self": {
+          "samples": 32,
+          "percent": 1.18
+        }
+      },
+      "overlapping_ancestor_roles_do_not_sum": {
+        "quiescence_any_ancestor": {
+          "samples": 2185,
+          "percent": 80.78
+        },
+        "native_any_ancestor": {
+          "samples": 2068,
+          "percent": 76.45
+        },
+        "native_fullnode_any_ancestor": {
+          "samples": 524,
+          "percent": 19.37
+        },
+        "native_turn_any_ancestor": {
+          "samples": 493,
+          "percent": 18.23
+        },
+        "evaluation_any_ancestor": {
+          "samples": 384,
+          "percent": 14.2
+        },
+        "mate_query_any_ancestor": {
+          "samples": 337,
+          "percent": 12.46
+        },
+        "identity_key_tt_any_ancestor": {
+          "samples": 225,
+          "percent": 8.32
+        },
+        "native_push_any_ancestor": {
+          "samples": 216,
+          "percent": 7.99
+        },
+        "native_repetition_identity_any_ancestor": {
+          "samples": 169,
+          "percent": 6.25
+        },
+        "native_preview_any_ancestor": {
+          "samples": 140,
+          "percent": 5.18
+        },
+        "checked_after_any_ancestor": {
+          "samples": 127,
+          "percent": 4.7
+        },
+        "see_any_ancestor": {
+          "samples": 97,
+          "percent": 3.59
+        },
+        "q_checked_after_excluding_see": {
+          "samples": 95,
+          "percent": 3.51
+        },
+        "incremental_position_hash_any_ancestor": {
+          "samples": 46,
+          "percent": 1.7
+        },
+        "native_pop_any_ancestor": {
+          "samples": 32,
+          "percent": 1.18
+        },
+        "explicit_table_logic_any_ancestor": {
+          "samples": 10,
+          "percent": 0.37
+        }
+      },
+      "top_self_symbols": {
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess6attackNtB4_8Position13attacker_bits (in diagnostic-profile)": 411,
+        "_RNvNtCsd9wqETEYSao_13mshogi_search23chess_conventional_eval7dynamic (in diagnostic-profile)": 211,
+        "_RNvMs3_NtNtCs2LEmWcma88C_11mshogi_core5chess6actionNtB7_8Position7resolve (in diagnostic-profile)": 207,
+        "mach_absolute_time (in libsystem_kernel.dylib)": 159,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess8generateNtB4_8Position14ray_candidates (in diagnostic-profile)": 153,
+        "_RNvMs3_NtNtCs2LEmWcma88C_11mshogi_core5chess6actionNtB7_8Position14apply_resolved (in diagnostic-profile)": 145,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess8generateNtB4_8Position19ordinary_candidates (in diagnostic-profile)": 132,
+        "_RNvMs0_NtNtCs2LEmWcma88C_11mshogi_core5chess4gameNtB7_8Position19repetition_identity (in diagnostic-profile)": 117,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess6attackNtB4_8Position12ray_is_clear (in diagnostic-profile)": 110,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess6attackNtB4_8Position10attacks_as (in diagnostic-profile)": 89,
+        "_RNvMs2_NtCsd9wqETEYSao_13mshogi_search23chess_conventional_evalNtB5_9EvalState4push (in diagnostic-profile)": 61,
+        "_xzm_xzone_malloc_tiny (in libsystem_malloc.dylib)": 52,
+        "_RNvNtNtCs2LEmWcma88C_11mshogi_core5chess13search_access20update_position_hash (in diagnostic-profile)": 46,
+        "xzm_malloc_zone_malloc_type_realloc (in libsystem_malloc.dylib)": 43,
+        "_xzm_free_main (in libsystem_malloc.dylib)": 42
+      }
+    },
+    {
+      "file": "/private/tmp/msh147/cpu-owned-goldfish-pawn-exchange-44.txt",
+      "sha256": "62c4767d9e9bc6368b3f29859ce77e1f6c2c5b9bac453e105e97af06d1e13546",
+      "sample_weight": 2708,
+      "exclusive_residual_weight": 2708,
+      "native_collapsed_self_symbols_crosschecked": 68,
+      "exclusive_self_categories": {
+        "native_other_self": {
+          "samples": 976,
+          "percent": 36.04
+        },
+        "evaluation_self": {
+          "samples": 510,
+          "percent": 18.83
+        },
+        "history_identity_key_tt_self": {
+          "samples": 381,
+          "percent": 14.07
+        },
+        "allocation_self": {
+          "samples": 329,
+          "percent": 12.15
+        },
+        "search_other_self": {
+          "samples": 227,
+          "percent": 8.38
+        },
+        "clock_self": {
+          "samples": 202,
+          "percent": 7.46
+        },
+        "other_self": {
+          "samples": 50,
+          "percent": 1.85
+        },
+        "memory_copy_self": {
+          "samples": 29,
+          "percent": 1.07
+        },
+        "see_self": {
+          "samples": 4,
+          "percent": 0.15
+        }
+      },
+      "exclusive_context_categories": {
+        "native_other_nonalloc": {
+          "samples": 875,
+          "percent": 32.31
+        },
+        "evaluation_including_native_nonalloc": {
+          "samples": 594,
+          "percent": 21.94
+        },
+        "identity_key_tt_nonalloc": {
+          "samples": 390,
+          "percent": 14.4
+        },
+        "allocation_self": {
+          "samples": 329,
+          "percent": 12.15
+        },
+        "search_other_nonalloc": {
+          "samples": 257,
+          "percent": 9.49
+        },
+        "clock_self": {
+          "samples": 202,
+          "percent": 7.46
+        },
+        "see_including_native_nonalloc": {
+          "samples": 32,
+          "percent": 1.18
+        },
+        "memory_copy_self": {
+          "samples": 29,
+          "percent": 1.07
+        }
+      },
+      "overlapping_ancestor_roles_do_not_sum": {
+        "native_any_ancestor": {
+          "samples": 1605,
+          "percent": 59.27
+        },
+        "quiescence_any_ancestor": {
+          "samples": 1005,
+          "percent": 37.11
+        },
+        "evaluation_any_ancestor": {
+          "samples": 624,
+          "percent": 23.04
+        },
+        "native_push_any_ancestor": {
+          "samples": 407,
+          "percent": 15.03
+        },
+        "native_preview_any_ancestor": {
+          "samples": 405,
+          "percent": 14.96
+        },
+        "identity_key_tt_any_ancestor": {
+          "samples": 398,
+          "percent": 14.7
+        },
+        "native_fullnode_any_ancestor": {
+          "samples": 325,
+          "percent": 12.0
+        },
+        "native_repetition_identity_any_ancestor": {
+          "samples": 248,
+          "percent": 9.16
+        },
+        "native_turn_any_ancestor": {
+          "samples": 146,
+          "percent": 5.39
+        },
+        "checked_after_any_ancestor": {
+          "samples": 111,
+          "percent": 4.1
+        },
+        "incremental_position_hash_any_ancestor": {
+          "samples": 104,
+          "percent": 3.84
+        },
+        "native_pop_any_ancestor": {
+          "samples": 95,
+          "percent": 3.51
+        },
+        "q_checked_after_excluding_see": {
+          "samples": 62,
+          "percent": 2.29
+        },
+        "explicit_table_logic_any_ancestor": {
+          "samples": 46,
+          "percent": 1.7
+        },
+        "see_any_ancestor": {
+          "samples": 43,
+          "percent": 1.59
+        },
+        "mate_query_any_ancestor": {
+          "samples": 40,
+          "percent": 1.48
+        }
+      },
+      "top_self_symbols": {
+        "_RNvNtCsd9wqETEYSao_13mshogi_search23chess_conventional_eval7dynamic (in diagnostic-profile)": 366,
+        "mach_absolute_time (in libsystem_kernel.dylib)": 180,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess6attackNtB4_8Position13attacker_bits (in diagnostic-profile)": 152,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess8generateNtB4_8Position19ordinary_candidates (in diagnostic-profile)": 146,
+        "_RNvMs2_NtCsd9wqETEYSao_13mshogi_search23chess_conventional_evalNtB5_9EvalState4push (in diagnostic-profile)": 126,
+        "_RNvMs0_NtNtCs2LEmWcma88C_11mshogi_core5chess4gameNtB7_8Position19repetition_identity (in diagnostic-profile)": 123,
+        "_RNvNtNtCs2LEmWcma88C_11mshogi_core5chess13search_access20update_position_hash (in diagnostic-profile)": 104,
+        "_RNvMs4_NtNtCs2LEmWcma88C_11mshogi_core5chess13search_accessNtB5_12SearchCursor7preview (in diagnostic-profile)": 97,
+        "_RNvMs3_NtNtCs2LEmWcma88C_11mshogi_core5chess6actionNtB7_8Position7resolve (in diagnostic-profile)": 96,
+        "_xzm_xzone_malloc_tiny (in libsystem_malloc.dylib)": 76,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess6attackNtB4_8Position10attacks_as (in diagnostic-profile)": 73,
+        "_RNvMs3_NtNtCs2LEmWcma88C_11mshogi_core5chess6actionNtB7_8Position14apply_resolved (in diagnostic-profile)": 58,
+        "_RNvNtCsd9wqETEYSao_13mshogi_search18chess_conventional13null_material (in diagnostic-profile)": 51,
+        "_xzm_free_main (in libsystem_malloc.dylib)": 45,
+        "_RNvMs4_NtNtCs2LEmWcma88C_11mshogi_core5chess13search_accessNtB5_12SearchCursor13push_with_key (in diagnostic-profile)": 42
+      }
+    },
+    {
+      "file": "/private/tmp/msh147/cpu-owned-goldfish-queen-rook-31.txt",
+      "sha256": "13d14d7c4ef1d68be1d5e86debae0edfadd487096016ceacc8ed3dd06409a609",
+      "sample_weight": 2702,
+      "exclusive_residual_weight": 2702,
+      "native_collapsed_self_symbols_crosschecked": 68,
+      "exclusive_self_categories": {
+        "native_other_self": {
+          "samples": 1182,
+          "percent": 43.75
+        },
+        "evaluation_self": {
+          "samples": 432,
+          "percent": 15.99
+        },
+        "allocation_self": {
+          "samples": 348,
+          "percent": 12.88
+        },
+        "history_identity_key_tt_self": {
+          "samples": 291,
+          "percent": 10.77
+        },
+        "clock_self": {
+          "samples": 197,
+          "percent": 7.29
+        },
+        "search_other_self": {
+          "samples": 171,
+          "percent": 6.33
+        },
+        "memory_copy_self": {
+          "samples": 39,
+          "percent": 1.44
+        },
+        "other_self": {
+          "samples": 38,
+          "percent": 1.41
+        },
+        "see_self": {
+          "samples": 4,
+          "percent": 0.15
+        }
+      },
+      "exclusive_context_categories": {
+        "native_other_nonalloc": {
+          "samples": 1054,
+          "percent": 39.01
+        },
+        "evaluation_including_native_nonalloc": {
+          "samples": 523,
+          "percent": 19.36
+        },
+        "allocation_self": {
+          "samples": 348,
+          "percent": 12.88
+        },
+        "identity_key_tt_nonalloc": {
+          "samples": 294,
+          "percent": 10.88
+        },
+        "clock_self": {
+          "samples": 197,
+          "percent": 7.29
+        },
+        "search_other_nonalloc": {
+          "samples": 196,
+          "percent": 7.25
+        },
+        "see_including_native_nonalloc": {
+          "samples": 51,
+          "percent": 1.89
+        },
+        "memory_copy_self": {
+          "samples": 39,
+          "percent": 1.44
+        }
+      },
+      "overlapping_ancestor_roles_do_not_sum": {
+        "native_any_ancestor": {
+          "samples": 1803,
+          "percent": 66.73
+        },
+        "quiescence_any_ancestor": {
+          "samples": 1634,
+          "percent": 60.47
+        },
+        "evaluation_any_ancestor": {
+          "samples": 540,
+          "percent": 19.99
+        },
+        "native_fullnode_any_ancestor": {
+          "samples": 341,
+          "percent": 12.62
+        },
+        "native_turn_any_ancestor": {
+          "samples": 310,
+          "percent": 11.47
+        },
+        "identity_key_tt_any_ancestor": {
+          "samples": 298,
+          "percent": 11.03
+        },
+        "native_preview_any_ancestor": {
+          "samples": 294,
+          "percent": 10.88
+        },
+        "native_push_any_ancestor": {
+          "samples": 292,
+          "percent": 10.81
+        },
+        "mate_query_any_ancestor": {
+          "samples": 203,
+          "percent": 7.51
+        },
+        "native_repetition_identity_any_ancestor": {
+          "samples": 199,
+          "percent": 7.36
+        },
+        "checked_after_any_ancestor": {
+          "samples": 110,
+          "percent": 4.07
+        },
+        "incremental_position_hash_any_ancestor": {
+          "samples": 81,
+          "percent": 3.0
+        },
+        "q_checked_after_excluding_see": {
+          "samples": 68,
+          "percent": 2.52
+        },
+        "native_pop_any_ancestor": {
+          "samples": 68,
+          "percent": 2.52
+        },
+        "see_any_ancestor": {
+          "samples": 65,
+          "percent": 2.41
+        },
+        "explicit_table_logic_any_ancestor": {
+          "samples": 18,
+          "percent": 0.67
+        }
+      },
+      "top_self_symbols": {
+        "_RNvNtCsd9wqETEYSao_13mshogi_search23chess_conventional_eval7dynamic (in diagnostic-profile)": 330,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess6attackNtB4_8Position13attacker_bits (in diagnostic-profile)": 260,
+        "mach_absolute_time (in libsystem_kernel.dylib)": 176,
+        "_RNvMs3_NtNtCs2LEmWcma88C_11mshogi_core5chess6actionNtB7_8Position7resolve (in diagnostic-profile)": 152,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess8generateNtB4_8Position19ordinary_candidates (in diagnostic-profile)": 133,
+        "_RNvMs0_NtNtCs2LEmWcma88C_11mshogi_core5chess4gameNtB7_8Position19repetition_identity (in diagnostic-profile)": 102,
+        "_RNvMs2_NtCsd9wqETEYSao_13mshogi_search23chess_conventional_evalNtB5_9EvalState4push (in diagnostic-profile)": 94,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess6attackNtB4_8Position10attacks_as (in diagnostic-profile)": 85,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess8generateNtB4_8Position14ray_candidates (in diagnostic-profile)": 83,
+        "_RNvMs3_NtNtCs2LEmWcma88C_11mshogi_core5chess6actionNtB7_8Position14apply_resolved (in diagnostic-profile)": 82,
+        "_RNvNtNtCs2LEmWcma88C_11mshogi_core5chess13search_access20update_position_hash (in diagnostic-profile)": 81,
+        "_xzm_xzone_malloc_tiny (in libsystem_malloc.dylib)": 61,
+        "_RNvMs4_NtNtCs2LEmWcma88C_11mshogi_core5chess13search_accessNtB5_12SearchCursor4turn (in diagnostic-profile)": 53,
+        "_RNvMNtNtCs2LEmWcma88C_11mshogi_core5chess6attackNtB4_8Position12ray_is_clear (in diagnostic-profile)": 50,
+        "_RNvMs4_NtNtCs2LEmWcma88C_11mshogi_core5chess13search_accessNtB5_12SearchCursor7preview (in diagnostic-profile)": 46
+      }
+    }
+  ]
+}

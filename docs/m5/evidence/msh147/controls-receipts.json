@@ -1,0 +1,89 @@
+[
+  {
+    "name": "ablations",
+    "command": [
+      "/private/tmp/msh147/diagnostic-profile",
+      "/private/tmp/msh147/ablation-inputs.json",
+      "128",
+      "timed",
+      "none"
+    ],
+    "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+    "binary_sha256": "8ae09bfb195276a201d81fc0c04ba0109496ffa56e9923a9fb8f60db94384486",
+    "inputs_sha256": "4a90f54ba49a11febc9ea81267934e559cee1209a7c20eb983e050f64764f480",
+    "elapsed_seconds": 85.2580030830577,
+    "exit": 0
+  },
+  {
+    "name": "tt",
+    "command": [
+      "/private/tmp/msh147/diagnostic-profile",
+      "/private/tmp/msh147/tt-inputs.json",
+      "128",
+      "timed",
+      "none"
+    ],
+    "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+    "binary_sha256": "8ae09bfb195276a201d81fc0c04ba0109496ffa56e9923a9fb8f60db94384486",
+    "inputs_sha256": "4e3f832f408799c67af65aedfc0d13f2882ec93bd8aec5ac6efe4ac3ccd6b08c",
+    "elapsed_seconds": 60.012940749991685,
+    "exit": 0
+  },
+  {
+    "name": "additional",
+    "command": [
+      "/private/tmp/msh147/diagnostic-profile",
+      "docs/m5/evidence/msh147/additional-endgames.json",
+      "128",
+      "timed",
+      "none"
+    ],
+    "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+    "binary_sha256": "8ae09bfb195276a201d81fc0c04ba0109496ffa56e9923a9fb8f60db94384486",
+    "inputs_sha256": "b3593581d696546711a652733e97b4b3229c73bbc8101dcced2f62573fad3f6e",
+    "elapsed_seconds": 6.008124249987304,
+    "exit": 0
+  },
+  {
+    "name": "cpu-sts-openfiles-001",
+    "command": [
+      "/private/tmp/msh147/diagnostic-profile",
+      "/private/tmp/msh147/sample-sts-openfiles-001.json",
+      "128",
+      "timed",
+      "none"
+    ],
+    "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+    "elapsed_seconds": 5.006484375335276,
+    "exit": 0,
+    "sample_exit": 255
+  },
+  {
+    "name": "cpu-goldfish-pawn-exchange-44",
+    "command": [
+      "/private/tmp/msh147/diagnostic-profile",
+      "/private/tmp/msh147/sample-goldfish-pawn-exchange-44.json",
+      "128",
+      "timed",
+      "none"
+    ],
+    "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+    "elapsed_seconds": 5.006354708224535,
+    "exit": 0,
+    "sample_exit": 255
+  },
+  {
+    "name": "cpu-goldfish-queen-rook-31",
+    "command": [
+      "/private/tmp/msh147/diagnostic-profile",
+      "/private/tmp/msh147/sample-goldfish-queen-rook-31.json",
+      "128",
+      "timed",
+      "none"
+    ],
+    "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+    "elapsed_seconds": 5.0059748333878815,
+    "exit": 0,
+    "sample_exit": 255
+  }
+]

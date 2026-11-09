@@ -104,3 +104,13 @@ engineering. Reassess practical strength after a substantial coherent round.
 Native correctness/history/restoration/cancellation remain binding; algorithm
 presence, speed and deeper search are distinct from decision quality and strength.
 No learned evaluation or Shogi/Xiangqi transfer is approved.
+
+MSH-146 is integrated: Level1 local verification is the ordinary engine default.
+The [MSH-147 diagnosis](chess-effectiveness-diagnosis.md) selects MSH-148
+(Deferred Frontier Work), then MSH-145 (Pawn Threat and Exchange Judgment), then
+MSH-149 (Classical King Exposure) as the next coherent round. The unrestricted
+low-material LMR trial is rejected because its extra nominal depth loses an
+independently winning rook move. TT capacity and isolated SEE micro-optimization
+are lower priorities on current evidence. Keep independent quality counterexamples
+alongside cost measurements; reassess fresh practical play after this combined
+round without declaring a gain from engineering telemetry.

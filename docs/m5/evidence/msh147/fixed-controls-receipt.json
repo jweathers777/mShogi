@@ -1,0 +1,12 @@
+{
+  "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+  "command": [
+    "/private/tmp/msh147/diagnostic-profile",
+    "/private/tmp/msh147/fixed-controls-inputs.json",
+    "7",
+    "untimed",
+    "3000000"
+  ],
+  "elapsed_seconds": 3.538457583170384,
+  "exit": 0
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sts-openfiles-001",
+    "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+    "elapsed_seconds": 5.00511350017041,
+    "exit": 0,
+    "sample_exit": 0,
+    "scope": "owned diagnostic child only, outside filesystem sandbox; no sudo or security change"
+  },
+  {
+    "id": "goldfish-pawn-exchange-44",
+    "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+    "elapsed_seconds": 5.0056768748909235,
+    "exit": 0,
+    "sample_exit": 0,
+    "scope": "owned diagnostic child only, outside filesystem sandbox; no sudo or security change"
+  },
+  {
+    "id": "goldfish-queen-rook-31",
+    "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+    "elapsed_seconds": 5.005459500011057,
+    "exit": 0,
+    "sample_exit": 0,
+    "scope": "owned diagnostic child only, outside filesystem sandbox; no sudo or security change"
+  }
+]

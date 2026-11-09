@@ -1,6 +1,6 @@
 {
   "task": "MSH-147 (Chess Effectiveness Diagnosis)",
-  "status": "baseline-complete-controlled-diagnosis-in-progress",
+  "status": "accepted",
   "verification_level": "Level1: portable diagnostic example and local measurements; no production behavior changes",
   "production_revision": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
   "environment": {
@@ -67,5 +67,198 @@
     ],
     "scope": "LMR, quiet omissions, SEE omissions and q delta isolated; optional low-material LMR preserves null and omission guards and native mate-threat protection",
     "evidence_correction": "The preceding checkpoint was recorded before the combined check command finished. Final receipt replaces its incomplete clippy log and explicitly preserves the initial formatting failure; no algorithm changed."
-  }
+  },
+  "diagnostic_source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+  "controlled_receipts": [
+    {
+      "name": "ablations",
+      "command": [
+        "/private/tmp/msh147/diagnostic-profile",
+        "/private/tmp/msh147/ablation-inputs.json",
+        "128",
+        "timed",
+        "none"
+      ],
+      "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+      "binary_sha256": "8ae09bfb195276a201d81fc0c04ba0109496ffa56e9923a9fb8f60db94384486",
+      "inputs_sha256": "4a90f54ba49a11febc9ea81267934e559cee1209a7c20eb983e050f64764f480",
+      "elapsed_seconds": 85.2580030830577,
+      "exit": 0
+    },
+    {
+      "name": "tt",
+      "command": [
+        "/private/tmp/msh147/diagnostic-profile",
+        "/private/tmp/msh147/tt-inputs.json",
+        "128",
+        "timed",
+        "none"
+      ],
+      "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+      "binary_sha256": "8ae09bfb195276a201d81fc0c04ba0109496ffa56e9923a9fb8f60db94384486",
+      "inputs_sha256": "4e3f832f408799c67af65aedfc0d13f2882ec93bd8aec5ac6efe4ac3ccd6b08c",
+      "elapsed_seconds": 60.012940749991685,
+      "exit": 0
+    },
+    {
+      "name": "additional",
+      "command": [
+        "/private/tmp/msh147/diagnostic-profile",
+        "docs/m5/evidence/msh147/additional-endgames.json",
+        "128",
+        "timed",
+        "none"
+      ],
+      "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+      "binary_sha256": "8ae09bfb195276a201d81fc0c04ba0109496ffa56e9923a9fb8f60db94384486",
+      "inputs_sha256": "b3593581d696546711a652733e97b4b3229c73bbc8101dcced2f62573fad3f6e",
+      "elapsed_seconds": 6.008124249987304,
+      "exit": 0
+    },
+    {
+      "name": "cpu-sts-openfiles-001",
+      "command": [
+        "/private/tmp/msh147/diagnostic-profile",
+        "/private/tmp/msh147/sample-sts-openfiles-001.json",
+        "128",
+        "timed",
+        "none"
+      ],
+      "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+      "elapsed_seconds": 5.006484375335276,
+      "exit": 0,
+      "sample_exit": 255
+    },
+    {
+      "name": "cpu-goldfish-pawn-exchange-44",
+      "command": [
+        "/private/tmp/msh147/diagnostic-profile",
+        "/private/tmp/msh147/sample-goldfish-pawn-exchange-44.json",
+        "128",
+        "timed",
+        "none"
+      ],
+      "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+      "elapsed_seconds": 5.006354708224535,
+      "exit": 0,
+      "sample_exit": 255
+    },
+    {
+      "name": "cpu-goldfish-queen-rook-31",
+      "command": [
+        "/private/tmp/msh147/diagnostic-profile",
+        "/private/tmp/msh147/sample-goldfish-queen-rook-31.json",
+        "128",
+        "timed",
+        "none"
+      ],
+      "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+      "elapsed_seconds": 5.0059748333878815,
+      "exit": 0,
+      "sample_exit": 255
+    }
+  ],
+  "cpu_receipts": [
+    {
+      "id": "sts-openfiles-001",
+      "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+      "elapsed_seconds": 5.00511350017041,
+      "exit": 0,
+      "sample_exit": 0,
+      "scope": "owned diagnostic child only, outside filesystem sandbox; no sudo or security change"
+    },
+    {
+      "id": "goldfish-pawn-exchange-44",
+      "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+      "elapsed_seconds": 5.0056768748909235,
+      "exit": 0,
+      "sample_exit": 0,
+      "scope": "owned diagnostic child only, outside filesystem sandbox; no sudo or security change"
+    },
+    {
+      "id": "goldfish-queen-rook-31",
+      "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+      "elapsed_seconds": 5.005459500011057,
+      "exit": 0,
+      "sample_exit": 0,
+      "scope": "owned diagnostic child only, outside filesystem sandbox; no sudo or security change"
+    }
+  ],
+  "fixed_depth_controls": {
+    "source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+    "command": [
+      "/private/tmp/msh147/diagnostic-profile",
+      "/private/tmp/msh147/fixed-controls-inputs.json",
+      "7",
+      "untimed",
+      "3000000"
+    ],
+    "elapsed_seconds": 3.538457583170384,
+    "exit": 0
+  },
+  "findings": [
+    "Time improves some historical judgments; all3published tactical roots and unique winning rook move retained in baseline",
+    "TT useful but4xcapacity gave no extra completed ply in4cases",
+    "Broad endgameLMR gains nominal depth but loses unique winning Re1; rejected for production",
+    "Quiet omission changes STSking choice even at equal completed depth7; not proof of unique winning move",
+    "Millions of eager quiet projections with95percent first-move qcutoffs justify deferred work investigation",
+    "Independent drawn/winning material neighbors expose persistent conversion/scaling ambiguity; native WDL choices remain legal and all6supplemental cases preserve WDL",
+    "CPU profiles prioritize native/frontier/evaluation/allocation over isolated SEE or TTcomparison optimization"
+  ],
+  "default_behavior": "Unchanged: all diagnostic flags false in product callers; exact12-position fixed-work old/new equality established",
+  "artifact_sha256": {
+    "ablation-inputs.json.gz": "4f9aa3212618af407c02f744272fa43e1f4c0d8af052981a3d3d44c484789b88",
+    "ablations.jsonl.gz": "fe275e213e4aca390c1c4b5f45972d416efba48887d524b4394417ce0553a620",
+    "additional-endgame-oracles.json.gz": "70726891ff9f8319e2588147317d9d432eb73bc7a9a153e2e00a47872e337381",
+    "additional-endgames.json": "b3593581d696546711a652733e97b4b3229c73bbc8101dcced2f62573fad3f6e",
+    "additional.jsonl.gz": "bb2f8053e1765e85d971b158405ca58411bd8cc29ea14ca69f8a9736e279327b",
+    "baseline-inputs.json.gz": "5d814eba968a1a2a8d7dc154e102ab7addeca17c46a019601922d388888d469d",
+    "baseline-receipt.json": "9de336d8da71cdc5f2b81f42c9595aea2791c050b9b6b374f51880d322348282",
+    "baseline-summary.json": "73a5fd356ae5437fce5172dc3dcde6a300148efd8d6ed0999648ace981cdf722",
+    "baseline.jsonl.gz": "4c7145bd7e1377ccf8e82c89d3b9934b6deb6a504f24dce57a4f117271652fcd",
+    "clippy.log.gz": "301efb2864116292e600c8e7ca996685ee48f4ce994b2f9ff0b506211e106eb9",
+    "controls-receipts.json": "138babb391f5c5ca09ee04f0c9ac513b4b19868c1db0cdc11b56b7791db82648",
+    "conventional-tests.log.gz": "1011af95ccd0ff2c44250111d0d747ebc2ae31bbf1b2184e7b4d6b14cbd4206d",
+    "cpu-independent-summary.json": "80865c285c40c3a4be20ae45558134780a4caf3bd4225bb5d736c60be8f70d91",
+    "cpu-owned-goldfish-pawn-exchange-44.txt.gz": "8114b28b40a94ec914cc7c82c9379e76003b62961cb08d6edbbd7caedcc3c78d",
+    "cpu-owned-goldfish-queen-rook-31.txt.gz": "d21417d6010e99cae60d73a73de75c2deb307fd37f0d95004685616485acc3dd",
+    "cpu-owned-sts-openfiles-001.txt.gz": "8e4a037eaf05923ec160865b57cdad55159d688258e84ecb6a5a5dd560abdebc",
+    "cpu-receipts.json": "518d826f57423a1b748c2769629b6e8a23c96e034221f2998d2718189df8480c",
+    "diagnostic-tests.log.gz": "408114040944fe97ebf4bc56e7eef956813dced591a569fd08a0be1610dd7cf3",
+    "fixed-controls-inputs.json.gz": "a6f336484bf9583608806f28d32aeca13657cf442aa09854d746820e137ea2f8",
+    "fixed-controls-receipt.json": "8a3bf77594527c2ddd1f56382e0e2d47be04a9dae95a1242e35bc90bb577ae0d",
+    "fixed-controls.jsonl.gz": "10af97945950ea246d17733f50881996ad06c2d05ce6f7c0fb97ae999ceb320a",
+    "fixed-controls.stderr.gz": "fd4f925f444bfc0f49f4ce5663c9b3255eecae8173740ea59165749383bd4604",
+    "fixed-new.jsonl.gz": "01c55d1edc47b589c447657e0315220228ad8e0847311c1cd919edfaf4c13604",
+    "fixed-old.jsonl.gz": "da8fc3969a566bdbe2bc42c8510282a4ade5cd48f35afb1c4cbcfc4a05ac977d",
+    "positions.json": "e06fae1ed657b171c1872c0fab98eeed61ea6614f90db0177875af2806d74acd",
+    "sample-goldfish-pawn-exchange-44.json.gz": "4fe54c230c60d465296fb1101d9a039eb894f58a71424422f4df103619714178",
+    "sample-goldfish-pawn-exchange-44.jsonl.gz": "d6c80df1ff001dad66593643b93cbc603afc8880f348bac410b0af2ea6b8a235",
+    "sample-goldfish-pawn-exchange-44.log.gz": "e4a1c131266af0dbb0ab074fd780ad6734655d8a513e56edd8a8a0180dba005f",
+    "sample-goldfish-queen-rook-31.json.gz": "13760ddd1edd39b365d5d259df377742b4b1baa14ad04058b41656bf47ca5b1c",
+    "sample-goldfish-queen-rook-31.jsonl.gz": "397916503e5e7e34bec49a46b575d7f4edcc707fdb95cf4e09d50560daecaeee",
+    "sample-goldfish-queen-rook-31.log.gz": "4d1d2d5d17912275e7e3cf76b66a92e647e628b3b57a6a408ad0e0b9485d477d",
+    "sample-owned-goldfish-pawn-exchange-44.jsonl.gz": "aa52a2d7f64a8647a97bdb36a0d18bd5c933bbdfa6406ddecc1d96e30d9c9cf2",
+    "sample-owned-goldfish-pawn-exchange-44.log.gz": "6af13bbf34770cc5a79acb85786ce1f9a6cc93627dfdf9c66834026ea4b5b8b2",
+    "sample-owned-goldfish-queen-rook-31.jsonl.gz": "4e177b11cc861ca5223a5a2a2032736f97ceed4b5bd5375d42d0fe11a94bdc68",
+    "sample-owned-goldfish-queen-rook-31.log.gz": "54de18445f717a2cc1428186ae056a2e696b935ba8d7d42240f14002292dac55",
+    "sample-owned-sts-openfiles-001.jsonl.gz": "60d1fe8135aef6ab46322993ee32562eef71de5d08758ff7ae2631acf444a6bb",
+    "sample-owned-sts-openfiles-001.log.gz": "315de7695c1d7715096655d72dc274f85e9f2775022e70cda9b5b50d49836fce",
+    "sample-sts-openfiles-001.json.gz": "ccd7799e22abde036722f230a2ef66623054f5d549841fcc6e940f55ab5545d0",
+    "sample-sts-openfiles-001.jsonl.gz": "eba8a5fb106dec745df6fab320bdae75f0f993eef3968d1aabf8a5b5340aed85",
+    "sample-sts-openfiles-001.log.gz": "4757fd953196f1f101fe27fdef91ef3078db5998cdf7fd01ab3bba30d34e5c2b",
+    "smoke.jsonl.gz": "f965f37f143a2f397c2290b99b820df4b8c5e14e73d9acf0c955c255a375792d",
+    "summarize_cpu.py.gz": "99edb6223fee1c2ea13d35bca2e38f43042a8e0a5fd41890836c59d419a9f378",
+    "tt-inputs.json.gz": "074d0ccf5e030361bad34958585b62749b5cba11ed5b19c8db9fb8b6498a9eb9",
+    "tt.jsonl.gz": "a55cc1d2dde954fd8c87f8231683799bf1f2443af7979832a525363c833801b5"
+  },
+  "final_review": {
+    "reviewer": "endgame_review",
+    "verdict": "Approved. Independently reconciled every artifact/source/input hash, all measurement counts and native assertions, old/new default equality, WDL inversion and rejected LMR regression. CPU parser independently rerun with residual/collapsed counts matching. No material findings; diagnostic conclusions only."
+  },
+  "next_tasks": [
+    "MSH-148 (Deferred Frontier Work)",
+    "MSH-145 (Pawn Threat and Exchange Judgment)",
+    "MSH-149 (Classical King Exposure)"
+  ]
 }

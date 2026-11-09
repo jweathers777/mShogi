@@ -31,3 +31,21 @@ Level 1 applies to this portable evaluation change. No opponent match, full
 platform or packaged-GUI campaign belongs to this increment. MSH-151 (Chess
 Coherent-Round Assessment) evaluates the combined work with fresh paired openings
 and independent opponents; these component changes alone establish no rating gain.
+
+Tested source `639b6465be384330c9fd7d49580c13bb0c314bf2` passes 103 release
+search tests (two pre-existing ignored), workspace all-target clippy and formatting.
+All 28 diagnostic conditions preserve native root/PV integrity, all 16 tablebase
+WDL choices, three published tactical moves, the two added immediate mates and
+the defensive rook choice. Candidate execution took 29.63 seconds. The original
+central-king test omitted a pawn placement contribution; its failed receipt and
+corrected expectation are preserved, with no product change to satisfy it.
+
+Supported versus capturable queen contact now yields end-danger −51 versus −27,
+while both middle terms remain −109. The rook counterpart yields −46 versus −14.
+The historical queen/rook root changes at five seconds from Nxa5/+23/depth9 to
+Ra7/−32/depth10; there is no independent proof that this move is better. Drawn
+rook endings remain overoptimistic (+159 and +311 in two controls), so neither
+complete endgame understanding nor stronger match play is established here.
+
+Independent final source and evidence reconciliation approved this increment;
+no material findings remain. MSH-151 now measures the combined practical result.

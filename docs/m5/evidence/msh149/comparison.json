@@ -1,0 +1,415 @@
+{
+  "rows": [
+    {
+      "id": "queen-bishop-pawn-draw",
+      "time_ms": 1000,
+      "before": {
+        "move": "d4a1",
+        "score": 95,
+        "completed_depth": 5
+      },
+      "after": {
+        "move": "d4a1",
+        "score": 98,
+        "completed_depth": 5
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "queen-central-pawn-win",
+      "time_ms": 1000,
+      "before": {
+        "move": "h8g7",
+        "score": 729,
+        "completed_depth": 5
+      },
+      "after": {
+        "move": "h8g7",
+        "score": 752,
+        "completed_depth": 5
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "two-knights-draw",
+      "time_ms": 1000,
+      "before": {
+        "move": "a2b4",
+        "score": 0,
+        "completed_depth": 8
+      },
+      "after": {
+        "move": "a2b4",
+        "score": 0,
+        "completed_depth": 8
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "bishop-knight-win",
+      "time_ms": 1000,
+      "before": {
+        "move": "c3d3",
+        "score": 806,
+        "completed_depth": 7
+      },
+      "after": {
+        "move": "c3d3",
+        "score": 806,
+        "completed_depth": 7
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "rook-philidor-draw",
+      "time_ms": 1000,
+      "before": {
+        "move": "h1h7",
+        "score": 149,
+        "completed_depth": 7
+      },
+      "after": {
+        "move": "h1h7",
+        "score": 159,
+        "completed_depth": 7
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "rook-lucena-win",
+      "time_ms": 1000,
+      "before": {
+        "move": "f1b1",
+        "score": 357,
+        "completed_depth": 7
+      },
+      "after": {
+        "move": "f1b1",
+        "score": 360,
+        "completed_depth": 7
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "race-white-tempo",
+      "time_ms": 1000,
+      "before": {
+        "move": "a5a6",
+        "score": 867,
+        "completed_depth": 10
+      },
+      "after": {
+        "move": "a5a6",
+        "score": 908,
+        "completed_depth": 10
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "race-black-tempo",
+      "time_ms": 1000,
+      "before": {
+        "move": "e7d6",
+        "score": 0,
+        "completed_depth": 13
+      },
+      "after": {
+        "move": "e7d6",
+        "score": 0,
+        "completed_depth": 13
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "race-king-escort",
+      "time_ms": 1000,
+      "before": {
+        "move": "h7h5",
+        "score": -826,
+        "completed_depth": 11
+      },
+      "after": {
+        "move": "h7h5",
+        "score": -858,
+        "completed_depth": 11
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "race-rook-support",
+      "time_ms": 1000,
+      "before": {
+        "move": "h7h5",
+        "score": -1389,
+        "completed_depth": 8
+      },
+      "after": {
+        "move": "h7h5",
+        "score": -1442,
+        "completed_depth": 8
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "queen-pawn-near-king",
+      "time_ms": 1000,
+      "before": {
+        "move": "d4a1",
+        "score": 999999,
+        "completed_depth": 128
+      },
+      "after": {
+        "move": "d4a1",
+        "score": 999999,
+        "completed_depth": 128
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "two-knights-mate-counterexample",
+      "time_ms": 1000,
+      "before": {
+        "move": "e7g6",
+        "score": 999999,
+        "completed_depth": 128
+      },
+      "after": {
+        "move": "e7g6",
+        "score": 999999,
+        "completed_depth": 128
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "rook-defence-king-far",
+      "time_ms": 1000,
+      "before": {
+        "move": "h1f1",
+        "score": 177,
+        "completed_depth": 7
+      },
+      "after": {
+        "move": "h1d1",
+        "score": 183,
+        "completed_depth": 7
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "rook-defence-opposite-turn",
+      "time_ms": 1000,
+      "before": {
+        "move": "a6e6",
+        "score": -29,
+        "completed_depth": 7
+      },
+      "after": {
+        "move": "a6e6",
+        "score": -30,
+        "completed_depth": 7
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "MO2mm",
+      "time_ms": 1000,
+      "before": {
+        "move": "d8d5",
+        "score": 999995,
+        "completed_depth": 128
+      },
+      "after": {
+        "move": "d8d5",
+        "score": 999995,
+        "completed_depth": 128
+      }
+    },
+    {
+      "id": "f3apJ",
+      "time_ms": 1000,
+      "before": {
+        "move": "d4f3",
+        "score": 407,
+        "completed_depth": 8
+      },
+      "after": {
+        "move": "d4f3",
+        "score": 418,
+        "completed_depth": 9
+      }
+    },
+    {
+      "id": "CNWwY",
+      "time_ms": 1000,
+      "before": {
+        "move": "c1c8",
+        "score": 752,
+        "completed_depth": 8
+      },
+      "after": {
+        "move": "c1c8",
+        "score": 795,
+        "completed_depth": 8
+      }
+    },
+    {
+      "id": "tb-6",
+      "time_ms": 1000,
+      "before": {
+        "move": "d1e1",
+        "score": 303,
+        "completed_depth": 7
+      },
+      "after": {
+        "move": "d1e1",
+        "score": 311,
+        "completed_depth": 8
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "tb-7",
+      "time_ms": 1000,
+      "before": {
+        "move": "d1e1",
+        "score": 376,
+        "completed_depth": 8
+      },
+      "after": {
+        "move": "d1e1",
+        "score": 391,
+        "completed_depth": 8
+      },
+      "wdl_preserved": true
+    },
+    {
+      "id": "goldfish-pawn-exchange-44",
+      "time_ms": 1000,
+      "before": {
+        "move": "e4f5",
+        "score": -68,
+        "completed_depth": 8
+      },
+      "after": {
+        "move": "e4f5",
+        "score": -68,
+        "completed_depth": 8
+      }
+    },
+    {
+      "id": "goldfish-pawn-exchange-44",
+      "time_ms": 5000,
+      "before": {
+        "move": "e4f5",
+        "score": -88,
+        "completed_depth": 9
+      },
+      "after": {
+        "move": "e4f5",
+        "score": -88,
+        "completed_depth": 9
+      }
+    },
+    {
+      "id": "goldfish-queen-rook-31",
+      "time_ms": 1000,
+      "before": {
+        "move": "b7a7",
+        "score": 162,
+        "completed_depth": 8
+      },
+      "after": {
+        "move": "b7a7",
+        "score": 143,
+        "completed_depth": 8
+      }
+    },
+    {
+      "id": "goldfish-queen-rook-31",
+      "time_ms": 5000,
+      "before": {
+        "move": "b3a5",
+        "score": 23,
+        "completed_depth": 9
+      },
+      "after": {
+        "move": "b7a7",
+        "score": -32,
+        "completed_depth": 10
+      }
+    },
+    {
+      "id": "queen-supported",
+      "time_ms": 1000,
+      "before": {
+        "move": "g6g7",
+        "score": 999999,
+        "completed_depth": 128
+      },
+      "after": {
+        "move": "g6g7",
+        "score": 999999,
+        "completed_depth": 128
+      }
+    },
+    {
+      "id": "queen-unsupported",
+      "time_ms": 1000,
+      "before": {
+        "move": "g6g4",
+        "score": 999995,
+        "completed_depth": 128
+      },
+      "after": {
+        "move": "g6g4",
+        "score": 999995,
+        "completed_depth": 128
+      }
+    },
+    {
+      "id": "rook-supported",
+      "time_ms": 1000,
+      "before": {
+        "move": "a7a8",
+        "score": 999999,
+        "completed_depth": 128
+      },
+      "after": {
+        "move": "a7a8",
+        "score": 999999,
+        "completed_depth": 128
+      }
+    },
+    {
+      "id": "rook-unsupported",
+      "time_ms": 1000,
+      "before": {
+        "move": "f5g6",
+        "score": 999997,
+        "completed_depth": 128
+      },
+      "after": {
+        "move": "f5g6",
+        "score": 999997,
+        "completed_depth": 128
+      }
+    },
+    {
+      "id": "rook-defence",
+      "time_ms": 1000,
+      "before": {
+        "move": "a8a6",
+        "score": -483,
+        "completed_depth": 6
+      },
+      "after": {
+        "move": "a8a6",
+        "score": -497,
+        "completed_depth": 6
+      }
+    }
+  ],
+  "all_native_root_pv_checks": true,
+  "all16_oracle_wdl_preserved": true,
+  "published_tactics_and_new_mate_defence_choices_preserved": true
+}

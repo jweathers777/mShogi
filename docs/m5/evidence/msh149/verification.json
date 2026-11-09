@@ -1,6 +1,6 @@
 {
   "task": "MSH-149 (Classical King Exposure)",
-  "status": "implementation-in-progress",
+  "status": "accepted",
   "baseline_production_source": "846329fb5e4af855c53da83c3edbd4bb1cf5e1d6",
   "baseline_existing": "../msh145/candidate.jsonl.gz and candidate-receipt.json (23conditions unchanged frozenbinary)",
   "baseline_additional": "baseline-new.jsonl.gz and receipt (5conditions)",
@@ -31,5 +31,44 @@
     "architecture": "arm64",
     "cpu": "AppleM1Pro32GiB",
     "rust": "1.99.1"
-  }
+  },
+  "tested_source": "639b6465be384330c9fd7d49580c13bb0c314bf2",
+  "candidate": {
+    "source": "639b6465be384330c9fd7d49580c13bb0c314bf2",
+    "binary_sha256": "2b2224affe49eaf71e6218fc5b73cd25156cf441a5b1077a5af965e995350c60",
+    "inputs_sha256": "8320eab4b994f07e99e98f160f573b618403f842972134c10a77d0d02d1c9060",
+    "command": [
+      "/private/tmp/msh149/candidate-profile",
+      "docs/m5/evidence/msh149/positions.json",
+      "128",
+      "timed",
+      "none"
+    ],
+    "elapsed_seconds": 29.631817792076617,
+    "exit": 0
+  },
+  "comparison": "28conditions: all16oracleWDL,3publishedtactics,2newimmediatemates anddefensivechoice retained; allnativePVs/rootrestoration. Historicalqueen/rook5s movesfromNxa5+23depth9toRa7-32depth10, notprovedbetter. DrawKRKPstill311 andPhilidor159; no completeness or strengthclaim.",
+  "artifacts": {
+    "eval-focused.log.gz": "fb4fb20d2755ec6ef621bf995ce3e476e20f88ab5676cf3225871e487b0f4673",
+    "inspect_controls.py": "c6b487a453f41bd2172d5360941949795fee860eb7383c1291426ab1c20eb474",
+    "baseline-new-receipt.json": "4ee02d87fda8acc73fab8d2eb2988f400a4e97a1d684a4c1189e5c8b8a49e49f",
+    "candidate.jsonl.gz": "896ba37c3b3256140a611a488b37f3850f7035ddbb3437b40d2165f236536f01",
+    "candidate-build.log.gz": "f69f64b905e5d775e30c777a2fbf6bc7eb89cedd8b70a92877be18a33b2a1b98",
+    "baseline-new.stderr.gz": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+    "candidate.stderr.gz": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+    "component-plan.md": "e3513b337e7bd15ecc5a0f1a7901f3297210407a449ddcd6c0fee3241b5e095b",
+    "eval-focused-corrected.log.gz": "c6dcc78f51359e0dd26b3c49f5253d8309841fe22b2f30dc51e0d16d30ce7a5c",
+    "comparison.json": "3feb2b58408aad721713e4c3ebc63f4d3afbe343968c3813336802cfe07bfba5",
+    "search-all.log.gz": "0acdd338aa063c24fa0089e112f21e3fd1be8478820ec1c5da234d9c53f692e7",
+    "fmt.log.gz": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+    "baseline-new.jsonl.gz": "c0ae9ad51db680a9c630c880c3cc3627f023920add549b8738bdbcca0f826acc",
+    "research.md": "781023214d60320c3f56bef5d0e480224c69ce3263cf05076ff43e8e29fcd859",
+    "new-positions.json": "2ebc885741b2f3284cd498a6bb41fa8a18a6c7e0b72bd86e05edf074f4272d08",
+    "independent-controls.json": "3e98bf5fb14bd15407efb0bad07ada04c6508f0f22aa4d9de6c567745a49541b",
+    "additional-component-controls.json": "4e0174275e3fc7c3166795a1bfc7bff3193a7e6f091ce8beaab26b3ee3ba7f9c",
+    "positions.json": "8320eab4b994f07e99e98f160f573b618403f842972134c10a77d0d02d1c9060",
+    "workspace-clippy.log.gz": "485ed41d78a8ba2405b46a9d8bc8f622135b163a7f00dff4e4c114104d57482d",
+    "candidate-receipt.json": "3158d6f2759b7054d960b8a3050cc43b29c18cbc848cc6d3fc58efe015998e93"
+  },
+  "independent_final_review": "endgame_review approved exact639b6465source,allartifact/input/binaryhashes,28conditions/16completeoracleWDL/3tactics/newmates/defence,103tests2ignored,failurehistory andqualifiedclaims; no materialfindings"
 }

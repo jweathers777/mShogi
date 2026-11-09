@@ -135,7 +135,7 @@ for this search-only boundary correction.
 
 ## Continuing conventional Chess
 
-MSH-141 remains **In Review** solely for required macOS15 CI. Production is
+MSH-141's required macOS15 CI has now passed. Production is
 integrated at `1d20ae6`; fixture-inclusive tested source is `22bf634`.
 On [Rust run42660806919](https://github.com/jweathers777/mShogi/actions/runs/42660806919),
 Linux job129311544941 and Windows job129311544328 passed completely at that source.
@@ -145,12 +145,13 @@ reported that no hosted runner acquired the job and cited macOS arm64 capacity
 constraints. The retry carries forward Linux/Windows success receipts under
 IDs129327575705/129327577416; those platforms were not rerun.
 
-The bounded retry campaign is stopped. A later supported retry of the completed
-macOS job on the identical source is the remaining action, subject to GitHub's
-retry eligibility and available capacity. No source, runner version, tests or
-acceptance requirement changed. Local macOS27 verification does not replace this
-gate. Historical fixture failure, superseded jobs and both capacity cancellations
-remain in the verification record; AC4 and final acceptance remain incomplete.
+The first bounded retry campaign stopped after those capacity failures. John's
+subsequent continuation authorized another targeted retry. Attempt3 macOS job
+129346371246 acquired a hosted runner and passed every required step at the same
+`22bf634` source. Linux/Windows receipts129346374668/129346373973 carry forward
+the original successful executions; neither platform was redundantly rerun.
+No source, runner version, tests or acceptance requirement changed. Historical
+fixture failure, superseded jobs and both capacity cancellations remain preserved.
 
 MSH-142 (Classical Endgame Judgment) addresses demonstrated conversion/scaling
 weaknesses. MSH-143 (Chess Search Efficiency) investigates remaining measured

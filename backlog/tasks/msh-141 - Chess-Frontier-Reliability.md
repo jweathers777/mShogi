@@ -1,11 +1,11 @@
 ---
 id: MSH-141
 title: Chess Frontier Reliability
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-09T16:16:00Z'
-updated_date: '2026-11-09T17:49:00Z'
+updated_date: '2026-11-09T18:33:00Z'
 labels:
   - handle:chess-frontier-reliability
 milestone: m-5
@@ -26,15 +26,15 @@ Handle: Chess Frontier Reliability. Owner authorizes continued conventional Ches
 - [x] #1 Preserved full-history incident and source telemetry reconcile depth/visit meanings; controlled profiles separate completed/incomplete iterations, main/quiescent work, extensions and repeated work, distinguishing proof from hypotheses.
 - [x] #2 A general correction addresses any demonstrated significant search-frontier defect with independent tactical expectations, counterexamples and restoration/history/cancellation regression coverage; limits are not adjusted to conceal the problem.
 - [x] #3 Bounded before/after realistic-time and deterministic work comparisons cover incident plus independent representative positions; limitations and any unresolved behavior are explicit, with no inferred playing-strength gain.
-- [ ] #4 Independent review and relevant native platform verification support the exact integrated source; concise evidence and prioritized conventional follow-up work are recorded while Shogi/Xiangqi remain deferred.
+- [x] #4 Independent review and relevant native platform verification support the exact integrated source; concise evidence and prioritized conventional follow-up work are recorded while Shogi/Xiangqi remain deferred.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -55,4 +55,12 @@ CI run42655073948: all3OS native/release checks passed; Linux129291275785 then f
 Final platform handoff: production1d20ae6, fixture-inclusive22bf634, both integrated/pushed to codex/rewrite. Rust run42660806919 at22bf634: Linux129311544941 and Windows129311544328 passed all steps (attempt1). macOS129311544814 and supported macOS-only retry129327572801 both cancelled after15m1s without acquiring a hosted runner (runner_id0, no steps). GitHub reports hosted-runner acquisition failure and macOS arm64 capacity constraints. Attempt2 Linux129327575705/Windows129327577416 receipts carry forward attempt1 success; healthy platforms were not rerun. One completion-aware monitor completed; bounded retry campaign stopped after the second capacity failure. Later supported retry of completed macOS job129327572801 on identical22bf634 is the remaining action, subject to current API eligibility/capacity. No source/runner/check/acceptance changes or local macOS substitution. MSH-141 stays In Review; AC4/final acceptance unsupported. Canonical receipts and historical failures: docs/m5/evidence/msh141/verification.json; explanation: docs/m5/chess-frontier-reliability.md. MSH-142 (Classical Endgame Judgment) and MSH-143 (Chess Search Efficiency) remain scoped follow-ups pending this platform gate; no cross-game transfer or strength claim.
 
 Independent final receipt reconciliation (chess_frontier_review) approves blocked handoff with no material mismatch: exact22bf634 source, every Linux/Windows required step passed, both macOS cancellations901seconds/runner_id0/no steps and matching capacity annotations, preserved historical/carried-forward receipts, all artifact hashes match. Production diff1d20ae6..22bf634 empty. In Review and incomplete AC4/final acceptance are required; no local-platform substitution. Evidence-only final commit follows; no active CI monitor or retry remains.
+
+Owner continuation targetedretry completed: Rust42660806919attempt3success at exact22bf634b268bb99efbd349d1e80c8b2466b24c7a. ActualmacOS15job129346371246 acquired runner1000002806 and passed every step. OriginalLinux129311544941/Windows129311544328attempt1successes are carried forward as129346374668/129346373973; neither healthyplatformreran. Independentendgame_review reconciledsource, steps, historicalcapacityfailures andhashes, approvedDone. No source/check/runnerrequirementschanged. Canonicalverificationrecordaccepted;141sourceintegrationremains1d20ae6production/22bf634fixtureinclusive, previoushandoffd2bfb2b; finalreceiptcommitfollows.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Diagnosed full-history Goldfish depth1/295113visit incident:295108qvisits and287379visits in interrupteddepth2 arose from recursivequiet-threatdefences; pre-movequeen-supportfilter also missed revealedmate support. Corrected finitequietfrontier and post-move native support, with independent tactical/negative/history/cancellationcoverage and unchanged operational/rulescontracts. Depth8 completes12279visits and identifies losingmate; no ratinggain inferred. All required nativeLinux/macOS15/Windows checks passed at22bf634; independent finalacceptance approved, historicalfailures retained. Integrated oncodex/rewrite. MSH-142 (Classical Endgame Judgment) and MSH-143 (Chess Search Efficiency) continue authorizedconventionalengineering; no cross-game transfer.
+<!-- SECTION:FINAL_SUMMARY:END -->

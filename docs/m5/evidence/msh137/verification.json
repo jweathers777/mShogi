@@ -6,9 +6,9 @@
     "MSH-137.2",
     "MSH-137.3"
   ],
-  "status": "in_review_pending_actual_platform_ci",
+  "status": "done",
   "starting_revision": "24512d0f4247752cfb67c7a4e5a908bc0b1e1302",
-  "tested_source": "f1484b15f44817e5469a849af28796d844393223",
+  "tested_source": "2a2ff7c00897fdcd10527c8db8cc77f5e1220e65",
   "source_manifest": {
     "base": "24512d0f4247752cfb67c7a4e5a908bc0b1e1302",
     "patch_sha256": "603ca1d536a909153dd7222db2d4f06d61b2ea35f95ff7c7b48df1523f6eeaed",
@@ -544,7 +544,8 @@
     "seconds": 0,
     "aggregate_task_allowance_seconds": 900,
     "formal_study": false,
-    "paid_compute": false
+    "paid_compute": false,
+    "scope": "Additional Chess diagnostic/development opponent experiments only. Existing mandatory native protocol/process and other-game self-play regression tests are engineering verification, not a new Chess match campaign."
   },
   "historical_failures": [
     "Reflection test ASCII-rank EP fixture TargetSyntax, corrected character formatting.",
@@ -584,35 +585,480 @@
       "reviewer": "chess_maturity_assessment",
       "scope": "Desktop20kvisit/1s limit interpretation",
       "verdict": "Product default/resource follow-up, not unresolved engine architecture gap; engine readiness/transfer supported. No GUI maximum-strength claim. Track MSH-138, preserve exactlimits/responsiveness."
+    },
+    {
+      "reviewer": "chess_maturity_assessment",
+      "scope": "Final independent source/CI/artifact/AC/DoD reconciliation",
+      "verdict": "Approved, no material findings. All137/.1/.2/.3AC supported; DoD1-3supported andnormalcompletionpublication satisfiesDoD4. All18sourcehashes+fixture match tested2a2ff7c andf148production; archivehashes verified, actual3OSjobs+workspacecounts independently reconciled. Historicalfailed/canceledreceipts preserved. No moretests/CI needed. Practicalengineeringreadiness supported, no playingstrengthclaim.138next before50/54.",
+      "execution": "Read-only; no tests, builds, matches or CI polling."
     }
   ],
   "required_ci": {
     "workflow": "rust.yml",
     "jobs": [
+      {
+        "id": 128908684741,
+        "run_id": 42538719298,
+        "workflow_name": "Rust workspace",
+        "head_branch": "codex/rewrite",
+        "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42538719298",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOAClwqs8AAAAeA45txQ",
+        "head_sha": "2a2ff7c00897fdcd10527c8db8cc77f5e1220e65",
+        "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/128908684741",
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42538719298/job/128908684741",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-09T00:10:17Z",
+        "started_at": "2026-11-09T00:10:20Z",
+        "completed_at": "2026-11-09T00:39:57Z",
+        "name": "Rust (ubuntu-24.04)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-09T00:10:21Z",
+            "completed_at": "2026-11-09T00:10:21Z"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-09T00:10:21Z",
+            "completed_at": "2026-11-09T00:10:33Z"
+          },
+          {
+            "name": "Install and identify the pinned toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-09T00:10:33Z",
+            "completed_at": "2026-11-09T00:10:43Z"
+          },
+          {
+            "name": "Format",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-09T00:10:43Z",
+            "completed_at": "2026-11-09T00:10:44Z"
+          },
+          {
+            "name": "Lint",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-09T00:10:44Z",
+            "completed_at": "2026-11-09T00:11:05Z"
+          },
+          {
+            "name": "Test",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-09T00:11:05Z",
+            "completed_at": "2026-11-09T00:27:32Z"
+          },
+          {
+            "name": "Verify production Tenjiku subprocess and standard-root journeys",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-09T00:27:32Z",
+            "completed_at": "2026-11-09T00:29:08Z"
+          },
+          {
+            "name": "Verify isolated desktop QA constructors",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-09T00:29:08Z",
+            "completed_at": "2026-11-09T00:38:59Z"
+          },
+          {
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-09T00:38:59Z",
+            "completed_at": "2026-11-09T00:39:50Z"
+          },
+          {
+            "name": "Build",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-09T00:39:50Z",
+            "completed_at": "2026-11-09T00:39:54Z"
+          },
+          {
+            "name": "Console smoke",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-09T00:39:54Z",
+            "completed_at": "2026-11-09T00:39:55Z"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-11-09T00:39:55Z",
+            "completed_at": "2026-11-09T00:39:55Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-11-09T00:39:55Z",
+            "completed_at": "2026-11-09T00:39:55Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/128908684741",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "runner_id": 1000002774,
+        "runner_name": "GitHub Actions 1000002774",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 128908685074,
+        "run_id": 42538719298,
+        "workflow_name": "Rust workspace",
+        "head_branch": "codex/rewrite",
+        "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42538719298",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOAClwqs8AAAAeA45vEg",
+        "head_sha": "2a2ff7c00897fdcd10527c8db8cc77f5e1220e65",
+        "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/128908685074",
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42538719298/job/128908685074",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-09T00:10:17Z",
+        "started_at": "2026-11-09T00:10:20Z",
+        "completed_at": "2026-11-09T00:30:36Z",
+        "name": "Rust (macos-15)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-09T00:10:20Z",
+            "completed_at": "2026-11-09T00:10:21Z"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-09T00:10:21Z",
+            "completed_at": "2026-11-09T00:10:47Z"
+          },
+          {
+            "name": "Install and identify the pinned toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-09T00:10:47Z",
+            "completed_at": "2026-11-09T00:10:55Z"
+          },
+          {
+            "name": "Format",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-09T00:10:55Z",
+            "completed_at": "2026-11-09T00:10:57Z"
+          },
+          {
+            "name": "Lint",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-09T00:10:57Z",
+            "completed_at": "2026-11-09T00:11:20Z"
+          },
+          {
+            "name": "Test",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-09T00:11:20Z",
+            "completed_at": "2026-11-09T00:22:19Z"
+          },
+          {
+            "name": "Verify production Tenjiku subprocess and standard-root journeys",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-09T00:22:19Z",
+            "completed_at": "2026-11-09T00:23:43Z"
+          },
+          {
+            "name": "Verify isolated desktop QA constructors",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-09T00:23:43Z",
+            "completed_at": "2026-11-09T00:29:43Z"
+          },
+          {
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-09T00:29:43Z",
+            "completed_at": "2026-11-09T00:30:29Z"
+          },
+          {
+            "name": "Build",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-09T00:30:29Z",
+            "completed_at": "2026-11-09T00:30:32Z"
+          },
+          {
+            "name": "Console smoke",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-09T00:30:32Z",
+            "completed_at": "2026-11-09T00:30:33Z"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-11-09T00:30:33Z",
+            "completed_at": "2026-11-09T00:30:33Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-11-09T00:30:33Z",
+            "completed_at": "2026-11-09T00:30:34Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/128908685074",
+        "labels": [
+          "macos-15"
+        ],
+        "runner_id": 1000002777,
+        "runner_name": "GitHub Actions 1000002777",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 128908685190,
+        "run_id": 42538719298,
+        "workflow_name": "Rust workspace",
+        "head_branch": "codex/rewrite",
+        "run_url": "https://api.github.com/repos/jweathers777/mShogi/actions/runs/42538719298",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOAClwqs8AAAAeA45vhg",
+        "head_sha": "2a2ff7c00897fdcd10527c8db8cc77f5e1220e65",
+        "url": "https://api.github.com/repos/jweathers777/mShogi/actions/jobs/128908685190",
+        "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42538719298/job/128908685190",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-09T00:10:17Z",
+        "started_at": "2026-11-09T00:10:20Z",
+        "completed_at": "2026-11-09T00:44:31Z",
+        "name": "Rust (windows-2022)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-09T00:10:21Z",
+            "completed_at": "2026-11-09T00:10:22Z"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-09T00:10:22Z",
+            "completed_at": "2026-11-09T00:10:43Z"
+          },
+          {
+            "name": "Install and identify the pinned toolchain",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-09T00:10:43Z",
+            "completed_at": "2026-11-09T00:10:56Z"
+          },
+          {
+            "name": "Format",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-09T00:10:56Z",
+            "completed_at": "2026-11-09T00:10:59Z"
+          },
+          {
+            "name": "Lint",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-09T00:10:59Z",
+            "completed_at": "2026-11-09T00:11:30Z"
+          },
+          {
+            "name": "Test",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-09T00:11:30Z",
+            "completed_at": "2026-11-09T00:29:40Z"
+          },
+          {
+            "name": "Verify production Tenjiku subprocess and standard-root journeys",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-09T00:29:40Z",
+            "completed_at": "2026-11-09T00:32:37Z"
+          },
+          {
+            "name": "Verify isolated desktop QA constructors",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-09T00:32:37Z",
+            "completed_at": "2026-11-09T00:42:43Z"
+          },
+          {
+            "name": "Verify native desktop snapshot fixtures",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-09T00:42:43Z",
+            "completed_at": "2026-11-09T00:44:19Z"
+          },
+          {
+            "name": "Build",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-09T00:44:19Z",
+            "completed_at": "2026-11-09T00:44:26Z"
+          },
+          {
+            "name": "Console smoke",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-09T00:44:26Z",
+            "completed_at": "2026-11-09T00:44:27Z"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-11-09T00:44:27Z",
+            "completed_at": "2026-11-09T00:44:29Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-11-09T00:44:29Z",
+            "completed_at": "2026-11-09T00:44:29Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/jweathers777/mShogi/check-runs/128908685190",
+        "labels": [
+          "windows-2022"
+        ],
+        "runner_id": 1000002778,
+        "runner_name": "GitHub Actions 1000002778",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ],
+    "status": "completed",
+    "source": "2a2ff7c00897fdcd10527c8db8cc77f5e1220e65",
+    "run_id": 42538719298,
+    "attempt": 1,
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/42538719298",
+    "monitor": "Onecompletion-aware monitor percampaign; supersededcampaign stopped/completed before replacement started. No overlapping retries.",
+    "conclusion": "success",
+    "required_job_names": [
       "Rust (ubuntu-24.04)",
       "Rust (macos-15)",
       "Rust (windows-2022)"
     ],
-    "status": "superseded_fixture_correction_pending_new_run",
-    "source": null,
-    "run_id": null,
-    "attempt": 1,
-    "url": null
+    "workspace_summaries": {
+      "linux": {
+        "groups": 102,
+        "passed": 1169,
+        "failed": 0,
+        "ignored": 11
+      },
+      "macos": {
+        "groups": 102,
+        "passed": 1169,
+        "failed": 0,
+        "ignored": 11
+      },
+      "windows": {
+        "groups": 102,
+        "passed": 1166,
+        "failed": 0,
+        "ignored": 11
+      }
+    },
+    "retries": 0,
+    "source_verified": "All3 job head_sha fields equal run head_sha and tested_source; exact18filemanifest plus regeneratedfixturehash match. No acceptance, workflow/runner-version or productioncode changed during verification.",
+    "platform_count_note": "Windows1166 versus Linux/macOS1169 is three existing cfg(unix) tests: console/tests/cli.rs:77 and runner/tests/runner.rs:520,584. No unperformed Unix-only cases are reported as Windows passes."
   },
-  "unchanged_evidence": "No GUI/IPC/schema/rules/profile/resource-admission change; accepted packaged/game-specific evidence retained. No new GUI campaign.",
-  "remaining": "Required3OSCI at fixture-correctedsource, final independent evidence reconciliation/integration; next138desktopdefaultcalibration thenShogi50/Xiangqi54. No additionalmatches/learnedresearch.",
+  "unchanged_evidence": "No UI production, IPC, canonical schema, rules/profile or resource-admission change. One generated Chess fixture updated for actual telemetry and focused frontend consumers passed. Accepted packaged/game-specific evidence retained; no new GUI campaign.",
+  "remaining": "No MSH-137 blocker. Normal completion publication on codex/rewrite. Next dependency-ready task MSH-138: desktop play-budget calibration within existing admission ceilings, no new Chess study; then MSH-50 Shogi/MSH-54 Xiangqi.",
   "artifact": {
     "file": "development-artifacts.tar.gz",
     "sha256": "2b7b6e0fbf66116d7f5ad2ac90c62b1b3fff7dadf33724704c8a1dbe42c85691",
     "bytes": 591871
   },
-  "integration_revision": "f1484b15f44817e5469a849af28796d844393223",
-  "unrequired_ci": {
-    "workflow": "Desktop packages",
-    "run_id": 42536624883,
-    "source": "f1484b15f44817e5469a849af28796d844393223",
-    "action": "Cancelled automatically triggered broad packaging run; native-only changes, accepted GUI/IPC evidence unaffected. Native3OSCI retained."
-  },
+  "integration_revision": "2a2ff7c00897fdcd10527c8db8cc77f5e1220e65",
+  "unrequired_ci": [
+    {
+      "workflow": "Desktop packages",
+      "run_id": 42536624883,
+      "source": "f1484b15f44817e5469a849af28796d844393223",
+      "action": "Cancelled automatically triggered broad packaging run; native-only changes, accepted GUI/IPC evidence unaffected. Native3OSCI retained.",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "attempt": 1,
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/42536624883"
+    },
+    {
+      "workflow": "Desktop packages",
+      "run_id": 42538719193,
+      "source": "2a2ff7c00897fdcd10527c8db8cc77f5e1220e65",
+      "action": "Cancel unrequired packagingcampaign, preserveunchangedGUI evidence andmandatorynative3OSCI.",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "attempt": 1,
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/42538719193"
+    }
+  ],
   "followups": {
     "MSH-138": "Desktop20kvisit default may finish before1s; calibrate product default within admitted ceilings, with exact request/limit/cancel/Resume identities. Separate product resource/default work, no engine architecture blocker or match study.",
     "MSH-50": "Shogi conventional engine; prove native history-equivalence before reuse.",
@@ -1043,6 +1489,48 @@
       "file": "fixture-correction.tar.gz",
       "sha256": "dfbe009f392b64bd69a6ba26ee96f6befa994e1604a9651f6b5a75c95dd4bc17",
       "bytes": 72769
+    },
+    "revision": "2a2ff7c00897fdcd10527c8db8cc77f5e1220e65",
+    "source_reuse": "All18cratesource/test/example SHA256 hashes match frozenmanifest andf1484b15 exactly. Final localchecks/profiles reused forunchangednativecode, not priorplatformjob outcomes. Correctedfixture has separatehash/34testreceipt; newfullCI required."
+  },
+  "production_integration_revision": "f1484b15f44817e5469a849af28796d844393223",
+  "ci_artifact": {
+    "file": "final-ci.tar.gz",
+    "sha256": "906c8741bfce1d21a1e40928cd064a7ce7e17338605c2764fa8d4cd750dfa902",
+    "bytes": 218130
+  },
+  "acceptance_coverage": {
+    "MSH-137": {
+      "1": "Native measurements/cache/checked transitions/compactidentity/targetcaptures; local and3OSCI plusnativeindependentreview.",
+      "2": "Exact futurecontextproof, adversarial history/collision/Full/null tests and actualexactnode cutoff; bounded main/q buckets andcapacitydiagnostic.",
+      "3": "Reviewed coherent search/evaluation, independent tactical/endgame arithmetic and255positionforcedmateproof, nativePV/undo/cancel/limit/process tests; bounded profiles, no matchstudy.",
+      "4": "Fresh whole-engine assessment supports practicalengineering readiness; remaining selectivepatterns/tuning/specialendgames need marginal evidence.138productdefault calibration beforetransfer; no Elo/parity/strength inferred."
+    },
+    "MSH-137.1": {
+      "1": "Target attack geometry/cache equivalence andprecise nativeeffects/errors preserved.",
+      "2": "Independent diagrams/perft/specialmoves+metamorphicwalks/FENcache/163840publicvalidator comparisons.",
+      "3": "Recorded unchanged-policy pairs and source-completeness caveats; final completefrozenpacket, localchecks/independentreview.",
+      "4": "All3nativeCIpass at2a2ff7c; historicalfailures retained, nativeincrementalone doesnotclaim maturity."
+    },
+    "MSH-137.2": {
+      "1": "NativeM2 occurrence-count equivalence/rawEP/counters/root policy/origin; Fullprefix proofkept, syntheticunkeyed.",
+      "2": "Positive transposition and exactoracle, forcedhash/multiplicity/counter/history/policy rejection; restoration/preview/nullboundary tests.",
+      "3": "Actual context/depth/qbudget/cutoff counters, nativeone-nodeexactreuse, bounded4K/16K capacity/no study; source review/local+3OSCI.",
+      "4": "ConservativeFull/ancestrymemory/incompletepattern limits explicit; parent freshmaturityreview separate."
+    },
+    "MSH-137.3": {
+      "1": "Primary classical research, measured hotpaths/TT/staging, pawn/king/conversion corrections andproved quietthreat regression.",
+      "2": "Native outcome/claim precedence, exactrestore, preview/qTT/probes, error/cancel/overflow controls and real UCI/session/engine checks.",
+      "3": "338queries/74.076397131s,0additionalChessmatches; failures/contended/source-limited stages preserved.",
+      "4": "Independent search/eval plusfreshmaturityapproval; finalsource fully3OSverified;138productdefault follow-up explicit."
     }
+  },
+  "completion": {
+    "branch": "codex/rewrite",
+    "source_and_fixture_integration": "2a2ff7c00897fdcd10527c8db8cc77f5e1220e65",
+    "production_integration": "f1484b15f44817e5469a849af28796d844393223",
+    "acceptance": "All4AC/all4defaultDoD supported for parent andthreechildren; final records published in normal evidence-only completion commit, no production or acceptance change.",
+    "next": "MSH-138",
+    "program_limit": "This closes a substantial reviewed engineering checkpoint, not a claim of optimal classical play, Elo/parity, complete quiet-threat search or maximum default GUI strength."
   }
 }

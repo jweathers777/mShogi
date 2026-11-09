@@ -6,7 +6,7 @@ title: >-
 status: Ready
 assignee: []
 created_date: '2026-11-08T23:48:00Z'
-updated_date: '2026-11-09T00:05:00Z'
+updated_date: '2026-11-09T00:50:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -42,4 +42,6 @@ MSH-137 improves engine work substantially, but normal desktop Chess retains its
 
 <!-- SECTION:NOTES:BEGIN -->
 Next bounded Chess product checkpoint after137, before50/54 transfer. Review supports engine architecture readiness; calibrate ordinary play defaults without increasing admission ceilings or conducting new opponent studies.
+
+MSH-137 is Done after independent final acceptance and required actual3OSCI42538719298 at2a2ff7c. This task is now dependency-ready, unassigned and next in the Chess-first sequence. Use current codex/rewrite and its source/evidence; no additional Chess opponent studies. Do not reinterpret engine-readiness evidence as GUI-default maximum strength.
 <!-- SECTION:NOTES:END -->

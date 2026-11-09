@@ -96,3 +96,10 @@ ordinary desktop Chess play limits within existing admission ceilings. Faster
 fixed-visit execution may stop before the hard time limit; timed UCI capability
 does not by itself establish ordinary GUI play strength. This is product-default
 work, with no new Chess opponent study or unresolved search-architecture claim.
+
+MSH-137 and its three increments are now complete: independently reviewed native
+cost, history-safe reuse and coherent tactical/classical refinements, with actual
+three-platform native CI at `2a2ff7c`. The [refinement record](chess-classical-refinement.md)
+states measured gains, historical failures and remaining limits. This supports
+practical engineering readiness, not a strength claim. MSH-138 is next;
+MSH-50/54 remain dependent on its desktop-default calibration.

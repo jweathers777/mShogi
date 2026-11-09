@@ -175,9 +175,9 @@ pub struct SearchStats {
     pub queen_threat_nodes: u64,
     /// Native-confirmed immediate contact mates admitted at a quiescent node.
     pub queen_contact_mates: u64,
-    /// Quiet moves creating a confirmed contact-mate threat inside quiescence.
+    /// Reached quiet moves creating a confirmed contact-mate threat inside quiescence.
     pub quiet_threat_moves: u64,
-    /// Native projections of quiet candidates before frontier admission.
+    /// Native projections of reached quiet candidates before frontier admission.
     pub q_quiet_projections: u64,
     /// Conservative late quiet/futility omissions.
     pub futility_pruned: u64,
@@ -1449,32 +1449,30 @@ impl Engine<'_> {
         } else {
             self.cursor.position().captures_and_promotions()
         };
-        let mut actions = Vec::new();
-        for a in candidates {
-            if unsettled || gain(self.cursor.position(), a) > 0 || a.promotion.is_some() {
-                actions.push(a);
-            } else if left >= Q_FORCING_MIN {
+        // Score all candidates before searching so admitted moves retain their
+        // original ordering and capture SEE. Delay native quiet projection until
+        // its ordered turn: an earlier capture cutoff needs no later quiet work.
+        let moves = self.ordered(candidates, None, ply, previous)?;
+        let mut searched = 0;
+        for m in moves {
+            if !unsettled && !m.tactical {
                 // Only the first two q plies consider quiet checks. Native
                 // resolution derives discovered/castling effects; no separate
                 // checking-move geometry or legal-move approximation lives here.
                 self.work.poll()?;
                 self.stats.q_quiet_projections += 1;
-                let projected = self.cursor.position().project(a).map_err(|e| {
+                let projected = self.cursor.position().project(m.action).map_err(|e| {
                     Halt::Error(SearchError::Transition(
                         mshogi_core::chess::PlayError::Action(e),
                     ))
                 })?;
                 let checking = projected.in_check();
                 let threat = !checking && left > 0 && projected.has_queen_contact_mate_threat();
-                if checking || threat {
-                    actions.push(a);
-                    self.stats.quiet_threat_moves += u64::from(threat);
+                if !checking && !threat {
+                    continue;
                 }
+                self.stats.quiet_threat_moves += u64::from(threat);
             }
-        }
-        let moves = self.ordered(actions, None, ply, previous)?;
-        let mut searched = 0;
-        for m in moves {
             self.push_with_key(m.action, false)?;
             let child_node = self.cursor.turn();
             let checking = matches!(

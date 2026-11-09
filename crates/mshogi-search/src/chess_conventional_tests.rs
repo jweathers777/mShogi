@@ -1840,3 +1840,84 @@ fn diagnostic_endgame_lmr_preserves_quiet_mating_threat_protection() {
     assert_eq!(e.cursor.game(), Some(&g));
     assert_eq!(e.eval, EvalState::new(g.position()));
 }
+
+#[test]
+fn deferred_frontier_capture_cutoff_skips_unreached_quiet_projections() {
+    // Rxa2 wins an undefended queen with check; Black has only its king.
+    // At the last quiet-forcing layer, child nodes have no quiet projections,
+    // so these counters isolate work reached in this root's move picker.
+    let g = game("k7/8/8/8/8/8/q7/R6K w - - 0 1");
+    let capture: Action = "a1a2".parse().unwrap();
+    let mut native = g.clone();
+    native.apply(capture).unwrap();
+    assert!(native.position().in_check());
+    assert!(native.outcome().is_none());
+    let mut stop = || false;
+    for beta in [0, INF] {
+        let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+        assert!(e.evaluate() < 0, "beta zero cannot be a stand-pat cutoff");
+        let key = e.cursor.key();
+        let v = e
+            .quiescence(0, -INF, beta, Q_FORCING_MIN, None)
+            .ok()
+            .unwrap();
+        assert!(v.score > 0);
+        assert_eq!(v.pv.first(), Some(&SearchChoice::Move(capture)));
+        if beta == 0 {
+            assert_eq!(e.stats.q_quiet_projections, 0);
+            assert_eq!(e.stats.q_first_move_cutoffs, 1);
+        } else {
+            assert!(e.stats.q_quiet_projections > 0);
+        }
+        assert_eq!(e.cursor.game(), Some(&g));
+        assert_eq!(e.cursor.key(), key);
+        assert_eq!(e.cursor.depth(), 0);
+        assert_eq!(e.eval, EvalState::new(g.position()));
+    }
+}
+
+#[test]
+fn deferred_frontier_reached_quiet_projection_polls_and_preserves_typed_errors() {
+    let g = game(STANDARD_START_FEN);
+    let count = g.position().legal_actions().len();
+    assert_eq!(count, 20);
+    // One node poll, one ordering poll per initial quiet move, then one poll
+    // before each reached native projection. The initial moves do not check.
+    for completed_projections in [0, 1] {
+        let mut polls = 0;
+        let mut stop = || {
+            polls += 1;
+            polls == 1 + count + completed_projections + 1
+        };
+        let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+        let key = e.cursor.key();
+        assert!(matches!(
+            e.quiescence(0, -INF, INF, Q_FORCING_MIN, None),
+            Err(Halt::Limit(SearchStatus::Stopped))
+        ));
+        assert_eq!(e.stats.q_quiet_projections, completed_projections as u64);
+        assert_eq!(e.work.nodes, 1);
+        assert_eq!(e.cursor.game(), Some(&g));
+        assert_eq!(e.cursor.key(), key);
+        assert_eq!(e.cursor.depth(), 0);
+        assert_eq!(e.eval, EvalState::new(g.position()));
+    }
+    // Every Black action increments the fullmove counter. A reached quiet
+    // candidate must propagate native overflow, never silently skip the action.
+    let g = game("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 4294967295");
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    let key = e.cursor.key();
+    assert!(matches!(
+        e.quiescence(0, -INF, INF, Q_FORCING_MIN, None),
+        Err(Halt::Error(SearchError::Transition(
+            mshogi_core::chess::PlayError::Action(mshogi_core::chess::ActionError::CounterOverflow)
+        )))
+    ));
+    assert_eq!(e.stats.q_quiet_projections, 1);
+    assert_eq!(e.work.nodes, 1);
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.cursor.key(), key);
+    assert_eq!(e.cursor.depth(), 0);
+    assert_eq!(e.eval, EvalState::new(g.position()));
+}

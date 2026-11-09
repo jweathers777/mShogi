@@ -2,7 +2,7 @@
   "task": "MSH-143 (Chess Search Efficiency)",
   "status": "independent-review-approved-combined-ci-pending",
   "base_revision": "50b459acfe681556387022f6a22024d4b6ee585b",
-  "tested_source_revision": null,
+  "tested_source_revision": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
   "required_ci": [
     "Rust (ubuntu-24.04)",
     "Rust (macos-15)",
@@ -135,12 +135,10 @@
     "desktop-play.log.gz": "869767cf3e608dc0a238b3d2df9e5b70986ad6b39df9ecd48de2c658c62215e9",
     "fixtures.log.gz": "aae09895d640a4763a1b894436ca17536a18d0714b18813cf0026f8751245afb",
     "inputs.json": "80bf1d0e15582916f350fba239c69c9f76bc93e79ba8dd27ef6b7378fccf197b",
-    "msh143-activation.txt.gz": "3051fb45617b8432a267534f9383c6d52d58eb55c86de1f851f537de501421fc",
     "msh143-baseline-cpu-summary.json": "302cf8ec497d1ec775212e53a6370843c92584f941884629570db50070a07dd0",
     "msh143-baseline-cpu.txt.gz": "0eb65ad98b4fb85449d0072bc10aa56386b57383fb2ce3ba87eea4cb72bc2ff7",
     "msh143-baseline-sample-receipt.json": "9489f32daab44d36dabc99634be1ace64c06dddb7635323cbb536b8b0501e94a",
     "msh143-baseline-sampled.jsonl": "4fd12b2615a4c3aed74a325584abfbb393d1fec50a2202242c15d3e2d1094952",
-    "msh143-discovery.txt.gz": "3051fb45617b8432a267534f9383c6d52d58eb55c86de1f851f537de501421fc",
     "msh143-sample-inputs.json": "1296b6f095fec906f2af018b70fb62eb98a8a5abf92332793d54904ec17e1176",
     "msh143-sample.log": "e7761c32f40809a1687529db29b9ca1a60918072b3e3ae0e3b37b6666567fb8c",
     "msh143-summarize.py": "c4816b410bda745397b33fb5e6cdd45b455949aaa981dfd22de9157aa9cc0ff4",
@@ -154,5 +152,19 @@
     "search-final-claims.log.gz": "274773932940765cf0e8818ac67e429e768b7d967cbcb934d89bb3ee4d873f96",
     "search-final.log.gz": "5bc59cc416f526fd542e90eaa083f0a376012b31f007aec104b99d7df2b80ef8",
     "search-first.log.gz": "6386774d29c433d293ca59d289fb491a782307247b62594ba01c25bb4a76189b"
-  }
+  },
+  "ci_run": {
+    "id": 42674054950,
+    "source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/42674054950",
+    "status": "pending"
+  },
+  "cancelled_automatic_campaigns": [
+    {
+      "id": 42674055051,
+      "source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+      "workflow": "Desktop packages",
+      "reason": "Native-only checkpoint; required Rust3OSincludesactualreleasecontrollerprocesschecks; noGUI/packagecampaignneeded."
+    }
+  ]
 }

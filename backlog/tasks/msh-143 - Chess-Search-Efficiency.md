@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-09T16:23:00Z'
-updated_date: '2026-11-09T18:25:00Z'
+updated_date: '2026-11-09T18:32:00Z'
 labels:
   - handle:chess-search-efficiency
 milestone: m-5
@@ -25,8 +25,8 @@ Handle: Chess Search Efficiency. Continue the owner-authorized conventional Ches
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Current cost measurements distinguish actual native/SEE/search work and useful safe transposition reuse from reported visit counts, with bounded reproducible representative inputs.
-- [ ] #2 Significant practical inefficiencies are corrected where supported by evidence, with independent tactical, exact-context/history, cancellation and restoration regressions; unsupported speculative changes are not presented as improvements.
+- [x] #1 Current cost measurements distinguish actual native/SEE/search work and useful safe transposition reuse from reported visit counts, with bounded reproducible representative inputs.
+- [x] #2 Significant practical inefficiencies are corrected where supported by evidence, with independent tactical, exact-context/history, cancellation and restoration regressions; unsupported speculative changes are not presented as improvements.
 - [ ] #3 Before/after realistic-time evidence, independent review and required platform verification support a coherent integrated increment; remaining substantial opportunities and readiness for a fresh adaptive reassessment are reported without declaring maturity or transfer.
 <!-- AC:END -->
 
@@ -50,4 +50,6 @@ Root Codex owns primary codex/rewrite after reviewed142checkpoint50b459a; no com
 MSH-142 varied frontier verification found a controlled remaining boundary limitation: r6k/8/5K2/8/6Q1/8/8/8 b - - 0 1. Independent exhaustive immediate-mate replies establish only Ra7,Ra6+,Rf8+ prevent all mate1. Current full initial q frontier chooses safe defence, but q left14 chooses Rg8, missing noncontact Qh5/Qh4/Qh3 mate after the quiet-check cutoff. Preserve and correct this general threatened-defence horizon case within search-frontier efficiency work, without reopening recursive broad quiet expansion. Failed receipt /private/tmp/msh142/frontier-defence-failure.log will accompany142evidence;142passing test explicitly covers initial frontier only. KRKP e4/e5 remains a demonstrated endgame weakness outside142narrow exact-KPK/fortress/conversion subset; no claim of correction from static knowledge.
 
 Implemented measured native checked-projection reuse for q/SEE, preserving all complete effects/errors and actual Game history admission. Exhaustive coordinate/promotion comparison with publicapply passes. New bounded final-defence immediate-reply proof corrects Rg8/noncontactmate boundary failure without recursivequiet expansion; cancellation/restoration and guardedAutoClaimprecedence pass.92release searchlib tests,25nativeChess tests,4real release desktopplay tests pass;workspaceclippy/fmt clean; generatedfixturesunchanged.3sequential16positionprojection-onlyfixedruns have identical complete outputs/PVs/workstats; combinedfixedtimeabout4.9percent lower aggregate,1stimeddepthsunchangedorhigher. Qualitative CPU sample and safeTTaudit preserved; no speculativecache redesign or strengthclaim. Independentreview finds no material defect. Canonical docs/m5/evidence/msh143/verification.json; required combined142+143Rust3OSCI pending at finalsource. No opponentgames yet.
+
+Final exact-source checkpointf9747769c6e0b4f08a2cb893bdaa696b1317faee integrated/pushed. Independent finalreview approved guardedAutoClaimtest and3x16fixed/timed evidence; no materialfindings. Combined native run42674054950attempt1failedbeforecreatinganyjobs/checkrecords: authenticatedGitHubsummary reports Internal server error,correlationca7157e1-d803-4faa-94b1-8c76741486e0. No source/workflowissue established. PreservedAPI/UIreceipts; one supportedwhole-runretry atidenticalsource requestedbecause nohealthyjobs existed. AutomaticDesktop42674055051cancelled as unnecessarypackagecampaign. No furtherretrycampaignwithoutcompletion-awareinspection. RequiredCI/finalacceptancepending; source unchanged.
 <!-- SECTION:NOTES:END -->

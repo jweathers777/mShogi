@@ -1,0 +1,12 @@
+{
+  "source": "GitHub authenticated run summary read via IAB",
+  "url": "https://github.com/jweathers777/mShogi/actions/runs/42674054950",
+  "head_sha": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+  "attempt": 1,
+  "status": "Failure",
+  "duration_seconds": 51,
+  "jobs_created": 0,
+  "annotation": "Internal server error. Correlation ID: ca7157e1-d803-4faa-94b1-8c76741486e0",
+  "workflow_file_changed": false,
+  "interpretation": "Provider workflow orchestration failure before matrix jobs; no source tests ran. CLI generic workflow-file-issue hint is not actual diagnostic."
+}

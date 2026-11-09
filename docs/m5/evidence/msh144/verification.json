@@ -1,0 +1,273 @@
+{
+  "task": "MSH-144 (Chess Progress Assessment)",
+  "status": "prepared-no-games-engineering-ci-pending",
+  "engineering_accepted": false,
+  "resource_cap_seconds": 900,
+  "resource_extra_seconds": 0,
+  "resource_total_seconds": 0,
+  "active_seconds": 0,
+  "runs": [],
+  "inflight": null,
+  "build": {
+    "candidate": {
+      "path": "/private/tmp/msh144/mshogi",
+      "sha256": "10d6ca7ba2f0c2759415a5ff8f3c87988d9073ee9222b19c8dda9706b94ac9a7",
+      "source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+      "model_identity": "mshogi.chess.conventional.v1 / mshogi.chess.conventional-tapered.v1; MSH-141/142/143 source f9747769c6e0b4f08a2cb893bdaa696b1317faee"
+    },
+    "runner": {
+      "path": "/private/tmp/msh144/mshogi-match",
+      "sha256": "d42fd23e9d5848b8fc7d2982d6c08829fd786380124c833768d2a6dcd3c6e363",
+      "source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee"
+    },
+    "references": {
+      "simbelmyne131": {
+        "path": "/private/tmp/msh139/simbelmyne/target/release/simbelmyne",
+        "sha256": "8c1af1ae68acc8e5cd5bcf5590255708343611f01992f8e739e75d6e7e4bc1d5",
+        "source": "ede2b01e408501b4f59a05c2951bba2dec5f6b74",
+        "name": "Simbelmyne1.3.1",
+        "options": [],
+        "workers": 1,
+        "hash_mb": 64,
+        "build": "RUSTFLAGS=-Ctarget-cpu=native -Cllvm-args=--inline-threshold=500 cargo build --release --locked; equivalent spelling of removed upstream optimization flag; source unchanged",
+        "eligible": false,
+        "exclusion": "FixedTime bug: requested max_time < hard_time(max_time-20ms); smoke2\u201314ms at4096nodepoll. Unchanged rated source excluded, no scored games."
+      },
+      "oxidation060": {
+        "path": "/private/tmp/msh139/oxidation060/target/release/oxidation",
+        "sha256": "1ad5a983873ba4e983adb1fb628a8f1506d2043c097e418c928b72e39e36d77e",
+        "source": "46a705b80e7191e7c302838eb8b85053b5994d65",
+        "name": "Oxidation0.6.0",
+        "options": [],
+        "workers": 1,
+        "hash_mb": 64,
+        "eligible": true,
+        "build": "cargo build --release -p oxidation --bin oxidation; upstream source unchanged, generated lockfile preserved",
+        "preflight": {
+          "id": {
+            "version": "1",
+            "pieces": "kmqcaehuriwbznxlop",
+            "name": "Oxidation v0.6.0",
+            "author": "Mathmagician"
+          },
+          "options": {
+            "Hash": "Option(name='Hash', type='spin', default=64, min=0, max=4294967296, var=[])",
+            "Prune": "Option(name='Prune', type='button', default=None, min=None, max=None, var=[])",
+            "QDepth": "Option(name='QDepth', type='spin', default=4, min=0, max=255, var=[])"
+          },
+          "startpos_seconds": 1.0013017081655562,
+          "info": "{'depth': 8, 'seldepth': 15, 'score': PovScore(Cp(+10), WHITE), 'time': 1.0, 'nodes': 704248, 'nps': 704248, 'hashfull': 182, 'pv': [Move.from_uci('g1f3'), Move.from_uci('g8f6'), Move.from_uci('e2e3'), Move.from_uci('e7e6'), Move.from_uci('f1e2'), Move.from_uci('f8b4'), Move.from_uci('e1g1'), Move.from_uci('e8g8')]}"
+        },
+        "preflight_seconds": 1.015332458075136
+      },
+      "goldfish113": {
+        "path": "/private/tmp/msh139/goldfish113/build/goldfish.x",
+        "sha256": "3459e8245299566018ba453d0895a2225f3a6abed47543ee88b7f42afb052c2c",
+        "source": "b7aed1c1b9188c55f4d773fd4fac43de30c83cbb",
+        "name": "Goldfish1.13.0",
+        "options": [],
+        "workers": 1,
+        "hash_mb": 16,
+        "eligible": true,
+        "preflight": {
+          "id": {
+            "name": "Goldfish v1.13.0",
+            "author": "Bendik Samseth"
+          },
+          "options": {
+            "Contempt": "Option(name='Contempt', type='spin', default=0, min=-100, max=100, var=[])",
+            "Hash": "Option(name='Hash', type='spin', default=16, min=1, max=1048576, var=[])",
+            "SyzygyPath": "Option(name='SyzygyPath', type='string', default='<empty>', min=None, max=None, var=[])"
+          },
+          "startpos_seconds": 1.0022758333943784,
+          "info": "{'depth': 10, 'seldepth': 26, 'nodes': 2186197, 'time': 1.001, 'nps': 2184012, 'tbhits': 0, 'currmove': Move.from_uci('d2d4'), 'currmovenumber': 1, 'score': PovScore(Cp(+8), WHITE), 'pv': [Move.from_uci('d2d4'), Move.from_uci('d7d5'), Move.from_uci('c1f4'), Move.from_uci('g8f6'), Move.from_uci('d1d3'), Move.from_uci('b8c6')]}",
+          "seconds": 1.2404238330200315
+        },
+        "submodules": [
+          " 3068d7461d7f8d2f323ae6bbf3c58a089fcf233d external/Fathom (heads/master)",
+          " 8b6d3f9c4a774bef3081195d422993323b6bb2e0 external/googletest (8b6d3f9)",
+          "-d54377abd957c32c58a8898b8544cdd340f506e4 external/lichess-bot"
+        ],
+        "build": "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5; cmake --build build --target goldfish.x -j4; upstreamsourceunchanged, currentCMakeoldpolicycompatibilityonly",
+        "license_note": "MITroot; GPLv3StockfishUCIoptionhelpers retainnotices, no thirdpartyexecutable/source distributedinproduct"
+      },
+      "arasan156": {
+        "path": "/private/tmp/msh139/arasan156/bin/arasanx-64",
+        "sha256": "899445f37f118d8836800689ab8c40e2df804e146c8cc4edc95eadb1f8091c97",
+        "source": "b1a161da023fb7c7d403b6e7ca0ecbd68247600e",
+        "name": "Arasan15.6",
+        "eligible": false,
+        "exclusion": "Notselectedcurrently; successfulunsandbox1stimingprobe, butnativepairedpreflightnotrun. Sourceunchanged.",
+        "preflight": {
+          "id": {
+            "name": "Arasan 15.6",
+            "author": "Jon Dart"
+          },
+          "advertised_options": {
+            "Hash": "Option(name='Hash', type='spin', default=32, min=4, max=1000, var=[])",
+            "Ponder": "Option(name='Ponder', type='check', default=True, min=None, max=None, var=[])",
+            "MultiPV": "Option(name='MultiPV', type='spin', default=1, min=1, max=10, var=[])",
+            "OwnBook": "Option(name='OwnBook', type='check', default=True, min=None, max=None, var=[])",
+            "Book selectivity": "Option(name='Book selectivity', type='spin', default=50, min=0, max=100, var=[])",
+            "Threads": "Option(name='Threads', type='spin', default=1, min=1, max=64, var=[])",
+            "UCI_LimitStrength": "Option(name='UCI_LimitStrength', type='check', default=False, min=None, max=None, var=[])",
+            "UCI_Elo": "Option(name='UCI_Elo', type='spin', default=2600, min=1000, max=2600, var=[])"
+          },
+          "configured_options": {
+            "Threads": 1,
+            "Hash": 64,
+            "OwnBook": false,
+            "UCI_LimitStrength": false
+          },
+          "startpos_seconds": 1.0233991667628288,
+          "info": "{'multipv': 1, 'depth': 16, 'score': PovScore(Cp(-25), WHITE), 'time': 10.11, 'nodes': 2379536, 'hashfull': 150, 'pv': [Move.from_uci('b1c3'), Move.from_uci('g8f6'), Move.from_uci('g1f3'), Move.from_uci('d7d5'), Move.from_uci('d2d4'), Move.from_uci('c8f5'), Move.from_uci('f3h4'), Move.from_uci('f5d7'), Move.from_uci('c1f4'), Move.from_uci('e7e6'), Move.from_uci('d1d2'), Move.from_uci('f8e7'), Move.from_uci('h4f3'), Move.from_uci('e8g8'), Move.from_uci('d2d3')], 'nps': 235364, 'currmove': Move.from_uci('b1c3'), 'currmovenumber': 1}",
+          "total_seconds": 1.0348299997858703
+        }
+      }
+    },
+    "environment": {
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "cpu": "Apple M1 Pro",
+      "logical_cpus": 10,
+      "memory_gib": 32,
+      "execution": "sequential, shared unpinned machine, equal fixed1s/move; no heavy concurrent tasks"
+    },
+    "command": "cargo build --release --locked -p mshogi-console --bin mshogi -p mshogi-runner --bin mshogi-match; copied to frozen /private/tmp/msh144"
+  },
+  "book": {
+    "path": "/private/tmp/msh144/roots.json.gz",
+    "roots_sha256": "fec31f288ae5cabfa040193eef6a86dd557fc9a14772b1ce3ff6a71bafd969eb",
+    "parent_roots_sha256": "512b4ca59b50b8678169fdf3d73a87457962acd19b39483eaf5a33a111810a22",
+    "historical_ledger_sha256": "9acd3407e44527fdbecb9ab7a20504d2cf69296e1204f2bf797a3c9768be24ee",
+    "excluded_prior_root_ids": [
+      "book-37c2074021ade124",
+      "book-44ce717424a6b937",
+      "book-4a1f39cf4df68e5e",
+      "book-5f8409c636b8d2fe",
+      "book-888bb50db420873b",
+      "book-9c313e2692cbb19f",
+      "book-9e9cd868a147baf3",
+      "book-9f8433b46da4a5b8",
+      "book-a0b403c7e122ec4c",
+      "book-a79aaf082ad590b2",
+      "book-aff55e2ccbe5f11a",
+      "book-e5b2fa0d36a9373a",
+      "book-f7fb302336a360b8"
+    ],
+    "roots": 34686,
+    "phases": {
+      "discovery": 17269,
+      "confirmation": 17417
+    }
+  },
+  "catalog": {
+    "shallow110": {
+      "name": "Shallow Blue1.1.0",
+      "rating": 1452,
+      "margin": 20,
+      "family": "shallowblue",
+      "source": "a59d0586d30bb961e72bbd3fb9d1929eec91156d"
+    },
+    "shallow200": {
+      "name": "Shallow Blue2.0.0",
+      "rating": 1616,
+      "margin": 22,
+      "family": "shallowblue",
+      "source": "a04fbd9861770c897eb566d83b0d2e3b17aa9fc0"
+    },
+    "oxidation060": {
+      "name": "Oxidation0.6.0",
+      "rating": 1943,
+      "margin": 25,
+      "family": "oxidation",
+      "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+    },
+    "simbelmyne131": {
+      "name": "Simbelmyne1.3.1",
+      "rating": 2460,
+      "margin": 22,
+      "family": "simbelmyne",
+      "source": "ede2b01e408501b4f59a05c2951bba2dec5f6b74"
+    },
+    "arasan156": {
+      "name": "Arasan15.6",
+      "rating": 2713,
+      "margin": 24,
+      "family": "arasan",
+      "source": "b1a161da023fb7c7d403b6e7ca0ecbd68247600e"
+    },
+    "arasan183": {
+      "name": "Arasan18.3",
+      "rating": 2889,
+      "margin": 22,
+      "family": "arasan",
+      "source": "49b2ff652f543fcb84eb743f218342fb3f71c82d"
+    },
+    "texel107": {
+      "name": "Texel1.07",
+      "rating": 3114,
+      "margin": 9,
+      "family": "texel",
+      "source": "1874e98e51276386f44d5992ce64e38fb1f17dfd"
+    },
+    "arasan212": {
+      "name": "Arasan21.2",
+      "rating": 3117,
+      "margin": 14,
+      "family": "arasan",
+      "source": "a318500eb78126cff635900b4f60fdfe25aaa3e3"
+    },
+    "laser17": {
+      "name": "Laser1.7",
+      "rating": 3256,
+      "margin": 6,
+      "family": "laser",
+      "source": "96bfbdba8d064442626e1bb23e02473a46559a2e"
+    },
+    "goldfish113": {
+      "name": "Goldfish1.13.0",
+      "rating": 1982,
+      "margin": 18,
+      "family": "goldfish",
+      "source": "b7aed1c1b9188c55f4d773fd4fac43de30c83cbb",
+      "addition_reason": "InitialOx1943pairscompetitive2W1D1L; independentlyratednearbyfamilymaximizesinformationratherthanmismatched2713/1616. AddedbeforeanyGoldfishgame."
+    }
+  },
+  "baseline": {
+    "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/verification.json",
+    "sha256": "9acd3407e44527fdbecb9ab7a20504d2cf69296e1204f2bf797a3c9768be24ee"
+  },
+  "freeze": {
+    "code_sha256": "1e930af413639f2c1c1cb1c1c4cb63bb89ce3aaa97e78fcb34e00c41cbeea47b",
+    "tests_sha256": "e06698f6c3b30ba026c9b3011cc58c2a35c4d41b98b9a38d2749c605e361df89",
+    "method_sha256": "705956acef5a06af91cd735f15c297601dcce8dda2d068a82a5a4f60a63fcb62",
+    "production_source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee"
+  },
+  "initial_scope": "OnefreshreversedcolorpairperOxidation/Goldfishfamily,adaptiveinspectionwithin900saggregate;largerformalstudyrequiresconcreteresourceproposal.",
+  "source_dependencies": [
+    "MSH-141 (Chess Frontier Reliability)",
+    "MSH-142 (Classical Endgame Judgment)",
+    "MSH-143 (Chess Search Efficiency)"
+  ],
+  "telemetry_extractor": {
+    "path": "inspect_reports.py",
+    "source": "Unchanged copy of MSH-139 extractor; scored nominal reports remain separate from final work-only reports.",
+    "sha256": "8d823d6d53ae406c21c39698c2596ab8282359dc909aa303e5b3ebc33cfe5767"
+  },
+  "preparation_checks": [
+    {
+      "command": "python3 -m unittest discover -s docs/m5/evidence/msh144 -p test_assessment.py -v",
+      "passed": 9,
+      "failed": 0,
+      "engine_launches": 0,
+      "receipt": "helper-tests.log.gz"
+    }
+  ],
+  "independent_review": [
+    {
+      "reviewer": "endgame_review",
+      "verdict": "Approved bounded helper and strengthened historical comparison identity guard; independently ran original8offline tests, reviewed added9thtest receipt and finalguard. No engine matches launched.",
+      "scope": "Cumulative resource admission/cleanup, complete-native-result eligibility, fresh-root exclusion, independent old/new uncertainty, exact reference comparison identity."
+    }
+  ]
+}

@@ -90,3 +90,9 @@ choices: the actual major-study resource/time budget and comparison/release
 criteria when the engine is ready; substantial training/data/hardware commitments;
 or an actual conflict in product/rules requirements. No new decision is needed
 to begin conventional engineering under this direction.
+
+MSH-138 follows the refined-engine checkpoint before cross-game transfer: calibrate
+ordinary desktop Chess play limits within existing admission ceilings. Faster
+fixed-visit execution may stop before the hard time limit; timed UCI capability
+does not by itself establish ordinary GUI play strength. This is product-default
+work, with no new Chess opponent study or unresolved search-architecture claim.

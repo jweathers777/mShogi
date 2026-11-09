@@ -100,13 +100,19 @@ archive tests cover the implementation. Short profile examples are diagnostics,
 not strength measurements. Routine match work for the whole task is capped at
 900 aggregate seconds; no formal study is authorized or run here.
 
-The [verification record](evidence/msh49-1/verification.json) holds exact source,
+The current [MSH-137 verification record](evidence/msh137/verification.json) pins
+production source `f1484b15f44817e5469a849af28796d844393223`, local checks, profiles
+and review. Its required actual three-platform native CI is pending final
+reconciliation. The refined native engine does not require a new packaged GUI
+campaign; accepted unchanged GUI evidence remains applicable.
+
+The historical [MSH-49.1 verification record](evidence/msh49-1/verification.json) holds that stage's exact source,
 commands, failures, profiles, any development matches, independent review and
 actual required Rust Ubuntu24/macOS15/Windows2022 receipts. Affected frontend and
 standalone host checks accompany native verification. Existing packaged evidence
 is retained; a new broad GUI campaign is not required for this engine boundary.
 
-The implementation was integrated at `eb4601d`; the fixture-generator completion
+The original MSH-49.1 implementation was integrated at `eb4601d`; the fixture-generator completion
 correction was integrated at `b8cc851`, with product code unchanged. Required
 [native CI](https://github.com/jweathers777/mShogi/actions/runs/42492362033)
 passed on Ubuntu 24.04, macOS 15 and Windows 2022 at that exact corrected source.
@@ -114,12 +120,11 @@ The earlier macOS snapshot failure remains in the verification record: command
 admission preceded background history reconstruction, so the generator now waits
 for the exact IO operation to finish before publishing its historical prefix.
 
-One timed self-play pair consumed 49.6924 of the task's 900-second allowance.
+In MSH-49.1, one timed self-play pair consumed49.6924 of that task's900-second allowance.
 One game reached a native mate; the other reached the 192-ply cap and remains
 unscored. Both histories replayed, without process or cleanup failures. These
-are development regressions, not a playing-strength estimate. MSH-49.2 owns the
-now-authorized8–12-game unrestricted Stockfish diagnostic at one second per move
-within30 minutes. The diagnostic is now complete. Owner direction subsequently required MSH-136
+are development regressions, not a playing-strength estimate. MSH-49.2 subsequently completed the owner-authorized8–12-game unrestricted
+Stockfish diagnostic at one second per move within30 minutes. The diagnostic is now complete. Owner direction subsequently required MSH-136
 and MSH-137 before cross-game transfer; the baseline alone did not establish
 classical maturity. The current refinement record supersedes the original
 immediate-transfer handoff while preserving all historical evidence.

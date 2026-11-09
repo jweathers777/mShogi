@@ -1,10 +1,11 @@
 ---
 id: MSH-145
 title: Pawn Threat and Exchange Judgment
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-09T19:38:00Z'
-updated_date: '2026-11-09T20:50:00Z'
+updated_date: '2026-11-09T21:22:00Z'
 labels:
   - handle:pawn-threat-and-exchange-judgment
 milestone: m-5
@@ -39,6 +40,12 @@ Handle: Pawn Threat and Exchange Judgment. Follow the completed conventional eng
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Root owns codex/rewrite after accepted MSH147diagnosis and MSH148/150cost corrections; Level1 portable evaluation/search verification. Current evaluator gives large unscaled advantages in independent drawn material families and its passer runway ignores future king interception. Freeze combined baseline and a small independent tempo/escort/rear-support/KNNK-mate/KQKP/KRPKR panel, preserving raw complete move-WDL and full historical roots. Implement original bounded passer-interception risk on the extra runway premium plus narrow advisory conversion scaling with nearby winning/tactical/material negatives; no rules outcomes, runtime tablebase, search extension or copied weights. Delegate isolated evaluator/tests, root owns fixtures/harness/evidence/integration. Verify color/turn/material symmetry, native mate/claims/history/cancel/restoration, all existing tactical frontier regressions, short fixed/time comparisons and independent review. No tournament or fullplatformcampaign; separate king-exposure work stays149 before coherent reassessment.
+<!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 

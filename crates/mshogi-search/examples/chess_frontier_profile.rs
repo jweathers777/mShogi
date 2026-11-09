@@ -84,6 +84,19 @@ fn main() {
             );
         }
         let before = game.clone();
+        let oracle_legal_set_verified = input.get("tb_moves").map(|moves| {
+            let mut expected: Vec<_> = moves.as_object().unwrap().keys().cloned().collect();
+            let mut actual: Vec<_> = game
+                .position()
+                .legal_actions()
+                .iter()
+                .map(ToString::to_string)
+                .collect();
+            expected.sort();
+            actual.sort();
+            assert_eq!(actual, expected, "oracle legal set for {}", input["id"]);
+            true
+        });
         // This validates a supplied line's native admission, not its optimality.
         let expected_line_replay = input.get("expected_line").map(|line| {
             let mut expected = game.clone();
@@ -167,6 +180,7 @@ fn main() {
                 "pv":r.result.principal_variation.iter().copied().map(choice_json).collect::<Vec<_>>(),
                 "pv_final_fen":replay.position().to_fen(),"pv_native_outcome":replay.outcome(),
                 "root_unchanged":true,"pv_native_admitted":true,
+                "oracle_legal_set_verified":oracle_legal_set_verified,
                 "expected_line_replay":expected_line_replay,
                 "root_evaluation":evaluation_json(&game,root_side),
                 "pv_leaf_evaluation":evaluation_json(&replay,root_side),

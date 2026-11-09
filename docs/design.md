@@ -378,22 +378,20 @@ formal study is authorized; routine matches remain bounded by the existing
 15-minute cumulative allowance without subtask resets. See the updated
 [roadmap](m5/strength-roadmap.md).
 
-Owner consolidation, 2026-11-09: MSH-138 (Desktop Search Limits) makes ordinary
-Chess play time-primary, removing practical visit/depth restrictions while
-preserving cancellation, bounded memory, process supervision, exact identities
-and old-document behavior. Player-configurable thinking time is future product
-work. MSH-137 (Chess Search Refinement) remains a completed engineering checkpoint,
-not demonstrated playing-strength acceptance. MSH-139 (Chess Strength Qualification)
-must establish credible practical strength against unweakened independently
-rated engines before conventional Shogi/Xiangqi transfer. Use adaptive paired
-opening samples, one consistent published pool where practical, and explicit
-uncertainty/condition differences; claim no official CCRL or human rating.
-Research and propose a meaningful classical target, protocol and overall budget
-for John's approval before the campaign. Routine engineering stays autonomous.
-This supersedes earlier immediate-transfer handoffs and the deferral of all
-further Chess strength analysis until learned evaluation; historical evidence
-and the later learned-evaluation phase remain intact. See the updated
-[roadmap](m5/strength-roadmap.md).
+Owner revision, 2026-11-09: MSH-138 (Desktop Search Limits) supplies ordinary
+time-primary Chess play. MSH-137 (Chess Search Refinement) remains a completed
+engineering checkpoint. MSH-139 (Chess Strength Assessment) is now authorized to
+establish current playing strength, with adaptive full-strength rated opponents,
+equal thinking time, meaningful uncertainty, independent tactical/endgame checks
+and fresh confirmation against two independent families. It has no predetermined
+strength target, fixed tournament size or arbitrary campaign-hour allocation.
+Use operational safeguards and actual cost accounting; escalate substantial
+resource requirements. Stop after reporting the evidence so John can choose the
+next objective together with the implementer. Do not declare Chess sufficiently
+strong, choose a final target, improve the engine or transfer to Shogi/Xiangqi
+within the assessment. This supersedes the unapproved qualification proposal;
+completed correctness/evidence and the later learned-evaluation sequence remain
+intact. See the [roadmap](m5/strength-roadmap.md).
 
 M2 is refined in MSH-15–25 against the actual M1 implementation. The [match/history profile](rules/chess-match-v1.md) records the approved 2026-10-24 policy; MSH-26 supplies an opt-in exact dead-position/side-specific reachability algorithm, with explicit resource uncertainty and unchanged M2 defaults. M2 is closed with its [integration evidence](review/m2-closure.md). M3 is delivered through MSH-27–39 and persistence follow-up MSH-61 against the [desktop contract](desktop/m3-design.md), including all eleven desktop work areas and the historical initial untimed play batch (MSH-27–32). Its [integration verdict](review/m3-closure.md) and MSH-39 record the independent review, actual three-platform application evidence and final closure checks. Next work is M4 scope refinement; all six games and strong engines remain the product target.
 

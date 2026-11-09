@@ -1,3 +1,8 @@
+> **Superseded, unapproved historical proposal.** The owner replaced this proposal
+> with [MSH-139 (Chess Strength Assessment)](chess-strength-assessment.md) on
+> 2026-11-09. Its targets, sample sizes, budget and transfer gate below are not
+> current requirements or authorizations. No qualification games ran.
+
 # MSH-139 (Chess Strength Qualification): approval proposal
 
 **Proposed, not approved or executed.** Owner consolidation, 2026-11-09.

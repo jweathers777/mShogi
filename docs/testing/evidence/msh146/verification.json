@@ -1,0 +1,64 @@
+{
+  "task": "MSH-146 (Risk-Based Verification)",
+  "status": "source-review-approved-live-configuration-pending",
+  "base_revision": "a4432e98beed611983d09c8210d5537380b9b1bc",
+  "integration_branch": "codex/rewrite",
+  "verification_level": {
+    "selected": "Level2 targeted CI configuration/trigger checks, not product platform verification",
+    "reason": "Workflow scheduling and status semantics change; local fixture/configuration review plus cheap actual GitHub dispatch. No native runtime, rules or test assertions changed.",
+    "deferred": "Fullnative/desktop matrices notrun for thispolicy; existing acceptedproduct evidence remainsatitsactualsources. FutureLevel3integration/release retainsallthreeplatforms."
+  },
+  "startup": {
+    "clean_origin_aligned": true,
+    "branch": "codex/rewrite",
+    "active_chess_worker": null,
+    "unrelated_worktree": "codex/tenjiku-historical-access atbe93699, preserved",
+    "unrelated_active_task": "MSH-133 historicalroadmap InReview, untouched",
+    "backlog_version": "1.55.1"
+  },
+  "github_policy_observation": {
+    "default_branch": "master",
+    "rewrite_protection": {
+      "status": 404,
+      "message": "Branch not protected"
+    },
+    "rulesets": [],
+    "settings_changed": false,
+    "registered_workflow_ids": {
+      "Rust workspace": 393975947,
+      "Desktop packages": 395991468
+    }
+  },
+  "local_checks": {
+    "helper_tests": 8,
+    "helper_failures": 0,
+    "yaml_and_trigger_checks": "passed; automaticRustalwaysfinishes/docsandmixed; manualDesktoponly; inputsagreewithallowlists",
+    "existing_full_checks": "AllpriorRust/Desktopcompletejobsteps,namesandtimeoutvaluesidentical",
+    "actionlint": "1.7.12 passed; shellcheck/pyflakes disabled, not claimed",
+    "actionlint_archive_sha256": "aba9ced2dee8d27fecca3dc7feb1a7f9a52caefa1eb46f3271ea66b6e0e6953f"
+  },
+  "source_files_sha256": {
+    ".github/workflows/rust.yml": "60ab43005cf4e781329a9043057cde107f6a5179729eff1191bb0945d300980e",
+    ".github/workflows/desktop.yml": "05eaaaf67aeb598eaa02955c43bba717fca94928f6dba683cf448430ef680d4c",
+    "tools/ci_checks.py": "14f7ce052a4f531822f76a870c709bd991290aa752e709327a9b1d0c2b4e08a8"
+  },
+  "review": {
+    "reviewer": "endgame_review",
+    "verdict": "Source/policyapproved, no materialfindings; independently8helpertests andfullexistingjobpreservation/sourceaudit. Actualcheapdispatchandnormalintegrationpending."
+  },
+  "unfinished_obligation_reconciliation": "No activeChessverificationleft;141/142/143/144Donehistoryuntouched.145deferredbehind147broad diagnosis. Existing57/58/60fullplatformproduct/releasecriteria remainLevel3; historical50/54platformreceipts unchanged. Currentdevelopmentguide blanketper-behaviorCI requirement supersededprospectively.",
+  "not_run": [
+    "Full3OSnativecampaign",
+    "Desktoppackage/GUIcampaign",
+    "Newopponentmatches"
+  ],
+  "receipts": {
+    "actionlint.log.gz": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+    "helper-tests.log.gz": "0151c76a64b937d0d4eb472e1c7ab26bf0c43fb012bfea212f4ee49134e9e77c"
+  },
+  "official_references": [
+    "https://github.com/github/docs/blob/main/content/actions/reference/workflows-and-actions/events-that-trigger-workflows.md#workflow_dispatch",
+    "https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event",
+    "https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks#handling-skipped-but-required-checks"
+  ]
+}

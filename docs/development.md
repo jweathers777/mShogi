@@ -1,6 +1,8 @@
-# Rust development baseline
+# Native development and verification
 
-MSH-3 establishes two active packages: `mshogi-core` (reusable library) and `mshogi-console` (binary name `mshogi`). MSH-4 adds explicit chess position state and validated FEN parsing/serialization; MSH-5 adds checked ordinary moves/captures, promotions and exact undo; MSH-6 adds geometric attack queries; MSH-7 adds pseudo-legal ordinary candidates; MSH-8 adds checked castling/en passant through `Position::apply` and special candidates; MSH-9 adds the legal-action list and position classification; MSH-10 adds perft and divide. MSH-11 adds the `mshogi shell` command session (see the README) over those APIs; the console provides help, version and coverage metadata as well. MSH-19 adds `mshogi-search`, a material-only static evaluator with no outcome semantics (see [evaluation](evaluation.md)). MSH-16 adds rules-owned Game/history and [versioned chess records](rules/chess-history-record-v1.md); the console delegates apply/undo and record reload to that layer. MSH-17/18 add live adjudication and semantic match/clock records; MSH-20 adds full-width native search. MSH-21 adds [bounded request coordination](search-coordination.md); MSH-22 adds the [first UCI adapter](uci.md) as `mshogi uci`. MSH-23 adds `mshogi-runner` / `mshogi-match` for [recorded UCI experiments](match-runner.md). The desktop remains later work.
+Current verification follows the permanent [three-level risk-based policy](testing/verification-levels.md). The workspace has seven native crates plus the separate Tauri host. The following scaffold history is retained as historical context, not a description of current product completeness.
+
+MSH-3 originally established two active packages: `mshogi-core` (reusable library) and `mshogi-console` (binary name `mshogi`). MSH-4 adds explicit chess position state and validated FEN parsing/serialization; MSH-5 adds checked ordinary moves/captures, promotions and exact undo; MSH-6 adds geometric attack queries; MSH-7 adds pseudo-legal ordinary candidates; MSH-8 adds checked castling/en passant through `Position::apply` and special candidates; MSH-9 adds the legal-action list and position classification; MSH-10 adds perft and divide. MSH-11 adds the `mshogi shell` command session (see the README) over those APIs; the console provides help, version and coverage metadata as well. MSH-19 adds `mshogi-search`, a material-only static evaluator with no outcome semantics (see [evaluation](evaluation.md)). MSH-16 adds rules-owned Game/history and [versioned chess records](rules/chess-history-record-v1.md); the console delegates apply/undo and record reload to that layer. MSH-17/18 add live adjudication and semantic match/clock records; MSH-20 adds full-width native search. MSH-21 adds [bounded request coordination](search-coordination.md); MSH-22 adds the [first UCI adapter](uci.md) as `mshogi uci`. MSH-23 adds `mshogi-runner` / `mshogi-match` for [recorded UCI experiments](match-runner.md). The desktop remains later work.
 
 ## Clean checkout
 
@@ -18,13 +20,33 @@ cargo run --locked --bin mshogi -- --version
 cargo run --locked --bin mshogi -- profile
 ```
 
-`rust-toolchain.toml` selects **stable release 1.89.0**, minimal profile, rustfmt and Clippy. Rustup can install that exact toolchain/components on first use; initial installation requires network access. This deliberately reproduces the inspected host's stable baseline, not the newest moving `stable` release. It does not change the user's global default. `rust-version = "1.89"` and edition 2024 are shared package metadata. Toolchain updates should change the pin and recorded minimum together, rerun formatting/lint/tests and native CI, and record the actual evidence.
+`rust-toolchain.toml` currently selects **stable release 1.99.1**, minimal
+profile, rustfmt and Clippy; shared package metadata declares `rust-version =
+"1.99"` and edition 2024. Check the committed files when reproducing older
+receipts, which retain their original toolchains. Toolchain changes are Level 2:
+select relevant platform/build checks and record actual outcomes rather than
+assuming portability from a local build. Do not change the user's global default.
 
 Rustup environment/directory overrides or `cargo +...` can take precedence over the repository pin. Check `rustup show` and `rustc --version` when reproducing evidence. The host installation and compiler version are not proof of successful tests on another platform.
 
 ## Repeatable checks
 
-Run from the root; every command targets only the active workspace:
+Choose checks for the changed behavior. For a platform-independent conventional
+Chess search/evaluation change, a typical Level 1 set is:
+
+```sh
+cargo fmt --all -- --check
+cargo clippy --locked -p mshogi-search --all-targets -- -D warnings
+cargo test --release --locked -p mshogi-search --lib chess_conventional
+```
+
+Add the relevant native history/action/property tests if that boundary changed,
+and real process/consumer tests when execution is affected. Independent review
+and independently established expected behavior remain required. Broaden local
+coverage where the risk warrants it. Do not infer other operating systems passed.
+
+The following broader workspace commands remain available for integration or
+shared changes; they are not a mandatory per-optimization checklist:
 
 ```sh
 cargo fmt --all -- --check
@@ -53,13 +75,58 @@ The [Python fixture checker](../tests/fixtures/chess/README.md) is optional rese
 
 ## CI and evidence
 
-[The workflow](../.github/workflows/rust.yml) runs native `ubuntu-24.04`, `macos-15` and `windows-2022` jobs with the pinned toolchain. It checks formatting, Clippy, tests, build and the documented console smoke commands: help, version, profile, and a piped `mshogi shell` session that loads, moves, shows, undoes, classifies and runs perft/divide (a failing command fails the step through its exit status). `fail-fast: false` preserves each platform's outcome. Checkout uses the reviewed official action v7.0.1 pinned to commit `3d3c42e5aac5ba805825da76410c181273ba90b1`, read-only repository permissions and no persisted credentials; hosted runners meet its Node 24 runtime requirement.
+Use the [verification levels](testing/verification-levels.md) to decide what is
+required. Ordinary pushes to `codex/**` and pull requests targeting `codex/rewrite`
+run the lightweight `Routine checks` context. It is emitted even for documentation
+changes; expensive native/frontend steps are conditional on the complete changed
+path set and relevant shared dependencies. A mixed change exercises both affected
+areas. This automation does not replace task-specific local regressions/review.
 
-Pushes to `codex/**` and pull requests targeting `codex/rewrite` trigger the workflow. Ticket-only changes under `backlog/**` are skipped; the last tested code revision remains the relevant evidence. No default branch, repository policy or protection setting is changed to run it.
+The existing [Rust workflow](../.github/workflows/rust.yml) provides explicit
+manual selection of `suite=configuration|search|process|persistence|full` and
+`platform=ubuntu-24.04|macos-15|windows-2022|all`. The
+[Desktop workflow](../.github/workflows/desktop.yml) is manual, with
+`operation=configuration|host|package` and the same platform choices. Configuration is
+the safe default. Full native and package commands/tests remain available; their
+historical `Rust (OS)` and `Desktop (OS)` job names are preserved. Targeted and
+lightweight jobs use different names so their success cannot masquerade as full
+verification. A manual package check is not required for ordinary engine work.
 
-The MSH-3 task records host/clean-checkout commands, independent review and the actual workflow URL, revision, runner information and outcome per platform. A configured matrix is not a passed run. Those first results established scaffold behavior only. Each later behavior task records its own native run, and the [M1 closure review](review/m1-closure.md) identifies the integrated-revision evidence. Packaged desktop evidence remains an M3 obligation.
+The rewrite workflows are registered in GitHub while the historical C++ `master`
+remains the default branch. Use the registered IDs and an explicit ref (the web UI
+button may not appear):
 
-References: [Cargo workspaces](https://doc.rust-lang.org/cargo/reference/workspaces.html), [rustup toolchain selection](https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file), [Rust 1.89.0 stable release](https://blog.rust-lang.org/2025/08/07/Rust-1.89.0/).
+```sh
+# Cheap workflow/trigger configuration checks; no engine or GUI campaign.
+gh workflow run 393975947 --ref codex/rewrite -f suite=configuration
+gh workflow run 395991468 --ref codex/rewrite -f operation=configuration
+
+# Example Level 2 selection: choose actual systems based on the process risk.
+gh workflow run 393975947 --ref codex/rewrite -f suite=process -f platform=all
+
+# Level 2 example: excluded Tauri host checks without installers or GUI journeys.
+gh workflow run 395991468 --ref codex/rewrite -f operation=host -f platform=ubuntu-24.04
+
+# Level 3 only: full native and desktop compatibility checkpoint.
+gh workflow run 393975947 --ref codex/rewrite -f suite=full -f platform=all
+gh workflow run 395991468 --ref codex/rewrite -f operation=package -f platform=all
+```
+
+Record the resolved source SHA, selected scope, real job outcomes and actual runner
+platforms. A configured or skipped matrix is not a passed run. Level 1 tasks may
+complete locally with review, explicitly deferring broad compatibility to the
+next significant integration/release checkpoint. Historical MSH-3/M1 and later
+completed matrices remain evidence only at their recorded sources and scopes.
+
+MSH-146 (Risk-Based Verification) inspected live `codex/rewrite` protection:
+GitHub returned `Branch not protected`; repository rulesets were empty. No
+protection or default-branch setting was changed. If requirements are added later,
+use a consistently emitted ordinary check rather than a filtered/manual workflow
+as the routine integration gate; preserve actual milestone platform obligations.
+
+Current official references: [workflow dispatch events](https://github.com/github/docs/blob/main/content/actions/reference/workflows-and-actions/events-that-trigger-workflows.md#workflow_dispatch),
+[REST workflow dispatch](https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event),
+[required-check skipping behavior](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks#handling-skipped-but-required-checks).
 
 ## Perft performance baseline
 

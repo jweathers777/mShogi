@@ -1,29 +1,90 @@
 name: Desktop packages
 
 on:
-  push:
-    branches: ["codex/**"]
-    paths-ignore: ["backlog/**"]
-  pull_request:
-    branches: ["codex/rewrite"]
-    paths-ignore: ["backlog/**"]
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Configuration checks dispatch; host checks the native interface; package runs the complete package journey
+        type: choice
+        default: configuration
+        options: [configuration, host, package]
+      platform:
+        description: One platform for a targeted package risk, or all for full integration
+        type: choice
+        default: ubuntu-24.04
+        options: [ubuntu-24.04, macos-15, windows-2022, all]
 
 permissions:
   contents: read
 
 jobs:
-  package:
-    name: Desktop (${{ matrix.os }})
+  configuration:
+    name: Desktop configuration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.scope.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Validate CI policy cases
+        run: python3 tools/ci_checks.py --self-test
+      - name: Validate selected scope
+        id: scope
+        run: python3 tools/ci_checks.py --kind desktop >> "$GITHUB_OUTPUT"
+
+  host:
+    name: Desktop host (${{ matrix.os }})
+    needs: configuration
+    if: inputs.operation == 'host'
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-24.04
-            bundle: deb
-          - os: macos-15
-            bundle: app
-          - os: windows-2022
-            bundle: nsis
+      matrix: ${{ fromJSON(needs.configuration.outputs.matrix) }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: desktop/.node-version
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - name: Linux native build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - name: Install desktop toolchain
+        run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt,clippy
+      - name: Locked frontend and native host checks without packaging
+        working-directory: desktop
+        run: |
+          npm ci
+          npm run check
+          npm test
+          npm run engine:prepare
+          cd src-tauri
+          cargo fmt --all -- --check
+          cargo clippy --locked --all-targets -- -D warnings
+          cargo test --locked
+          cargo test --locked --features desktop-verification
+      - name: Verify stable macOS QA identities and external fixture selection
+        if: runner.os == 'macOS'
+        run: python3 -m unittest discover -s desktop/scripts -p test_macos_verification.py -v
+
+  package:
+    name: Desktop (${{ matrix.os }})
+    needs: configuration
+    if: inputs.operation == 'package'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.configuration.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 75
     defaults:

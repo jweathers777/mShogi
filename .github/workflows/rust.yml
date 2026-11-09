@@ -3,21 +3,111 @@ name: Rust workspace
 on:
   push:
     branches: ["codex/**"]
-    paths-ignore: ["backlog/**"]
   pull_request:
     branches: ["codex/rewrite"]
-    paths-ignore: ["backlog/**"]
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: Explicit verification scope (full preserves the complete native campaign)
+        type: choice
+        default: configuration
+        options: [configuration, search, process, persistence, full]
+      platform:
+        description: Select only the platforms required by the task's actual risks
+        type: choice
+        default: ubuntu-24.04
+        options: [ubuntu-24.04, macos-15, windows-2022, all]
 
 permissions:
   contents: read
 
 jobs:
-  check:
-    name: Rust (${{ matrix.os }})
+  # This context always completes on push/PR, including documentation-only changes.
+  # Product checks are conditional steps, not path-filtered missing status checks.
+  routine:
+    name: Routine checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      matrix: ${{ steps.scope.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Validate CI policy cases
+        run: python3 tools/ci_checks.py --self-test
+      - name: Identify applicable checks
+        id: scope
+        run: python3 tools/ci_checks.py --kind rust >> "$GITHUB_OUTPUT"
+      - name: Native formatting and consumer compilation
+        if: steps.scope.outputs.rust == 'true'
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: Focused native search regressions
+        if: steps.scope.outputs.rust == 'true'
+        run: cargo test --release --locked -p mshogi-search --lib
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        if: steps.scope.outputs.frontend == 'true'
+        with:
+          node-version-file: desktop/.node-version
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - name: Frontend checks for changed UI or shared native contracts
+        if: steps.scope.outputs.frontend == 'true'
+        working-directory: desktop
+        run: |
+          npm ci
+          npm run check
+          npm test
+
+  targeted:
+    name: Targeted ${{ inputs.suite }} (${{ matrix.os }})
+    needs: routine
+    if: github.event_name == 'workflow_dispatch' && contains(fromJSON('["search","process","persistence"]'), inputs.suite)
     strategy:
       fail-fast: false
-      matrix:
-        os: [ubuntu-24.04, macos-15, windows-2022]
+      matrix: ${{ fromJSON(needs.routine.outputs.matrix) }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Identify toolchain
+        run: |
+          rustup show
+          rustc --version --verbose
+      - name: Execute selected native checks
+        env:
+          SUITE: ${{ inputs.suite }}
+        run: |
+          case "$SUITE" in
+            search)
+              cargo test --release --locked -p mshogi-search
+              ;;
+            process)
+              cargo test --release --locked -p mshogi-engine -p mshogi-runner -p mshogi-console --tests
+              ;;
+            persistence)
+              cargo test --release --locked -p mshogi-core --test game_record --test shogi_record --test native_envelope --test native_tori_envelope --test native_chu_envelope --test native_tenjiku_envelope --test native_xiangqi_envelope
+              cargo test --release --locked -p mshogi-desktop-session
+              cargo test --release --locked -p mshogi-console --test desktop_persistence
+              ;;
+            *) exit 2 ;;
+          esac
+
+  check:
+    name: Rust (${{ matrix.os }})
+    needs: routine
+    if: github.event_name == 'workflow_dispatch' && inputs.suite == 'full'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.routine.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
     # MSH-79 Windows used27m39s before MSH-44 added actual two-profile search,
     # console/controller tests and required release child/standard-root journeys.

@@ -61,3 +61,9 @@ KRKP remains unresolved: the historical unique ...Re1 win and drawn advanced-paw
 position need more than the narrow material classes implemented here. No exact
 rook-versus-pawn recognizer or general pawn-ending solver is claimed. Fresh
 adaptive strength reassessment follows the combined endgame and efficiency work.
+
+The final combined source `f9747769c6e0b4f08a2cb893bdaa696b1317faee`
+passed all required Linux, macOS 15 and Windows native CI jobs in
+[run 42674054950, attempt 2](https://github.com/jweathers777/mShogi/actions/runs/42674054950).
+Attempt 1 failed inside GitHub before creating any jobs; that provider error and
+the identical-source retry are retained in the structured evidence.

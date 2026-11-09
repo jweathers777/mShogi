@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-09T18:27:00Z'
-updated_date: '2026-11-09T18:39:00Z'
+updated_date: '2026-11-09T19:07:00Z'
 labels:
   - handle:chess-progress-assessment
 milestone: m-5
@@ -50,4 +50,6 @@ Owner explicitly requested post142/143adaptiveassessment. Root prepares only whi
 
 <!-- SECTION:NOTES:BEGIN -->
 Prepared exact f974776 candidate/runner binaries, reused unchanged eligible Oxidation/Goldfish references, and excluded all13 prior attempted opening roots. Independent review approved bounded adapted helper including source/binary/options/arguments/rating identity guard for historical changes;9offline tests pass, no engine launches. Initial900s aggregate allowance includes failures, cleanup and replay. No games before combined engineering CI/acceptance; source evidence and method frozen in docs/m5/evidence/msh144/verification.json.
+
+Engineering dependencies141/142/143 are Done after independently reconciled actual3OSCI at f974776. Frozen binaries/helper/method verified, no games yet. Initial pair launch gate is now satisfied; cumulative900second safeguard remains.
 <!-- SECTION:NOTES:END -->

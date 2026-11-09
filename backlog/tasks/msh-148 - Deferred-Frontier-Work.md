@@ -1,9 +1,11 @@
 ---
 id: MSH-148
 title: Deferred Frontier Work
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-09T20:36:00Z'
+updated_date: '2026-11-09T20:40:00Z'
 labels:
   - handle:deferred-frontier-work
 milestone: m-5
@@ -35,3 +37,9 @@ Handle: Deferred Frontier Work. MSH147 identifies millions of eager quiescent qu
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Root integrates on codex/rewrite after approved MSH147 atf8ffd96. Level1 portable search correction; rules/protocol/platform boundaries unchanged. Defer only settled quiet candidate projection until its already-ordered move is reached; retain entry-time ordering scores, all unsettled evasions/defences, frontier budget, native admission and cancellation/error unwinding. Delegate this isolated function/test edit, independently review it. Compare frozen0a6e8cf diagnostic binary against corrected source at identical bounded work over12positions plus independent defensive/error tests; measure actual saved projections and sequential repeated cost, then short realistic-time choices. No opponent matches/fullmatrix. Integrate after local search regressions, consumer compilation and independent source/evidence review.
+<!-- SECTION:PLAN:END -->

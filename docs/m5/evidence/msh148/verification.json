@@ -1,0 +1,28 @@
+{
+  "task": "MSH-148 (Deferred Frontier Work)",
+  "status": "implementation-in-progress",
+  "base_revision": "f8ffd96",
+  "baseline_diagnostic_revision": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+  "baseline_binary_sha256": "8ae09bfb195276a201d81fc0c04ba0109496ffa56e9923a9fb8f60db94384486",
+  "verification_level": "Level1: portable search work scheduling; no rules, protocol or platform-sensitive behavior changes",
+  "requirements": [
+    "same admitted move order and fixed-work search results",
+    "native history/claims/checks/threats/error/cancellation restoration",
+    "deterministic avoided-work test and existing varied frontier suite",
+    "bounded repeated sequential performance and realistic-time comparisons",
+    "independent source and evidence review"
+  ],
+  "not_run": [
+    "opponent matches",
+    "full platform matrix",
+    "packaged GUI campaign"
+  ],
+  "environment": "same macOS27.0.1 arm64/Rust1.99.1 as MSH147; sequential local timings",
+  "local_checks": [
+    "98 release search library tests passed, 2 existing ignored",
+    "release all-target search clippy -Dwarnings passed",
+    "fmt and diffcheck passed"
+  ],
+  "review": "endgame_review source/tests approved; exact-ordering/native/cancel/error properties inspected; measurement reconciliation pending",
+  "local_failure_history": "New Rxa2 fixture initially asserted nonchecking; native result correctly checks Ka8. Assertion corrected, no product-code concession. Final suite passed."
+}

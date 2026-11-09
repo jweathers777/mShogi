@@ -26,6 +26,9 @@ pub const MAX_PLY: u16 = 128;
 const INF: i32 = MATE_SCORE + 1;
 const MATE_BAND: i32 = MATE_SCORE - MAX_PLY as i32;
 const Q_PLIES: u16 = 16;
+// Two quiet forcing plies plus the response to a threat created on the second.
+const Q_FORCING_MIN: u16 = Q_PLIES - 1;
+const Q_DEFENCE_MIN: u16 = Q_FORCING_MIN - 1;
 const TABLE_ENTRIES: usize = 4096;
 const MAX_TABLE_ENTRIES: usize = 16_384;
 
@@ -82,6 +85,10 @@ pub struct SearchStats {
     pub main_nodes: u64,
     /// Quiescence visits.
     pub q_nodes: u64,
+    /// Expanded quiescent nodes in check, excluding earlier terminal/TT exits.
+    pub q_check_nodes: u64,
+    /// Expanded quiescent nodes at the exhausted capture horizon.
+    pub q_horizon_nodes: u64,
     /// Exact native future-context transposition hits.
     pub tt_hits: u64,
     /// Real main-node table lookups, including empty slots.
@@ -151,6 +158,21 @@ pub struct ConventionalResult {
     /// Deepest actual visited board ply across all attempted iterations.
     pub selective_depth: u16,
     /// Inspectable bounded work counters.
+    pub stats: SearchStats,
+    /// Cumulative work at each completed or interrupted nominal iteration.
+    pub iterations: Vec<IterationStats>,
+}
+
+/// Diagnostic accounting only; an interrupted iteration never supplies a choice.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct IterationStats {
+    /// Nominal depth attempted.
+    pub depth: u16,
+    /// Whether all root work completed successfully.
+    pub completed: bool,
+    /// Cumulative elapsed microseconds, including earlier iterations.
+    pub elapsed_us: u128,
+    /// Cumulative counters, including unsuccessful aspiration windows.
     pub stats: SearchStats,
 }
 
@@ -227,6 +249,7 @@ pub fn search_with_options(
         principal_variation: vec![],
         status: SearchStatus::Complete,
     };
+    let mut iterations = Vec::new();
     for depth in 1..=limits.depth {
         engine.generation = depth;
         let mut width = if depth >= 3 && result.score.is_some_and(|s| s.abs() < MATE_BAND) {
@@ -259,6 +282,12 @@ pub fn search_with_options(
             engine.eval.evaluate(game.position()),
             evaluation::evaluate(game.position())
         );
+        iterations.push(IterationStats {
+            depth,
+            completed: iteration.is_ok(),
+            elapsed_us: engine.work.start.elapsed().as_micros(),
+            stats: engine.stats.clone(),
+        });
         match iteration {
             Ok(value) => {
                 result.decision = value
@@ -294,6 +323,7 @@ pub fn search_with_options(
         result,
         selective_depth: engine.work.seldepth,
         stats: engine.stats,
+        iterations,
     })
 }
 
@@ -1274,6 +1304,8 @@ impl Engine<'_> {
             self.cursor.turn().classification,
             Classification::Check | Classification::Checkmate
         );
+        self.stats.q_check_nodes += u64::from(in_check);
+        self.stats.q_horizon_nodes += u64::from(left == 0);
         if ply < MAX_PLY
             && let Some(action) = self.cursor.position().queen_contact_mate()
         {
@@ -1288,7 +1320,7 @@ impl Engine<'_> {
             return Ok(Value::prepend(action, child?));
         }
         let threatened = ply < MAX_PLY
-            && left > 0
+            && left >= Q_DEFENCE_MIN
             && !in_check
             && self.cursor.position().has_queen_contact_mate_threat();
         self.stats.queen_threat_nodes += u64::from(threatened);
@@ -1312,41 +1344,27 @@ impl Engine<'_> {
                 return Ok(best.unwrap());
             }
         }
+        // Quiet checks and contact-threat expansions belong only at the first
+        // two frontier plies, with one additional ply to answer their threats.
+        // Recursively treating every later mate threat as
+        // check turns quiescence into a second full-width search. Actual checks
+        // still search every evasion, and immediate mates are admitted above at
+        // every ply. Deeper quiet plans belong to the next main iteration.
         // Stand-pat cutoffs do not need an owned copy of every native action.
-        let near_queen = left > 0
-            && self
-                .cursor
-                .position()
-                .queen_in_attack_zone(self.cursor.position().side_to_move());
-        let candidates = if unsettled || left >= Q_PLIES - 1 || near_queen {
+        let candidates = if unsettled || left >= Q_FORCING_MIN {
             self.cursor.node().actions.clone()
         } else {
             self.cursor.position().captures_and_promotions()
         };
         let mut actions = Vec::new();
-        let mut quiet_queen_probes = 0;
         for a in candidates {
             if unsettled || gain(self.cursor.position(), a) > 0 || a.promotion.is_some() {
                 actions.push(a);
-            } else if left >= Q_PLIES - 1
-                || near_queen
-                    && quiet_queen_probes < 16
-                    && self
-                        .cursor
-                        .position()
-                        .piece_at(a.from)
-                        .is_some_and(|p| p.kind == PieceKind::Queen)
-            {
+            } else if left >= Q_FORCING_MIN {
                 // Only the first two q plies consider quiet checks. Native
                 // resolution derives discovered/castling effects; no separate
                 // checking-move geometry or legal-move approximation lives here.
                 self.work.poll()?;
-                quiet_queen_probes += u32::from(
-                    self.cursor
-                        .position()
-                        .piece_at(a.from)
-                        .is_some_and(|p| p.kind == PieceKind::Queen),
-                );
                 let mut projected = self.cursor.position().clone();
                 projected.apply(a).map_err(|e| {
                     Halt::Error(SearchError::Transition(
@@ -1355,7 +1373,7 @@ impl Engine<'_> {
                 })?;
                 let checking = projected.in_check();
                 let threat = !checking && left > 0 && projected.has_queen_contact_mate_threat();
-                if checking && left >= Q_PLIES - 1 || threat {
+                if checking || threat {
                     actions.push(a);
                     self.stats.quiet_threat_moves += u64::from(threat);
                 }

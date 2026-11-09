@@ -11,8 +11,8 @@ playing-strength qualification.
 | Continue conventional Chess | Research, profile and refine established search/classical evaluation as a coherent system. MSH-137 (Chess Search Refinement) is a completed engineering checkpoint, not strength qualification. Use observed important weaknesses to direct further conventional development. |
 | Time-primary desktop play | MSH-138 (Desktop Search Limits): spend the allotted thinking time, retain the last completed iteration and preserve native rules/history, cancellation, resource protection, supervision and compatible documents. Only effectively unreachable technical visit/depth safeguards remain. |
 | Assess current Chess | MSH-139 (Chess Strength Assessment): authorized adaptive full-strength rated comparisons, fresh independent-family confirmation, tactical/endgame checks and mistake analysis. [Current assessment](chess-strength-assessment.md) has no target, fixed tournament size or campaign-hour allocation. Report useful evidence and stop for owner review. |
-| Decide next objective | John and the implementer review actual strength, uncertainty and limitations before choosing further Chess development or cross-game transfer. Assessment completion alone authorizes neither. |
-| Other conventional engines | MSH-50 (Conventional Shogi) and MSH-54 (Conventional Xiangqi) remain To Do pending that owner decision, then Tori/Chu/both Tenjiku profiles under existing tasks. Adapt techniques with native history/action/effect proofs and game-specific evaluation/guards. Do not copy Chess repetition-reset formulas into capture/drop or chase games. |
+| Continue from measured weaknesses | John reviewed MSH-139 (Chess Strength Assessment) and authorized further conventional Chess engineering. MSH-141 (Chess Frontier Reliability) first explains/corrects the depth1/295113-visit incident; then address substantial endgame/evaluation and search efficiency opportunities in coherent increments. No arbitrary rating target or maturity claim. |
+| Other conventional engines | MSH-50 (Conventional Shogi) and MSH-54 (Conventional Xiangqi) remain To Do pending explicit owner approval of cross-game transfer, then Tori/Chu/both Tenjiku profiles under existing tasks. Adapt techniques with native history/action/effect proofs and game-specific evaluation/guards. Do not copy Chess repetition-reset formulas into capture/drop or chase games. |
 | Learned evaluation later | After the conventional engines are established, research a substantially complete Chess learned approach, then extend a validated approach to the other games. Existing learned-evaluator, opening-knowledge and M5 closure requirements remain intact. |
 
 MSH-140 (Player Thinking Time) records future ordinary Chess time configuration:
@@ -63,5 +63,17 @@ tables or weights. No neural model is part of the current conventional candidate
 MSH-138 (Desktop Search Limits) is complete at tested source `fac34c9`, with
 actual three-platform native/release-controller CI and the focused normal macOS
 package journey. Its [engineering record](chess-desktop-time.md) preserves exact
-receipts and limitations. The next work is MSH-139 (Chess Strength Assessment), followed by owner review of
-the findings before any next strength target or cross-game transfer decision.
+receipts and limitations. MSH-139 (Chess Strength Assessment) is complete. The owner selected further conventional Chess development, beginning with MSH-141 (Chess Frontier Reliability). Reassess with fresh adaptive opponents only after meaningful engineering progress; no per-optimization tournament. Cross-game transfer and learned evaluation remain deferred.
+
+
+## Current conventional development queue
+
+MSH-141 (Chess Frontier Reliability) owns the reproduced depth-1 incident and
+its general correction. MSH-142 (Classical Endgame Judgment) follows the measured
+conversion/scaling weaknesses; MSH-143 (Chess Search Efficiency) follows remaining
+measured native, exchange and safe transposition costs. These are authorized
+engineering work, with concise per-task plans based on then-current source.
+Review practical playing strength with fresh adaptive reference openings after
+meaningful progress across these increments, not after each technique. Neither
+task completion nor higher reported depth establishes maturity or authorizes
+cross-game transfer.

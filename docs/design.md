@@ -762,3 +762,16 @@ shared presentation refinements, all six required CI jobs and actual packaged
 gameplay on all three platforms are supported by independent review. The owner
 decisions and reading limitations above are unchanged. Shared M4 integration
 and milestone closure remain separate work.
+
+### Owner continuation after Chess assessment (2026-11-09)
+
+MSH-139 (Chess Strength Assessment) established a conditional local index around
+1900, not conventional maturity. John authorizes further substantial classical
+Chess engineering, first explaining and correcting the depth1/295113-visit
+Goldfish incident, then addressing general search/frontier, native-query and safe
+TT costs, specialized endgame knowledge and classical evaluation. Use independent
+correctness/tactical checks and bounded profiling, preserving rules/history and
+product contracts. No arbitrary rating target, learned evaluation or automatic
+Shogi/Xiangqi transfer. Routine technical choices remain autonomous; fresh adaptive
+strength reassessment follows meaningful progress rather than each optimization.
+See the current [roadmap](m5/strength-roadmap.md).

@@ -101,8 +101,21 @@ and artifacts, and escalate genuinely substantial additional resource needs.
 This authorization supersedes the unapproved qualification proposal and the
 routine 15-minute match allowance for this assessment only. Report findings and
 STOP for John's review before selecting a target, further engine improvements or
-Shogi/Xiangqi transfer. Completed engineering and historical evidence remain valid;
+Shogi/Xiangqi transfer (assessment-specific stopping point, subsequently satisfied). Completed engineering and historical evidence remain valid;
 learned evaluation stays later. Player-configurable time is separate future work.
+
+Owner continuation, 2026-11-09 after MSH-139 (Chess Strength Assessment):
+continue conventional Chess engineering autonomously, beginning with the
+completed-depth1/295113-visit incident in the Goldfish loss. Establish the work
+and root cause before optimization, correct general defects with independent
+regressions, then pursue substantial search/frontier/native-query/TT and classical
+endgame/evaluation improvements in coherent tasks. No position special cases,
+concealed limits, learned evaluation or arbitrary rating target. Routine match
+allowance remains15minutes cumulatively per task; no substantial tournament after
+each increment. Reassessment belongs after meaningful progress, with fresh
+openings/adaptive references and proportionate approved resource scope. Shogi and
+Xiangqi remain deferred until explicit owner approval. Routine engineering choices
+do not require owner checkpoints.
 
 For macOS GUI verification, reuse the fixed normal/QA/synthetic application slots
 and identities documented in `docs/desktop/packaged-gui-verification.md`, using

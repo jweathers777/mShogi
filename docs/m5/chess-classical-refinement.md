@@ -7,11 +7,12 @@ Shogi/Xiangqi transfer and requires an independent assessment of remaining work.
 No additional opponent match, statistical study or Elo estimate is part of this
 assignment. Routine algorithm and representation choices remain autonomous.
 
-**Current checkpoint: final source independently reviewed; local checks and
-short isolated profiles passed. Actual three-platform native CI and final
-acceptance reconciliation remain pending. The first CI campaign passed every
-platform's workspace tests but exposed one stale Chess analysis fixture; its
-regenerated telemetry is recorded below.**
+**Verified checkpoint:** production refinement integrated at `f1484b15`, with the
+regenerated fixture at `2a2ff7c00897fdcd10527c8db8cc77f5e1220e65`. All required
+[actual native CI jobs](https://github.com/jweathers777/mShogi/actions/runs/42538719298)
+passed at the latter exact source. Final independent evidence reconciliation approved all parent/subtask acceptance
+criteria; MSH-137 and its three increments are complete. MSH-138 remains the next
+product checkpoint before Shogi/Xiangqi transfer.
 
 ## Substantive corrections
 
@@ -91,11 +92,17 @@ checkmate. In the isolated one-second original-root probe it instead chooses
 that concrete horizon failure without changing the accepted historical 49.2
 report or claiming broad strength from a single position.
 
-The final 20,000-visit profile (three rounds/four positions) has median milliseconds
-93.055/132.602/43.436/32.559 for standard/developed/recapture/endgame versus
-379.060/412.814/162.056/92.089 at the starting source: approximately 4.1/3.1/3.7/2.8x
-lower wall time. Search policy/evaluation changed, so these are descriptive
-throughput observations, not equal-work ablations or strength measurements.
+The final 20,000-visit profile uses three rounds of four positions on the local
+M1 Pro. Search policy/evaluation changed, so these are descriptive throughput
+observations, not equal-work ablations or strength measurements.
+
+| Position | Starting median (ms) | Refined median (ms) |
+| --- | ---: | ---: |
+| Standard | 379.060 | 93.055 |
+| Developed | 412.814 | 132.602 |
+| Recapture | 162.056 | 43.436 |
+| Endgame | 92.089 | 32.559 |
+
 Unchanged-policy intermediate pairs retain identical recorded outputs/work and
 show local timing differences. Exploratory packets have documented source-completeness
 limits, so they do not all support complete causal reproduction. Final fixed-visit RSS is 4,194,304 bytes. A separate fixed-depth 4K/16K table
@@ -126,7 +133,7 @@ describes extending real search after a null-move mating threat. No upstream cod
 tables, trained weights or external engine binary became product dependencies.
 
 Fresh independent whole-engine assessment supports practical conventional-engine
-readiness subject to final platform receipts and integration. Remaining work is
+readiness, reconciled with the final platform receipts and integrated source. Remaining work is
 broader quiet-threat patterns, further move-order/selectivity tuning, specialized
 endgames and coefficient calibration; benefits now need marginal evidence or
 larger engineering effort. This is not a claim of Elo, Stockfish parity or optimal
@@ -148,9 +155,23 @@ native history proof. MSH-50/54 retain those gates and game-specific correctness
 
 The first native CI campaign at `f1484b15` exposed an expected-output omission:
 all three workspace test suites passed, but macOS snapshot regeneration changed
-only the Chess mate-analysis telemetry (29 to65 visits, selective depth2 to7).
+only the Chess mate-analysis telemetry (29 to 65 visits, selective depth 2 to 7).
 Mate-in-one, score and PV stayed unchanged. The complete generator confirmed
-only that file differed; the updated fixture passed34 relevant frontend tests
-under Node24.22.1. The superseded run, macOS failure and cancelled matrix remainder
-are preserved. The corrected fixture requires a new exact-source CI campaign;
+only that file differed; the updated fixture passed 34 relevant frontend tests
+under Node 24.22.1. The superseded run, macOS failure and cancelled matrix remainder
+are preserved. The corrected fixture passed the new exact-source CI campaign recorded below;
 no required checks or production search behavior were changed to obtain a pass.
+
+Final corrected-source native receipts (attempt 1, no retries):
+
+| Platform | Job | Outcome |
+| --- | --- | --- |
+| Ubuntu24.04 | 128908684741 | Passed |
+| macOS15 | 128908685074 | Passed |
+| Windows2022 | 128908685190 | Passed |
+
+The workspace suites passed 1,169 tests on Linux/macOS and 1,166 on Windows,
+with 11 intentionally ignored on each platform. All later required subprocess,
+desktop-session, fixture, build and smoke steps passed.
+Earlier failed/cancelled campaigns remain historical evidence, not successful
+required jobs. No production code changed after the frozen profile source.

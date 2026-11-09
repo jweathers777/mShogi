@@ -102,8 +102,9 @@ not strength measurements. Routine match work for the whole task is capped at
 
 The current [MSH-137 verification record](evidence/msh137/verification.json) pins
 production source `f1484b15f44817e5469a849af28796d844393223`, local checks, profiles
-and review. Its required actual three-platform native CI is pending final
-reconciliation. The refined native engine does not require a new packaged GUI
+and review. Required actual Ubuntu24.04/macOS15/Windows2022 native CI passed
+at fixture-corrected `2a2ff7c00897fdcd10527c8db8cc77f5e1220e65`; production code
+is unchanged from `f1484b15`. The refined native engine does not require a new packaged GUI
 campaign; accepted unchanged GUI evidence remains applicable.
 
 The historical [MSH-49.1 verification record](evidence/msh49-1/verification.json) holds that stage's exact source,

@@ -90,6 +90,12 @@ class AssessmentTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'incomplete'):
             a.invoke({'inflight':None,'runs':[{'phase':'discovery','complete':False}]},'unused','discovery','test')
 
+    def test_actual_analysis_calls_upstream_bounds_with_array(self):
+        ledger={'catalog':{'x':{'rating':2000}},'runs':[{'opponent':'x','phase':'discovery','complete':True,'pair_score':.25}]}
+        result=a.analysis(ledger)['x/discovery']
+        self.assertEqual(result['pairs'],1)
+        self.assertEqual(result['supplemental_anytime_score_bounds'],[0.,1.])
+
     def test_posterior_uncertainty_and_symmetry(self):
         mixed=a.posterior([0,.25,.5,.75,1]*4,2000)
         self.assertAlmostEqual(mixed['score_mean'],.5,delta=.005)

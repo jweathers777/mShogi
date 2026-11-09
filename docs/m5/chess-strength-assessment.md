@@ -23,6 +23,7 @@ Use this single frozen [CCRL 40/15 list, November 16, 2024](https://www.computer
 | Shallow Blue 1.1.0 | 1452 (20) | a59d0586d30bb961e72bbd3fb9d1929eec91156d |
 | Shallow Blue 2.0.0 | 1616 (22) | a04fbd9861770c897eb566d83b0d2e3b17aa9fc0 |
 | Oxidation 0.6.0 | 1943 (25) | 46a705b80e7191e7c302838eb8b85053b5994d65 |
+| Goldfish 1.13.0 (added before its first game) | 1982 (18) | b7aed1c1b9188c55f4d773fd4fac43de30c83cbb |
 | Simbelmyne 1.3.1 | 2460 (22) | ede2b01e408501b4f59a05c2951bba2dec5f6b74 |
 | Arasan 15.6 | 2713 (24) | b1a161da023fb7c7d403b6e7ca0ecbd68247600e |
 | Arasan 18.3 | 2889 (22) | 49b2ff652f543fcb84eb743f218342fb3f71c82d |
@@ -41,6 +42,7 @@ with Arasan15.6 (2713) available if results justify moving upward. Both are from
 the same pool, not handicapped engines. Sources: [Simbelmyne](https://github.com/sroelants/simbelmyne),
 [Shallow Blue](https://github.com/GunshipPenguin/shallow-blue),
 [Oxidation](https://github.com/Mathmagician8191/Liberty-Chess),
+[Goldfish](https://github.com/bsamseth/Goldfish/tree/v1.13.0),
 [Arasan](https://github.com/jdart1/arasan-chess),
 [Texel](https://github.com/peterosterlund2/texel),
 [Laser](https://github.com/jeffreyan11/laser-chess-engine).
@@ -75,7 +77,8 @@ transfer uncertainty are **separate**; these are not guaranteed simultaneous rat
 intervals. Do not pool conflicting families or claim official CCRL/human Elo.
 As a conservative supplemental check, report upstream [confseq](https://github.com/gostevehoward/confseq)
 predictable-mixture empirical-Bernstein anytime score bounds, alpha=.05/(2*9)
-per opponent/phase, independent with-replacement streams. Their broadness is not
+per played opponent/phase (at most nine actual reference releases, including
+adaptively added nearby references), independent with-replacement streams. Their broadness is not
 a reason to run a disproportionate campaign; Bayesian intervals are primary.
 
 Route from scores and uncertainty: after convincing losses move down, after

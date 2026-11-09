@@ -1,0 +1,166 @@
+{
+  "native_tablebase_move_sets": [
+    {
+      "id": "tb-0",
+      "native_legal_set_matches_all_tablebase_moves": true,
+      "legal": [
+        "e5d4",
+        "e5f4",
+        "e5d5",
+        "e5f5"
+      ]
+    },
+    {
+      "id": "tb-1",
+      "native_legal_set_matches_all_tablebase_moves": true,
+      "legal": [
+        "e7d7",
+        "e7f7",
+        "e7d8",
+        "e7e8",
+        "e7f8"
+      ]
+    },
+    {
+      "id": "tb-2",
+      "native_legal_set_matches_all_tablebase_moves": true,
+      "legal": [
+        "b6a5",
+        "b6b5",
+        "b6c5",
+        "b6a6",
+        "b6c6",
+        "b6c7"
+      ]
+    },
+    {
+      "id": "tb-3",
+      "native_legal_set_matches_all_tablebase_moves": true,
+      "legal": [
+        "c2b1",
+        "c2c1",
+        "c2d1",
+        "c2a2",
+        "c2b2",
+        "c2d2",
+        "c2e2",
+        "c2f2",
+        "c2g2",
+        "c2h2",
+        "c2c3",
+        "c2d3",
+        "c2c4",
+        "c2e4",
+        "c2c5",
+        "c2f5",
+        "c2c6",
+        "c2g6",
+        "c2c7",
+        "c2h7",
+        "c2c8",
+        "b3a3",
+        "b3c3",
+        "b3a4",
+        "b3b4",
+        "b3c4"
+      ]
+    },
+    {
+      "id": "tb-4",
+      "native_legal_set_matches_all_tablebase_moves": true,
+      "legal": [
+        "c2c1",
+        "c2a2",
+        "c2b2",
+        "c2d2",
+        "c2e2",
+        "c2f2",
+        "c2g2",
+        "c2h2",
+        "c2c3",
+        "c2c4",
+        "c2c5",
+        "c2c6",
+        "c2c7",
+        "c2c8",
+        "b3a3",
+        "b3c3",
+        "b3a4",
+        "b3b4",
+        "b3c4"
+      ]
+    },
+    {
+      "id": "tb-5",
+      "native_legal_set_matches_all_tablebase_moves": true,
+      "legal": [
+        "c1b2",
+        "c1d2",
+        "c1a3",
+        "c1e3",
+        "c1f4",
+        "c1g5",
+        "c1h6",
+        "b6a5",
+        "b6b5",
+        "b6c5",
+        "b6a6",
+        "b6c6",
+        "b6c7"
+      ]
+    },
+    {
+      "id": "tb-6",
+      "native_legal_set_matches_all_tablebase_moves": true,
+      "legal": [
+        "d1a1",
+        "d1b1",
+        "d1c1",
+        "d1e1",
+        "d1f1",
+        "d1g1",
+        "d1d2",
+        "d1d3",
+        "d1d4",
+        "d1d5",
+        "d1d6",
+        "d1d7",
+        "d1d8",
+        "h1g1",
+        "h1g2",
+        "h1h2"
+      ]
+    },
+    {
+      "id": "tb-7",
+      "native_legal_set_matches_all_tablebase_moves": true,
+      "legal": [
+        "d1a1",
+        "d1b1",
+        "d1c1",
+        "d1e1",
+        "d1f1",
+        "d1g1",
+        "d1d2",
+        "d1d3",
+        "d1d4",
+        "d1d5",
+        "d1d6",
+        "d1d7",
+        "d1d8",
+        "h1g1",
+        "h1g2",
+        "h1h2"
+      ]
+    }
+  ],
+  "puzzle_POZ40_alternative": {
+    "move": "e1e6",
+    "native_status": "status checkmate",
+    "accepted_equivalent_mate": true
+  },
+  "executed_quality_script_sha256": "a1fa6d141af2e23bdb6cbb6eded5cca5e23958efa29a81059a9ef096c68a165a",
+  "quality_complete": true,
+  "seconds": 0.034537583123892546,
+  "caveat": "A short attempted Arasan handshake overlapped early tactical diagnostics and hit sandbox semaphore errors; all raw outcomes retained. No match overlapped. Repeat affectedearlychecks separately if needed; do not infer tacticalrating."
+}

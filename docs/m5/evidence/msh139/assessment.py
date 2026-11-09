@@ -172,6 +172,9 @@ def invoke(ledger, opponent, phase, reason, smoke=False):
         raise ValueError('Unreconciled prior process; inspect PID/group and preserve accounting first')
     if any(r.get('phase') != 'smoke' and not r.get('complete') and not r.get('resolution') for r in ledger['runs']):
         raise ValueError('Prior incomplete pair needs explicit investigation, not automatic replacement')
+    played={r['opponent'] for r in ledger['runs'] if r['phase']!='smoke'}
+    if not smoke and opponent not in played and len(played)>=9:
+        raise ValueError('Reconcile supplemental alpha before a tenth reference')
     build = ledger['build']; verify_build(build, opponent)
     freeze = ledger['freeze']
     if digest(__file__) != freeze['code_sha256'] or digest(HERE/'../../chess-strength-assessment.md') != freeze['method_sha256']:
@@ -252,6 +255,8 @@ def posterior(scores, anchor, prior=.5, draws=100000):
 
 def analysis(ledger):
     result = {}
+    if len({r['opponent'] for r in ledger['runs'] if r['phase']!='smoke'})>9:
+        raise ValueError('Reconcile supplemental alpha spending before a tenth played reference')
     for opponent, ref in ledger['catalog'].items():
         for phase in ['discovery','confirmation']:
             scores = [r['pair_score'] for r in ledger['runs'] if r['opponent']==opponent and r['phase']==phase and r['complete']]
@@ -260,7 +265,8 @@ def analysis(ledger):
             item['prior_sensitivity'] = [posterior(scores,ref['rating'],p) for p in [.2,1]]
             try:
                 from confseq.predmix import predmix_empbern_twosided_cs
-                lo, hi = predmix_empbern_twosided_cs(scores,alpha=.05/18,running_intersection=True)
+                import numpy as np
+                lo, hi = predmix_empbern_twosided_cs(np.asarray(scores),alpha=.05/18,running_intersection=True)
                 item['supplemental_anytime_score_bounds'] = [float(lo[-1]),float(hi[-1])]
             except ImportError:
                 item['supplemental_anytime_score_bounds'] = 'not available; install pinned upstream source on PYTHONPATH'

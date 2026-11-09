@@ -1,6 +1,6 @@
 {
   "task": "MSH-139 (Chess Strength Assessment)",
-  "status": "reviewed_ready_for_discovery",
+  "status": "adaptive_discovery",
   "owner_authorization": "2026-11-09 adaptive assessment, no fixed target/game/hour budget; stop report before next objective",
   "source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
   "build": {
@@ -53,6 +53,70 @@
           "info": "{'depth': 8, 'seldepth': 15, 'score': PovScore(Cp(+10), WHITE), 'time': 1.0, 'nodes': 704248, 'nps': 704248, 'hashfull': 182, 'pv': [Move.from_uci('g1f3'), Move.from_uci('g8f6'), Move.from_uci('e2e3'), Move.from_uci('e7e6'), Move.from_uci('f1e2'), Move.from_uci('f8b4'), Move.from_uci('e1g1'), Move.from_uci('e8g8')]}"
         },
         "preflight_seconds": 1.015332458075136
+      },
+      "goldfish113": {
+        "path": "/private/tmp/msh139/goldfish113/build/goldfish.x",
+        "sha256": "3459e8245299566018ba453d0895a2225f3a6abed47543ee88b7f42afb052c2c",
+        "source": "b7aed1c1b9188c55f4d773fd4fac43de30c83cbb",
+        "name": "Goldfish1.13.0",
+        "options": [],
+        "workers": 1,
+        "hash_mb": 16,
+        "eligible": true,
+        "preflight": {
+          "id": {
+            "name": "Goldfish v1.13.0",
+            "author": "Bendik Samseth"
+          },
+          "options": {
+            "Contempt": "Option(name='Contempt', type='spin', default=0, min=-100, max=100, var=[])",
+            "Hash": "Option(name='Hash', type='spin', default=16, min=1, max=1048576, var=[])",
+            "SyzygyPath": "Option(name='SyzygyPath', type='string', default='<empty>', min=None, max=None, var=[])"
+          },
+          "startpos_seconds": 1.0022758333943784,
+          "info": "{'depth': 10, 'seldepth': 26, 'nodes': 2186197, 'time': 1.001, 'nps': 2184012, 'tbhits': 0, 'currmove': Move.from_uci('d2d4'), 'currmovenumber': 1, 'score': PovScore(Cp(+8), WHITE), 'pv': [Move.from_uci('d2d4'), Move.from_uci('d7d5'), Move.from_uci('c1f4'), Move.from_uci('g8f6'), Move.from_uci('d1d3'), Move.from_uci('b8c6')]}",
+          "seconds": 1.2404238330200315
+        },
+        "submodules": [
+          " 3068d7461d7f8d2f323ae6bbf3c58a089fcf233d external/Fathom (heads/master)",
+          " 8b6d3f9c4a774bef3081195d422993323b6bb2e0 external/googletest (8b6d3f9)",
+          "-d54377abd957c32c58a8898b8544cdd340f506e4 external/lichess-bot"
+        ],
+        "build": "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5; cmake --build build --target goldfish.x -j4; upstreamsourceunchanged, currentCMakeoldpolicycompatibilityonly",
+        "license_note": "MITroot; GPLv3StockfishUCIoptionhelpers retainnotices, no thirdpartyexecutable/source distributedinproduct"
+      },
+      "arasan156": {
+        "path": "/private/tmp/msh139/arasan156/bin/arasanx-64",
+        "sha256": "899445f37f118d8836800689ab8c40e2df804e146c8cc4edc95eadb1f8091c97",
+        "source": "b1a161da023fb7c7d403b6e7ca0ecbd68247600e",
+        "name": "Arasan15.6",
+        "eligible": false,
+        "exclusion": "Notselectedcurrently; successfulunsandbox1stimingprobe, butnativepairedpreflightnotrun. Sourceunchanged.",
+        "preflight": {
+          "id": {
+            "name": "Arasan 15.6",
+            "author": "Jon Dart"
+          },
+          "advertised_options": {
+            "Hash": "Option(name='Hash', type='spin', default=32, min=4, max=1000, var=[])",
+            "Ponder": "Option(name='Ponder', type='check', default=True, min=None, max=None, var=[])",
+            "MultiPV": "Option(name='MultiPV', type='spin', default=1, min=1, max=10, var=[])",
+            "OwnBook": "Option(name='OwnBook', type='check', default=True, min=None, max=None, var=[])",
+            "Book selectivity": "Option(name='Book selectivity', type='spin', default=50, min=0, max=100, var=[])",
+            "Threads": "Option(name='Threads', type='spin', default=1, min=1, max=64, var=[])",
+            "UCI_LimitStrength": "Option(name='UCI_LimitStrength', type='check', default=False, min=None, max=None, var=[])",
+            "UCI_Elo": "Option(name='UCI_Elo', type='spin', default=2600, min=1000, max=2600, var=[])"
+          },
+          "configured_options": {
+            "Threads": 1,
+            "Hash": 64,
+            "OwnBook": false,
+            "UCI_LimitStrength": false
+          },
+          "startpos_seconds": 1.0233991667628288,
+          "info": "{'multipv': 1, 'depth': 16, 'score': PovScore(Cp(-25), WHITE), 'time': 10.11, 'nodes': 2379536, 'hashfull': 150, 'pv': [Move.from_uci('b1c3'), Move.from_uci('g8f6'), Move.from_uci('g1f3'), Move.from_uci('d7d5'), Move.from_uci('d2d4'), Move.from_uci('c8f5'), Move.from_uci('f3h4'), Move.from_uci('f5d7'), Move.from_uci('c1f4'), Move.from_uci('e7e6'), Move.from_uci('d1d2'), Move.from_uci('f8e7'), Move.from_uci('h4f3'), Move.from_uci('e8g8'), Move.from_uci('d2d3')], 'nps': 235364, 'currmove': Move.from_uci('b1c3'), 'currmovenumber': 1}",
+          "total_seconds": 1.0348299997858703
+        }
       }
     },
     "command": "CARGO_TARGET_DIR=/private/tmp/msh139/target cargo build --release --locked -p mshogi-console --bin mshogi -p mshogi-runner --bin mshogi-match",
@@ -128,6 +192,14 @@
       "margin": 6,
       "family": "laser",
       "source": "96bfbdba8d064442626e1bb23e02473a46559a2e"
+    },
+    "goldfish113": {
+      "name": "Goldfish1.13.0",
+      "rating": 1982,
+      "margin": 18,
+      "family": "goldfish",
+      "source": "b7aed1c1b9188c55f4d773fd4fac43de30c83cbb",
+      "addition_reason": "InitialOx1943pairscompetitive2W1D1L; independentlyratednearbyfamilymaximizesinformationratherthanmismatched2713/1616. AddedbeforeanyGoldfishgame."
     }
   },
   "book": {
@@ -165,16 +237,21 @@
       "reference": "simbelmyne131",
       "command": "cargo build --release --locked",
       "outcome": "failed: upstream removed -Cinline-threshold flag; rebuilt successfully with modern LLVM spelling; no source changes"
+    },
+    {
+      "reference": "arasan156",
+      "outcome": "initialnarrowmake lackedbuilddir;secondattempt commandlineCFLAGSoverrodeDarwin_MACdefine. Correctportable64bitO3buildcompletedunchangedsourcewith_MAC; nativeunsandbox1sprobesucceeded. Sandboxedprobehitdeniedsystemsemaphores; keepoutofthatcontext."
     }
   ],
   "freeze": {
-    "code_sha256": "a9d0ed423f18430435aa786e55784b27d38ddb88005a0399f5c59e9af19f09f1",
-    "tests_sha256": "ba56193d0e0da2bc3d74ed002f906e4e8b855aaab678dd8fc4a6a22cb6d88d27",
-    "method_sha256": "c1bca472af07f1be82ae5a72356666de1b7292f6c997929dd344ed79bdb68ddf",
-    "production_source": "9a509f077460e07341d2bccf830e4b02fcb0e95e"
+    "code_sha256": "9989182af3df75d9dc841d74a6ae0baccfea61ed541011c833e5a403bb2e2724",
+    "tests_sha256": "e20d64510c3f722f10aadeb1b59a9b7fe7cd9fe148cb082f1b7053b234f3385f",
+    "method_sha256": "1477f36e7c0c3e69ef38aad5cef82422f5c4b377884456ea99e7c014da7d765b",
+    "production_source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
+    "integration_revision": "1832f7f"
   },
   "inflight": null,
-  "active_seconds": 12.64804320782423,
+  "active_seconds": 466.96884283283725,
   "runs": [
     {
       "phase": "smoke",
@@ -248,6 +325,117 @@
       "seconds": 8.083117291796952,
       "ended_utc": "2026-11-09T13:42:09.396258+00:00",
       "process_group_settled": true
+    },
+    {
+      "phase": "discovery",
+      "opponent": "oxidation060",
+      "ordinal": 0,
+      "opening": "book-4a1f39cf4df68e5e",
+      "reason": "Initial valid lower-middle reference1943 after Simbel exclusion; first of small discovery batch, no inference from one pair",
+      "started_utc": "2026-11-09T13:42:43.817371+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.25,
+      "folder": "pair-002-discovery-oxidation060",
+      "config_sha256": "3060e620364e7e24e1953a82a40e6a96ba32a203a69e3ac41bbf3b9175fb907e",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "24152d6cdcc89420d5e9257559ee7d4a8544df998ae6600d5a4d60d01fb38db2",
+      "summary": {
+        "opening_id": "book-4a1f39cf4df68e5e",
+        "games": 2,
+        "wins": [
+          0,
+          1
+        ],
+        "draws": 1,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 224.4180074580945,
+      "ended_utc": "2026-11-09T13:46:28.236192+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "discovery",
+      "opponent": "oxidation060",
+      "ordinal": 1,
+      "opening": "book-a79aaf082ad590b2",
+      "reason": "Second initial discovery pair: firstpair1draw1loss is competitive and too small to routeaway or infer strength; retainsameopponent before adaptation",
+      "started_utc": "2026-11-09T13:50:48.613989+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 1.0,
+      "folder": "pair-003-discovery-oxidation060",
+      "config_sha256": "3cd48d66baf5fe88ad2f4d072a0da5461c443df9d7bd0bf940f16e2dfd77ead0",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "49f6a7d3b365c9b4dc64af9d2cc216eb6027be36b6843ef1f812aba282aa47df",
+      "summary": {
+        "opening_id": "book-a79aaf082ad590b2",
+        "games": 2,
+        "wins": [
+          2,
+          0
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 221.8036744580604,
+      "ended_utc": "2026-11-09T13:54:30.418451+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "smoke",
+      "opponent": "goldfish113",
+      "ordinal": 0,
+      "opening": "book-a0b403c7e122ec4c",
+      "reason": "Preflight independentnearby1982reference: equal1sactualbehavior, nativefullhistory/replayandcleanquit; deliberatecapsnotmeasurement",
+      "started_utc": "2026-11-09T13:58:19.928223+00:00",
+      "healthy": true,
+      "complete": false,
+      "pair_score": null,
+      "folder": "pair-004-smoke-goldfish113",
+      "config_sha256": "61681878ad3850ad7a2117ee45d62eda101f3cd0e6593a64fabfd46d548082b1",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "554acb241ad608e1b914d414ff6b4b951a5030211e91af101678ad1383c82880",
+      "summary": {
+        "opening_id": "book-a0b403c7e122ec4c",
+        "games": 2,
+        "wins": [
+          0,
+          0
+        ],
+        "draws": 0,
+        "unscored": 2,
+        "failures": 0
+      },
+      "stops": [
+        "ply_limit",
+        "ply_limit"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 8.099117708858103,
+      "ended_utc": "2026-11-09T13:58:28.027590+00:00",
+      "process_group_settled": true
     }
   ],
   "reviews": [
@@ -260,6 +448,19 @@
       "reviewer": "independent chess_next_refinements agent",
       "scope": "orchestration, eligible observations, native replay, bounded cleanup, identity, tests",
       "verdict": "approved after nonstandardstart rejection, exitedleader/descendant cleanup, explicitfailure resolution; excludedrefguard and portableunitfixture fixed before freeze"
+    },
+    {
+      "reviewer": "independent chess_maturity_assessment agent",
+      "verdict": "approved narrow np.asarray input correction and actual upstream one-pair test; same method",
+      "code_sha256": "297cff61492e84334d142e76b40c2a772c5913f01c2605e4af088ee52662ad8c"
+    },
+    {
+      "reviewer": "independent chess_maturity_assessment agent",
+      "verdict": "approved Goldfishaddition/\u22649actuallyplayedreleases18streamsclarification beforefirstGoldfishmeasurement; primaryBayesunchanged"
+    },
+    {
+      "reviewer": "independent chess_next_refinements agent",
+      "verdict": "actual20qualityrowsindependentlyreconciled:12solutionsinclnativeverifiedalternative;7/8WDLpreservingbut4nondiscriminating. Originalexecutedsourcehashpreserved; postrunqualitydriverguardsreviewedseparately, notclaimedexecuted."
     }
   ],
   "checks": [
@@ -276,6 +477,18 @@
     {
       "command": "ps -axo pid,ppid,command (filtered exact reference/runner paths)",
       "result": "no residual smoke runner/engine processes"
+    },
+    {
+      "command": "PYTHONPATH=/private/tmp/msh139/confseq/src /private/tmp/msh139/venv/bin/python -m unittest discover -s docs/m5/evidence/msh139 -p test_assessment.py",
+      "result": "11 passed",
+      "code_sha256": "297cff61492e84334d142e76b40c2a772c5913f01c2605e4af088ee52662ad8c",
+      "evidence": "tests-statfix.log.gz"
+    },
+    {
+      "command": "PYTHONPATH=/private/tmp/msh139/confseq/src ... python -m unittest discover -s docs/m5/evidence/msh139 -p test_assessment.py",
+      "result": "11 passed",
+      "code_sha256": "9989182af3df75d9dc841d74a6ae0baccfea61ed541011c833e5a403bb2e2724",
+      "evidence": "tests-catalog.log.gz"
     }
   ],
   "setup_work": {
@@ -283,5 +496,58 @@
     "note": "Preparation commands/logs retained; not included in match/analysis elapsed total, no campaign-hour cap. Candidate build ordinary release/locked succeeded; Simbel initial compiler-flag failure and successful16s rebuild preserved.",
     "diagnostic_seconds": 3.215332458075136,
     "diagnostic_seconds_note": "Includes recorded1sOxprobe; earlier2sOxprobe approximately2.002s observed across2requests, separately estimated rather than exactglobalcharge."
+  },
+  "diagnostics": [
+    {
+      "kind": "quality",
+      "seconds": 15.12366116605699,
+      "results": "quality-results.json",
+      "complete": true
+    },
+    {
+      "kind": "quality_native_audit",
+      "seconds": 0.033420708030462265,
+      "results": "quality-audit.json",
+      "complete": true
+    },
+    {
+      "kind": "Goldfishfairtimepreflight",
+      "seconds": 1.2404238330200315,
+      "complete": true
+    },
+    {
+      "kind": "quality_native_audit",
+      "seconds": 0.034537583123892546,
+      "results": "quality-audit.json",
+      "complete": true
+    }
+  ],
+  "freeze_history": [
+    {
+      "code_sha256": "a9d0ed423f18430435aa786e55784b27d38ddb88005a0399f5c59e9af19f09f1",
+      "tests_sha256": "ba56193d0e0da2bc3d74ed002f906e4e8b855aaab678dd8fc4a6a22cb6d88d27",
+      "method_sha256": "c1bca472af07f1be82ae5a72356666de1b7292f6c997929dd344ed79bdb68ddf",
+      "production_source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
+      "integration_revision": "1832f7f",
+      "ended_after_runs": 3,
+      "reason": "Supplemental confseq call needed ndarray rather than list; one healthy discovery pair preserved. No method, observations or inference assumptions changed."
+    },
+    {
+      "code_sha256": "297cff61492e84334d142e76b40c2a772c5913f01c2605e4af088ee52662ad8c",
+      "tests_sha256": "e20d64510c3f722f10aadeb1b59a9b7fe7cd9fe148cb082f1b7053b234f3385f",
+      "method_sha256": "c1bca472af07f1be82ae5a72356666de1b7292f6c997929dd344ed79bdb68ddf",
+      "production_source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
+      "integration_revision": "1832f7f",
+      "ended_after_runs": 4,
+      "reason": "AddcloserGoldfishreferencefromsamepublishedpoolbeforeitsgames, explicitlyreserved18CSstreamsfor\u22649playedreleases;primaryperrelease/phaseBayesunchanged."
+    }
+  ],
+  "quality": {
+    "inputs": "quality-inputs.json",
+    "results": "quality-results.json",
+    "audit": "quality-audit.json",
+    "executed_source": "quality-executed.py.gz",
+    "executed_sha256": "a1fa6d141af2e23bdb6cbb6eded5cca5e23958efa29a81059a9ef096c68a165a",
+    "interpretation": "12/12publishedorequivalentmate;7/8WDLbut4nondiscriminating; concreteRc1drawinsteaduniqueRe1win remainsfailure; possibleroughly0.5searlytacticalinterferencefromArasanhandshake preserved, no tacticalrating."
   }
 }

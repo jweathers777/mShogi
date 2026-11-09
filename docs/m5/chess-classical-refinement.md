@@ -182,3 +182,8 @@ Qualification) adds the independently grounded playing-strength gate before
 MSH-50 (Conventional Shogi) and MSH-54 (Conventional Xiangqi). The completed
 MSH-137 (Chess Search Refinement) evidence above remains an engineering checkpoint;
 it does not itself qualify that new gate. See the current [roadmap](strength-roadmap.md).
+
+Owner revision, 2026-11-09: the qualification proposal mentioned above is
+superseded by [MSH-139 (Chess Strength Assessment)](chess-strength-assessment.md).
+Discover current strength first, then stop for owner review; neither this
+engineering checkpoint nor assessment completion authorizes transfer alone.

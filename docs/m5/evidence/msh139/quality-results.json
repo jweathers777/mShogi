@@ -1,0 +1,638 @@
+{
+  "source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
+  "candidate_sha256": "c5e8f6319403a0b7308971ef3cdcaca5c4c0139fc690b8e08ebc6ebf6d7b8cf8",
+  "inputs_sha256": "2d7ca0a147b9efbf0e56c281d4f0bc2db8bf2f2037bf293f9164ab1e698b6587",
+  "seconds": 15.12366116605699,
+  "results": [
+    {
+      "id": "4qbtz",
+      "kind": "puzzle",
+      "move": "g7h6",
+      "seconds": 0.06679124990478158,
+      "depth": 128,
+      "seldepth": 23,
+      "nodes": 25279,
+      "score_cp_side_to_move": 31998,
+      "score": "PovScore(Mate(+2), WHITE)",
+      "pv": [
+        "g7h6",
+        "h5g4",
+        "f7e5"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "b5746af381030ea474d04082646bf1adf2f9aabfe0b0258a82d0a447ee73b119",
+        "returncode": 0,
+        "final_native_fen": "8/2p5/1p4pQ/p3Nb2/P4Pk1/1P4q1/1KP5/8 b - - 2 37"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "5a258d740ba484997c58d6c3aba310538ecd0f3142b57ce085a9cbbb07032e70",
+        "returncode": 0,
+        "final_native_fen": "8/2p2N2/1p4pQ/p4b1k/P4P2/1P4q1/1KP5/8 b - - 0 36"
+      },
+      "published_first_move_agreement": true
+    },
+    {
+      "id": "f3apJ",
+      "kind": "puzzle",
+      "move": "d4f3",
+      "seconds": 1.0023777498863637,
+      "depth": 7,
+      "seldepth": 28,
+      "nodes": 262240,
+      "score_cp_side_to_move": 476,
+      "score": "PovScore(Cp(+476), BLACK)",
+      "pv": [
+        "d4f3",
+        "g2f3",
+        "g3f3",
+        "h1g1",
+        "f3d1",
+        "g1h2",
+        "d1e1",
+        "a5c6",
+        "e1g3",
+        "h2h1",
+        "g3h3",
+        "h1g1"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "db213541928bf39d89908d4cfc09fbe41eb0058666fb776d5522c82b8f880ffb",
+        "returncode": 0,
+        "final_native_fen": "1r6/3n4/3P2pk/N1pNp3/P3Pp1p/7P/6Q1/3q3K w - - 0 35"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "0734ac59329b4505fa837277a8f3e8b77300cf7970ac526b6333912af6069ec5",
+        "returncode": 0,
+        "final_native_fen": "1r6/3n4/3P2pk/N1pNp3/P3Pp1p/5nqP/Q5P1/3R3K w - - 0 33"
+      },
+      "published_first_move_agreement": true
+    },
+    {
+      "id": "CNWwY",
+      "kind": "puzzle",
+      "move": "c1c8",
+      "seconds": 1.003522084094584,
+      "depth": 7,
+      "seldepth": 28,
+      "nodes": 121548,
+      "score_cp_side_to_move": 676,
+      "score": "PovScore(Cp(+676), BLACK)",
+      "pv": [
+        "c1c8",
+        "d8e8",
+        "c8e8",
+        "b5c4",
+        "a3a2",
+        "d6d7",
+        "e8d8"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "3705e71da19a20816f9bc290f82086062c613f2da1c2ca10e48ca76d4f99c31d",
+        "returncode": 0,
+        "final_native_fen": "2k5/8/3P4/8/2K5/8/p7/8 w - - 0 57"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "cb237e8e974deca2193dc861a6667403050d4288131fef5b7bc36f553b1b635d",
+        "returncode": 0,
+        "final_native_fen": "1krR4/8/3P4/1K6/8/p7/8/8 w - - 3 55"
+      },
+      "published_first_move_agreement": true
+    },
+    {
+      "id": "pHMBh",
+      "kind": "puzzle",
+      "move": "h4h3",
+      "seconds": 0.4061459577642381,
+      "depth": 128,
+      "seldepth": 23,
+      "nodes": 115294,
+      "score_cp_side_to_move": 31998,
+      "score": "PovScore(Mate(+2), BLACK)",
+      "pv": [
+        "h4h3",
+        "h2g1",
+        "f3h1"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "0e0e286d74ea3a69800fac05775aef4e50e63788f6cc1fd283bf15794630ef7e",
+        "returncode": 0,
+        "final_native_fen": "4r3/pp3kp1/4p3/P1R4p/1BP5/3pRq2/3Q1P2/6Kr w - - 2 42"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "4ba28f16a880ef9f181acebba83261f96fd40ebbb2eb94e9f4cb8f0e1c54fced",
+        "returncode": 0,
+        "final_native_fen": "4r3/pp3kp1/4p3/P1R4p/1BP5/3pRq1r/3Q1P1K/8 w - - 0 41"
+      },
+      "published_first_move_agreement": true
+    },
+    {
+      "id": "PwM5g",
+      "kind": "puzzle",
+      "move": "d8d3",
+      "seconds": 1.0035828752443194,
+      "depth": 8,
+      "seldepth": 20,
+      "nodes": 335795,
+      "score_cp_side_to_move": 99,
+      "score": "PovScore(Cp(+99), BLACK)",
+      "pv": [
+        "d8d3",
+        "c2d3",
+        "e4f2",
+        "d3d4",
+        "f2h1",
+        "b2b4",
+        "a5b4",
+        "a3b4",
+        "h1f2"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "66c3b42fc36c4f9f18cd02854de2ef7904d918d82ad8b85e2fa1f3361499d2c9",
+        "returncode": 0,
+        "final_native_fen": "8/7p/2k2pp1/p7/6P1/P1P1P3/1P2K1P1/7n w - - 0 33"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "d1ba0a82e8f48470c7bd9be93ce3f0e3ce7524541dba6c409084692b174d5163",
+        "returncode": 0,
+        "final_native_fen": "8/7p/2k2pp1/p7/4n1P1/P1PrP3/1PK3P1/7R w - - 0 31"
+      },
+      "published_first_move_agreement": true
+    },
+    {
+      "id": "MO2mm",
+      "kind": "puzzle",
+      "move": "d8d5",
+      "seconds": 0.3716139579191804,
+      "depth": 128,
+      "seldepth": 7,
+      "nodes": 162152,
+      "score_cp_side_to_move": 31997,
+      "score": "PovScore(Mate(+3), BLACK)",
+      "pv": [
+        "d8d5",
+        "e7d8",
+        "c7d8",
+        "a2a4",
+        "d5h5"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "53bda4ea72dfd473b72e2a89e7d1922c5c545e7f38ed3ae24e1456eec72a4fd5",
+        "returncode": 0,
+        "final_native_fen": "8/2k2prp/1p6/8/3p3r/5P2/PPP2P1K/R4R2 w - - 0 30"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "78a1fb3f36c57bb561e28701e65f13bbc6f22412732e8430718300548642d339",
+        "returncode": 0,
+        "final_native_fen": "8/2k1Bprp/1p3n2/3r4/3p4/5P2/PPP2P1K/R4R2 w - - 2 28"
+      },
+      "published_first_move_agreement": true
+    },
+    {
+      "id": "TnyRw",
+      "kind": "puzzle",
+      "move": "e4e7",
+      "seconds": 1.003944416064769,
+      "depth": 6,
+      "seldepth": 30,
+      "nodes": 192839,
+      "score_cp_side_to_move": 193,
+      "score": "PovScore(Cp(+193), WHITE)",
+      "pv": [
+        "e4e7",
+        "e8e7",
+        "b5e5",
+        "c6e6",
+        "e5g7",
+        "e7d6",
+        "c1f4",
+        "d6c6",
+        "g7h8",
+        "h6h5"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "f1bd25a4e2948a9b9e3014a3ac473b90ecfc4554bfb47ede000136355138ced7",
+        "returncode": 0,
+        "final_native_fen": "rn5Q/ppp2k2/2q3pp/8/3P4/8/PPP3PP/R1B3K1 b - - 0 18"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "25ed9328d6ee935ecf78294e44a6b1aeffa756b360d58f09dc719719fb5e147d",
+        "returncode": 0,
+        "final_native_fen": "rn2k2r/ppp1R3/2q3pp/1Q6/3P4/8/PPP3PP/R1B3K1 b kq - 0 16"
+      },
+      "published_first_move_agreement": true
+    },
+    {
+      "id": "wn8tP",
+      "kind": "puzzle",
+      "move": "b8e5",
+      "seconds": 1.0037641660310328,
+      "depth": 9,
+      "seldepth": 18,
+      "nodes": 364524,
+      "score_cp_side_to_move": 63,
+      "score": "PovScore(Cp(+63), BLACK)",
+      "pv": [
+        "b8e5",
+        "h2h3",
+        "e5g3",
+        "f2g3",
+        "c6c5",
+        "g4g5",
+        "g8f7",
+        "h3g4",
+        "a3e3",
+        "g5g6",
+        "f7f6"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "9bd75536a8fdac7543fca1624eb0f65687835210fcea4dd083f4331438854e34",
+        "returncode": 0,
+        "final_native_fen": "6k1/1p4p1/2p5/P4P2/6P1/r5bK/5P2/4B3 w - - 0 44"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "6b92d4d98673f9bb6c7b3036fb81cb9e7efed6c050f35e975561191e24e16856",
+        "returncode": 0,
+        "final_native_fen": "6k1/1p4p1/2p5/P3bP2/6P1/r5Rp/5P1K/4B3 w - - 0 43"
+      },
+      "published_first_move_agreement": true
+    },
+    {
+      "id": "kVk8O",
+      "kind": "puzzle",
+      "move": "c4d5",
+      "seconds": 1.004151833243668,
+      "depth": 8,
+      "seldepth": 28,
+      "nodes": 175555,
+      "score_cp_side_to_move": 344,
+      "score": "PovScore(Cp(+344), WHITE)",
+      "pv": [
+        "c4d5",
+        "c8e6",
+        "d5d4",
+        "e6h3",
+        "d4f6",
+        "f8f6",
+        "f1e1",
+        "a7a5",
+        "b1d2"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "b989c3d45cdb26f9ebc4d210002cf7f63c0629042566c7e9784730b4031d091a",
+        "returncode": 0,
+        "final_native_fen": "r4rk1/ppp3p1/4bq1p/8/3Qp2P/2P1B1P1/PP3P2/RN3RK1 b - - 0 22"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "76fe4b03e5f5904adb433ea2b898dc9a70b9236540c37f8eeb38b28016948715",
+        "returncode": 0,
+        "final_native_fen": "r1b2rk1/ppp3p1/5q1p/3Q4/3bp2P/2P1B1P1/PP3P2/RN3RK1 b - - 0 21"
+      },
+      "published_first_move_agreement": true
+    },
+    {
+      "id": "POZ40",
+      "kind": "puzzle",
+      "move": "e1e6",
+      "seconds": 0.0038863751105964184,
+      "depth": 128,
+      "seldepth": 1,
+      "nodes": 256,
+      "score_cp_side_to_move": 31999,
+      "score": "PovScore(Mate(+1), WHITE)",
+      "pv": [
+        "e1e6"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "afd9f4ffc0e24ab7044b6c7124369f699c95d6bb7240bc983bf5da0ada55ec45",
+        "returncode": 0,
+        "final_native_fen": "2bq1r2/1p1nkp1R/2p1Q3/6P1/1pPP4/r4N2/5PP1/2K1RB2 b - - 0 25"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "c7c24f63edd9bac2dc791ce8f15fb1547e2cae1f1e1ab4a667dd67ba28ac7ac4",
+        "returncode": 0,
+        "final_native_fen": "2bq1r2/1p1nkp1R/2p1R1Q1/6P1/1pPP4/r4N2/5PP1/2K2B2 b - - 0 25"
+      },
+      "published_first_move_agreement": false
+    },
+    {
+      "id": "NRznd",
+      "kind": "puzzle",
+      "move": "a5b5",
+      "seconds": 1.0040604160167277,
+      "depth": 8,
+      "seldepth": 24,
+      "nodes": 240958,
+      "score_cp_side_to_move": 316,
+      "score": "PovScore(Cp(+316), BLACK)",
+      "pv": [
+        "a5b5",
+        "b3c2",
+        "b5b6",
+        "g2g3",
+        "e6d7",
+        "c2d2",
+        "d7c6",
+        "e2d3",
+        "d6e6"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "177218938a054b8478e1482fd754b784ff93f8f8327c32601c61974f7f450480",
+        "returncode": 0,
+        "final_native_fen": "8/8/1r1kbb1p/2p2pp1/2P2P2/4P2P/R1K1B1P1/8 w - - 0 39"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "e450f1a4e30ec7d5842a09d6133b01bd518dad346e2c4cb1cd0060097199ecf6",
+        "returncode": 0,
+        "final_native_fen": "8/8/1N1kbb1p/1rp2pp1/2P2P2/1K2P2P/R3B1P1/8 w - - 0 38"
+      },
+      "published_first_move_agreement": true
+    },
+    {
+      "id": "CbvTv",
+      "kind": "puzzle",
+      "move": "f3f6",
+      "seconds": 1.0030515417456627,
+      "depth": 61,
+      "seldepth": 14,
+      "nodes": 97394,
+      "score_cp_side_to_move": 31997,
+      "score": "PovScore(Mate(+3), WHITE)",
+      "pv": [
+        "f3f6",
+        "h8g8",
+        "c2b3",
+        "e8e6",
+        "b3e6"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "ad734051098bfb77474a5c03a5ab683712e5f560ae5b56e80fe845115466049a",
+        "returncode": 0,
+        "final_native_fen": "6k1/pp5p/3bBQp1/6p1/3P4/2P4P/PP3KPq/8 b - - 0 32"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "c49efc41e05efe1d4342d44799a0ee1d534bb47c49288099dbd16b59dca76eaa",
+        "returncode": 0,
+        "final_native_fen": "4r2k/pp5p/3b1Qp1/6p1/3P4/2P4P/PPB2KPq/8 b - - 1 30"
+      },
+      "published_first_move_agreement": true
+    },
+    {
+      "id": "tb-0",
+      "kind": "tablebase",
+      "move": "e5d5",
+      "seconds": 1.002964542247355,
+      "depth": 12,
+      "seldepth": 18,
+      "nodes": 512035,
+      "score_cp_side_to_move": 260,
+      "score": "PovScore(Cp(+260), WHITE)",
+      "pv": [
+        "e5d5",
+        "e7d7",
+        "e4e5",
+        "d7e7",
+        "e5e6",
+        "e7e8",
+        "d5d6",
+        "e8d8",
+        "d6d5",
+        "d8e8",
+        "d5d6",
+        "e8d8",
+        "e6e7",
+        "d8e8"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "be42dce0effa7cd153e64ee103ad8e7d6d3a4c95cca5ed39a1fb2fc0605f5d89",
+        "returncode": 0,
+        "final_native_fen": "8/4k3/8/4K3/4P3/8/8/8 w - - 0 1"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "b68d3598d337db166864ebc06a48969c4da9dba0aeb9fe2a08644a1991447bd0",
+        "returncode": 0,
+        "final_native_fen": "8/4k3/8/3K4/4P3/8/8/8 b - - 1 1"
+      },
+      "child_tablebase_category": "draw",
+      "wdl_preserved": true
+    },
+    {
+      "id": "tb-1",
+      "kind": "tablebase",
+      "move": "e7f7",
+      "seconds": 1.0039134584367275,
+      "depth": 12,
+      "seldepth": 19,
+      "nodes": 564915,
+      "score_cp_side_to_move": -923,
+      "score": "PovScore(Cp(-923), BLACK)",
+      "pv": [
+        "e7f7",
+        "e5d6",
+        "f7f8",
+        "d6d7",
+        "f8f7",
+        "e4e5",
+        "f7g6",
+        "e5e6",
+        "g6f6",
+        "e6e7",
+        "f6e5",
+        "e7e8q",
+        "e5d4"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "5a26ecc9c9b62c5b0869e4be66075e19aea83dfe195c8ec2fe9b5c30b7532e94",
+        "returncode": 0,
+        "final_native_fen": "8/4k3/8/4K3/4P3/8/8/8 b - - 0 1"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "289fd8e5f0cf6d53a4de34a9240458d33f121b360e660abe5ba523be77896eef",
+        "returncode": 0,
+        "final_native_fen": "8/5k2/8/4K3/4P3/8/8/8 w - - 1 2"
+      },
+      "child_tablebase_category": "win",
+      "wdl_preserved": true
+    },
+    {
+      "id": "tb-2",
+      "kind": "tablebase",
+      "move": "b6a5",
+      "seconds": 1.0037941671907902,
+      "depth": 16,
+      "seldepth": 22,
+      "nodes": 261643,
+      "score_cp_side_to_move": 0,
+      "score": "PovScore(Cp(0), WHITE)",
+      "pv": [
+        "b6a5",
+        "a8a7"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "9950f06052c0f7045a0fd92cd47f0934f6933ef80ac8137d4382fe909776dcdb",
+        "returncode": 0,
+        "final_native_fen": "k7/P7/1K6/8/8/8/8/8 w - - 0 1"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "d043a85e8e4508710560dc765afd0a81858554aa146eff7e72b9f00b98c076ee",
+        "returncode": 0,
+        "final_native_fen": "k7/P7/8/K7/8/8/8/8 b - - 1 1"
+      },
+      "child_tablebase_category": "draw",
+      "wdl_preserved": true
+    },
+    {
+      "id": "tb-3",
+      "kind": "tablebase",
+      "move": "c2a2",
+      "seconds": 0.0036370418965816498,
+      "depth": 128,
+      "seldepth": 1,
+      "nodes": 261,
+      "score_cp_side_to_move": 31999,
+      "score": "PovScore(Mate(+1), WHITE)",
+      "pv": [
+        "c2a2"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "41e2cad93134fc1eba973863f6a3f71b608d04ac97db79c4b94734849f1339c3",
+        "returncode": 0,
+        "final_native_fen": "8/8/8/8/8/1K6/2Q5/k7 w - - 0 1"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "d7db02e3ffb7d6702f5b82717997dcd3580dddfc47b8f69c741fcd5adbfb8997",
+        "returncode": 0,
+        "final_native_fen": "8/8/8/8/8/1K6/Q7/k7 b - - 1 1"
+      },
+      "child_tablebase_category": "loss",
+      "wdl_preserved": true
+    },
+    {
+      "id": "tb-4",
+      "kind": "tablebase",
+      "move": "c2c1",
+      "seconds": 0.003688584081828594,
+      "depth": 128,
+      "seldepth": 4,
+      "nodes": 268,
+      "score_cp_side_to_move": 31999,
+      "score": "PovScore(Mate(+1), WHITE)",
+      "pv": [
+        "c2c1"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "eda2a49343a46230ab807af891eaaaefe7f848cec0848fe991619a531bf45d24",
+        "returncode": 0,
+        "final_native_fen": "8/8/8/8/8/1K6/2R5/k7 w - - 0 1"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "459601b4b101fd795424a926ad196807655180ae312bee30940974d573c6514d",
+        "returncode": 0,
+        "final_native_fen": "8/8/8/8/8/1K6/8/k1R5 b - - 1 1"
+      },
+      "child_tablebase_category": "loss",
+      "wdl_preserved": true
+    },
+    {
+      "id": "tb-5",
+      "kind": "tablebase",
+      "move": "b6a5",
+      "seconds": 1.003823250066489,
+      "depth": 16,
+      "seldepth": 22,
+      "nodes": 217749,
+      "score_cp_side_to_move": 0,
+      "score": "PovScore(Cp(0), WHITE)",
+      "pv": [
+        "b6a5",
+        "a8a7"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "874541c7d160df4525fcbfac6b3bdaa11c3137d63fdb274b49b169a032ba8438",
+        "returncode": 0,
+        "final_native_fen": "k7/P7/1K6/8/8/8/8/2B5 w - - 0 1"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "6434f179368fb044799d6445db8a1698e56758b5fbf580fffd1225490c3faafb",
+        "returncode": 0,
+        "final_native_fen": "k7/P7/8/K7/8/8/8/2B5 b - - 1 1"
+      },
+      "child_tablebase_category": "draw",
+      "wdl_preserved": true
+    },
+    {
+      "id": "tb-6",
+      "kind": "tablebase",
+      "move": "d1c1",
+      "seconds": 1.0040585421957076,
+      "depth": 7,
+      "seldepth": 16,
+      "nodes": 451218,
+      "score_cp_side_to_move": 303,
+      "score": "PovScore(Cp(+303), BLACK)",
+      "pv": [
+        "d1c1",
+        "c6d5",
+        "c1d1",
+        "d5c6",
+        "h1g2",
+        "e5e6",
+        "d1c1",
+        "c6d5",
+        "c1d1",
+        "d5e5",
+        "d1d8"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "9dd6e8d4bc2b0b66c02385b20575fea2e077c642245e3510ac0121e2ccdf460f",
+        "returncode": 0,
+        "final_native_fen": "8/8/2K5/4P3/8/8/8/3r3k b - - 1 1"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "86262a03113e67f4aa36297bfbd952004539385f56a2462f1ce811cbeb960013",
+        "returncode": 0,
+        "final_native_fen": "8/8/2K5/4P3/8/8/8/2r4k w - - 2 2"
+      },
+      "child_tablebase_category": "draw",
+      "wdl_preserved": true
+    },
+    {
+      "id": "tb-7",
+      "kind": "tablebase",
+      "move": "d1c1",
+      "seconds": 1.0037316246889532,
+      "depth": 7,
+      "seldepth": 16,
+      "nodes": 476685,
+      "score_cp_side_to_move": 376,
+      "score": "PovScore(Cp(+376), BLACK)",
+      "pv": [
+        "d1c1",
+        "c6d5",
+        "c1d1",
+        "d5c5",
+        "d1c1",
+        "c5d5",
+        "c1d1",
+        "d5c5",
+        "h1g2",
+        "e4e5",
+        "d1d7"
+      ],
+      "expected_native_admission": {
+        "command_sha256": "82f6077fb37b5ddd747214cb18c71ee3a998cc46693ffc632497b078fa635821",
+        "returncode": 0,
+        "final_native_fen": "8/8/2K5/8/4P3/8/8/3r3k b - - 1 1"
+      },
+      "chosen_native_admission": {
+        "command_sha256": "405c257ec0321b757503a9386f0cd176cd67265a293aac0feebde90c7ed13c8e",
+        "returncode": 0,
+        "final_native_fen": "8/8/2K5/8/4P3/8/8/2r4k w - - 2 2"
+      },
+      "child_tablebase_category": "draw",
+      "wdl_preserved": false
+    }
+  ],
+  "scope": "Small independent diagnostic; published puzzle move disagreement needs alternative analysis, not automatic error. Tablebasecategories from child side. Not a tactical rating or strength estimate.",
+  "executed_code_sha256": "a1fa6d141af2e23bdb6cbb6eded5cca5e23958efa29a81059a9ef096c68a165a",
+  "executed_source": "quality-executed.py.gz"
+}

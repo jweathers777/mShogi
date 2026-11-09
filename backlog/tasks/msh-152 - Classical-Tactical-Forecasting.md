@@ -1,11 +1,11 @@
 ---
 id: MSH-152
 title: Classical Tactical Forecasting
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-09T22:12:00Z'
-updated_date: '2026-11-09T22:49:00Z'
+updated_date: '2026-11-09T22:51:00Z'
 labels:
   - handle:classical-tactical-forecasting
 milestone: m-5
@@ -25,17 +25,17 @@ Handle: Classical Tactical Forecasting. MSH-151 fresh games remain near the prio
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Establish the cause and generality of significant forecast instability with complete histories, completed-iteration/PV telemetry, modest controlled work/time comparisons and independently established tactical/defensive counterexamples; distinguish evaluation, frontier/selectivity and useful-depth limits from hypotheses.
-- [ ] #2 Implement supported general established conventional corrections where practical, preserving native authority, history/claims, exact restoration, cancellation and bounded work; do not conceal defects with limits, indiscriminate pruning removal or a recursive quiet-search explosion.
-- [ ] #3 Level1 focused local correctness, independent varied tactical/positional/endgame negatives, proportionate performance/decision comparisons and independent review support the increment; report limitations without a claimed rating gain or another small-change tournament.
+- [x] #1 Establish the cause and generality of significant forecast instability with complete histories, completed-iteration/PV telemetry, modest controlled work/time comparisons and independently established tactical/defensive counterexamples; distinguish evaluation, frontier/selectivity and useful-depth limits from hypotheses.
+- [x] #2 Implement supported general established conventional corrections where practical, preserving native authority, history/claims, exact restoration, cancellation and bounded work; do not conceal defects with limits, indiscriminate pruning removal or a recursive quiet-search explosion.
+- [x] #3 Level1 focused local correctness, independent varied tactical/positional/endgame negatives, proportionate performance/decision comparisons and independent review support the increment; report limitations without a claimed rating gain or another small-change tournament.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -51,3 +51,9 @@ Owner direction supersedes automatic small adaptive reassessments after each coh
 
 Controlled complete-history diagnosis now supports PV-sensitive LMR (Rb8 reduced fail-low skipped verification after Ke8) and correct native promotion-recapture SEE (+170 wrong versus -400 independently accounted). Goldfish matched remaining-depth backups all +17; farther search -83, residual valuation/horizon uncertain, reference also prefers e4. Independent20-position tactical/WDL controls retained; PV policy costs31percent more depth6 visits and loses one nominalply on several timed controls. Search/engine/console385passed2ignored; workspaceclippy and format passed after diagnostic-only redundant-update cleanup. No matches or platformcampaign. Final independent evidence reconciliation pending; docs/m5/chess-tactical-forecasting.md and evidence/msh152/verification.json are canonical. MSH-153 (Classical Compensation Calibration) records the residual general question; no automatic ratingstudy.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Integrated on codex/rewrite at tested/published source 6c903e43594c9ed859a6af43618b3c28487d5805. Diagnosed the Ke8 quiet-invasion reduced fail-low and corrected general PV confidence; corrected promotion recapture SEE from independently wrong +170 to -400. Matched-horizon Goldfish backups are consistent (+17); farther search gives -83, with residual horizon/valuation unresolved and e4 also referencepreferred. Evidence: docs/m5/chess-tactical-forecasting.md and evidence/msh152/verification.json. Level1 search/engine/console385passed2preexistingignored, all20independent controls retained, workspaceclippy/fmtpassed; independent final review approved all3AC. PVpolicy costs31percent more visits atdepth6 and one nominalply on several timedcontrols. No overall strengthgain claimed, no matches/fullplatform/GUIcampaign. MSH-153 (Classical Compensation Calibration) is next, unassigned Ready; no automatic tournament, learned evaluation or crossgame transfer. Final evidence/task publication follows normally on the same integration branch.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -1,9 +1,9 @@
 {
   "task": "MSH-152 (Classical Tactical Forecasting)",
-  "status": "review_pending",
+  "status": "accepted",
   "base_revision": "ed32b24e058572dad883b2ea8efd67209e2cada5",
   "diagnostic_baseline_revision": "bb1c63a16fb78c61984d8c150ff6134922239bc3",
-  "tested_revision": null,
+  "tested_revision": "6c903e43594c9ed859a6af43618b3c28487d5805",
   "verification_level": "Level1 portable search only: local focused search/history/claim/restoration/cancellation tests, affected native consumer tests and workspace compile/lint; independent source/evidence review",
   "environment": {
     "os": "macOS-27.0.1-arm64-arm-64bit",
@@ -58,7 +58,13 @@
   "review": {
     "promotion": "Independent endgame_review approved source/arithmetic/native/cancellation/bounds and preserved failing logs",
     "pv_policy": "Independent endgame_review supports general PVconfidence policy, conditional on behavioral/restoration tests; costs explicit",
-    "final": "pending"
+    "final": {
+      "verdict": "approved; no material findings",
+      "reviewer": "endgame_review independent read-only review",
+      "source": "6c903e43594c9ed859a6af43618b3c28487d5805",
+      "record": "review.md",
+      "scope": "all3 originalAC; DoD1-3 supported, DoD4 normal final integration"
+    }
   },
   "local_checks": {
     "search_library": {
@@ -90,7 +96,8 @@
       "command": "cargo fmt --all -- --check",
       "exit": 0,
       "log": "fmt.log.gz"
-    }
+    },
+    "source_reconciliation": "Checks ran on the exact frozen production/test bytes in tested_revision; final harness differs from measured binaries only by removal of a no-effect struct update. Source hashes verified after commit. No broad rerun for evidence bookkeeping."
   },
   "not_run": [
     "opponentmatches (0)",
@@ -131,6 +138,7 @@
     "reference.json": "dcb2696ae41b1fe842a3313c1bb01410681ff957599cad413b0de8924ef333ae",
     "reference.py": "bb130bcb1ca6a4252ff44d4c5deba8e5141e62929adf50cc7f42fa4f172fc5e2",
     "research.md": "4af75ba37f8eba1345c3c0c708d72764f3da66d9016d015c26d9c13f314c0f3d",
+    "review.md": "db78feaddf4cb295c43e170f9ff446bcefcf441b35544055e4cd13a568d59d68",
     "screen.json": "70b0e4628b2548b0c43a07154958a576cc4a25b15f9a3fe6aebc899cff81de6e",
     "screen.jsonl.gz": "45f55580653c1d54397455c9dbe4e3bb15f105716ba6d4487dbed623d69b8e10",
     "search-consumers.log.gz": "02c227ec2fd65f1542c93e99ae5785edc018afcd76b66a847a8b4380773edbcd",
@@ -141,5 +149,15 @@
     "trace.jsonl.gz": "72bc6c4b26d422f8199daf2e001a9c85a32b7e1083eede807092391af967a655",
     "trace.patch.gz": "f14255edcb3cd74de62e140d819de2a53851b96755dece6b7b09390567fc9117",
     "trace.stderr.gz": "44f83706c15f35a7409cd2837cb719333b333c69fbe9cab7d3a0fb57b02c0ca3"
+  },
+  "acceptance": {
+    "1": "Complete histories, same-depth pruning contrasts and reduced fail-low trace localize selective admission; matched-horizon backup and deeper continuation separate verified horizon effect from unresolved valuation; independent tactical/defensive/endgame controls retained.",
+    "2": "General PV-sensitive LMR and native promotion-completion SEE corrections; history/claims/native outcomes, boundedwork/cancellation and exactrestoration verified.",
+    "3": "Level1 focused/broader affected consumers385passed2ignored, independent20 controls, explicit cost comparisons, preserved failures and independent approval; no matches/ratingclaim."
+  },
+  "integration": {
+    "branch": "codex/rewrite",
+    "published_source_revision": "6c903e43594c9ed859a6af43618b3c28487d5805",
+    "evidence_publication": "Final acceptance metadata is published by the subsequent normal evidence commit; identify its real hash from Git, never a fabricated self-reference."
   }
 }

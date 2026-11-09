@@ -95,3 +95,9 @@ After further meaningful progress, propose matched earlier/current versions with
 shared openings, conditions and opponents where appropriate, and a sample suited
 to the effect of interest, for owner approval. No automatic small absolute-rating
 study, arbitrary strength target, learned evaluation or cross-game transfer follows.
+
+Accepted source: `6c903e43594c9ed859a6af43618b3c28487d5805`, integrated on
+`codex/rewrite`. The local search/engine/console checks passed **385 tests**, with
+2 preexisting ignored tests; the search library contributes 113 of those passes.
+Workspace all-target Clippy and formatting passed. Independent final review
+approved all three acceptance criteria and reconciled the source and receipts.

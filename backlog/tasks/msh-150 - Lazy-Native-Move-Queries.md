@@ -1,9 +1,11 @@
 ---
 id: MSH-150
 title: Lazy Native Move Queries
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-09T20:49:00Z'
+updated_date: '2026-11-09T20:50:00Z'
 labels:
   - handle:lazy-native-move-queries
 milestone: m-5
@@ -35,3 +37,9 @@ Handle: Lazy Native Move Queries. Current native any-legal-action queries stop v
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Root owns codex/rewrite after accepted MSH148 atab81609; no other Chess worker. Level1 isolated native query optimization, broaden local rules/search evidence but no platform-sensitive change. Replace eager candidate-vector traversal with one private ControlFlow visitor shared by existing public collection APIs and native legal query filtering/existence, preserving exact traversal order and unchanged permits_candidate/counter normalization. Delegate only generate.rs/legal.rs and focused visitor tests. Verify independent ordinary/special sets, exhaustive action admission, perft/divides, seeded sequences and search history/claims. Freeze before/after binaries and compare identical fixed-work results/counters with bounded sequential timing; independent source and evidence review before normal integration. No rule changes, extra engine protocol, match campaign or fullplatformCI.
+<!-- SECTION:PLAN:END -->

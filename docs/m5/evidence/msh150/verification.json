@@ -1,0 +1,83 @@
+{
+  "task": "MSH-150 (Lazy Native Move Queries)",
+  "status": "source-verified-measurement-pending",
+  "base_revision": "ab81609b518c11ece60ee3575734fade17df0152",
+  "baseline_binary_source": "0a941948a405c75a2473e737bc3a260032753db0",
+  "baseline_binary_sha256": "ddc34b896a973c6516c2d9c414684c3758b03cc159f7689dad84051ca1329fef",
+  "baseline_native_files": {
+    "crates/mshogi-core/src/chess/generate.rs": "ad4ec3b8ea1608af81c47c68f36d39b3c26a1b8df7bc91ffe9cd02695b4396d9",
+    "crates/mshogi-core/src/chess/legal.rs": "aed75ad338e7abf0a26878d699517d1eecbc16f27255a80f4959ca66ad3a2da5"
+  },
+  "verification_level": "Level1: isolated portable native candidate traversal; broaden local rules/search checks; no OS-sensitive code or new platform claims",
+  "environment": "macOS27.0.1 arm64, Rust1.99.1; sequential measurement binaries",
+  "required_local": [
+    "independent ordinary/special move expectations and action admission",
+    "native perft/divides and sequence restoration",
+    "search access/history/claims/target queries",
+    "search library regressions and affected consumer compilation",
+    "exact before/after fixed-work/native output comparison",
+    "independent implementation and evidence review"
+  ],
+  "not_run": [
+    "opponent matches",
+    "full platform matrix",
+    "packaged GUI campaign"
+  ],
+  "broad_checks": {
+    "command": "cargo test --release --locked -p mshogi-core -p mshogi-search -p mshogi-console",
+    "passed": 697,
+    "failed": 0,
+    "ignored": 4,
+    "deep_perft": "three independent depth4 divides/perft: initial197281, Kiwipete4085603, promotion/castling422333; separate ignored test passed",
+    "consumer_clippy": "workspace all-target locked -Dwarnings passed",
+    "fmt": "passed"
+  },
+  "focused_checks": {
+    "base_revision": "ab81609b518c11ece60ee3575734fade17df0152",
+    "source_state": "uncommitted scoped visitor changes; root-owned Backlog task also dirty",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "files_sha256": {
+      "crates/mshogi-core/src/chess/generate.rs": "05ae8f4bd936d694bbada6e3c0aa16d589b73942e6adc2464c974ee0bc69b1c8",
+      "crates/mshogi-core/src/chess/legal.rs": "028a5a52bf6a87d46240be6d7a01e99755891d95619434798c4da6a84e2cf5f9"
+    },
+    "checks": [
+      {
+        "command": "cargo test -p mshogi-core --release --lib prechange_ordered_candidate_snapshots",
+        "log": "prechange-snapshots.log",
+        "exit_code": 0,
+        "passed": 1,
+        "scope": "Original generator with snapshot test added, before visitor production refactor",
+        "log_sha256": "51538d975651c7ec78799558891b9b914a7a36856398494f325a9438886dcaea"
+      },
+      {
+        "command": "cargo test -p mshogi-core --release --lib chess::generate::visitor_tests",
+        "log": "visitor-tests.log",
+        "exit_code": 0,
+        "passed": 3,
+        "log_sha256": "873c7cfe31941baf573e19540c734b71a5df0a80f173b39bd21bb83f48b8673a"
+      },
+      {
+        "command": "cargo test -p mshogi-core --release --test ordinary_candidates --test special_actions --test chess_target_queries --test chess_search_access",
+        "log": "focused-native-tests.log",
+        "exit_code": 0,
+        "passed": 28,
+        "log_sha256": "e5b83dd9d1b57001d43d5d456a24f1c65daa2d386d5352967e4b97611ebe9f39"
+      },
+      {
+        "command": "cargo test -p mshogi-core --release --lib chess::generate::visitor_tests",
+        "log": "visitor-tests-queen.log",
+        "log_sha256": "87774777760924296cc5a53396a693434725e932f7133e542601c4cb7216c2f6",
+        "exit_code": 0,
+        "passed": 3,
+        "scope": "Reviewer-requested queen diagonal/orthogonal break assertion added; production unchanged"
+      }
+    ],
+    "format_and_diff_check": "rustfmt --edition 2024 on assigned files and git diff --check passed",
+    "final_files_sha256": {
+      "crates/mshogi-core/src/chess/generate.rs": "b4661a2db09ca26960448a5b5929eea8ecfddf0d12d115b59d5050ca0cc025bc",
+      "crates/mshogi-core/src/chess/legal.rs": "028a5a52bf6a87d46240be6d7a01e99755891d95619434798c4da6a84e2cf5f9"
+    }
+  },
+  "review": "endgame_review final source approved: identical traversal/native resolver/counters and no public history/claim change; independent set/perft/corpus expectations inspected"
+}

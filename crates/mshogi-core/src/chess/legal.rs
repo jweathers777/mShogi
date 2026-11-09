@@ -3,7 +3,7 @@
 //! This is the public legal-move list for `mshogi.chess.position.v1`. The
 //! classification describes one position only; it is not match adjudication.
 
-use std::fmt;
+use std::{fmt, ops::ControlFlow};
 
 use super::{Action, Color, PieceKind, Position, Square};
 
@@ -148,22 +148,30 @@ impl Position {
     }
 
     fn legal_actions_matching(&self, keep: impl Fn(&Action) -> bool) -> Vec<Action> {
-        self.legal_candidates(keep).collect()
+        let (base, king) = self.legal_query_base();
+        let mut actions = Vec::new();
+        let _ = base.visit_candidates(&mut |action| {
+            if keep(&action) && base.permits_candidate(action, king) {
+                actions.push(action);
+            }
+            ControlFlow::Continue(())
+        });
+        actions
     }
 
     /// Whether any rule-legal action exists, using the same native checked
     /// candidate pipeline as `legal_actions` and stopping at its first witness.
     /// Counters remain representation-independent, just as for the full list.
     pub fn has_legal_action(&self) -> bool {
-        self.legal_candidates(|_| true).next().is_some()
-    }
-
-    fn legal_candidates(&self, keep: impl Fn(&Action) -> bool) -> impl Iterator<Item = Action> {
         let (base, king) = self.legal_query_base();
-        base.candidates()
-            .into_iter()
-            .filter(keep)
-            .filter(move |&action| base.permits_candidate(action, king))
+        base.visit_candidates(&mut |action| {
+            if base.permits_candidate(action, king) {
+                ControlFlow::Break(())
+            } else {
+                ControlFlow::Continue(())
+            }
+        })
+        .is_break()
     }
 
     fn legal_query_base(&self) -> (Self, Square) {

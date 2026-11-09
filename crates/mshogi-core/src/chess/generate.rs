@@ -1,5 +1,7 @@
 //! Pseudo-legal chess candidates; not a legal-move list.
 
+use std::ops::ControlFlow;
+
 use super::{Action, Color, PieceKind, Position, Promotion, Square};
 
 const KNIGHT_OFFSETS: [(i8, i8); 8] = [
@@ -59,7 +61,10 @@ impl Position {
     /// ```
     pub fn ordinary_candidates(&self) -> Vec<Action> {
         let mut candidates = Vec::new();
-        self.push_ordinary_candidates(&mut candidates);
+        let _ = self.visit_ordinary_candidates(&mut |action| {
+            candidates.push(action);
+            ControlFlow::Continue(())
+        });
         candidates
     }
 
@@ -78,8 +83,10 @@ impl Position {
     /// [`ActionError::CounterOverflow`](super::ActionError::CounterOverflow).
     pub fn special_candidates(&self) -> Vec<Action> {
         let mut candidates = Vec::new();
-        self.push_castling_candidates(&mut candidates);
-        self.push_en_passant_candidates(&mut candidates);
+        let _ = self.visit_special_candidates(&mut |action| {
+            candidates.push(action);
+            ControlFlow::Continue(())
+        });
         candidates
     }
 
@@ -92,12 +99,36 @@ impl Position {
     /// profile-legal actions (the u32 counter domain can exclude a FIDE-legal
     /// action at the limit), but this method itself makes no legality claim.
     pub fn candidates(&self) -> Vec<Action> {
-        let mut candidates = self.ordinary_candidates();
-        candidates.extend(self.special_candidates());
+        let mut candidates = Vec::new();
+        let _ = self.visit_candidates(&mut |action| {
+            candidates.push(action);
+            ControlFlow::Continue(())
+        });
         candidates
     }
 
-    fn push_castling_candidates(&self, out: &mut Vec<Action>) {
+    // The one candidate traversal behind both complete lists and early-exit
+    // native queries. A break propagates through every piece and phase.
+    pub(super) fn visit_candidates(
+        &self,
+        visit: &mut impl FnMut(Action) -> ControlFlow<()>,
+    ) -> ControlFlow<()> {
+        self.visit_ordinary_candidates(visit)?;
+        self.visit_special_candidates(visit)
+    }
+
+    fn visit_special_candidates(
+        &self,
+        visit: &mut impl FnMut(Action) -> ControlFlow<()>,
+    ) -> ControlFlow<()> {
+        self.visit_castling_candidates(visit)?;
+        self.visit_en_passant_candidates(visit)
+    }
+
+    fn visit_castling_candidates(
+        &self,
+        visit: &mut impl FnMut(Action) -> ControlFlow<()>,
+    ) -> ControlFlow<()> {
         let color = self.side_to_move;
         let rank = if color == Color::White { 0 } else { 7 };
         let at = |file: u8| Square(rank * 8 + file);
@@ -115,14 +146,18 @@ impl Position {
                     .iter()
                     .all(|&file| self.piece_at(at(file)).is_none())
             {
-                out.push(plain(at(4), at(king_to)));
+                visit(plain(at(4), at(king_to)))?;
             }
         }
+        ControlFlow::Continue(())
     }
 
-    fn push_en_passant_candidates(&self, out: &mut Vec<Action>) {
+    fn visit_en_passant_candidates(
+        &self,
+        visit: &mut impl FnMut(Action) -> ControlFlow<()>,
+    ) -> ControlFlow<()> {
         let Some(target) = self.en_passant_target else {
-            return;
+            return ControlFlow::Continue(());
         };
         let back = if self.side_to_move == Color::White {
             -1
@@ -137,12 +172,16 @@ impl Position {
             if let Some(from) = offset(target, df, back)
                 && self.piece_at(from) == own_pawn
             {
-                out.push(plain(from, target));
+                visit(plain(from, target))?;
             }
         }
+        ControlFlow::Continue(())
     }
 
-    fn push_ordinary_candidates(&self, candidates: &mut Vec<Action>) {
+    fn visit_ordinary_candidates(
+        &self,
+        visit: &mut impl FnMut(Action) -> ControlFlow<()>,
+    ) -> ControlFlow<()> {
         for index in 0..64u8 {
             let from = Square(index);
             let Some(piece) = self.piece_at(from) else {
@@ -152,17 +191,18 @@ impl Position {
                 continue;
             }
             match piece.kind {
-                PieceKind::Pawn => self.pawn_candidates(from, candidates),
-                PieceKind::Knight => self.step_candidates(from, &KNIGHT_OFFSETS, candidates),
-                PieceKind::King => self.step_candidates(from, &KING_OFFSETS, candidates),
-                PieceKind::Bishop => self.ray_candidates(from, &DIAGONALS, candidates),
-                PieceKind::Rook => self.ray_candidates(from, &ORTHOGONALS, candidates),
+                PieceKind::Pawn => self.visit_pawn_candidates(from, visit),
+                PieceKind::Knight => self.visit_step_candidates(from, &KNIGHT_OFFSETS, visit),
+                PieceKind::King => self.visit_step_candidates(from, &KING_OFFSETS, visit),
+                PieceKind::Bishop => self.visit_ray_candidates(from, &DIAGONALS, visit),
+                PieceKind::Rook => self.visit_ray_candidates(from, &ORTHOGONALS, visit),
                 PieceKind::Queen => {
-                    self.ray_candidates(from, &DIAGONALS, candidates);
-                    self.ray_candidates(from, &ORTHOGONALS, candidates);
+                    self.visit_ray_candidates(from, &DIAGONALS, visit)?;
+                    self.visit_ray_candidates(from, &ORTHOGONALS, visit)
                 }
-            }
+            }?;
         }
+        ControlFlow::Continue(())
     }
 
     // An empty square or an opponent non-king piece may be the destination. In a
@@ -175,22 +215,33 @@ impl Position {
         }
     }
 
-    fn step_candidates(&self, from: Square, offsets: &[(i8, i8)], out: &mut Vec<Action>) {
+    fn visit_step_candidates(
+        &self,
+        from: Square,
+        offsets: &[(i8, i8)],
+        visit: &mut impl FnMut(Action) -> ControlFlow<()>,
+    ) -> ControlFlow<()> {
         for &(df, dr) in offsets {
             if let Some(to) = offset(from, df, dr)
                 && self.may_land_on(to)
             {
-                out.push(plain(from, to));
+                visit(plain(from, to))?;
             }
         }
+        ControlFlow::Continue(())
     }
 
-    fn ray_candidates(&self, from: Square, directions: &[(i8, i8)], out: &mut Vec<Action>) {
+    fn visit_ray_candidates(
+        &self,
+        from: Square,
+        directions: &[(i8, i8)],
+        visit: &mut impl FnMut(Action) -> ControlFlow<()>,
+    ) -> ControlFlow<()> {
         for &(df, dr) in directions {
             let mut current = from;
             while let Some(to) = offset(current, df, dr) {
                 if self.may_land_on(to) {
-                    out.push(plain(from, to));
+                    visit(plain(from, to))?;
                 }
                 if self.piece_at(to).is_some() {
                     break;
@@ -198,9 +249,14 @@ impl Position {
                 current = to;
             }
         }
+        ControlFlow::Continue(())
     }
 
-    fn pawn_candidates(&self, from: Square, out: &mut Vec<Action>) {
+    fn visit_pawn_candidates(
+        &self,
+        from: Square,
+        visit: &mut impl FnMut(Action) -> ControlFlow<()>,
+    ) -> ControlFlow<()> {
         let (forward, start_rank, last_rank) = match self.side_to_move {
             Color::White => (1, 1, 7),
             Color::Black => (-1, 6, 0),
@@ -208,25 +264,26 @@ impl Position {
         let mut push = |to: Square| {
             if to.rank() == last_rank {
                 for promotion in PROMOTIONS {
-                    out.push(Action {
+                    visit(Action {
                         from,
                         to,
                         promotion: Some(promotion),
-                    });
+                    })?;
                 }
             } else {
-                out.push(plain(from, to));
+                visit(plain(from, to))?;
             }
+            ControlFlow::Continue(())
         };
         if let Some(one) = offset(from, 0, forward)
             && self.piece_at(one).is_none()
         {
-            push(one);
+            push(one)?;
             if from.rank() == start_rank
                 && let Some(two) = offset(one, 0, forward)
                 && self.piece_at(two).is_none()
             {
-                push(two);
+                push(two)?;
             }
         }
         for df in [-1, 1] {
@@ -235,9 +292,10 @@ impl Position {
                 && self.piece_at(to).is_some()
                 && self.may_land_on(to)
             {
-                push(to);
+                push(to)?;
             }
         }
+        ControlFlow::Continue(())
     }
 }
 
@@ -252,5 +310,114 @@ const fn plain(from: Square, to: Square) -> Action {
         from,
         to,
         promotion: None,
+    }
+}
+
+#[cfg(test)]
+mod visitor_tests {
+    use super::*;
+
+    fn texts(actions: Vec<Action>) -> Vec<String> {
+        actions.into_iter().map(|a| a.to_string()).collect()
+    }
+
+    fn visited_until(p: &Position, stop: &str) -> Vec<String> {
+        let mut visited = Vec::new();
+        let result = p.visit_candidates(&mut |action| {
+            let text = action.to_string();
+            assert!(
+                visited.last().is_none_or(|last| last != stop),
+                "visited after break"
+            );
+            let end = text == stop;
+            visited.push(text);
+            if end {
+                ControlFlow::Break(())
+            } else {
+                ControlFlow::Continue(())
+            }
+        });
+        assert!(result.is_break());
+        visited
+    }
+
+    #[test]
+    fn candidate_visitor_breaks_inside_rays_and_promotion_choices() {
+        let p = Position::from_fen("7k/8/8/8/8/8/8/R6K w - - 0 1").unwrap();
+        let before = p.clone();
+        assert_eq!(visited_until(&p, "a1a3"), ["a1a2", "a1a3"]);
+        assert_eq!(p, before);
+        // Queen traversal invokes diagonal rays before a separate orthogonal
+        // phase. A break inside the first phase must skip the second entirely.
+        let p = Position::from_fen("8/7k/8/8/8/8/8/Q6K w - - 0 1").unwrap();
+        let before = p.clone();
+        assert_eq!(visited_until(&p, "a1c3"), ["a1b2", "a1c3"]);
+        assert_eq!(p, before);
+        let p = Position::from_fen("2r1k3/1P6/8/8/8/8/8/K7 w - - 0 1").unwrap();
+        let before = p.clone();
+        assert_eq!(
+            visited_until(&p, "b7b8r"),
+            ["a1a2", "a1b2", "a1b1", "b7b8q", "b7b8r"]
+        );
+        assert_eq!(p, before);
+    }
+
+    #[test]
+    fn candidate_visitor_break_propagates_between_ordinary_castling_and_ep_phases() {
+        let p = Position::from_fen("4k3/8/8/2PpP3/8/8/8/R3K2R w KQ d6 0 9").unwrap();
+        let before = p.clone();
+        let ordinary = texts(p.ordinary_candidates());
+        assert_eq!(ordinary.last().map(String::as_str), Some("e5e6"));
+        assert_eq!(visited_until(&p, "e5e6"), ordinary);
+        let mut expected = ordinary;
+        expected.push("e1g1".into());
+        assert_eq!(visited_until(&p, "e1g1"), expected);
+        expected.extend(["e1c1".into(), "c5d6".into()]);
+        assert_eq!(visited_until(&p, "c5d6"), expected);
+        expected.push("e5d6".into());
+        let mut complete = Vec::new();
+        let result = p.visit_candidates(&mut |action| {
+            complete.push(action.to_string());
+            ControlFlow::Continue(())
+        });
+        assert!(result.is_continue());
+        assert_eq!(complete, expected);
+        assert_eq!(p, before);
+    }
+
+    #[test]
+    fn prechange_ordered_candidate_snapshots() {
+        // Recorded against the pre-visitor generator. These are compatibility
+        // snapshots, not substitutes for the independent legal-set fixtures.
+        for (fen, expected) in [
+            (
+                super::super::STANDARD_START_FEN,
+                "b1c3 b1a3 g1h3 g1f3 a2a3 a2a4 b2b3 b2b4 c2c3 c2c4 d2d3 d2d4 e2e3 e2e4 f2f3 f2f4 g2g3 g2g4 h2h3 h2h4",
+            ),
+            (
+                "2r1k3/1P6/8/8/8/8/8/K7 w - - 0 1",
+                "a1a2 a1b2 a1b1 b7b8q b7b8r b7b8b b7b8n b7c8q b7c8r b7c8b b7c8n",
+            ),
+            (
+                "7k/8/8/8/8/P7/8/R1b4K w - - 0 1",
+                "a1a2 a1b1 a1c1 h1h2 h1g1 h1g2 a3a4",
+            ),
+        ] {
+            let p = Position::from_fen(fen).unwrap();
+            let before = p.clone();
+            assert_eq!(
+                texts(p.ordinary_candidates()),
+                expected.split_whitespace().collect::<Vec<_>>()
+            );
+            assert_eq!(p, before);
+        }
+        let p = Position::from_fen("4k3/8/8/2PpP3/8/8/8/R3K2R w KQ d6 0 9").unwrap();
+        assert_eq!(
+            texts(p.special_candidates()),
+            ["e1g1", "e1c1", "c5d6", "e5d6"]
+        );
+        let mut expected = p.ordinary_candidates();
+        expected.extend(p.special_candidates());
+        assert_eq!(p.candidates(), expected);
     }
 }

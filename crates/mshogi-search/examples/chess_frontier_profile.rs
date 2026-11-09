@@ -103,7 +103,9 @@ fn main() {
         let options = SearchOptions {
             diagnostics: SearchDiagnostics {
                 disable_lmr: input["disable_lmr"].as_bool().unwrap_or(false),
-                disable_quiet_omissions: input["disable_quiet_omissions"].as_bool().unwrap_or(false),
+                disable_quiet_omissions: input["disable_quiet_omissions"]
+                    .as_bool()
+                    .unwrap_or(false),
                 disable_see_pruning: input["disable_see_pruning"].as_bool().unwrap_or(false),
                 disable_delta_pruning: input["disable_delta_pruning"].as_bool().unwrap_or(false),
                 endgame_lmr: input["endgame_lmr"].as_bool().unwrap_or(false),

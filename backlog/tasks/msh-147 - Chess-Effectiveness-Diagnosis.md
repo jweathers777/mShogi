@@ -1,9 +1,11 @@
 ---
 id: MSH-147
 title: Chess Effectiveness Diagnosis
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-09T20:00:00Z'
+updated_date: '2026-11-09T20:14:00Z'
 labels:
   - handle:chess-effectiveness-diagnosis
 milestone: m-5
@@ -33,3 +35,9 @@ Handle: Chess Effectiveness Diagnosis. Owner requests a broad diagnosis before a
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Root owns codex/rewrite; no competing Chess worker. Level1 local diagnosis, no platform-sensitive product change. Freeze a twelve-position independent tactical/strategic/endgame/control panel plus full-history failures. Extend the existing diagnostic example with explicit time budgets and structured complete-result/root/PV telemetry, retaining native replay/restoration. Measure sequential 1/5/15/30s runs (~10 minutes), then selected TT/selectivity controls and CPU samples only where results discriminate causes. Compare established classical approaches and evaluation terms; distinguish speed, depth, decision quality and strength. Independent review of instrumentation/findings; concise canonical evidence and priority reconciliation before the next bounded correction. No opponent matches or full platform campaign.
+<!-- SECTION:PLAN:END -->

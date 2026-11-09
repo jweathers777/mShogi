@@ -1,6 +1,6 @@
 {
   "task": "MSH-147 (Chess Effectiveness Diagnosis)",
-  "status": "instrumentation-reviewed-baseline-pending",
+  "status": "baseline-complete-controlled-diagnosis-in-progress",
   "verification_level": "Level1: portable diagnostic example and local measurements; no production behavior changes",
   "production_revision": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
   "environment": {
@@ -40,5 +40,31 @@
     "https://raw.githubusercontent.com/official-stockfish/Stockfish/sf_11/src/evaluate.cpp",
     "https://sites.google.com/site/strategictestsuite/about"
   ],
-  "instrumentation_review": "endgame_review independently approved budgets, source/panel identities, native histories/root assertions, score/PV semantics and no-result smoke receipts; no material findings"
+  "instrumentation_review": "endgame_review independently approved budgets, source/panel identities, native histories/root assertions, score/PV semantics and no-result smoke receipts; no material findings",
+  "baseline": {
+    "command": [
+      "/private/tmp/msh147/baseline-profile",
+      "/private/tmp/msh147/baseline-inputs.json",
+      "128",
+      "timed",
+      "none"
+    ],
+    "source": "95017155fa6a4617eb25e115706e050c1e27d405",
+    "binary_sha256": "7a0618ece33e63fc34303b440d5f7f7bb1f1614c337c38e2e6ac5c4948950a30",
+    "input_sha256": "8bdf67e3743f748cbfd18b7f849b415fac0bb5cac70bc0dbceacee3e1bc13b61",
+    "elapsed_seconds": 562.6425625421107,
+    "exit": 0,
+    "concurrency": "one search, no concurrent builds/tests/matches; no visits cap"
+  },
+  "diagnostic_controls": {
+    "default": "unchanged normal engine; flags all false, fresh context per invocation",
+    "review": "endgame_review source approved; no material findings",
+    "checks": [
+      "five diagnostic-filter tests passed (four new Chess controls)",
+      "48 conventional-search/evaluation tests passed, one existing ignored",
+      "12 positions at30000visits old/new default exact result/PV/work/legacy-counter equality",
+      "workspace all-target clippy and fmt passed"
+    ],
+    "scope": "LMR, quiet omissions, SEE omissions and q delta isolated; optional low-material LMR preserves null and omission guards and native mate-threat protection"
+  }
 }

@@ -12,6 +12,7 @@ fn exact(g: &AdjudicatedGame, depth: u16, entries: usize) -> ConventionalResult 
             mode: SearchMode::Exact,
             table_entries: entries,
             time: None,
+            diagnostics: SearchDiagnostics::default(),
         },
         || false,
     )
@@ -242,6 +243,7 @@ fn engine<'a>(
             seldepth: 0,
         },
         mode,
+        diagnostics: SearchDiagnostics::default(),
         table: vec![None; 4096],
         history: vec![0; 8192],
         continuation: vec![0; 4096],
@@ -1711,4 +1713,130 @@ fn winning_pawn_endings_progress_without_discarding_the_board_win() {
         }
         assert!(promoted, "bounded conversion stalled: {fen}");
     }
+}
+
+#[test]
+fn diagnostics_default_preserves_search_and_exact_mode_ignores_ablations() {
+    let g = game(STANDARD_START_FEN);
+    let limits = SearchLimits {
+        depth: 2,
+        nodes: Some(30000),
+    };
+    let implicit = search(&g, limits).unwrap();
+    let explicit = search_with_options(&g, limits, SearchOptions::default(), || false).unwrap();
+    assert_eq!(implicit.result, explicit.result);
+    assert_eq!(implicit.stats, explicit.stats);
+    assert_eq!(implicit.selective_depth, explicit.selective_depth);
+    assert_eq!(
+        implicit.stats.researches,
+        implicit.stats.reduction_researches + implicit.stats.pv_researches
+    );
+    assert!(implicit.stats.main_first_move_cutoffs <= implicit.stats.main_beta_cutoffs);
+    assert!(implicit.stats.q_first_move_cutoffs <= implicit.stats.q_beta_cutoffs);
+    assert!(implicit.stats.q_quiet_projections > 0);
+    let baseline = exact(&g, 2, 4096);
+    let ablated = search_with_options(
+        &g,
+        limits,
+        SearchOptions {
+            mode: SearchMode::Exact,
+            diagnostics: SearchDiagnostics {
+                disable_lmr: true,
+                disable_quiet_omissions: true,
+                disable_see_pruning: true,
+                disable_delta_pruning: true,
+                endgame_lmr: true,
+            },
+            ..SearchOptions::default()
+        },
+        || false,
+    )
+    .unwrap();
+    assert_eq!(baseline.result, ablated.result);
+    assert_eq!(baseline.stats, ablated.stats);
+}
+
+#[test]
+fn diagnostic_omission_controls_are_independent_and_restore_state() {
+    let mut stop = || false;
+    let g = game(STANDARD_START_FEN);
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    e.diagnostics.disable_quiet_omissions = true;
+    e.main(1, 1, 100, 1000, false, false, 4, None).ok().unwrap();
+    assert_eq!(e.stats.late_move_pruned, 0);
+    assert_eq!(e.stats.futility_pruned, 0);
+    assert_eq!(e.cursor.game(), Some(&g));
+    // The established Rxa2/Ra8 exchange and unrecaptured-pawn delta fixtures
+    // isolate distinct rejection reasons without changing their native effects.
+    for (fen, alpha, beta, see_case) in [
+        ("r6k/8/8/8/8/8/p7/R6K w - - 0 1", -INF, INF, true),
+        ("7k/8/8/8/8/8/p7/R6K w - - 0 1", 5000, 5001, false),
+    ] {
+        for disable_matching in [false, true] {
+            let g = game(fen);
+            let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+            e.diagnostics.disable_see_pruning = see_case == disable_matching;
+            e.diagnostics.disable_delta_pruning = see_case != disable_matching;
+            e.quiescence(0, alpha, beta, Q_PLIES - 2, None)
+                .ok()
+                .unwrap();
+            if disable_matching {
+                assert_eq!(e.stats.see_pruned, 0);
+                assert!(e.work.nodes > 1);
+            } else {
+                assert_eq!(e.stats.see_pruned, 1);
+                assert_eq!(e.work.nodes, 1);
+                assert_eq!(e.stats.q_see_pruned, u64::from(see_case));
+                assert_eq!(e.stats.q_delta_pruned, u64::from(!see_case));
+            }
+            assert_eq!(e.cursor.game(), Some(&g));
+            assert_eq!(e.eval, EvalState::new(g.position()));
+        }
+    }
+}
+
+#[test]
+fn diagnostic_endgame_lmr_does_not_enable_null_or_omissions() {
+    let g = game("4k3/p6p/8/8/8/8/P6P/4K3 w - - 0 1");
+    let mut stop = || false;
+    for (endgame_lmr, disable_lmr) in [(false, false), (true, false), (true, true)] {
+        let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+        e.diagnostics.endgame_lmr = endgame_lmr;
+        e.diagnostics.disable_lmr = disable_lmr;
+        e.main(3, 0, -INF, INF, true, true, 4, None).ok().unwrap();
+        assert_eq!(e.stats.reductions > 0, endgame_lmr && !disable_lmr);
+        assert_eq!(e.stats.null_probes, 0);
+        assert_eq!(e.stats.late_move_pruned, 0);
+        assert_eq!(e.stats.futility_pruned, 0);
+        assert_eq!(e.cursor.game(), Some(&g));
+        assert_eq!(e.eval, EvalState::new(g.position()));
+    }
+}
+
+#[test]
+fn diagnostic_endgame_lmr_preserves_quiet_mating_threat_protection() {
+    // The independently hand-proved Qg4, Kh7 (only legal reply), Qg7# motif
+    // has no non-pawn material for Black, so ordinary LMR is disabled.
+    let g = game("7k/8/5K2/8/5Q2/8/8/8 w - - 0 1");
+    let mut proof = g.clone();
+    proof.apply("f4g4".parse().unwrap()).unwrap();
+    assert_eq!(
+        proof.position().legal_actions(),
+        vec!["h8h7".parse().unwrap()]
+    );
+    proof.apply("h8h7".parse().unwrap()).unwrap();
+    proof.apply("g4g7".parse().unwrap()).unwrap();
+    assert!(matches!(
+        proof.outcome(),
+        Some(ChessOutcome::Checkmate { .. })
+    ));
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    e.diagnostics.endgame_lmr = true;
+    let v = e.main(3, 0, -INF, INF, true, true, 4, None).ok().unwrap();
+    assert_eq!(v.score, MATE_SCORE - 3);
+    assert!(e.stats.threat_protected_moves > 0);
+    assert_eq!(e.stats.null_probes, 0);
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
 }

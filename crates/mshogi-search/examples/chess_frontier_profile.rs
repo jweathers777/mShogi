@@ -6,7 +6,7 @@
 //! the history origin; expected_root_fen, when supplied, checks the replayed root.
 use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy, Color, STANDARD_START_FEN};
 use mshogi_search::{
-    chess_conventional::{SearchOptions, TimeBudget, search_with_options},
+    chess_conventional::{SearchDiagnostics, SearchOptions, TimeBudget, search_with_options},
     chess_conventional_eval::{self as evaluation, Tapered, Terms},
     search::{MAX_DEPTH, SearchChoice, SearchDecision, SearchLimits, SearchStatus},
 };
@@ -101,6 +101,13 @@ fn main() {
             })
         });
         let options = SearchOptions {
+            diagnostics: SearchDiagnostics {
+                disable_lmr: input["disable_lmr"].as_bool().unwrap_or(false),
+                disable_quiet_omissions: input["disable_quiet_omissions"].as_bool().unwrap_or(false),
+                disable_see_pruning: input["disable_see_pruning"].as_bool().unwrap_or(false),
+                disable_delta_pruning: input["disable_delta_pruning"].as_bool().unwrap_or(false),
+                endgame_lmr: input["endgame_lmr"].as_bool().unwrap_or(false),
+            },
             time: time_ms.map(TimeBudget::from_hard_ms),
             table_entries: input.get("table_entries").map_or(
                 SearchOptions::default().table_entries,
@@ -151,6 +158,7 @@ fn main() {
                 "depth_limit":depth,"node_limit":nodes,"timed":timed,"time_ms":time_ms,
                 "table_entries_requested":options.table_entries,
                 "table_entries":options.table_entries.min(16_384),
+                "diagnostics":format!("{:?}",options.diagnostics),
                 "decision":decision,"move":selected_move,"score":r.result.score,
                 "score_perspective":root_side,"completed_depth":r.result.completed_depth,
                 "nodes":r.result.nodes,"status":status,

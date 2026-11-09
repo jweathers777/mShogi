@@ -59,6 +59,21 @@ pub enum SearchMode {
     /// Quiescence, bounded check extensions and guarded conventional pruning.
     Conventional,
 }
+/// Per-invocation experimental ablations; every default preserves playing behavior.
+/// These controls are not exposed through the product execution protocol.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct SearchDiagnostics {
+    /// Disable late quiet reductions without changing the quiescent frontier.
+    pub disable_lmr: bool,
+    /// Disable main-search late quiet and static futility omissions.
+    pub disable_quiet_omissions: bool,
+    /// Disable exchange-based main/quiescent omissions; retain delta pruning.
+    pub disable_see_pruning: bool,
+    /// Disable quiescent material-gain delta omissions; retain SEE pruning.
+    pub disable_delta_pruning: bool,
+    /// Experimentally admit low-material LMR, preserving null/omission guards.
+    pub endgame_lmr: bool,
+}
 /// Bounded per-invocation configuration; no table or history leaks between requests.
 #[derive(Clone, Copy, Debug)]
 pub struct SearchOptions {
@@ -68,6 +83,8 @@ pub struct SearchOptions {
     pub time: Option<TimeBudget>,
     /// Entries in buckets of up to four, clamped to16384; zero disables reuse.
     pub table_entries: usize,
+    /// Opt-in diagnostic controls; normal product callers use the default.
+    pub diagnostics: SearchDiagnostics,
 }
 impl Default for SearchOptions {
     fn default() -> Self {
@@ -75,6 +92,7 @@ impl Default for SearchOptions {
             mode: SearchMode::Conventional,
             time: None,
             table_entries: TABLE_ENTRIES,
+            diagnostics: SearchDiagnostics::default(),
         }
     }
 }
@@ -123,6 +141,22 @@ pub struct SearchStats {
     pub aspiration_researches: u64,
     /// PVS/reduction re-searches.
     pub researches: u64,
+    /// Full-depth zero-window verification after a reduced move improves alpha.
+    pub reduction_researches: u64,
+    /// Full-window PV verification after a zero-window move improves alpha.
+    pub pv_researches: u64,
+    /// Main move-loop beta cutoffs, excluding native, null and TT returns.
+    pub main_beta_cutoffs: u64,
+    /// Main move-loop cutoffs caused by the first actually searched move.
+    pub main_first_move_cutoffs: u64,
+    /// Quiescent move-loop beta cutoffs, excluding stand pat, claims and TT.
+    pub q_beta_cutoffs: u64,
+    /// Quiescent move-loop cutoffs caused by the first actually searched move.
+    pub q_first_move_cutoffs: u64,
+    /// Quiescent omissions with a failing enabled exchange estimate.
+    pub q_see_pruned: u64,
+    /// Quiescent omissions with a failing enabled delta margin (may overlap SEE).
+    pub q_delta_pruned: u64,
     /// Late quiet move reductions.
     pub reductions: u64,
     /// Detached hypothetical null probes.
@@ -143,6 +177,8 @@ pub struct SearchStats {
     pub queen_contact_mates: u64,
     /// Quiet moves creating a confirmed contact-mate threat inside quiescence.
     pub quiet_threat_moves: u64,
+    /// Native projections of quiet candidates before frontier admission.
+    pub q_quiet_projections: u64,
     /// Conservative late quiet/futility omissions.
     pub futility_pruned: u64,
     /// Guarded late quiet omissions after the shallow move-count threshold.
@@ -235,6 +271,7 @@ pub fn search_with_options(
             seldepth: 0,
         },
         mode: options.mode,
+        diagnostics: options.diagnostics,
         table: vec![None; options.table_entries.min(MAX_TABLE_ENTRIES)],
         history: vec![0; 2 * 64 * 64],
         continuation: vec![0; 64 * 64],
@@ -398,6 +435,7 @@ struct Engine<'a> {
     eval: EvalState,
     work: Work<'a>,
     mode: SearchMode,
+    diagnostics: SearchDiagnostics,
     table: Vec<Option<Entry>>,
     history: Vec<i32>,
     continuation: Vec<i32>,
@@ -1031,9 +1069,20 @@ impl Engine<'_> {
                         .as_ref()
                         .map_or_else(|| self.cursor.position(), SearchPreview::position),
                 );
-            if child_has_null_material
+            let lmr_candidate = self.mode == SearchMode::Conventional
+                && !self.diagnostics.disable_lmr
+                && threat_extension == 0
+                && !critical
+                && !in_check
+                && !gives_check
                 && !m.tactical
-                && (depth <= 2 || move_index >= 3)
+                && (child_has_null_material || self.diagnostics.endgame_lmr)
+                && depth >= 3
+                && move_index >= 3;
+            // Low-material diagnostic reductions require the same native threat
+            // protection as ordinary reductions; the null guard is independent.
+            if ((child_has_null_material && !m.tactical && (depth <= 2 || move_index >= 3))
+                || lmr_candidate)
                 && preview
                     .as_ref()
                     .map_or_else(|| self.cursor.position(), SearchPreview::position)
@@ -1052,6 +1101,7 @@ impl Engine<'_> {
                 && searched > 0
                 && alpha.abs() < MATE_BAND;
             if selective
+                && !self.diagnostics.disable_quiet_omissions
                 && !m.tactical
                 && depth <= 2
                 && quiet_seen > 6 + depth * depth
@@ -1067,7 +1117,12 @@ impl Engine<'_> {
                 }
                 continue;
             }
-            if selective && !m.tactical && depth <= 2 && static_score + 140 * depth <= alpha {
+            if selective
+                && !self.diagnostics.disable_quiet_omissions
+                && !m.tactical
+                && depth <= 2
+                && static_score + 140 * depth <= alpha
+            {
                 self.stats.futility_pruned += 1;
                 if pushed {
                     self.pop();
@@ -1077,6 +1132,7 @@ impl Engine<'_> {
                 continue;
             }
             if selective
+                && !self.diagnostics.disable_see_pruning
                 && m.tactical
                 && m.action.promotion.is_none()
                 && depth <= 2
@@ -1093,16 +1149,7 @@ impl Engine<'_> {
             if let Some(preview) = preview {
                 self.push_preview(preview)?;
             }
-            let reduction = if self.mode == SearchMode::Conventional
-                && threat_extension == 0
-                && !critical
-                && !in_check
-                && !gives_check
-                && !m.tactical
-                && child_has_null_material
-                && depth >= 3
-                && move_index >= 3
-            {
+            let reduction = if lmr_candidate && !critical {
                 1 + i32::from(depth >= 6 && move_index >= 8)
             } else {
                 0
@@ -1137,6 +1184,7 @@ impl Engine<'_> {
                 match first {
                     Ok(v) if -v.score > alpha && reduction > 0 => {
                         self.stats.researches += 1;
+                        self.stats.reduction_researches += 1;
                         self.main(
                             full_depth,
                             ply + 1,
@@ -1153,6 +1201,7 @@ impl Engine<'_> {
                 .and_then(|v| {
                     if pv && -v.score > alpha && -v.score < beta {
                         self.stats.researches += 1;
+                        self.stats.pv_researches += 1;
                         self.main(
                             full_depth,
                             ply + 1,
@@ -1176,6 +1225,8 @@ impl Engine<'_> {
             }
             alpha = alpha.max(best.as_ref().unwrap().score);
             if alpha >= beta {
+                self.stats.main_beta_cutoffs += 1;
+                self.stats.main_first_move_cutoffs += u64::from(searched == 1);
                 self.reward(m, depth, ply, previous);
                 self.penalize_quiets(&failed_quiets, depth, previous);
                 break;
@@ -1407,6 +1458,7 @@ impl Engine<'_> {
                 // resolution derives discovered/castling effects; no separate
                 // checking-move geometry or legal-move approximation lives here.
                 self.work.poll()?;
+                self.stats.q_quiet_projections += 1;
                 let projected = self.cursor.position().project(a).map_err(|e| {
                     Halt::Error(SearchError::Transition(
                         mshogi_core::chess::PlayError::Action(e),
@@ -1421,6 +1473,7 @@ impl Engine<'_> {
             }
         }
         let moves = self.ordered(actions, None, ply, previous)?;
+        let mut searched = 0;
         for m in moves {
             self.push_with_key(m.action, false)?;
             let child_node = self.cursor.turn();
@@ -1434,15 +1487,20 @@ impl Engine<'_> {
                     child_node.classification,
                     Classification::Checkmate | Classification::Stalemate
                 );
+            let failing_see = !self.diagnostics.disable_see_pruning && m.see < 0;
+            let failing_delta =
+                !self.diagnostics.disable_delta_pruning && score + m.gain + 140 < alpha;
             if !unsettled
                 && !critical
                 && !checking
                 && m.action.promotion.is_none()
-                && (m.see < 0 || score + m.gain + 140 < alpha)
+                && (failing_see || failing_delta)
                 && m.tactical
                 && alpha.abs() < MATE_BAND
             {
                 self.stats.see_pruned += 1;
+                self.stats.q_see_pruned += u64::from(failing_see);
+                self.stats.q_delta_pruned += u64::from(failing_delta);
                 self.pop();
                 continue;
             }
@@ -1456,11 +1514,14 @@ impl Engine<'_> {
             );
             self.pop();
             let value = Value::prepend(m.action, child?);
+            searched += 1;
             if best.as_ref().is_none_or(|b| value.score > b.score) {
                 best = Some(value);
             }
             alpha = alpha.max(best.as_ref().unwrap().score);
             if alpha >= beta {
+                self.stats.q_beta_cutoffs += 1;
+                self.stats.q_first_move_cutoffs += u64::from(searched == 1);
                 break;
             }
         }

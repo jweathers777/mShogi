@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/private/tmp/msh147/baseline-profile",
+    "/private/tmp/msh147/baseline-inputs.json",
+    "128",
+    "timed",
+    "none"
+  ],
+  "source": "95017155fa6a4617eb25e115706e050c1e27d405",
+  "binary_sha256": "7a0618ece33e63fc34303b440d5f7f7bb1f1614c337c38e2e6ac5c4948950a30",
+  "input_sha256": "8bdf67e3743f748cbfd18b7f849b415fac0bb5cac70bc0dbceacee3e1bc13b61",
+  "elapsed_seconds": 562.6425625421107,
+  "exit": 0,
+  "concurrency": "one search, no concurrent builds/tests/matches; no visits cap"
+}

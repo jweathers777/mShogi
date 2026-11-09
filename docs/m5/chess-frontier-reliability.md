@@ -37,9 +37,15 @@ score, choice and selective depth:
 | Check / null-threat extensions | 0 / 0 |
 | Aspiration retries / PVS re-searches | 0 / 1 |
 | Threatened q expansions | 8,615 |
+| Expanded q nodes in check / at exhausted capture horizon | 26,289 / 98,755 |
 | Immediate contact-mate admissions | 111,485 |
 | Exchange probes | 46,967 |
 | Recursive q TT cutoffs | 0 |
+
+The main-search extension count does not count mandatory check evasions inside
+quiescence: those can continue after its capture horizon, within the existing
+128-ply safety bound. Expanded-node categories overlap and exclude early
+terminal/claim/TT exits; they are not additive CPU timing categories.
 
 This allocation is reproduced evidence, **not counters retrospectively invented
 for the original timed game**. Three additional uncapped one-second repetitions
@@ -67,7 +73,8 @@ have independent regressions.
 The search correction confines optional quiet checks and quiet threat creation
 to the first two q layers, with a third layer to answer a threat created on the
 second. Actual check evasions and immediate native contact mates remain available
-at every layer, including the exhausted capture horizon. Deeper quiet plans belong
+at every layer, including the exhausted capture horizon, subject to the unchanged
+128-board-ply safety bound. Deeper quiet plans belong
 to main iterative search. This follows the established finite quiet-check frontier
 approach in classical [Stockfish11 search](https://raw.githubusercontent.com/official-stockfish/Stockfish/sf_11/src/search.cpp)
 and [move selection](https://raw.githubusercontent.com/official-stockfish/Stockfish/sf_11/src/movepick.cpp);

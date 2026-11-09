@@ -1,11 +1,11 @@
 {
   "task": "MSH-141 (Chess Frontier Reliability)",
-  "status": "local-verification-in-progress",
+  "status": "independent-review-approved-ci-pending",
   "base_revision": "d86dfcab0d6122dc357e6ce58903beb2d351e3ad",
   "historical_candidate_build_source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
   "historical_production_equivalent": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
   "corrected_source_revision": null,
-  "integration_revision": null,
+  "integration_revision": "1d20ae6f93936122e4aaa6fb320a48d995bde531",
   "environment": {
     "os": "macOS27.0.1 (26A434)",
     "rust": "1.99.1",
@@ -30,7 +30,8 @@
     ],
     "old_timed_profiles": "baseline-timed used300000 visit cap; retained but final comparisons use timed-unlimited with no visit cap",
     "baseline_binary_sha256": "d200b34362265c202a19d860c1bf662c694768d7c3836489fad9bc193fe55adb",
-    "corrected_binary_sha256": "c9b2671122d220795de2f26531967fdeea1c7ad9183c87b7c7f665d66b3bd5c1"
+    "corrected_binary_sha256": "c9b2671122d220795de2f26531967fdeea1c7ad9183c87b7c7f665d66b3bd5c1",
+    "uncapped_baseline_recipe": "Checkout d86dfca; replace chess_conventional.rs with search-instrumented-before.rs.gz and attack.rs with attack-before.rs.gz; use FINAL chess_frontier_profile.rs from corrected source1d20ae6 (not profile-before.rs.gz), cargo build --release --locked -p mshogi-search --example chess_frontier_profile. Restore final production sources and rebuild corrected binary. Baseline counter docstrings precede expanded-node wording clarification; behavior unchanged."
   },
   "commands": [
     "cargo build --release --locked -p mshogi-search --example chess_frontier_profile",
@@ -336,11 +337,40 @@
     },
     {
       "command": "cargo test --locked -p mshogi-core -p mshogi-search -p mshogi-console",
-      "result": "running"
+      "result": "passed",
+      "passed": 680,
+      "failed": 0,
+      "ignored": 4,
+      "receipt": "native-tests.log.gz"
     },
     {
       "command": "cargo test --release --locked -p mshogi-console --test desktop_play",
-      "result": "pending"
+      "result": "passed",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0,
+      "receipt": "desktop-play.log.gz"
+    },
+    {
+      "command": "python-chess SimpleEngine.play full preserved81ply history, target/release/mshogi --game chess uci, Limit(time=1), explicit quit",
+      "result": "passed",
+      "receipt": "incident-uci.json",
+      "observation": "g6f6,depth128,seldepth17,nodes306191,mate(-3),clean quit; no match game"
+    },
+    {
+      "command": "cargo test --release --locked -p mshogi-search chess_conventional::tests::quiescence_retains_mate_and_check_evasions_beyond_quiet_forcing_frontier -- --exact",
+      "result": "passed,1test at1d20ae6 including final explicit Check precondition",
+      "receipt": "final-boundary-exact.log.gz"
+    },
+    {
+      "command": "cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__",
+      "result": "passed; exactlyone mate fixture changes only actual work counts",
+      "receipt": "fixtures.log.gz"
+    },
+    {
+      "command": "Node24.19.0 node_modules/vitest/vitest.mjs run src/product/NativeSessionPanels.test.tsx",
+      "result": "passed,34tests",
+      "receipt": "frontend-panel-pinned.log.gz"
     }
   ],
   "independent_review": [
@@ -358,6 +388,23 @@
         "git diff --check passed"
       ],
       "resolved": "Expanded q-node counter wording corrected; created quiet threats retain an additional defensive response ply."
+    },
+    {
+      "reviewer": "chess_frontier_review",
+      "verdict": "final evidence reconciliation approved at1d20ae6, actual CI pending",
+      "verified": [
+        "Original raw MSH139 transcript and full81ply history",
+        "all recorded artifact/source and live binary hashes",
+        "archived baseline production equivalence apart from diagnostics",
+        "295113visit arithmetic and all3baseline/3corrected uncapped runs",
+        "appropriate finite-selectivity, historical-telemetry and no-strength-gain caveats"
+      ],
+      "resolved": "Uncapped baseline reproduction explicitly names final profile example; earlier archived helper was capped."
+    },
+    {
+      "reviewer": "chess_frontier_review",
+      "verdict": "fixture-only reconciliation approved",
+      "verified": "Exactly8scalar changes:4telemetry projections nodes65to48 andseldepth7to5; move,PV,score,depth,state,schema unchanged. Matches Linux actual generated diff; production diff from1d20ae6 empty."
     }
   ],
   "limitations": [
@@ -371,7 +418,8 @@
     "opponent_match_games": 0,
     "paid_compute": false,
     "profile_elapsed_seconds": 88.03456033599997,
-    "note": "Sum of retained profile runs; builds/tests separate. One exploratory two-position fixed run before seven-position file retained in /private/tmp only took2.7s. No multi-hour benchmark."
+    "note": "Sum of retained profile runs; builds/tests separate. One exploratory two-position fixed run before seven-position file retained in /private/tmp only took2.7s. No multi-hour benchmark.",
+    "single_uci_probe_elapsed_seconds": 0.9502191659994423
   },
   "artifacts": {
     "early-threat-fixed.jsonl": "5b0f7760f90cc2154eae05d2155f7096cc557b2800dedd9ad3169f426bfca7f6",
@@ -394,15 +442,63 @@
     "corrected-exact-visits.jsonl": "effa1ffa0739ff80fbf0221f8d56021abac0614157365fc17d41b4bfacf2601a",
     "clippy.log.gz": "e8c86f05a59a58957349831cc56d4a20b575e4c3f14f468a38fcdded575b151f",
     "search-final.log.gz": "6056a3d68ccf217a3c3c1a24133e5ffe1b7f94c4909a5a9a5514fcc6b4b4d79b",
-    "attacks.log.gz": "ffb766a78f86d11e01da9d8a9738067f33f98d9f58c0c3db475af5e7d5fa437f"
+    "attacks.log.gz": "ffb766a78f86d11e01da9d8a9738067f33f98d9f58c0c3db475af5e7d5fa437f",
+    "native-tests.log.gz": "a410763eeb0674a6ab75325440e5792d479a926fddb2ea584a319302cfc40952",
+    "desktop-play.log.gz": "f787f4c1855f8f1b6c18746ffd026ed1d8fda2807b514977a351e5c4ae063cb7",
+    "incident-uci.json": "368e727e50b29fe1aa5d018ac4ccd6e3bfee495341822b5bc5b1c38f53c2b0ab",
+    "final-boundary.log.gz": "1d51d265cf062fb47078cc79fbe4bb3bf4541be98162beae7863ec7032412dc2",
+    "final-boundary-exact.log.gz": "dd98a1a388f8f9a0bddd4c44f2e248cbf873bda02d70b86d86c1a934edabaf86",
+    "ci-1-linux-fixture-failure.log": "6194ed03f1032997fde92a26e95428792d76935b83ddbdb3ae80af7dba156ce8",
+    "frontend-panel-pinned.log.gz": "a5d9b6ffae43148b2e05be6bf7a31e3a7240a96daaf0caf8aabf8b039ea7ecff",
+    "frontend-panel.log.gz": "dc26936a145b622816014269da858b15943d9c1e2287596c5e1c32ee147a42ca",
+    "desktop-cancelled.json": "13a40c09668f97b370c5f568a7c69af5e4aecdb8361a84952c1ca2e9406d2cbc",
+    "fixtures.log.gz": "6c4c66139fcabc4cec11d2ce6f2983378b960e70a4bef1697480f2caa177eaf1",
+    "ci-1-run.json": "f45c44780e81bd93e39c6523bc9fc94e0c1e8d251393f29fa3d504079322495f",
+    "ci-1-jobs.json": "e049d26e995861d6f1c2671c7be76b8a4bc3f88c588188067e7eed3ebe58a4e0",
+    "ci-1-monitor.log.gz": "fc43aef358bdb7b7666eeb12f52517643b8b7bb2e7abcee99e7e71a1be31748a"
   },
   "development_failures": [
     "Initial added exhausted-horizon evasion fixture accidentally was already checkmate due Rg1 support; assertion failed, fixture corrected by removing rook and explicitly requiring Check. No production semantics or expected rule was weakened.",
-    "Initial sandboxed Backlog create refused Git metadata lock; supported command then succeeded with authorized escalation."
+    "Initial sandboxed Backlog create refused Git metadata lock; supported command then succeeded with authorized escalation.",
+    "Abbreviated exact test filter selected0tests; not counted. Fully qualified filter rerun selected1test and passed; both receipts retained.",
+    "First CI run Linux failed stale generated work telemetry in one Chess mate fixture; source correction unchanged, native generator refreshed fixture; superseded macOS/Windows canceled after native and release checks passed.",
+    "Initial frontend command exited134 before tests because default Homebrew Node26 lacks libsimdjson. Used working Node23 only to bootstrap isolated pinned Node24.19.0; actual34tests passed with project-pinned runtime; no system settings changed."
   ],
   "source_files_sha256": {
     "crates/mshogi-core/src/chess/attack.rs": "b37fe11bf6627dcd6f8315109d8b168f078aa0da55c7716cd2aab5d6228793a6",
     "crates/mshogi-search/src/chess_conventional.rs": "8abe7601080c0fc38e893ccf8a77283be0387d31fef0d2fce4b8de07098737b8",
     "crates/mshogi-search/examples/chess_frontier_profile.rs": "ec5413aee8c4ef0842b8464f6b39eec9fec6468ae36a4bfeff39d641755055f4"
-  }
+  },
+  "ci_run": null,
+  "superseded_campaigns": [
+    {
+      "id": 42655073772,
+      "workflow": "Desktop packages",
+      "head_sha": "1d20ae6f93936122e4aaa6fb320a48d995bde531",
+      "action": "cancelled automatic push-triggered packaging; native Rust CI includes real release desktop-play contract, GUI/interface unchanged; no broad packaged campaign required"
+    }
+  ],
+  "provider_observations": [
+    {
+      "time_utc": "2026-11-09T16:39Z",
+      "source": "https://www.githubstatus.com/api/v2/summary.json",
+      "summary": "Public Actions status operational, no incidents; page updated14:44:23Z. This does not establish macOS-specific available capacity. Native macOS15 job still queued at last monitor snapshot."
+    }
+  ],
+  "ci_history": [
+    {
+      "attempt": 1,
+      "conclusion": "cancelled",
+      "createdAt": "2026-11-09T16:28:08Z",
+      "databaseId": 42655073948,
+      "headSha": "1d20ae6f93936122e4aaa6fb320a48d995bde531",
+      "status": "completed",
+      "updatedAt": "2026-11-09T16:59:50Z",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/42655073948",
+      "jobs_receipt": "ci-1-jobs.json",
+      "failure": "Generated Chess mate analysis fixture still recorded65visits/seldepth7; actual corrected search reports48/5. Native tests and release subprocess checks passed on all3OS; Linux failed fixture comparison; remaining jobs canceled superseded."
+    }
+  ],
+  "production_source_revision": "1d20ae6f93936122e4aaa6fb320a48d995bde531",
+  "pending_change": "Generated fixture only; production byte-identical to1d20ae6. Await replacement native3OS run."
 }

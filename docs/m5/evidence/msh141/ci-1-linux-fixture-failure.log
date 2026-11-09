@@ -1,0 +1,57 @@
+2026-11-09T16:58:02.1971559Z diff --git a/desktop/src/__fixtures__/shared-chess-analysis-mate.json b/desktop/src/__fixtures__/shared-chess-analysis-mate.json
+2026-11-09T16:58:02.1972277Z index d377620..5294f8b 100644
+2026-11-09T16:58:02.1972651Z --- a/desktop/src/__fixtures__/shared-chess-analysis-mate.json
+2026-11-09T16:58:02.1973110Z +++ b/desktop/src/__fixtures__/shared-chess-analysis-mate.json
+2026-11-09T16:58:02.1973472Z @@ -577,8 +577,8 @@
+2026-11-09T16:58:02.1973686Z            "telemetry": {
+2026-11-09T16:58:02.1974149Z              "score": 999999,
+2026-11-09T16:58:02.1974451Z              "completed_depth": 1,
+2026-11-09T16:58:02.1974722Z -            "selective_depth": 7,
+2026-11-09T16:58:02.1974976Z -            "nodes": 65,
+2026-11-09T16:58:02.1975205Z +            "selective_depth": 5,
+2026-11-09T16:58:02.1975737Z +            "nodes": 48,
+2026-11-09T16:58:02.1976009Z              "principal_variation": [
+2026-11-09T16:58:02.1976277Z                {
+2026-11-09T16:58:02.1976678Z                  "kind": "move",
+2026-11-09T16:58:02.1977089Z @@ -636,8 +636,8 @@
+2026-11-09T16:58:02.1977453Z              "telemetry": {
+2026-11-09T16:58:02.1977839Z                "score": 999999,
+2026-11-09T16:58:02.1978246Z                "completed_depth": 1,
+2026-11-09T16:58:02.1978551Z -              "selective_depth": 7,
+2026-11-09T16:58:02.1978805Z -              "nodes": 65,
+2026-11-09T16:58:02.1979038Z +              "selective_depth": 5,
+2026-11-09T16:58:02.1979295Z +              "nodes": 48,
+2026-11-09T16:58:02.1979536Z                "principal_variation": [
+2026-11-09T16:58:02.1979802Z                  {
+2026-11-09T16:58:02.1980007Z                    "kind": "move",
+2026-11-09T16:58:02.1980246Z @@ -663,8 +663,8 @@
+2026-11-09T16:58:02.1980451Z        "engine": "mShogi",
+2026-11-09T16:58:02.1980694Z        "score": "mate in 1 plies",
+2026-11-09T16:58:02.1980950Z        "completed_depth": 1,
+2026-11-09T16:58:02.1981201Z -      "selective_depth": 7,
+2026-11-09T16:58:02.1981429Z -      "nodes": 65,
+2026-11-09T16:58:02.1981641Z +      "selective_depth": 5,
+2026-11-09T16:58:02.1981866Z +      "nodes": 48,
+2026-11-09T16:58:02.1982066Z        "variation": [
+2026-11-09T16:58:02.1982269Z          "g6g7"
+2026-11-09T16:58:02.1982455Z        ],
+2026-11-09T16:58:02.1982636Z @@ -734,8 +734,8 @@
+2026-11-09T16:58:02.1982835Z          "telemetry": {
+2026-11-09T16:58:02.1983052Z            "score": 999999,
+2026-11-09T16:58:02.1983283Z            "completed_depth": 1,
+2026-11-09T16:58:02.1983528Z -          "selective_depth": 7,
+2026-11-09T16:58:02.1983770Z -          "nodes": 65,
+2026-11-09T16:58:02.1984359Z +          "selective_depth": 5,
+2026-11-09T16:58:02.1984645Z +          "nodes": 48,
+2026-11-09T16:58:02.1984869Z            "principal_variation": [
+2026-11-09T16:58:02.1985117Z              {
+2026-11-09T16:58:02.1985325Z                "kind": "move",
+2026-11-09T16:58:02.1997724Z ##[error]Process completed with exit code 1.
+2026-11-09T16:58:02.3553548Z git version 2.56.0
+2026-11-09T16:58:02.3592904Z Temporarily overriding HOME='/home/runner/work/_temp/ea57db54-a966-40f2-b78f-f99b099fddb8' before making global git config changes
+2026-11-09T16:58:02.3594483Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-09T16:58:02.3638725Z Removing SSH command configuration
+2026-11-09T16:58:02.3957919Z Removing HTTP extra header
+2026-11-09T16:58:02.4296567Z Removing includeIf entries pointing to credentials config files
+2026-11-09T16:58:02.4791578Z Cleaning up orphan processes
+

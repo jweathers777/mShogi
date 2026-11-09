@@ -1,0 +1,24 @@
+{
+  "source": "1d20ae6f93936122e4aaa6fb320a48d995bde531",
+  "binary_sha256": "5d37a7fbc81e9884962b0cf44b514a13e2246f964e1968e6f87f7ebb3e2a9887",
+  "history_plies": 81,
+  "fen": "4r3/5r2/3p2k1/q1pP4/1pQ5/1Kb1N2P/4RP2/6R1 b - - 1 41",
+  "move": "g6f6",
+  "info": {
+    "depth": "128",
+    "nodes": "306191",
+    "time": "0.94",
+    "seldepth": "17",
+    "score": "PovScore(Mate(-3), BLACK)",
+    "pv": [
+      "g6f6",
+      "c4h4",
+      "f6e5",
+      "g1g5",
+      "e5f6",
+      "e3g4"
+    ]
+  },
+  "elapsed_s": 0.9502191659994423,
+  "clean_quit": true
+}

@@ -1,11 +1,11 @@
 ---
 id: MSH-142
 title: Classical Endgame Judgment
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-09T16:23:00Z'
-updated_date: '2026-11-09T18:31:00Z'
+updated_date: '2026-11-09T19:07:00Z'
 labels:
   - handle:classical-endgame-judgment
 milestone: m-5
@@ -27,15 +27,15 @@ Handle: Classical Endgame Judgment. Continue owner-authorized conventional Chess
 <!-- AC:BEGIN -->
 - [x] #1 Implemented specialized classical endgame knowledge addresses general demonstrated judgment or conversion weaknesses, with documented applicability guards and honest heuristic versus exact distinctions.
 - [x] #2 Independent winning/drawing/losing positions, color and side-to-move counterexamples, promotion and history-sensitive guards validate the change; search/restoration/cancellation and native terminal authority are preserved.
-- [ ] #3 Focused tactical/endgame and realistic-time comparisons identify gains and regressions without a rating claim; independent review and required native integration evidence support completion.
+- [x] #3 Focused tactical/endgame and realistic-time comparisons identify gains and regressions without a rating claim; independent review and required native integration evidence support completion.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -54,4 +54,12 @@ Bounded independent read-only source audit during MSH-141 (Chess Frontier Reliab
 Implemented original native-generated24KiB KPK advisory bitbase, narrowly guarded wrong-bishop rook-pawn corner scaling and KBNK correct-corner conversion. All3generator/module tests, exhaustive165676valid-state regeneration, independent8KPK oracle byte checks and91release searchlib tests pass. Three bounded native conversion journeys preserve knownwin and reach uncapturable Q/R promotion.4release actual desktop-play tests pass; generated sharedfixtures unchanged; workspace clippy passed. Independent endgame_review approves production/testsource, no material issue. Broader local native tests and sequential timing pending; platform3OS required at final combined142+143source. KRKP and discovered left14noncontact-mate frontier case remain explicitly unresolved for continuedengineering; no opponentgames or ratingclaim.
 
 Final local evidence at50b459a:687native core/search/console tests passed0failed4ignored; finalrelease searchlib91pass2ignored includes safeconversionassertion;4release desktopplay andclippy/fmt passed;sharedfixtures unchanged. Sequential15position1scomparison changes drawnopposition score+260to0, otherdepth/scoresunchanged; noKRKPcorrection/ratingclaim. Source integrated/pushed with combinedf974776; required3OSgate shared from143record, pending.142canonical record docs/m5/evidence/msh142/verification.json.
+
+Final combined CI and independent evidence reconciliation passed at f974776. See canonical verification record; no source or acceptance requirement changed. Historical provider failure and prior local findings preserved.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Added original native-generated KPK knowledge, narrowly guarded wrong-bishop rook-pawn scaling and bishop/knight conversion guidance; native Game retains outcomes/history/claims. Independent oracle, conversion, cancellation and restoration evidence supports AC1/2. Local687native tests, final91search tests, actual release desktop play and finalcombined3OSCI support AC3. No rating claim or general KRKP solution. Integrated/pushed codex/rewrite source f9747769c6e0b4f08a2cb893bdaa696b1317faee. Required run42674054950attempt2 passed Linux129352974207,macOS15 129352974379,Windows129352973885; original providerinternalerror retained. Final independent reviewer endgame_review approves acceptance. MSH-144 (Chess Progress Assessment) now dependency-ready; no learned evaluation or cross-game transfer.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -1,7 +1,7 @@
 {
   "task": "MSH-144 (Chess Progress Assessment)",
-  "status": "prepared-no-games-engineering-ci-pending",
-  "engineering_accepted": false,
+  "status": "accepted-engineering-ready-for-initial-pairs",
+  "engineering_accepted": true,
   "resource_cap_seconds": 900,
   "resource_extra_seconds": 0,
   "resource_total_seconds": 0,
@@ -269,5 +269,21 @@
       "verdict": "Approved bounded helper and strengthened historical comparison identity guard; independently ran original8offline tests, reviewed added9thtest receipt and finalguard. No engine matches launched.",
       "scope": "Cumulative resource admission/cleanup, complete-native-result eligibility, fresh-root exclusion, independent old/new uncertainty, exact reference comparison identity."
     }
-  ]
+  ],
+  "retained_engineering_diagnostics": {
+    "path": "retained-endgame-diagnostics.json",
+    "sha256": "b1d558e27ce284d1c0d94a8842a4ed6bc806b0d70206726fd5f1fa5cc8d25e2f",
+    "review": "endgame_review independently verified all8extractions and existingoracle categories; no new engine work. Four fixtures nondiscriminating; one timedRe1choice improvement does not establish general KRKPconversion."
+  },
+  "engineering_acceptance": {
+    "source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+    "tasks": [
+      "MSH-141 Done",
+      "MSH-142 Done",
+      "MSH-143 Done"
+    ],
+    "ci_record": "../msh143/verification.json",
+    "reviewer": "endgame_review",
+    "verdict": "Final actual3OSreceipts/source/history accepted; no outstanding material findings."
+  }
 }

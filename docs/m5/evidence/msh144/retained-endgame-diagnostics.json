@@ -1,0 +1,90 @@
+{
+  "source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+  "method": "Offline comparison of existing one-second MSH-143 profile choices with preserved independent MSH-139 tablebase move categories. No new engine search, games or oracle calls. Categories after a move are opponent-relative.",
+  "input_sha256": "80bf1d0e15582916f350fba239c69c9f76bc93e79ba8dd27ef6b7378fccf197b",
+  "profile_sha256": "01a028e56a68470d25be39eba51a1abf5f925415ca92ca911a941c7c86aabd7d",
+  "rows": [
+    {
+      "id": "tb-0",
+      "fen": "8/4k3/8/4K3/4P3/8/8/8 w - - 0 1",
+      "move": "e5d4",
+      "root_category": "draw",
+      "child_category": "draw",
+      "preserves_wdl": true,
+      "score": 0,
+      "completed_depth": 12
+    },
+    {
+      "id": "tb-1",
+      "fen": "8/4k3/8/4K3/4P3/8/8/8 b - - 0 1",
+      "move": "e7e8",
+      "root_category": "loss",
+      "child_category": "win",
+      "preserves_wdl": true,
+      "score": -923,
+      "completed_depth": 12
+    },
+    {
+      "id": "tb-2",
+      "fen": "k7/P7/1K6/8/8/8/8/8 w - - 0 1",
+      "move": "b6a5",
+      "root_category": "draw",
+      "child_category": "draw",
+      "preserves_wdl": true,
+      "score": 0,
+      "completed_depth": 17
+    },
+    {
+      "id": "tb-3",
+      "fen": "8/8/8/8/8/1K6/2Q5/k7 w - - 0 1",
+      "move": "c2a2",
+      "root_category": "win",
+      "child_category": "loss",
+      "preserves_wdl": true,
+      "score": 999999,
+      "completed_depth": 128
+    },
+    {
+      "id": "tb-4",
+      "fen": "8/8/8/8/8/1K6/2R5/k7 w - - 0 1",
+      "move": "c2c1",
+      "root_category": "win",
+      "child_category": "loss",
+      "preserves_wdl": true,
+      "score": 999999,
+      "completed_depth": 128
+    },
+    {
+      "id": "tb-5",
+      "fen": "k7/P7/1K6/8/8/8/8/2B5 w - - 0 1",
+      "move": "b6a5",
+      "root_category": "draw",
+      "child_category": "draw",
+      "preserves_wdl": true,
+      "score": 0,
+      "completed_depth": 17
+    },
+    {
+      "id": "tb-6",
+      "fen": "8/8/2K5/4P3/8/8/8/3r3k b - - 1 1",
+      "move": "d1c1",
+      "root_category": "draw",
+      "child_category": "draw",
+      "preserves_wdl": true,
+      "score": 303,
+      "completed_depth": 7
+    },
+    {
+      "id": "tb-7",
+      "fen": "8/8/2K5/8/4P3/8/8/3r3k b - - 1 1",
+      "move": "d1e1",
+      "root_category": "win",
+      "child_category": "loss",
+      "preserves_wdl": true,
+      "score": 376,
+      "completed_depth": 8
+    }
+  ],
+  "preserved_wdl": 8,
+  "total": 8
+}

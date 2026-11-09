@@ -60,7 +60,10 @@ Three combined fixed-work runs took 1069.38/1080.07/1050.99 ms, roughly 5% less 
 aggregate than before. In the sequential one-second sample, completed depth and
 scores were retained, with one additional completed depth on the rook-pawn and
 KRKP examples. More visits reflect reduced overhead, not stronger play by itself.
-The historical unique ...Re1 miss is not claimed solved by completing depth 8.
+In that KRKP sample, depth 8 selected the independently winning ...Re1, whereas
+the earlier depth-7 result chose drawing ...Rc1+. This is a useful observed choice
+improvement, not proof of stable or general rook-versus-pawn conversion. The
+other, drawn KRKP fixture still receives an optimistic +303.
 
 The [single verification record](evidence/msh143/verification.json) retains frozen
 binaries, inputs, raw profiles, actual tests, independent review and combined
@@ -73,3 +76,9 @@ to test the combined practical effect. KRKP, richer pawn-ending judgment and
 broader classical evaluation remain substantial candidates depending on findings.
 Neither this checkpoint nor algorithm presence establishes conventional maturity
 or authorizes learned evaluation or transfer to Shogi/Xiangqi.
+
+The final combined source `f9747769c6e0b4f08a2cb893bdaa696b1317faee`
+passed all required Linux, macOS 15 and Windows native CI jobs in
+[run 42674054950, attempt 2](https://github.com/jweathers777/mShogi/actions/runs/42674054950).
+Attempt 1 failed inside GitHub before creating any jobs; that provider error and
+the identical-source retry are retained in the structured evidence.

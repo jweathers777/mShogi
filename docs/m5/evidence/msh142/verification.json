@@ -1,6 +1,6 @@
 {
   "task": "MSH-142 (Classical Endgame Judgment)",
-  "status": "independent-review-approved-combined-ci-pending",
+  "status": "accepted",
   "base_revision": "d2bfb2be53de493eea059e70de502fb68b614ebd",
   "production_revision": "50b459acfe681556387022f6a22024d4b6ee585b",
   "integration_branch": "codex/rewrite",
@@ -9,7 +9,7 @@
     "Rust (macos-15)",
     "Rust (windows-2022)"
   ],
-  "ci_evidence": "../msh143/verification.json (final combined engineering source; pending)",
+  "ci_evidence": "../msh143/verification.json (all three required native jobs passed at final combined source)",
   "environment": {
     "os": "macOS27.0.1 (26A434)",
     "hardware": "M1 Pro32GiB",
@@ -44,6 +44,11 @@
     {
       "reviewer": "endgame_review",
       "verdict": "Final endgame source approved, no outstanding material issue; platform verification pending. Reversed/invalid KBN test fixtures corrected; safe-promotion assertion added."
+    },
+    {
+      "reviewer": "endgame_review",
+      "verdict": "Final independent acceptance approved: all3actualCIjobs and all14steps each passed at exactf974776; providerfailedattempt preserved, revision-specificsource/artifacthashes reconcile, currentproductionunchanged. No material findings remain.",
+      "scope": "Engineering acceptance only, no inferred playing-strength or maturity claim."
     }
   ],
   "local_checks": [
@@ -323,5 +328,7 @@
     "crates/mshogi-search/examples/generate_chess_kpk.rs": "dbe2feb8147c529c3ac3435593b1e80dbdb240b0a993212c9f3539fea809be64",
     "crates/mshogi-search/src/chess_conventional_eval.rs": "5597175ca199ca6f876dde638179f8eb3fe4e68d8ecfd816390b57281da0f505",
     "crates/mshogi-search/src/chess_conventional_tests.rs": "dffce2d6dc1928c251e79c22aa0290d048b679f5f99a4e89a2e318e6d9450a53"
-  }
+  },
+  "final_tested_source_revision": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+  "integration_revision": "f9747769c6e0b4f08a2cb893bdaa696b1317faee"
 }

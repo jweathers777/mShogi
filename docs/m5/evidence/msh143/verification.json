@@ -1,6 +1,6 @@
 {
   "task": "MSH-143 (Chess Search Efficiency)",
-  "status": "independent-review-approved-combined-ci-pending",
+  "status": "accepted",
   "base_revision": "50b459acfe681556387022f6a22024d4b6ee585b",
   "tested_source_revision": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
   "required_ci": [
@@ -8,8 +8,57 @@
     "Rust (macos-15)",
     "Rust (windows-2022)"
   ],
-  "ci": [],
-  "combined_gate": "Required final native integration source also verifies MSH142; no duplicated full campaign. MSH141separatefrozenmacOSretry remains required.",
+  "ci": [
+    {
+      "id": 129352973885,
+      "name": "Rust (windows-2022)",
+      "run_attempt": 2,
+      "head_sha": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+      "status": "completed",
+      "conclusion": "success",
+      "runner_id": 1000002807,
+      "runner_name": "GitHub Actions 1000002807",
+      "labels": [
+        "windows-2022"
+      ],
+      "started_at": "2026-11-09T18:31:24Z",
+      "completed_at": "2026-11-09T19:05:00Z",
+      "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42674054950/job/129352973885"
+    },
+    {
+      "id": 129352974207,
+      "name": "Rust (ubuntu-24.04)",
+      "run_attempt": 2,
+      "head_sha": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+      "status": "completed",
+      "conclusion": "success",
+      "runner_id": 1000002808,
+      "runner_name": "GitHub Actions 1000002808",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "started_at": "2026-11-09T18:31:24Z",
+      "completed_at": "2026-11-09T19:01:14Z",
+      "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42674054950/job/129352974207"
+    },
+    {
+      "id": 129352974379,
+      "name": "Rust (macos-15)",
+      "run_attempt": 2,
+      "head_sha": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+      "status": "completed",
+      "conclusion": "success",
+      "runner_id": 1000002809,
+      "runner_name": "GitHub Actions 1000002809",
+      "labels": [
+        "macos-15"
+      ],
+      "started_at": "2026-11-09T18:31:24Z",
+      "completed_at": "2026-11-09T18:55:47Z",
+      "html_url": "https://github.com/jweathers777/mShogi/actions/runs/42674054950/job/129352974379"
+    }
+  ],
+  "combined_gate": "All three actual native CI jobs passed at f974776, jointly verifying the unchanged MSH-142 endgame implementation and reviewed MSH-143 correction. MSH-141 separate frozen-source macOS gate accepted in b389a9e.",
   "environment": {
     "os": "macOS27.0.1 (26A434)",
     "hardware": "M1 Pro32GiB",
@@ -41,7 +90,7 @@
       ]
     },
     "combined_aggregate_reduction_percent": 4.906146063001304,
-    "timed": "One sequential before/after16position1scomparison; depthsand scores retained or completeddepthhigher, no ratingclaim. Visitsdefinitions unchanged."
+    "timed": "One sequential before/after16position1scomparison: scores unchanged, depths retained or higher. KRKP tb-7 choice improves from drawing d1c1 atdepth7 to independently winning d1e1 atdepth8. Single timing-dependent observation, not general conversion or rating proof."
   },
   "local_checks": [
     {
@@ -96,11 +145,16 @@
         "All3x16fixedprojectioncomparisons identicalresults/work andtimingtotals reconcile",
         "One-second scoresunchanged, depthsretainedorhigher; no inferredstrengthgain"
       ]
+    },
+    {
+      "reviewer": "endgame_review",
+      "verdict": "Final independent acceptance approved: all3actualCIjobs and all14steps each passed at exactf974776; providerfailedattempt preserved, revision-specificsource/artifacthashes reconcile, currentproductionunchanged. No material findings remain.",
+      "scope": "Engineering acceptance only, no inferred playing-strength or maturity claim."
     }
   ],
   "limitations": [
     "Finite selective q remains incomplete; guard prevents only immediate mate after final-layerdefence, not all longerquiet threats.",
-    "KRKPuniqueRe1failure and optimisticdraw remain; no claimthat one more completeddepthsolves them.",
+    "KRKP tb-7 selected winning Re1 in the final one-second sample, but stable/general conversion is unproved; drawn KRKP tb-6 remains optimistic +303.",
     "Recursiveqbounds remainunkeyed; no unsafe board-only reuse.",
     "Performance sample small/unisolated; no actualstrengthgain inferred."
   ],
@@ -151,13 +205,22 @@
     "projection-timed.jsonl": "906964e08531e156daf176a7fae7ec1805926f370e3e3bdb74ce573a8ea03160",
     "search-final-claims.log.gz": "274773932940765cf0e8818ac67e429e768b7d967cbcb934d89bb3ee4d873f96",
     "search-final.log.gz": "5bc59cc416f526fd542e90eaa083f0a376012b31f007aec104b99d7df2b80ef8",
-    "search-first.log.gz": "6386774d29c433d293ca59d289fb491a782307247b62594ba01c25bb4a76189b"
+    "search-first.log.gz": "6386774d29c433d293ca59d289fb491a782307247b62594ba01c25bb4a76189b",
+    "ci-initial.json": "071384c2510dc8f6de0be1811af1318c2c5f2db3a51ad208364f578e1382e5c0",
+    "ci-run-failure.json": "e966bf9bb716a1b6b465d4f84a2458d67dfcb2a7c43e76ff331168e591434499",
+    "ci-failed-check-runs.json": "e83cfac35507982a40cfeb776ce85aa0367e7646f81fe857df4a6c841ea8a170",
+    "ci-attempt1-ui-annotation.json": "6fdc9e8a2cc6b26fe842a9343428f1d3e6f69f1ed99cbc07b4a183c83934f737",
+    "ci-attempt2-run.json": "1dedcdfd9b7d1ad958d6b375fa8762ee3bc1c948e69e874ba3cf337dba27898f",
+    "ci-attempt2-jobs.json": "33287c6085dbdc2ac40ff4353f62b058777249f7c2bdc34899ce1f6b3ef2ea44",
+    "ci-attempt2-monitor.log.gz": "ce90bf9e57b9f9f194c938f8d5f2dcac9523cd5b78016731dee7102ba27a703c"
   },
   "ci_run": {
     "id": 42674054950,
     "source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
     "url": "https://github.com/jweathers777/mShogi/actions/runs/42674054950",
-    "status": "pending"
+    "status": "completed",
+    "conclusion": "success",
+    "attempt": 2
   },
   "cancelled_automatic_campaigns": [
     {
@@ -166,5 +229,32 @@
       "workflow": "Desktop packages",
       "reason": "Native-only checkpoint; required Rust3OSincludesactualreleasecontrollerprocesschecks; noGUI/packagecampaignneeded."
     }
-  ]
+  ],
+  "ci_history": [
+    {
+      "attempt": 1,
+      "conclusion": "failure",
+      "jobs_created": 0,
+      "source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+      "reason": "GitHub Internal server error; correlation ca7157e1-d803-4faa-94b1-8c76741486e0. No source checks executed.",
+      "receipts": [
+        "ci-initial.json",
+        "ci-run-failure.json",
+        "ci-failed-check-runs.json",
+        "ci-attempt1-ui-annotation.json"
+      ]
+    },
+    {
+      "attempt": 2,
+      "conclusion": "success",
+      "source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+      "receipts": [
+        "ci-attempt2-run.json",
+        "ci-attempt2-jobs.json",
+        "ci-attempt2-monitor.log.gz"
+      ]
+    }
+  ],
+  "integration_branch": "codex/rewrite",
+  "integration_revision": "f9747769c6e0b4f08a2cb893bdaa696b1317faee"
 }

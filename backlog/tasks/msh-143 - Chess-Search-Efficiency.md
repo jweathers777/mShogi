@@ -1,11 +1,11 @@
 ---
 id: MSH-143
 title: Chess Search Efficiency
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-09T16:23:00Z'
-updated_date: '2026-11-09T18:32:00Z'
+updated_date: '2026-11-09T19:07:00Z'
 labels:
   - handle:chess-search-efficiency
 milestone: m-5
@@ -27,15 +27,15 @@ Handle: Chess Search Efficiency. Continue the owner-authorized conventional Ches
 <!-- AC:BEGIN -->
 - [x] #1 Current cost measurements distinguish actual native/SEE/search work and useful safe transposition reuse from reported visit counts, with bounded reproducible representative inputs.
 - [x] #2 Significant practical inefficiencies are corrected where supported by evidence, with independent tactical, exact-context/history, cancellation and restoration regressions; unsupported speculative changes are not presented as improvements.
-- [ ] #3 Before/after realistic-time evidence, independent review and required platform verification support a coherent integrated increment; remaining substantial opportunities and readiness for a fresh adaptive reassessment are reported without declaring maturity or transfer.
+- [x] #3 Before/after realistic-time evidence, independent review and required platform verification support a coherent integrated increment; remaining substantial opportunities and readiness for a fresh adaptive reassessment are reported without declaring maturity or transfer.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -52,4 +52,12 @@ MSH-142 varied frontier verification found a controlled remaining boundary limit
 Implemented measured native checked-projection reuse for q/SEE, preserving all complete effects/errors and actual Game history admission. Exhaustive coordinate/promotion comparison with publicapply passes. New bounded final-defence immediate-reply proof corrects Rg8/noncontactmate boundary failure without recursivequiet expansion; cancellation/restoration and guardedAutoClaimprecedence pass.92release searchlib tests,25nativeChess tests,4real release desktopplay tests pass;workspaceclippy/fmt clean; generatedfixturesunchanged.3sequential16positionprojection-onlyfixedruns have identical complete outputs/PVs/workstats; combinedfixedtimeabout4.9percent lower aggregate,1stimeddepthsunchangedorhigher. Qualitative CPU sample and safeTTaudit preserved; no speculativecache redesign or strengthclaim. Independentreview finds no material defect. Canonical docs/m5/evidence/msh143/verification.json; required combined142+143Rust3OSCI pending at finalsource. No opponentgames yet.
 
 Final exact-source checkpointf9747769c6e0b4f08a2cb893bdaa696b1317faee integrated/pushed. Independent finalreview approved guardedAutoClaimtest and3x16fixed/timed evidence; no materialfindings. Combined native run42674054950attempt1failedbeforecreatinganyjobs/checkrecords: authenticatedGitHubsummary reports Internal server error,correlationca7157e1-d803-4faa-94b1-8c76741486e0. No source/workflowissue established. PreservedAPI/UIreceipts; one supportedwhole-runretry atidenticalsource requestedbecause nohealthyjobs existed. AutomaticDesktop42674055051cancelled as unnecessarypackagecampaign. No furtherretrycampaignwithoutcompletion-awareinspection. RequiredCI/finalacceptancepending; source unchanged.
+
+Final combined CI and independent evidence reconciliation passed at f974776. See canonical verification record; no source or acceptance requirement changed. Historical provider failure and prior local findings preserved.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Removed measured redundant structural validation from checked native q/SEE projections, preserving actual native Game/history admission. Corrected final-layer defence against immediate remote mate with bounded native reply verification and claim/cancellation regressions. Local92search/25nativeChess/4release desktop tests, independently reviewed fixed/timed profiles and final3OSCI support allACs. Fixed aggregate time about5percent lower; final sampled KRKPchoice is winningRe1, but reliable general conversion remains unproved. Integrated/pushed codex/rewrite source f9747769c6e0b4f08a2cb893bdaa696b1317faee. Required run42674054950attempt2 passed Linux129352974207,macOS15 129352974379,Windows129352973885; original providerinternalerror retained. Final independent reviewer endgame_review approves acceptance. MSH-144 (Chess Progress Assessment) now dependency-ready; no learned evaluation or cross-game transfer.
+<!-- SECTION:FINAL_SUMMARY:END -->

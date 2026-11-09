@@ -1,6 +1,6 @@
 {
   "task": "MSH-141 (Chess Frontier Reliability)",
-  "status": "independent-review-approved-macos-ci-capacity-blocked",
+  "status": "accepted",
   "base_revision": "d86dfcab0d6122dc357e6ce58903beb2d351e3ad",
   "historical_candidate_build_source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
   "historical_production_equivalent": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
@@ -33,6 +33,17 @@
       "attempt": 1,
       "conclusion": "success",
       "source": "22bf634b268bb99efbd349d1e80c8b2466b24c7a"
+    },
+    {
+      "platform": "macos-15",
+      "job_id": 129346371246,
+      "attempt": 3,
+      "conclusion": "success",
+      "source": "22bf634b268bb99efbd349d1e80c8b2466b24c7a",
+      "runner_id": 1000002806,
+      "runner_name": "GitHub Actions 1000002806",
+      "started_at": "2026-11-09T18:04:50Z",
+      "completed_at": "2026-11-09T18:31:10Z"
     }
   ],
   "source_reconstruction": {
@@ -442,6 +453,10 @@
         "All artifact hashes match"
       ],
       "scope": "Independent stored-provider-receipt reconciliation; root performed sole live CI monitoring. No new source review or product campaign."
+    },
+    {
+      "reviewer": "endgame_review",
+      "verdict": "Final acceptance approved: all required platform receipts at exact22bf634, actualmacOSrunner/steps passed, originalLinux/Windowsexecutions andhistoricalfailures retained, artifacthashesreconcile. No material mismatch."
     }
   ],
   "limitations": [
@@ -498,6 +513,9 @@
     "frontier-response-fixed.jsonl": "9f3692c2e98dc1595dc0d007a9dabf9c3ec97beab1aff4d13779316fa23c6f97",
     "incident-uci.json": "368e727e50b29fe1aa5d018ac4ccd6e3bfee495341822b5bc5b1c38f53c2b0ab",
     "inputs.json": "c54ee6939be7fb58cde72454e36b7ff708b2436b6b5361d60e6f5e69cbc78321",
+    "msh141-attempt3-macos-job.json": "b56a5722c1c165c7a7a0ce62f303e42fd534714e4530f2ff32b48a437d0dc23b",
+    "msh141-attempt3-monitor.log.gz": "77a466ed47cc2d6e5e981e36d831a849ee7ec427178c65d0092b9c290f2d5291",
+    "msh141-attempt3-run.json": "0484347c24d331272630f66658a9c227988ee5108437b4c86d689f15205a00b9",
     "native-tests.log.gz": "a410763eeb0674a6ab75325440e5792d479a926fddb2ea584a319302cfc40952",
     "profile-before.rs.gz": "19e5e6cbed3299c2fa947477dd4ef3ee2f8e888e868d09fe4bc2dc5dc229432b",
     "search-final.log.gz": "6056a3d68ccf217a3c3c1a24133e5ffe1b7f94c4909a5a9a5514fcc6b4b4d79b",
@@ -533,14 +551,14 @@
         "ci-2-macos-annotations.json"
       ]
     },
-    "attempt": 2,
-    "macos_retry_job_id": 129327572801,
+    "attempt": 3,
+    "macos_retry_job_id": 129346371246,
     "carried_forward_job_ids": {
-      "ubuntu-24.04": 129327575705,
-      "windows-2022": 129327577416
+      "ubuntu-24.04": 129346374668,
+      "windows-2022": 129346373973
     },
-    "carry_forward_note": "GitHub creates new success receipt IDs in attempt2 for unchanged successful jobs; their original23m38s/27m10s execution was attempt1, not additional platform executions.",
-    "conclusion": "failure",
+    "carry_forward_note": "GitHub creates new success receipt IDs in later attempts for unchanged successful jobs; original23m38s/27m10s executions were attempt1, not additional platform executions.",
+    "conclusion": "success",
     "macos_retry": {
       "job_id": 129327572801,
       "attempt": 2,
@@ -615,10 +633,18 @@
       "url": "https://github.com/jweathers777/mShogi/actions/runs/42660806919",
       "jobs_receipt": "ci-2-attempt2-jobs.json",
       "note": "Only macOS retried; again no hosted runner acquired. Linux/Windows success IDs are carried forward from attempt1, not new executions."
+    },
+    {
+      "run_id": 42660806919,
+      "attempt": 3,
+      "source": "22bf634b268bb99efbd349d1e80c8b2466b24c7a",
+      "conclusion": "success",
+      "receipt": "msh141-attempt3-run.json",
+      "note": "Owner explicitly resumed withtargetedmacOSretry; actualmacOSjob129346371246acquiredrunnerandpassedallsteps. Linux/Windowsarecarriedforwardoriginalattempt1executions."
     }
   ],
   "production_source_revision": "1d20ae6f93936122e4aaa6fb320a48d995bde531",
-  "pending_change": "No source change pending. Complete actual macOS15 native CI at22bf634 before AC4 and final acceptance; local macOS27 does not substitute.",
+  "pending_change": null,
   "retry_policy": "One supported macOS-only retry at identical22bf634; no healthy Linux/Windows rerun. If capacity acquisition fails again, leave taskInReview and record precise infrastructure blocker; do not start repeated campaigns.",
   "retry_events": [
     {
@@ -628,9 +654,13 @@
     {
       "job_id": 129311544814,
       "result": "accepted supported rerun after attempt1completed; only macOS requested, same22bf634"
+    },
+    {
+      "job_id": 129327572801,
+      "result": "New ownercontinuationauthorizedtargetedretry; supportedAPIaccepted, actualattempt3macOSjob129346371246passed."
     }
   ],
-  "blocker": {
+  "resolved_blocker": {
     "scope": "Required macOS15 native platform verification only; AC4 and final acceptance incomplete.",
     "retry_campaign": "Stopped after initial capacity failure and one supported identical-source macOS-only retry. No active monitor or retry remains.",
     "next_action": "A later supported retry of completed macOS job129327572801 on run42660806919 at22bf634 when capacity is available. The completed run remains within GitHub retry retention; future API eligibility/capacity must be checked then. No third retry requested here.",

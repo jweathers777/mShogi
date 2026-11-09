@@ -12,5 +12,24 @@
     "GUIcampaign"
   ],
   "preimplementation_review": "endgame_review independently approved exact23reused+5newconditions, support/capture/defence oracleclaims and boundedscope; source/evidence reviewpending",
-  "inputs_sha256": "8320eab4b994f07e99e98f160f573b618403f842972134c10a77d0d02d1c9060"
+  "inputs_sha256": "8320eab4b994f07e99e98f160f573b618403f842972134c10a77d0d02d1c9060",
+  "historical_failed_check": {
+    "command": "cargo test --release -p mshogi-search --lib chess_conventional_eval",
+    "result": "one new test assertion expected84butactual90; omitted e2pawn placement6. Corrected assertion/comment only; production unchanged; failed logretained",
+    "corrected_result": "15passed1preexistingignored"
+  },
+  "checks": [
+    "103 release search library tests passed, two existing ignored",
+    "cargo clippy --release --workspace --all-targets -- -D warnings passed",
+    "cargo fmt --all -- --check passed",
+    "release diagnostic build passed",
+    "offline independent-controls reproduced exactly"
+  ],
+  "independent_source_review": "endgame_review approved exactevaluatorSHA892a0669a3c145a64b6931dfef53748be857d0415c5388bf2eea91c383bd1dbb, finalgeometry/nativepriority/cap/negative/incremental tests; no materialfindings",
+  "environment": {
+    "os": "macOS27.0.1",
+    "architecture": "arm64",
+    "cpu": "AppleM1Pro32GiB",
+    "rust": "1.99.1"
+  }
 }

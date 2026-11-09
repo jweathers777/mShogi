@@ -18,6 +18,9 @@ pub const MIDDLE_PHASE: i32 = 6_400;
 /// by144 bounds a color's absolute contribution below30000; their difference is
 /// therefore below60000. The larger100000 ceiling leaves conservative slack.
 pub const MAX_ABS_STATIC_SCORE: i32 = 100_000;
+// Endgame danger is deliberately modest and cannot overwhelm material or the
+// native mate band. Its128cp cap is inside the6500cp king-safety bound above.
+const MAX_ENDGAME_KING_DANGER: i32 = 128;
 
 /// One inspectable term's middle-game and endgame contributions in centipawns.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -52,7 +55,8 @@ pub struct Terms {
     pub pawns: Tapered,
     /// Geometric activity, safe-from-pawn mobility and rook/bishop activity.
     pub mobility: Tapered,
-    /// Shelter, pawn storms, ring pressure and geometrically safe checking threats.
+    /// Shelter/storms and ring/check pressure; participating major pieces retain
+    /// bounded danger in low-material positions, independently of king placement.
     pub king_safety: Tapered,
     /// Attacked undefended or more valuable enemy pieces; geometric estimates.
     pub threats: Tapered,
@@ -546,6 +550,8 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
                 let mut pressure = 0;
                 let mut attackers = 0i32;
                 let mut checks = 0;
+                let mut major_participates = false;
+                let mut major_contact_checks = 0;
                 for enemy in f
                     .men
                     .iter()
@@ -561,6 +567,8 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
                     };
                     pressure += attacked * weight;
                     attackers += i32::from(attacked != 0);
+                    let major = matches!(enemy.piece.kind, PieceKind::Rook | PieceKind::Queen);
+                    major_participates |= major && attacked != 0;
                     if !matches!(enemy.piece.kind, PieceKind::Pawn | PieceKind::King) {
                         // Hypothetical checking origins are native attack maps
                         // from the king. A candidate is reachable geometrically,
@@ -571,7 +579,15 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
                         let safe = !f.occupied[other]
                             & !f.nonking_attacks[i]
                             & (!man.attacks | f.double_attacks[other]);
-                        let count = (origins & enemy.attacks & safe).count_ones().min(2) as i32;
+                        let checking = origins & enemy.attacks & safe;
+                        let count = checking.count_ones().min(2) as i32;
+                        if major {
+                            major_participates |= checking != 0;
+                            // Count supported contacts before the ordinary two-
+                            // check cap: a new protected adjacent check can be
+                            // masked by already available remote checking moves.
+                            major_contact_checks += (checking & man.attacks).count_ones() as i32;
+                        }
                         let check_weight = match enemy.piece.kind {
                             PieceKind::Knight => 14,
                             PieceKind::Bishop => 12,
@@ -587,7 +603,16 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
                         - pressure * (2 + attackers.min(4))
                         - checks
                         - f.pawn_storm(man),
-                    0,
+                    if major_participates {
+                        // Keep actual attack pressure when total material falls,
+                        // without extending middlegame shelter/storm penalties
+                        // to active endgame kings. These native geometric maps
+                        // are heuristics: legality, pins and mate remain search's.
+                        -(pressure + checks / 2 + 24 * major_contact_checks.min(2))
+                            .min(MAX_ENDGAME_KING_DANGER)
+                    } else {
+                        0
+                    },
                 ));
             }
         }
@@ -1029,6 +1054,151 @@ mod tests {
         let mirrored = evaluate(&reflect(&p));
         assert_eq!(evaluate(&p).white, mirrored.black);
         assert_eq!(evaluate(&p).black, mirrored.white);
+    }
+    #[test]
+    fn endgame_king_danger_preserves_supported_contact_and_native_defensive_resources() {
+        // Independent exhaustive legal replies are preserved under msh149.
+        // Both queen boards previously have the same capped middle check count.
+        // Qg7 is protected by Kf6; with Kf5, ...Kxg7 is the sole legal reply.
+        let supported = position("7k/8/5KQ1/8/8/8/8/8 w - - 0 1");
+        let unsupported = position("7k/8/6Q1/5K2/8/8/8/8 w - - 0 1");
+        let g7 = Square::new(6, 6).unwrap();
+        assert_ne!(Features::new(&supported).double_attacks[0] & bit(g7), 0);
+        assert_eq!(Features::new(&unsupported).double_attacks[0] & bit(g7), 0);
+        let supported_eval = evaluate(&supported);
+        let unsupported_eval = evaluate(&unsupported);
+        assert_eq!(supported_eval.black.king_safety.middle, -109);
+        assert_eq!(unsupported_eval.black.king_safety.middle, -109);
+        // Three queen-attacked ring squares =>15pressure; capped check weight24.
+        // The one additional safe contact supplies24end cp, despite the old cap.
+        assert_eq!(supported_eval.black.king_safety.end, -51);
+        assert_eq!(unsupported_eval.black.king_safety.end, -27);
+        assert_eq!(
+            supported_eval.black.placement,
+            unsupported_eval.black.placement
+        );
+        assert_eq!(
+            supported_eval.white.material,
+            unsupported_eval.white.material
+        );
+        let mut mate = supported.clone();
+        mate.apply("g6g7".parse().unwrap()).unwrap();
+        assert!(mate.in_check() && !mate.has_legal_action());
+        let mut captured = unsupported.clone();
+        captured.apply("g6g7".parse().unwrap()).unwrap();
+        assert_eq!(captured.legal_actions(), vec!["h8g7".parse().unwrap()]);
+
+        let rook = position("7k/R7/6K1/8/8/8/8/8 w - - 0 1");
+        let lone_rook = position("7k/R7/8/5K2/8/8/8/8 w - - 0 1");
+        assert_eq!(evaluate(&rook).black.king_safety, Tapered::new(-90, -46));
+        assert_eq!(
+            evaluate(&lone_rook).black.king_safety,
+            Tapered::new(-74, -14)
+        );
+        // Rh7+ is protected, not mate (...Kg8 survives). Ra8 IS mate in the
+        // supported board. The unsupported king can capture Rh7 instead.
+        let mut protected_check = rook.clone();
+        protected_check.apply("a7h7".parse().unwrap()).unwrap();
+        assert_eq!(
+            protected_check.legal_actions(),
+            vec!["h8g8".parse().unwrap()]
+        );
+        let mut unprotected_check = lone_rook.clone();
+        unprotected_check.apply("a7h7".parse().unwrap()).unwrap();
+        assert!(
+            unprotected_check
+                .legal_actions()
+                .contains(&"h8h7".parse().unwrap())
+        );
+        let mut rook_mate = rook.clone();
+        rook_mate.apply("a7a8".parse().unwrap()).unwrap();
+        assert!(rook_mate.in_check() && !rook_mate.has_legal_action());
+
+        // Rg8 defends g7 even though Kf6 still supports the checking queen.
+        // Other immediate mates Qh6/Qh5 exist; this is NOT a globally safe king.
+        let defended = position("6rk/8/5KQ1/8/8/8/8/8 w - - 0 1");
+        let f = Features::new(&defended);
+        assert_ne!(f.double_attacks[0] & bit(g7), 0);
+        assert_ne!(f.nonking_attacks[1] & bit(g7), 0);
+        assert_eq!(evaluate(&defended).black.king_safety.end, -27);
+        let mut defence = defended.clone();
+        defence.apply("g6g7".parse().unwrap()).unwrap();
+        defence.apply("g8g7".parse().unwrap()).unwrap();
+        for p in [supported, unsupported, rook, lone_rook, defended] {
+            let before = p.clone();
+            let e = evaluate(&p);
+            let reflected = evaluate(&reflect(&p));
+            assert_eq!(e.white, reflected.black);
+            assert_eq!(e.black, reflected.white);
+            assert_eq!(e.score_for(Color::White), reflected.score_for(Color::Black));
+            assert_eq!(p, before);
+        }
+    }
+
+    #[test]
+    fn endgame_danger_requires_participation_and_preserves_active_kings_and_exchange() {
+        // Qa8 cannot participate through its own a7/b7 pawns and Bb8. Bb8 does
+        // attack the d4 king's ring at e5: mere queen presence is insufficient.
+        let blocked = position("qb5k/pp6/8/8/3K4/8/8/8 w - - 0 1");
+        let f = Features::new(&blocked);
+        let queen = f
+            .men
+            .iter()
+            .find(|m| m.piece.kind == PieceKind::Queen)
+            .unwrap();
+        let king = f
+            .men
+            .iter()
+            .find(|m| m.piece.kind == PieceKind::King && m.piece.color == Color::White)
+            .unwrap();
+        assert_eq!(queen.attacks & (king.attacks | bit(king.sq)), 0);
+        assert_ne!(f.attacks[1] & bit(Square::new(4, 4).unwrap()), 0);
+        assert_eq!(evaluate(&blocked).white.king_safety.end, 0);
+        let minor = position("7k/8/5n2/8/3K4/8/4P3/8 w - - 0 1");
+        assert_eq!(evaluate(&minor).white.king_safety.end, 0);
+        // Kd4 centrality84 plus the e2 pawn's central-file placement6.
+        assert_eq!(evaluate(&minor).white.placement.end, 90);
+        assert_eq!(evaluate(&reflect(&minor)).black.king_safety.end, 0);
+
+        // Legal queen exchange removes both attacks; native bare-king outcome
+        // remains independent of the now-zero end-danger term.
+        let fen = "7k/7q/5KQ1/8/8/8/8/8 w - - 0 1";
+        let mut game = AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).unwrap();
+        let mut incremental = EvalState::new(game.position());
+        assert!(evaluate(game.position()).black.king_safety.end < 0);
+        for action in ["g6h7", "h8h7"] {
+            let before = game.position().clone();
+            game.apply(action.parse().unwrap()).unwrap();
+            incremental.push(&before, game.position());
+            assert_eq!(
+                incremental.evaluate(game.position()),
+                evaluate(game.position())
+            );
+        }
+        let e = evaluate(game.position());
+        assert_eq!(e.white.king_safety.end, 0);
+        assert_eq!(e.black.king_safety.end, 0);
+        assert!(matches!(
+            game.outcome(),
+            Some(mshogi_core::chess::ChessOutcome::Draw(_))
+        ));
+        for _ in 0..2 {
+            game.undo().unwrap();
+            assert!(incremental.pop());
+            assert_eq!(
+                incremental.evaluate(game.position()),
+                evaluate(game.position())
+            );
+        }
+        assert_eq!(game.position().to_fen(), fen);
+
+        // Nine queens (eight promotions) bound the heuristic even in a legal
+        // high-pressure check. No static score is promoted to a mate conclusion.
+        let promoted = position("Q6k/Q7/Q1Q1Q3/Q7/Q7/Q7/Q7/K7 b - - 0 1");
+        let e = evaluate(&promoted);
+        assert!(promoted.in_check());
+        assert_eq!(e.black.king_safety.end, -MAX_ENDGAME_KING_DANGER);
+        assert!(e.score_for(Color::White).abs() < MAX_ABS_STATIC_SCORE);
     }
     #[test]
     fn symmetry_and_no_history_turn_or_outcome_inference() {

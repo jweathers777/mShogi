@@ -1,0 +1,150 @@
+{
+  "oracle": "python-chess1.11.2 independent legal enumeration, no search engine",
+  "rows": [
+    {
+      "id": "queen-contact-defended",
+      "fen": "6rk/8/5KQ1/8/8/8/8/8 w - - 0 1",
+      "legal_actions": [
+        "f6e5",
+        "f6e6",
+        "f6e7",
+        "f6f5",
+        "f6f7",
+        "f6g5",
+        "g6b1",
+        "g6c2",
+        "g6d3",
+        "g6e4",
+        "g6e8",
+        "g6f5",
+        "g6f7",
+        "g6g1",
+        "g6g2",
+        "g6g3",
+        "g6g4",
+        "g6g5",
+        "g6g7",
+        "g6g8",
+        "g6h5",
+        "g6h6",
+        "g6h7"
+      ],
+      "mate_in_one": [
+        "g6h5",
+        "g6h6"
+      ],
+      "line": [
+        "g6g7",
+        "g8g7"
+      ],
+      "line_states": [
+        {
+          "fen": "6rk/6Q1/5K2/8/8/8/8/8 b - - 1 1",
+          "is_check": true,
+          "is_checkmate": false,
+          "legal_replies": [
+            "g8g7"
+          ]
+        },
+        {
+          "fen": "7k/6r1/5K2/8/8/8/8/8 w - - 0 2",
+          "is_check": false,
+          "is_checkmate": false,
+          "legal_replies": [
+            "f6e5",
+            "f6e6",
+            "f6f5"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "major-blocked",
+      "fen": "qb5k/pp6/8/8/3K4/8/8/8 w - - 0 1",
+      "legal_actions": [
+        "d4c3",
+        "d4c4",
+        "d4c5",
+        "d4d3",
+        "d4d5",
+        "d4e3",
+        "d4e4"
+      ],
+      "mate_in_one": [],
+      "line": [],
+      "line_states": []
+    },
+    {
+      "id": "queen-exchange",
+      "fen": "7k/7q/5KQ1/8/8/8/8/8 w - - 0 1",
+      "legal_actions": [
+        "f6e5",
+        "f6e6",
+        "f6f5",
+        "f6g5",
+        "g6b1",
+        "g6c2",
+        "g6d3",
+        "g6e4",
+        "g6e8",
+        "g6f5",
+        "g6f7",
+        "g6g1",
+        "g6g2",
+        "g6g3",
+        "g6g4",
+        "g6g5",
+        "g6g7",
+        "g6g8",
+        "g6h5",
+        "g6h6",
+        "g6h7"
+      ],
+      "mate_in_one": [],
+      "line": [
+        "g6h7",
+        "h8h7"
+      ],
+      "line_states": [
+        {
+          "fen": "7k/7Q/5K2/8/8/8/8/8 b - - 0 1",
+          "is_check": true,
+          "is_checkmate": false,
+          "legal_replies": [
+            "h8h7"
+          ]
+        },
+        {
+          "fen": "8/7k/5K2/8/8/8/8/8 w - - 0 2",
+          "is_check": false,
+          "is_checkmate": false,
+          "legal_replies": [
+            "f6e5",
+            "f6e6",
+            "f6e7",
+            "f6f5",
+            "f6f7",
+            "f6g5"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "minor-only-central-king",
+      "fen": "7k/8/5n2/8/3K4/8/4P3/8 w - - 0 1",
+      "legal_actions": [
+        "d4c3",
+        "d4c4",
+        "d4c5",
+        "d4d3",
+        "d4e3",
+        "d4e5",
+        "e2e3",
+        "e2e4"
+      ],
+      "mate_in_one": [],
+      "line": [],
+      "line_states": []
+    }
+  ]
+}

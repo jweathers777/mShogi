@@ -1,9 +1,11 @@
 ---
 id: MSH-151
 title: Chess Coherent-Round Assessment
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-09T21:34:00Z'
+updated_date: '2026-11-09T21:46:00Z'
 labels:
   - handle:chess-coherent-round-assessment
 milestone: m-5
@@ -35,3 +37,9 @@ Handle: Chess Coherent-Round Assessment. After the owner-requested broad MSH-147
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Root owns codex/rewrite afteraccepted149integration4837f9d, testedproduction639b6465be384330c9fd7d49580c13bb0c314bf2. Reuse144native-runner assessment helper/model, historicalfullstrengthOxidation/Goldfish binaries/options and1second/move singleworker. Freezecandidate/runner hashes andmethod beforelaunch. Preservecanonicalbook IDs/partitions; priorauditfinds19exposed139/144roots andzeroearlierM5rootsoverlap; carrytransitiveexclusions, seednewdrawstream. Startfreshdiscoverypairagainst eachinformative1943/1982family, adaptusingresults/uncertainty, thenfreshindependentconfirmation; no predeterminedgain. One900secondinitialaggregateactiveworkguard; proportionateextension up to1800total onlyifuseful, noreset orpaidcompute, stopbeforeexhaustion/unresolvedfailures. ReusepairedDirichletposterior/prior sensitivity andindependentchange uncertaintyvs144;139contextonly. Nativeconclusions/replay/cleanup andallfailed/incompleteattemptspreserved. Delegateisolatedhelper/tests, rootmethod/ledger/execution/report. Level1experimentreuse/offlinetests andindependentprefreeze/finalreceipt review; no platform/GUIcampaign. Reportactualconditionaluncertainty/representativeweaknesses, no maturity/target/learned/crossgameauthorization.
+<!-- SECTION:PLAN:END -->

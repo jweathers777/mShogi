@@ -1,0 +1,454 @@
+{
+  "command": "/private/tmp/msh139/venv/bin/python /private/tmp/msh151/audit_prior_openings.py",
+  "python_chess_version": "1.11.2",
+  "scope": "Preserved M5 experiment initial roots, including smoke/incomplete and conservatively every configured MSH48 Chess root; excludes ordinary regression fixtures and later game descendants.",
+  "normalization": "Complete opening replay; board, side to move, castling rights, legally capturable en-passant; excludes counters. Shared opening prefixes are not identical final roots.",
+  "source_sha256": {
+    "/private/tmp/msh139/roots.json.gz": "512b4ca59b50b8678169fdf3d73a87457962acd19b39483eaf5a33a111810a22",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-000/config.json": "2cd6211a6be2eb04604c8770afc38d7dd3c9a56d601dd0655ffff8905d186348",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-001/config.json": "34b45e0cc0fdc739cd7d03dcfa5734fc595cc350621b7a30ab4af73a285a6086",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-002/config.json": "94c00088ae27ecd03b158ce45240244005611b25bbc9cb6dac711ba4b6381d77",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-003/config.json": "208a25dfb85e9f70d5e724a0ccf8a2943416bc437103eb987cb6caacfccb4bd1",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/smoke/config.json": "a7936a82248f0dfcff9142d122528eeb54ea57ef28f7f84c4b552708a50bda40",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-000-smoke-simbelmyne131/config.json": "6c2fae7125830733dbdbbb057266d8ea37d41657e9e863835cd4bfb868eae30b",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-001-smoke-oxidation060/config.json": "a5b350406eb8bfc072b3302b92a213ef737396ce3725d5f67163b95302aadfaf",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-002-discovery-oxidation060/config.json": "3060e620364e7e24e1953a82a40e6a96ba32a203a69e3ac41bbf3b9175fb907e",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-003-discovery-oxidation060/config.json": "3cd48d66baf5fe88ad2f4d072a0da5461c443df9d7bd0bf940f16e2dfd77ead0",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-004-smoke-goldfish113/config.json": "61681878ad3850ad7a2117ee45d62eda101f3cd0e6593a64fabfd46d548082b1",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-005-discovery-goldfish113/config.json": "c90d2e1ea7868c8cee3f7a1731409cc618f8bd925786ef7c878eeb5c87bee03d",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-006-discovery-goldfish113/config.json": "e845d290d86a9db3fc89f50158e1f7e0e766e3306aeaf74ea4a46d3cc30076ed",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-007-confirmation-oxidation060/config.json": "3e5a5234a8edc36429a24d5efc7bba300802ff028b056f55bda039e3b594c14e",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-008-confirmation-oxidation060/config.json": "5724ce166f7e262b88ece6693794a2ef5804a28be9b91657e532175fbd487912",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-009-confirmation-goldfish113/config.json": "49f72f07e24451d5b265c7ddf44f63d591dc98168af263df3451ab7e7f555960",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-010-confirmation-goldfish113/config.json": "46395364108abe47a4a4eabd91a930e31d7214adc3fd0286163af57b86fa5f4d",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-011-confirmation-oxidation060/config.json": "97172e702cf07fd7ba521a5dca2deac676c7fd8ca4415d33e00c93f79a5a1298",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-012-confirmation-oxidation060/config.json": "af44294d0af5152d08d606d60ccaf8777dee7170ec7d390074d20d786d04d711",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-013-confirmation-goldfish113/config.json": "d0b7a7604fe6d7b205d74c5f23201f449bb0e4e91a177773e8a803e971b22a6e",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-014-confirmation-goldfish113/config.json": "462a96257dbde7ce1b7a51094373bac82dfe6092d4a2f65b13835602d1027cff",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-000-discovery-oxidation060/config.json": "06b52271c4b14dd1b038c79f374f0cdbb40c975d7b900aadb080025ab96944f2",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-001-discovery-goldfish113/config.json": "1f75d825482bdbcf1d712df71c86a6e7d854b7e976837848ea40b0aef426ef76",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-002-confirmation-oxidation060/config.json": "4a64f09604ea9644bc586d24cec828017b6dd42caa09c4c44ed42fffe670ffad",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-003-confirmation-goldfish113/config.json": "f4875ed94245bb48e90d99352bf411f14942b8d1338180d5a1ba9d893e3268d1",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-004-confirmation-oxidation060/config.json": "9f1c4935eb709ebe1e0ce08bc8a31c8f17fb33f22b7d3ebc71d4c5ae58e1e924",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-005-confirmation-goldfish113/config.json": "4f8cb98d1cadee333099c8d0bb80781feae8b8ac5cd77501ba6776bbda7e2afc",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/fianchetto.external.json.gz": "6950484d713d15664ee53c971043994e41d7a606cd0ac7247a33e79cd3a10172",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/flank.external.json.gz": "b7c4bae6f3e1d810d0d8559172c4815542baf79e2d34305811f0377bf969fda6",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/french.external.json.gz": "44f88b8480ebb5192fdb16f4a40733470a99efe88823539998631967e48a5c25",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/open.external.json.gz": "77bd3652ccf95030813409af482dd2a4ebb072fd140a8010251cdf7ccbdca789",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/queen.external.json.gz": "a85f0fe7fc8d181659684d89883039d3918e63ee5bcd87ed14d34a3c25f8c39d",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/standard.external.json.gz": "650fe2e55eb31e2c4f61c835123e24bdcea2d2bc41f35a47f442309f7d144212",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-external/development-external-000-baseline.external.json.gz": "f291c55419e0053f9aa8e542480f03b45a3198a8e2b392ad04644e768eb0f089",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-external/development-external-000-candidate.external.json.gz": "32726b48a58603f97f8a3c64653cb43f3fdb58f5576860d8f6b71003aeffa9c3",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-external/development-external-001-baseline.external.json.gz": "ff8786e6f458d16a261fdb15472928c329adb2fe5fad590c123ee68d6deff791",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-external/development-external-001-candidate.external.json.gz": "d89049cf9f5471e4ec107eac33f7188c2613ea8796499a577623fffdcdd0b274",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-relative/development-relative-000-candidate.external.json.gz": "ec7462e6ea3a6030db030356fc012c17ae2d04ebd22381ee2becb077335cb650",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-relative/development-relative-001-candidate.external.json.gz": "13d496fd07a07ac5aae084b295252736e889e239cc6ad706ba5bc2830acaebef",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-relative/development-relative-002-candidate.external.json.gz": "b0039cb3de35b127d7d7b23c87893d82af00e74f217c7a9caad697672ec903c9",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-relative/development-relative-003-candidate.external.json.gz": "e71186f0d9abff38ec3e212b9412e6af61ee72a52a72248dbc96b377b141de45",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v3-relative/development-relative-000-candidate.external.json.gz": "1b210f8fa92ee7c6afe8091fba41d4362e4490307a419ff464d34a7d9b17f140",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-1/selfplay.external.json.gz": "688254bc91cd2d0b6cfa94ab23ec444cb9164e3658e7e3bd9852d526d2a6887c",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh48/prelimit-debug-report.json.gz": "8820b230bfc85aec76a60fc4f7d177b31323d58310260a37b9d9b33ac6c67c32",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh48/release-report.json.gz": "cf92a1d969efa50e018821a78c4a5184bc37f23c5c289ea898625bba5395e805",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh48/repeat-report.json.gz": "2cf5de835b1af717202389dee29697c7082f2a58aea5353c763c6bc094631bbb",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh48/supplement-report.json.gz": "1fa32f983c48764ac3490f68d228d7e5d614b39a4dd16f8371fe5314c48cd9d4",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/verification.json": "9acd3407e44527fdbecb9ab7a20504d2cf69296e1204f2bf797a3c9768be24ee",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/verification.json": "02e1acb53fa89b807dca969f20816255bc0b9cd8a91708ab457bf9fe3ec9bbc8",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh136/verification.json": "fd383542c2b3c6c2ba061ee8c7c8f5f7f36a7302813c321b77650be680ecf219",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh137/verification.json": "a52e60247682f63520404e631c8a78691de8b6108a270c5cfbe195415c237b05",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh138/verification.json": "8a5a7a05ae8cc5be8f05032c2596d969354923fd221407c93f2b94a792ca42b0",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/assessment.py": "9989182af3df75d9dc841d74a6ae0baccfea61ed541011c833e5a403bb2e2724",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/chess-strength-assessment.md": "1477f36e7c0c3e69ef38aad5cef82422f5c4b377884456ea99e7c014da7d765b",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/assessment.py": "1e930af413639f2c1c1cb1c1c4cb63bb89ce3aaa97e78fcb34e00c41cbeea47b",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/chess-progress-assessment.md": "326f1fbb36832618b56ce766c14dd5214daad2c34ee19c131610b1da3816937d"
+  },
+  "canonical_book_roots": 34699,
+  "msh139_method_pre139_exclusion": false,
+  "per_task": {
+    "msh49-2": {
+      "root_records": 5,
+      "unique_root_keys": 5,
+      "canonical_book_overlap_ids": []
+    },
+    "msh139": {
+      "root_records": 15,
+      "unique_root_keys": 13,
+      "canonical_book_overlap_ids": [
+        "book-37c2074021ade124",
+        "book-44ce717424a6b937",
+        "book-4a1f39cf4df68e5e",
+        "book-5f8409c636b8d2fe",
+        "book-888bb50db420873b",
+        "book-9c313e2692cbb19f",
+        "book-9e9cd868a147baf3",
+        "book-9f8433b46da4a5b8",
+        "book-a0b403c7e122ec4c",
+        "book-a79aaf082ad590b2",
+        "book-aff55e2ccbe5f11a",
+        "book-e5b2fa0d36a9373a",
+        "book-f7fb302336a360b8"
+      ]
+    },
+    "msh144": {
+      "root_records": 6,
+      "unique_root_keys": 6,
+      "canonical_book_overlap_ids": [
+        "book-2ee848c4e23e153f",
+        "book-559a75660c5cac7f",
+        "book-755b3890d0bf1304",
+        "book-84e510d761ef4923",
+        "book-8d860c4288eca087",
+        "book-b57d9565ec64c417"
+      ]
+    },
+    "msh49": {
+      "root_records": 15,
+      "unique_root_keys": 10,
+      "canonical_book_overlap_ids": []
+    },
+    "msh49-1": {
+      "root_records": 1,
+      "unique_root_keys": 1,
+      "canonical_book_overlap_ids": []
+    },
+    "msh48": {
+      "root_records": 5,
+      "unique_root_keys": 2,
+      "canonical_book_overlap_ids": []
+    }
+  },
+  "pre139_distinct_root_keys": 11,
+  "pre139_book_overlap": 0,
+  "all_distinct_root_keys": 30,
+  "excluded_root_ids": [
+    "book-2ee848c4e23e153f",
+    "book-37c2074021ade124",
+    "book-44ce717424a6b937",
+    "book-4a1f39cf4df68e5e",
+    "book-559a75660c5cac7f",
+    "book-5f8409c636b8d2fe",
+    "book-755b3890d0bf1304",
+    "book-84e510d761ef4923",
+    "book-888bb50db420873b",
+    "book-8d860c4288eca087",
+    "book-9c313e2692cbb19f",
+    "book-9e9cd868a147baf3",
+    "book-9f8433b46da4a5b8",
+    "book-a0b403c7e122ec4c",
+    "book-a79aaf082ad590b2",
+    "book-aff55e2ccbe5f11a",
+    "book-b57d9565ec64c417",
+    "book-e5b2fa0d36a9373a",
+    "book-f7fb302336a360b8"
+  ],
+  "remaining_roots": 34680,
+  "remaining_phases": {
+    "discovery": 17267,
+    "confirmation": 17413
+  },
+  "ledger_reconciliation": {
+    "msh139": {
+      "attempts": 15,
+      "unique_root_ids": [
+        "book-37c2074021ade124",
+        "book-44ce717424a6b937",
+        "book-4a1f39cf4df68e5e",
+        "book-5f8409c636b8d2fe",
+        "book-888bb50db420873b",
+        "book-9c313e2692cbb19f",
+        "book-9e9cd868a147baf3",
+        "book-9f8433b46da4a5b8",
+        "book-a0b403c7e122ec4c",
+        "book-a79aaf082ad590b2",
+        "book-aff55e2ccbe5f11a",
+        "book-e5b2fa0d36a9373a",
+        "book-f7fb302336a360b8"
+      ],
+      "all_config_hashes_and_ids_match": true,
+      "inflight": null
+    },
+    "msh144": {
+      "attempts": 6,
+      "unique_root_ids": [
+        "book-2ee848c4e23e153f",
+        "book-559a75660c5cac7f",
+        "book-755b3890d0bf1304",
+        "book-84e510d761ef4923",
+        "book-8d860c4288eca087",
+        "book-b57d9565ec64c417"
+      ],
+      "all_config_hashes_and_ids_match": true,
+      "inflight": null
+    }
+  },
+  "zero_additional_match_receipts": {
+    "msh136": {
+      "count": 0,
+      "seconds": 0,
+      "no_external_engine": "No Stockfish/opponent experiment or additional Chess match campaign in136;49.2 remains accepted unchanged.",
+      "scope": "Additional diagnostic/development match experiments or strength studies; existing mandatory process/protocol/native regression tests are verification, not new match campaigns."
+    },
+    "msh137": {
+      "count": 0,
+      "seconds": 0,
+      "aggregate_task_allowance_seconds": 900,
+      "formal_study": false,
+      "paid_compute": false,
+      "scope": "Additional Chess diagnostic/development opponent experiments only. Existing mandatory native protocol/process and other-game self-play regression tests are engineering verification, not a new Chess match campaign."
+    },
+    "msh138": {
+      "additional_Chess_experiments": 0,
+      "seconds": 0,
+      "formal_qualification_started": false,
+      "scope": "Routineactualproduct/nativeprocessregressionsareengineeringverification,notnewstrengthstudies."
+    }
+  },
+  "root_provenance": {
+    "msh49-2": [
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-000/config.json",
+        "opening_id": "open-game",
+        "final_root_key": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-001/config.json",
+        "opening_id": "queens-gambit",
+        "final_root_key": "rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-002/config.json",
+        "opening_id": "english",
+        "final_root_key": "rnbqkb1r/pppp1ppp/5n2/4p3/2P5/2N5/PP1PPPPP/R1BQKBNR w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/pair-003/config.json",
+        "opening_id": "french",
+        "final_root_key": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-2/smoke/config.json",
+        "opening_id": "startup",
+        "final_root_key": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+      }
+    ],
+    "msh139": [
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-000-smoke-simbelmyne131/config.json",
+        "opening_id": "book-e5b2fa0d36a9373a",
+        "final_root_key": "r2q1rk1/ppp1bppp/2n1b3/3np3/8/P1N1PN2/1PQPBPPP/R1B1K2R w KQ -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-001-smoke-oxidation060/config.json",
+        "opening_id": "book-4a1f39cf4df68e5e",
+        "final_root_key": "r2qr1k1/ppp2ppp/2np1n2/4pb2/1bP5/2NPPN2/PP1BBPPP/R2Q1RK1 w - -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-002-discovery-oxidation060/config.json",
+        "opening_id": "book-4a1f39cf4df68e5e",
+        "final_root_key": "r2qr1k1/ppp2ppp/2np1n2/4pb2/1bP5/2NPPN2/PP1BBPPP/R2Q1RK1 w - -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-003-discovery-oxidation060/config.json",
+        "opening_id": "book-a79aaf082ad590b2",
+        "final_root_key": "rnbq1rk1/3p1ppp/1p2pn2/p1p5/2P5/P1Q2NP1/1P1PPPBP/R1B1K2R w KQ -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-004-smoke-goldfish113/config.json",
+        "opening_id": "book-a0b403c7e122ec4c",
+        "final_root_key": "1rbqkb1r/2pn1ppp/p1Q1pn2/1p6/3P4/5NP1/PP2PPBP/RNB1K2R w KQk -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-005-discovery-goldfish113/config.json",
+        "opening_id": "book-a0b403c7e122ec4c",
+        "final_root_key": "1rbqkb1r/2pn1ppp/p1Q1pn2/1p6/3P4/5NP1/PP2PPBP/RNB1K2R w KQk -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-006-discovery-goldfish113/config.json",
+        "opening_id": "book-9f8433b46da4a5b8",
+        "final_root_key": "rnb1kb1r/p4pp1/3p1q1p/1ppP4/8/5N2/PPQ1PPPP/RN2KB1R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-007-confirmation-oxidation060/config.json",
+        "opening_id": "book-5f8409c636b8d2fe",
+        "final_root_key": "rnbq1rk1/pp3ppp/4pn2/8/1bBp4/2N1PN2/PP3PPP/R1BQ1RK1 w - -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-008-confirmation-oxidation060/config.json",
+        "opening_id": "book-9c313e2692cbb19f",
+        "final_root_key": "r1bqnrk1/pp2ppbp/2p3p1/2p1P3/8/2N2N2/PPPP1PPP/R1BQR1K1 w - -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-009-confirmation-goldfish113/config.json",
+        "opening_id": "book-aff55e2ccbe5f11a",
+        "final_root_key": "r1bq1rk1/ppp1nppp/1b1p1n2/1B2p3/4P3/2PP1N1P/PP1N1PP1/R1BQ1RK1 w - -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-010-confirmation-goldfish113/config.json",
+        "opening_id": "book-f7fb302336a360b8",
+        "final_root_key": "r1bqk2r/1ppp2bp/5np1/p3ppB1/2Pn4/P1NP2P1/1P2PPBP/1R1QK1NR w Kkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-011-confirmation-oxidation060/config.json",
+        "opening_id": "book-44ce717424a6b937",
+        "final_root_key": "r2qkb1r/1p1b2pp/p1n1pn2/2pp1p2/3P1B2/P1N1PN2/1PP1BPPP/R2Q1RK1 w kq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-012-confirmation-oxidation060/config.json",
+        "opening_id": "book-37c2074021ade124",
+        "final_root_key": "rn1qk2r/1bpp1pb1/pp2pnpp/8/3P1B2/2N2N1P/PPPQPPP1/3RKB1R w Kkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-013-confirmation-goldfish113/config.json",
+        "opening_id": "book-888bb50db420873b",
+        "final_root_key": "r2qk2r/pbpp1ppp/1pn1pn2/3P4/2P5/1Q3NP1/PP1bPPBP/R1B1K2R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh139/pair-014-confirmation-goldfish113/config.json",
+        "opening_id": "book-9e9cd868a147baf3",
+        "final_root_key": "rnbqk2r/1p2bppp/5n2/p1Pp4/8/P4NP1/1P1NPP1P/R1BQKB1R w KQkq -"
+      }
+    ],
+    "msh144": [
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-000-discovery-oxidation060/config.json",
+        "opening_id": "book-755b3890d0bf1304",
+        "final_root_key": "r2qkb1r/pb1p1ppp/1pn1p3/3n4/3P4/PP1B1N2/1BP2PPP/RN1QK2R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-001-discovery-goldfish113/config.json",
+        "opening_id": "book-84e510d761ef4923",
+        "final_root_key": "rn1q1rk1/pb2bppp/1p2pn2/2pp4/2P5/1P3NP1/PBQPPPBP/RN3RK1 w - -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-002-confirmation-oxidation060/config.json",
+        "opening_id": "book-b57d9565ec64c417",
+        "final_root_key": "r1b1kb1r/1pq2ppp/p1n1pn2/3p4/3NP3/2N1BP2/PPPQ2PP/R3KB1R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-003-confirmation-goldfish113/config.json",
+        "opening_id": "book-559a75660c5cac7f",
+        "final_root_key": "r1bq1rk1/ppp1ppbp/2n3p1/8/8/2P3P1/PB1PPPBP/1R1QK1NR w K -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-004-confirmation-oxidation060/config.json",
+        "opening_id": "book-2ee848c4e23e153f",
+        "final_root_key": "r1bqkb1r/1p1n1ppp/p4n2/3pp3/8/1PN1PN2/P2PBPPP/R1BQ1RK1 w kq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh144/pair-005-confirmation-goldfish113/config.json",
+        "opening_id": "book-8d860c4288eca087",
+        "final_root_key": "r1bq1rk1/pp1n1ppp/3bpn2/2p5/P7/1Q3NP1/1P1PPPBP/RNB1K2R w KQ -"
+      }
+    ],
+    "msh49": [
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/fianchetto.external.json.gz",
+        "opening_id": "authored-fianchetto",
+        "final_root_key": "rnbqkb1r/ppp1pppp/5n2/3p4/8/5NP1/PPPPPP1P/RNBQKB1R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/flank.external.json.gz",
+        "opening_id": "authored-flank",
+        "final_root_key": "rnbqkb1r/pppp1ppp/5n2/4p3/2P5/2N5/PP1PPPPP/R1BQKBNR w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/french.external.json.gz",
+        "opening_id": "authored-french",
+        "final_root_key": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/open.external.json.gz",
+        "opening_id": "authored-open",
+        "final_root_key": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/queen.external.json.gz",
+        "opening_id": "authored-queen",
+        "final_root_key": "rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/calibration/standard.external.json.gz",
+        "opening_id": "authored-standard",
+        "final_root_key": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-external/development-external-000-baseline.external.json.gz",
+        "opening_id": "development-000",
+        "final_root_key": "r1bqkbnr/pppn1ppp/4p3/8/3Pp3/4BN2/PPP2PPP/RN1QKB1R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-external/development-external-000-candidate.external.json.gz",
+        "opening_id": "development-000",
+        "final_root_key": "r1bqkbnr/pppn1ppp/4p3/8/3Pp3/4BN2/PPP2PPP/RN1QKB1R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-external/development-external-001-baseline.external.json.gz",
+        "opening_id": "development-001",
+        "final_root_key": "r1bqkbnr/ppppppp1/n7/7p/1P6/7N/P1PPPPPP/RNBQKB1R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-external/development-external-001-candidate.external.json.gz",
+        "opening_id": "development-001",
+        "final_root_key": "r1bqkbnr/ppppppp1/n7/7p/1P6/7N/P1PPPPPP/RNBQKB1R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-relative/development-relative-000-candidate.external.json.gz",
+        "opening_id": "development-000",
+        "final_root_key": "r1bqkbnr/pppn1ppp/4p3/8/3Pp3/4BN2/PPP2PPP/RN1QKB1R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-relative/development-relative-001-candidate.external.json.gz",
+        "opening_id": "development-001",
+        "final_root_key": "r1bqkbnr/ppppppp1/n7/7p/1P6/7N/P1PPPPPP/RNBQKB1R w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-relative/development-relative-002-candidate.external.json.gz",
+        "opening_id": "development-002",
+        "final_root_key": "rnbqkbnr/p1p3pp/4p3/1p1p1p2/2PP4/4B3/PP2PPPP/RN1QKBNR w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v1-relative/development-relative-003-candidate.external.json.gz",
+        "opening_id": "development-003",
+        "final_root_key": "rnbqkbnr/pp1p1ppp/8/2p1p3/1PP5/2N2N1P/P2PPPP1/R1BQKB1R b KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49/development/v3-relative/development-relative-000-candidate.external.json.gz",
+        "opening_id": "development-000",
+        "final_root_key": "r1bqkbnr/pppn1ppp/4p3/8/3Pp3/4BN2/PPP2PPP/RN1QKB1R w KQkq -"
+      }
+    ],
+    "msh49-1": [
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh49-1/selfplay.external.json.gz",
+        "opening_id": "standard",
+        "final_root_key": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+      }
+    ],
+    "msh48": [
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh48/prelimit-debug-report.json.gz",
+        "opening_id": "mshogi.chess.match.v1",
+        "final_root_key": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh48/release-report.json.gz",
+        "opening_id": "mshogi.chess.match.v1",
+        "final_root_key": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh48/release-report.json.gz",
+        "opening_id": "tactical-mshogi.chess.match.v1",
+        "final_root_key": "7k/8/5KQ1/8/8/8/8/8 w - -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh48/repeat-report.json.gz",
+        "opening_id": "mshogi.chess.match.v1",
+        "final_root_key": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+      },
+      {
+        "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh48/repeat-report.json.gz",
+        "opening_id": "tactical-mshogi.chess.match.v1",
+        "final_root_key": "7k/8/5KQ1/8/8/8/8/8 w - -"
+      }
+    ]
+  }
+}

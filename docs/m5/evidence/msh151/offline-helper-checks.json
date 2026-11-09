@@ -1,0 +1,14 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 /private/tmp/msh139/venv/bin/python -m unittest discover -s docs/m5/evidence/msh151 -p test_assessment.py -v",
+  "exit_code": 0,
+  "tests_passed": 11,
+  "log": "/private/tmp/msh151/offline-helper-tests.log",
+  "log_sha256": "224a5f9fbea01c938e461b1d9a73d36e5505050e4eeb158b406b774f2b90ff13",
+  "files_sha256": {
+    "docs/m5/evidence/msh151/assessment.py": "ff0d18758a9b0c96e34774b6802870d945d0d3dc153ef419c4853d8103b40c43",
+    "docs/m5/evidence/msh151/test_assessment.py": "8975743e500ddef77613f819f7d58a4a168d187ea4c0291319e0df4c22569880",
+    "docs/m5/evidence/msh151/inspect_reports.py": "8d823d6d53ae406c21c39698c2596ab8282359dc909aa303e5b3ebc33cfe5767"
+  },
+  "inspect_reports_unchanged_from_msh144": true,
+  "matches_or_builds_run": false
+}

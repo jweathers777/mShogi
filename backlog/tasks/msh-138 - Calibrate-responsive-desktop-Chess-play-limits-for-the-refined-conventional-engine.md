@@ -1,11 +1,11 @@
 ---
 id: MSH-138
 title: Desktop Search Limits
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-08T23:48:00Z'
-updated_date: '2026-11-09T11:51:00Z'
+updated_date: '2026-11-09T12:41:00Z'
 labels:
   - handle:desktop-search-limits
 milestone: m-5
@@ -25,17 +25,17 @@ Handle: Desktop Search Limits. Owner consolidation2026-11-09 supersedes the earl
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Ordinary desktop Chess is time-primary: no practical node or depth cap preempts productive timed search, and actual native/controller/subprocess journeys demonstrate deadline stopping and the last completed legal iteration without fabricated fallback.
-- [ ] #2 Cancellation, supervision, bounded memory and technical recursion/representation guards remain; old untimed and timed20k documents/observations open unchanged and stopped, with explicit Resume selecting new defaults and fresh identities. Analysis/other-game limits and schemas remain compatible.
-- [ ] #3 Relevant native/process/controller, frontend, standalone host and focused actual packaged desktop verification plus independent review support the integrated behavior. Roadmap records configurable thinking time and owner-approved strength qualification before Shogi/Xiangqi; no rating claim or unapproved qualification campaign.
+- [x] #1 Ordinary desktop Chess is time-primary: no practical node or depth cap preempts productive timed search, and actual native/controller/subprocess journeys demonstrate deadline stopping and the last completed legal iteration without fabricated fallback.
+- [x] #2 Cancellation, supervision, bounded memory and technical recursion/representation guards remain; old untimed and timed20k documents/observations open unchanged and stopped, with explicit Resume selecting new defaults and fresh identities. Analysis/other-game limits and schemas remain compatible.
+- [x] #3 Relevant native/process/controller, frontend, standalone host and focused actual packaged desktop verification plus independent review support the integrated behavior. Roadmap records configurable thinking time and owner-approved strength qualification before Shogi/Xiangqi; no rating claim or unapproved qualification campaign.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -60,4 +60,16 @@ Current MSH-138 (Desktop Search Limits) checks pass: both prior-config/historica
 MSH-138 (Desktop Search Limits) source and all16generatedfixturechanges independently approved with no findings. Allfocusednative/process/controller/570frontend/standaloneTaurichecks passed; formalrecords in docs/m5/evidence/msh138/verification.json. Code nowfrozen for normalfixed-identitypackagedmacOSjourney andactualrequired3OSRustCI. No Chessstrength experiments ran. MSH-139 (Chess Strength Qualification) target/protocol/budget proposal reviewed but notowner-approved.
 
 MSH-138 (Desktop Search Limits) normalpackagebuiltcleanata23fb92, butexternalpackage-smokestillpinnedmaterial-onlya2a3/+0. Actualacceptedclassicalfixtureisb1c3/+61/depth1/21visits; nativeconventionaltestalreadyindependentlyexpectsit. Narrowverifierconstants/PVcheckcorrectionindependentlyapproved; correctedentirepackagesmokepassedonunchangedbinary. Preserveinitialfailedreceipt; verification-onlycommitthenfixednormalapprebuildbeforeGUI/actual3OSCI. No productionbehaviororrequiredcheckweakened.
+
+Final independent MSH-138 (Desktop Search Limits) acceptance reconciles exact source,actual3OSCI/packageGUI/evidence andall3AC. Code/sourcealreadyintegratednormally; finalrecords published in the completion commit. MSH-139 (Chess Strength Qualification) is not approved or completed.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+MSH-138 (Desktop Search Limits) completed: ordinary desktop Chess now uses its full one-second allowance and last completed iteration, with only depth128/native-stack and JSON-safe2^53−1 technical visit guards. Explicit low-node/zero-time controls remain honest. Both prior untimed and timed20k documents/observations load stopped unchanged; Resume adopts current defaults with fresh exact identities. UI shows thinking time. Cancellation, native re-admission, memory/streams,15s supervision, cleanup, analysis/other-game budgets and schemas remain intact.
+
+Production integration a23fb92683012e2697978e788d4630fe293fc5fe; verification-corrected exact tested source fac34c9f0ab0618b67cb76fde6703eff6f93e158 on codex/rewrite. Independent source, normal packaged GUI and final evidence/AC reviews approve. Actual Rust CI42613601864 attempt1 passed Ubuntu24 job129147893842, macOS15 job129147893398, Windows2022 job129147893993, including4 actualreleaseDesktopController/process cases each; workspace1171/1171/1168 pass,11 intentional ignores. Local570frontend/typecheck, standalone8+17/Clippy, nativeUCI/session/search/error/cancel/archive checks pass. Actual normalGUI exceeded20k visits, cancelledwithoutreply, saved/reopenedstopped, resumedexplicitly andQuitcleanly withpriorfileintact.
+
+Canonical evidence docs/m5/evidence/msh138/verification.json and docs/m5/chess-desktop-time.md preserve the stale material-only package verifier failure and excluded observer errors. No required checks weakened, no security/access settings changed. Handles now durable in task labels/records and AGENTS.md. MSH-139 (Chess Strength Qualification) remains To Do pending owner target/protocol/six-hour-budget approval and actual qualification; it gates MSH-50 (Conventional Shogi) and MSH-54 (Conventional Xiangqi). MSH-140 (Player Thinking Time) is future work. No qualification campaign or playing-strength claim.
+<!-- SECTION:FINAL_SUMMARY:END -->

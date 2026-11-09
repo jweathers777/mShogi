@@ -49,8 +49,35 @@ unchanged six-game GUI/platform evidence; no new all-six packaged campaign is
 required. Never infer actual Linux/Windows GUI interaction from a macOS run.
 
 The canonical [verification record](evidence/msh138/verification.json) pins source,
-commands, actual outcomes, review and platform/package receipts. Final source and
-platform/package acceptance remain pending at this checkpoint.
+commands, actual outcomes, review and platform/package receipts. The exact tested source is `fac34c9f0ab0618b67cb76fde6703eff6f93e158`.
+Actual native CI passed on Ubuntu 24.04, macOS 15 and Windows 2022 in
+[run42613601864](https://github.com/jweathers777/mShogi/actions/runs/42613601864),
+including all three release desktop-play journeys. The normal packaged macOS
+application passed actual play/cancel/save/reopen/Resume/Quit with prior-file
+integrity and no remaining bundled host/child observed after Quit.
+Independent final receipt reconciliation approved all three acceptance criteria
+and the applicable completion checklist. MSH-138 (Desktop Search Limits) is Done
+with normal completion publication on `codex/rewrite`.
 
 MSH-139 (Chess Strength Qualification) separately gates MSH-50 (Conventional Shogi)
 and MSH-54 (Conventional Xiangqi). No qualification match campaign has run here.
+
+The earlier local package smoke failure is preserved: its external verifier still
+expected the material-only opening `a2a3/+0`. The independently specified current
+classical fixture is `b1c3/+61`, depth1/21 visits. The narrow verifier update and
+PV check were independently approved; no production behavior changed in that
+correction. Two external GUI observer mistakes were excluded and retried with
+fresh full accessibility state. The successful journey, not those attempts,
+supplies cancellation/shutdown evidence.
+
+Required native receipts, run42613601864 attempt1:
+
+| Platform | Job | Outcome |
+| --- | --- | --- |
+| Ubuntu 24.04 | 129147893842 | Passed |
+| macOS 15 | 129147893398 | Passed |
+| Windows 2022 | 129147893993 | Passed |
+
+Workspace totals are1,171/1,171/1,168 passes respectively, zero failures and11
+intentional ignores each. Each platform also passed all four release controller
+journeys and subsequent required native checks. No qualification matches ran.

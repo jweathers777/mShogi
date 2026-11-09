@@ -1,0 +1,222 @@
+{
+  "screen-receipt.json": {
+    "source": "bb1c63a16fb78c61984d8c150ff6134922239bc3",
+    "binary_sha256": "922d9aad3ad8e067a8598e1cb3897f544c31bf8d27a699d08e7160402041d06d",
+    "command": [
+      "/private/tmp/msh152/baseline-profile",
+      "docs/m5/evidence/msh152/screen.json",
+      "128",
+      "timed",
+      "none"
+    ],
+    "elapsed_seconds": 28.36644170805812,
+    "exit": 0
+  },
+  "selectivity-receipt.json": {
+    "command": [
+      "/private/tmp/msh152/baseline-profile",
+      "docs/m5/evidence/msh152/selectivity.json",
+      "128",
+      "timed",
+      "2000000"
+    ],
+    "elapsed_seconds": 8.296759124845266,
+    "exit": 0,
+    "binary_source": "bb1c63a16fb78c61984d8c150ff6134922239bc3"
+  },
+  "trace-receipt.json": {
+    "command": [
+      "/private/tmp/msh152/trace-profile",
+      "/private/tmp/msh152/trace-input.json",
+      "128",
+      "timed",
+      "2000000"
+    ],
+    "env": {
+      "MSH152_TRACE": "1"
+    },
+    "exit": 0,
+    "elapsed_seconds": 2.1522373338229954,
+    "source": "bb1c63a plus recorded promotion correction and trace.patch; diagnostic timing not performance evidence",
+    "binary_sha256": "f8ebd92ff7173a15c85744a9f1181401ce46ec4c48d94aaac93252591011def9"
+  },
+  "continuations-receipt.json": {
+    "command": [
+      "/private/tmp/msh152/corrected-profile",
+      "docs/m5/evidence/msh152/continuations.json",
+      "128",
+      "timed",
+      "2000000"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.43376137502491474,
+    "source": "bb1c63a plus promotion correction"
+  },
+  "pv-panel-receipts.json": [
+    {
+      "command": [
+        "/private/tmp/msh152/corrected-profile",
+        "docs/m5/evidence/msh152/pv-experiment.json",
+        "128",
+        "timed",
+        "2000000"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 8.949135374743491,
+      "binary_sha256": "2542c1d6dc04f3c4ad08ae9022e7a8f5f6ef508ebd76db034dfa7597c48506e5",
+      "source": "bb1c63a plus promotion correction"
+    },
+    {
+      "command": [
+        "/private/tmp/msh152/pv-profile",
+        "docs/m5/evidence/msh152/pv-experiment.json",
+        "128",
+        "timed",
+        "2000000"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 8.983859458938241,
+      "binary_sha256": "b7ee2f241a4d8452a117b9bdd9e16edcf6d2086fbc30c49c16b80624b6d239d3",
+      "source": "bb1c63a plus promotion correction plus pv-policy.patch"
+    }
+  ],
+  "independent-receipts.json": [
+    {
+      "command": [
+        "/private/tmp/msh152/corrected-profile",
+        "docs/m5/evidence/msh152/independent-panel.json",
+        "128",
+        "timed",
+        "2000000"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 14.393219917081296,
+      "binary_sha256": "2542c1d6dc04f3c4ad08ae9022e7a8f5f6ef508ebd76db034dfa7597c48506e5",
+      "source": "bb1c63a plus promotion correction"
+    },
+    {
+      "command": [
+        "/private/tmp/msh152/pv-profile",
+        "docs/m5/evidence/msh152/independent-panel.json",
+        "128",
+        "timed",
+        "2000000"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 14.413839334156364,
+      "binary_sha256": "b7ee2f241a4d8452a117b9bdd9e16edcf6d2086fbc30c49c16b80624b6d239d3",
+      "source": "bb1c63a plus promotion correction plus pv-policy.patch"
+    }
+  ],
+  "quiet-attack-receipts.json": [
+    {
+      "command": [
+        "/private/tmp/msh152/corrected-profile",
+        "docs/m5/evidence/msh152/quiet-attack.json",
+        "128",
+        "timed",
+        "1000000"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 0.02434670878574252
+    },
+    {
+      "command": [
+        "/private/tmp/msh152/pv-profile",
+        "docs/m5/evidence/msh152/quiet-attack.json",
+        "128",
+        "timed",
+        "1000000"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 0.02479558391496539
+    }
+  ],
+  "promotion-baseline-checks.json": {
+    "head": "bb1c63a16fb78c61984d8c150ff6134922239bc3",
+    "source_state": "Existing SEE production behavior; root diagnostic null-off change and new tests uncommitted. No SEE correction yet.",
+    "files_sha256": {
+      "crates/mshogi-search/src/chess_conventional.rs": "919ec00ca31b1b34710eafb094303f59142e04e73dd0b5201b08f68334087df9",
+      "crates/mshogi-search/src/chess_conventional_tests.rs": "7f8327cb3aca73515a9a09dbea072d08adc7059d388045112d4432f1bc27bc1c"
+    },
+    "checks": [
+      {
+        "command": "cargo test -p mshogi-search --release --lib promotion_recapture_see -- --nocapture",
+        "log": "promotion-recapture-baseline.log",
+        "exit_code": 101,
+        "passed": 2,
+        "failed": 3,
+        "finding": "White and reflected Black SEE return170 versus independently proven material exchange -400; q SEE pruning counter0 versus1. Recaptured promotion +500 and cancellation/restoration pass.",
+        "log_sha256": "bdad539a17798c0573112f1b53e98b8ae0b46a8d7efb9852436f493d809a46e2"
+      },
+      {
+        "command": "cargo test -p mshogi-search --release --lib diagnostic_null_off_disables_genuine_probes_without_changing_frontier -- --exact",
+        "log": "null-off-filter-attempt.log",
+        "exit_code": 0,
+        "selected": 0,
+        "credit": "none; incomplete exact filter",
+        "log_sha256": "c8d3ab817c9165273a1dc9c152e0b9c94e9a0aba9f6233de92d182d1ee9a0115"
+      },
+      {
+        "command": "cargo test -p mshogi-search --release --lib chess_conventional::tests::diagnostic_null_off_disables_genuine_probes_without_changing_frontier -- --exact",
+        "log": "null-off-control.log",
+        "exit_code": 0,
+        "passed": 1,
+        "log_sha256": "a63a002ef7fc291aaa0f28b0c64ca896f06c5117255b4eed20d462e702dead08"
+      }
+    ],
+    "remaining": "Promotion correctness tests intentionally fail pending product correction; no engine match or broad search campaign."
+  },
+  "promotion-corrected-checks.json": {
+    "head": "bb1c63a16fb78c61984d8c150ff6134922239bc3",
+    "source_state": "Uncommitted promotion-only SEE correction and root-owned diagnostic additions",
+    "files_sha256": {
+      "crates/mshogi-search/src/chess_conventional.rs": "b6e6e6d81e03673861c2ffaa231e04465497961bb39e09fbe333f3a3441f9820",
+      "crates/mshogi-search/src/chess_conventional_tests.rs": "ebff48c1ddf965a93357c4ea7803a644c99830aaa26611bd558b13b0d7e8f26c"
+    },
+    "checks": [
+      {
+        "command": "cargo test -p mshogi-search --release --lib promotion_recapture_see -- --nocapture",
+        "log": "/private/tmp/msh152/promotion-recapture-corrected.log",
+        "exit_code": 0,
+        "summary": "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 106 filtered out; finished in 0.00s",
+        "sha256": "e905515d839b14652709820c868e3f1c1733ccff5ffaf5aab7a8e82bef6c167e"
+      },
+      {
+        "command": "cargo test -p mshogi-search --release --lib chess_conventional::tests",
+        "log": "/private/tmp/msh152/conventional-corrected-tests.log",
+        "exit_code": 0,
+        "summary": "test result: ok. 47 passed; 0 failed; 0 ignored; 0 measured; 65 filtered out; finished in 0.20s",
+        "sha256": "d7b919d6be9efd79bbf4ff4b529fb50b41efdb9999d22953d453aa06a011b1a7"
+      }
+    ],
+    "historical_failure_receipt": "/private/tmp/msh152/promotion-baseline-checks.json",
+    "diff_check": "passed",
+    "matches": 0
+  },
+  "pv-focused-checks.json": [
+    {
+      "command": "cargo test -p mshogi-search --release --lib pv_quiet_alternatives -- --nocapture",
+      "exit_code": 0,
+      "log": "/private/tmp/msh152/pv-quiet-tests.log",
+      "sha256": "20429cca3ec9604b6c1314c25e3f966f3def45158b2243876de5a232c16f2d5e"
+    },
+    {
+      "command": "cargo test -p mshogi-search --release --lib non_pv_reductions_remain_active -- --nocapture",
+      "exit_code": 0,
+      "log": "/private/tmp/msh152/non-pv-tests.log",
+      "sha256": "c3719157bb1e7cefde96f2c6fc40f25459568cac1fcbfd0fb28f202e698f1a20"
+    }
+  ],
+  "search-library-pv-corrected.json": {
+    "command": "cargo test -p mshogi-search --release --lib",
+    "exit_code": 0,
+    "log": "/private/tmp/msh152/search-library-pv-corrected.log",
+    "sha256": "a1747d1d14295102f323948bf97da09e3712fceb56a10c2b21c668cfb65b067f",
+    "head": "bb1c63a16fb78c61984d8c150ff6134922239bc3",
+    "source_sha256": {
+      "crates/mshogi-search/src/chess_conventional.rs": "34db0c23ca09e46ca63bdd05a4d71116a8c06cae8f6cd05e64fcc367291b8d2d",
+      "crates/mshogi-search/src/chess_conventional_tests.rs": "bd70a05e754faa168ca70e61ac9710b90ec667c854643e98db73a2c2734d2076"
+    }
+  }
+}

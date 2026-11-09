@@ -1,11 +1,11 @@
 ---
 id: MSH-152
 title: Classical Tactical Forecasting
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-09T22:12:00Z'
-updated_date: '2026-11-09T22:27:00Z'
+updated_date: '2026-11-09T22:49:00Z'
 labels:
   - handle:classical-tactical-forecasting
 milestone: m-5
@@ -48,4 +48,6 @@ Primary builder @codex owns clean codex/rewrite at ed32b24, aligned origin; unre
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner direction supersedes automatic small adaptive reassessments after each coherent round: favor controlled matched-version comparisons when justified, with substantial/formal study approval before launch. Define decision-quality outcomes and investigation stopping criteria; preserve earlier completed assessment evidence. Principal hypotheses must be separated by controlled tests, not another heuristic chosen from a single game.
+
+Controlled complete-history diagnosis now supports PV-sensitive LMR (Rb8 reduced fail-low skipped verification after Ke8) and correct native promotion-recapture SEE (+170 wrong versus -400 independently accounted). Goldfish matched remaining-depth backups all +17; farther search -83, residual valuation/horizon uncertain, reference also prefers e4. Independent20-position tactical/WDL controls retained; PV policy costs31percent more depth6 visits and loses one nominalply on several timed controls. Search/engine/console385passed2ignored; workspaceclippy and format passed after diagnostic-only redundant-update cleanup. No matches or platformcampaign. Final independent evidence reconciliation pending; docs/m5/chess-tactical-forecasting.md and evidence/msh152/verification.json are canonical. MSH-153 (Classical Compensation Calibration) records the residual general question; no automatic ratingstudy.
 <!-- SECTION:NOTES:END -->

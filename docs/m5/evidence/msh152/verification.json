@@ -1,0 +1,145 @@
+{
+  "task": "MSH-152 (Classical Tactical Forecasting)",
+  "status": "review_pending",
+  "base_revision": "ed32b24e058572dad883b2ea8efd67209e2cada5",
+  "diagnostic_baseline_revision": "bb1c63a16fb78c61984d8c150ff6134922239bc3",
+  "tested_revision": null,
+  "verification_level": "Level1 portable search only: local focused search/history/claim/restoration/cancellation tests, affected native consumer tests and workspace compile/lint; independent source/evidence review",
+  "environment": {
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "hardware": "Apple M1 Pro,32GiB; single search threads; sequential unisolated desktop diagnostic timings"
+  },
+  "source_files_sha256": {
+    "crates/mshogi-search/src/chess_conventional.rs": "34db0c23ca09e46ca63bdd05a4d71116a8c06cae8f6cd05e64fcc367291b8d2d",
+    "crates/mshogi-search/src/chess_conventional_tests.rs": "bd70a05e754faa168ca70e61ac9710b90ec667c854643e98db73a2c2734d2076",
+    "crates/mshogi-search/examples/chess_frontier_profile.rs": "787233c5b2d4a75bd3350e826cd724378e5e0e0ff4d33102b54dbe470e1446e6"
+  },
+  "source_mapping": {
+    "baseline": "bb1c63a exactly",
+    "corrected": "bb1c63a plus promotion-only.patch.gz",
+    "pv": "corrected plus pv-policy.patch.gz; final source adds explanatory comment only to this policy",
+    "trace": "corrected plus trace.patch.gz; temporary stderr instrumentation removed; diagnostic timing not performance evidence",
+    "final_harness": "Only redundant SearchOptions struct update removed after measured binaries; every field was explicitly supplied, no behavior change."
+  },
+  "binary_sha256": {
+    "baseline": "922d9aad3ad8e067a8598e1cb3897f544c31bf8d27a699d08e7160402041d06d",
+    "corrected": "2542c1d6dc04f3c4ad08ae9022e7a8f5f6ef508ebd76db034dfa7597c48506e5",
+    "pv": "b7ee2f241a4d8452a117b9bdd9e16edcf6d2086fbc30c49c16b80624b6d239d3",
+    "trace": "f8ebd92ff7173a15c85744a9f1181401ce46ec4c48d94aaac93252591011def9"
+  },
+  "experiments": "experiment-receipts.json; raw compressed outputs and complete history inputs retained",
+  "measurable_outcomes": {
+    "historical_selectivity": "Ke8 reduced fail-low Rb8 path localized; targeted PV policy selects reference-supported Rxf5 at same depth6 and1s",
+    "same_depth_visits": {
+      "before": 87818,
+      "targeted": 115107,
+      "lmr_disabled": 216561
+    },
+    "independent_panel": {
+      "puzzles": 12,
+      "published_preference_or_immediate_mate_before": 12,
+      "published_preference_or_immediate_mate_after": 12,
+      "tablebase_wdl_preserved_before": 8,
+      "tablebase_wdl_preserved_after": 8,
+      "scope": "retention, not newly improved decisions; native full legal sets match preserved oracle maps"
+    },
+    "positional_control": "STS Bxd5 retained",
+    "horizon_backup": "Goldfish root d8 and prefixes1/d7,2/d6,5/d3 all White+17; prefix5/d8 White-83; residual classical/reference disagreement unresolved",
+    "promotion_exchange": "both-color independent arithmetic +170 wrong -> -400; losing-capture q omission restored; original3 semantic failures retained"
+  },
+  "costs_and_limits": [
+    "PV policy spends31percent more visits at diagnosticdepth6, versus147percent more with allLMRdisabled",
+    "One-second completed depth falls by1 in Goldfish,older139root,f3apJ,STS and independentTnyRw; selected independent answers retained",
+    "Stockfish19 opinions do not establish best moves orWDL; e4 also referencepreferred in alreadypoorposition",
+    "No demonstrated ratinggain, no claimChess mature; residualcompensation/horizon workMSH153",
+    "SEE still bounded legal least-attacker heuristic, not full tactical minimax"
+  ],
+  "review": {
+    "promotion": "Independent endgame_review approved source/arithmetic/native/cancellation/bounds and preserved failing logs",
+    "pv_policy": "Independent endgame_review supports general PVconfidence policy, conditional on behavioral/restoration tests; costs explicit",
+    "final": "pending"
+  },
+  "local_checks": {
+    "search_library": {
+      "command": "cargo test -p mshogi-search --release --lib",
+      "exit_code": 0,
+      "log": "/private/tmp/msh152/search-library-pv-corrected.log",
+      "sha256": "a1747d1d14295102f323948bf97da09e3712fceb56a10c2b21c668cfb65b067f",
+      "head": "bb1c63a16fb78c61984d8c150ff6134922239bc3",
+      "source_sha256": {
+        "crates/mshogi-search/src/chess_conventional.rs": "34db0c23ca09e46ca63bdd05a4d71116a8c06cae8f6cd05e64fcc367291b8d2d",
+        "crates/mshogi-search/src/chess_conventional_tests.rs": "bd70a05e754faa168ca70e61ac9710b90ec667c854643e98db73a2c2734d2076"
+      }
+    },
+    "consumer_suite": {
+      "command": "cargo test --release --locked -p mshogi-search -p mshogi-engine -p mshogi-console",
+      "exit": 0,
+      "passed": 385,
+      "failed": 0,
+      "ignored": 2,
+      "log": "search-consumers.log.gz"
+    },
+    "workspace_clippy": {
+      "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "exit": 0,
+      "log": "clippy-corrected.log.gz",
+      "preceding_failure": "clippy.log.gz: redundant diagnostic struct update after all fields supplied; removed without behavioral change"
+    },
+    "format": {
+      "command": "cargo fmt --all -- --check",
+      "exit": 0,
+      "log": "fmt.log.gz"
+    }
+  },
+  "not_run": [
+    "opponentmatches (0)",
+    "formalstrengthstudy",
+    "Linuxnativeexecution",
+    "Windowsnativeexecution",
+    "fullhostedmacOSCI",
+    "packagedGUIcampaign"
+  ],
+  "follow_up": "MSH-153 (Classical Compensation Calibration)",
+  "artifact_sha256": {
+    "clippy-corrected.log.gz": "48088c8d5b5b4c5083c32f8a426203cd246a7196f332fc12e5a0424661f60896",
+    "clippy.log.gz": "00f1edae72b62639a520a4e200e63a7c0294ff26e41699b2448a3a9ce9249c19",
+    "continuations.json": "1caa6c758772ee5693bb20343792157dc250ad739b1a68544b9d197d924fbae1",
+    "continuations.jsonl.gz": "fc81b6ddd7a666fc14959ed18cbc260a1c358ca4d6f1a4128d4f8f1025ddac34",
+    "conventional-corrected-tests.log.gz": "a6670a4a9af0431b4ae7878a2e0b2ce64f70ee9e3b4fe889c1190b4d26b61efd",
+    "corrected-independent.jsonl.gz": "112937adc292b15ec5fdeadd1d04e598e0c245b5b9444f434d1cb5912bdc798c",
+    "corrected-panel.jsonl.gz": "fe152a0ac2bb694b4ada50da04aff8acb7efb9fcb0be2343b0d8de94c9619d52",
+    "corrected-quiet-attack.jsonl.gz": "619f306b0ab180c6674ed17f7d1b79a31d7002d89740b97f00af0191d4c531ce",
+    "experiment-receipts.json": "84eb19e4c0f9429bc333e9296d3d867733628618a7afad1387828f25e27527ec",
+    "fmt.log.gz": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+    "harness-build-type-error.log.gz": "33d42e6ed8fcbe5ae2ebf9be36ddd9b4d0d280667977189f3901cfe715f3029b",
+    "independent-panel.json": "f8bc3de4d41be02bd09ef59e9bcb6c83407c1d5f2f61124eb0293239c28c2318",
+    "non-pv-tests.log.gz": "e3ea3ce15e0467a689f186d83bf406f698ce6f7ee0ac5470467079f63098767b",
+    "null-off-control.log.gz": "fe39fe4e8349e2957d79b4f85521e461bf37812b8ece6cfdb00b5a6402f79447",
+    "null-off-filter-attempt.log.gz": "9218b37496f291c06595d3406f089e3118b883d411df9eb6557304e154aa16d8",
+    "positions.json": "41a1b3f90c8525567dffea651517d96860774114e5fb89ed24637127e97758c6",
+    "promotion-only.patch.gz": "46cbe6f484248c2b30962bccaab312c1884ed320e143ba592b5e1df3e96364b7",
+    "promotion-recapture-baseline.log.gz": "05a95a1cfa5d47307d005c230668d2610730e1276954eaf83d808adb36c952f0",
+    "promotion-recapture-corrected.log.gz": "0d978c0cb752c91cd8786f3dcd7229a03d595494a599a766dfc99e236c4d8e15",
+    "pv-experiment.json": "9b4e03bbbce757317e101d6f20ff9d250475f3d17ce93d612e296eec01bfd1ab",
+    "pv-independent.jsonl.gz": "eec56f9c6f780e7545d0cec92c540b80aefaf103a854f392b259e7db7aab82a5",
+    "pv-panel.jsonl.gz": "477236ae63c47f3ec20de6e0b387c70e59caea1071c3dec61554a767dd7f5489",
+    "pv-policy.patch.gz": "30f51d276c77791abbcdfda5f872d31b7ea3f2fea6614fcb7f267546363bdfde",
+    "pv-quiet-attack.jsonl.gz": "a5088f5fe93ab4d1f77d44467f6cda75c809f752121eefa70ec6fc59eeaab8f9",
+    "pv-quiet-tests.log.gz": "3684b6cb8376ed4657768b53fa40e29424902dada875ff2fb642415ca8f7def3",
+    "quiet-attack.json": "2fee049a735495c4c548fd99f52a2f34aa2038f1321f954aeef1cf8b6488f913",
+    "reference.json": "dcb2696ae41b1fe842a3313c1bb01410681ff957599cad413b0de8924ef333ae",
+    "reference.py": "bb130bcb1ca6a4252ff44d4c5deba8e5141e62929adf50cc7f42fa4f172fc5e2",
+    "research.md": "4af75ba37f8eba1345c3c0c708d72764f3da66d9016d015c26d9c13f314c0f3d",
+    "screen.json": "70b0e4628b2548b0c43a07154958a576cc4a25b15f9a3fe6aebc899cff81de6e",
+    "screen.jsonl.gz": "45f55580653c1d54397455c9dbe4e3bb15f105716ba6d4487dbed623d69b8e10",
+    "search-consumers.log.gz": "02c227ec2fd65f1542c93e99ae5785edc018afcd76b66a847a8b4380773edbcd",
+    "search-library-pv-corrected.log.gz": "6469583558b1124098936553501a8144e3cca4b85c73a165616ea0baa94a3538",
+    "selectivity.json": "cd4fd16ac16629cfd5aa020ce9d30bec04118c2450120b43c2d6dfcc5ffb3f6e",
+    "selectivity.jsonl.gz": "26ceb5baec3de73ec1464e7e0c7ac34d4d5afb31b7f89bd6df65abf9cea28949",
+    "trace-input.json": "80a9918825df0f271bbf9ea3b420ce7bbcc154534c79d30058ebadd6779029c7",
+    "trace.jsonl.gz": "72bc6c4b26d422f8199daf2e001a9c85a32b7e1083eede807092391af967a655",
+    "trace.patch.gz": "f14255edcb3cd74de62e140d819de2a53851b96755dece6b7b09390567fc9117",
+    "trace.stderr.gz": "44f83706c15f35a7409cd2837cb719333b333c69fbe9cab7d3a0fb57b02c0ca3"
+  }
+}

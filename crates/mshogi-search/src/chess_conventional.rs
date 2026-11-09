@@ -559,7 +559,8 @@ fn exchange(position: &Position, a: Action, left: u8, work: &mut Work<'_>) -> Re
     let Ok(after) = position.project(a) else {
         return Ok(0); // Actual search push reports representation errors.
     };
-    let reply = after.legal_captures_to(a.to).into_iter().min_by_key(|r| {
+    let replies = after.legal_captures_to(a.to);
+    let reply = replies.iter().copied().min_by_key(|r| {
         (
             after.piece_at(r.from).map_or(0, |p| {
                 if p.kind == PieceKind::King {
@@ -571,12 +572,30 @@ fn exchange(position: &Position, a: Action, left: u8, work: &mut Work<'_>) -> Re
             lexical(*r),
         )
     });
-    Ok(immediate
-        - if let Some(reply) = reply {
-            exchange(&after, reply, left - 1, work)?.max(0)
+    let response = if let Some(reply) = reply {
+        if reply.promotion.is_some() {
+            // LVA chooses an origin, not the opponent's promotion. Preserve
+            // every native legal completion of that capture and choose its
+            // best continued material return, including declining the exchange.
+            // A fixed back-rank target has at most two promoting pawn origins:
+            // at most4^2=16 variant paths, each still bounded by `left` (16).
+            // Every recursive variant polls cancellation. Ordinary LVA remains
+            // a single path with its existing piece-value/lexical tie policy.
+            let mut best = 0;
+            for variant in replies
+                .into_iter()
+                .filter(|candidate| candidate.from == reply.from && candidate.to == reply.to)
+            {
+                best = best.max(exchange(&after, variant, left - 1, work)?);
+            }
+            best
         } else {
-            0
-        })
+            exchange(&after, reply, left - 1, work)?.max(0)
+        }
+    } else {
+        0
+    };
+    Ok(immediate - response)
 }
 
 impl Engine<'_> {
@@ -1153,7 +1172,12 @@ impl Engine<'_> {
                 self.push_preview(preview)?;
             }
             let reduction = if lmr_candidate && !critical {
-                1 + i32::from(depth >= 6 && move_index >= 8)
+                // A PV node must compare plausible quiet alternatives reliably.
+                // Give these moves one more ply than a non-PV cut probe: a
+                // reduced fail-low is otherwise accepted without verification.
+                // Keep the deeper late-move reduction and every native guard;
+                // this is selective search, not an exact minimax guarantee.
+                (1 + i32::from(depth >= 6 && move_index >= 8) - i32::from(pv)).max(0)
             } else {
                 0
             };

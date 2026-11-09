@@ -1258,7 +1258,8 @@ fn contact_mate_candidates_preserve_child_cancellation_and_actual_counter_errors
 fn destination_filtered_exchange_matches_previous_full_query_on_native_special_tactics() {
     // Reference retains the prior full-list/filter implementation. Hand-solved
     // SEE cases above and the native target-query fixtures supply independent
-    // expectations; this additionally checks unchanged selection/tie ordering.
+    // expectations; this additionally checks unchanged ordinary selection/ties.
+    // Promotion branches use the corrected policy for the same selected origin.
     fn previous(p: &Position, a: Action, left: u8) -> i32 {
         let immediate = gain(p, a);
         if left == 0 {
@@ -1268,23 +1269,37 @@ fn destination_filtered_exchange_matches_previous_full_query_on_native_special_t
         if after.apply(a).is_err() {
             return 0;
         }
-        let reply = after
+        let replies: Vec<_> = after
             .legal_actions()
             .into_iter()
             .filter(|r| r.to == a.to)
-            .min_by_key(|r| {
-                (
-                    after.piece_at(r.from).map_or(0, |p| {
-                        if p.kind == PieceKind::King {
-                            20_000
-                        } else {
-                            piece_value(p.kind)
-                        }
-                    }),
-                    lexical(*r),
-                )
-            });
-        immediate - reply.map_or(0, |r| previous(&after, r, left - 1).max(0))
+            .collect();
+        let reply = replies.iter().copied().min_by_key(|r| {
+            (
+                after.piece_at(r.from).map_or(0, |p| {
+                    if p.kind == PieceKind::King {
+                        20_000
+                    } else {
+                        piece_value(p.kind)
+                    }
+                }),
+                lexical(*r),
+            )
+        });
+        immediate
+            - reply.map_or(0, |r| {
+                if r.promotion.is_some() {
+                    replies
+                        .into_iter()
+                        .filter(|candidate| candidate.from == r.from && candidate.to == r.to)
+                        .map(|candidate| previous(&after, candidate, left - 1))
+                        .max()
+                        .unwrap()
+                        .max(0)
+                } else {
+                    previous(&after, r, left - 1).max(0)
+                }
+            })
     }
     for fen in [
         "r1bq1rk1/ppp2ppp/2np1n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQ1RK1 w - - 0 1",
@@ -1851,6 +1866,7 @@ fn diagnostics_default_preserves_search_and_exact_mode_ignores_ablations() {
         SearchOptions {
             mode: SearchMode::Exact,
             diagnostics: SearchDiagnostics {
+                disable_null: true,
                 disable_lmr: true,
                 disable_quiet_omissions: true,
                 disable_see_pruning: true,
@@ -1913,7 +1929,9 @@ fn diagnostic_endgame_lmr_does_not_enable_null_or_omissions() {
         let mut e = engine(&g, &mut stop, SearchMode::Conventional);
         e.diagnostics.endgame_lmr = endgame_lmr;
         e.diagnostics.disable_lmr = disable_lmr;
-        e.main(3, 0, -INF, INF, true, true, 4, None).ok().unwrap();
+        // A non-PV node retains ordinary LMR; shallow PV alternatives now
+        // intentionally receive their full depth.
+        e.main(3, 0, -INF, INF, false, true, 4, None).ok().unwrap();
         assert_eq!(e.stats.reductions > 0, endgame_lmr && !disable_lmr);
         assert_eq!(e.stats.null_probes, 0);
         assert_eq!(e.stats.late_move_pruned, 0);
@@ -2030,4 +2048,351 @@ fn deferred_frontier_reached_quiet_projection_polls_and_preserves_typed_errors()
     assert_eq!(e.cursor.key(), key);
     assert_eq!(e.cursor.depth(), 0);
     assert_eq!(e.eval, EvalState::new(g.position()));
+}
+
+// A native replay plus hand material accounting supplies the expectation. This
+// does not select recaptures with SEE's least-attacker/lexical implementation.
+fn promotion_recapture_material_proof(
+    fen: &str,
+    first: &str,
+    promotion_prefix: &str,
+    recapture: Option<&str>,
+) -> AdjudicatedGame {
+    fn material(position: &Position, side: Color) -> i32 {
+        (0..8)
+            .flat_map(|rank| (0..8).map(move |file| Square::new(file, rank).unwrap()))
+            .filter_map(|sq| position.piece_at(sq))
+            .map(|piece| {
+                let value = match piece.kind {
+                    PieceKind::Pawn => 100,
+                    PieceKind::Knight => 320,
+                    PieceKind::Bishop => 330,
+                    PieceKind::Rook => 500,
+                    PieceKind::Queen => 900,
+                    PieceKind::King => 0,
+                };
+                if piece.color == side { value } else { -value }
+            })
+            .sum()
+    }
+    let original = game(fen);
+    let side = original.position().side_to_move();
+    let before_material = material(original.position(), side);
+    let mut child = original.clone();
+    child.apply(first.parse().unwrap()).unwrap();
+    let promotions: Vec<_> = child
+        .position()
+        .legal_actions()
+        .into_iter()
+        .filter(|a| a.to_string().starts_with(promotion_prefix))
+        .collect();
+    assert_eq!(promotions.len(), 4);
+    for (suffix, delta) in [('q', -400), ('r', 0), ('b', 170), ('n', 180)] {
+        let action: Action = format!("{promotion_prefix}{suffix}").parse().unwrap();
+        assert!(promotions.contains(&action));
+        let mut branch = child.clone();
+        branch.apply(action).unwrap();
+        if let Some(reply) = recapture {
+            branch.apply(reply.parse().unwrap()).unwrap();
+        }
+        assert_eq!(
+            material(branch.position(), side) - before_material,
+            if recapture.is_some() { 500 } else { delta }
+        );
+        // All native branches undo exactly, including automatic dead-position
+        // conclusions following an unrecaptured bishop/knight promotion.
+        if recapture.is_some() {
+            branch.undo().unwrap();
+        }
+        branch.undo().unwrap();
+        branch.undo().unwrap();
+        assert_eq!(branch, original);
+    }
+    original
+}
+
+#[test]
+fn promotion_recapture_see_accounts_for_the_opponents_queen_choice() {
+    let g =
+        promotion_recapture_material_proof("7k/8/8/8/8/R6K/1p6/q7 w - - 0 1", "a3a1", "b2a1", None);
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    // Rxa1 gains900; bxa1=Q costs500 and creates800: 900-1300=-400.
+    assert_eq!(
+        exchange(g.position(), "a3a1".parse().unwrap(), 16, &mut e.work).ok(),
+        Some(-400)
+    );
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
+}
+
+#[test]
+fn promotion_recapture_see_is_color_reflection_symmetric() {
+    let g =
+        promotion_recapture_material_proof("Q7/1P6/r6k/8/8/8/8/7K b - - 0 1", "a6a8", "b7a8", None);
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    assert_eq!(
+        exchange(g.position(), "a6a8".parse().unwrap(), 16, &mut e.work).ok(),
+        Some(-400)
+    );
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
+}
+
+#[test]
+fn promotion_recapture_see_does_not_double_count_a_recaptured_promotion() {
+    for (fen, first, promotion, reply) in [
+        ("7k/8/8/8/R7/R6K/1p6/q7 w - - 0 1", "a3a1", "b2a1", "a4a1"),
+        ("Q7/1P6/r6k/r7/8/8/8/7K b - - 0 1", "a6a8", "b7a8", "a5a8"),
+    ] {
+        let g = promotion_recapture_material_proof(fen, first, promotion, Some(reply));
+        let mut stop = || false;
+        let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+        assert_eq!(
+            exchange(g.position(), first.parse().unwrap(), 16, &mut e.work).ok(),
+            Some(500)
+        );
+        assert_eq!(e.cursor.game(), Some(&g));
+        assert_eq!(e.eval, EvalState::new(g.position()));
+    }
+}
+
+#[test]
+fn promotion_recapture_see_cancels_before_reply_projection_without_mutation() {
+    for (fen, first) in [
+        ("7k/8/8/8/8/R6K/1p6/q7 w - - 0 1", "a3a1"),
+        ("Q7/1P6/r6k/8/8/8/8/7K b - - 0 1", "a6a8"),
+    ] {
+        for stop_at in [2, 3] {
+            let g = game(fen);
+            let original = g.clone();
+            let mut polls = 0;
+            let mut stop = || {
+                polls += 1;
+                polls >= stop_at
+            };
+            let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+            let key = e.cursor.key();
+            assert!(matches!(
+                exchange(g.position(), first.parse().unwrap(), 16, &mut e.work),
+                Err(Halt::Limit(SearchStatus::Stopped))
+            ));
+            assert_eq!(g, original);
+            assert_eq!(e.cursor.game(), Some(&g));
+            assert_eq!(e.cursor.key(), key);
+            assert_eq!(e.cursor.depth(), 0);
+            assert_eq!(e.eval, EvalState::new(g.position()));
+        }
+    }
+}
+#[test]
+fn promotion_recapture_see_negative_exchange_reaches_quiescent_pruning() {
+    let g = game("7k/8/8/8/8/R6K/1p6/q7 w - - 0 1");
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    e.diagnostics.disable_delta_pruning = true;
+    let key = e.cursor.key();
+    e.quiescence(0, -INF, INF, Q_PLIES - 2, None).ok().unwrap();
+    assert_eq!(e.stats.q_see_pruned, 1);
+    assert_eq!(e.stats.q_delta_pruned, 0);
+    assert_eq!(
+        e.work.nodes, 1,
+        "the losing capture is the only tactical candidate"
+    );
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.cursor.key(), key);
+    assert_eq!(e.cursor.depth(), 0);
+    assert_eq!(e.eval, EvalState::new(g.position()));
+}
+
+#[test]
+fn diagnostic_null_off_disables_genuine_probes_without_changing_frontier() {
+    let g = game(STANDARD_START_FEN);
+    let mut stop = || false;
+    for disabled in [false, true] {
+        let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+        let key = e.cursor.key();
+        e.diagnostics.disable_null = disabled;
+        let v = e
+            .main(4, 1, -100001, -100000, false, true, 4, None)
+            .ok()
+            .unwrap();
+        assert!(v.score >= -100000);
+        assert_eq!(e.stats.null_probes > 0, !disabled);
+        assert_eq!(e.stats.null_verified > 0, !disabled);
+        assert!(
+            e.stats.q_nodes > 0,
+            "quiescence remains enabled in both controls"
+        );
+        assert_eq!(e.cursor.game(), Some(&g));
+        assert_eq!(e.cursor.key(), key);
+        assert_eq!(e.cursor.depth(), 0);
+        assert_eq!(e.eval, EvalState::new(g.position()));
+    }
+}
+
+#[test]
+fn promotion_recapture_see_two_origins_keep_variant_work_bounded() {
+    use std::cell::Cell;
+    // Rxd1 wins900; either pawn can promote while capturing that rook.
+    // White's second rook could recapture, but the remaining pawn promotes
+    // in turn, making that continuation worse than declining it. Losing400
+    // is therefore the best material exchange after the initial capture.
+    let g = game("7k/8/8/8/3R4/3R3K/2p1p3/3q4 w - - 0 1");
+    let polls = Cell::new(0);
+    let mut stop = || {
+        polls.set(polls.get() + 1);
+        false
+    };
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    assert_eq!(
+        exchange(g.position(), "d3d1".parse().unwrap(), 16, &mut e.work).ok(),
+        Some(-400)
+    );
+    // Root + four first-promotion branches, each with its single rook reply
+    // and four second-promotion completions:1+4*(1+1+4)=25 inspected actions.
+    assert_eq!(polls.get(), 25);
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
+}
+
+fn msh152_history_fixture(json: &str, id: &str) -> (AdjudicatedGame, serde_json::Value) {
+    let inputs: serde_json::Value = serde_json::from_str(json).unwrap();
+    let input = inputs
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|v| v["id"] == id)
+        .unwrap();
+    let mut g =
+        AdjudicatedGame::from_fen(input["fen"].as_str().unwrap(), ClaimPolicy::AutoClaim).unwrap();
+    for action in input["history"].as_array().unwrap() {
+        g.apply(action.as_str().unwrap().parse().unwrap()).unwrap();
+    }
+    assert_eq!(
+        g.position().to_fen(),
+        input["expected_root_fen"].as_str().unwrap()
+    );
+    (g, input.clone())
+}
+
+#[test]
+fn pv_quiet_alternatives_preserve_full_history_invasion_defence() {
+    // MSH-152 controlled selectivity experiment: the old PV reduction chose
+    // Ke8; full-depth alternatives and the revised PV policy choose Rxf5.
+    // This is a reference-supported engineering regression, not a claim that
+    // Rxf5 is a proven unique best move or an independent rules oracle.
+    let (g, _) = msh152_history_fixture(
+        include_str!("../../../docs/m5/evidence/msh152/positions.json"),
+        "confirmation-004-1-31-d7e8",
+    );
+    let before = g.clone();
+    let key = SearchCursor::new(&g).key();
+    let r = search(
+        &g,
+        SearchLimits {
+            depth: 6,
+            nodes: Some(2_000_000),
+        },
+    )
+    .unwrap();
+    assert_eq!(r.result.status, SearchStatus::Complete);
+    assert_eq!(r.result.completed_depth, 6);
+    assert_eq!(
+        r.result.principal_variation.first(),
+        Some(&SearchChoice::Move("e5f5".parse().unwrap()))
+    );
+    assert!(
+        r.stats.reductions > 0,
+        "ordinary non-PV/deeper LMR remains active"
+    );
+    assert!(r.iterations.iter().all(|i| i.completed));
+    replay(&g, &r);
+    assert_eq!(g, before);
+    assert_eq!(SearchCursor::new(&g).key(), key);
+}
+
+#[test]
+fn pv_quiet_alternatives_find_independent_published_rook_mating_threat() {
+    let (g, input) = msh152_history_fixture(
+        include_str!("../../../docs/m5/evidence/msh152/independent-panel.json"),
+        "MO2mm",
+    );
+    let before = g.clone();
+    // The preserved independent puzzle publishes Rd5 and this mate-in-three
+    // line. Native replay proves this line ends in mate, not that it exhausts
+    // every defensive alternative or establishes a unique best move.
+    let mut line = g.clone();
+    for action in input["expected_line"].as_array().unwrap() {
+        line.apply(action.as_str().unwrap().parse().unwrap())
+            .unwrap();
+    }
+    assert_eq!(
+        line.outcome(),
+        Some(ChessOutcome::Checkmate {
+            winner: Color::Black
+        })
+    );
+    let r = search(
+        &g,
+        SearchLimits {
+            depth: 3,
+            nodes: Some(2_000_000),
+        },
+    )
+    .unwrap();
+    assert_eq!(r.result.status, SearchStatus::Complete);
+    assert_eq!(r.result.completed_depth, 3);
+    assert_eq!(
+        r.result.principal_variation.first(),
+        Some(&SearchChoice::Move("d8d5".parse().unwrap()))
+    );
+    assert!(r.result.score.is_some_and(|score| score >= MATE_BAND));
+    replay(&g, &r);
+    assert_eq!(g, before);
+}
+
+#[test]
+fn non_pv_reductions_remain_active_and_cancellation_restores_full_history() {
+    let mut g = game(STANDARD_START_FEN);
+    for action in ["g1f3", "g8f6", "f3g1", "f6g8"] {
+        g.apply(action.parse().unwrap()).unwrap();
+    }
+    let before = g.clone();
+    let mut total_polls = 0;
+    {
+        let mut stop = || {
+            total_polls += 1;
+            false
+        };
+        let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+        let key = e.cursor.key();
+        e.main(3, 0, -INF, INF, false, false, 4, None).ok().unwrap();
+        assert!(e.stats.reductions > 0);
+        assert_eq!(e.cursor.game(), Some(&g));
+        assert_eq!(e.cursor.key(), key);
+        assert_eq!(e.cursor.depth(), 0);
+        assert_eq!(e.eval, EvalState::new(g.position()));
+    }
+    // Interrupt the same real-history search at several interior work points;
+    // no partially searched branch may survive in the native cursor/evaluator.
+    for cancel_at in [total_polls / 3, total_polls / 2, total_polls - 1] {
+        let mut polls = 0;
+        let mut stop = || {
+            polls += 1;
+            polls >= cancel_at
+        };
+        let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+        let key = e.cursor.key();
+        assert!(matches!(
+            e.main(3, 0, -INF, INF, false, false, 4, None),
+            Err(Halt::Limit(SearchStatus::Stopped))
+        ));
+        assert_eq!(e.cursor.game(), Some(&g));
+        assert_eq!(e.cursor.key(), key);
+        assert_eq!(e.cursor.depth(), 0);
+        assert_eq!(e.eval, EvalState::new(g.position()));
+    }
+    assert_eq!(g, before);
 }

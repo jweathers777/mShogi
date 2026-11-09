@@ -84,12 +84,48 @@ pub struct Evaluation {
     pub black: Terms,
     /// Shared blend in0..=6400, capped at initial non-pawn material.
     pub middle_phase: i32,
+    /// Material-specific advisory estimate, never a native outcome or claim.
+    pub specialized: Option<EndgameEvaluation>,
+}
+
+/// Applicability of original classical endgame knowledge.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum EndgameKind {
+    /// Native-generated KPK board win/draw knowledge; ignores history and clocks.
+    KingPawnKing,
+    /// Wrong-colored bishop and one rook pawn, defender on the promotion corner.
+    WrongBishopRookPawn,
+    /// Bishop and knight against a bare king: encourage the correct corner.
+    BishopKnightConversion,
+}
+
+/// Transparent replacement for generic terms in a narrowly matched ending.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct EndgameEvaluation {
+    /// Material-specific applicability, including whether the score is heuristic.
+    pub kind: EndgameKind,
+    /// Side owning the pawn or mating material.
+    pub strong_side: Color,
+    /// Centipawns from that side, always outside the mate band. Even zero is
+    /// advisory: search must still process native outcomes and draw claims.
+    pub score: i32,
 }
 impl Evaluation {
     /// Static estimate in centipawns; zero does not establish a draw.
     pub fn score_for(self, side: Color) -> i32 {
-        let score =
-            self.white.contribution(self.middle_phase) - self.black.contribution(self.middle_phase);
+        let score = self.specialized.map_or_else(
+            || {
+                self.white.contribution(self.middle_phase)
+                    - self.black.contribution(self.middle_phase)
+            },
+            |e| {
+                if e.strong_side == Color::White {
+                    e.score
+                } else {
+                    -e.score
+                }
+            },
+        );
         debug_assert!(score.abs() < MAX_ABS_STATIC_SCORE);
         if side == Color::White { score } else { -score }
     }
@@ -356,7 +392,8 @@ impl Features {
 /// and defended occupied squares. Mobility discounts own occupancy and enemy
 /// pawn attacks; it is an activity estimate, not a count of legal moves. King
 /// ring and threat estimates likewise never decide check, capture or outcome.
-/// Phase blending does not depend on side to move, clocks, claims or history.
+/// Generic phase blending does not depend on side to move. Specialized KPK
+/// board knowledge includes the turn; clocks, claims and history stay native.
 /// All coefficients are original, transparent untrained arithmetic heuristics.
 pub fn evaluate(position: &Position) -> Evaluation {
     dynamic(position, Accumulator::rebuilt(position))
@@ -595,7 +632,87 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
         white: terms[0],
         black: terms[1],
         middle_phase: base.phase.min(MIDDLE_PHASE),
+        specialized: specialized(position, &f),
     }
+}
+
+fn specialized(position: &Position, f: &Features) -> Option<EndgameEvaluation> {
+    // These material sets cannot retain castling rights. Ignore raw EP targets:
+    // with only one pawn no en-passant capture is possible (including immediately
+    // after a legal double push). Native Game still owns all history semantics.
+    if f.men.len() > 5 {
+        return None;
+    }
+    let nonkings: Vec<_> = f
+        .men
+        .iter()
+        .filter(|m| m.piece.kind != PieceKind::King)
+        .collect();
+    if let [pawn] = nonkings.as_slice()
+        && pawn.piece.kind == PieceKind::Pawn
+    {
+        let win = crate::chess_kpk::probe(position)?;
+        return Some(EndgameEvaluation {
+            kind: EndgameKind::KingPawnKing,
+            strong_side: pawn.piece.color,
+            // WDL membership is exact board knowledge; conversion preferences
+            // are ordinary original heuristics, not distance-to-mate data.
+            // Stay below a rook so a winning underpromotion is not discouraged.
+            score: if win {
+                300 + 24 * i32::from(relative_rank(pawn.piece, pawn.sq))
+            } else {
+                0
+            },
+        });
+    }
+    if nonkings.len() != 2 || nonkings[0].piece.color != nonkings[1].piece.color {
+        return None;
+    }
+    let bishop = nonkings
+        .iter()
+        .find(|m| m.piece.kind == PieceKind::Bishop)?;
+    let other = nonkings
+        .iter()
+        .find(|m| m.piece.kind != PieceKind::Bishop)?;
+    let strong_side = bishop.piece.color;
+    let i = side(strong_side);
+    let defender = f.kings[1 - i];
+    let bishop_color = (bishop.sq.file() + bishop.sq.rank()) % 2;
+    if other.piece.kind == PieceKind::Pawn && matches!(other.sq.file(), 0 | 7) {
+        let corner = Square::new(
+            other.sq.file(),
+            if strong_side == Color::White { 7 } else { 0 },
+        )
+        .unwrap();
+        if defender == corner && (corner.file() + corner.rank()) % 2 != bishop_color {
+            return Some(EndgameEvaluation {
+                kind: EndgameKind::WrongBishopRookPawn,
+                strong_side,
+                score: 0,
+            });
+        }
+    }
+    if other.piece.kind == PieceKind::Knight {
+        let corners = if bishop_color == 0 {
+            [square(0), square(63)]
+        } else {
+            [square(7), square(56)]
+        };
+        let corner_distance = corners
+            .into_iter()
+            .map(|c| distance(defender, c))
+            .min()
+            .unwrap();
+        let approach = 7 - distance(f.kings[i], defender);
+        return Some(EndgameEvaluation {
+            kind: EndgameKind::BishopKnightConversion,
+            strong_side,
+            // Not a win certificate: hanging pieces, stalemate and the fifty-
+            // move claim must be handled by actual search/native admission.
+            score: 650 + 24 * (7 - corner_distance) + 12 * approach,
+        });
+    }
+    None
 }
 
 #[cfg(test)]
@@ -652,12 +769,18 @@ mod tests {
         let e = evaluate(&position("7k/8/8/8/8/8/P7/K7 w - - 0 1"));
         assert_eq!(e.white.material, 100);
         assert_eq!(e.white.pawns.end, 22);
-        assert_eq!(e.score_for(Color::White), 122);
+        assert_eq!(
+            e.white.contribution(e.middle_phase) - e.black.contribution(e.middle_phase),
+            122
+        );
         // A6 pawn:40placement,-8isolated+122passed+4escort+64clear runway.
         let e = evaluate(&position("7k/8/P7/8/8/8/8/K7 w - - 0 1"));
         assert_eq!(e.white.placement.end, 40);
         assert_eq!(e.white.pawns.end, 182);
-        assert_eq!(e.score_for(Color::White), 322);
+        assert_eq!(
+            e.white.contribution(e.middle_phase) - e.black.contribution(e.middle_phase),
+            322
+        );
         // RookA1 attacks14squares, oneoccupiedbyownKh1 excluded:13mobility.
         let e = evaluate(&position("7k/8/8/8/8/8/8/R6K w - - 0 1"));
         assert_eq!(e.white.mobility, Tapered::new(13 * 2 + 16, 13 * 4 + 12));
@@ -909,6 +1032,68 @@ mod tests {
                     .is_none()
             );
         }
+    }
+
+    #[test]
+    fn specialized_endings_distinguish_turn_color_and_material_guards() {
+        // Independent Syzygy WDL: the same e4 opposition board draws on White's
+        // turn and wins for White on Black's. These are advisory finite scores.
+        for (fen, kind, zero) in [
+            (
+                "8/4k3/8/4K3/4P3/8/8/8 w - - 0 1",
+                EndgameKind::KingPawnKing,
+                true,
+            ),
+            (
+                "8/4k3/8/4K3/4P3/8/8/8 b - - 0 1",
+                EndgameKind::KingPawnKing,
+                false,
+            ),
+            (
+                "k7/P7/1K6/8/8/8/8/2B5 w - - 0 1",
+                EndgameKind::WrongBishopRookPawn,
+                true,
+            ),
+        ] {
+            let p = position(fen);
+            let before = p.clone();
+            let e = evaluate(&p);
+            assert_eq!(e.specialized.unwrap().kind, kind);
+            assert_eq!(e.score_for(Color::White) == 0, zero);
+            assert!(e.score_for(Color::White).abs() < 1000);
+            assert_eq!(
+                evaluate(&reflect(&p)).score_for(Color::Black),
+                e.score_for(Color::White)
+            );
+            assert_eq!(p, before);
+        }
+        // Right bishop (Be4#), far defender, additional pawn, non-rook pawn:
+        // none may inherit the corner-fortress scale merely from similar material.
+        for fen in [
+            "k7/P7/1K6/8/8/8/8/1B6 w - - 0 1",
+            "7k/P7/1K6/8/8/8/8/2B5 w - - 0 1",
+            "k7/P7/1K6/8/8/8/1P6/2B5 w - - 0 1",
+            "k7/2P5/1K6/8/8/8/8/2B5 w - - 0 1",
+        ] {
+            let p = position(fen);
+            assert!(evaluate(&p).specialized.is_none(), "{fen}");
+            assert!(evaluate(&reflect(&p)).specialized.is_none());
+        }
+        // Bare king must be driven to bishop-colored corners. Same material,
+        // identical king distance; d2 bishop mates in h8, not a8.
+        let correct = position("7k/8/8/8/3K4/8/3B4/4N3 w - - 0 1");
+        let wrong = position("k7/8/8/8/3K4/8/3B4/4N3 w - - 0 1");
+        assert!(
+            evaluate(&correct).score_for(Color::White) > evaluate(&wrong).score_for(Color::White)
+        );
+        assert_eq!(
+            evaluate(&correct).specialized.unwrap().kind,
+            EndgameKind::BishopKnightConversion
+        );
+        assert_eq!(
+            evaluate(&reflect(&correct)).score_for(Color::Black),
+            evaluate(&correct).score_for(Color::White)
+        );
     }
 
     #[test]

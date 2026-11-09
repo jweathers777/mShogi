@@ -1484,3 +1484,168 @@ fn independent_quiet_threat_gets_a_defensive_response_at_the_frontier_boundary()
         }
     }
 }
+
+#[test]
+fn frontier_retains_quiet_and_checking_defences_against_contact_mate() {
+    // Independent exhaustive python-chess expectation: only Ra7!, Rf8+ and
+    // Ra6+ prevent every immediate White mate. Ra7 defends g7 without checking;
+    // Rg8 is insufficient because Qh5/Qh4/Qh3 still mate. No global draw claim.
+    let g = game("r6k/8/5K2/8/6Q1/8/8/8 b - - 0 1");
+    let expected: Vec<Action> = ["a8a7", "a8a6", "a8f8"].map(|a| a.parse().unwrap()).into();
+    let mut safe = Vec::new();
+    for a in g.position().legal_actions() {
+        let mut child = g.clone();
+        child.apply(a).unwrap();
+        let mut immediate_mate = false;
+        for reply in child.position().legal_actions() {
+            child.apply(reply).unwrap();
+            immediate_mate |= matches!(
+                child.outcome(),
+                Some(ChessOutcome::Checkmate {
+                    winner: Color::White
+                })
+            );
+            child.undo().unwrap();
+        }
+        if !immediate_mate {
+            safe.push(a);
+        }
+    }
+    assert_eq!(safe.len(), expected.len());
+    assert!(expected.iter().all(|a| safe.contains(a)));
+    // The exhausted quiet frontier counterexample is retained for MSH-143;
+    // this assertion covers the full initial frontier, not every horizon.
+    {
+        let left = Q_PLIES;
+        let mut stop = || false;
+        let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+        let v = e
+            .quiescence(0, -INF, INF, left, None)
+            .unwrap_or_else(|_| panic!("bounded defence"));
+        let SearchChoice::Move(a) = v.pv[0] else {
+            panic!("expected defence")
+        };
+        assert!(safe.contains(&a), "{a:?} left={left}");
+        assert!(e.stats.queen_threat_nodes > 0);
+        assert_eq!(e.cursor.game(), Some(&g));
+        assert_eq!(e.eval, EvalState::new(g.position()));
+    }
+}
+
+#[test]
+fn endgame_knowledge_remains_below_native_history_claims_and_terminal_authority() {
+    let draw = game("8/4k3/8/4K3/4P3/8/8/8 w - - 0 1");
+    assert!(draw.outcome().is_none(), "static zero is not adjudication");
+    let r = search_with_stop(
+        &draw,
+        SearchLimits {
+            depth: 4,
+            nodes: Some(20000),
+        },
+        || false,
+    )
+    .unwrap();
+    assert_eq!(r.result.score, Some(0));
+    assert!(matches!(
+        r.result.decision,
+        Some(SearchDecision::Choose(SearchChoice::Move(_)))
+    ));
+    replay(&draw, &r);
+    let claim = game("8/4k3/8/4K3/4P3/8/8/8 b - - 100 1");
+    assert!(evaluation::evaluate(claim.position()).score_for(Color::Black) < 0);
+    let before = claim.clone();
+    let r = search_with_stop(
+        &claim,
+        SearchLimits {
+            depth: 4,
+            nodes: Some(20000),
+        },
+        || false,
+    )
+    .unwrap();
+    assert_eq!(r.result.score, Some(0));
+    assert!(matches!(
+        r.result.decision,
+        Some(SearchDecision::Choose(SearchChoice::Claim(_)))
+    ));
+    assert_eq!(claim, before);
+    replay(&claim, &r);
+    let terminal = game("8/4k3/8/4K3/4P3/8/8/8 b - - 150 1");
+    assert!(matches!(terminal.outcome(), Some(ChessOutcome::Draw(_))));
+    let r = search_with_stop(
+        &terminal,
+        SearchLimits {
+            depth: 4,
+            nodes: Some(20000),
+        },
+        || false,
+    )
+    .unwrap();
+    assert_eq!(r.result.score, Some(0));
+    assert!(matches!(
+        r.result.decision,
+        Some(SearchDecision::Finished(ChessOutcome::Draw(_)))
+    ));
+    let r = search_with_stop(
+        &draw,
+        SearchLimits {
+            depth: 4,
+            nodes: Some(20000),
+        },
+        || true,
+    )
+    .unwrap();
+    assert!(r.result.decision.is_none());
+    assert_eq!(r.result.completed_depth, 0);
+}
+
+#[test]
+fn winning_pawn_endings_progress_without_discarding_the_board_win() {
+    // Independently confirmed wins: preserve the WDL while both sides choose
+    // actual native moves, then reach safe promotion in a bounded journey.
+    // This tests conversion integration, not competitive playing strength.
+    for fen in [
+        "K7/P7/k7/8/8/8/8/8 w - - 0 1",
+        "8/4k3/8/4K3/4P3/8/8/8 b - - 0 1",
+        "8/k1P5/2K5/8/8/8/8/8 w - - 0 1",
+    ] {
+        let mut g = game(fen);
+        let mut promoted = false;
+        for _ in 0..48 {
+            assert_eq!(crate::chess_kpk::probe(g.position()), Some(true));
+            let before = g.clone();
+            let r = search(
+                &g,
+                SearchLimits {
+                    depth: 6,
+                    nodes: Some(20000),
+                },
+            )
+            .unwrap();
+            assert_eq!(g, before);
+            let Some(SearchDecision::Choose(SearchChoice::Move(a))) = r.result.decision else {
+                panic!("winning pawn ending did not choose a move: {r:?}");
+            };
+            g.apply(a).unwrap();
+            assert!(!matches!(g.outcome(), Some(ChessOutcome::Draw(_))), "{fen}");
+            if a.promotion.is_some() {
+                promoted = true;
+                assert!(
+                    g.position()
+                        .legal_actions()
+                        .iter()
+                        .all(|reply| reply.to != a.to),
+                    "promotion must not be immediately capturable: {fen}"
+                );
+                assert!(matches!(
+                    a.promotion,
+                    Some(
+                        mshogi_core::chess::Promotion::Queen | mshogi_core::chess::Promotion::Rook
+                    )
+                ));
+                break;
+            }
+        }
+        assert!(promoted, "bounded conversion stalled: {fen}");
+    }
+}

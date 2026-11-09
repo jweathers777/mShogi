@@ -4,7 +4,7 @@ title: Pawn Threat and Exchange Judgment
 status: Ready
 assignee: []
 created_date: '2026-11-09T19:38:00Z'
-updated_date: '2026-11-09T20:38:00Z'
+updated_date: '2026-11-09T20:50:00Z'
 labels:
   - handle:pawn-threat-and-exchange-judgment
 milestone: m-5
@@ -12,6 +12,7 @@ dependencies:
   - MSH-144
   - MSH-147
   - MSH-148
+  - MSH-150
 documentation:
   - docs/m5/chess-progress-assessment-report.md
 priority: high
@@ -45,4 +46,6 @@ Handle: Pawn Threat and Exchange Judgment. Follow the completed conventional eng
 Owner course-correction after MSH-144: do not start automatically. MSH-147 (Chess Effectiveness Diagnosis) first compares general search/evaluation effectiveness and increasing thinking time, then determines this task priority. Prospective verification follows MSH-146 (Risk-Based Verification): default Level1 local evidence/review for platform-independent search/evaluation; explicitly escalate only actual platform-sensitive risks. Historical completed acceptance remains unchanged.
 
 MSH147 broad diagnosis prioritizes MSH148 Deferred Frontier Work first, then this evaluation increment. Baseline avoided historical Ne5 at local depth8 but still showed deeper pessimism; independent queen-pawn, KNNK and rook endings expose broader conversion/scaling ambiguity. Preserve native authority and nearby winning/losing counterexamples. Broad low-material LMR was experimentally rejected after losing unique winningRe1; no blanket pruning/TT change is authorized by that result.
+
+MSH148 removed unused quiet work with exact fixed-work equivalence but neutral aggregate timing. MSH150 Lazy Native Move Queries now precedes this task to address the larger profiled native-query/allocation cost. Evaluation scope and independent counterexamples remain valid; no per-technique tournament.
 <!-- SECTION:NOTES:END -->

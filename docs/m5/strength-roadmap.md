@@ -114,3 +114,10 @@ independently winning rook move. TT capacity and isolated SEE micro-optimization
 are lower priorities on current evidence. Keep independent quality counterexamples
 alongside cost measurements; reassess fresh practical play after this combined
 round without declaring a gain from engineering telemetry.
+
+MSH-148's exact-work correction is accepted but its aggregate timing is neutral.
+MSH-150 (Lazy Native Move Queries) therefore precedes MSH-145: native existence
+queries still eagerly construct every candidate, despite needing only one legal
+witness. This follows the measured native/allocation costs rather than expanding
+SEE/TT tuning or claiming a strength gain from fewer projections. The evaluation
+round and later adaptive assessment remain required.

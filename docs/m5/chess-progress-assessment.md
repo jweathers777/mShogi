@@ -40,8 +40,12 @@ fresh confirmation evidence remain distinguishable.
 
 Two initial pairs are expected to take roughly 8 minutes based on prior observations,
 but this is not a guarantee. If they leave the development question unresolved,
-report the evidence and propose a concrete bounded extension before a substantial
-expanded campaign. There is no automatic repetition of the old 48-minute study.
+use fresh confirmation under the owner-requested adaptive reassessment. After
+the initial two pairs, a proportionate operational extension permits at most
+1,800 seconds total active local work, including the first tranche; this is not
+a fresh allowance. Stop earlier when evidence is useful. A substantial further
+expanded campaign requires a concrete resource proposal. There is no automatic
+repetition of the old 48-minute study.
 Routine opponent selection, analysis and correctness work need no owner checkpoint.
 
 Report actual scores, conditional ranges and their sensitivity, representative

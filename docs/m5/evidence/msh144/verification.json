@@ -1,12 +1,253 @@
 {
   "task": "MSH-144 (Chess Progress Assessment)",
-  "status": "accepted-engineering-ready-for-initial-pairs",
+  "status": "accepted",
   "engineering_accepted": true,
-  "resource_cap_seconds": 900,
+  "resource_cap_seconds": 1800,
   "resource_extra_seconds": 0,
-  "resource_total_seconds": 0,
-  "active_seconds": 0,
-  "runs": [],
+  "resource_total_seconds": 1313.6070637931116,
+  "active_seconds": 1313.6070637931116,
+  "runs": [
+    {
+      "phase": "discovery",
+      "opponent": "oxidation060",
+      "ordinal": 0,
+      "opening": "book-755b3890d0bf1304",
+      "reason": "First fresh pair at the previously informative independent1943anchor after accepted141/142/143engineering; no presupposed gain.",
+      "started_utc": "2026-11-09T19:08:13.388082+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.25,
+      "folder": "pair-000-discovery-oxidation060",
+      "config_sha256": "06b52271c4b14dd1b038c79f374f0cdbb40c975d7b900aadb080025ab96944f2",
+      "resource_cap_seconds": 900,
+      "remaining_at_admission_seconds": 900,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "5377d5f26bc20c110cd75287460fbc1c7af715e2cc240bcb3ac0ff6fdb47609d",
+      "summary": {
+        "opening_id": "book-755b3890d0bf1304",
+        "games": 2,
+        "wins": [
+          0,
+          1
+        ],
+        "draws": 1,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 190.55614220909774,
+      "ended_utc": "2026-11-09T19:11:23.944992+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "discovery",
+      "opponent": "goldfish113",
+      "ordinal": 0,
+      "opening": "book-84e510d761ef4923",
+      "reason": "One Oxidationpair produced1draw1loss, too little for a mismatch judgment. Use the second previously informative independent1982family before routing or confirmation.",
+      "started_utc": "2026-11-09T19:12:42.078253+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 1.0,
+      "folder": "pair-001-discovery-goldfish113",
+      "config_sha256": "1f75d825482bdbcf1d712df71c86a6e7d854b7e976837848ea40b0aef426ef76",
+      "resource_cap_seconds": 900,
+      "remaining_at_admission_seconds": 709.4438577909023,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "4a9a2c88d2374d3dd450bd120fb83a0dd677f6a5315aea03240127b47f0aacba",
+      "summary": {
+        "opening_id": "book-84e510d761ef4923",
+        "games": 2,
+        "wins": [
+          2,
+          0
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 267.63457891717553,
+      "ended_utc": "2026-11-09T19:17:09.713811+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "oxidation060",
+      "ordinal": 0,
+      "opening": "book-b57d9565ec64c417",
+      "reason": "Fresh confirmation from disjoint partition after sparse differing scouts; Ox1draw1loss is competitive, so retain1943anchor rather than overreacting to onepair.",
+      "started_utc": "2026-11-09T19:18:28.507878+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.5,
+      "folder": "pair-002-confirmation-oxidation060",
+      "config_sha256": "4a64f09604ea9644bc586d24cec828017b6dd42caa09c4c44ed42fffe670ffad",
+      "resource_cap_seconds": 1800,
+      "remaining_at_admission_seconds": 1341.8092788737267,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "af92e7852eb01f7d3d77d286689b98b71a12bebd39d841940ec2968583ac0cf3",
+      "summary": {
+        "opening_id": "book-b57d9565ec64c417",
+        "games": 2,
+        "wins": [
+          1,
+          1
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 229.3289724579081,
+      "ended_utc": "2026-11-09T19:22:17.837002+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "goldfish113",
+      "ordinal": 0,
+      "opening": "book-559a75660c5cac7f",
+      "reason": "Ox freshconfirmation split1win1loss. Confirm the initialGoldfish2winpair on disjoint freshroots; do not treat a single favorableopeningpair as strength gain or routeup prematurely.",
+      "started_utc": "2026-11-09T19:22:46.255259+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.5,
+      "folder": "pair-003-confirmation-goldfish113",
+      "config_sha256": "f4875ed94245bb48e90d99352bf411f14942b8d1338180d5a1ba9d893e3268d1",
+      "resource_cap_seconds": 1800,
+      "remaining_at_admission_seconds": 1112.4803064158186,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "b4ecb7d41ee0fa3e72856b7e962ca3ba99742c40fe870f5dc0db6bfddf15e09f",
+      "summary": {
+        "opening_id": "book-559a75660c5cac7f",
+        "games": 2,
+        "wins": [
+          1,
+          1
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 204.25923320883885,
+      "ended_utc": "2026-11-09T19:26:10.515555+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "oxidation060",
+      "ordinal": 1,
+      "opening": "book-2ee848c4e23e153f",
+      "reason": "First freshconfirmation pairs split1win1loss inbothfamilies. Ox remains informative near currentstrength; add a second freshpair to reduce dependence on one opening and prior before concluding.",
+      "started_utc": "2026-11-09T19:26:42.497335+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.25,
+      "folder": "pair-004-confirmation-oxidation060",
+      "config_sha256": "9f1c4935eb709ebe1e0ce08bc8a31c8f17fb33f22b7d3ebc71d4c5ae58e1e924",
+      "resource_cap_seconds": 1800,
+      "remaining_at_admission_seconds": 908.2210732069798,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "3f18284a778499c4a36d50b5e098a4afa6bdec8eedbcca0b7a7abaefddbaab4d",
+      "summary": {
+        "opening_id": "book-2ee848c4e23e153f",
+        "games": 2,
+        "wins": [
+          0,
+          1
+        ],
+        "draws": 1,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 239.7830017078668,
+      "ended_utc": "2026-11-09T19:30:42.281519+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "goldfish113",
+      "ordinal": 1,
+      "opening": "book-8d860c4288eca087",
+      "reason": "Ox twofreshconfirmationpairs score1.5/4,matching historicalpercentage and showing no clear gain. Complete secondindependentGoldfishconfirmationpair before stopping and reporting paireduncertainty; no automatic tournament expansion.",
+      "started_utc": "2026-11-09T19:31:59.155690+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.0,
+      "folder": "pair-005-confirmation-goldfish113",
+      "config_sha256": "4f8cb98d1cadee333099c8d0bb80781feae8b8ac5cd77501ba6776bbda7e2afc",
+      "resource_cap_seconds": 1800,
+      "remaining_at_admission_seconds": 668.438071499113,
+      "cleanup_replay_finalize_reserve_seconds": 40,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "f9319dbcae97b7ade31a257351000321a841cd606126374c601f49774803608e",
+      "summary": {
+        "opening_id": "book-8d860c4288eca087",
+        "games": 2,
+        "wins": [
+          0,
+          2
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 182.0451352922246,
+      "ended_utc": "2026-11-09T19:35:01.201983+00:00",
+      "process_group_settled": true
+    }
+  ],
   "inflight": null,
   "build": {
     "candidate": {
@@ -240,7 +481,7 @@
   "freeze": {
     "code_sha256": "1e930af413639f2c1c1cb1c1c4cb63bb89ce3aaa97e78fcb34e00c41cbeea47b",
     "tests_sha256": "e06698f6c3b30ba026c9b3011cc58c2a35c4d41b98b9a38d2749c605e361df89",
-    "method_sha256": "705956acef5a06af91cd735f15c297601dcce8dda2d068a82a5a4f60a63fcb62",
+    "method_sha256": "326f1fbb36832618b56ce766c14dd5214daad2c34ee19c131610b1da3816937d",
     "production_source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee"
   },
   "initial_scope": "OnefreshreversedcolorpairperOxidation/Goldfishfamily,adaptiveinspectionwithin900saggregate;largerformalstudyrequiresconcreteresourceproposal.",
@@ -268,6 +509,11 @@
       "reviewer": "endgame_review",
       "verdict": "Approved bounded helper and strengthened historical comparison identity guard; independently ran original8offline tests, reviewed added9thtest receipt and finalguard. No engine matches launched.",
       "scope": "Cumulative resource admission/cleanup, complete-native-result eligibility, fresh-root exclusion, independent old/new uncertainty, exact reference comparison identity."
+    },
+    {
+      "reviewer": "endgame_review",
+      "verdict": "Finalassessment approved; no material findings. Allsixconfigs/rawreports/nativeconclusions4W2D6L, identities, effective1sconditions, freshroots, exits, replay/cleanup and1313.607s agree. Independenttranscript extraction matchesobservations, diagnosticfullhistories86/88plies verified,682turnsnonewithdepth<=1. Statisticaluncertainty andproportionatestop support completion withoutgain/regression/maturityclaim.",
+      "scope": "Read-only final audit; no new engines, searches, replays, tests or campaigns. Corrected5percentwording refers to combinedfixed-workcomparison."
     }
   ],
   "retained_engineering_diagnostics": {
@@ -285,5 +531,88 @@
     "ci_record": "../msh143/verification.json",
     "reviewer": "endgame_review",
     "verdict": "Final actual3OSreceipts/source/history accepted; no outstanding material findings."
+  },
+  "method_history": [
+    {
+      "freeze": {
+        "code_sha256": "1e930af413639f2c1c1cb1c1c4cb63bb89ce3aaa97e78fcb34e00c41cbeea47b",
+        "tests_sha256": "e06698f6c3b30ba026c9b3011cc58c2a35c4d41b98b9a38d2749c605e361df89",
+        "method_sha256": "705956acef5a06af91cd735f15c297601dcce8dda2d068a82a5a4f60a63fcb62",
+        "production_source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee"
+      },
+      "resource_cap_seconds": 900,
+      "scope": "Initial two pairs; frozen and integrated before execution at bd88649. Both receipts retain original cap900.",
+      "active_seconds": 458.1907211262733
+    }
+  ],
+  "resource_extension": {
+    "recorded_utc": "2026-11-09T19:18:05.631308+00:00",
+    "new_aggregate_cap_seconds": 1800,
+    "authorization": "Current owner explicitly requests fresh adaptive reassessment using MSH-139 methodology, with proportionate work and escalation for substantial new resource commitments. This modest same-method confirmation extends the initial tranche, not routine per-optimization matches or a new formal campaign. No paid compute.",
+    "reason": "InitialOxpair0.25 andGoldfishpair1.0 differ and are too sparse; fresh independent-family confirmation is necessary before a meaningful claim. Existing sample/resource history retained, no reset.",
+    "method_changes": "Aggregate operational ceiling only; opponents, sampling streams, time controls, native scoring, statistical model and failure treatment unchanged."
+  },
+  "owner_authorization": "Current owner explicitly requested a fresh adaptive reassessment using MSH-139 methodology after MSH-141/142/143, with proportionate existing-infrastructure work and escalation for substantial new resources. Implementer selected initial900s and then1800s cumulative operational safeguards; no formal qualification campaign, target or paid compute.",
+  "statistics": {
+    "primary": "Existing paired pentanomial Dirichlet .5 per bin; sensitivity .2/1;100000draws; absolute seed139; independent old/new streams spawned from SeedSequence144. No pooling acrossfamilies/phases.",
+    "confseq_source": "5ffe733ca2447a2e28c2c91f3b00086173f2ab2c",
+    "python": "3.11.0",
+    "numpy": "1.26.4",
+    "python_chess_module": "1.11.2",
+    "result": "analysis.json"
+  },
+  "quality": {
+    "pairs": 6,
+    "games": 12,
+    "candidate_wins": 4,
+    "draws": 2,
+    "candidate_losses": 6,
+    "failed_or_unscored_games": 0,
+    "native_replay_successes": 6,
+    "cleanup_settled_pairs": 6,
+    "candidate_turns": 682,
+    "depth1_or_lower_scored_turns": 0,
+    "cp_scored_turns": 637,
+    "candidate_binary_frozen": true,
+    "conditions_unchanged": true
+  },
+  "stopping_decision": {
+    "reason": "Fresh confirmation against two nearby independent families remains compatible with oldworkingbaselinearound1900. No supportedgain/regression; uncertainty aboutmodestchanges remains. Concrete pawn-threat/exchange/kingactivity weaknesses support further engineering, while additionalgames would principally refine uncertain small changes. Stop thisproportionateassessment, not declare conventionalmaturity.",
+    "active_match_seconds": 1313.6070637931116,
+    "aggregate_cap_seconds": 1800,
+    "additional_engine_queries": 0,
+    "additional_paid_compute": false,
+    "followup": "MSH-145 (Pawn Threat and Exchange Judgment)"
+  },
+  "report": "../../chess-progress-assessment-report.md",
+  "report_sha256": "cae649124b2fed220674d8b7a33d24f09f601b74d4536dc59ba6df29aa1f1ae2",
+  "artifacts": {
+    "analysis.json": "f141a32c2a8bceec1850c56f4cc66aa1e40532869d7d43d3f7ef7003c2d44230",
+    "assessment.py": "1e930af413639f2c1c1cb1c1c4cb63bb89ce3aaa97e78fcb34e00c41cbeea47b",
+    "diagnostic-positions.json": "07bbfb5170395ad55eb2ba8f172d40a314416d4b88297a0b26135f502f6a4d05",
+    "helper-tests.log.gz": "fec38b62879b19740966f104974fdff0ef019f2bd8b3e46b85cb1c2890f65ab0",
+    "inspect_reports.py": "8d823d6d53ae406c21c39698c2596ab8282359dc909aa303e5b3ebc33cfe5767",
+    "observations.json.gz": "93267302eabab9ac3d17ffac5fd6497a84698e566a181f9c3599d0f53c4f8bf2",
+    "pair-000-discovery-oxidation060/config.json": "06b52271c4b14dd1b038c79f374f0cdbb40c975d7b900aadb080025ab96944f2",
+    "pair-000-discovery-oxidation060/report.json.gz": "ec387aa517fd2b6008361464a02d7ede3e208910a80740a308cc1f5f2d9793e4",
+    "pair-001-discovery-goldfish113/config.json": "1f75d825482bdbcf1d712df71c86a6e7d854b7e976837848ea40b0aef426ef76",
+    "pair-001-discovery-goldfish113/report.json.gz": "f5b84822245bc1370156411eac1db8152192ea563a177ca1051fbfd231be576a",
+    "pair-002-confirmation-oxidation060/config.json": "4a64f09604ea9644bc586d24cec828017b6dd42caa09c4c44ed42fffe670ffad",
+    "pair-002-confirmation-oxidation060/report.json.gz": "30b8f62867e219d3ca391c6b257b07acc88742e9fcf4323bfa5695b79be34e4d",
+    "pair-003-confirmation-goldfish113/config.json": "f4875ed94245bb48e90d99352bf411f14942b8d1338180d5a1ba9d893e3268d1",
+    "pair-003-confirmation-goldfish113/report.json.gz": "33817ab4a7e6f2790407aba773d28b2cc77008cfb1016f67d0bdf3f804361161",
+    "pair-004-confirmation-oxidation060/config.json": "9f1c4935eb709ebe1e0ce08bc8a31c8f17fb33f22b7d3ebc71d4c5ae58e1e924",
+    "pair-004-confirmation-oxidation060/report.json.gz": "3e2e71ac7ef1207b1eae1f3c092f0d83183fd15670368d5843fd93d1370345c3",
+    "pair-005-confirmation-goldfish113/config.json": "4f8cb98d1cadee333099c8d0bb80781feae8b8ac5cd77501ba6776bbda7e2afc",
+    "pair-005-confirmation-goldfish113/report.json.gz": "fbe36703b1d04568b988c6946a3693b4a94cb70c9d341b302bdf7db66ddfdeb7",
+    "retained-endgame-diagnostics.json": "b1d558e27ce284d1c0d94a8842a4ed6bc806b0d70206726fd5f1fa5cc8d25e2f",
+    "test_assessment.py": "e06698f6c3b30ba026c9b3011cc58c2a35c4d41b98b9a38d2749c605e361df89"
+  },
+  "integration": {
+    "branch": "codex/rewrite",
+    "tested_production_source": "f9747769c6e0b4f08a2cb893bdaa696b1317faee",
+    "engineering_acceptance_revision": "bc3c6fa",
+    "initial_method_revision": "bd88649",
+    "assessment_evidence": "Normal completion commit containing this accepted record and task summary."
   }
 }

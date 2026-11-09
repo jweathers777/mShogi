@@ -1,6 +1,6 @@
 {
   "task": "MSH-150 (Lazy Native Move Queries)",
-  "status": "source-verified-measurement-pending",
+  "status": "accepted",
   "base_revision": "ab81609b518c11ece60ee3575734fade17df0152",
   "baseline_binary_source": "0a941948a405c75a2473e737bc3a260032753db0",
   "baseline_binary_sha256": "ddc34b896a973c6516c2d9c414684c3758b03cc159f7689dad84051ca1329fef",
@@ -79,5 +79,46 @@
       "crates/mshogi-core/src/chess/legal.rs": "028a5a52bf6a87d46240be6d7a01e99755891d95619434798c4da6a84e2cf5f9"
     }
   },
-  "review": "endgame_review final source approved: identical traversal/native resolver/counters and no public history/claim change; independent set/perft/corpus expectations inspected"
+  "review": "endgame_review final source approved: identical traversal/native resolver/counters and no public history/claim change; independent set/perft/corpus expectations inspected",
+  "tested_revision": "0401b828c472f32759afba1a407093cb99313d5a",
+  "measurement_receipt": {
+    "source": "0401b828c472f32759afba1a407093cb99313d5a",
+    "baseline_source": "0a941948a405c75a2473e737bc3a260032753db0",
+    "binary_sha256": {
+      "before": "ddc34b896a973c6516c2d9c414684c3758b03cc159f7689dad84051ca1329fef",
+      "after": "b50fa11c6bbd3a7e6cead69ae86689455a94374cba07e54852f90f6e6bde5a21"
+    },
+    "elapsed_seconds": 94.64655720908195,
+    "fixed_pairs": 36,
+    "timed_conditions": 32,
+    "oracle_cases": 6,
+    "fixed_equivalence": "all completed results/PV/work and every search counter identical",
+    "method": "sequential alternated order,3fixed-work repeats/12positions; unisolated desktop; no concurrent builds/tests/matches",
+    "exit": 0
+  },
+  "performance": {
+    "sum_median_ms": {
+      "before": 4447.261373,
+      "after": 3901.971458
+    },
+    "time_reduction_percent": 12.261251796679595,
+    "interpretation": "Observed12.26percent lower aggregate time at identical fixed work;11of12 medians lower, remainingcase0.7percent slower within ordinary noise. Small unisolated local sample, not a playing-strength estimate."
+  },
+  "timed_results": "All16paired choices unchanged; standard and STSkingactivity1s samples complete one extra ply. All6additional independently established WDLchoices preserved.",
+  "artifact_sha256": {
+    "visitor-tests-queen.log.gz": "66db3c50897792aac07e8002d3bf2e5d444d952a894fe5c795391e6c3eeb82e7",
+    "fixed.jsonl.gz": "204533da35f521e6cf0c1f144a2d1f6b542e3c34add6e6a7b630c36d4d87f9fc",
+    "focused-native-tests.log.gz": "a170f75a87f1909013610d2629c4ba92500251ae6ef92e38a0d0e11b6edfb194",
+    "clippy.log.gz": "23924b08026919d4f25e5925662b812b226d9cb7baaba390b7699c4f6bd28553",
+    "oracles.jsonl.gz": "0e7a6d790255d6af2f95185d769d5ee316d25614f53a5c7b092c9cff68ac90b0",
+    "visitor-tests.log.gz": "3c5ca831d4d6eec23d86ed53f3318859c6becaa1ae97716038512d53f09345b9",
+    "measurement-receipt.json": "bfc29529007406ba0eed019f2800eea9452057855811af018e02aa9402fe8f4c",
+    "timed.jsonl.gz": "236af7d520b669fcbdb7794a6e78dcc94d14f5419c216c378a77d06c52b6573f",
+    "compare.py.gz": "1c5f96b90f88cd72326dbda3394aef0b6a4984730e81d204a6fde30b797d8541",
+    "deep-perft.log.gz": "e398c32eca6ad36a2488a0d16f02abb43cd0cb65b1aceb4d54f1bb30041d039d",
+    "comparison-summary.json": "600aabfc1ef2dc0bc754f5378f32165dd254c2226cea0a42ad8d9af434c39918",
+    "prechange-snapshots.log.gz": "1468c32f36396a327e11c9c22b1636717476cb7eeaa7d87b303653659a4539de",
+    "native-search-console.log.gz": "b6d7ef6195044d431864d78da235790bdc6ed4cbef15b44d32cdb726b9192c85"
+  },
+  "final_review": "endgame_review independently reconciled every source/artifact hash,36exactfixedpairs/everycounter,16timedpairs,6oracleWDL and697tests+deepperft. Recomputed12.26125percent time reduction; no materialfindings orstrength/platformsubstitution claim."
 }

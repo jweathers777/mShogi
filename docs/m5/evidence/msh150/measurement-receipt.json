@@ -1,0 +1,15 @@
+{
+  "source": "0401b828c472f32759afba1a407093cb99313d5a",
+  "baseline_source": "0a941948a405c75a2473e737bc3a260032753db0",
+  "binary_sha256": {
+    "before": "ddc34b896a973c6516c2d9c414684c3758b03cc159f7689dad84051ca1329fef",
+    "after": "b50fa11c6bbd3a7e6cead69ae86689455a94374cba07e54852f90f6e6bde5a21"
+  },
+  "elapsed_seconds": 94.64655720908195,
+  "fixed_pairs": 36,
+  "timed_conditions": 32,
+  "oracle_cases": 6,
+  "fixed_equivalence": "all completed results/PV/work and every search counter identical",
+  "method": "sequential alternated order,3fixed-work repeats/12positions; unisolated desktop; no concurrent builds/tests/matches",
+  "exit": 0
+}

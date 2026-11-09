@@ -1,0 +1,98 @@
+[
+  {
+    "id": "MO2mm",
+    "median_ms": {
+      "before": 213.87995800000002,
+      "after": 188.72108300000002
+    },
+    "time_reduction_percent": 11.76308207429141
+  },
+  {
+    "id": "f3apJ",
+    "median_ms": {
+      "before": 387.539916,
+      "after": 325.748583
+    },
+    "time_reduction_percent": 15.944508023271597
+  },
+  {
+    "id": "CNWwY",
+    "median_ms": {
+      "before": 672.1162499999999,
+      "after": 676.540958
+    },
+    "time_reduction_percent": -0.6583248061626357
+  },
+  {
+    "id": "tb-6",
+    "median_ms": {
+      "before": 205.50050000000002,
+      "after": 189.252
+    },
+    "time_reduction_percent": 7.906793414127944
+  },
+  {
+    "id": "tb-7",
+    "median_ms": {
+      "before": 197.8055,
+      "after": 184.269625
+    },
+    "time_reduction_percent": 6.843022565095513
+  },
+  {
+    "id": "sts-openfiles-001",
+    "median_ms": {
+      "before": 483.915375,
+      "after": 402.581959
+    },
+    "time_reduction_percent": 16.807363477550187
+  },
+  {
+    "id": "sts-minortrade-001",
+    "median_ms": {
+      "before": 599.2403750000001,
+      "after": 478.998625
+    },
+    "time_reduction_percent": 20.065695673459928
+  },
+  {
+    "id": "sts-kingactivity-001",
+    "median_ms": {
+      "before": 464.253666,
+      "after": 383.11687500000005
+    },
+    "time_reduction_percent": 17.476822897075404
+  },
+  {
+    "id": "standard-control",
+    "median_ms": {
+      "before": 448.145583,
+      "after": 384.502041
+    },
+    "time_reduction_percent": 14.2015328085918
+  },
+  {
+    "id": "closed-minors-control",
+    "median_ms": {
+      "before": 217.7055,
+      "after": 202.319584
+    },
+    "time_reduction_percent": 7.067306981220045
+  },
+  {
+    "id": "goldfish-pawn-exchange-44",
+    "median_ms": {
+      "before": 226.354792,
+      "after": 202.804625
+    },
+    "time_reduction_percent": 10.404094736372983
+  },
+  {
+    "id": "goldfish-queen-rook-31",
+    "median_ms": {
+      "before": 330.803958,
+      "after": 283.1155
+    },
+    "time_reduction_percent": 14.415927272550954
+  }
+]

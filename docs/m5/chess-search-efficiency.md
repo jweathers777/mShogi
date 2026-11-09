@@ -7,8 +7,8 @@ draw claims and cancellation remain unchanged. It makes no playing-strength clai
 ## Measured work and correction
 
 A five-second frozen-source sample of five representative searches found whole
-board structural validation in about11.7% of inclusive sampled stacks:263 of334
-such samples came from temporary quiescence projections,43 from exchange
+board structural validation in about 11.7% of inclusive sampled stacks: 263 of 334
+such samples came from temporary quiescence projections, 43 from exchange
 estimation. Categories overlap and the machine had correctness-test contention;
 these are qualitative CPU attribution, not additive timings or throughput ratios.
 
@@ -21,15 +21,15 @@ use it; actual search moves still enter the native cursor with complete history.
 Exhaustive coordinate/promotion checks compare projection effects and errors to
 full public apply, including castling, EP, pins and counter overflow.
 
-In three sequential projection-only fixed-work comparisons, all16 positions
+In three sequential projection-only fixed-work comparisons, all 16 positions
 retained identical result/PV, visits and work counters. Aggregate times were
-1116.84/1119.98/1128.74ms before and1086.39/1041.07/1028.13ms after. The first
+1116.84/1119.98/1128.74 ms before and 1086.39/1041.07/1028.13 ms after. The first
 15-position exploratory comparison was faster still; it is retained, not used
 as a stronger repeatable speed claim. Different host scheduling or positions
 may produce different changes.
 
-Current SEE sampling was about3.2%, not the historical40% from an older engine.
-Exact key comparison was about0.3%; genuine main and keyed-frontier TT cutoffs
+Current SEE sampling was about 3.2%, not the historical 40% from an older engine.
+Exact key comparison was about 0.3%; genuine main and keyed-frontier TT cutoffs
 were observed. These measurements did not justify a new SEE algorithm or TT
 identity redesign. Recursive q branches remain unkeyed, preserving complete
 history correctness. Further reuse needs a measured benefit/cost argument.
@@ -56,11 +56,11 @@ This bounded safeguard does not make selective quiescence complete minimax.
 
 ## Practical measurements and acceptance
 
-Three combined fixed-work runs took1069.38/1080.07/1050.99ms, roughly5% less in
+Three combined fixed-work runs took 1069.38/1080.07/1050.99 ms, roughly 5% less in
 aggregate than before. In the sequential one-second sample, completed depth and
 scores were retained, with one additional completed depth on the rook-pawn and
 KRKP examples. More visits reflect reduced overhead, not stronger play by itself.
-The historical unique ...Re1 miss is not claimed solved by completing depth8.
+The historical unique ...Re1 miss is not claimed solved by completing depth 8.
 
 The [single verification record](evidence/msh143/verification.json) retains frozen
 binaries, inputs, raw profiles, actual tests, independent review and combined

@@ -77,3 +77,12 @@ Review practical playing strength with fresh adaptive reference openings after
 meaningful progress across these increments, not after each technique. Neither
 task completion nor higher reported depth establishes maturity or authorizes
 cross-game transfer.
+
+John's continuation after MSH-141 (Chess Frontier Reliability) explicitly assigns
+its targeted macOS verification, then MSH-142 (Classical Endgame Judgment) and
+MSH-143 (Chess Search Efficiency), followed by MSH-144 (Chess Progress Assessment).
+The latter reuses the established adaptive methodology with fresh paired openings;
+its [initial bounded scope](chess-progress-assessment.md) preserves the ordinary
+15-minute resource allowance. A substantial expanded study requires a concrete
+resource decision. Review actual combined results and remaining opportunities
+before deciding readiness; no per-optimization tournament or automatic transfer.

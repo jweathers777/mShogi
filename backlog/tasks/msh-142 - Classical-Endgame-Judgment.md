@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-09T16:23:00Z'
-updated_date: '2026-11-09T18:17:00Z'
+updated_date: '2026-11-09T18:31:00Z'
 labels:
   - handle:classical-endgame-judgment
 milestone: m-5
@@ -25,8 +25,8 @@ Handle: Classical Endgame Judgment. Continue owner-authorized conventional Chess
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Implemented specialized classical endgame knowledge addresses general demonstrated judgment or conversion weaknesses, with documented applicability guards and honest heuristic versus exact distinctions.
-- [ ] #2 Independent winning/drawing/losing positions, color and side-to-move counterexamples, promotion and history-sensitive guards validate the change; search/restoration/cancellation and native terminal authority are preserved.
+- [x] #1 Implemented specialized classical endgame knowledge addresses general demonstrated judgment or conversion weaknesses, with documented applicability guards and honest heuristic versus exact distinctions.
+- [x] #2 Independent winning/drawing/losing positions, color and side-to-move counterexamples, promotion and history-sensitive guards validate the change; search/restoration/cancellation and native terminal authority are preserved.
 - [ ] #3 Focused tactical/endgame and realistic-time comparisons identify gains and regressions without a rating claim; independent review and required native integration evidence support completion.
 <!-- AC:END -->
 
@@ -52,4 +52,6 @@ Owner assigned142and143as one queue. Preserve separate implementation commits, l
 Bounded independent read-only source audit during MSH-141 (Chess Frontier Reliability) verification: current evaluator has no side-to-move term, material-specific recognizers or scale factors, so static evaluation cannot distinguish the same-board/opposite-turn MSH-139 opposition pair (draw versus pawn-side win). Established classical references support KPK knowledge and wrong-bishop rook-pawn fortress scaling; KRKP rules are heuristic and must not be claimed to prove the unique Re1 win. Source: official-stockfish/Stockfish sf_11 endgame.cpp and bitbase.cpp. No implementation, runtime tablebase dependency, match campaign or task activation occurred; worker must inspect current source and record the implementation plan on activation.
 
 Implemented original native-generated24KiB KPK advisory bitbase, narrowly guarded wrong-bishop rook-pawn corner scaling and KBNK correct-corner conversion. All3generator/module tests, exhaustive165676valid-state regeneration, independent8KPK oracle byte checks and91release searchlib tests pass. Three bounded native conversion journeys preserve knownwin and reach uncapturable Q/R promotion.4release actual desktop-play tests pass; generated sharedfixtures unchanged; workspace clippy passed. Independent endgame_review approves production/testsource, no material issue. Broader local native tests and sequential timing pending; platform3OS required at final combined142+143source. KRKP and discovered left14noncontact-mate frontier case remain explicitly unresolved for continuedengineering; no opponentgames or ratingclaim.
+
+Final local evidence at50b459a:687native core/search/console tests passed0failed4ignored; finalrelease searchlib91pass2ignored includes safeconversionassertion;4release desktopplay andclippy/fmt passed;sharedfixtures unchanged. Sequential15position1scomparison changes drawnopposition score+260to0, otherdepth/scoresunchanged; noKRKPcorrection/ratingclaim. Source integrated/pushed with combinedf974776; required3OSgate shared from143record, pending.142canonical record docs/m5/evidence/msh142/verification.json.
 <!-- SECTION:NOTES:END -->

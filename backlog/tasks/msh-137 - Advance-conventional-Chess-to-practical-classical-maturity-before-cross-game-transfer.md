@@ -7,7 +7,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-08T21:47:00Z'
-updated_date: '2026-11-08T23:44:00Z'
+updated_date: '2026-11-09T00:09:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -52,4 +52,6 @@ Codex owns codex/rewrite at clean origin-aligned 24512d0; unrelated historical-a
 Substantive native/search/evaluation increments implemented and independently reviewed, including lazy native summaries, checked transitions and prepared pruned children, derived occupancy/rays, exact future-context main/q TT, bounded replacement and classical tactical/pawn/king corrections. All acceptance remains open pending coherent final checks/platform receipts and maturity assessment. Fresh independent assessment withholds maturity: finish direct34-byte lossless identity storage, small4K/16K capacity+memory comparison and basic KQ/KR conversion coherence; direct native capture-to-target generation remains a measured SEE opportunity. No opponent matches or formal studies; all profiling producers so far280queries/~60.49 recorded query seconds including failed timing-tool receipt. Current broad native regression/lint campaign94834 uses frozen source manifest /private/tmp/msh137/final-source.json; no production edits while it runs. Continue concrete follow-ups after completion; no Shogi/Xiangqi release.
 
 Final frozen source manifest accepted-source.json (patch603ca1d5,18files), independent native/search/maturity reviews approved. Final local checks:670native pass/6intentionalignored,11UCI,29desktopChess; workspaceClippy-Dwarnings/fmt pass. Isolated12query medians93.055/132.602/43.436/32.559ms; no strength inference. Historical forcedmate255positionproof and actualmate-search regression pass, original-root1s avoidsQxa1. 4K/16K no meaningful gain; default4K. All338profilingqueries/74.08recordedseconds and failures preserved in docs/m5/evidence/msh137/verification.json; no matches. Final actual Ubuntu24/macOS15/Windows2022 RustCI required; do not mark Done yet.
+
+First nativeCI42536624859 atf1484b15 passed all3workspace test suites. macOS128902235827 failed fixture regeneration because existingChessmate snapshot expected29visits/seldepth2 insteadactual65/7; mate1/score/PV unchanged. SupersededLinux/Windowsjobs canceled afterworkspacepass. Regenerated allnativeChess/sharedfixtures: onlyonefile differed;34frontendconsumer tests pass Node24.22.1. No cratesourcechanges. Historicalreceipts preserved; newexact-source3OSCI required, task remainsInReview.
 <!-- SECTION:NOTES:END -->

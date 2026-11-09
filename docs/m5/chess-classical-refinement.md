@@ -9,7 +9,9 @@ assignment. Routine algorithm and representation choices remain autonomous.
 
 **Current checkpoint: final source independently reviewed; local checks and
 short isolated profiles passed. Actual three-platform native CI and final
-acceptance reconciliation remain pending.**
+acceptance reconciliation remain pending. The first CI campaign passed every
+platform's workspace tests but exposed one stale Chess analysis fixture; its
+regenerated telemetry is recorded below.**
 
 ## Substantive corrections
 
@@ -58,9 +60,9 @@ policy, imported origin and mode distinct. Within one real root, exact side and
 fullmove number also determine played ply, preserving absolute-horizon meaning.
 
 Preparation is deliberately narrower. With no identity repeated and a parent
-clock below98, the child can create only one second-occurrence identity. Its
+clock below 98, the child can create only one second-occurrence identity. Its
 intended next action has the opposite side to move from that identity, so it
-cannot create a threefold claim. Child/intended clocks are at most98/99, excluding
+cannot create a threefold claim. Child/intended clocks are at most 98/99, excluding
 fifty/seventy-five-move and fivefold conclusions. Mate, stalemate and material
 death still use the shared native outcome function. Opaque tokens carry checked
 Position/turn data; stale/foreign tokens discard that data and re-admit the action.
@@ -72,7 +74,7 @@ Independent expected attack/special-action/perft/history fixtures remain require
 New checks add all-square/color native walks and reflection, cache reconstruction,
 full-public-transition comparisons, exact-context and forced digest collisions,
 second-occurrence/intended-claim boundaries, corrupted foreign prepared payloads,
-Full/null/undo/cancellation paths, table capacities1/3/4/5 and q/main budget
+Full/null/undo/cancellation paths, table capacities 1/3/4/5 and q/main budget
 isolation. Tactical coverage includes seven distinct immediate mating mechanisms,
 three forced three-ply sacrifices with every defence explained, a forcing knight
 fork, quiet-check horizons, native stalemate avoidance and precise feature terms.
@@ -80,24 +82,25 @@ These establish specific behavior; they are not a tactical-rating or strength st
 
 The historical queen grab is now a controlled tactical regression. After
 ...Qxa1 Qg5, a fixed White policy (Qg7/Qh6/Nxh2) traverses all native Black
-defences:255 positions establish mate within six further plies. The earlier
+defences: 255 positions establish mate within six further plies. The earlier
 suspected ...gxf6 defence is illegal because it exposes the king to Qg5;
 negative admission checks retain that fact. The engine now finds mate within
-seven plies after ...Qxa1 at depth4/200,000 visits and its PV replays to native
+seven plies after ...Qxa1 at depth 4/200,000 visits and its PV replays to native
 checkmate. In the isolated one-second original-root probe it instead chooses
-...gxf6 (before Qg5, when legal), at -35cp with completed depth7. This addresses
-that concrete horizon failure without changing the accepted historical49.2
+...gxf6 (before Qg5, when legal), at -35cp with completed depth 7. This addresses
+that concrete horizon failure without changing the accepted historical 49.2
 report or claiming broad strength from a single position.
 
-The final20,000-visit profile (three rounds/four positions) has median milliseconds
+The final 20,000-visit profile (three rounds/four positions) has median milliseconds
 93.055/132.602/43.436/32.559 for standard/developed/recapture/endgame versus
-379.060/412.814/162.056/92.089 at the starting source: approximately4.1/3.1/3.7/2.8x
+379.060/412.814/162.056/92.089 at the starting source: approximately 4.1/3.1/3.7/2.8x
 lower wall time. Search policy/evaluation changed, so these are descriptive
 throughput observations, not equal-work ablations or strength measurements.
-Unchanged-policy intermediate pairs separately isolate native/hash/preparation
-costs. Final fixed-visit RSS is4,194,304 bytes. A separate fixed-depth4K/16K table
-comparison gave similar work/time with RSS3,981,312 versus6,127,616 bytes; retain
-the4K default. One earlier final timing batch overlapped tests and is preserved
+Unchanged-policy intermediate pairs retain identical recorded outputs/work and
+show local timing differences. Exploratory packets have documented source-completeness
+limits, so they do not all support complete causal reproduction. Final fixed-visit RSS is 4,194,304 bytes. A separate fixed-depth 4K/16K table
+comparison gave similar work/time with RSS 3,981,312 versus 6,127,616 bytes; retain
+the 4K default. One earlier final timing batch overlapped tests and is preserved
 as contended, excluded from performance comparisons.
 
 The single [verification record](evidence/msh137/verification.json) records exact
@@ -112,7 +115,7 @@ no packaged GUI campaign is required by these native-only changes.
 ## Research and remaining assessment
 
 Techniques were researched and independently implemented from primary classical
-references: [Stockfish11 native geometry](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/position.cpp),
+references: [Stockfish 11 native geometry](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/position.cpp),
 [search](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/search.cpp),
 [move ordering](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/movepick.cpp),
 [pawn evaluation](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/pawns.cpp),
@@ -130,7 +133,24 @@ larger engineering effort. This is not a claim of Elo, Stockfish parity or optim
 classical play. Queen-contact detection is deliberately incomplete; selective
 search and bounded horizons remain approximate. No further strength study ran.
 
+Ordinary desktop play still requests 20,000 visits and a 1,000ms hard search limit
+(the process-supervision watchdog is separate). It receives lower latency and
+algorithmic improvements but can exhaust visits before one second. The larger
+visit allowance used in timed engine/UCI checks establishes a separate capability,
+not maximum GUI strength. MSH-138 is the next bounded Chess product checkpoint before cross-game transfer.
+It tracks proportionate desktop-default calibration
+within existing admission ceilings, without another opponent study.
+
 Transfer the measured query/state/cache discipline to Shogi then Xiangqi, not
 Chess equivalence formulas: Shogi captures/drops can restore material, while
 Xiangqi lateral pawn movement and chase/pending/no-win state require their own
 native history proof. MSH-50/54 retain those gates and game-specific correctness.
+
+The first native CI campaign at `f1484b15` exposed an expected-output omission:
+all three workspace test suites passed, but macOS snapshot regeneration changed
+only the Chess mate-analysis telemetry (29 to65 visits, selective depth2 to7).
+Mate-in-one, score and PV stayed unchanged. The complete generator confirmed
+only that file differed; the updated fixture passed34 relevant frontend tests
+under Node24.22.1. The superseded run, macOS failure and cancelled matrix remainder
+are preserved. The corrected fixture requires a new exact-source CI campaign;
+no required checks or production search behavior were changed to obtain a pass.

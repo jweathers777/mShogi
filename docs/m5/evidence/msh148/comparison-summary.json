@@ -1,0 +1,146 @@
+[
+  {
+    "id": "MO2mm",
+    "median_ms": {
+      "before": 213.12545799999998,
+      "after": 215.06575
+    },
+    "quiet_projections": {
+      "before": 3657,
+      "after": 1813
+    },
+    "time_change_percent": 0.9103989819930547
+  },
+  {
+    "id": "f3apJ",
+    "median_ms": {
+      "before": 389.39133300000003,
+      "after": 382.96387500000003
+    },
+    "quiet_projections": {
+      "before": 177022,
+      "after": 159269
+    },
+    "time_change_percent": -1.6506422858672098
+  },
+  {
+    "id": "CNWwY",
+    "median_ms": {
+      "before": 676.8857499999999,
+      "after": 676.85675
+    },
+    "quiet_projections": {
+      "before": 140177,
+      "after": 87235
+    },
+    "time_change_percent": -0.0042843271556347595
+  },
+  {
+    "id": "tb-6",
+    "median_ms": {
+      "before": 198.124583,
+      "after": 202.283417
+    },
+    "quiet_projections": {
+      "before": 163213,
+      "after": 151928
+    },
+    "time_change_percent": 2.0991004432801663
+  },
+  {
+    "id": "tb-7",
+    "median_ms": {
+      "before": 193.586125,
+      "after": 195.79125
+    },
+    "quiet_projections": {
+      "before": 164279,
+      "after": 156696
+    },
+    "time_change_percent": 1.1390924840300354
+  },
+  {
+    "id": "sts-openfiles-001",
+    "median_ms": {
+      "before": 503.31991700000003,
+      "after": 482.039708
+    },
+    "quiet_projections": {
+      "before": 210964,
+      "after": 137664
+    },
+    "time_change_percent": -4.227968789083302
+  },
+  {
+    "id": "sts-minortrade-001",
+    "median_ms": {
+      "before": 595.901333,
+      "after": 598.174625
+    },
+    "quiet_projections": {
+      "before": 489120,
+      "after": 380109
+    },
+    "time_change_percent": 0.38148798703894204
+  },
+  {
+    "id": "sts-kingactivity-001",
+    "median_ms": {
+      "before": 465.91870800000004,
+      "after": 459.42729199999997
+    },
+    "quiet_projections": {
+      "before": 259463,
+      "after": 195273
+    },
+    "time_change_percent": -1.3932507728365517
+  },
+  {
+    "id": "standard-control",
+    "median_ms": {
+      "before": 432.37516700000003,
+      "after": 442.48900000000003
+    },
+    "quiet_projections": {
+      "before": 748126,
+      "after": 654240
+    },
+    "time_change_percent": 2.339133644092928
+  },
+  {
+    "id": "closed-minors-control",
+    "median_ms": {
+      "before": 212.719584,
+      "after": 213.659416
+    },
+    "quiet_projections": {
+      "before": 201605,
+      "after": 192098
+    },
+    "time_change_percent": 0.4418173363859079
+  },
+  {
+    "id": "goldfish-pawn-exchange-44",
+    "median_ms": {
+      "before": 227.79108300000001,
+      "after": 225.53216700000002
+    },
+    "quiet_projections": {
+      "before": 191222,
+      "after": 170261
+    },
+    "time_change_percent": -0.9916612934317559
+  },
+  {
+    "id": "goldfish-queen-rook-31",
+    "median_ms": {
+      "before": 329.936667,
+      "after": 328.89162500000003
+    },
+    "quiet_projections": {
+      "before": 284845,
+      "after": 223063
+    },
+    "time_change_percent": -0.31674018213925237
+  }
+]

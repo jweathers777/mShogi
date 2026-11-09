@@ -1,6 +1,6 @@
 {
   "task": "MSH-148 (Deferred Frontier Work)",
-  "status": "implementation-in-progress",
+  "status": "accepted",
   "base_revision": "f8ffd96",
   "baseline_diagnostic_revision": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
   "baseline_binary_sha256": "8ae09bfb195276a201d81fc0c04ba0109496ffa56e9923a9fb8f60db94384486",
@@ -24,5 +24,192 @@
     "fmt and diffcheck passed"
   ],
   "review": "endgame_review source/tests approved; exact-ordering/native/cancel/error properties inspected; measurement reconciliation pending",
-  "local_failure_history": "New Rxa2 fixture initially asserted nonchecking; native result correctly checks Ka8. Assertion corrected, no product-code concession. Final suite passed."
+  "local_failure_history": "New Rxa2 fixture initially asserted nonchecking; native result correctly checks Ka8. Assertion corrected, no product-code concession. Final suite passed.",
+  "tested_revision": "0a941948a405c75a2473e737bc3a260032753db0",
+  "measurement_receipt": {
+    "source": "0a941948a405c75a2473e737bc3a260032753db0",
+    "baseline_source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+    "binary_sha256": {
+      "before": "8ae09bfb195276a201d81fc0c04ba0109496ffa56e9923a9fb8f60db94384486",
+      "after": "ddc34b896a973c6516c2d9c414684c3758b03cc159f7689dad84051ca1329fef"
+    },
+    "elapsed_seconds": 96.25963408313692,
+    "fixed_pairs": 36,
+    "timed_conditions": 32,
+    "oracle_cases": 6,
+    "fixed_equivalence": "all completed results/PV/work/legacy counters identical except reached quiet projections/threat admissions",
+    "method": "sequential alternated order,3fixed-work repeats/12positions; unisolated desktop; no concurrent builds/tests/matches",
+    "exit": 0
+  },
+  "performance": {
+    "per_position": [
+      {
+        "id": "MO2mm",
+        "median_ms": {
+          "before": 213.12545799999998,
+          "after": 215.06575
+        },
+        "quiet_projections": {
+          "before": 3657,
+          "after": 1813
+        },
+        "time_change_percent": 0.9103989819930547
+      },
+      {
+        "id": "f3apJ",
+        "median_ms": {
+          "before": 389.39133300000003,
+          "after": 382.96387500000003
+        },
+        "quiet_projections": {
+          "before": 177022,
+          "after": 159269
+        },
+        "time_change_percent": -1.6506422858672098
+      },
+      {
+        "id": "CNWwY",
+        "median_ms": {
+          "before": 676.8857499999999,
+          "after": 676.85675
+        },
+        "quiet_projections": {
+          "before": 140177,
+          "after": 87235
+        },
+        "time_change_percent": -0.0042843271556347595
+      },
+      {
+        "id": "tb-6",
+        "median_ms": {
+          "before": 198.124583,
+          "after": 202.283417
+        },
+        "quiet_projections": {
+          "before": 163213,
+          "after": 151928
+        },
+        "time_change_percent": 2.0991004432801663
+      },
+      {
+        "id": "tb-7",
+        "median_ms": {
+          "before": 193.586125,
+          "after": 195.79125
+        },
+        "quiet_projections": {
+          "before": 164279,
+          "after": 156696
+        },
+        "time_change_percent": 1.1390924840300354
+      },
+      {
+        "id": "sts-openfiles-001",
+        "median_ms": {
+          "before": 503.31991700000003,
+          "after": 482.039708
+        },
+        "quiet_projections": {
+          "before": 210964,
+          "after": 137664
+        },
+        "time_change_percent": -4.227968789083302
+      },
+      {
+        "id": "sts-minortrade-001",
+        "median_ms": {
+          "before": 595.901333,
+          "after": 598.174625
+        },
+        "quiet_projections": {
+          "before": 489120,
+          "after": 380109
+        },
+        "time_change_percent": 0.38148798703894204
+      },
+      {
+        "id": "sts-kingactivity-001",
+        "median_ms": {
+          "before": 465.91870800000004,
+          "after": 459.42729199999997
+        },
+        "quiet_projections": {
+          "before": 259463,
+          "after": 195273
+        },
+        "time_change_percent": -1.3932507728365517
+      },
+      {
+        "id": "standard-control",
+        "median_ms": {
+          "before": 432.37516700000003,
+          "after": 442.48900000000003
+        },
+        "quiet_projections": {
+          "before": 748126,
+          "after": 654240
+        },
+        "time_change_percent": 2.339133644092928
+      },
+      {
+        "id": "closed-minors-control",
+        "median_ms": {
+          "before": 212.719584,
+          "after": 213.659416
+        },
+        "quiet_projections": {
+          "before": 201605,
+          "after": 192098
+        },
+        "time_change_percent": 0.4418173363859079
+      },
+      {
+        "id": "goldfish-pawn-exchange-44",
+        "median_ms": {
+          "before": 227.79108300000001,
+          "after": 225.53216700000002
+        },
+        "quiet_projections": {
+          "before": 191222,
+          "after": 170261
+        },
+        "time_change_percent": -0.9916612934317559
+      },
+      {
+        "id": "goldfish-queen-rook-31",
+        "median_ms": {
+          "before": 329.936667,
+          "after": 328.89162500000003
+        },
+        "quiet_projections": {
+          "before": 284845,
+          "after": 223063
+        },
+        "time_change_percent": -0.31674018213925237
+      }
+    ],
+    "sum_median_ms": {
+      "before": 4439.075707999999,
+      "after": 4423.174875
+    },
+    "time_reduction_percent": 0.3582014375502429,
+    "interpretation": "0.36percent aggregate reduction is within ordinary timing noise; no robust overall speed gain established. Quiet projections are deterministically avoided, with unchanged fixed-work results. Extra upfront ordering of unadmitted quiets may offset saved projections; not separately profiled."
+  },
+  "timed_quality": "All16 paired timed conditions selected the same move; open-files1s completed one extra ply in corrected sample. All6additional independent WDL choices preserved. No playing-strength claim.",
+  "artifact_sha256": {
+    "fixed.jsonl.gz": "9cf93df8b74b7e1da7d25d90c6bcf9767dde398149516ce9dbf232ccac2c8ea3",
+    "search-tests.log.gz": "55b07d8a910f46088860aee1954f13a6172b734d417e4dba42324469b4f4fbec",
+    "clippy.log.gz": "27eb3d83047d2c3ee6811add481eba03cf5b36b6e32380d9fe6c4a6a34606691",
+    "oracles.jsonl.gz": "a966d510daa2af4cd128ea4128cfe3e587bfd262a941c9325c1fb1f675294503",
+    "measurement-receipt.json": "e9c6d7055da2b6cd6c0079e075c22eab84a54aa21f2b47616ed642d21d6a9ff2",
+    "timed.jsonl.gz": "4db6309d3bfee2dc1a9c7039f5c480f6ddaac31676a4246a62b7296a2cc6c6b7",
+    "compare.py.gz": "9e3e18094e337066ef44d9be51a83835563ccd72433de5d8b50bf9047444b101",
+    "comparison-summary.json": "f0d211edc39eacbbbc71017814367e23e7edbdda07cf1b859fab8d83149a217b"
+  },
+  "final_review": "endgame_review approved all source/counter/order/cancellation guarantees and independently reconciled36fixedpairs,16timedpairs,6WDLchoices, hashes and98tests. Neutral overall timing honestly qualified; small scheduling simplification accepted, not a practical-strength advance.",
+  "next_tasks": [
+    "MSH-150 (Lazy Native Move Queries)",
+    "MSH-145 (Pawn Threat and Exchange Judgment)",
+    "MSH-149 (Classical King Exposure)"
+  ]
 }

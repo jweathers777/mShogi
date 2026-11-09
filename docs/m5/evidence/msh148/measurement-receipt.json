@@ -1,0 +1,15 @@
+{
+  "source": "0a941948a405c75a2473e737bc3a260032753db0",
+  "baseline_source": "0a6e8cf27e34b4b36311b09e3b3d14071d3f03bc",
+  "binary_sha256": {
+    "before": "8ae09bfb195276a201d81fc0c04ba0109496ffa56e9923a9fb8f60db94384486",
+    "after": "ddc34b896a973c6516c2d9c414684c3758b03cc159f7689dad84051ca1329fef"
+  },
+  "elapsed_seconds": 96.25963408313692,
+  "fixed_pairs": 36,
+  "timed_conditions": 32,
+  "oracle_cases": 6,
+  "fixed_equivalence": "all completed results/PV/work/legacy counters identical except reached quiet projections/threat admissions",
+  "method": "sequential alternated order,3fixed-work repeats/12positions; unisolated desktop; no concurrent builds/tests/matches",
+  "exit": 0
+}

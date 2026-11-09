@@ -94,10 +94,13 @@ assert observation['context'] == context, 'internal response changed exact reque
 assert observation['result']['kind'] == 'chess', observation
 result = observation['result']['result']
 assert result['kind'] == 'move', result
-assert result['action'] == 'a2a3', result
+# Current classical opening fixture is independently specified by the native
+# conventional-search tests (material/placement, not the former material-only tie).
+assert result['action'] == 'b1c3', result
 assert result['telemetry']['completed_depth'] == 1, result
 assert result['telemetry']['nodes'] == 21, result
-assert result['telemetry']['score'] == 0, result
+assert result['telemetry']['score'] == 61, result
+assert result['telemetry']['principal_variation'][0] == {'kind': 'move', 'action': 'b1c3'}, result
 assert result['telemetry']['status'] == 'complete', result
 # Purpose-specific queries exercise the actual shipped advanced solver as well.
 target = {'selection_id': 1, 'event_index': 0, 'board_ply': 0, 'session_version': 1,

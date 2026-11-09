@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-08T23:48:00Z'
-updated_date: '2026-11-09T11:46:00Z'
+updated_date: '2026-11-09T11:51:00Z'
 labels:
   - handle:desktop-search-limits
 milestone: m-5
@@ -58,4 +58,6 @@ Consolidated related owner directions: MSH-139 (Chess Strength Qualification) To
 Current MSH-138 (Desktop Search Limits) checks pass: both prior-config/historical-observation compatibility,6engine execution, nativecompleted-iteration cancellation,29Chesssession and11UCI cases,4actualreleaseDesktopController/subprocess journeys,570frontend tests andtypecheck/workspaceClippy/fmt. Nativefixed-time constructoralso gives UCI movetime its full budget; separate clockallocationunchanged. All16regeneratedChessfixtures differonly/play_limits/nodes. Required CI: Rust(ubuntu-24.04/macOS15/windows2022), nowincludingactualreleaseDesktopControllerplayjourney; localstandaloneTauri checks andonefocusednormalpackagedmacOSplay/cancel/save/reopen journey. Reuse unchanged all-six GUI/platform package evidence; no broadsix-gamecampaign orqualificationmatches. ActualWindows/LinuxGUIinteractionnotinferredfromlocalmacOS; cross-platformnativeDesktopControllerjourneysrequired.
 
 MSH-138 (Desktop Search Limits) source and all16generatedfixturechanges independently approved with no findings. Allfocusednative/process/controller/570frontend/standaloneTaurichecks passed; formalrecords in docs/m5/evidence/msh138/verification.json. Code nowfrozen for normalfixed-identitypackagedmacOSjourney andactualrequired3OSRustCI. No Chessstrength experiments ran. MSH-139 (Chess Strength Qualification) target/protocol/budget proposal reviewed but notowner-approved.
+
+MSH-138 (Desktop Search Limits) normalpackagebuiltcleanata23fb92, butexternalpackage-smokestillpinnedmaterial-onlya2a3/+0. Actualacceptedclassicalfixtureisb1c3/+61/depth1/21visits; nativeconventionaltestalreadyindependentlyexpectsit. Narrowverifierconstants/PVcheckcorrectionindependentlyapproved; correctedentirepackagesmokepassedonunchangedbinary. Preserveinitialfailedreceipt; verification-onlycommitthenfixednormalapprebuildbeforeGUI/actual3OSCI. No productionbehaviororrequiredcheckweakened.
 <!-- SECTION:NOTES:END -->

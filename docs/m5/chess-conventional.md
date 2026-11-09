@@ -139,7 +139,9 @@ and [evaluation](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/
 as references. Implementations and arithmetic are original; no upstream source,
 tables, fitted weights or engine binary becomes a product dependency.
 
-Owner consolidation, 2026-11-09: MSH-139 (Chess Strength Qualification), not
-engineering readiness alone, now gates transfer to MSH-50 (Conventional Shogi)
-and MSH-54 (Conventional Xiangqi). The [proposal](chess-strength-qualification.md)
-awaits target/protocol/budget approval; no formal qualification campaign ran.
+Owner revision, 2026-11-09: [MSH-139 (Chess Strength Assessment)](chess-strength-assessment.md)
+is authorized to discover current strength through adaptive full-strength rated
+comparisons and independent quality diagnostics. The unapproved qualification
+target/protocol/budget proposal is superseded. Report findings and stop for John
+to choose the next objective; neither engineering completion nor assessment
+completion alone authorizes a final strength verdict or cross-game transfer.

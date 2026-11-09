@@ -1,0 +1,94 @@
+{
+  "reference_sha256": "8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5",
+  "reference": "Stockfish19unrestricted,1thread16MBdefaultembeddednetwork,go movetime3000",
+  "candidate_source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
+  "inputs_sha256": "a2eada759368f0dcbcaa383d9bff944ac894a4c98de91370159329fcc244783b",
+  "code_sha256": "0a43d90178d6f68136bb45f930a07b17562e437914be5f62c12ff8dd98da6b50",
+  "seconds": 6.338585750199854,
+  "results": [
+    {
+      "id": "goldfish-loss-v62",
+      "chosen": "d8a5",
+      "before": {
+        "depth": 24,
+        "nodes": 3439123,
+        "time": 3.0,
+        "score_from_mover": "-14",
+        "cp_from_mover": -14,
+        "pv": [
+          "d8g5",
+          "h5g6"
+        ]
+      },
+      "after": {
+        "depth": 21,
+        "nodes": 3559292,
+        "time": 3.0,
+        "score_from_mover": "-648",
+        "cp_from_mover": -648,
+        "pv": [
+          "h5g6",
+          "h7g7",
+          "e2a2",
+          "a5a2",
+          "b3a2",
+          "f7f3",
+          "a2b3",
+          "g7g8",
+          "c4a6",
+          "c3e5",
+          "h3h4",
+          "e5d4",
+          "a6c6",
+          "e8f8",
+          "c6d7",
+          "d4g7",
+          "d7e6",
+          "g8h8",
+          "h4h5",
+          "f8a8",
+          "e6d6",
+          "h8g8",
+          "b3c4",
+          "b4b3",
+          "d6e6",
+          "g8h8"
+        ]
+      }
+    },
+    {
+      "id": "goldfish-loss-v66",
+      "chosen": "g6h5",
+      "before": {
+        "depth": 245,
+        "nodes": 302091,
+        "time": 0.034,
+        "score_from_mover": "#-3",
+        "cp_from_mover": -31997,
+        "pv": [
+          "g6f6",
+          "c4h4",
+          "f6e5",
+          "g1g5",
+          "e5f6",
+          "e3g4"
+        ]
+      },
+      "after": {
+        "depth": 245,
+        "nodes": 18567,
+        "time": 0.004,
+        "score_from_mover": "#-2",
+        "cp_from_mover": -31998,
+        "pv": [
+          "c4g4",
+          "h5h6",
+          "g4g6"
+        ]
+      }
+    }
+  ],
+  "error": null,
+  "process_group_settled": true,
+  "scope": "Representative three-second reference opinions, not proven game results. Rookwin independently certified by tablebase. No root score adjudication or match study."
+}

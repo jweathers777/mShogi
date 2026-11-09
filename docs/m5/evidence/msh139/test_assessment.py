@@ -96,6 +96,18 @@ class AssessmentTests(unittest.TestCase):
         self.assertEqual(result['pairs'],1)
         self.assertEqual(result['supplemental_anytime_score_bounds'],[0.,1.])
 
+    def test_goldfish_score_and_work_reports_remain_separate(self):
+        import inspect_reports
+        games=inspect_reports.inspect()['games']
+        game=next(g for g in games if g['pair']=='pair-006-discovery-goldfish113' and g['pairing']==1)
+        turn=next(t for t in game['turns'] if t['engine']==1 and t['version']==65)
+        self.assertEqual(turn['last_scored_report']['depth'],8)
+        self.assertEqual(turn['last_scored_report']['score_kind'],'mate')
+        self.assertEqual(turn['last_scored_report']['score'],4)
+        self.assertEqual(turn['last_work_report']['depth'],9)
+        self.assertNotIn('score',turn['last_work_report'])
+        self.assertEqual(turn['latest'],turn['last_scored_report'])
+
     def test_posterior_uncertainty_and_symmetry(self):
         mixed=a.posterior([0,.25,.5,.75,1]*4,2000)
         self.assertAlmostEqual(mixed['score_mean'],.5,delta=.005)

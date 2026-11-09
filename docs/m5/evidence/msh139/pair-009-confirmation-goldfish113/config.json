@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "id": "msh139-goldfish113-book-aff55e2ccbe5f11a",
+  "engines": [
+    {
+      "path": "/private/tmp/msh139/target/release/mshogi",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "mshogi.chess.conventional.v1 / mshogi.chess.conventional-tapered.v1",
+      "deterministic": false
+    },
+    {
+      "path": "/private/tmp/msh139/goldfish113/build/goldfish.x",
+      "args": [],
+      "options": [],
+      "model_path": null,
+      "model_identity": "Goldfish1.13.0/b7aed1c1b9188c55f4d773fd4fac43de30c83cbb",
+      "deterministic": false
+    }
+  ],
+  "openings": [
+    {
+      "id": "book-aff55e2ccbe5f11a",
+      "fen": null,
+      "moves": [
+        "e2e4",
+        "e7e5",
+        "g1f3",
+        "b8c6",
+        "f1b5",
+        "f8c5",
+        "c2c3",
+        "g8f6",
+        "d2d3",
+        "e8g8",
+        "e1g1",
+        "d7d6",
+        "b1d2",
+        "c5b6",
+        "h2h3",
+        "c6e7"
+      ]
+    }
+  ],
+  "paired": true,
+  "claim_policy": "auto_claim",
+  "time_control": "untimed",
+  "work": {
+    "depth": null,
+    "nodes": null,
+    "movetime_ms": 1000
+  },
+  "max_plies": 512,
+  "watchdogs": {
+    "handshake_ms": 5000,
+    "ready_ms": 5000,
+    "response_ms": 10000,
+    "write_ms": 2000,
+    "cleanup_ms": 1000
+  },
+  "io": {
+    "line_bytes": 4096,
+    "queued_lines": 32,
+    "transcript_bytes": 2097152,
+    "stderr_bytes": 16384,
+    "command_bytes": 4096
+  }
+}

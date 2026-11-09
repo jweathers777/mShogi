@@ -1,6 +1,6 @@
 {
   "task": "MSH-139 (Chess Strength Assessment)",
-  "status": "adaptive_discovery",
+  "status": "accepted_pending_normal_integration",
   "owner_authorization": "2026-11-09 adaptive assessment, no fixed target/game/hour budget; stop report before next objective",
   "source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
   "build": {
@@ -248,10 +248,10 @@
     "tests_sha256": "e20d64510c3f722f10aadeb1b59a9b7fe7cd9fe148cb082f1b7053b234f3385f",
     "method_sha256": "1477f36e7c0c3e69ef38aad5cef82422f5c4b377884456ea99e7c014da7d765b",
     "production_source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
-    "integration_revision": "1832f7f"
+    "integration_revision": "3c231b2f044ebbf2e2c29cb89da60ce62eeb3c4d"
   },
   "inflight": null,
-  "active_seconds": 466.96884283283725,
+  "active_seconds": 2935.2943580001593,
   "runs": [
     {
       "phase": "smoke",
@@ -436,6 +436,376 @@
       "seconds": 8.099117708858103,
       "ended_utc": "2026-11-09T13:58:28.027590+00:00",
       "process_group_settled": true
+    },
+    {
+      "phase": "discovery",
+      "opponent": "goldfish113",
+      "ordinal": 0,
+      "opening": "book-a0b403c7e122ec4c",
+      "reason": "Nearbyindependentfamily1982vsOx1943initialscore.625over4games; twoopeningpairsforscoutingwithoutprematuresmall-sampleinference, freshconfirmationreserved",
+      "started_utc": "2026-11-09T13:59:46.589404+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.25,
+      "folder": "pair-005-discovery-goldfish113",
+      "config_sha256": "c90d2e1ea7868c8cee3f7a1731409cc618f8bd925786ef7c878eeb5c87bee03d",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "9f909cd0d63db0971811acbc655f98c9531bc51dcfdaec80b1cf5f44a845fabc",
+      "summary": {
+        "opening_id": "book-a0b403c7e122ec4c",
+        "games": 2,
+        "wins": [
+          0,
+          1
+        ],
+        "draws": 1,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 230.64720491599292,
+      "ended_utc": "2026-11-09T14:03:37.237458+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "discovery",
+      "opponent": "goldfish113",
+      "ordinal": 1,
+      "opening": "book-9f8433b46da4a5b8",
+      "reason": "Nearbyindependentfamily1982vsOx1943initialscore.625over4games; twoopeningpairsforscoutingwithoutprematuresmall-sampleinference, freshconfirmationreserved",
+      "started_utc": "2026-11-09T14:03:37.338306+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.0,
+      "folder": "pair-006-discovery-goldfish113",
+      "config_sha256": "e845d290d86a9db3fc89f50158e1f7e0e766e3306aeaf74ea4a46d3cc30076ed",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "540877d5bfcd2abeda859499cd7226bc79991afc817fc719ec39a446424fe226",
+      "summary": {
+        "opening_id": "book-9f8433b46da4a5b8",
+        "games": 2,
+        "wins": [
+          0,
+          2
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 180.30767245823517,
+      "ended_utc": "2026-11-09T14:06:37.645787+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "oxidation060",
+      "ordinal": 0,
+      "opening": "book-5f8409c636b8d2fe",
+      "reason": "Freshconfirmationfromdisjointbookhalf: initialOx1943score2W1D1Lcompetitiveandmostinformative; collectsmallnewbatchthencheckintervalandprior-sensitivitybeforemorework",
+      "started_utc": "2026-11-09T14:09:45.911089+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.25,
+      "folder": "pair-007-confirmation-oxidation060",
+      "config_sha256": "3e5a5234a8edc36429a24d5efc7bba300802ff028b056f55bda039e3b594c14e",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "c2681b041171f47300cb8360d46c1630bde1ee31d2b351126a1e5e57b514be2f",
+      "summary": {
+        "opening_id": "book-5f8409c636b8d2fe",
+        "games": 2,
+        "wins": [
+          0,
+          1
+        ],
+        "draws": 1,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 280.6393708749674,
+      "ended_utc": "2026-11-09T14:14:26.551433+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "oxidation060",
+      "ordinal": 1,
+      "opening": "book-9c313e2692cbb19f",
+      "reason": "Freshconfirmationfromdisjointbookhalf: initialOx1943score2W1D1Lcompetitiveandmostinformative; collectsmallnewbatchthencheckintervalandprior-sensitivitybeforemorework",
+      "started_utc": "2026-11-09T14:14:26.653085+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.75,
+      "folder": "pair-008-confirmation-oxidation060",
+      "config_sha256": "5724ce166f7e262b88ece6693794a2ef5804a28be9b91657e532175fbd487912",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "d56f1cb738acea80d3e7a3f427955b33db7e1f14d0b0d568abd10e6e296189e6",
+      "summary": {
+        "opening_id": "book-9c313e2692cbb19f",
+        "games": 2,
+        "wins": [
+          1,
+          0
+        ],
+        "draws": 1,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 252.3682989999652,
+      "ended_utc": "2026-11-09T14:18:39.022084+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "goldfish113",
+      "ordinal": 0,
+      "opening": "book-aff55e2ccbe5f11a",
+      "reason": "Freshsecond-familyconfirmation: Goldfishscout1D3Lbutonly2pairsandbandsstilloverlapOx; nooverreaction, independentbookhalfandcheckwhetherfamilydifferencepersists",
+      "started_utc": "2026-11-09T14:21:09.547877+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.5,
+      "folder": "pair-009-confirmation-goldfish113",
+      "config_sha256": "49f72f07e24451d5b265c7ddf44f63d591dc98168af263df3451ab7e7f555960",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "e762e4c21f200b82f878bcdcff7ba488c4ed6e3d67988be45e0789b98bd42897",
+      "summary": {
+        "opening_id": "book-aff55e2ccbe5f11a",
+        "games": 2,
+        "wins": [
+          0,
+          0
+        ],
+        "draws": 2,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 328.42685091728345,
+      "ended_utc": "2026-11-09T14:26:37.975916+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "goldfish113",
+      "ordinal": 1,
+      "opening": "book-f7fb302336a360b8",
+      "reason": "Freshsecond-familyconfirmation: Goldfishscout1D3Lbutonly2pairsandbandsstilloverlapOx; nooverreaction, independentbookhalfandcheckwhetherfamilydifferencepersists",
+      "started_utc": "2026-11-09T14:26:38.071294+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.0,
+      "folder": "pair-010-confirmation-goldfish113",
+      "config_sha256": "46395364108abe47a4a4eabd91a930e31d7214adc3fd0286163af57b86fa5f4d",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "0a367f32b44f9a3e5f94524000ac4d9288f0c4fb1b964b7f7177ff81c5fed387",
+      "summary": {
+        "opening_id": "book-f7fb302336a360b8",
+        "games": 2,
+        "wins": [
+          0,
+          2
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 182.6977814999409,
+      "ended_utc": "2026-11-09T14:29:40.769610+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "oxidation060",
+      "ordinal": 2,
+      "opening": "book-44ce717424a6b937",
+      "reason": "ContinuecompetitivefreshOxconfirmation: first2pairs1W2D1Lscore.5; uncertainty~1749\u20132136andpriorstillmaterial. Addsmallbatchtoimproveusefulprecisionbeforeconsideringstop.",
+      "started_utc": "2026-11-09T14:36:12.984887+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.25,
+      "folder": "pair-011-confirmation-oxidation060",
+      "config_sha256": "97172e702cf07fd7ba521a5dca2deac676c7fd8ca4415d33e00c93f79a5a1298",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "4ad4a4323792d7fa94a49975e40912418659c8ac7bc2d0237d625722883e4a1f",
+      "summary": {
+        "opening_id": "book-44ce717424a6b937",
+        "games": 2,
+        "wins": [
+          0,
+          1
+        ],
+        "draws": 1,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 318.7262249169871,
+      "ended_utc": "2026-11-09T14:41:31.712159+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "oxidation060",
+      "ordinal": 3,
+      "opening": "book-37c2074021ade124",
+      "reason": "ContinuecompetitivefreshOxconfirmation: first2pairs1W2D1Lscore.5; uncertainty~1749\u20132136andpriorstillmaterial. Addsmallbatchtoimproveusefulprecisionbeforeconsideringstop.",
+      "started_utc": "2026-11-09T14:41:31.816649+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.25,
+      "folder": "pair-012-confirmation-oxidation060",
+      "config_sha256": "af44294d0af5152d08d606d60ccaf8777dee7170ec7d390074d20d786d04d711",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "48523a1fab7371294626c97d9af4ab9f0ee7a84148d85bc685540bbb05f3d83f",
+      "summary": {
+        "opening_id": "book-37c2074021ade124",
+        "games": 2,
+        "wins": [
+          0,
+          1
+        ],
+        "draws": 1,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 247.00964683387429,
+      "ended_utc": "2026-11-09T14:45:38.827041+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "goldfish113",
+      "ordinal": 2,
+      "opening": "book-888bb50db420873b",
+      "reason": "ContinuefreshGoldfishconfirmation: first2pairs2D2Lscore.25withwide1644\u20132115band; Oxnowfourfreshpairsscore.375, notastablefamilycontradiction. Addsmallbatchforusefulprecisionandprior-stability.",
+      "started_utc": "2026-11-09T14:46:56.119928+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 1.0,
+      "folder": "pair-013-confirmation-goldfish113",
+      "config_sha256": "d0b7a7604fe6d7b205d74c5f23201f449bb0e4e91a177773e8a803e971b22a6e",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "d71509552dcc4f2499e6161c248ef1b5c91cc131f2480c0c704363396f862b53",
+      "summary": {
+        "opening_id": "book-888bb50db420873b",
+        "games": 2,
+        "wins": [
+          2,
+          0
+        ],
+        "draws": 0,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 193.43961600027978,
+      "ended_utc": "2026-11-09T14:50:09.560420+00:00",
+      "process_group_settled": true
+    },
+    {
+      "phase": "confirmation",
+      "opponent": "goldfish113",
+      "ordinal": 3,
+      "opening": "book-9e9cd868a147baf3",
+      "reason": "ContinuefreshGoldfishconfirmation: first2pairs2D2Lscore.25withwide1644\u20132115band; Oxnowfourfreshpairsscore.375, notastablefamilycontradiction. Addsmallbatchforusefulprecisionandprior-stability.",
+      "started_utc": "2026-11-09T14:50:09.656529+00:00",
+      "healthy": true,
+      "complete": true,
+      "pair_score": 0.25,
+      "folder": "pair-014-confirmation-goldfish113",
+      "config_sha256": "462a96257dbde7ce1b7a51094373bac82dfe6092d4a2f65b13835602d1027cff",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "report_sha256": "941e55bf2b582ee787eb6d30348bc7127780ec884c7945541d535d0cdaf25b9b",
+      "summary": {
+        "opening_id": "book-9e9cd868a147baf3",
+        "games": 2,
+        "wins": [
+          0,
+          1
+        ],
+        "draws": 1,
+        "unscored": 0,
+        "failures": 0
+      },
+      "stops": [
+        "chess_conclusion",
+        "chess_conclusion"
+      ],
+      "replay_returncode": 0,
+      "replay_stderr": "",
+      "seconds": 254.06284774979576,
+      "ended_utc": "2026-11-09T14:54:23.720148+00:00",
+      "process_group_settled": true
     }
   ],
   "reviews": [
@@ -461,6 +831,26 @@
     {
       "reviewer": "independent chess_next_refinements agent",
       "verdict": "actual20qualityrowsindependentlyreconciled:12solutionsinclnativeverifiedalternative;7/8WDLpreservingbut4nondiscriminating. Originalexecutedsourcehashpreserved; postrunqualitydriverguardsreviewedseparately, notclaimedexecuted."
+    },
+    {
+      "reviewer": "independent chess_maturity_assessment agent",
+      "scope": "all12rawscoredpairs, nativeoutcomes/colorassignments, posteriorarithmetic, prior-sensitivity/conditionalrange and proportionatestopping, actualqualityinterpretation",
+      "verdict": "approved stopping and assessment completion; no more games justified solely to narrow error bars; no qualification/transfer readiness or precise stable rating claim"
+    },
+    {
+      "reviewer": "independent chess_next_refinements agent",
+      "scope": "all15pairreceipts,2978acceptedmoves, source/binaryidentities, nativeoutcomes/replays/cleanup, openingselection, originalqualitysource and boundedreferencePVs",
+      "verdict": "no result-integrity defect; final12-testreceipt/report reconciliation requested and now supplied; IPCcleanup remainsauthor-observed historicalreceipt"
+    },
+    {
+      "reviewer": "independent chess_maturity_assessment agent",
+      "scope": "final written report, stopping/uncertainty, current6helperhashes and actual12-testreceipt",
+      "verdict": "approved for completion; no further games; owner nextobjective pending"
+    },
+    {
+      "reviewer": "independent chess_next_refinements agent",
+      "scope": "final24games/2978acceptedmoves,24nativeconclusions,15receipts,report,metrics,sourceidentity and actual12-testreceipt",
+      "verdict": "approved acceptance and normal integration; no unresolved material issue; author-observedIPCcleanup qualified"
     }
   ],
   "checks": [
@@ -489,6 +879,26 @@
       "result": "11 passed",
       "code_sha256": "9989182af3df75d9dc841d74a6ae0baccfea61ed541011c833e5a403bb2e2724",
       "evidence": "tests-catalog.log.gz"
+    },
+    {
+      "command": "PYTHONPATH=/private/tmp/msh139/confseq/src /private/tmp/msh139/venv/bin/python -m unittest discover -s docs/m5/evidence/msh139 -p test_assessment.py",
+      "result": "12 passed, zero failures",
+      "environment": "Python3.11.0 macOS27.0.1 arm64",
+      "log_modified_utc": "2026-11-09T14:19:21.419278+00:00",
+      "evidence": "tests-telemetry.log.gz",
+      "assessment_sha256": "9989182af3df75d9dc841d74a6ae0baccfea61ed541011c833e5a403bb2e2724",
+      "test_sha256": "7c5c88a3778bf5899753471c03a6cd0c0caff055ac9d9925e1b227d5508a09d3",
+      "telemetry_sha256": "8d823d6d53ae406c21c39698c2596ab8282359dc909aa303e5b3ebc33cfe5767"
+    },
+    {
+      "command": "ps -axo pid=,ppid=,command=; exact frozen executable-prefix filter",
+      "result": "No remaining candidate, runner or reference process observed",
+      "observed_utc": "2026-11-09T15:02:17.727708+00:00",
+      "scope": "Final actual absence check; earlier Simbel smoke lacks a later-helper process_group_settled field, preserved honestly."
+    },
+    {
+      "command": "git diff --name-only fac34c9f0ab0618b67cb76fde6703eff6f93e158 -- . :!docs :!backlog :!AGENTS.md",
+      "result": "empty; all production consumers/source unchanged from accepted runtime"
     }
   ],
   "setup_work": {
@@ -520,6 +930,18 @@
       "seconds": 0.034537583123892546,
       "results": "quality-audit.json",
       "complete": true
+    },
+    {
+      "kind": "representative_reference_analysis",
+      "seconds": 24.35618754196912,
+      "complete": true,
+      "path": "example-analysis.json"
+    },
+    {
+      "kind": "representative_reference_analysis",
+      "seconds": 6.338585750199854,
+      "complete": true,
+      "path": "attack-analysis.json"
     }
   ],
   "freeze_history": [
@@ -549,5 +971,402 @@
     "executed_source": "quality-executed.py.gz",
     "executed_sha256": "a1fa6d141af2e23bdb6cbb6eded5cca5e23958efa29a81059a9ef096c68a165a",
     "interpretation": "12/12publishedorequivalentmate;7/8WDLbut4nondiscriminating; concreteRc1drawinsteaduniqueRe1win remainsfailure; possibleroughly0.5searlytacticalinterferencefromArasanhandshake preserved, no tacticalrating."
-  }
+  },
+  "reference_probe_cleanup": {
+    "reference": "unusedArasan15.6",
+    "cause": "Initial PythonChess transport-close probes terminate without running Arasan semaphore destructors; native paired runner uses quit and current diagnostic helpers explicitly quit. Source unchanged; no scored Arasan games.",
+    "owned_semaphore_sets": [
+      {
+        "id": 589878,
+        "owner_uid": 501,
+        "creator_uid": 501,
+        "nsems": 1,
+        "created_utc": "2026-11-09T13:47:41+00:00",
+        "last_pid": 0
+      },
+      {
+        "id": 458807,
+        "owner_uid": 501,
+        "creator_uid": 501,
+        "nsems": 1,
+        "created_utc": "2026-11-09T13:47:41+00:00",
+        "last_pid": 0
+      },
+      {
+        "id": 131129,
+        "owner_uid": 501,
+        "creator_uid": 501,
+        "nsems": 1,
+        "created_utc": "2026-11-09T13:47:41+00:00",
+        "last_pid": 0
+      },
+      {
+        "id": 65594,
+        "owner_uid": 501,
+        "creator_uid": 501,
+        "nsems": 1,
+        "created_utc": "2026-11-09T13:50:22+00:00",
+        "last_pid": 41131
+      },
+      {
+        "id": 65595,
+        "owner_uid": 501,
+        "creator_uid": 501,
+        "nsems": 1,
+        "created_utc": "2026-11-09T13:50:22+00:00",
+        "last_pid": 41131
+      },
+      {
+        "id": 65596,
+        "owner_uid": 501,
+        "creator_uid": 501,
+        "nsems": 1,
+        "created_utc": "2026-11-09T13:50:22+00:00",
+        "last_pid": 41131
+      }
+    ],
+    "identity_evidence": "Only six IPC_PRIVATE single-semaphore sets, two exact3-set creation groups at known probe start times; second lastPID41131 aligns1sprobe andartifactcreation; originalprobePIDs40676/41131 absent. AllotherIPCresourcesuntouched.",
+    "cleanup": "ipcrm -s for six explicitly verified owned IDs; post-removal IPC_STAT invalidargument confirmed"
+  },
+  "assessment_results": {
+    "oxidation060/discovery": {
+      "counts": [
+        0,
+        1,
+        0,
+        0,
+        1
+      ],
+      "prior_per_bin": 0.5,
+      "score_mean": 0.5560859673322265,
+      "score_credible95": [
+        0.26229287898858106,
+        0.8574173723537538
+      ],
+      "index_median": 1980.6878674733211,
+      "index_credible95": [
+        1763.3610097406988,
+        2254.650265834068
+      ],
+      "prior_sensitivity": [
+        {
+          "counts": [
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "prior_per_bin": 0.2,
+          "score_mean": 0.5841171430832182,
+          "score_credible95": [
+            0.2564754889640566,
+            0.9265196840225474
+          ],
+          "index_median": 1999.3760278334794,
+          "index_credible95": [
+            1758.1002305634036,
+            2383.2734540936203
+          ]
+        },
+        {
+          "counts": [
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "prior_per_bin": 1,
+          "score_mean": 0.5356316602151859,
+          "score_credible95": [
+            0.28952255828415646,
+            0.7859469493062715
+          ],
+          "index_median": 1966.9575919442864,
+          "index_credible95": [
+            1787.0528457543935,
+            2168.948724302414
+          ]
+        }
+      ],
+      "supplemental_anytime_score_bounds": [
+        0.0,
+        1.0
+      ],
+      "pairs": 2,
+      "actual_points": 2.5
+    },
+    "oxidation060/confirmation": {
+      "counts": [
+        0,
+        3,
+        0,
+        1,
+        0
+      ],
+      "prior_per_bin": 0.5,
+      "score_mean": 0.4230127679153046,
+      "score_credible95": [
+        0.24725236991049027,
+        0.6450835490660688
+      ],
+      "index_median": 1882.5326120504842,
+      "index_credible95": [
+        1749.5964264393942,
+        2046.795934668552
+      ],
+      "prior_sensitivity": [
+        {
+          "counts": [
+            0,
+            3,
+            0,
+            1,
+            0
+          ],
+          "prior_per_bin": 0.2,
+          "score_mean": 0.40031447420170674,
+          "score_credible95": [
+            0.24442062001126774,
+            0.6313078408875592
+          ],
+          "index_median": 1862.3058353968859,
+          "index_credible95": [
+            1746.9430976166934,
+            2036.4309126677138
+          ]
+        },
+        {
+          "counts": [
+            0,
+            3,
+            0,
+            1,
+            0
+          ],
+          "prior_per_bin": 1,
+          "score_mean": 0.4446627274435448,
+          "score_credible95": [
+            0.27033847410954115,
+            0.6460864471541977
+          ],
+          "index_median": 1900.9965473990421,
+          "index_credible95": [
+            1770.5145644123252,
+            2047.5573748403267
+          ]
+        }
+      ],
+      "supplemental_anytime_score_bounds": [
+        0.0,
+        1.0
+      ],
+      "pairs": 4,
+      "actual_points": 3.0
+    },
+    "goldfish113/discovery": {
+      "counts": [
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "prior_per_bin": 0.5,
+      "score_mean": 0.3329273674553054,
+      "score_credible95": [
+        0.09907515151594551,
+        0.6518664950974115
+      ],
+      "index_median": 1847.7451830360533,
+      "index_credible95": [
+        1598.5104719088424,
+        2090.965134852196
+      ],
+      "prior_sensitivity": [
+        {
+          "counts": [
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          "prior_per_bin": 0.2,
+          "score_mean": 0.24899164151376324,
+          "score_credible95": [
+            0.039846028265345564,
+            0.6085259945045011
+          ],
+          "index_median": 1767.3071596301857,
+          "index_credible95": [
+            1429.2176623764444,
+            2058.6304821172416
+          ]
+        },
+        {
+          "counts": [
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          "prior_per_bin": 1,
+          "score_mean": 0.39293602880252737,
+          "score_credible95": [
+            0.17158268155747605,
+            0.6516866883525294
+          ],
+          "index_median": 1901.2596070129962,
+          "index_credible95": [
+            1708.4897125284533,
+            2090.8275110351947
+          ]
+        }
+      ],
+      "supplemental_anytime_score_bounds": [
+        0.0,
+        1.0
+      ],
+      "pairs": 2,
+      "actual_points": 0.5
+    },
+    "goldfish113/confirmation": {
+      "counts": [
+        1,
+        1,
+        1,
+        0,
+        1
+      ],
+      "prior_per_bin": 0.5,
+      "score_mean": 0.46215371766738267,
+      "score_credible95": [
+        0.2142184007193792,
+        0.735553138430386
+      ],
+      "index_median": 1952.1223272774214,
+      "index_credible95": [
+        1756.2219669734616,
+        2159.710254260341
+      ],
+      "prior_sensitivity": [
+        {
+          "counts": [
+            1,
+            1,
+            1,
+            0,
+            1
+          ],
+          "prior_per_bin": 0.2,
+          "score_mean": 0.4495596536342463,
+          "score_credible95": [
+            0.17812032323061253,
+            0.762680359672865
+          ],
+          "index_median": 1940.9537386912857,
+          "index_credible95": [
+            1716.3620930420577,
+            2184.8035524988
+          ]
+        },
+        {
+          "counts": [
+            1,
+            1,
+            1,
+            0,
+            1
+          ],
+          "prior_per_bin": 1,
+          "score_mean": 0.4726136662951586,
+          "score_credible95": [
+            0.2552295675621162,
+            0.7024349203376825
+          ],
+          "index_median": 1961.1837849293665,
+          "index_credible95": [
+            1795.963423151091,
+            2131.209651925802
+          ]
+        }
+      ],
+      "supplemental_anytime_score_bounds": [
+        0.0,
+        1.0
+      ],
+      "pairs": 4,
+      "actual_points": 3.5
+    }
+  },
+  "stopping_decision": {
+    "utc": "2026-11-09T15:01:53.617558+00:00",
+    "scored_games": 24,
+    "reason": "Fresh independent nearby-family estimates agree; central prior sensitivity modest; primary per-family bands about300/400points and working sensitivity span1700\u20132200 useful for next engineering decision. Moregames mainly refine uncertainty. No predetermined strength gate or game/hour allocation. Independent stopping review approved.",
+    "working_local_index": "about1900",
+    "working_range": [
+      1700,
+      2200
+    ],
+    "range_meaning": "Rounded descriptive sensitivity span across separate per-release fresh credible intervals; not pooled/joint95%, officialCCRL/humanrating or a bound on time/hardware-transfer error."
+  },
+  "report": "docs/m5/chess-strength-assessment-report.md",
+  "required_checks": [
+    "12 focused offline instrumentation tests on localmacOS/Python3.11",
+    "real native protocol preflights and native replay of every eligible pair",
+    "independent tactical/tablebase source and native admission audits",
+    "source/binary identity, failure/cleanup and fresh-opening audit",
+    "independent method/stopping/final evidence reconciliation"
+  ],
+  "product_evidence_reuse": {
+    "accepted_runtime_source": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
+    "measurement_build_source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
+    "production_diff": "empty; no production files changed",
+    "record": "docs/m5/evidence/msh138/verification.json",
+    "scope": "Reuse accepted actual3OSnative/release-controller and normalMacGUI evidence. No new Linux/Windows localassessment execution or broadGUIcampaign claimed."
+  },
+  "current_test_receipt": "tests-telemetry.log.gz",
+  "final_instrumentation_hashes": {
+    "assessment.py": "9989182af3df75d9dc841d74a6ae0baccfea61ed541011c833e5a403bb2e2724",
+    "inspect_reports.py": "8d823d6d53ae406c21c39698c2596ab8282359dc909aa303e5b3ebc33cfe5767",
+    "analyze_examples.py": "0a43d90178d6f68136bb45f930a07b17562e437914be5f62c12ff8dd98da6b50",
+    "audit_quality.py": "6abf2a3d946c32192405ab558c748508b26d2df485d96da9e75b113ba2c2a67d",
+    "test_assessment.py": "7c5c88a3778bf5899753471c03a6cd0c0caff055ac9d9925e1b227d5508a09d3",
+    "quality.py": "01122b19f0194415184a4e8d67fb122e0945fc0d40f6e5a7edebc7295aa0a8e4"
+  },
+  "accounting_summary": {
+    "scored_pair_seconds": 2914.547197083477,
+    "smoke_pair_seconds": 20.747160916682333,
+    "recorded_diagnostic_seconds": 47.12681658240035,
+    "note": "Elapsed invocation time includes process cleanup/native replay where launched through assessment.py. Build/preparation logs separate; early small timing probes separately recorded/estimated, no claim of exhaustive CPU-second billing. No paid compute or campaign-hour allocation."
+  },
+  "guard_observations": [
+    {
+      "case": "Attempted analyzer while a diagnostic held sharedlock",
+      "outcome": "Refused withBlockingIOError Errno35; no secondengine campaign/process launched or ledger update"
+    },
+    {
+      "case": "SupplementalCS initial list input",
+      "outcome": "TypeError afterfirst scored pair; rawgamepairretained, ndarrayinput corrected/reviewed/tested, no method change"
+    },
+    {
+      "case": "Tactical preparation initialPly guard",
+      "outcome": "Initial assertion rejected zero-based APIindex; corrected +1 beforediagnosticengine work; fullPGN solvingroots/solutions independentlyverified"
+    }
+  ],
+  "host_architecture_receipt": [
+    "/private/tmp/msh139/target/release/mshogi:                 Mach-O 64-bit executable arm64",
+    "/private/tmp/msh139/target/release/mshogi-match:           Mach-O 64-bit executable arm64",
+    "/private/tmp/msh139/oxidation060/target/release/oxidation: Mach-O 64-bit executable arm64",
+    "/private/tmp/msh139/goldfish113/build/goldfish.x:          Mach-O 64-bit executable arm64"
+  ],
+  "power_observation": {
+    "utc": "2026-11-09T14:20:00Z",
+    "scope": "approximate observation time, not continuous monitoring",
+    "pmset": "AC Power; 100%; charged"
+  },
+  "report_sha256": "2f8ff62c331974a4f8745562bcb3221581d0e9c69e8b7f1a7fdf98e09f9d0194"
 }

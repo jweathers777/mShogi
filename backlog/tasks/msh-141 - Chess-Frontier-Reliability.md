@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-09T16:16:00Z'
-updated_date: '2026-11-09T17:02:00Z'
+updated_date: '2026-11-09T17:49:00Z'
 labels:
   - handle:chess-frontier-reliability
 milestone: m-5
@@ -51,4 +51,8 @@ Reproduced exact295113 visit incident from full81ply history: completeddepth1 at
 Final local integration checks passed at production source1d20ae6:680 core/search/console tests,0fail,4explicitignored;4 actual release desktop-play tests pass; workspace all-target clippy and format pass. Independent final evidence review matched original raw transcript/fullhistory, archived baseline diagnostics-only diff, all artifact/source/binary hashes,295113visit arithmetic and all3uncapped before/after rounds. Required native CI run42655073948 (Linux129291275785,macOS15 129291275256,Windows129291276143) pending; one60s completion-aware monitor. Auto-triggered Desktop run42655073772 cancelled as unnecessary package campaign; no GUI/interface change. AC4/DoD remain unchecked pending actual3OS completion.
 
 CI run42655073948: all3OS native/release checks passed; Linux129291275785 then failed stale generated shared-chess-analysis-mate telemetry (65visits/seldepth7 now48/5). I missed this fixture refresh before CI. Regenerated with native producer; independent recursive diff confirms exactly8scalars and unchanged move/PV/score/depth/state/schema.34frontend consumer tests pass with pinnedNode24.19.0. Cancelled superseded macOS/Windows jobs, preserved full job receipts and failure diff. Production unchanged from1d20ae6; fixture-inclusive checkpoint and fresh required3OS CI follow. No criteria/limits/tests weakened.
+
+Final platform handoff: production1d20ae6, fixture-inclusive22bf634, both integrated/pushed to codex/rewrite. Rust run42660806919 at22bf634: Linux129311544941 and Windows129311544328 passed all steps (attempt1). macOS129311544814 and supported macOS-only retry129327572801 both cancelled after15m1s without acquiring a hosted runner (runner_id0, no steps). GitHub reports hosted-runner acquisition failure and macOS arm64 capacity constraints. Attempt2 Linux129327575705/Windows129327577416 receipts carry forward attempt1 success; healthy platforms were not rerun. One completion-aware monitor completed; bounded retry campaign stopped after the second capacity failure. Later supported retry of completed macOS job129327572801 on identical22bf634 is the remaining action, subject to current API eligibility/capacity. No source/runner/check/acceptance changes or local macOS substitution. MSH-141 stays In Review; AC4/final acceptance unsupported. Canonical receipts and historical failures: docs/m5/evidence/msh141/verification.json; explanation: docs/m5/chess-frontier-reliability.md. MSH-142 (Classical Endgame Judgment) and MSH-143 (Chess Search Efficiency) remain scoped follow-ups pending this platform gate; no cross-game transfer or strength claim.
+
+Independent final receipt reconciliation (chess_frontier_review) approves blocked handoff with no material mismatch: exact22bf634 source, every Linux/Windows required step passed, both macOS cancellations901seconds/runner_id0/no steps and matching capacity annotations, preserved historical/carried-forward receipts, all artifact hashes match. Production diff1d20ae6..22bf634 empty. In Review and incomplete AC4/final acceptance are required; no local-platform substitution. Evidence-only final commit follows; no active CI monitor or retry remains.
 <!-- SECTION:NOTES:END -->

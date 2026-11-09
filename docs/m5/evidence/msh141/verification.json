@@ -1,11 +1,11 @@
 {
   "task": "MSH-141 (Chess Frontier Reliability)",
-  "status": "independent-review-approved-ci-pending",
+  "status": "independent-review-approved-macos-ci-capacity-blocked",
   "base_revision": "d86dfcab0d6122dc357e6ce58903beb2d351e3ad",
   "historical_candidate_build_source": "9a509f077460e07341d2bccf830e4b02fcb0e95e",
   "historical_production_equivalent": "fac34c9f0ab0618b67cb76fde6703eff6f93e158",
-  "corrected_source_revision": null,
-  "integration_revision": "1d20ae6f93936122e4aaa6fb320a48d995bde531",
+  "corrected_source_revision": "22bf634b268bb99efbd349d1e80c8b2466b24c7a",
+  "integration_revision": "22bf634b268bb99efbd349d1e80c8b2466b24c7a",
   "environment": {
     "os": "macOS27.0.1 (26A434)",
     "rust": "1.99.1",
@@ -19,7 +19,22 @@
     "Rust (macos-15)",
     "Rust (windows-2022)"
   ],
-  "ci": [],
+  "ci": [
+    {
+      "platform": "ubuntu-24.04",
+      "job_id": 129311544941,
+      "attempt": 1,
+      "conclusion": "success",
+      "source": "22bf634b268bb99efbd349d1e80c8b2466b24c7a"
+    },
+    {
+      "platform": "windows-2022",
+      "job_id": 129311544328,
+      "attempt": 1,
+      "conclusion": "success",
+      "source": "22bf634b268bb99efbd349d1e80c8b2466b24c7a"
+    }
+  ],
   "source_reconstruction": {
     "baseline": "base production plus diagnostic-only per-iteration/q-expansion counters; exact instrumented search and unchanged attack source gz retained",
     "intermediate_profiles": [
@@ -318,22 +333,26 @@
   "local_checks": [
     {
       "command": "cargo fmt --all -- --check",
-      "result": "passed"
+      "result": "passed",
+      "source_context": "Production1d20ae6; generated fixture verification/34frontend tests use the fixture later committed at22bf634. Other local checks precede fixture-only reconciliation; unchanged production evidence is reused."
     },
     {
       "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
       "result": "passed",
-      "receipt": "clippy.log.gz"
+      "receipt": "clippy.log.gz",
+      "source_context": "Production1d20ae6; generated fixture verification/34frontend tests use the fixture later committed at22bf634. Other local checks precede fixture-only reconciliation; unchanged production evidence is reused."
     },
     {
       "command": "cargo test --release --locked -p mshogi-search",
       "result": "passed",
-      "receipt": "search-final.log.gz"
+      "receipt": "search-final.log.gz",
+      "source_context": "Production1d20ae6; generated fixture verification/34frontend tests use the fixture later committed at22bf634. Other local checks precede fixture-only reconciliation; unchanged production evidence is reused."
     },
     {
       "command": "cargo test --release --locked -p mshogi-core --test attacks",
       "result": "passed,7tests",
-      "receipt": "attacks.log.gz"
+      "receipt": "attacks.log.gz",
+      "source_context": "Production1d20ae6; generated fixture verification/34frontend tests use the fixture later committed at22bf634. Other local checks precede fixture-only reconciliation; unchanged production evidence is reused."
     },
     {
       "command": "cargo test --locked -p mshogi-core -p mshogi-search -p mshogi-console",
@@ -341,7 +360,8 @@
       "passed": 680,
       "failed": 0,
       "ignored": 4,
-      "receipt": "native-tests.log.gz"
+      "receipt": "native-tests.log.gz",
+      "source_context": "Production1d20ae6; generated fixture verification/34frontend tests use the fixture later committed at22bf634. Other local checks precede fixture-only reconciliation; unchanged production evidence is reused."
     },
     {
       "command": "cargo test --release --locked -p mshogi-console --test desktop_play",
@@ -349,28 +369,33 @@
       "passed": 4,
       "failed": 0,
       "ignored": 0,
-      "receipt": "desktop-play.log.gz"
+      "receipt": "desktop-play.log.gz",
+      "source_context": "Production1d20ae6; generated fixture verification/34frontend tests use the fixture later committed at22bf634. Other local checks precede fixture-only reconciliation; unchanged production evidence is reused."
     },
     {
       "command": "python-chess SimpleEngine.play full preserved81ply history, target/release/mshogi --game chess uci, Limit(time=1), explicit quit",
       "result": "passed",
       "receipt": "incident-uci.json",
-      "observation": "g6f6,depth128,seldepth17,nodes306191,mate(-3),clean quit; no match game"
+      "observation": "g6f6,depth128,seldepth17,nodes306191,mate(-3),clean quit; no match game",
+      "source_context": "Production1d20ae6; generated fixture verification/34frontend tests use the fixture later committed at22bf634. Other local checks precede fixture-only reconciliation; unchanged production evidence is reused."
     },
     {
       "command": "cargo test --release --locked -p mshogi-search chess_conventional::tests::quiescence_retains_mate_and_check_evasions_beyond_quiet_forcing_frontier -- --exact",
       "result": "passed,1test at1d20ae6 including final explicit Check precondition",
-      "receipt": "final-boundary-exact.log.gz"
+      "receipt": "final-boundary-exact.log.gz",
+      "source_context": "Production1d20ae6; generated fixture verification/34frontend tests use the fixture later committed at22bf634. Other local checks precede fixture-only reconciliation; unchanged production evidence is reused."
     },
     {
       "command": "cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__",
       "result": "passed; exactlyone mate fixture changes only actual work counts",
-      "receipt": "fixtures.log.gz"
+      "receipt": "fixtures.log.gz",
+      "source_context": "Production1d20ae6; generated fixture verification/34frontend tests use the fixture later committed at22bf634. Other local checks precede fixture-only reconciliation; unchanged production evidence is reused."
     },
     {
       "command": "Node24.19.0 node_modules/vitest/vitest.mjs run src/product/NativeSessionPanels.test.tsx",
       "result": "passed,34tests",
-      "receipt": "frontend-panel-pinned.log.gz"
+      "receipt": "frontend-panel-pinned.log.gz",
+      "source_context": "Production1d20ae6; generated fixture verification/34frontend tests use the fixture later committed at22bf634. Other local checks precede fixture-only reconciliation; unchanged production evidence is reused."
     }
   ],
   "independent_review": [
@@ -405,6 +430,18 @@
       "reviewer": "chess_frontier_review",
       "verdict": "fixture-only reconciliation approved",
       "verified": "Exactly8scalar changes:4telemetry projections nodes65to48 andseldepth7to5; move,PV,score,depth,state,schema unchanged. Matches Linux actual generated diff; production diff from1d20ae6 empty."
+    },
+    {
+      "reviewer": "chess_frontier_review",
+      "verdict": "Final blocked evidence handoff approved; no material mismatch. MSH-141 must remain In Review with AC4/final acceptance incomplete.",
+      "verified": [
+        "Exact22bf634 source on both run receipts; production unchanged from1d20ae6",
+        "All required steps passed on original Linux129311544941 and Windows129311544328",
+        "Both macOS attempts901seconds, runner_id0, empty runner name/steps, cancelled with hosted-acquisition and arm64-capacity annotations",
+        "Carried-forward attempt2 success IDs and historical failed/cancelled receipts preserved",
+        "All artifact hashes match"
+      ],
+      "scope": "Independent stored-provider-receipt reconciliation; root performed sole live CI monitoring. No new source review or product campaign."
     }
   ],
   "limitations": [
@@ -422,40 +459,50 @@
     "single_uci_probe_elapsed_seconds": 0.9502191659994423
   },
   "artifacts": {
-    "early-threat-fixed.jsonl": "5b0f7760f90cc2154eae05d2155f7096cc557b2800dedd9ad3169f426bfca7f6",
-    "frontier-response-fixed.jsonl": "9f3692c2e98dc1595dc0d007a9dabf9c3ec97beab1aff4d13779316fa23c6f97",
-    "corrected-timed-unlimited-2.jsonl": "a509243ce15461287157fb212e5bb03f4e515a114335f56b89b7a65bd38b2812",
-    "baseline-fixed.jsonl": "db321ef9abccb16e19374beaf8d7342325cbe473902b938f00e46b9c37b64769",
-    "corrected-timed-unlimited-0.jsonl": "d460ac02bd454a3207d89a10df725559b6261bcc9cd92541f8e8c09e4800dc4c",
-    "support-only-fixed.jsonl": "78a005fa8f83359e750a87148e824f8fd115cbaa0db2236cfb131a1b317bf52a",
-    "frontier-fixed.jsonl": "3f16b81cc52595910fbf6296b2499fea21dfdf5f87720c94dc34fce81b8751d1",
     "attack-before.rs.gz": "363b718f4af784decdd15c98272b2085b3191445b6e6f7b2233eae7a6c024e21",
-    "baseline-timed.jsonl": "e4be836e1fb707a4de9c1bc9b10d1e23c4b6ce17ca011fd045045de94f30be2e",
-    "corrected-timed-unlimited-1.jsonl": "dfa057ec8e6bff921c6413b5651834e6360db37d3113b809dda2ce86efe6432e",
-    "baseline-exact-visits.jsonl": "f21e61925a5cf57a9d9a49cd86db08031bd2789040fd5d889296bc73167c86b0",
-    "inputs.json": "c54ee6939be7fb58cde72454e36b7ff708b2436b6b5361d60e6f5e69cbc78321",
-    "baseline-timed-unlimited-0.jsonl": "a05209eb661852baf35a6698fd9b274af7b235f6dce9f712f584f591a6fe8bc5",
-    "search-instrumented-before.rs.gz": "a19ee5672b71849de473183944e203deaab6c1616cb06ceb2cac0f5d90b35d70",
-    "profile-before.rs.gz": "19e5e6cbed3299c2fa947477dd4ef3ee2f8e888e868d09fe4bc2dc5dc229432b",
-    "baseline-timed-unlimited-2.jsonl": "9e8b6cb1f8cc41fea0b47dd9f389a5ea23833faa1a7233224533d286bb689ea3",
-    "baseline-timed-unlimited-1.jsonl": "52eec8ce24db97f3575b912f60e7ac72ac101192a35244fc0f55e734120230df",
-    "corrected-exact-visits.jsonl": "effa1ffa0739ff80fbf0221f8d56021abac0614157365fc17d41b4bfacf2601a",
-    "clippy.log.gz": "e8c86f05a59a58957349831cc56d4a20b575e4c3f14f468a38fcdded575b151f",
-    "search-final.log.gz": "6056a3d68ccf217a3c3c1a24133e5ffe1b7f94c4909a5a9a5514fcc6b4b4d79b",
     "attacks.log.gz": "ffb766a78f86d11e01da9d8a9738067f33f98d9f58c0c3db475af5e7d5fa437f",
-    "native-tests.log.gz": "a410763eeb0674a6ab75325440e5792d479a926fddb2ea584a319302cfc40952",
-    "desktop-play.log.gz": "f787f4c1855f8f1b6c18746ffd026ed1d8fda2807b514977a351e5c4ae063cb7",
-    "incident-uci.json": "368e727e50b29fe1aa5d018ac4ccd6e3bfee495341822b5bc5b1c38f53c2b0ab",
-    "final-boundary.log.gz": "1d51d265cf062fb47078cc79fbe4bb3bf4541be98162beae7863ec7032412dc2",
-    "final-boundary-exact.log.gz": "dd98a1a388f8f9a0bddd4c44f2e248cbf873bda02d70b86d86c1a934edabaf86",
+    "baseline-exact-visits.jsonl": "f21e61925a5cf57a9d9a49cd86db08031bd2789040fd5d889296bc73167c86b0",
+    "baseline-fixed.jsonl": "db321ef9abccb16e19374beaf8d7342325cbe473902b938f00e46b9c37b64769",
+    "baseline-timed-unlimited-0.jsonl": "a05209eb661852baf35a6698fd9b274af7b235f6dce9f712f584f591a6fe8bc5",
+    "baseline-timed-unlimited-1.jsonl": "52eec8ce24db97f3575b912f60e7ac72ac101192a35244fc0f55e734120230df",
+    "baseline-timed-unlimited-2.jsonl": "9e8b6cb1f8cc41fea0b47dd9f389a5ea23833faa1a7233224533d286bb689ea3",
+    "baseline-timed.jsonl": "e4be836e1fb707a4de9c1bc9b10d1e23c4b6ce17ca011fd045045de94f30be2e",
+    "ci-1-jobs.json": "e049d26e995861d6f1c2671c7be76b8a4bc3f88c588188067e7eed3ebe58a4e0",
     "ci-1-linux-fixture-failure.log": "6194ed03f1032997fde92a26e95428792d76935b83ddbdb3ae80af7dba156ce8",
+    "ci-1-monitor.log.gz": "fc43aef358bdb7b7666eeb12f52517643b8b7bb2e7abcee99e7e71a1be31748a",
+    "ci-1-run.json": "f45c44780e81bd93e39c6523bc9fc94e0c1e8d251393f29fa3d504079322495f",
+    "ci-2-attempt1-jobs.json": "715a64f62a5068b852ba5256fb7cad452434de31199e8cb8eea53496f29c6b16",
+    "ci-2-attempt1-monitor.log.gz": "d81af117fc7428d3e291e25384620c83ae3b7083002cf7318a98fa6e1905959a",
+    "ci-2-attempt2-jobs.json": "1fa22f7bdbe09802f8e8d825e1d6b6362f39805d5d78b9bfb1e156996b898f0a",
+    "ci-2-attempt2-macos-annotations.json": "0c790c67f2b909c8894750d9a84a7821b42525a176e8cb819b0e6f6bbdda3bd2",
+    "ci-2-attempt2-macos-job.json": "6ea46e4ed6e53d9db2da6875c7fcbfc57507233a72ce7455de653b6e1368f81f",
+    "ci-2-attempt2-monitor.log.gz": "08b38a0cd34aa1d44a0ed3705a390bed8467a179bcf1326affd1f2a567aeb1d0",
+    "ci-2-macos-annotations.json": "0c790c67f2b909c8894750d9a84a7821b42525a176e8cb819b0e6f6bbdda3bd2",
+    "ci-2-macos-job.json": "b4870968ca4bf06063d4c20755bdadf389cf8f0416247a535c0b6399f5f894d2",
+    "ci-2-run-attempt1.json": "ee4ce108248f0ae0fe72a279248c8c9651db21fb5da9fc698284ca0c484ac35f",
+    "ci-2-run-attempt2.json": "a32186fee496a5eea3907dac6840b33f1ee4ce506218a5c82440e0f4cbc36351",
+    "clippy.log.gz": "e8c86f05a59a58957349831cc56d4a20b575e4c3f14f468a38fcdded575b151f",
+    "corrected-exact-visits.jsonl": "effa1ffa0739ff80fbf0221f8d56021abac0614157365fc17d41b4bfacf2601a",
+    "corrected-timed-unlimited-0.jsonl": "d460ac02bd454a3207d89a10df725559b6261bcc9cd92541f8e8c09e4800dc4c",
+    "corrected-timed-unlimited-1.jsonl": "dfa057ec8e6bff921c6413b5651834e6360db37d3113b809dda2ce86efe6432e",
+    "corrected-timed-unlimited-2.jsonl": "a509243ce15461287157fb212e5bb03f4e515a114335f56b89b7a65bd38b2812",
+    "desktop-cancelled.json": "13a40c09668f97b370c5f568a7c69af5e4aecdb8361a84952c1ca2e9406d2cbc",
+    "desktop-play.log.gz": "f787f4c1855f8f1b6c18746ffd026ed1d8fda2807b514977a351e5c4ae063cb7",
+    "early-threat-fixed.jsonl": "5b0f7760f90cc2154eae05d2155f7096cc557b2800dedd9ad3169f426bfca7f6",
+    "final-boundary-exact.log.gz": "dd98a1a388f8f9a0bddd4c44f2e248cbf873bda02d70b86d86c1a934edabaf86",
+    "final-boundary.log.gz": "1d51d265cf062fb47078cc79fbe4bb3bf4541be98162beae7863ec7032412dc2",
+    "fixtures.log.gz": "6c4c66139fcabc4cec11d2ce6f2983378b960e70a4bef1697480f2caa177eaf1",
     "frontend-panel-pinned.log.gz": "a5d9b6ffae43148b2e05be6bf7a31e3a7240a96daaf0caf8aabf8b039ea7ecff",
     "frontend-panel.log.gz": "dc26936a145b622816014269da858b15943d9c1e2287596c5e1c32ee147a42ca",
-    "desktop-cancelled.json": "13a40c09668f97b370c5f568a7c69af5e4aecdb8361a84952c1ca2e9406d2cbc",
-    "fixtures.log.gz": "6c4c66139fcabc4cec11d2ce6f2983378b960e70a4bef1697480f2caa177eaf1",
-    "ci-1-run.json": "f45c44780e81bd93e39c6523bc9fc94e0c1e8d251393f29fa3d504079322495f",
-    "ci-1-jobs.json": "e049d26e995861d6f1c2671c7be76b8a4bc3f88c588188067e7eed3ebe58a4e0",
-    "ci-1-monitor.log.gz": "fc43aef358bdb7b7666eeb12f52517643b8b7bb2e7abcee99e7e71a1be31748a"
+    "frontier-fixed.jsonl": "3f16b81cc52595910fbf6296b2499fea21dfdf5f87720c94dc34fce81b8751d1",
+    "frontier-response-fixed.jsonl": "9f3692c2e98dc1595dc0d007a9dabf9c3ec97beab1aff4d13779316fa23c6f97",
+    "incident-uci.json": "368e727e50b29fe1aa5d018ac4ccd6e3bfee495341822b5bc5b1c38f53c2b0ab",
+    "inputs.json": "c54ee6939be7fb58cde72454e36b7ff708b2436b6b5361d60e6f5e69cbc78321",
+    "native-tests.log.gz": "a410763eeb0674a6ab75325440e5792d479a926fddb2ea584a319302cfc40952",
+    "profile-before.rs.gz": "19e5e6cbed3299c2fa947477dd4ef3ee2f8e888e868d09fe4bc2dc5dc229432b",
+    "search-final.log.gz": "6056a3d68ccf217a3c3c1a24133e5ffe1b7f94c4909a5a9a5514fcc6b4b4d79b",
+    "search-instrumented-before.rs.gz": "a19ee5672b71849de473183944e203deaab6c1616cb06ceb2cac0f5d90b35d70",
+    "support-only-fixed.jsonl": "78a005fa8f83359e750a87148e824f8fd115cbaa0db2236cfb131a1b317bf52a"
   },
   "development_failures": [
     "Initial added exhausted-horizon evasion fixture accidentally was already checkmate due Rg1 support; assertion failed, fixture corrected by removing rook and explicitly requiring Check. No production semantics or expected rule was weakened.",
@@ -469,13 +516,60 @@
     "crates/mshogi-search/src/chess_conventional.rs": "8abe7601080c0fc38e893ccf8a77283be0387d31fef0d2fce4b8de07098737b8",
     "crates/mshogi-search/examples/chess_frontier_profile.rs": "ec5413aee8c4ef0842b8464f6b39eec9fec6468ae36a4bfeff39d641755055f4"
   },
-  "ci_run": null,
+  "ci_run": {
+    "id": 42660806919,
+    "head_sha": "22bf634b268bb99efbd349d1e80c8b2466b24c7a",
+    "url": "https://github.com/jweathers777/mShogi/actions/runs/42660806919",
+    "status": "completed",
+    "macos_initial_attempt": {
+      "job_id": 129311544814,
+      "conclusion": "cancelled",
+      "runner_id": 0,
+      "runner_name": "",
+      "reason": "The job was not acquired by Runner of type hosted even after multiple attempts",
+      "provider_notice": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+      "receipts": [
+        "ci-2-macos-job.json",
+        "ci-2-macos-annotations.json"
+      ]
+    },
+    "attempt": 2,
+    "macos_retry_job_id": 129327572801,
+    "carried_forward_job_ids": {
+      "ubuntu-24.04": 129327575705,
+      "windows-2022": 129327577416
+    },
+    "carry_forward_note": "GitHub creates new success receipt IDs in attempt2 for unchanged successful jobs; their original23m38s/27m10s execution was attempt1, not additional platform executions.",
+    "conclusion": "failure",
+    "macos_retry": {
+      "job_id": 129327572801,
+      "attempt": 2,
+      "conclusion": "cancelled",
+      "runner_id": 0,
+      "runner_name": "",
+      "steps_executed": 0,
+      "started_at": "2026-11-09T17:31:10Z",
+      "completed_at": "2026-11-09T17:46:11Z",
+      "reason": "The job was not acquired by Runner of type hosted even after multiple attempts",
+      "provider_notice": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+      "receipts": [
+        "ci-2-attempt2-macos-job.json",
+        "ci-2-attempt2-macos-annotations.json"
+      ]
+    }
+  },
   "superseded_campaigns": [
     {
       "id": 42655073772,
       "workflow": "Desktop packages",
       "head_sha": "1d20ae6f93936122e4aaa6fb320a48d995bde531",
       "action": "cancelled automatic push-triggered packaging; native Rust CI includes real release desktop-play contract, GUI/interface unchanged; no broad packaged campaign required"
+    },
+    {
+      "id": 42660807015,
+      "workflow": "Desktop packages",
+      "head_sha": "22bf634b268bb99efbd349d1e80c8b2466b24c7a",
+      "action": "cancelled redundant automatic package campaign; current native CI and focused34frontend tests cover changed boundary"
     }
   ],
   "provider_observations": [
@@ -497,8 +591,49 @@
       "url": "https://github.com/jweathers777/mShogi/actions/runs/42655073948",
       "jobs_receipt": "ci-1-jobs.json",
       "failure": "Generated Chess mate analysis fixture still recorded65visits/seldepth7; actual corrected search reports48/5. Native tests and release subprocess checks passed on all3OS; Linux failed fixture comparison; remaining jobs canceled superseded."
+    },
+    {
+      "attempt": 1,
+      "conclusion": "failure",
+      "createdAt": "2026-11-09T17:03:05Z",
+      "databaseId": 42660806919,
+      "headSha": "22bf634b268bb99efbd349d1e80c8b2466b24c7a",
+      "status": "completed",
+      "updatedAt": "2026-11-09T17:30:20Z",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/42660806919",
+      "jobs_receipt": "ci-2-attempt1-jobs.json",
+      "note": "Linux129311544941 andWindows129311544328 complete success; macOS129311544814 cancelled before any runner acquired."
+    },
+    {
+      "attempt": 2,
+      "conclusion": "failure",
+      "createdAt": "2026-11-09T17:03:05Z",
+      "databaseId": 42660806919,
+      "headSha": "22bf634b268bb99efbd349d1e80c8b2466b24c7a",
+      "status": "completed",
+      "updatedAt": "2026-11-09T17:46:12Z",
+      "url": "https://github.com/jweathers777/mShogi/actions/runs/42660806919",
+      "jobs_receipt": "ci-2-attempt2-jobs.json",
+      "note": "Only macOS retried; again no hosted runner acquired. Linux/Windows success IDs are carried forward from attempt1, not new executions."
     }
   ],
   "production_source_revision": "1d20ae6f93936122e4aaa6fb320a48d995bde531",
-  "pending_change": "Generated fixture only; production byte-identical to1d20ae6. Await replacement native3OS run."
+  "pending_change": "No source change pending. Complete actual macOS15 native CI at22bf634 before AC4 and final acceptance; local macOS27 does not substitute.",
+  "retry_policy": "One supported macOS-only retry at identical22bf634; no healthy Linux/Windows rerun. If capacity acquisition fails again, leave taskInReview and record precise infrastructure blocker; do not start repeated campaigns.",
+  "retry_events": [
+    {
+      "job_id": 129311544814,
+      "result": "rejected403 because workflow still running; no new attempt started"
+    },
+    {
+      "job_id": 129311544814,
+      "result": "accepted supported rerun after attempt1completed; only macOS requested, same22bf634"
+    }
+  ],
+  "blocker": {
+    "scope": "Required macOS15 native platform verification only; AC4 and final acceptance incomplete.",
+    "retry_campaign": "Stopped after initial capacity failure and one supported identical-source macOS-only retry. No active monitor or retry remains.",
+    "next_action": "A later supported retry of completed macOS job129327572801 on run42660806919 at22bf634 when capacity is available. The completed run remains within GitHub retry retention; future API eligibility/capacity must be checked then. No third retry requested here.",
+    "preserved_requirements": "No runner version, tests, source, resource limits or acceptance requirements changed; no replacement by local macOS27."
+  }
 }

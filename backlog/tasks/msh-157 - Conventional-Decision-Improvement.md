@@ -72,6 +72,8 @@ Completed checkpoint evidence: docs/m5/chess-decision-round.md. Primary 238/240 
 Independent final evidence and native closure reviews approved; all material findings resolved. Source remains 3b52314, no production edits after heldout freeze. Archive payload hashes and report links passed; Backlog doctor clean. Final documentation/evidence commit and normal codex/rewrite integration follow; do not interpret completed bounded diagnostic work as achieving the failed broad strength objective.
 
 Integrated by fast-forward into codex/rewrite at 3114b8c (benchmark freeze da4010b, native corrections 3b52314, candidate freeze acc9965). Independent reviews approved, required Level1 checks and final artifact audits passed for unchanged production source. This completes the bounded round and measurement work; the broader objective of substantially better Chess remains unmet. No next engine task was started. Normal push follows this completion-record commit.
+
+Completion record d353da3 and round evidence3114b8c pushed to origin/codex/rewrite; both checkouts clean and all engine jobs finished. App-managed worktree cleanup attempted after push, but archive_worktree returned: The task's primary checkout cannot be removed. Retain this clean chat-primary checkout for owner inspection/resume; no pending implementation or benchmark process needs it. Primary integration checkout remains codex/rewrite; original master and unrelated Tenjiku worktree untouched.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

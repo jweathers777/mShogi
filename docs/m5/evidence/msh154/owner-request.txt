@@ -1,0 +1,225 @@
+# mShogi Chess Engine: Independent Adversarial Assessment
+
+I want a fresh, independent, adversarial assessment of mShogi's entire conventional Chess engine, followed by a coherent, evidence-driven development roadmap.
+
+You are the coordinator of this investigation. Your responsibility is to organize independent technical reviews, challenge their findings, reconcile competing explanations, and identify the most consequential opportunities for improving practical playing strength.
+
+**This is a diagnostic and strategic assignment, not an implementation assignment.**
+
+Do not begin substantial engine modifications until I have reviewed and approved the resulting findings and roadmap.
+
+## 1. Background and objective
+
+Despite implementing sophisticated conventional search algorithms, making numerous performance optimizations, and correcting tactical and evaluation defects, mShogi has not demonstrated substantial playing-strength improvement beyond approximately 1900 on its conditional local CCRL-referenced index.
+
+Previous development has become a succession of increasingly narrow investigations and corrections. Each task is individually defensible, but the overall process lacks a sufficiently clear explanation of why the engine remains relatively weak.
+
+I want to challenge our current assumptions rather than continue automatically with MSH-153 (Classical Compensation Calibration).
+
+Our objective is to answer:
+
+**Why is mShogi's conventional Chess engine performing at its current level, what are its most consequential limitations, and what coherent engineering strategy offers the best opportunity to make it substantially stronger?**
+
+We are not trying to reproduce modern Stockfish or introduce learned evaluation yet. We want a genuinely capable conventional Chess engine before adapting the architecture to Shogi, Xiangqi, and the less familiar variants.
+
+## 2. Establish genuinely independent reviews
+
+Use separate agents with fresh contexts and clearly defined responsibilities.
+
+I am using GPT-6 Astra Medium as the coordinator. Where Codex supports per-subagent model selection, the preferred assignments are:
+
+- Architecture and performance auditor: GPT-6 Astra High.
+- Gameplay and decision-quality auditor: GPT-6.1 Sol High.
+- Adversarial methodology reviewer: GPT-6 Astra Medium.
+
+If those exact models or independent model settings are unavailable, use the strongest suitable supported alternatives. Do not make model selection a blocker. Independence of context, evidence, and reasoning matters more than model diversity.
+
+The coordinator should synthesize findings and challenge conclusions rather than simply accept subagent reports.
+
+### Architecture and performance auditor
+
+Critically examine the complete Chess search implementation, computational efficiency, and interaction among its algorithms.
+
+Do not assume an algorithm works effectively simply because it is present, has tests, or resembles an established technique.
+
+Challenge fundamental implementation decisions, including whether the current search-state representation and reliance on complete native game operations unnecessarily limit search efficiency.
+
+The core Rust rules implementation must remain authoritative for legal moves, transitions, history, and outcomes. However, this does not prohibit specialized internal search representations, incremental state, caching, or optimized operations whose behavior is demonstrably consistent with those authoritative rules.
+
+Consider substantial architectural alternatives where justified rather than assuming existing abstractions are optimal.
+
+### Gameplay and decision-quality auditor
+
+Independently evaluate representative complete games and positions from mShogi's matches against established reference engines.
+
+During the initial assessment, do not provide this agent with previous engineering diagnoses, implementation explanations, or conclusions from the architecture auditor.
+
+Supply game records, actual moves, time controls, and sufficient factual information to interpret results correctly.
+
+Investigate patterns in tactical decisions, strategic judgment, exchanges, king safety, pawn structure, positional compensation, and endgame conversion.
+
+Distinguish objectively poor moves from reasonable moves in already inferior positions. Use independently proven tactics and tablebase outcomes where available, with strong reference-engine analysis as additional evidence rather than unquestionable truth.
+
+The objective is to characterize general weaknesses in practical play, not collect another series of isolated mistakes.
+
+### Adversarial methodology reviewer
+
+Independently examine the proposed questions, measurements, experimental design, and causal reasoning.
+
+Identify important questions the other agents have overlooked, misleading metrics, hidden assumptions, alternative explanations, and ways an experiment might produce a convincing but invalid conclusion.
+
+Challenge claims about strength, search depth, nodes per second, evaluation quality, and architectural efficiency.
+
+Require falsifiable hypotheses and appropriate controls.
+
+This reviewer should assess both the proposed investigation before substantial experiments and the conclusions after the results are available.
+
+## 3. Organize the investigation to minimize confirmation bias
+
+The architecture and gameplay audits should begin independently and may run in parallel.
+
+Their initial findings should be recorded separately before either auditor sees the other's conclusions.
+
+The gameplay auditor should not initially receive prior diagnostic reports or source-level explanations, although the coordinator may consult them when reconstructing the project's history and requirements.
+
+After the initial reviews:
+
+1. Have the methodology reviewer challenge the findings and identify missing evidence.
+2. Reconcile the independent architectural and gameplay observations.
+3. Identify competing hypotheses explaining the observed weaknesses.
+4. Design focused experiments capable of distinguishing those hypotheses.
+5. Have an independent reviewer challenge the final synthesis before presenting it.
+
+Use fresh contexts where practical. Do not allow agents to validate one another merely by repeating shared assumptions.
+
+Avoid unnecessary duplication or elaborate agent orchestration. One coordinator should own the final synthesis and repository integration.
+
+## 4. Examine the complete search system
+
+Develop a systematic set of questions that can reveal why mShogi's playing strength remains limited.
+
+In particular, investigate:
+
+- How much actual search work does mShogi accomplish per second compared with established engines?
+- What does each engine count as a node, and which operations are excluded from those counts?
+- How much CPU time is consumed by move generation, legality checks, state transitions, evaluation, quiescence, exchange estimation, memory allocation, and other work?
+- How effective are move ordering, alpha-beta cutoffs, transposition reuse, iterative deepening, pruning, reductions, extensions, and aspiration searches?
+- Is quiescence consuming a disproportionate share of computation?
+- Are important candidate moves being pruned, reduced, ordered poorly, or inadequately examined?
+- How do search quality, chosen moves, scores, and principal variations change with additional thinking time?
+- Are positions being searched efficiently but evaluated poorly, or is computational overhead preventing useful search depth?
+- Are current history and adjudication requirements implemented in a way that unnecessarily restricts high-performance search?
+- Could a different internal search representation preserve identical rules and history semantics while improving throughput substantially?
+
+These are starting questions, not an exhaustive checklist. I particularly want the auditors to identify consequential questions we have not considered.
+
+Compare mShogi's actual behavior with mature conventional Chess engines where useful. Do not merely compare lists of implemented algorithms.
+
+Keep meaningful distinctions among raw throughput, search efficiency, useful depth, decision quality, and competitive playing strength.
+
+## 5. Connect gameplay findings to implementation causes
+
+After independently identifying gameplay weaknesses and architectural concerns, investigate their relationships.
+
+For each significant hypothesis:
+
+- State the suspected mechanism.
+- Identify the evidence supporting it.
+- Identify plausible competing explanations.
+- Specify what observations would falsify it.
+- Design the smallest discriminating experiment.
+- Conduct focused profiling, source inspection, controlled search comparisons, or diagnostic reproductions where appropriate.
+- Distinguish demonstrated defects from plausible but unverified opportunities.
+
+Use complete historical game records, independently selected positions, and existing experimental infrastructure.
+
+Avoid overfitting the positions that motivated previous corrections.
+
+Do not assume every disagreement with Stockfish is an mShogi error. Conversely, do not assume existing code is correct or efficient merely because previous reviews accepted it.
+
+Investigate whether systemic deficiencies can plausibly explain substantial playing-strength limitations, rather than focusing primarily on small optimization opportunities.
+
+## 6. Produce a coherent engineering strategy
+
+Use the findings to propose a prioritized, forward-looking conventional Chess development roadmap.
+
+The roadmap should identify:
+
+- Major architectural or algorithmic deficiencies supported by evidence.
+- Opportunities for improving search efficiency and useful depth.
+- Opportunities for improving classical evaluation and decision quality.
+- Dependencies and interactions among proposed changes.
+- Expected benefits, implementation complexity, regression risks, and confidence in each recommendation.
+- How to evaluate whether each major engineering stage achieved its intended objective.
+- When a controlled playing-strength comparison would be justified.
+
+Group related improvements into meaningful engineering stages rather than an indefinite succession of narrow tickets.
+
+Reassess MSH-153 (Classical Compensation Calibration) within this broader strategy. Do not automatically implement it because it is next in the backlog.
+
+We should eventually measure improvement using matched earlier/current engine versions, common openings, comparable opponents, and a sample capable of detecting the effect of interest.
+
+Do not initiate a substantial tournament without owner approval. Avoid repeating small absolute-rating estimates that are unlikely to distinguish modest improvements.
+
+No learned evaluation or Shogi/Xiangqi transfer is authorized.
+
+## 7. Improve the readability of project management
+
+The current task descriptions and development roadmap are difficult for human oversight.
+
+Establish a clearer standard for new and active task descriptions:
+
+**Problem:** what is wrong or missing, and why does it matter?
+
+**Objective:** what should the task achieve?
+
+**Approach:** what general investigation or implementation is appropriate?
+
+**Completion:** what evidence establishes that the task has succeeded?
+
+Keep task descriptions concise, properly structured, and understandable without reading several earlier tickets.
+
+Store detailed technical findings, experimental conditions, chronological notes, and verification receipts in the appropriate linked records instead of compressing them into task descriptions.
+
+Continue using stable, concise descriptive handles alongside task IDs.
+
+Make the active Chess roadmap clearly forward-looking, showing the major engineering objectives, dependencies, and meaningful checkpoints. Preserve historical evidence without allowing accumulated chronology to obscure the current plan.
+
+Do not introduce another elaborate project-management framework.
+
+## 8. Repository isolation and verification
+
+This investigation is being launched in a fresh Codex conversation and may overlap with another development session.
+
+Inspect existing branch, worktree, and task ownership before making changes.
+
+Use an isolated worktree and dedicated branch if concurrent work is active. Do not compete with another agent for files, overwrite uncommitted work, or integrate conflicting changes into codex/rewrite.
+
+The first phase should remain primarily read-only. Minimal diagnostic instrumentation and isolated experimental code are permitted where needed to establish evidence. Avoid substantive production changes.
+
+Follow the repository's risk-based verification policy. Local tests and reviews are sufficient for ordinary platform-independent diagnostic work. Do not launch unnecessary Windows/Linux/macOS CI or packaged GUI campaigns.
+
+Keep measurements reproducible and record their actual conditions, limitations, and source revisions.
+
+Use the existing repository instructions, backlog, test tools, and evidence records. Do not create duplicate infrastructure.
+
+## 9. Final report and decision checkpoint
+
+When the investigation is complete, deliver a concise, human-readable report with:
+
+1. The most important independently established architectural findings.
+2. The most important gameplay weaknesses and their frequency or generality where measurable.
+3. The strongest supported explanations for mShogi's current playing-strength limitations.
+4. Alternative explanations and significant unresolved uncertainties.
+5. A prioritized, coherent roadmap for substantially improving the conventional Chess engine.
+6. Any material architectural or resource decisions requiring my input.
+
+Include references to the detailed evidence, but don't reproduce long technical logs or chronological implementation reports in the conversational summary.
+
+Have the conclusions independently challenged before presenting them.
+
+**Stop for my review and approval of the findings and roadmap before beginning substantial implementation.**
+
+The overarching objective is to replace reactive, isolated optimization work with a systematic assessment of the entire engine and a credible strategy for making it demonstrably stronger.
+
+Your role as coordinator is to challenge assumptions, direct independent investigation, and synthesize evidence into actionable engineering decisions, not simply manage completion of the next backlog ticket.

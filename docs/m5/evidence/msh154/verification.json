@@ -1,0 +1,62 @@
+{
+  "task": "MSH-154 (Chess Adversarial Assessment)",
+  "source_revision": "d53f34413d808dc2b727a06a770b92f24191eabf",
+  "level": 1,
+  "reason": "Read-only production diagnostics and documentation; no production source changes",
+  "environment": "macOS27.0.1 arm64, Apple M1 Pro32GiB; rustc1.99.1; release; sequential search/reference windows",
+  "build": "architecture/provenance.json",
+  "native_runs": "architecture/runs.jsonl",
+  "independent_review": "methodology.md: approved with no material blockers; two wording clarifications resolved",
+  "resource_use": {
+    "new_match_seconds": 0,
+    "native_diagnostic_wall_seconds": 70.690224,
+    "native_diagnostic_and_sampler_child_cpu_seconds": 69.844209,
+    "native_build_wall_seconds": 11.23,
+    "reference_measured_child_cpu_seconds": 69.823866,
+    "excluded_screen_unknown_cpu_conservative_allowance_charge_seconds": 5,
+    "reference_allowance_seconds": 180,
+    "architecture_operational_allowance_seconds": 180,
+    "note": "Failed screen CPU unknown, not measured5seconds. All recorded failures retained. Offline parsing and coordination not included in engine compute."
+  },
+  "failures_retained": [
+    "Excluded Simbelmyne illegalPV/terminal-child crash; no result used",
+    "Initial reference merged scores omitted bound flags; repaired for key2, others exploratory only",
+    "Reference wrapper exit1 from trailing denied sysctl after completed batch",
+    "Illegal manual Ne4 mapping caught before constrainedquery; corrected separate run",
+    "First CPU sampler process-inspection failure; approved read-only retry passed",
+    "Initial Git branch sandbox denial and pinned CLI launch under broken globalNode; retried with approved write and explicit workingNode23; no partial task writes"
+  ],
+  "passed": [
+    "Native example build at frozen source",
+    "Full-history current12x1s and selected3x5s roots restored/PV natively admitted",
+    "Synthetic exact-history positive/negative cost controls and real affected root",
+    "Independent pythonchess legal replay of all12 historical games",
+    "Bound-preserving reference key2 with allPV/root assertions",
+    "Three read-only CPU samples",
+    "Independent final synthesis/roadmap review",
+    "Backlog1.55.1 doctor: no duplicate IDs, self-dependencies or cycles",
+    "git diff --check"
+  ],
+  "not_run": [
+    "New opponent matches or strength study",
+    "New tablebase queries",
+    "Production correctness suite rerun: production unchanged; native diagnostic assertions run",
+    "Linux/Windows execution",
+    "Hosted CI campaign",
+    "PackagedGUI campaign",
+    "Broad selectivity or evaluation ablations; mechanisms remain unresolved"
+  ],
+  "deferred_checkpoint": "Platform compatibility belongs to risk-selected implementation/integration or release work, not this diagnostic report",
+  "integration": {
+    "target": "codex/rewrite",
+    "status": "prepared for normal integration; final commit identity recorded in task/Git after creation"
+  },
+  "owner_checkpoint": "Findings and proposed roadmap require John review before substantial implementation. MSH-153 held ToDo.",
+  "evidence_integrity": {
+    "command": "python3 docs/m5/evidence/msh154/verify_evidence.py",
+    "artifacts": 69,
+    "source_hashes": 96,
+    "native_rows": 74,
+    "result": "passed"
+  }
+}

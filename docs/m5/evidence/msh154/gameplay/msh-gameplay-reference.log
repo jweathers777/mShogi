@@ -1,0 +1,18 @@
+IDENTITY {'name': 'Stockfish 19', 'author': 'the Stockfish developers (see AUTHORS file)'}
+pair-000-discovery-oxidation060 0 Nf5 [('unrestricted', 25, 17), ('played', -268, 21), ('alternative', -25, 18)] elapsed 1.8868449591100216
+pair-000-discovery-oxidation060 1 exf5 [('unrestricted', 22, 19), ('played', 34, 18), ('alternative', -552, 18)] elapsed 3.4118037498556077
+pair-001-discovery-goldfish113 0 h4 [('unrestricted', 200, 18), ('played', 176, 18), ('alternative', -575, 17)] elapsed 4.837775249965489
+pair-001-discovery-goldfish113 1 Rf6 [('unrestricted', -1, 21), ('played', -326, 20), ('alternative', -1003, 21)] elapsed 6.132794000208378
+pair-002-confirmation-oxidation060 0 Ne2 [('unrestricted', -2, 20), ('played', 0, 23), ('alternative', -24, 20)] elapsed 7.1356491250917315
+pair-002-confirmation-oxidation060 1 Rxh2 [('unrestricted', -7, 21), ('played', -5, 24), ('alternative', 0, 32)] elapsed 7.933589874766767
+pair-003-confirmation-goldfish113 0 Bxg6 [('unrestricted', 0, 31), ('played', 0, 31), ('alternative', -909, 19)] elapsed 9.418736500199884
+pair-003-confirmation-goldfish113 1 Bxa4 [('unrestricted', -619, 20), ('played', -617, 19), ('alternative', -632, 15)] elapsed 10.558111624792218
+pair-004-confirmation-oxidation060 0 Ba6 [('unrestricted', 551, 17), ('played', 523, 19), ('alternative', 538, 19)] elapsed 12.043447999749333
+pair-004-confirmation-oxidation060 1 d5 [('unrestricted', -202, 19), ('played', -307, 19), ('alternative', -236, 20)] elapsed 13.54221145901829
+pair-005-confirmation-goldfish113 0 Rc5 [('unrestricted', 485, 19), ('played', 293, 20), ('alternative', 353, 19)] elapsed 14.741482959128916
+pair-005-confirmation-goldfish113 1 d3 [('unrestricted', 559, 18), ('played', 568, 18), ('alternative', -680, 14)] elapsed 16.30967920878902
+RESOURCE {"elapsed": 16.317812125198543, "user": 15.835663, "sys": 0.244219}
+real 16.41
+user 16.06
+sys 0.27
+time: sysctl kern.clockrate: Operation not permitted

@@ -1,0 +1,1110 @@
+[
+  {
+    "pair": "pair-000-discovery-oxidation060",
+    "game": 0,
+    "rows": [
+      {
+        "ply": 16,
+        "san": "Bd3",
+        "uci": "f1d3",
+        "pre": {
+          "score": 32,
+          "depth": 5,
+          "nodes": 12099,
+          "pv": [
+            "a3c4",
+            "b6c4",
+            "f1c4",
+            "d7d5",
+            "c4d3"
+          ]
+        },
+        "post": {
+          "score": 38,
+          "depth": 5,
+          "nodes": 7620,
+          "pv": [
+            "b8c6",
+            "c1f4",
+            "b6d5",
+            "e1g1",
+            "d5f4",
+            "h4f4"
+          ]
+        },
+        "loss": -6
+      },
+      {
+        "ply": 18,
+        "san": "Qg3",
+        "uci": "h4g3",
+        "pre": {
+          "score": 46,
+          "depth": 5,
+          "nodes": 11871,
+          "pv": [
+            "c1f4",
+            "d6e5",
+            "f4e5",
+            "d8d3",
+            "e5g7"
+          ]
+        },
+        "post": {
+          "score": -12,
+          "depth": 5,
+          "nodes": 15811,
+          "pv": [
+            "e8g8",
+            "e5d6",
+            "e7d6",
+            "a3b5",
+            "f8e8",
+            "c1e3"
+          ]
+        },
+        "loss": 58
+      },
+      {
+        "ply": 20,
+        "san": "Nxe5",
+        "uci": "f3e5",
+        "pre": {
+          "score": 7,
+          "depth": 5,
+          "nodes": 10111,
+          "pv": [
+            "f3e5",
+            "e8g8",
+            "a3c4",
+            "b8d7",
+            "c1f4",
+            "b6c4",
+            "d3c4",
+            "d7e5",
+            "f4e5",
+            "g7e5",
+            "g3e5"
+          ]
+        },
+        "post": {
+          "score": -6,
+          "depth": 5,
+          "nodes": 9116,
+          "pv": [
+            "e8g8",
+            "a3c4",
+            "b6c4",
+            "d3c4",
+            "e7e6"
+          ]
+        },
+        "loss": 13
+      },
+      {
+        "ply": 22,
+        "san": "O-O",
+        "uci": "e1g1",
+        "pre": {
+          "score": 7,
+          "depth": 5,
+          "nodes": 9755,
+          "pv": [
+            "a3c4",
+            "b8d7",
+            "c1f4",
+            "b6c4",
+            "d3c4",
+            "d7e5",
+            "f4e5",
+            "g7e5",
+            "g3e5"
+          ]
+        },
+        "post": {
+          "score": -264,
+          "depth": 5,
+          "nodes": 4249,
+          "pv": [
+            "g7e5",
+            "g3e5",
+            "d8d3",
+            "e5e3",
+            "d3e3",
+            "c1e3"
+          ]
+        },
+        "loss": 271
+      },
+      {
+        "ply": 24,
+        "san": "Re1",
+        "uci": "f1e1",
+        "pre": {
+          "score": 92,
+          "depth": 5,
+          "nodes": 8113,
+          "pv": [
+            "f1d1",
+            "c8e6"
+          ]
+        },
+        "post": {
+          "score": 26,
+          "depth": 6,
+          "nodes": 12480,
+          "pv": [
+            "b8d7",
+            "a3c4",
+            "b6c4",
+            "e5c4",
+            "d7c5",
+            "d3c2"
+          ]
+        },
+        "loss": 66
+      },
+      {
+        "ply": 26,
+        "san": "Nxd7",
+        "uci": "e5d7",
+        "pre": {
+          "score": 26,
+          "depth": 5,
+          "nodes": 10933,
+          "pv": [
+            "a3c4",
+            "b6c4",
+            "e5c4",
+            "d7c5",
+            "d3c2"
+          ]
+        },
+        "post": {
+          "score": 42,
+          "depth": 6,
+          "nodes": 13325,
+          "pv": [
+            "c8d7",
+            "e1d1",
+            "e7e5",
+            "c1e3",
+            "b6d5",
+            "a3c4",
+            "d5e3",
+            "c4e3"
+          ]
+        },
+        "loss": -16
+      },
+      {
+        "ply": 28,
+        "san": "Qf3",
+        "uci": "g3f3",
+        "pre": {
+          "score": 42,
+          "depth": 5,
+          "nodes": 7891,
+          "pv": [
+            "e1d1",
+            "e7e5",
+            "c1e3",
+            "b6d5",
+            "a3c4",
+            "d5e3",
+            "c4e3"
+          ]
+        },
+        "post": {
+          "score": -24,
+          "depth": 4,
+          "nodes": 2937,
+          "pv": [
+            "d7c6",
+            "d3e4",
+            "c6e4",
+            "f3e4"
+          ]
+        },
+        "loss": 66
+      },
+      {
+        "ply": 30,
+        "san": "Qf5",
+        "uci": "f3f5",
+        "pre": {
+          "score": -3,
+          "depth": 5,
+          "nodes": 8274,
+          "pv": [
+            "f3g3",
+            "e7e5",
+            "e1d1",
+            "e5e4",
+            "d3c2"
+          ]
+        },
+        "post": {
+          "score": 82,
+          "depth": 6,
+          "nodes": 9740,
+          "pv": [
+            "f8e8",
+            "f5h7",
+            "g8f8",
+            "e1d1",
+            "e7e5",
+            "c1e3",
+            "b6d5"
+          ]
+        },
+        "loss": -85
+      },
+      {
+        "ply": 32,
+        "san": "Qh7+",
+        "uci": "f5h7",
+        "pre": {
+          "score": 82,
+          "depth": 5,
+          "nodes": 9505,
+          "pv": [
+            "f5h7",
+            "g8f8",
+            "e1d1",
+            "e7e5",
+            "c1e3",
+            "b6d5"
+          ]
+        },
+        "post": {
+          "score": 82,
+          "depth": 4,
+          "nodes": 7186,
+          "pv": [
+            "g8f8",
+            "e1d1",
+            "e7e5",
+            "c1e3",
+            "b6d5"
+          ]
+        },
+        "loss": 0
+      },
+      {
+        "ply": 34,
+        "san": "Nc2",
+        "uci": "a3c2",
+        "pre": {
+          "score": 82,
+          "depth": 4,
+          "nodes": 7184,
+          "pv": [
+            "e1d1",
+            "e7e5",
+            "c1e3",
+            "b6d5"
+          ]
+        },
+        "post": {
+          "score": 74,
+          "depth": 4,
+          "nodes": 8194,
+          "pv": [
+            "d8d6",
+            "e1d1",
+            "a8d8",
+            "c2e3"
+          ]
+        },
+        "loss": 8
+      },
+      {
+        "ply": 36,
+        "san": "Ne3",
+        "uci": "c2e3",
+        "pre": {
+          "score": 147,
+          "depth": 6,
+          "nodes": 11181,
+          "pv": [
+            "c2e3"
+          ]
+        },
+        "post": {
+          "score": 117,
+          "depth": 4,
+          "nodes": 7486,
+          "pv": [
+            "d5e5",
+            "e1d1",
+            "a8d8",
+            "e3f5"
+          ]
+        },
+        "loss": 30
+      },
+      {
+        "ply": 38,
+        "san": "Bd2",
+        "uci": "c1d2",
+        "pre": {
+          "score": 107,
+          "depth": 5,
+          "nodes": 16104,
+          "pv": [
+            "d3f5",
+            "e6e5",
+            "e1d1",
+            "a8d8",
+            "c1d2"
+          ]
+        },
+        "post": {
+          "score": 108,
+          "depth": 5,
+          "nodes": 14026,
+          "pv": [
+            "a8d8",
+            "d3f5",
+            "e6f6",
+            "a1d1",
+            "e7e5"
+          ]
+        },
+        "loss": -1
+      },
+      {
+        "ply": 40,
+        "san": "a3",
+        "uci": "a2a3",
+        "pre": {
+          "score": 123,
+          "depth": 5,
+          "nodes": 7212,
+          "pv": [
+            "a1d1"
+          ]
+        },
+        "post": {
+          "score": 44,
+          "depth": 4,
+          "nodes": 7261,
+          "pv": [
+            "e6d6",
+            "e3f5",
+            "d6g6",
+            "h7g6",
+            "f7g6"
+          ]
+        },
+        "loss": 79
+      },
+      {
+        "ply": 42,
+        "san": "Nf5",
+        "uci": "e3f5",
+        "pre": {
+          "score": 67,
+          "depth": 4,
+          "nodes": 4222,
+          "pv": [
+            "d3f5",
+            "e6b3",
+            "a1d1",
+            "b3b2"
+          ]
+        },
+        "post": {
+          "score": -46,
+          "depth": 7,
+          "nodes": 14896,
+          "pv": [
+            "e6g6"
+          ]
+        },
+        "loss": 113
+      },
+      {
+        "ply": 44,
+        "san": "Nd4",
+        "uci": "f5d4",
+        "pre": {
+          "score": 14,
+          "depth": 4,
+          "nodes": 5894,
+          "pv": [
+            "h7g6",
+            "f7g6",
+            "f5g7",
+            "f8g7"
+          ]
+        },
+        "post": {
+          "score": -146,
+          "depth": 7,
+          "nodes": 10595,
+          "pv": [
+            "g6h7",
+            "d3h7",
+            "e7e5",
+            "d4c6",
+            "d8d2",
+            "c6a7",
+            "a4b2"
+          ]
+        },
+        "loss": 160
+      },
+      {
+        "ply": 46,
+        "san": "Bxh7",
+        "uci": "d3h7",
+        "pre": {
+          "score": -146,
+          "depth": 6,
+          "nodes": 6949,
+          "pv": [
+            "d3h7",
+            "e7e5",
+            "d4c6",
+            "d8d2",
+            "c6a7",
+            "a4b2"
+          ]
+        },
+        "post": {
+          "score": -146,
+          "depth": 5,
+          "nodes": 6707,
+          "pv": [
+            "e7e5",
+            "d4c6",
+            "d8d2",
+            "c6a7",
+            "a4b2"
+          ]
+        },
+        "loss": 0
+      },
+      {
+        "ply": 48,
+        "san": "cxd4",
+        "uci": "c3d4",
+        "pre": {
+          "score": -115,
+          "depth": 6,
+          "nodes": 9777,
+          "pv": [
+            "c3d4",
+            "a4b2",
+            "a1c1",
+            "f8g7",
+            "d2c3",
+            "b2c4"
+          ]
+        },
+        "post": {
+          "score": -115,
+          "depth": 5,
+          "nodes": 8373,
+          "pv": [
+            "a4b2",
+            "a1c1",
+            "f8g7",
+            "d2c3",
+            "b2c4"
+          ]
+        },
+        "loss": 0
+      },
+      {
+        "ply": 50,
+        "san": "Be3",
+        "uci": "d2e3",
+        "pre": {
+          "score": -97,
+          "depth": 6,
+          "nodes": 11502,
+          "pv": [
+            "d2e3",
+            "d4g4",
+            "g2g3",
+            "a4b2",
+            "h7f5",
+            "g4a4"
+          ]
+        },
+        "post": {
+          "score": -83,
+          "depth": 6,
+          "nodes": 14783,
+          "pv": [
+            "d4g4",
+            "g2g3",
+            "a4b2",
+            "h7f5",
+            "g4c4",
+            "e3a7"
+          ]
+        },
+        "loss": -14
+      },
+      {
+        "ply": 52,
+        "san": "g3",
+        "uci": "g2g3",
+        "pre": {
+          "score": -110,
+          "depth": 6,
+          "nodes": 16218,
+          "pv": [
+            "g2g3",
+            "a4b2",
+            "h7f5",
+            "g4c4",
+            "e3a7",
+            "e8d8"
+          ]
+        },
+        "post": {
+          "score": -111,
+          "depth": 6,
+          "nodes": 11881,
+          "pv": [
+            "a4b2",
+            "h7f5",
+            "g4c4",
+            "e3a7",
+            "e7e6",
+            "f5h3"
+          ]
+        },
+        "loss": 1
+      },
+      {
+        "ply": 54,
+        "san": "Bxa7",
+        "uci": "e3a7",
+        "pre": {
+          "score": -105,
+          "depth": 5,
+          "nodes": 8883,
+          "pv": [
+            "e3a7",
+            "g4c4",
+            "h2h3",
+            "e8d8",
+            "h7f5"
+          ]
+        },
+        "post": {
+          "score": -91,
+          "depth": 5,
+          "nodes": 13596,
+          "pv": [
+            "e7e6",
+            "h7c2",
+            "f8g7",
+            "a1c1",
+            "b2c4"
+          ]
+        },
+        "loss": -14
+      },
+      {
+        "ply": 56,
+        "san": "Bc5",
+        "uci": "a7c5",
+        "pre": {
+          "score": -75,
+          "depth": 6,
+          "nodes": 6942,
+          "pv": [
+            "a7c5",
+            "a4c4",
+            "a1c1",
+            "c4c1",
+            "e1c1",
+            "f8g7"
+          ]
+        },
+        "post": {
+          "score": -75,
+          "depth": 5,
+          "nodes": 4120,
+          "pv": [
+            "a4c4",
+            "a1c1",
+            "c4c1",
+            "e1c1",
+            "f8g7"
+          ]
+        },
+        "loss": 0
+      },
+      {
+        "ply": 58,
+        "san": "Rac1",
+        "uci": "a1c1",
+        "pre": {
+          "score": -70,
+          "depth": 7,
+          "nodes": 15402,
+          "pv": [
+            "a1c1",
+            "c4c1",
+            "e1c1",
+            "b2a4",
+            "c5d4",
+            "e8d8",
+            "c1d1"
+          ]
+        },
+        "post": {
+          "score": -70,
+          "depth": 6,
+          "nodes": 8267,
+          "pv": [
+            "c4c1",
+            "e1c1",
+            "b2a4",
+            "c5d4",
+            "e8d8",
+            "c1d1"
+          ]
+        },
+        "loss": 0
+      },
+      {
+        "ply": 60,
+        "san": "Rxc1",
+        "uci": "e1c1",
+        "pre": {
+          "score": -65,
+          "depth": 7,
+          "nodes": 8074,
+          "pv": [
+            "e1c1",
+            "c6d5",
+            "h7f5",
+            "b2c4",
+            "c1e1",
+            "c4d6",
+            "e1d1",
+            "d6f5",
+            "d1d5"
+          ]
+        },
+        "post": {
+          "score": -65,
+          "depth": 6,
+          "nodes": 7140,
+          "pv": [
+            "c6d5",
+            "h7f5",
+            "b2c4",
+            "c1e1",
+            "c4d6",
+            "e1d1",
+            "d6f5",
+            "d1d5"
+          ]
+        },
+        "loss": 0
+      },
+      {
+        "ply": 62,
+        "san": "h4",
+        "uci": "h2h4",
+        "pre": {
+          "score": -38,
+          "depth": 5,
+          "nodes": 3372,
+          "pv": [
+            "h7f5",
+            "b2a4",
+            "f5d7",
+            "e8a8",
+            "c5d4"
+          ]
+        },
+        "post": {
+          "score": -84,
+          "depth": 6,
+          "nodes": 8225,
+          "pv": [
+            "g5h4",
+            "g3h4",
+            "b2a4",
+            "h7f5",
+            "a4c5",
+            "c1c5"
+          ]
+        },
+        "loss": 46
+      },
+      {
+        "ply": 64,
+        "san": "Bd4",
+        "uci": "c5d4",
+        "pre": {
+          "score": -38,
+          "depth": 7,
+          "nodes": 11104,
+          "pv": [
+            "h7f5",
+            "b2a4",
+            "c5e3",
+            "f8g7",
+            "c1c7",
+            "g7f6",
+            "f5d3"
+          ]
+        },
+        "post": {
+          "score": -58,
+          "depth": 7,
+          "nodes": 10511,
+          "pv": [
+            "b2a4",
+            "h7c2",
+            "b7b5",
+            "d4e3",
+            "f8g7",
+            "c2d3",
+            "e8b8"
+          ]
+        },
+        "loss": 20
+      },
+      {
+        "ply": 66,
+        "san": "Be3",
+        "uci": "d4e3",
+        "pre": {
+          "score": -33,
+          "depth": 7,
+          "nodes": 12733,
+          "pv": [
+            "h7c2",
+            "b7b5",
+            "d4e3",
+            "f8g7",
+            "c2d3",
+            "e8b8",
+            "c1c7"
+          ]
+        },
+        "post": {
+          "score": -47,
+          "depth": 7,
+          "nodes": 13329,
+          "pv": [
+            "f8g7",
+            "h7c2",
+            "e8a8",
+            "h4h5",
+            "e7e5",
+            "c2b3",
+            "e5e4"
+          ]
+        },
+        "loss": 14
+      },
+      {
+        "ply": 68,
+        "san": "Bc2",
+        "uci": "h7c2",
+        "pre": {
+          "score": -43,
+          "depth": 6,
+          "nodes": 10758,
+          "pv": [
+            "h7c2",
+            "f3c6",
+            "c2f5",
+            "h6h5",
+            "e3d4",
+            "e7e5",
+            "d4e3"
+          ]
+        },
+        "post": {
+          "score": -47,
+          "depth": 5,
+          "nodes": 11481,
+          "pv": [
+            "e8a8",
+            "h4h5",
+            "e7e5",
+            "c2b3",
+            "e5e4"
+          ]
+        },
+        "loss": 4
+      },
+      {
+        "ply": 70,
+        "san": "Bd1",
+        "uci": "c2d1",
+        "pre": {
+          "score": -34,
+          "depth": 5,
+          "nodes": 9472,
+          "pv": [
+            "c2b3",
+            "b7b5",
+            "c1c7",
+            "a8e8",
+            "h4h5"
+          ]
+        },
+        "post": {
+          "score": -27,
+          "depth": 6,
+          "nodes": 12740,
+          "pv": [
+            "f3d1",
+            "c1d1",
+            "b7b5",
+            "d1d7",
+            "a8e8",
+            "h4h5"
+          ]
+        },
+        "loss": -7
+      },
+      {
+        "ply": 72,
+        "san": "Bxf3",
+        "uci": "d1f3",
+        "pre": {
+          "score": -42,
+          "depth": 7,
+          "nodes": 5578,
+          "pv": [
+            "d1f3",
+            "g4f3",
+            "c1c7",
+            "b7b6",
+            "h4h5",
+            "a8d8",
+            "g1h2"
+          ]
+        },
+        "post": {
+          "score": -41,
+          "depth": 8,
+          "nodes": 13985,
+          "pv": [
+            "g4f3",
+            "c1c7",
+            "b7b6",
+            "c7c6",
+            "h6h5",
+            "g1h2",
+            "a8b8",
+            "c6c7"
+          ]
+        },
+        "loss": -1
+      },
+      {
+        "ply": 74,
+        "san": "Rc7",
+        "uci": "c1c7",
+        "pre": {
+          "score": -35,
+          "depth": 6,
+          "nodes": 12934,
+          "pv": [
+            "c1c7",
+            "b7b6",
+            "c7c6",
+            "h6h5",
+            "e3h6",
+            "g7h7",
+            "h6e3"
+          ]
+        },
+        "post": {
+          "score": -49,
+          "depth": 7,
+          "nodes": 13292,
+          "pv": [
+            "b7b5",
+            "c7c6",
+            "h6h5",
+            "g1h2",
+            "a8d8",
+            "c6h6",
+            "d8h8",
+            "h6h8",
+            "g7h8"
+          ]
+        },
+        "loss": 14
+      },
+      {
+        "ply": 76,
+        "san": "h5",
+        "uci": "h4h5",
+        "pre": {
+          "score": -49,
+          "depth": 6,
+          "nodes": 6999,
+          "pv": [
+            "c7c6",
+            "h6h5",
+            "g1h2",
+            "a8d8",
+            "c6h6",
+            "d8h8",
+            "h6h8",
+            "g7h8"
+          ]
+        },
+        "post": {
+          "score": -68,
+          "depth": 5,
+          "nodes": 3664,
+          "pv": [
+            "a8d8",
+            "g1h2",
+            "d8d1",
+            "c7c6",
+            "f7f6"
+          ]
+        },
+        "loss": 19
+      },
+      {
+        "ply": 78,
+        "san": "Re7",
+        "uci": "c7e7",
+        "pre": {
+          "score": -64,
+          "depth": 6,
+          "nodes": 15560,
+          "pv": [
+            "c7e7",
+            "a4c3",
+            "e3c5",
+            "g7f6",
+            "e7c7",
+            "a6a4"
+          ]
+        },
+        "post": {
+          "score": -70,
+          "depth": 6,
+          "nodes": 5014,
+          "pv": [
+            "a4c3",
+            "e3c5",
+            "g7f6",
+            "e7c7",
+            "c3e4",
+            "c5b4"
+          ]
+        },
+        "loss": 6
+      },
+      {
+        "ply": 80,
+        "san": "Rc7",
+        "uci": "e7c7",
+        "pre": {
+          "score": -32,
+          "depth": 8,
+          "nodes": 6168,
+          "pv": [
+            "e7c7"
+          ]
+        },
+        "post": {
+          "score": -23,
+          "depth": 7,
+          "nodes": 13302,
+          "pv": [
+            "a4b2",
+            "e3h6",
+            "a6a3",
+            "h6c1",
+            "a3a1",
+            "c7c6",
+            "f6f5",
+            "h5h6"
+          ]
+        },
+        "loss": -9
+      },
+      {
+        "ply": 82,
+        "san": "Rb7",
+        "uci": "c7b7",
+        "pre": {
+          "score": 0,
+          "depth": 12,
+          "nodes": 10841,
+          "pv": [
+            "c7e7"
+          ]
+        },
+        "post": {
+          "score": -96,
+          "depth": 8,
+          "nodes": 11275,
+          "pv": [
+            "a4c3",
+            "e3c5",
+            "a6c6",
+            "c5e3",
+            "c6c4",
+            "b7d7",
+            "c3e2",
+            "g1h2",
+            "e2d4"
+          ]
+        },
+        "loss": 96
+      },
+      {
+        "ply": 84,
+        "san": "Rc7",
+        "uci": "b7c7",
+        "pre": {
+          "score": -96,
+          "depth": 7,
+          "nodes": 10367,
+          "pv": [
+            "e3c5",
+            "a6c6",
+            "c5e3",
+            "c6c4",
+            "b7d7",
+            "c3e2",
+            "g1h2",
+            "e2d4"
+          ]
+        },
+        "post": {
+          "score": -138,
+          "depth": 7,
+          "nodes": 14381,
+          "pv": [
+            "c3d5",
+            "c7a7",
+            "a6c6",
+            "e3d2",
+            "c6c2",
+            "d2b4",
+            "g7f6"
+          ]
+        },
+        "loss": 42
+      }
+    ]
+  }
+]

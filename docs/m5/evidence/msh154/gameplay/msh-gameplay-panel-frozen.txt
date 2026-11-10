@@ -1,0 +1,98 @@
+[
+  {
+    "pair": "pair-000-discovery-oxidation060",
+    "game": 0,
+    "ply": 42,
+    "san": "Nf5",
+    "alternative_san": "h3",
+    "reason": "possible compensation/coordination deterioration; fallback 21.a3"
+  },
+  {
+    "pair": "pair-000-discovery-oxidation060",
+    "game": 1,
+    "ply": 53,
+    "san": "exf5",
+    "alternative_san": "Qd6",
+    "reason": "winning-game neutral middlegame control"
+  },
+  {
+    "pair": "pair-001-discovery-goldfish113",
+    "game": 0,
+    "ply": 46,
+    "san": "h4",
+    "alternative_san": "g3",
+    "reason": "winning-game opposite-flank strategy control"
+  },
+  {
+    "pair": "pair-001-discovery-goldfish113",
+    "game": 1,
+    "ply": 45,
+    "san": "Rf6",
+    "alternative_san": "Qf7",
+    "reason": "suspected attack underestimation, fallback 19...f5"
+  },
+  {
+    "pair": "pair-002-confirmation-oxidation060",
+    "game": 0,
+    "ply": 102,
+    "san": "Ne2",
+    "alternative_san": "Nd3",
+    "reason": "endgame pawn/king coordination, fallback 55.Nf4"
+  },
+  {
+    "pair": "pair-002-confirmation-oxidation060",
+    "game": 1,
+    "ply": 95,
+    "san": "Rxh2",
+    "alternative_san": "Rc4",
+    "reason": "drawn rook-ending passers/control"
+  },
+  {
+    "pair": "pair-003-confirmation-goldfish113",
+    "game": 0,
+    "ply": 24,
+    "san": "Bxg6",
+    "alternative_san": "Bh3",
+    "reason": "compensation judgment, fallback 27.e4"
+  },
+  {
+    "pair": "pair-003-confirmation-goldfish113",
+    "game": 1,
+    "ply": 131,
+    "san": "Bxa4",
+    "alternative_san": "h1=Q",
+    "reason": "late tactical liquidation versus passer promotion; earlier deterioration unresolved"
+  },
+  {
+    "pair": "pair-004-confirmation-oxidation060",
+    "game": 0,
+    "ply": 42,
+    "san": "Ba6",
+    "alternative_san": "Na4",
+    "reason": "winning-game bishop pair/coordination control"
+  },
+  {
+    "pair": "pair-004-confirmation-oxidation060",
+    "game": 1,
+    "ply": 41,
+    "san": "d5",
+    "alternative_san": "Rh6",
+    "reason": "central break opens king lines, fallback 31...Ke8"
+  },
+  {
+    "pair": "pair-005-confirmation-goldfish113",
+    "game": 0,
+    "ply": 66,
+    "san": "Rc5",
+    "alternative_san": "Re3",
+    "reason": "winning rook ending trade/passers control"
+  },
+  {
+    "pair": "pair-005-confirmation-goldfish113",
+    "game": 1,
+    "ply": 25,
+    "san": "d3",
+    "alternative_san": "Qd6",
+    "reason": "winning-game central passed pawn/attack control"
+  }
+]

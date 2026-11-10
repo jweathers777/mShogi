@@ -34,6 +34,7 @@ Work on one bounded task per session by default. An explicitly requested queue o
 
 - Use the supported Backlog.md CLI for task creation and updates. MCP may be used if already configured and compatible; it is not a requirement for this project.
 - Keep status, ownership, dependencies, acceptance criteria, implementation notes, and final summaries in the task records.
+- Structure new and active task descriptions as **Problem**, **Objective**, **Approach**, **Completion**. Keep them concise and understandable on their own; link detailed findings, conditions and receipts instead of accumulating chronology in the description. Preserve historical records and stable handles.
 - Use `--append-notes` to preserve prior findings. Use `--notes` only when intentionally replacing notes.
 - Editing dependencies sets the intended list; pass the complete dependency set, not just the newest dependency.
 - Keep custom project instructions outside Backlog.md's managed instruction block.
@@ -189,6 +190,16 @@ independent review, acceptance criteria or required platform evidence.
   records rather than copying their results into competing evidence ledgers.
 - Before completion, establish that the exact tested revision passed its required
   checks. Reuse unchanged source/scope evidence; never infer unperformed checks.
+
+## Current Chess assessment checkpoint
+
+Owner direction, 2026-11-10: MSH-154 (Chess Adversarial Assessment) independently
+assesses the complete conventional Chess engine and proposes a coherent roadmap.
+Do not automatically start MSH-153 (Classical Compensation Calibration). Stop for
+John to review and approve findings and roadmap before substantial engine changes.
+Specialized internal search state is permissible if demonstrably consistent with
+authoritative native rules, transitions, histories and outcomes. No learned
+evaluation, cross-game transfer or substantial tournament is authorized.
 
 ## Git and routine autonomy
 

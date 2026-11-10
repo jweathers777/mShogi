@@ -1,0 +1,165 @@
+# Conventional engines and demonstrated strength
+
+Owner revision, 2026-11-09. This supersedes immediate cross-game transfer
+based solely on algorithm presence, the initial Stockfish diagnostic, or an
+engineering-readiness review. Completed work and original evidence remain valid
+at their recorded sources; none establishes an official rating or present
+playing-strength qualification.
+
+| Stage | Outcome and gate |
+| --- | --- |
+| Continue conventional Chess | Research, profile and refine established search/classical evaluation as a coherent system. MSH-137 (Chess Search Refinement) is a completed engineering checkpoint, not strength qualification. Use observed important weaknesses to direct further conventional development. |
+| Time-primary desktop play | MSH-138 (Desktop Search Limits): spend the allotted thinking time, retain the last completed iteration and preserve native rules/history, cancellation, resource protection, supervision and compatible documents. Only effectively unreachable technical visit/depth safeguards remain. |
+| Assess current Chess | MSH-139 (Chess Strength Assessment): authorized adaptive full-strength rated comparisons, fresh independent-family confirmation, tactical/endgame checks and mistake analysis. [Current assessment](chess-strength-assessment.md) has no target, fixed tournament size or campaign-hour allocation. Report useful evidence and stop for owner review. |
+| Continue from measured weaknesses | John reviewed MSH-139 (Chess Strength Assessment) and authorized further conventional Chess engineering. MSH-141 (Chess Frontier Reliability) first explains/corrects the depth1/295113-visit incident; then address substantial endgame/evaluation and search efficiency opportunities in coherent increments. No arbitrary rating target or maturity claim. |
+| Other conventional engines | MSH-50 (Conventional Shogi) and MSH-54 (Conventional Xiangqi) remain To Do pending explicit owner approval of cross-game transfer, then Tori/Chu/both Tenjiku profiles under existing tasks. Adapt techniques with native history/action/effect proofs and game-specific evaluation/guards. Do not copy Chess repetition-reset formulas into capture/drop or chase games. |
+| Learned evaluation later | After the conventional engines are established, research a substantially complete Chess learned approach, then extend a validated approach to the other games. Existing learned-evaluator, opening-knowledge and M5 closure requirements remain intact. |
+
+MSH-140 (Player Thinking Time) records future ordinary Chess time configuration:
+faster responses or stronger play through longer searches. Exposed choices must
+agree with bounded process-supervision deadlines and exact saved/request identities.
+It does not expand the immediate one-second default assignment or implicitly add
+timed execution to every other game.
+
+## Engineering and assessment are different
+
+Routine correctness/tactical tests, short profiles and development matches remain
+autonomous; local match work ordinarily has a 15-minute cumulative allowance per
+task including failures/concurrent work. The current assessment has explicit owner
+authorization beyond that allowance, without an arbitrary total game/hour budget.
+Use adaptive information and reasonable independent confirmation to stop, track
+actual work, and escalate genuinely substantial resource needs. No paid compute.
+Do not conduct substantial studies after individual optimizations.
+
+Use one frozen published pool where practical. Equal thinking time is principal;
+record hardware, threads, memory, books/tablebases and elapsed work. Spend fewer
+games at obvious mismatches and more near the estimate. Report uncertainty,
+family disagreement and testing-condition limitations. No official CCRL, FIDE or
+USCF rating follows. The rejected [qualification proposal](chess-strength-qualification.md)
+remains historical only. No production engine improvement belongs in this task.
+
+## Existing evidence and infrastructure
+
+MSH-49.2 (Stockfish Baseline) remains the accepted eight-game initial diagnostic.
+Its losses, depth/throughput observations and bounded budget remain historical;
+its old immediate-transfer handoff is superseded. MSH-137 (Chess Search Refinement)
+retains its actual native three-platform CI, measured costs and controlled tactical
+corrections. Engineering readiness does not substitute for the new strength gate.
+
+Reuse the [native runner and experiment tools](experiments.md), its UCI adapters,
+paired outcome accounting, bounded artifacts and authoritative native replay.
+No second rules engine, protocol, application runtime or experimentation platform
+is needed. Rules conformance remains [independently established](../testing/conformance-policy.md);
+opponent agreement is not a rules oracle.
+
+The architecture references remain primary classical [Stockfish search](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/search.cpp),
+[ordering](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/movepick.cpp)
+and [evaluation](https://github.com/official-stockfish/Stockfish/blob/sf_11/src/evaluate.cpp),
+plus game-specific [YaneuraOu](https://github.com/yaneurao/YaneuraOu)
+and [Pikafish](https://github.com/official-pikafish/Pikafish) research.
+Independently implement techniques; resolve licensing before copying source,
+tables or weights. No neural model is part of the current conventional candidate.
+
+MSH-138 (Desktop Search Limits) is complete at tested source `fac34c9`, with
+actual three-platform native/release-controller CI and the focused normal macOS
+package journey. Its [engineering record](chess-desktop-time.md) preserves exact
+receipts and limitations. MSH-139 (Chess Strength Assessment) is complete. The owner selected further conventional Chess development, beginning with MSH-141 (Chess Frontier Reliability). Reassess with fresh adaptive opponents only after meaningful engineering progress; no per-optimization tournament. Cross-game transfer and learned evaluation remain deferred.
+
+
+## Current conventional development queue
+
+MSH-141 (Chess Frontier Reliability) owns the reproduced depth-1 incident and
+its general correction. MSH-142 (Classical Endgame Judgment) follows the measured
+conversion/scaling weaknesses; MSH-143 (Chess Search Efficiency) follows remaining
+measured native, exchange and safe transposition costs. These are authorized
+engineering work, with concise per-task plans based on then-current source.
+Review practical playing strength with fresh adaptive reference openings after
+meaningful progress across these increments, not after each technique. Neither
+task completion nor higher reported depth establishes maturity or authorizes
+cross-game transfer.
+
+John's continuation after MSH-141 (Chess Frontier Reliability) explicitly assigns
+its targeted macOS verification, then MSH-142 (Classical Endgame Judgment) and
+MSH-143 (Chess Search Efficiency), followed by MSH-144 (Chess Progress Assessment).
+The latter reuses the established adaptive methodology with fresh paired openings;
+its [bounded scope](chess-progress-assessment.md) began with a 15-minute
+scouting tranche. For this explicitly requested adaptive reassessment, the
+implementer selected a 30-minute aggregate operational ceiling for proportionate
+fresh confirmation, including scouting, failures and cleanup. Routine engineering retains its ordinary
+15-minute allowance; a substantial further campaign requires a concrete resource
+decision. Review actual combined results and remaining opportunities
+before deciding readiness; no per-optimization tournament or automatic transfer.
+
+## Course-correction after MSH-144 (Chess Progress Assessment)
+
+The owner requests a broad explanation of modest conventional strength before
+assuming the next pawn-focused ticket is the best priority. MSH-146 (Risk-Based
+Verification) establishes the permanent local/targeted/full verification policy;
+MSH-147 (Chess Effectiveness Diagnosis) compares representative tactical,
+positional and endgame behavior at increasing thinking time and through controlled
+search/profiling comparisons. Its findings determine the order of coherent
+conventional improvements, including MSH-145 (Pawn Threat and Exchange Judgment).
+No per-optimization tournament or new owner checkpoint is required for ordinary
+engineering. Reassess practical strength after a substantial coherent round.
+Native correctness/history/restoration/cancellation remain binding; algorithm
+presence, speed and deeper search are distinct from decision quality and strength.
+No learned evaluation or Shogi/Xiangqi transfer is approved.
+
+MSH-146 is integrated: Level1 local verification is the ordinary engine default.
+The [MSH-147 diagnosis](chess-effectiveness-diagnosis.md) selects MSH-148
+(Deferred Frontier Work), then MSH-145 (Pawn Threat and Exchange Judgment), then
+MSH-149 (Classical King Exposure) as the next coherent round. The unrestricted
+low-material LMR trial is rejected because its extra nominal depth loses an
+independently winning rook move. TT capacity and isolated SEE micro-optimization
+are lower priorities on current evidence. Keep independent quality counterexamples
+alongside cost measurements; reassess fresh practical play after this combined
+round without declaring a gain from engineering telemetry.
+
+MSH-148's exact-work correction is accepted but its aggregate timing is neutral.
+MSH-150 (Lazy Native Move Queries) therefore precedes MSH-145: native existence
+queries still eagerly construct every candidate, despite needing only one legal
+witness. This follows the measured native/allocation costs rather than expanding
+SEE/TT tuning or claiming a strength gain from fewer projections. The evaluation
+round and later adaptive assessment remain required.
+
+MSH-150 now establishes a local 12.26% fixed-work execution-time reduction with
+identical search results and counters. MSH-145 addresses independently exposed
+passer-interception and conversion-score limitations; MSH-149 follows with
+material-aware king exposure. MSH-151 (Chess Coherent-Round Assessment) records
+the fresh adaptive comparison after this combined round. Its results, not these
+engineering metrics alone, will inform the next conventional-development choice.
+
+The [MSH-151 reassessment](chess-coherent-round-assessment-report.md) completes
+this round: 12 fresh games give5W2D5L, with unchanged Oxidation confirmation and
+better but highly variable Goldfish confirmation. Conditional change intervals
+include gains and regressions; practical improvement is not established. No
+further tournament follows. MSH-152 (Classical Tactical Forecasting) investigates
+repeated exchange/quiet-attack forecast instability using complete histories and
+independent controls before correction. Conventional Chess remains the priority;
+no learned evaluation or cross-game transfer is authorized.
+
+## Owner refinement after MSH-151 (Chess Coherent-Round Assessment)
+
+MSH-152 (Classical Tactical Forecasting) investigates decision quality across
+evaluation, horizon, selectivity and cost, with explicit measurable outcomes and
+bounded stopping conditions. It must not default to another positional heuristic
+or infer an error merely from a PV/score disagreement. Independent tactics and
+endgame truths supplement complete historical game records.
+
+Do not automatically run another small adaptive absolute-rating study after this
+work. At a meaningful improvement milestone, propose a controlled comparison of
+earlier and improved versions using matched openings, conditions and opponents
+where appropriate, with a sample suited to the question. Substantial tournaments
+and formal studies require owner approval before execution. Routine development
+experiments remain autonomous and bounded by the existing resource policy.
+Conventional Chess remains the priority; learned evaluation and cross-game
+transfer remain unapproved. Completed studies and their limitations are preserved.
+
+MSH-152's [forecast investigation](chess-tactical-forecasting.md) identifies a
+PV reduced fail-low that suppresses quiet invasion alternatives, and a separate
+promotion-recapture exchange defect. The targeted corrections retain independent
+tactical/WDL decisions but spend more work at PV nodes; no overall strength gain
+is established. Matched-horizon exchange forecasts back up consistently while
+longer search changes their valuation. MSH-153 (Classical Compensation Calibration)
+continues that residual horizon/valuation question with independent controls;
+no further opponent campaign is automatically scheduled.

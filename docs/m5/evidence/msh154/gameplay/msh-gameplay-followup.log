@@ -1,0 +1,8 @@
+pair-000-discovery-oxidation060 0 Nf5 [('unrestricted', 22, 21), ('played', -290, 25), ('alternative', -11, 22)]
+pair-001-discovery-goldfish113 1 Rf6 [('unrestricted', 0, 29), ('played', -371, 23), ('alternative', 0, 30)]
+pair-002-confirmation-oxidation060 0 Nf4 [('unrestricted', -12, 26), ('played', -70, 22), ('alternative', -548, 21)]
+pair-003-confirmation-goldfish113 0 e4 [('unrestricted', -686, 22), ('played', -619, 18), ('alternative', -790, 26)]
+pair-003-confirmation-goldfish113 1 Re4 [('unrestricted', -513, 24), ('played', -569, 23), ('alternative', -909, 27)]
+pair-004-confirmation-oxidation060 1 g5 [('unrestricted', 6, 23), ('played', 5, 25), ('alternative', -26, 24)]
+pair-005-confirmation-goldfish113 0 Rc5 [('unrestricted', 474, 23), ('played', 341, 27), ('alternative', 375, 23)]
+RESOURCE {"elapsed": 34.625896958168596, "user": 33.72875, "sys": 0.17975}

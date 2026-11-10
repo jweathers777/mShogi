@@ -1,0 +1,1 @@
+First profile-panel0 attempt: sampler255, sample cannot examine child process25252 even though it appears to exist; try sudo. Search completed5.047853792wall/4.997084CPU sec. Repeated only through approved unsandboxed tool; no security changes.

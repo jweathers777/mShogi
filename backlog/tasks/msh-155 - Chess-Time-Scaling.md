@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex-coordinator'
 created_date: '2026-11-10T11:25:00Z'
-updated_date: '2026-11-10T12:06:00Z'
+updated_date: '2026-11-10T12:07:00Z'
 labels:
   - handle:chess-time-scaling
 dependencies:
@@ -44,7 +44,7 @@ Reproducible scaling evidence, independently challenged conclusions, a stable ro
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -64,10 +64,14 @@ Reproducible scaling evidence, independently challenged conclusions, a stable ro
 Owner Codex coordinator; reusing clean app-managed chess-adversarial-assessment worktree and branch, integration codex/rewrite. Base dcc17e1; unchanged production source d53f344. Pinned Backlog1.55.1 via explicit Node23 runtime. Fresh SolHigh panel selector, AstraMedium methodology reviewer and AstraHigh diagnostic harness reviewer; no competing production builders. Owner request stored with evidence.
 
 Level 1 diagnostic on macOS arm64, unchanged production d53f344. Consolidated evidence: docs/m5/evidence/msh155/verification.json; report: docs/m5/chess-time-scaling.md. Independent methodology approval in methodology.md; harness-verification is explicitly an author recheck. verify_evidence.py passed: 715 artifacts, 109 attempts, 683 ledger hashes, source equivalence, stable fixture and report links. 723.175 seconds active searches plus 0.132 seconds proof construction, below 900; zero matches. One pre-search initialization failure retained/charged; successful reviewed retry. No production or cross-platform/GUI checks claimed; broader compatibility deferred to future risk-selected implementation.
+
+Assessment commit 0f6d24a integrated by fast-forward into codex/rewrite; package verifier passed again in the integration checkout. All diagnostic acceptance criteria and completion evidence are satisfied; status remains In Review for the explicitly requested owner checkpoint. Next action is owner review, not an implementation task. The app-managed assessment worktree is retained clean for that review: previous archive attempt reports that this task primary checkout cannot be removed; do not bypass the app lifecycle. No engine process requires it.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
 Completed the balanced eight-root matched-time diagnosis, stable benchmark and refined roadmap. Two selected historical errors improve by the earliest successful sampled allowance of five seconds; fresh exact controls already pass at one second. No supported regression in this small panel and no longer-time rating claim. Coverage/valuation and measured native execution remain complementary priorities. Independent final review approved diagnostic closure. MSH-153 (Classical Compensation Calibration) stays held. In Review for John before substantial implementation; normal integration target codex/rewrite.
+
+Integrated assessment: 0f6d24a on codex/rewrite, with final metadata recorded separately. Owner-review checkpoint is the only remaining action; no further experiment or implementation started.
 <!-- SECTION:FINAL_SUMMARY:END -->

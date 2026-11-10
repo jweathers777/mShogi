@@ -95,5 +95,12 @@
     "Native safeguard depth 128 on early solved mate is not useful depth 128.",
     "Different retained reference hash policies and limited fresh-panel discrimination constrain inference."
   ],
-  "owner_checkpoint": "Stop for review before substantial implementation; MSH-153 held."
+  "owner_checkpoint": "Stop for review before substantial implementation; MSH-153 held.",
+  "integrated_assessment_commit": "0f6d24ae86d28adcc1041902c2d452fa0dc02434",
+  "package_checks": {
+    "command": "python3 docs/m5/evidence/msh155/verify_evidence.py",
+    "result": "passed in assessment worktree and integration checkout",
+    "git_diff_check": "passed",
+    "backlog_doctor": "passed using pinned 1.55.1"
+  }
 }

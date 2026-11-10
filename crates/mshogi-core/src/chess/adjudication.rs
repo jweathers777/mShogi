@@ -210,16 +210,18 @@ impl Game {
     fn claims_with_actions(&self, actions: &[Action]) -> Vec<ClaimRequest> {
         // One intended action adds at most one halfmove and one occurrence.
         // Without either prerequisite, neither current nor intended claims
-        // can qualify. Keep the full native validator/order for every other
-        // case, including imported counters and previously repeated identities.
-        if self.position().halfmove_clock() < 99 && !self.has_repeated_identity() {
+        // can qualify. Keep native claim order and checked transitions for every
+        // other case, including imported counters and reachable repetitions.
+        let repetition_possible = self.has_repeated_identity();
+        let fifty_possible = self.position().halfmove_clock() >= 99;
+        if !fifty_possible && !repetition_possible {
             return Vec::new();
         }
         let actor = self.position().side_to_move();
         let mut claims = Vec::new();
         for reason in [DrawClaim::Threefold, DrawClaim::FiftyMove] {
-            if reason == DrawClaim::Threefold && !self.has_repeated_identity()
-                || reason == DrawClaim::FiftyMove && self.position().halfmove_clock() < 99
+            if reason == DrawClaim::Threefold && !repetition_possible
+                || reason == DrawClaim::FiftyMove && !fifty_possible
             {
                 continue;
             }
@@ -246,20 +248,35 @@ impl Game {
                 },
             )
         });
+        // A claim does not play its intended action. Normalize only the
+        // irrelevant fullmove counter, as the public validator does; keep the
+        // actual halfmove clock and all rules state. Reuse one authoritative
+        // checked projection for both reasons without public Undo snapshots.
+        let mut base = self.position().clone();
+        base.fullmove_number = 1;
+        let projected: Vec<_> = actions
+            .into_iter()
+            .filter_map(|action| {
+                let after = base.checked_after(action).ok()?;
+                let threefold =
+                    repetition_possible && self.occurrences(&after.repetition_identity()) >= 2;
+                let fifty = fifty_possible && after.halfmove_clock() >= 100;
+                Some((action, threefold, fifty))
+            })
+            .collect();
+        // Preserve policy order: all intended threefolds, then all intended
+        // fifty-move claims, each in the established square/promotion order.
         for reason in [DrawClaim::Threefold, DrawClaim::FiftyMove] {
-            if reason == DrawClaim::Threefold && !self.has_repeated_identity()
-                || reason == DrawClaim::FiftyMove && self.position().halfmove_clock() < 99
-            {
-                continue;
-            }
-            for &action in &actions {
-                let r = ClaimRequest {
-                    actor,
-                    reason,
-                    intended: Some(action),
-                };
-                if self.validate_claim_without_outcome(r).is_ok() {
-                    claims.push(r);
+            for &(action, threefold, fifty) in &projected {
+                if match reason {
+                    DrawClaim::Threefold => threefold,
+                    DrawClaim::FiftyMove => fifty,
+                } {
+                    claims.push(ClaimRequest {
+                        actor,
+                        reason,
+                        intended: Some(action),
+                    });
                 }
             }
         }

@@ -503,3 +503,123 @@ fn complete_mode_cached_proof_and_claimed_root_are_preserved() {
     assert_eq!(cursor.push(action("b1b2")), Err(PlayError::GameOver));
     assert_eq!(cursor.game(), Some(&claimed));
 }
+
+// Independently enumerate the public validation boundary rather than repeating
+// the optimized catalog's projection or repetition prerequisite.
+fn public_claim_oracle(game: &AdjudicatedGame) -> Vec<ClaimRequest> {
+    let mut actions = game.position().legal_actions();
+    actions.sort_by_key(|a| {
+        (
+            a.from.rank() * 8 + a.from.file(),
+            a.to.rank() * 8 + a.to.file(),
+            match a.promotion {
+                None => 0,
+                Some(Promotion::Queen) => 1,
+                Some(Promotion::Rook) => 2,
+                Some(Promotion::Bishop) => 3,
+                Some(Promotion::Knight) => 4,
+            },
+        )
+    });
+    let actor = game.position().side_to_move();
+    let mut candidates = Vec::new();
+    for reason in [DrawClaim::Threefold, DrawClaim::FiftyMove] {
+        candidates.push(ClaimRequest {
+            actor,
+            reason,
+            intended: None,
+        });
+    }
+    for reason in [DrawClaim::Threefold, DrawClaim::FiftyMove] {
+        for &a in &actions {
+            candidates.push(ClaimRequest {
+                actor,
+                reason,
+                intended: Some(a),
+            });
+        }
+    }
+    candidates
+        .into_iter()
+        .filter(|&c| game.history().validate_claim(c).is_ok())
+        .collect()
+}
+
+#[test]
+fn projected_claim_catalog_matches_public_validator_at_boundaries_and_special_moves() {
+    for clock in [98, 99, 100, 149, 150] {
+        for board in [
+            "7k/8/8/8/8/8/8/KR6 b - -",
+            "r3k2r/8/8/8/8/8/8/R3K2R w KQkq -",
+            "7k/P7/8/8/8/8/8/KR6 w - -",
+        ] {
+            let native = game(&format!("{board} {clock} 4294967295"));
+            let expected = public_claim_oracle(&native);
+            assert_eq!(native.available_claims(), expected);
+            let mut cursor = SearchCursor::new(&native);
+            assert_eq!(cursor.turn().claims, expected);
+            assert_eq!(cursor.node().claims, expected);
+        }
+    }
+    // Legal EP with an actual zeroing counter, and terminal precedence controls.
+    for fen in [
+        "7k/8/8/3pP3/8/8/8/KR6 w - d6 0 7",
+        "7k/6Q1/5K2/8/8/8/8/8 b - - 100 1",
+        "7k/5K2/6Q1/8/8/8/8/8 b - - 100 1",
+        "7k/8/8/8/8/8/8/K7 w - - 100 1",
+    ] {
+        let native = game(fen);
+        assert_eq!(native.available_claims(), public_claim_oracle(&native));
+    }
+    // A real live repeat and fifty-move threshold coexist; intended claims must
+    // remain grouped by reason, not interleaved by action.
+    let mut native = game("4k1n1/8/8/8/8/8/8/4K1NR w - - 92 1");
+    for text in ["g1f3", "g8f6", "f3g1", "f6g8", "g1f3", "g8f6", "f3g1"] {
+        native.apply(action(text)).unwrap();
+    }
+    let expected = public_claim_oracle(&native);
+    assert!(
+        expected
+            .iter()
+            .any(|c| c.reason == DrawClaim::Threefold && c.intended == Some(action("f6g8")))
+    );
+    assert!(expected.iter().any(|c| c.reason == DrawClaim::FiftyMove));
+    assert_eq!(native.available_claims(), expected);
+    let mut cursor = SearchCursor::new(&native);
+    assert_eq!(cursor.turn().claims, expected);
+}
+
+#[test]
+fn obsolete_repetitions_allow_preview_without_discarding_history_or_live_claims() {
+    let mut native = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
+    for text in ["g1f3", "g8f6", "f3g1", "f6g8", "e2e4"] {
+        native.apply(action(text)).unwrap();
+    }
+    let original = native.clone();
+    let mut cursor = SearchCursor::new(&native);
+    let token = cursor
+        .preview(action("g8f6"))
+        .unwrap()
+        .expect("obsolete repeat is unreachable");
+    native.apply(action("g8f6")).unwrap();
+    cursor.push_preview(token).unwrap();
+    assert_eq!(cursor.game(), Some(&native));
+    assert_eq!(cursor.turn().claims, public_claim_oracle(&native));
+    assert!(cursor.pop());
+    assert_eq!(cursor.game(), Some(&original));
+    // Restore a new live occurrence within the post-pawn-move segment.
+    for text in ["g8f6", "g1f3", "f6g8", "f3g1"] {
+        cursor.push(action(text)).unwrap();
+    }
+    assert!(cursor.preview(action("b8c6")).unwrap().is_none());
+    for text in ["g8f6", "g1f3", "f6g8"] {
+        cursor.push(action(text)).unwrap();
+    }
+    assert!(
+        cursor
+            .turn()
+            .claims
+            .iter()
+            .any(|c| c.reason == DrawClaim::Threefold && c.intended == Some(action("f3g1")))
+    );
+}

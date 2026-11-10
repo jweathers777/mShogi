@@ -1,0 +1,331 @@
+# mShogi: Comprehensive Chess Playing-Strength Diagnosis
+
+## Objective
+
+We need to understand why mShogi is not stronger against established Chess engines.
+
+Previous work, MSH-153 through MSH-159, spent considerable effort on specific search problems, unusual endgames, and evaluation changes. Some corrections were useful. However, we still lack a systematic understanding of the weaknesses that limit mShogi's actual competitive performance.
+
+We must change our approach.
+
+**Study complete competitive games first. Identify the weaknesses that cost mShogi games. Use those findings to select future engineering work.**
+
+Do not begin with a suspected code defect. Do not focus on a small set of previously studied positions. Do not start another search or evaluation correction campaign.
+
+This assignment is a comprehensive gameplay diagnosis, not an implementation task or Elo-rating study.
+
+Read the current repository instructions, relevant MSH-139 through MSH-159 evidence, the Chess strength roadmap, and MSH-160 (Chess Opening Quality Assessment). Use prior findings as context, not as predetermined explanations.
+
+## 1. Design a broad complete-game study
+
+Plan a broad survey of approximately 200 complete games, with the option to extend the sample when coverage or uncertainty requires it.
+
+The number is a planning target, not a mandatory stopping point or a statistical claim.
+
+Select one fixed reference opponent that is stronger than mShogi but not so strong that almost every game becomes a hopeless defense.
+
+Consider Goldfish and Oxidation using the available evidence. Perform limited qualification only if needed to choose between them.
+
+Once selected, keep the opponent, executable, configuration, and playing conditions fixed throughout the main study.
+
+Use equal practical thinking time. Start with five seconds per move unless a better justified game-clock configuration is available. Record the actual conditions.
+
+### Opening coverage
+
+Use a diverse collection of sound opening positions.
+
+Cover different types of play, including:
+
+- Open and closed centers.
+- Symmetrical and asymmetrical pawn structures.
+- Tactical and quieter positional openings.
+- Different king-safety and castling arrangements.
+- Different types of piece development and pawn tension.
+
+Use recognized opening families and master-game records to select balanced positions.
+
+Play each selected opening with mShogi as White and Black.
+
+Keep complete opening histories, including castling and en passant state.
+
+Avoid selecting positions because mShogi is already known to perform badly in them.
+
+### Unaided opening games
+
+Include a separate group of games from the normal starting position.
+
+mShogi must use its own search and evaluation. It must not receive an opening book.
+
+These games will help us measure its actual opening choices.
+
+Prepared-opening games measure how mShogi plays from different opening positions. Unaided-opening games measure how it reaches those positions.
+
+Keep these two types of evidence separate.
+
+Reuse and extend the research goals in MSH-160. Do not create a competing opening assessment or introduce an opening book into production.
+
+## 2. Review the experiment while it runs
+
+Do not blindly execute the entire study without checking its quality.
+
+Use an early pilot batch to verify that:
+
+- Games complete correctly.
+- Both engines receive fair, comparable conditions.
+- Opening selection produces useful variety.
+- Complete move histories are valid.
+- Stockfish analysis can identify meaningful changes in position quality.
+- The proposed classifications can distinguish genuine errors from normal evaluation uncertainty.
+
+Correct methodological problems before continuing.
+
+During the main study, review the results after meaningful batches of games.
+
+Track the number of new weakness types, their frequency, their severity, and their distribution across opening families.
+
+Ask whether new games continue to reveal important problems or whether the findings are becoming stable.
+
+**Do not stop because the first batch reveals a plausible weakness.**
+
+We expect several weaknesses to contribute to mShogi's performance.
+
+Complete the planned broad coverage before deciding that one issue deserves priority.
+
+You may extend the sample if new games continue to reveal important problems or if the original sample gives inadequate coverage.
+
+Do not expand indefinitely without a reason. Explain what additional evidence an extension should provide.
+
+Do not reduce the study to a small sample merely to fit an arbitrary computation budget.
+
+## 3. Use Stockfish to analyze both players
+
+Use a strong, fixed version of Stockfish as an independent analysis engine.
+
+Stockfish is the judge of move quality for this experiment. It is not the competitive opponent.
+
+Analyze every move from both players.
+
+Use a consistent initial analysis method across the complete games. Then perform deeper, controlled analysis of moves that appear to cause significant deterioration, missed opportunities, or changes in the likely game result.
+
+Use appropriate root-move comparisons and legal continuations to confirm important judgments.
+
+Preserve score perspective, search conditions, bounds, histories, and relevant principal variations.
+
+Prefer a consistent measure of expected game outcome or winning chances for the primary severity assessment. Keep raw centipawn evaluations as supporting evidence.
+
+Do not treat Stockfish's preferred move as the only acceptable move.
+
+Do not treat finite engine analysis as a proof of game-theoretic correctness.
+
+Record uncertain judgments as uncertain.
+
+Use tablebases where they can establish exact endgame results.
+
+## 4. Measure opening quality
+
+For unaided-opening games, measure the quality of mShogi's opening decisions.
+
+Use Lichess Opening Explorer, master-game records, ECO classifications, and independent Stockfish analysis where useful.
+
+Distinguish established book moves from unusual but sound moves.
+
+Do not mark a move as bad merely because it is uncommon.
+
+Measure:
+
+- Decision quality during the opening.
+- Material and positional changes caused by opening choices.
+- Development and king-safety problems that have demonstrated consequences.
+- The quality of the position when the game enters the middlegame.
+- Differences across opening families and playing colors.
+
+Define and record a consistent method for identifying the opening-to-middlegame transition. Do not assume that every opening ends on the same move number.
+
+For prepared-opening games, evaluate the position supplied to both engines separately from the decisions they make afterward.
+
+Do not blame mShogi for a disadvantage that already exists in the prepared position.
+
+## 5. Identify mistakes, missed opportunities, and recoveries
+
+For each complete game, identify the following events where reliable analysis supports them.
+
+### First significant deterioration
+
+Find the first mShogi decision that causes a meaningful reduction in position quality.
+
+Distinguish a small inaccuracy from a serious mistake.
+
+### Largest consequential mistake
+
+Identify the decision that causes the greatest supported damage to mShogi's expected result.
+
+This may occur much later than the first deterioration.
+
+### Missed opportunity
+
+When the opponent makes a mistake, determine whether mShogi recognizes the resulting opportunity.
+
+If mShogi fails to exploit it, record the missed opportunity and its likely importance.
+
+### Recovery
+
+When an opponent's mistake gives mShogi a chance to recover, determine whether mShogi takes advantage of it.
+
+A recovery normally requires an opponent error. Do not label an ordinary change in evaluation as a recovery without confirming the sequence.
+
+### Advantage preservation
+
+When mShogi obtains a favorable position, determine whether it preserves that advantage.
+
+Identify decisions that unnecessarily reduce or surrender it.
+
+### Advantage conversion
+
+Determine whether mShogi can turn favorable positions into wins against continued resistance.
+
+Distinguish failure to convert from a position that was never demonstrably winning.
+
+Analyze both sides' decisions so that opponent errors, missed chances, and changes in the game result are attributed correctly.
+
+Do not classify every later mistake in a lost position as an independent cause of the original defeat.
+
+## 6. Classify the competitive weaknesses
+
+Use the complete-game evidence to identify recurring types of poor decisions.
+
+Possible categories include:
+
+- Opening development and early strategic decisions.
+- King safety.
+- Tactical calculation.
+- Quiet defensive moves.
+- Piece coordination and activity.
+- Pawn structures and pawn breaks.
+- Strategic planning.
+- Exchange decisions.
+- Missed opportunities after opponent mistakes.
+- Advantage preservation and conversion.
+- Endgame decisions.
+
+These are candidate categories. Let the evidence identify any additional categories.
+
+For each confirmed weakness, record:
+
+1. How often it occurs.
+2. How much position quality it typically costs.
+3. Which game phases it affects.
+4. Which opening families expose it.
+5. Whether it occurs in wins, draws, losses, or several result classes.
+6. Representative games and critical moves.
+7. Conflicting examples where mShogi performs well.
+8. Confidence and important uncertainty.
+
+Distinguish the number of affected games from the number of affected moves. Do not treat correlated decisions from the same game as independent samples.
+
+Do not assume that the most dramatic individual blunder is the most important general weakness.
+
+A moderate error that occurs frequently may have more practical importance than a rare catastrophic error.
+
+## 7. Use independent analysis and critical review
+
+Use separate agents where this improves independence.
+
+One agent may manage the games and source records.
+
+A gameplay analyst should examine the moves and independent Stockfish results without first receiving the previous engineering explanations.
+
+A separate reviewer should challenge the classification rules, uncertainty, game selection, and conclusions.
+
+Freeze the analysis method before using it to rank the results.
+
+If a method changes during the study, preserve the original findings and explain the effect of the change.
+
+Do not allow the previous focus on endgame evaluation, repetition handling, or quiet-search corrections to determine the conclusions.
+
+## 8. Turn the results into engineering priorities
+
+The final objective is not a collection of game records or a list of interesting moves.
+
+It is a clear explanation of which problems most limit mShogi's competitive Chess performance.
+
+Rank the major weaknesses by their observed frequency, severity, and likely effect on game results.
+
+For each important weakness, distinguish:
+
+**Observed behavior:** what mShogi repeatedly does poorly in actual games.
+
+**Possible technical cause:** what search or evaluation mechanism might produce that behavior.
+
+**Required investigation:** what evidence would distinguish the competing technical explanations.
+
+**Potential engineering work:** what general correction or class of correction might address the weakness.
+
+Do not state that a search or evaluation mechanism is defective merely because a poor move occurred.
+
+The survey should identify the best engineering workstreams, not implement speculative corrections.
+
+If several weaknesses contribute materially to poor play, report several priorities. Do not force all findings into one explanation.
+
+Use the existing position benchmark as supporting diagnostic and regression evidence, not as the primary measure of competitive performance.
+
+## 9. Scope and resource policy
+
+This assignment authorizes the broad complete-game study and the Stockfish analysis needed to complete it.
+
+Do not impose an arbitrary aggregate engine-computation ceiling that causes the study to stop before its planned coverage is complete.
+
+Estimate the necessary computation and record actual resource use.
+
+If existing repository defaults contain a short routine match allowance, record this owner authorization as a study-specific exception through the project's normal process. Preserve other safety and verification requirements.
+
+Keep individual process timeouts, failure recovery, output-size controls, resource monitoring, and reproducible execution.
+
+Do not silently discard failed games or incomplete analysis.
+
+Do not run an unnecessary large rating tournament. This is a gameplay diagnosis, and its primary evidence consists of complete games and independently assessed decisions.
+
+Do not modify production Chess search, evaluation, or rules during this assignment.
+
+Do not begin learned evaluation, self-play training, Shogi, Xiangqi, or unrelated performance work.
+
+Do not create a new experimentation framework when the existing tools can support the study.
+
+Do not interrupt the study to implement a correction when a weakness is discovered.
+
+## 10. Final report and roadmap
+
+When the study is complete, provide a concise report with:
+
+1. The study design, opponent, opening coverage, and actual number of games.
+2. Overall results, with appropriate uncertainty.
+3. Opening quality, including unaided opening performance.
+4. The distribution of first significant deteriorations by game phase.
+5. The most frequent and most damaging decision weaknesses.
+6. Missed opportunities, recoveries, and failures to preserve or convert advantages.
+7. Examples of strong mShogi play.
+8. The main limitations of the evidence.
+9. A ranked set of engineering priorities based on competitive impact.
+
+Use clear tables and useful game examples.
+
+Keep the full games, source information, Stockfish analysis, and verification records in the repository.
+
+Update the forward Chess roadmap to reflect the findings. Coordinate the existing MSH-160 opening task with this study and avoid duplicate tasks.
+
+Use concise Problem, Objective, Approach, and Completion descriptions for the new backlog work.
+
+Have an independent reviewer challenge the final diagnosis and rankings.
+
+**Stop for my review before implementing the proposed engineering changes.**
+
+## Principal requirement
+
+We have spent many development rounds correcting isolated problems without establishing why mShogi loses to other engines.
+
+This study must address that missing evidence.
+
+Do not select the next engineering priority because a position is interesting, a defect is easy to correct, or an optimization is technically attractive.
+
+**Determine which weaknesses cost mShogi the most competitive performance across complete games. Then recommend engineering work that addresses those weaknesses.**
+
+Owner follow-up: Use unattended software execution for games and Stockfish analysis. Do not use model reasoning to supervise individual moves or repeatedly poll unchanged results. Save structured results and have agents analyze completed batches. Preserve planned scientific coverage while keeping model usage efficient.

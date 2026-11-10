@@ -1,0 +1,441 @@
+{
+  "seed": "msh161-independent-master-coverage-v1",
+  "purpose": "Candidate sources only; not balance-cleared or frozen playing sample",
+  "filter": "standard start; at least 24 legal plies; both recorded Elo >=2400; first 16 full-history plies; recognized ECO ancestor by root; unique board/turn/rights/legal-EP roots",
+  "selection": "preassigned structural minima by family, greedy unmet coverage then unseen symmetry/center/castling features, SHA tie-break; up to15 per family; no result/mShogi/SF judgment consulted",
+  "structural_minimums": {
+    "symmetric": 12,
+    "opposite_castled": 10,
+    "closed": 15,
+    "open": 15
+  },
+  "structural_quotas": {
+    "spanish": {
+      "symmetric": 1,
+      "opposite_castled": 1,
+      "closed": 1,
+      "open": 1
+    },
+    "italian": {
+      "symmetric": 1,
+      "opposite_castled": 0,
+      "closed": 1,
+      "open": 1
+    },
+    "petroff-scotch-four-knights": {
+      "symmetric": 1,
+      "opposite_castled": 1,
+      "closed": 1,
+      "open": 1
+    },
+    "french": {
+      "symmetric": 1,
+      "opposite_castled": 1,
+      "closed": 1,
+      "open": 1
+    },
+    "caro-kann": {
+      "symmetric": 1,
+      "opposite_castled": 1,
+      "closed": 1,
+      "open": 1
+    },
+    "sicilian-closed-anti": {
+      "symmetric": 0,
+      "opposite_castled": 1,
+      "closed": 1,
+      "open": 1
+    },
+    "sicilian-classical-sveshnikov-taimanov": {
+      "symmetric": 0,
+      "opposite_castled": 0,
+      "closed": 1,
+      "open": 1
+    },
+    "sicilian-najdorf-dragon-scheveningen-rauzer": {
+      "symmetric": 0,
+      "opposite_castled": 1,
+      "closed": 0,
+      "open": 1
+    },
+    "pirc-modern-other-semiopen": {
+      "symmetric": 1,
+      "opposite_castled": 1,
+      "closed": 1,
+      "open": 1
+    },
+    "slav-semi-slav": {
+      "symmetric": 1,
+      "opposite_castled": 1,
+      "closed": 1,
+      "open": 1
+    },
+    "queens-gambit-accepted": {
+      "symmetric": 1,
+      "opposite_castled": 0,
+      "closed": 0,
+      "open": 1
+    },
+    "queens-gambit-declined": {
+      "symmetric": 1,
+      "opposite_castled": 1,
+      "closed": 1,
+      "open": 1
+    },
+    "grunfeld": {
+      "symmetric": 1,
+      "opposite_castled": 0,
+      "closed": 0,
+      "open": 1
+    },
+    "catalan": {
+      "symmetric": 0,
+      "opposite_castled": 0,
+      "closed": 0,
+      "open": 1
+    },
+    "queens-indian-bogo": {
+      "symmetric": 1,
+      "opposite_castled": 0,
+      "closed": 1,
+      "open": 1
+    },
+    "nimzo-indian": {
+      "symmetric": 1,
+      "opposite_castled": 0,
+      "closed": 1,
+      "open": 0
+    },
+    "kings-indian": {
+      "symmetric": 0,
+      "opposite_castled": 0,
+      "closed": 1,
+      "open": 0
+    },
+    "english": {
+      "symmetric": 0,
+      "opposite_castled": 0,
+      "closed": 1,
+      "open": 0
+    },
+    "reti": {
+      "symmetric": 0,
+      "opposite_castled": 1,
+      "closed": 1,
+      "open": 0
+    },
+    "other-flank-indian-dutch": {
+      "symmetric": 0,
+      "opposite_castled": 0,
+      "closed": 0,
+      "open": 0
+    },
+    "queens-pawn-other": {
+      "symmetric": 0,
+      "opposite_castled": 0,
+      "closed": 0,
+      "open": 0
+    },
+    "other-open-games": {
+      "symmetric": 0,
+      "opposite_castled": 0,
+      "closed": 0,
+      "open": 0
+    }
+  },
+  "family_structure_available": {
+    "spanish": {
+      "symmetric": 13,
+      "opposite_castled": 3,
+      "closed": 5,
+      "open": 116
+    },
+    "italian": {
+      "symmetric": 10,
+      "opposite_castled": 0,
+      "closed": 4,
+      "open": 45
+    },
+    "petroff-scotch-four-knights": {
+      "symmetric": 38,
+      "opposite_castled": 4,
+      "closed": 3,
+      "open": 263
+    },
+    "french": {
+      "symmetric": 11,
+      "opposite_castled": 3,
+      "closed": 187,
+      "open": 178
+    },
+    "caro-kann": {
+      "symmetric": 4,
+      "opposite_castled": 2,
+      "closed": 136,
+      "open": 176
+    },
+    "sicilian-closed-anti": {
+      "symmetric": 0,
+      "opposite_castled": 3,
+      "closed": 11,
+      "open": 127
+    },
+    "sicilian-classical-sveshnikov-taimanov": {
+      "symmetric": 0,
+      "opposite_castled": 0,
+      "closed": 18,
+      "open": 127
+    },
+    "sicilian-najdorf-dragon-scheveningen-rauzer": {
+      "symmetric": 0,
+      "opposite_castled": 3,
+      "closed": 0,
+      "open": 10
+    },
+    "pirc-modern-other-semiopen": {
+      "symmetric": 5,
+      "opposite_castled": 17,
+      "closed": 40,
+      "open": 234
+    },
+    "slav-semi-slav": {
+      "symmetric": 16,
+      "opposite_castled": 3,
+      "closed": 4,
+      "open": 25
+    },
+    "queens-gambit-accepted": {
+      "symmetric": 1,
+      "opposite_castled": 0,
+      "closed": 0,
+      "open": 78
+    },
+    "queens-gambit-declined": {
+      "symmetric": 9,
+      "opposite_castled": 3,
+      "closed": 2,
+      "open": 95
+    },
+    "grunfeld": {
+      "symmetric": 8,
+      "opposite_castled": 0,
+      "closed": 0,
+      "open": 12
+    },
+    "catalan": {
+      "symmetric": 0,
+      "opposite_castled": 0,
+      "closed": 0,
+      "open": 18
+    },
+    "queens-indian-bogo": {
+      "symmetric": 5,
+      "opposite_castled": 0,
+      "closed": 5,
+      "open": 9
+    },
+    "nimzo-indian": {
+      "symmetric": 5,
+      "opposite_castled": 0,
+      "closed": 4,
+      "open": 39
+    },
+    "kings-indian": {
+      "symmetric": 8,
+      "opposite_castled": 0,
+      "closed": 68,
+      "open": 20
+    },
+    "english": {
+      "symmetric": 11,
+      "opposite_castled": 0,
+      "closed": 12,
+      "open": 141
+    },
+    "reti": {
+      "symmetric": 14,
+      "opposite_castled": 1,
+      "closed": 17,
+      "open": 59
+    },
+    "other-flank-indian-dutch": {
+      "symmetric": 11,
+      "opposite_castled": 7,
+      "closed": 64,
+      "open": 138
+    },
+    "queens-pawn-other": {
+      "symmetric": 11,
+      "opposite_castled": 2,
+      "closed": 5,
+      "open": 46
+    },
+    "other-open-games": {
+      "symmetric": 12,
+      "opposite_castled": 6,
+      "closed": 6,
+      "open": 64
+    }
+  },
+  "counts": {
+    "Caruana": 6500,
+    "Karpov": 3529,
+    "PolgarJ": 1825,
+    "Kramnik": 4355,
+    "Anand": 4311,
+    "Carlsen": 7818
+  },
+  "rejected": {
+    "missing_elo": 586,
+    "either_elo_below_2400": 2697,
+    "invalid_nonstandard_or_short": 137
+  },
+  "eligible_unique_roots": 13036,
+  "family_available": {
+    "spanish": 705,
+    "italian": 397,
+    "petroff-scotch-four-knights": 436,
+    "french": 567,
+    "caro-kann": 567,
+    "sicilian-closed-anti": 398,
+    "sicilian-classical-sveshnikov-taimanov": 1429,
+    "sicilian-najdorf-dragon-scheveningen-rauzer": 420,
+    "pirc-modern-other-semiopen": 699,
+    "slav-semi-slav": 494,
+    "queens-gambit-accepted": 198,
+    "queens-gambit-declined": 738,
+    "grunfeld": 196,
+    "catalan": 201,
+    "queens-indian-bogo": 534,
+    "nimzo-indian": 450,
+    "kings-indian": 371,
+    "english": 1385,
+    "reti": 721,
+    "other-flank-indian-dutch": 1418,
+    "queens-pawn-other": 487,
+    "other-open-games": 225
+  },
+  "family_selected": {
+    "spanish": 15,
+    "italian": 15,
+    "petroff-scotch-four-knights": 15,
+    "french": 15,
+    "caro-kann": 15,
+    "sicilian-closed-anti": 15,
+    "sicilian-classical-sveshnikov-taimanov": 15,
+    "sicilian-najdorf-dragon-scheveningen-rauzer": 15,
+    "pirc-modern-other-semiopen": 15,
+    "slav-semi-slav": 15,
+    "queens-gambit-accepted": 15,
+    "queens-gambit-declined": 15,
+    "grunfeld": 15,
+    "catalan": 15,
+    "queens-indian-bogo": 15,
+    "nimzo-indian": 15,
+    "kings-indian": 15,
+    "english": 15,
+    "reti": 15,
+    "other-flank-indian-dutch": 15,
+    "queens-pawn-other": 15,
+    "other-open-games": 15
+  },
+  "files": {
+    "COPYING.txt": {
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "bytes": 7048
+    },
+    "Karpov.zip": {
+      "sha256": "4d26460db840c7e749c85f30fceb17783956fe396941465f18b68009e3c722cd",
+      "bytes": 729995
+    },
+    "masters.headers": {
+      "sha256": "a1c4a5ebfb56a29b06f000bd8d0c97a495bd2467f56edbf7664023ce82728d34",
+      "bytes": 318
+    },
+    "Anand.zip": {
+      "sha256": "9f7227690c26ed05688cf1c118c46585c8d6a69a054764f5ef2649c47aeb292f",
+      "bytes": 869891
+    },
+    "pgnmentor-files.html": {
+      "sha256": "da2204b8c4234030e7a6ae9dbcdc9af8a7cbcac068ae89f369c9dda72f4eeaaf",
+      "bytes": 534503
+    },
+    "PolgarJ.zip": {
+      "sha256": "93d9ea786c536d718ae1845867ff0b045b8dd343c94211c9467dfe39eb3342c1",
+      "bytes": 408715
+    },
+    "Carlsen.zip": {
+      "sha256": "29347942a512b260814717592c82cf6f3cd5975925a0b1732ef60f734651553d",
+      "bytes": 1849084
+    },
+    "README.md": {
+      "sha256": "bf7f1a1dc5de97559d34371a46f9d4f83fdcba461feb33d7703479f1740d1a38",
+      "bytes": 2769
+    },
+    "pinned-b.tsv": {
+      "sha256": "2744a3890879bd9dce79093147fe5b6c3a9d9d42a3388af698e67b6829be1c48",
+      "bytes": 78137
+    },
+    "pinned-c.tsv": {
+      "sha256": "447bbd4b15d68067b150faf12bf66aa14b18582cf80d736aaa7c0081131806ef",
+      "bytes": 132304
+    },
+    "pinned-a.tsv": {
+      "sha256": "3282e4c9155289a29224f9a85fba0decb46efa35c2fa5e39662d2ac48fb0f793",
+      "bytes": 67257
+    },
+    "pinned-d.tsv": {
+      "sha256": "1cf4057a8aece94f27bb3f278ad410ee2844831a642364eeceaafa091dbcceda",
+      "bytes": 73318
+    },
+    "pinned-e.tsv": {
+      "sha256": "48c6f6645b031a5937c8386839debab0e2e48837251687ba1afb6369677f8546",
+      "bytes": 44061
+    },
+    "masters.json": {
+      "sha256": "9371176869a945e2958e43b349397210a1b72b83f11c67e02e0be1f950254ef2",
+      "bytes": 172
+    },
+    "e.tsv": {
+      "sha256": "48c6f6645b031a5937c8386839debab0e2e48837251687ba1afb6369677f8546",
+      "bytes": 44061
+    },
+    "d.tsv": {
+      "sha256": "1cf4057a8aece94f27bb3f278ad410ee2844831a642364eeceaafa091dbcceda",
+      "bytes": 73318
+    },
+    "source-ref.json": {
+      "sha256": "ab2b0a8094f6e11de08ba6d1422a79420e676c6078fe131d61380c9114a169ae",
+      "bytes": 7006
+    },
+    "Kramnik.zip": {
+      "sha256": "c6f5896f5495b7d99c86f33f83f47f95e09ac8b2296f3ed94ecb2e45f0099f28",
+      "bytes": 943128
+    },
+    "c.tsv": {
+      "sha256": "447bbd4b15d68067b150faf12bf66aa14b18582cf80d736aaa7c0081131806ef",
+      "bytes": 132304
+    },
+    "b.tsv": {
+      "sha256": "2744a3890879bd9dce79093147fe5b6c3a9d9d42a3388af698e67b6829be1c48",
+      "bytes": 78137
+    },
+    "Caruana.zip": {
+      "sha256": "d63c0e697c2dab0b65247cc29f8f03c3b7c1f06d50a48da4f28cf971d89318f9",
+      "bytes": 1622443
+    },
+    "a.tsv": {
+      "sha256": "3282e4c9155289a29224f9a85fba0decb46efa35c2fa5e39662d2ac48fb0f793",
+      "bytes": 67257
+    }
+  },
+  "eco_revision": "3ba6b20d31b2e6125cb0e6a2e792f400717d9d39",
+  "archives": {
+    "Caruana.zip": "https://www.pgnmentor.com/players/Caruana.zip",
+    "Karpov.zip": "https://www.pgnmentor.com/players/Karpov.zip",
+    "PolgarJ.zip": "https://www.pgnmentor.com/players/PolgarJ.zip",
+    "Kramnik.zip": "https://www.pgnmentor.com/players/Kramnik.zip",
+    "Anand.zip": "https://www.pgnmentor.com/players/Anand.zip",
+    "Carlsen.zip": "https://www.pgnmentor.com/players/Carlsen.zip"
+  }
+}

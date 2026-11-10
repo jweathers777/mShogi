@@ -4,11 +4,13 @@ title: Chess Opening Quality Assessment
 status: To Do
 assignee: []
 created_date: '2026-11-10T18:28:00Z'
+updated_date: '2026-11-10T20:48:00Z'
 labels:
   - handle:chess-opening-quality-assessment
 milestone: m-5
 dependencies:
   - MSH-158
+  - MSH-159
 documentation:
   - docs/m5/strength-roadmap.md
   - docs/m5/experiments.md
@@ -41,12 +43,12 @@ Before future execution, establish a modest aggregate engine/reference compute a
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Before execution, establish a modest aggregate resource budget, process/artifact bounds, stopping rules and frozen protocol with independent review; finish current classical evaluation/correction work and update dependencies.
-- [ ] #2 Verify and record source terms, licenses, attribution, access limits, provenance and data quality before use.
-- [ ] #3 Use approximately 100–150 reproducibly sampled positions across diverse opening families, both colors and several development stages; preserve available full histories and label unknown history.
-- [ ] #4 Compare unaided one/five/selected fifteen-second decisions using independent continuation evidence and the four soundness classes; report master-choice frequency separately and do not penalize theory absence alone.
-- [ ] #5 Report development, center, king safety, threat responses, family difficulties, timing effects and middlegame soundness with uncertainty; any optional sequences continue legally and independently soundly after deviations.
-- [ ] #6 Reuse existing infrastructure and native rules/history without a new framework, opening book or production changes; preserve reproducible results, actual resource use and independent outcome review.
+- [ ] #1 Coordinate opening assessment within MSH-161 complete-game study; freeze reviewed method, sources, process bounds and actual resource accounting under the new owner authorization.
+- [ ] #2 Verify source terms, provenance, attribution, access limits and data quality before use.
+- [ ] #3 Measure unaided opening decisions separately from diverse prepared-position quality; preserve complete histories, family/color coverage and phase-transition definitions.
+- [ ] #4 Distinguish established and sound, unusual but sound, questionable and clearly poor moves using independent continuation evidence; report master frequency separately.
+- [ ] #5 Report demonstrated development/center/king-safety consequences and middlegame entry with uncertainty, without blaming candidate for supplied disadvantage.
+- [ ] #6 Reuse native authority and existing infrastructure; no production/book changes; preserve reproducible complete-game analysis and independent review.
 <!-- AC:END -->
 
 ## Definition of Done
@@ -56,3 +58,9 @@ Before future execution, establish a modest aggregate engine/reference compute a
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner supersession 2026-11-10: opening questions are now integrated into MSH-161 (Competitive Gameplay Diagnosis), whose full request authorizes broad complete-game study and necessary Stockfish analysis. Earlier proposed separate100–150-position sample,1/5/15s matrix and modest aggregate cap are superseded for this assignment. Use separate unaided start games plus prepared-position baseline analysis, master provenance and consistent phase boundaries. Preserve historical description; do not run competing corpus or introduce book. Dependency MSH-159 (Classical Evaluation Decisions) completed; opening deliverable closes with reviewed study evidence.
+<!-- SECTION:NOTES:END -->

@@ -251,6 +251,21 @@ Stop after reasonable distinct trials if unsupported; MSH-153 remains held unles
 a relevant general valuation problem is established. Full owner request is retained
 in docs/m5/evidence/msh159/owner-request.txt.
 
+Owner direction, 2026-11-10: MSH-161 (Competitive Gameplay Diagnosis) is the
+current assignment. Study approximately200 complete games first against one fixed
+suitable stronger reference with equal practical thinking time (initial5s/move),
+diverse master-supported paired openings plus separate unaided starts. Analyze
+every move of both players with fixed Stockfish, confirm consequential events,
+review pilot and completed batches, and rank observed competitive weaknesses
+before hypothesizing mechanisms. Integrate MSH-160 opening questions; no competing
+corpus. The full request in docs/m5/evidence/msh161/owner-request.txt authorizes the
+broad study and necessary analysis beyond routine aggregate compute/match caps;
+retain process bounds, failures, reproducibility and actual resource monitoring.
+Use unattended software for games/reference analysis; agents inspect completed
+batches, not individual moves or repeated unchanged polling. No production changes,
+rating tournament, learned/cross-game work or speculative corrections. Stop for
+John's review after independently reviewed diagnosis and updated roadmap.
+
 ## Git and routine autonomy
 
 The established workflow permits ordinary local commits, non-destructive integration, normal pushes to the configured project remote, and cleanup of the agent's own completed disposable branches/worktrees. Use the designated rewrite branch as the integration target. Keep the original project history and default branch intact unless John explicitly changes that instruction.

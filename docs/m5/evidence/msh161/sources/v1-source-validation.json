@@ -1,0 +1,16 @@
+{
+  "candidate_sha256": "9ce186924ee8326a9b8aea97b15e5683b26a996b6efda37a5c82ea2ecbebf62d",
+  "candidate_records": 330,
+  "full_source_histories_legally_replayed": 330,
+  "unique_root_identities": 330,
+  "root_fens_match": 330,
+  "initial_four_per_family": 88,
+  "initial_four_structure_counts": {
+    "central_locked": 44,
+    "mirror_symmetric": 1,
+    "opposite_wing_castles": 14,
+    "both_kings_castled": 57,
+    "neither_castled": 1
+  },
+  "analysis": "source validation only; balance screen and native admission still required"
+}

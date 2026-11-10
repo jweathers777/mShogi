@@ -1,0 +1,31 @@
+{
+  "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+  "command": "cargo build --release --locked -p mshogi-console --bin mshogi -p mshogi-runner --bin mshogi-match",
+  "build_result": "passed;22.02seconds",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "engines": {
+    "candidate": {
+      "path": "/private/tmp/msh161/mshogi",
+      "sha256": "756510977054b3c3b52b90379215f2922a9ef8aea590d1f5df9766656686c666"
+    },
+    "runner": {
+      "path": "/private/tmp/msh161/mshogi-match",
+      "sha256": "fb7760c0a45b760236a0108f16ea1a2b8d04f95bf0103b7f55b9ff221cd83605"
+    },
+    "goldfish113": {
+      "path": "/private/tmp/msh139/goldfish113/build/goldfish.x",
+      "sha256": "3459e8245299566018ba453d0895a2225f3a6abed47543ee88b7f42afb052c2c",
+      "source": "b7aed1c1b9188c55f4d773fd4fac43de30c83cbb"
+    },
+    "oxidation060": {
+      "path": "/private/tmp/msh139/oxidation060/target/release/oxidation",
+      "sha256": "1ad5a983873ba4e983adb1fb628a8f1506d2043c097e418c928b72e39e36d77e",
+      "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+    },
+    "stockfish19": {
+      "path": "/private/tmp/msh49/opponent/stockfish/stockfish-macos-universal",
+      "sha256": "8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5"
+    }
+  }
+}

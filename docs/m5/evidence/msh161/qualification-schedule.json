@@ -1,0 +1,26 @@
+{
+  "stage": "qualification",
+  "question": "Choose a resistant but non-overwhelming fixed opponent at5s; prior1s evidence uncertain. Matched unaided-start pair per reference initially; expand limited qualification only if unresolved. Not part of main sample.",
+  "pairs": [
+    {
+      "id": "qualification-oxidation060-start",
+      "phase": "qualification",
+      "opponent": "oxidation060",
+      "opening": {
+        "id": "unaided-start-qualification",
+        "fen": null,
+        "moves": []
+      }
+    },
+    {
+      "id": "qualification-goldfish113-start",
+      "phase": "qualification",
+      "opponent": "goldfish113",
+      "opening": {
+        "id": "unaided-start-qualification",
+        "fen": null,
+        "moves": []
+      }
+    }
+  ]
+}

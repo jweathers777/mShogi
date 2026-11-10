@@ -1,0 +1,30 @@
+{
+  "a.tsv": {
+    "exit": 0,
+    "matches_initial": true
+  },
+  "b.tsv": {
+    "exit": 0,
+    "matches_initial": true
+  },
+  "c.tsv": {
+    "exit": 0,
+    "matches_initial": true
+  },
+  "d.tsv": {
+    "exit": 0,
+    "matches_initial": true
+  },
+  "e.tsv": {
+    "exit": 0,
+    "matches_initial": true
+  },
+  "COPYING.txt": {
+    "exit": 0,
+    "matches_initial": true
+  },
+  "README.md": {
+    "exit": 0,
+    "matches_initial": true
+  }
+}

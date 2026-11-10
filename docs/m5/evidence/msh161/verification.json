@@ -1,0 +1,56 @@
+{
+  "stage": "preparation",
+  "verification_level": 1,
+  "reason": "Offline study/helpers, unchanged native source; independent method and outcome review plus native game replay",
+  "environment": "macOS-27.0.1-arm64-arm-64bit",
+  "source": "77101fe",
+  "build": "build.json",
+  "source_review": "source-review.md",
+  "execution_review": "execution-review.md",
+  "production_changed": false,
+  "checks": [
+    {
+      "command": "cargo build --release --locked -p mshogi-console --bin mshogi -p mshogi-runner --bin mshogi-match",
+      "outcome": "passed",
+      "seconds": 22.02
+    },
+    {
+      "command": "/private/tmp/msh139/venv/bin/python -m unittest discover -s docs/m5/evidence/msh161 -p test_analysis.py -v",
+      "outcome": "passed",
+      "tests": 13,
+      "seconds": 0.014,
+      "scope": "initial helper source; final reviewed source to be checked separately"
+    },
+    {
+      "command": "UCI handshake and quit for candidate/Oxidation/Goldfish/Stockfish",
+      "outcome": "passed; no search",
+      "details": "preflight.json"
+    },
+    {
+      "command": "/private/tmp/msh139/venv/bin/python -m unittest discover -s docs/m5/evidence/msh161 -p test_analysis.py -v",
+      "outcome": "passed",
+      "tests": 14,
+      "seconds": 0.018,
+      "receipt": "offline-tests.log",
+      "script_sha256": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+      "note": "Prior shell invocation had a typo in executable path and did not execute tests; this corrected invocation passed."
+    }
+  ],
+  "not_run": [
+    "new Linux native checks",
+    "new Windows native checks",
+    "packaged GUI",
+    "main200game study",
+    "final diagnosis review"
+  ],
+  "deferred": "Broader compatibility checkpoint at relevant integration/release; no production change in this study.",
+  "power": "pmset -g batt reports AC Power100percentcharged at qualification setup",
+  "resource_policy": "Owner expressly authorizes broad study and necessary analysis; retain individual bounds, failures and resource receipts; no arbitrary aggregate stop.",
+  "analysis_review": "analysis-review.md",
+  "postbatch_launch_state": "waiting_for_qualification",
+  "automation": {
+    "id": "review-completed-chess-diagnosis-batch",
+    "scheduled_local": "2026-11-11T01:55:00+01:00",
+    "one_review": true
+  }
+}

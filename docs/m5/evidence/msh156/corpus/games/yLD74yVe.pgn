@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/yLD74yVe"]
+[Date "2020.05.23"]
+[Round "-"]
+[White "sanjeevps"]
+[Black "ivanpopovici"]
+[Result "0-1"]
+[GameId "yLD74yVe"]
+[UTCDate "2020.05.23"]
+[UTCTime "16:39:41"]
+[WhiteElo "1726"]
+[BlackElo "1792"]
+[WhiteRatingDiff "-5"]
+[BlackRatingDiff "+13"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "C41"]
+[Opening "Philidor Defense"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nf3 d6 3. Bc4 Nf6 4. d3 h6 5. Nc3 Bg4 6. h3 Bh5 7. g4 Bg6 8. g5 hxg5 9. Bxg5 Be7 10. Bxf6 Bxf6 11. Qd2 Nd7 12. O-O-O a6 13. Kb1 Nb6 14. Nd5 Nxc4 15. Nxf6+ Qxf6 16. dxc4 Qxf3 17. c5 O-O-O 18. c6 b6 19. Qb4 Kb8 20. Qc4 Ka7 21. Rhe1 Rh4 22. Re3 Qxf2 23. Ra3 a5 24. b4 Rxe4 25. Qb5 Rxb4+ 26. Qxb4 Qxc2+ 27. Ka1 Qxd1+ 28. Qb1 Qxb1# 0-1
+
+

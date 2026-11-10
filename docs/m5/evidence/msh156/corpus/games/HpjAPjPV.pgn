@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/HpjAPjPV"]
+[Date "2020.10.21"]
+[Round "-"]
+[White "AhmedELsaied"]
+[Black "Pianogijs"]
+[Result "1-0"]
+[GameId "HpjAPjPV"]
+[UTCDate "2020.10.21"]
+[UTCTime "13:59:06"]
+[WhiteElo "1693"]
+[BlackElo "1771"]
+[WhiteRatingDiff "+8"]
+[BlackRatingDiff "-7"]
+[Variant "Standard"]
+[TimeControl "300+8"]
+[ECO "D00"]
+[Opening "Queen's Pawn Game: Accelerated London System"]
+[Termination "Normal"]
+
+1. d4 d5 2. Bf4 Nf6 3. Na3 Bf5 4. f3 e6 5. h4 Nc6 6. Nb5 Nb4 7. Nxc7+ Ke7 8. Nxa8 Nxc2+ 9. Kf2 Nxa1 10. g4 Bc2 11. Qxa1 Qxa8 12. Qc1 Ba4 13. b3 Bc6 14. Qc5+ Kd7 15. Qc2 a6 16. e3 Bb4 17. Nh3 a5 18. Ng5 Ke7 19. a4 h6 20. Nh3 Rc8 21. g5 Nh5 22. gxh6 Nxf4 23. Nxf4 g6 24. Nd3 Bxa4 25. Qb1 Bc6 26. Ne5 Bd6 27. Bd3 Rh8 28. Nxf7 Kxf7 29. Bxg6+ Ke7 30. h7 b5 31. Qg1 a4 32. Qg5+ Kd7 33. bxa4 bxa4 34. Qh6 a3 35. Qg7+ Be7 36. Ra1 a2 37. f4 Bb5 38. f5 Qa3 39. fxe6+ Kxe6 40. Qe5+ Kd7 41. Bf5+ Kc6 42. Qxh8 Qb2+ 43. Kg3 Bd6+ 44. Kg4 Qxa1 45. Qc8+ Bc7 46. Qd7+ Kb6 47. Qe6+ Bc6 48. h8=Q Qd1+ 49. Kg5 a1=Q 50. Qe7 Qg1+ 51. Kh6 Qae1 52. Qc5+ Ka6 53. Qa8+ Bxa8 54. Bc8+ Bb7 55. Qa3+ Ba5 56. Qd3+ Ka7 57. Qb5 Qexe3+ 58. Kh7 Qe7+ 59. Kh6 Qeg7+ 60. Kh5 Q1g4+ 61. Bxg4 Bb6 62. Qa4+ Kb8 63. Qe8+ Bc8 64. Qxc8+ Ka7 65. Qc6 Qf7+ 66. Kg5 Bxd4 67. Qa4+ Kb6 68. Qxd4+ Kc6 69. Qf6+ Qxf6+ 70. Kxf6 d4 71. h5 d3 72. h6 d2 73. h7 Kc5 74. h8=Q d1=Q 75. Bxd1 Kd4 76. Qd8+ Ke3 77. Qb6+ Kf4 78. Qd6+ Ke4 79. Bc2+ Ke3 80. Qd3+ Kf4 81. Qe2 Kg3 82. Kf5 Kh3 83. Qf1+ Kg3 84. Qf4+ Kh3 85. Qg4+ Kh2 86. Kf4 Kh1 87. Be4+ Kh2 88. Qg3# 1-0
+
+

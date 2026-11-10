@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/Vh4DOPYa"]
+[Date "2021.12.22"]
+[Round "-"]
+[White "jboywalters"]
+[Black "Victor_Kirillov"]
+[Result "1-0"]
+[GameId "Vh4DOPYa"]
+[UTCDate "2021.12.22"]
+[UTCTime "19:16:53"]
+[WhiteElo "1753"]
+[BlackElo "1603"]
+[WhiteRatingDiff "+3"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "300+3"]
+[ECO "D01"]
+[Opening "Richter-Veresov Attack"]
+[Termination "Normal"]
+
+1. d4 Nf6 2. Nc3 d5 3. Bg5 e6 4. a3 Be7 5. e3 O-O 6. Bd3 h6 7. Bh4 Nc6 8. Nf3 Bd6 9. O-O e5 10. dxe5 Nxe5 11. Nxe5 Bxe5 12. Rb1 Bg4 13. Be2 Bxe2 14. Qxe2 g5 15. Bg3 Bxg3 16. fxg3 Kg7 17. Rbd1 c6 18. e4 Qb6+ 19. Kh1 dxe4 20. Nxe4 Nxe4 21. Qxe4 Qxb2 22. Rd6 Qxa3 23. Qe5+ Kg8 24. Qf6 Rae8 25. Qxh6 Re6 26. Qxg5+ Kh7 27. Rd7 Qe3 28. Rdxf7+ Rxf7 29. Rxf7+ Kh8 30. Qg7# 1-0
+
+

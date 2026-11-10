@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/w0DlpnC2"]
+[Date "2023.05.17"]
+[Round "-"]
+[White "YYoshigue"]
+[Black "abohosen890"]
+[Result "1-0"]
+[GameId "w0DlpnC2"]
+[UTCDate "2023.05.17"]
+[UTCTime "02:19:57"]
+[WhiteElo "1931"]
+[BlackElo "1863"]
+[WhiteRatingDiff "+5"]
+[BlackRatingDiff "-4"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "B01"]
+[Opening "Scandinavian Defense"]
+[Termination "Normal"]
+
+1. e4 d5 2. e5 d4 3. Bc4 Bf5 4. d3 e6 5. f4 h6 6. Nf3 a6 7. c3 dxc3 8. Nxc3 Bb4 9. a3 Bxc3+ 10. bxc3 Ne7 11. d4 Nd5 12. Bd2 O-O 13. O-O Nc6 14. Be2 b5 15. a4 b4 16. c4 Nc3 17. Bxc3 bxc3 18. d5 exd5 19. cxd5 Nb4 20. Bc4 Be4 21. Qd4 Bxd5 22. Qxc3 Bxc4 23. Qxc4 a5 24. f5 Qd3 25. Qg4 c5 26. f6 Qg6 27. Qf4 Nd3 28. Qc4 Rad8 29. Ra3 gxf6 30. exf6 Rfe8 31. Nh4 Re4 32. Rxd3 Rxd3 33. Qxd3 Rxh4 34. Qd8+ Kh7 35. Qxa5 Qh5 36. Rf3 Rxh2 37. Qd8 Rh1+ 38. Kf2 Qh4+ 39. Rg3 Rf1+ 40. Kxf1 Qxg3 41. Qe7 Qf4+ 42. Kg1 Qd4+ 43. Kh1 Kg6 44. a5 Qa1+ 45. Kh2 Qxa5 46. g4 c4 47. Qe4+ Kxf6 48. Qxc4 Qe5+ 49. Kh3 Qe3+ 50. Kh4 Qg5+ 51. Kg3 h5 52. Qc6+ Kg7 53. Qc3+ f6 54. Qc7+ Kh6 55. Qd7 hxg4 56. Qf7 f5 57. Qf8+ Qg7 58. Qxf5 Qg6 59. Qf4+ Qg5 60. Qd6+ Kh5 61. Qd4 Qh4+ 62. Kg2 Qh3+ 63. Kg1 Qg3+ 64. Kf1 Qf3+ 65. Kg1 Kh4 66. Qh8+ Kg3 67. Qh2# 1-0
+
+

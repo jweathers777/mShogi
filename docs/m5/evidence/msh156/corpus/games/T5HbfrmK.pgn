@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/T5HbfrmK"]
+[Date "2022.10.19"]
+[Round "-"]
+[White "Semen0810"]
+[Black "wej12"]
+[Result "0-1"]
+[GameId "T5HbfrmK"]
+[UTCDate "2022.10.19"]
+[UTCTime "09:00:31"]
+[WhiteElo "1851"]
+[BlackElo "1899"]
+[WhiteRatingDiff "-7"]
+[BlackRatingDiff "+5"]
+[Variant "Standard"]
+[TimeControl "1200+0"]
+[ECO "B06"]
+[Opening "Modern Defense: Two Knights Variation, Suttles Variation"]
+[Termination "Normal"]
+
+1. e4 d6 2. d4 c6 3. Nc3 g6 4. Nf3 Bg7 5. Bc4 e6 6. Bd3 e5 7. dxe5 dxe5 8. O-O Bg4 9. h3 Be6 10. Bg5 f6 11. Be3 Ne7 12. Qd2 h6 13. Nh2 Nd7 14. f4 exf4 15. Bxf4 g5 16. Bg3 Ng6 17. Nf3 O-O 18. Nd4 Bf7 19. Nf5 Nde5 20. h4 Qc7 21. hxg5 hxg5 22. Nxg7 Kxg7 23. Qf2 Qb6 24. Qxb6 axb6 25. Be2 b5 26. a3 Bc4 27. b3 Bxe2 28. Nxe2 Ng4 29. Rfd1 Rad8 30. Rd3 N6e5 31. Bxe5 Nxe5 32. Rd4 Rxd4 33. Nxd4 Kh7 34. Kf2 Kg6 35. Ke2 Rd8 36. Rd1 Kf7 37. Nf5 Rxd1 38. Kxd1 Ke6 39. Ke2 c5 40. Ke3 b6 41. Ng7+ Kf7 42. Nf5 Ke6 43. Ng7+ Kd6 44. Nf5+ Kd7 45. Ng7 Nc6 46. Nf5 Ke6 47. Ng7+ Ke5 48. Nf5 Nd4 49. Nxd4 cxd4+ 50. Kd3 g4 51. g3 b4 52. a4 f5 53. exf5 Kxf5 54. Kxd4 Kg5 55. Ke5 Kg6 56. Kf4 Kh5 57. Kf5 Kh6 58. Kxg4 Kg6 59. c4 bxc3 60. b4 c2 61. a5 bxa5 62. bxa5 c1=Q 63. a6 Qc8+ 64. Kf4 Qxa6 65. g4 Qc4+ 66. Kg3 Kg5 67. Kf3 Qf4+ 68. Kg2 Kxg4 69. Kg1 Qf3 70. Kh2 Kh4 71. Kg1 Qe2 72. Kh1 Kg3 73. Kg1 Qg2# 0-1
+
+

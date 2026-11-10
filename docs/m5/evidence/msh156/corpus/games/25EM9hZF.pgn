@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/25EM9hZF"]
+[Date "2025.02.16"]
+[Round "-"]
+[White "Roshchin_2"]
+[Black "chessyahya"]
+[Result "0-1"]
+[GameId "25EM9hZF"]
+[UTCDate "2025.02.16"]
+[UTCTime "20:42:01"]
+[WhiteElo "1724"]
+[BlackElo "1694"]
+[WhiteRatingDiff "-7"]
+[BlackRatingDiff "+6"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "B06"]
+[Opening "Modern Defense"]
+[Termination "Time forfeit"]
+
+1. e4 g6 2. d4 Bg7 3. c3 d6 4. Bc4 Nf6 5. f3 c6 6. Qb3 O-O 7. Ne2 b5 8. Bd3 a5 9. a4 Ba6 10. axb5 cxb5 11. O-O Qb6 12. Qa2 a4 13. b3 Nc6 14. bxa4 bxa4 15. Bxa6 Qxa6 16. Rf2 Rfb8 17. Nd2 Nd7 18. Qc4 Qxc4 19. Nxc4 Nb6 20. Nxb6 Rxb6 21. Be3 Rb3 22. Rff1 a3 23. Rfb1 Rxb1+ 24. Rxb1 a2 25. Ra1 e6 26. Nc1 d5 27. Rxa2 Rxa2 28. Nxa2 Na5 29. e5 f6 30. f4 Nc4 31. Bc1 fxe5 32. Nb4 exf4 33. Bxf4 h6 34. h4 Bf8 35. Nc6 Kf7 36. Nd8+ Kf6 37. g4 g5 38. hxg5+ hxg5 39. Bc1 e5 40. dxe5+ Kxe5 41. Bxg5 Bc5+ 42. Kg2 Ne3+ 43. Bxe3 Bxe3 44. Nc6+ Ke4 45. Nd4 Bxd4 46. cxd4 Kxd4 47. g5 Kc3 48. g6 d4 0-1
+
+

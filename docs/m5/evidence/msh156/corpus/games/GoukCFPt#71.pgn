@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/GoukCFPt"]
+[Date "2017.01.22"]
+[Round "-"]
+[White "klemi"]
+[Black "OsM22"]
+[Result "0-1"]
+[GameId "GoukCFPt"]
+[UTCDate "2017.01.22"]
+[UTCTime "10:29:42"]
+[WhiteElo "1871"]
+[BlackElo "1849"]
+[WhiteRatingDiff "-11"]
+[BlackRatingDiff "+17"]
+[Variant "Standard"]
+[TimeControl "60+19"]
+[ECO "D38"]
+[Opening "Queen's Gambit Declined: Ragozin Defense"]
+[Termination "Normal"]
+
+1. d4 Nf6 2. c4 e6 3. Nc3 d5 4. Nf3 Bb4 5. Bg5 Bxc3+ 6. bxc3 h6 7. Bxf6 Qxf6 8. e3 dxc4 9. Bxc4 c6 10. O-O Nd7 11. a4 O-O 12. Re1 e5 13. d5 e4 14. Nd4 cxd5 15. Bxd5 Ne5 16. Bxe4 Bg4 17. f3 Be6 18. Bxb7 Rad8 19. Be4 Nc4 20. Qe2 Nb6 21. a5 Bc4 22. Bd3 Bxd3 23. Qxd3 Nd5 24. Qc4 Rfe8 25. e4 Nf4 26. Rad1 Rc8 27. Qb5 a6 28. Qb6 Qg5 29. g3 Rxc3 30. Qxa6 Ne6 31. Nxe6 Rxe6 32. Qe2 Rec6 33. Rd2 Qc5+ 34. Kg2 Qxa5 35. Rb1 Qa4 36. Rdb2 Rc2 37. Rxc2 Rxc2 38. Rb8+ Kh7 39. Qxc2 Qxc2+ 40. Kh3 Qf2 0-1
+
+

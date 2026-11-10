@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/WYzDWLi7"]
+[Date "2024.04.04"]
+[Round "-"]
+[White "Armando47"]
+[Black "Ven1079"]
+[Result "0-1"]
+[GameId "WYzDWLi7"]
+[UTCDate "2024.04.04"]
+[UTCTime "15:39:31"]
+[WhiteElo "1934"]
+[BlackElo "1854"]
+[WhiteRatingDiff "-7"]
+[BlackRatingDiff "+13"]
+[Variant "Standard"]
+[TimeControl "600+5"]
+[ECO "D20"]
+[Opening "Queen's Gambit Accepted"]
+[Termination "Normal"]
+
+1. d4 d5 2. c4 dxc4 3. Nc3 Bg4 4. h3 Bh5 5. g4 Bg6 6. e4 e5 7. d5 Bb4 8. f3 b5 9. a3 Ba5 10. Ne2 c5 11. Bg2 a6 12. O-O h5 13. f4 hxg4 14. hxg4 Bxc3 15. bxc3 Qh4 16. f5 Nf6 17. fxg6 Nxg4 18. gxf7+ Kf8 19. Rf3 Qh2+ 20. Kf1 Ra7 21. Ng3 g6 22. Be3 Rxf7 23. Bg1 Qxg3 24. Rxf7+ Kxf7 25. Qf3+ Qxf3+ 26. Bxf3 Nh2+ 27. Bxh2 Rxh2 28. a4 b4 29. cxb4 cxb4 30. d6 Rd2 31. Be2 c3 32. Bc4+ Ke8 33. Bd5 c2 34. Ke1 Rxd5 35. exd5 b3 36. Kd2 b2 37. Re1 b1=Q 38. Rxe5+ Kd7 39. Re6 c1=Q+ 40. Ke2 Qcc2+ 41. Kf3 Qf5+ 42. Ke3 Qbd3# 0-1
+
+

@@ -1,0 +1,23 @@
+[Event "Hourly Rapid Arena"]
+[Site "https://lichess.org/game/ic7hqK45"]
+[Date "2021.11.17"]
+[Round "-"]
+[White "komarnik"]
+[Black "johkamar99"]
+[Result "0-1"]
+[GameId "ic7hqK45"]
+[UTCDate "2021.11.17"]
+[UTCTime "17:04:30"]
+[WhiteElo "2021"]
+[BlackElo "2102"]
+[WhiteRatingDiff "-5"]
+[BlackRatingDiff "+4"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "C10"]
+[Opening "French Defense: Rubinstein Variation, Blackburne Defense"]
+[Termination "Normal"]
+
+1. e4 e6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Nd7 5. Nf3 Ngf6 6. Bd3 Be7 7. O-O O-O 8. h3 b6 9. c4 Bb7 10. Re1 Nxe4 11. Bxe4 Bxe4 12. Rxe4 c5 13. Qe1 cxd4 14. Nxd4 Bf6 15. Nf3 Nc5 16. Re2 Nd3 17. Qf1 Nxc1 18. Rxc1 Qc7 19. b3 Rfd8 20. Rd2 Rxd2 21. Nxd2 Rd8 22. Ne4 Qf4 23. Re1 Rd4 24. Nxf6+ Qxf6 25. Rd1 Qd8 26. Rxd4 Qxd4 27. Qe2 g6 28. Kh2 h5 29. Qe3 Qxe3 30. fxe3 Kg7 31. Kg3 Kf6 32. Kf4 e5+ 33. Ke4 Ke6 34. a3 f5+ 35. Kf3 h4 36. g4 a5 37. b4 Kd6 38. Ke2 fxg4 39. hxg4 e4 40. g5 Ke5 41. Kf2 a4 42. Kg2 Kf5 43. Kh3 Kxg5 44. c5 bxc5 45. bxc5 Kf5 46. c6 Ke6 47. Kxh4 Kd6 48. c7 Kxc7 49. Kg5 Kd6 50. Kxg6 Kc5 51. Kf5 Kc4 52. Kxe4 Kb3 53. Kd3 Kxa3 54. e4 Kb3 55. e5 a3 56. e6 a2 57. e7 a1=Q 58. e8=Q Qd1+ 0-1
+
+

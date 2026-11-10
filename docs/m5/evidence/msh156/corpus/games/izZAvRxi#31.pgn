@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/izZAvRxi"]
+[Date "2023.12.30"]
+[Round "-"]
+[White "julentor"]
+[Black "piyonusta"]
+[Result "0-1"]
+[GameId "izZAvRxi"]
+[UTCDate "2023.12.30"]
+[UTCTime "18:58:52"]
+[WhiteElo "1850"]
+[BlackElo "1871"]
+[WhiteRatingDiff "-5"]
+[BlackRatingDiff "+5"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "B50"]
+[Opening "Sicilian Defense"]
+[Termination "Normal"]
+
+1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 e5 5. Nf3 f5 6. exf5 Bxf5 7. Bd3 Bxd3 8. Qxd3 Nf6 9. Bg5 Be7 10. O-O O-O 11. Bxf6 Bxf6 12. c3 Nc6 13. Qd5+ Kh8 14. Nbd2 Rc8 15. Ne4 Be7 16. Neg5 Bxg5 17. Nxg5 Qxg5 18. Qxd6 Rcd8 19. Qa3 Rf6 20. b4 a6 21. Qb3 Rg6 22. g3 Rh6 23. Qc4 Qh5 24. h4 Qf3 25. Rae1 Rf6 26. Re3 Qf5 27. b5 axb5 28. Qxb5 Rdf8 29. Qxb7 Nd8 30. Qe4 Qxe4 31. Rxe4 Nc6 32. a4 Na5 33. Rxe5 Nb3 34. Rb5 Nd2 35. Ra1 Rxf2 36. a5 Re2 37. a6 h6 38. a7 Rff2 39. a8=Q+ Kh7 40. h5 Nf3+ 41. Qxf3 Rxf3 42. c4 Rxg3+ 43. Kf1 Rgg2 44. c5 Rc2 45. Rd1 Rh2 46. Kg1 Rxh5 47. Rd7 Rhxc5 48. Rxc5 Rxc5 49. Kg2 h5 50. Kg3 Kh6 51. Rd8 Rg5+ 52. Kh4 Rg4+ 53. Kh3 g6 54. Rd6 Kg5 55. Rd5+ Kf4 56. Rd4+ Kf5 57. Rd5+ Ke4 58. Ra5 Rg1 59. Kh4 Rd1 60. Kg5 Rg1+ 61. Kh6 h4 62. Ra4+ Kf5 63. Rxh4 g5 64. Rh5 Kf4 65. Rh2 g4 66. Rf2+ Ke3 67. Rf8 g3 68. Re8+ Kf2 69. Rf8+ Kg2 70. Kg5 Rf1 71. Rg8 Kg1 72. Kg4 g2 73. Kg3 Rc1 74. Re8 Rc3+ 75. Kh4 Kh1 76. Re1+ g1=Q 0-1
+
+

@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/G5ICaVyn"]
+[Date "2022.10.26"]
+[Round "-"]
+[White "Akami_Channel"]
+[Black "enaamhasan"]
+[Result "1-0"]
+[GameId "G5ICaVyn"]
+[UTCDate "2022.10.26"]
+[UTCTime "17:14:02"]
+[WhiteElo "1754"]
+[BlackElo "1722"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-5"]
+[Variant "Standard"]
+[TimeControl "180+2"]
+[ECO "B00"]
+[Opening "Owen Defense"]
+[Termination "Normal"]
+
+1. e4 b6 2. Nc3 Bb7 3. d4 e6 4. Nf3 Be7 5. Be3 Nf6 6. e5 Nd5 7. Nxd5 Bxd5 8. c4 Bb7 9. Be2 d5 10. Qd2 O-O 11. O-O dxc4 12. Bxc4 c5 13. Qd3 cxd4 14. Bxd4 Nc6 15. Rac1 Rc8 16. Rfd1 Nb4 17. Qb3 Qc7 18. Bb5 Qb8 19. a3 Nd5 20. Qd3 Nf4 21. Qd2 Ng6 22. Bd3 Bxf3 23. gxf3 Nxe5 24. Qe3 Bf6 25. Rxc8 Rxc8 26. Qe4 Nxd3 27. Qxd3 Qf4 28. Qe4 Qg5+ 29. Qg4 Qxg4+ 30. fxg4 Bxd4 31. Rxd4 g6 32. Rd2 Rc6 33. f3 a5 34. Kf2 Kg7 35. h4 f5 36. g5 Rc7 37. Rd6 Rc2+ 38. Ke3 Rxb2 39. Rxe6 Rb3+ 40. Kf4 Rxa3 41. Rxb6 Ra4+ 42. Ke5 Rxh4 43. Rb7+ Kg8 44. Kf6 Rd4 45. Rb8+ Rd8 46. Rxd8# 1-0
+
+

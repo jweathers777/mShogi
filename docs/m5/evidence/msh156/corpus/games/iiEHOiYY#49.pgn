@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/iiEHOiYY"]
+[Date "2022.05.26"]
+[Round "-"]
+[White "Ararat2004"]
+[Black "AcesReturn"]
+[Result "0-1"]
+[GameId "iiEHOiYY"]
+[UTCDate "2022.05.26"]
+[UTCTime "09:23:42"]
+[WhiteElo "1942"]
+[BlackElo "1964"]
+[WhiteRatingDiff "-5"]
+[BlackRatingDiff "+8"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "B01"]
+[Opening "Scandinavian Defense: Icelandic-Palme Gambit"]
+[Termination "Normal"]
+
+1. e4 d5 2. exd5 Nf6 3. c4 e6 4. dxe6 Bxe6 5. d4 Nc6 6. Nf3 Bb4+ 7. Nc3 Bg4 8. d5 Ne5 9. Qa4+ c6 10. Qxb4 Nxf3+ 11. gxf3 Bxf3 12. Rg1 g6 13. dxc6 bxc6 14. Bg5 h6 15. Bxf6 Qxf6 16. Kd2 Rd8+ 17. Kc2 Qf5+ 18. Kb3 c5 19. Re1+ Kf8 20. Qb5 Kg7 21. Ka3 Rb8 22. Qa4 Rhc8 23. Be2 Bc6 24. Qd1 Rd8 25. Qb1 Qc8 26. Bh5 Qa6+ 0-1
+
+

@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/D82yUBKY"]
+[Date "2024.05.19"]
+[Round "-"]
+[White "ShuruPoVert"]
+[Black "Alexscorp"]
+[Result "1-0"]
+[GameId "D82yUBKY"]
+[UTCDate "2024.05.19"]
+[UTCTime "17:33:51"]
+[WhiteElo "1574"]
+[BlackElo "1618"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "B01"]
+[Opening "Scandinavian Defense: Main Line"]
+[Termination "Normal"]
+
+1. e4 d5 2. exd5 Qxd5 3. Nc3 Qa5 4. Nf3 Nc6 5. Bb5 Bg4 6. d3 Nf6 7. h3 Bh5 8. g4 Bg6 9. Ne5 O-O-O 10. Qf3 Nxe5 11. Qg2 a6 12. a4 axb5 13. O-O e6 14. Nxb5 c6 15. f4 Bc5+ 16. d4 Bxd4+ 17. Nxd4 Rxd4 18. fxe5 Qc5 19. Be3 Qc4 20. exf6 gxf6 21. Bxd4 Qxd4+ 22. Kh1 Be4 23. Rf3 Bxf3 24. Qxf3 Qxb2 25. Rd1 Qxc2 26. a5 Kc7 27. Rf1 Ra8 28. Qf4+ e5 29. Qxf6 Qe4+ 30. Kh2 Rxa5 31. Qxf7+ Kb6 32. Rf2 Qd5 33. Rb2+ Rb5 34. Rxb5+ Kxb5 35. Qxb7+ Kc4 36. Qxh7 Qd2+ 37. Kg3 Qe3+ 38. Kh4 Qf2+ 39. Kh5 Qh2 40. Qe4+ Kb5 41. h4 Qf4 42. Qd3+ Qc4 43. Qxc4+ Kxc4 44. g5 e4 45. g6 e3 46. g7 e2 47. g8=Q+ Kd3 48. Qd8+ Ke3 49. Qe8+ Kf2 50. Qxc6 e1=Q 51. Qf6+ Kg2 52. Qg5+ Kh2 53. Qf4+ Kh3 54. Qf3+ Kh2 55. Kg4 Qe6+ 56. Qf5 Qg8+ 57. Qg5 Qc4+ 58. Qf4+ Qxf4+ 59. Kxf4 Kh3 60. h5 Kh4 61. h6 Kh5 62. h7 Kh6 63. h8=Q+ 1-0
+
+

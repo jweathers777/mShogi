@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/0Z24sqw3"]
+[Date "2021.05.17"]
+[Round "-"]
+[White "RedCrescentMoon"]
+[Black "face_mask"]
+[Result "0-1"]
+[GameId "0Z24sqw3"]
+[UTCDate "2021.05.17"]
+[UTCTime "07:48:59"]
+[WhiteElo "2087"]
+[BlackElo "2026"]
+[WhiteRatingDiff "-47"]
+[BlackRatingDiff "+7"]
+[Variant "Standard"]
+[TimeControl "600+10"]
+[ECO "C00"]
+[Opening "French Defense: Queen's Knight"]
+[Termination "Normal"]
+
+1. e4 e6 2. Nc3 d5 3. exd5 exd5 4. Bb5+ c6 5. Ba4 Nf6 6. d4 b5 7. Bb3 a5 8. a3 Bd6 9. Nge2 O-O 10. O-O Bg4 11. f3 Bf5 12. Bg5 Nbd7 13. Ng3 Bg6 14. Re1 Qc7 15. Nce2 h6 16. Be3 Rfe8 17. Bf2 Re7 18. a4 b4 19. Rc1 Rae8 20. c3 Nb6 21. c4 dxc4 22. Bxc4 Nxc4 23. Rxc4 Nd5 24. Qd2 Nb6 25. Rcc1 Nxa4 26. b3 Nc3 27. Nxc3 bxc3 28. Qxc3 Rxe1+ 29. Rxe1 Rxe1+ 30. Qxe1 c5 31. d5 Qb7 32. Qd1 Qb4 33. Be1 Qb5 34. Ne4 Be5 35. Qc2 Bd4+ 36. Bf2 Qb4 37. h3 Qe1+ 38. Kh2 Bxf2 39. Qxf2 Qb4 40. Qe3 c4 41. bxc4 Qxc4 42. d6 Qd5 43. Qc5 Qxc5 44. Nxc5 Kf8 45. g4 Ke8 46. f4 Bc2 47. Kg3 a4 48. Nxa4 Bxa4 49. f5 Kd7 50. Kf4 Kxd6 51. h4 Bc2 52. g5 f6 53. gxf6 gxf6 54. h5 Kd5 55. Kg4 Ke5 56. Kh4 Bxf5 57. Kg3 Be6 58. Kh4 Kf5 59. Kg3 Kg5 60. Kf3 Kxh5 61. Kf4 Kg6 62. Kg3 h5 63. Kh4 Bd7 64. Kg3 Kg5 65. Kf3 h4 66. Kg2 Kg4 67. Kh2 h3 68. Kg1 Kg3 69. Kh1 Bc6+ 70. Kg1 h2+ 71. Kf1 h1=Q+ 72. Ke2 0-1
+
+

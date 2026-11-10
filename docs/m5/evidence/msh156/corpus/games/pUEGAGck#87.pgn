@@ -1,0 +1,24 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/pUEGAGck"]
+[Date "2020.09.26"]
+[Round "-"]
+[White "GNBuckley"]
+[Black "flogflog"]
+[Result "0-1"]
+[GameId "pUEGAGck"]
+[UTCDate "2020.09.26"]
+[UTCTime "00:27:01"]
+[WhiteElo "2256"]
+[BlackElo "2166"]
+[WhiteRatingDiff "-13"]
+[BlackRatingDiff "+20"]
+[WhiteTitle "IM"]
+[Variant "Standard"]
+[TimeControl "180+2"]
+[ECO "B51"]
+[Opening "Sicilian Defense: Moscow Variation"]
+[Termination "Normal"]
+
+1. e4 { [%eval 0.0] [%clk 0:03:00] } 1... c5 { [%eval 0.0] [%clk 0:03:00] } 2. Nf3 { [%eval 0.0] [%clk 0:03:01] } 2... d6 { [%eval 0.0] [%clk 0:02:59] } 3. Bb5+ { [%eval 0.0] [%clk 0:03:01] } 3... Nd7 { [%eval 0.13] [%clk 0:02:59] } 4. Ba4 { [%eval 0.0] [%clk 0:03:01] } 4... a6 { [%eval 0.28] [%clk 0:03:00] } 5. c4 { [%eval -0.13] [%clk 0:03:01] } 5... g6 { [%eval 0.48] [%clk 0:02:50] } 6. Nc3 { [%eval 0.15] [%clk 0:03:00] } 6... Bg7 { [%eval 0.2] [%clk 0:02:50] } 7. O-O { [%eval 0.0] [%clk 0:03:01] } 7... e6 { [%eval 1.19] [%clk 0:02:50] } 8. d4 { [%eval 0.79] [%clk 0:02:54] } 8... cxd4 { [%eval 0.99] [%clk 0:02:45] } 9. Nxd4 { [%eval 1.21] [%clk 0:02:56] } 9... Ne7 { [%eval 1.39] [%clk 0:02:44] } 10. Nde2 { [%eval 1.35] [%clk 0:02:41] } 10... O-O { [%eval 1.56] [%clk 0:02:43] } 11. Qxd6 { [%eval 1.52] [%clk 0:02:40] } 11... Be5 { [%eval 1.74] [%clk 0:02:11] } 12. Qd2 { [%eval 0.78] [%clk 0:02:33] } 12... Qc7 { [%eval 0.81] [%clk 0:02:08] } 13. Qh6 { [%eval 1.02] [%clk 0:02:22] } 13... Qxc4 { [%eval 1.03] [%clk 0:01:50] } 14. Bg5 { [%eval 0.95] [%clk 0:02:19] } 14... Bg7 { [%eval 1.33] [%clk 0:01:47] } 15. Qh3 { [%eval 0.6] [%clk 0:02:11] } 15... Nc6 { [%eval 1.11] [%clk 0:01:36] } 16. Rac1 { [%eval 1.0] [%clk 0:02:04] } 16... Qb4 { [%eval 0.88] [%clk 0:01:34] } 17. Bh6 { [%eval -0.48] [%clk 0:01:33] } 17... Nde5 { [%eval 1.02] [%clk 0:01:30] } 18. Bxg7 { [%eval 0.89] [%clk 0:01:30] } 18... Kxg7 { [%eval 0.93] [%clk 0:01:30] } 19. Bb3 { [%eval 0.13] [%clk 0:01:29] } 19... b5 { [%eval 0.44] [%clk 0:01:28] } 20. Rcd1 { [%eval 0.12] [%clk 0:01:11] } 20... Bb7 { [%eval 0.66] [%clk 0:01:25] } 21. f4 { [%eval 0.19] [%clk 0:01:11] } 21... Nc4 { [%eval 0.75] [%clk 0:01:23] } 22. f5 { [%eval 0.39] [%clk 0:01:12] } 22... Qc5+ { [%eval 0.57] [%clk 0:01:21] } 23. Kh1 { [%eval 0.52] [%clk 0:01:12] } 23... exf5 { [%eval 2.35] [%clk 0:01:22] } 24. exf5 { [%eval 3.35] [%clk 0:01:11] } 24... N6e5 { [%eval 4.29] [%clk 0:00:57] } 25. f6+ { [%eval 3.76] [%clk 0:01:10] } 25... Kh8 { [%eval 3.97] [%clk 0:00:58] } 26. Qh6 { [%eval 0.1] [%clk 0:01:06] } 26... Rg8 { [%eval 0.02] [%clk 0:00:59] } 27. Rf4 { [%eval -3.25] [%clk 0:01:00] } 27... g5 { [%eval -3.11] [%clk 0:00:57] } 28. Bc2 { [%eval -5.67] [%clk 0:01:00] } 28... Ng6 { [%eval -0.72] [%clk 0:00:51] } 29. Rf5 { [%eval -6.5] [%clk 0:00:56] } 29... Qc6 { [%eval 6.14] [%clk 0:00:43] } 30. Rxg5 { [%eval 0.36] [%clk 0:00:57] } 30... Qxf6 { [%eval 0.75] [%clk 0:00:10] } 31. Be4 { [%eval 0.0] [%clk 0:00:57] } 31... Bxe4 { [%eval 0.23] [%clk 0:00:10] } 32. Nxe4 { [%eval 0.02] [%clk 0:00:58] } 32... Qg7 { [%eval 0.32] [%clk 0:00:11] } 33. Rh5 { [%eval -0.16] [%clk 0:00:57] } 33... Qxh6 { [%eval -0.15] [%clk 0:00:11] } 34. Rxh6 { [%eval -0.21] [%clk 0:00:59] } 34... Rad8 { [%eval -0.2] [%clk 0:00:12] } 35. Rf1 { [%eval -0.32] [%clk 0:00:55] } 35... Kg7 { [%eval -0.19] [%clk 0:00:13] } 36. Rh3 { [%eval -0.36] [%clk 0:00:54] } 36... Rge8 { [%eval 0.0] [%clk 0:00:11] } 37. N2g3 { [%eval 0.0] [%clk 0:00:52] } 37... Nd2 { [%eval 0.0] [%clk 0:00:11] } 38. Nxd2 { [%eval -0.05] [%clk 0:00:50] } 38... Rxd2 { [%eval -0.13] [%clk 0:00:13] } 39. Nh5+ { [%eval -0.28] [%clk 0:00:48] } 39... Kf8 { [%eval -0.13] [%clk 0:00:12] } 40. Nf6 { [%eval -0.57] [%clk 0:00:45] } 40... Ree2 { [%eval -0.8] [%clk 0:00:13] } 41. Rg3 { [%eval -1.44] [%clk 0:00:41] } 41... h6 { [%eval -0.62] [%clk 0:00:11] } 42. Nh5 { [%eval -1.08] [%clk 0:00:35] } 42... Rxb2 { [%eval 0.0] [%clk 0:00:12] } 43. Rxg6 { [%eval 0.0] [%clk 0:00:33] } 43... Rf2 { [%eval 0.19] [%clk 0:00:10] } 44. Rxf2 { [%eval #-2] [%clk 0:00:24] } 44... Rb1+ { [%eval #-1] [%clk 0:00:10] } 0-1
+
+

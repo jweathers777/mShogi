@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/BPpSHmfh"]
+[Date "2024.01.17"]
+[Round "-"]
+[White "sherlockkholmes221b"]
+[Black "Anastasios_M"]
+[Result "1-0"]
+[GameId "BPpSHmfh"]
+[UTCDate "2024.01.17"]
+[UTCTime "05:03:40"]
+[WhiteElo "1940"]
+[BlackElo "1970"]
+[WhiteRatingDiff "+7"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "600+5"]
+[ECO "D00"]
+[Opening "Queen's Pawn Game: Accelerated London System"]
+[Termination "Normal"]
+
+1. d4 d5 2. Bf4 Nf6 3. e3 c5 4. Nf3 Nc6 5. Nbd2 Bg4 6. Be2 e6 7. h3 Bh5 8. c4 Bd6 9. dxc5 Bxc5 10. cxd5 Nxd5 11. Bh2 O-O 12. O-O Bxe3 13. fxe3 Nxe3 14. Qb3 Nxf1 15. Rxf1 Qe7 16. Kh1 Rfd8 17. Qb5 Bg6 18. Nc4 Bd3 19. Bxd3 Rxd3 20. Nce5 Rd5 21. Nxc6 bxc6 22. Qxc6 Rad8 23. a3 Rc5 24. Qe4 Rcd5 25. Re1 h6 26. Ne5 Qb7 27. b4 Qa6 28. Qe3 Qb7 29. Rf1 Qa6 30. Rxf7 Rxe5 31. Rxg7+ Kxg7 32. Bxe5+ Kf7 33. Qf4+ Ke8 34. Qxh6 Qf1+ 35. Kh2 Qf7 36. Qh8+ Kd7 37. Qh6 Ke8 38. Qe3 Rd5 39. Bg3 Qd7 40. Qe4 Rd3 41. Qg6+ Kd8 42. Qf6+ Kc8 43. Qf8+ Kb7 44. Qb8+ Ka6 45. Qe5 Rxa3 46. b5+ Kb6 47. Bf2+ Kb7 48. Qe4+ Kc8 49. Qc4+ Kd8 50. Bh4+ Ke8 51. Qf4 Rd3 52. Qb8+ Kf7 53. Qf4+ Ke8 54. Qe5 Qd6 55. Bg3 Qxe5 56. Bxe5 Rd5 57. Bb8 Rxb5 58. Bxa7 Kf7 59. Be3 Kf6 60. h4 Kg6 61. Kh3 e5 62. g3 e4 63. Kg4 Rb4 64. h5+ Kg7 65. Kf5 Ra4 66. h6+ Kh7 67. g4 Rb4 68. g5 Ra4 69. g6+ Kg8 70. h7+ Kg7 71. Bh6+ Kh8 72. Bf4 Ra5+ 73. Be5+ Rxe5+ 74. Kxe5 e3 75. Kf6 e2 76. Kf7 e1=Q 77. g7+ Kxh7 78. g8=Q+ Kh6 79. Qg6# 1-0
+
+

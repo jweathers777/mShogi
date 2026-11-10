@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/n4DHVAbk"]
+[Date "2020.07.26"]
+[Round "-"]
+[White "natcracker"]
+[Black "G7g4go"]
+[Result "0-1"]
+[GameId "n4DHVAbk"]
+[UTCDate "2020.07.26"]
+[UTCTime "04:13:18"]
+[WhiteElo "1827"]
+[BlackElo "1804"]
+[WhiteRatingDiff "-6"]
+[BlackRatingDiff "+6"]
+[Variant "Standard"]
+[TimeControl "600+5"]
+[ECO "B02"]
+[Opening "Alekhine Defense: Sämisch Attack"]
+[Termination "Normal"]
+
+1. e4 Nf6 2. e5 Nd5 3. Nc3 Nxc3 4. bxc3 d6 5. Nf3 Bg4 6. Rb1 Qc8 7. d4 Nc6 8. Be2 dxe5 9. d5 Nd8 10. Nxe5 Bxe2 11. Qxe2 e6 12. c4 Bd6 13. Bb2 O-O 14. O-O f6 15. Nd3 exd5 16. cxd5 Qf5 17. c4 b6 18. Rbe1 Nb7 19. Nb4 a5 20. Nc6 Kh8 21. Ne7 Qf4 22. g3 Qh6 23. Bc1 g5 24. h4 Bxe7 25. Qxe7 Qg6 26. hxg5 Rf7 27. Qe3 Rg8 28. Bb2 Qxg5 29. Qe8 Rxe8 30. Rxe8+ Kg7 31. Rfe1 h5 0-1
+
+

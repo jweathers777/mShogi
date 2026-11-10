@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/HM31HxQM"]
+[Date "2024.12.11"]
+[Round "-"]
+[White "Taita001"]
+[Black "malickyman"]
+[Result "0-1"]
+[GameId "HM31HxQM"]
+[UTCDate "2024.12.11"]
+[UTCTime "17:48:57"]
+[WhiteElo "1843"]
+[BlackElo "1814"]
+[WhiteRatingDiff "-6"]
+[BlackRatingDiff "+7"]
+[Variant "Standard"]
+[TimeControl "300+0"]
+[ECO "D10"]
+[Opening "Slav Defense: Exchange Variation"]
+[Termination "Normal"]
+
+1. d4 d5 2. c4 c6 3. cxd5 cxd5 4. Nc3 Nf6 5. Bf4 a6 6. e3 Bf5 7. Bd3 Bxd3 8. Qxd3 e6 9. a3 Bd6 10. Bxd6 Qxd6 11. Nf3 Nbd7 12. O-O O-O 13. Rad1 Rac8 14. b4 b5 15. Rc1 Rfe8 16. Ne2 Ne4 17. Rxc8 Rxc8 18. Rc1 Rxc1+ 19. Nxc1 h6 20. Nd2 Ndf6 21. f3 Nxd2 22. Qxd2 e5 23. dxe5 Qxe5 24. Qd4 Qf5 25. Nd3 g5 26. h3 h5 27. Nc5 g4 28. fxg4 hxg4 29. Qf4 Qxf4 30. exf4 gxh3 31. gxh3 Kg7 32. Nxa6 Kg6 33. Nc7 d4 34. Nxb5 d3 35. Kf2 Nd5 36. Nc3 Nxc3 37. Ke3 d2 38. Kxd2 Nb1+ 39. Kc2 Nxa3+ 40. Kb3 Nb5 41. Kc4 Nc7 42. Kc5 Na6+ 43. Kc4 Nxb4 44. Kxb4 Kf5 45. Kc5 Kxf4 46. Kd5 f5 47. Kd4 Kg3 48. Ke3 f4+ 49. Ke2 Kg2 50. h4 f3+ 51. Ke1 f2+ 52. Kd2 f1=Q 53. h5 Qf4+ 54. Ke2 Qg4+ 0-1
+
+

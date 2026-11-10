@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/F7AymHZ0"]
+[Date "2020.07.29"]
+[Round "-"]
+[White "Chessqueen_love"]
+[Black "cdbags2019"]
+[Result "1-0"]
+[GameId "F7AymHZ0"]
+[UTCDate "2020.07.29"]
+[UTCTime "17:41:22"]
+[WhiteElo "1924"]
+[BlackElo "1921"]
+[WhiteRatingDiff "+27"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "180+25"]
+[ECO "D37"]
+[Opening "Queen's Gambit Declined: Harrwitz Attack"]
+[Termination "Normal"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Nf3 Be7 5. Bf4 c5 6. cxd5 Nxd5 7. Nxd5 Qxd5 8. dxc5 Qxc5 9. e3 O-O 10. Be2 Rd8 11. Qc1 Qa5+ 12. Kf1 Nc6 13. g4 e5 14. Bg3 Bxg4 15. Kg2 e4 16. Nd4 Bxe2 17. Nxe2 Qh5 18. Nc3 Qf3+ 19. Kg1 h5 20. Qc2 h4 21. Bf4 h3 22. Qxe4 Qg4+ 23. Kf1 Rd2 24. Rg1 Qh5 25. Bc7 Bb4 26. Qg4 Qxg4 27. Rxg4 Rxb2 28. Nd5 Bf8 29. Nf6+ Kh8 30. Rh4# 1-0
+
+

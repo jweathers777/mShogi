@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/h3BiGQIQ"]
+[Date "2020.12.01"]
+[Round "-"]
+[White "pravenbaggins"]
+[Black "Jannik102"]
+[Result "1-0"]
+[GameId "h3BiGQIQ"]
+[UTCDate "2020.12.01"]
+[UTCTime "13:15:30"]
+[WhiteElo "1812"]
+[BlackElo "1718"]
+[WhiteRatingDiff "+54"]
+[BlackRatingDiff "-4"]
+[Variant "Standard"]
+[TimeControl "900+10"]
+[ECO "D00"]
+[Opening "Queen's Pawn Game: Accelerated London System"]
+[Termination "Normal"]
+
+1. d4 d5 2. Bf4 f6 3. e3 a6 4. Nf3 Bg4 5. c4 Nc6 6. Nc3 e5 7. Bg3 Bb4 8. a3 Bxc3+ 9. bxc3 dxc4 10. Bxc4 b5 11. Bd3 exd4 12. h3 Bxf3 13. Qxf3 Nge7 14. Be4 Qd7 15. cxd4 O-O 16. Rc1 Nxd4 17. exd4 Rae8 18. Qd3 Nf5 19. Rxc7 Qxd4 20. O-O Qxe4 21. Qb3+ Qe6 22. Qxe6+ Rxe6 23. Bf4 g5 24. Rc5 Nd4 25. Be3 Ne2+ 26. Kh2 Re4 27. Rc7 Ra4 28. Rd1 Rf7 29. Rc8+ Kg7 30. Re1 Nf4 31. Bc5 Nd3 32. Re3 Nxf2 33. Ree8 Nd3 34. Rg8+ Kh6 35. Bd6 Nb2 36. Rc3 Nc4 37. Bf8+ Kh5 38. g4+ Kh4 39. Rd3 Ne5 40. Rd8 f5 41. Rg7 fxg4 42. Rxf7 Nxf7 43. Rd7 Rf4 44. Bd6 Rf3 45. Bc7 Rxh3+ 46. Kg2 Rf3 47. Rd1 h5 48. Rh1+ Rh3 49. Bg3# 1-0
+
+

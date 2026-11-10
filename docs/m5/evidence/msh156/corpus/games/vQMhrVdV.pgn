@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/vQMhrVdV"]
+[Date "2023.03.30"]
+[Round "-"]
+[White "MuratSarg"]
+[Black "woody_melad"]
+[Result "1-0"]
+[GameId "vQMhrVdV"]
+[UTCDate "2023.03.30"]
+[UTCTime "09:33:01"]
+[WhiteElo "1968"]
+[BlackElo "2003"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-47"]
+[Variant "Standard"]
+[TimeControl "600+5"]
+[ECO "C00"]
+[Opening "French Defense: La Bourdonnais Variation"]
+[Termination "Normal"]
+
+1. e4 e6 2. f4 d5 3. e5 d4 4. d3 c5 5. Be2 Nc6 6. b3 Be7 7. Nd2 f6 8. Ngf3 Nh6 9. Ne4 O-O 10. O-O Qc7 11. exf6 Bxf6 12. Nxf6+ Rxf6 13. g3 Nf5 14. Ng5 h6 15. Ne4 Rf8 16. Nxc5 Nb4 17. Ne4 Nxc2 18. Rb1 Nce3 19. Bxe3 Nxe3 20. Qd2 Nxf1 21. Rxf1 Bd7 22. Qb4 Qb6 23. Qe7 Rf7 24. Qd6 Qxd6 25. Nxd6 Rff8 26. Nxb7 Bc6 27. Nc5 a5 28. Bg4 e5 29. fxe5 Rxf1+ 30. Kxf1 Rf8+ 31. Ke2 Re8 32. e6 Kf8 33. a3 Ke7 34. b4 a4 35. h4 Kd6 36. Bh5 Re7 37. Bf7 Bd5 38. Nxa4 Bxe6 39. Bxe6 Rxe6+ 40. Kd2 Re3 41. Nc5 Rxg3 42. Ne4+ Kc6 43. Nxg3 Kb5 44. Kc2 g5 45. hxg5 hxg5 46. Kb3 g4 47. a4+ Kb6 48. Kc4 Kc6 49. Kxd4 Kb6 50. Ke4 1-0
+
+

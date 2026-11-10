@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/2EjDmfdU"]
+[Date "2022.05.03"]
+[Round "-"]
+[White "ninobrown-777"]
+[Black "razorback1963"]
+[Result "0-1"]
+[GameId "2EjDmfdU"]
+[UTCDate "2022.05.03"]
+[UTCTime "22:20:19"]
+[WhiteElo "1828"]
+[BlackElo "1834"]
+[WhiteRatingDiff "-6"]
+[BlackRatingDiff "+10"]
+[Variant "Standard"]
+[TimeControl "300+0"]
+[ECO "A00"]
+[Opening "Van't Kruijs Opening"]
+[Termination "Normal"]
+
+1. e3 e6 2. d4 c5 3. dxc5 Bxc5 4. Nf3 Nf6 5. Nc3 O-O 6. Bd2 Nc6 7. Bd3 a6 8. O-O Ba7 9. Ne4 Bb8 10. Nxf6+ Qxf6 11. Bc3 Qe7 12. e4 b5 13. Bd2 Bb7 14. e5 Nxe5 15. Bxh7+ Kxh7 16. Ng5+ Kg6 17. f4 Ba7+ 18. Kh1 Nc4 19. Qg4 f5 20. Qh4 Rh8 21. Qg3 Nxd2 22. Nxe6+ Kf7 23. Qxg7+ Kxe6 24. Rfe1+ Kd6 25. Qxe7+ Kc6 26. b4 Rae8 27. Qf6+ Kc7 28. Qc3+ Bc6 29. Qxd2 Be4 30. Qc3+ Kd8 31. a4 Reg8 32. Rxe4 fxe4 33. Qf6+ Kc7 34. Qe5+ Kd8 35. axb5 Re8 36. Qf6+ Kc7 37. Rxa6 Bf2 38. Qb6+ Bxb6 0-1
+
+

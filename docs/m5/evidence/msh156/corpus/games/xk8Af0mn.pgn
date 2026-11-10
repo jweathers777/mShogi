@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/xk8Af0mn"]
+[Date "2016.05.09"]
+[Round "-"]
+[White "hoffoo"]
+[Black "ajedrezariano"]
+[Result "1-0"]
+[GameId "xk8Af0mn"]
+[UTCDate "2016.05.09"]
+[UTCTime "00:31:20"]
+[WhiteElo "1640"]
+[BlackElo "1750"]
+[WhiteRatingDiff "+15"]
+[BlackRatingDiff "-14"]
+[Variant "Standard"]
+[TimeControl "900+5"]
+[ECO "D50"]
+[Opening "Queen's Gambit Declined: Modern Variation"]
+[Termination "Normal"]
+
+1. d4 e6 2. c4 d5 3. Nc3 Nf6 4. Bg5 Bb4 5. Qc2 h6 6. Bh4 Nbd7 7. Nf3 g5 8. Bg3 c6 9. a3 Bxc3+ 10. bxc3 Ne4 11. Be5 Nxe5 12. Nxe5 Nf6 13. e3 Nd7 14. Nxf7 Kxf7 15. Bd3 Rg8 16. O-O Nf6 17. cxd5 exd5 18. Rab1 Qe7 19. Rb3 Ne4 20. f4 g4 21. g3 Nd6 22. Rbb1 Qxe3+ 23. Kh1 Qe7 24. Rbe1 Qc7 25. Re2 Bd7 26. Rfe1 Kf6 27. Bh7 Rg7 28. Re7 Bf5 29. Rxc7 Bxc2 30. Rxg7 Be4+ 31. Bxe4 Re8 32. Rg6+ Kf7 33. Rxd6 dxe4 34. Rd7+ Kf6 35. Rxb7 e3 36. Re2 Kf5 37. Rxa7 Ke4 38. Kg1 Kd3 39. Kf1 Kxc3 40. Rc7 Kb3 41. Rxc6 Kxa3 42. Rc3+ Kb4 43. Rcxe3 Rd8 44. Rd2 Kc4 45. Ke2 Rd5 46. Re5 Rd6 47. Ke3 Kc3 48. Rc5+ Kb4 49. Rb2+ Ka4 50. Rc8 Ka3 51. Rb7 Ra6 52. Ke4 Ka4 53. Ke5 Ra5+ 54. d5 Ra6 55. d6 Ra5+ 56. Ke6 Ra6 57. Ke7 h5 58. d7 h4 59. d8=Q hxg3 60. hxg3 Ka3 61. Qd3+ Ka4 62. Qxa6# 1-0
+
+

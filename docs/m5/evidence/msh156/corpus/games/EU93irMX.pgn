@@ -1,0 +1,24 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/EU93irMX"]
+[Date "2019.01.24"]
+[Round "-"]
+[White "Tondo_king16"]
+[Black "tomo71hr"]
+[Result "0-1"]
+[GameId "EU93irMX"]
+[UTCDate "2019.01.24"]
+[UTCTime "10:11:56"]
+[WhiteElo "2381"]
+[BlackElo "2320"]
+[WhiteRatingDiff "-13"]
+[BlackRatingDiff "+12"]
+[BlackTitle "FM"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "B12"]
+[Opening "Caro-Kann Defense: Advance Variation, Bayonet Attack"]
+[Termination "Normal"]
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. g4 Be4 5. f3 Bg6 6. h4 h5 7. e6 Qd6 8. exf7+ Bxf7 9. Ne2 hxg4 10. fxg4 Nf6 11. g5 Ne4 12. Nbc3 Nxc3 13. bxc3 e5 14. dxe5 Qxe5 15. Qd4 Nd7 16. Bf4 Qxd4 17. cxd4 Bg6 18. Kd2 Nb6 19. Bh3 Nc4+ 20. Kc3 Ba3 21. Rae1 Bb2+ 22. Kb3 a5 23. a4 O-O 24. Be6+ Kh8 25. h5 Be4 26. h6 g6 27. Rhf1 b5 28. axb5 a4+ 29. Ka2 Bxc2 30. bxc6 Bb3+ 31. Kb1 a3 32. Nc1 a2+ 33. Nxa2 Rxa2 34. Be5+ Kh7 35. Bg8+ Kxg8 36. h7+ Kxh7 37. Rh1+ Kg8 38. Rh8+ Kf7 39. Rf1+ Ke6 0-1
+
+

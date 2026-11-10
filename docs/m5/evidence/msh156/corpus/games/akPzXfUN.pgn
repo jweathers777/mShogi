@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/akPzXfUN"]
+[Date "2024.02.12"]
+[Round "-"]
+[White "RuyLeftEyeLopez"]
+[Black "sc4wowei"]
+[Result "0-1"]
+[GameId "akPzXfUN"]
+[UTCDate "2024.02.12"]
+[UTCTime "14:25:19"]
+[WhiteElo "1967"]
+[BlackElo "2115"]
+[WhiteRatingDiff "-4"]
+[BlackRatingDiff "+4"]
+[Variant "Standard"]
+[TimeControl "180+3"]
+[ECO "C26"]
+[Opening "Vienna Game: Falkbeer Variation"]
+[Termination "Normal"]
+
+1. e4 Nf6 2. Nc3 e5 3. d3 d5 4. exd5 Nxd5 5. Nxd5 Qxd5 6. Be3 Nc6 7. Qd2 Be7 8. Be2 Be6 9. Bf3 Qb5 10. Ne2 Qxb2 11. O-O Bb4 12. Qd1 Bxa2 13. c3 Ba3 14. Qa4 O-O 15. Ng3 Rad8 16. Qg4 Be6 17. Nf5 Bxf5 18. Qxf5 Qxc3 19. Be4 g6 20. Qf6 Rfe8 21. Bh6 Bf8 22. Be3 Bg7 23. Qh4 Nd4 24. Rxa7 b6 25. Bh6 Ne6 26. Bxg7 Kxg7 27. Raa1 Nf4 28. Rae1 Rd4 29. g3 Nxd3 30. Bxd3 Rxh4 31. gxh4 Qxd3 0-1
+
+

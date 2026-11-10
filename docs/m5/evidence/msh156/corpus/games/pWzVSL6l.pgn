@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/pWzVSL6l"]
+[Date "2022.10.19"]
+[Round "-"]
+[White "dregonunter"]
+[Black "mykure11"]
+[Result "1-0"]
+[GameId "pWzVSL6l"]
+[UTCDate "2022.10.19"]
+[UTCTime "21:10:57"]
+[WhiteElo "1535"]
+[BlackElo "1553"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "180+2"]
+[ECO "D00"]
+[Opening "Queen's Pawn Game: Accelerated London System"]
+[Termination "Normal"]
+
+1. d4 d5 2. Bf4 Nf6 3. e3 e6 4. Nf3 Bd6 5. Ne5 Bxe5 6. dxe5 Ne4 7. Bd3 Nc6 8. c3 Qh4 9. O-O g5 10. Bg3 Nxg3 11. fxg3 Qh6 12. Qf3 O-O 13. Nd2 Ne7 14. Rf2 Nf5 15. e4 dxe4 16. Bxe4 Ne7 17. Raf1 Ng6 18. Nc4 Qg7 19. Bxg6 Qxg6 20. Ne3 Bd7 21. Ng4 Bc6 22. Nf6+ Kg7 23. Qh5 b5 24. Qxh7+ Qxh7 25. Nxh7 Kxh7 26. Rxf7+ Kg8 27. Rxc7 Rxf1+ 28. Kxf1 Be4 29. Re7 Bb1 30. a3 Ba2 31. Ke1 Kf8 32. Rb7 a6 33. Kd2 Rd8+ 34. Kc2 Ke8 35. b3 Rd5 36. Rb6 Rxe5 37. Rxa6 Re2+ 38. Kd3 Rxg2 39. Rxe6+ Kd7 40. Re2 Rxe2 41. Kxe2 Bxb3 42. Kf3 Ke6 43. h4 gxh4 44. gxh4 Kf7 45. Kf4 Kg6 46. Ke3 Kh5 47. Kd4 Kxh4 48. Kd3 Bc4+ 49. Kd2 Kg4 50. Ke3 Kf5 51. Kd4 Kf4 52. Kc5 Ke3 53. a4 Kd3 54. a5 b4 55. cxb4 Ba6 56. b5 Bc8 57. b6 Bb7 58. Kb5 Kc3 59. a6 Bd5 60. b7 Bc4+ 61. Kb6 Kb4 62. b8=Q Be6 63. Qd6+ 1-0
+
+

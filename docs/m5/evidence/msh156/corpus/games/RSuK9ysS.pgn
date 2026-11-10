@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/RSuK9ysS"]
+[Date "2022.09.17"]
+[Round "-"]
+[White "Arnotheassassin"]
+[Black "avramov2005"]
+[Result "1-0"]
+[GameId "RSuK9ysS"]
+[UTCDate "2022.09.17"]
+[UTCTime "17:54:50"]
+[WhiteElo "1863"]
+[BlackElo "1826"]
+[WhiteRatingDiff "+36"]
+[BlackRatingDiff "-94"]
+[Variant "Standard"]
+[TimeControl "600+5"]
+[ECO "D20"]
+[Opening "Queen's Gambit Accepted: Central Variation, McDonnell Defense"]
+[Termination "Normal"]
+
+1. d4 d5 2. c4 dxc4 3. e4 e5 4. d5 Nf6 5. Bxc4 Nxe4 6. Nf3 Bd6 7. O-O O-O 8. Re1 f5 9. g4 fxg4 10. Rxe4 gxf3 11. Nc3 Bf5 12. Re1 Qh4 13. Qxf3 e4 14. Qg2 Bh3 15. Rxe4 Qh5 16. Qg5 Qf3 17. Be3 Rf5 18. Re8+ Kf7 19. Re7+ Bxe7 20. d6+ 1-0
+
+

@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/FMrtGbeC"]
+[Date "2020.11.01"]
+[Round "-"]
+[White "drewbock"]
+[Black "MysteryChess50"]
+[Result "1-0"]
+[GameId "FMrtGbeC"]
+[UTCDate "2020.11.01"]
+[UTCTime "00:33:22"]
+[WhiteElo "1768"]
+[BlackElo "1795"]
+[WhiteRatingDiff "+5"]
+[BlackRatingDiff "-154"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "D82"]
+[Opening "Grünfeld Defense: Brinckmann Attack"]
+[Termination "Normal"]
+
+1. d4 Nf6 2. c4 g6 3. Nc3 d5 4. Bf4 dxc4 5. e4 Bg7 6. Qd2 O-O 7. Bh6 Nc6 8. Nge2 Ng4 9. Bxg7 Kxg7 10. f3 Nf6 11. e5 Nd5 12. h4 e6 13. h5 f5 14. hxg6 hxg6 15. Qh6+ Kf7 16. Qh7+ Ke8 17. Qxg6+ Kd7 18. Rh7+ Nce7 19. Nxd5 exd5 20. Nf4 c6 21. Qd6+ Ke8 22. Qxd8+ Kxd8 23. Ne6+ Bxe6 24. Be2 Rf7 25. Rh8+ Kc7 26. Rxa8 Nc8 27. g4 Rg7 28. O-O-O fxg4 29. Rg1 g3 30. f4 a6 31. Kc2 Bf5+ 32. Kc3 Be4 33. Kd2 g2 34. Ke3 Rg3+ 35. Kf2 Rh3 36. Bg4 Rh8 37. Rxc8+ Rxc8 38. Bxc8 Kxc8 39. f5 Kd7 40. Rxg2 Bxg2 41. Kxg2 Ke7 42. Kg3 Kf7 43. Kg4 b5 44. Kg5 a5 45. e6+ Ke7 46. Kg6 b4 47. Kg7 c3 48. f6+ Kxe6 49. bxc3 bxc3 50. f7 c2 51. f8=Q c1=Q 52. Qf7+ Kd6 53. Qf8+ Kc7 54. Qe7+ Kb6 55. Qd8+ Kb7 56. Qd7+ Kb6 57. Qd8+ Kb5 58. Qb8+ Ka4 59. Qb3# 1-0
+
+

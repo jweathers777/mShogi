@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/7KUWYJx0"]
+[Date "2020.11.16"]
+[Round "-"]
+[White "mondel-2"]
+[Black "ENEMNAODAFUTURO"]
+[Result "0-1"]
+[GameId "7KUWYJx0"]
+[UTCDate "2020.11.16"]
+[UTCTime "20:36:28"]
+[WhiteElo "1809"]
+[BlackElo "1793"]
+[WhiteRatingDiff "-5"]
+[BlackRatingDiff "+99"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "B02"]
+[Opening "Alekhine Defense: Scandinavian Variation, Geschev Gambit"]
+[Termination "Time forfeit"]
+
+1. e4 d5 2. exd5 Nf6 3. Nc3 c6 4. dxc6 e5 5. d3 Bc5 6. Be3 Bb6 7. Bxb6 axb6 8. cxb7 Bxb7 9. Qd2 O-O 10. Nf3 Nc6 11. O-O-O b5 12. Re1 b4 13. Ne4 Rxa2 14. Nxf6+ Qxf6 15. Qg5 Qe6 16. Nxe5 Rfa8 17. f4 Rxb2 18. Kxb2 Qa2+ 19. Kc1 b3 20. Kd2 Qxc2+ 21. Ke3 Ra2 22. Re2 Qc5+ 23. Kf3 Nd4+ 24. Kg3 Nxe2+ 25. Bxe2 Rxe2 26. Qd8+ Qf8 27. Qxf8+ Kxf8 28. Nd7+ Ke7 29. Nc5 Rxg2+ 30. Kh3 Bd5 31. Rb1 b2 32. Na6 Ba2 33. Re1+ Kd6 34. Nb4 Rd2 35. Nxa2 Rxd3+ 36. Kg4 Rb3 37. Rb1 g6 38. Kg5 Kd5 39. Kh6 Kd4 40. Kxh7 Kd3 41. Nc1+ Kc2 42. Rxb2+ Rxb2 43. Ne2 Kd3 44. Ng3 Rxh2+ 45. Kg7 Rg2 46. Nf1 Rf2 47. Ng3 Rxf4 48. Nh1 g5 49. Ng3 g4 50. Nh5 Rf3 51. Kh6 g3 52. Nxg3 Rxg3 53. Kh5 f5 54. Kh4 f4 55. Kh5 f3 56. Kh4 Rg1 57. Kh5 f2 58. Kh4 f1=R 59. Kh3 Rf8 0-1
+
+

@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/oZp3J1tY"]
+[Date "2023.05.06"]
+[Round "-"]
+[White "faraaaaa"]
+[Black "IncreaseTension"]
+[Result "1-0"]
+[GameId "oZp3J1tY"]
+[UTCDate "2023.05.06"]
+[UTCTime "07:52:12"]
+[WhiteElo "2335"]
+[BlackElo "2414"]
+[WhiteRatingDiff "+12"]
+[BlackRatingDiff "-7"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "B25"]
+[Opening "Sicilian Defense: Closed"]
+[Termination "Time forfeit"]
+
+1. e4 c5 2. Nc3 d6 3. g3 Nc6 4. Bg2 g6 5. d3 Bg7 6. Nge2 e6 7. Be3 Nd4 8. Qd2 Ne7 9. O-O O-O 10. Nd1 Bd7 11. c3 Nxe2+ 12. Qxe2 b5 13. Qd2 Rb8 14. Bh6 Bxh6 15. Qxh6 b4 16. c4 Kh8 17. f4 Nc6 18. Ne3 Qf6 19. f5 Qg7 20. Qxg7+ Kxg7 21. fxg6 hxg6 22. b3 Nd4 23. Rf2 a5 24. Nc2 Nc6 25. a4 f5 26. exf5 gxf5 27. Bxc6 Bxc6 28. Re1 Rf6 29. Rfe2 Kf7 30. d4 Be4 31. dxc5 dxc5 32. Kf2 Rd8 33. Rc1 e5 34. Ke1 Rfd6 35. Ne3 Ke6 36. Rd1 Rxd1+ 37. Nxd1 Rd3 38. Rb2 f4 39. gxf4 exf4 40. Nf2 Re3+ 41. Kd2 Bf3 42. h4 Kf5 43. Nd3 Re2+ 44. Kc1 Rxb2 45. Kxb2 Be2 46. Nf2 f3 47. Kc1 Kf4 48. Kd2 Bf1 49. h5 Kg5 50. Ne4+ Kxh5 51. Nxc5 Kg4 52. Ke3 Kg3 53. Ne4+ Kg2 54. c5 Ba6 55. c6 Bc8 56. Kd4 f2 57. Nxf2 Kxf2 58. Kc5 Ke3 59. Kb6 Kd3 60. Kxa5 Kc3 61. Kb6 Kxb3 62. a5 Kc4 63. a6 Bxa6 64. Kxa6 b3 65. c7 b2 66. c8=Q+ Kb3 67. Qb7+ Ka2 68. Qd5+ Ka1 69. Qd4 Ka2 70. Qb4 Ka1 71. Qa4+ Kb1 72. Qb4 Kc1 73. Qc4+ Kd2 74. Kb5 Ke3 75. Qe6+ Kf4 76. Qb3 Kg5 77. Qxb2 Kh4 78. Qb1 Kg4 79. Qb2 Kh5 80. Kc4 Kg5 81. Qc3 1-0
+
+

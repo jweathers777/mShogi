@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/qGETyzwU"]
+[Date "2024.01.05"]
+[Round "-"]
+[White "EmotionalCat"]
+[Black "Tchemr"]
+[Result "1-0"]
+[GameId "qGETyzwU"]
+[UTCDate "2024.01.05"]
+[UTCTime "00:47:36"]
+[WhiteElo "1688"]
+[BlackElo "1712"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "600+5"]
+[ECO "B18"]
+[Opening "Caro-Kann Defense: Classical Variation"]
+[Termination "Normal"]
+
+1. e4 c6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Bf5 5. Bd3 Qxd4 6. Nf3 Qd8 7. Qe2 Bg6 8. h4 h6 9. h5 Bh7 10. c4 Nd7 11. Nd6# 1-0
+
+

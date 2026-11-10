@@ -1,0 +1,24 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/DGNaJwrC"]
+[Date "2025.05.21"]
+[Round "-"]
+[White "Tactical-Attack"]
+[Black "amir90325"]
+[Result "0-1"]
+[GameId "DGNaJwrC"]
+[UTCDate "2025.05.21"]
+[UTCTime "07:45:18"]
+[WhiteElo "2179"]
+[BlackElo "2184"]
+[WhiteRatingDiff "-11"]
+[BlackRatingDiff "+6"]
+[WhiteTitle "NM"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "B32"]
+[Opening "Sicilian Defense: Löwenthal Variation"]
+[Termination "Time forfeit"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 e5 5. Nb5 Nf6 6. N1c3 Bb4 7. a3 Bxc3+ 8. Nxc3 O-O 9. Be3 d6 10. Qd2 Bg4 11. f3 Bh5 12. g4 Bg6 13. h4 h5 14. g5 Nd7 15. Qxd6 Nb6 16. O-O-O Qxd6 17. Rxd6 Rad8 18. Rxd8 Rxd8 19. Nb5 Nd4 20. Bxd4 exd4 21. Nxa7 Ra8 22. Nb5 Rc8 23. Nxd4 f6 24. Bh3 Rc7 25. Be6+ Kh7 26. Bf5 fxg5 27. hxg5 Bxf5 28. Nxf5 g6 29. Nh6 Nc4 30. Rd1 Ne3 31. Rd2 b5 32. c3 Nc4 33. Rd8 Ne5 34. Rf8 Rd7 35. f4 Nd3+ 36. Kc2 Nf2 37. e5 h4 38. e6 Re7 39. Nf7 Rxe6 40. Nh6 Re7 41. f5 gxf5 42. Nxf5 Re2+ 43. Kb3 h3 44. Ng3 Re3 45. Rxf2 Rxg3 46. Rh2 Kg6 47. a4 bxa4+ 48. Kxa4 Kxg5 49. c4 Kf6 50. Kb5 Ke5 51. b4 Kd4 52. c5 Rc3 53. c6 Kd5 54. Rd2+ Ke6 55. c7 Rxc7 56. Rh2 Rc3 57. Kb6 Kd5 58. b5 Rb3 59. Rh1 Kc4 60. Rc1+ Kb4 61. Rh1 Ka4 62. Ka6 Kb4 63. b6 Kc5 64. Ka7 Kc6 65. Rc1+ Kd7 66. Rc2 Ra3+ 67. Kb8 Rb3 68. b7 Rg3 69. Ka7 Ra3+ 70. Kb8 h2 71. Rxh2 Kc6 72. Rh4 Kd5 73. Rh6 Rf3 74. Rh8 Ra3 75. Rc8 Kd6 76. Rd8+ Ke7 77. Kc8 Rc3+ 78. Kb8 Kxd8 79. Ka7 Ra3+ 80. Kb6 Rb3+ 81. Kc6 Rc3+ 0-1
+
+

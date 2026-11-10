@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/4cEPExf3"]
+[Date "2025.06.21"]
+[Round "-"]
+[White "scipioafricanus1"]
+[Black "jojonexus"]
+[Result "1-0"]
+[GameId "4cEPExf3"]
+[UTCDate "2025.06.21"]
+[UTCTime "09:02:01"]
+[WhiteElo "1799"]
+[BlackElo "1798"]
+[WhiteRatingDiff "+8"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "D20"]
+[Opening "Queen's Gambit Accepted: Saduleto Variation"]
+[Termination "Normal"]
+
+1. d4 d5 2. c4 dxc4 3. e4 h6 4. Bxc4 e6 5. Nf3 Nf6 6. e5 Nd5 7. O-O Be7 8. Nc3 Nxc3 9. bxc3 O-O 10. a4 c6 11. Ba3 Bxa3 12. Rxa3 Nd7 13. Qc2 Nb6 14. Bb3 Nd5 15. a5 f5 16. Bc4 Qe7 17. Rfa1 b5 18. Bxd5 exd5 19. a6 Rd8 20. R3a2 Qe6 21. Re1 Bd7 22. Nh4 Rf8 23. f4 Rab8 24. Nf3 Rb6 25. Nd2 Bc8 26. Rea1 Qe7 27. Nb3 Qh4 28. Qc1 b4 29. cxb4 Rxb4 30. Qxc6 Qxf4 31. Qxd5+ Kh8 32. Rf1 Qe3+ 33. Kh1 Qxb3 34. Qxb3 Rxb3 35. Raa1 Rb6 36. d5 Bxa6 37. Rfe1 Bc4 38. d6 Be6 39. Rxa7 Rd8 40. Re7 Bd5 41. d7 Kh7 42. e6 Bxe6 43. R7xe6 Rxe6 44. Rxe6 Rxd7 45. h3 g6 46. Kh2 h5 47. h4 Kg7 48. g3 Kf7 49. Ra6 Kg7 50. Kg2 Kh6 51. Kf3 Rd4 52. Ke3 Re4+ 53. Kf3 Rb4 54. Ra3 Rg4 55. Ra1 Kg7 56. Ra7+ Kf6 57. Ra6+ Ke5 58. Ra5+ Kd4 59. Ra4+ Kc3 60. Rxg4 hxg4+ 61. Kf4 Kd4 62. Kg5 Ke5 63. Kxg6 f4 64. h5 fxg3 65. h6 g2 66. h7 g1=Q 67. h8=Q+ Kf4 68. Qf8+ Kg3 69. Qb8+ Kg2 70. Qb2+ Qf2 71. Qb7+ Kg3 72. Qc7+ Qf4 73. Qc3+ Kf2 74. Qc2+ Kf3 75. Qc3+ Qe3 76. Qf6+ Kg3 77. Qd6+ Kh3 78. Qd1 g3 79. Qh1+ Kg4 80. Qh5+ Kf4 81. Qf5# 1-0
+
+

@@ -1,9 +1,10 @@
 # Conventional Chess: evidence-driven engineering roadmap
 
-John broadly approved MSH-154 (Chess Adversarial Assessment), then required
-MSH-155 (Chess Time Scaling) before substantial implementation. The [time-scaling
-report](chess-time-scaling.md) is complete and returns for owner review. **The next
-engineering round below remains proposed; no substantial restructuring is authorized.**
+John approved the direction after MSH-154 (Chess Adversarial Assessment) and
+MSH-155 (Chess Time Scaling). MSH-156 (Independent Chess Benchmark) establishes
+the [broader development/held-out measurement](independent-chess-benchmark.md)
+before MSH-157 (Conventional Decision Improvement), now authorized as one coherent
+round. Major architecture and substantial tournaments still require separate approval.
 
 The objective is a demonstrably strong conventional engine at meaningful practical
 thinking times. The one-second conditional local index is not a general rating or
@@ -31,7 +32,7 @@ transfer claims need additional independent holdouts.
 static bonuses, or infer a higher longer-time rating. Use the evidence to choose a
 coherent round with a practical budget/outcome objective and observable alternatives.
 
-## Proposed round — Useful search and efficient native execution together
+## Authorized round — Useful search and efficient native execution together
 
 These are complementary workstreams, not a sequence in which a large kernel rewrite
 must finish before decision diagnosis can begin.
@@ -99,5 +100,10 @@ New and active tasks use concise Problem / Objective / Approach / Completion
 sections, with conditions, failures and receipts in linked evidence. The
 [MSH-154 roadmap](strength-roadmap-msh154.md) and [earlier history](strength-roadmap-history-2026-11-09.md)
 preserve previous direction; completed evidence remains valid for its source.
-The next action is owner review of MSH-155 (Chess Time Scaling), not automatic
-selection of an implementation ticket.
+The current round freezes public-source expectations and a predecessor before
+production changes, uses five seconds as primary, one second secondary and focused
+fifteen-second probes. The original eight roots are regression-only. Held-out
+families stay isolated until candidate freeze; exposed families are promoted and
+replaced before later validation claims. MSH-157 (Conventional Decision Improvement)
+reports broad practical outcomes and revisits its diagnosis if benefits fail to
+materialize; routine related task transitions require no new owner checkpoint.

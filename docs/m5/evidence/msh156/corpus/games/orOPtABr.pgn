@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/orOPtABr"]
+[Date "2019.04.02"]
+[Round "-"]
+[White "pillsbury2017"]
+[Black "emrdsr"]
+[Result "1-0"]
+[GameId "orOPtABr"]
+[UTCDate "2019.04.02"]
+[UTCTime "15:42:40"]
+[WhiteElo "1760"]
+[BlackElo "1698"]
+[WhiteRatingDiff "+9"]
+[BlackRatingDiff "-28"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "C65"]
+[Opening "Ruy Lopez: Berlin Defense, Anti-Berlin Variation"]
+[Termination "Time forfeit"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. d3 d6 5. c3 Be7 6. h3 Bd7 7. Ba4 O-O 8. Nbd2 a6 9. Nf1 b5 10. Bc2 d5 11. Qe2 d4 12. g4 Bc8 13. Nh4 Nxe4 14. Qxe4 Bb7 15. g5 Nb4 16. Qxb7 Nxc2+ 17. Ke2 Nxa1 18. Rg1 f5 19. Nh2 Nc2 20. N2f3 dxc3 21. bxc3 e4 22. dxe4 fxe4 23. Qxe4 Bxg5 24. Rxg5 Re8 25. Re5 Rxe5 26. Qxe5 Qd7 27. Be3 Re8 28. Qf5 Qxf5 29. Nxf5 Nxe3 30. fxe3 c5 31. Kd2 b4 32. cxb4 cxb4 33. Kc2 a5 34. N5d4 Rc8+ 35. Kb3 Rc3+ 36. Kb2 Rxe3 37. Ng5 h6 38. Nge6 Kf7 39. Nc5 Rxh3 40. Nc6 Rh2+ 41. Kb3 a4+ 42. Kxb4 Rxa2 43. Nxa4 h5 44. Nb6 h4 45. Kc5 h3 46. Ne5+ Kf6 47. Nbc4 h2 48. Ng4+ Kg5 49. Nxh2 Rxh2 50. Kd5 Rc2 51. Ne3 Rd2+ 52. Ke4 Rf2 53. Nd5 Kh4 54. Ke3 Rf8 55. Nf4 g5 56. Ng6+ Kh5 57. Nxf8 g4 58. Ne6 1-0
+
+

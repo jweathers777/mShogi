@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/esjFtwW0"]
+[Date "2022.01.09"]
+[Round "-"]
+[White "Omar-Metwally"]
+[Black "AntonieMi"]
+[Result "1-0"]
+[GameId "esjFtwW0"]
+[UTCDate "2022.01.09"]
+[UTCTime "17:35:12"]
+[WhiteElo "1986"]
+[BlackElo "1954"]
+[WhiteRatingDiff "+5"]
+[BlackRatingDiff "-5"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "D53"]
+[Opening "Queen's Gambit Declined"]
+[Termination "Normal"]
+
+1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. Bg5 Be7 5. Nc3 c6 6. cxd5 exd5 7. e3 O-O 8. Bd3 Bg4 9. h3 Bh5 10. Rc1 Nbd7 11. Bb1 Bg6 12. Bxg6 fxg6 13. O-O h6 14. Bh4 g5 15. Bg3 Nb6 16. b3 Nc8 17. Qd3 Nd6 18. Ne5 Nfe4 19. Ng6 Rf5 20. Nxe7+ Qxe7 21. Bxd6 Qxd6 22. Nxe4 dxe4 23. Qxe4 Raf8 24. Rc2 Qd7 25. Rfc1 Qf7 26. Rc5 Rxf2 27. Kh2 Re8 28. Re5 Rxe5 29. Qxe5 Rxa2 30. Rb1 Qf2 31. Qe8+ Kh7 32. Qe4+ Kg8 33. Qe8+ Qf8 34. Qe6+ Kh8 35. b4 Rf2 36. b5 Rf6 37. Qe4 Qd6+ 38. Kg1 Re6 39. Qf3 Qd5 40. Qf8+ Kh7 41. bxc6 Qxc6 42. Qf5+ Kg8 43. Rxb7 Rxe3 44. Qf7+ 1-0
+
+

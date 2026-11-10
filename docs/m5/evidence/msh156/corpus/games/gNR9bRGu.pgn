@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/gNR9bRGu"]
+[Date "2018.10.03"]
+[Round "-"]
+[White "snndsn"]
+[Black "babulka"]
+[Result "1-0"]
+[GameId "gNR9bRGu"]
+[UTCDate "2018.10.03"]
+[UTCTime "08:27:50"]
+[WhiteElo "1636"]
+[BlackElo "1727"]
+[WhiteRatingDiff "+32"]
+[BlackRatingDiff "-12"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "C50"]
+[Opening "Italian Game: Paris Defense"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nf3 d6 3. Bc4 Nc6 4. c3 Nf6 5. d4 Nxe4 6. O-O Be7 7. Re1 d5 8. Bb5 a6 9. Bxc6+ bxc6 10. Nxe5 Bb7 11. Qf3 O-O 12. Nd2 Nxd2 13. Bxd2 f6 14. Ng4 c5 15. Qg3 Bd6 16. Bf4 Bxf4 17. Qxf4 cxd4 18. Qxd4 Qd6 19. Re3 c5 20. Qa4 Bc6 21. Qc2 Rae8 22. Qd2 Rxe3 23. Nxe3 Rd8 24. Rd1 Qe5 25. Re1 Qg5 26. Qe2 d4 27. Ng4 d3 28. Qe6+ Kh8 29. Qxc6 h5 30. Re8+ Rxe8 31. Qxe8+ Kh7 32. Qe4+ Kh8 33. Ne3 d2 34. Qd3 f5 35. Qxd2 f4 36. Qd5 Qg6 37. Nf1 h4 38. h3 1-0
+
+

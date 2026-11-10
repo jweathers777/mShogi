@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/VnZpSP0U"]
+[Date "2023.03.17"]
+[Round "-"]
+[White "Akiban"]
+[Black "jesal0rz"]
+[Result "1-0"]
+[GameId "VnZpSP0U"]
+[UTCDate "2023.03.17"]
+[UTCTime "10:35:34"]
+[WhiteElo "2041"]
+[BlackElo "2110"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-86"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "A45"]
+[Opening "Indian Defense: Accelerated London System"]
+[Termination "Normal"]
+
+1. d4 Nf6 2. Bf4 d5 3. e3 e6 4. Nf3 c5 5. Nbd2 Qb6 6. dxc5 Bxc5 7. c4 Qxb2 8. cxd5 Nxd5 9. Bxb8 Rxb8 10. Rb1 Qxa2 11. Bb5+ Bd7 12. Bxd7+ Kxd7 13. Ne5+ Ke7 14. e4 Nc3 15. Qf3 Nxb1 16. Qxf7+ Kd6 17. Ndc4+ Qxc4 18. Nxc4+ Kc6 19. Qxe6+ Kb5 20. O-O Nc3 21. Ne5 Rhe8 22. Qc4+ Kb6 23. Nd7+ Kc7 24. Nxc5 b6 25. Na6+ 1-0
+
+

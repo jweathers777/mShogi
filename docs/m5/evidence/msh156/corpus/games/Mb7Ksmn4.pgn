@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/Mb7Ksmn4"]
+[Date "2021.07.28"]
+[Round "-"]
+[White "DonaD0ny"]
+[Black "Haedarah_Ali"]
+[Result "1-0"]
+[GameId "Mb7Ksmn4"]
+[UTCDate "2021.07.28"]
+[UTCTime "07:40:09"]
+[WhiteElo "1749"]
+[BlackElo "1695"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-4"]
+[Variant "Standard"]
+[TimeControl "180+2"]
+[ECO "D11"]
+[Opening "Slav Defense: Modern Line"]
+[Termination "Time forfeit"]
+
+1. d4 c6 2. c4 d5 3. Nf3 Bf5 4. cxd5 cxd5 5. Qb3 Qb6 6. Qxb6 axb6 7. Nc3 e6 8. Bf4 Bb4 9. e3 Nc6 10. Bb5 Nf6 11. O-O O-O 12. a3 Be7 13. b4 Ne4 14. Nxe4 Bxe4 15. Nd2 Bf5 16. h3 h6 17. g4 Bh7 18. Bg3 f5 19. Kh1 fxg4 20. hxg4 Rf7 21. f4 Raf8 22. Nf3 Be4 23. Rad1 g5 24. Bd3 gxf4 25. Bxf4 Bxd3 26. Rxd3 Kh7 27. Rf2 e5 28. Nxe5 Nxe5 29. dxe5 Bg5 30. Rxd5 Bxf4 31. exf4 Rxf4 32. Rxf4 Rxf4 33. Rd7+ Kg6 34. Rxb7 Rxg4 35. e6 Re4 36. e7 Kf7 37. Rxb6 Rxe7 38. Rxh6 Re1+ 39. Kg2 Ra1 40. Rh3 Ke6 41. Kf2 Kd7 42. Ke2 Kc6 43. Kd2 Kb5 44. Kc2 Ka4 45. Kb2 Rg1 46. Rc3 Rg2+ 47. Rc2 Rg3 48. Rc3 Rg2+ 49. Kc1 Ra2 50. b5 Kxb5 51. Kb1 Rh2 52. Rb3+ Ka4 53. Rb2 Rh3 54. Rb8 Kxa3 55. Ra8+ Kb4 56. Rb8+ Ka5 57. Ra8+ Kb6 58. Rb8+ Ka7 59. Rb2 Rh8 60. Kc2 Rc8+ 61. Kd3 Rd8+ 62. Kc4 Rc8+ 63. Kd5 Rd8+ 64. Kc6 Ra8 65. Kc7 Ka6 66. Rb3 Ka5 67. Ra3+ 1-0
+
+

@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/bOznzgz1"]
+[Date "2022.10.31"]
+[Round "-"]
+[White "TwoFace8472"]
+[Black "J25"]
+[Result "1-0"]
+[GameId "bOznzgz1"]
+[UTCDate "2022.10.31"]
+[UTCTime "08:21:27"]
+[WhiteElo "1800"]
+[BlackElo "1794"]
+[WhiteRatingDiff "+41"]
+[BlackRatingDiff "-5"]
+[Variant "Standard"]
+[TimeControl "300+0"]
+[ECO "A80"]
+[Opening "Dutch Defense"]
+[Termination "Time forfeit"]
+
+1. d4 f5 2. f4 Nf6 3. Nf3 d6 4. e3 Nbd7 5. Be2 Ne4 6. O-O Ndf6 7. Nbd2 h6 8. Nxe4 Nxe4 9. Nd2 Nf6 10. Bf3 d5 11. b3 Be6 12. c4 c6 13. cxd5 cxd5 14. Bb2 Bf7 15. Rf2 e6 16. Nf1 Bd6 17. Rc1 O-O 18. Rfc2 Ne4 19. Bxe4 fxe4 20. a3 g5 21. Qg4 Kh7 22. Ng3 Rg8 23. f5 Bxg3 24. hxg3 h5 25. Qh3 g4 26. Qh4 Qxh4 27. gxh4 exf5 28. Rc7 Rg7 29. g3 Bg6 30. Rxg7+ Kxg7 31. Rc7+ Kh6 32. Kf2 b6 33. Ke2 a5 34. Kd2 b5 35. Kc3 Ra6 36. Rc5 b4+ 37. axb4 axb4+ 38. Kxb4 Rb6+ 39. Kc3 Rd6 40. b4 Be8 41. Ba3 Bb5 42. Kb3 Bc4+ 43. Kc3 Ra6 44. Kb2 Ra4 45. Ra5 Rxa5 46. bxa5 Kg6 47. Kc3 Kf6 48. Kb4 1-0
+
+

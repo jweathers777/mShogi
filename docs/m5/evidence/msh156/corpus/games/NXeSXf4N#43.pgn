@@ -1,0 +1,23 @@
+[Event "rated classical game"]
+[Site "https://lichess.org/game/NXeSXf4N"]
+[Date "2024.12.09"]
+[Round "-"]
+[White "maksim10031982"]
+[Black "Saisa15"]
+[Result "0-1"]
+[GameId "NXeSXf4N"]
+[UTCDate "2024.12.09"]
+[UTCTime "17:00:32"]
+[WhiteElo "1596"]
+[BlackElo "1529"]
+[WhiteRatingDiff "-7"]
+[BlackRatingDiff "+13"]
+[Variant "Standard"]
+[TimeControl "1800+0"]
+[ECO "B13"]
+[Opening "Caro-Kann Defense: Exchange Variation"]
+[Termination "Normal"]
+
+1. e4 c6 2. Nf3 d5 3. exd5 cxd5 4. d4 Nc6 5. Nc3 Bg4 6. Be2 f6 7. Be3 e5 8. Nxe5 Bxe2 9. Qxe2 fxe5 10. O-O Nf6 11. dxe5 Nxe5 12. Bf4 Ne4 13. Qh5+ Ng6 14. Nxd5 Bd6 15. Bxd6 Qxd6 16. Rad1 O-O 17. Ne3 Qb6 18. Qd5+ Kh8 19. Qxe4 Rae8 20. Qa4 h6 21. Rde1 Re5 22. Nc4 Qb5 23. Qxb5 Rxb5 24. b3 Nf4 25. a4 Rg5 26. Ne3 Nh3+ 27. Kh1 Nxf2+ 28. Rxf2 Rxf2 29. Rd1 Kh7 30. Rd7 Re5 31. Kg1 Re2 32. Nf1 Rxc2 33. Rxb7 Ra5 34. h3 a6 35. Ne3 Rc1+ 36. Kh2 Re5 37. Ng4 Re4 38. Rb6 a5 39. Rb5 Rb1 40. Ne5 Rb4 41. Rxa5 R4xb3 42. Nc4 Rc1 43. Nd2 Ra3 44. Nb3 Rxb3 0-1
+
+

@@ -1,0 +1,23 @@
+[Event "rated bullet game"]
+[Site "https://lichess.org/game/QXo2xINh"]
+[Date "2023.07.13"]
+[Round "-"]
+[White "LaPalomaGomez"]
+[Black "sumsum"]
+[Result "0-1"]
+[GameId "QXo2xINh"]
+[UTCDate "2023.07.13"]
+[UTCTime "14:37:14"]
+[WhiteElo "2097"]
+[BlackElo "2215"]
+[WhiteRatingDiff "-7"]
+[BlackRatingDiff "+4"]
+[Variant "Standard"]
+[TimeControl "120+1"]
+[ECO "B94"]
+[Opening "Sicilian Defense: Najdorf Variation"]
+[Termination "Normal"]
+
+1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5 Nbd7 7. Qd2 b5 8. a3 Bb7 9. f3 g6 10. O-O-O Bg7 11. g4 Rc8 12. Kb1 Ne5 13. Bh6 Bxh6 14. Qxh6 Rxc3 15. bxc3 Qa5 16. Qc1 O-O 17. Qb2 Rc8 18. g5 Nfd7 19. Nb3 Qb6 20. Be2 Qe3 21. Rhe1 Nxf3 22. Bxf3 Qxf3 23. Rd3 Qf4 24. Qc1 Qe5 25. Nd4 Nc5 26. Rde3 Na4 27. Ne2 Bxe4 28. Qd2 d5 29. Nd4 Qxg5 30. h4 Qxh4 31. Nb3 Rc4 32. Na5 Rc8 33. Nb3 Qf6 34. Qd4 Nxc3+ 35. Rxc3 Qxd4 36. Rxc8+ Kg7 37. Nxd4 h5 38. Rg1 h4 39. Ne2 h3 40. Ng3 h2 41. Re1 f5 42. Rc3 f4 43. Rce3 fxe3 44. Rxe3 Kf6 45. Re1 Kg5 46. Nxe4+ dxe4 47. a4 bxa4 48. c4 Kf4 49. c5 Ke5 50. Rd1 e3 51. c6 e2 52. Re1 Kd6 53. c7 Kxc7 54. Kc2 g5 55. Kd2 g4 56. Kxe2 g3 57. Kf3 Kc6 58. Kxg3 Kc5 59. Kxh2 Kc4 60. Kg2 Kc3 61. Kf2 a3 62. Ke2 a2 63. Rc1+ Kb2 64. Rc6 a1=Q 65. Rb6+ Kc3 66. Rc6+ Kd4 67. Re6 Qb2+ 68. Kf3 Qc3+ 69. Kf4 Qc7+ 70. Kf5 Qd7 0-1
+
+

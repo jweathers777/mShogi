@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/ab37P44f"]
+[Date "2020.11.01"]
+[Round "-"]
+[White "Natavanka"]
+[Black "random0855"]
+[Result "1/2-1/2"]
+[GameId "ab37P44f"]
+[UTCDate "2020.11.01"]
+[UTCTime "00:13:38"]
+[WhiteElo "1674"]
+[BlackElo "1636"]
+[WhiteRatingDiff "+0"]
+[BlackRatingDiff "+1"]
+[Variant "Standard"]
+[TimeControl "420+8"]
+[ECO "B32"]
+[Opening "Sicilian Defense: Open"]
+[Termination "Normal"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 d6 5. Bb5 Bd7 6. Nxc6 bxc6 7. Bc4 Qa5+ 8. Bd2 Qe5 9. Qf3 d5 10. Bc3 Qxe4+ 11. Qxe4 dxe4 12. O-O Nf6 13. Re1 Rd8 14. Nd2 Bf5 15. Bxf6 gxf6 16. Nxe4 Rd4 17. Bd3 e6 18. Nxf6+ Kd8 19. Ne4 Bg7 20. Ng5 Bxd3 21. Nxf7+ Ke7 22. Nxh8 Bf5 23. c3 Rd8 24. g4 Bxg4 25. Re4 Bf5 26. Ra4 Ra8 27. Ra6 c5 28. Rc6 Bxh8 29. Rxc5 Kd6 30. b4 Bxc3 31. Rd1+ Ke7 32. Rxc3 Rb8 33. Rc7+ Kf6 34. Rxa7 Rxb4 35. h4 h5 36. Rdd7 Rxh4 37. Rf7+ Kg5 38. Rg7+ Kf6 39. Rgf7+ Kg5 40. Rg7+ Kf6 41. a4 Rxa4 42. Rgf7+ Ke5 43. Rxa4 h4 44. f4+ Kd6 45. Kh2 Kd5 46. Rd7+ Kc6 47. Rh7 h3 48. Ra5 Kb6 49. Re5 Bxh7 50. Rxe6+ Kc5 51. Kxh3 Bf5+ 52. Kg3 Bxe6 53. Kh4 1/2-1/2
+
+

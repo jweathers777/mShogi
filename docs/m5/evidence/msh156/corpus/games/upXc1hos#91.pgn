@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/upXc1hos"]
+[Date "2022.12.27"]
+[Round "-"]
+[White "instant_noodles"]
+[Black "kjdid"]
+[Result "0-1"]
+[GameId "upXc1hos"]
+[UTCDate "2022.12.27"]
+[UTCTime "22:53:39"]
+[WhiteElo "1832"]
+[BlackElo "1914"]
+[WhiteRatingDiff "-4"]
+[BlackRatingDiff "+5"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "C25"]
+[Opening "Vienna Game: Anderssen Defense"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nc3 Bc5 3. Bc4 d6 4. Nf3 Bg4 5. h3 Bh5 6. g4 Bg6 7. d4 exd4 8. Nxd4 Qf6 9. Be3 c6 10. Qe2 Nd7 11. O-O-O Ne5 12. Bb3 O-O-O 13. Nf5 Bxf5 14. exf5 h6 15. Ne4 Qe7 16. Nxc5 dxc5 17. Rxd8+ Kxd8 18. Rd1+ Kc7 19. Bf4 f6 20. Be6 Kb6 21. Qe3 g5 22. Qb3+ Ka6 23. Bxe5 fxe5 24. Bc4+ b5 25. Be6 Nf6 26. a4 Rd8 27. axb5+ cxb5 28. Qa3+ Kb6 29. b4 Rxd1+ 30. Kxd1 cxb4 31. Qe3+ Qc5 32. Kd2 Qxe3+ 33. fxe3 Kc5 34. Kd3 a5 35. c3 e4+ 36. Kc2 Nd5 37. cxb4+ axb4 38. Bxd5 Kxd5 39. Kb3 Kc5 40. f6 Kd6 41. Kxb4 Ke6 42. Kxb5 Kxf6 43. Kc5 Ke5 44. Kb4 Kd5 45. Kc3 Kc5 46. Kd2 Kc4 47. Kc2 Kb4 48. Kb2 Kc4 49. Kc2 Kb4 50. Kd2 Kb3 51. Ke2 Kc3 52. Kf2 Kd3 53. Ke1 Kxe3 54. Kf1 Kf3 55. Kg1 Kg3 56. Kf1 Kxh3 57. Ke2 Kxg4 58. Ke3 Kf5 59. Kf2 h5 0-1
+
+

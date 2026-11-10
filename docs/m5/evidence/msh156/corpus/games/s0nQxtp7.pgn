@@ -1,0 +1,24 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/s0nQxtp7"]
+[Date "2022.07.09"]
+[Round "-"]
+[White "onubense"]
+[Black "SexyMango"]
+[Result "0-1"]
+[GameId "s0nQxtp7"]
+[UTCDate "2022.07.09"]
+[UTCTime "18:22:08"]
+[WhiteElo "2398"]
+[BlackElo "2390"]
+[WhiteRatingDiff "-6"]
+[BlackRatingDiff "+6"]
+[WhiteTitle "LM"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "A80"]
+[Opening "Dutch Defense"]
+[Termination "Time forfeit"]
+
+1. d4 f5 2. Nf3 e6 3. g3 b6 4. Bg2 Bb7 5. O-O Nf6 6. c4 Be7 7. d5 O-O 8. Nc3 Na6 9. Nd4 Nc5 10. Qc2 Qc8 11. Rd1 a5 12. b3 g6 13. Bh6 Re8 14. Rac1 e5 15. Nf3 d6 16. h3 Qd7 17. Ng5 e4 18. Nb5 Bf8 19. Bxf8 Rxf8 20. Nd4 Qe7 21. Nge6 Nxe6 22. Nxe6 Bc8 23. Nxf8 Qxf8 24. a3 Nd7 25. b4 Ne5 26. c5 f4 27. Qxe4 fxg3 28. fxg3 Bf5 29. Qf4 axb4 30. axb4 Ra2 31. cxb6 cxb6 32. g4 Bd7 33. Qxf8+ Kxf8 34. Kf2 Bb5 35. Bf1 Nd3+ 36. Rxd3 Bxd3 37. Ke3 Bb5 38. Rc7 h5 39. g5 Ra3+ 40. Kf2 Rb3 41. Rb7 Rxb4 42. Rxb6 Rf4+ 43. Kg1 Bc4 44. Rxd6 Rf5 45. Rf6+ Rxf6 46. gxf6 Kf7 47. Bg2 Kxf6 48. Kf2 Ke5 49. Kg3 g5 50. h4 g4 51. e3 Bxd5 52. Bxd5 Kxd5 53. Kf4 Ke6 54. e4 Kf6 55. e5+ Ke6 56. Ke4 Ke7 57. Kf4 Kf7 58. Ke4 Ke6 59. Kf4 Kd5 60. Kf5 g3 61. e6 g2 62. e7 g1=Q 63. e8=Q Qg4+ 64. Kf6 Qxh4+ 65. Kg7 Qg5+ 66. Kh7 h4 67. Qa8+ Ke5 68. Qa1+ Kf4 69. Qa3 Kg4 0-1
+
+

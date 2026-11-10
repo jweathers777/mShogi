@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/0x1IquMF"]
+[Date "2025.12.19"]
+[Round "-"]
+[White "honst"]
+[Black "Zobral"]
+[Result "0-1"]
+[GameId "0x1IquMF"]
+[UTCDate "2025.12.19"]
+[UTCTime "12:21:09"]
+[WhiteElo "1776"]
+[BlackElo "1807"]
+[WhiteRatingDiff "-5"]
+[BlackRatingDiff "+6"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "D02"]
+[Opening "Queen's Pawn Game: London System"]
+[Termination "Normal"]
+
+1. d4 d5 2. Nf3 Nf6 3. Bf4 Bf5 4. e3 c6 5. Bd3 Bxd3 6. Qxd3 e6 7. Nbd2 Nbd7 8. c4 Be7 9. c5 O-O 10. h3 Re8 11. Ne5 Nxe5 12. Bxe5 Nd7 13. Bh2 Bf6 14. f4 Qe7 15. O-O b6 16. b4 bxc5 17. bxc5 Nxc5 18. dxc5 Bxa1 19. Rxa1 Qxc5 20. f5 e5 21. Nb3 Qd6 22. Rd1 f6 23. Nd4 Qd7 24. Ne6 Rab8 25. Rb1 Rxb1+ 26. Qxb1 Qc8 27. Qe1 Qb8 28. Qg3 Re7 29. Qh4 Qb1+ 30. Kf2 Qxa2+ 31. Kf3 Rf7 32. Bxe5 Qc4 33. Qxc4 dxc4 34. Bc3 Rd7 35. Nd4 c5 36. Nc6 Rd3 37. Ba5 c3 38. Bxc3 Rxc3 39. Nxa7 Rc4 40. Nb5 Kf8 41. g4 Rc1 42. Ke4 c4 43. Kd4 Ke7 44. Nc3 Kd6 45. Kxc4 Ke5 46. Kd3 Rxc3+ 47. Kxc3 Ke4 48. Kd2 Kf3 49. g5 fxg5 50. Kd3 h5 51. e4 Kf4 52. Kd4 g4 53. e5 Kxf5 54. hxg4+ hxg4 55. Kd5 g3 56. e6 g2 57. e7 g1=Q 58. e8=Q Qd1+ 59. Kc5 Qc2+ 60. Kd5 Qb3+ 61. Kc5 Qc3+ 62. Kd6 Qb4+ 63. Kd5 Qb3+ 64. Kd6 Qb6+ 65. Kd5 Qf6 66. Qe4+ Kg5 67. Qg2+ Kh6 68. Qh3+ Kg6 69. Qg4+ Kh7 70. Qh5+ Kg8 71. Qe8+ Qf8 72. Qe6+ Qf7 73. Qxf7+ Kxf7 74. Ke5 Kg6 75. Kf4 Kh5 76. Kg3 g5 77. Kh3 g4+ 78. Kg3 Kg5 79. Kh2 Kf4 80. Kg2 g3 81. Kf1 Kf3 82. Kg1 g2 83. Kh2 Kf2 0-1
+
+

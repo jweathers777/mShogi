@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/zqEBWqei"]
+[Date "2021.12.16"]
+[Round "-"]
+[White "f00f00"]
+[Black "Danilo51"]
+[Result "1-0"]
+[GameId "zqEBWqei"]
+[UTCDate "2021.12.16"]
+[UTCTime "22:36:11"]
+[WhiteElo "1913"]
+[BlackElo "1923"]
+[WhiteRatingDiff "+14"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "D00"]
+[Opening "Queen's Pawn Game: Accelerated London System"]
+[Termination "Time forfeit"]
+
+1. d4 d5 2. Bf4 Nf6 3. Nd2 Nc6 4. e3 e5 5. dxe5 Ne4 6. Nxe4 dxe4 7. Bb5 Bd7 8. Qe2 Bc5 9. O-O-O O-O 10. h4 Qe7 11. Bg5 f6 12. exf6 gxf6 13. Bh6 Rfd8 14. g4 a6 15. Bc4+ Be6 16. g5 Ne5 17. gxf6 Qxf6 18. Bg5 Qf7 19. Rxd8+ Rxd8 20. Bxe6 Qxe6 21. Bxd8 Qxa2 22. Kd1 Qb1+ 23. Kd2 Bb4+ 24. c3 Qxb2+ 25. Ke1 Qc1+ 26. Qd1 Bxc3+ 27. Ke2 Qb2+ 28. Kf1 Nd3 29. Qg4+ Kf7 30. Qf5+ Bf6 31. Qd5+ Ke8 32. Qxe4+ Kxd8 33. Qxd3+ Kc8 34. Nf3 Qc1+ 35. Kg2 Qc6 36. Rd1 Bxh4 37. Qf5+ Kb8 38. Rd8+ Bxd8 39. Qxh7 a5 40. Qg8 b5 41. Qxd8+ Kb7 42. Kg3 Qd6+ 43. Qxd6 cxd6 44. Kf4 a4 45. Nd4 a3 46. Nxb5 a2 47. Nxd6+ Kc6 48. e4 a1=Q 49. e5 Qc1+ 50. Kf5 Qc2+ 51. Ne4 Kd5 52. f3 Qc8+ 53. Kf4 Qf8+ 54. Nf6+ Ke6 55. Ke4 Qb4+ 56. Ke3 Kxe5 57. Ng4+ Kd5 58. Kf2 Kd4 59. Ne3 Qb2+ 60. Kg3 Ke5 61. f4+ Kf6 62. Ng4+ Kf5 63. Kh4 1-0
+
+

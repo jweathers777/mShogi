@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/dMDzwTSW"]
+[Date "2022.10.14"]
+[Round "-"]
+[White "sampiyon4747"]
+[Black "Division_By_Zero"]
+[Result "1/2-1/2"]
+[GameId "dMDzwTSW"]
+[UTCDate "2022.10.14"]
+[UTCTime "11:16:48"]
+[WhiteElo "2143"]
+[BlackElo "2231"]
+[WhiteRatingDiff "+1"]
+[BlackRatingDiff "-2"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "C50"]
+[Opening "Italian Game: Hungarian Defense"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Be7 4. O-O Nf6 5. d3 O-O 6. Nc3 d6 7. h3 Na5 8. Bb3 Nxb3 9. axb3 Be6 10. Re1 Qd7 11. Bg5 h6 12. Bh4 Nh7 13. Bxe7 Qxe7 14. Qe2 f5 15. Kh2 Ng5 16. Nxg5 Qxg5 17. Qe3 f4 18. Qf3 c6 19. Ne2 Qf6 20. c3 Bxb3 21. c4 b5 22. Rec1 d5 23. exd5 bxc4 24. dxc4 cxd5 25. Qxb3 d4 26. c5+ Kh8 27. Qd3 a5 28. c6 Qd6 29. Kg1 f3 30. gxf3 Qe6 31. Kh2 e4 32. Qxd4 Rxf3 33. Ng3 Raf8 34. Rc2 e3 35. Rf1 Qg6 36. Re2 exf2 37. Qg4 Qxc6 38. Nh5 Qc7+ 39. Kg2 Qb7 40. Kh2 R3f7 41. Qg2 Qb5 42. Ng3 Qc5 43. Ne4 Qe5+ 44. Ng3 Qd4 45. Nh1 Qf6 46. Rexf2 Qd6+ 47. Ng3 Qg6 48. Rxf7 Rxf7 49. Rxf7 Qxf7 50. Qa8+ Kh7 51. Qe4+ g6 52. Qd4 Qc7 53. Qd2 h5 54. Qg2 h4 55. Qf2 hxg3+ 56. Qxg3 Qc2+ 57. Qg2 Qxg2+ 58. Kxg2 Kh6 59. Kg3 Kg5 60. h4+ Kf5 61. Kh3 a4 62. Kg3 g5 63. hxg5 Kxg5 64. Kf3 Kf5 65. Ke3 Ke5 66. Kd3 Kd5 67. Kc3 Kc5 68. b3 a3 69. b4+ Kb5 70. Kb3 a2 71. Kxa2 Kxb4 1/2-1/2
+
+

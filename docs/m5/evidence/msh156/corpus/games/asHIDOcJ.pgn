@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/asHIDOcJ"]
+[Date "2022.02.18"]
+[Round "-"]
+[White "kielbasa35"]
+[Black "Nando181"]
+[Result "0-1"]
+[GameId "asHIDOcJ"]
+[UTCDate "2022.02.18"]
+[UTCTime "06:46:37"]
+[WhiteElo "1883"]
+[BlackElo "1944"]
+[WhiteRatingDiff "-11"]
+[BlackRatingDiff "+5"]
+[Variant "Standard"]
+[TimeControl "300+3"]
+[ECO "C29"]
+[Opening "Vienna Game: Vienna Gambit"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nc3 Nf6 3. f4 d6 4. Nf3 exf4 5. d4 Be7 6. Bxf4 O-O 7. Bd3 Bg4 8. O-O Nc6 9. e5 dxe5 10. dxe5 Nd7 11. Bxh7+ Kxh7 12. Ng5+ Bxg5 13. Qxg4 Bxf4 14. Rxf4 Ndxe5 15. Qh5+ Kg8 16. Rh4 f6 17. Rf1 Qe7 18. Ne4 Rad8 19. Qh7+ Kf7 20. Rxf6+ Qxf6 21. Nxf6 Kxf6 22. Rf4+ Ke6 23. Rxf8 Rxf8 24. Qxg7 Rf7 25. Qg3 Nd4 26. Qe3 Kd5 27. h3 Re7 28. Qa3 Ndc6 29. Qb3+ Kd6 30. Qxb7 Rg7 31. Qb3 Nd4 32. Qe3 c5 33. Qh6+ Rg6 34. Qf8+ Kd5 35. Qd8+ Rd6 36. Qa8+ Nec6 37. Qg8+ Re6 38. c4+ Kxc4 39. Qg4 Kd5 40. h4 Ne5 41. Qg7 Rg6 42. Qxa7 Nef3+ 43. Kf2 Nxh4 44. Qf7+ Ne6 45. g3 Rg7 46. Qe8 Nf5 47. Qh5 Rg5 48. Qe8 Nxg3 49. Qd7+ Ke5 50. Qe7 Ne4+ 51. Ke3 Rg3+ 52. Ke2 Rg2+ 53. Kf3 Rxb2 54. Qh4 N6g5+ 55. Ke3 Rxa2 56. Qf4+ Kd5 57. Qf5+ Kc4 58. Qf1+ Kb4 59. Qb1+ Ka3 60. Qd3+ Ka4 61. Qc4+ Ka3 62. Qd3+ Kb2 63. Qe2+ Kb3 64. Qd3+ Nc3 65. Qf5 Re2+ 66. Kd3 Nge4 67. Qf3 Rd2+ 68. Ke3 c4 69. Qf7 Re2+ 70. Kd4 Rd2+ 71. Ke3 Rd3+ 72. Kf4 Rd2 73. Ke5 Rd5+ 74. Ke6 Rd6+ 75. Ke5 Rd5+ 76. Ke6 Nc5+ 77. Ke7 Rd7+ 0-1
+
+

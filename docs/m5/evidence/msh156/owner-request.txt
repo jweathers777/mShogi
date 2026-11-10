@@ -1,0 +1,141 @@
+# mShogi: Next Conventional Chess Engineering Round
+
+I approve the general direction of the revised roadmap following MSH-154 (Chess Adversarial Assessment) and MSH-155 (Chess Time Scaling).
+
+I want one additional improvement to our development process before substantial engine changes: establish a broad, independent decision-quality benchmark using existing public Chess databases.
+
+Our objective is to build a demonstrably strong conventional Chess engine. We must measure the quality of its decisions, not merely its search speed, depth, or agreement with individual reference moves.
+
+## 1. Establish an independent Chess decision benchmark
+
+Research and use suitable free public resources, including:
+
+- Lichess Puzzle Database for tactical problems of different types and difficulty levels.
+- Lichess Position Evaluations for diverse positions with strong reference analysis.
+- Strategic Test Suite (STS) for positional and strategic decisions.
+- Syzygy tablebases for exact endgame results.
+- Other established Chess-engine test collections where useful.
+
+Verify licenses, provenance, data formats, and limitations before use.
+
+Select a diverse, manageable collection rather than downloading entire databases. Aim initially for a few hundred positions across tactical, defensive, positional, strategic, and endgame situations, adjusting the size when justified.
+
+Include both straightforward and difficult problems.
+
+Preserve source identifiers, position state, available move history, and independently established expectations. Do not invent missing history or assume that a FEN contains complete repetition information.
+
+Distinguish exact mating or tablebase results from published preferences and finite reference-engine opinions. Allow multiple acceptable moves where justified.
+
+Use the existing experiment infrastructure. Do not create a new testing framework unless a specific missing capability requires it.
+
+## 2. Separate development tests from independent validation
+
+Maintain two distinct collections.
+
+Development positions may guide investigation, implementation, and tuning.
+
+Held-out positions must not influence those decisions. Use them to determine whether improvements also work on unfamiliar positions.
+
+When a held-out position becomes part of development, move it into the development collection and replace it with independent material.
+
+Prevent closely related positions from the same game or problem family from leaking across the split.
+
+Freeze test expectations before evaluating a candidate. Do not change expected answers merely to make the engine pass.
+
+The existing eight-position benchmark becomes a regression collection. It must not serve as the principal evidence of general improvement.
+
+Keep routine checks efficient. Larger benchmark runs belong at coherent engineering checkpoints, not after every minor change.
+
+## 3. Use practical thinking times
+
+MSH-155 established that some important decisions improve when mShogi receives five seconds instead of one.
+
+For conventional-engine development:
+
+- Use five seconds as the primary decision-quality comparison.
+- Retain one-second tests for fast-play performance.
+- Use fifteen seconds, or longer focused searches, when needed to distinguish search limitations from evaluation problems.
+
+Compare candidates at equal thinking time. Record completed search depth, actual work, elapsed time, selected moves, and relevant continuations.
+
+Do not assume deeper search or greater node throughput proves better play.
+
+For eventual competitive qualification, prefer realistic game clocks with increments and suitable independently rated opponents. That requires separate approval.
+
+## 4. Continue the two complementary engineering workstreams
+
+**Workstream A: search efficiency**
+
+Investigate and correct demonstrated computational waste in native move queries, checked transitions, attack calculations, state updates, history processing, and claim handling.
+
+The obsolete-repetition-history defect is a valid correction candidate, but it does not explain the engine's general weakness.
+
+Use profiling and bounded prototypes to guide changes. Consider specialized internal search state where justified, but do not assume a wholesale rewrite is necessary.
+
+Keep one authoritative implementation of legal moves, state transitions, history, and outcomes. Optimized search operations must preserve its behavior.
+
+**Workstream B: search coverage and classical judgment**
+
+Investigate why mShogi overlooks important defensive and tactical continuations or evaluates their consequences incorrectly.
+
+Use the independent benchmark, complete game histories, matched-horizon comparisons, and controlled search configurations to distinguish:
+
+- Insufficient useful search.
+- Ineffective pruning, reductions, or move ordering.
+- Problems at the search frontier.
+- Incorrect classical evaluation of positions and compensation.
+
+Select changes based on evidence. Do not add evaluation bonuses or special cases merely to repair individual historical positions.
+
+Keep MSH-153 (Classical Compensation Calibration) on hold unless the broader investigation establishes that classical valuation deserves priority.
+
+Coordinate both workstreams as one coherent engineering effort. They may proceed in parallel where responsibilities and file ownership permit.
+
+## 5. Measure actual decision improvement
+
+For each substantial engineering stage, evaluate the combined result against its frozen predecessor.
+
+Record improvements, regressions, unchanged decisions, and unresolved judgments separately.
+
+Use exact outcome tests where possible. For positional problems, inspect meaningful alternatives and their continuations rather than counting simple agreement with Stockfish.
+
+Require improvement across a diverse collection, including genuinely held-out positions. Do not treat success on the motivating examples as sufficient evidence.
+
+If a coherent round does not produce useful results, reconsider the underlying diagnosis instead of automatically generating another narrow correction task.
+
+After substantial progress, propose a controlled playing-strength comparison against the predecessor and independent opponents. Do not execute a substantial tournament without my approval.
+
+## 6. Engineering process and autonomy
+
+Follow AGENTS.md and the repository's risk-based verification policy.
+
+Use local verification for ordinary platform-independent engine work. Run cross-platform CI only when the change or integration checkpoint justifies it.
+
+Use separate agents for independent review where beneficial, but avoid unnecessary coordination overhead.
+
+Keep the roadmap forward-looking and the backlog readable. Use stable descriptive task handles and concise Problem, Objective, Approach, and Completion sections.
+
+Handle routine research, implementation, testing, and engineering decisions autonomously. Do not request approval merely to move between related tasks in this authorized round.
+
+Escalate major architectural changes, substantial resource commitments, and product decisions.
+
+Do not begin learned evaluation or transfer the architecture to Shogi or Xiangqi.
+
+## 7. Reporting
+
+Keep conversational progress reports brief.
+
+When the coherent round is complete, report:
+
+1. The general weaknesses established by the investigation.
+2. The main corrections and why they were selected.
+3. The measured effect on search cost and decision quality at practical thinking times.
+4. Results on independent held-out positions, including regressions.
+5. Remaining significant limitations.
+6. Whether the evidence justifies a new competitive strength comparison.
+
+Preserve detailed technical evidence in the repository instead of reproducing it in conversational reports.
+
+The central objective is to make mShogi choose substantially better Chess moves across many types of positions.
+
+**We want to prove that the engine plays better Chess, not merely that it searches faster or passes more implementation tests.**

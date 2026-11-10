@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/qu5fNSTH"]
+[Date "2020.04.25"]
+[Round "-"]
+[White "NicoDec"]
+[Black "Blazorge"]
+[Result "1-0"]
+[GameId "qu5fNSTH"]
+[UTCDate "2020.04.25"]
+[UTCTime "15:22:23"]
+[WhiteElo "1767"]
+[BlackElo "1723"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-5"]
+[Variant "Standard"]
+[TimeControl "900+10"]
+[ECO "E50"]
+[Opening "Nimzo-Indian Defense"]
+[Termination "Normal"]
+
+1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 O-O 5. Nf3 c6 6. Bd3 d5 7. O-O Bxc3 8. bxc3 dxc4 9. Bxc4 Qd6 10. a4 Qc7 11. Re1 Ne4 12. Qc2 Nf6 13. e4 Nbd7 14. Bd3 e5 15. dxe5 Nxe5 16. Nxe5 Qxe5 17. f4 Qe7 18. Ba3 c5 19. e5 Nd5 20. Qf2 b6 21. Be4 Bb7 22. c4 Nb4 23. Bxb7 Qxb7 24. Bxb4 cxb4 25. Qd2 a5 26. Qd5 Qc7 27. Qd6 Qc5+ 28. Qxc5 bxc5 29. Red1 Rfd8 30. Kf2 g6 31. Ke3 f5 32. exf6 Re8+ 33. Kf3 Kf7 34. Rd7+ Kxf6 35. Rad1 Re7 36. R1d6+ Kf7 37. Rxe7+ Kxe7 38. Rc6 Rb8 39. Rxc5 b3 40. Re5+ Kf6 41. Re1 b2 42. Rb1 Kf5 43. g4+ Kf6 44. Ke3 Ke6 45. Kd3 Kd6 46. Kc3 Kc5 47. Rxb2 Rxb2 48. Kxb2 Kxc4 49. f5 gxf5 50. gxf5 Kd5 51. Kc3 Ke5 52. f6 Kxf6 53. Kc4 h5 54. Kb5 Kf5 55. Kxa5 Kf4 56. Kb6 h4 57. a5 Kg4 58. a6 1-0
+
+

@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/5bXBBPer"]
+[Date "2020.08.22"]
+[Round "-"]
+[White "persefalb"]
+[Black "trantiendat9712"]
+[Result "0-1"]
+[GameId "5bXBBPer"]
+[UTCDate "2020.08.22"]
+[UTCTime "15:00:48"]
+[WhiteElo "1795"]
+[BlackElo "1893"]
+[WhiteRatingDiff "-4"]
+[BlackRatingDiff "+5"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "C34"]
+[Opening "King's Gambit Accepted: MacLeod Defense"]
+[Termination "Normal"]
+
+1. e4 e5 2. f4 exf4 3. Nf3 Nc6 4. Bc4 h6 5. d4 d6 6. O-O g5 7. h4 Bg7 8. e5 dxe5 9. dxe5 Qxd1 10. Rxd1 Nxe5 11. Re1 f6 12. hxg5 hxg5 13. Bd3 Ne7 14. Nc3 Nxf3+ 15. gxf3 b6 16. Nd5 Kf8 17. Rxe7 Bb7 18. Nxc7 Bxf3 19. Rxg7 Rc8 20. Na8 Rxa8 21. Rd7 Re8 22. Bd2 Rh1+ 23. Kf2 Rxa1 24. Bb4+ Kg8 25. Bc3 Bg4 26. Bxf6 Bxd7 27. Bxg5 Rf8 28. Be7 Rxa2 29. Bxf8 Kxf8 30. Kf3 Rxb2 31. Kxf4 a5 32. Ke3 a4 33. Kd2 a3 34. Bc4 Ke7 35. Kc1 Rb4 36. Bb3 Be6 37. Kb1 Bxb3 38. cxb3 Rxb3+ 39. Ka2 Rh3 40. Kb1 b5 41. Ka2 b4 42. Kb1 b3 43. Ka1 Rh1# 0-1
+
+

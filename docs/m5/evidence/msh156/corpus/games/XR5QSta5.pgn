@@ -1,0 +1,23 @@
+[Event "Reto Jaguar 2020 Torneo 6 Arena"]
+[Site "https://lichess.org/game/XR5QSta5"]
+[Date "2020.09.12"]
+[Round "-"]
+[White "LawrenceAntonioPlata"]
+[Black "lobotomizedpawn"]
+[Result "1/2-1/2"]
+[GameId "XR5QSta5"]
+[UTCDate "2020.09.12"]
+[UTCTime "02:53:30"]
+[WhiteElo "1647"]
+[BlackElo "2135"]
+[WhiteRatingDiff "+11"]
+[BlackRatingDiff "-9"]
+[Variant "Standard"]
+[TimeControl "420+5"]
+[ECO "B18"]
+[Opening "Caro-Kann Defense: Classical Variation"]
+[Termination "Normal"]
+
+1. e4 c6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Bf5 5. Ng3 Bg6 6. Nf3 Nd7 7. Bd3 e6 8. Bxg6 hxg6 9. c3 Ngf6 10. h3 Bd6 11. Ne2 Qc7 12. Qc2 O-O 13. O-O Rfe8 14. Bg5 Rac8 15. Bh4 a6 16. Bg3 Bxg3 17. Nxg3 c5 18. dxc5 Nxc5 19. Rac1 Red8 20. Rfd1 b5 21. Rxd8+ Rxd8 22. Rd1 Rxd1+ 23. Qxd1 Qd7 24. Qxd7 Nfxd7 25. Ne1 Ne5 26. b4 Na4 27. Ne2 Kf8 28. f4 Nc4 29. Kf2 Ke7 30. Nd3 Kd6 31. Nc5 Nxc5 32. bxc5+ Kxc5 33. g4 Nd6 34. Kf3 Kc4 35. Ke3 a5 36. h4 b4 37. cxb4 Kxb4 38. Nd4 Nc4+ 39. Ke4 Kc5 40. Nb3+ Kb4 41. Nd4 a4 42. Nc6+ Kc5 43. Nd4 Nd2+ 44. Ke3 Nb1 45. Kd3 Na3 46. Ne2 Nb5 47. Ng3 Kb4 48. Ne4 f5 49. Nd2 fxg4 50. Ke4 Nc3+ 51. Ke5 g3 52. Kxe6 g2 53. Nf3 Ne2 54. Kf7 Nxf4 55. Kxg7 Ka3 56. Kf6 Kxa2 57. Kg5 Nh3+ 58. Kxg6 g1=Q+ 59. Nxg1 Nxg1 60. h5 Nf3 61. h6 Ne5+ 62. Kg7 Kb3 63. h7 a3 64. h8=Q a2 65. Qh3+ Kb2 66. Qh2+ Kb1 67. Qg1+ Kb2 68. Qf2+ Kb3 69. Qe3+ Kb2 70. Qd2+ Kb1 71. Qd1+ Kb2 72. Qe2+ Kb1 73. Qb5+ Kc2 74. Qxe5 Kb1 75. Qe1+ Kb2 76. Qd2+ Kb1 77. Qb4+ Kc2 78. Qa3 Kb1 79. Qb3+ Ka1 80. Qc3+ Kb1 81. Qb3+ Ka1 82. Qxa2+ Kxa2 1/2-1/2
+
+

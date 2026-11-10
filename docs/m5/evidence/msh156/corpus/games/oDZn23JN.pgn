@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/oDZn23JN"]
+[Date "2017.12.12"]
+[Round "-"]
+[White "Daenerys_Targaryen"]
+[Black "Zunik"]
+[Result "0-1"]
+[GameId "oDZn23JN"]
+[UTCDate "2017.12.12"]
+[UTCTime "18:50:28"]
+[WhiteElo "1796"]
+[BlackElo "1939"]
+[WhiteRatingDiff "-7"]
+[BlackRatingDiff "+6"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "D20"]
+[Opening "Queen's Gambit Accepted: Old Variation"]
+[Termination "Normal"]
+
+1. d4 d5 2. c4 dxc4 3. e3 Nc6 4. Bxc4 e6 5. Nc3 Bb4 6. Nf3 Nge7 7. O-O O-O 8. a3 Bxc3 9. bxc3 Na5 10. Bd3 b6 11. e4 Bb7 12. e5 Ng6 13. h4 Bxf3 14. Qxf3 Nxh4 15. Qh5 Ng6 16. f4 c5 17. Rf3 cxd4 18. Rh3 h6 19. Bxg6 fxg6 20. Qxg6 dxc3 21. Rxh6 Qd1+ 22. Kh2 Nb3 23. Qh7+ Kf7 24. Rf6+ Ke8 25. Qg6+ Kd7 26. Qxg7+ Kc6 27. Rxe6+ Kb5 28. Rd6 Rh8+ 29. Rh6 Rxh6+ 30. Qxh6 Nxa1 31. a4+ Qxa4 32. Qh3 Nb3 33. Qd3+ Qc4 34. Qd7+ Ka6 35. Be3 Rh8+ 36. Kg1 c2 37. Qd6 c1=Q+ 38. Bxc1 Qxc1+ 39. Kf2 Qxf4+ 40. Ke2 Qe4+ 41. Kf2 Qd4+ 42. Qxd4 Nxd4 43. Ke3 Nc6 44. e6 Re8 0-1
+
+

@@ -1,0 +1,16 @@
+{
+  "passed": [
+    "exact WDL improvement/regression",
+    "complete map missing move invalid",
+    "exhaustive vs incomplete mate proof",
+    "STS points distinct from exact quality",
+    "unlisted STS unresolved",
+    "puzzle/opinion preferred alternatives retained",
+    "unknown to preferred remains unresolved",
+    "same move unchanged regardless external scores",
+    "no move unresolved",
+    "mate-in-one objective distinct from lost win"
+  ],
+  "heldout_access": false,
+  "engine_searches": 0
+}

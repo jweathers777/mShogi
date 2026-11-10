@@ -1,0 +1,6 @@
+{
+  "python": "3.11.0",
+  "python_chess": "1.11.2",
+  "zstd": "1.5.7; only needed for original prefix extraction",
+  "source_version": "SHA256 exact receipts; mutable source endpoints must pass expected hashes"
+}

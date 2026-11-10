@@ -1,0 +1,24 @@
+{
+  "passed": [
+    "retained receipt replay and native/PV validation",
+    "UTC receipts and active charge",
+    "completed cell never rerun",
+    "changed panel refused",
+    "cross-folder orphan refused",
+    "failed worker preserved and wall charged",
+    "failed attempt never rerun",
+    "malformed native output preserved and wall charged",
+    "wrong ID rejected",
+    "wrong time rejected",
+    "wrong diagnostics rejected",
+    "global budget aggregates both directories",
+    "global lock excludes concurrent runs",
+    "any registered manifest mutation blocks all runs",
+    "external reservation blocks native spend",
+    "duplicate/negative reservation rejected",
+    "external actual receipt retained without refund",
+    "duplicate/negative receipt rejected"
+  ],
+  "engine_searches": 0,
+  "artifact_directory": "/var/folders/0d/v4yn9m6n1yv6z8q3cj_fv2pc0000gn/T/msh156-runner-tests-7ufw9lvj"
+}

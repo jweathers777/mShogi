@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/d0EG6YWs"]
+[Date "2024.11.18"]
+[Round "-"]
+[White "R2D2_SP"]
+[Black "Lupada"]
+[Result "1-0"]
+[GameId "d0EG6YWs"]
+[UTCDate "2024.11.18"]
+[UTCTime "20:23:55"]
+[WhiteElo "1627"]
+[BlackElo "1545"]
+[WhiteRatingDiff "+4"]
+[BlackRatingDiff "-5"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "A00"]
+[Opening "Hungarian Opening"]
+[Termination "Normal"]
+
+1. g3 d5 2. Bg2 Nf6 3. b3 Nc6 4. Bb2 Bf5 5. Bxf6 gxf6 6. d3 e5 7. Nd2 Ba3 8. Kf1 Qd6 9. c4 dxc4 10. Nxc4 Qd4 11. Bxc6+ bxc6 12. Nf3 Bh3+ 13. Kg1 Qd7 14. Nfd2 Bc5 15. Ne4 Qf5 16. Nxc5 e4 17. Nxe4 O-O-O 18. Qc2 Qg4 19. Ne3 Qg6 20. Qxc6 f5 21. Qxg6 hxg6 22. Ng5 Rh5 23. Nxf7 Rd4 24. Ne5 f4 25. gxf4 Rxf4 26. Nf3 Rxf3 27. exf3 Rg5+ 28. Ng2 Rxg2+ 29. Kf1 Rxh2+ 30. Ke2 Rxh1 31. Rxh1 Bf5 32. Rh7 Kb7 33. a3 Kc6 34. b4 a6 35. a4 Kb6 36. a5+ Kb5 37. Rxc7 Kxb4 38. Rf7 Kxa5 39. Rxf5+ gxf5 40. Ke3 Kb4 41. Kf4 a5 42. d4 a4 43. d5 a3 44. d6 a2 45. d7 a1=Q 46. d8=Q Qc1+ 47. Kxf5 Qc2+ 48. Ke6 Qe2+ 49. Kd7 Qd3+ 50. Kc7 Qc4+ 51. Kb7 Qb5+ 52. Qb6 Qxb6+ 53. Kxb6 Kc4 54. Kc6 Kd4 55. Kd6 Kd3 56. Ke5 Ke2 57. f4 Kxf2 58. f5 Ke2 59. f6 Kd2 60. f7 Kc2 61. f8=Q Kd2 62. Qf4+ Kd3 63. Qd4+ Ke2 64. Qc4+ Kd2 65. Qb4+ Kc2 66. Qe4+ Kd2 67. Qf3 Kc2 68. Qe3 Kb2 69. Qd3 Kc1 70. Qe2 Kb1 71. Qd2 Ka1 72. Kd4 Kb1 73. Kc3 Ka1 74. Kb3 Kb1 75. Qb2# 1-0
+
+

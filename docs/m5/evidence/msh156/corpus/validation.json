@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "roots": 240,
+  "development": 160,
+  "heldout": 80,
+  "history_replay": 240,
+  "legal_expectations": 240,
+  "complete_exact_tb_maps": 48,
+  "exhaustive_mate1": 3,
+  "cross_partition_family_overlap": 0,
+  "canonical_symmetry_root_overlap": 0,
+  "root_known_continuation_overlap": 0,
+  "old_eight_root_and_declared_line_overlap": 0,
+  "limitations": [
+    "Unknown-game evaluation rows cannot prove absence of all latent game/family relations. Conservative near-board filtering and known-line exclusion reduce but cannot eliminate this risk.",
+    "No engine candidate evaluated. Published and finite opinions remain separate from exact outcomes."
+  ]
+}

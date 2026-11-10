@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/j4amk0tF"]
+[Date "2022.09.08"]
+[Round "-"]
+[White "ImmelmannTurn"]
+[Black "Bravesrule10"]
+[Result "1-0"]
+[GameId "j4amk0tF"]
+[UTCDate "2022.09.08"]
+[UTCTime "22:24:40"]
+[WhiteElo "1876"]
+[BlackElo "1838"]
+[WhiteRatingDiff "+5"]
+[BlackRatingDiff "-5"]
+[Variant "Standard"]
+[TimeControl "900+10"]
+[ECO "A10"]
+[Opening "English Opening"]
+[Termination "Normal"]
+
+1. c4 a6 2. Nc3 e6 3. g3 Bb4 4. Bg2 Bxc3 5. bxc3 d6 6. e4 Qd7 7. Ne2 h6 8. d3 Ne7 9. O-O O-O 10. Bb2 c5 11. f4 b6 12. a4 a5 13. d4 Bb7 14. Qd3 f5 15. exf5 Nxf5 16. Bxb7 Qxb7 17. d5 Qd7 18. dxe6 Qxe6 19. Qd5 Qxd5 20. cxd5 Ne3 21. Rfe1 Nxd5 22. c4 Nb4 23. Nc3 N8c6 24. Nb5 Rad8 25. Re6 Rfe8 26. Rae1 Rxe6 27. Rxe6 Nd3 28. Ba1 Kf7 29. Rxd6 Rxd6 30. Nxd6+ Ke6 31. Nc8 Nd4 32. Nxb6 Kf5 33. Kg2 Ne1+ 34. Kf2 Nec2 35. Bc3 Ke4 36. Bxa5 Kd3 37. Be1 Nxe1 38. Kxe1 Nc6 39. h4 Ke3 40. Kf1 Kf3 41. Nd7 Kxg3 42. Nxc5 Kxf4 43. Ne6+ Kg4 44. Nxg7 Kxh4 45. Ke2 Kg5 46. Kd3 h5 47. Nxh5 Kxh5 48. Ke4 Kg5 49. Kd5 Na5 50. c5 Kf6 51. c6 Ke7 52. Kc5 Nb3+ 53. Kb6 Nd4 54. c7 Kd7 55. Kb7 1-0
+
+

@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/8dWNCqXu"]
+[Date "2024.12.02"]
+[Round "-"]
+[White "felipe09am"]
+[Black "ishakov199"]
+[Result "1-0"]
+[GameId "8dWNCqXu"]
+[UTCDate "2024.12.02"]
+[UTCTime "05:59:09"]
+[WhiteElo "1993"]
+[BlackElo "1942"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-5"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "B19"]
+[Opening "Caro-Kann Defense: Classical Variation, Spassky Variation"]
+[Termination "Time forfeit"]
+
+1. e4 c6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Bf5 5. Ng3 Bg6 6. Nf3 Nd7 7. h4 h6 8. h5 Bh7 9. Bd3 Bxd3 10. Qxd3 Ngf6 11. Bf4 Qb6 12. O-O-O O-O-O 13. Rhe1 e6 14. Kb1 Nd5 15. Bd2 N7f6 16. Ne5 Qc7 17. Qc4 Bd6 18. Qa4 Kb8 19. Ba5 Nb6 20. Bxb6 axb6 21. Rd3 b5 22. Qb3 Nd5 23. Ne4 Bxe5 24. dxe5 Qxe5 25. f3 Nb6 26. g4 Nc4 27. Red1 Kc7 28. Qb4 Rxd3 29. Rxd3 f5 30. Nc5 b6 31. Rd7+ Kc8 32. Nd3 Qh2 33. Ra7 Nd2+ 34. Kc1 Nc4 35. Ra8+ Kb7 36. Rxh8 1-0
+
+

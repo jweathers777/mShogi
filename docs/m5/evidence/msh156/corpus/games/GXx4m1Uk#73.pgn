@@ -1,0 +1,23 @@
+[Event "rated classical game"]
+[Site "https://lichess.org/game/GXx4m1Uk"]
+[Date "2019.05.27"]
+[Round "-"]
+[White "Suhov549"]
+[Black "henry901"]
+[Result "1-0"]
+[GameId "GXx4m1Uk"]
+[UTCDate "2019.05.27"]
+[UTCTime "14:58:07"]
+[WhiteElo "1891"]
+[BlackElo "1899"]
+[WhiteRatingDiff "+40"]
+[BlackRatingDiff "-11"]
+[Variant "Standard"]
+[TimeControl "900+15"]
+[ECO "B04"]
+[Opening "Alekhine Defense: Modern Variation, Larsen Variation"]
+[Termination "Normal"]
+
+1. e4 Nf6 2. e5 Nd5 3. d4 d6 4. Nf3 dxe5 5. Nxe5 c6 6. c4 Nb4 7. Be3 Bf5 8. Nd3 e5 9. Nxb4 Bxb4+ 10. Nc3 Nd7 11. Be2 O-O 12. O-O Re8 13. a3 exd4 14. Bxd4 Bxc3 15. Bxc3 Nb6 16. b3 Qxd1 17. Bxd1 Bd3 18. Re1 Rxe1+ 19. Bxe1 Re8 20. Bc3 f6 21. Rc1 Nd7 22. Bc2 Bxc2 23. Rxc2 Ne5 24. Kf1 Kf7 25. Re2 Re6 26. Bxe5 Rxe5 27. Rxe5 fxe5 28. Ke2 Ke6 29. Ke3 Kf5 30. f3 h5 31. h4 b6 32. b4 a6 33. a4 b5 34. cxb5 cxb5 35. a5 Ke6 36. Ke4 g6 37. g4 Kd6 38. gxh5 gxh5 39. Kf5 Kd5 40. Kf6 Kc4 41. Kxe5 Kxb4 42. f4 Kxa5 43. f5 b4 44. Kd4 Ka4 45. f6 b3 46. Kc3 Ka3 47. f7 b2 48. f8=Q+ Ka2 49. Qf2 Ka1 1-0
+
+

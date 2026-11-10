@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/Irp6KtsO"]
+[Date "2026.04.01"]
+[Round "-"]
+[White "Capriccio"]
+[Black "tejasbhavsar01"]
+[Result "1-0"]
+[GameId "Irp6KtsO"]
+[UTCDate "2026.04.01"]
+[UTCTime "19:20:32"]
+[WhiteElo "1690"]
+[BlackElo "1711"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "180+2"]
+[ECO "B07"]
+[Opening "Czech Defense"]
+[Termination "Normal"]
+
+1. e4 d6 2. d4 Nf6 3. Nc3 c6 4. Bd3 Qa5 5. Nf3 e5 6. O-O Bg4 7. Qe2 Be7 8. Bd2 Qc7 9. dxe5 dxe5 10. Qe3 Nbd7 11. Bc4 O-O 12. Ng5 h6 13. Nf3 b5 14. Be2 Rad8 15. Rad1 Nc5 16. Bc1 Na6 17. Ne1 Bxe2 18. Qxe2 Bb4 19. Nd3 Be7 20. f4 exf4 21. Nxf4 Bd6 22. Nh5 Bxh2+ 23. Kh1 Nxh5 24. Qxh5 Be5 25. Bxh6 gxh6 26. Qxh6 Bg7 27. Qh5 Qe5 28. Qg4 Nc5 29. Rf3 b4 30. Rxd8 Rxd8 31. Rf5 Qe6 32. Ne2 Qxe4 33. Rf4 Rd1+ 34. Kh2 Qe5 35. Ng3 Rd2 36. Nh5 Ne6 37. Nxg7 Nxg7 38. Kh3 Rxc2 39. Re4 Qxb2 40. Re8+ Kh7 41. Qh4+ Kg6 42. Qe4+ Kh6 43. Rh8+ Kg5 44. Qe7+ Kg6 45. Qe4+ Kf6 46. Rh6+ Kg5 47. Qe3+ Kf5 48. g4# 1-0
+
+

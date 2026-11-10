@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/KdTWhMT2"]
+[Date "2024.10.02"]
+[Round "-"]
+[White "abhi123dhiman"]
+[Black "JULIAME"]
+[Result "1/2-1/2"]
+[GameId "KdTWhMT2"]
+[UTCDate "2024.10.02"]
+[UTCTime "11:03:06"]
+[WhiteElo "1551"]
+[BlackElo "1543"]
+[WhiteRatingDiff "+0"]
+[BlackRatingDiff "+0"]
+[Variant "Standard"]
+[TimeControl "300+0"]
+[ECO "C20"]
+[Opening "King's Pawn Game: Napoleon Attack"]
+[Termination "Normal"]
+
+1. e4 e5 2. Qf3 Nc6 3. Bc4 Qe7 4. Ne2 Nf6 5. h3 d6 6. a3 Be6 7. Ba2 Bxa2 8. Rxa2 O-O-O 9. Nbc3 Kb8 10. O-O a6 11. d3 h5 12. Be3 g6 13. Rfa1 Bh6 14. Nd5 Nxd5 15. exd5 Bxe3 16. fxe3 Na7 17. b4 Nb5 18. c4 Na7 19. a4 f5 20. b5 a5 21. e4 f4 22. d4 b6 23. Rc1 Rc8 24. Rb2 g5 25. c5 dxc5 26. dxc5 g4 27. hxg4 hxg4 28. Qxg4 Qh4 29. Qxh4 Rxh4 30. Rbc2 Rhh8 31. Rd1 Rhf8 32. d6 cxd6 33. Rxd6 Rxc5 34. Rxb6+ Kc7 35. Rxc5+ Kxb6 36. Rxe5 Nc8 37. Re6+ Kc5 38. Re5+ Kb4 39. Rf5 Rxf5 40. exf5 Kxa4 41. f6 Nd6 42. Nxf4 Kxb5 43. Nd5 a4 44. Nc3+ Kb4 45. Nxa4 Kxa4 46. g4 Kb5 47. g5 Kc5 48. g6 Kd5 49. g7 Ke6 50. g8=Q+ Kxf6 51. Kf2 Ne4+ 52. Ke3 Ng5 53. Qh8+ Kf5 54. Qc8+ Kg6 55. Qg8+ Kf5 56. Qf8+ Kg6 57. Kf4 Ne6+ 58. Ke5 Nxf8 1/2-1/2
+
+

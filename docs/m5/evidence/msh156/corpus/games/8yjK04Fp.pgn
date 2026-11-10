@@ -1,0 +1,24 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/8yjK04Fp"]
+[Date "2025.07.13"]
+[Round "-"]
+[White "Kenzo_Tange"]
+[Black "chosenpr"]
+[Result "1-0"]
+[GameId "8yjK04Fp"]
+[UTCDate "2025.07.13"]
+[UTCTime "13:02:55"]
+[WhiteElo "2249"]
+[BlackElo "2291"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-6"]
+[BlackTitle "CM"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "B02"]
+[Opening "Alekhine Defense: Maróczy Variation"]
+[Termination "Normal"]
+
+1. d3 Nf6 2. e4 e5 3. c4 Nc6 4. Nc3 Bb4 5. Bd2 O-O 6. Nf3 d6 7. g3 Bg4 8. Bg2 Nd4 9. O-O Nd7 10. h3 Nxf3+ 11. Bxf3 Bxh3 12. Bg2 Bxg2 13. Kxg2 Nc5 14. Be3 Ne6 15. Rh1 f5 16. Qh5 h6 17. Bxh6 gxh6 18. Qxh6 Qf6 19. Qh7# 1-0
+
+

@@ -1,0 +1,13 @@
+{
+  "development_sha256": "4c2dc1459b7be62201f04cb58cd7cbddc61483d8a90d9584fd16f3220bc00389",
+  "development_schema_validated": 160,
+  "tier_counts": {
+    "finite-reference-opinion": 24,
+    "published-puzzle-preference": 63,
+    "exact-mate-in-one": 1,
+    "published-strategic-preference": 40,
+    "exact-tablebase-wdl": 32
+  },
+  "heldout_access": false,
+  "engine_searches": 0
+}

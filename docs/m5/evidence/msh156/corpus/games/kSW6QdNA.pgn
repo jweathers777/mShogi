@@ -1,0 +1,23 @@
+[Event "rated classical game"]
+[Site "https://lichess.org/game/kSW6QdNA"]
+[Date "2022.02.27"]
+[Round "-"]
+[White "Scorpion1987"]
+[Black "ZAB76"]
+[Result "1-0"]
+[GameId "kSW6QdNA"]
+[UTCDate "2022.02.27"]
+[UTCTime "10:01:49"]
+[WhiteElo "1571"]
+[BlackElo "1590"]
+[WhiteRatingDiff "+11"]
+[BlackRatingDiff "-10"]
+[Variant "Standard"]
+[TimeControl "1800+0"]
+[ECO "A40"]
+[Opening "Mikenas Defense"]
+[Termination "Normal"]
+
+1. d4 Nc6 2. Nf3 g6 3. e4 Bg7 4. e5 d6 5. Bf4 dxe5 6. dxe5 Qxd1+ 7. Kxd1 Bg4 8. Be2 Bxf3 9. Bxf3 O-O-O+ 10. Ke2 Nxe5 11. Nc3 Nxf3 12. gxf3 Bh6 13. Be5 f6 14. Bg3 Bg7 15. Nb5 e5 16. Nxa7+ Kb8 17. Nb5 Rd5 18. c4 Rd7 19. Rhd1 Kc8 20. Na7+ Kd8 21. Rxd7+ Kxd7 22. Rd1+ Ke8 23. Nb5 c6 24. Nd6+ Ke7 25. Nxb7 Nh6 26. a4 Rb8 27. Nc5 Rxb2+ 28. Rd2 Rxd2+ 29. Kxd2 Kd6 30. Ne4+ Kc7 31. f4 exf4 32. Bxf4+ Kb6 33. Kd3 f5 34. Ng5 Ng4 35. Ke2 h6 36. Ne6 Be5 37. h3 Bxf4 38. hxg4 Bd6 39. c5+ Bxc5 40. Nxc5 Kxc5 41. gxf5 gxf5 42. f4 Kb4 43. Ke3 Kxa4 44. Kd4 Kb5 45. Ke5 c5 46. Kxf5 c4 47. Ke4 c3 48. Kd3 Kb4 49. Kc2 h5 50. f5 h4 51. f6 h3 52. f7 h2 53. f8=Q+ Kc4 54. Qh8 Kd5 55. Qxh2 1-0
+
+

@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/0LTidFU2"]
+[Date "2021.05.14"]
+[Round "-"]
+[White "pvbp"]
+[Black "Egor_mol"]
+[Result "0-1"]
+[GameId "0LTidFU2"]
+[UTCDate "2021.05.14"]
+[UTCTime "16:58:49"]
+[WhiteElo "1917"]
+[BlackElo "1852"]
+[WhiteRatingDiff "-7"]
+[BlackRatingDiff "+7"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "D00"]
+[Opening "Queen's Pawn Game: Accelerated London System"]
+[Termination "Normal"]
+
+1. d4 d5 2. Bf4 e6 3. e3 g5 4. Bg3 h5 5. h3 h4 6. Bh2 f5 7. Nc3 Nc6 8. Bd3 Bd7 9. g4 Bd6 10. f4 Qe7 11. Qf3 O-O-O 12. O-O-O fxg4 13. hxg4 Nf6 14. fxg5 Nh7 15. Bxd6 Qxd6 16. Qf4 Qe7 17. Rxh4 Nxg5 18. Rxh8 Rxh8 19. Rf1 Nb4 20. Be2 Rg8 21. Nf3 Ne4 22. Nxe4 dxe4 23. Qxe4 Bc6 24. Qe5 Nxa2+ 25. Kb1 Nb4 26. Rh1 Bd5 27. Rh8 Qf7 28. Ng5 Qg6 29. Rxg8+ Qxg8 30. c4 Qg6+ 31. Ka1 Qc2 32. Qh8+ Kd7 33. Qh7+ Kc6 34. Qxc2 Nxc2+ 35. Ka2 Bg2 36. Nxe6 Nxe3 37. d5+ Nxd5 38. cxd5+ Bxd5+ 39. Ka3 Bxe6 40. g5 b6 41. Kb4 a5+ 42. Kc3 Kc5 43. Bh5 c6 44. Be8 b5 45. g6 Kd6 46. Kd4 Ke7 47. Bf7 Bxf7 48. gxf7 Kxf7 49. Kc5 Ke7 50. Kxc6 b4 51. Kb5 Kd6 52. Kxa5 Kc5 53. Ka4 Kc4 54. b3+ Kc3 55. Kb5 Kxb3 56. Kc5 Ka3 57. Kc4 b3 58. Kd3 Ka2 59. Kc3 b2 0-1
+
+

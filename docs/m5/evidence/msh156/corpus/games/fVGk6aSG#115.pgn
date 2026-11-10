@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/fVGk6aSG"]
+[Date "2023.06.20"]
+[Round "-"]
+[White "patrickhaas"]
+[Black "Manumar87"]
+[Result "0-1"]
+[GameId "fVGk6aSG"]
+[UTCDate "2023.06.20"]
+[UTCTime "15:04:33"]
+[WhiteElo "1868"]
+[BlackElo "1850"]
+[WhiteRatingDiff "-6"]
+[BlackRatingDiff "+6"]
+[Variant "Standard"]
+[TimeControl "300+3"]
+[ECO "A50"]
+[Opening "Queen's Indian Accelerated"]
+[Termination "Normal"]
+
+1. d4 Nf6 2. c4 b6 3. Nc3 Bb7 4. Qc2 e6 5. e4 Be7 6. Nf3 d6 7. Bd3 h6 8. O-O O-O 9. d5 exd5 10. exd5 c6 11. Re1 cxd5 12. cxd5 Nxd5 13. Nd4 Bf6 14. Nf5 Nxc3 15. bxc3 Nc6 16. Bxh6 gxh6 17. Nxh6+ Kh8 18. Re3 Bg5 19. Rh3 Bxh6 20. Rxh6+ Kg7 21. Rh7+ Kg8 22. Qe2 Qg5 23. Rh5 Qxg2+ 24. Kxg2 Nd4+ 25. Kh3 Nxe2 26. Bxe2 Rfe8 27. Rg1+ Kf8 28. Bb5 Re5 29. Rh8+ Ke7 30. Rxa8 Bxa8 31. c4 Re2 32. Rg8 Bf3 33. Re8+ Kf6 34. Rxe2 Bxe2 35. Kg3 Kg5 36. h4+ Kg6 37. a3 f6 38. Kf4 Kh5 39. Kf5 d5 40. Kxf6 dxc4 41. Ke5 c3 42. Ba4 Kxh4 43. Kd4 Kg4 44. Kxc3 Kf3 45. Kd4 Kxf2 46. Kd5 Ke3 47. Kc6 Bf3+ 48. Kc7 Kd4 49. Bb5 Kc5 50. a4 a5 51. Kb8 Bd5 52. Ka7 Bb3 53. Ka6 Bd5 54. Ka7 Bb3 55. Ka6 Bc2 56. Ka7 Bxa4 57. Bxa4 b5 58. Bd1 a4 59. Ka6 a3 60. Bb3 Kb4 61. Ba2 Ka4 62. Kb6 b4 63. Kc5 b3 64. Bb1 a2 65. Bxa2 bxa2 0-1
+
+

@@ -1,0 +1,24 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/p5VsXzym"]
+[Date "2024.09.01"]
+[Round "-"]
+[White "BabaMara"]
+[Black "bernardoviciadin"]
+[Result "0-1"]
+[GameId "p5VsXzym"]
+[UTCDate "2024.09.01"]
+[UTCTime "18:35:13"]
+[WhiteElo "2181"]
+[BlackElo "2336"]
+[WhiteRatingDiff "-4"]
+[BlackRatingDiff "+3"]
+[BlackTitle "NM"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "A00"]
+[Opening "Polish Opening: King's Indian Variation"]
+[Termination "Normal"]
+
+1. b4 { [%eval -0.28] [%clk 0:03:00] } 1... Nf6 { [%eval -0.04] [%clk 0:03:00] } 2. Bb2 { [%eval -0.08] [%clk 0:02:59] } 2... g6 { [%eval 0.0] [%clk 0:03:00] } 3. e3 { [%eval 0.0] [%clk 0:02:56] } 3... Bg7 { [%eval 0.06] [%clk 0:02:57] } 4. c4 { [%eval 0.0] [%clk 0:02:55] } 4... O-O { [%eval 0.0] [%clk 0:02:57] } 5. Nf3 { [%eval 0.02] [%clk 0:02:54] } 5... d6 { [%eval 0.0] [%clk 0:02:57] } 6. Be2 { [%eval -0.03] [%clk 0:02:52] } 6... e5 { [%eval 0.03] [%clk 0:02:56] } 7. O-O { [%eval -0.13] [%clk 0:02:50] } 7... e4 { [%eval -0.11] [%clk 0:02:55] } 8. Nd4 { [%eval -0.54] [%clk 0:02:48] } 8... c5 { [%eval -0.56] [%clk 0:02:53] } 9. bxc5 { [%eval -0.6] [%clk 0:02:46] } 9... dxc5 { [%eval -0.58] [%clk 0:02:53] } 10. Nb3 { [%eval -0.59] [%clk 0:02:45] } 10... Qd6 { [%eval -0.26] [%clk 0:02:41] } 11. Qc2 { [%eval -0.46] [%clk 0:02:41] } 11... Nc6 { [%eval -0.38] [%clk 0:02:36] } 12. a3 { [%eval -1.22] [%clk 0:02:40] } 12... Bg4 { [%eval -1.39] [%clk 0:02:31] } 13. Nc1 { [%eval -1.7] [%clk 0:02:29] } 13... Bxe2 { [%eval -1.08] [%clk 0:02:26] } 14. Nxe2 { [%eval -1.23] [%clk 0:02:26] } 14... Ng4 { [%eval -1.12] [%clk 0:02:25] } 15. Ng3 { [%eval -1.19] [%clk 0:02:24] } 15... Bxb2 { [%eval -1.25] [%clk 0:02:13] } 16. Qxb2 { [%eval -1.23] [%clk 0:02:23] } 16... Nce5 { [%eval 0.1] [%clk 0:02:12] } 17. Nxe4 { [%eval #-2] [%clk 0:02:13] } 17... Nf3+ { [%eval #-1] [%clk 0:02:11] } 18. gxf3 { [%eval #-1] [%clk 0:02:06] } 18... Qxh2# { [%clk 0:02:11] } 0-1
+
+

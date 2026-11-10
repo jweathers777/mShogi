@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/axqAHmkv"]
+[Date "2024.12.30"]
+[Round "-"]
+[White "goplit_cat"]
+[Black "Simba_Abessimba"]
+[Result "1-0"]
+[GameId "axqAHmkv"]
+[UTCDate "2024.12.30"]
+[UTCTime "14:22:16"]
+[WhiteElo "2399"]
+[BlackElo "2492"]
+[WhiteRatingDiff "+7"]
+[BlackRatingDiff "-7"]
+[Variant "Standard"]
+[TimeControl "180+2"]
+[ECO "D37"]
+[Opening "Queen's Gambit Declined: Vienna Variation, Quiet Variation"]
+[Termination "Time forfeit"]
+
+1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. Nc3 dxc4 5. e3 a6 6. a4 c5 7. Bxc4 cxd4 8. exd4 Nc6 9. O-O Be7 10. d5 Nxd5 11. Nxd5 exd5 12. Bxd5 O-O 13. Bf4 Bf5 14. Bxc6 bxc6 15. Nd4 Bd7 16. Qc2 Qb6 17. Be3 c5 18. Nb3 Rac8 19. Rfc1 Bf5 20. Qxf5 Qxb3 21. Qc2 c4 22. Qxb3 cxb3 23. Bd4 Bg5 24. Rxc8 Rxc8 25. Bc3 h5 26. Kf1 h4 27. Rd1 h3 28. gxh3 f6 29. Rd6 Rc4 30. Rxa6 Rh4 31. Rb6 Rxh3 32. Kg2 Rh4 33. Rxb3 Rxa4 34. Rb4 Ra1 35. f4 Bh4 36. Bd4 Be1 37. Rb8+ Kh7 38. Bc3 Bxc3 39. bxc3 Rc1 40. Rc8 Kg6 41. Kg3 Kf5 42. Rc5+ Kg6 43. h4 Rg1+ 44. Kf3 Rh1 45. h5+ Kh6 46. Kg4 Rg1+ 47. Kf5 Rh1 48. Ke6 Rxh5 49. Rxh5+ Kxh5 50. Kf5 g5 51. fxg5 fxg5 52. c4 g4 53. Kf4 Kh4 54. c5 g3 55. Kf3 Kh3 56. c6 g2 57. c7 g1=Q 58. c8=Q+ Kh4 59. Qh8+ 1-0
+
+

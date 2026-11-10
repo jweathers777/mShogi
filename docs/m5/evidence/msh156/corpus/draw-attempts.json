@@ -1,0 +1,77 @@
+[
+  {
+    "id": "0DSOJ",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F7b%2F4R3%2F2k5%2F5P2%2F7K%2F8%2F8+b+-+-+0+51",
+    "sha256": "a3173835c7cb5234030dadda981e1a608b77f71ebc40486d89a7995bde308977"
+  },
+  {
+    "id": "2vhCS",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F8%2F3R4%2F2p5%2F2K3kp%2F8%2F8%2F8+b+-+-+1+54",
+    "sha256": "14948240fd546b599d5cd7d450b1133541628c8cf0c2c163bc29ad8512f3d578"
+  },
+  {
+    "id": "14B12",
+    "url": "https://tablebase.lichess.org/standard?fen=5r2%2F8%2F8%2F6p1%2F5N1k%2F4K3%2F8%2F8+w+-+-+0+56",
+    "sha256": "f6eb206ec7ac328b84abfef802c1310e9fd3ecb3ebb8e824700ace6646543dd1"
+  },
+  {
+    "id": "00XCT",
+    "url": "https://tablebase.lichess.org/standard?fen=6QK%2F8%2F2k5%2F3r4%2F8%2F8%2F8%2F8+b+-+-+6+82",
+    "sha256": "458a4952ea36ee6ee415ce612b687b45a173702ba19ac321dc9d37bd068ed493"
+  },
+  {
+    "id": "1sYLD",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F7p%2F8%2F6P1%2F3k4%2F2p5%2F8%2F2K5+w+-+-+2+54",
+    "sha256": "9dca5bb776b6fffd8f314d51741b808c9978cd59ee241aa7f8f5eb6daf0628fc"
+  },
+  {
+    "id": "7016a959db34aaf1",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F8%2F6p1%2F8%2F4N1P1%2F6k1%2F8%2F6K1+b+-+-+0+1",
+    "sha256": "28201b0cb95ece7a5544dcf220693442b129c1e7b868fb462e44bc8fabc4910a"
+  },
+  {
+    "id": "2574a625fea15260",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F8%2F8%2F8%2F8%2F4kp2%2F8%2F4K3+b+-+-+0+1",
+    "sha256": "a691e9c24c3bbc68d7f0ae3a74455bf817c0eecb223d1ce406527a681cc543bb"
+  },
+  {
+    "id": "64ecddccba07d708",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F2k5%2F8%2F3pK3%2F3P4%2F8%2F8%2F8+w+-+-+0+1",
+    "sha256": "7514920ec953bb3bc4581e7a679943bd92e05959031eb380047ade93dc581617"
+  },
+  {
+    "id": "d92cad1caf419688",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F2k5%2F8%2F3K4%2F3P4%2F8%2F8%2F8+b+-+-+0+1",
+    "sha256": "264977767eb0b94dcb36deba4e798728841df9dd484ca81e99d9e4979cacd444"
+  },
+  {
+    "id": "215fefbcfb708db7",
+    "url": "https://tablebase.lichess.org/standard?fen=4k3%2F6p1%2F3N2N1%2F5K2%2F8%2F8%2F8%2F8+b+-+-+0+1",
+    "sha256": "a4296c96d4a85ddcf563fe85d0f37c17d64e6608580da3eccbf0572e20733e7f"
+  },
+  {
+    "id": "d5b0fe9a1b031851",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F3k2p1%2F3N2N1%2F5K2%2F8%2F8%2F8%2F8+w+-+-+0+1",
+    "sha256": "4273c029e4867777aec611108594a626af19275e80c498ad46fb9cebe86eee7e"
+  },
+  {
+    "id": "b1258089ba61b58c",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F8%2F3k4%2F4PK2%2F8%2F8%2F8%2F8+b+-+-+0+1",
+    "sha256": "e0e81ae21ce8e7f1a53de09060f72a443532c703b1c2146dc55ee4eb7e544868"
+  },
+  {
+    "id": "1de175f33219a2fc",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F3k4%2F8%2F3K4%2F3P4%2F8%2F8%2F8+w+-+-+0+1",
+    "sha256": "a2becc163ebdd93dfb736ed531231c3a8e0a3379bb69af0b6a659c1011c84d8f"
+  },
+  {
+    "id": "f343e2e22d856124",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F8%2F8%2F5k2%2F1N2p3%2Fp7%2FK7%2F8+b+-+-+0+1",
+    "sha256": "d1ce33563102c2a3c06109793e4ba98ed929c1c1a79385c493051f8a90f54422"
+  },
+  {
+    "id": "7eb891d11b770c34",
+    "url": "https://tablebase.lichess.org/standard?fen=8%2F3k4%2F8%2F8%2F2KP4%2F8%2F8%2F8+b+-+-+0+1",
+    "sha256": "c2216c9c9e06d8e5f9bdfafa56ac968373a90027ae49fed314996beddaac27ad"
+  }
+]

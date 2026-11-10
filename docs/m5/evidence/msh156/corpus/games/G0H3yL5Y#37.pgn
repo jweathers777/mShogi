@@ -1,0 +1,21 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/G0H3yL5Y"]
+[Date "2023.08.10"]
+[Round "-"]
+[White "Alex196019"]
+[Black "HamidSalam"]
+[Result "0-1"]
+[GameId "G0H3yL5Y"]
+[UTCDate "2023.08.10"]
+[UTCTime "00:47:40"]
+[WhiteElo "1513"]
+[BlackElo "1775"]
+[Variant "Standard"]
+[TimeControl "180+2"]
+[ECO "A52"]
+[Opening "Indian Defense: Budapest Defense, Rubinstein Variation"]
+[Termination "Normal"]
+
+1. d4 Nf6 2. c4 e5 3. dxe5 Ng4 4. Bf4 g5 5. Bg3 Bg7 6. Qd4 d6 7. f4 Nc6 8. Qd5 Be6 9. Qe4 dxe5 10. f5 Bd7 11. Qxg4 h5 12. Qe4 h4 13. Bf2 Qe7 14. Nf3 Qb4+ 15. Nbd2 Qxb2 16. Rb1 Qxa2 17. Rxb7 O-O 18. Rxc7 Rab8 19. Rxd7 Qa1+ 20. Nb1 Rxb1+ 21. Kd2 Rd1+ 22. Ke3 Rxd7 23. Nxg5 Bh6 24. Bxh4 f6 25. Qxc6 Qd4+ 26. Kf3 Qf4# 0-1
+
+

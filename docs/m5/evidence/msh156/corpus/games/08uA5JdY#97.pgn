@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/08uA5JdY"]
+[Date "2024.01.12"]
+[Round "-"]
+[White "kuroko15"]
+[Black "Genrih14"]
+[Result "1-0"]
+[GameId "08uA5JdY"]
+[UTCDate "2024.01.12"]
+[UTCTime "16:54:09"]
+[WhiteElo "1836"]
+[BlackElo "1849"]
+[WhiteRatingDiff "+113"]
+[BlackRatingDiff "-5"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "B23"]
+[Opening "Sicilian Defense: Closed"]
+[Termination "Normal"]
+
+1. e4 e6 2. Nc3 c5 3. Bc4 a6 4. Nf3 Nc6 5. a3 b5 6. Ba2 d6 7. O-O Nf6 8. d3 Be7 9. Bg5 O-O 10. Re1 h6 11. Bxf6 Bxf6 12. Rb1 Bb7 13. Ne2 e5 14. Ng3 a5 15. Nf5 b4 16. a4 Ne7 17. c3 Nxf5 18. exf5 Qc8 19. g4 Qd8 20. cxb4 axb4 21. Bc4 Rxa4 22. Qxa4 Bxf3 23. Ra1 Bxg4 24. Qc6 Bxf5 25. Qb7 e4 26. Bxf7+ Rxf7 27. Qd5 Bg6 28. Ra8 Qxa8 29. Qxa8+ Kh7 30. dxe4 Bxb2 31. Qa2 Bd4 32. Qd5 Bxf2+ 33. Kf1 Bxe1+ 34. Kxe1 Rf6 35. h4 Rf4 36. h5 Bxe4 37. Qxd6 Rf5 38. Qg6+ Kg8 39. Qe8+ Rf8 40. Qxe4 Rb8 41. Qd5+ Kh8 42. Qxc5 b3 43. Qe5 Rb7 44. Qb2 Kh7 45. Kd2 g6 46. Qb1 Rb6 47. hxg6+ Rxg6 48. Qxb3 h5 49. Ke3 Kh6 50. Kf2 h4 51. Qe3+ Rg5 52. Qe6+ Kh5 53. Qe2+ Rg4 54. Qe5+ Rg5 55. Qh8+ Kg4 56. Qd4+ Kh3 57. Qe3+ Rg3 58. Qe6+ Kh2 59. Qe1 h3 60. Qe5 Kh1 61. Qxg3 h2 62. Qg2# 1-0
+
+

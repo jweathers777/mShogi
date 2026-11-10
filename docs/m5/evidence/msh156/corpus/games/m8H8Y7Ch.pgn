@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/m8H8Y7Ch"]
+[Date "2023.07.05"]
+[Round "-"]
+[White "RebeccaThatcHer"]
+[Black "CyndrexArongArsenio"]
+[Result "0-1"]
+[GameId "m8H8Y7Ch"]
+[UTCDate "2023.07.05"]
+[UTCTime "00:44:24"]
+[WhiteElo "2033"]
+[BlackElo "2134"]
+[WhiteRatingDiff "-4"]
+[BlackRatingDiff "+10"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "B07"]
+[Opening "Czech Defense"]
+[Termination "Normal"]
+
+1. e4 d6 2. d4 Nf6 3. Nc3 c6 4. Nf3 Bg4 5. h3 Bh5 6. Be2 e6 7. O-O d5 8. Bg5 Be7 9. e5 Nfd7 10. Bxe7 Qxe7 11. Nh2 Bxe2 12. Qxe2 a6 13. f4 g6 14. Qf3 h5 15. Rae1 c5 16. Ne2 cxd4 17. Nxd4 Nc6 18. Nxc6 bxc6 19. g4 hxg4 20. hxg4 Rb8 21. b3 Nc5 22. f5 Ne4 23. Rxe4 dxe4 24. Qxe4 gxf5 25. gxf5 Qc5+ 26. Kh1 Ke7 27. c4 Rh3 28. fxe6 fxe6 29. Qf4 Rxh2+ 30. Kxh2 Rh8+ 31. Kg3 Rg8+ 32. Kh4 Rh8+ 33. Kg5 Rg8+ 34. Kh6 Kd8 35. Qf6+ Qe7 36. Qxe7+ Kxe7 37. Rf2 Rg3 38. Re2 a5 39. Kh5 Rg1 40. Rb2 Re1 41. a3 Rxe5+ 42. Kg4 Kd6 43. Kf4 Re1 44. b4 axb4 45. axb4 Rc1 46. b5 Kc7 47. bxc6 Rxc4+ 48. Ke5 Rxc6 49. Rh2 Rd6 50. Rh6 Kd7 51. Rh7+ Kc6 52. Rh6 Rd5+ 53. Ke4 Kd6 54. Rh8 Ra5 55. Rh6 Ra4+ 56. Ke3 Kd5 57. Rh8 Ra3+ 58. Ke2 Kd4 59. Re8 e5 60. Rh8 Ra2+ 61. Ke1 Kd3 62. Rh3+ Kd4 63. Rh4+ e4 64. Rh3 Rg2 65. Ra3 e3 66. Ra8 Rg4 67. Rd8+ Ke4 68. Re8+ Kf3 69. Rf8+ Rf4 70. Rxf4+ Kxf4 71. Kf1 Kf3 72. Ke1 e2 0-1
+
+

@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/R3nslqhn"]
+[Date "2025.01.02"]
+[Round "-"]
+[White "magnusbeater"]
+[Black "i_am_raaj"]
+[Result "0-1"]
+[GameId "R3nslqhn"]
+[UTCDate "2025.01.02"]
+[UTCTime "12:26:35"]
+[WhiteElo "2180"]
+[BlackElo "2207"]
+[WhiteRatingDiff "-6"]
+[BlackRatingDiff "+5"]
+[Variant "Standard"]
+[TimeControl "600+5"]
+[ECO "D10"]
+[Opening "Slav Defense: Exchange Variation"]
+[Termination "Time forfeit"]
+
+1. d4 c6 2. c4 d5 3. cxd5 cxd5 4. Bf4 Qb6 5. Nc3 Nf6 6. e3 a6 7. Qc2 Nc6 8. a3 Bg4 9. h3 Bh5 10. Bd3 e6 11. Nge2 Be7 12. O-O O-O 13. Rab1 Rac8 14. Qd2 Bg6 15. Bxg6 hxg6 16. b4 Rfd8 17. Rfc1 Qa7 18. Rc2 b5 19. Rbc1 Qb7 20. Bg5 Na7 21. Bxf6 Bxf6 22. Nf4 Rc4 23. Nd3 Be7 24. Ne2 Rdc8 25. Ne5 R4c7 26. Nf4 Bd6 27. Nfd3 Bxe5 28. Nxe5 Nc6 29. Nxc6 Rxc6 30. Rc3 Rc4 31. Rxc4 Rxc4 32. Rxc4 dxc4 33. Qc2 Qd5 34. h4 e5 35. Qc3 exd4 36. exd4 Qe4 37. g3 Qb1+ 38. Kg2 Qb3 39. Qe1 f6 40. Qe8+ Kh7 41. h5 Qd3 42. hxg6+ Qxg6 43. Qc6 Qd3 44. d5 c3 45. d6 c2 46. d7 c1=Q 47. Qxc1 Qxd7 48. Qc2+ f5 49. Qc5 Qd3 50. Qe5 Qe4+ 51. Qxe4 fxe4 52. f4 Kg6 53. g4 Kf6 54. Kf2 Ke6 55. Ke3 Kd5 56. g5 g6 57. Kd2 Ke6 58. Ke3 Kf5 0-1
+
+

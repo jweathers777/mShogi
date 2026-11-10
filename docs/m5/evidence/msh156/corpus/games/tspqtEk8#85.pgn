@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/tspqtEk8"]
+[Date "2022.05.03"]
+[Round "-"]
+[White "Lucky71"]
+[Black "onryr"]
+[Result "1-0"]
+[GameId "tspqtEk8"]
+[UTCDate "2022.05.03"]
+[UTCTime "15:31:22"]
+[WhiteElo "1607"]
+[BlackElo "1627"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "C50"]
+[Opening "Italian Game: Jerome Gambit"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. Bxf7+ Kxf7 5. d4 exd4 6. c3 dxc3 7. O-O cxb2 8. Bxb2 Nf6 9. Qc2 Rf8 10. Qxc5 Kg8 11. Nc3 d6 12. Qe3 Bg4 13. Nd4 Nxd4 14. Qxd4 Qe7 15. Nd5 Nxd5 16. Qxd5+ Be6 17. Qd4 c5 18. Qd2 Rad8 19. Rad1 Bg4 20. f3 Bh5 21. Kh1 Rfe8 22. Qd5+ Bf7 23. Qd3 Bxa2 24. f4 c4 25. Qd5+ Kh8 26. f5 Qc7 27. f6 c3 28. fxg7+ Kxg7 29. Bxc3+ Qxc3 30. Qxa2 a6 31. Qf7+ Kh8 32. Rxd6 Rf8 33. Rxd8 Rxd8 34. h3 Qg7 35. Qf5 h6 36. g4 Qe7 37. e5 a5 38. Qf6+ Qxf6 39. exf6 Kg8 40. h4 Kf7 41. g5 h5 42. Kg2 Rd2+ 43. Rf2 a4 44. Rxd2 1-0
+
+

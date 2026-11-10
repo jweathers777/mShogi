@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/KGzrhFSH"]
+[Date "2021.09.18"]
+[Round "-"]
+[White "lateg"]
+[Black "moriiiiui"]
+[Result "1/2-1/2"]
+[GameId "KGzrhFSH"]
+[UTCDate "2021.09.18"]
+[UTCTime "13:16:03"]
+[WhiteElo "1696"]
+[BlackElo "1691"]
+[WhiteRatingDiff "+0"]
+[BlackRatingDiff "+0"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "B13"]
+[Opening "Caro-Kann Defense: Exchange Variation"]
+[Termination "Normal"]
+
+1. e4 c6 2. d4 d5 3. exd5 cxd5 4. Bd3 Nc6 5. c3 g6 6. h3 Bg7 7. Nf3 Nf6 8. Bf4 O-O 9. O-O Qb6 10. Qc2 Bd7 11. Nbd2 Rac8 12. Qb1 Nh5 13. Bh2 e5 14. dxe5 Nxe5 15. Nxe5 Bb5 16. Nef3 Bxd3 17. Qxd3 Qxb2 18. Nd4 Qxc3 19. Qxc3 Rxc3 20. N2f3 Rc4 21. Rad1 Rfc8 22. Rd2 Nf6 23. Be5 Ne4 24. Rdd1 Bxe5 25. Nxe5 Rc2 26. Nxc2 Rxc2 27. Rxd5 Nc3 28. Rd8+ Kg7 29. a3 Kf6 30. Nf3 Ne4 31. Rd7 Nc5 32. Rc7 b6 33. Rxa7 Ra2 34. Rb1 Nd3 35. Rf1 Re2 36. Ra6 Re6 37. Rb1 Nc5 38. Rbxb6 Nxa6 39. Rxe6+ fxe6 40. Nd4 Nc5 41. Nb3 Nxb3 42. Kf1 Nc5 43. Ke2 Ke5 44. Kd2 Kd4 45. Kc2 e5 46. f3 h5 47. g3 Kc4 48. h4 Ne6 49. Kb2 Kb5 50. Kb3 Nd4+ 51. Kc3 Nxf3 52. Kd3 Ne1+ 53. Ke4 Nc2 54. Kxe5 Nxa3 55. Kf6 Nc4 56. Kxg6 Ne5+ 57. Kxh5 Nf3 58. g4 Kc6 59. g5 Nxg5 60. Kg4 Kd7 61. hxg5 Ke7 62. Kh5 Kf7 63. Kg4 Kg8 64. Kf5 Kg7 65. Ke6 Kg6 66. Ke5 Kxg5 1/2-1/2
+
+

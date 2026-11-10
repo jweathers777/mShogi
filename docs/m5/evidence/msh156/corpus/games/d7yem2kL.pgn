@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/d7yem2kL"]
+[Date "2026.01.12"]
+[Round "-"]
+[White "V-VT"]
+[Black "vatokato"]
+[Result "1/2-1/2"]
+[GameId "d7yem2kL"]
+[UTCDate "2026.01.12"]
+[UTCTime "13:44:40"]
+[WhiteElo "2064"]
+[BlackElo "2100"]
+[WhiteRatingDiff "+0"]
+[BlackRatingDiff "-1"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "A03"]
+[Opening "Bird Opening: Dutch Variation"]
+[Termination "Normal"]
+
+1. f4 d5 2. Nf3 Nc6 3. g3 Bg4 4. Bg2 Nf6 5. d3 e6 6. O-O Bc5+ 7. e3 O-O 8. h3 Bh5 9. Kh2 Re8 10. d4 Bd6 11. Nc3 a6 12. Qe1 b5 13. a3 h6 14. g4 Bg6 15. Qf2 Ne4 16. Nxe4 Bxe4 17. Ne5 Bxg2 18. Qxg2 Na5 19. b3 c5 20. Bd2 c4 21. b4 Nb7 22. c3 Qc7 23. Kh1 a5 24. Qg3 axb4 25. axb4 Kh7 26. g5 Bxe5 27. fxe5 Qe7 28. gxh6 gxh6 29. Rxa8 Rxa8 30. Rg1 Qf8 31. e4 dxe4 32. Qf4 Ra2 33. Qxe4+ Kh8 34. Rg2 Nd8 35. Be3 Rxg2 36. Kxg2 f5 37. exf6 Qxf6 38. Bf4 Nf7 39. Be5 Nxe5 40. Qxe5 Qxe5 41. dxe5 Kg7 42. Kf3 Kg6 43. Ke4 Kg5 44. Kd4 Kf5 45. Kc5 Kxe5 46. Kxb5 Kd5 47. Ka6 e5 48. b5 e4 49. b6 e3 50. b7 e2 51. b8=Q e1=Q 52. Qb5+ Kd6 53. Qxc4 Qe3 54. Kb5 Qxh3 55. Qc6+ Ke5 56. Qc5+ Ke4 57. Qc6+ Kd3 58. c4 h5 59. Qd5+ Kc3 60. c5 Qf1+ 61. Kb6 Qb1+ 62. Kc7 Qh7+ 63. Qd7 Qxd7+ 64. Kxd7 h4 65. c6 h3 66. c7 h2 67. c8=Q+ Kd4 68. Qd8 h1=Q 69. Qb6+ Kd3 70. Qb2 Qh7+ 71. Ke6 Qg8+ 72. Kf5 Qf7+ 73. Kg4 Qg6+ 74. Kf3 Qf5+ 75. Kg2 Qg4+ 76. Kh1 Qd1+ 77. Kg2 Qc2+ 78. Qxc2+ Kxc2 1/2-1/2
+
+

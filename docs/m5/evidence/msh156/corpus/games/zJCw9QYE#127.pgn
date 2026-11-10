@@ -1,0 +1,23 @@
+[Event "rated classical game"]
+[Site "https://lichess.org/game/zJCw9QYE"]
+[Date "2020.09.18"]
+[Round "-"]
+[White "b10x"]
+[Black "Aleksandr-2009"]
+[Result "1/2-1/2"]
+[GameId "zJCw9QYE"]
+[UTCDate "2020.09.18"]
+[UTCTime "16:36:38"]
+[WhiteElo "1728"]
+[BlackElo "1767"]
+[WhiteRatingDiff "+0"]
+[BlackRatingDiff "-3"]
+[Variant "Standard"]
+[TimeControl "2700+10"]
+[ECO "B40"]
+[Opening "Sicilian Defense: French Variation"]
+[Termination "Normal"]
+
+1. e4 c5 2. Nf3 e6 3. Bc4 d6 4. a3 Nf6 5. d3 Be7 6. c3 O-O 7. O-O a6 8. b4 b5 9. Ba2 cxb4 10. cxb4 Bb7 11. Bb2 Nbd7 12. Nbd2 Rc8 13. Qb3 Qb6 14. Bd4 Qd8 15. Rac1 Rxc1 16. Rxc1 Qb8 17. Bb2 Rc8 18. Rxc8+ Qxc8 19. h3 h6 20. Nh2 Ne8 21. Qd1 Nf8 22. Bb3 Qc6 23. Ndf3 Bf6 24. Bxf6 Nxf6 25. Nd4 Qc3 26. Nhf3 Qc7 27. Qd2 Ng6 28. a4 bxa4 29. Bxa4 Nd7 30. b5 axb5 31. Nxb5 Qb6 32. Nc3 Bc6 33. d4 Bxa4 34. Nxa4 Qb1+ 35. Qe1 Qxe1+ 36. Nxe1 Nf4 37. Nc3 d5 38. e5 f6 39. exf6 gxf6 40. Nf3 Nd3 41. g3 Kg7 42. Kf1 Nb8 43. Ke2 Nc1+ 44. Ke3 Nc6 45. Nd2 Kg6 46. f4 f5 47. Nf3 Nb3 48. Ne5+ Nxe5 49. fxe5 Kg5 50. Ne2 Kg6 51. Nf4+ Kf7 52. g4 fxg4 53. hxg4 Ke7 54. Ne2 Kf7 55. Kf3 Kg6 56. Nf4+ Kf7 57. Ke3 Ke7 58. Ne2 Kf7 59. Kf4 Kg6 60. Kg3 Kf7 61. Kh4 Kg6 62. Nf4+ Kf7 63. Ne2 Kg6 64. g5 hxg5+ 65. Kg4 Na5 66. Nc3 Nc4 67. Nb5 Ne3+ 68. Kf3 Nc2 69. Kg4 Ne3+ 70. Kf3 Nf5 71. Kg4 Ne3+ 72. Kf3 1/2-1/2
+
+

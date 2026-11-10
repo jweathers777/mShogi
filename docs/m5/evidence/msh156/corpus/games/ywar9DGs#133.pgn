@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/ywar9DGs"]
+[Date "2021.10.08"]
+[Round "-"]
+[White "Lila1312"]
+[Black "Kenki98"]
+[Result "0-1"]
+[GameId "ywar9DGs"]
+[UTCDate "2021.10.08"]
+[UTCTime "20:16:14"]
+[WhiteElo "1682"]
+[BlackElo "1721"]
+[WhiteRatingDiff "-5"]
+[BlackRatingDiff "+5"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "C00"]
+[Opening "French Defense: Knight Variation"]
+[Termination "Normal"]
+
+1. e4 e6 2. Nf3 d5 3. e5 c5 4. Bb5+ Nc6 5. d4 Bd7 6. Bxc6 bxc6 7. c3 cxd4 8. Qxd4 c5 9. Qh4 Be7 10. Bg5 h6 11. Bxe7 Qxe7 12. Qxe7+ Nxe7 13. O-O O-O-O 14. Nh4 g5 15. Nf3 Rdf8 16. Nfd2 f5 17. exf6 Rxf6 18. g3 e5 19. Nf3 e4 20. Ne5 Rhf8 21. Nd2 Nc6 22. Nxc6 Bxc6 23. Nb3 Bb5 24. Rfd1 c4 25. Nd4 a6 26. Rd2 Kc7 27. g4 Kd6 28. Nf5+ Ke5 29. Rf1 Bc6 30. Nd4 Bb7 31. Kg2 Kf4 32. f3 Ke3 33. Re2+ Kf4 34. h3 Ke5 35. Kg3 Bc8 36. Ref2 e3 37. Re2 h5 38. Rxe3+ Kd6 39. Rf2 hxg4 40. hxg4 Rh8 41. b4 Rfh6 42. Rg2 Rh3+ 43. Kf2 Rh2 44. a4 Bd7 45. b5 axb5 46. axb5 Kc5 47. Re5 Rxg2+ 48. Kxg2 Bxb5 49. Nxb5 Kxb5 50. Rxd5+ Ka4 51. Rxg5 Kb3 52. Rh5 Rg8 53. Kf2 Kxc3 54. Ke2 Re8+ 55. Kd1 Kd3 56. Rd5+ Ke3 57. Rf5 c3 58. Kc2 Kd4 59. g5 Re2+ 60. Kc1 c2 61. g6 Kc3 62. Rc5+ Kb3 63. g7 Re1+ 64. Kd2 Rg1 65. Rxc2 Rxg7 66. Rc3+ Kb4 67. f4 Rg2+ 68. Kd3 Rg3+ 69. Kd4 Rxc3 70. f5 Rf3 71. Ke5 Kc5 72. f6 Kc6 73. Ke6 Re3+ 74. Kf5 Rf3+ 75. Kg6 Kd7 76. f7 Ke7 77. Kg7 Rxf7+ 0-1
+
+

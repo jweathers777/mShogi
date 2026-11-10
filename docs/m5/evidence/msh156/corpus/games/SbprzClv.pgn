@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/SbprzClv"]
+[Date "2017.11.20"]
+[Round "-"]
+[White "SaiKumarMadipoju"]
+[Black "maxy34"]
+[Result "1-0"]
+[GameId "SbprzClv"]
+[UTCDate "2017.11.20"]
+[UTCTime "17:17:00"]
+[WhiteElo "1643"]
+[BlackElo "1618"]
+[WhiteRatingDiff "+25"]
+[BlackRatingDiff "-10"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "D30"]
+[Opening "Queen's Gambit Declined"]
+[Termination "Normal"]
+
+1. d4 d5 2. c4 e6 3. e3 c6 4. Nf3 dxc4 5. Bxc4 h6 6. Nc3 c5 7. O-O cxd4 8. Nxd4 Nf6 9. Bb5+ Bd7 10. Qe2 a6 11. Ba4 Bb4 12. Bxd7+ Nbxd7 13. Bd2 O-O 14. Rfd1 Qe7 15. a3 Bxc3 16. Bxc3 Nd5 17. Qg4 Nxc3 18. bxc3 Nf6 19. Qf3 b5 20. Rab1 Nd5 21. Rbc1 Rfc8 22. e4 Nxc3 23. Rxc3 Rab8 24. Rdc1 Rxc3 25. Rxc3 b4 26. axb4 Qxb4 27. h3 Qxd4 28. Qg3 Rb1+ 29. Kh2 Qxe4 30. Ra3 Qc4 31. Qd6 Qc1 32. Kg3 Qg5+ 33. Kh2 e5 34. Rb3 Qf4+ 35. Rg3 a5 36. Qd8+ Kh7 37. Qd3+ e4 38. Qxb1 Qxf2 39. Qxe4+ g6 40. Rf3 1-0
+
+

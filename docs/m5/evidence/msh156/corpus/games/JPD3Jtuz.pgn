@@ -1,0 +1,23 @@
+[Event "rated classical game"]
+[Site "https://lichess.org/game/JPD3Jtuz"]
+[Date "2025.08.02"]
+[Round "-"]
+[White "Adithyayuva_2018mys"]
+[Black "espomita"]
+[Result "1-0"]
+[GameId "JPD3Jtuz"]
+[UTCDate "2025.08.02"]
+[UTCTime "02:22:07"]
+[WhiteElo "1602"]
+[BlackElo "1682"]
+[WhiteRatingDiff "+9"]
+[BlackRatingDiff "-37"]
+[Variant "Standard"]
+[TimeControl "1800+20"]
+[ECO "C41"]
+[Opening "Philidor Defense"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nf3 d6 3. Bc4 Be7 4. d4 exd4 5. Qxd4 Bf6 6. e5 dxe5 7. Qxd8+ Kxd8 8. Bxf7 Nc6 9. Bxg8 Rxg8 10. O-O Ke7 11. Nc3 Be6 12. Bg5 a6 13. Bxf6+ gxf6 14. g3 h5 15. Rfd1 Bg4 16. Kg2 e4 17. Nxe4 Ne5 18. Ned2 Rad8 19. Re1 h4 20. Nxe5 h3+ 21. Kg1 fxe5 22. Nc4 Rd4 23. Nxe5 Be6 24. f4 Kf6 25. Red1 Rxf4 26. Nd7+ Kf5 27. Nc5 Bc4 28. b3 Bb5 29. Nxb7 Rf3 30. c4 Bc6 31. Nc5 Re8 32. Rf1 Re2 33. Rxf3+ Bxf3 34. Rf1 Kg4 35. Nd3 Rg2+ 36. Kh1 Rd2+ 37. Kg1 Rxd3 38. Rf2 Rd1+ 39. Rf1 Kf5 40. Rxd1 Bxd1 41. Kf2 Ke4 42. Ke1 Bg4 43. Kd2 Kf3 44. Ke1 Kg2 45. b4 Kxh2 46. Kf2 c6 47. a4 Bc8 48. b5 c5 49. b6 Bb7 50. g4 a5 51. g5 Be4 52. g6 Bxg6 53. b7 Kh1 54. b8=Q Be4 55. Qe5 Bg2 56. Qe1+ Bf1 57. Qxf1+ Kh2 58. Qg1# 1-0
+
+

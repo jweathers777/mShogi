@@ -1,0 +1,25 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/iByo5C8X"]
+[Date "2020.08.21"]
+[Round "-"]
+[White "theblindman1980"]
+[Black "kevinalbino16"]
+[Result "0-1"]
+[GameId "iByo5C8X"]
+[UTCDate "2020.08.21"]
+[UTCTime "05:18:36"]
+[WhiteElo "2131"]
+[BlackElo "2035"]
+[WhiteRatingDiff "-7"]
+[BlackRatingDiff "+17"]
+[WhiteTitle "NM"]
+[WhiteFideId "117951"]
+[Variant "Standard"]
+[TimeControl "180+2"]
+[ECO "C56"]
+[Opening "Italian Game: Two Knights Defense, Perreux Variation"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. d4 exd4 5. Ng5 Ne5 6. Bb3 Bc5 7. f4 Neg4 8. Nxf7 Qe7 9. Nxh8 d5 10. e5 Ne4 11. Bxd5 Qh4+ 12. g3 Nxg3 13. hxg3 Qxg3+ 14. Ke2 Nxe5 15. Qe1 d3+ 16. Kf1 Bh3+ 17. Rxh3 Qg1# 0-1
+
+

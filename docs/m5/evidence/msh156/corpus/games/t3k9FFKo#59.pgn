@@ -1,0 +1,23 @@
+[Event "rated classical game"]
+[Site "https://lichess.org/game/t3k9FFKo"]
+[Date "2020.03.27"]
+[Round "-"]
+[White "shimikotsu"]
+[Black "chess_boom"]
+[Result "1-0"]
+[GameId "t3k9FFKo"]
+[UTCDate "2020.03.27"]
+[UTCTime "09:06:53"]
+[WhiteElo "1746"]
+[BlackElo "1736"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-5"]
+[Variant "Standard"]
+[TimeControl "900+15"]
+[ECO "C51"]
+[Opening "Italian Game: Evans Gambit, Anderssen Variation"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. b4 Bxb4 5. c3 Be7 6. d4 exd4 7. Nxd4 Nxd4 8. cxd4 Nf6 9. e5 d5 10. exf6 Bxf6 11. Bd3 Qe7+ 12. Be3 Bxd4 13. Bb5+ c6 14. Bxc6+ bxc6 15. Qxd4 O-O 16. O-O Qe4 17. Nd2 Qxd4 18. Bxd4 Ba6 19. Rfc1 Rac8 20. Bxa7 Rc7 21. Bc5 Re8 22. Nf3 h6 23. h4 Re2 24. Nd4 Re4 25. Nf5 Bc4 26. Nd6 Rxh4 27. Nxc4 dxc4 28. a4 Rd7 29. Rc2 Rd5 30. Bb6 Rg5 31. a5 Rhg4 32. g3 Re4 33. a6 Re8 34. a7 Ra8 35. Rxc4 h5 36. Rxc6 h4 37. Kg2 Kh7 38. Rc7 hxg3 39. fxg3 Rf5 40. Rb7 Rb5 41. Rb8 Rxb8 42. axb8=Q Rxb6 1-0
+
+

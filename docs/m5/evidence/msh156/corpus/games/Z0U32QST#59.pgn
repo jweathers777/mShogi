@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/Z0U32QST"]
+[Date "2017.04.23"]
+[Round "-"]
+[White "B2xB4"]
+[Black "Torschlusspanik"]
+[Result "1/2-1/2"]
+[GameId "Z0U32QST"]
+[UTCDate "2017.04.23"]
+[UTCTime "07:46:25"]
+[WhiteElo "1779"]
+[BlackElo "1710"]
+[WhiteRatingDiff "-2"]
+[BlackRatingDiff "+2"]
+[Variant "Standard"]
+[TimeControl "900+2"]
+[ECO "A45"]
+[Opening "Indian Defense"]
+[Termination "Normal"]
+
+1. d4 Nf6 2. Nc3 g6 3. e4 d5 4. Be3 dxe4 5. f3 exf3 6. Qxf3 Bg7 7. O-O-O Bg4 8. Qxb7 Bxd1 9. Qxa8 Bg4 10. Bb5+ Bd7 11. Bxd7+ Nfxd7 12. Qxa7 Nc6 13. Qa4 Ncb8 14. Nd5 e6 15. Nb4 O-O 16. Nf3 Nb6 17. Qb5 Nd5 18. Nxd5 Qxd5 19. Qxd5 exd5 20. Bf4 Rc8 21. Re1 Nd7 22. Re7 Nf6 23. Rxc7 Rxc7 24. Bxc7 Ne4 25. Be5 f6 26. Bf4 f5 27. h3 g5 28. Bxg5 Nxg5 29. Nxg5 Bxd4 30. c3 Be3+ 31. Kc2 Bxg5 32. Kd3 Kf7 33. Kd4 Ke6 34. a4 Bd8 35. b4 f4 36. a5 Kd6 37. c4 Bf6+ 38. Kd3 dxc4+ 39. Kxc4 Kc6 40. b5+ Kb7 41. Kd5 Bd8 42. b6 h5 43. Kd6 Bh4 44. Kc5 Ka6 45. Kc6 f3 46. gxf3 Kxa5 47. b7 Bg3 48. Kd7 Kb6 49. Kc8 Ka7 50. b8=B+ Bxb8 51. Kd7 Bg3 52. Ke6 h4 53. Kf5 Kb7 54. Kg4 Kc6 55. f4 Kd6 56. f5 Ke7 57. Kg5 Kf7 58. f6 Kg8 59. Kg6 Kf8 60. f7 Bd6 61. Kf6 Be7+ 62. Ke6 Bg5 63. Kf5 Be7 64. Kg6 Bd8 65. Kf5 Kxf7 66. Ke5 Be7 67. Kf5 Bf6 68. Kg4 Be7 69. Kf5 Bf6 70. Kg4 Kg6 71. Kf3 Kf5 72. Ke3 Bg5+ 73. Kf3 Bf4 74. Ke2 Ke4 75. Kf2 Bg3+ 76. Kg2 Ke3 77. Kf1 Kf3 78. Kg1 Bf4 79. Kh1 Kg3 80. Kg1 Kxh3 81. Kf2 Bg3+ 82. Kg1 Kg4 83. Kh1 Kf3 84. Kg1 h3 85. Kh1 Ke2 86. Kg1 Bf2+ 87. Kh2 Bg1+ 88. Kxh3 1/2-1/2
+
+

@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/8DSxtMMr"]
+[Date "2022.01.31"]
+[Round "-"]
+[White "exanime"]
+[Black "Drwards"]
+[Result "1-0"]
+[GameId "8DSxtMMr"]
+[UTCDate "2022.01.31"]
+[UTCTime "08:06:07"]
+[WhiteElo "2416"]
+[BlackElo "2267"]
+[WhiteRatingDiff "+13"]
+[BlackRatingDiff "-4"]
+[Variant "Standard"]
+[TimeControl "600+5"]
+[ECO "A48"]
+[Opening "East Indian Defense"]
+[Termination "Normal"]
+
+1. d4 Nf6 2. Nf3 g6 3. e3 Bg7 4. b3 d6 5. Bb2 O-O 6. Bd3 Nbd7 7. O-O Re8 8. e4 e5 9. dxe5 Nxe5 10. Nxe5 dxe5 11. Nd2 Bg4 12. f3 Be6 13. Qe2 Nd7 14. Rad1 c6 15. Nc4 Qc7 16. Qf2 a5 17. Ba3 Bf8 18. Bc1 a4 19. f4 axb3 20. axb3 Ra1 21. Be3 Rxd1 22. Rxd1 b5 23. Nxe5 Nxe5 24. fxe5 Qxe5 25. Bd4 Qg5 26. h4 Qh5 27. Qf6 Qxd1+ 28. Bf1 Qxd4+ 29. Qxd4 Bg7 30. Qd6 Rc8 31. e5 Bf8 32. Qd4 c5 33. Qf4 c4 34. Be2 cxb3 35. cxb3 Bxb3 36. Bxb5 Rb8 37. Bc4 Bc5+ 38. Kh2 Bxc4 39. Qxc4 Bf8 40. e6 fxe6 41. Qxe6+ Kg7 42. Qe5+ Kf7 43. Qxb8 1-0
+
+

@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/mHZp9fcV"]
+[Date "2022.11.29"]
+[Round "-"]
+[White "LeRoiTsongor_514"]
+[Black "Badanbenjee"]
+[Result "1-0"]
+[GameId "mHZp9fcV"]
+[UTCDate "2022.11.29"]
+[UTCTime "15:48:50"]
+[WhiteElo "1731"]
+[BlackElo "1671"]
+[WhiteRatingDiff "+30"]
+[BlackRatingDiff "-4"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "A02"]
+[Opening "Bird Opening"]
+[Termination "Normal"]
+
+1. f4 b6 2. Nf3 Bb7 3. e3 d5 4. b3 Nd7 5. Bb2 f6 6. Be2 e5 7. fxe5 fxe5 8. Bxe5 Nxe5 9. Nxe5 Bd6 10. Bh5+ g6 11. Nxg6 hxg6 12. Bxg6+ Kd7 13. Qg4+ Kc6 14. O-O Bxh2+ 15. Kf2 Qf6+ 16. Bf5 Qxa1 17. Bd7+ Kc5 18. b4+ Kd6 19. Qe6# 1-0
+
+

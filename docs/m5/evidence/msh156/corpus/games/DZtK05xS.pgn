@@ -1,0 +1,23 @@
+[Event "rated rapid game"]
+[Site "https://lichess.org/game/DZtK05xS"]
+[Date "2023.04.02"]
+[Round "-"]
+[White "chica230"]
+[Black "islamleader"]
+[Result "1-0"]
+[GameId "DZtK05xS"]
+[UTCDate "2023.04.02"]
+[UTCTime "19:32:23"]
+[WhiteElo "2272"]
+[BlackElo "2272"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "D43"]
+[Opening "Semi-Slav Defense"]
+[Termination "Normal"]
+
+1. d4 Nf6 2. c4 d5 3. Nc3 c6 4. Nf3 e6 5. Bg5 Be7 6. e3 Nbd7 7. Bd3 dxc4 8. Bxc4 Nb6 9. Bd3 Nbd5 10. O-O Nxc3 11. bxc3 Nd5 12. Bxe7 Qxe7 13. Qd2 Bd7 14. Ne5 O-O 15. Rab1 Rab8 16. c4 Nf6 17. Qa5 a6 18. Rb6 Rbd8 19. Rxb7 Qe8 20. Nxd7 Rxd7 21. Qxa6 Qa8 22. Qxa8 Rxa8 23. Rxd7 Nxd7 24. Ra1 Ra3 25. Bc2 Nb6 26. Bb3 Kf8 27. c5 Nc8 28. h3 Na7 29. Rc1 Nb5 30. Rc4 Ra7 31. Ra4 Rb7 32. Ra6 Na7 33. Rb6 Rc7 34. Kf1 Ke7 35. Ke2 Nc8 36. Rb8 g6 37. Kf3 h5 38. g4 hxg4+ 39. hxg4 Kf6 40. Kg3 Ne7 41. f4 g5 42. Rh8 Ng6 43. Rh5 gxf4+ 44. exf4 Rd7 45. f5 exf5 46. Rxf5+ Kg7 47. d5 Ne7 48. Rxf7+ Kxf7 49. dxc6+ Rd5 50. c7 Ke6 51. g5 Kd7 52. Bxd5 Nxd5 53. Kg4 Nxc7 54. g6 Ne8 55. Kf5 Ke7 56. Ke5 Nc7 57. c6 Ne8 58. a4 Kd8 59. Ke6 Kc7 60. Kd5 Kb6 61. a5+ Kxa5 62. g7 Nxg7 63. c7 Nf5 64. Ke6 Nd4+ 65. Kd5 Nf5 66. Ke6 Nd4+ 67. Kd7 Nf3 68. c8=Q Ne5+ 69. Ke6 Nd3 70. Qd8+ Kb4 71. Qxd3 Kc5 72. Qc3+ Kb5 73. Kd5 Kb6 74. Kd6 Kb5 75. Qc1 Kb4 76. Kd5 Kb3 77. Kd4 Kb4 78. Qb1+ Ka3 79. Kc3 Ka4 80. Qb4# 1-0
+
+

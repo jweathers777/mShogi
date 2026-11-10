@@ -1,0 +1,23 @@
+[Event "LMAO Night 35 Team Battle"]
+[Site "https://lichess.org/game/6VJGjzbr"]
+[Date "2025.09.19"]
+[Round "-"]
+[White "renzo_manco"]
+[Black "DavidWilson1980"]
+[Result "1-0"]
+[GameId "6VJGjzbr"]
+[UTCDate "2025.09.19"]
+[UTCTime "00:41:23"]
+[WhiteElo "2020"]
+[BlackElo "2126"]
+[WhiteRatingDiff "+7"]
+[BlackRatingDiff "-7"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "A43"]
+[Opening "Benoni Defense: Old Benoni"]
+[Termination "Time forfeit"]
+
+1. d4 c5 2. c4 cxd4 3. Qxd4 Nf6 4. Qd2 Nc6 5. a3 g6 6. b3 Bg7 7. Bb2 O-O 8. e3 b6 9. Nf3 Bb7 10. Nc3 Rc8 11. Be2 d6 12. Rc1 Nd7 13. Nd5 Nde5 14. O-O e6 15. Nc3 Na5 16. Qd1 Nxf3+ 17. Bxf3 Bxf3 18. gxf3 Qh4 19. Qc2 Nb7 20. Ne4 Bh6 21. Nf6+ Kh8 22. Nd7+ Kg8 23. Qc3 e5 24. Nxf8 Rxf8 25. Qd3 Rd8 26. b4 Bg7 27. Qe4 Qe7 28. Rfd1 h6 29. Rd5 f5 30. Qd3 Kh7 31. Rd1 Rc8 32. Qc2 Qf7 33. Kf1 a5 34. Qb3 axb4 35. axb4 h5 36. f4 exf4 37. Bxg7 Qxg7 38. exf4 Ra8 39. c5 bxc5 40. bxc5 Nxc5 41. Qf3 Ra1 42. Rxd6 Rxd1+ 43. Qxd1 Kh6 44. h4 Qe7 45. Qd4 Ne4 46. Qh8+ Qh7 47. Qxh7+ Kxh7 48. Rd7+ Kh6 49. Kg2 Nf6 50. Rd8 Ng4 51. Rf8 Kg7 52. Rc8 Nf6 53. Rc5 Kh6 54. Kf3 Ne4 55. Re5 Nd2+ 56. Kg2 Ne4 57. Rxe4 fxe4 58. Kf1 Kg7 59. Ke2 Kf6 60. Ke3 Kf5 61. f3 exf3 62. Kxf3 Kf6 63. Ke4 Ke6 64. Kd4 Kf5 65. Ke3 Kg4 66. Ke4 Kxh4 67. Ke5 Kg4 68. f5 h4 69. Kf6 h3 70. fxg6 h2 71. g7 h1=Q 72. g8=Q+ Kf3 73. Qa8+ Kf2 74. Qxh1 1-0
+
+

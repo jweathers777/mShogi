@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/FtHHVnn4"]
+[Date "2024.04.11"]
+[Round "-"]
+[White "Aluminium-27"]
+[Black "paineiro"]
+[Result "1-0"]
+[GameId "FtHHVnn4"]
+[UTCDate "2024.04.11"]
+[UTCTime "13:53:43"]
+[WhiteElo "1797"]
+[BlackElo "1816"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "300+3"]
+[ECO "A00"]
+[Opening "Barnes Opening"]
+[Termination "Normal"]
+
+1. f3 Nf6 2. Kf2 d5 3. d4 e6 4. e3 c5 5. c3 Nc6 6. Ne2 e5 7. Qa4 Bd7 8. Qd1 exd4 9. cxd4 cxd4 10. exd4 Bd6 11. Nbc3 O-O 12. g3 Qb6 13. Kg2 Na5 14. Nf4 Bc6 15. Bd3 Nc4 16. b3 Na3 17. Bb2 Nb5 18. Nxb5 Bxb5 19. Re1 Bb4 20. Re5 Qd6 21. Qe2 Bxd3 22. Qxd3 Rae8 23. Rc1 Ba5 24. Qb5 Bb6 25. Nxd5 Nxd5 26. Rxd5 Qe6 27. Re5 Qd6 28. Rxe8 1-0
+
+

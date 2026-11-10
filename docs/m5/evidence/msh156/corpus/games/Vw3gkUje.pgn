@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/Vw3gkUje"]
+[Date "2023.04.28"]
+[Round "-"]
+[White "cdfalmeida"]
+[Black "abati"]
+[Result "1-0"]
+[GameId "Vw3gkUje"]
+[UTCDate "2023.04.28"]
+[UTCTime "13:45:30"]
+[WhiteElo "1763"]
+[BlackElo "1764"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-5"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "B01"]
+[Opening "Scandinavian Defense: Modern Variation"]
+[Termination "Normal"]
+
+1. e4 d5 2. exd5 Nf6 3. Nc3 Nxd5 4. Nxd5 Qxd5 5. c4 Qe4+ 6. Qe2 Bf5 7. Qxe4 Bxe4 8. d3 Bc6 9. d4 e6 10. f3 Bb4+ 11. Bd2 Bxd2+ 12. Kxd2 O-O 13. Ne2 Nd7 14. Nc3 a6 15. Rd1 Nf6 16. b3 Rad8 17. Kc2 Rd7 18. d5 exd5 19. cxd5 Nxd5 20. Nxd5 Rxd5 21. Bc4 Rdd8 22. Rxd8 Rxd8 23. Rd1 Rxd1 24. Kxd1 g6 25. Kd2 Kg7 26. Ke3 Kf6 27. g3 g5 28. f4 h6 29. a3 b5 30. Bd3 Bd5 31. b4 c6 32. Be4 Bxe4 33. Kxe4 g4 34. Kd4 h5 35. Kc5 Kf5 36. Kxc6 h4 37. Kb6 hxg3 38. hxg3 Ke4 39. Kxa6 Kf3 40. Kxb5 Kxg3 41. a4 Kxf4 42. a5 g3 43. a6 g2 44. a7 g1=Q 45. a8=Q Qf1+ 46. Kb6 Qf2+ 47. Kc7 Qc2+ 48. Qc6 Qxc6+ 49. Kxc6 Ke5 50. b5 f5 51. b6 f4 52. b7 f3 53. b8=Q+ Ke4 54. Qb1+ Ke3 55. Qf1 f2 56. Kc5 Kf3 57. Kc4 Ke3 58. Kc3 Kf3 59. Kd2 1-0
+
+

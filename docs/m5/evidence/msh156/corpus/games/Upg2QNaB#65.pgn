@@ -1,0 +1,24 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/Upg2QNaB"]
+[Date "2021.03.18"]
+[Round "-"]
+[White "mayraaymet"]
+[Black "Nat1991"]
+[Result "1-0"]
+[GameId "Upg2QNaB"]
+[UTCDate "2021.03.18"]
+[UTCTime "07:46:07"]
+[WhiteElo "2145"]
+[BlackElo "2066"]
+[WhiteRatingDiff "+5"]
+[BlackRatingDiff "-5"]
+[WhiteTitle "WFM"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "B01"]
+[Opening "Scandinavian Defense: Modern Variation"]
+[Termination "Time forfeit"]
+
+1. e4 d5 2. exd5 Nf6 3. Nf3 c6 4. dxc6 Nxc6 5. Bc4 Bf5 6. O-O e6 7. Nc3 Bd6 8. d4 a6 9. Bb3 O-O 10. h3 Rc8 11. Be3 Re8 12. Nh4 Bg6 13. Nxg6 hxg6 14. Qf3 Bb8 15. Rad1 Ne7 16. Bg5 Qd6 17. g3 Nh7 18. Bf4 Qd7 19. Bxb8 Rxb8 20. d5 exd5 21. Nxd5 Qxh3 22. Nc7 Ng5 23. Qf4 Qh5 24. Kg2 Qh3+ 25. Kg1 Qh5 26. Qc4 Nf5 27. Nxe8 Rxe8 28. Rd7 Nf3+ 29. Kg2 N3h4+ 30. Kg1 Nf3+ 31. Kg2 N3h4+ 32. gxh4 Nxh4+ 33. Kg3 1-0
+
+

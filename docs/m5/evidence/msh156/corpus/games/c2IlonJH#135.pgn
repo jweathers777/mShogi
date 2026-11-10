@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/c2IlonJH"]
+[Date "2020.08.17"]
+[Round "-"]
+[White "LeFiN"]
+[Black "halimansour"]
+[Result "0-1"]
+[GameId "c2IlonJH"]
+[UTCDate "2020.08.17"]
+[UTCTime "02:36:10"]
+[WhiteElo "2157"]
+[BlackElo "2140"]
+[WhiteRatingDiff "-6"]
+[BlackRatingDiff "+6"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "B30"]
+[Opening "Sicilian Defense: Old Sicilian"]
+[Termination "Time forfeit"]
+
+1. e4 c5 2. Nf3 Nc6 3. c3 e6 4. d4 d5 5. exd5 exd5 6. Bf4 Nf6 7. Be2 Bd6 8. Bxd6 Qxd6 9. dxc5 Qxc5 10. Nbd2 O-O 11. Nb3 Qd6 12. Nbd4 Nxd4 13. Nxd4 a6 14. O-O Ne4 15. Bf3 Qg6 16. g3 Bh3 17. Re1 Rfe8 18. Bg2 Bxg2 19. Kxg2 Qf6 20. Qf3 Qxf3+ 21. Kxf3 g6 22. Re2 Re7 23. Rae1 Rae8 24. Kg2 Kf8 25. Rd1 Nf6 26. Rxe7 Rxe7 27. Kf3 h5 28. h4 Ng4 29. Nb3 Ne5+ 30. Kg2 Nc4 31. Rxd5 Re2 32. Rd7 Rxb2 33. Rxb7 Ne3+ 34. Kf3 Nd1 35. c4 Rxf2+ 36. Ke4 Rxa2 37. c5 Nc3+ 38. Kd3 Nb5 39. c6 Ra3 40. Kc2 Ra2+ 41. Kd3 Ra3 42. Kc4 Nd6+ 43. Kc3 a5 44. Kb2 Ra4 45. Rd7 Nb5 46. c7 Nxc7 47. Rxc7 Rg4 48. Ra7 a4 49. Nc5 Rxg3 50. Rxa4 Rg2+ 51. Kc3 Rg3+ 52. Kd2 Rg2+ 53. Ke3 Rh2 54. Kf3 Rh3+ 55. Kg2 Rc3 56. Ne4 Rc2+ 57. Nf2 f6 58. Ra7 g5 59. hxg5 fxg5 60. Ra5 g4 61. Rxh5 Kg7 62. Kg3 Kf6 63. Nxg4+ Kg6 64. Rh6+ Kg5 65. Rh2 Rc3+ 66. Kg2 Kxg4 67. Rh1 Rc2+ 68. Kg1 Kg3 69. Kf1 Rc1+ 70. Ke2 Rxh1 71. Ke3 Rf1 0-1
+
+

@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/IUPMfJDr"]
+[Date "2023.02.16"]
+[Round "-"]
+[White "zeus007"]
+[Black "Lajahom"]
+[Result "1-0"]
+[GameId "IUPMfJDr"]
+[UTCDate "2023.02.16"]
+[UTCTime "13:02:54"]
+[WhiteElo "1769"]
+[BlackElo "1798"]
+[WhiteRatingDiff "+6"]
+[BlackRatingDiff "-6"]
+[Variant "Standard"]
+[TimeControl "180+2"]
+[ECO "C64"]
+[Opening "Ruy Lopez: Classical Variation"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 Bc5 4. O-O a6 5. Ba4 d6 6. c3 b5 7. Bb3 Nf6 8. Re1 O-O 9. h3 h6 10. d4 exd4 11. cxd4 Bb6 12. Nc3 Bb7 13. Bf4 Ne7 14. e5 dxe5 15. Bxe5 Ng6 16. Qd3 Kh8 17. Rad1 Nd5 18. Bc2 Nb4 19. Qd2 Nxc2 20. Qxh6+ Kg8 21. Qxg7# 1-0
+
+

@@ -1,0 +1,23 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/Ix6llOmu"]
+[Date "2024.04.16"]
+[Round "-"]
+[White "kaaspaarov"]
+[Black "Eburonia"]
+[Result "0-1"]
+[GameId "Ix6llOmu"]
+[UTCDate "2024.04.16"]
+[UTCTime "15:06:03"]
+[WhiteElo "2047"]
+[BlackElo "2010"]
+[WhiteRatingDiff "-5"]
+[BlackRatingDiff "+185"]
+[Variant "Standard"]
+[TimeControl "300+3"]
+[ECO "A00"]
+[Opening "Polish Opening"]
+[Termination "Normal"]
+
+1. b4 e5 2. Bb2 Bxb4 3. Bxe5 Nf6 4. a3 Be7 5. Nf3 c5 6. c4 Nc6 7. Bb2 O-O 8. e3 b6 9. d4 cxd4 10. exd4 d5 11. Nbd2 Bb7 12. Be2 dxc4 13. Nxc4 Rc8 14. Rc1 Re8 15. O-O h6 16. Nfe5 Nxe5 17. Nxe5 Bd6 18. Bb5 Re7 19. Nc6 Bxc6 20. Bxc6 Rec7 21. d5 Qf8 22. Bxf6 gxf6 23. Qg4+ Qg7 24. Qxg7+ Kxg7 25. a4 Re7 26. Rfe1 Rcc7 27. g3 f5 28. Kf1 f4 29. Rc4 fxg3 30. hxg3 Rxe1+ 31. Kxe1 Re7+ 32. Kd2 Bc5 33. Rf4 a6 34. Kd3 Re1 35. Bb7 a5 36. Kc4 Rb1 37. Rg4+ Kf8 38. Rh4 Bxf2 39. Rxh6 Rb4+ 40. Kd3 Bxg3 41. d6 Kg7 42. d7 Rb1 43. Bf3 Bc7 44. Rc6 Bd8 45. Rc8 Bf6 46. d8=Q Bxd8 47. Rxd8 Rb3+ 48. Ke2 b5 49. axb5 Rxb5 50. Bc6 Rb2+ 51. Kd3 Rh2 52. Kc3 f5 53. Kb3 f4 54. Ka4 Rc2 55. Be4 Rc4+ 56. Kxa5 Rxe4 57. Kb5 f3 58. Rd1 Kg6 59. Rf1 Rf4 60. Kc5 Kf5 61. Kd5 f2 62. Kc5 Kg4 63. Kd5 Kf3 0-1
+
+

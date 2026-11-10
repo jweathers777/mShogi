@@ -1,0 +1,23 @@
+[Event "rated bullet game"]
+[Site "https://lichess.org/game/tR8peBjm"]
+[Date "2026.05.17"]
+[Round "-"]
+[White "Murmelmuck"]
+[Black "SmashPhil"]
+[Result "1-0"]
+[GameId "tR8peBjm"]
+[UTCDate "2026.05.17"]
+[UTCTime "05:17:19"]
+[WhiteElo "1962"]
+[BlackElo "2041"]
+[WhiteRatingDiff "+7"]
+[BlackRatingDiff "-7"]
+[Variant "Standard"]
+[TimeControl "120+1"]
+[ECO "D02"]
+[Opening "Queen's Pawn Game: London System"]
+[Termination "Normal"]
+
+1. d4 d5 2. Bf4 Nf6 3. Nf3 Nc6 4. c3 Bg4 5. Nbd2 e6 6. e3 Bd6 7. Bxd6 cxd6 8. Be2 h6 9. h3 Bh5 10. O-O O-O 11. Re1 e5 12. dxe5 dxe5 13. Nh2 Bxe2 14. Qxe2 Qd7 15. Ng4 Nxg4 16. hxg4 f5 17. gxf5 Rxf5 18. Rf1 Raf8 19. Nf3 e4 20. Nd4 Nxd4 21. cxd4 Rg5 22. f4 Rg3 23. Kh2 Qg4 24. Qxg4 Rxg4 25. Kh3 Rg6 26. g4 Rc8 27. Rac1 Rgc6 28. Rxc6 Rxc6 29. Rf2 a6 30. Kh4 Kf7 31. g5 hxg5+ 32. fxg5+ Kg6 33. Kg4 Rc1 34. Rg2 Re1 35. Kf4 Rf1+ 36. Ke5 Rf5+ 37. Kd6 Kh5 38. b4 Kh4 39. Ke6 g6 40. a4 Kh3 41. Rg1 Kh2 42. Rg4 Kh3 43. Rg1 Kh4 44. b5 axb5 45. axb5 b6 46. Rg2 Rxg5 47. Rxg5 Kxg5 48. Kxd5 Kh4 49. Kxe4 Kh3 50. Kf4 Kh4 51. d5 g5+ 52. Kf3 Kh3 53. d6 g4+ 54. Ke4 g3 55. d7 g2 56. d8=Q g1=Q 57. Qh8+ Kg2 58. Qg7+ Kf1 59. Qxg1+ Kxg1 60. Kd4 Kf2 61. e4 Kf3 62. e5 Kf4 63. Kd5 1-0
+
+

@@ -1,0 +1,24 @@
+[Event "rated blitz game"]
+[Site "https://lichess.org/game/wXICwsAf"]
+[Date "2024.12.23"]
+[Round "-"]
+[White "Fed67"]
+[Black "Fleetwood_Mac"]
+[Result "0-1"]
+[GameId "wXICwsAf"]
+[UTCDate "2024.12.23"]
+[UTCTime "15:16:07"]
+[WhiteElo "2375"]
+[BlackElo "2425"]
+[WhiteRatingDiff "-5"]
+[BlackRatingDiff "+5"]
+[BlackTitle "FM"]
+[Variant "Standard"]
+[TimeControl "180+0"]
+[ECO "B00"]
+[Opening "Owen Defense"]
+[Termination "Normal"]
+
+1. e4 { [%eval 0.18] [%clk 0:03:00] } 1... b6 { [%eval 0.85] [%clk 0:03:00] } 2. d4 { [%eval 0.7] [%clk 0:02:57] } 2... Bb7 { [%eval 0.63] [%clk 0:03:00] } 3. Nc3 { [%eval 0.6] [%clk 0:02:56] } 3... g6 { [%eval 0.93] [%clk 0:02:59] } 4. Nf3 { [%eval 0.86] [%clk 0:02:55] } 4... Bg7 { [%eval 1.03] [%clk 0:02:59] } 5. Be3 { [%eval 0.73] [%clk 0:02:51] } 5... d6 { [%eval 0.75] [%clk 0:02:59] } 6. Bd3 { [%eval 0.54] [%clk 0:02:50] } 6... Nd7 { [%eval 0.67] [%clk 0:02:59] } 7. O-O { [%eval 0.39] [%clk 0:02:49] } 7... Ngf6 { [%eval 0.36] [%clk 0:02:58] } 8. h3 { [%eval 0.39] [%clk 0:02:48] } 8... O-O { [%eval 0.3] [%clk 0:02:57] } 9. Re1 { [%eval 0.34] [%clk 0:02:47] } 9... c5 { [%eval 1.25] [%clk 0:02:55] } 10. d5 { [%eval 1.12] [%clk 0:02:43] } 10... a6 { [%eval 1.17] [%clk 0:02:52] } 11. a4 { [%eval 1.22] [%clk 0:02:42] } 11... e6 { [%eval 2.83] [%clk 0:02:39] } 12. dxe6 { [%eval 2.81] [%clk 0:02:41] } 12... fxe6 { [%eval 2.58] [%clk 0:02:38] } 13. Qd2 { [%eval 0.85] [%clk 0:02:39] } 13... Nh5 { [%eval 1.88] [%clk 0:02:34] } 14. Bh6 { [%eval -1.95] [%clk 0:02:34] } 14... Rxf3 { [%eval -1.61] [%clk 0:02:32] } 15. gxf3 { [%eval -4.36] [%clk 0:02:30] } 15... Ne5 { [%eval -4.06] [%clk 0:02:31] } 16. Be2 { [%eval -4.08] [%clk 0:02:26] } 16... Qh4 { [%eval -0.01] [%clk 0:02:25] } 17. Bxg7 { [%eval -2.98] [%clk 0:02:24] } 17... Nf4 { [%eval -2.96] [%clk 0:02:17] } 18. Bxe5 { [%eval #-2] [%clk 0:02:15] } 18... Qg5+ { [%eval #-1] [%clk 0:02:15] } 0-1
+
+

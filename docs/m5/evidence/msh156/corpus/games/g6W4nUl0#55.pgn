@@ -1,0 +1,24 @@
+[Event "Swedish Rapid Chess Div 2 Team Battle"]
+[Site "https://lichess.org/game/g6W4nUl0"]
+[Date "2022.03.02"]
+[Round "-"]
+[White "HaraldEtuna"]
+[Black "bjorking"]
+[Result "0-1"]
+[GameId "g6W4nUl0"]
+[UTCDate "2022.03.02"]
+[UTCTime "19:56:19"]
+[WhiteElo "2295"]
+[BlackElo "2329"]
+[WhiteRatingDiff "-7"]
+[BlackRatingDiff "+5"]
+[WhiteTitle "FM"]
+[Variant "Standard"]
+[TimeControl "600+2"]
+[ECO "C21"]
+[Opening "Danish Gambit Accepted: Chigorin Defense"]
+[Termination "Normal"]
+
+1. e4 { [%eval 0.25] [%clk 0:10:00] } 1... e5 { [%eval 0.12] [%clk 0:10:00] } 2. d4 { [%eval -0.1] [%clk 0:10:01] } 2... exd4 { [%eval 0.0] [%clk 0:10:00] } 3. c3 { [%eval -0.55] [%clk 0:10:03] } 3... dxc3 { [%eval -0.28] [%clk 0:10:01] } 4. Bc4 { [%eval -0.56] [%clk 0:10:04] } 4... cxb2 { [%eval -0.62] [%clk 0:10:00] } 5. Bxb2 { [%eval -0.49] [%clk 0:10:06] } 5... Qe7 { [%eval 0.36] [%clk 0:09:47] } 6. Nc3 { [%eval 0.33] [%clk 0:10:06] } 6... c6 { [%eval 0.44] [%clk 0:09:45] } 7. Nf3 { [%eval 0.55] [%clk 0:10:00] } 7... h6 { [%eval 2.75] [%clk 0:09:13] } 8. O-O { [%eval 3.92] [%clk 0:10:00] } 8... Nf6 { [%eval 7.05] [%clk 0:09:11] } 9. e5 { [%eval 6.9] [%clk 0:10:01] } 9... Nh7 { [%eval 8.76] [%clk 0:09:07] } 10. Ne4 { [%eval 9.27] [%clk 0:10:02] } 10... Qb4 { [%eval 8.81] [%clk 0:08:53] } 11. Qc2 { [%eval 8.98] [%clk 0:09:46] } 11... b5 { [%eval 9.61] [%clk 0:08:26] } 12. Bb3 { [%eval 9.9] [%clk 0:09:30] } 12... Be7 { [%eval 11.19] [%clk 0:08:19] } 13. a3 { [%eval 10.18] [%clk 0:09:20] } 13... Qa5 { [%eval 11.46] [%clk 0:08:11] } 14. Bc3 { [%eval 10.03] [%clk 0:09:18] } 14... Qb6 { [%eval 11.38] [%clk 0:07:56] } 15. Bd4 { [%eval 4.82] [%clk 0:09:17] } 15... c5 { [%eval 5.19] [%clk 0:07:50] } 16. Nxc5 { [%eval 3.57] [%clk 0:09:16] } 16... Qc7 { [%eval 5.55] [%clk 0:07:17] } 17. Rac1 { [%eval 4.53] [%clk 0:08:56] } 17... Nc6 { [%eval 7.19] [%clk 0:07:11] } 18. Ne4 { [%eval 4.49] [%clk 0:08:49] } 18... O-O { [%eval 4.72] [%clk 0:06:50] } 19. Ba1 { [%eval 4.33] [%clk 0:08:46] } 19... Bb7 { [%eval 6.54] [%clk 0:06:10] } 20. Qb2 { [%eval 5.3] [%clk 0:08:46] } 20... Kh8 { [%eval 5.23] [%clk 0:04:49] } 21. Rfd1 { [%eval 5.06] [%clk 0:08:23] } 21... f6 { [%eval 10.48] [%clk 0:04:32] } 22. Nh4 { [%eval 11.13] [%clk 0:07:53] } 22... Ng5 { [%eval 13.77] [%clk 0:03:32] } 23. Ng6+ { [%eval 9.55] [%clk 0:07:51] } 23... Kh7 { [%eval 9.74] [%clk 0:03:33] } 24. Nxf8+ { [%eval 9.19] [%clk 0:07:29] } 24... Rxf8 { [%eval 9.38] [%clk 0:03:32] } 25. Nxg5+ { [%eval 9.64] [%clk 0:07:29] } 25... hxg5 { [%eval 9.71] [%clk 0:03:24] } 26. Qe2 { [%eval 9.05] [%clk 0:07:26] } 26... g6 { [%eval 10.46] [%clk 0:02:26] } 27. exf6 { [%eval 10.18] [%clk 0:07:26] } 27... Bxa3 { [%eval #9] [%clk 0:02:09] } 28. Qe7+ { [%eval -4.52] [%clk 0:07:12] } 28... Bxe7 { [%eval -3.92] [%clk 0:02:05] } 29. fxe7 { [%eval -4.76] [%clk 0:07:09] } 29... Re8 { [%eval -4.68] [%clk 0:02:00] } 30. Bf6 { [%eval -6.84] [%clk 0:07:10] } 30... Qf4 { [%eval -6.98] [%clk 0:01:58] } 31. Bb2 { [%eval -7.08] [%clk 0:06:54] } 31... Rxe7 { [%eval -7.22] [%clk 0:01:55] } 32. g3 { [%eval -9.38] [%clk 0:06:46] } 32... Qb4 { [%eval -9.51] [%clk 0:01:45] } 33. Rc3 { [%eval -11.23] [%clk 0:06:47] } 33... Nd4 { [%eval -11.57] [%clk 0:01:34] } 0-1
+
+

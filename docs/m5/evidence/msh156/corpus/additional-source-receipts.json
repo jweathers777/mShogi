@@ -1,0 +1,22 @@
+[
+  {
+    "file": "eval-orientation.scala",
+    "url": "https://raw.githubusercontent.com/lichess-org/lila/master/modules/evalCache/src/main/JsonView.scala",
+    "sha256": "4aedf927ff5d963c2862b1fc471169c2ce2401072094cad579b0f07c92af9b0f"
+  },
+  {
+    "file": "eval-export.scala",
+    "url": "https://raw.githubusercontent.com/lichess-org/database/master/src/main/scala/Evals.scala",
+    "sha256": "feb98280120881d232073adabc6e20c0e02d6e0a3977e195a5dc89794733cc5f"
+  },
+  {
+    "file": "syzygy-terms.md",
+    "url": "https://raw.githubusercontent.com/syzygy1/tb/master/README.md",
+    "sha256": "0eeb6c83b1cbce8c097c9fb15ddd9eaf3440e2a751a2297dc676909b9dc32f87"
+  },
+  {
+    "file": "tablebase-api.md",
+    "url": "https://raw.githubusercontent.com/lichess-org/lila-tablebase/main/README.md",
+    "sha256": "091118fad1505324e84447fd6aa99d110476e18588b9ae78eff48e41fe6ae486"
+  }
+]

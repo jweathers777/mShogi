@@ -1,0 +1,23 @@
+[Event "Daily Rapid Arena"]
+[Site "https://lichess.org/game/MHopRMGU"]
+[Date "2025.05.20"]
+[Round "-"]
+[White "RafecaS"]
+[Black "antoine_ducos"]
+[Result "1/2-1/2"]
+[GameId "MHopRMGU"]
+[UTCDate "2025.05.20"]
+[UTCTime "19:04:21"]
+[WhiteElo "1879"]
+[BlackElo "1822"]
+[WhiteRatingDiff "-1"]
+[BlackRatingDiff "+1"]
+[Variant "Standard"]
+[TimeControl "600+0"]
+[ECO "C24"]
+[Opening "Bishop's Opening: Vienna Hybrid"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nc3 Nc6 3. Bc4 Nf6 4. d3 Bc5 5. f4 d6 6. Nf3 Bg4 7. h3 Bxf3 8. gxf3 Qe7 9. f5 Nh5 10. h4 Nf4 11. Bxf4 exf4 12. Qd2 Be3 13. Qg2 O-O-O 14. Nd5 Qe5 15. Nxe3 fxe3 16. O-O-O Rd7 17. h5 Rhd8 18. Rh4 Na5 19. Bd5 c6 20. d4 Qf6 21. Bxf7 Rxf7 22. Rg4 Nc4 23. Qe2 Nb6 24. Qxe3 Qh6 25. Qxh6 gxh6 26. Rdg1 Rdd7 27. c3 Nc4 28. b3 Ne3 29. Rg8+ Kc7 30. Kd2 Nxf5 31. exf5 Rxf5 32. R8g7 Rxf3 33. Rxd7+ Kxd7 34. Rg7+ Kc8 35. Ke2 Rxc3 36. Rxh7 Rc2+ 37. Kd3 Rxa2 38. Rxh6 Kd7 39. Rh7+ Ke6 40. Rxb7 Kf6 41. h6 Kg6 42. h7 Rh2 43. Rxa7 Rxh7 44. Rxh7 Kxh7 45. Kc4 Kg6 46. b4 Kf6 47. d5 cxd5+ 48. Kxd5 Ke7 49. Kc6 d5 50. b5 d4 51. Kc7 d3 52. b6 d2 53. b7 d1=Q 54. b8=Q Qd6+ 55. Kc8 Qd8+ 56. Kb7 Qxb8+ 57. Kxb8 1/2-1/2
+
+

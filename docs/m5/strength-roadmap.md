@@ -92,6 +92,36 @@ outcomes before changes. Retain the native authoritative rules/history boundary,
 independent regressions and Level 1 risk-based verification for ordinary scalar
 engine work.
 
+## Deferred checkpoint — Unaided opening decision quality
+
+MSH-160 (Chess Opening Quality Assessment) preserves a future M5 investigation
+of the human-play observation that mShogi finds sound openings without a book.
+It remains **To Do**, after the recorded MSH-158 (Chess Decision Corrections)
+checkpoint. That task is already complete; before activation, confirm any
+then-active classical evaluation/correction work has finished and record its
+dependency. Opening research must not interrupt or block those corrections.
+MSH-153 (Classical Compensation Calibration) remains held. This is distinct from
+MSH-104 (per-game opening-knowledge research), with no requirement to wait for
+learned evaluation or introduce opening assistance.
+
+The proposed scope is approximately 100–150 balanced positions across opening
+families, colors and development stages, preserving available full histories.
+Compare one/five/selected fifteen seconds; distinguish master-game frequency
+from independently supported soundness, including unusual alternatives and
+middlegame consequences. Consider Lichess Opening Explorer/master games,
+Chess Openings/ECO, Position Evaluations and selected independent Stockfish
+continuations, subject to source terms, licenses, access limits and data-quality
+verification before use. The task records source links and classification scope.
+Optional short opponent book-guided sequences must continue legally and soundly
+after any deviation; mShogi remains unaided.
+
+**Execution gate:** establish a modest aggregate compute/artifact budget,
+process bounds, stopping criteria and frozen protocol with independent review
+before running engines. Reuse [existing experiment infrastructure](experiments.md).
+This planning record authorizes no engines, large downloads, corpus construction,
+new framework, production changes or opening book. It is not a competitive
+qualification campaign and does not start automatically at dependency completion.
+
 ## Later checkpoint — Controlled competitive measurement
 
 **Problem:** diagnostic roots cannot establish game-level relative strength. Earlier

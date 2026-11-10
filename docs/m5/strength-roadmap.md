@@ -1,10 +1,19 @@
 # Conventional Chess: evidence-driven engineering roadmap
 
-John approved the direction after MSH-154 (Chess Adversarial Assessment) and
-MSH-155 (Chess Time Scaling). MSH-156 (Independent Chess Benchmark) establishes
-the [broader development/held-out measurement](independent-chess-benchmark.md)
-before MSH-157 (Conventional Decision Improvement), now authorized as one coherent
-round. Major architecture and substantial tournaments still require separate approval.
+MSH-158 (Chess Decision Corrections) completes the owner-requested focused round
+following MSH-157 (Conventional Decision Improvement). See the
+[correction report](chess-decision-corrections.md). The retained general fix preserves
+a detected mating-threat extension across full-window verification: Qc8 replaces
+Qf4 at five seconds with independent continuation support. The other 159 development,
+all 80 held-out and all 40 fast-screen choices are unchanged; exact outcomes are
+preserved. This supports one local decision improvement, not broad transfer or a
+strength claim. The king-route/pawn-race and bishop-blockade failures remain open.
+
+Four alternative trials were rejected. MSH-153 (Classical Compensation Calibration)
+remains held; the evidence does not select a general compensation adjustment.
+No further engineering queue or competitive study is started by this completion.
+The sections below preserve the preceding roadmap and its reasoning. Major
+architecture and substantial tournaments still require separate approval.
 
 The objective is a demonstrably strong conventional engine at meaningful practical
 thinking times. The one-second conditional local index is not a general rating or

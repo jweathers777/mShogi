@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex-coordinator'
 created_date: '2026-11-10T12:57:00Z'
-updated_date: '2026-11-10T13:09:00Z'
+updated_date: '2026-11-10T13:30:00Z'
 labels:
   - handle:conventional-decision-improvement
 dependencies:
@@ -62,4 +62,6 @@ Independent review, relevant local correctness and cost evidence, development/he
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner coordinator on codex/chess-adversarial-assessment worktree; native implementation ownership to native_round_plan for core history/adjudication and tests only. Benchmark dependency data gate satisfied before production work; MSH-156 baseline/evidence finalization continues within this explicitly authorized linked batch. No heldout rows/results inspected by builders. Source baseline d53f344 / repository fb87ca2. Existing MSH-154 cost evidence establishes narrow exact fixes; broad search changes await development results.
+
+Native exact corrections committed3b52314 and binary8355dddd frozen. Level1 local core232, Chess search79 (1ignored), console claim1 passed; releasebuild and independent native review approved. Cost retry preserves first diagnostic invalid-result attempt0.041284s.99paired fixed-depth decisions/scores/nodes/depth identical; three alternating1spairs each yield affected-history median visit ratios3.856/4.049, normalcontrol1.037, all selectedmoves unchanged.18.147348376 active seconds charged within profile60reservation. Cost evidence is not broad strength proof. Full development baseline supports no exact failure; bounded eight-candidate/two-control coverage plan selects3puzzle mismatches and5lower-listed STS preferences, all opinions pending continuation checks. Reference paired3s analysis begun within160reservation; native ablations await discrimination.
 <!-- SECTION:NOTES:END -->

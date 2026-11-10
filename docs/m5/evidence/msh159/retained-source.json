@@ -1,0 +1,8 @@
+{
+  "disposition": "Rejected entire frozen96e4bcd candidate; restored predecessor evaluation. No post-heldout tuning or alternative subvariant selected.",
+  "retained_production_source": "e93a750c058c82e8f85f8a05b92326747cd92aef",
+  "comparison_base": "d1f2c674058b157a56aea98c8ed7f218cecb3c14",
+  "production_diff_from_base": [],
+  "restored_evaluator_sha256": "892a0669a3c145a64b6931dfef53748be857d0415c5388bf2eea91c383bd1dbb",
+  "verification": "All crates, Cargo.toml and Cargo.lock unchanged from completed tested predecessor checkout. Experimental90test results belong to rejected candidate; prior MSH158 native checks remain applicable to unchanged retained source."
+}

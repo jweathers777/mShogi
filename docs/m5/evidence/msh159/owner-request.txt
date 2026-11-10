@@ -1,0 +1,155 @@
+# mShogi: Investigate and Improve Classical Chess Evaluation
+
+MSH-158 (Chess Decision Corrections) fixed a real search problem, but two important decision failures remain.
+
+I now want to examine whether the classical evaluation function can correctly assess positions where the important consequences are known.
+
+**The objective is better Chess decisions, not closer numerical agreement with Stockfish.**
+
+## 1. Investigate the unresolved failures
+
+Start with these development positions.
+
+**0UOyM: pawn race and king route**
+
+mShogi prefers Kg6 over exf3+. Independent analysis strongly favors exf3+ because it leads to a better king route and pawn race.
+
+**0m5mI: bishop blockade**
+
+mShogi initially prefers Bd6 over Kc3. At longer thinking times, it finds Kc3 but still appears to misunderstand the blockade and king penetration.
+
+Also use 28pJK as a useful control. MSH-158 corrected its move selection, but its reported evaluation remains substantially different from the independent reference.
+
+These are diagnostic examples. Do not tune the engine to recognize these exact positions.
+
+## 2. Separate search failures from evaluation failures
+
+For each important position, establish the consequences as reliably as possible.
+
+Use tablebases or proven continuations where available. Otherwise use independently reviewed reference analysis with the necessary uncertainty.
+
+Examine selected intermediate positions along the important continuations.
+
+Determine:
+
+- What is the actual position?
+- What does mShogi's static evaluation report?
+- Which evaluation terms produce that result?
+- Does the evaluation correctly rank important alternatives?
+- Does the error come from material, king activity, pawn structure, passed pawns, mobility, or another general feature?
+- Does the search reach the relevant position and use its evaluation correctly?
+
+Keep the same position, side to move, history, and evaluation perspective when making comparisons.
+
+Do not treat Stockfish centipawn values as calibration targets. Its evaluation scale and methods differ from ours.
+
+A difference in score is not enough to establish a defect. We need evidence that the evaluation ranks relevant positions incorrectly or causes poor decisions.
+
+## 3. Examine the existing classical evaluator
+
+Review the current evaluation design as a complete system.
+
+Identify the terms that assess king activity, pawn races, passed pawns, blockades, piece coordination, and conversion.
+
+Check whether these terms work together as intended.
+
+Consider established conventional Chess evaluation techniques. Use reference implementations where they help explain a general solution.
+
+Do not assume that an existing heuristic works well merely because it has tests or is based on a familiar Chess principle.
+
+Focus on the mechanisms supported by the observed failures. Do not perform unrelated optimization or a general architectural rewrite.
+
+## 4. Test general improvements
+
+You are authorized to implement and test experimental classical evaluation changes.
+
+You do not need to prove a correction will work before testing it. A clear technical hypothesis and a controlled experiment are sufficient.
+
+For each candidate change:
+
+1. State the problem and expected effect.
+2. Implement a general correction.
+3. Test the motivating positions and other relevant development positions.
+4. Measure actual move decisions at five seconds.
+5. Examine regressions and wider effects.
+6. Retain the correction only if the evidence supports it.
+
+Use selected fifteen-second tests when they help separate evaluation from search depth.
+
+A better static score is not sufficient. The correction must improve meaningful decisions or provide a clearly established evaluation benefit that supports those decisions.
+
+Do not add position-specific bonuses. Do not modify pruning or search behavior merely to force a preferred move.
+
+If the investigation establishes that the principal problem is still search coverage rather than evaluation, report that finding. Do not disguise a search problem as an evaluation problem.
+
+## 5. Use the existing benchmark
+
+Reuse the 240-position benchmark from MSH-156.
+
+Use development positions for diagnosis and experiments. Include independent successful controls and positions with similar mechanisms.
+
+Keep the 80 held-out positions sealed until the candidate and comparison procedure are frozen.
+
+Use five seconds as the primary comparison. Retain the existing one-second checks.
+
+Avoid running the entire benchmark after every experimental change. Use focused development tests first.
+
+When a candidate is ready, compare it with the frozen predecessor on the full benchmark. Reuse verified baseline results where possible.
+
+Report supported improvements, regressions, unchanged decisions, and unresolved judgments separately.
+
+Preserve exact mate and tablebase results.
+
+## 6. Strict scope
+
+Do not substitute any of the following for the assigned objective:
+
+- General search-speed optimization.
+- History or draw-claim optimization.
+- New benchmark construction.
+- Additional general architecture assessments.
+- Opening-book research.
+- Learned evaluation.
+- Shogi or Xiangqi work.
+- A competitive tournament.
+- A broad parameter sweep without a specific hypothesis.
+
+Record unrelated findings briefly, but do not implement them.
+
+Keep MSH-153 (Classical Compensation Calibration) on hold unless the evidence establishes a relevant general valuation problem. Do not activate it solely because it is next in the backlog.
+
+## 7. Work limits and engineering process
+
+Use a single focused engineering task with a descriptive handle.
+
+Follow AGENTS.md and the risk-based verification policy. Preserve authoritative native rules, history, outcomes, restoration, and cancellation.
+
+Use independent review for the diagnosis and retained corrections.
+
+You may implement and integrate supported evaluation changes without requesting approval for each experiment.
+
+Keep new active engine computation within 2,400 seconds. Do not run opponent matches or substantial new studies without approval.
+
+If a reasonable set of distinct experiments fails to identify an effective correction, stop. Explain the technical obstacle and recommend the next general mechanism to investigate.
+
+Do not replace a failed evaluation investigation with unrelated engineering work.
+
+## 8. Completion
+
+Report:
+
+1. Which evaluation weaknesses were established.
+2. How they affect real Chess decisions.
+3. Which general corrections were tested.
+4. Which corrections were retained or rejected.
+5. How the engine's five-second decisions changed.
+6. What the held-out results establish.
+7. Which important problems remain unresolved.
+
+Keep the conversational summary short. Preserve detailed technical evidence in the repository.
+
+**Success means that we improve Chess decisions through a justified general evaluation correction.**
+
+If the evidence shows that evaluation is not the principal cause, that is a valid conclusion. In that case, do not make an unsupported change.
+
+Do not begin another unrelated engineering workstream.

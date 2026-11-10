@@ -1,0 +1,372 @@
+{
+  "rows": [
+    {
+      "id": "lichess-puzzle-0UOyM",
+      "move": "h7g6",
+      "san": "Kg6",
+      "score": {
+        "cp": 0,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 76,
+      "pv_san": [
+        "Kg6",
+        "g4",
+        "Kf6",
+        "Kg3",
+        "Ke6",
+        "Kf2",
+        "Kd6",
+        "Ke2",
+        "Ke6",
+        "Kd2",
+        "Kd6"
+      ],
+      "last_two": [
+        {
+          "depth": 75,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 76,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 103,
+      "legal_replay": true,
+      "query_sha256": "18f5ede05fec614d8c04b9f0f30ba4c3b7eb5b32cf496667e44df74ac2cbec0c"
+    },
+    {
+      "id": "lichess-puzzle-0UOyM",
+      "move": "e4f3",
+      "san": "exf3+",
+      "score": {
+        "cp": 699,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 51,
+      "pv_san": [
+        "exf3+",
+        "Kxf3",
+        "Kh6",
+        "g4",
+        "Kg6",
+        "Kf4",
+        "Kf6",
+        "g5+",
+        "Ke6",
+        "Ke4",
+        "g6",
+        "Kd4",
+        "Kf5",
+        "Kc5",
+        "Kxg5",
+        "Kb6",
+        "Kf5",
+        "Kxa6",
+        "g5",
+        "Kxb5",
+        "g4",
+        "a4",
+        "g3",
+        "Ka6",
+        "g2",
+        "b5",
+        "g1=Q",
+        "b6",
+        "Qg8",
+        "b7",
+        "Qb8",
+        "a5",
+        "Ke5",
+        "Kb6",
+        "Kd5",
+        "a6",
+        "Kd4",
+        "Kc6",
+        "Kc4",
+        "a7",
+        "Qxa7",
+        "Kc7",
+        "Kd5",
+        "Kd8"
+      ],
+      "last_two": [
+        {
+          "depth": 50,
+          "score": {
+            "cp": 699,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 51,
+          "score": {
+            "cp": 699,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 103,
+      "legal_replay": true,
+      "query_sha256": "d25cf8db10820782b27b3ddc2b95387030caf5ed219fdc3685315929ade1f95e"
+    },
+    {
+      "id": "lichess-puzzle-0m5mI",
+      "move": "b2c3",
+      "san": "Kc3",
+      "score": {
+        "cp": 548,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 26,
+      "pv_san": [
+        "Kc3",
+        "f4",
+        "exf4",
+        "e3",
+        "Bc1",
+        "e2",
+        "Bd2",
+        "Ba6",
+        "Kb4",
+        "Kf5",
+        "Kc5",
+        "Ke4",
+        "Kb6",
+        "Kxd4",
+        "Kxa6",
+        "Kd3",
+        "Bb4",
+        "Ke3",
+        "Kb5",
+        "d4",
+        "a6",
+        "d3",
+        "a7",
+        "d2",
+        "Bxd2+",
+        "Kxd2",
+        "a8=Q",
+        "e1=Q",
+        "Qa5+",
+        "Ke2",
+        "Qxe1+",
+        "Kxe1",
+        "f5",
+        "Kf2",
+        "f6",
+        "Kxg3",
+        "f7"
+      ],
+      "last_two": [
+        {
+          "depth": 25,
+          "score": {
+            "cp": 548,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 26,
+          "score": {
+            "cp": 548,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 92,
+      "legal_replay": true,
+      "query_sha256": "49f23684279119916f25b927612afa4fceb51da5640d439ce0e5097bab759694"
+    },
+    {
+      "id": "lichess-puzzle-0m5mI",
+      "move": "a3d6",
+      "san": "Bd6",
+      "score": {
+        "cp": 0,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 88,
+      "pv_san": [
+        "Bd6",
+        "Kf7",
+        "Kc3",
+        "Ke6",
+        "Be5",
+        "Kd7",
+        "Bb8",
+        "Kc6",
+        "Kb4",
+        "Ba6",
+        "Bf4",
+        "Bb5",
+        "Be5",
+        "Bc4"
+      ],
+      "last_two": [
+        {
+          "depth": 87,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 88,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 92,
+      "legal_replay": true,
+      "query_sha256": "dba413828938bc554566e32e968accc9c30cb8b627e60e02d94d73e2de4937c7"
+    },
+    {
+      "id": "lichess-puzzle-28pJK",
+      "move": "f5f4",
+      "san": "Qf4",
+      "score": {
+        "cp": -438,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 22,
+      "pv_san": [
+        "Qf4",
+        "Qc1",
+        "Qf6",
+        "Rg3",
+        "Rd4",
+        "b3",
+        "Rbd8",
+        "Re3",
+        "h5",
+        "Nd5",
+        "Bxd5",
+        "cxd5",
+        "R8xd5",
+        "Bc4",
+        "Rf5",
+        "R1e2",
+        "Qb6",
+        "Qc3",
+        "Kh7",
+        "Kb2",
+        "Rff4",
+        "Kc1",
+        "Qf6",
+        "f3",
+        "a5"
+      ],
+      "last_two": [
+        {
+          "depth": 21,
+          "score": {
+            "cp": -438,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 22,
+          "score": {
+            "cp": -438,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 49,
+      "legal_replay": true,
+      "query_sha256": "0e0d05a5b8b662bab1a99cd668e97c3366cd827675b9e2c7ccf929a88bc59e69"
+    },
+    {
+      "id": "lichess-puzzle-28pJK",
+      "move": "f5c8",
+      "san": "Qc8",
+      "score": {
+        "cp": 287,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 19,
+      "pv_san": [
+        "Qc8",
+        "b3",
+        "Rd2",
+        "Rd1",
+        "Qa6+",
+        "Na4",
+        "Bxa4",
+        "Qa1+",
+        "Kg8",
+        "Rxd2",
+        "Bxb3+",
+        "Kb2",
+        "Bxa2+",
+        "Kc2",
+        "Qa4+",
+        "Kc1",
+        "Qa3+",
+        "Kc2",
+        "Qb3+",
+        "Kc1",
+        "Qb1+",
+        "Qxb1",
+        "Rxb1+",
+        "Kc2",
+        "Rxg1",
+        "Kc3",
+        "Bb1",
+        "Bf3",
+        "Rc1+",
+        "Kb2",
+        "Re1",
+        "Rd8+"
+      ],
+      "last_two": [
+        {
+          "depth": 18,
+          "score": {
+            "cp": 296,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 19,
+          "score": {
+            "cp": 287,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 49,
+      "legal_replay": true,
+      "query_sha256": "415b43c29b01be1c7ab0093279500de3256e1d8e36eb4d4a85e7b06aa7728781"
+    }
+  ],
+  "interpretation": "Reused equal3s full-history root analysis: match actualmoves rather than historical role labels. Finite support for exf3+ overKg6, Kc3 overBd6 andQc8 overQf4. Scores are not evaluator calibration targets and do not establish exact root WDL."
+}

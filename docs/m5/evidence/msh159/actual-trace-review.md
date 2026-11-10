@@ -1,0 +1,31 @@
+# MSH-159: independent actual-search trace review
+
+Verdict: actual bishop search supplies meaningful evaluation-and-backup evidence beyond PV inclusion. Pawn evidence establishes improved selected route and backed-up bounds, but does not trace the exact corrected race endpoint into the result. Together with independent endpoint/reference evidence and focused decision controls, this supports proceeding to frozen wider validation. Final retention remains pending the full benchmark and combined-control adjudication. No engine/build/test execution or held-out reads by reviewer.
+
+Reviewed /tmp/msh159/runs/combined-trace15 native outputs, trace-build.json, trace-equivalence.json and retained MSH-158 endpoints15/trace15. Observer build identifies eval hash a00fc8ab39faba24d75517b2ad0cf9b88402aa0e60e38fc9b8e6df438d4c7c9c; final approved source differs only by the reviewed comment correction. Depth4 equivalence receipt reports two roots equal in move,score,nodes,completed_depth,stats,PV and root restoration. This supports observer semantic equivalence at fixed work, not zero timing overhead.
+
+## Pawn route
+
+Candidate15s selects exf3, completed depth15, score−6 from Black's perspective. Iteration16 is incomplete. Selected trace has1635 events and dropped0. Crucially, it contains NO visit to cached endpoint 8/8/8/1K6/1P3kp1/P7/8/8 w and no selected evaluate event with a300 race endgame term. Therefore it cannot establish that endpoint's static55→−245 change directly produced this actual root value. That sign/rank improvement is separately demonstrated by static evaluation and tablebase evidence; the root tree changed, and unselected branches/TT producers remain outside this trace.
+
+The actual seven-piece capture state is reached. Its static evaluation remains White−80, correctly signed, so not every position along the route was statically misvalued. At completed iteration14 node2663201 reuses same-context depth6/credits3 TT Upper−46 for White; iteration15 node5657117 reuses depth7 Upper−145. The retained predecessor had a same-context depth6 Lower+55. Different bound directions and changed search trees prevent interpreting this as exact score subtraction, but the candidate no longer treats this route as favorable to White under those windows. Cached PVs are not assumed to identify evaluated leaves.
+
+Completed iteration15 nodes5023168/5023169/5023170, after exf3/Kxf3/Kh6 respectively, return White6/Black−6/White6 within their[-40,40] windows and support the selected king route. This is a still-imperfect heuristic estimate, not a proof that the root is drawn/lost. Retained independent full-history analysis supports Kh6 over g6 and exf3 over Kg6; the tablebase endpoints do not themselves supply root-history WDL.
+
+## Bishop continuation
+
+Candidate15s selects Kc3, completed depth11, score+59 White; iteration12 is incomplete. The703-event selected trace has dropped0. In completed iteration11 after Kc3 f4 exf4 e3, node2354308 enters depth7/window[-184,61] PV. Bc1 is admitted unreduced at child depth6, then full-PV node2419879 returns Black−59 exact-window in[-61,35]. Kc2 is also admitted unreduced at child depth6; node2423792 reuses same-context depth6 Lower−59 in[-60,−59]. Thus White's Kc2 value is bounded at most59; this comparison retains Bc1 but does not prove it strictly better than Kc2. Parent2354308 returns White59 with Bc1.
+
+This differs from predecessor completed iteration11 parent4868355, window[6,32]: Kc2 node4868356 returned Black−8 exact-window, whereas Bc1 node4881305 returned Black−6 lower in[-9,−8], so Bc1 failed to improve the established White8. The predecessor also evaluated Bc1 White12 versus Kc2 White14, contrary to the independent finite preference. Candidate actual interior evaluations are Bc1 White89 versus Kc2 White−29. No Stockfish numerical calibration is implied.
+
+The candidate trace also exposes the intermediate discontinuity honestly: after Bc1,e2, White evaluates−93 because Bc1 does not control e1; after Bd2, evaluation becomes White102. Black pawn terms are middle9/end18 after Bc1, middle84/end214 after e2, then middle9/end14 after Bd2. This credits current pressure/blockade, not a fictitious future Bd2 at the earlier state. It can still change selective search behavior and is not a continuity guarantee.
+
+A genuine evaluated frontier witness occurs at qnode2420204 after Kc3 f4 exf4 e3 Bc1 e2 Bd2 Kf5 Kb4 Ke4 Bc3, FEN8/8/8/P2p3p/1KbPkPpP/2B3P1/4p3/8 b - - 5 52. It evaluates Black−59 and returns a stand-pat lower bound in[-61,−60]. The trace records propagation through main2420203,2420198,2420186,2420185 into Bd2 node2419881, e2 node2419880, Bc1 node2419879, after-e3 node2354308, and ultimately root1800956, which returns White59. The internal narrow bounds alternate signs; parent exact-window labels remain selective-search results, not game-theoretic exactness.
+
+Both passers are restricted at this leaf. From the recorded terms and old/new formula, independent arithmetic reconstructs baseline White−22 versus candidate White59 at the identical position: White's a5 discount removes27 middle/45 end, Black's e2 discount removes75 middle/129 end, tapered at phase660/6400. Candidate contributions are1057 White and998 Black; old formula would yield1100 and1122. This reconstruction is not a claim the predecessor trace visited the same leaf. It establishes that the changed evaluation term is present in an actual returned frontier bound, rather than merely a named move in a PV.
+
+## Limits and retention gate
+
+The trace supports a causal contribution, not complete attribution of every root decision. Quiet alternatives outside selected prefixes, ordering, TT reuse and changed windows matter. A static value at a main node is not automatically its returned value. Zero drops means no cap loss only within selected paths/iterations. Timed tracing has cost; primary five-second claims must use uninstrumented runs.
+
+Current evidence plausibly meets the owner's allowance for a general evaluation benefit supporting meaningful decisions, including the observed combined five-second root changes reported by coordinator. Do not downgrade this to mere Stockfish score agreement, but do not claim broad improvement or exact root WDL. Proceed with frozen validation and preserve any regression/unresolved judgment before final retention.

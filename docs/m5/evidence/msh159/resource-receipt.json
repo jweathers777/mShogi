@@ -1,0 +1,156 @@
+{
+  "audited_utc": "2026-11-10T19:27:43.951088+00:00",
+  "native_attempts": 400,
+  "failed_native_attempts": 0,
+  "reference_attempts": 12,
+  "failed_reference_attempts": 0,
+  "verified_native_and_reference_artifacts": 3284,
+  "native_active_seconds": 1752.7432432410021,
+  "reference_active_seconds": 36.00335687585175,
+  "measured_timed_engine_seconds": 1788.7466001168539,
+  "correctness_and_static_reserved_upper_bound_seconds": 120.0,
+  "conservative_total_including_correctness_and_static": 1908.7466001168539,
+  "reference_reservation_seconds": 180.0,
+  "effective_registry_charge_with_unused_reservations": 2052.7432432410005,
+  "global_cap_seconds": 2400,
+  "within_cap": true,
+  "native_worker_cpu_seconds": 1767.4421770000004,
+  "native_process_wall_seconds": 1811.1627651676536,
+  "folders": [
+    {
+      "directory": "bishop-blockade",
+      "attempts": 11,
+      "planned_cells": 11,
+      "failures": 0,
+      "active_seconds": 55.002425336,
+      "manifest_sha256": "6c51f50f472c29d5f493de027c99a56e03c852c39acc3e7013e46f089ceea979"
+    },
+    {
+      "directory": "bishop-corrected",
+      "attempts": 11,
+      "planned_cells": 11,
+      "failures": 0,
+      "active_seconds": 55.002920247000006,
+      "manifest_sha256": "4af403913b76f2c8f0ba7240beb56f28af37493a68e97b5802374744ea9fa37d"
+    },
+    {
+      "directory": "pawn-clearance",
+      "attempts": 30,
+      "planned_cells": 30,
+      "failures": 0,
+      "active_seconds": 150.010516168,
+      "manifest_sha256": "c542d8682d525f04c35289629f7e34490798f151de0e51ea42564ee1fa99a144"
+    },
+    {
+      "directory": "bishop-pressure",
+      "attempts": 11,
+      "planned_cells": 11,
+      "failures": 0,
+      "active_seconds": 55.002487207,
+      "manifest_sha256": "64197bacb34caebeb35ffb4a9791f7234cbaa69c75a4d28b2d64829f026a6e1b"
+    },
+    {
+      "directory": "pawn-clearance15",
+      "attempts": 1,
+      "planned_cells": 1,
+      "failures": 0,
+      "active_seconds": 15.000269917,
+      "manifest_sha256": "6a1d08352f08a6e6a8234579006b8c4bb1977beed6ac0fc6c8c7a8f2c458a0f2"
+    },
+    {
+      "directory": "bishop-pressure15",
+      "attempts": 1,
+      "planned_cells": 1,
+      "failures": 0,
+      "active_seconds": 15.000269292,
+      "manifest_sha256": "80880facfc3aecb2710caa23289ccf2523f039206852cbe867103fd283e1c694"
+    },
+    {
+      "directory": "bishop-pressure-extra",
+      "attempts": 19,
+      "planned_cells": 19,
+      "failures": 0,
+      "active_seconds": 95.00510975300001,
+      "manifest_sha256": "26e44ecc2dccb7e6c29d06b7ff19e8b5be5f793aed51b32dab417b8bf97e0342"
+    },
+    {
+      "directory": "bishop-intermediate-baseline",
+      "attempts": 2,
+      "planned_cells": 2,
+      "failures": 0,
+      "active_seconds": 10.000507625000001,
+      "manifest_sha256": "97eb8e840cbcb8239631a8a8ded195fb686918a6046a34f1bc914bd59d394a9d"
+    },
+    {
+      "directory": "bishop-intermediate-pressure",
+      "attempts": 2,
+      "planned_cells": 2,
+      "failures": 0,
+      "active_seconds": 10.000528001,
+      "manifest_sha256": "6bc2cd714e24d29410dcbff162ec6e811807cf19bf5ca33b15ab8dc3bb02a4df"
+    },
+    {
+      "directory": "combined-controls",
+      "attempts": 30,
+      "planned_cells": 30,
+      "failures": 0,
+      "active_seconds": 150.00770208199998,
+      "manifest_sha256": "85437f82d701f976e51728ee34047f7fc7375619a83be21b9a58525e6cd7be17"
+    },
+    {
+      "directory": "combined-trace15",
+      "attempts": 2,
+      "planned_cells": 2,
+      "failures": 0,
+      "active_seconds": 30.000562625999997,
+      "manifest_sha256": "1494068f58e2b0828a8b263ecc7d6bd37758e76f0bbac74afc667eb599636348"
+    },
+    {
+      "directory": "candidate-development",
+      "attempts": 160,
+      "planned_cells": 160,
+      "failures": 0,
+      "active_seconds": 728.4448622439996,
+      "manifest_sha256": "178f0e1020ea1c5acfe7db767b683a404acbeee85b5ead42ab0d46412046d525"
+    },
+    {
+      "directory": "candidate-heldout",
+      "attempts": 80,
+      "planned_cells": 80,
+      "failures": 0,
+      "active_seconds": 348.2045481219999,
+      "manifest_sha256": "7ba0a5ed8856be7c5afed4d9ca4fbad2bf6f50c94960af70b6f6a85109968165"
+    },
+    {
+      "directory": "candidate-fast",
+      "attempts": 40,
+      "planned_cells": 40,
+      "failures": 0,
+      "active_seconds": 36.060534621,
+      "manifest_sha256": "6e86f1d9426e243c2be97d1d6f1c94b5d631cf7368ea2f00979640e1489436dc"
+    }
+  ],
+  "diagnostic_trace_limits": [
+    {
+      "directory": "combined-trace15",
+      "index": 0,
+      "events": 1635,
+      "dropped": 0
+    },
+    {
+      "directory": "combined-trace15",
+      "index": 1,
+      "events": 703,
+      "dropped": 0
+    }
+  ],
+  "checks": [
+    "frozen manifest/panel/driver/binary/artifact hashes",
+    "sequential complete ledgers or explicitly failed diagnostic stop; no orphan attempts",
+    "exact histories and runtime input FENs",
+    "legal native decisions/PVs and reference PVs replayed from full histories",
+    "native root restoration and admission assertions",
+    "no native/reference overlap"
+  ],
+  "limitations": "Correctness-and-static120s is a conservative reservation, not measured CPU. Reference180s remains charged even where actual usage is lower. Failed trials and incomplete diagnostic trace iterations are preserved; PVs and static scores do not prove outcomes. Predecessor reused measurements are outside new resource consumption. No matches."
+}

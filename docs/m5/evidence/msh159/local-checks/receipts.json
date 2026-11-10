@@ -1,0 +1,33 @@
+[
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "mshogi-search",
+      "--lib",
+      "chess"
+    ],
+    "returncode": 0,
+    "wall_seconds": 13.996578291989863,
+    "log": "check-0.log"
+  },
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mshogi-search",
+      "--example",
+      "chess_frontier_profile"
+    ],
+    "returncode": 0,
+    "wall_seconds": 2.7742055421695113,
+    "log": "check-1.log"
+  }
+]

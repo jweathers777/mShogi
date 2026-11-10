@@ -1,0 +1,17 @@
+[
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "mshogi-search",
+      "--lib",
+      "chess"
+    ],
+    "returncode": 101,
+    "wall_seconds": 15.137925958260894,
+    "log": "check-0.log"
+  }
+]

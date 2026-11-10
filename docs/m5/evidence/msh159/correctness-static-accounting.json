@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "prepared_utc": "2026-11-10T19:12:02.443375+00:00",
+  "reservation_id": "correctness-and-static",
+  "reserved_seconds": 120,
+  "measurement_classification": "Conservative allowance, not measured engine-active time or CPU. Per-process wall receipts and native elapsed counters below are partial and must not be summed as total measured engine CPU.",
+  "coverage": [
+    "initial predecessor/trial1 static evaluations,19 positions each",
+    "later trial2 static evaluations and three tablebase legal-set comparisons",
+    "retained remote tablebase raw API replies and wall receipts; remote service compute is not measured locally",
+    "two-root depth4 traced/untraced combined candidate equivalence",
+    "all recorded failed and passed focused tests and final local Chess suite; release builds preserved separately"
+  ],
+  "static_batches": [
+    {
+      "artifact": "predecessor-static.jsonl",
+      "positions": 19,
+      "native_reported_elapsed_ms_total": 0.780957,
+      "legal_set_verified_ids": []
+    },
+    {
+      "artifact": "bishop-blockade-static.jsonl",
+      "positions": 19,
+      "native_reported_elapsed_ms_total": 0.7703360000000001,
+      "legal_set_verified_ids": []
+    },
+    {
+      "artifact": "pawn-clearance-static.jsonl",
+      "positions": 19,
+      "native_reported_elapsed_ms_total": 0.9359150000000002,
+      "legal_set_verified_ids": [
+        "0UOyM-capture",
+        "0UOyM-cached-endpoint",
+        "0UOyM-other-leaf"
+      ]
+    }
+  ],
+  "initial_static_process_wall_receipt": "static-receipt.json",
+  "later_static_limit": "Coordinator estimates later static work around15ms; no standalone process timing receipt. This is an estimate covered by120s, not a measurement reconstructed from native counters.",
+  "trace_equivalence": {
+    "passed": true,
+    "roots": 2,
+    "depth": 4,
+    "equal_fields": [
+      "move",
+      "score",
+      "nodes",
+      "completed_depth",
+      "stats",
+      "pv",
+      "root_unchanged"
+    ],
+    "receipts": [
+      {
+        "binary": "combined",
+        "wall_seconds": 0.22880362486466765
+      },
+      {
+        "binary": "traced-combined",
+        "wall_seconds": 0.17341183265671134
+      }
+    ],
+    "reservation": "correctness-and-static120"
+  },
+  "tests": [
+    {
+      "stage": "trial1 initial",
+      "result": "1 passed,1 failed; invalid fixture defense expectation",
+      "receipt": "trial1-tests-first-failure.json"
+    },
+    {
+      "stage": "trial1 corrected fixture",
+      "result": "2 passed",
+      "receipt": "trial1-tests.json"
+    },
+    {
+      "stage": "trial1b king attack guard",
+      "result": "3 passed",
+      "receipt": "trial1b-tests.json"
+    },
+    {
+      "stage": "trial2 race/clearance",
+      "result": "recorded pawn_race filter1passed; promotion_clearance command exit0",
+      "receipts": [
+        "trial2-tests.json",
+        "trial2-tests.log"
+      ]
+    },
+    {
+      "stage": "trial3 bishop tests",
+      "result": "5 passed",
+      "receipts": [
+        "trial3-tests.json",
+        "trial3-tests.log"
+      ]
+    },
+    {
+      "stage": "combined initial broad Chess",
+      "result": "89 passed,1 failed,1 ignored; independently derived term arithmetic assertion",
+      "receipt": "local-checks/initial-receipts-failed.json",
+      "retained_log": "local-checks/initial-check-0-failed.log",
+      "receipt_log_path_note": "Original receipt says check-0.log; failing bytes preserved under initial-check-0-failed.log before succeeding log replaced check-0.log."
+    },
+    {
+      "stage": "combined final broad Chess",
+      "result": "90 passed,0 failed,1 ignored; release build exit0",
+      "receipt": "local-checks/receipts.json"
+    }
+  ],
+  "source_provenance": {
+    "candidate_commit": "96e4bcd",
+    "durable_freeze_commit": "9831230",
+    "final_binary_sha256": "b02a128ccf2e7f5a6f70b3ce8b99ebd753a0eda44cc46e5f9ddba89b2d2bd405",
+    "limitation": "Coordinator reports final source differs from tested source only by comment and produces identical binary. Build/source hash evidence retained in native-build.json and combined-build.json; this accounting note is not a fresh build attestation."
+  },
+  "artifacts": {
+    "static-receipt.json": "a43e74465b8f3e9d7949eb4ae1b134409093cdf20b0c0f67757e314322d10c82",
+    "predecessor-static.jsonl": "d38b29146c461ab9f29f92482616f2a3d3a688967818ba5faf983ce6a9f00d64",
+    "bishop-blockade-static.jsonl": "06054060ffe9d3e9c1b74dda556a76391d1c5fbe2c6ccda084ea4d058af7076e",
+    "pawn-clearance-static.jsonl": "e6701328835d7ae2d4896e7d82ddc789ed100fc8e70fc4064f75d8968831c90f",
+    "trace-equivalence.json": "bc0767bdbb260cd928e9ad8931dcba5a4a2df4ec66da67a4a1ef863b2c34855c",
+    "combined-equivalence.jsonl": "46599e4bba4375d3ec75ee4591c59b8a1c919c44e9dd4552d89857792a868264",
+    "traced-combined-equivalence.jsonl": "59fe361c0d1c82a1513e3832e247157c1a006685b120f898631a66f82c556545",
+    "trial1-tests-first-failure.json": "7e847913670517fa8276353b010fed0e43bd9215c6e42c021f9d5de667859093",
+    "trial1-tests.json": "de239abd1f5c848b4c7a3039f0680800b1fbc660b734424d7bff4843c288cdf5",
+    "trial1b-tests.json": "d4c8090a2bcd4fe80665673729f8391ff91eb6f92e0d819fc6c4a5c264c28dda",
+    "trial2-tests.json": "49bef1b55042d6739bcfc3b4e25d8937820dcbb0f9fee9d8c0f8c1d11ab27908",
+    "trial2-tests.log": "4bf1465ea9c0aa74f0189ce46469029c26c15c3fec55582ff9e994cbe63fc781",
+    "trial3-tests.json": "d7672cb9545985445b545e5f946bd090535fec03b42057d2743c4132c8bbe113",
+    "trial3-tests.log": "9b34775ed78613f6c9382dc96e7bfd857e316a730a067002036f7a1380be8af2",
+    "local-checks/initial-receipts-failed.json": "3ad50143da8188f0e180d0fa9bdb21cf8291c2b36cd8d45a57813c4af55b0583",
+    "local-checks/initial-check-0-failed.log": "3109286daf9278025c57e92235a8a4435d14369042f957754941ecc8881a8583",
+    "local-checks/receipts.json": "a6a23d176440dd3c90c2f0a739c94a54843067ff59cd8af946cfd9271be711af",
+    "local-checks/check-0.log": "b9bafb36aceeb9b5437d763418b89fbc5633c9bbe6d8f75ba37cef05256bcecb",
+    "local-checks/check-1.log": "498191daa304a47c89a08f246c1f0dda203ddedee887329310c3a1409b32203e",
+    "native-build.json": "7c02ae4947f2171cd3c2b6fce48bf3a5c0fdf500b6275eda01cf2424f98e12f9",
+    "combined-build.json": "4aa84d6fc9169a70ef819663ac3921d3201ff8f1b4022ebe03903b9dbb463c1f",
+    "final-eval.rs": "5b4d9bed4cd86f3096bfefc98dbfb14c9762e421281ae1dd49164b124d15d007"
+  },
+  "tablebase_artifacts": {
+    "tablebase/cached-endpoint.json": "f219aed7910d8d3968529d2283f121dc5dc438a094a72214a8a67b48ac220376",
+    "tablebase/cached-endpoint.receipt.json": "d269a12195e1cbcf4025adc9eb698b7dac841a653015d51716ecd4746181c9fb",
+    "tablebase/other-branch-leaf.json": "f29ace7407465845650ab55e5fe78d327c58ce6cbbc16815c4242ae158112239",
+    "tablebase/other-branch-leaf.receipt.json": "84b2c5e47cfee9c965303d5de9ed5bc9e325d7e317d694e56f9b41f2ca62ce9d",
+    "tablebase/route-capture.json": "1cc0b8da4c827ba2ad33cdbdf746eac50bbb789728bb940888f199ff519fac31",
+    "tablebase/route-capture.receipt.json": "886f72ae8b5a887ffecd8513a9935d2d42d1a93b5df67b9722b749f57d6411fd"
+  },
+  "reference_separate_accounting": "Initial reference actual18.002765791025013s sits within distinct180s reservation; do not count it in120s here. Timed native/reference ledgers are audited separately."
+}

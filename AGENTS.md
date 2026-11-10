@@ -223,6 +223,21 @@ revealed held-out material. MSH-153 (Classical Compensation Calibration) remains
 held; no competitive campaign is justified by this round's evidence. Revisit the
 continuation-quality diagnosis before selecting further implementation work.
 
+Owner correction, 2026-11-10: MSH-158 (Chess Decision Corrections) is the current
+assignment. Improve actual conventional Chess decisions, beginning with development
+roots 0UOyM, 0m5mI and 28pJK plus successes. Trace real interior search admission,
+windows, TT, reductions/frontier and returned values; separate child searches are
+not evidence of interior behavior. Test focused general search/evaluation hypotheses
+without requiring perfect causal proof; retain only supported corrections. Do not
+substitute native/history optimization, infrastructure, new benchmark construction
+or another general assessment. Use the existing 160/80 split, five seconds primary,
+selected fifteen seconds and fast regression checks; seal heldout until candidate
+and procedure freeze, then no retuning. Reuse valid predecessor measurements. New
+active engine computation is capped at 2400 seconds, including failures; no matches.
+Stop after reasonable distinct experiments if none supports improvement, with the
+specific unresolved obstacle. MSH-153 remains held unless valuation is implicated.
+Ordinary implementation/review/integration within this assignment is authorized.
+
 ## Git and routine autonomy
 
 The established workflow permits ordinary local commits, non-destructive integration, normal pushes to the configured project remote, and cleanup of the agent's own completed disposable branches/worktrees. Use the designated rewrite branch as the integration target. Keep the original project history and default branch intact unless John explicitly changes that instruction.

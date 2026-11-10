@@ -1,0 +1,9 @@
+
+running 2 tests
+test chess_conventional::tests::detected_narrow_window_mate_threat_is_retained_for_compatible_pv_verification ... ok
+test chess_conventional::tests::historical_attack_null_mate_threat_only_extends_real_search_within_shared_budget ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 116 filtered out; finished in 0.35s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running unittests src/lib.rs (/Users/johnweathers/Development/Personal/mShogi/target/debug/deps/mshogi_search-9389c2386fa2e0fd)

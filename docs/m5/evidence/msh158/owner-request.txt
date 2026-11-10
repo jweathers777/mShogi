@@ -1,0 +1,153 @@
+# mShogi: Correct Conventional Chess Decision Failures
+
+The previous engineering round, MSH-157 (Conventional Decision Improvement), did not achieve its main objective. It improved history and draw-claim processing but did not establish broadly better Chess decisions.
+
+I want to correct our development direction.
+
+**Your primary objective is to improve the Chess engine's decisions. Do not substitute unrelated performance optimizations, infrastructure improvements, documentation, or additional general assessments for this objective.**
+
+Read the MSH-154 through MSH-157 reports, the current strength roadmap, and the relevant search code before starting. Use the existing benchmark and experimental tools.
+
+## 1. Investigate the actual decision failures
+
+Start with three established development positions:
+
+- **0UOyM:** mShogi selects Kg6 instead of the reference-supported exf3+. Investigate the missed king route, blockade, and distant pawn race.
+- **0m5mI:** mShogi selects Bd6 instead of Kc3 at five seconds. Investigate the king penetration and bishop-blockade consequences.
+- **28pJK:** mShogi selects Qf4 instead of Qc8. Investigate why the important quiet defensive reply Qc1 does not receive adequate consideration.
+
+These are starting points, not positions for special-case tuning. Reference analysis supports the alternative choices but does not prove their exact game outcomes.
+
+Include successful controls. Look for a general cause that affects multiple positions.
+
+## 2. Trace the real search
+
+Previous investigations used separate child searches and broad pruning switches. These did not identify the cause.
+
+This time, examine what happens inside the actual search.
+
+Add focused, temporary diagnostic instrumentation where necessary. Trace relevant moves and their continuations through the existing search process.
+
+For each important continuation, determine:
+
+- Was the move generated and admitted?
+- Was it searched, reduced, pruned, or excluded at the frontier?
+- How much search depth remained?
+- Which alpha-beta bounds, search windows, and transposition-table results affected it?
+- Which positions were evaluated?
+- How were scores returned to the parent?
+- Where did the engine first fail to recognize or correctly value the important consequence?
+
+Compare five-second and selected fifteen-second searches. Preserve their actual search conditions.
+
+A new search from a child position is not equivalent to the original interior search. Do not use it as proof of what happened inside the original search.
+
+Do not assume that failure to follow a Stockfish principal variation is itself a defect. Identify the first difference that matters to the quality of the decision.
+
+## 3. Test general corrections
+
+Once you have a plausible cause, test a general correction.
+
+You are authorized to make experimental changes to conventional Chess search or classical evaluation.
+
+You do not need proof that a proposed correction will improve playing strength before testing it. A sound technical hypothesis and a controlled experiment are sufficient.
+
+Use established Chess-engine techniques where appropriate. Consider search reductions, pruning, extensions, frontier search, move ordering, and evaluation only when relevant to the observed failures.
+
+Do not add position-specific rules or bonuses.
+
+For each experiment:
+
+1. State the suspected cause.
+2. Make a focused change.
+3. Compare decisions and search behavior against the frozen predecessor.
+4. Check independent development positions and successful controls.
+5. Keep a general correction if the evidence supports it. Otherwise revert it.
+
+Do not spend the assignment on large parameter sweeps or cosmetic score improvements.
+
+Do not require perfect causal proof before implementation, but require evidence before retaining a production change.
+
+## 4. Strict scope
+
+The following work is outside this assignment:
+
+- Unrelated history or draw-claim optimization.
+- General performance cleanup.
+- New benchmark construction or expansion.
+- Another broad architectural review.
+- Learned evaluation.
+- Shogi or Xiangqi development.
+- A large competitive tournament.
+- A wholesale engine rewrite without my approval.
+
+If you discover an unrelated defect, record it briefly and continue the assigned work. Do not implement it unless it directly blocks the investigation.
+
+Do not divide the assignment into a long sequence of new diagnostic tickets. Keep one clear engineering objective.
+
+The goal is not to make the engine faster at performing the same ineffective search. The goal is to make it find and correctly assess important continuations.
+
+## 5. Measure decision quality
+
+Use the existing 240-position benchmark.
+
+The 160 development positions may guide experiments. Keep the 80 held-out positions sealed until the candidate and evaluation procedure are frozen.
+
+Use five seconds as the primary thinking-time budget. Retain one-second regression checks and selected fifteen-second diagnostic comparisons.
+
+Measure meaningful decision outcomes, not only move agreement, reported scores, nominal depth, or node throughput.
+
+Preserve exact tactical and tablebase outcomes. For other positions, use independent continuation analysis and distinguish supported improvements from uncertain judgments.
+
+Once you have selected and frozen a candidate, evaluate it against the predecessor using the existing benchmark. Do not tune the candidate after seeing held-out results.
+
+Reuse valid predecessor measurements where possible. Keep new active engine computation within 2,400 seconds unless I approve a larger budget. No opponent-match campaign is authorized.
+
+A correction must show a supported benefit on the problem it addresses and acceptable behavior on wider development controls before you retain it. Claim broad improvement only when independent validation supports that conclusion.
+
+## 6. If the investigation remains inconclusive
+
+Do not abandon the decision-quality objective in favor of an unrelated task.
+
+If the initial hypotheses fail, reconsider the search mechanism. Compare the relevant implementation with established conventional Chess search designs.
+
+Investigate a different general explanation and test it.
+
+However, do not continue indefinitely. After a reasonable set of distinct, focused experiments, stop if no correction has adequate support.
+
+In that case, report the exact technical obstacle and the evidence needed to resolve it.
+
+An inconclusive result is acceptable. Replacing the requested work with an unrelated optimization is not.
+
+## 7. Engineering process
+
+Follow AGENTS.md, the native rules authority requirement, and the risk-based verification policy.
+
+Preserve exact legal moves, game histories, claims, outcomes, state restoration, and cancellation.
+
+Use appropriate local correctness tests and independent review. Do not run unrelated platform or GUI test campaigns.
+
+You may implement, review, and integrate supported conventional Chess corrections autonomously. Do not stop for approval between ordinary experiments.
+
+Keep task descriptions and reports concise. Use Problem, Objective, Approach, and Completion. Store detailed traces in the repository.
+
+MSH-153 (Classical Compensation Calibration) remains on hold unless this investigation establishes that a general valuation problem requires correction.
+
+## 8. Completion
+
+At the end, report:
+
+1. What caused each investigated decision failure, or what remains unresolved.
+2. What general correction you tested and why.
+3. Which corrections you retained or rejected.
+4. Whether the engine makes better decisions at five seconds.
+5. What the development and held-out tests establish.
+6. What significant problems remain.
+
+If the work produces no supported decision improvement, state that clearly.
+
+**Success means better Chess decisions, supported by independent evidence.**
+
+Do not measure success by the number of optimizations, new tickets, tests, documents, or completed investigations.
+
+Focus engineering effort on the search and evaluation mechanisms that determine move quality. Complete this assignment before returning to other development priorities.

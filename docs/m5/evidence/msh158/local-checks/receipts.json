@@ -1,0 +1,55 @@
+[
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "mshogi-search",
+      "--lib",
+      "chess",
+      "--target-dir",
+      "/Users/johnweathers/Development/Personal/mShogi/target"
+    ],
+    "returncode": 0,
+    "start_utc": "2026-11-10T17:04:06.365274+00:00",
+    "wall_seconds": 12.258501625154167,
+    "log": "check-0.log"
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "mshogi-console",
+      "--test",
+      "chess_claim_admission",
+      "--target-dir",
+      "/Users/johnweathers/Development/Personal/mShogi/target"
+    ],
+    "returncode": 0,
+    "start_utc": "2026-11-10T17:04:18.624215+00:00",
+    "wall_seconds": 9.966385582927614,
+    "log": "check-1.log"
+  },
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mshogi-search",
+      "--example",
+      "chess_frontier_profile"
+    ],
+    "returncode": 0,
+    "start_utc": "2026-11-10T17:04:28.591111+00:00",
+    "wall_seconds": 2.5023085828870535,
+    "log": "check-2.log"
+  }
+]

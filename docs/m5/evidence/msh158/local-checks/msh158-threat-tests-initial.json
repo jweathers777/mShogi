@@ -1,0 +1,18 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "--offline",
+    "-p",
+    "mshogi-search",
+    "--lib",
+    "cached_threat",
+    "--target-dir",
+    "/Users/johnweathers/Development/Personal/mShogi/target",
+    "--",
+    "--nocapture"
+  ],
+  "runtime_seconds": 3.8207863341085613,
+  "exit_code": 0
+}

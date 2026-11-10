@@ -15,7 +15,7 @@ pub const MIDDLE_PHASE: i32 = 6_400;
 /// Validated native positions have at most16pieces and8pawns per color, one
 /// king each. Bounding each color's material by14400, placement by1728, pawn
 /// terms by4000, activity by1636, king safety by6500, threats by896 and conversion
-/// by144 bounds a color's absolute contribution below30000; their difference is
+/// by444 bounds a color's absolute contribution below30000; their difference is
 /// therefore below60000. The larger100000 ceiling leaves conservative slack.
 pub const MAX_ABS_STATIC_SCORE: i32 = 100_000;
 // Endgame danger is deliberately modest and cannot overwhelm material or the
@@ -466,7 +466,13 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
                 let front =
                     Square::new(man.sq.file(), next_rank).expect("validated pawn not on last rank");
                 if passed && f.pawn_ranks[i][file] & ahead == 0 {
-                    let middle = 4 + 3 * advance * advance;
+                    let bishop_restriction =
+                        advance >= 3 && secure_bishop_restriction(&f, man, front);
+                    let middle = if bishop_restriction {
+                        4
+                    } else {
+                        4 + 3 * advance * advance
+                    };
                     let end = 10 + 7 * advance * advance;
                     let blocked = position.piece_at(front).is_some();
                     let escort =
@@ -493,8 +499,12 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
                     };
                     terms[i].pawns.add(Tapered::new(
                         middle,
-                        if blocked { end / 2 } else { end } + escort + runway
-                            - if unsafe_path { end / 4 } else { 0 },
+                        if bishop_restriction {
+                            10 + escort
+                        } else {
+                            (if blocked { end / 2 } else { end }) + escort + runway
+                                - if unsafe_path { end / 4 } else { 0 }
+                        },
                     ));
                 }
                 if f.backward(man) {
@@ -659,6 +669,9 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
             };
         }
     }
+    for (i, bonus) in pawn_race_bonus(position, &f).into_iter().enumerate() {
+        terms[i].endgame.end += bonus;
+    }
     let phase = base.phase.min(MIDDLE_PHASE);
     Evaluation {
         white: terms[0],
@@ -666,6 +679,132 @@ fn dynamic(position: &Position, base: Accumulator) -> Evaluation {
         middle_phase: phase,
         specialized: specialized(position, &f, &terms, phase),
     }
+}
+
+// Advisory current-board blockade or pressure on an undefended pawn, not an
+// endgame result or future-tempo credit. Restrict the discount to opposite
+// bishops without other pieces; unsupported king approach or a nonking attack
+// releases the guard. An attacked, defended passer keeps its normal premium.
+fn secure_bishop_restriction(f: &Features, pawn: &Man, front: Square) -> bool {
+    if f.bishops != [1, 1]
+        || f.men.iter().any(|m| {
+            matches!(
+                m.piece.kind,
+                PieceKind::Knight | PieceKind::Rook | PieceKind::Queen
+            )
+        })
+    {
+        return false;
+    }
+    let own = side(pawn.piece.color);
+    let mut bishops = f.men.iter().filter(|m| m.piece.kind == PieceKind::Bishop);
+    let first = bishops.next().unwrap();
+    let second = bishops.next().unwrap();
+    if (first.sq.file() + first.sq.rank()) % 2 == (second.sq.file() + second.sq.rank()) % 2 {
+        return false;
+    }
+    let defender = if first.piece.color != pawn.piece.color {
+        first
+    } else {
+        second
+    };
+    let king_defends = distance(f.kings[1 - own], defender.sq) == 1;
+    let defended = king_defends || f.pawn_attacks[1 - own] & bit(defender.sq) != 0;
+    // A bishop cannot cheaply take a pawn advancing onto a protected square.
+    // Promotion differs: trading the bishop for the new queen remains useful.
+    // Physical occupation prevents a forward pawn move regardless of support.
+    let promotion_front = front.rank()
+        == if pawn.piece.color == Color::White {
+            7
+        } else {
+            0
+        };
+    let controls_front = defender.sq == front
+        || (defender.attacks & bit(front) != 0
+            && (promotion_front || f.attacks[own] & bit(front) == 0));
+    let pressures_undefended_pawn =
+        defender.attacks & bit(pawn.sq) != 0 && f.attacks[own] & bit(pawn.sq) == 0;
+    (controls_front || pressures_undefended_pawn)
+        && f.nonking_attacks[own] & bit(defender.sq) == 0
+        // Geometric king attacks do not imply a legal capture of a defended
+        // bishop. Other attacks still release this conservative guard.
+        && (distance(f.kings[own], defender.sq) > 2 || defended)
+}
+
+/// Optimistic promotion time: include one mandatory extra preparatory turn.
+/// Strict passing and no friendly pawn farther forward exclude a current
+/// capture bypass. King clearance or creating a later capture bypass consumes
+/// an extra own turn; the king need not move in every possible continuation.
+fn optimistic_promotion_plies(position: &Position, f: &Features, pawn: &Man) -> i32 {
+    let rank = relative_rank(pawn.piece, pawn.sq);
+    let king = f.kings[side(pawn.piece.color)];
+    let strict_passed = !f.men.iter().any(|enemy| {
+        enemy.piece.kind == PieceKind::Pawn
+            && enemy.piece.color != pawn.piece.color
+            && enemy.sq.file().abs_diff(pawn.sq.file()) <= 1
+            && relative_rank(pawn.piece, enemy.sq) > rank
+    });
+    let no_friendly_ahead = !f.men.iter().any(|other| {
+        other.piece.kind == PieceKind::Pawn
+            && other.piece.color == pawn.piece.color
+            && relative_rank(pawn.piece, other.sq) > rank
+    });
+    let clearance = king.file() == pawn.sq.file()
+        && relative_rank(pawn.piece, king) > rank
+        && strict_passed
+        && no_friendly_ahead;
+    2 * i32::from(7 - rank - u8::from(rank == 1))
+        - i32::from(position.side_to_move() == pawn.piece.color)
+        + 2 * i32::from(clearance)
+}
+
+/// Conservative pawn-only promotion forecast; heuristic, never native WDL.
+fn pawn_race_bonus(position: &Position, f: &Features) -> [i32; 2] {
+    if f.men
+        .iter()
+        .any(|m| !matches!(m.piece.kind, PieceKind::Pawn | PieceKind::King))
+    {
+        return [0; 2];
+    }
+    let tempo = |p: &Man| optimistic_promotion_plies(position, f, p);
+    let mut fastest = [i32::MAX; 2];
+    for p in f.men.iter().filter(|m| m.piece.kind == PieceKind::Pawn) {
+        let i = side(p.piece.color);
+        fastest[i] = fastest[i].min(tempo(p));
+    }
+    let mut result = [0; 2];
+    for p in f.men.iter().filter(|m| m.piece.kind == PieceKind::Pawn) {
+        let i = side(p.piece.color);
+        let rank = relative_rank(p.piece, p.sq);
+        // A one-ply lead may allow the opposing queen before ours acts.
+        if fastest[1 - i].saturating_sub(tempo(p)) < 3
+            || f.men.iter().any(|enemy| {
+                enemy.piece.kind == PieceKind::Pawn
+                    && enemy.piece.color != p.piece.color
+                    && enemy.sq.file().abs_diff(p.sq.file()) <= 1
+                    && relative_rank(p.piece, enemy.sq) > rank
+            })
+        {
+            continue;
+        }
+        let clear = (1..=(7 - rank)).all(|advance| {
+            let next_rank = if p.piece.color == Color::White {
+                p.sq.rank() + advance
+            } else {
+                p.sq.rank() - advance
+            };
+            let sq = Square::new(p.sq.file(), next_rank).unwrap();
+            let pushes = advance - u8::from(rank == 1 && advance >= 2);
+            let king_moves =
+                i32::from(pushes) + i32::from(position.side_to_move() != p.piece.color);
+            (f.occupied[0] | f.occupied[1] | f.pawn_attacks[1 - i]) & bit(sq) == 0
+                && distance(f.kings[1 - i], sq) > king_moves
+        });
+        if clear {
+            result[i] = 300;
+        }
+    }
+    result
 }
 
 /// Only the extra clear-runway premium is discounted. King distance ignores
@@ -928,6 +1067,189 @@ mod tests {
     }
 
     #[test]
+    fn bishop_blockade_discounts_only_advancement_and_is_color_symmetric() {
+        // Bd2 controls e1 now; Bc1 does not. Neither bishop is attacked.
+        // The black king is four squares from Bd2. Both roots have legal moves.
+        let guarded = position("8/8/6k1/7b/1K6/8/P2Bp3/8 b - - 0 1");
+        let future = position("8/8/6k1/7b/1K6/8/P3p3/2B5 b - - 0 1");
+        assert!(!guarded.legal_actions().is_empty());
+        assert!(!future.legal_actions().is_empty());
+        let a = evaluate(&guarded);
+        let b = evaluate(&future);
+        assert_eq!(a.black.material, b.black.material);
+        assert_eq!(a.black.material, 430);
+        assert_eq!(a.black.placement, b.black.placement);
+        // Isolated -8, retained passer base10, escort4*(3-5)=-8.
+        assert_eq!(a.black.pawns.end, -6);
+        assert!(b.black.pawns.end > a.black.pawns.end + 100);
+        let mirrored = evaluate(&reflect(&guarded));
+        assert_eq!(a.black.pawns, mirrored.white.pawns);
+        assert_eq!(a.white.pawns, mirrored.black.pawns);
+        assert_eq!(a.score_for(Color::Black), mirrored.score_for(Color::White));
+    }
+
+    #[test]
+    fn bishop_blockade_requires_current_secure_opposite_bishop_control() {
+        let guarded = "8/8/6k1/7b/1K6/8/P2Bp3/8 b - - 0 1";
+        let check = |fen: &str| {
+            let p = position(fen);
+            let f = Features::new(&p);
+            let pawn = f
+                .men
+                .iter()
+                .find(|m| m.sq == Square::new(4, 1).unwrap())
+                .unwrap();
+            secure_bishop_restriction(&f, pawn, Square::new(4, 0).unwrap())
+        };
+        assert!(check(guarded));
+        for fen in [
+            "8/8/6k1/7b/1K6/8/P3p3/2B5 b - - 0 1",  // no current control
+            "8/8/6k1/7b/1K6/8/P3p3/8 b - - 0 1",    // bishop removed
+            "8/8/6k1/8/1K5b/8/P2Bp3/8 b - - 0 1",   // same color
+            "r7/8/6k1/7b/1K6/8/P2Bp3/8 b - - 0 1",  // major present
+            "8/8/6k1/7b/1K6/4p3/P2Bp3/8 b - - 0 1", // pawn attacks bishop
+            "8/8/8/7b/1K1k4/8/P2Bp3/8 b - - 0 1",   // king close, no defense
+        ] {
+            assert!(!check(fen), "{fen}");
+        }
+        // A nearby pawn-side king does not invalidate a king-defended bishop,
+        // including when adjacent: capturing it would expose the king.
+        assert!(check("8/8/8/7b/4k3/8/P1KBp3/8 b - - 0 1"));
+        assert!(check("8/8/8/7b/8/4k3/P1KBp3/8 b - - 0 1"));
+    }
+
+    #[test]
+    fn bishop_blockade_distinguishes_protected_from_capturable_adjacent_bishop() {
+        // Bc4 controls a6. Black d5 protects it: Kc3xc4 is illegal, although
+        // the king geometrically attacks c4. Removing d5 makes capture legal.
+        let protected = position("7k/7p/8/P2p4/2b5/2K5/8/6B1 w - - 0 1");
+        let exposed = position("7k/7p/8/P7/2b5/2K5/8/6B1 w - - 0 1");
+        let capture = "c3c4".parse().unwrap();
+        assert!(!protected.legal_actions().contains(&capture));
+        assert!(exposed.legal_actions().contains(&capture));
+        for (p, expected) in [(&protected, true), (&exposed, false)] {
+            let f = Features::new(p);
+            let pawn = f
+                .men
+                .iter()
+                .find(|m| m.sq == Square::new(0, 4).unwrap())
+                .unwrap();
+            assert_eq!(
+                secure_bishop_restriction(&f, pawn, Square::new(0, 5).unwrap()),
+                expected
+            );
+            let mirror = reflect(p);
+            let mf = Features::new(&mirror);
+            let mp = mf
+                .men
+                .iter()
+                .find(|m| m.sq == Square::new(0, 3).unwrap())
+                .unwrap();
+            assert_eq!(
+                secure_bishop_restriction(&mf, mp, Square::new(0, 2).unwrap()),
+                expected
+            );
+        }
+        assert!(evaluate(&protected).white.pawns.end < evaluate(&exposed).white.pawns.end);
+    }
+
+    #[test]
+    fn bishop_pressure_requires_present_attack_on_undefended_passer() {
+        // Bc1 attacks e3 but neither e2 nor its promotion square e1.
+        // Black f4 defends e3 in the second fixture, so pressure is insufficient.
+        for (fen, rank, expected) in [
+            ("8/8/6k1/7b/1K6/4p3/P7/2B5 b - - 0 1", 2, true),
+            ("8/8/6k1/7b/1K3p2/4p3/P7/2B5 b - - 0 1", 2, false),
+            ("8/8/6k1/7b/1K6/8/P3p3/2B5 b - - 0 1", 1, false),
+        ] {
+            let p = position(fen);
+            let f = Features::new(&p);
+            let pawn = f
+                .men
+                .iter()
+                .find(|m| m.sq == Square::new(4, rank).unwrap())
+                .unwrap();
+            assert_eq!(
+                secure_bishop_restriction(&f, pawn, Square::new(4, rank - 1).unwrap()),
+                expected
+            );
+            let mirror = reflect(&p);
+            let mf = Features::new(&mirror);
+            let mp = mf
+                .men
+                .iter()
+                .find(|m| m.sq == Square::new(4, 7 - rank).unwrap())
+                .unwrap();
+            assert_eq!(
+                secure_bishop_restriction(&mf, mp, Square::new(4, 8 - rank).unwrap()),
+                expected
+            );
+            assert_eq!(evaluate(&p).black.pawns, evaluate(&mirror).white.pawns);
+        }
+    }
+
+    #[test]
+    fn bishop_pressure_matched_development_continuation_ranking() {
+        // Finite reference preference, not a rules/WDL oracle: compare the two
+        // legal White replies at the same after-e3 development state. This is
+        // a diagnostic static-ranking target, not evidence of a root benefit.
+        let fen = "8/8/6k1/P2p3p/2bP1PpP/B1K1p1P1/8/8 w - - 0 49";
+        let mut bishop = AdjudicatedGame::from_fen(fen, ClaimPolicy::ExplicitOnly).unwrap();
+        let mut king = bishop.clone();
+        bishop.apply("a3c1".parse().unwrap()).unwrap();
+        king.apply("c3c2".parse().unwrap()).unwrap();
+        assert!(
+            evaluate(bishop.position()).score_for(Color::White)
+                > evaluate(king.position()).score_for(Color::White)
+        );
+    }
+
+    #[test]
+    fn bishop_restriction_respects_protected_intermediate_landing() {
+        // Bc4 controls a6, but Kb6 protects the advancing pawn. Black d5
+        // protects the bishop in both roots so the security guard is held fixed.
+        let protected = "7k/7p/1K6/P2p4/2b5/8/8/6B1 w - - 0 1";
+        let unprotected = "7k/7p/8/P2p4/2b5/2K5/8/6B1 w - - 0 1";
+        // Promotion may trade a pawn for a bishop despite king protection.
+        let promotion = "1K5k/P2p4/2b5/8/8/8/8/6B1 w - - 0 1";
+        // Ba6 physically blocks a5-a6 even though Kb6 protects a6.
+        let occupied = "7k/1p5p/bK6/P7/8/8/8/6B1 w - - 0 1";
+        for (fen, rank, expected) in [
+            (protected, 4, false),
+            (unprotected, 4, true),
+            (promotion, 6, true),
+            (occupied, 4, true),
+        ] {
+            let p = position(fen);
+            let f = Features::new(&p);
+            let pawn = f
+                .men
+                .iter()
+                .find(|m| m.sq == Square::new(0, rank).unwrap())
+                .unwrap();
+            assert_eq!(
+                secure_bishop_restriction(&f, pawn, Square::new(0, rank + 1).unwrap()),
+                expected,
+                "{fen}"
+            );
+            let mirror = reflect(&p);
+            let mf = Features::new(&mirror);
+            let mp = mf
+                .men
+                .iter()
+                .find(|m| m.sq == Square::new(0, 7 - rank).unwrap())
+                .unwrap();
+            assert_eq!(
+                secure_bishop_restriction(&mf, mp, Square::new(0, 6 - rank).unwrap()),
+                expected
+            );
+        }
+        let advance = "a5a6".parse().unwrap();
+        assert!(position(protected).legal_actions().contains(&advance));
+        assert!(!position(occupied).legal_actions().contains(&advance));
+    }
+
+    #[test]
     fn independently_derived_term_arithmetic_and_perspective() {
         // Bare king centrality: Kd4 has6, Kh8 has0; zero phase =>14*6=84.
         let p = position("7k/8/8/8/3K4/8/8/8 w - - 0 1");
@@ -937,20 +1259,24 @@ mod tests {
         assert_eq!(e.score_for(Color::White), 84);
         assert_eq!(e.score_for(Color::Black), -84);
         // A2 pawn:100 material,0placement,-8isolated+10passed+20king escort.
+        // The clear a-file pawn promotes in five own turns with its double
+        // push; Kh8 needs seven king steps to a8, so add the300 race premium.
+        // This inspects generic terms; the specialized KPK score still overrides.
         let e = evaluate(&position("7k/8/8/8/8/8/P7/K7 w - - 0 1"));
         assert_eq!(e.white.material, 100);
         assert_eq!(e.white.pawns.end, 22);
         assert_eq!(
             e.white.contribution(e.middle_phase) - e.black.contribution(e.middle_phase),
-            122
+            422
         );
-        // A6 pawn:40placement,-8isolated+122passed+4escort+64clear runway.
+        // A6 pawn:40placement,-8isolated+122passed+4escort+64clear runway,
+        // plus the same300 race premium (two own turns, three plies).
         let e = evaluate(&position("7k/8/P7/8/8/8/8/K7 w - - 0 1"));
         assert_eq!(e.white.placement.end, 40);
         assert_eq!(e.white.pawns.end, 182);
         assert_eq!(
             e.white.contribution(e.middle_phase) - e.black.contribution(e.middle_phase),
-            322
+            622
         );
         // RookA1 attacks14squares, oneoccupiedbyownKh1 excluded:13mobility.
         let e = evaluate(&position("7k/8/8/8/8/8/8/R6K w - - 0 1"));
@@ -1410,6 +1736,76 @@ mod tests {
             evaluate(&reflect(&correct)).score_for(Color::Black),
             evaluate(&correct).score_for(Color::White)
         );
+    }
+
+    #[test]
+    fn promotion_clearance_tempo_and_bypass_guards() {
+        let time = |fen: &str, file: u8, rank: u8| {
+            let p = position(fen);
+            let f = Features::new(&p);
+            let pawn = f
+                .men
+                .iter()
+                .find(|m| m.sq == Square::new(file, rank).unwrap())
+                .unwrap();
+            optimistic_promotion_plies(&p, &f, pawn)
+        };
+        let endpoint = "8/8/8/1K6/1P3kp1/P7/8/8 w - - 1 60";
+        // b4-b8 needs four pawn turns plus one mandatory king-clearance turn.
+        assert_eq!(time(endpoint, 1, 3), 9);
+        assert_eq!(time(endpoint, 0, 2), 9);
+        assert_eq!(time(endpoint, 6, 3), 6);
+        // bxa5 can bypass Kb5: do not add a clearance turn.
+        assert_eq!(time("8/8/8/pK6/1P3kp1/P7/8/8 w - - 1 60", 1, 3), 7);
+        // A distant enemy pawn might change file by capturing a forward pawn.
+        // Keep its tempo optimistic rather than assuming no future bypass.
+        assert_eq!(time("8/5p2/4P3/1K6/1P3kp1/P7/8/8 w - - 1 60", 1, 3), 7);
+        // Current cached endpoint and independently probed alternative q leaf:
+        // Syzygy categorizes the former White loss and the latter White win.
+        // These are evaluation sign/ranking regressions, not native WDL rules.
+        let losing = evaluate(&position(endpoint));
+        let winning = evaluate(&position("8/8/1K6/Pp4p1/8/P4k2/8/8 w - - 1 60"));
+        assert!(losing.score_for(Color::White) < 0);
+        assert!(winning.score_for(Color::White) > 0);
+        assert!(winning.score_for(Color::White) > losing.score_for(Color::White));
+        assert_eq!(losing.white.material, 200);
+        assert_eq!(losing.black.material, 100);
+        // Several eligible passers still receive at most one bonus per side.
+        let many = position("8/8/8/PPP5/8/8/8/K6k w - - 0 1");
+        assert_eq!(pawn_race_bonus(&many, &Features::new(&many)), [300, 0]);
+    }
+
+    #[test]
+    fn pawn_race_forecast_respects_tempo_obstructions_and_material() {
+        let race = |fen| {
+            let p = position(fen);
+            let result = pawn_race_bonus(&p, &Features::new(&p));
+            let mirrored = reflect(&p);
+            assert_eq!(
+                pawn_race_bonus(&mirrored, &Features::new(&mirrored)),
+                [result[1], result[0]]
+            );
+            result
+        };
+        // Mandatory king clearance makes White's earliest promotion nine plies.
+        assert_eq!(race("8/8/8/1K6/1P3kp1/P7/8/8 w - - 1 60"), [0, 300]);
+        // Equal push counts only give a one-ply lead, whichever side starts.
+        assert_eq!(race("8/8/4k3/P7/7p/3K4/8/8 w - - 0 1"), [0, 0]);
+        assert_eq!(race("8/8/4k3/P7/7p/3K4/8/8 b - - 0 1"), [0, 0]);
+        // A faster opponent forbids a bonus despite a clear runway.
+        assert_eq!(race("8/8/4k3/P7/8/3K3p/8/8 b - - 0 1"), [0, 300]);
+        // King interception, occupied runway, non-pawn material, enemy pawn.
+        assert_eq!(race("8/3k4/8/P7/8/8/8/7K w - - 0 1"), [0, 0]);
+        assert_eq!(race("8/8/K7/P7/8/7k/8/8 w - - 0 1"), [0, 0]);
+        assert_eq!(race("8/8/8/P7/8/7k/8/5N1K w - - 0 1"), [0, 0]);
+        assert_eq!(race("8/8/1p6/P7/8/7k/8/7K w - - 0 1"), [0, 0]);
+        // Initial double push keeps the opposing a2 pawn within one ply of h5.
+        assert_eq!(race("8/8/4k3/7p/8/2K5/P7/8 w - - 0 1"), [0, 0]);
+        assert_eq!(race("8/8/4k3/7p/8/2K5/P7/8 b - - 0 1"), [0, 300]);
+        // After White spends a king move clearing b5, Black leads by three plies.
+        assert_eq!(race("8/8/1K6/8/1P3kp1/P7/8/8 b - - 2 60"), [0, 300]);
+        let kpk = evaluate(&position("8/8/8/P7/8/7k/8/7K w - - 0 1"));
+        assert_eq!(kpk.specialized.unwrap().kind, EndgameKind::KingPawnKing);
     }
 
     #[test]

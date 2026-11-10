@@ -1,0 +1,397 @@
+{
+  "rows": [
+    {
+      "id": "0UOyM-open",
+      "move": "h7h6",
+      "san": "Kh6",
+      "score": {
+        "cp": 728,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 51,
+      "pv_san": [
+        "Kh6",
+        "g4",
+        "Kg6",
+        "Kf4",
+        "Kf6",
+        "g5+",
+        "Ke6",
+        "Ke4",
+        "g6",
+        "Kd4",
+        "Kf5",
+        "Kc5",
+        "Kxg5",
+        "Kb6",
+        "Kf5",
+        "Kxa6",
+        "g5",
+        "Kxb5",
+        "g4",
+        "Ka6",
+        "g3",
+        "b5",
+        "g2",
+        "b6",
+        "g1=Q",
+        "b7",
+        "Qg3",
+        "a4",
+        "Qd6+",
+        "Ka7",
+        "Qd4+",
+        "Ka6",
+        "Qxa4+",
+        "Kb6",
+        "Qb4+",
+        "Kc7",
+        "Qc5+",
+        "Kd7",
+        "Qb6",
+        "Kc8",
+        "Qc6+",
+        "Kb8",
+        "Ke5",
+        "Ka7",
+        "Qc7",
+        "Ka6",
+        "Qb8",
+        "Kb5",
+        "Qxb7+",
+        "Kc5"
+      ],
+      "last_two": [
+        {
+          "depth": 50,
+          "score": {
+            "cp": 728,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 51,
+          "score": {
+            "cp": 728,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 105,
+      "legal_replay": true,
+      "query_sha256": "70eb3a6949bb650a5c3650dc827d70cd5635adf61bcff7fdfe261a2f3842068e"
+    },
+    {
+      "id": "0UOyM-open",
+      "move": "g7g6",
+      "san": "g6",
+      "score": {
+        "cp": -37,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 34,
+      "pv_san": [
+        "g6",
+        "Kf4",
+        "Kh6",
+        "g4",
+        "Kg7",
+        "Ke5",
+        "Kf7",
+        "Kd6",
+        "Kf6",
+        "Kc6",
+        "Kg5",
+        "Kb6",
+        "Kxg4",
+        "Kxa6",
+        "g5",
+        "Kxb5",
+        "Kh5",
+        "Ka6",
+        "g4",
+        "b5",
+        "g3",
+        "b6",
+        "g2",
+        "b7",
+        "g1=Q",
+        "b8=Q",
+        "Qc1",
+        "Qb5+",
+        "Kg4",
+        "Qd7+",
+        "Kf4",
+        "Qd6+",
+        "Kf5"
+      ],
+      "last_two": [
+        {
+          "depth": 33,
+          "score": {
+            "cp": -37,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 34,
+          "score": {
+            "cp": -37,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 105,
+      "legal_replay": true,
+      "query_sha256": "58396785cbb7b12729543c39cd295142dd7640194f874a3d139f8dba6917a459"
+    },
+    {
+      "id": "0m5mI-after-e3",
+      "move": "a3c1",
+      "san": "Bc1",
+      "score": {
+        "cp": 601,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 40,
+      "pv_san": [
+        "Bc1",
+        "e2",
+        "Bd2",
+        "Ba6",
+        "Kb4",
+        "Kf5",
+        "Bc3",
+        "Ke4",
+        "Kc5",
+        "Bc8",
+        "Kb6",
+        "Kd3",
+        "Be1",
+        "Kxd4",
+        "a6",
+        "Bxa6",
+        "Kxa6",
+        "Kc5",
+        "Ka5",
+        "d4",
+        "f5",
+        "d3",
+        "f6",
+        "Kd6",
+        "Kb5",
+        "Ke6",
+        "Kc4",
+        "d2",
+        "Bxd2",
+        "Kf7"
+      ],
+      "last_two": [
+        {
+          "depth": 39,
+          "score": {
+            "cp": 601,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 40,
+          "score": {
+            "cp": 601,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 96,
+      "legal_replay": true,
+      "query_sha256": "cfb09c006941d6c8d394924735708753ff3ab82b2a23ae21c4e043893554de17"
+    },
+    {
+      "id": "0m5mI-after-e3",
+      "move": "c3c2",
+      "san": "Kc2",
+      "score": {
+        "cp": 0,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 66,
+      "pv_san": [
+        "Kc2",
+        "Kf5",
+        "Bc1",
+        "Ke4",
+        "Kc3",
+        "e2",
+        "Bd2",
+        "Ba6",
+        "Be1",
+        "Bc8",
+        "Kd2",
+        "Kf3",
+        "Kd3",
+        "Ba6+",
+        "Kc3",
+        "Ke4",
+        "Bf2",
+        "Kf3"
+      ],
+      "last_two": [
+        {
+          "depth": 65,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 66,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 96,
+      "legal_replay": true,
+      "query_sha256": "c0f892c06726fafabd9af4e159a8c90fbc5c399b3ce27d2ffb5ad1bb00a6c8ae"
+    },
+    {
+      "id": "0m5mI-after-e2",
+      "move": "c1d2",
+      "san": "Bd2",
+      "score": {
+        "cp": 626,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 44,
+      "pv_san": [
+        "Bd2",
+        "Kf5",
+        "Kb4",
+        "Ke4",
+        "Kc5",
+        "Ba6",
+        "Bc3",
+        "Bb7",
+        "Be1",
+        "Bc8",
+        "Kb6",
+        "Kxd4",
+        "a6",
+        "Bxa6",
+        "Kxa6",
+        "Kd3",
+        "Kb6",
+        "Kc2",
+        "Kc5",
+        "Kd1",
+        "Bb4",
+        "e1=R",
+        "Bxe1",
+        "Kxe1",
+        "f5",
+        "Kf2",
+        "f6",
+        "Kxg3",
+        "f7",
+        "Kh2",
+        "f8=Q",
+        "g3",
+        "Qf4",
+        "Kh3",
+        "Qf5+",
+        "Kh2",
+        "Qe5",
+        "Kh3",
+        "Qxh5",
+        "g2",
+        "Qd1",
+        "Kh2",
+        "h5",
+        "g1=Q+",
+        "Qxg1+",
+        "Kxg1",
+        "Kxd5"
+      ],
+      "last_two": [
+        {
+          "depth": 43,
+          "score": {
+            "cp": 626,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 44,
+          "score": {
+            "cp": 626,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 98,
+      "legal_replay": true,
+      "query_sha256": "e940db5b57efb0bfbe6cec20c8ceb888519b344e821cf0d435c9c910c0212943"
+    },
+    {
+      "id": "0m5mI-after-e2",
+      "move": "c3d2",
+      "san": "Kd2",
+      "score": {
+        "cp": 0,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 83,
+      "pv_san": [
+        "Kd2",
+        "Kf5",
+        "Ke1",
+        "Ke4",
+        "Bb2",
+        "Bb5",
+        "Kf2",
+        "Bd3",
+        "Bc3",
+        "Bb5"
+      ],
+      "last_two": [
+        {
+          "depth": 82,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 83,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 98,
+      "legal_replay": true,
+      "query_sha256": "89e6a3bf66a77580e9e64ff1b833b8bf31aafa87e506c559fd8b69a38946adb0"
+    }
+  ],
+  "interpretation": "Finite support for Kh6 overg6, Bc1 overKc2, Bd2 overKd2; scores are not evaluator calibration targets. Existing old-driver role labels denote diagnostic alternatives only. No exact root WDL claim."
+}

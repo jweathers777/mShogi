@@ -1,0 +1,613 @@
+{
+  "rows": [
+    {
+      "id": "lichess-puzzle-0UOyM",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h7g6",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e4f3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "changed",
+      "outcome_change": "unresolved"
+    },
+    {
+      "id": "lichess-puzzle-0m5mI",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "a3d6",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "b2c3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "changed",
+      "outcome_change": "unresolved"
+    },
+    {
+      "id": "lichess-puzzle-28pJK",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "f5c8",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "f5c8",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-puzzle-0K45A",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h5f3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h5f3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-puzzle-1Fs7n",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "e8e5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e8e5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-puzzle-1Uyiw",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c6c7",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c6c7",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-puzzle-2egOz",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c7c6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c7c6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "sts-STS(v10.0) Simplification.061",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "h4h5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "h4h5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "sts-STS(v4.0) Square Vacancy.059",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "d7g4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "d7g4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-eval-9a9ec8b947a4876a",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "d7d5",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "d7d5",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-eval-f2c22dfb510b09db",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "d7f6",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "d7f6",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-eval-e3940265618fa6cb",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "d8c7",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "d8c7",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-puzzle-06qUU",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "g6g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "g6g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-puzzle-0VG2o",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "e4e5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e4e5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-puzzle-0bBfG",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "b4b5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "b4b5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-puzzle-2B1S9",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h7h5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h7h5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-puzzle-2Tejj",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "f5f4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "f5f4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-puzzle-2jFoK",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "b4b3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "b4b3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "lichess-puzzle-2kSBz",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "c3b4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "c3b4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-draw-7eb891d11b770c34",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "d7c6",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "d7c6",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-draw-b1258089ba61b58c",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "d6e7",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "d6e7",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-draw-d92cad1caf419688",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c7d7",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c7d7",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-puzzle-0q59Y",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a5b4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a5b4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-puzzle-1a30n",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a5a4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a5a4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-puzzle-2F3cE",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f5g6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f5g6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-puzzle-2JtTu",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "b6a6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "b6a6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-puzzle-2Yrwe",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a7a5",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a7a5",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-puzzle-2oWYm",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f5f6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f5f6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-puzzle-2uFaq",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a3a4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a3a4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-puzzle-3CQ8d",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f4g3",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f4g3",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision"
+    }
+  ],
+  "changes": [
+    {
+      "id": "lichess-puzzle-0UOyM",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h7g6",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e4f3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "changed",
+      "outcome_change": "unresolved"
+    },
+    {
+      "id": "lichess-puzzle-0m5mI",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "a3d6",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "b2c3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "changed",
+      "outcome_change": "unresolved"
+    }
+  ],
+  "exact_regressions": []
+}

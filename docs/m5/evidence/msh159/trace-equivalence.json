@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "roots": 2,
+  "depth": 4,
+  "equal_fields": [
+    "move",
+    "score",
+    "nodes",
+    "completed_depth",
+    "stats",
+    "pv",
+    "root_unchanged"
+  ],
+  "receipts": [
+    {
+      "binary": "combined",
+      "wall_seconds": 0.22880362486466765
+    },
+    {
+      "binary": "traced-combined",
+      "wall_seconds": 0.17341183265671134
+    }
+  ],
+  "reservation": "correctness-and-static120"
+}

@@ -1,11 +1,11 @@
 ---
 id: MSH-157
 title: Conventional Decision Improvement
-status: In Review
+status: Done
 assignee:
   - '@codex-coordinator'
 created_date: '2026-11-10T12:57:00Z'
-updated_date: '2026-11-10T14:29:00Z'
+updated_date: '2026-11-10T14:30:00Z'
 labels:
   - handle:conventional-decision-improvement
 dependencies:
@@ -44,7 +44,7 @@ Independent review, relevant local correctness and cost evidence, development/he
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -70,6 +70,8 @@ Bounded attribution closed after42 successful native probes247.829370751s and16p
 Completed checkpoint evidence: docs/m5/chess-decision-round.md. Primary 238/240 choices unchanged, including all 80 heldout; exact objectives preserved. Quiet 38 attempts retained original moves. Active engine cost 2705.533657 seconds below 3300 ceiling. Broad decision gate failed; exact cost repairs retained without a strength claim. Two-root development exposure overlay and offline audit accounting limitations preserved. Final independent closure review and integration pending.
 
 Independent final evidence and native closure reviews approved; all material findings resolved. Source remains 3b52314, no production edits after heldout freeze. Archive payload hashes and report links passed; Backlog doctor clean. Final documentation/evidence commit and normal codex/rewrite integration follow; do not interpret completed bounded diagnostic work as achieving the failed broad strength objective.
+
+Integrated by fast-forward into codex/rewrite at 3114b8c (benchmark freeze da4010b, native corrections 3b52314, candidate freeze acc9965). Independent reviews approved, required Level1 checks and final artifact audits passed for unchanged production source. This completes the bounded round and measurement work; the broader objective of substantially better Chess remains unmet. No next engine task was started. Normal push follows this completion-record commit.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

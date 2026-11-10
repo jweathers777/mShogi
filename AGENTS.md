@@ -191,23 +191,27 @@ independent review, acceptance criteria or required platform evidence.
 - Before completion, establish that the exact tested revision passed its required
   checks. Reuse unchanged source/scope evidence; never infer unperformed checks.
 
-## Current Chess assessment checkpoint
+## Current conventional Chess round
 
-Owner refinement, 2026-11-10: John reviewed and broadly approved MSH-154
-(Chess Adversarial Assessment). MSH-155 (Chess Time Scaling) now precedes substantial
-implementation: establish a small balanced benchmark with fresh independently
-justified positions, compare current/reference decisions at matched increasing
-thinking time, and revise engineering priorities. The one-second conditional local
-index is not a general rating or a fixed ceiling. Keep execution, coverage and
-valuation investigations complementary, not strictly sequential. Obsolete-history
-overhead remains a narrow correction, not the entire strategy. Keep MSH-153
-(Classical Compensation Calibration) on hold. Specialized native search state is
-permissible when profiling justifies it and exact native rules/history are retained;
-no wholesale rewrite is presumed. Return findings and roadmap for John review before
-substantial implementation. No learned evaluation, Shogi/Xiangqi transfer or substantial
-match campaign is authorized. Later strength qualification should consider clock-based
-increment games and comparable pool conditions, without mixing time controls into one
-rating absent a justified model.
+Owner authorization, 2026-11-10 after MSH-155 (Chess Time Scaling): establish
+MSH-156 (Independent Chess Benchmark) from verified public sources before
+substantial engine changes, then carry out MSH-157 (Conventional Decision
+Improvement) autonomously as one coherent round. Use a few hundred diverse
+positions, separate grouped development/held-out collections and frozen
+expectations; the prior eight roots are regression-only. Five seconds is primary,
+one second secondary, fifteen seconds focused. Protect heldout positions from
+implementation decisions and promote/replace any exposed family before reuse.
+Coordinate exact native execution improvements with controlled continuation
+coverage/classical-judgment diagnosis. Preserve one rules/history/outcome authority;
+no wholesale rewrite is presumed. MSH-153 (Classical Compensation Calibration)
+remains held unless broader evidence selects valuation work. Compare substantial
+stages to a frozen predecessor and report improvements, regressions and unresolved
+judgments separately. Ordinary local engineering and related task transitions are
+authorized; escalate major architecture, substantial resources and product choices.
+No learned evaluation, Shogi/Xiangqi transfer or substantial tournament is
+authorized. Eventual strength qualification needs separately approved clock-based
+increment games and suitable independent opponents. Stop the round to reconsider
+its diagnosis if useful benefits do not materialize.
 
 ## Git and routine autonomy
 

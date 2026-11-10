@@ -1,11 +1,11 @@
 ---
 id: MSH-155
 title: Chess Time Scaling
-status: In Review
+status: Done
 assignee:
   - '@codex-coordinator'
 created_date: '2026-11-10T11:25:00Z'
-updated_date: '2026-11-10T12:07:00Z'
+updated_date: '2026-11-10T12:57:00Z'
 labels:
   - handle:chess-time-scaling
 dependencies:
@@ -66,6 +66,8 @@ Owner Codex coordinator; reusing clean app-managed chess-adversarial-assessment 
 Level 1 diagnostic on macOS arm64, unchanged production d53f344. Consolidated evidence: docs/m5/evidence/msh155/verification.json; report: docs/m5/chess-time-scaling.md. Independent methodology approval in methodology.md; harness-verification is explicitly an author recheck. verify_evidence.py passed: 715 artifacts, 109 attempts, 683 ledger hashes, source equivalence, stable fixture and report links. 723.175 seconds active searches plus 0.132 seconds proof construction, below 900; zero matches. One pre-search initialization failure retained/charged; successful reviewed retry. No production or cross-platform/GUI checks claimed; broader compatibility deferred to future risk-selected implementation.
 
 Assessment commit 0f6d24a integrated by fast-forward into codex/rewrite; package verifier passed again in the integration checkout. All diagnostic acceptance criteria and completion evidence are satisfied; status remains In Review for the explicitly requested owner checkpoint. Next action is owner review, not an implementation task. The app-managed assessment worktree is retained clean for that review: previous archive attempt reports that this task primary checkout cannot be removed; do not bypass the app lifecycle. No engine process requires it.
+
+Owner approved the general revised roadmap on 2026-11-10 and authorized a broader independent public-data benchmark followed by one coherent conventional engineering round. The prior owner checkpoint is satisfied; new benchmark must precede substantial engine changes.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

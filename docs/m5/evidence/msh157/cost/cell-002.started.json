@@ -1,0 +1,11 @@
+{
+  "index": 2,
+  "start_utc": "2026-11-10T13:26:15.622450+00:00",
+  "command": [
+    "/private/tmp/msh157-bin/native-candidate",
+    "/private/tmp/msh157-cost-retry/fixed-depth2.json",
+    "2",
+    "untimed",
+    "none"
+  ]
+}

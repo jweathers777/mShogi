@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "command": "reconstruct.py --sts /tmp/msh156-data/sts-v3.epd --out /tmp/msh156-reconstructed; verify_corpus.py --corpus /tmp/msh156-reconstructed --repo <assessment checkout>",
+  "package_manifest_files": 220,
+  "execution_hashes_unchanged": true,
+  "byte_identical_reconstruction": true,
+  "strengthened_bindings": [
+    "tablebase expectation move_wdl equals complete tb_moves",
+    "tablebase root value equals raw oracle category",
+    "mate1 legal_moves equals computed legal set",
+    "mate1 enumerated count equals legal count"
+  ],
+  "history_and_family_checks": "all240 passed",
+  "heldout_outcomes_accessed": false,
+  "native_queries": 0,
+  "timing": "after coordinator confirmed baseline native search stopped"
+}

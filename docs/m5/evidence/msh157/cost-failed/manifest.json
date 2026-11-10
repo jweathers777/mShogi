@@ -1,0 +1,194 @@
+{
+  "schema": 1,
+  "host": "macOS-27.0.1-arm64-arm-64bit",
+  "prepared_utc": "2026-11-10T13:24:33.050374+00:00",
+  "budget_seconds": 60,
+  "budget_scope": "separate native-cost reservation, coordinator subtracts from round allowance; never double-count as runner folders",
+  "source_revision": "3b523149e55e990ae4dbb684a9ff724c6820b235",
+  "predecessor_source": "d53f34413d808dc2b727a06a770b92f24191eabf",
+  "binary_paths": {
+    "predecessor": "/private/tmp/msh157-bin/predecessor",
+    "candidate": "/private/tmp/msh157-bin/native-candidate"
+  },
+  "binary_sha256": {
+    "predecessor": "55b38b7411eed17038c1426630fd34a22a4f31d67fd5c3f9ce74612b5fd58ebf",
+    "candidate": "8355ddddf7e53ee5de99a082f5f6bda12591eaffae2b5fe1298f172c50d65224"
+  },
+  "input_sha256": {
+    "fixed-depth2": "bc31b2ca994ad2e52fc136d93427efd7fb8ac3efa85a087974e58796ff64acd2",
+    "obsolete-real": "1aed55fa58781c0941602fc5555ffe4591bc7daaaacf25a06751f320eed1fef5",
+    "live-repeat": "0696df7eab01806c59248a390d1869c3b1c5588b21b384de57d324f0280fbf33",
+    "normal-history": "88050466d9042f762b146542cf04aa641bfa5b6d28fcd25180d0a9763b95e627"
+  },
+  "driver_sha256": "15d87f43a18d4f15940444a5ebe87f524056831c309dfc1d1feb9bbfd24bde1e",
+  "cells": [
+    {
+      "kind": "fixed",
+      "input": "fixed-depth2",
+      "repeat": 0,
+      "version": "predecessor",
+      "timeout": 8
+    },
+    {
+      "kind": "fixed",
+      "input": "fixed-depth2",
+      "repeat": 0,
+      "version": "candidate",
+      "timeout": 8
+    },
+    {
+      "kind": "fixed",
+      "input": "fixed-depth2",
+      "repeat": 1,
+      "version": "candidate",
+      "timeout": 8
+    },
+    {
+      "kind": "fixed",
+      "input": "fixed-depth2",
+      "repeat": 1,
+      "version": "predecessor",
+      "timeout": 8
+    },
+    {
+      "kind": "fixed",
+      "input": "fixed-depth2",
+      "repeat": 2,
+      "version": "predecessor",
+      "timeout": 8
+    },
+    {
+      "kind": "fixed",
+      "input": "fixed-depth2",
+      "repeat": 2,
+      "version": "candidate",
+      "timeout": 8
+    },
+    {
+      "kind": "timed",
+      "input": "obsolete-real",
+      "repeat": 0,
+      "version": "predecessor",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "obsolete-real",
+      "repeat": 0,
+      "version": "candidate",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "obsolete-real",
+      "repeat": 1,
+      "version": "candidate",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "obsolete-real",
+      "repeat": 1,
+      "version": "predecessor",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "obsolete-real",
+      "repeat": 2,
+      "version": "predecessor",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "obsolete-real",
+      "repeat": 2,
+      "version": "candidate",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "live-repeat",
+      "repeat": 0,
+      "version": "predecessor",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "live-repeat",
+      "repeat": 0,
+      "version": "candidate",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "live-repeat",
+      "repeat": 1,
+      "version": "candidate",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "live-repeat",
+      "repeat": 1,
+      "version": "predecessor",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "live-repeat",
+      "repeat": 2,
+      "version": "predecessor",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "live-repeat",
+      "repeat": 2,
+      "version": "candidate",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "normal-history",
+      "repeat": 0,
+      "version": "predecessor",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "normal-history",
+      "repeat": 0,
+      "version": "candidate",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "normal-history",
+      "repeat": 1,
+      "version": "candidate",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "normal-history",
+      "repeat": 1,
+      "version": "predecessor",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "normal-history",
+      "repeat": 2,
+      "version": "predecessor",
+      "timeout": 9
+    },
+    {
+      "kind": "timed",
+      "input": "normal-history",
+      "repeat": 2,
+      "version": "candidate",
+      "timeout": 9
+    }
+  ]
+}

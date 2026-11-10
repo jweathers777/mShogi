@@ -1,0 +1,100 @@
+[
+  {
+    "command": [
+      "rustfmt",
+      "--edition",
+      "2024",
+      "crates/mshogi-core/src/chess/game.rs",
+      "crates/mshogi-core/src/chess/adjudication.rs",
+      "crates/mshogi-core/tests/chess_search_access.rs"
+    ],
+    "returncode": 0,
+    "start_utc": "2026-11-10T13:21:52.048422+00:00",
+    "wall_seconds": 0.19407937489449978,
+    "log": "check-0.log"
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "mshogi-core",
+      "--lib",
+      "--test",
+      "adjudication",
+      "--test",
+      "chess_search_access",
+      "--test",
+      "game_history",
+      "--test",
+      "game_record",
+      "--test",
+      "chess_target_queries",
+      "--test",
+      "special_actions",
+      "--target-dir",
+      "/Users/johnweathers/Development/Personal/mShogi/target"
+    ],
+    "returncode": 0,
+    "start_utc": "2026-11-10T13:21:52.243219+00:00",
+    "wall_seconds": 52.44144683284685,
+    "log": "check-1.log"
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "mshogi-search",
+      "--lib",
+      "chess",
+      "--target-dir",
+      "/Users/johnweathers/Development/Personal/mShogi/target"
+    ],
+    "returncode": 0,
+    "start_utc": "2026-11-10T13:22:44.685250+00:00",
+    "wall_seconds": 17.01170404208824,
+    "log": "check-2.log"
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "mshogi-console",
+      "--test",
+      "chess_claim_admission",
+      "--target-dir",
+      "/Users/johnweathers/Development/Personal/mShogi/target"
+    ],
+    "returncode": 0,
+    "start_utc": "2026-11-10T13:23:01.697467+00:00",
+    "wall_seconds": 16.35612979158759,
+    "log": "check-3.log"
+  },
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mshogi-search",
+      "--example",
+      "chess_frontier_profile",
+      "--target-dir",
+      "/Users/johnweathers/Development/Personal/mShogi/target"
+    ],
+    "returncode": 0,
+    "start_utc": "2026-11-10T13:23:18.054104+00:00",
+    "wall_seconds": 10.402626459021121,
+    "log": "check-4.log"
+  }
+]

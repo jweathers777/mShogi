@@ -109,3 +109,14 @@ a proof or an engine rating.
 ## Source rights
 
 Lichess database exports are CC0. Syzygy generated-table redistribution is permitted by its author; API results retain attribution and exact context. The STS mirror has an MIT notice, but affirmative upstream fixture permission was not found. Therefore the repository retains STS retrieval identifiers, source hashes and extraction code, with source attribution and the limitation, rather than redistributing those upstream fixture rows. Local execution fixtures are reconstructed from the public pinned source. This does not assert that a mirror license settles upstream rights. See [source research](evidence/msh156/source-research.md).
+
+## Round decision gate (before candidate results)
+
+Call the round a demonstrated broad decision improvement only when supported
+favorable changes span more than one decision domain, include genuinely held-out
+material, and leave no unexplained exact-outcome regression. Published preference
+counts alone do not satisfy that gate. Report adverse cases even when other cases
+improve; no mixed-tier aggregate cancels an exact loss. A cost improvement without
+this decision evidence is reported as an execution result and an unresolved
+better-Chess objective. Stop to reconsider the causal diagnosis if the gate is not
+met, rather than tuning against the revealed holdout or launching a tournament.

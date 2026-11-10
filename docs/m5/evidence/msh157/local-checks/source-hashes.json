@@ -1,0 +1,5 @@
+{
+  "crates/mshogi-core/src/chess/game.rs": "d06dc6e56a123526f66c43a0f16fa4ea8a835dc4dca655dc1b6e2cac82951f8b",
+  "crates/mshogi-core/src/chess/adjudication.rs": "76c7f1acae0f11ab10107ae820a576d3512370f05a8c6203ec38fd70aa09915b",
+  "crates/mshogi-core/tests/chess_search_access.rs": "9d0617e43130ef3f7018da3353b9d05a13fd454174147528bcb7f793ec549e87"
+}

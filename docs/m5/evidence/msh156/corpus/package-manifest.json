@@ -163,7 +163,7 @@
   "scripts/group-final.py": "9b09fd78b8ac2e300b8d5aee801b1fb00ab8c0f2e46e9f02696174d08b9527e1",
   "scripts/normalize.py": "53ea751da0beef46a2228d6875b55701bfdcd6e97105dc715af1ffbe09ebf63a",
   "scripts/tablebases.py": "217d2da2eeded18feda0726627e9a92929ffff9883a72dca793ed375e72e9075",
-  "scripts/validate.py": "055c4daa0a004247ec4ec4c9bf73e0d45db4f53e5812ea07df31be24f14261bb",
+  "scripts/validate.py": "7dfd49516b2b8fc43c3cb190a0109f2abdf74bc894344a4d4812d569668b0f6d",
   "source-research.md": "d71d1bee48e03b97acc56f6fed37d1ca1c0240bab8c908325ffb27bc1100a01d",
   "sts-LICENSE": "d940b267881d15d68af24d10b812fbd779e46cd6bff4187bf86534b8d804a58c",
   "syzygy-terms.md": "0eeb6c83b1cbce8c097c9fb15ddd9eaf3440e2a751a2297dc676909b9dc32f87",
@@ -218,5 +218,5 @@
   "tb-raw/puzzle-3E6Ga.json": "b4c422ddbea77cfe85746c57e3c0cb8a2756db06dba8fdaf39ec8afb99be3be9",
   "tb-raw/puzzle-3IfYy.json": "4c1e8f765249750037cc352432b2911bb58d4857a92d00eb673a905e44093a75",
   "validation.json": "c06ce0d6bd1afe0613cd6859152706757d11474b4d0e2e86d5bb0f1cba63bc5f",
-  "verify_corpus.py": "2a86c95adb6817794dec47796189f3703ce998b12dfd109be54fc1f003a4e7dd"
+  "verify_corpus.py": "eb5eafc1d82da489eb51f43ccbd208fedb7299358aa4e1fce0a0ad413566c4f7"
 }

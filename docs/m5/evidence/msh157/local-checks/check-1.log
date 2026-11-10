@@ -1,0 +1,277 @@
+   Compiling mshogi-core v0.1.0 (/Users/johnweathers/.codex/worktrees/chess-adversarial-assessment/mShogi/crates/mshogi-core)
+   Compiling mshogi-conformance v0.1.0 (/Users/johnweathers/.codex/worktrees/chess-adversarial-assessment/mShogi/crates/mshogi-conformance)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.90s
+     Running unittests src/lib.rs (/Users/johnweathers/Development/Personal/mShogi/target/debug/deps/mshogi_core-b1b2044b7a2395ed)
+
+running 186 tests
+test chess::generate::visitor_tests::candidate_visitor_breaks_inside_rays_and_promotion_choices ... ok
+test chess::game::reversible_repeat_tests::irreversible_boundaries_retain_archive_and_restore_repeat_prerequisite ... ok
+test chess::game::reversible_repeat_tests::fresh_repetitions_after_boundary_and_failed_actions_restore_exactly ... ok
+test chess::legal::inspection_tests::hypothetical_castling_uses_existing_rights_without_mutation ... ok
+test chess::generate::visitor_tests::candidate_visitor_break_propagates_between_ordinary_castling_and_ep_phases ... ok
+test chess::legal::inspection_tests::hypothetical_promotion_contains_all_four_completions ... ok
+test chess::generate::visitor_tests::prechange_ordered_candidate_snapshots ... ok
+test chess::legal::inspection_tests::inspection_preserves_actual_en_passant_without_transferring_it ... ok
+test chess::legal::inspection_tests::hypothetical_knight_and_pin_are_local_and_immutable ... ok
+test chess::search_access::tests::exact_key_equality_rejects_an_intentionally_forced_hash_collision ... ok
+test chess::search_access::tests::foreign_prepared_payload_is_discarded_even_when_its_action_is_legal ... ok
+test chess::search_access::tests::quiet_lazy_summary_needs_no_complete_actions_and_restores_on_undo ... ok
+test chess::search_access::tests::rejected_push_restores_even_an_unpopulated_node_cache ... ok
+test chess::search_access::tests::forced_same_position_digest_collision_still_compares_occurrence_multiplicity ... ok
+test chess::search_access::tests::deterministic_native_walk_rebuilds_hashes_and_restores_cached_turns ... ok
+test chu::game::attack_metadata_tests::discovered_attack_counts_but_unchanged_incidental_attack_does_not ... ok
+test chu::game_tests::counter_exhaustion_is_unscored_and_speculation_is_counter_independent ... ok
+test chu::game::capacity_tests::actual_encoded_reservations_cover_every_actor_and_exact_byte_boundary ... ok
+test chu::game_tests::observational_queries_do_not_change_record_or_admission_budget ... ok
+test chu::game_tests::stale_actor_selection_and_reopening_never_revive_work ... ok
+test chu::game_tests::lifo_full_game_undo_redo_and_branch_retirement ... ok
+test chu::local_tests::actor_rotation_preserves_every_local_choice_and_effect ... ok
+test chu::game_tests::standard_provenance_cannot_be_forged_on_both_serialized_copies ... ok
+test chu::local_tests::bounded_square_codec_and_rotation ... ok
+test chu::local_tests::all_central_actions_exactly_reverse_and_tokens_cannot_cross_clones_or_branches ... ok
+test chu::local_tests::counter_exhaustion_is_a_resource_refusal_and_preserves_everything ... ok
+test chu::local_tests::defended_distant_lion_and_hidden_ray_are_not_chess_pins ... ok
+test chu::local_tests::explicit_lion_rights_need_actual_owner_defense_canonical_squares_and_turn ... ok
+test chu::local_tests::full_routes_keep_jump_walk_capture_return_distinct ... ok
+test chu::local_tests::intermediate_pawn_gobetween_not_qualifying_but_silver_is ... ok
+test chu::local_tests::lion_window_qualifying_capture_override_and_undefended_absence ... ok
+test chu::local_tests::malformed_and_friendly_compound_actions_are_atomic ... ok
+test chu::local_tests::non_lion_capture_creates_defended_next_turn_window_and_rejection_preserves_it ... ok
+test chu::game_tests::exact_native_record_byte_limit_accepts_padding_and_rejects_one_more_byte ... ok
+test chu::local_tests::opponent_inspection_uses_native_owner_and_cannot_mutate_or_consume_rights ... ok
+test chu::local_tests::original_identity_survives_every_once_only_promotion ... ok
+test chu::local_tests::original_removed_pawn_or_gobetween_defender_still_bars_distant_lion ... ok
+test chu::local_tests::promotion_is_optional_entry_capture_reentry_pawn_rescue_not_lance_rescue ... ok
+test chu::local_tests::restricted_lion_cannot_turn_and_can_jump_over_both_owners ... ok
+test chu::local_tests::royal_capture_exposure_and_dead_originals_are_capture_based ... ok
+test chu::local_tests::standard_is_exactly46_owned_originals_per_side_and_rotation ... ok
+test chu::local_tests::structural_diagram_is_not_reachability_and_bad_roots_reject ... ok
+test chu::local_tests::empty_central_complete_lion_sets_are88_41_42 ... ok
+test chu::notation::tests::source_original_identity_and_optional_flip_remain_explicit ... ok
+test chu::notation::tests::independent_lion_jump_ordered_captures_and_returns_are_distinct ... ok
+test shogi::game::invariant_tests::corrupted_check_cache_retains_candidate_evidence_without_committing_or_scoring ... ok
+test shogi::game::invariant_tests::corrupted_command_prefix_preserves_replay_error_and_original_game ... ok
+test shogi::legal::inspection_tests::hypothetical_drops_retain_nifu_dead_ranks_and_resources ... ok
+test shogi::legal::inspection_tests::hypothetical_inspection_still_excludes_pawn_drop_mate ... ok
+test shogi::legal::inspection_tests::opposite_side_movement_promotions_capture_and_pin_preserve_position ... ok
+test shogi::tests::custom_sfen_preserves_hands_promotions_counter_and_unknown_prehistory ... ok
+test shogi::tests::drop_resources_nifu_and_dead_ranks_are_native_for_both_sides ... ok
+test shogi::tests::every_promotable_base_capture_returns_its_own_kind_not_gold ... ok
+test shogi::tests::forced_optional_and_leaving_zone_promotions_for_both_sides ... ok
+test shogi::tests::geometry_matches_independent_center_movement_sets_and_ray_blocks ... ok
+test shogi::tests::initial_placement_sfen_and_declared_origin ... ok
+test shogi::tests::malformed_and_locally_invalid_imports_are_rejected_without_touching_existing_state ... ok
+test shogi::tests::opening_capture_demotes_transfers_and_nested_undo_is_exact ... ok
+test shogi::tests::rejected_choices_are_atomic_and_undo_requires_exact_context ... ok
+test shogi::tests::sparse_diagrams_are_local_and_do_not_claim_king_safety_or_reachability ... ok
+test shogi::tests::square_and_complete_usi_choices_roundtrip ... ok
+test tenjiku::conformance::all_originals_once_promoted_never_gain_another_flip ... ok
+test chu::conformance::every_geometry_choice_rotates_and_reverses_exactly ... ok
+test chu::notation::tests::native_choice_roundtrip_both_sides_and_malformed_route_bounds ... ok
+test chu::conformance::local_independently_expected_corpus ... ok
+test chu::game_tests::strict_canonical_mutations_reject_without_changing_live_state ... ok
+test native::envelope_size_tests::complete_encoding_counts_profile_specific_wrapper_headroom_exactly ... ok
+test tenjiku::game_tests::actual_ending_runtime_headroom_is_reserved_before_ordinary_admission ... ok
+test tenjiku::game_tests::cancellation_during_candidates_preserves_every_accepted_component ... ok
+test tenjiku::game_tests::bare_winning_royal_reply_and_simultaneous_effect_priority ... ok
+test tenjiku::game_tests::actual_consent_stop_and_resign_do_not_become_board_actions ... ok
+test tenjiku::game_tests::cancellable_prefix_reconstruction_preserves_live_state_and_fresh_authority ... ok
+test tenjiku::game_tests::historical_prefix_is_exact_immutable_and_retires_authority ... ok
+test tenjiku::game_tests::native_counter_refusal_is_capacity_and_not_a_game_outcome ... ok
+test tenjiku::game_tests::first_repetition_atomic_distinct_saved_and_runtime_domains ... ok
+test tenjiku::game_tests::root_provenance_and_declared_counter_are_not_played_history ... ok
+test tenjiku::game_tests::two_profiles_contexts_cannot_cross_even_equal_boards ... ok
+test tenjiku::local_tests::actual_standard_setup_preserves_asymmetry_and_original_inventory ... ok
+test tenjiku::local_tests::area_capture_ends_action_and_friend_blocks_intermediate_landing ... ok
+test tenjiku::local_tests::cancellation_counter_refusal_and_inspection_preserve_every_live_field ... ok
+test tenjiku::local_tests::capturing_demon_clears_its_hazard_and_new_promotion_never_burns_that_turn ... ok
+test tenjiku::local_tests::complete_action_json_rejects_conflicting_shape_and_caller_effects ... ok
+test tenjiku::local_tests::complete_turn_hazard_ignores_lion_transit_and_does_not_cascade ... ok
+test tenjiku::local_tests::fire_demon_profiles_order_burn_batch_before_suicide_and_preserve_stationary_demons ... ok
+test tenjiku::local_tests::first_refusal_belongs_to_original_and_only_its_next_move_is_restricted ... ok
+test tenjiku::local_tests::free_eagle_complete_choices_preserve_the_actual_profile_difference ... ok
+test tenjiku::local_tests::lion_paths_capture_in_order_without_chu_protection_or_royal_safety ... ok
+test tenjiku::local_tests::malformed_state_and_profile_identities_reject_before_admission ... ok
+test tenjiku::local_tests::mandatory_promotion_rights_and_once_promoted_originals_are_not_face_chains ... ok
+test tenjiku::game_tests::undo_cannot_spend_reserved_ending_authority_and_failure_keeps_token ... ok
+test tenjiku::local_tests::ranked_interveners_and_destination_are_distinct_and_profile_bound ... ok
+test tenjiku::local_tests::reversal_is_instance_lifo_single_use_and_branch_bound ... ok
+test tenjiku::game_tests::owner_exchange_preserves_real_burn_phases_after_canonical_batch_sort ... ok
+test tenjiku::local_tests::tetrarch_skips_only_first_square_and_has_stationary_not_adjacent_travel_capture ... ok
+test tenjiku::notation::tests::actual_three_landing_demon_effects_explain_both_profiles_without_invented_victims ... ok
+test tenjiku::local_tests::special_geometry_combinatorics_count_complete_paths_not_only_destinations ... ok
+test tenjiku::game_tests::exact_undo_redo_retire_runtime_and_new_branch_tokens ... ok
+test tenjiku::notation::tests::english_face_names_match_the_independently_ratified_profile ... ok
+test tenjiku::notation::tests::independently_specified_lion_routes_captures_and_returns_are_distinct ... ok
+test tenjiku::notation::tests::admitted_history_preserves_capture_label_undo_and_fresh_permission ... ok
+test tenjiku::notation::tests::simultaneous_burn_order_promotion_and_quiet_effects_remain_native_facts ... ok
+test tenjiku::notation::tests::stationary_capture_and_original_promoted_capture_identities_are_spoken_exactly ... ok
+test tenjiku::notation::tests::stationary_igui_origin_does_not_claim_survival_beside_an_enemy_demon ... ok
+test tenjiku::local_tests::native_sequence_rotates_and_restores_exact_state_without_assuming_rules_oracles ... ok
+test tenjiku::notation::tests::original_promoted_identity_igui_three_landings_and_flip_remain_explicit ... ok
+test tenjiku::perft::tests::limits_budget_and_stop_never_return_partial_exact_or_mutate_original ... ok
+test tenjiku::record::tests::cached_event_size_equals_actual_encoding_for_board_controls_and_reversal ... ok
+test tenjiku::record::tests::cancellation_is_distinct_and_never_changes_record_or_source_game ... ok
+test tenjiku::perft::tests::independent_full_game_corner_king_and_remote_pawn_counts_and_divide ... ok
+test chu::game_conformance::complete_independently_expected_native_corpus ... ok
+test tenjiku::record::tests::oversized_native_input_and_missing_nullable_summary_refuse ... ok
+test tenjiku::record::tests::strict_raw_parser_rejects_duplicates_including_escaped_keys_before_tag_buffering ... ok
+test tori::conformance::real_structural_fixture_observations ... ok
+test tori::game::capacity_tests::exact_production_capacity_and_reservation_policy_boundaries ... ok
+test tori::game::reservation_bound_test::constructed_metadata_upper_bound_proves_each_reserved_nonboard_event_fits ... ok
+test tenjiku::record::tests::both_profiles_replay_actual_commands_metadata_and_fresh_authority ... ok
+test tori::game_tests::counter_refusal_is_unscored_saveable_and_does_not_manufacture_no_actions ... ok
+test tori::game_conformance::actual_complete_native_fixture_observations ... ok
+test tori::game_tests::exact_reversal_every_prefix_replay_and_selection_never_restore_native_authority ... ok
+test tori::game_tests::independent_forced8_and_unequal16_integrate_board_choices_history_and_precedence ... ok
+test tori::game_tests::native_commands_are_atomic_out_of_turn_resignation_and_unscored_stops_preserve_board_identity ... ok
+test tori::game_tests::native_rotation_metamorphism_preserves_repetition_responsibility_and_forced_loss ... ok
+test tenjiku::record::tests::identities_and_all_redundant_fields_are_rederived_not_trusted ... ok
+test tori::game_tests::repetition_equality_and_semantic_context_are_distinct_and_root_counters_are_not_history ... ok
+test tenjiku::notation::tests::malformed_action_shapes_reject_and_all_standard_choices_roundtrip_both_owners ... ok
+test tori::game_tests::undo_redo_reject_foreign_used_out_of_order_and_retired_branches_atomically ... ok
+test tori::local_conformance::actual_local_and_structural_fixture_observations ... ok
+test tori::local_tests::bounded_perft_and_divide_use_independent_counts_and_preserve_native_paths ... ok
+test tori::local_tests::complete_generator_membership_and_rotated_effects_properties ... ok
+test tenjiku::record::tests::ordinary_replay_retains_no_undo_but_explicit_replay_returns_real_lifo_handles ... ok
+test tori::local_tests::exact_legal_apply_undo_redo_material_and_atomic_capacity ... ok
+test tori::local_tests::independent_complete_choices_single_double_check_capture_and_block ... ok
+test tori::local_tests::deterministic_legal_sequences_restore_every_prefix_and_inspection_is_nonmutating ... ok
+test tori::local_tests::inspection_is_owner_specific_immutable_complete_and_not_live_permission ... ok
+test tori::local_tests::local_root_checks_preserve_custom_provenance_and_allow_moving_side_check ... ok
+test tori::local_tests::only_swallow_has_last_rank_drop_ban_and_inspection_keeps_forced_faces ... ok
+test tori::local_tests::source_derived_attack_tables_match_native_threats_for_all_faces_and_owners ... ok
+test tori::local_tests::pinned_attackers_still_defend_squares_and_discovered_self_check_rejects ... ok
+test tori::local_tests::swallow_drop_mate_uses_all_safe_capture_escape_and_drop_defenses_without_recursion ... ok
+test tori::local_tests::terminal_root_observations_are_native_not_match_conclusions ... ok
+test tori::notation::tests::independent_complete_examples_capture_compulsory_result_and_handed_drop ... ok
+test tori::notation::tests::notation_does_not_resurrect_stale_permission_or_replace_canonical_record ... ok
+test tori::tests::actual_zone_drop_wait_exit_within_and_swallow_promotion ... ok
+test tori::tests::all_40_accepted_board_transitions_execute_reversal_two_resignations_stay_pending ... ok
+test tori::tests::all_nonroyal_faces_capture_demote_and_preserve_handed_inventory ... ok
+test tori::notation::tests::every_complete_choice_roundtrips_both_owners_and_all_seven_files ... ok
+test tori::tests::coordinate_domains_and_both_owner_axes ... ok
+test tori::tests::basic_invalid_actions_reject_all_state_and_runtime_atomically ... ok
+test tori::tests::explicit_capacity_boundaries_preserve_state_and_tokens ... ok
+test tori::tests::incomplete_legality_boundary_is_explicit_not_silently_partial ... ok
+test tori::tests::native_rotation_symmetry_for_every_face_square_and_fixture_transition ... ok
+test tori::tests::roots_preserve_identity_inventory_and_counter_provenance ... ok
+test tori::tests::undo_redo_are_single_use_bound_lifo_and_branch_safe ... ok
+test xiangqi::conduct::tests::board_repetition_may_permute_identical_piece_identities ... ok
+test xiangqi::conduct::tests::check_and_idle_mixture_is_not_perpetual_chase_or_check ... ok
+test xiangqi::conduct::tests::check_priority_and_contiguous_history_are_native ... ok
+test xiangqi::conduct::tests::established_chase_retires_at_actual_break_not_only_at_anchor_return ... ok
+test xiangqi::conduct::tests::pending_general_attack_cannot_invent_a_combination_exemption ... ok
+test xiangqi::conduct::tests::primary_rule_independent_cycles ... ok
+test xiangqi::conduct::tests::real_roots_require_actual_native_recapture ... ok
+test xiangqi::conduct::tests::two_to_one_is_counter_chase_frequency_not_two_pursuing_pieces ... ok
+test xiangqi::tests::analysis_root_counters_require_explicit_null_never_missing_field_defaults ... ok
+test xiangqi::tests::complete_action_codec_has_no_drop_promotion_or_terminal_command ... ok
+test tori::game_tests::strict_record_all_fields_nested_duplicates_missing_tampering_and_resources ... ok
+test xiangqi::tests::exact_initial_inventory_and_scoped_fen_roundtrip ... ok
+test xiangqi::tests::intersections_native_palaces_river_and_both_forward_directions ... ok
+test xiangqi::tests::local_sets_and_perft_ignore_counter_exhaustion_but_commit_is_atomic ... ok
+test xiangqi::tests::private_atomic_rejections_and_counter_limits_are_not_game_outcomes ... ok
+test xiangqi::tests::private_transition_derives_capture_resets_count_and_restores_every_value ... ok
+test xiangqi::tests::private_transition_preserves_unknowns_and_increments_black_fullmove ... ok
+test xiangqi::tests::raw_counter_preserves_check_plies_and_root_provenance_through_reversal ... ok
+test tori::tests::deterministic_generated_structural_sequences_restore_all_native_state ... ok
+test xiangqi::tests::root_codec_direct_typed_parser_rejects_duplicate_unknown_missing_and_conflicting_fields ... ok
+test xiangqi::tests::stale_preparation_and_out_of_order_undo_are_atomic ... ok
+test xiangqi::tests::strict_position_notation_rejects_aliases_width_spacing_and_counter_errors ... ok
+test xiangqi::tests::structural_diagram_domain_is_not_live_admission_or_reachability ... ok
+test xiangqi::tests::structural_geography_and_nonmoving_threats_are_not_false_empty_legal_sets ... ok
+test xiangqi::tests::root_codec_preserves_explicit_provenance_unknown_counters_and_no_history ... ok
+test xiangqi::tests::complete_public_action_admission_is_atomic_for_all_coordinate_pairs_and_stale_values ... ok
+test tenjiku::conformance::both_profiles_execute_every_applicable_frozen_native_expectation ... ok
+test chu::game_tests::event_capacity_refuses_before_commit_and_reserves_real_stop_and_resign ... ok
+test chu::game_tests::real_long_history_hits_work_limit_atomically_and_remains_closable_and_replayable ... ok
+test chu::game_tests::deterministic_real_sequences_preserve_exact_logical_caches_and_replay ... ok
+test tori::game_tests::real_event_limit_preserves_two_slots_for_stop_and_resignation ... ok
+test tori::game_tests::long_deterministic_real_history_reaches_replay_admission_bound_and_retains_stop_resign_headroom ... ok
+test tenjiku::game_tests::deterministic_admitted_sequences_preserve_capture_accounting_reversal_and_replay ... ok
+
+test result: ok. 186 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.70s
+
+     Running tests/adjudication.rs (/Users/johnweathers/Development/Personal/mShogi/target/debug/deps/adjudication-50ceab3af15715ba)
+
+running 9 tests
+test intended_claim_legality_does_not_depend_on_fullmove_representability ... ok
+test invalid_claims_and_wrong_actor_are_atomic ... ok
+test policy_returns_the_exact_profile_priority_and_square_order ... ok
+test profile_claim_thresholds_and_intended_actions ... ok
+test optional_claims_conclude_only_when_exercised_and_round_trip_without_playing_intention ... ok
+test independent_automatic_results_and_bounded_dead_recognition ... ok
+test live_path_refuses_continuation_after_automatic_result_and_undo_restores_it ... ok
+test policy_selection_current_before_intended_and_intended_before_prospective_mate ... ok
+test claim_catalog_prerequisite_shortcut_matches_individually_validated_requests ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests/chess_search_access.rs (/Users/johnweathers/Development/Personal/mShogi/target/debug/deps/chess_search_access-8554e34cc2e305bf)
+
+running 13 tests
+test null_is_a_detached_position_never_a_game_or_history_key ... ok
+test complete_mode_cached_proof_and_claimed_root_are_preserved ... ok
+test keys_distinguish_imports_policies_counters_modes_and_exact_prefixes ... ok
+test full_mode_keeps_prefix_identity_even_after_an_irreversible_action ... ok
+test actual_outcomes_claims_and_representation_errors_keep_native_semantics ... ok
+test native_repetition_catalog_and_undo_cross_the_first_repeated_identity ... ok
+test standard_queries_and_independent_special_transitions_restore_every_field ... ok
+test unkeyed_real_subtrees_preserve_native_history_and_restore_parent_identity ... ok
+test lazy_turn_summaries_equal_full_native_semantics_at_sensitive_boundaries ... ok
+test obsolete_repetitions_allow_preview_without_discarding_history_or_live_claims ... ok
+test irreversible_boundaries_allow_exact_future_context_transpositions ... ok
+test prepared_native_transitions_equal_regular_games_and_preserve_sensitive_fallbacks ... ok
+test projected_claim_catalog_matches_public_validator_at_boundaries_and_special_moves ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/chess_target_queries.rs (/Users/johnweathers/Development/Personal/mShogi/target/debug/deps/chess_target_queries-2d7242ce9832ee52)
+
+running 6 tests
+test destination_query_keeps_counter_independent_legality_and_actual_overflow ... ok
+test tactical_projection_keeps_ep_and_all_quiet_promotions_without_quiet_slides ... ok
+test direct_capture_target_queries_have_independent_pin_ep_and_promotion_expectations ... ok
+test destination_query_preserves_independently_expected_safety_and_special_actions ... ok
+test destination_projection_equals_full_native_list_at_every_square_along_real_walks ... ok
+test native_candidate_query_matches_full_checked_public_transition_on_corpus_walks ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/game_history.rs (/Users/johnweathers/Development/Personal/mShogi/target/debug/deps/game_history-89376b1c6bcbf1df)
+
+running 7 tests
+test repetition_hash_collisions_retain_exact_identities_and_equivalent_ep_counts ... ok
+test rejection_and_branch_undo_restore_all_history_fields ... ok
+test independently_specified_repetition_equivalences ... ok
+test independent_history_counts_and_identical_fen_different_histories ... ok
+test independent_special_transition_fixtures_restore_game_and_records ... ok
+test fixed_seed_games_restore_positions_history_and_occurrence_tables ... ok
+test checked_game_transition_matches_full_position_errors_effects_and_atomicity ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+     Running tests/game_record.rs (/Users/johnweathers/Development/Personal/mShogi/target/debug/deps/game_record-72c0dbb4a57b8a5c)
+
+running 5 tests
+test strict_coordinate_identity_is_shared_without_legalizing_actions ... ok
+test canonical_record_has_an_independent_expected_encoding ... ok
+test ordered_same_ply_observations_and_intended_claim_are_preserved_without_execution ... ok
+test every_observation_variant_round_trips_and_preserves_context ... ok
+test invalid_versions_metadata_effects_contexts_and_actions_are_rejected ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/special_actions.rs (/Users/johnweathers/Development/Personal/mShogi/target/debug/deps/special_actions-1d5262dbe6454260)
+
+running 6 tests
+test ordinary_only_boundary_still_refuses_specials_that_apply_executes ... ok
+test castling_effects_and_rights_are_exact_for_each_side_and_color ... ok
+test independent_rejections_report_the_expected_error_without_mutation ... ok
+test independent_sequences_reach_exact_states_and_undo_in_reverse ... ok
+test independent_positions_match_special_candidates_and_full_legal_sets ... ok
+test corpus_legal_sets_equal_candidates_accepted_by_apply ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+

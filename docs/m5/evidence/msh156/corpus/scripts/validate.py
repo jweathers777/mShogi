@@ -27,6 +27,8 @@ for x in roots:
   raw=x['tablebase_receipt'];cats={'win':1,'draw':0,'loss':-1};assert raw['category']in cats
   vals={m['uci']:-cats[m['category']]for m in raw['moves']};assert vals==x['tb_moves']
   assert e['root_wdl']==max(vals.values())
+  assert e['move_wdl']==x['tb_moves']
+  assert e['root_wdl']==cats[raw['category']]
  if e['tier']=='exact-mate-in-one':
   mates=[]
   for m in list(c.legal_moves):
@@ -34,6 +36,8 @@ for x in roots:
    if c.is_checkmate():mates.append(m.uci())
    c.pop()
   assert set(mates)==set(e['preferred_moves'])
+  assert set(e['legal_moves'])==legal
+  assert e['all_legal_roots_enumerated']==len(legal)
 linecache={x["id"]:linekeys(x) for x in roots}
 rootcache={x["id"]:keys(chess.Board(x["expected_root_fen"])) for x in roots}
 for i,x in enumerate(roots):

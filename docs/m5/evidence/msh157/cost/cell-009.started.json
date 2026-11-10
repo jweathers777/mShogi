@@ -1,0 +1,11 @@
+{
+  "index": 9,
+  "start_utc": "2026-11-10T13:26:19.407572+00:00",
+  "command": [
+    "/private/tmp/msh157-bin/predecessor",
+    "/private/tmp/msh157-cost-retry/obsolete-real.json",
+    "128",
+    "timed",
+    "none"
+  ]
+}

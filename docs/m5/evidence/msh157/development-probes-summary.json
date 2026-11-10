@@ -1,0 +1,1330 @@
+{
+  "groups": {
+    "probe-depth-0": {
+      "attempts": 1,
+      "active_seconds": 0.492891208,
+      "all_successful": true
+    },
+    "probe-depth-1": {
+      "attempts": 1,
+      "active_seconds": 2.095165417,
+      "all_successful": true
+    },
+    "probe-depth-2": {
+      "attempts": 1,
+      "active_seconds": 1.854742833,
+      "all_successful": true
+    },
+    "probe-depth-3": {
+      "attempts": 1,
+      "active_seconds": 2.865468958,
+      "all_successful": true
+    },
+    "probe-depth-4": {
+      "attempts": 1,
+      "active_seconds": 1.273157625,
+      "all_successful": true
+    },
+    "probe-depth-5": {
+      "attempts": 1,
+      "active_seconds": 3.085029584,
+      "all_successful": true
+    },
+    "probe-long15": {
+      "attempts": 6,
+      "active_seconds": 90.001399166,
+      "all_successful": true
+    },
+    "probe-no-delta": {
+      "attempts": 5,
+      "active_seconds": 25.001243458999998,
+      "all_successful": true
+    },
+    "probe-no-lmr": {
+      "attempts": 8,
+      "active_seconds": 40.001738126000006,
+      "all_successful": true
+    },
+    "probe-no-quiet": {
+      "attempts": 8,
+      "active_seconds": 40.001581708,
+      "all_successful": true
+    },
+    "probe-no-see": {
+      "attempts": 7,
+      "active_seconds": 35.00175775100001,
+      "all_successful": true
+    },
+    "probe-child-candidate": {
+      "attempts": 1,
+      "active_seconds": 5.103160666,
+      "all_successful": true
+    },
+    "probe-child-source": {
+      "attempts": 1,
+      "active_seconds": 1.05203425,
+      "all_successful": true
+    }
+  },
+  "aggregate_active_seconds": 247.82937075100003,
+  "attempts": 42,
+  "rows": [
+    {
+      "group": "probe-depth-0",
+      "root_id": "sts-STS(v15.0) AT.065",
+      "move": "c7e7",
+      "score": 43,
+      "completed_depth": 8,
+      "depth_limit": 8,
+      "matched_depth_completed": true,
+      "active_seconds": 0.492891208,
+      "main_nodes": 28912,
+      "q_nodes": 70350,
+      "pv": [
+        "Qe7",
+        "Kg1",
+        "Bh5",
+        "Bg4",
+        "Bxg4",
+        "hxg4",
+        "Bf4",
+        "f3"
+      ]
+    },
+    {
+      "group": "probe-depth-1",
+      "root_id": "sts-STS(v15.0) AT.065",
+      "move": "c7d6",
+      "score": 33,
+      "completed_depth": 8,
+      "depth_limit": 8,
+      "matched_depth_completed": true,
+      "active_seconds": 2.095165417,
+      "main_nodes": 132209,
+      "q_nodes": 296320,
+      "pv": [
+        "Qd6",
+        "Bg4",
+        "Qe7",
+        "Rd1",
+        "Rxd1",
+        "Bxd1",
+        "Bg6",
+        "Bf3"
+      ]
+    },
+    {
+      "group": "probe-depth-2",
+      "root_id": "sts-STS(v6.0) Recapturing.003",
+      "move": "c4e4",
+      "score": 51,
+      "completed_depth": 7,
+      "depth_limit": 7,
+      "matched_depth_completed": true,
+      "active_seconds": 1.854742833,
+      "main_nodes": 58980,
+      "q_nodes": 350688,
+      "pv": [
+        "Rxe4",
+        "Rxd3",
+        "Qxd3",
+        "Bxf2",
+        "Rf4",
+        "Rd8",
+        "Rxf7",
+        "Rxd3",
+        "Rxe7",
+        "Rxg3",
+        "Rxe6"
+      ]
+    },
+    {
+      "group": "probe-depth-3",
+      "root_id": "sts-STS(v6.0) Recapturing.003",
+      "move": "c4e4",
+      "score": 57,
+      "completed_depth": 7,
+      "depth_limit": 7,
+      "matched_depth_completed": true,
+      "active_seconds": 2.865468958,
+      "main_nodes": 106321,
+      "q_nodes": 537214,
+      "pv": [
+        "Rxe4",
+        "f6",
+        "Ng6",
+        "Qc5",
+        "Nf4",
+        "Rxd3",
+        "Nxd3"
+      ]
+    },
+    {
+      "group": "probe-depth-4",
+      "root_id": "lichess-puzzle-28pJK",
+      "move": "f5f4",
+      "score": -204,
+      "completed_depth": 6,
+      "depth_limit": 6,
+      "matched_depth_completed": true,
+      "active_seconds": 1.273157625,
+      "main_nodes": 21193,
+      "q_nodes": 271810,
+      "pv": [
+        "Qf4",
+        "Bd3",
+        "Rb6",
+        "Re7",
+        "Ra6+",
+        "Kb3",
+        "Kg8"
+      ]
+    },
+    {
+      "group": "probe-depth-5",
+      "root_id": "lichess-puzzle-28pJK",
+      "move": "f5f6",
+      "score": -193,
+      "completed_depth": 6,
+      "depth_limit": 6,
+      "matched_depth_completed": true,
+      "active_seconds": 3.085029584,
+      "main_nodes": 53661,
+      "q_nodes": 639201,
+      "pv": [
+        "Qf6",
+        "Qc2",
+        "Qxf2",
+        "Bd3",
+        "Qxc2",
+        "Bxc2"
+      ]
+    },
+    {
+      "group": "probe-long15",
+      "root_id": "lichess-puzzle-0UOyM",
+      "move": "h7g6",
+      "score": -40,
+      "completed_depth": 14,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 15.000290791,
+      "main_nodes": 3261986,
+      "q_nodes": 4687989,
+      "pv": [
+        "Kg6",
+        "Kf2",
+        "Kf6",
+        "Ke2",
+        "Kf5",
+        "Ke3",
+        "g6",
+        "Kd4",
+        "Kg4",
+        "Kxe4",
+        "Kxg3",
+        "Ke3",
+        "Kg4",
+        "Ke4"
+      ]
+    },
+    {
+      "group": "probe-long15",
+      "root_id": "lichess-puzzle-0m5mI",
+      "move": "b2c3",
+      "score": 8,
+      "completed_depth": 11,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 15.00025025,
+      "main_nodes": 2091388,
+      "q_nodes": 4687193,
+      "pv": [
+        "Kc3",
+        "f4",
+        "exf4",
+        "e3",
+        "Kc2",
+        "Kf5",
+        "Bd6",
+        "Ke4",
+        "Be5",
+        "e2",
+        "Kd2"
+      ]
+    },
+    {
+      "group": "probe-long15",
+      "root_id": "lichess-puzzle-28pJK",
+      "move": "f5c8",
+      "score": -97,
+      "completed_depth": 9,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 15.000232417,
+      "main_nodes": 248467,
+      "q_nodes": 3439254,
+      "pv": [
+        "Qc8",
+        "b3",
+        "Rd2",
+        "Qc1",
+        "Qa6+",
+        "Na4",
+        "Bxa4",
+        "Qc3+",
+        "Kg8",
+        "Qxd2",
+        "Bxb3+",
+        "Kb2",
+        "Qxa2+",
+        "Kc3"
+      ]
+    },
+    {
+      "group": "probe-long15",
+      "root_id": "sts-STS(v1.0) Undermine.037",
+      "move": "g2g5",
+      "score": 87,
+      "completed_depth": 8,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 15.000195375,
+      "main_nodes": 412258,
+      "q_nodes": 4526511,
+      "pv": [
+        "Rg5",
+        "Kg8",
+        "Rxd5",
+        "e3",
+        "Bxe3",
+        "Qxf6",
+        "Bd4",
+        "Qf7"
+      ]
+    },
+    {
+      "group": "probe-long15",
+      "root_id": "sts-STS(v10.0) Simplification.024",
+      "move": "d2e4",
+      "score": 146,
+      "completed_depth": 8,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 15.000218083,
+      "main_nodes": 493963,
+      "q_nodes": 3266640,
+      "pv": [
+        "Nxe4",
+        "Kxe4",
+        "Rxd3",
+        "Nxd3",
+        "Bxd6",
+        "Rxb1",
+        "Nc3+",
+        "Kf5",
+        "Nxb1"
+      ]
+    },
+    {
+      "group": "probe-long15",
+      "root_id": "sts-STS(v15.0) AT.065",
+      "move": "c7a5",
+      "score": 64,
+      "completed_depth": 12,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 15.00021225,
+      "main_nodes": 912967,
+      "q_nodes": 2373924,
+      "pv": [
+        "Qxa5",
+        "Bxa5",
+        "Rd6",
+        "Bc7",
+        "Rd2",
+        "Bb6",
+        "Rxa2",
+        "Bxc5",
+        "Rb2",
+        "Rd1",
+        "Rxb3",
+        "Rd8+",
+        "Bg8"
+      ]
+    },
+    {
+      "group": "probe-no-delta",
+      "root_id": "lichess-puzzle-0UOyM",
+      "move": "h7g6",
+      "score": -32,
+      "completed_depth": 13,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000287,
+      "main_nodes": 1122204,
+      "q_nodes": 1565216,
+      "pv": [
+        "Kg6",
+        "g4",
+        "Kf6",
+        "Kf2",
+        "Ke6",
+        "Ke2",
+        "Kd6",
+        "Kf2",
+        "Ke6",
+        "Ke3",
+        "Kd5",
+        "f5",
+        "Ke5"
+      ]
+    },
+    {
+      "group": "probe-no-delta",
+      "root_id": "lichess-puzzle-0m5mI",
+      "move": "a3d6",
+      "score": 1,
+      "completed_depth": 10,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.00023825,
+      "main_nodes": 771123,
+      "q_nodes": 1558507,
+      "pv": [
+        "Bd6",
+        "Kf7",
+        "Kc3",
+        "Ke6",
+        "Be5",
+        "Kd7",
+        "Kb4",
+        "Kc6",
+        "Kc3",
+        "Kd7"
+      ]
+    },
+    {
+      "group": "probe-no-delta",
+      "root_id": "lichess-puzzle-28pJK",
+      "move": "f5f4",
+      "score": -179,
+      "completed_depth": 7,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.00026325,
+      "main_nodes": 85651,
+      "q_nodes": 1160207,
+      "pv": [
+        "Qf4",
+        "Bd3",
+        "Rb6",
+        "Re2",
+        "Qxh2",
+        "Be4",
+        "Ra6+",
+        "Kb3"
+      ]
+    },
+    {
+      "group": "probe-no-delta",
+      "root_id": "lichess-puzzle-0d58A",
+      "move": "e8e7",
+      "score": 1432,
+      "completed_depth": 7,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000198417,
+      "main_nodes": 52303,
+      "q_nodes": 1925608,
+      "pv": [
+        "Re7+",
+        "Bxe7",
+        "d6+",
+        "Rd5",
+        "Bxd5+",
+        "Qxd5",
+        "Qxe7+",
+        "Kg6",
+        "Nxd5",
+        "Bd7",
+        "Nf4+",
+        "Kf5",
+        "Qf7+",
+        "Ke5",
+        "dxc7"
+      ]
+    },
+    {
+      "group": "probe-no-delta",
+      "root_id": "syzygy-draw-0DSOJ",
+      "move": "h7f5",
+      "score": 215,
+      "completed_depth": 10,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000256542,
+      "main_nodes": 258380,
+      "q_nodes": 485124,
+      "pv": [
+        "Bf5+",
+        "Kg3",
+        "Bxe6",
+        "f5",
+        "Bf7",
+        "f6",
+        "Kd5",
+        "Kf4",
+        "Kd4",
+        "Kf5",
+        "Bd5"
+      ]
+    },
+    {
+      "group": "probe-no-lmr",
+      "root_id": "lichess-puzzle-28pJK",
+      "move": "f5f6",
+      "score": -193,
+      "completed_depth": 6,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.0001925,
+      "main_nodes": 94643,
+      "q_nodes": 1046634,
+      "pv": [
+        "Qf6",
+        "Qc2",
+        "Qxf2",
+        "Bd3",
+        "Qxc2",
+        "Bxc2"
+      ]
+    },
+    {
+      "group": "probe-no-lmr",
+      "root_id": "sts-STS(v1.0) Undermine.037",
+      "move": "g2g5",
+      "score": 104,
+      "completed_depth": 7,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000197333,
+      "main_nodes": 151835,
+      "q_nodes": 1473546,
+      "pv": [
+        "Rg5",
+        "Rc7",
+        "Rxg6",
+        "Qxg6+",
+        "Qxg6",
+        "Rc1+",
+        "Kf2",
+        "Rc2+",
+        "Ke3",
+        "Rc3+",
+        "Bxc3",
+        "Bxg6"
+      ]
+    },
+    {
+      "group": "probe-no-lmr",
+      "root_id": "sts-STS(v10.0) Simplification.024",
+      "move": "d2e4",
+      "score": 87,
+      "completed_depth": 9,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000202083,
+      "main_nodes": 204956,
+      "q_nodes": 1047005,
+      "pv": [
+        "Nxe4",
+        "Kxe4",
+        "Rxd3",
+        "Nxd3",
+        "Bxd6",
+        "Rxb1",
+        "Nc3+",
+        "Kf5",
+        "Nxb1",
+        "N7e5"
+      ]
+    },
+    {
+      "group": "probe-no-lmr",
+      "root_id": "sts-STS(v15.0) AT.065",
+      "move": "c7d6",
+      "score": 33,
+      "completed_depth": 8,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000219042,
+      "main_nodes": 296246,
+      "q_nodes": 768933,
+      "pv": [
+        "Qd6",
+        "Bg4",
+        "Qe7",
+        "Rd1",
+        "Rxd1",
+        "Bxd1",
+        "Bg6",
+        "Bf3"
+      ]
+    },
+    {
+      "group": "probe-no-lmr",
+      "root_id": "sts-STS(v6.0) Recapturing.003",
+      "move": "c4e4",
+      "score": 57,
+      "completed_depth": 7,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000202875,
+      "main_nodes": 203496,
+      "q_nodes": 933816,
+      "pv": [
+        "Rxe4",
+        "f6",
+        "Ng6",
+        "Qc5",
+        "Nf4",
+        "Rxd3",
+        "Nxd3"
+      ]
+    },
+    {
+      "group": "probe-no-lmr",
+      "root_id": "sts-STS(v3.0) Knight Outposts/Repositioning/Centralization.076",
+      "move": "d2e3",
+      "score": 41,
+      "completed_depth": 8,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000200792,
+      "main_nodes": 243238,
+      "q_nodes": 591000,
+      "pv": [
+        "Be3",
+        "Rc8",
+        "Qb2",
+        "Nxb4",
+        "Qxb4",
+        "Bc6",
+        "Bc4",
+        "d5"
+      ]
+    },
+    {
+      "group": "probe-no-lmr",
+      "root_id": "lichess-puzzle-0d58A",
+      "move": "e8e7",
+      "score": 1294,
+      "completed_depth": 6,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000244709,
+      "main_nodes": 52482,
+      "q_nodes": 1855832,
+      "pv": [
+        "Re7+",
+        "Bxe7",
+        "d6+",
+        "Rd5",
+        "Bxd5+",
+        "Qxd5",
+        "Qxe7+",
+        "Kg6",
+        "Nxd5",
+        "Nc6",
+        "Qg5+",
+        "Kf7",
+        "dxc7"
+      ]
+    },
+    {
+      "group": "probe-no-lmr",
+      "root_id": "syzygy-draw-0DSOJ",
+      "move": "h7f5",
+      "score": 215,
+      "completed_depth": 10,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000278792,
+      "main_nodes": 249314,
+      "q_nodes": 454254,
+      "pv": [
+        "Bf5+",
+        "Kg3",
+        "Bxe6",
+        "f5",
+        "Bf7",
+        "f6",
+        "Kd5",
+        "Kf4",
+        "Kd4",
+        "Kf5",
+        "Bd5"
+      ]
+    },
+    {
+      "group": "probe-no-quiet",
+      "root_id": "lichess-puzzle-28pJK",
+      "move": "f5f4",
+      "score": -207,
+      "completed_depth": 6,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000205209,
+      "main_nodes": 92022,
+      "q_nodes": 1218353,
+      "pv": [
+        "Qf4",
+        "b3",
+        "Qxf2",
+        "Qb2",
+        "Rd4",
+        "Nb5"
+      ]
+    },
+    {
+      "group": "probe-no-quiet",
+      "root_id": "sts-STS(v1.0) Undermine.037",
+      "move": "g2c2",
+      "score": 0,
+      "completed_depth": 7,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000210916,
+      "main_nodes": 119141,
+      "q_nodes": 1580300,
+      "pv": [
+        "Rc2",
+        "Rxc2",
+        "Qf8+",
+        "Bg8",
+        "Qh6+",
+        "Bh7",
+        "Qf8+",
+        "Bg8",
+        "Qh6+"
+      ]
+    },
+    {
+      "group": "probe-no-quiet",
+      "root_id": "sts-STS(v10.0) Simplification.024",
+      "move": "d2e4",
+      "score": 146,
+      "completed_depth": 8,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000196208,
+      "main_nodes": 184469,
+      "q_nodes": 1252047,
+      "pv": [
+        "Nxe4",
+        "Kxe4",
+        "Rxd3",
+        "Nxd3",
+        "Bxd6",
+        "Rxb1",
+        "Nc3+",
+        "Kf5",
+        "Nxb1"
+      ]
+    },
+    {
+      "group": "probe-no-quiet",
+      "root_id": "sts-STS(v15.0) AT.065",
+      "move": "c7e7",
+      "score": 68,
+      "completed_depth": 8,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000190083,
+      "main_nodes": 250333,
+      "q_nodes": 1020539,
+      "pv": [
+        "Qe7",
+        "Rh1",
+        "Bf4",
+        "h4",
+        "Bh5",
+        "f3",
+        "Rd3",
+        "Rf1"
+      ]
+    },
+    {
+      "group": "probe-no-quiet",
+      "root_id": "sts-STS(v6.0) Recapturing.003",
+      "move": "c4e4",
+      "score": 60,
+      "completed_depth": 7,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000192042,
+      "main_nodes": 160380,
+      "q_nodes": 1118153,
+      "pv": [
+        "Rxe4",
+        "Rxd3",
+        "Nxd3",
+        "g6",
+        "Rc4",
+        "Ka8",
+        "Qe5"
+      ]
+    },
+    {
+      "group": "probe-no-quiet",
+      "root_id": "sts-STS(v3.0) Knight Outposts/Repositioning/Centralization.076",
+      "move": "d2e3",
+      "score": 44,
+      "completed_depth": 8,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000159417,
+      "main_nodes": 203374,
+      "q_nodes": 890411,
+      "pv": [
+        "Be3",
+        "Be6",
+        "Qb2",
+        "Nxb4",
+        "cxb4",
+        "Bxa2",
+        "Qxa2",
+        "Rc8"
+      ]
+    },
+    {
+      "group": "probe-no-quiet",
+      "root_id": "lichess-puzzle-0d58A",
+      "move": "e8e7",
+      "score": 1294,
+      "completed_depth": 6,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000202708,
+      "main_nodes": 33884,
+      "q_nodes": 1992961,
+      "pv": [
+        "Re7+",
+        "Bxe7",
+        "d6+",
+        "Rd5",
+        "Bxd5+",
+        "Qxd5",
+        "Qxe7+",
+        "Kg6",
+        "Nxd5",
+        "Nc6",
+        "Qg5+",
+        "Kf7",
+        "dxc7"
+      ]
+    },
+    {
+      "group": "probe-no-quiet",
+      "root_id": "syzygy-draw-0DSOJ",
+      "move": "h7f5",
+      "score": 215,
+      "completed_depth": 10,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000225125,
+      "main_nodes": 256787,
+      "q_nodes": 464081,
+      "pv": [
+        "Bf5+",
+        "Kg3",
+        "Bxe6",
+        "f5",
+        "Bf7",
+        "f6",
+        "Kd5",
+        "Kf4",
+        "Kd4",
+        "Kf5",
+        "Bd5"
+      ]
+    },
+    {
+      "group": "probe-no-see",
+      "root_id": "lichess-puzzle-0UOyM",
+      "move": "h7g6",
+      "score": -32,
+      "completed_depth": 13,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000264375,
+      "main_nodes": 1147000,
+      "q_nodes": 1531812,
+      "pv": [
+        "Kg6",
+        "g4",
+        "Kf6",
+        "Kf2",
+        "Ke6",
+        "Ke2",
+        "Kd6",
+        "Kf2",
+        "Ke6",
+        "Ke3",
+        "Kd5",
+        "f5",
+        "Ke5"
+      ]
+    },
+    {
+      "group": "probe-no-see",
+      "root_id": "lichess-puzzle-0m5mI",
+      "move": "a3d6",
+      "score": 1,
+      "completed_depth": 10,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000333167,
+      "main_nodes": 776041,
+      "q_nodes": 1606688,
+      "pv": [
+        "Bd6",
+        "Kf7",
+        "Kc3",
+        "Ke6",
+        "Be5",
+        "Kd7",
+        "Kb4",
+        "Kc6",
+        "Kc3",
+        "Kd7"
+      ]
+    },
+    {
+      "group": "probe-no-see",
+      "root_id": "lichess-puzzle-28pJK",
+      "move": "f5f6",
+      "score": -181,
+      "completed_depth": 7,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000216166,
+      "main_nodes": 73466,
+      "q_nodes": 1186906,
+      "pv": [
+        "Qf6",
+        "Qc2",
+        "Qxf2",
+        "Ref1",
+        "Qe3",
+        "Qf5",
+        "Qe7"
+      ]
+    },
+    {
+      "group": "probe-no-see",
+      "root_id": "sts-STS(v10.0) Simplification.024",
+      "move": "d2e4",
+      "score": 146,
+      "completed_depth": 8,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000273292,
+      "main_nodes": 112530,
+      "q_nodes": 1381108,
+      "pv": [
+        "Nxe4",
+        "Kxe4",
+        "Rxd3",
+        "Nxd3",
+        "Bxd6",
+        "Rxb1",
+        "Nc3+",
+        "Kf5",
+        "Nxb1"
+      ]
+    },
+    {
+      "group": "probe-no-see",
+      "root_id": "sts-STS(v6.0) Recapturing.003",
+      "move": "c4e4",
+      "score": 38,
+      "completed_depth": 8,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000228584,
+      "main_nodes": 178969,
+      "q_nodes": 994531,
+      "pv": [
+        "Rxe4",
+        "Rxd3",
+        "Nxd3",
+        "g6",
+        "Ne5",
+        "Rg8",
+        "c3",
+        "Rd8"
+      ]
+    },
+    {
+      "group": "probe-no-see",
+      "root_id": "lichess-puzzle-0d58A",
+      "move": "e8e7",
+      "score": 1402,
+      "completed_depth": 7,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000208333,
+      "main_nodes": 50045,
+      "q_nodes": 1876873,
+      "pv": [
+        "Re7+",
+        "Bxe7",
+        "d6+",
+        "Rd5",
+        "Bxd5+",
+        "Qxd5",
+        "Qxe7+",
+        "Kg6",
+        "Nxd5",
+        "Bd7",
+        "dxc7"
+      ]
+    },
+    {
+      "group": "probe-no-see",
+      "root_id": "syzygy-draw-0DSOJ",
+      "move": "h7f5",
+      "score": 215,
+      "completed_depth": 10,
+      "depth_limit": 128,
+      "matched_depth_completed": null,
+      "active_seconds": 5.000233834,
+      "main_nodes": 252284,
+      "q_nodes": 457311,
+      "pv": [
+        "Bf5+",
+        "Kg3",
+        "Bxe6",
+        "f5",
+        "Bf7",
+        "f6",
+        "Kd5",
+        "Kf4",
+        "Kd4",
+        "Kf5",
+        "Bd5"
+      ]
+    }
+  ],
+  "heldout_access": false,
+  "child_attribution": [
+    {
+      "group": "probe-child-candidate",
+      "root_id": "probe-0UOyM-after-h7g6",
+      "move": "g2f2",
+      "score_child_white": 40,
+      "score_original_black": -40,
+      "completed_depth": 13,
+      "depth_limit": 13,
+      "matched_depth_completed": true,
+      "active_seconds": 5.103160666,
+      "pv": [
+        "Kf2",
+        "Kf6",
+        "Ke2",
+        "Kf5",
+        "Ke3",
+        "g6",
+        "Kd4",
+        "Kg4",
+        "Kxe4",
+        "Kxg3",
+        "Ke3",
+        "Kg4",
+        "Ke4"
+      ],
+      "root_evaluation": {
+        "black": {
+          "endgame": {
+            "end": 0,
+            "middle": 0
+          },
+          "king_safety": {
+            "end": 0,
+            "middle": -56
+          },
+          "material": 400,
+          "mobility": {
+            "end": 0,
+            "middle": 0
+          },
+          "pawns": {
+            "end": 74,
+            "middle": 14
+          },
+          "placement": {
+            "end": 112,
+            "middle": 6
+          },
+          "threats": {
+            "end": 0,
+            "middle": 0
+          }
+        },
+        "kind": "static_heuristic_not_native_outcome",
+        "middle_phase": 0,
+        "root_side": "white",
+        "score_root_side": -60,
+        "score_side_to_move": -60,
+        "side_to_move": "white",
+        "specialized": null,
+        "white": {
+          "endgame": {
+            "end": 0,
+            "middle": 0
+          },
+          "king_safety": {
+            "end": 0,
+            "middle": -11
+          },
+          "material": 400,
+          "mobility": {
+            "end": 0,
+            "middle": 0
+          },
+          "pawns": {
+            "end": 30,
+            "middle": 14
+          },
+          "placement": {
+            "end": 96,
+            "middle": 20
+          },
+          "threats": {
+            "end": 0,
+            "middle": 0
+          }
+        }
+      },
+      "pv_leaf_evaluation": {
+        "black": {
+          "endgame": {
+            "end": 0,
+            "middle": 0
+          },
+          "king_safety": {
+            "end": 0,
+            "middle": -38
+          },
+          "material": 300,
+          "mobility": {
+            "end": 0,
+            "middle": 0
+          },
+          "pawns": {
+            "end": 4,
+            "middle": -7
+          },
+          "placement": {
+            "end": 100,
+            "middle": -40
+          },
+          "threats": {
+            "end": 0,
+            "middle": 0
+          }
+        },
+        "kind": "static_heuristic_not_native_outcome",
+        "middle_phase": 0,
+        "root_side": "white",
+        "score_root_side": 40,
+        "score_side_to_move": -40,
+        "side_to_move": "black",
+        "specialized": null,
+        "white": {
+          "endgame": {
+            "end": 0,
+            "middle": 0
+          },
+          "king_safety": {
+            "end": 0,
+            "middle": -46
+          },
+          "material": 300,
+          "mobility": {
+            "end": 0,
+            "middle": 0
+          },
+          "pawns": {
+            "end": 4,
+            "middle": -7
+          },
+          "placement": {
+            "end": 140,
+            "middle": -44
+          },
+          "threats": {
+            "end": 0,
+            "middle": 0
+          }
+        }
+      },
+      "context_limit": "Nominal child horizon; fresh TT/window/order and skipped root check extension differ from original interior search."
+    },
+    {
+      "group": "probe-child-source",
+      "root_id": "probe-0UOyM-after-e4f3",
+      "move": "g2f3",
+      "score_child_white": 92,
+      "score_original_black": -92,
+      "completed_depth": 13,
+      "depth_limit": 13,
+      "matched_depth_completed": true,
+      "active_seconds": 1.05203425,
+      "pv": [
+        "Kxf3",
+        "Kg6",
+        "Ke4",
+        "Kf6",
+        "Kd4",
+        "g5",
+        "Kc5",
+        "Ke6",
+        "Kb6",
+        "Kd5",
+        "Kxa6",
+        "Kc4",
+        "Ka5"
+      ],
+      "root_evaluation": {
+        "black": {
+          "endgame": {
+            "end": 0,
+            "middle": 0
+          },
+          "king_safety": {
+            "end": 0,
+            "middle": -20
+          },
+          "material": 400,
+          "mobility": {
+            "end": 0,
+            "middle": 0
+          },
+          "pawns": {
+            "end": 88,
+            "middle": 55
+          },
+          "placement": {
+            "end": 92,
+            "middle": 34
+          },
+          "threats": {
+            "end": 0,
+            "middle": 0
+          }
+        },
+        "kind": "static_heuristic_not_native_outcome",
+        "middle_phase": 0,
+        "root_side": "white",
+        "score_root_side": -198,
+        "score_side_to_move": -198,
+        "side_to_move": "white",
+        "specialized": null,
+        "white": {
+          "endgame": {
+            "end": 0,
+            "middle": 0
+          },
+          "king_safety": {
+            "end": 0,
+            "middle": -46
+          },
+          "material": 300,
+          "mobility": {
+            "end": 0,
+            "middle": 0
+          },
+          "pawns": {
+            "end": 4,
+            "middle": -7
+          },
+          "placement": {
+            "end": 72,
+            "middle": 4
+          },
+          "threats": {
+            "end": 6,
+            "middle": 6
+          }
+        }
+      },
+      "pv_leaf_evaluation": {
+        "black": {
+          "endgame": {
+            "end": 0,
+            "middle": 0
+          },
+          "king_safety": {
+            "end": 0,
+            "middle": -56
+          },
+          "material": 200,
+          "mobility": {
+            "end": 0,
+            "middle": 0
+          },
+          "pawns": {
+            "end": -16,
+            "middle": -20
+          },
+          "placement": {
+            "end": 114,
+            "middle": -50
+          },
+          "threats": {
+            "end": 0,
+            "middle": 0
+          }
+        },
+        "kind": "static_heuristic_not_native_outcome",
+        "middle_phase": 0,
+        "root_side": "white",
+        "score_root_side": 92,
+        "score_side_to_move": -92,
+        "side_to_move": "black",
+        "specialized": null,
+        "white": {
+          "endgame": {
+            "end": 0,
+            "middle": 0
+          },
+          "king_safety": {
+            "end": 0,
+            "middle": -6
+          },
+          "material": 300,
+          "mobility": {
+            "end": 0,
+            "middle": 0
+          },
+          "pawns": {
+            "end": 4,
+            "middle": -7
+          },
+          "placement": {
+            "end": 86,
+            "middle": -30
+          },
+          "threats": {
+            "end": 0,
+            "middle": 0
+          }
+        }
+      },
+      "context_limit": "Nominal child horizon; fresh TT/window/order and skipped root check extension differ from original interior search."
+    }
+  ]
+}

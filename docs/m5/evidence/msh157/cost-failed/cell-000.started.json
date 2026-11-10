@@ -1,0 +1,11 @@
+{
+  "index": 0,
+  "start_utc": "2026-11-10T13:24:33.212422+00:00",
+  "command": [
+    "/private/tmp/msh157-bin/predecessor",
+    "/private/tmp/msh157-cost-run/fixed-depth2.json",
+    "2",
+    "untimed",
+    "none"
+  ]
+}

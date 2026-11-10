@@ -1,0 +1,11 @@
+{
+  "index": 21,
+  "start_utc": "2026-11-10T13:26:32.686466+00:00",
+  "command": [
+    "/private/tmp/msh157-bin/predecessor",
+    "/private/tmp/msh157-cost-retry/normal-history.json",
+    "128",
+    "timed",
+    "none"
+  ]
+}

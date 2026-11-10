@@ -1,0 +1,12 @@
+{
+  "status": "completed-with-one-preserved-validation-failure",
+  "start_utc": "2026-11-10T13:24:33.212715+00:00",
+  "end_utc": "2026-11-10T13:26:35.918419+00:00",
+  "charged_active_seconds": 18.14734837571238,
+  "process_wall_seconds": 18.968347542453557,
+  "cpu_seconds": 18.202308999999996,
+  "ledger_paths": [
+    "/tmp/msh157-cost-run/runs.jsonl",
+    "/tmp/msh157-cost-retry/runs.jsonl"
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "development_sha256": "4c2dc1459b7be62201f04cb58cd7cbddc61483d8a90d9584fd16f3220bc00389",
+  "baseline_ledger_sha256": "e6f12e2b79e2cefc3f93f4980413359a77e0557970d52dad0a5e8be8e9864fda",
+  "candidates": [
+    "lichess-puzzle-0UOyM",
+    "lichess-puzzle-0m5mI",
+    "lichess-puzzle-28pJK",
+    "sts-STS(v1.0) Undermine.037",
+    "sts-STS(v10.0) Simplification.024",
+    "sts-STS(v15.0) AT.065",
+    "sts-STS(v6.0) Recapturing.003",
+    "sts-STS(v3.0) Knight Outposts/Repositioning/Centralization.076"
+  ],
+  "controls": [
+    "lichess-puzzle-0d58A",
+    "syzygy-draw-0DSOJ"
+  ],
+  "groups": {
+    "long15": {
+      "path": "/tmp/msh157-probe-long15.json",
+      "seconds": 15,
+      "diagnostic": null,
+      "roots": [
+        "lichess-puzzle-0UOyM",
+        "lichess-puzzle-0m5mI",
+        "lichess-puzzle-28pJK",
+        "sts-STS(v1.0) Undermine.037",
+        "sts-STS(v10.0) Simplification.024",
+        "sts-STS(v15.0) AT.065"
+      ],
+      "nominal_seconds": 90,
+      "sha256": "2a71833adf3d0156622b92516cd8dc81ce8d6452c1c326f365514dff11dfe9a0"
+    },
+    "no-lmr": {
+      "path": "/tmp/msh157-probe-no-lmr.json",
+      "seconds": 5,
+      "diagnostic": "disable_lmr",
+      "roots": [
+        "lichess-puzzle-28pJK",
+        "sts-STS(v1.0) Undermine.037",
+        "sts-STS(v10.0) Simplification.024",
+        "sts-STS(v15.0) AT.065",
+        "sts-STS(v6.0) Recapturing.003",
+        "sts-STS(v3.0) Knight Outposts/Repositioning/Centralization.076",
+        "lichess-puzzle-0d58A",
+        "syzygy-draw-0DSOJ"
+      ],
+      "nominal_seconds": 40,
+      "sha256": "6bba7ccd069adae555a86ab98aac1215fd69e6e0372e8aaf6ee2fb48ec89c806"
+    },
+    "no-quiet": {
+      "path": "/tmp/msh157-probe-no-quiet.json",
+      "seconds": 5,
+      "diagnostic": "disable_quiet_omissions",
+      "roots": [
+        "lichess-puzzle-28pJK",
+        "sts-STS(v1.0) Undermine.037",
+        "sts-STS(v10.0) Simplification.024",
+        "sts-STS(v15.0) AT.065",
+        "sts-STS(v6.0) Recapturing.003",
+        "sts-STS(v3.0) Knight Outposts/Repositioning/Centralization.076",
+        "lichess-puzzle-0d58A",
+        "syzygy-draw-0DSOJ"
+      ],
+      "nominal_seconds": 40,
+      "sha256": "6bba7ccd069adae555a86ab98aac1215fd69e6e0372e8aaf6ee2fb48ec89c806"
+    },
+    "no-see": {
+      "path": "/tmp/msh157-probe-no-see.json",
+      "seconds": 5,
+      "diagnostic": "disable_see_pruning",
+      "roots": [
+        "lichess-puzzle-0UOyM",
+        "lichess-puzzle-0m5mI",
+        "lichess-puzzle-28pJK",
+        "sts-STS(v10.0) Simplification.024",
+        "sts-STS(v6.0) Recapturing.003",
+        "lichess-puzzle-0d58A",
+        "syzygy-draw-0DSOJ"
+      ],
+      "nominal_seconds": 35,
+      "sha256": "b5b9baa5188315fdbd24b256fcf8d7deb8333c213cbe8c3ab65b43acaeea4462"
+    },
+    "no-delta": {
+      "path": "/tmp/msh157-probe-no-delta.json",
+      "seconds": 5,
+      "diagnostic": "disable_delta_pruning",
+      "roots": [
+        "lichess-puzzle-0UOyM",
+        "lichess-puzzle-0m5mI",
+        "lichess-puzzle-28pJK",
+        "lichess-puzzle-0d58A",
+        "syzygy-draw-0DSOJ"
+      ],
+      "nominal_seconds": 25,
+      "sha256": "11e261856dcaec95ab6a455cb9867e236016f16c8bf16385cc0f7f2ae32065bc"
+    }
+  },
+  "nominal_seconds": 230,
+  "reserve_to_300_seconds": 70,
+  "selection_note": "No exact failure exists. Three puzzle mismatches are unresolved; five lower-published-point STS examples selected by largest point deficit then distinct strategy family and stable ID. No unlisted STS/eval move is called an error."
+}

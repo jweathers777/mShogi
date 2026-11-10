@@ -1,0 +1,11 @@
+{
+  "index": 12,
+  "start_utc": "2026-11-10T13:26:22.745902+00:00",
+  "command": [
+    "/private/tmp/msh157-bin/predecessor",
+    "/private/tmp/msh157-cost-retry/live-repeat.json",
+    "128",
+    "timed",
+    "none"
+  ]
+}

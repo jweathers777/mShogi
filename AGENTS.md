@@ -238,6 +238,19 @@ Stop after reasonable distinct experiments if none supports improvement, with th
 specific unresolved obstacle. MSH-153 remains held unless valuation is implicated.
 Ordinary implementation/review/integration within this assignment is authorized.
 
+Owner direction after MSH-158 (Chess Decision Corrections), 2026-11-10:
+investigate and improve classical evaluation in MSH-159 (Classical Evaluation
+Decisions). Establish meaningful intermediate-position rankings and consequences,
+not Stockfish centipawn calibration. Evaluation-only experiments are authorized;
+do not change search policy to force preferred moves. Reuse the existing160/80
+benchmark, keep held-out sealed until freeze, retain5s primary/1s checks and selected15s
+diagnostics. New active engine computation is capped at2400seconds; no matches,
+new corpus, learned evaluation, cross-game work or unrelated optimization. Use
+independent diagnosis/correction review and integrate supported changes normally.
+Stop after reasonable distinct trials if unsupported; MSH-153 remains held unless
+a relevant general valuation problem is established. Full owner request is retained
+in docs/m5/evidence/msh159/owner-request.txt.
+
 ## Git and routine autonomy
 
 The established workflow permits ordinary local commits, non-destructive integration, normal pushes to the configured project remote, and cleanup of the agent's own completed disposable branches/worktrees. Use the designated rewrite branch as the integration target. Keep the original project history and default branch intact unless John explicitly changes that instruction.

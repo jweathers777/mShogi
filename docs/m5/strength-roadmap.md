@@ -1,5 +1,24 @@
 # Conventional Chess: evidence-driven engineering roadmap
 
+MSH-159 (Classical Evaluation Decisions) completed the focused classical-evaluation
+investigation. See the [evaluation report](classical-evaluation-decisions.md).
+The experimental general pawn-race and bishop-restriction corrections improved
+both motivating five-second choices and established useful static weaknesses.
+The wider frozen comparison also found two material strategic decision regressions,
+so independent review rejected the entire candidate. Production remains the
+verified MSH-158 (Chess Decision Corrections) predecessor; no alternative component
+was selected after held-out exposure. All 80 held-out choices and exact objectives
+were preserved, which establishes neither transfer nor strength improvement.
+
+The next useful bounded question would explain those regressions and separate
+feature consequences from time-limited coverage while preserving the established
+target benefits. This is a recommendation, not a new engineering assignment.
+MSH-153 (Classical Compensation Calibration) stays held: numerical disagreement
+and these endgame findings do not select a general material-compensation change.
+No further workstream or tournament is started by this completion.
+
+The preceding MSH-158 checkpoint follows for historical context.
+
 MSH-158 (Chess Decision Corrections) completes the owner-requested focused round
 following MSH-157 (Conventional Decision Improvement). See the
 [correction report](chess-decision-corrections.md). The retained general fix preserves

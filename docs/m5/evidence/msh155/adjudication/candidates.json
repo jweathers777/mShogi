@@ -1,0 +1,728 @@
+{
+  "schema": 1,
+  "state": "FROZEN_PENDING_COORDINATOR_APPROVAL_AND_ENGINE_SLOT",
+  "created_utc": "2026-11-10T11:41:34.448589+00:00",
+  "benchmark_panel_sha256": "993785b5c6f1f82c17652ebd0078b3e642132207ac10db5ec0abde15d2c4ec85",
+  "baseline_missing_indices": [],
+  "included_scopes": [
+    "/tmp/msh155",
+    "/tmp/msh155/followup30",
+    "/tmp/msh155/intermediate"
+  ],
+  "excluded_scope": "smoke",
+  "candidates": {
+    "historical-22Nf5": {
+      "canonical_anchor": "d3f5",
+      "selected_moves": {
+        "e3f5": [
+          {
+            "engine": "mshogi",
+            "seconds": 1,
+            "cell_index": 0,
+            "scope": "."
+          }
+        ],
+        "b2b3": [
+          {
+            "engine": "goldfish",
+            "seconds": 1,
+            "cell_index": 1,
+            "scope": "."
+          }
+        ],
+        "a1b1": [
+          {
+            "engine": "oxidation",
+            "seconds": 1,
+            "cell_index": 2,
+            "scope": "."
+          },
+          {
+            "engine": "goldfish",
+            "seconds": 5,
+            "cell_index": 45,
+            "scope": "."
+          },
+          {
+            "engine": "oxidation",
+            "seconds": 5,
+            "cell_index": 46,
+            "scope": "."
+          },
+          {
+            "engine": "oxidation",
+            "seconds": 15,
+            "cell_index": 66,
+            "scope": "."
+          }
+        ],
+        "d3f5": [
+          {
+            "engine": "mshogi",
+            "seconds": 5,
+            "cell_index": 47,
+            "scope": "."
+          }
+        ],
+        "d2c1": [
+          {
+            "engine": "mshogi",
+            "seconds": 15,
+            "cell_index": 67,
+            "scope": "."
+          },
+          {
+            "engine": "goldfish",
+            "seconds": 15,
+            "cell_index": 68,
+            "scope": "."
+          }
+        ]
+      },
+      "sources": [
+        {
+          "file": "/tmp/msh155/cell-000-mshogi.result.json",
+          "sha256": "7902a8708926ba8fa29c026f9a05d79820c9612d8171651dd9ed70e9cf52f7c7"
+        },
+        {
+          "file": "/tmp/msh155/cell-001-goldfish.result.json",
+          "sha256": "74a30e0071ec425bd8df9f214d62e7af424cf633e413725e5f5bd888ef8cfab7"
+        },
+        {
+          "file": "/tmp/msh155/cell-002-oxidation.result.json",
+          "sha256": "7c766fafa61243173d92992d22c077e27fdf886fca78a9a0f1a4e309c4456827"
+        },
+        {
+          "file": "/tmp/msh155/cell-045-goldfish.result.json",
+          "sha256": "18e142467ffb6158be6c59265323188ae8489721c3cadd7f645fb3f57e7e609d"
+        },
+        {
+          "file": "/tmp/msh155/cell-046-oxidation.result.json",
+          "sha256": "bec3a2d456e69f021c0292bb3cf3f7ba31ef28775d2f0a53d72a43415c7ee224"
+        },
+        {
+          "file": "/tmp/msh155/cell-047-mshogi.result.json",
+          "sha256": "28c18b118475955cacb4e74fc7571cde9437e0721c86778c2dbd0fdaf42fc7f6"
+        },
+        {
+          "file": "/tmp/msh155/cell-066-oxidation.result.json",
+          "sha256": "076e6732d3cc27fe48fcf891a9b3fbae9b5debb820098488e6608e8fffeeaaad"
+        },
+        {
+          "file": "/tmp/msh155/cell-067-mshogi.result.json",
+          "sha256": "336a6a08c4b39e6c25245408f62cf87e6381f5f3b083b55d9a8fe873b1e6da97"
+        },
+        {
+          "file": "/tmp/msh155/cell-068-goldfish.result.json",
+          "sha256": "9b21a6809158465f1728b6cbe291b89ddd65b26d3fb2449bd473ec651c6aa9fe"
+        }
+      ],
+      "candidate_moves": [
+        "a1b1",
+        "b2b3",
+        "d2c1",
+        "d3f5",
+        "e3f5"
+      ]
+    },
+    "historical-24h4": {
+      "canonical_anchor": "h3h4",
+      "selected_moves": {
+        "h3h4": [
+          {
+            "engine": "oxidation",
+            "seconds": 1,
+            "cell_index": 6,
+            "scope": "."
+          },
+          {
+            "engine": "mshogi",
+            "seconds": 1,
+            "cell_index": 7,
+            "scope": "."
+          },
+          {
+            "engine": "mshogi",
+            "seconds": 5,
+            "cell_index": 27,
+            "scope": "."
+          },
+          {
+            "engine": "oxidation",
+            "seconds": 5,
+            "cell_index": 29,
+            "scope": "."
+          },
+          {
+            "engine": "goldfish",
+            "seconds": 15,
+            "cell_index": 48,
+            "scope": "."
+          },
+          {
+            "engine": "oxidation",
+            "seconds": 15,
+            "cell_index": 49,
+            "scope": "."
+          },
+          {
+            "engine": "mshogi",
+            "seconds": 15,
+            "cell_index": 50,
+            "scope": "."
+          }
+        ],
+        "d2b4": [
+          {
+            "engine": "goldfish",
+            "seconds": 1,
+            "cell_index": 8,
+            "scope": "."
+          },
+          {
+            "engine": "goldfish",
+            "seconds": 5,
+            "cell_index": 28,
+            "scope": "."
+          }
+        ]
+      },
+      "sources": [
+        {
+          "file": "/tmp/msh155/cell-006-oxidation.result.json",
+          "sha256": "f66de18d4e9fcb9f4a68564fa2daa90e4774df3276fccbc2bb646ff57789636e"
+        },
+        {
+          "file": "/tmp/msh155/cell-007-mshogi.result.json",
+          "sha256": "587c5049e83418535d0a1d4308e9862c103f6abaec8b9e591fb869101df10cdb"
+        },
+        {
+          "file": "/tmp/msh155/cell-008-goldfish.result.json",
+          "sha256": "fefed2eb772ecb30218fd16914db3e69b94cf100c4c7ddfbf7167b417ec34ab5"
+        },
+        {
+          "file": "/tmp/msh155/cell-027-mshogi.result.json",
+          "sha256": "04c058c7068d2bd4d356bca34914ba810ee87487751ef5b691cc9a695ff9133d"
+        },
+        {
+          "file": "/tmp/msh155/cell-028-goldfish.result.json",
+          "sha256": "d9401accff29539181c9f68a799e69bbe055fe93cd6a0e7af05f6a924bad5e02"
+        },
+        {
+          "file": "/tmp/msh155/cell-029-oxidation.result.json",
+          "sha256": "31ef45e90c2b1765d5205b112d72460cb597421ba63648cc34a93ba2b9d58b76"
+        },
+        {
+          "file": "/tmp/msh155/cell-048-goldfish.result.json",
+          "sha256": "02a11bfa72406d19eec3f55be28db2074527f306a2d2b6ca93dbdfa6c53da0cb"
+        },
+        {
+          "file": "/tmp/msh155/cell-049-oxidation.result.json",
+          "sha256": "8eda0a81020aec710569022c61d540c05851b08072740d7cfd11a93fe7d48420"
+        },
+        {
+          "file": "/tmp/msh155/cell-050-mshogi.result.json",
+          "sha256": "678f0b93e5ba5b0235a410e34ff711fa7a6bcdc73f57955059210678d57cd09f"
+        }
+      ],
+      "candidate_moves": [
+        "d2b4",
+        "h3h4"
+      ]
+    },
+    "fresh-sts-undermine-004": {
+      "canonical_anchor": "b4b5",
+      "selected_moves": {
+        "b4b5": [
+          {
+            "engine": "mshogi",
+            "seconds": 1,
+            "cell_index": 9,
+            "scope": "."
+          },
+          {
+            "engine": "goldfish",
+            "seconds": 1,
+            "cell_index": 10,
+            "scope": "."
+          },
+          {
+            "engine": "goldfish",
+            "seconds": 5,
+            "cell_index": 30,
+            "scope": "."
+          },
+          {
+            "engine": "mshogi",
+            "seconds": 5,
+            "cell_index": 32,
+            "scope": "."
+          },
+          {
+            "engine": "mshogi",
+            "seconds": 15,
+            "cell_index": 52,
+            "scope": "."
+          },
+          {
+            "engine": "goldfish",
+            "seconds": 15,
+            "cell_index": 53,
+            "scope": "."
+          }
+        ],
+        "f3e5": [
+          {
+            "engine": "oxidation",
+            "seconds": 1,
+            "cell_index": 11,
+            "scope": "."
+          },
+          {
+            "engine": "oxidation",
+            "seconds": 5,
+            "cell_index": 31,
+            "scope": "."
+          },
+          {
+            "engine": "oxidation",
+            "seconds": 15,
+            "cell_index": 51,
+            "scope": "."
+          }
+        ]
+      },
+      "sources": [
+        {
+          "file": "/tmp/msh155/cell-009-mshogi.result.json",
+          "sha256": "9470b1d647bcaeb2c4f899ddb5f77b1e15536425b973de300f9d08e7b26cb03b"
+        },
+        {
+          "file": "/tmp/msh155/cell-010-goldfish.result.json",
+          "sha256": "6ecaeab5bc5207e3eb1954cf365df4a8f4c9e4aea942d6856bd533a2e71a8673"
+        },
+        {
+          "file": "/tmp/msh155/cell-011-oxidation.result.json",
+          "sha256": "3d50b7179d1815440a78323c1b4ff9bb5aa171630d04cccf3ac263b10b35b7cf"
+        },
+        {
+          "file": "/tmp/msh155/cell-030-goldfish.result.json",
+          "sha256": "cd60640f347663701cba2980e8c02af190b73d594c9a84e1f64b1d80c187d2b7"
+        },
+        {
+          "file": "/tmp/msh155/cell-031-oxidation.result.json",
+          "sha256": "4c35ea6ffb700f09455e8a301d010cad69322bb8ec6a02b28e6b0ccf7a8693d5"
+        },
+        {
+          "file": "/tmp/msh155/cell-032-mshogi.result.json",
+          "sha256": "638fc29f9e1e2dedbe5ec4023bfa2e3960068e03fcc2e58d35f0b5941dfaeafb"
+        },
+        {
+          "file": "/tmp/msh155/cell-051-oxidation.result.json",
+          "sha256": "6bc3556fbe62ed656f4cacbe476b4690613fcc703145c031fb388a06a035e932"
+        },
+        {
+          "file": "/tmp/msh155/cell-052-mshogi.result.json",
+          "sha256": "b5a5a9ec83534f0d002763c689c9eb4be48ddd0b0e883d84a9ca698bade27cd1"
+        },
+        {
+          "file": "/tmp/msh155/cell-053-goldfish.result.json",
+          "sha256": "fde2d3b600cf38a53ee735ded46fe5b0b407142c35233b6b19324d7a00e5754c"
+        }
+      ],
+      "candidate_moves": [
+        "b4b5",
+        "f3e5"
+      ]
+    },
+    "historical-23Rf6": {
+      "canonical_anchor": "d6e4",
+      "selected_moves": {
+        "f8f6": [
+          {
+            "engine": "goldfish",
+            "seconds": 1,
+            "cell_index": 12,
+            "scope": "."
+          },
+          {
+            "engine": "mshogi",
+            "seconds": 1,
+            "cell_index": 14,
+            "scope": "."
+          },
+          {
+            "engine": "goldfish",
+            "seconds": 5,
+            "cell_index": 35,
+            "scope": "."
+          },
+          {
+            "engine": "goldfish",
+            "seconds": 15,
+            "cell_index": 55,
+            "scope": "."
+          }
+        ],
+        "a8d8": [
+          {
+            "engine": "oxidation",
+            "seconds": 1,
+            "cell_index": 13,
+            "scope": "."
+          },
+          {
+            "engine": "oxidation",
+            "seconds": 5,
+            "cell_index": 33,
+            "scope": "."
+          },
+          {
+            "engine": "mshogi",
+            "seconds": 5,
+            "cell_index": 34,
+            "scope": "."
+          },
+          {
+            "engine": "mshogi",
+            "seconds": 15,
+            "cell_index": 54,
+            "scope": "."
+          },
+          {
+            "engine": "oxidation",
+            "seconds": 15,
+            "cell_index": 56,
+            "scope": "."
+          }
+        ]
+      },
+      "sources": [
+        {
+          "file": "/tmp/msh155/cell-012-goldfish.result.json",
+          "sha256": "5febd3d3bc123596a51136a3496dd8aaada36d77a318468078d0eb9e5d91e818"
+        },
+        {
+          "file": "/tmp/msh155/cell-013-oxidation.result.json",
+          "sha256": "11d5cd3cdea911ed3ff7eb03ee71c17eca65f319f7483d7c158930a40e7fc4e8"
+        },
+        {
+          "file": "/tmp/msh155/cell-014-mshogi.result.json",
+          "sha256": "7024c0fa90fc8b54b9c6fb3fdd0419b2ad3c5a312ea30ff04183a520f482d3a6"
+        },
+        {
+          "file": "/tmp/msh155/cell-033-oxidation.result.json",
+          "sha256": "9720f1f39307220090ed45f27fc7580b965eadaaca410807ac758b5e317d4a9a"
+        },
+        {
+          "file": "/tmp/msh155/cell-034-mshogi.result.json",
+          "sha256": "4766d39148f0d6bd14e4a1f3afd2d5ff02c1c5398eeb0a6870cf2c7a666b1e69"
+        },
+        {
+          "file": "/tmp/msh155/cell-035-goldfish.result.json",
+          "sha256": "0fdf5bbac9f8112463433f847f2be98ef0d9c1d872ea424a39daf7a45cbc1b8f"
+        },
+        {
+          "file": "/tmp/msh155/cell-054-mshogi.result.json",
+          "sha256": "5c0e3c63a7a5e31785ad6460d5fc3467457ca2fa4f180144054c5903fee7abf7"
+        },
+        {
+          "file": "/tmp/msh155/cell-055-goldfish.result.json",
+          "sha256": "11c68a99ec1f4a627fea13b3711d2c2d5e0159c2e71914fb7d042a91128e0c08"
+        },
+        {
+          "file": "/tmp/msh155/cell-056-oxidation.result.json",
+          "sha256": "c8a14428ca42a526f510ca355f337e19f724ebf3d4af2399bace36e06509825a"
+        }
+      ],
+      "candidate_moves": [
+        "a8d8",
+        "d6e4",
+        "f8f6"
+      ]
+    },
+    "historical-34Rc5": {
+      "canonical_anchor": "e2e3",
+      "selected_moves": {
+        "e4f4": [
+          {
+            "engine": "mshogi",
+            "seconds": 1,
+            "cell_index": 18,
+            "scope": "."
+          }
+        ],
+        "b4b5": [
+          {
+            "engine": "goldfish",
+            "seconds": 1,
+            "cell_index": 19,
+            "scope": "."
+          }
+        ],
+        "a5a6": [
+          {
+            "engine": "oxidation",
+            "seconds": 1,
+            "cell_index": 20,
+            "scope": "."
+          },
+          {
+            "engine": "goldfish",
+            "seconds": 15,
+            "cell_index": 62,
+            "scope": "."
+          }
+        ],
+        "g2g4": [
+          {
+            "engine": "goldfish",
+            "seconds": 5,
+            "cell_index": 39,
+            "scope": "."
+          },
+          {
+            "engine": "mshogi",
+            "seconds": 5,
+            "cell_index": 41,
+            "scope": "."
+          },
+          {
+            "engine": "mshogi",
+            "seconds": 15,
+            "cell_index": 61,
+            "scope": "."
+          }
+        ],
+        "f3f4": [
+          {
+            "engine": "oxidation",
+            "seconds": 5,
+            "cell_index": 40,
+            "scope": "."
+          },
+          {
+            "engine": "oxidation",
+            "seconds": 15,
+            "cell_index": 60,
+            "scope": "."
+          }
+        ]
+      },
+      "sources": [
+        {
+          "file": "/tmp/msh155/cell-018-mshogi.result.json",
+          "sha256": "8251b133715285a5ce77f87d267e66e26d297f1975fd6a5c69fba4ed63c61f3c"
+        },
+        {
+          "file": "/tmp/msh155/cell-019-goldfish.result.json",
+          "sha256": "cb0db5d943eb1f2d8b5d0d7059b868535b5467fdb56c29c058d0f30eef54e019"
+        },
+        {
+          "file": "/tmp/msh155/cell-020-oxidation.result.json",
+          "sha256": "0bde1586636c6eb9930b000d63d25d3d2c728553d318bdbf1502359f0a0d2ea7"
+        },
+        {
+          "file": "/tmp/msh155/cell-039-goldfish.result.json",
+          "sha256": "d5b8209a2dc8d2d6508b35e0f1d9076ccba2845252c97b78117cd3b9323bc98f"
+        },
+        {
+          "file": "/tmp/msh155/cell-040-oxidation.result.json",
+          "sha256": "974f5ea3e64f6bb8c0c145e0c9deea12b03ac180ab66ea0e95a7f0346c8424ac"
+        },
+        {
+          "file": "/tmp/msh155/cell-041-mshogi.result.json",
+          "sha256": "e4662c0e507a9bc9a1d535a050cc01a453012fd437f3c71bc69d16a8b95f7ab1"
+        },
+        {
+          "file": "/tmp/msh155/cell-060-oxidation.result.json",
+          "sha256": "083999bea54f27aabca53cfc93bc9567a029610f85d5bf5da99ba52c86ffbec2"
+        },
+        {
+          "file": "/tmp/msh155/cell-061-mshogi.result.json",
+          "sha256": "07c44938153311e6d9ae728cdcf664e503fcbc8c86b777ce3f5944934e80bb70"
+        },
+        {
+          "file": "/tmp/msh155/cell-062-goldfish.result.json",
+          "sha256": "b0933fe81fc1efca3c3849869b4de45cc9ddffea289ff5e7d794744fbc5bdcfc"
+        }
+      ],
+      "candidate_moves": [
+        "a5a6",
+        "b4b5",
+        "e2e3",
+        "e4f4",
+        "f3f4",
+        "g2g4"
+      ]
+    }
+  },
+  "queries": [
+    {
+      "root_id": "historical-22Nf5",
+      "root_move": "d2c1",
+      "role": "observed_or_prior_weakness",
+      "query_index": 0,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-22Nf5",
+      "root_move": "d3f5",
+      "role": "canonical_anchor",
+      "query_index": 1,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-22Nf5",
+      "root_move": null,
+      "role": "unrestricted",
+      "query_index": 2,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-22Nf5",
+      "root_move": "a1b1",
+      "role": "observed_or_prior_weakness",
+      "query_index": 3,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-22Nf5",
+      "root_move": "b2b3",
+      "role": "observed_or_prior_weakness",
+      "query_index": 4,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-22Nf5",
+      "root_move": "e3f5",
+      "role": "observed_or_prior_weakness",
+      "query_index": 5,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-23Rf6",
+      "root_move": null,
+      "role": "unrestricted",
+      "query_index": 6,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-23Rf6",
+      "root_move": "a8d8",
+      "role": "observed_or_prior_weakness",
+      "query_index": 7,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-23Rf6",
+      "root_move": "d6e4",
+      "role": "canonical_anchor",
+      "query_index": 8,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-23Rf6",
+      "root_move": "f8f6",
+      "role": "observed_or_prior_weakness",
+      "query_index": 9,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-24h4",
+      "root_move": null,
+      "role": "unrestricted",
+      "query_index": 10,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-24h4",
+      "root_move": "d2b4",
+      "role": "observed_or_prior_weakness",
+      "query_index": 11,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-24h4",
+      "root_move": "h3h4",
+      "role": "canonical_anchor",
+      "query_index": 12,
+      "seconds": 3
+    },
+    {
+      "root_id": "fresh-sts-undermine-004",
+      "root_move": null,
+      "role": "unrestricted",
+      "query_index": 13,
+      "seconds": 3
+    },
+    {
+      "root_id": "fresh-sts-undermine-004",
+      "root_move": "b4b5",
+      "role": "canonical_anchor",
+      "query_index": 14,
+      "seconds": 3
+    },
+    {
+      "root_id": "fresh-sts-undermine-004",
+      "root_move": "f3e5",
+      "role": "observed_or_prior_weakness",
+      "query_index": 15,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-34Rc5",
+      "root_move": null,
+      "role": "unrestricted",
+      "query_index": 16,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-34Rc5",
+      "root_move": "a5a6",
+      "role": "observed_or_prior_weakness",
+      "query_index": 17,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-34Rc5",
+      "root_move": "b4b5",
+      "role": "observed_or_prior_weakness",
+      "query_index": 18,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-34Rc5",
+      "root_move": "e2e3",
+      "role": "canonical_anchor",
+      "query_index": 19,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-34Rc5",
+      "root_move": "e4f4",
+      "role": "observed_or_prior_weakness",
+      "query_index": 20,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-34Rc5",
+      "root_move": "f3f4",
+      "role": "observed_or_prior_weakness",
+      "query_index": 21,
+      "seconds": 3
+    },
+    {
+      "root_id": "historical-34Rc5",
+      "root_move": "g2g4",
+      "role": "observed_or_prior_weakness",
+      "query_index": 22,
+      "seconds": 3
+    }
+  ],
+  "nominal_active_seconds": 69,
+  "hard_aggregate_active_seconds": 100,
+  "no_engine_calls_made_by_collector": true,
+  "ordering_policy": "Coordinator requested22Nf5 Bc1,Bf5,unrestricted first for30second eligibility; all baselineobservedcandidateunion frozen beforequeries.",
+  "reserved_later_new_move_queries": 5
+}

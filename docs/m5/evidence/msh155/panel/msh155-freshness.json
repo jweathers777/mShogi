@@ -1,0 +1,24 @@
+{
+  "revision": "dcc17e1728f07ab217e3f3a067277df2ec612563",
+  "search_roots": [
+    "docs",
+    "crates",
+    "tests",
+    "tools",
+    "backlog"
+  ],
+  "method": "Exact puzzle-ID and piece-placement FEN substring across text and gzip-decoded evidence; no engine outputs consulted",
+  "files": 5134,
+  "decoded_characters": 1593586258,
+  "hits": {
+    "004X6": [],
+    "SfkRC": [],
+    "1r4k1/p4ppp/2Q5/3pq3/8/P6P/2PR1PP1/1R4K1": [],
+    "6k1/pp4Np/1qppNb2/4p3/4Q1Pr/7P/PPP4K/R7": [],
+    "7K/8/k1P5/7p/8/8/8/8": [],
+    "8/8/5k2/8/p7/8/1PK5/8": [],
+    "STS(v1.0) Undermine.004": [],
+    "1nr5/1k5r/p3pqp1/3p4/1P1P1PP1/R4N2/3Q1PK1/R7": []
+  },
+  "additional_sts_files_checked": 5135
+}

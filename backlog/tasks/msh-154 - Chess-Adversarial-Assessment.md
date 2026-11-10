@@ -1,11 +1,11 @@
 ---
 id: MSH-154
 title: Chess Adversarial Assessment
-status: In Review
+status: Done
 assignee:
   - '@codex-coordinator'
 created_date: '2026-11-10T09:59:00Z'
-updated_date: '2026-11-10T10:18:00Z'
+updated_date: '2026-11-10T11:25:00Z'
 labels:
   - handle:chess-adversarial-assessment
 dependencies: []
@@ -70,10 +70,14 @@ Final evidence: docs/m5/chess-adversarial-assessment.md, strength-roadmap.md and
 Assessment/evidence commit25618fb fast-forward integrated into codex/rewrite from clean d53f344. All acceptance criteria and completion evidence are present; task intentionally remains In Review awaiting the owner-requested findings/roadmap decision. No further implementation is eligible under this checkpoint; MSH-153 (Classical Compensation Calibration) remains held. Disposable assessment worktree will be archived after normal push; primary checkout retains all evidence.
 
 Published on origin/codex/rewrite at15275e0. Cleanup exception: archive_worktree rejected the isolated checkout with "The task primary checkout cannot be removed." It is clean, all commits integrated/pushed, no running processes or needed ignored files. Retained solely as this chat current checkout for owner review until the app permits archival; do not remove it behind app management. Primary project directory remains codex/rewrite. No further engine work authorized.
+
+Owner reviewed and broadly approved findings/strategic direction on2026-11-10, with time-scaling diagnosis required before substantial implementation. All existing AC/DoD remain checked and integration dcc17e1 preserved. Follow-on Chess Time Scaling records the refinements; MSH-153 (Classical Compensation Calibration) remains on hold.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
 Delivered separate fresh-context architecture, gameplay and adversarial reviews, full12-game cohort review, current-source timing/continuation probes and native history controls/profiles. Two1s suspect decisions improve under finite-reference comparison at5s; native costs are position/history-dependent; obsolete-history overhead is real but narrow. Broad selectivity versus valuation causation remains unresolved. Proposed coherent forward roadmap replaces chronology while preserving it in a linked historical record. MSH-153 (Classical Compensation Calibration) is held ToDo. Level1 diagnostic checks and independent review pass; no strength gain/rating claim or unrun platform check. Await John review before substantial implementation. Integration target codex/rewrite; actual commit recorded after publication.
+
+Owner review satisfied2026-11-10. Proceed only with authorized bounded time-scaling diagnosis and roadmap refinement before the next owner checkpoint.
 <!-- SECTION:FINAL_SUMMARY:END -->

@@ -1,0 +1,4883 @@
+{
+  "rows": [
+    {
+      "root": "fresh-SfkRC",
+      "fresh": true,
+      "category": "tactical",
+      "engine": "goldfish",
+      "seconds": 1,
+      "move": "b6f2",
+      "active_seconds": 0.02136662509292364,
+      "evidence": "/private/tmp/msh155/cell-003-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 64,
+      "score": {
+        "cp": null,
+        "mate": 3,
+        "perspective": "root_side"
+      },
+      "nodes": 97712,
+      "pv": [
+        "b6f2",
+        "e4g2",
+        "h4h3",
+        "h2h3",
+        "f2h4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-SfkRC",
+      "fresh": true,
+      "category": "tactical",
+      "engine": "goldfish",
+      "seconds": 5,
+      "move": "b6f2",
+      "active_seconds": 0.02148899994790554,
+      "evidence": "/private/tmp/msh155/cell-026-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 64,
+      "score": {
+        "cp": null,
+        "mate": 3,
+        "perspective": "root_side"
+      },
+      "nodes": 97712,
+      "pv": [
+        "b6f2",
+        "e4g2",
+        "h4h3",
+        "h2h3",
+        "f2h4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-SfkRC",
+      "fresh": true,
+      "category": "tactical",
+      "engine": "goldfish",
+      "seconds": 15,
+      "move": "b6f2",
+      "active_seconds": 0.020975375082343817,
+      "evidence": "/private/tmp/msh155/cell-070-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 64,
+      "score": {
+        "cp": null,
+        "mate": 3,
+        "perspective": "root_side"
+      },
+      "nodes": 97712,
+      "pv": [
+        "b6f2",
+        "e4g2",
+        "h4h3",
+        "h2h3",
+        "f2h4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-SfkRC",
+      "fresh": true,
+      "category": "tactical",
+      "engine": "mshogi",
+      "seconds": 1,
+      "move": "b6f2",
+      "active_seconds": 0.458175875,
+      "evidence": "/private/tmp/msh155/cell-005-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 128,
+      "score": 999995,
+      "nodes": 191236,
+      "stats": {
+        "main_nodes": 189330,
+        "q_nodes": 1906,
+        "q_check_nodes": 159,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 18,
+        "tt_hits": 2323,
+        "tt_probes": 99950,
+        "tt_position_hits": 97952,
+        "tt_context_hits": 96828,
+        "tt_stores": 97627,
+        "q_tt_probes": 819,
+        "q_tt_hits": 11,
+        "q_tt_cutoffs": 11,
+        "q_tt_stores": 808,
+        "tt_replacements": 3263,
+        "tt_store_refusals": 0,
+        "prepared_moves": 190710,
+        "prepared_pruned": 0,
+        "tt_cutoffs": 2323,
+        "aspiration_researches": 0,
+        "researches": 0,
+        "reduction_researches": 0,
+        "pv_researches": 0,
+        "main_beta_cutoffs": 93607,
+        "main_first_move_cutoffs": 93605,
+        "q_beta_cutoffs": 181,
+        "q_first_move_cutoffs": 174,
+        "q_see_pruned": 17,
+        "q_delta_pruned": 48,
+        "reductions": 72911,
+        "null_probes": 0,
+        "null_verified": 0,
+        "null_abandoned": 0,
+        "extensions": 8348,
+        "threat_extensions": 0,
+        "threat_protected_moves": 8,
+        "queen_threat_nodes": 11,
+        "queen_contact_mates": 2,
+        "quiet_threat_moves": 2,
+        "q_quiet_projections": 988,
+        "futility_pruned": 0,
+        "late_move_pruned": 0,
+        "see_pruned": 55,
+        "see_probes": 81070
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "b6f2"
+        },
+        {
+          "kind": "move",
+          "uci": "e4g2"
+        },
+        {
+          "kind": "move",
+          "uci": "h4h3"
+        },
+        {
+          "kind": "move",
+          "uci": "h2h3"
+        },
+        {
+          "kind": "move",
+          "uci": "f2h4"
+        }
+      ],
+      "incomplete_iteration_seconds": 7.887500000003378e-05,
+      "incomplete_iteration_share": 0.00017215005045823073,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "fresh-SfkRC",
+      "fresh": true,
+      "category": "tactical",
+      "engine": "mshogi",
+      "seconds": 5,
+      "move": "b6f2",
+      "active_seconds": 0.452765125,
+      "evidence": "/private/tmp/msh155/cell-025-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 128,
+      "score": 999995,
+      "nodes": 191236,
+      "stats": {
+        "main_nodes": 189330,
+        "q_nodes": 1906,
+        "q_check_nodes": 159,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 18,
+        "tt_hits": 2323,
+        "tt_probes": 99950,
+        "tt_position_hits": 97952,
+        "tt_context_hits": 96828,
+        "tt_stores": 97627,
+        "q_tt_probes": 819,
+        "q_tt_hits": 11,
+        "q_tt_cutoffs": 11,
+        "q_tt_stores": 808,
+        "tt_replacements": 3263,
+        "tt_store_refusals": 0,
+        "prepared_moves": 190710,
+        "prepared_pruned": 0,
+        "tt_cutoffs": 2323,
+        "aspiration_researches": 0,
+        "researches": 0,
+        "reduction_researches": 0,
+        "pv_researches": 0,
+        "main_beta_cutoffs": 93607,
+        "main_first_move_cutoffs": 93605,
+        "q_beta_cutoffs": 181,
+        "q_first_move_cutoffs": 174,
+        "q_see_pruned": 17,
+        "q_delta_pruned": 48,
+        "reductions": 72911,
+        "null_probes": 0,
+        "null_verified": 0,
+        "null_abandoned": 0,
+        "extensions": 8348,
+        "threat_extensions": 0,
+        "threat_protected_moves": 8,
+        "queen_threat_nodes": 11,
+        "queen_contact_mates": 2,
+        "quiet_threat_moves": 2,
+        "q_quiet_projections": 988,
+        "futility_pruned": 0,
+        "late_move_pruned": 0,
+        "see_pruned": 55,
+        "see_probes": 81070
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "b6f2"
+        },
+        {
+          "kind": "move",
+          "uci": "e4g2"
+        },
+        {
+          "kind": "move",
+          "uci": "h4h3"
+        },
+        {
+          "kind": "move",
+          "uci": "h2h3"
+        },
+        {
+          "kind": "move",
+          "uci": "f2h4"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.0001011249999999797,
+      "incomplete_iteration_share": 0.00022334979974436564,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "fresh-SfkRC",
+      "fresh": true,
+      "category": "tactical",
+      "engine": "mshogi",
+      "seconds": 15,
+      "move": "b6f2",
+      "active_seconds": 0.464585583,
+      "evidence": "/private/tmp/msh155/cell-069-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 128,
+      "score": 999995,
+      "nodes": 191236,
+      "stats": {
+        "main_nodes": 189330,
+        "q_nodes": 1906,
+        "q_check_nodes": 159,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 18,
+        "tt_hits": 2323,
+        "tt_probes": 99950,
+        "tt_position_hits": 97952,
+        "tt_context_hits": 96828,
+        "tt_stores": 97627,
+        "q_tt_probes": 819,
+        "q_tt_hits": 11,
+        "q_tt_cutoffs": 11,
+        "q_tt_stores": 808,
+        "tt_replacements": 3263,
+        "tt_store_refusals": 0,
+        "prepared_moves": 190710,
+        "prepared_pruned": 0,
+        "tt_cutoffs": 2323,
+        "aspiration_researches": 0,
+        "researches": 0,
+        "reduction_researches": 0,
+        "pv_researches": 0,
+        "main_beta_cutoffs": 93607,
+        "main_first_move_cutoffs": 93605,
+        "q_beta_cutoffs": 181,
+        "q_first_move_cutoffs": 174,
+        "q_see_pruned": 17,
+        "q_delta_pruned": 48,
+        "reductions": 72911,
+        "null_probes": 0,
+        "null_verified": 0,
+        "null_abandoned": 0,
+        "extensions": 8348,
+        "threat_extensions": 0,
+        "threat_protected_moves": 8,
+        "queen_threat_nodes": 11,
+        "queen_contact_mates": 2,
+        "quiet_threat_moves": 2,
+        "q_quiet_projections": 988,
+        "futility_pruned": 0,
+        "late_move_pruned": 0,
+        "see_pruned": 55,
+        "see_probes": 81070
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "b6f2"
+        },
+        {
+          "kind": "move",
+          "uci": "e4g2"
+        },
+        {
+          "kind": "move",
+          "uci": "h4h3"
+        },
+        {
+          "kind": "move",
+          "uci": "h2h3"
+        },
+        {
+          "kind": "move",
+          "uci": "f2h4"
+        }
+      ],
+      "incomplete_iteration_seconds": 8.558300000000019e-05,
+      "incomplete_iteration_share": 0.00018421363712450844,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "fresh-SfkRC",
+      "fresh": true,
+      "category": "tactical",
+      "engine": "oxidation",
+      "seconds": 1,
+      "move": "b6f2",
+      "active_seconds": 1.000909375026822,
+      "evidence": "/private/tmp/msh155/cell-004-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 11,
+      "score": {
+        "cp": null,
+        "mate": 3,
+        "perspective": "root_side"
+      },
+      "nodes": 1191227,
+      "pv": [
+        "b6f2",
+        "e4g2",
+        "h4h3",
+        "h2h3",
+        "f2h4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-SfkRC",
+      "fresh": true,
+      "category": "tactical",
+      "engine": "oxidation",
+      "seconds": 5,
+      "move": "b6f2",
+      "active_seconds": 5.000657000113279,
+      "evidence": "/private/tmp/msh155/cell-024-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 13,
+      "score": {
+        "cp": null,
+        "mate": 3,
+        "perspective": "root_side"
+      },
+      "nodes": 5921706,
+      "pv": [
+        "b6f2",
+        "e4g2",
+        "h4h3",
+        "h2h3",
+        "f2h4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-SfkRC",
+      "fresh": true,
+      "category": "tactical",
+      "engine": "oxidation",
+      "seconds": 15,
+      "move": "b6f2",
+      "active_seconds": 15.000702166929841,
+      "evidence": "/private/tmp/msh155/cell-071-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 14,
+      "score": {
+        "cp": null,
+        "mate": 3,
+        "perspective": "root_side"
+      },
+      "nodes": 17682217,
+      "pv": [
+        "b6f2",
+        "e4g2",
+        "h4h3",
+        "h2h3",
+        "f2h4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "goldfish",
+      "seconds": 1,
+      "move": "c2c3",
+      "active_seconds": 1.0044376249425113,
+      "evidence": "/private/tmp/msh155/cell-021-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 21,
+      "score": {
+        "cp": 103,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1751538,
+      "pv": [
+        "c2c3",
+        "f6e6",
+        "c3b4",
+        "e6d5",
+        "b4a4",
+        "d5c5",
+        "a4a5",
+        "c5c6",
+        "b2b4",
+        "c6d7",
+        "a5b6",
+        "d7d8"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "goldfish",
+      "seconds": 5,
+      "move": "c2c3",
+      "active_seconds": 5.005209041759372,
+      "evidence": "/private/tmp/msh155/cell-044-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 21,
+      "score": {
+        "cp": 103,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1751538,
+      "pv": [
+        "c2c3",
+        "f6e6",
+        "c3b4",
+        "e6d5",
+        "b4a4",
+        "d5c5",
+        "a4a5",
+        "c5c6",
+        "b2b4",
+        "c6d7",
+        "a5b6",
+        "d7d8"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "goldfish",
+      "seconds": 15,
+      "move": "c2c3",
+      "active_seconds": 15.005347291007638,
+      "evidence": "/private/tmp/msh155/cell-064-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 21,
+      "score": {
+        "cp": 103,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1751538,
+      "pv": [
+        "c2c3",
+        "f6e6",
+        "c3b4",
+        "e6d5",
+        "b4a4",
+        "d5c5",
+        "a4a5",
+        "c5c6",
+        "b2b4",
+        "c6d7",
+        "a5b6",
+        "d7d8"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "goldfish",
+      "seconds": 30,
+      "move": "c2c3",
+      "active_seconds": 30.00542762503028,
+      "evidence": "/private/tmp/msh155/followup30/cell-001-goldfish.result.json",
+      "run_scope": "followup30",
+      "depth": 21,
+      "score": {
+        "cp": 103,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1751538,
+      "pv": [
+        "c2c3",
+        "f6e6",
+        "c3b4",
+        "e6d5",
+        "b4a4",
+        "d5c5",
+        "a4a5",
+        "c5c6",
+        "b2b4",
+        "c6d7",
+        "a5b6",
+        "d7d8"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "mshogi",
+      "seconds": 1,
+      "move": "c2b1",
+      "active_seconds": 1.000266541,
+      "evidence": "/private/tmp/msh155/cell-023-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 12,
+      "score": 324,
+      "nodes": 530833,
+      "stats": {
+        "main_nodes": 237519,
+        "q_nodes": 293314,
+        "q_check_nodes": 1928,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 0,
+        "tt_hits": 18244,
+        "tt_probes": 231571,
+        "tt_position_hits": 176193,
+        "tt_context_hits": 24639,
+        "tt_stores": 184073,
+        "q_tt_probes": 271415,
+        "q_tt_hits": 6018,
+        "q_tt_cutoffs": 5939,
+        "q_tt_stores": 71281,
+        "tt_replacements": 246789,
+        "tt_store_refusals": 223518,
+        "prepared_moves": 400069,
+        "prepared_pruned": 0,
+        "tt_cutoffs": 18162,
+        "aspiration_researches": 2,
+        "researches": 12,
+        "reduction_researches": 0,
+        "pv_researches": 12,
+        "main_beta_cutoffs": 159643,
+        "main_first_move_cutoffs": 158350,
+        "q_beta_cutoffs": 1498,
+        "q_first_move_cutoffs": 1493,
+        "q_see_pruned": 0,
+        "q_delta_pruned": 1525,
+        "reductions": 0,
+        "null_probes": 0,
+        "null_verified": 0,
+        "null_abandoned": 0,
+        "extensions": 1154,
+        "threat_extensions": 0,
+        "threat_protected_moves": 0,
+        "queen_threat_nodes": 22,
+        "queen_contact_mates": 37,
+        "quiet_threat_moves": 0,
+        "q_quiet_projections": 577571,
+        "futility_pruned": 0,
+        "late_move_pruned": 0,
+        "see_pruned": 1525,
+        "see_probes": 28704
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "c2b1"
+        },
+        {
+          "kind": "move",
+          "uci": "f6e5"
+        },
+        {
+          "kind": "move",
+          "uci": "b1a2"
+        },
+        {
+          "kind": "move",
+          "uci": "e5d4"
+        },
+        {
+          "kind": "move",
+          "uci": "a2a3"
+        },
+        {
+          "kind": "move",
+          "uci": "d4c5"
+        },
+        {
+          "kind": "move",
+          "uci": "a3a4"
+        },
+        {
+          "kind": "move",
+          "uci": "c5b6"
+        },
+        {
+          "kind": "move",
+          "uci": "a4b4"
+        },
+        {
+          "kind": "move",
+          "uci": "b6c6"
+        },
+        {
+          "kind": "move",
+          "uci": "b4a3"
+        },
+        {
+          "kind": "move",
+          "uci": "c6b6"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.453587541,
+      "incomplete_iteration_share": 0.4534666735393681,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": true
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "mshogi",
+      "seconds": 5,
+      "move": "c2b1",
+      "active_seconds": 5.000218375,
+      "evidence": "/private/tmp/msh155/cell-043-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 14,
+      "score": 348,
+      "nodes": 2458897,
+      "stats": {
+        "main_nodes": 1065323,
+        "q_nodes": 1393574,
+        "q_check_nodes": 20784,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 0,
+        "tt_hits": 81127,
+        "tt_probes": 1041337,
+        "tt_position_hits": 656052,
+        "tt_context_hits": 90060,
+        "tt_stores": 662145,
+        "q_tt_probes": 1272510,
+        "q_tt_hits": 10437,
+        "q_tt_cutoffs": 10350,
+        "q_tt_stores": 123651,
+        "tt_replacements": 775812,
+        "tt_store_refusals": 1436675,
+        "prepared_moves": 1756671,
+        "prepared_pruned": 0,
+        "tt_cutoffs": 81014,
+        "aspiration_researches": 2,
+        "researches": 17,
+        "reduction_researches": 0,
+        "pv_researches": 17,
+        "main_beta_cutoffs": 719347,
+        "main_first_move_cutoffs": 715883,
+        "q_beta_cutoffs": 12692,
+        "q_first_move_cutoffs": 12678,
+        "q_see_pruned": 0,
+        "q_delta_pruned": 4642,
+        "reductions": 0,
+        "null_probes": 0,
+        "null_verified": 0,
+        "null_abandoned": 0,
+        "extensions": 10929,
+        "threat_extensions": 0,
+        "threat_protected_moves": 0,
+        "queen_threat_nodes": 56,
+        "queen_contact_mates": 104,
+        "quiet_threat_moves": 0,
+        "q_quiet_projections": 2834054,
+        "futility_pruned": 0,
+        "late_move_pruned": 0,
+        "see_pruned": 4642,
+        "see_probes": 109576
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "c2b1"
+        },
+        {
+          "kind": "move",
+          "uci": "f6e5"
+        },
+        {
+          "kind": "move",
+          "uci": "b1a2"
+        },
+        {
+          "kind": "move",
+          "uci": "e5d4"
+        },
+        {
+          "kind": "move",
+          "uci": "a2a3"
+        },
+        {
+          "kind": "move",
+          "uci": "d4c5"
+        },
+        {
+          "kind": "move",
+          "uci": "a3a4"
+        },
+        {
+          "kind": "move",
+          "uci": "c5b6"
+        },
+        {
+          "kind": "move",
+          "uci": "a4b4"
+        },
+        {
+          "kind": "move",
+          "uci": "b6c6"
+        },
+        {
+          "kind": "move",
+          "uci": "b4a5"
+        },
+        {
+          "kind": "move",
+          "uci": "c6b7"
+        },
+        {
+          "kind": "move",
+          "uci": "b2b3"
+        },
+        {
+          "kind": "move",
+          "uci": "b7a7"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.842206375,
+      "incomplete_iteration_share": 0.16843391864860302,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": true
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "mshogi",
+      "seconds": 15,
+      "move": "c2b1",
+      "active_seconds": 15.000303417,
+      "evidence": "/private/tmp/msh155/cell-063-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 15,
+      "score": 348,
+      "nodes": 6462244,
+      "stats": {
+        "main_nodes": 2519974,
+        "q_nodes": 3942270,
+        "q_check_nodes": 124248,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 265,
+        "tt_hits": 189635,
+        "tt_probes": 2465421,
+        "tt_position_hits": 1397586,
+        "tt_context_hits": 202781,
+        "tt_stores": 1378944,
+        "q_tt_probes": 3363353,
+        "q_tt_hits": 12487,
+        "q_tt_cutoffs": 12399,
+        "q_tt_stores": 160253,
+        "tt_replacements": 1527644,
+        "tt_store_refusals": 4087638,
+        "prepared_moves": 4401352,
+        "prepared_pruned": 1493,
+        "tt_cutoffs": 189519,
+        "aspiration_researches": 2,
+        "researches": 18,
+        "reduction_researches": 0,
+        "pv_researches": 18,
+        "main_beta_cutoffs": 1632485,
+        "main_first_move_cutoffs": 1625587,
+        "q_beta_cutoffs": 33282,
+        "q_first_move_cutoffs": 33147,
+        "q_see_pruned": 0,
+        "q_delta_pruned": 19287,
+        "reductions": 38,
+        "null_probes": 0,
+        "null_verified": 0,
+        "null_abandoned": 0,
+        "extensions": 41253,
+        "threat_extensions": 0,
+        "threat_protected_moves": 3,
+        "queen_threat_nodes": 850,
+        "queen_contact_mates": 718,
+        "quiet_threat_moves": 36,
+        "q_quiet_projections": 4967242,
+        "futility_pruned": 553,
+        "late_move_pruned": 992,
+        "see_pruned": 19287,
+        "see_probes": 504792
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "c2b1"
+        },
+        {
+          "kind": "move",
+          "uci": "f6e5"
+        },
+        {
+          "kind": "move",
+          "uci": "b1a2"
+        },
+        {
+          "kind": "move",
+          "uci": "e5d4"
+        },
+        {
+          "kind": "move",
+          "uci": "a2a3"
+        },
+        {
+          "kind": "move",
+          "uci": "d4c5"
+        },
+        {
+          "kind": "move",
+          "uci": "a3a4"
+        },
+        {
+          "kind": "move",
+          "uci": "c5b6"
+        },
+        {
+          "kind": "move",
+          "uci": "a4b4"
+        },
+        {
+          "kind": "move",
+          "uci": "b6c6"
+        },
+        {
+          "kind": "move",
+          "uci": "b4a5"
+        },
+        {
+          "kind": "move",
+          "uci": "c6b7"
+        },
+        {
+          "kind": "move",
+          "uci": "b2b3"
+        },
+        {
+          "kind": "move",
+          "uci": "b7a8"
+        },
+        {
+          "kind": "move",
+          "uci": "a5a6"
+        }
+      ],
+      "incomplete_iteration_seconds": 2.693342417,
+      "incomplete_iteration_share": 0.17955252918068354,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": true
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "mshogi",
+      "seconds": 30,
+      "move": "c2b1",
+      "active_seconds": 30.00030325,
+      "evidence": "/private/tmp/msh155/followup30/cell-000-mshogi.result.json",
+      "run_scope": "followup30",
+      "depth": 15,
+      "score": 348,
+      "nodes": 10241716,
+      "stats": {
+        "main_nodes": 3975565,
+        "q_nodes": 6266151,
+        "q_check_nodes": 374669,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 265,
+        "tt_hits": 225826,
+        "tt_probes": 3876044,
+        "tt_position_hits": 1906390,
+        "tt_context_hits": 240875,
+        "tt_stores": 1897739,
+        "q_tt_probes": 4311745,
+        "q_tt_hits": 12502,
+        "q_tt_cutoffs": 12414,
+        "q_tt_stores": 160304,
+        "tt_replacements": 2046355,
+        "tt_store_refusals": 5891601,
+        "prepared_moves": 6084066,
+        "prepared_pruned": 3591,
+        "tt_cutoffs": 225710,
+        "aspiration_researches": 2,
+        "researches": 18,
+        "reduction_researches": 0,
+        "pv_researches": 18,
+        "main_beta_cutoffs": 2761953,
+        "main_first_move_cutoffs": 2754714,
+        "q_beta_cutoffs": 56917,
+        "q_first_move_cutoffs": 56674,
+        "q_see_pruned": 0,
+        "q_delta_pruned": 24369,
+        "reductions": 240,
+        "null_probes": 2,
+        "null_verified": 2,
+        "null_abandoned": 0,
+        "extensions": 95428,
+        "threat_extensions": 0,
+        "threat_protected_moves": 3,
+        "queen_threat_nodes": 873,
+        "queen_contact_mates": 798,
+        "quiet_threat_moves": 36,
+        "q_quiet_projections": 8229684,
+        "futility_pruned": 1478,
+        "late_move_pruned": 2465,
+        "see_pruned": 24369,
+        "see_probes": 724168
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "c2b1"
+        },
+        {
+          "kind": "move",
+          "uci": "f6e5"
+        },
+        {
+          "kind": "move",
+          "uci": "b1a2"
+        },
+        {
+          "kind": "move",
+          "uci": "e5d4"
+        },
+        {
+          "kind": "move",
+          "uci": "a2a3"
+        },
+        {
+          "kind": "move",
+          "uci": "d4c5"
+        },
+        {
+          "kind": "move",
+          "uci": "a3a4"
+        },
+        {
+          "kind": "move",
+          "uci": "c5b6"
+        },
+        {
+          "kind": "move",
+          "uci": "a4b4"
+        },
+        {
+          "kind": "move",
+          "uci": "b6c6"
+        },
+        {
+          "kind": "move",
+          "uci": "b4a5"
+        },
+        {
+          "kind": "move",
+          "uci": "c6b7"
+        },
+        {
+          "kind": "move",
+          "uci": "b2b3"
+        },
+        {
+          "kind": "move",
+          "uci": "b7a8"
+        },
+        {
+          "kind": "move",
+          "uci": "a5a6"
+        }
+      ],
+      "incomplete_iteration_seconds": 17.915288250000003,
+      "incomplete_iteration_share": 0.5971702386041715,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": true
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "oxidation",
+      "seconds": 1,
+      "move": "c2c3",
+      "active_seconds": 1.0009448751807213,
+      "evidence": "/private/tmp/msh155/cell-022-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 21,
+      "score": {
+        "cp": 354,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1584721,
+      "pv": [
+        "c2c3",
+        "f6e5",
+        "c3b4",
+        "e5d4",
+        "b4a4",
+        "d4c5",
+        "b2b4",
+        "c5b6",
+        "b4b5",
+        "b6b7",
+        "a4a5",
+        "b7a7",
+        "b5b6",
+        "a7b7",
+        "a5b5",
+        "b7b8",
+        "b5a4",
+        "b8c8",
+        "a4b4",
+        "c8b7",
+        "b4b5",
+        "b7b8",
+        "b5a4",
+        "b8c8"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "oxidation",
+      "seconds": 5,
+      "move": "c2c3",
+      "active_seconds": 5.001145042013377,
+      "evidence": "/private/tmp/msh155/cell-042-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 21,
+      "score": {
+        "cp": 309,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 8935818,
+      "pv": [
+        "c2c3",
+        "a4a3",
+        "b2b4",
+        "f6e5",
+        "c3b3",
+        "e5d5",
+        "b3a3",
+        "d5c6",
+        "a3a4",
+        "c6b6",
+        "b4b5",
+        "b6c7",
+        "a4a5",
+        "c7b7",
+        "b5b6",
+        "b7b8",
+        "a5b4",
+        "b8b7",
+        "b4b5",
+        "b7b8",
+        "b5c5"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "oxidation",
+      "seconds": 15,
+      "move": "c2c3",
+      "active_seconds": 15.0007322919555,
+      "evidence": "/private/tmp/msh155/cell-065-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 23,
+      "score": {
+        "cp": 354,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 26671060,
+      "pv": [
+        "c2c3",
+        "f6e5",
+        "c3b4",
+        "e5d4",
+        "b4a4",
+        "d4c5",
+        "a4a3",
+        "c5d5",
+        "a3a4",
+        "d5e5",
+        "a4b4",
+        "e5d6",
+        "b4a4",
+        "d6e5",
+        "a4b4",
+        "e5d6",
+        "b4b3",
+        "d6c5",
+        "b3a4",
+        "c5d4",
+        "b2b4",
+        "d4e5",
+        "b4b5",
+        "e5d6"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-dedrle-win",
+      "fresh": true,
+      "category": "endgame",
+      "engine": "oxidation",
+      "seconds": 30,
+      "move": "c2c3",
+      "active_seconds": 30.000958332791924,
+      "evidence": "/private/tmp/msh155/followup30/cell-002-oxidation.result.json",
+      "run_scope": "followup30",
+      "depth": 22,
+      "score": {
+        "cp": 339,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 54936418,
+      "pv": [
+        "c2c3",
+        "f6e5",
+        "c3b4",
+        "e5d4",
+        "b4a4",
+        "d4c5",
+        "b2b4",
+        "c5b6",
+        "b4b5",
+        "b6c7",
+        "a4a5",
+        "c7b7",
+        "b5b6",
+        "b7b8",
+        "a5a4",
+        "b8c8",
+        "a4b4",
+        "c8b7",
+        "b4b5",
+        "b7b8",
+        "b5a6",
+        "b8a8",
+        "a6b5"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-reti-draw",
+      "fresh": true,
+      "category": "defensive",
+      "engine": "goldfish",
+      "seconds": 1,
+      "move": "h8g7",
+      "active_seconds": 1.005416166037321,
+      "evidence": "/private/tmp/msh155/cell-017-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 19,
+      "score": {
+        "cp": 0,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 2737095,
+      "pv": [
+        "h8g7",
+        "h5h4",
+        "g7f6",
+        "a6b6",
+        "f6e5",
+        "h4h3",
+        "e5d6",
+        "h3h2",
+        "c6c7",
+        "h2h1q",
+        "c7c8q",
+        "h1h2"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-reti-draw",
+      "fresh": true,
+      "category": "defensive",
+      "engine": "goldfish",
+      "seconds": 5,
+      "move": "h8g7",
+      "active_seconds": 5.005326291080564,
+      "evidence": "/private/tmp/msh155/cell-037-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 20,
+      "score": {
+        "cp": 0,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 13194499,
+      "pv": [
+        "h8g7",
+        "h5h4",
+        "g7f6",
+        "a6b6",
+        "f6e5",
+        "h4h3",
+        "e5d6",
+        "h3h2",
+        "c6c7",
+        "h2h1q",
+        "c7c8q",
+        "h1h2",
+        "d6d5",
+        "h2d2",
+        "d5e5",
+        "d2e3",
+        "e5d5",
+        "e3e7",
+        "c8c6",
+        "b6a7",
+        "c6a4",
+        "a7b7",
+        "a4b3",
+        "b7a7",
+        "b3a4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-reti-draw",
+      "fresh": true,
+      "category": "defensive",
+      "engine": "goldfish",
+      "seconds": 15,
+      "move": "h8g7",
+      "active_seconds": 15.00479424977675,
+      "evidence": "/private/tmp/msh155/cell-057-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 22,
+      "score": {
+        "cp": -1,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 41130940,
+      "pv": [
+        "h8g7",
+        "h5h4",
+        "g7f6",
+        "a6b6",
+        "f6e5",
+        "b6c7",
+        "e5e4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-reti-draw",
+      "fresh": true,
+      "category": "defensive",
+      "engine": "mshogi",
+      "seconds": 1,
+      "move": "h8g7",
+      "active_seconds": 1.00020825,
+      "evidence": "/private/tmp/msh155/cell-016-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 12,
+      "score": 0,
+      "nodes": 446274,
+      "stats": {
+        "main_nodes": 83261,
+        "q_nodes": 363013,
+        "q_check_nodes": 98340,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 6978,
+        "tt_hits": 9945,
+        "tt_probes": 82889,
+        "tt_position_hits": 49388,
+        "tt_context_hits": 20257,
+        "tt_stores": 71851,
+        "q_tt_probes": 102421,
+        "q_tt_hits": 4130,
+        "q_tt_cutoffs": 4061,
+        "q_tt_stores": 25774,
+        "tt_replacements": 87801,
+        "tt_store_refusals": 74218,
+        "prepared_moves": 198181,
+        "prepared_pruned": 12558,
+        "tt_cutoffs": 9384,
+        "aspiration_researches": 4,
+        "researches": 37,
+        "reduction_researches": 6,
+        "pv_researches": 31,
+        "main_beta_cutoffs": 55390,
+        "main_first_move_cutoffs": 52945,
+        "q_beta_cutoffs": 88878,
+        "q_first_move_cutoffs": 79543,
+        "q_see_pruned": 0,
+        "q_delta_pruned": 16,
+        "reductions": 532,
+        "null_probes": 34,
+        "null_verified": 6,
+        "null_abandoned": 0,
+        "extensions": 6095,
+        "threat_extensions": 0,
+        "threat_protected_moves": 5,
+        "queen_threat_nodes": 169,
+        "queen_contact_mates": 365,
+        "quiet_threat_moves": 87,
+        "q_quiet_projections": 361625,
+        "futility_pruned": 70,
+        "late_move_pruned": 12610,
+        "see_pruned": 16,
+        "see_probes": 104190
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "h8g7"
+        },
+        {
+          "kind": "move",
+          "uci": "h5h4"
+        },
+        {
+          "kind": "move",
+          "uci": "g7f6"
+        },
+        {
+          "kind": "move",
+          "uci": "h4h3"
+        },
+        {
+          "kind": "move",
+          "uci": "f6e6"
+        },
+        {
+          "kind": "move",
+          "uci": "h3h2"
+        },
+        {
+          "kind": "move",
+          "uci": "c6c7"
+        },
+        {
+          "kind": "move",
+          "uci": "h2h1q"
+        },
+        {
+          "kind": "move",
+          "uci": "c7c8q"
+        },
+        {
+          "kind": "move",
+          "uci": "h1b7"
+        },
+        {
+          "kind": "move",
+          "uci": "c8c4"
+        },
+        {
+          "kind": "move",
+          "uci": "a6a7"
+        },
+        {
+          "kind": "move",
+          "uci": "c4a4"
+        },
+        {
+          "kind": "move",
+          "uci": "b7a6"
+        },
+        {
+          "kind": "move",
+          "uci": "a4a6"
+        },
+        {
+          "kind": "move",
+          "uci": "a7a6"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.6184892500000001,
+      "incomplete_iteration_share": 0.6183604764307833,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": true
+    },
+    {
+      "root": "fresh-reti-draw",
+      "fresh": true,
+      "category": "defensive",
+      "engine": "mshogi",
+      "seconds": 5,
+      "move": "h8g7",
+      "active_seconds": 5.000249375,
+      "evidence": "/private/tmp/msh155/cell-036-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 14,
+      "score": -3,
+      "nodes": 2217133,
+      "stats": {
+        "main_nodes": 369697,
+        "q_nodes": 1847436,
+        "q_check_nodes": 486006,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 24327,
+        "tt_hits": 35153,
+        "tt_probes": 367891,
+        "tt_position_hits": 205499,
+        "tt_context_hits": 54285,
+        "tt_stores": 295777,
+        "q_tt_probes": 607013,
+        "q_tt_hits": 4651,
+        "q_tt_cutoffs": 4543,
+        "q_tt_stores": 42679,
+        "tt_replacements": 326213,
+        "tt_store_refusals": 597301,
+        "prepared_moves": 1007071,
+        "prepared_pruned": 63346,
+        "tt_cutoffs": 34539,
+        "aspiration_researches": 4,
+        "researches": 73,
+        "reduction_researches": 26,
+        "pv_researches": 47,
+        "main_beta_cutoffs": 235938,
+        "main_first_move_cutoffs": 225206,
+        "q_beta_cutoffs": 438943,
+        "q_first_move_cutoffs": 394996,
+        "q_see_pruned": 0,
+        "q_delta_pruned": 16,
+        "reductions": 4397,
+        "null_probes": 251,
+        "null_verified": 45,
+        "null_abandoned": 0,
+        "extensions": 26881,
+        "threat_extensions": 0,
+        "threat_protected_moves": 35,
+        "queen_threat_nodes": 693,
+        "queen_contact_mates": 2188,
+        "quiet_threat_moves": 308,
+        "q_quiet_projections": 1661575,
+        "futility_pruned": 74,
+        "late_move_pruned": 65239,
+        "see_pruned": 16,
+        "see_probes": 441725
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "h8g7"
+        },
+        {
+          "kind": "move",
+          "uci": "h5h4"
+        },
+        {
+          "kind": "move",
+          "uci": "g7f6"
+        },
+        {
+          "kind": "move",
+          "uci": "h4h3"
+        },
+        {
+          "kind": "move",
+          "uci": "f6e6"
+        },
+        {
+          "kind": "move",
+          "uci": "a6b6"
+        },
+        {
+          "kind": "move",
+          "uci": "e6d6"
+        },
+        {
+          "kind": "move",
+          "uci": "h3h2"
+        },
+        {
+          "kind": "move",
+          "uci": "c6c7"
+        },
+        {
+          "kind": "move",
+          "uci": "h2h1q"
+        },
+        {
+          "kind": "move",
+          "uci": "c7c8q"
+        },
+        {
+          "kind": "move",
+          "uci": "h1h2"
+        },
+        {
+          "kind": "move",
+          "uci": "d6d5"
+        },
+        {
+          "kind": "move",
+          "uci": "h2d2"
+        },
+        {
+          "kind": "move",
+          "uci": "d5e5"
+        },
+        {
+          "kind": "move",
+          "uci": "d2e3"
+        },
+        {
+          "kind": "move",
+          "uci": "e5d5"
+        },
+        {
+          "kind": "move",
+          "uci": "e3d3"
+        },
+        {
+          "kind": "move",
+          "uci": "d5e5"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.35902237500000034,
+      "incomplete_iteration_share": 0.07180089393041522,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": true
+    },
+    {
+      "root": "fresh-reti-draw",
+      "fresh": true,
+      "category": "defensive",
+      "engine": "mshogi",
+      "seconds": 15,
+      "move": "h8g7",
+      "active_seconds": 15.00024225,
+      "evidence": "/private/tmp/msh155/cell-059-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 15,
+      "score": -2,
+      "nodes": 6112289,
+      "stats": {
+        "main_nodes": 1021593,
+        "q_nodes": 5090696,
+        "q_check_nodes": 1411882,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 108032,
+        "tt_hits": 70719,
+        "tt_probes": 1016801,
+        "tt_position_hits": 522829,
+        "tt_context_hits": 99863,
+        "tt_stores": 781669,
+        "q_tt_probes": 1511385,
+        "q_tt_hits": 5520,
+        "q_tt_cutoffs": 5254,
+        "q_tt_stores": 55413,
+        "tt_replacements": 822287,
+        "tt_store_refusals": 1615884,
+        "prepared_moves": 2541548,
+        "prepared_pruned": 149410,
+        "tt_cutoffs": 69707,
+        "aspiration_researches": 4,
+        "researches": 155,
+        "reduction_researches": 58,
+        "pv_researches": 97,
+        "main_beta_cutoffs": 722217,
+        "main_first_move_cutoffs": 695239,
+        "q_beta_cutoffs": 1279279,
+        "q_first_move_cutoffs": 1164848,
+        "q_see_pruned": 0,
+        "q_delta_pruned": 16,
+        "reductions": 15223,
+        "null_probes": 717,
+        "null_verified": 241,
+        "null_abandoned": 0,
+        "extensions": 65403,
+        "threat_extensions": 0,
+        "threat_protected_moves": 230,
+        "queen_threat_nodes": 3033,
+        "queen_contact_mates": 10439,
+        "quiet_threat_moves": 1235,
+        "q_quiet_projections": 5732328,
+        "futility_pruned": 214,
+        "late_move_pruned": 159410,
+        "see_pruned": 16,
+        "see_probes": 1261725
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "h8g7"
+        },
+        {
+          "kind": "move",
+          "uci": "h5h4"
+        },
+        {
+          "kind": "move",
+          "uci": "g7f6"
+        },
+        {
+          "kind": "move",
+          "uci": "h4h3"
+        },
+        {
+          "kind": "move",
+          "uci": "f6e6"
+        },
+        {
+          "kind": "move",
+          "uci": "a6b6"
+        },
+        {
+          "kind": "move",
+          "uci": "e6d6"
+        },
+        {
+          "kind": "move",
+          "uci": "h3h2"
+        },
+        {
+          "kind": "move",
+          "uci": "c6c7"
+        },
+        {
+          "kind": "move",
+          "uci": "h2h1q"
+        },
+        {
+          "kind": "move",
+          "uci": "c7c8q"
+        },
+        {
+          "kind": "move",
+          "uci": "h1h2"
+        },
+        {
+          "kind": "move",
+          "uci": "d6d5"
+        },
+        {
+          "kind": "move",
+          "uci": "h2h5"
+        },
+        {
+          "kind": "move",
+          "uci": "d5d6"
+        },
+        {
+          "kind": "move",
+          "uci": "h5d1"
+        },
+        {
+          "kind": "move",
+          "uci": "d6e7"
+        },
+        {
+          "kind": "move",
+          "uci": "d1f3"
+        }
+      ],
+      "incomplete_iteration_seconds": 6.095725249999999,
+      "incomplete_iteration_share": 0.40637512037513923,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": true
+    },
+    {
+      "root": "fresh-reti-draw",
+      "fresh": true,
+      "category": "defensive",
+      "engine": "oxidation",
+      "seconds": 1,
+      "move": "h8g7",
+      "active_seconds": 1.0010800412856042,
+      "evidence": "/private/tmp/msh155/cell-015-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 19,
+      "score": {
+        "cp": -31,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1474391,
+      "pv": [
+        "h8g7",
+        "a6b6",
+        "g7f6",
+        "h5h4",
+        "f6e5",
+        "h4h3",
+        "e5d6",
+        "h3h2",
+        "c6c7",
+        "h2h1q",
+        "c7c8q",
+        "h1h2",
+        "d6d5",
+        "h2d2",
+        "d5e4",
+        "d2e2",
+        "e4f4",
+        "e2d2",
+        "f4e4",
+        "d2e2",
+        "e4f4",
+        "e2f2",
+        "f4e4",
+        "f2h4",
+        "e4d3",
+        "h4g3",
+        "d3c4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-reti-draw",
+      "fresh": true,
+      "category": "defensive",
+      "engine": "oxidation",
+      "seconds": 5,
+      "move": "h8g7",
+      "active_seconds": 5.000941957812756,
+      "evidence": "/private/tmp/msh155/cell-038-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 21,
+      "score": {
+        "cp": -30,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 7079413,
+      "pv": [
+        "h8g7",
+        "a6b6",
+        "g7f6",
+        "h5h4",
+        "f6e5",
+        "h4h3",
+        "e5d6",
+        "h3h2",
+        "c6c7",
+        "h2h1q",
+        "c7c8q",
+        "h1h2",
+        "d6e7",
+        "h2h4",
+        "e7f7",
+        "h4h5",
+        "f7f6",
+        "h5h6",
+        "f6e5",
+        "h6e3",
+        "e5f6",
+        "e3d4",
+        "f6g6",
+        "d4d6",
+        "g6g5",
+        "d6d2",
+        "g5h5",
+        "d2d5",
+        "h5h4",
+        "d5d3"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-reti-draw",
+      "fresh": true,
+      "category": "defensive",
+      "engine": "oxidation",
+      "seconds": 15,
+      "move": "h8g7",
+      "active_seconds": 15.00112474989146,
+      "evidence": "/private/tmp/msh155/cell-058-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 21,
+      "score": {
+        "cp": -30,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 24541739,
+      "pv": [
+        "h8g7",
+        "a6b6",
+        "g7f6",
+        "h5h4",
+        "f6e5",
+        "h4h3",
+        "e5d6",
+        "h3h2",
+        "c6c7",
+        "h2h1q",
+        "c7c8q",
+        "h1h2",
+        "d6e7",
+        "h2h4",
+        "e7f7",
+        "h4h5",
+        "f7f6",
+        "h5h6",
+        "f6e5",
+        "h6e3",
+        "e5f6",
+        "e3d4",
+        "f6g6",
+        "d4d6",
+        "g6g5",
+        "d6d2",
+        "g5h5",
+        "d2d5",
+        "h5h4",
+        "d5d3"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "goldfish",
+      "seconds": 1,
+      "move": "b4b5",
+      "active_seconds": 1.0043399157002568,
+      "evidence": "/private/tmp/msh155/cell-010-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": 201,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1963195,
+      "pv": [
+        "b4b5",
+        "b7a7",
+        "g2g3",
+        "c8f8",
+        "b5a6"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "goldfish",
+      "seconds": 5,
+      "move": "b4b5",
+      "active_seconds": 5.0031247907318175,
+      "evidence": "/private/tmp/msh155/cell-030-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": 201,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1963195,
+      "pv": [
+        "b4b5",
+        "b7a7",
+        "g2g3",
+        "c8f8",
+        "b5a6"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "goldfish",
+      "seconds": 15,
+      "move": "b4b5",
+      "active_seconds": 15.005113041959703,
+      "evidence": "/private/tmp/msh155/cell-053-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 10,
+      "score": {
+        "cp": 204,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 31515865,
+      "pv": [
+        "b4b5",
+        "c8c7",
+        "b5a6",
+        "b7a7",
+        "a1b1",
+        "b8c6",
+        "a3c3"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "goldfish",
+      "seconds": 30,
+      "move": "b4b5",
+      "active_seconds": 30.005362375173718,
+      "evidence": "/private/tmp/msh155/followup30/cell-003-goldfish.result.json",
+      "run_scope": "followup30",
+      "depth": 11,
+      "score": {
+        "cp": 204,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 46789766,
+      "pv": [
+        "b4b5",
+        "c8c7",
+        "b5a6"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "mshogi",
+      "seconds": 1,
+      "move": "b4b5",
+      "active_seconds": 1.000158375,
+      "evidence": "/private/tmp/msh155/cell-009-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 6,
+      "score": 300,
+      "nodes": 207883,
+      "stats": {
+        "main_nodes": 14219,
+        "q_nodes": 193664,
+        "q_check_nodes": 53084,
+        "q_horizon_nodes": 5,
+        "defence_reply_probes": 391555,
+        "tt_hits": 527,
+        "tt_probes": 14066,
+        "tt_position_hits": 3358,
+        "tt_context_hits": 2539,
+        "tt_stores": 13513,
+        "q_tt_probes": 18925,
+        "q_tt_hits": 687,
+        "q_tt_cutoffs": 572,
+        "q_tt_stores": 14032,
+        "tt_replacements": 22291,
+        "tt_store_refusals": 4320,
+        "prepared_moves": 103318,
+        "prepared_pruned": 70430,
+        "tt_cutoffs": 445,
+        "aspiration_researches": 0,
+        "researches": 38,
+        "reduction_researches": 10,
+        "pv_researches": 28,
+        "main_beta_cutoffs": 10664,
+        "main_first_move_cutoffs": 9628,
+        "q_beta_cutoffs": 62206,
+        "q_first_move_cutoffs": 58893,
+        "q_see_pruned": 42040,
+        "q_delta_pruned": 55294,
+        "reductions": 3330,
+        "null_probes": 139,
+        "null_verified": 101,
+        "null_abandoned": 0,
+        "extensions": 1247,
+        "threat_extensions": 1,
+        "threat_protected_moves": 182,
+        "queen_threat_nodes": 1701,
+        "queen_contact_mates": 8505,
+        "quiet_threat_moves": 992,
+        "q_quiet_projections": 379275,
+        "futility_pruned": 13076,
+        "late_move_pruned": 57753,
+        "see_pruned": 71141,
+        "see_probes": 222683
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "b4b5"
+        },
+        {
+          "kind": "move",
+          "uci": "b7a7"
+        },
+        {
+          "kind": "move",
+          "uci": "f3g5"
+        },
+        {
+          "kind": "move",
+          "uci": "h7e7"
+        },
+        {
+          "kind": "move",
+          "uci": "b5a6"
+        },
+        {
+          "kind": "move",
+          "uci": "b8c6"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.446074375,
+      "incomplete_iteration_share": 0.446003739157811,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "mshogi",
+      "seconds": 5,
+      "move": "b4b5",
+      "active_seconds": 5.000212291,
+      "evidence": "/private/tmp/msh155/cell-032-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 8,
+      "score": 291,
+      "nodes": 1155064,
+      "stats": {
+        "main_nodes": 82115,
+        "q_nodes": 1072949,
+        "q_check_nodes": 301276,
+        "q_horizon_nodes": 244,
+        "defence_reply_probes": 2165141,
+        "tt_hits": 3128,
+        "tt_probes": 80731,
+        "tt_position_hits": 11821,
+        "tt_context_hits": 7733,
+        "tt_stores": 77420,
+        "q_tt_probes": 100007,
+        "q_tt_hits": 1457,
+        "q_tt_cutoffs": 1301,
+        "q_tt_stores": 26864,
+        "tt_replacements": 96917,
+        "tt_store_refusals": 71847,
+        "prepared_moves": 603536,
+        "prepared_pruned": 423177,
+        "tt_cutoffs": 2863,
+        "aspiration_researches": 0,
+        "researches": 210,
+        "reduction_researches": 135,
+        "pv_researches": 75,
+        "main_beta_cutoffs": 60456,
+        "main_first_move_cutoffs": 55015,
+        "q_beta_cutoffs": 344950,
+        "q_first_move_cutoffs": 327179,
+        "q_see_pruned": 199044,
+        "q_delta_pruned": 303601,
+        "reductions": 24230,
+        "null_probes": 669,
+        "null_verified": 430,
+        "null_abandoned": 0,
+        "extensions": 7936,
+        "threat_extensions": 5,
+        "threat_protected_moves": 1053,
+        "queen_threat_nodes": 9884,
+        "queen_contact_mates": 53073,
+        "quiet_threat_moves": 5436,
+        "q_quiet_projections": 1979126,
+        "futility_pruned": 86939,
+        "late_move_pruned": 336525,
+        "see_pruned": 373398,
+        "see_probes": 1243615
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "b4b5"
+        },
+        {
+          "kind": "move",
+          "uci": "b7a7"
+        },
+        {
+          "kind": "move",
+          "uci": "b5a6"
+        },
+        {
+          "kind": "move",
+          "uci": "c8c6"
+        },
+        {
+          "kind": "move",
+          "uci": "f3e5"
+        },
+        {
+          "kind": "move",
+          "uci": "c6b6"
+        },
+        {
+          "kind": "move",
+          "uci": "g4g5"
+        },
+        {
+          "kind": "move",
+          "uci": "f6f5"
+        }
+      ],
+      "incomplete_iteration_seconds": 1.3054852910000005,
+      "incomplete_iteration_share": 0.26108597295954306,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "mshogi",
+      "seconds": 15,
+      "move": "b4b5",
+      "active_seconds": 15.000196042,
+      "evidence": "/private/tmp/msh155/cell-052-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": 316,
+      "nodes": 3400560,
+      "stats": {
+        "main_nodes": 295656,
+        "q_nodes": 3104904,
+        "q_check_nodes": 785852,
+        "q_horizon_nodes": 298,
+        "defence_reply_probes": 5745880,
+        "tt_hits": 10625,
+        "tt_probes": 289155,
+        "tt_position_hits": 34709,
+        "tt_context_hits": 21689,
+        "tt_stores": 277766,
+        "q_tt_probes": 355455,
+        "q_tt_hits": 1786,
+        "q_tt_cutoffs": 1610,
+        "q_tt_stores": 32633,
+        "tt_replacements": 296309,
+        "tt_store_refusals": 321645,
+        "prepared_moves": 2072954,
+        "prepared_pruned": 1428475,
+        "tt_cutoffs": 9392,
+        "aspiration_researches": 0,
+        "researches": 742,
+        "reduction_researches": 465,
+        "pv_researches": 277,
+        "main_beta_cutoffs": 218843,
+        "main_first_move_cutoffs": 196487,
+        "q_beta_cutoffs": 941833,
+        "q_first_move_cutoffs": 882122,
+        "q_see_pruned": 637425,
+        "q_delta_pruned": 912750,
+        "reductions": 90577,
+        "null_probes": 2484,
+        "null_verified": 1550,
+        "null_abandoned": 0,
+        "extensions": 23662,
+        "threat_extensions": 10,
+        "threat_protected_moves": 3422,
+        "queen_threat_nodes": 30564,
+        "queen_contact_mates": 174504,
+        "quiet_threat_moves": 14450,
+        "q_quiet_projections": 6368914,
+        "futility_pruned": 305898,
+        "late_move_pruned": 1130741,
+        "see_pruned": 1163394,
+        "see_probes": 3886010
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "b4b5"
+        },
+        {
+          "kind": "move",
+          "uci": "b7a8"
+        },
+        {
+          "kind": "move",
+          "uci": "b5a6"
+        },
+        {
+          "kind": "move",
+          "uci": "h7a7"
+        },
+        {
+          "kind": "move",
+          "uci": "f3e5"
+        },
+        {
+          "kind": "move",
+          "uci": "c8h8"
+        },
+        {
+          "kind": "move",
+          "uci": "g2g1"
+        },
+        {
+          "kind": "move",
+          "uci": "f6h4"
+        },
+        {
+          "kind": "move",
+          "uci": "g1f1"
+        },
+        {
+          "kind": "move",
+          "uci": "h4h1"
+        },
+        {
+          "kind": "move",
+          "uci": "f1e2"
+        }
+      ],
+      "incomplete_iteration_seconds": 4.778006042000001,
+      "incomplete_iteration_share": 0.31852957312169516,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "mshogi",
+      "seconds": 30,
+      "move": "b4b5",
+      "active_seconds": 30.000186125,
+      "evidence": "/private/tmp/msh155/followup30/cell-005-mshogi.result.json",
+      "run_scope": "followup30",
+      "depth": 10,
+      "score": 301,
+      "nodes": 7077303,
+      "stats": {
+        "main_nodes": 659406,
+        "q_nodes": 6417897,
+        "q_check_nodes": 1650679,
+        "q_horizon_nodes": 470,
+        "defence_reply_probes": 11626537,
+        "tt_hits": 20259,
+        "tt_probes": 634715,
+        "tt_position_hits": 64223,
+        "tt_context_hits": 37281,
+        "tt_stores": 606546,
+        "q_tt_probes": 757413,
+        "q_tt_hits": 1971,
+        "q_tt_cutoffs": 1773,
+        "q_tt_stores": 38451,
+        "tt_replacements": 625670,
+        "tt_store_refusals": 721984,
+        "prepared_moves": 4499653,
+        "prepared_pruned": 3107585,
+        "tt_cutoffs": 18810,
+        "aspiration_researches": 0,
+        "researches": 1236,
+        "reduction_researches": 911,
+        "pv_researches": 325,
+        "main_beta_cutoffs": 483220,
+        "main_first_move_cutoffs": 438404,
+        "q_beta_cutoffs": 1951872,
+        "q_first_move_cutoffs": 1837908,
+        "q_see_pruned": 1305851,
+        "q_delta_pruned": 1900824,
+        "reductions": 202177,
+        "null_probes": 6811,
+        "null_verified": 4553,
+        "null_abandoned": 0,
+        "extensions": 56490,
+        "threat_extensions": 51,
+        "threat_protected_moves": 7522,
+        "queen_threat_nodes": 64194,
+        "queen_contact_mates": 346778,
+        "quiet_threat_moves": 28152,
+        "q_quiet_projections": 13179350,
+        "futility_pruned": 725367,
+        "late_move_pruned": 2485937,
+        "see_pruned": 2406640,
+        "see_probes": 8030699
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "b4b5"
+        },
+        {
+          "kind": "move",
+          "uci": "b7a8"
+        },
+        {
+          "kind": "move",
+          "uci": "d2e3"
+        },
+        {
+          "kind": "move",
+          "uci": "h7a7"
+        },
+        {
+          "kind": "move",
+          "uci": "g2g1"
+        },
+        {
+          "kind": "move",
+          "uci": "c8c2"
+        },
+        {
+          "kind": "move",
+          "uci": "b5a6"
+        },
+        {
+          "kind": "move",
+          "uci": "b8c6"
+        },
+        {
+          "kind": "move",
+          "uci": "a3c3"
+        },
+        {
+          "kind": "move",
+          "uci": "c6b4"
+        }
+      ],
+      "incomplete_iteration_seconds": 8.892913125,
+      "incomplete_iteration_share": 0.29642859840757074,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "oxidation",
+      "seconds": 1,
+      "move": "f3e5",
+      "active_seconds": 1.0007900418713689,
+      "evidence": "/private/tmp/msh155/cell-011-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 7,
+      "score": {
+        "cp": 208,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1104176,
+      "pv": [
+        "f3e5",
+        "h7c7",
+        "g4g5",
+        "f6f5",
+        "a1e1",
+        "b7a8",
+        "g2h1"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "oxidation",
+      "seconds": 5,
+      "move": "f3e5",
+      "active_seconds": 5.000627332832664,
+      "evidence": "/private/tmp/msh155/cell-031-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 8,
+      "score": {
+        "cp": 197,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 5351440,
+      "pv": [
+        "f3e5",
+        "h7c7",
+        "g2g1",
+        "b7a7",
+        "a1e1",
+        "b8c6",
+        "a3c3",
+        "a7a8"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "oxidation",
+      "seconds": 15,
+      "move": "f3e5",
+      "active_seconds": 15.000824582763016,
+      "evidence": "/private/tmp/msh155/cell-051-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": 211,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 15789341,
+      "pv": [
+        "f3e5",
+        "h7c7",
+        "d2d3",
+        "f6f4",
+        "a3a6",
+        "c8f8",
+        "a6a7",
+        "b7c8",
+        "a7c7",
+        "c8c7",
+        "a1f1"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "fresh-sts-undermine-004",
+      "fresh": true,
+      "category": "positional",
+      "engine": "oxidation",
+      "seconds": 30,
+      "move": "f3e5",
+      "active_seconds": 30.000979291740805,
+      "evidence": "/private/tmp/msh155/followup30/cell-004-oxidation.result.json",
+      "run_scope": "followup30",
+      "depth": 10,
+      "score": {
+        "cp": 221,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 32108930,
+      "pv": [
+        "f3e5",
+        "h7c7",
+        "d2d3",
+        "f6f4",
+        "a3a6",
+        "c8f8",
+        "f2f3",
+        "f8f6",
+        "a6a7",
+        "b7c8",
+        "a7c7",
+        "c8c7",
+        "e5g6"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-22Nf5",
+      "fresh": false,
+      "category": "tactical",
+      "engine": "goldfish",
+      "seconds": 1,
+      "move": "b2b3",
+      "active_seconds": 1.0048623746261,
+      "evidence": "/private/tmp/msh155/cell-001-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 7,
+      "score": {
+        "cp": -7,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1189763,
+      "pv": [
+        "b2b3",
+        "d8d3",
+        "h7d3",
+        "c6e4",
+        "d3c4",
+        "e6c4",
+        "e3c4",
+        "a4c3"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-22Nf5",
+      "fresh": false,
+      "category": "tactical",
+      "engine": "goldfish",
+      "seconds": 5,
+      "move": "a1b1",
+      "active_seconds": 5.005372209008783,
+      "evidence": "/private/tmp/msh155/cell-045-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": -23,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 10343808,
+      "pv": [
+        "a1b1",
+        "a4c5",
+        "d3f5",
+        "e6a2",
+        "e1d1",
+        "e7e6"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-22Nf5",
+      "fresh": false,
+      "category": "tactical",
+      "engine": "goldfish",
+      "seconds": 15,
+      "move": "d2c1",
+      "active_seconds": 15.003225833177567,
+      "evidence": "/private/tmp/msh155/cell-068-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 10,
+      "score": {
+        "cp": -14,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 31244710,
+      "pv": [
+        "d2c1",
+        "a4c5",
+        "d3f5",
+        "e6e5",
+        "e3c2",
+        "e5d5",
+        "c2e3",
+        "d5b3"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-22Nf5",
+      "fresh": false,
+      "category": "tactical",
+      "engine": "mshogi",
+      "seconds": 1,
+      "move": "e3f5",
+      "active_seconds": 1.000177,
+      "evidence": "/private/tmp/msh155/cell-000-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 5,
+      "score": 45,
+      "nodes": 240809,
+      "stats": {
+        "main_nodes": 12579,
+        "q_nodes": 228230,
+        "q_check_nodes": 32325,
+        "q_horizon_nodes": 253,
+        "defence_reply_probes": 781746,
+        "tt_hits": 1167,
+        "tt_probes": 12291,
+        "tt_position_hits": 3577,
+        "tt_context_hits": 3409,
+        "tt_stores": 11265,
+        "q_tt_probes": 14502,
+        "q_tt_hits": 523,
+        "q_tt_cutoffs": 436,
+        "q_tt_stores": 10470,
+        "tt_replacements": 16352,
+        "tt_store_refusals": 3595,
+        "prepared_moves": 99300,
+        "prepared_pruned": 71768,
+        "tt_cutoffs": 1002,
+        "aspiration_researches": 1,
+        "researches": 31,
+        "reduction_researches": 12,
+        "pv_researches": 19,
+        "main_beta_cutoffs": 8863,
+        "main_first_move_cutoffs": 8343,
+        "q_beta_cutoffs": 44037,
+        "q_first_move_cutoffs": 40131,
+        "q_see_pruned": 62185,
+        "q_delta_pruned": 77615,
+        "reductions": 4826,
+        "null_probes": 70,
+        "null_verified": 20,
+        "null_abandoned": 0,
+        "extensions": 911,
+        "threat_extensions": 2,
+        "threat_protected_moves": 555,
+        "queen_threat_nodes": 3699,
+        "queen_contact_mates": 36274,
+        "quiet_threat_moves": 1681,
+        "q_quiet_projections": 294820,
+        "futility_pruned": 13622,
+        "late_move_pruned": 55223,
+        "see_pruned": 93821,
+        "see_probes": 286806
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "e3f5"
+        },
+        {
+          "kind": "move",
+          "uci": "e6f6"
+        },
+        {
+          "kind": "move",
+          "uci": "b2b3"
+        },
+        {
+          "kind": "move",
+          "uci": "d8d3"
+        },
+        {
+          "kind": "move",
+          "uci": "f5g7"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.3611960000000001,
+      "incomplete_iteration_share": 0.36113207962190697,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-22Nf5",
+      "fresh": false,
+      "category": "tactical",
+      "engine": "mshogi",
+      "seconds": 2,
+      "move": "e3f5",
+      "active_seconds": 2.000195667,
+      "evidence": "/private/tmp/msh155/intermediate/cell-000-mshogi.result.json",
+      "run_scope": "intermediate",
+      "depth": 6,
+      "score": 51,
+      "nodes": 496295,
+      "stats": {
+        "main_nodes": 26381,
+        "q_nodes": 469914,
+        "q_check_nodes": 60757,
+        "q_horizon_nodes": 442,
+        "defence_reply_probes": 1848140,
+        "tt_hits": 1834,
+        "tt_probes": 25945,
+        "tt_position_hits": 5192,
+        "tt_context_hits": 4714,
+        "tt_stores": 24237,
+        "q_tt_probes": 28500,
+        "q_tt_hits": 981,
+        "q_tt_cutoffs": 882,
+        "q_tt_stores": 14363,
+        "tt_replacements": 32705,
+        "tt_store_refusals": 13254,
+        "prepared_moves": 215318,
+        "prepared_pruned": 160064,
+        "tt_cutoffs": 1632,
+        "aspiration_researches": 1,
+        "researches": 51,
+        "reduction_researches": 18,
+        "pv_researches": 33,
+        "main_beta_cutoffs": 18808,
+        "main_first_move_cutoffs": 17799,
+        "q_beta_cutoffs": 81282,
+        "q_first_move_cutoffs": 74327,
+        "q_see_pruned": 112285,
+        "q_delta_pruned": 146067,
+        "reductions": 10790,
+        "null_probes": 157,
+        "null_verified": 70,
+        "null_abandoned": 0,
+        "extensions": 1871,
+        "threat_extensions": 2,
+        "threat_protected_moves": 1016,
+        "queen_threat_nodes": 7950,
+        "queen_contact_mates": 74463,
+        "quiet_threat_moves": 3491,
+        "q_quiet_projections": 562839,
+        "futility_pruned": 32919,
+        "late_move_pruned": 121094,
+        "see_pruned": 175001,
+        "see_probes": 546413
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "e3f5"
+        },
+        {
+          "kind": "move",
+          "uci": "e6g6"
+        },
+        {
+          "kind": "move",
+          "uci": "h7g6"
+        },
+        {
+          "kind": "move",
+          "uci": "f7g6"
+        },
+        {
+          "kind": "move",
+          "uci": "f5g7"
+        },
+        {
+          "kind": "move",
+          "uci": "f8g7"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.8009456669999999,
+      "incomplete_iteration_share": 0.40043365767375194,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-22Nf5",
+      "fresh": false,
+      "category": "tactical",
+      "engine": "mshogi",
+      "seconds": 3,
+      "move": "e3f5",
+      "active_seconds": 3.000220875,
+      "evidence": "/private/tmp/msh155/intermediate/cell-002-mshogi.result.json",
+      "run_scope": "intermediate",
+      "depth": 6,
+      "score": 51,
+      "nodes": 703045,
+      "stats": {
+        "main_nodes": 43649,
+        "q_nodes": 659396,
+        "q_check_nodes": 93663,
+        "q_horizon_nodes": 473,
+        "defence_reply_probes": 2511575,
+        "tt_hits": 2661,
+        "tt_probes": 43055,
+        "tt_position_hits": 6959,
+        "tt_context_hits": 6202,
+        "tt_stores": 40556,
+        "q_tt_probes": 46813,
+        "q_tt_hits": 981,
+        "q_tt_cutoffs": 882,
+        "q_tt_stores": 14391,
+        "tt_replacements": 48349,
+        "tt_store_refusals": 31544,
+        "prepared_moves": 364569,
+        "prepared_pruned": 273527,
+        "tt_cutoffs": 2400,
+        "aspiration_researches": 1,
+        "researches": 85,
+        "reduction_researches": 38,
+        "pv_researches": 47,
+        "main_beta_cutoffs": 31214,
+        "main_first_move_cutoffs": 29565,
+        "q_beta_cutoffs": 121558,
+        "q_first_move_cutoffs": 112357,
+        "q_see_pruned": 175038,
+        "q_delta_pruned": 224994,
+        "reductions": 17809,
+        "null_probes": 215,
+        "null_verified": 89,
+        "null_abandoned": 0,
+        "extensions": 3085,
+        "threat_extensions": 3,
+        "threat_protected_moves": 1965,
+        "queen_threat_nodes": 11484,
+        "queen_contact_mates": 100907,
+        "quiet_threat_moves": 4837,
+        "q_quiet_projections": 943670,
+        "futility_pruned": 55880,
+        "late_move_pruned": 205550,
+        "see_pruned": 269252,
+        "see_probes": 819561
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "e3f5"
+        },
+        {
+          "kind": "move",
+          "uci": "e6g6"
+        },
+        {
+          "kind": "move",
+          "uci": "h7g6"
+        },
+        {
+          "kind": "move",
+          "uci": "f7g6"
+        },
+        {
+          "kind": "move",
+          "uci": "f5g7"
+        },
+        {
+          "kind": "move",
+          "uci": "f8g7"
+        }
+      ],
+      "incomplete_iteration_seconds": 1.797125875,
+      "incomplete_iteration_share": 0.5989978571161032,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-22Nf5",
+      "fresh": false,
+      "category": "tactical",
+      "engine": "mshogi",
+      "seconds": 5,
+      "move": "d3f5",
+      "active_seconds": 5.000197875,
+      "evidence": "/private/tmp/msh155/cell-047-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 7,
+      "score": 20,
+      "nodes": 1219640,
+      "stats": {
+        "main_nodes": 77002,
+        "q_nodes": 1142638,
+        "q_check_nodes": 156875,
+        "q_horizon_nodes": 586,
+        "defence_reply_probes": 4250551,
+        "tt_hits": 4242,
+        "tt_probes": 75985,
+        "tt_position_hits": 10358,
+        "tt_context_hits": 9042,
+        "tt_stores": 71808,
+        "q_tt_probes": 80354,
+        "q_tt_hits": 1306,
+        "q_tt_cutoffs": 1200,
+        "q_tt_stores": 19729,
+        "tt_replacements": 83704,
+        "tt_store_refusals": 59433,
+        "prepared_moves": 651078,
+        "prepared_pruned": 493274,
+        "tt_cutoffs": 3913,
+        "aspiration_researches": 1,
+        "researches": 120,
+        "reduction_researches": 65,
+        "pv_researches": 55,
+        "main_beta_cutoffs": 54990,
+        "main_first_move_cutoffs": 52120,
+        "q_beta_cutoffs": 198512,
+        "q_first_move_cutoffs": 184817,
+        "q_see_pruned": 270993,
+        "q_delta_pruned": 360882,
+        "reductions": 31490,
+        "null_probes": 471,
+        "null_verified": 248,
+        "null_abandoned": 0,
+        "extensions": 5533,
+        "threat_extensions": 5,
+        "threat_protected_moves": 3462,
+        "queen_threat_nodes": 19871,
+        "queen_contact_mates": 190374,
+        "quiet_threat_moves": 7755,
+        "q_quiet_projections": 1591720,
+        "futility_pruned": 103774,
+        "late_move_pruned": 372835,
+        "see_pruned": 428696,
+        "see_probes": 1327896
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "d3f5"
+        },
+        {
+          "kind": "move",
+          "uci": "e6e5"
+        },
+        {
+          "kind": "move",
+          "uci": "e3g4"
+        },
+        {
+          "kind": "move",
+          "uci": "e5d6"
+        },
+        {
+          "kind": "move",
+          "uci": "d2c1"
+        },
+        {
+          "kind": "move",
+          "uci": "c6d5"
+        },
+        {
+          "kind": "move",
+          "uci": "c1e3"
+        },
+        {
+          "kind": "move",
+          "uci": "a4b2"
+        },
+        {
+          "kind": "move",
+          "uci": "e3a7"
+        }
+      ],
+      "incomplete_iteration_seconds": 1.8465028749999997,
+      "incomplete_iteration_share": 0.3692859605081129,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-22Nf5",
+      "fresh": false,
+      "category": "tactical",
+      "engine": "mshogi",
+      "seconds": 15,
+      "move": "d2c1",
+      "active_seconds": 15.000197791,
+      "evidence": "/private/tmp/msh155/cell-067-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 8,
+      "score": -14,
+      "nodes": 3763099,
+      "stats": {
+        "main_nodes": 306619,
+        "q_nodes": 3456480,
+        "q_check_nodes": 420142,
+        "q_horizon_nodes": 1142,
+        "defence_reply_probes": 14180918,
+        "tt_hits": 14507,
+        "tt_probes": 299705,
+        "tt_position_hits": 27944,
+        "tt_context_hits": 24710,
+        "tt_stores": 282685,
+        "q_tt_probes": 270945,
+        "q_tt_hits": 1558,
+        "q_tt_cutoffs": 1404,
+        "q_tt_stores": 25130,
+        "tt_replacements": 294928,
+        "tt_store_refusals": 245343,
+        "prepared_moves": 2567220,
+        "prepared_pruned": 1990517,
+        "tt_cutoffs": 13966,
+        "aspiration_researches": 1,
+        "researches": 350,
+        "reduction_researches": 243,
+        "pv_researches": 107,
+        "main_beta_cutoffs": 213388,
+        "main_first_move_cutoffs": 204120,
+        "q_beta_cutoffs": 514431,
+        "q_first_move_cutoffs": 483919,
+        "q_see_pruned": 728918,
+        "q_delta_pruned": 994512,
+        "reductions": 117751,
+        "null_probes": 3223,
+        "null_verified": 2111,
+        "null_abandoned": 0,
+        "extensions": 24478,
+        "threat_extensions": 51,
+        "threat_protected_moves": 10332,
+        "queen_threat_nodes": 58858,
+        "queen_contact_mates": 643159,
+        "quiet_threat_moves": 18538,
+        "q_quiet_projections": 4886661,
+        "futility_pruned": 473652,
+        "late_move_pruned": 1494323,
+        "see_pruned": 1199337,
+        "see_probes": 3847538
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "d2c1"
+        },
+        {
+          "kind": "move",
+          "uci": "a4c5"
+        },
+        {
+          "kind": "move",
+          "uci": "d3f5"
+        },
+        {
+          "kind": "move",
+          "uci": "e6e5"
+        },
+        {
+          "kind": "move",
+          "uci": "e3c2"
+        },
+        {
+          "kind": "move",
+          "uci": "e5d5"
+        },
+        {
+          "kind": "move",
+          "uci": "f2f3"
+        },
+        {
+          "kind": "move",
+          "uci": "e7e6"
+        }
+      ],
+      "incomplete_iteration_seconds": 6.3843917910000005,
+      "incomplete_iteration_share": 0.4256205071396182,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-22Nf5",
+      "fresh": false,
+      "category": "tactical",
+      "engine": "oxidation",
+      "seconds": 1,
+      "move": "a1b1",
+      "active_seconds": 1.0011022919788957,
+      "evidence": "/private/tmp/msh155/cell-002-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 7,
+      "score": {
+        "cp": -41,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1022180,
+      "pv": [
+        "a1b1",
+        "g7e5",
+        "d3c4",
+        "e6g6",
+        "h7g6",
+        "f7g6",
+        "e1e2"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-22Nf5",
+      "fresh": false,
+      "category": "tactical",
+      "engine": "oxidation",
+      "seconds": 5,
+      "move": "a1b1",
+      "active_seconds": 5.000760083086789,
+      "evidence": "/private/tmp/msh155/cell-046-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 8,
+      "score": {
+        "cp": -36,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 5345683,
+      "pv": [
+        "a1b1",
+        "g7e5",
+        "f2f3",
+        "e6d7",
+        "d3c4",
+        "e5g7",
+        "e1e2",
+        "e7e5"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-22Nf5",
+      "fresh": false,
+      "category": "tactical",
+      "engine": "oxidation",
+      "seconds": 15,
+      "move": "a1b1",
+      "active_seconds": 15.001072667073458,
+      "evidence": "/private/tmp/msh155/cell-066-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": -75,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 15989382,
+      "pv": [
+        "a1b1",
+        "a4c5",
+        "d3f5",
+        "e6a2",
+        "d2c1",
+        "a2b3",
+        "f5c2",
+        "b3e6",
+        "h7f5"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-23Rf6",
+      "fresh": false,
+      "category": "defensive",
+      "engine": "goldfish",
+      "seconds": 1,
+      "move": "f8f6",
+      "active_seconds": 1.0014123329892755,
+      "evidence": "/private/tmp/msh155/cell-012-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 7,
+      "score": {
+        "cp": -16,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 352366,
+      "pv": [
+        "f8f6",
+        "h6g4",
+        "f6g6",
+        "g4h2",
+        "g6g8",
+        "h2f3",
+        "h5f6"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-23Rf6",
+      "fresh": false,
+      "category": "defensive",
+      "engine": "goldfish",
+      "seconds": 5,
+      "move": "f8f6",
+      "active_seconds": 5.003556957934052,
+      "evidence": "/private/tmp/msh155/cell-035-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": -135,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 4659042,
+      "pv": [
+        "f8f6",
+        "b4h4",
+        "d6e4",
+        "h6f5",
+        "f6f5",
+        "d3e4",
+        "e6e4",
+        "h4e4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-23Rf6",
+      "fresh": false,
+      "category": "defensive",
+      "engine": "goldfish",
+      "seconds": 15,
+      "move": "f8f6",
+      "active_seconds": 15.005479500163347,
+      "evidence": "/private/tmp/msh155/cell-055-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": -135,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 4659042,
+      "pv": [
+        "f8f6",
+        "b4h4",
+        "d6e4",
+        "h6f5",
+        "f6f5",
+        "d3e4",
+        "e6e4",
+        "h4e4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-23Rf6",
+      "fresh": false,
+      "category": "defensive",
+      "engine": "mshogi",
+      "seconds": 1,
+      "move": "f8f6",
+      "active_seconds": 1.000245125,
+      "evidence": "/private/tmp/msh155/cell-014-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 7,
+      "score": 56,
+      "nodes": 206300,
+      "stats": {
+        "main_nodes": 28371,
+        "q_nodes": 177929,
+        "q_check_nodes": 49580,
+        "q_horizon_nodes": 28,
+        "defence_reply_probes": 78095,
+        "tt_hits": 1223,
+        "tt_probes": 28119,
+        "tt_position_hits": 5525,
+        "tt_context_hits": 3741,
+        "tt_stores": 26834,
+        "q_tt_probes": 31333,
+        "q_tt_hits": 1477,
+        "q_tt_cutoffs": 1345,
+        "q_tt_stores": 19312,
+        "tt_replacements": 40509,
+        "tt_store_refusals": 10676,
+        "prepared_moves": 215285,
+        "prepared_pruned": 156043,
+        "tt_cutoffs": 1119,
+        "aspiration_researches": 1,
+        "researches": 56,
+        "reduction_researches": 19,
+        "pv_researches": 37,
+        "main_beta_cutoffs": 21179,
+        "main_first_move_cutoffs": 19973,
+        "q_beta_cutoffs": 59315,
+        "q_first_move_cutoffs": 55824,
+        "q_see_pruned": 67922,
+        "q_delta_pruned": 91632,
+        "reductions": 10418,
+        "null_probes": 200,
+        "null_verified": 158,
+        "null_abandoned": 0,
+        "extensions": 2151,
+        "threat_extensions": 0,
+        "threat_protected_moves": 71,
+        "queen_threat_nodes": 610,
+        "queen_contact_mates": 1732,
+        "quiet_threat_moves": 415,
+        "q_quiet_projections": 688151,
+        "futility_pruned": 32144,
+        "late_move_pruned": 122662,
+        "see_pruned": 119755,
+        "see_probes": 344418
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "f8f6"
+        },
+        {
+          "kind": "move",
+          "uci": "h6g4"
+        },
+        {
+          "kind": "move",
+          "uci": "f6g6"
+        },
+        {
+          "kind": "move",
+          "uci": "g4h2"
+        },
+        {
+          "kind": "move",
+          "uci": "h7g8"
+        },
+        {
+          "kind": "move",
+          "uci": "h2f3"
+        },
+        {
+          "kind": "move",
+          "uci": "f5f4"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.16516612499999994,
+      "incomplete_iteration_share": 0.1651256485753929,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-23Rf6",
+      "fresh": false,
+      "category": "defensive",
+      "engine": "mshogi",
+      "seconds": 2,
+      "move": "f8f6",
+      "active_seconds": 2.000269875,
+      "evidence": "/private/tmp/msh155/intermediate/cell-001-mshogi.result.json",
+      "run_scope": "intermediate",
+      "depth": 7,
+      "score": 56,
+      "nodes": 415871,
+      "stats": {
+        "main_nodes": 57266,
+        "q_nodes": 358605,
+        "q_check_nodes": 99868,
+        "q_horizon_nodes": 44,
+        "defence_reply_probes": 225767,
+        "tt_hits": 2269,
+        "tt_probes": 56730,
+        "tt_position_hits": 7827,
+        "tt_context_hits": 5277,
+        "tt_stores": 54368,
+        "q_tt_probes": 59916,
+        "q_tt_hits": 1504,
+        "q_tt_cutoffs": 1372,
+        "q_tt_stores": 20051,
+        "tt_replacements": 68234,
+        "tt_store_refusals": 38493,
+        "prepared_moves": 423475,
+        "prepared_pruned": 307152,
+        "tt_cutoffs": 2067,
+        "aspiration_researches": 1,
+        "researches": 82,
+        "reduction_researches": 41,
+        "pv_researches": 41,
+        "main_beta_cutoffs": 42596,
+        "main_first_move_cutoffs": 40167,
+        "q_beta_cutoffs": 116252,
+        "q_first_move_cutoffs": 108921,
+        "q_see_pruned": 123838,
+        "q_delta_pruned": 184932,
+        "reductions": 21728,
+        "null_probes": 427,
+        "null_verified": 286,
+        "null_abandoned": 0,
+        "extensions": 4992,
+        "threat_extensions": 0,
+        "threat_protected_moves": 179,
+        "queen_threat_nodes": 1729,
+        "queen_contact_mates": 5372,
+        "quiet_threat_moves": 1095,
+        "q_quiet_projections": 1270690,
+        "futility_pruned": 66865,
+        "late_move_pruned": 239063,
+        "see_pruned": 234104,
+        "see_probes": 680614
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "f8f6"
+        },
+        {
+          "kind": "move",
+          "uci": "h6g4"
+        },
+        {
+          "kind": "move",
+          "uci": "f6g6"
+        },
+        {
+          "kind": "move",
+          "uci": "g4h2"
+        },
+        {
+          "kind": "move",
+          "uci": "h7g8"
+        },
+        {
+          "kind": "move",
+          "uci": "h2f3"
+        },
+        {
+          "kind": "move",
+          "uci": "f5f4"
+        }
+      ],
+      "incomplete_iteration_seconds": 1.1721638749999999,
+      "incomplete_iteration_share": 0.5860028637385744,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-23Rf6",
+      "fresh": false,
+      "category": "defensive",
+      "engine": "mshogi",
+      "seconds": 3,
+      "move": "f8f6",
+      "active_seconds": 3.0002118750000006,
+      "evidence": "/private/tmp/msh155/intermediate/cell-003-mshogi.result.json",
+      "run_scope": "intermediate",
+      "depth": 7,
+      "score": 56,
+      "nodes": 644565,
+      "stats": {
+        "main_nodes": 74977,
+        "q_nodes": 569588,
+        "q_check_nodes": 159592,
+        "q_horizon_nodes": 107,
+        "defence_reply_probes": 326691,
+        "tt_hits": 3320,
+        "tt_probes": 74340,
+        "tt_position_hits": 9595,
+        "tt_context_hits": 6791,
+        "tt_stores": 71010,
+        "q_tt_probes": 81961,
+        "q_tt_hits": 1504,
+        "q_tt_cutoffs": 1372,
+        "q_tt_stores": 20051,
+        "tt_replacements": 84315,
+        "tt_store_refusals": 60541,
+        "prepared_moves": 575202,
+        "prepared_pruned": 419286,
+        "tt_cutoffs": 2993,
+        "aspiration_researches": 1,
+        "researches": 112,
+        "reduction_researches": 54,
+        "pv_researches": 58,
+        "main_beta_cutoffs": 55132,
+        "main_first_move_cutoffs": 51315,
+        "q_beta_cutoffs": 188868,
+        "q_first_move_cutoffs": 174767,
+        "q_see_pruned": 171192,
+        "q_delta_pruned": 275034,
+        "reductions": 26921,
+        "null_probes": 522,
+        "null_verified": 325,
+        "null_abandoned": 0,
+        "extensions": 7321,
+        "threat_extensions": 0,
+        "threat_protected_moves": 274,
+        "queen_threat_nodes": 2558,
+        "queen_contact_mates": 9583,
+        "quiet_threat_moves": 1538,
+        "q_quiet_projections": 1698437,
+        "futility_pruned": 90903,
+        "late_move_pruned": 324738,
+        "see_pruned": 342933,
+        "see_probes": 1018764
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "f8f6"
+        },
+        {
+          "kind": "move",
+          "uci": "h6g4"
+        },
+        {
+          "kind": "move",
+          "uci": "f6g6"
+        },
+        {
+          "kind": "move",
+          "uci": "g4h2"
+        },
+        {
+          "kind": "move",
+          "uci": "h7g8"
+        },
+        {
+          "kind": "move",
+          "uci": "h2f3"
+        },
+        {
+          "kind": "move",
+          "uci": "f5f4"
+        }
+      ],
+      "incomplete_iteration_seconds": 2.1618728750000007,
+      "incomplete_iteration_share": 0.7205734011702091,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-23Rf6",
+      "fresh": false,
+      "category": "defensive",
+      "engine": "mshogi",
+      "seconds": 5,
+      "move": "a8d8",
+      "active_seconds": 5.000248875,
+      "evidence": "/private/tmp/msh155/cell-034-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 8,
+      "score": 33,
+      "nodes": 1088058,
+      "stats": {
+        "main_nodes": 126069,
+        "q_nodes": 961989,
+        "q_check_nodes": 266188,
+        "q_horizon_nodes": 196,
+        "defence_reply_probes": 585467,
+        "tt_hits": 4855,
+        "tt_probes": 124461,
+        "tt_position_hits": 13066,
+        "tt_context_hits": 9603,
+        "tt_stores": 119301,
+        "q_tt_probes": 138094,
+        "q_tt_hits": 1707,
+        "q_tt_cutoffs": 1553,
+        "q_tt_stores": 25679,
+        "tt_replacements": 137117,
+        "tt_store_refusals": 110918,
+        "prepared_moves": 992939,
+        "prepared_pruned": 731058,
+        "tt_cutoffs": 4459,
+        "aspiration_researches": 1,
+        "researches": 176,
+        "reduction_researches": 110,
+        "pv_researches": 66,
+        "main_beta_cutoffs": 91600,
+        "main_first_move_cutoffs": 84839,
+        "q_beta_cutoffs": 315315,
+        "q_first_move_cutoffs": 290476,
+        "q_see_pruned": 272170,
+        "q_delta_pruned": 451875,
+        "reductions": 42625,
+        "null_probes": 1003,
+        "null_verified": 634,
+        "null_abandoned": 0,
+        "extensions": 12550,
+        "threat_extensions": 2,
+        "threat_protected_moves": 437,
+        "queen_threat_nodes": 4301,
+        "queen_contact_mates": 16080,
+        "quiet_threat_moves": 2572,
+        "q_quiet_projections": 2733933,
+        "futility_pruned": 161009,
+        "late_move_pruned": 564889,
+        "see_pruned": 563999,
+        "see_probes": 1703889
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "a8d8"
+        },
+        {
+          "kind": "move",
+          "uci": "d3d1"
+        },
+        {
+          "kind": "move",
+          "uci": "h5g3"
+        },
+        {
+          "kind": "move",
+          "uci": "f2g3"
+        },
+        {
+          "kind": "move",
+          "uci": "e6e3"
+        },
+        {
+          "kind": "move",
+          "uci": "b4h4"
+        },
+        {
+          "kind": "move",
+          "uci": "h7g7"
+        },
+        {
+          "kind": "move",
+          "uci": "d1d4"
+        },
+        {
+          "kind": "move",
+          "uci": "e3d4"
+        },
+        {
+          "kind": "move",
+          "uci": "c3d4"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.6075368749999992,
+      "incomplete_iteration_share": 0.12150132727143492,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-23Rf6",
+      "fresh": false,
+      "category": "defensive",
+      "engine": "mshogi",
+      "seconds": 15,
+      "move": "a8d8",
+      "active_seconds": 15.000226792,
+      "evidence": "/private/tmp/msh155/cell-054-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": 28,
+      "nodes": 3287536,
+      "stats": {
+        "main_nodes": 396633,
+        "q_nodes": 2890903,
+        "q_check_nodes": 790169,
+        "q_horizon_nodes": 539,
+        "defence_reply_probes": 2413288,
+        "tt_hits": 12400,
+        "tt_probes": 389501,
+        "tt_position_hits": 28809,
+        "tt_context_hits": 20987,
+        "tt_stores": 374334,
+        "q_tt_probes": 408856,
+        "q_tt_hits": 2342,
+        "q_tt_cutoffs": 2123,
+        "q_tt_stores": 31561,
+        "tt_replacements": 394560,
+        "tt_store_refusals": 376265,
+        "prepared_moves": 2973999,
+        "prepared_pruned": 2177700,
+        "tt_cutoffs": 11795,
+        "aspiration_researches": 1,
+        "researches": 433,
+        "reduction_researches": 349,
+        "pv_researches": 84,
+        "main_beta_cutoffs": 284387,
+        "main_first_move_cutoffs": 265380,
+        "q_beta_cutoffs": 907367,
+        "q_first_move_cutoffs": 840216,
+        "q_see_pruned": 702415,
+        "q_delta_pruned": 1266472,
+        "reductions": 124344,
+        "null_probes": 3350,
+        "null_verified": 2269,
+        "null_abandoned": 0,
+        "extensions": 44778,
+        "threat_extensions": 15,
+        "threat_protected_moves": 2099,
+        "queen_threat_nodes": 17079,
+        "queen_contact_mates": 77587,
+        "quiet_threat_moves": 8576,
+        "q_quiet_projections": 7528611,
+        "futility_pruned": 515848,
+        "late_move_pruned": 1675577,
+        "see_pruned": 1545949,
+        "see_probes": 4853538
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "a8d8"
+        },
+        {
+          "kind": "move",
+          "uci": "d3d1"
+        },
+        {
+          "kind": "move",
+          "uci": "h5g3"
+        },
+        {
+          "kind": "move",
+          "uci": "h1h2"
+        },
+        {
+          "kind": "move",
+          "uci": "d6c4"
+        },
+        {
+          "kind": "move",
+          "uci": "d1b3"
+        },
+        {
+          "kind": "move",
+          "uci": "g3f1"
+        },
+        {
+          "kind": "move",
+          "uci": "a1f1"
+        },
+        {
+          "kind": "move",
+          "uci": "e6d6"
+        },
+        {
+          "kind": "move",
+          "uci": "h2h1"
+        },
+        {
+          "kind": "move",
+          "uci": "c4e3"
+        },
+        {
+          "kind": "move",
+          "uci": "f2e3"
+        },
+        {
+          "kind": "move",
+          "uci": "d6h6"
+        }
+      ],
+      "incomplete_iteration_seconds": 3.4260357919999986,
+      "incomplete_iteration_share": 0.22839893286328117,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-23Rf6",
+      "fresh": false,
+      "category": "defensive",
+      "engine": "oxidation",
+      "seconds": 1,
+      "move": "a8d8",
+      "active_seconds": 1.0007816669531167,
+      "evidence": "/private/tmp/msh155/cell-013-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 7,
+      "score": {
+        "cp": 7,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 1146498,
+      "pv": [
+        "a8d8",
+        "b4d4",
+        "f8f6",
+        "h6g4",
+        "f6g6",
+        "g4h2",
+        "h7h8"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-23Rf6",
+      "fresh": false,
+      "category": "defensive",
+      "engine": "oxidation",
+      "seconds": 5,
+      "move": "a8d8",
+      "active_seconds": 5.000926374923438,
+      "evidence": "/private/tmp/msh155/cell-033-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": -23,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 5503931,
+      "pv": [
+        "a8d8",
+        "b4d4",
+        "f8f6",
+        "h6g4",
+        "f6g6",
+        "d4d5",
+        "d6f7",
+        "d5d8",
+        "f7d8"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-23Rf6",
+      "fresh": false,
+      "category": "defensive",
+      "engine": "oxidation",
+      "seconds": 15,
+      "move": "a8d8",
+      "active_seconds": 15.000722375232726,
+      "evidence": "/private/tmp/msh155/cell-056-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": -23,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 16610959,
+      "pv": [
+        "a8d8",
+        "b4d4",
+        "f8f6",
+        "h6g4",
+        "f6g6",
+        "d4d5",
+        "d6f7",
+        "d5d8",
+        "f7d8"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-24h4",
+      "fresh": false,
+      "category": "positional",
+      "engine": "goldfish",
+      "seconds": 1,
+      "move": "d2b4",
+      "active_seconds": 1.0031262496486306,
+      "evidence": "/private/tmp/msh155/cell-008-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": 0,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 977660,
+      "pv": [
+        "d2b4",
+        "f5d7",
+        "e1a1",
+        "g6g5",
+        "g2g4",
+        "h5g4",
+        "h3g4"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-24h4",
+      "fresh": false,
+      "category": "positional",
+      "engine": "goldfish",
+      "seconds": 5,
+      "move": "d2b4",
+      "active_seconds": 5.005239624995738,
+      "evidence": "/private/tmp/msh155/cell-028-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 11,
+      "score": {
+        "cp": -2,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 13107581,
+      "pv": [
+        "d2b4",
+        "c8d8",
+        "f3h2",
+        "f6g5"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-24h4",
+      "fresh": false,
+      "category": "positional",
+      "engine": "goldfish",
+      "seconds": 15,
+      "move": "h3h4",
+      "active_seconds": 15.00548620801419,
+      "evidence": "/private/tmp/msh155/cell-048-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 12,
+      "score": {
+        "cp": 1,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 26355993,
+      "pv": [
+        "h3h4",
+        "g6g5",
+        "f3g5",
+        "f6g5"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-24h4",
+      "fresh": false,
+      "category": "positional",
+      "engine": "mshogi",
+      "seconds": 1,
+      "move": "h3h4",
+      "active_seconds": 1.000159667,
+      "evidence": "/private/tmp/msh155/cell-007-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 7,
+      "score": 77,
+      "nodes": 175820,
+      "stats": {
+        "main_nodes": 41093,
+        "q_nodes": 134727,
+        "q_check_nodes": 22376,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 57693,
+        "tt_hits": 2075,
+        "tt_probes": 40601,
+        "tt_position_hits": 7931,
+        "tt_context_hits": 5731,
+        "tt_stores": 38534,
+        "q_tt_probes": 46189,
+        "q_tt_hits": 1151,
+        "q_tt_cutoffs": 1033,
+        "q_tt_stores": 19653,
+        "tt_replacements": 51367,
+        "tt_store_refusals": 25503,
+        "prepared_moves": 271950,
+        "prepared_pruned": 185876,
+        "tt_cutoffs": 1749,
+        "aspiration_researches": 0,
+        "researches": 141,
+        "reduction_researches": 36,
+        "pv_researches": 105,
+        "main_beta_cutoffs": 30148,
+        "main_first_move_cutoffs": 28233,
+        "q_beta_cutoffs": 31823,
+        "q_first_move_cutoffs": 30077,
+        "q_see_pruned": 113371,
+        "q_delta_pruned": 80445,
+        "reductions": 10565,
+        "null_probes": 453,
+        "null_verified": 310,
+        "null_abandoned": 0,
+        "extensions": 1876,
+        "threat_extensions": 0,
+        "threat_protected_moves": 36,
+        "queen_threat_nodes": 646,
+        "queen_contact_mates": 6232,
+        "quiet_threat_moves": 108,
+        "q_quiet_projections": 666400,
+        "futility_pruned": 41021,
+        "late_move_pruned": 134540,
+        "see_pruned": 154502,
+        "see_probes": 389127
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "h3h4"
+        },
+        {
+          "kind": "move",
+          "uci": "g6g5"
+        },
+        {
+          "kind": "move",
+          "uci": "f3g5"
+        },
+        {
+          "kind": "move",
+          "uci": "f6g5"
+        },
+        {
+          "kind": "move",
+          "uci": "h4g5"
+        },
+        {
+          "kind": "move",
+          "uci": "g8g5"
+        },
+        {
+          "kind": "move",
+          "uci": "f2f4"
+        },
+        {
+          "kind": "move",
+          "uci": "g5g4"
+        },
+        {
+          "kind": "move",
+          "uci": "f4e5"
+        },
+        {
+          "kind": "move",
+          "uci": "g4e4"
+        },
+        {
+          "kind": "move",
+          "uci": "e1e4"
+        },
+        {
+          "kind": "move",
+          "uci": "d6e5"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.14208666699999994,
+      "incomplete_iteration_share": 0.14206398406985543,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-24h4",
+      "fresh": false,
+      "category": "positional",
+      "engine": "mshogi",
+      "seconds": 5,
+      "move": "h3h4",
+      "active_seconds": 5.000261042,
+      "evidence": "/private/tmp/msh155/cell-027-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": 69,
+      "nodes": 922244,
+      "stats": {
+        "main_nodes": 211282,
+        "q_nodes": 710962,
+        "q_check_nodes": 115305,
+        "q_horizon_nodes": 22,
+        "defence_reply_probes": 225658,
+        "tt_hits": 7223,
+        "tt_probes": 203651,
+        "tt_position_hits": 26097,
+        "tt_context_hits": 15026,
+        "tt_stores": 194443,
+        "q_tt_probes": 228616,
+        "q_tt_hits": 2424,
+        "q_tt_cutoffs": 2058,
+        "q_tt_stores": 34588,
+        "tt_replacements": 218384,
+        "tt_store_refusals": 192148,
+        "prepared_moves": 1367415,
+        "prepared_pruned": 938620,
+        "tt_cutoffs": 6423,
+        "aspiration_researches": 0,
+        "researches": 414,
+        "reduction_researches": 176,
+        "pv_researches": 238,
+        "main_beta_cutoffs": 153935,
+        "main_first_move_cutoffs": 143811,
+        "q_beta_cutoffs": 173156,
+        "q_first_move_cutoffs": 160028,
+        "q_see_pruned": 518489,
+        "q_delta_pruned": 412278,
+        "reductions": 58804,
+        "null_probes": 3526,
+        "null_verified": 2601,
+        "null_abandoned": 0,
+        "extensions": 8931,
+        "threat_extensions": 5,
+        "threat_protected_moves": 455,
+        "queen_threat_nodes": 3589,
+        "queen_contact_mates": 29461,
+        "quiet_threat_moves": 1061,
+        "q_quiet_projections": 3205873,
+        "futility_pruned": 244068,
+        "late_move_pruned": 688169,
+        "see_pruned": 742650,
+        "see_probes": 2005866
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "h3h4"
+        },
+        {
+          "kind": "move",
+          "uci": "h7g7"
+        },
+        {
+          "kind": "move",
+          "uci": "f3g5"
+        },
+        {
+          "kind": "move",
+          "uci": "g8e8"
+        },
+        {
+          "kind": "move",
+          "uci": "f2f3"
+        },
+        {
+          "kind": "move",
+          "uci": "g7g8"
+        },
+        {
+          "kind": "move",
+          "uci": "f3f4"
+        },
+        {
+          "kind": "move",
+          "uci": "f6g5"
+        },
+        {
+          "kind": "move",
+          "uci": "h4g5"
+        }
+      ],
+      "incomplete_iteration_seconds": 2.101357042,
+      "incomplete_iteration_share": 0.4202494678476829,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-24h4",
+      "fresh": false,
+      "category": "positional",
+      "engine": "mshogi",
+      "seconds": 15,
+      "move": "h3h4",
+      "active_seconds": 15.000247292,
+      "evidence": "/private/tmp/msh155/cell-050-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 11,
+      "score": 77,
+      "nodes": 3115797,
+      "stats": {
+        "main_nodes": 669232,
+        "q_nodes": 2446565,
+        "q_check_nodes": 369025,
+        "q_horizon_nodes": 26,
+        "defence_reply_probes": 2683871,
+        "tt_hits": 19032,
+        "tt_probes": 607385,
+        "tt_position_hits": 63011,
+        "tt_context_hits": 33827,
+        "tt_stores": 573917,
+        "q_tt_probes": 706355,
+        "q_tt_hits": 3051,
+        "q_tt_cutoffs": 2683,
+        "q_tt_stores": 48645,
+        "tt_replacements": 605893,
+        "tt_store_refusals": 661220,
+        "prepared_moves": 3735060,
+        "prepared_pruned": 2431750,
+        "tt_cutoffs": 17942,
+        "aspiration_researches": 0,
+        "researches": 852,
+        "reduction_researches": 558,
+        "pv_researches": 294,
+        "main_beta_cutoffs": 487115,
+        "main_first_move_cutoffs": 462121,
+        "q_beta_cutoffs": 487072,
+        "q_first_move_cutoffs": 457399,
+        "q_see_pruned": 1237007,
+        "q_delta_pruned": 1137905,
+        "reductions": 180284,
+        "null_probes": 12137,
+        "null_verified": 9322,
+        "null_abandoned": 0,
+        "extensions": 29227,
+        "threat_extensions": 70,
+        "threat_protected_moves": 2689,
+        "queen_threat_nodes": 22280,
+        "queen_contact_mates": 157404,
+        "quiet_threat_moves": 6111,
+        "q_quiet_projections": 8842689,
+        "futility_pruned": 750507,
+        "late_move_pruned": 1883941,
+        "see_pruned": 1868414,
+        "see_probes": 5436499
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "h3h4"
+        },
+        {
+          "kind": "move",
+          "uci": "g6g5"
+        },
+        {
+          "kind": "move",
+          "uci": "h4g5"
+        },
+        {
+          "kind": "move",
+          "uci": "f6g5"
+        },
+        {
+          "kind": "move",
+          "uci": "f3g5"
+        },
+        {
+          "kind": "move",
+          "uci": "g8g5"
+        },
+        {
+          "kind": "move",
+          "uci": "f2f4"
+        },
+        {
+          "kind": "move",
+          "uci": "g5g4"
+        },
+        {
+          "kind": "move",
+          "uci": "f4e5"
+        },
+        {
+          "kind": "move",
+          "uci": "g4e4"
+        },
+        {
+          "kind": "move",
+          "uci": "e1e4"
+        },
+        {
+          "kind": "move",
+          "uci": "d6e5"
+        }
+      ],
+      "incomplete_iteration_seconds": 3.3614422919999996,
+      "incomplete_iteration_share": 0.2240924583818521,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-24h4",
+      "fresh": false,
+      "category": "positional",
+      "engine": "oxidation",
+      "seconds": 1,
+      "move": "h3h4",
+      "active_seconds": 1.001041917130351,
+      "evidence": "/private/tmp/msh155/cell-006-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 8,
+      "score": {
+        "cp": 55,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 944699,
+      "pv": [
+        "h3h4",
+        "f5d7",
+        "f3g5",
+        "h7h8",
+        "f2f4",
+        "g8f8",
+        "f4e5",
+        "f6e5",
+        "g1h1"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-24h4",
+      "fresh": false,
+      "category": "positional",
+      "engine": "oxidation",
+      "seconds": 5,
+      "move": "h3h4",
+      "active_seconds": 5.000748500227928,
+      "evidence": "/private/tmp/msh155/cell-029-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": 64,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 4908900,
+      "pv": [
+        "h3h4",
+        "h7g7",
+        "f3g5",
+        "g8f8",
+        "d2b4",
+        "f8d8",
+        "b4d2",
+        "g7g8",
+        "g1h1"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-24h4",
+      "fresh": false,
+      "category": "positional",
+      "engine": "oxidation",
+      "seconds": 15,
+      "move": "h3h4",
+      "active_seconds": 15.000846792012453,
+      "evidence": "/private/tmp/msh155/cell-049-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 10,
+      "score": {
+        "cp": 68,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 15121854,
+      "pv": [
+        "h3h4",
+        "f6g7",
+        "f3g5",
+        "h7h8",
+        "f2f4",
+        "g8f8",
+        "f4e5",
+        "d6e5",
+        "e1f1",
+        "f5d7",
+        "f1f3"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-34Rc5",
+      "fresh": false,
+      "category": "endgame",
+      "engine": "goldfish",
+      "seconds": 1,
+      "move": "b4b5",
+      "active_seconds": 1.004843832924962,
+      "evidence": "/private/tmp/msh155/cell-019-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 8,
+      "score": {
+        "cp": 198,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 2071140,
+      "pv": [
+        "b4b5",
+        "a1g1"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-34Rc5",
+      "fresh": false,
+      "category": "endgame",
+      "engine": "goldfish",
+      "seconds": 5,
+      "move": "g2g4",
+      "active_seconds": 5.005579708144069,
+      "evidence": "/private/tmp/msh155/cell-039-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 10,
+      "score": {
+        "cp": 198,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 11917759,
+      "pv": [
+        "g2g4",
+        "f6f7"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-34Rc5",
+      "fresh": false,
+      "category": "endgame",
+      "engine": "goldfish",
+      "seconds": 15,
+      "move": "a5a6",
+      "active_seconds": 15.003492542076856,
+      "evidence": "/private/tmp/msh155/cell-062-goldfish.result.json",
+      "run_scope": "msh155",
+      "depth": 12,
+      "score": {
+        "cp": 199,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 19083169,
+      "pv": [
+        "a5a6"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-34Rc5",
+      "fresh": false,
+      "category": "endgame",
+      "engine": "mshogi",
+      "seconds": 1,
+      "move": "e4f4",
+      "active_seconds": 1.000233041,
+      "evidence": "/private/tmp/msh155/cell-018-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 6,
+      "score": 303,
+      "nodes": 239219,
+      "stats": {
+        "main_nodes": 32059,
+        "q_nodes": 207160,
+        "q_check_nodes": 54993,
+        "q_horizon_nodes": 0,
+        "defence_reply_probes": 0,
+        "tt_hits": 1972,
+        "tt_probes": 31953,
+        "tt_position_hits": 5984,
+        "tt_context_hits": 3836,
+        "tt_stores": 30277,
+        "q_tt_probes": 76647,
+        "q_tt_hits": 1267,
+        "q_tt_cutoffs": 1153,
+        "q_tt_stores": 31586,
+        "tt_replacements": 56609,
+        "tt_store_refusals": 43907,
+        "prepared_moves": 108708,
+        "prepared_pruned": 18118,
+        "tt_cutoffs": 1630,
+        "aspiration_researches": 0,
+        "researches": 62,
+        "reduction_researches": 11,
+        "pv_researches": 51,
+        "main_beta_cutoffs": 24091,
+        "main_first_move_cutoffs": 22436,
+        "q_beta_cutoffs": 55624,
+        "q_first_move_cutoffs": 53956,
+        "q_see_pruned": 22169,
+        "q_delta_pruned": 18744,
+        "reductions": 2762,
+        "null_probes": 97,
+        "null_verified": 36,
+        "null_abandoned": 0,
+        "extensions": 3370,
+        "threat_extensions": 1,
+        "threat_protected_moves": 0,
+        "queen_threat_nodes": 0,
+        "queen_contact_mates": 0,
+        "quiet_threat_moves": 0,
+        "q_quiet_projections": 404767,
+        "futility_pruned": 1469,
+        "late_move_pruned": 20460,
+        "see_pruned": 32090,
+        "see_probes": 136836
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "e4f4"
+        },
+        {
+          "kind": "move",
+          "uci": "f6e6"
+        },
+        {
+          "kind": "move",
+          "uci": "f4e4"
+        },
+        {
+          "kind": "move",
+          "uci": "e6f7"
+        },
+        {
+          "kind": "move",
+          "uci": "a5c5"
+        },
+        {
+          "kind": "move",
+          "uci": "c7d7"
+        },
+        {
+          "kind": "move",
+          "uci": "e4f4"
+        },
+        {
+          "kind": "move",
+          "uci": "f7e7"
+        },
+        {
+          "kind": "move",
+          "uci": "f4e4"
+        },
+        {
+          "kind": "move",
+          "uci": "e7f7"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.36400104099999997,
+      "incomplete_iteration_share": 0.3639162335970063,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-34Rc5",
+      "fresh": false,
+      "category": "endgame",
+      "engine": "mshogi",
+      "seconds": 5,
+      "move": "g2g4",
+      "active_seconds": 5.000245417,
+      "evidence": "/private/tmp/msh155/cell-041-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 7,
+      "score": 309,
+      "nodes": 1641973,
+      "stats": {
+        "main_nodes": 257701,
+        "q_nodes": 1384272,
+        "q_check_nodes": 331041,
+        "q_horizon_nodes": 10,
+        "defence_reply_probes": 0,
+        "tt_hits": 12421,
+        "tt_probes": 256926,
+        "tt_position_hits": 36178,
+        "tt_context_hits": 17559,
+        "tt_stores": 243689,
+        "q_tt_probes": 597761,
+        "q_tt_hits": 1668,
+        "q_tt_cutoffs": 1537,
+        "q_tt_stores": 42339,
+        "tt_replacements": 278180,
+        "tt_store_refusals": 555414,
+        "prepared_moves": 928890,
+        "prepared_pruned": 106654,
+        "tt_cutoffs": 11473,
+        "aspiration_researches": 0,
+        "researches": 209,
+        "reduction_researches": 64,
+        "pv_researches": 145,
+        "main_beta_cutoffs": 194496,
+        "main_first_move_cutoffs": 186282,
+        "q_beta_cutoffs": 336430,
+        "q_first_move_cutoffs": 327757,
+        "q_see_pruned": 124865,
+        "q_delta_pruned": 162320,
+        "reductions": 14433,
+        "null_probes": 517,
+        "null_verified": 226,
+        "null_abandoned": 0,
+        "extensions": 23312,
+        "threat_extensions": 9,
+        "threat_protected_moves": 0,
+        "queen_threat_nodes": 0,
+        "queen_contact_mates": 0,
+        "quiet_threat_moves": 0,
+        "q_quiet_projections": 2665633,
+        "futility_pruned": 12171,
+        "late_move_pruned": 97951,
+        "see_pruned": 229711,
+        "see_probes": 968174
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "g2g4"
+        },
+        {
+          "kind": "move",
+          "uci": "c7d7"
+        },
+        {
+          "kind": "move",
+          "uci": "e2e3"
+        },
+        {
+          "kind": "move",
+          "uci": "a1a2"
+        },
+        {
+          "kind": "move",
+          "uci": "e4f4"
+        },
+        {
+          "kind": "move",
+          "uci": "f6e7"
+        },
+        {
+          "kind": "move",
+          "uci": "f4d4"
+        },
+        {
+          "kind": "move",
+          "uci": "d7d4"
+        },
+        {
+          "kind": "move",
+          "uci": "e3d4"
+        },
+        {
+          "kind": "move",
+          "uci": "a2d2"
+        },
+        {
+          "kind": "move",
+          "uci": "d4e3"
+        }
+      ],
+      "incomplete_iteration_seconds": 3.0250114170000004,
+      "incomplete_iteration_share": 0.604972589288411,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-34Rc5",
+      "fresh": false,
+      "category": "endgame",
+      "engine": "mshogi",
+      "seconds": 15,
+      "move": "g2g4",
+      "active_seconds": 15.000273792,
+      "evidence": "/private/tmp/msh155/cell-061-mshogi.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": 308,
+      "nodes": 5138423,
+      "stats": {
+        "main_nodes": 911489,
+        "q_nodes": 4226934,
+        "q_check_nodes": 911586,
+        "q_horizon_nodes": 10,
+        "defence_reply_probes": 167,
+        "tt_hits": 43201,
+        "tt_probes": 908727,
+        "tt_position_hits": 134010,
+        "tt_context_hits": 52606,
+        "tt_stores": 838719,
+        "q_tt_probes": 2113510,
+        "q_tt_hits": 2388,
+        "q_tt_cutoffs": 2192,
+        "q_tt_stores": 61597,
+        "tt_replacements": 891214,
+        "tt_store_refusals": 2076965,
+        "prepared_moves": 3144499,
+        "prepared_pruned": 216381,
+        "tt_cutoffs": 42150,
+        "aspiration_researches": 0,
+        "researches": 305,
+        "reduction_researches": 136,
+        "pv_researches": 169,
+        "main_beta_cutoffs": 685023,
+        "main_first_move_cutoffs": 668172,
+        "q_beta_cutoffs": 891805,
+        "q_first_move_cutoffs": 873301,
+        "q_see_pruned": 281816,
+        "q_delta_pruned": 465031,
+        "reductions": 30289,
+        "null_probes": 1326,
+        "null_verified": 601,
+        "null_abandoned": 0,
+        "extensions": 69822,
+        "threat_extensions": 38,
+        "threat_protected_moves": 0,
+        "queen_threat_nodes": 1,
+        "queen_contact_mates": 2,
+        "quiet_threat_moves": 0,
+        "q_quiet_projections": 8160038,
+        "futility_pruned": 30029,
+        "late_move_pruned": 194542,
+        "see_pruned": 595593,
+        "see_probes": 2717645
+      },
+      "pv": [
+        {
+          "kind": "move",
+          "uci": "g2g4"
+        },
+        {
+          "kind": "move",
+          "uci": "c7d7"
+        },
+        {
+          "kind": "move",
+          "uci": "a5e5"
+        },
+        {
+          "kind": "move",
+          "uci": "h7h6"
+        },
+        {
+          "kind": "move",
+          "uci": "a4a5"
+        },
+        {
+          "kind": "move",
+          "uci": "f6f7"
+        },
+        {
+          "kind": "move",
+          "uci": "e4f4"
+        },
+        {
+          "kind": "move",
+          "uci": "f7g8"
+        },
+        {
+          "kind": "move",
+          "uci": "e5e8"
+        },
+        {
+          "kind": "move",
+          "uci": "g8h7"
+        },
+        {
+          "kind": "move",
+          "uci": "f4c4"
+        },
+        {
+          "kind": "move",
+          "uci": "a1a2"
+        },
+        {
+          "kind": "move",
+          "uci": "e2f1"
+        }
+      ],
+      "incomplete_iteration_seconds": 0.8691527919999995,
+      "incomplete_iteration_share": 0.05794246185449892,
+      "root_restored": true,
+      "pv_native_admitted": true,
+      "legal_map_verified": null
+    },
+    {
+      "root": "historical-34Rc5",
+      "fresh": false,
+      "category": "endgame",
+      "engine": "oxidation",
+      "seconds": 1,
+      "move": "a5a6",
+      "active_seconds": 1.0008917907252908,
+      "evidence": "/private/tmp/msh155/cell-020-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 8,
+      "score": {
+        "cp": 406,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 964472,
+      "pv": [
+        "a5a6",
+        "f6f7",
+        "b4b5",
+        "a1a2",
+        "e2f1",
+        "a2b2",
+        "g2g4",
+        "b2b3",
+        "f3f4",
+        "b3f3"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-34Rc5",
+      "fresh": false,
+      "category": "endgame",
+      "engine": "oxidation",
+      "seconds": 5,
+      "move": "f3f4",
+      "active_seconds": 5.001270042266697,
+      "evidence": "/private/tmp/msh155/cell-040-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 9,
+      "score": {
+        "cp": 401,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 4656048,
+      "pv": [
+        "f3f4",
+        "h7h5",
+        "a5a6",
+        "f6f5",
+        "e2f3",
+        "c7c3",
+        "e4e3",
+        "c3e3",
+        "f2e3",
+        "a1f1",
+        "f3e2",
+        "f1g1",
+        "e2f3"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    },
+    {
+      "root": "historical-34Rc5",
+      "fresh": false,
+      "category": "endgame",
+      "engine": "oxidation",
+      "seconds": 15,
+      "move": "f3f4",
+      "active_seconds": 15.000953208189458,
+      "evidence": "/private/tmp/msh155/cell-060-oxidation.result.json",
+      "run_scope": "msh155",
+      "depth": 10,
+      "score": {
+        "cp": 402,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "nodes": 14443993,
+      "pv": [
+        "f3f4",
+        "h7h5",
+        "a5a6",
+        "f6f5",
+        "e2f3",
+        "a1a3",
+        "e4e3",
+        "a3c3",
+        "a6a5",
+        "f5f6",
+        "b4b5",
+        "c3c5",
+        "a5a6",
+        "f6f5",
+        "e3e5"
+      ],
+      "depth_semantics": "last bestmove-aligned nonbound info, not proof of complete iteration"
+    }
+  ],
+  "resources": {
+    "msh155": {
+      "attempts": 72,
+      "active": 463.56050916229964,
+      "cpu": 468.21761700000013,
+      "wall": 473.99751429166645
+    },
+    "intermediate": {
+      "attempts": 4,
+      "active": 10.000898292,
+      "cpu": 10.339728999999998,
+      "wall": 10.552048790734261
+    },
+    "followup30": {
+      "attempts": 6,
+      "active": 180.01321699973673,
+      "cpu": 179.227975,
+      "wall": 180.8577114176005
+    }
+  }
+}

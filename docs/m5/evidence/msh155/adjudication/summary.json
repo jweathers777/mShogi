@@ -1,0 +1,6376 @@
+{
+  "rows": [
+    {
+      "query_index": 1,
+      "root_id": "historical-22Nf5",
+      "root_move": "d3f5",
+      "bestmove": "d3f5",
+      "finite_score_cp": 13,
+      "finite_mate": null,
+      "depth": 24,
+      "last_two_cp": [
+        14,
+        13
+      ],
+      "last_two_cp_change": 1,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "d3f5",
+        "e6d6",
+        "e1e2",
+        "a4b2",
+        "a1e1",
+        "h6h5",
+        "c3c4",
+        "d6h6",
+        "h7h6",
+        "g7h6",
+        "d2b4",
+        "b2d3",
+        "f5d3",
+        "a7a5",
+        "b4c5",
+        "b7b6",
+        "c5b6",
+        "d8d3",
+        "e3f5",
+        "h6g7",
+        "b6a5",
+        "c6d7",
+        "f5e7",
+        "g7c3",
+        "a5c3",
+        "d3c3",
+        "e2e4",
+        "c3a3",
+        "h2h4"
+      ],
+      "pv_san": [
+        "Bf5",
+        "Qd6",
+        "Re2",
+        "Nxb2",
+        "Rae1",
+        "h5",
+        "c4",
+        "Qh6",
+        "Qxh6",
+        "Bxh6",
+        "Bb4",
+        "Nd3",
+        "Bxd3",
+        "a5",
+        "Bc5",
+        "b6",
+        "Bxb6",
+        "Rxd3",
+        "Nf5",
+        "Bg7",
+        "Bxa5",
+        "Bd7",
+        "Nxe7",
+        "Bc3",
+        "Bxc3",
+        "Rxc3",
+        "Re4",
+        "Rxa3",
+        "h4"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-001.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "d3f5",
+          "san": "Bf5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "e6d6",
+          "san": "Qd6",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "e1e2",
+          "san": "Re2",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "a4b2",
+          "san": "Nxb2",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "a1e1",
+          "san": "Rae1",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "h6h5",
+          "san": "h5",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "c3c4",
+          "san": "c4",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "d6h6",
+          "san": "Qh6",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "h7h6",
+          "san": "Qxh6",
+          "root_side_static_material_balance_cp_conventional_only": 800,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "g7h6",
+          "san": "Bxh6",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "d2b4",
+          "san": "Bb4",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "b2d3",
+          "san": "Nd3",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "f5d3",
+          "san": "Bxd3",
+          "root_side_static_material_balance_cp_conventional_only": 220,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "a7a5",
+          "san": "a5",
+          "root_side_static_material_balance_cp_conventional_only": 220,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "b4c5",
+          "san": "Bc5",
+          "root_side_static_material_balance_cp_conventional_only": 220,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "b7b6",
+          "san": "b6",
+          "root_side_static_material_balance_cp_conventional_only": 220,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "c5b6",
+          "san": "Bxb6",
+          "root_side_static_material_balance_cp_conventional_only": 320,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "d8d3",
+          "san": "Rxd3",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "e3f5",
+          "san": "Nf5",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "h6g7",
+          "san": "Bg7",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "b6a5",
+          "san": "Bxa5",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "c6d7",
+          "san": "Bd7",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "f5e7",
+          "san": "Nxe7",
+          "root_side_static_material_balance_cp_conventional_only": 190,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "g7c3",
+          "san": "Bc3",
+          "root_side_static_material_balance_cp_conventional_only": 190,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "a5c3",
+          "san": "Bxc3",
+          "root_side_static_material_balance_cp_conventional_only": 520,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "d3c3",
+          "san": "Rxc3",
+          "root_side_static_material_balance_cp_conventional_only": 190,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "e2e4",
+          "san": "Re4",
+          "root_side_static_material_balance_cp_conventional_only": 190,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 28,
+          "uci": "c3a3",
+          "san": "Rxa3",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 29,
+          "uci": "h2h4",
+          "san": "h4",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 2,
+      "root_id": "historical-22Nf5",
+      "root_move": null,
+      "bestmove": "d3f5",
+      "finite_score_cp": 23,
+      "finite_mate": null,
+      "depth": 21,
+      "last_two_cp": [
+        24,
+        23
+      ],
+      "last_two_cp_change": 1,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "d3f5",
+        "e6e5",
+        "e3f1",
+        "e5d5",
+        "f5e4",
+        "d5d6",
+        "h2h4",
+        "a4b2",
+        "h4g5",
+        "h6g5",
+        "d2g5",
+        "b2d3",
+        "e4c6",
+        "b7c6",
+        "e1e3",
+        "d6g6",
+        "h7g6",
+        "f7g6",
+        "a1d1",
+        "d3e5",
+        "d1e1"
+      ],
+      "pv_san": [
+        "Bf5",
+        "Qe5",
+        "Nf1",
+        "Qd5",
+        "Be4",
+        "Qd6",
+        "h4",
+        "Nxb2",
+        "hxg5",
+        "hxg5",
+        "Bxg5",
+        "Nd3",
+        "Bxc6",
+        "bxc6",
+        "Re3",
+        "Qg6",
+        "Qxg6",
+        "fxg6",
+        "Rd1",
+        "Ne5",
+        "Rde1"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-002.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "d3f5",
+          "san": "Bf5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "e6e5",
+          "san": "Qe5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "e3f1",
+          "san": "Nf1",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "e5d5",
+          "san": "Qd5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "f5e4",
+          "san": "Be4",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "d5d6",
+          "san": "Qd6",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "h2h4",
+          "san": "h4",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "a4b2",
+          "san": "Nxb2",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "h4g5",
+          "san": "hxg5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "h6g5",
+          "san": "hxg5",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "d2g5",
+          "san": "Bxg5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "b2d3",
+          "san": "Nd3",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "e4c6",
+          "san": "Bxc6",
+          "root_side_static_material_balance_cp_conventional_only": 330,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "b7c6",
+          "san": "bxc6",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "e1e3",
+          "san": "Re3",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "d6g6",
+          "san": "Qg6",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "h7g6",
+          "san": "Qxg6",
+          "root_side_static_material_balance_cp_conventional_only": 900,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "f7g6",
+          "san": "fxg6",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "a1d1",
+          "san": "Rd1",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "d3e5",
+          "san": "Ne5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "d1e1",
+          "san": "Rde1",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 3,
+      "root_id": "historical-22Nf5",
+      "root_move": "a1b1",
+      "bestmove": "a1b1",
+      "finite_score_cp": 15,
+      "finite_mate": null,
+      "depth": 27,
+      "last_two_cp": [
+        17,
+        15
+      ],
+      "last_two_cp_change": 2,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "a1b1",
+        "d8d3",
+        "h7d3",
+        "c6e4",
+        "d3b5",
+        "e4b1",
+        "b5a4",
+        "b1e4",
+        "a4a7",
+        "e8d8",
+        "a7a5",
+        "e6d7",
+        "d2c1",
+        "f7f5",
+        "h2h3",
+        "b7b5",
+        "c3c4",
+        "b5c4",
+        "e3c4",
+        "d7d5",
+        "a5b4",
+        "d5b7",
+        "b4b7",
+        "e4b7",
+        "c1e3"
+      ],
+      "pv_san": [
+        "Rab1",
+        "Rxd3",
+        "Qxd3",
+        "Be4",
+        "Qb5",
+        "Bxb1",
+        "Qxa4",
+        "Be4",
+        "Qxa7",
+        "Rd8",
+        "Qa5",
+        "Qd7",
+        "Bc1",
+        "f5",
+        "h3",
+        "b5",
+        "c4",
+        "bxc4",
+        "Nxc4",
+        "Qd5",
+        "Qb4",
+        "Qb7",
+        "Qxb7",
+        "Bxb7",
+        "Be3"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-003.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "a1b1",
+          "san": "Rab1",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "d8d3",
+          "san": "Rxd3",
+          "root_side_static_material_balance_cp_conventional_only": -330,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "h7d3",
+          "san": "Qxd3",
+          "root_side_static_material_balance_cp_conventional_only": 170,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "c6e4",
+          "san": "Be4",
+          "root_side_static_material_balance_cp_conventional_only": 170,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "d3b5",
+          "san": "Qb5",
+          "root_side_static_material_balance_cp_conventional_only": 170,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "e4b1",
+          "san": "Bxb1",
+          "root_side_static_material_balance_cp_conventional_only": -330,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "b5a4",
+          "san": "Qxa4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "b1e4",
+          "san": "Be4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "a4a7",
+          "san": "Qxa7",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "e8d8",
+          "san": "Rd8",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "a7a5",
+          "san": "Qa5",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "e6d7",
+          "san": "Qd7",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "d2c1",
+          "san": "Bc1",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "f7f5",
+          "san": "f5",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "h2h3",
+          "san": "h3",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "b7b5",
+          "san": "b5",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "c3c4",
+          "san": "c4",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "b5c4",
+          "san": "bxc4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "e3c4",
+          "san": "Nxc4",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "d7d5",
+          "san": "Qd5",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "a5b4",
+          "san": "Qb4",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "d5b7",
+          "san": "Qb7",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "b4b7",
+          "san": "Qxb7",
+          "root_side_static_material_balance_cp_conventional_only": 990,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "e4b7",
+          "san": "Bxb7",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "c1e3",
+          "san": "Be3",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 4,
+      "root_id": "historical-22Nf5",
+      "root_move": "b2b3",
+      "bestmove": "b2b3",
+      "finite_score_cp": -216,
+      "finite_mate": null,
+      "depth": 23,
+      "last_two_cp": [
+        -216,
+        -216
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "b2b3",
+        "a4c5",
+        "d3f5",
+        "e6d6",
+        "a1d1",
+        "c5b3",
+        "d2c1",
+        "d6e5",
+        "f5d3",
+        "b3c5",
+        "d3c2",
+        "d8d1",
+        "e1d1",
+        "e7e6",
+        "e3g4",
+        "c6e4",
+        "g4e5",
+        "e4h7",
+        "e5d7",
+        "c5d7",
+        "c2h7",
+        "d7f6",
+        "h7d3",
+        "f6d5",
+        "c3c4",
+        "d5c3",
+        "d1d2",
+        "a7a6"
+      ],
+      "pv_san": [
+        "b3",
+        "Nc5",
+        "Bf5",
+        "Qd6",
+        "Rad1",
+        "Nxb3",
+        "Bc1",
+        "Qe5",
+        "Bd3",
+        "Nc5",
+        "Bc2",
+        "Rxd1",
+        "Rxd1",
+        "e6",
+        "Ng4",
+        "Be4",
+        "Nxe5",
+        "Bxh7",
+        "Nd7+",
+        "Nxd7",
+        "Bxh7",
+        "Nf6",
+        "Bd3",
+        "Nd5",
+        "c4",
+        "Nc3",
+        "Rd2",
+        "a6"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-004.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "b2b3",
+          "san": "b3",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "a4c5",
+          "san": "Nc5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "d3f5",
+          "san": "Bf5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "e6d6",
+          "san": "Qd6",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "a1d1",
+          "san": "Rad1",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "c5b3",
+          "san": "Nxb3",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "d2c1",
+          "san": "Bc1",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "d6e5",
+          "san": "Qe5",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "f5d3",
+          "san": "Bd3",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "b3c5",
+          "san": "Nc5",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "d3c2",
+          "san": "Bc2",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "d8d1",
+          "san": "Rxd1",
+          "root_side_static_material_balance_cp_conventional_only": -600,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "e1d1",
+          "san": "Rxd1",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "e7e6",
+          "san": "e6",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "e3g4",
+          "san": "Ng4",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "c6e4",
+          "san": "Be4",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "g4e5",
+          "san": "Nxe5",
+          "root_side_static_material_balance_cp_conventional_only": 800,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "e4h7",
+          "san": "Bxh7",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "e5d7",
+          "san": "Nd7+",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "c5d7",
+          "san": "Nxd7",
+          "root_side_static_material_balance_cp_conventional_only": -420,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "c2h7",
+          "san": "Bxh7",
+          "root_side_static_material_balance_cp_conventional_only": -90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "d7f6",
+          "san": "Nf6",
+          "root_side_static_material_balance_cp_conventional_only": -90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "h7d3",
+          "san": "Bd3",
+          "root_side_static_material_balance_cp_conventional_only": -90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "f6d5",
+          "san": "Nd5",
+          "root_side_static_material_balance_cp_conventional_only": -90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "c3c4",
+          "san": "c4",
+          "root_side_static_material_balance_cp_conventional_only": -90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "d5c3",
+          "san": "Nc3",
+          "root_side_static_material_balance_cp_conventional_only": -90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "d1d2",
+          "san": "Rd2",
+          "root_side_static_material_balance_cp_conventional_only": -90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 28,
+          "uci": "a7a6",
+          "san": "a6",
+          "root_side_static_material_balance_cp_conventional_only": -90,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 5,
+      "root_id": "historical-22Nf5",
+      "root_move": "e3f5",
+      "bestmove": "e3f5",
+      "finite_score_cp": -303,
+      "finite_mate": null,
+      "depth": 26,
+      "last_two_cp": [
+        -303,
+        -303
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "e3f5",
+        "e6g6",
+        "f5d4",
+        "g6h7",
+        "d3h7",
+        "a4b2",
+        "d2e3",
+        "b2c4",
+        "d4c6",
+        "b7c6",
+        "a1b1",
+        "g7c3",
+        "e1c1",
+        "c4a3",
+        "b1b3",
+        "a3b5",
+        "g2g3",
+        "c3f6",
+        "g1g2",
+        "d8c8",
+        "h2h4",
+        "e8d8",
+        "h7f5",
+        "e7e6",
+        "f5d3",
+        "a7a5",
+        "c1c4",
+        "b5d6",
+        "c4c2",
+        "a5a4",
+        "b3b6",
+        "a4a3",
+        "h4g5",
+        "h6g5"
+      ],
+      "pv_san": [
+        "Nf5",
+        "Qg6",
+        "Nd4",
+        "Qxh7",
+        "Bxh7",
+        "Nxb2",
+        "Be3",
+        "Nc4",
+        "Nxc6",
+        "bxc6",
+        "Rab1",
+        "Bxc3",
+        "Rec1",
+        "Nxa3",
+        "Rb3",
+        "Nb5",
+        "g3",
+        "Bf6",
+        "Kg2",
+        "Rc8",
+        "h4",
+        "Red8",
+        "Bf5",
+        "e6",
+        "Bd3",
+        "a5",
+        "Rc4",
+        "Nd6",
+        "Rc2",
+        "a4",
+        "Rb6",
+        "a3",
+        "hxg5",
+        "hxg5"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-005.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "e3f5",
+          "san": "Nf5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "e6g6",
+          "san": "Qg6",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "f5d4",
+          "san": "Nd4",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "g6h7",
+          "san": "Qxh7",
+          "root_side_static_material_balance_cp_conventional_only": -900,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "d3h7",
+          "san": "Bxh7",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "a4b2",
+          "san": "Nxb2",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "d2e3",
+          "san": "Be3",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "b2c4",
+          "san": "Nc4",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "d4c6",
+          "san": "Nxc6",
+          "root_side_static_material_balance_cp_conventional_only": 230,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "b7c6",
+          "san": "bxc6",
+          "root_side_static_material_balance_cp_conventional_only": -90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "a1b1",
+          "san": "Rab1",
+          "root_side_static_material_balance_cp_conventional_only": -90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "g7c3",
+          "san": "Bxc3",
+          "root_side_static_material_balance_cp_conventional_only": -190,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "e1c1",
+          "san": "Rec1",
+          "root_side_static_material_balance_cp_conventional_only": -190,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "c4a3",
+          "san": "Nxa3",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "b1b3",
+          "san": "Rb3",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "a3b5",
+          "san": "Nb5",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "g2g3",
+          "san": "g3",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "c3f6",
+          "san": "Bf6",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "g1g2",
+          "san": "Kg2",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "d8c8",
+          "san": "Rc8",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "h2h4",
+          "san": "h4",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "e8d8",
+          "san": "Red8",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "h7f5",
+          "san": "Bf5",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "e7e6",
+          "san": "e6",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "f5d3",
+          "san": "Bd3",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "a7a5",
+          "san": "a5",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "c1c4",
+          "san": "Rc4",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 28,
+          "uci": "b5d6",
+          "san": "Nd6",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 29,
+          "uci": "c4c2",
+          "san": "Rc2",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 30,
+          "uci": "a5a4",
+          "san": "a4",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 31,
+          "uci": "b3b6",
+          "san": "Rb6",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 32,
+          "uci": "a4a3",
+          "san": "a3",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 33,
+          "uci": "h4g5",
+          "san": "hxg5",
+          "root_side_static_material_balance_cp_conventional_only": -190,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 34,
+          "uci": "h6g5",
+          "san": "hxg5",
+          "root_side_static_material_balance_cp_conventional_only": -290,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 6,
+      "root_id": "historical-23Rf6",
+      "root_move": null,
+      "bestmove": "d6e4",
+      "finite_score_cp": 0,
+      "finite_mate": null,
+      "depth": 34,
+      "last_two_cp": [
+        0,
+        0
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "d6e4",
+        "h6f5",
+        "e4f2",
+        "e3f2",
+        "e6f5",
+        "d3f5",
+        "f8f5",
+        "f2d4",
+        "a8g8",
+        "a1e1",
+        "h5g3",
+        "h1g2",
+        "g3e2",
+        "g2h2",
+        "e2d4",
+        "e1e7",
+        "h7h6",
+        "c3d4",
+        "f5f2",
+        "h2h1",
+        "f2a2",
+        "e7e6",
+        "h6g5",
+        "b4b1",
+        "a2a5",
+        "e6e7",
+        "a5a3",
+        "b1b7",
+        "g5f4",
+        "e7f7",
+        "f4e4",
+        "b7e7",
+        "e4d5",
+        "e7d7",
+        "d5c4",
+        "d7c7",
+        "c4d5",
+        "c7d7"
+      ],
+      "pv_san": [
+        "Ne4",
+        "Nxf5",
+        "Nxf2+",
+        "Bxf2",
+        "Qxf5",
+        "Qxf5+",
+        "Rxf5",
+        "Bd4",
+        "Rg8",
+        "Re1",
+        "Ng3+",
+        "Kg2",
+        "Ne2+",
+        "Kh2",
+        "Nxd4",
+        "Rxe7+",
+        "Kh6",
+        "cxd4",
+        "Rf2+",
+        "Kh1",
+        "Rxa2",
+        "Re6+",
+        "Kg5",
+        "Rb1",
+        "Ra5",
+        "Re7",
+        "Ra3",
+        "Rbxb7",
+        "Kf4",
+        "Rf7+",
+        "Ke4",
+        "Rbe7+",
+        "Kd5",
+        "Rd7+",
+        "Kc4",
+        "Rc7+",
+        "Kd5",
+        "Rcd7+"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-006.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "d6e4",
+          "san": "Ne4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "h6f5",
+          "san": "Nxf5",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "e4f2",
+          "san": "Nxf2+",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "e3f2",
+          "san": "Bxf2",
+          "root_side_static_material_balance_cp_conventional_only": -330,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "e6f5",
+          "san": "Qxf5",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "d3f5",
+          "san": "Qxf5+",
+          "root_side_static_material_balance_cp_conventional_only": -910,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "f8f5",
+          "san": "Rxf5",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "f2d4",
+          "san": "Bd4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "a8g8",
+          "san": "Rg8",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "a1e1",
+          "san": "Re1",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "h5g3",
+          "san": "Ng3+",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "h1g2",
+          "san": "Kg2",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "g3e2",
+          "san": "Ne2+",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "g2h2",
+          "san": "Kh2",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "e2d4",
+          "san": "Nxd4",
+          "root_side_static_material_balance_cp_conventional_only": 320,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "e1e7",
+          "san": "Rxe7+",
+          "root_side_static_material_balance_cp_conventional_only": 220,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "h7h6",
+          "san": "Kh6",
+          "root_side_static_material_balance_cp_conventional_only": 220,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "c3d4",
+          "san": "cxd4",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "f5f2",
+          "san": "Rf2+",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "h2h1",
+          "san": "Kh1",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "f2a2",
+          "san": "Rxa2",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "e7e6",
+          "san": "Re6+",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "h6g5",
+          "san": "Kg5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "b4b1",
+          "san": "Rb1",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "a2a5",
+          "san": "Ra5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "e6e7",
+          "san": "Re7",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "a5a3",
+          "san": "Ra3",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 28,
+          "uci": "b1b7",
+          "san": "Rbxb7",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 29,
+          "uci": "g5f4",
+          "san": "Kf4",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 30,
+          "uci": "e7f7",
+          "san": "Rf7+",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 31,
+          "uci": "f4e4",
+          "san": "Ke4",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 32,
+          "uci": "b7e7",
+          "san": "Rbe7+",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 33,
+          "uci": "e4d5",
+          "san": "Kd5",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 34,
+          "uci": "e7d7",
+          "san": "Rd7+",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 35,
+          "uci": "d5c4",
+          "san": "Kc4",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 36,
+          "uci": "d7c7",
+          "san": "Rc7+",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 37,
+          "uci": "c4d5",
+          "san": "Kd5",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 38,
+          "uci": "c7d7",
+          "san": "Rcd7+",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": true,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 7,
+      "root_id": "historical-23Rf6",
+      "root_move": "a8d8",
+      "bestmove": "a8d8",
+      "finite_score_cp": -33,
+      "finite_mate": null,
+      "depth": 23,
+      "last_two_cp": [
+        -36,
+        -33
+      ],
+      "last_two_cp_change": 3,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "a8d8",
+        "b4d4",
+        "f8f6",
+        "d4h4",
+        "d6f7",
+        "h6f7",
+        "e6c6",
+        "d3e4",
+        "c6e4",
+        "h4e4",
+        "f6f7",
+        "e4h4",
+        "f5f4",
+        "a1g1",
+        "h7h6",
+        "e3a7",
+        "e7e5",
+        "a2a4",
+        "f7f5",
+        "a4a5",
+        "d8d3",
+        "h1h2",
+        "e5e4",
+        "a7d4",
+        "d3d2",
+        "g1g8",
+        "e4e3",
+        "h4g4",
+        "d2f2",
+        "h2g1",
+        "f5a5"
+      ],
+      "pv_san": [
+        "Rad8",
+        "Rd4",
+        "Rf6",
+        "Rh4",
+        "Nf7",
+        "Nxf7",
+        "Qc6+",
+        "Qe4",
+        "Qxe4+",
+        "Rxe4",
+        "Rxf7",
+        "Rh4",
+        "f4",
+        "Rg1",
+        "Kh6",
+        "Bxa7",
+        "e5",
+        "a4",
+        "Rf5",
+        "a5",
+        "Rd3",
+        "Kh2",
+        "e4",
+        "Bd4",
+        "Rd2",
+        "Rg8",
+        "e3",
+        "Rhg4",
+        "Rxf2+",
+        "Kg1",
+        "Rxa5"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-007.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "a8d8",
+          "san": "Rad8",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "b4d4",
+          "san": "Rd4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "f8f6",
+          "san": "Rf6",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "d4h4",
+          "san": "Rh4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "d6f7",
+          "san": "Nf7",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "h6f7",
+          "san": "Nxf7",
+          "root_side_static_material_balance_cp_conventional_only": -330,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "e6c6",
+          "san": "Qc6+",
+          "root_side_static_material_balance_cp_conventional_only": -330,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "d3e4",
+          "san": "Qe4",
+          "root_side_static_material_balance_cp_conventional_only": -330,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "c6e4",
+          "san": "Qxe4+",
+          "root_side_static_material_balance_cp_conventional_only": 570,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "h4e4",
+          "san": "Rxe4",
+          "root_side_static_material_balance_cp_conventional_only": -330,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "f6f7",
+          "san": "Rxf7",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "e4h4",
+          "san": "Rh4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "f5f4",
+          "san": "f4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "a1g1",
+          "san": "Rg1",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "h7h6",
+          "san": "Kh6",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "e3a7",
+          "san": "Bxa7",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "e7e5",
+          "san": "e5",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "a2a4",
+          "san": "a4",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "f7f5",
+          "san": "Rf5",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "a4a5",
+          "san": "a5",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "d8d3",
+          "san": "Rd3",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "h1h2",
+          "san": "Kh2",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "e5e4",
+          "san": "e4",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "a7d4",
+          "san": "Bd4",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "d3d2",
+          "san": "Rd2",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "g1g8",
+          "san": "Rg8",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "e4e3",
+          "san": "e3",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 28,
+          "uci": "h4g4",
+          "san": "Rhg4",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 29,
+          "uci": "d2f2",
+          "san": "Rxf2+",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 30,
+          "uci": "h2g1",
+          "san": "Kg1",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 31,
+          "uci": "f5a5",
+          "san": "Rxa5",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 8,
+      "root_id": "historical-23Rf6",
+      "root_move": "d6e4",
+      "bestmove": "d6e4",
+      "finite_score_cp": 0,
+      "finite_mate": null,
+      "depth": 34,
+      "last_two_cp": [
+        0,
+        0
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "d6e4",
+        "h6f5",
+        "e4f2",
+        "e3f2",
+        "e6f5",
+        "d3f5",
+        "f8f5",
+        "f2d4",
+        "a8g8",
+        "a1e1",
+        "h5g3",
+        "h1h2",
+        "g3f1",
+        "h2h1"
+      ],
+      "pv_san": [
+        "Ne4",
+        "Nxf5",
+        "Nxf2+",
+        "Bxf2",
+        "Qxf5",
+        "Qxf5+",
+        "Rxf5",
+        "Bd4",
+        "Rg8",
+        "Re1",
+        "Ng3+",
+        "Kh2",
+        "Nf1+",
+        "Kh1"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-008.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "d6e4",
+          "san": "Ne4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "h6f5",
+          "san": "Nxf5",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "e4f2",
+          "san": "Nxf2+",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "e3f2",
+          "san": "Bxf2",
+          "root_side_static_material_balance_cp_conventional_only": -330,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "e6f5",
+          "san": "Qxf5",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "d3f5",
+          "san": "Qxf5+",
+          "root_side_static_material_balance_cp_conventional_only": -910,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "f8f5",
+          "san": "Rxf5",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "f2d4",
+          "san": "Bd4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "a8g8",
+          "san": "Rg8",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "a1e1",
+          "san": "Re1",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "h5g3",
+          "san": "Ng3+",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "h1h2",
+          "san": "Kh2",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "g3f1",
+          "san": "Nf1+",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "h2h1",
+          "san": "Kh1",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 9,
+      "root_id": "historical-23Rf6",
+      "root_move": "f8f6",
+      "bestmove": "f8f6",
+      "finite_score_cp": -374,
+      "finite_mate": null,
+      "depth": 24,
+      "last_two_cp": [
+        -374,
+        -374
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "f8f6",
+        "b4h4",
+        "d6e4",
+        "h6f5",
+        "e6f5",
+        "d3e4",
+        "f5e4",
+        "h4e4",
+        "f6f7",
+        "a1g1",
+        "a8g8",
+        "e4e5",
+        "g8g1",
+        "h1g1",
+        "h5g7",
+        "e3a7",
+        "h7g6",
+        "a2a4",
+        "g7f5",
+        "a4a5",
+        "f7h7",
+        "e5e2"
+      ],
+      "pv_san": [
+        "Rf6",
+        "Rh4",
+        "Ne4",
+        "Nxf5",
+        "Qxf5",
+        "Qxe4",
+        "Qxe4+",
+        "Rxe4",
+        "Rf7",
+        "Rg1",
+        "Rg8",
+        "Re5",
+        "Rxg1+",
+        "Kxg1",
+        "Ng7",
+        "Bxa7",
+        "Kg6",
+        "a4",
+        "Nf5",
+        "a5",
+        "Rh7",
+        "Re2"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-009.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "f8f6",
+          "san": "Rf6",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "b4h4",
+          "san": "Rh4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "d6e4",
+          "san": "Ne4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "h6f5",
+          "san": "Nxf5",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "e6f5",
+          "san": "Qxf5",
+          "root_side_static_material_balance_cp_conventional_only": 210,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "d3e4",
+          "san": "Qxe4",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "f5e4",
+          "san": "Qxe4+",
+          "root_side_static_material_balance_cp_conventional_only": 790,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "h4e4",
+          "san": "Rxe4",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "f6f7",
+          "san": "Rf7",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "a1g1",
+          "san": "Rg1",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "a8g8",
+          "san": "Rg8",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "e4e5",
+          "san": "Re5",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "g8g1",
+          "san": "Rxg1+",
+          "root_side_static_material_balance_cp_conventional_only": 390,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "h1g1",
+          "san": "Kxg1",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "h5g7",
+          "san": "Ng7",
+          "root_side_static_material_balance_cp_conventional_only": -110,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "e3a7",
+          "san": "Bxa7",
+          "root_side_static_material_balance_cp_conventional_only": -210,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "h7g6",
+          "san": "Kg6",
+          "root_side_static_material_balance_cp_conventional_only": -210,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "a2a4",
+          "san": "a4",
+          "root_side_static_material_balance_cp_conventional_only": -210,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "g7f5",
+          "san": "Nf5",
+          "root_side_static_material_balance_cp_conventional_only": -210,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "a4a5",
+          "san": "a5",
+          "root_side_static_material_balance_cp_conventional_only": -210,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "f7h7",
+          "san": "Rh7",
+          "root_side_static_material_balance_cp_conventional_only": -210,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "e5e2",
+          "san": "Re2",
+          "root_side_static_material_balance_cp_conventional_only": -210,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 10,
+      "root_id": "historical-24h4",
+      "root_move": null,
+      "bestmove": "h3h4",
+      "finite_score_cp": 231,
+      "finite_mate": null,
+      "depth": 22,
+      "last_two_cp": [
+        224,
+        231
+      ],
+      "last_two_cp_change": 7,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "h3h4",
+        "h7g7",
+        "f3g5",
+        "f5d7",
+        "f2f4",
+        "c8e8",
+        "e1f1",
+        "g8f8",
+        "g5f3",
+        "d7a4",
+        "f4e5",
+        "f6e5",
+        "f3e5",
+        "e8e5",
+        "e4e5",
+        "d6e5",
+        "f1e1",
+        "f8e8",
+        "c4c5",
+        "a4b5",
+        "e1c1",
+        "f7f6"
+      ],
+      "pv_san": [
+        "h4",
+        "Kg7",
+        "Ng5",
+        "Qd7",
+        "f4",
+        "Rce8",
+        "Rf1",
+        "Rgf8",
+        "Nf3",
+        "Qa4",
+        "fxe5",
+        "Bxe5",
+        "Nxe5",
+        "Rxe5",
+        "Rxe5",
+        "dxe5",
+        "Re1",
+        "Re8",
+        "c5",
+        "Qb5",
+        "Rc1",
+        "f6"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-010.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "h3h4",
+          "san": "h4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "h7g7",
+          "san": "Kg7",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "f3g5",
+          "san": "Ng5",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "f5d7",
+          "san": "Qd7",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "f2f4",
+          "san": "f4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "c8e8",
+          "san": "Rce8",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "e1f1",
+          "san": "Rf1",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "g8f8",
+          "san": "Rgf8",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "g5f3",
+          "san": "Nf3",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "d7a4",
+          "san": "Qa4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "f4e5",
+          "san": "fxe5",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "f6e5",
+          "san": "Bxe5",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "f3e5",
+          "san": "Nxe5",
+          "root_side_static_material_balance_cp_conventional_only": 320,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "e8e5",
+          "san": "Rxe5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "e4e5",
+          "san": "Rxe5",
+          "root_side_static_material_balance_cp_conventional_only": 500,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "d6e5",
+          "san": "dxe5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "f1e1",
+          "san": "Re1",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "f8e8",
+          "san": "Re8",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "c4c5",
+          "san": "c5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "a4b5",
+          "san": "Qb5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "e1c1",
+          "san": "Rc1",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "f7f6",
+          "san": "f6",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 11,
+      "root_id": "historical-24h4",
+      "root_move": "d2b4",
+      "bestmove": "d2b4",
+      "finite_score_cp": 28,
+      "finite_mate": null,
+      "depth": 24,
+      "last_two_cp": [
+        25,
+        28
+      ],
+      "last_two_cp_change": 3,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "d2b4",
+        "f5d7",
+        "b4d2",
+        "f6d8",
+        "e4e2",
+        "d7f5",
+        "h3h4",
+        "g6g5",
+        "h4g5",
+        "d8g5",
+        "f3g5",
+        "g8g5",
+        "f2f4",
+        "e5f4",
+        "e1f1",
+        "f4f3",
+        "e2f2",
+        "f3g2",
+        "f2g2",
+        "g5g2",
+        "d2g2",
+        "f5g6",
+        "g1h1",
+        "g6g2",
+        "h1g2",
+        "h7g6",
+        "f1e1",
+        "g6f6",
+        "g2f3",
+        "c8g8"
+      ],
+      "pv_san": [
+        "Qb4",
+        "Qd7",
+        "Qd2",
+        "Bd8",
+        "R4e2",
+        "Qf5",
+        "h4",
+        "g5",
+        "hxg5",
+        "Bxg5",
+        "Nxg5+",
+        "Rxg5",
+        "f4",
+        "exf4",
+        "Rf1",
+        "f3",
+        "Ref2",
+        "fxg2",
+        "Rxg2",
+        "Rxg2+",
+        "Qxg2",
+        "Qg6",
+        "Kh1",
+        "Qxg2+",
+        "Kxg2",
+        "Kg6",
+        "Re1",
+        "Kf6",
+        "Kf3",
+        "Rg8"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-011.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "d2b4",
+          "san": "Qb4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "f5d7",
+          "san": "Qd7",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "b4d2",
+          "san": "Qd2",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "f6d8",
+          "san": "Bd8",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "e4e2",
+          "san": "R4e2",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "d7f5",
+          "san": "Qf5",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "h3h4",
+          "san": "h4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "g6g5",
+          "san": "g5",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "h4g5",
+          "san": "hxg5",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "d8g5",
+          "san": "Bxg5",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "f3g5",
+          "san": "Nxg5+",
+          "root_side_static_material_balance_cp_conventional_only": 320,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "g8g5",
+          "san": "Rxg5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "f2f4",
+          "san": "f4",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "e5f4",
+          "san": "exf4",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "e1f1",
+          "san": "Rf1",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "f4f3",
+          "san": "f3",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "e2f2",
+          "san": "Ref2",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "f3g2",
+          "san": "fxg2",
+          "root_side_static_material_balance_cp_conventional_only": -200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "f2g2",
+          "san": "Rxg2",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "g5g2",
+          "san": "Rxg2+",
+          "root_side_static_material_balance_cp_conventional_only": -600,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "d2g2",
+          "san": "Qxg2",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "f5g6",
+          "san": "Qg6",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "g1h1",
+          "san": "Kh1",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "g6g2",
+          "san": "Qxg2+",
+          "root_side_static_material_balance_cp_conventional_only": -1000,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "h1g2",
+          "san": "Kxg2",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "h7g6",
+          "san": "Kg6",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "f1e1",
+          "san": "Re1",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 28,
+          "uci": "g6f6",
+          "san": "Kf6",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 29,
+          "uci": "g2f3",
+          "san": "Kf3",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 30,
+          "uci": "c8g8",
+          "san": "Rg8",
+          "root_side_static_material_balance_cp_conventional_only": -100,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 12,
+      "root_id": "historical-24h4",
+      "root_move": "h3h4",
+      "bestmove": "h3h4",
+      "finite_score_cp": 236,
+      "finite_mate": null,
+      "depth": 22,
+      "last_two_cp": [
+        215,
+        236
+      ],
+      "last_two_cp_change": 21,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "h3h4",
+        "f5d7",
+        "f3g5",
+        "h7g7",
+        "f2f4",
+        "c8e8",
+        "e1f1",
+        "g8f8",
+        "g5f3",
+        "d7a4",
+        "g1h1",
+        "a4d7",
+        "d2f2",
+        "g7g8",
+        "f4e5",
+        "d6e5",
+        "f1e1",
+        "d7d6",
+        "f3d4",
+        "f6g7"
+      ],
+      "pv_san": [
+        "h4",
+        "Qd7",
+        "Ng5+",
+        "Kg7",
+        "f4",
+        "Rce8",
+        "Rf1",
+        "Rgf8",
+        "Nf3",
+        "Qa4",
+        "Kh1",
+        "Qd7",
+        "Qf2",
+        "Kg8",
+        "fxe5",
+        "dxe5",
+        "Rfe1",
+        "Qd6",
+        "Nxd4",
+        "Bg7"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-012.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "h3h4",
+          "san": "h4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "f5d7",
+          "san": "Qd7",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "f3g5",
+          "san": "Ng5+",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "h7g7",
+          "san": "Kg7",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "f2f4",
+          "san": "f4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "c8e8",
+          "san": "Rce8",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "e1f1",
+          "san": "Rf1",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "g8f8",
+          "san": "Rgf8",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "g5f3",
+          "san": "Nf3",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "d7a4",
+          "san": "Qa4",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "g1h1",
+          "san": "Kh1",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "a4d7",
+          "san": "Qd7",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "d2f2",
+          "san": "Qf2",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "g7g8",
+          "san": "Kg8",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "f4e5",
+          "san": "fxe5",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "d6e5",
+          "san": "dxe5",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "d7d6",
+          "san": "Qd6",
+          "root_side_static_material_balance_cp_conventional_only": -10,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "f3d4",
+          "san": "Nxd4",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "f6g7",
+          "san": "Bg7",
+          "root_side_static_material_balance_cp_conventional_only": 90,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 13,
+      "root_id": "fresh-sts-undermine-004",
+      "root_move": null,
+      "bestmove": "b4b5",
+      "finite_score_cp": 590,
+      "finite_mate": null,
+      "depth": 24,
+      "last_two_cp": [
+        590,
+        590
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "b4b5",
+        "h7f7",
+        "g2g3",
+        "b7a8",
+        "d2e3",
+        "c8h8",
+        "f3g5",
+        "f7c7",
+        "a3d3",
+        "c7a7",
+        "d3b3",
+        "f6g7",
+        "e3e6",
+        "g7d4",
+        "b5a6",
+        "a7c7",
+        "e6e5",
+        "d4e5",
+        "f4e5",
+        "h8e8",
+        "f2f4",
+        "c7c4"
+      ],
+      "pv_san": [
+        "b5",
+        "Rf7",
+        "Kg3",
+        "Ka8",
+        "Qe3",
+        "Rh8",
+        "Ng5",
+        "Rc7",
+        "Rd3",
+        "Ra7",
+        "Rb3",
+        "Qg7",
+        "Qxe6",
+        "Qxd4",
+        "bxa6",
+        "Rc7",
+        "Qe5",
+        "Qxe5",
+        "fxe5",
+        "Re8",
+        "f4",
+        "Rc4"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-013.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "b4b5",
+          "san": "b5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "h7f7",
+          "san": "Rf7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "g2g3",
+          "san": "Kg3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "b7a8",
+          "san": "Ka8",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "d2e3",
+          "san": "Qe3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "c8h8",
+          "san": "Rh8",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "f3g5",
+          "san": "Ng5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "f7c7",
+          "san": "Rc7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "a3d3",
+          "san": "Rd3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "c7a7",
+          "san": "Ra7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "d3b3",
+          "san": "Rb3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "f6g7",
+          "san": "Qg7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "e3e6",
+          "san": "Qxe6",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "g7d4",
+          "san": "Qxd4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "b5a6",
+          "san": "bxa6",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "a7c7",
+          "san": "Rc7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "e6e5",
+          "san": "Qe5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "d4e5",
+          "san": "Qxe5",
+          "root_side_static_material_balance_cp_conventional_only": -700,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "f4e5",
+          "san": "fxe5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "h8e8",
+          "san": "Re8",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "f2f4",
+          "san": "f4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "c7c4",
+          "san": "Rc4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 14,
+      "root_id": "fresh-sts-undermine-004",
+      "root_move": "b4b5",
+      "bestmove": "b4b5",
+      "finite_score_cp": 613,
+      "finite_mate": null,
+      "depth": 24,
+      "last_two_cp": [
+        613,
+        613
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "b4b5",
+        "h7f7",
+        "g2g3",
+        "b7a8",
+        "g4g5",
+        "f6f5",
+        "f3h4",
+        "c8c2",
+        "d2e3",
+        "f5e4",
+        "e3e4",
+        "d5e4",
+        "h4g6",
+        "f7d7",
+        "g6e5",
+        "d7d4",
+        "a3e3",
+        "c2d2",
+        "g5g6",
+        "d2d1",
+        "a1d1",
+        "d4d1",
+        "e3a3",
+        "d1h1"
+      ],
+      "pv_san": [
+        "b5",
+        "Rf7",
+        "Kg3",
+        "Ka8",
+        "g5",
+        "Qf5",
+        "Nh4",
+        "Rc2",
+        "Qe3",
+        "Qe4",
+        "Qxe4",
+        "dxe4",
+        "Nxg6",
+        "Rd7",
+        "Ne5",
+        "Rxd4",
+        "Re3",
+        "Rcd2",
+        "g6",
+        "Rd1",
+        "Rxd1",
+        "Rxd1",
+        "Ra3",
+        "Rh1"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-014.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "b4b5",
+          "san": "b5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "h7f7",
+          "san": "Rf7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "g2g3",
+          "san": "Kg3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "b7a8",
+          "san": "Ka8",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "g4g5",
+          "san": "g5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "f6f5",
+          "san": "Qf5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "f3h4",
+          "san": "Nh4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "c8c2",
+          "san": "Rc2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "d2e3",
+          "san": "Qe3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "f5e4",
+          "san": "Qe4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "e3e4",
+          "san": "Qxe4",
+          "root_side_static_material_balance_cp_conventional_only": 1000,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "d5e4",
+          "san": "dxe4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "h4g6",
+          "san": "Nxg6",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "f7d7",
+          "san": "Rd7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "g6e5",
+          "san": "Ne5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "d7d4",
+          "san": "Rxd4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "a3e3",
+          "san": "Re3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "c2d2",
+          "san": "Rcd2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "g5g6",
+          "san": "g6",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "d2d1",
+          "san": "Rd1",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "a1d1",
+          "san": "Rxd1",
+          "root_side_static_material_balance_cp_conventional_only": 600,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "d4d1",
+          "san": "Rxd1",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "e3a3",
+          "san": "Ra3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "d1h1",
+          "san": "Rh1",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 15,
+      "root_id": "fresh-sts-undermine-004",
+      "root_move": "f3e5",
+      "bestmove": "f3e5",
+      "finite_score_cp": 4,
+      "finite_mate": null,
+      "depth": 20,
+      "last_two_cp": [
+        0,
+        4
+      ],
+      "last_two_cp_change": 4,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "f3e5",
+        "f6h4",
+        "a3g3",
+        "h4h2",
+        "g2f1",
+        "h2h1",
+        "g3g1",
+        "h1h3",
+        "f1e2",
+        "h7c7",
+        "a1a2",
+        "b8c6",
+        "e5c6",
+        "c7c6",
+        "d2d3",
+        "h3d3",
+        "e2d3",
+        "c6c3",
+        "d3e2",
+        "c8c4",
+        "g1a1",
+        "c4d4",
+        "a2a6",
+        "c3c2",
+        "e2f3",
+        "c2c3",
+        "f3g2",
+        "d4f4",
+        "a6e6",
+        "f4g4",
+        "g2f1",
+        "c3h3"
+      ],
+      "pv_san": [
+        "Ne5",
+        "Qh4",
+        "Rg3",
+        "Qh2+",
+        "Kf1",
+        "Qh1+",
+        "Rg1",
+        "Qh3+",
+        "Ke2",
+        "Rhc7",
+        "Ra2",
+        "Nc6",
+        "Nxc6",
+        "Rxc6",
+        "Qd3",
+        "Qxd3+",
+        "Kxd3",
+        "Rc3+",
+        "Ke2",
+        "R8c4",
+        "Rga1",
+        "Rxd4",
+        "Rxa6",
+        "Rc2+",
+        "Kf3",
+        "Rc3+",
+        "Kg2",
+        "Rxf4",
+        "Rxe6",
+        "Rxg4+",
+        "Kf1",
+        "Rh3"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-015.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "f3e5",
+          "san": "Ne5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "f6h4",
+          "san": "Qh4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "a3g3",
+          "san": "Rg3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "h4h2",
+          "san": "Qh2+",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "g2f1",
+          "san": "Kf1",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "h2h1",
+          "san": "Qh1+",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "g3g1",
+          "san": "Rg1",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "h1h3",
+          "san": "Qh3+",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "f1e2",
+          "san": "Ke2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "h7c7",
+          "san": "Rhc7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "a1a2",
+          "san": "Ra2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "b8c6",
+          "san": "Nc6",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "e5c6",
+          "san": "Nxc6",
+          "root_side_static_material_balance_cp_conventional_only": 420,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "c7c6",
+          "san": "Rxc6",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "d2d3",
+          "san": "Qd3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "h3d3",
+          "san": "Qxd3+",
+          "root_side_static_material_balance_cp_conventional_only": -800,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "e2d3",
+          "san": "Kxd3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "c6c3",
+          "san": "Rc3+",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "d3e2",
+          "san": "Ke2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "c8c4",
+          "san": "R8c4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "g1a1",
+          "san": "Rga1",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "c4d4",
+          "san": "Rxd4",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "a2a6",
+          "san": "Rxa6",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "c3c2",
+          "san": "Rc2+",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "e2f3",
+          "san": "Kf3",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "c2c3",
+          "san": "Rc3+",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "f3g2",
+          "san": "Kg2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 28,
+          "uci": "d4f4",
+          "san": "Rxf4",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 29,
+          "uci": "a6e6",
+          "san": "Rxe6",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 30,
+          "uci": "f4g4",
+          "san": "Rxg4+",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 31,
+          "uci": "g2f1",
+          "san": "Kf1",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 32,
+          "uci": "c3h3",
+          "san": "Rh3",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 16,
+      "root_id": "historical-34Rc5",
+      "root_move": null,
+      "bestmove": "e2e3",
+      "finite_score_cp": 485,
+      "finite_mate": null,
+      "depth": 24,
+      "last_two_cp": [
+        485,
+        485
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "e2e3",
+        "a1g1",
+        "a5c5",
+        "c7d7",
+        "g2g4",
+        "g1e1",
+        "e3f4",
+        "e1f1",
+        "c5c8",
+        "f6f7",
+        "e4c4",
+        "f1f2",
+        "c4c7",
+        "f2d2",
+        "c7d7",
+        "d2d7",
+        "f4e5",
+        "a7a6",
+        "c8c6",
+        "d7b7",
+        "c6c4",
+        "f7e7",
+        "e5d5",
+        "e7d7",
+        "c4f4",
+        "d7c8"
+      ],
+      "pv_san": [
+        "Ke3",
+        "Rg1",
+        "Rc5",
+        "Rd7",
+        "g4",
+        "Re1+",
+        "Kf4",
+        "Rf1",
+        "Rc8",
+        "Kf7",
+        "Rec4",
+        "Rxf2",
+        "R4c7",
+        "Rd2",
+        "Rxd7+",
+        "Rxd7",
+        "Ke5",
+        "a6",
+        "Rc6",
+        "Rb7",
+        "Rc4",
+        "Ke7",
+        "Kd5",
+        "Kd7",
+        "Rf4",
+        "Kc8"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-016.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "e2e3",
+          "san": "Ke3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "a1g1",
+          "san": "Rg1",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "a5c5",
+          "san": "Rc5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "c7d7",
+          "san": "Rd7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "g2g4",
+          "san": "g4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "g1e1",
+          "san": "Re1+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "e3f4",
+          "san": "Kf4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "e1f1",
+          "san": "Rf1",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "c5c8",
+          "san": "Rc8",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "f6f7",
+          "san": "Kf7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "e4c4",
+          "san": "Rec4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "f1f2",
+          "san": "Rxf2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "c4c7",
+          "san": "R4c7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "f2d2",
+          "san": "Rd2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "c7d7",
+          "san": "Rxd7+",
+          "root_side_static_material_balance_cp_conventional_only": 600,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "d2d7",
+          "san": "Rxd7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "f4e5",
+          "san": "Ke5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "a7a6",
+          "san": "a6",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "c8c6",
+          "san": "Rc6",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "d7b7",
+          "san": "Rb7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "c6c4",
+          "san": "Rc4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "f7e7",
+          "san": "Ke7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "e5d5",
+          "san": "Kd5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "e7d7",
+          "san": "Kd7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "c4f4",
+          "san": "Rf4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "d7c8",
+          "san": "Kc8",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 17,
+      "root_id": "historical-34Rc5",
+      "root_move": "a5a6",
+      "bestmove": "a5a6",
+      "finite_score_cp": 510,
+      "finite_mate": null,
+      "depth": 24,
+      "last_two_cp": [
+        510,
+        510
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "a5a6",
+        "f6f7",
+        "f3f4",
+        "a1a3",
+        "e4e3",
+        "a3a2",
+        "e2f3",
+        "h7h6",
+        "g2g3",
+        "f7g8",
+        "b4b5",
+        "g8h7",
+        "e3d3",
+        "h6h5",
+        "d3e3",
+        "a2c2",
+        "e3e8",
+        "c7d7",
+        "e8e2",
+        "c2c1",
+        "a6c6"
+      ],
+      "pv_san": [
+        "Ra6+",
+        "Kf7",
+        "f4",
+        "Ra3",
+        "Re3",
+        "Ra2+",
+        "Kf3",
+        "h6",
+        "g3",
+        "Kg8",
+        "b5",
+        "Kh7",
+        "Rd3",
+        "h5",
+        "Re3",
+        "Rac2",
+        "Re8",
+        "Rd7",
+        "Re2",
+        "Rc1",
+        "Rc6"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-017.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "a5a6",
+          "san": "Ra6+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "f6f7",
+          "san": "Kf7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "f3f4",
+          "san": "f4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "a1a3",
+          "san": "Ra3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "e4e3",
+          "san": "Re3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "a3a2",
+          "san": "Ra2+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "e2f3",
+          "san": "Kf3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "h7h6",
+          "san": "h6",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "g2g3",
+          "san": "g3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "f7g8",
+          "san": "Kg8",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "b4b5",
+          "san": "b5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "g8h7",
+          "san": "Kh7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "e3d3",
+          "san": "Rd3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "h6h5",
+          "san": "h5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "d3e3",
+          "san": "Re3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "a2c2",
+          "san": "Rac2",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "e3e8",
+          "san": "Re8",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "c7d7",
+          "san": "Rd7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "e8e2",
+          "san": "Re2",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "c2c1",
+          "san": "Rc1",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "a6c6",
+          "san": "Rc6",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 18,
+      "root_id": "historical-34Rc5",
+      "root_move": "b4b5",
+      "bestmove": "b4b5",
+      "finite_score_cp": 506,
+      "finite_mate": null,
+      "depth": 26,
+      "last_two_cp": [
+        506,
+        506
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "b4b5",
+        "f6f7",
+        "a5a6",
+        "h7h6",
+        "e4g4",
+        "a1a3",
+        "e2d2",
+        "g6g5",
+        "h4g5",
+        "h6g5",
+        "g4d4",
+        "a3a2",
+        "d2d3",
+        "a2f2",
+        "d4g4",
+        "f2a2",
+        "g4g5",
+        "a2a3",
+        "d3d4",
+        "f7g8",
+        "g5g4",
+        "a3a2",
+        "d4e3",
+        "c7e7",
+        "e3f4",
+        "e7d7",
+        "f4g3"
+      ],
+      "pv_san": [
+        "b5",
+        "Kf7",
+        "Ra6",
+        "h6",
+        "Rg4",
+        "Ra3",
+        "Kd2",
+        "g5",
+        "hxg5",
+        "hxg5",
+        "Rd4",
+        "Ra2+",
+        "Kd3",
+        "Rxf2",
+        "Rg4",
+        "Ra2",
+        "Rxg5",
+        "Ra3+",
+        "Kd4",
+        "Kg8",
+        "Rg4",
+        "Ra2",
+        "Ke3",
+        "Re7+",
+        "Kf4",
+        "Rd7",
+        "Kg3"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-018.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "b4b5",
+          "san": "b5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "f6f7",
+          "san": "Kf7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "a5a6",
+          "san": "Ra6",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "h7h6",
+          "san": "h6",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "e4g4",
+          "san": "Rg4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "a1a3",
+          "san": "Ra3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "e2d2",
+          "san": "Kd2",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "g6g5",
+          "san": "g5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "h4g5",
+          "san": "hxg5",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "h6g5",
+          "san": "hxg5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "g4d4",
+          "san": "Rd4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "a3a2",
+          "san": "Ra2+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "d2d3",
+          "san": "Kd3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "a2f2",
+          "san": "Rxf2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "d4g4",
+          "san": "Rg4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "f2a2",
+          "san": "Ra2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "g4g5",
+          "san": "Rxg5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "a2a3",
+          "san": "Ra3+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "d3d4",
+          "san": "Kd4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "f7g8",
+          "san": "Kg8",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "g5g4",
+          "san": "Rg4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "a3a2",
+          "san": "Ra2",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "d4e3",
+          "san": "Ke3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "c7e7",
+          "san": "Re7+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "e3f4",
+          "san": "Kf4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "e7d7",
+          "san": "Rd7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "f4g3",
+          "san": "Kg3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 19,
+      "root_id": "historical-34Rc5",
+      "root_move": "e2e3",
+      "bestmove": "e2e3",
+      "finite_score_cp": 493,
+      "finite_mate": null,
+      "depth": 24,
+      "last_two_cp": [
+        493,
+        493
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "e2e3",
+        "a1g1",
+        "a5c5",
+        "c7d7",
+        "g2g3",
+        "g1e1",
+        "e3f4",
+        "e1f1",
+        "c5c8",
+        "f6f7",
+        "e4c4",
+        "f1f2",
+        "c4c7",
+        "f2d2",
+        "c7d7",
+        "d2d7",
+        "f4e5",
+        "a7a6",
+        "c8c4",
+        "f7e8",
+        "g3g4",
+        "d7f7",
+        "g4g5",
+        "h7h6",
+        "e5d6",
+        "e8d8",
+        "a4a5",
+        "f7d7",
+        "d6e5",
+        "d7e7",
+        "e5d5"
+      ],
+      "pv_san": [
+        "Ke3",
+        "Rg1",
+        "Rc5",
+        "Rd7",
+        "g3",
+        "Re1+",
+        "Kf4",
+        "Rf1",
+        "Rc8",
+        "Kf7",
+        "Rec4",
+        "Rxf2",
+        "R4c7",
+        "Rd2",
+        "Rxd7+",
+        "Rxd7",
+        "Ke5",
+        "a6",
+        "Rc4",
+        "Ke8",
+        "g4",
+        "Rf7",
+        "g5",
+        "h6",
+        "Kd6",
+        "Kd8",
+        "a5",
+        "Rd7+",
+        "Ke5",
+        "Re7+",
+        "Kd5"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-019.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "e2e3",
+          "san": "Ke3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "a1g1",
+          "san": "Rg1",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "a5c5",
+          "san": "Rc5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "c7d7",
+          "san": "Rd7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "g2g3",
+          "san": "g3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "g1e1",
+          "san": "Re1+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "e3f4",
+          "san": "Kf4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "e1f1",
+          "san": "Rf1",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "c5c8",
+          "san": "Rc8",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "f6f7",
+          "san": "Kf7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "e4c4",
+          "san": "Rec4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "f1f2",
+          "san": "Rxf2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "c4c7",
+          "san": "R4c7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "f2d2",
+          "san": "Rd2",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "c7d7",
+          "san": "Rxd7+",
+          "root_side_static_material_balance_cp_conventional_only": 600,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "d2d7",
+          "san": "Rxd7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "f4e5",
+          "san": "Ke5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "a7a6",
+          "san": "a6",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "c8c4",
+          "san": "Rc4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "f7e8",
+          "san": "Ke8",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "g3g4",
+          "san": "g4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "d7f7",
+          "san": "Rf7",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "g4g5",
+          "san": "g5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "h7h6",
+          "san": "h6",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "e5d6",
+          "san": "Kd6",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "e8d8",
+          "san": "Kd8",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "a4a5",
+          "san": "a5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 28,
+          "uci": "f7d7",
+          "san": "Rd7+",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 29,
+          "uci": "d6e5",
+          "san": "Ke5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 30,
+          "uci": "d7e7",
+          "san": "Re7+",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 31,
+          "uci": "e5d5",
+          "san": "Kd5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 20,
+      "root_id": "historical-34Rc5",
+      "root_move": "e4f4",
+      "bestmove": "e4f4",
+      "finite_score_cp": 487,
+      "finite_mate": null,
+      "depth": 26,
+      "last_two_cp": [
+        487,
+        487
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "e4f4",
+        "f6e7",
+        "f4e4",
+        "e7f7",
+        "e2e3",
+        "a1g1",
+        "e4f4",
+        "f7g8",
+        "a5c5",
+        "c7e7",
+        "f4e4",
+        "e7d7",
+        "g2g3",
+        "g1e1",
+        "e3f4",
+        "e1d1",
+        "c5c8",
+        "g8f7",
+        "e4c4",
+        "d7d5",
+        "c4c5",
+        "d1d4",
+        "f4e3",
+        "d5c5",
+        "c8c5",
+        "d4b4",
+        "c5a5"
+      ],
+      "pv_san": [
+        "Rf4+",
+        "Ke7",
+        "Re4+",
+        "Kf7",
+        "Ke3",
+        "Rg1",
+        "Rf4+",
+        "Kg8",
+        "Rc5",
+        "Re7+",
+        "Re4",
+        "Rd7",
+        "g3",
+        "Re1+",
+        "Kf4",
+        "Red1",
+        "Rc8+",
+        "Kf7",
+        "Rec4",
+        "R7d5",
+        "R4c5",
+        "R1d4+",
+        "Ke3",
+        "Rxc5",
+        "Rxc5",
+        "Rxb4",
+        "Ra5"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-020.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "e4f4",
+          "san": "Rf4+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "f6e7",
+          "san": "Ke7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "f4e4",
+          "san": "Re4+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "e7f7",
+          "san": "Kf7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "e2e3",
+          "san": "Ke3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "a1g1",
+          "san": "Rg1",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "e4f4",
+          "san": "Rf4+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "f7g8",
+          "san": "Kg8",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "a5c5",
+          "san": "Rc5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "c7e7",
+          "san": "Re7+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "f4e4",
+          "san": "Re4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "e7d7",
+          "san": "Rd7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "g2g3",
+          "san": "g3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "g1e1",
+          "san": "Re1+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "e3f4",
+          "san": "Kf4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "e1d1",
+          "san": "Red1",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "c5c8",
+          "san": "Rc8+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "g8f7",
+          "san": "Kf7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "e4c4",
+          "san": "Rec4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "d7d5",
+          "san": "R7d5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "c4c5",
+          "san": "R4c5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "d1d4",
+          "san": "R1d4+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "f4e3",
+          "san": "Ke3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "d5c5",
+          "san": "Rxc5",
+          "root_side_static_material_balance_cp_conventional_only": -300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "c8c5",
+          "san": "Rxc5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "d4b4",
+          "san": "Rxb4",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "c5a5",
+          "san": "Ra5",
+          "root_side_static_material_balance_cp_conventional_only": 100,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 21,
+      "root_id": "historical-34Rc5",
+      "root_move": "f3f4",
+      "bestmove": "f3f4",
+      "finite_score_cp": 534,
+      "finite_mate": null,
+      "depth": 22,
+      "last_two_cp": [
+        534,
+        534
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "f3f4",
+        "c7c3",
+        "e4e3",
+        "c3c2",
+        "e2f3",
+        "a1f1",
+        "a5a6",
+        "f6f7",
+        "a6a7",
+        "f7f6",
+        "g2g4",
+        "f1f2",
+        "f3e4",
+        "f6e6",
+        "b4b5",
+        "c2d2",
+        "a7c7",
+        "f2f1",
+        "c7c6",
+        "e6f7",
+        "b5b6",
+        "f1a1",
+        "c6c4",
+        "d2d6",
+        "c4b4",
+        "d6e6",
+        "e4d4"
+      ],
+      "pv_san": [
+        "f4",
+        "Rc3",
+        "Re3",
+        "Rc2+",
+        "Kf3",
+        "Rf1",
+        "Ra6+",
+        "Kf7",
+        "Rxa7+",
+        "Kf6",
+        "g4",
+        "Rfxf2+",
+        "Ke4",
+        "Ke6",
+        "b5",
+        "Rcd2",
+        "Rc7",
+        "Rf1",
+        "Rc6+",
+        "Kf7",
+        "b6",
+        "Ra1",
+        "Rc4",
+        "Rd6",
+        "Rb4",
+        "Re6+",
+        "Kd4"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-021.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "f3f4",
+          "san": "f4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "c7c3",
+          "san": "Rc3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "e4e3",
+          "san": "Re3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "c3c2",
+          "san": "Rc2+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "e2f3",
+          "san": "Kf3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "a1f1",
+          "san": "Rf1",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "a5a6",
+          "san": "Ra6+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "f6f7",
+          "san": "Kf7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "a6a7",
+          "san": "Rxa7+",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "f7f6",
+          "san": "Kf6",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "g2g4",
+          "san": "g4",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "f1f2",
+          "san": "Rfxf2+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "f3e4",
+          "san": "Ke4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "f6e6",
+          "san": "Ke6",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "b4b5",
+          "san": "b5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "c2d2",
+          "san": "Rcd2",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "a7c7",
+          "san": "Rc7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "f2f1",
+          "san": "Rf1",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "c7c6",
+          "san": "Rc6+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "e6f7",
+          "san": "Kf7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "b5b6",
+          "san": "b6",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "f1a1",
+          "san": "Ra1",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "c6c4",
+          "san": "Rc4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "d2d6",
+          "san": "Rd6",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "c4b4",
+          "san": "Rb4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "d6e6",
+          "san": "Re6+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "e4d4",
+          "san": "Kd4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 22,
+      "root_id": "historical-34Rc5",
+      "root_move": "g2g4",
+      "bestmove": "g2g4",
+      "finite_score_cp": 439,
+      "finite_mate": null,
+      "depth": 26,
+      "last_two_cp": [
+        439,
+        439
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "g2g4",
+        "h7h5",
+        "e2e3",
+        "f6f7",
+        "e3f4",
+        "f7g8",
+        "e4e8",
+        "g8h7",
+        "g4h5",
+        "a1h1",
+        "h5g6",
+        "h7g6",
+        "h4h5",
+        "g6h7",
+        "e8e4",
+        "h1g1",
+        "a5c5",
+        "c7f7",
+        "c5f5",
+        "f7d7",
+        "b4b5",
+        "d7c7",
+        "f5f8",
+        "g1h1",
+        "f4g4",
+        "c7c5",
+        "e4e8",
+        "h1h5"
+      ],
+      "pv_san": [
+        "g4",
+        "h5",
+        "Ke3",
+        "Kf7",
+        "Kf4",
+        "Kg8",
+        "Re8+",
+        "Kh7",
+        "gxh5",
+        "Rh1",
+        "hxg6+",
+        "Kxg6",
+        "h5+",
+        "Kh7",
+        "Re4",
+        "Rg1",
+        "Rc5",
+        "Rf7+",
+        "Rf5",
+        "Rd7",
+        "b5",
+        "Rc7",
+        "Rf8",
+        "Rh1",
+        "Kg4",
+        "Rc5",
+        "Ree8",
+        "Rhxh5"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-022.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "g2g4",
+          "san": "g4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "h7h5",
+          "san": "h5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "e2e3",
+          "san": "Ke3",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "f6f7",
+          "san": "Kf7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "e3f4",
+          "san": "Kf4",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "f7g8",
+          "san": "Kg8",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "e4e8",
+          "san": "Re8+",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 8,
+          "uci": "g8h7",
+          "san": "Kh7",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 9,
+          "uci": "g4h5",
+          "san": "gxh5",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 10,
+          "uci": "a1h1",
+          "san": "Rh1",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 11,
+          "uci": "h5g6",
+          "san": "hxg6+",
+          "root_side_static_material_balance_cp_conventional_only": 400,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 12,
+          "uci": "h7g6",
+          "san": "Kxg6",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 13,
+          "uci": "h4h5",
+          "san": "h5+",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 14,
+          "uci": "g6h7",
+          "san": "Kh7",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 15,
+          "uci": "e8e4",
+          "san": "Re4",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 16,
+          "uci": "h1g1",
+          "san": "Rg1",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 17,
+          "uci": "a5c5",
+          "san": "Rc5",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 18,
+          "uci": "c7f7",
+          "san": "Rf7+",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": true,
+          "outcome": "None"
+        },
+        {
+          "ply": 19,
+          "uci": "c5f5",
+          "san": "Rf5",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 20,
+          "uci": "f7d7",
+          "san": "Rd7",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 21,
+          "uci": "b4b5",
+          "san": "b5",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 22,
+          "uci": "d7c7",
+          "san": "Rc7",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 23,
+          "uci": "f5f8",
+          "san": "Rf8",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 24,
+          "uci": "g1h1",
+          "san": "Rh1",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 25,
+          "uci": "f4g4",
+          "san": "Kg4",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 26,
+          "uci": "c7c5",
+          "san": "Rc5",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 27,
+          "uci": "e4e8",
+          "san": "Ree8",
+          "root_side_static_material_balance_cp_conventional_only": 300,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 28,
+          "uci": "h1h5",
+          "san": "Rhxh5",
+          "root_side_static_material_balance_cp_conventional_only": 200,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    },
+    {
+      "query_index": 23,
+      "root_id": "historical-22Nf5",
+      "root_move": "d2c1",
+      "bestmove": "d2c1",
+      "finite_score_cp": 0,
+      "finite_mate": null,
+      "depth": 39,
+      "last_two_cp": [
+        0,
+        0
+      ],
+      "last_two_cp_change": 0,
+      "bestmove_alignment_issue": false,
+      "pv_uci": [
+        "d2c1",
+        "a4c5",
+        "d3f5",
+        "e6e5",
+        "e3c2",
+        "e5d5",
+        "c2e3"
+      ],
+      "pv_san": [
+        "Bc1",
+        "Nc5",
+        "Bf5",
+        "Qe5",
+        "Nc2",
+        "Qd5",
+        "Ne3"
+      ],
+      "result_path": "/tmp/msh155-adjudication/query-023.result.json",
+      "pv_consequences": [
+        {
+          "ply": 1,
+          "uci": "d2c1",
+          "san": "Bc1",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 2,
+          "uci": "a4c5",
+          "san": "Nc5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 3,
+          "uci": "d3f5",
+          "san": "Bf5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 4,
+          "uci": "e6e5",
+          "san": "Qe5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 5,
+          "uci": "e3c2",
+          "san": "Nc2",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 6,
+          "uci": "e5d5",
+          "san": "Qd5",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        },
+        {
+          "ply": 7,
+          "uci": "c2e3",
+          "san": "Ne3",
+          "root_side_static_material_balance_cp_conventional_only": 0,
+          "check": false,
+          "outcome": "None"
+        }
+      ]
+    }
+  ],
+  "aggregate_active_search_seconds_including_failed_init": 69.2942627929151,
+  "aggregate_cpu_seconds_including_startup_and_failure": 76.95582900000002,
+  "aggregate_process_wall_seconds": 77.90710795717314,
+  "attempts": 24,
+  "successful_queries": 23,
+  "warning": "Scores are finite reference opinions; conventional material balances are descriptive and do not value compensation. Exact panel outcomes unchanged."
+}

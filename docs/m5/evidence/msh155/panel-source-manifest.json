@@ -1,0 +1,70 @@
+{
+  "frozen_utc": "2026-11-10T11:30:55.191556+00:00",
+  "panel_sha256": "993785b5c6f1f82c17652ebd0078b3e642132207ac10db5ec0abde15d2c4ec85",
+  "source_revision": "dcc17e1728f07ab217e3f3a067277df2ec612563",
+  "production_revision": "d53f344",
+  "artifacts": {
+    "/tmp/msh155-panel.json": {
+      "sha256": "993785b5c6f1f82c17652ebd0078b3e642132207ac10db5ec0abde15d2c4ec85",
+      "bytes": 17667
+    },
+    "/tmp/msh155-panel-design.md": {
+      "sha256": "a227d18a10f0c6ebd001ae0e9f0b6dbb36293254e8cad72e1c8eb8166312aaa8",
+      "bytes": 7614
+    },
+    "/tmp/msh155-freshness.json": {
+      "sha256": "38120372f124c5c8ccc2681a2a016bd8777b55fa0c9f9797e4f3b039c55dac81",
+      "bytes": 685
+    },
+    "/tmp/msh155-mate-proof.py": {
+      "sha256": "3a4bc55e3b33e7db6530408fd650890dd15329ec211192630eb2d510621b74a7",
+      "bytes": 1835
+    },
+    "/tmp/msh155-mate-proof.json": {
+      "sha256": "e96f8f158b349035ed62537486cfd75da89668aeb76023b822a7bfae04509956",
+      "bytes": 2715
+    },
+    "/tmp/msh155-puzzleSfkRC.json": {
+      "sha256": "e14f9fc718460555c6615a83ecedd43542e084d6aa1d384d746ef9fefd871694",
+      "bytes": 755
+    },
+    "/tmp/msh155-puzzle004X6.json": {
+      "sha256": "fbef94970a7daecd53d152310dcc2c5b7ba1926ecdde7a26ed5eebdb9fc2f7f3",
+      "bytes": 707
+    },
+    "/tmp/msh155-puzzle00SLR.json": {
+      "sha256": "b7031ded5520925a3ce67fa8304a30bae2fe8a43616b96fc33b55bda55c754ff",
+      "bytes": 492
+    },
+    "/tmp/msh155-tb-reti.json": {
+      "sha256": "0957bba979c33ac22aeb9e332c432093b667b36d8452dea9a0cb602561a7c474",
+      "bytes": 1152
+    },
+    "/tmp/msh155-tb-dedrle.json": {
+      "sha256": "e1255965b8322eaf9132b900173ccf617a87630c2b4e686cfd92eea05f1e4e7a",
+      "bytes": 2118
+    },
+    "/tmp/msh155-sts-v3.epd": {
+      "sha256": "d7a33ae6cf2fb5f3f18ef1b904cca07dce2cd0458edcf60644f59d4d9e28c07b",
+      "bytes": 288513
+    },
+    "/tmp/msh155-build-panel.py": {
+      "sha256": "09ae0c2fb91c9e09199218656b9fed005fd078cc954d35ed208e3308f4e2e901",
+      "bytes": 8904
+    }
+  },
+  "resources": {
+    "tablebase_root_queries": 2,
+    "opponent_searches": 0,
+    "mshogi_searches": 0,
+    "matches": 0,
+    "mate_proof_cpu_seconds_including_unused_candidate": 0.131754,
+    "candidate_puzzle_api_queries": 3,
+    "sts_downloads": 1
+  },
+  "unused_candidates": [
+    "004X6",
+    "00SLR"
+  ],
+  "freshness_all_selected_hits_empty": true
+}

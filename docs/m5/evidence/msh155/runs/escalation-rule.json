@@ -1,0 +1,9 @@
+{
+  "frozen_before_baseline": true,
+  "max_roots_at_30_seconds": 2,
+  "all_three_engines_per_selected_root": true,
+  "eligibility": "Meaningful supported outcome disagreement at15s, or supported nonmonotone/time-sensitive trajectory whose30s result can change next diagnostic priority. Unclassified alternatives must be adjudicated or remain explicitly unresolved.",
+  "ranking": ["Exact mate goal or tablebase WDL evidence before finite reference opinion before soft published positional points", "Outcome preservation or concrete deterioration before marginal preference", "Prefer different mechanisms across chosen roots", "Stable root id lexicographic tie-break"],
+  "noneligibility": "Unchanged supported acceptable decisions in all engines; move changes without supported outcome distinction; choosing solely because mShogi loses.",
+  "reporting": "List every eligible root with selection reason.30s results are selected follow-up, never a complete8-root curve or rating estimate."
+}

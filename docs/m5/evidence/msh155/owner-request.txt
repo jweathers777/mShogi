@@ -1,0 +1,120 @@
+I have reviewed MSH-154 (Chess Adversarial Assessment) and its proposed roadmap. I broadly approve the findings and strategic direction, with several important refinements.
+
+Before committing to substantial architectural changes, I want to investigate a potentially important limitation of our previous playing-strength assessments: we have primarily evaluated mShogi using only one second of thinking time per move.
+
+That may be placing disproportionate emphasis on shallow-search performance and static evaluation quality, without adequately measuring what our conventional engine can accomplish with more realistic thinking times.
+
+Our objective remains a demonstrably strong conventional Chess engine, but we need to understand its capabilities and limitations more systematically.
+
+## 1. Investigate how decision quality scales with thinking time
+
+Add an initial time-scaling investigation to the proposed roadmap, before substantial implementation changes.
+
+Use representative, independently selected tactical, positional, defensive, and endgame positions, including successful controls and previously identified weaknesses.
+
+Examine how mShogi's decisions change with additional thinking time, using settings such as 1, 5, 15, and 30 seconds where they provide useful discrimination.
+
+Measure actual elapsed time, completed and incomplete iterations, useful search depth, main/quiescence work, move selection, evaluation, and principal variations.
+
+Determine whether additional thinking time consistently produces better decisions, and investigate cases where deeper search produces worse choices.
+
+Use independent tactical proofs, tablebases, and strong reference analysis as appropriate. Distinguish proven correctness from reference-engine opinion.
+
+Do not infer that a higher nominal depth, improved score, or changed move necessarily represents better Chess.
+
+## 2. Distinguish absolute improvement from relative playing strength
+
+An important question is whether mShogi benefits from additional thinking time more or less than established reference engines.
+
+Our previous approximately 1900 conditional local index comes from one-second-per-move comparisons. It should not be treated as a general rating or as evidence of a fixed strength ceiling at longer time controls.
+
+Investigate how reference engines' decisions and search behavior scale under the same increased thinking allowances.
+
+Where useful, conduct small, controlled comparisons using the existing reference opponents and infrastructure to determine whether a longer time control appears likely to change mShogi's relative competitiveness.
+
+Do not assume that five times more thinking time benefits mShogi more than its opponents.
+
+Use the existing routine experimentation allowance for bounded diagnostics. Propose any substantial new opponent-match campaign for my approval before executing it.
+
+For eventual serious strength qualification, consider conventional clock-based games with increments and conditions reasonably comparable to the reference rating pool, rather than relying exclusively on fixed one-second moves.
+
+Do not combine results from different time controls into one rating estimate without an appropriate model and supporting evidence.
+
+## 3. Use time scaling to distinguish engineering priorities
+
+I want the findings to help determine whether our principal limitations involve:
+
+- Computational overhead preventing useful search depth.
+- Ineffective pruning, reductions, move ordering, or search-frontier behavior.
+- Classical evaluation that misjudges positions even when relevant consequences are searched.
+- Interactions between search efficiency, selective coverage, and evaluation.
+
+For example, if additional time frequently allows the current engine to discover strong moves, determine whether meaningful native efficiency improvements could bring those decisions within shorter practical time limits.
+
+If additional time does not correct important mistakes, investigate whether search selectivity excludes relevant continuations or the classical evaluator values them incorrectly.
+
+These are hypotheses, not predetermined conclusions.
+
+## 4. Incorporate the adversarial review's findings
+
+Retain the central findings of MSH-154 and its independent architecture, gameplay, and methodology reviews.
+
+I agree with the proposed direction of reducing demonstrated native execution waste while investigating continuation coverage and classical valuation.
+
+However, make these related lines of investigation complementary rather than strictly sequential.
+
+The demonstrated obsolete-repetition-history overhead deserves correction, but its limited observed prevalence means it should not dominate the overall development strategy.
+
+Investigate specialized internal search-state representations and more efficient use of checked game transitions when profiling justifies them. Preserve one authoritative implementation of legal moves, state transitions, game history, and outcomes.
+
+Do not assume a wholesale rewrite is necessary.
+
+Keep MSH-153 (Classical Compensation Calibration) on hold until evidence establishes whether valuation, search coverage, or another mechanism deserves priority.
+
+## 5. Establish meaningful decision-quality measurements
+
+Develop a stable, balanced decision-quality benchmark using independently justified tactical, defensive, positional, and endgame expectations.
+
+Include fresh positions that have not influenced previous implementation changes.
+
+Measure whether proposed improvements produce better decisions at comparable thinking times, not merely faster execution or better agreement with isolated Stockfish scores.
+
+Distinguish genuine tactical or tablebase truths from uncertain positional judgments. Allow multiple defensible moves where appropriate.
+
+Keep the benchmark small enough for routine engineering use. Do not turn this into another elaborate testing framework.
+
+## 6. Maintain a coherent engineering roadmap
+
+Revise the forward-looking roadmap to incorporate these refinements.
+
+Organize the work around significant architectural and decision-quality objectives, not an indefinite succession of narrow tickets generated from individual mistakes.
+
+For each major stage, identify the underlying problem, supporting evidence, expected benefit, relevant competing explanations, and criteria for determining whether the work was successful.
+
+If a coherent improvement round fails to demonstrate practical benefits, reconsider the underlying hypotheses and development strategy rather than automatically creating another series of local optimization tasks.
+
+After meaningful engineering progress, propose an appropriately controlled earlier/current engine comparison using shared openings and opponents. Do not automatically run small, inconclusive absolute-rating studies.
+
+## 7. Autonomy, verification, and next steps
+
+You may carry out the bounded time-scaling diagnostic work, revise the roadmap, and create or update the necessary tasks autonomously.
+
+Use the repository's risk-based CI policy. Ordinary platform-independent diagnostics should receive appropriate local verification and independent review without unnecessary three-platform campaigns.
+
+Continue using concise, human-readable Problem / Objective / Approach / Completion descriptions and stable descriptive task handles.
+
+Do not begin substantial engine restructuring, learned evaluation, or Shogi/Xiangqi development yet.
+
+After the time-scaling investigation, return with a concise report explaining:
+
+1. How mShogi's decision quality changes with additional thinking time.
+2. Whether the evidence suggests different relative performance against established opponents at longer time controls.
+3. What these findings imply about search efficiency, selectivity, and classical evaluation.
+4. Which architectural or algorithmic improvements now deserve priority.
+5. Any consequential design or resource decisions requiring my approval.
+
+Then update the proposed engineering roadmap accordingly and stop for my review before substantial implementation.
+
+**The central question is whether we're evaluating an intrinsically weak conventional Chess engine or an engine whose potential is being obscured by very short thinking times and inefficient use of computational resources.**
+
+We should establish that distinction as well as the evidence allows before deciding which major engineering investments to make next.

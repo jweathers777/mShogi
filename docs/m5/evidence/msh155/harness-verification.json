@@ -1,0 +1,51 @@
+{
+  "counts": {
+    "source_hash_checks": 384,
+    "attempts": 109,
+    "artifact_hashes": 683,
+    "native": 31,
+    "pv_lines": 1779,
+    "uci_success": 77,
+    "uci_events": 2826,
+    "failed": 1
+  },
+  "totals": {
+    "msh155": {
+      "charged_active_seconds": 463.56050916229964,
+      "cpu_seconds": 468.21761700000013,
+      "process_wall_seconds": 473.99751429166645,
+      "attempts": 72
+    },
+    "intermediate": {
+      "charged_active_seconds": 10.000898292,
+      "cpu_seconds": 10.339728999999998,
+      "process_wall_seconds": 10.552048790734261,
+      "attempts": 4
+    },
+    "followup30": {
+      "charged_active_seconds": 180.01321699973673,
+      "cpu_seconds": 179.227975,
+      "process_wall_seconds": 180.8577114176005,
+      "attempts": 6
+    },
+    "smoke": {
+      "charged_active_seconds": 0.3061455417737024,
+      "cpu_seconds": 0.6144769999999999,
+      "process_wall_seconds": 0.7140394179150462,
+      "attempts": 3
+    },
+    "msh155-adjudication": {
+      "charged_active_seconds": 69.2942627929151,
+      "cpu_seconds": 76.95582900000002,
+      "process_wall_seconds": 77.90710795717314,
+      "attempts": 24
+    }
+  },
+  "grand_totals": {
+    "charged_active_seconds": 723.1750327887252,
+    "cpu_seconds": 735.355627,
+    "process_wall_seconds": 744.0284218750894,
+    "attempts": 109
+  },
+  "problems": []
+}

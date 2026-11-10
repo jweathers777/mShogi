@@ -4,12 +4,13 @@ title: Classical Compensation Calibration
 status: To Do
 assignee: []
 created_date: '2026-11-09T22:45:00Z'
-updated_date: '2026-11-10T10:02:00Z'
+updated_date: '2026-11-10T12:06:00Z'
 labels:
   - handle:classical-compensation-calibration
 milestone: m-5
 dependencies:
   - MSH-152
+  - MSH-155
 documentation:
   - docs/m5/chess-tactical-forecasting.md
 priority: high
@@ -22,13 +23,13 @@ ordinal: 158000
 Handle: Classical Compensation Calibration.
 
 ## Problem
-Residual compensation and continuation judgments remain uncertain after MSH-152 (Classical Tactical Forecasting); narrow score corrections may miss the main strength limitations.
+Residual compensation and continuation judgments remain uncertain; narrow score corrections may miss the main strength limitations.
 
 ## Objective
-Improve general classical decision quality only where the broader assessment establishes the need.
+Improve general classical decision quality only where broader assessment establishes the need.
 
 ## Approach
-Reassess within MSH-154 (Chess Adversarial Assessment), separating evaluation, horizon and selectivity using full histories and independent controls. Await owner approval of that roadmap before implementation.
+Use MSH-154 (Chess Adversarial Assessment) and MSH-155 (Chess Time Scaling) to separate evaluation, horizon and selectivity. Held pending owner review of the revised roadmap; valuation work is not yet selected.
 
 ## Completion
 Existing acceptance criteria remain intact. Any eventual correction needs general decision improvements, counterexamples and independent review; score agreement alone is insufficient.
@@ -55,4 +56,6 @@ Existing acceptance criteria remain intact. Any eventual correction needs genera
 2026-11-10 owner direction: held pending review of MSH-154 (Chess Adversarial Assessment); no implementation authorized by readiness. Historical description retained below:
 
 Handle: Classical Compensation Calibration. MSH-152 established consistent score backup along the Goldfish exchange: matched remaining-depth roots all value White +17, while deeper postexchange search changes that to -83. Strong reference analysis also prefers the original e4 but evaluates the already-poor position much lower; this is not proof that e4 was wrong. The residual gap may combine useful horizon, classical compensation and king/activity valuation. Diagnose this general limitation across full histories and independent materially imbalanced, defensive and endgame controls before choosing further conventional changes. Preserve prior evidence, native authority/history/claims, restoration and bounded cancellation. No preselected positional bonus, learned evaluation, cross-game transfer or automatic tournament. Substantial matched-version strength studies require owner approval.
+
+MSH-155 (Chess Time Scaling) completed bounded diagnosis and returns for owner review. See docs/m5/chess-time-scaling.md and docs/m5/strength-roadmap.md. Remains held; no substantial implementation authorized.
 <!-- SECTION:NOTES:END -->

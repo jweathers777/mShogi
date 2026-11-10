@@ -427,6 +427,8 @@ struct Entry {
     hash: u64,
     depth: i32,
     extensions: u8,
+    // Selective null-mate evidence, valid only at the same native key/depth/credits.
+    mate_threat: bool,
     score: i32,
     bound: Bound,
     value: Value,
@@ -962,6 +964,9 @@ impl Engine<'_> {
                 .and_then(|i| self.table[i].as_ref())
         };
         let same_context = entry.as_ref().is_some_and(|e| Some(&e.key) == key.as_ref());
+        let cached_mate_threat = same_context
+            && entry
+                .is_some_and(|e| e.depth == depth && e.extensions == extensions && e.mate_threat);
         self.stats.tt_position_hits += u64::from(entry.as_ref().is_some_and(|e| e.hash == hash));
         self.stats.tt_context_hits += u64::from(same_context);
         let hint = entry
@@ -993,9 +998,22 @@ impl Engine<'_> {
         // Native outcome/claim admission stays before TT reuse. Dynamic static
         // evaluation and action copies are unnecessary for a reusable cutoff.
         let static_score = self.evaluate();
-        let mut threat_extension = 0;
+        // Preserve a detected threat when a narrow probe is verified as a PV.
+        // This is a search heuristic at the exact native context, never an outcome.
+        // Reuse does not require another null probe, including allow_null=false
+        // verification, and consumes the same bounded extension credit below.
+        let mut threat_extension = i32::from(
+            cached_mate_threat
+                && self.mode == SearchMode::Conventional
+                && !self.diagnostics.disable_null
+                && extensions > 0
+                && !in_check
+                && !synthetic,
+        );
+        self.stats.threat_extensions += threat_extension as u64;
         if self.mode == SearchMode::Conventional
             && allow_null
+            && threat_extension == 0
             && !self.diagnostics.disable_null
             && !pv
             && ply > 0
@@ -1277,6 +1295,9 @@ impl Engine<'_> {
                     hash,
                     depth,
                     extensions,
+                    // Preserve same-context evidence even if this call did not
+                    // probe null (for example a PV re-search).
+                    mate_threat: cached_mate_threat || threat_extension > 0,
                     score: to_table(best.score, ply),
                     bound,
                     value: best.clone(),
@@ -1401,6 +1422,7 @@ impl Engine<'_> {
                     hash,
                     depth: q_depth,
                     extensions: 0,
+                    mate_threat: false,
                     score: to_table(value.score, ply),
                     bound,
                     value: value.clone(),

@@ -465,6 +465,7 @@ fn synthetic_counter_failure_abandons_probe_but_real_mate_and_cancellation_stay_
         hash,
         depth: 0,
         extensions: 4,
+        mate_threat: false,
         score: 0,
         bound: Bound::Upper,
         value: Value {
@@ -563,6 +564,7 @@ fn board_hash_collision_never_admits_a_foreign_history_bound_or_claim() {
         hash,
         depth: 1,
         extensions: 4,
+        mate_threat: false,
         score: MATE_SCORE - 1,
         bound: Bound::Exact,
         value: Value {
@@ -800,6 +802,7 @@ fn bounded_buckets_retain_deep_current_entries_then_retire_old_generations() {
             hash: e.cursor.position_hash(),
             depth: if i == 4 { 1 } else { 6 + i as i32 },
             extensions: 4,
+            mate_threat: false,
             score: 0,
             bound: Bound::Upper,
             value: Value::leaf(0),
@@ -2395,4 +2398,186 @@ fn non_pv_reductions_remain_active_and_cancellation_restores_full_history() {
         assert_eq!(e.eval, EvalState::new(g.position()));
     }
     assert_eq!(g, before);
+}
+
+fn threat_cache_fixture() -> AdjudicatedGame {
+    let mut g = game("rn3rk1/p4ppp/3bpP2/1Q6/3P4/2q2N2/5PPP/R1B2RK1 b - - 0 15");
+    g.apply("c3a1".parse().unwrap()).unwrap();
+    g.apply("b5g5".parse().unwrap()).unwrap();
+    g
+}
+
+// Produce the evidence through an actual non-PV null probe and real search,
+// rather than manufacturing the flag being tested.
+fn observed_threat_entry(g: &AdjudicatedGame) -> Entry {
+    // Independently check the tactical witness: if Black could pass, Qxg7 is
+    // checkmate. It is NOT an adjudicated result at the real Black-to-move root.
+    assert!(g.outcome().is_none());
+    let mut cursor = SearchCursor::new(g);
+    assert!(cursor.push_null());
+    let mut hypothesis = cursor.position().clone();
+    hypothesis.apply("g5g7".parse().unwrap()).unwrap();
+    assert_eq!(hypothesis.classify(), Classification::Checkmate);
+    assert!(cursor.pop());
+    assert_eq!(cursor.game(), Some(g));
+
+    let mut stop = || false;
+    let mut e = engine(g, &mut stop, SearchMode::Conventional);
+    e.work.limit = Some(100_000);
+    assert!(e.main(4, 2, -1, 0, false, true, 1, None).is_ok());
+    assert!(e.stats.null_probes > 0);
+    assert!(e.stats.threat_extensions > 0);
+    assert_eq!(e.cursor.game(), Some(g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
+    let key = e.cursor.key().unwrap();
+    let hash = e.cursor.position_hash();
+    let index = e.entry_index(hash, Some(&key), None).unwrap();
+    let entry = e.table[index].as_ref().unwrap().clone();
+    assert!(entry.key == key && entry.depth == 4 && entry.extensions == 1);
+    assert!(entry.mate_threat);
+    entry
+}
+
+#[test]
+fn detected_narrow_window_mate_threat_is_retained_for_compatible_pv_verification() {
+    let g = threat_cache_fixture();
+    let entry = observed_threat_entry(&g);
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    e.store(entry, false);
+    // One root visit is enough to exercise actual cached-evidence admission.
+    // The limit stops at a subsequent node; move ordering may poll/abort before
+    // a child is pushed. This tests extension admission, not exact child depth.
+    // No new null probe is allowed here.
+    e.work.limit = Some(1);
+    assert!(matches!(
+        e.main(4, 2, -INF, INF, true, false, 1, None),
+        Err(Halt::Limit(SearchStatus::NodeLimit))
+    ));
+    assert_eq!(
+        e.stats.threat_extensions, 1,
+        "PV verification must retain the compatible narrow search's extra ply"
+    );
+    assert_eq!(
+        e.stats.null_probes, 0,
+        "reuse must not manufacture another null probe"
+    );
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.eval, EvalState::new(g.position()));
+    assert!(
+        g.outcome().is_none(),
+        "hypothetical mate never becomes a native outcome"
+    );
+}
+
+#[test]
+fn cached_threat_research_rejects_incompatible_depth_credit_history_and_modes() {
+    let g = threat_cache_fixture();
+    let observed = observed_threat_entry(&g);
+    // Same board/counters, different known-history origin. A bound/threat hint
+    // cannot manufacture equivalence from board identity alone.
+    let imported = game(&g.position().to_fen());
+    assert_eq!(imported.position(), g.position());
+    for case in [
+        "depth",
+        "credits",
+        "q-entry",
+        "history",
+        "disabled-null",
+        "exact",
+        "no-credit",
+    ] {
+        let root = if case == "history" { &imported } else { &g };
+        let mut stop = || false;
+        let mode = if case == "exact" {
+            SearchMode::Exact
+        } else {
+            SearchMode::Conventional
+        };
+        let mut e = engine(root, &mut stop, mode);
+        let mut entry = observed.clone();
+        if case == "history" {
+            assert!(
+                entry.key != e.cursor.key().unwrap(),
+                "fixture must carry a genuinely different native history context"
+            );
+        }
+        match case {
+            "depth" => entry.depth = 5,
+            "credits" => entry.extensions = 2,
+            "q-entry" => entry.depth = -17,
+            _ => {}
+        }
+        e.diagnostics.disable_null = case == "disabled-null";
+        e.store(entry, case == "q-entry");
+        e.work.limit = Some(1);
+        let credits = if case == "no-credit" { 0 } else { 1 };
+        assert!(
+            matches!(
+                e.main(4, 2, -INF, INF, true, false, credits, None),
+                Err(Halt::Limit(SearchStatus::NodeLimit))
+            ),
+            "{case}"
+        );
+        assert_eq!(e.stats.threat_extensions, 0, "{case}");
+        assert_eq!(e.stats.null_probes, 0, "{case}");
+        assert_eq!(e.cursor.game(), Some(root), "{case}");
+        assert_eq!(e.eval, EvalState::new(root.position()), "{case}");
+    }
+}
+
+#[test]
+fn cached_threat_admission_preserves_native_outcomes_claims_and_cancellation() {
+    let g = threat_cache_fixture();
+    let observed = observed_threat_entry(&g);
+    for (fen, expected) in [
+        ("7k/6Q1/5K2/8/8/8/8/8 b - - 0 1", -MATE_SCORE + 2),
+        ("7k/5K2/6Q1/8/8/8/8/8 b - - 0 1", 0),
+        ("7k/8/8/8/8/8/8/KR6 w - - 150 1", 0),
+    ] {
+        let root = game(fen);
+        let mut stop = || false;
+        let mut e = engine(&root, &mut stop, SearchMode::Conventional);
+        let mut entry = observed.clone();
+        entry.key = e.cursor.key().unwrap();
+        entry.hash = e.cursor.position_hash();
+        e.store(entry, false);
+        let value = e.main(4, 2, -INF, INF, true, false, 1, None).ok().unwrap();
+        assert_eq!(value.score, expected);
+        assert_eq!(
+            e.stats.threat_extensions, 0,
+            "native conclusion precedes cached heuristic"
+        );
+        assert_eq!(e.cursor.game(), Some(&root));
+    }
+    let auto = AdjudicatedGame::from_fen("7k/8/8/8/8/8/8/KR6 w - - 100 1", ClaimPolicy::AutoClaim)
+        .unwrap();
+    let mut stop = || false;
+    let mut e = engine(&auto, &mut stop, SearchMode::Conventional);
+    let mut entry = observed.clone();
+    entry.key = e.cursor.key().unwrap();
+    entry.hash = e.cursor.position_hash();
+    e.store(entry, false);
+    let value = e.main(4, 2, -INF, INF, true, false, 1, None).ok().unwrap();
+    assert_eq!(value.score, 0);
+    assert!(matches!(value.pv.first(), Some(SearchChoice::Claim(_))));
+    assert_eq!(e.stats.threat_extensions, 0);
+    assert_eq!(e.cursor.game(), Some(&auto));
+
+    let mut polls = 0;
+    let mut cancel = || {
+        polls += 1;
+        polls >= 2
+    };
+    let mut e = engine(&g, &mut cancel, SearchMode::Conventional);
+    e.store(observed, false);
+    let key = e.cursor.key();
+    assert!(matches!(
+        e.main(4, 2, -INF, INF, true, false, 1, None),
+        Err(Halt::Limit(SearchStatus::Stopped))
+    ));
+    assert_eq!(e.stats.threat_extensions, 1);
+    assert_eq!(e.cursor.game(), Some(&g));
+    assert_eq!(e.cursor.key(), key);
+    assert_eq!(e.eval, EvalState::new(g.position()));
 }

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-10T20:58:00Z'
+updated_date: '2026-11-10T20:59:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -67,4 +67,6 @@ Deliver independently challenged diagnosis, ranked investigations and updated ro
 Primary builder Codex on codex/rewrite at 77101fe; unrelated worktrees preserved. PATH CLI1.55.0 read-only; mutations use baseline1.55.1. Level1 offline helpers/evidence with native replay and independent reviews; no new platform or GUI claims.
 
 Preparation checkpoint: unchanged77101fe candidate/runner built and fingerprinted; Goldfish/Oxidation identities match retained binaries and Stockfish19 preflight passed. Independent qualification/source/analysis review recorded.14 offline analysis tests passed. Unattended four-game qualification batch launched; after_qualification software chain waits on shared OS lock then validates automatic reference smoke, analyzes every move and screens330master-source candidates. No model move supervision or repeated result polling. One app review scheduled for next checkpoint; README handoff records exact state/artifact paths. Main approximately200game coverage, method freeze and diagnosis remain unfinished. Sourcev2 resolves symmetry/center/castling coverage before any candidate results; no production changes.
+
+Preparation integrated on codex/rewrite at e066f58. Main study remains In Progress; no acceptance checks or final rankings claimed. Deferred review11November01:55Europe/Paris continues from README/state files; no need to poll individual moves. Live runtime outputs remain local pending completed-batch preservation.
 <!-- SECTION:NOTES:END -->

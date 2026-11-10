@@ -1,0 +1,70 @@
+---
+id: MSH-161
+title: Competitive Gameplay Diagnosis
+status: In Progress
+assignee:
+  - '@codex'
+created_date: '2026-11-10T20:47:00Z'
+updated_date: '2026-11-10T20:58:00Z'
+labels:
+  - handle:competitive-gameplay-diagnosis
+milestone: m-5
+dependencies:
+  - MSH-159
+documentation:
+  - docs/m5/competitive-gameplay-diagnosis.md
+ordinal: 165000
+---
+
+## Description
+
+<!-- SECTION:DESCRIPTION:BEGIN -->
+Handle: Competitive Gameplay Diagnosis.
+
+## Problem
+Isolated corrections have not established which weaknesses cost mShogi competitive games.
+
+## Objective
+Diagnose recurring decision weaknesses across approximately 200 complete games and rank evidence-based engineering investigations; no production changes.
+
+## Approach
+Freeze a reviewed protocol, qualify one fixed reference if needed, pair diverse master-supported openings and separately study unaided starts at comparable five-second thinking time. Analyze every move from both players using fixed Stockfish, confirm consequential events and review meaningful batches. Coordinate opening outcomes with MSH-160 (Chess Opening Quality Assessment).
+
+## Completion
+Deliver independently challenged diagnosis, ranked investigations and updated roadmap, then stop for owner review. The owner authorizes the broad study and necessary analysis without a routine aggregate match cap; preserve individual bounds and monitoring. Full request: docs/m5/evidence/msh161/owner-request.txt.
+<!-- SECTION:DESCRIPTION:END -->
+
+## Acceptance Criteria
+<!-- AC:BEGIN -->
+- [ ] #1 Freeze reviewed protocol, provenance, fixed opponent/binaries/conditions and study-specific resource authorization.
+- [ ] #2 Complete approximately 200 diverse paired/unaided games with pilot and batch reviews; document sample changes, failures and actual resources.
+- [ ] #3 Analyze every move of both sides with fixed Stockfish; confirm significant events with controlled alternatives and legal histories, preserving bounds, perspective and uncertainty.
+- [ ] #4 Coordinate MSH-160 opening outcomes, prepared-position quality and consistent phase transitions without duplicate study.
+- [ ] #5 Report affected-game/move frequency, severity, phases/families/results, opportunities/recoveries/conversion and conflicting successes.
+- [ ] #6 Independently review ranked behaviors, potential mechanisms and investigations; update roadmap, integrate evidence and stop before engineering.
+<!-- AC:END -->
+
+## Definition of Done
+<!-- DOD:BEGIN -->
+- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [ ] #2 Applicable independent review is recorded and material findings are resolved.
+- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+<!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Reconcile opening task, sources, prior evidence and independently reviewed protocol.
+2. Fingerprint unchanged engines; pilot games, native replay and full-move analysis.
+3. Complete broad coverage in reviewed batches, preserving failures and resource use.
+4. Confirm events, independently challenge rankings, update roadmap, integrate and stop before engineering.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Primary builder Codex on codex/rewrite at 77101fe; unrelated worktrees preserved. PATH CLI1.55.0 read-only; mutations use baseline1.55.1. Level1 offline helpers/evidence with native replay and independent reviews; no new platform or GUI claims.
+
+Preparation checkpoint: unchanged77101fe candidate/runner built and fingerprinted; Goldfish/Oxidation identities match retained binaries and Stockfish19 preflight passed. Independent qualification/source/analysis review recorded.14 offline analysis tests passed. Unattended four-game qualification batch launched; after_qualification software chain waits on shared OS lock then validates automatic reference smoke, analyzes every move and screens330master-source candidates. No model move supervision or repeated result polling. One app review scheduled for next checkpoint; README handoff records exact state/artifact paths. Main approximately200game coverage, method freeze and diagnosis remain unfinished. Sourcev2 resolves symmetry/center/castling coverage before any candidate results; no production changes.
+<!-- SECTION:NOTES:END -->

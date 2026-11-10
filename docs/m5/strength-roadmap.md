@@ -1,3 +1,20 @@
+# Current assignment — complete competitive-game diagnosis
+
+MSH-161 (Competitive Gameplay Diagnosis) supersedes the suggested next isolated
+correction below. The owner authorizes approximately200 complete games against
+one fixed suitable reference, equal practical thinking time, and Stockfish
+analysis of both players. Study-specific resources are authorized beyond short
+routine experiment caps; process bounds and actual accounting remain required.
+MSH-160 (Chess Opening Quality Assessment) supplies the integrated opening
+questions, with separate unaided and prepared-opening evidence, not a second
+corpus campaign. See [protocol and status](competitive-gameplay-diagnosis.md).
+
+No production search/evaluation/rules changes during this assignment. Identify
+recurring competitive behaviors, uncertainty and conflicting successes before
+ranking general engineering investigations. Stop for owner review before any
+proposed correction. The prior roadmap follows as historical context, not the
+active next-work selection. MSH-153 remains held.
+
 # Conventional Chess: evidence-driven engineering roadmap
 
 MSH-159 (Classical Evaluation Decisions) completed the focused classical-evaluation

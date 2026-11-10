@@ -193,13 +193,21 @@ independent review, acceptance criteria or required platform evidence.
 
 ## Current Chess assessment checkpoint
 
-Owner direction, 2026-11-10: MSH-154 (Chess Adversarial Assessment) independently
-assesses the complete conventional Chess engine and proposes a coherent roadmap.
-Do not automatically start MSH-153 (Classical Compensation Calibration). Stop for
-John to review and approve findings and roadmap before substantial engine changes.
-Specialized internal search state is permissible if demonstrably consistent with
-authoritative native rules, transitions, histories and outcomes. No learned
-evaluation, cross-game transfer or substantial tournament is authorized.
+Owner refinement, 2026-11-10: John reviewed and broadly approved MSH-154
+(Chess Adversarial Assessment). MSH-155 (Chess Time Scaling) now precedes substantial
+implementation: establish a small balanced benchmark with fresh independently
+justified positions, compare current/reference decisions at matched increasing
+thinking time, and revise engineering priorities. The one-second conditional local
+index is not a general rating or a fixed ceiling. Keep execution, coverage and
+valuation investigations complementary, not strictly sequential. Obsolete-history
+overhead remains a narrow correction, not the entire strategy. Keep MSH-153
+(Classical Compensation Calibration) on hold. Specialized native search state is
+permissible when profiling justifies it and exact native rules/history are retained;
+no wholesale rewrite is presumed. Return findings and roadmap for John review before
+substantial implementation. No learned evaluation, Shogi/Xiangqi transfer or substantial
+match campaign is authorized. Later strength qualification should consider clock-based
+increment games and comparable pool conditions, without mixing time controls into one
+rating absent a justified model.
 
 ## Git and routine autonomy
 

@@ -1,117 +1,103 @@
-# Conventional Chess: proposed next engineering round
+# Conventional Chess: evidence-driven engineering roadmap
 
-**Awaiting John’s review and approval.** MSH-154 (Chess Adversarial Assessment),
-2026-11-10, supersedes automatic selection of MSH-153 (Classical Compensation
-Calibration). Read the [assessment](chess-adversarial-assessment.md) for evidence,
-competing explanations and limits. This is a forward plan, not authorization to
-begin substantial implementation.
+John broadly approved MSH-154 (Chess Adversarial Assessment), then required
+MSH-155 (Chess Time Scaling) before substantial implementation. The [time-scaling
+report](chess-time-scaling.md) is complete and returns for owner review. **The next
+engineering round below remains proposed; no substantial restructuring is authorized.**
 
-The objective is better practical decisions at comparable thinking time. Faster
-execution, deeper nominal search, algorithm presence and changed static scores
-are intermediate measurements, not substitutes for that objective. Existing
-conditional rating studies do not establish a fixed 1900 ceiling or a reliable
-change between versions.
+The objective is a demonstrably strong conventional engine at meaningful practical
+thinking times. The one-second conditional local index is not a general rating or
+fixed strength ceiling. Algorithm presence, nominal depth, speed and isolated score
+agreement are not substitutes for good decisions or competitive results.
 
-## Stage 1 — Establish decision outcomes and remove measured execution waste
+## Initial checkpoint — Time scaling and a stable benchmark
 
-Freeze a balanced diagnostic set with complete histories and explicitly justified
-outcomes: forcing tactics, quiet defense, compensation, pawn races and conversion,
-plus successes and genuinely fresh holdouts. Separate proof/tablebase outcomes
-from finite reference opinions. Preserve the current source and binaries as the
-comparison point. Continue locating best-defense consequences of the two current
-reproduced suspect choices; do not wait for a kernel rewrite to do this.
+**Problem:** earlier one-second assessments could not show longer-time capability
+or whether opponents benefit equally. **Evidence:** the frozen eight-root matrix
+finds two historical mShogi weaknesses repaired at five seconds, still weak at the
+sampled two/three seconds; fifteen-second alternatives remain defensible. Fresh
+mate/tablebase controls are already solved at one second. References scale unevenly;
+selected thirty-second differences persist. No relative match strength is measured.
 
-In parallel, correct demonstrated exact-cost problems inside the native rules
-boundary. The repeated-history predicate is one narrow candidate, not the overall
-explanation. Optimize semantically necessary claim handling as well as obsolete
-history checks where profiles support it. Profile-guided prototypes may reuse
-checked transition effects, changed-cell deltas, attack information and reversible
-search summaries; complete canonical history remains intact. A specialized internal
-native search state is permissible. A second approximate legality/history engine
-is not.
+**Completed outcome:** the [small decision benchmark](chess-decision-benchmark.md)
+contains one fresh position per category, explicit proof/opinion tiers, complete
+known histories and multiple acceptable choices. Preserved raw records distinguish
+elapsed time, completed versus incomplete native iterations and outcome quality.
+No supported regression appeared in this panel; it is small, selected and partly
+ceiling-limited. These fresh positions now become regression controls, so later
+transfer claims need additional independent holdouts.
 
-**Gate:** exact legal actions, state/history/outcomes, restoration and cancellation
-remain equivalent; fixed-traversal score/work results agree where applicable.
-Demonstrate repeatable total-cost improvement on targeted affected histories and
-no material regression on unaffected controls, with decision non-regression at equal time. Include captures, promotions,
-castling, en passant, counter boundaries, intended claims and live repetitions.
-Reject a broad representation rewrite unless measured costs justify its complexity.
-Local Level 1 correctness and independent review normally suffice.
+**Implication:** do not commit to a major rewrite, compensate every error with
+static bonuses, or infer a higher longer-time rating. Use the evidence to choose a
+coherent round with a practical budget/outcome objective and observable alternatives.
 
-**Benefit/confidence/risk:** measured local overhead offers high-confidence cost
-opportunities; broad throughput scale and playing-strength benefit are unknown.
-Compact native deltas have medium-to-high implementation complexity and high
-history/special-move regression risk. Begin with a bounded interchangeable prototype,
-not a precommitted wholesale rewrite.
+## Proposed round — Useful search and efficient native execution together
 
-## Stage 2 — Improve continuation coverage and classical valuation as one round
+These are complementary workstreams, not a sequence in which a large kernel rewrite
+must finish before decision diagnosis can begin.
 
-Use Stage 1’s outcome definitions and source baseline. Investigate why the candidate
-and best-defense continuations receive their backed-up values; a move appearing in
-a PV is insufficient. Separate missing coverage, selective bounds, unresolved
-frontier and wrong quiet-endpoint ordering through matched-horizon continuation
-comparisons and one-factor controls.
+| Workstream | Problem and supporting evidence | Approach, benefit and competing explanation | Completion evidence |
+| --- | --- | --- | --- |
+| Continuation coverage and classical judgment | Nf5/Rf6 choices remain weak at the sampled two/three seconds; some supported decisions change with budget, but seeing replies in a PV never proves their consequences were properly valued. | Trace candidate and best-defense continuations with matched remaining horizons and bound-aware comparisons. Vary one relevant search mechanism or endpoint term only when it distinguishes coverage from valuation. Expected benefit is earlier sound choices; the dominant cause is still unresolved. | Better supported decisions or earlier attainment across a balanced set, plus fresh holdouts; preserve exact WDL/mate controls and credible alternatives. Retain adverse cases and equal-time costs. No fixture-specific bonuses or success measured only by score agreement. |
+| Native search execution | MSH-154 profiles show substantial geometry/transition/evaluation/history work outside visits, and high claim-processing costs in relevant histories. The obsolete-repetition defect is real but narrow and absent at the two weakness roots. | Correct exact costs where measured. Prototype rules-owned checked transition reuse, changed-cell deltas and reversible search summaries alongside intact canonical history. Specialized internal state is permitted if profiling supports it. Expected speed scale and strength benefit are unknown; insufficient coverage/evaluation may still dominate. | Exact legal/state/history/outcome/restoration equivalence and cancellation bounds; fixed-traversal scores/work agree where appropriate. Repeatable total-cost gains on affected histories with no material regression on controls and equal-time decision non-regression. Reject a broad representation rewrite unless the bounded prototype justifies its complexity. |
 
-Select coherent changes from those findings: frontier work admission and reuse,
-low-material search policy, ordering of expensive branches, and classical endpoint
-valuation. TT changes follow measured reusable-opportunity evidence; distinguish
-board-only legal move hints from exact history-safe score bounds. Do not assume a
-larger table, more pruning, or a positional bonus is the answer.
+A small execution gain must not be sold as sufficient to recover five-second
+choices at one second. Conversely an exact cost repair need not change already-good
+moves to be worthwhile. Preserve the distinction between execution improvement,
+useful search efficiency and playing strength. A high unfinished-iteration fraction
+is not automatically waste or permission to use partial-root scores.
 
-MSH-153 (Classical Compensation Calibration) is **To Do and held for this review**.
-Its existing criteria and historical evidence remain intact. If valuation is the
-limiting mechanism, refine it as part of this stage; if coverage dominates, change
-the work sequence before implementing compensation tuning. Reject special cases
-for the motivating positions.
+TT/ordering/frontier changes follow actual opportunity evidence: distinguish safe
+board-only move hints from exact history-dependent bounds; don't assume larger TT,
+more pruning or broader quiescence is inherently stronger. Specialized native
+state retains one authoritative legal transition/history/outcome implementation.
+Compact changes have significant special-move/history regression risk; safe Rust,
+existing conformance controls and independent review remain required.
 
-**Gate:** materially better decision outcomes or faster attainment of justified
-outcomes across more than the motivating roots, retaining successes and fresh
-holdouts at comparable time. Report contrary cases, iteration completion and CPU
-cost; score alignment alone does not pass. Independent review must challenge the
-causal claim as well as correctness. Stop the round when the predeclared outcomes
-are met or evidence redirects the mechanism; avoid an endless chain of tiny fixes.
+**MSH-153 (Classical Compensation Calibration) stays To Do/on hold.** Its historical
+criteria remain intact. Activate/refine it only if attribution justifies valuation
+work; otherwise adjust the work sequence before tuning. No new queue of isolated
+mistake tickets is created by this diagnosis.
 
-**Benefit/confidence/risk:** current time-sensitive choices give medium-confidence
-reason to pursue useful coverage; classical calibration remains a live alternative.
-Neither mechanism’s strength contribution is quantified. Search/evaluation changes
-interact and may regress quiet defense or zugzwang; use outcome-based counterexamples,
-not algorithm-presence checklists.
+**Round gate:** define practical thinking-time objectives and independent decision
+outcomes before implementation, then use a coherent source checkpoint for combined
+verification. If the round does not produce useful cost/decision benefits, revisit
+the explanation and strategy instead of automatically creating more local fixes.
+Ordinary scalar native work uses Level 1 verification; broader platforms follow
+actual implementation risk, not an automatic unrelated GUI campaign.
 
-## Stage 3 — Test the combined round against its predecessor
+## Later checkpoint — Controlled competitive measurement
 
-Only after meaningful Stage 1/2 progress, propose a controlled earlier/current
-comparison with common fresh openings, paired colours, matching time and resource
-conditions and comparable opponents. Define the effect of interest, uncertainty,
-opening dependence, stopping rule and resource/artifact bounds before games. Choose
-the sample to answer that question; do not repeatedly estimate absolute strength
-from a handful of different openings.
+**Problem:** diagnostic roots cannot establish game-level relative strength. Earlier
+small absolute-index estimates across different openings did not demonstrate a
+reliable improvement. **Approach:** after meaningful engineering progress, propose a
+matched predecessor/current comparison with shared fresh openings, paired colours,
+comparable opponents, fixed source/configurations and a sample designed for a stated
+effect/uncertainty. Include opposing mistakes, conversion and complete-game behavior.
 
-**Gate:** John approves substantial study scope/resources before execution. Report
-both positive and negative findings; an inconclusive result remains inconclusive.
-Routine local development matches retain the cumulative 15-minute allowance per
-task, including failures/concurrent runs. This roadmap authorizes no new tournament.
+For serious qualification, consider conventional clocks **with increments** and a
+declared reference pool whose timing/resource conditions can be reasonably matched.
+Record hardware/time-manager/hash differences. Do not combine distinct time controls
+into one rating without a suitable model and evidence. Fixed-movetime diagnostics
+remain useful for causal questions but cannot validate full-game time allocation.
 
-**Benefit/confidence/risk:** this measures competitive transfer rather than assuming
-it. Statistical sensitivity depends on effect and sample; no fixed Elo target or
-unapproved campaign size is imposed.
+**Gate:** John approves a substantial campaign's question, sample/stopping rule and
+resource/artifact bounds before execution. An inconclusive comparison stays
+inconclusive. No tournament is authorized by this roadmap. Routine development
+matches retain the cumulative 15-minute allowance per task, including failures;
+no per-optimization absolute-rating campaign follows automatically.
 
-## Boundaries and preserved work
+## Boundaries and preserved history
 
-Native Rust rules, transitions, complete histories, claims and outcomes remain
-authoritative. Specialized internal state, caching and incremental operations must
-be demonstrably consistent with that authority. Safe code is the default. No learned
-evaluation or Shogi/Xiangqi transfer is authorized; all six games remain required.
-Player thinking-time configuration remains separate MSH-140 (Player Thinking Time).
-Broader platform compatibility is checked at implementation/integration risks,
-not through an unrelated packaged-GUI campaign for this diagnostic work.
+No learned evaluation or Shogi/Xiangqi development is authorized; all six games
+remain requirements. MSH-140 (Player Thinking Time) remains separate product work;
+current diagnostics change no desktop default. Native rules, histories, claims,
+complete actions and outcomes remain authoritative. Use [existing experiment tools](experiments.md)
+and [risk-based verification](../testing/verification-levels.md), not a second framework.
 
-Reuse the [experiment tools](experiments.md) and [risk-based verification policy](../testing/verification-levels.md).
-New and active tasks use concise **Problem / Objective / Approach / Completion**
-descriptions, with detailed conditions and receipts in linked evidence. No new
-parallel tracking system is introduced.
-
-The [previous roadmap](strength-roadmap-history-2026-11-09.md) preserves the complete
-historical sequence and superseded decisions. Completed engineering and assessment
-evidence remain valid for their recorded sources. The current [assessment](chess-adversarial-assessment.md)
-is the decision checkpoint; no next implementation task is automatically eligible
-until John reviews this direction.
+New and active tasks use concise Problem / Objective / Approach / Completion
+sections, with conditions, failures and receipts in linked evidence. The
+[MSH-154 roadmap](strength-roadmap-msh154.md) and [earlier history](strength-roadmap-history-2026-11-09.md)
+preserve previous direction; completed evidence remains valid for its source.
+The next action is owner review of MSH-155 (Chess Time Scaling), not automatic
+selection of an implementation ticket.

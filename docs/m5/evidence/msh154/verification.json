@@ -49,7 +49,9 @@
   "deferred_checkpoint": "Platform compatibility belongs to risk-selected implementation/integration or release work, not this diagnostic report",
   "integration": {
     "target": "codex/rewrite",
-    "status": "prepared for normal integration; final commit identity recorded in task/Git after creation"
+    "reviewed_assessment_commit": "25618fb",
+    "diagnostic_production_source": "d53f34413d808dc2b727a06a770b92f24191eabf",
+    "status": "Assessment25618fb fast-forward integrated; this metadata and task handoff published in subsequent normal commit. Owner approval remains pending."
   },
   "owner_checkpoint": "Findings and proposed roadmap require John review before substantial implementation. MSH-153 held ToDo.",
   "evidence_integrity": {

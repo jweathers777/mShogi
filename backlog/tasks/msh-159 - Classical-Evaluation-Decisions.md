@@ -1,7 +1,7 @@
 ---
 id: MSH-159
 title: Classical Evaluation Decisions
-status: In Review
+status: Done
 assignee:
   - '@codex-coordinator'
 created_date: '2026-11-10T18:27:00Z'
@@ -46,7 +46,7 @@ Retain only supported corrections, preserve native semantics, review independent
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -79,4 +79,6 @@ Full frozen results:5/160 development changes,0/80 held-out changes,1/40 fast ch
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
 Completed the focused evaluation investigation; no production correction retained. Exact pawn-race endpoint ranking and finite-supported bishop defensive-role weaknesses were established. General experimental corrections changed five-second targets to exf3+ and Kc3, but the full frozen comparison found two material strategic regressions. Independent outcome/closure review rejected candidate96e4bcd; evaluator restored byte-for-byte to verified e93a750 predecessor, all production crates/Cargo unchanged from d1f2c67. Full160development/80heldout5s and40fast1s runs complete; heldout80unchanged;48WDL/3mate primary objectives preserved. Candidate90tests pass/1manualignored and release build pass; retained source reuses unchanged predecessor evidence.400native+12reference runs,3284original hashes audited;1788.75s timed,2052.74s conservative charge below2400. Level1 macOSarm64; broader platform/GUI checks deferred to integration/release, not claimed. Evidence report docs/m5/classical-evaluation-decisions.md and docs/m5/evidence/msh159 preserve failures, exact/finite limits, actual traces and rejected variants. MSH-153 held; MSH-160 deferred planning preserved. No further workstream started. Normal integration target codex/rewrite; integration reference will be appended after merge.
+
+Integrated evidence/restoration commit c2075fc into codex/rewrite at c029333922effc29c86121ecee9662ee24d313f6, preserving unrelated ec1bcde opening-assessment planning. Production source remains identical to the verified predecessor. Independent final closure review verifies restored source and all3007archive entries. The application-primary assessment checkout is retained clean/synchronized for this chat because it is not an archivable disposable worktree; no ongoing engine process or experiment remains. Stop here: MSH-153 stays held and MSH-160 is deferred, with no next work item activated.
 <!-- SECTION:FINAL_SUMMARY:END -->

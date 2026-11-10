@@ -1,0 +1,19 @@
+{
+  "frozen_utc": "2026-11-10T19:06:36.406200+00:00",
+  "candidate_source": "96e4bcd6307409e988ffde1c8862aecfc7af39e3",
+  "candidate_binary_sha256": "b02a128ccf2e7f5a6f70b3ce8b99ebd753a0eda44cc46e5f9ddba89b2d2bd405",
+  "predecessor_source": "e93a750c058c82e8f85f8a05b92326747cd92aef",
+  "predecessor_binary_sha256": "9102ea64c5ec31d821243b6308b8b9977f3ff43691ac50e03489a65c455ea50f",
+  "development_sha256": "4c2dc1459b7be62201f04cb58cd7cbddc61483d8a90d9584fd16f3220bc00389",
+  "heldout_sha256": "b83342ce6944596fc4416e90a836a1f94360ddeb693a4871cf6e936d1a35d623",
+  "fast_panel_sha256": "85d1ed1cc6638d28164dce5e43dff50eafea660cf56f9471c942b813015da4f5",
+  "runner_sha256": "c5b2c65d73aed9201e2bbc1d14d6f3921b9319ecec987696f77f702d2c2e9c92",
+  "grader_sha256": "02c3cc20fb8292d353b931711e635f86a340122b3307aba037a47c2e876b2e9e",
+  "primary": "160 development then80 heldout,5s each,fresh process,4096TTentries; same full histories as reused MSH158 candidate receipts",
+  "secondary": "existing40development1s screen; reuseMSH158 candidate-fast receipts",
+  "judgment": "Frozen exact/published/finite rubric; unlisted soft alternatives unresolved. Allchangesreported. Up to8 changed soft pairs perpartition3s perforcedmove, lostpublishedpreference first,gainedsecond,otherthird,IDlexicalwithinpriority. Reuse same fullhistory rootpairs for0UOyM,0m5mI,28pJK byactualmove if applicable. Ifmorethan16newqueries split into same-condition batches; totalnewfinalreference<=96s within180s cumulative reference reservation. Whole near-root-cluster-001 familyexclusion sensitivity retained. No broadimprovement claim from targets/nominaldepth alone.",
+  "retention": "Require supported benefit and preserved exact outcomes, no independently established material contrary regression left unexplained. No parameter/product retuning afterheldout; rejectunsupported candidate ratherthanselectanuntestedvariant usingholdout.",
+  "scope": "Only classicalevaluation: guarded pawnpromotionclearance/race forecasting and oppositebishop currentloosepawnpressure/securefrontrestriction. No search/rules changes.",
+  "heldout_exposure": "No current heldout positions/results read by diagnosis/product workers beforefreeze. Existing80 reused asownerrequested, notnewpopulation.",
+  "cap_seconds": 2400
+}

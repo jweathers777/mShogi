@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex-coordinator'
 created_date: '2026-11-10T09:59:00Z'
-updated_date: '2026-11-10T10:16:00Z'
+updated_date: '2026-11-10T10:17:00Z'
 labels:
   - handle:chess-adversarial-assessment
 dependencies: []
@@ -45,7 +45,7 @@ Independently challenged findings, reproducible evidence and a readable prioriti
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -66,6 +66,8 @@ Owner: Codex coordinator. Dedicated app-managed worktree chess-adversarial-asses
 Initial independent reviews are frozen separately under evidence/msh154. Methodology rejected exhaustive low-budget parent/child screening; use preselected same-root alternatives instead. Historical games use 639b646, current diagnostic source d53f344; do not conflate versions. No new matches.
 
 Final evidence: docs/m5/chess-adversarial-assessment.md, strength-roadmap.md and evidence/msh154/verification.json. Independent methodology review approved diagnostic closure; owner review of findings/roadmap remains the explicit implementation gate. All69 artifacts and96 source hashes verified,74 native diagnostic rows preserve input/PV admission, Backlogdoctor and diffcheck pass. No production changes or new matches. Global CLI/runtime and initial sandbox failures resolved without partial record writes.
+
+Assessment/evidence commit25618fb fast-forward integrated into codex/rewrite from clean d53f344. All acceptance criteria and completion evidence are present; task intentionally remains In Review awaiting the owner-requested findings/roadmap decision. No further implementation is eligible under this checkpoint; MSH-153 (Classical Compensation Calibration) remains held. Disposable assessment worktree will be archived after normal push; primary checkout retains all evidence.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

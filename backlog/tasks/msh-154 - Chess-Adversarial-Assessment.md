@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex-coordinator'
 created_date: '2026-11-10T09:59:00Z'
-updated_date: '2026-11-10T10:17:00Z'
+updated_date: '2026-11-10T10:18:00Z'
 labels:
   - handle:chess-adversarial-assessment
 dependencies: []
@@ -68,6 +68,8 @@ Initial independent reviews are frozen separately under evidence/msh154. Methodo
 Final evidence: docs/m5/chess-adversarial-assessment.md, strength-roadmap.md and evidence/msh154/verification.json. Independent methodology review approved diagnostic closure; owner review of findings/roadmap remains the explicit implementation gate. All69 artifacts and96 source hashes verified,74 native diagnostic rows preserve input/PV admission, Backlogdoctor and diffcheck pass. No production changes or new matches. Global CLI/runtime and initial sandbox failures resolved without partial record writes.
 
 Assessment/evidence commit25618fb fast-forward integrated into codex/rewrite from clean d53f344. All acceptance criteria and completion evidence are present; task intentionally remains In Review awaiting the owner-requested findings/roadmap decision. No further implementation is eligible under this checkpoint; MSH-153 (Classical Compensation Calibration) remains held. Disposable assessment worktree will be archived after normal push; primary checkout retains all evidence.
+
+Published on origin/codex/rewrite at15275e0. Cleanup exception: archive_worktree rejected the isolated checkout with "The task primary checkout cannot be removed." It is clean, all commits integrated/pushed, no running processes or needed ignored files. Retained solely as this chat current checkout for owner review until the app permits archival; do not remove it behind app management. Primary project directory remains codex/rewrite. No further engine work authorized.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

@@ -32,40 +32,56 @@ transfer claims need additional independent holdouts.
 static bonuses, or infer a higher longer-time rating. Use the evidence to choose a
 coherent round with a practical budget/outcome objective and observable alternatives.
 
-## Authorized round — Useful search and efficient native execution together
+## Completed coherent round — Cost gains without broad decision transfer
 
-These are complementary workstreams, not a sequence in which a large kernel rewrite
-must finish before decision diagnosis can begin.
+MSH-156 (Independent Chess Benchmark) froze 240 public-source positions and their
+expectation tiers before production changes, with160 development / 80 held-out roots.
+MSH-157 (Conventional Decision Improvement) completed the two complementary
+workstreams and the full practical-time checkpoint. See the
+[round report](chess-decision-round.md) and [protocol](independent-chess-benchmark.md).
 
-| Workstream | Problem and supporting evidence | Approach, benefit and competing explanation | Completion evidence |
-| --- | --- | --- | --- |
-| Continuation coverage and classical judgment | Nf5/Rf6 choices remain weak at the sampled two/three seconds; some supported decisions change with budget, but seeing replies in a PV never proves their consequences were properly valued. | Trace candidate and best-defense continuations with matched remaining horizons and bound-aware comparisons. Vary one relevant search mechanism or endpoint term only when it distinguishes coverage from valuation. Expected benefit is earlier sound choices; the dominant cause is still unresolved. | Better supported decisions or earlier attainment across a balanced set, plus fresh holdouts; preserve exact WDL/mate controls and credible alternatives. Retain adverse cases and equal-time costs. No fixture-specific bonuses or success measured only by score agreement. |
-| Native search execution | MSH-154 profiles show substantial geometry/transition/evaluation/history work outside visits, and high claim-processing costs in relevant histories. The obsolete-repetition defect is real but narrow and absent at the two weakness roots. | Correct exact costs where measured. Prototype rules-owned checked transition reuse, changed-cell deltas and reversible search summaries alongside intact canonical history. Specialized internal state is permitted if profiling supports it. Expected speed scale and strength benefit are unknown; insufficient coverage/evaluation may still dominate. | Exact legal/state/history/outcome/restoration equivalence and cancellation bounds; fixed-traversal scores/work agree where appropriate. Repeatable total-cost gains on affected histories with no material regression on controls and equal-time decision non-regression. Reject a broad representation rewrite unless the bounded prototype justifies its complexity. |
+Two exact native corrections remove obsolete-repetition claim work and reuse one
+authoritative checked projection across intended claim reasons. Selected affected
+histories show roughly 3.9–4.0 times as many visits at one second; fixed traversal
+semantics remain identical. That benefit is worth retaining on its own evidence.
+The ordinary-history control is only about 1.04 times, and throughput is not strength.
 
-A small execution gain must not be sold as sufficient to recover five-second
-choices at one second. Conversely an exact cost repair need not change already-good
-moves to be worthwhile. Preserve the distinction between execution improvement,
-useful search efficiency and playing strength. A high unfinished-iteration fraction
-is not automatically waste or permission to use partial-root scores.
+At five seconds,238 of 240decisions are unchanged, including all 80held-out choices.
+The two development strategic changes require finite continuation judgments;
+published preference membership alone does not establish better play. No broad
+held-out transfer was demonstrated. The one-second screen is secondary and the
+exact root objectives are ceiling-limited. The round does not satisfy its broad
+decision-improvement gate and does not justify a competitive strength campaign.
 
-TT/ordering/frontier changes follow actual opportunity evidence: distinguish safe
-board-only move hints from exact history-dependent bounds; don't assume larger TT,
-more pruning or broader quiescence is inherently stronger. Specialized native
-state retains one authoritative legal transition/history/outcome implementation.
-Compact changes have significant special-move/history regression risk; safe Rust,
-existing conformance controls and independent review remain required.
+## Revised diagnosis before further engineering
 
-**MSH-153 (Classical Compensation Calibration) stays To Do/on hold.** Its historical
-criteria remain intact. Activate/refine it only if attribution justifies valuation
-work; otherwise adjust the work sequence before tuning. No new queue of isolated
-mistake tickets is created by this diagnosis.
+The development investigation supports weaknesses in long quiet king routes,
+pawn-race timing, bishop blockade and quiet queen defense/coordination. It does not
+establish population frequency or a single general defect. More time sometimes
+finds a better move while the anticipated consequences remain inaccurately valued.
+Pruning toggles confound coverage with completed depth; child-root probes also
+change TT/window/order and extension context. Neither is enough to select a safe
+general pruning or evaluation correction.
 
-**Round gate:** define practical thinking-time objectives and independent decision
-outcomes before implementation, then use a coherent source checkpoint for combined
-verification. If the round does not produce useful cost/decision benefits, revisit
-the explanation and strategy instead of automatically creating more local fixes.
-Ordinary scalar native work uses Level 1 verification; broader platforms follow
-actual implementation risk, not an automatic unrelated GUI campaign.
+Reconsider where the search loses useful continuation information before another
+series of local fixes. The discriminating question is the earliest divergence in
+coverage or valuation along independently justified quiet continuations, with
+comparable remaining search context and explicitly bounded expectations. Trace
+intermediate state values and admitted/omitted defenses, rather than treating a
+PV match or deeper nominal iteration as success. Use development material;
+held-out families exposed for diagnosis must be promoted and replaced before
+future independent validation. No production tuning occurred after this round's
+candidate freeze.
+
+Keep MSH-153 (Classical Compensation Calibration) on hold: the present evidence
+does not causally select a general compensation term. Do not automatically open a
+queue of bonuses, global pruning changes, or a wholesale representation rewrite.
+The authorized coherent round is complete; this roadmap records the next research
+direction, not an unbounded follow-on implementation campaign. A fresh bounded
+assignment should state its causal question, stopping rule and desired decision
+outcomes before changes. Retain the native authoritative rules/history boundary,
+independent regressions and Level 1 risk-based verification for ordinary scalar
+engine work.
 
 ## Later checkpoint — Controlled competitive measurement
 
@@ -100,10 +116,10 @@ New and active tasks use concise Problem / Objective / Approach / Completion
 sections, with conditions, failures and receipts in linked evidence. The
 [MSH-154 roadmap](strength-roadmap-msh154.md) and [earlier history](strength-roadmap-history-2026-11-09.md)
 preserve previous direction; completed evidence remains valid for its source.
-The current round freezes public-source expectations and a predecessor before
-production changes, uses five seconds as primary, one second secondary and focused
+The completed round froze public-source expectations and a predecessor before
+production changes, used five seconds as primary, one second secondary and focused
 fifteen-second probes. The original eight roots are regression-only. Held-out
 families stay isolated until candidate freeze; exposed families are promoted and
 replaced before later validation claims. MSH-157 (Conventional Decision Improvement)
-reports broad practical outcomes and revisits its diagnosis if benefits fail to
-materialize; routine related task transitions require no new owner checkpoint.
+records the failed broad-decision gate and the revised diagnosis above; the useful
+exact cost repair is not presented as a strength improvement.

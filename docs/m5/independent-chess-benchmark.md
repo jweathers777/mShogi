@@ -120,3 +120,18 @@ improve; no mixed-tier aggregate cancels an exact loss. A cost improvement witho
 this decision evidence is reported as an execution result and an unresolved
 better-Chess objective. Stop to reconsider the causal diagnosis if the gate is not
 met, rather than tuning against the revealed holdout or launching a tournament.
+
+## Completed checkpoint and exposure overlay
+
+The original frozen 240-root corpus and expectations remain unchanged. The
+[completed round](chess-decision-round.md) records full development/held-out results,
+quiet timing confirmations and the failed broad-decision-improvement gate.
+A subsequent historical source audit conservatively identified the two-root
+`near-root-cluster-001` development family as previously exposed (a mirrored
+board match with different side/counters). Treat `syzygy-draw-d92cad1caf419688`
+and `syzygy-draw-7eb891d11b770c34` as development/regression material in future use.
+Do not describe all 240 roots as historically fresh. The whole-family-excluded
+238-root sensitivity is reported separately; original measurements are retained.
+No held-out matches were found within the explicitly bounded source/M5 evidence
+scope. See [the exposure overlay](evidence/msh157/final-review/freshness-review.json)
+for identities, scope and limits. Unknown lineage remains an explicit limitation.

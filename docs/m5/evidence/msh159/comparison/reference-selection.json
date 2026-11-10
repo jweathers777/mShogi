@@ -1,0 +1,135 @@
+{
+  "panel_sha256": "c7d087b3cd744b7a835abc5b1d888df7e75e8b49ac0d69606e725b720cb4f200",
+  "local_only_contains_source_rows": true,
+  "state": "FROZEN_FINAL_REFERENCE_PAIRS",
+  "selected": [
+    {
+      "partition": "development",
+      "id": "sts-STS(v2.2) Open Files and Diagonals.037",
+      "priority": "lost published preference",
+      "before": "a2b1",
+      "after": "e7b4"
+    },
+    {
+      "partition": "development",
+      "id": "lichess-puzzle-0UOyM",
+      "priority": "gained published preference",
+      "before": "h7g6",
+      "after": "e4f3"
+    },
+    {
+      "partition": "development",
+      "id": "lichess-puzzle-0m5mI",
+      "priority": "gained published preference",
+      "before": "a3d6",
+      "after": "b2c3"
+    },
+    {
+      "partition": "development",
+      "id": "sts-STS(v1.0) Undermine.037",
+      "priority": "other soft change",
+      "before": "g2g5",
+      "after": "g2c2"
+    },
+    {
+      "partition": "development",
+      "id": "sts-STS(v2.2) Open Files and Diagonals.033",
+      "priority": "other soft change",
+      "before": "b3b4",
+      "after": "b3f3"
+    }
+  ],
+  "reused": [
+    {
+      "id": "lichess-puzzle-0UOyM",
+      "manifest": "/tmp/msh157-reference-initial/manifest.json",
+      "manifest_sha256": "8429ddb16d280c0c502762e079ab10ac118479e18cb70ad494390f772a264c85",
+      "queries": [
+        {
+          "query_index": 0,
+          "root_id": "lichess-puzzle-0UOyM",
+          "root_move": "h7g6",
+          "seconds": 3,
+          "role": "candidate"
+        },
+        {
+          "query_index": 1,
+          "root_id": "lichess-puzzle-0UOyM",
+          "root_move": "e4f3",
+          "seconds": 3,
+          "role": "anchor"
+        }
+      ],
+      "reason": "same full-history root and both actual moves under recorded equal3s reference conditions; inspect retained bound/PV receipts for final opinion"
+    },
+    {
+      "id": "lichess-puzzle-0m5mI",
+      "manifest": "/tmp/msh157-reference-initial/manifest.json",
+      "manifest_sha256": "8429ddb16d280c0c502762e079ab10ac118479e18cb70ad494390f772a264c85",
+      "queries": [
+        {
+          "query_index": 2,
+          "root_id": "lichess-puzzle-0m5mI",
+          "root_move": "b2c3",
+          "seconds": 3,
+          "role": "anchor"
+        },
+        {
+          "query_index": 3,
+          "root_id": "lichess-puzzle-0m5mI",
+          "root_move": "a3d6",
+          "seconds": 3,
+          "role": "candidate"
+        }
+      ],
+      "reason": "same full-history root and both actual moves under recorded equal3s reference conditions; inspect retained bound/PV receipts for final opinion"
+    }
+  ],
+  "queries": [
+    {
+      "query_index": 0,
+      "root_id": "sts-STS(v2.2) Open Files and Diagonals.037",
+      "root_move": "a2b1",
+      "seconds": 3,
+      "role": "predecessor"
+    },
+    {
+      "query_index": 1,
+      "root_id": "sts-STS(v2.2) Open Files and Diagonals.037",
+      "root_move": "e7b4",
+      "seconds": 3,
+      "role": "candidate"
+    },
+    {
+      "query_index": 2,
+      "root_id": "sts-STS(v1.0) Undermine.037",
+      "root_move": "g2g5",
+      "seconds": 3,
+      "role": "predecessor"
+    },
+    {
+      "query_index": 3,
+      "root_id": "sts-STS(v1.0) Undermine.037",
+      "root_move": "g2c2",
+      "seconds": 3,
+      "role": "candidate"
+    },
+    {
+      "query_index": 4,
+      "root_id": "sts-STS(v2.2) Open Files and Diagonals.033",
+      "root_move": "b3b4",
+      "seconds": 3,
+      "role": "predecessor"
+    },
+    {
+      "query_index": 5,
+      "root_id": "sts-STS(v2.2) Open Files and Diagonals.033",
+      "root_move": "b3f3",
+      "seconds": 3,
+      "role": "candidate"
+    }
+  ],
+  "nominal_active_seconds": 18,
+  "rule": "Frozen exact/published/finite rubric; unlisted soft alternatives unresolved. Allchangesreported. Up to8 changed soft pairs perpartition3s perforcedmove, lostpublishedpreference first,gainedsecond,otherthird,IDlexicalwithinpriority. Reuse same fullhistory rootpairs for0UOyM,0m5mI,28pJK byactualmove if applicable. Ifmorethan16newqueries split into same-condition batches; totalnewfinalreference<=96s within180s cumulative reference reservation. Whole near-root-cluster-001 familyexclusion sensitivity retained. No broadimprovement claim from targets/nominaldepth alone.",
+  "unselected_changed_soft_ids": []
+}

@@ -1,0 +1,347 @@
+{
+  "rows": [
+    {
+      "id": "sts-STS(v2.2) Open Files and Diagonals.037",
+      "move": "a2b1",
+      "san": "Bb1",
+      "score": {
+        "cp": 117,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 24,
+      "pv_san": [
+        "Bb1",
+        "Ne2",
+        "Be4",
+        "O-O",
+        "Qb7",
+        "e6",
+        "Qd5",
+        "Qb6",
+        "Qd6",
+        "Qxd6",
+        "Rxd6",
+        "Kf2",
+        "Kf8",
+        "Rc1",
+        "Rxe6",
+        "Nd4",
+        "Rd6",
+        "Ke3",
+        "Bxg2",
+        "Nxf5",
+        "Re6+",
+        "Kf2",
+        "Bh3",
+        "Rc8+",
+        "Re8"
+      ],
+      "last_two": [
+        {
+          "depth": 23,
+          "score": {
+            "cp": 114,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 24,
+          "score": {
+            "cp": 117,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 0,
+      "legal_replay": true,
+      "query_sha256": "48ce6cc46e766415e1dfa16dda06da2630a420d7f22376c01046491a8690b774"
+    },
+    {
+      "id": "sts-STS(v2.2) Open Files and Diagonals.037",
+      "move": "e7b4",
+      "san": "Qb4+",
+      "score": {
+        "cp": 0,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 34,
+      "pv_san": [
+        "Qb4+",
+        "Kf2",
+        "Qd2+",
+        "Qxd2",
+        "Rxd2+",
+        "Ke3",
+        "Rxg2",
+        "Rd1",
+        "Rxh2",
+        "e6",
+        "Rh3+",
+        "Kd4",
+        "Bxb3",
+        "Nxb3",
+        "Rxb3",
+        "Ke5",
+        "Re3+",
+        "Kd6",
+        "g5",
+        "Rd5",
+        "gxf4",
+        "Rxf5",
+        "b4",
+        "e7",
+        "b3",
+        "Rf8+",
+        "Kg7",
+        "Rxf4",
+        "b2",
+        "Rb4",
+        "Kf6",
+        "Rf4+",
+        "Kg7"
+      ],
+      "last_two": [
+        {
+          "depth": 33,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 34,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 0,
+      "legal_replay": true,
+      "query_sha256": "f3064518a36e896eab747c60956e28dbe531723587af540ce12d916bf67e2c4f"
+    },
+    {
+      "id": "sts-STS(v1.0) Undermine.037",
+      "move": "g2g5",
+      "san": "Rg5",
+      "score": {
+        "cp": 471,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 24,
+      "pv_san": [
+        "Rg5",
+        "Re8",
+        "Rxd5",
+        "Kg8",
+        "Rd6",
+        "b6",
+        "a3",
+        "Qc7",
+        "b4",
+        "Qf7",
+        "a4",
+        "Qc7",
+        "b5",
+        "Qf7",
+        "h3",
+        "Qc7",
+        "h4",
+        "Rf8",
+        "Be5",
+        "Qf7",
+        "Kg2",
+        "Re8",
+        "Bd4",
+        "Qc7",
+        "Rc6",
+        "Qf7",
+        "Qf4",
+        "e3",
+        "Rc7",
+        "Qa2+",
+        "Kg3"
+      ],
+      "last_two": [
+        {
+          "depth": 23,
+          "score": {
+            "cp": 471,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 24,
+          "score": {
+            "cp": 471,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 0,
+      "legal_replay": true,
+      "query_sha256": "e08400a165500d72757f1435a0c099fbf995d1f7174026676133ad3cad8caddf"
+    },
+    {
+      "id": "sts-STS(v1.0) Undermine.037",
+      "move": "g2c2",
+      "san": "Rc2",
+      "score": {
+        "cp": 0,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 90,
+      "pv_san": [
+        "Rc2",
+        "Rxc2",
+        "Qf8+",
+        "Bg8",
+        "Qh6+"
+      ],
+      "last_two": [
+        {
+          "depth": 89,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 90,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 0,
+      "legal_replay": true,
+      "query_sha256": "e5343016918e6930613215a3331799a02a37a26a2b6b0c300d4ef293cb3f6d1c"
+    },
+    {
+      "id": "sts-STS(v2.2) Open Files and Diagonals.033",
+      "move": "b3b4",
+      "san": "Rb4",
+      "score": {
+        "cp": 0,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 36,
+      "pv_san": [
+        "Rb4",
+        "Ra2",
+        "Rb8",
+        "Qe7",
+        "Rb3",
+        "a5",
+        "Qg4",
+        "Rg1",
+        "Rf3",
+        "Rg2",
+        "Rf6",
+        "Kh1",
+        "Qd1+",
+        "Rg1",
+        "Qf3+",
+        "Rg2"
+      ],
+      "last_two": [
+        {
+          "depth": 35,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 36,
+          "score": {
+            "cp": 0,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 0,
+      "legal_replay": true,
+      "query_sha256": "c870b354bfc5b47652a65e5ddbaba569b0c65b95ad0e9241353052b02e883752"
+    },
+    {
+      "id": "sts-STS(v2.2) Open Files and Diagonals.033",
+      "move": "b3f3",
+      "san": "Rf3",
+      "score": {
+        "cp": 186,
+        "mate": null,
+        "perspective": "root_side"
+      },
+      "depth": 22,
+      "pv_san": [
+        "Rf3",
+        "Ra2",
+        "Qf5",
+        "Kg2",
+        "Bf6",
+        "Qb8",
+        "g5",
+        "hxg5",
+        "Bd4",
+        "Rd2",
+        "Qe4",
+        "Rxd4",
+        "Qxd4",
+        "Rf1",
+        "h4",
+        "Qb1",
+        "Ra3",
+        "Rh1",
+        "hxg3",
+        "Qh7+",
+        "Kf8",
+        "fxg3",
+        "Rxa4",
+        "Rh4",
+        "Qd2+",
+        "Kh3",
+        "Rxh4+",
+        "gxh4"
+      ],
+      "last_two": [
+        {
+          "depth": 21,
+          "score": {
+            "cp": 149,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        },
+        {
+          "depth": 22,
+          "score": {
+            "cp": 186,
+            "mate": null,
+            "perspective": "root_side"
+          }
+        }
+      ],
+      "full_history_plies": 0,
+      "legal_replay": true,
+      "query_sha256": "ea7902060771a2d3f11d7fa7df506e07f06187af1080afc10d39f9a3a25586d1"
+    }
+  ],
+  "interpretation": "Final frozen changed-choice reference pairs: finite supporting evidence, not calibration targets or exact WDL. Requires independent consequence adjudication."
+}

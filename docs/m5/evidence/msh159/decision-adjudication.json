@@ -1,0 +1,65 @@
+{
+  "candidate": "96e4bcd6307409e988ffde1c8862aecfc7af39e3",
+  "disposition": "REJECT whole frozen combined candidate; retain predecessor; no unvalidated component selection",
+  "rows": [
+    {
+      "id": "lichess-puzzle-0UOyM",
+      "before": "Kg6",
+      "after": "exf3+",
+      "automatic_rubric": "unresolved",
+      "independent_judgment": "supported local improvement",
+      "exact_root_wdl_proved": false
+    },
+    {
+      "id": "lichess-puzzle-0m5mI",
+      "before": "Bd6",
+      "after": "Kc3",
+      "automatic_rubric": "unresolved",
+      "independent_judgment": "supported local improvement",
+      "exact_root_wdl_proved": false
+    },
+    {
+      "id": "sts-STS(v1.0) Undermine.037",
+      "before": "Rg5",
+      "after": "Rc2",
+      "automatic_rubric": "unresolved",
+      "independent_judgment": "supported material regression",
+      "exact_root_wdl_proved": false
+    },
+    {
+      "id": "sts-STS(v2.2) Open Files and Diagonals.033",
+      "before": "Rb4",
+      "after": "Rf3",
+      "automatic_rubric": "unresolved",
+      "independent_judgment": "finite support for improvement; conversion uncertain",
+      "exact_root_wdl_proved": false
+    },
+    {
+      "id": "sts-STS(v2.2) Open Files and Diagonals.037",
+      "before": "Bb1",
+      "after": "Qb4+",
+      "automatic_rubric": "unresolved",
+      "independent_judgment": "supported material regression",
+      "exact_root_wdl_proved": false
+    }
+  ],
+  "unchanged_primary_choices": 235,
+  "heldout_unchanged": 80,
+  "fast_changes": [
+    {
+      "id": "lichess-puzzle-0m5mI",
+      "before": "Bd6",
+      "after": "Kc3",
+      "judgment": "same finite-supported local preference at1s"
+    }
+  ],
+  "exact_preserved": {
+    "primary_tablebase": 48,
+    "primary_mate_in_one": 3,
+    "secondary_tablebase": 10
+  },
+  "new_final_reference_queries": 6,
+  "reused_target_reference_queries": 4,
+  "references": "final-outcome-review.md; final-reference-findings.json; reused-root-reference-findings.json",
+  "limitations": "No adding centipawns across roots or counting favorable opinions as a quality metric; no broad transfer/strength conclusion. Automatic unpublished alternatives remain unresolved; independent judgments retain finite uncertainty."
+}

@@ -1,0 +1,18 @@
+# MSH-158 (Chess Decision Corrections): comparison and retained reference review
+
+Verdict: comparison script is suitable for the frozen campaign's reporting and deterministic reference selection; no material blocker found. Campaign is still running: no full-panel conclusion is made. Reviewer did not run the comparison script or read held-out results. Source-read /tmp/msh158/compare-results.py, frozen grader, candidate-freeze.json and the two retained development reference queries; independent Python-chess replay used /tmp/msh139/venv/bin/python. No engines run.
+
+Script checks frozen grader/panel hashes, predecessor/candidate binary hashes, equal time, disabled diagnostic switches, native root preservation/PV admission, no node cap,4096 TT entries and Conventional mode. It reconstructs each root's full history and validates exact six-field FEN and legal selected moves/PV/final FEN. Duplicate attempts and unexpected IDs fail; incomplete trailing writes are excluded and missing rows leave partial state. Failed runs stay unresolved. Authority tiers remain separate and unlisted soft choices are not scored as automatic losses. Prior-exposed-family sensitivity is retained. Reference selection waits for both complete primary partitions, applies the frozen priority/lexical rule and cap, preserves the first selection, and explicitly remaps the reusable pair by actual moves. It does not execute engines.
+
+Provenance limits: comparison validates output/ledger fields, not all underlying input and raw artifact hashes itself; the frozen runner/global resource and artifact audit must establish those. Root FEN alone cannot prove history equivalence, so retain runner input provenance. Native claim legality is trusted to the native-admitted receipt; Python replay stops at a claim. The frozen grader appropriately treats missing board moves as unresolved. Equal-time completed depths may differ and are not a decision-quality score.
+
+Retained reference pair verified:
+
+- query004 old role candidate means actual Qf4/f5f4; in this round that is the predecessor choice.
+- query005 old role anchor means actual Qc8/f5c8; in this round that is the candidate choice.
+- Both inputs are identical full49-ply histories from start position, exactly matching the current development root and ending Black to move. Raw UCI logs send that full history and respectively go movetime3000 searchmoves f5f4/f5c8.
+- Both receipts identify Stockfish19 binary8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5, Threads1, Hash16, empty SyzygyPath and unrestricted strength. Actual searches3.000542s and3.001342s.
+- Bestmove-aligned final nonbound scores are−438cp at depth22 for Qf4 and+287cp at depth19 for Qc8, both from Black's perspective. No bestmove alignment issue. Last two distinct completed depths agree directionally: Qf4−438/−438, Qc8+296/+287.
+- Independently replayed both complete reported PVs legally and matched their final six-field FENs. Qf4 line starts Qf4,Qc1,Qf6,Rg3,Rd4, showing the quiet defensive reply and White's consolidation. Qc8 line starts Qc8,b3,Rd2,Rd1,Qa6+,Na4,Bxa4 and continues Black's checks/invasion and exchanges. These provide meaningful continuation support beyond preferred-move agreement.
+
+Conclusion limited to this root: the preserved equal-time reference opinion supports Qc8 over Qf4, and is valid to reuse by actual move rather than obsolete role label. It is finite analysis, not exact WDL or proof of all branches. The reference PV itself replies Rd1 after Rd2; candidate tracing separately shows Qc1 considered there. Combining these observations must not imply the retained reference directly proved every candidate-PV branch or establish broad improvement before the campaign completes.

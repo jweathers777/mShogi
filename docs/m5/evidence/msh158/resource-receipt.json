@@ -1,0 +1,152 @@
+{
+  "audited_utc": "2026-11-10T17:25:41.474549+00:00",
+  "native_attempts": 360,
+  "failed_native_attempts": 0,
+  "verified_native_and_reference_artifacts": 2894,
+  "native_active_seconds": 1562.7994859279997,
+  "reference_active_seconds": 6.0008752080611885,
+  "measured_timed_engine_seconds": 1568.800361136061,
+  "correctness_test_reserved_upper_bound_seconds": 120,
+  "conservative_total_including_tests": 1688.800361136061,
+  "effective_registry_charge_with_unused_reservations": 1802.7994859279988,
+  "global_cap_seconds": 2400,
+  "within_cap": true,
+  "native_process_wall_seconds": 1615.8592876126058,
+  "native_worker_cpu_seconds": 1587.7481010000006,
+  "folders": [
+    {
+      "directory": "trace5",
+      "attempts": 3,
+      "active_seconds": 15.0007955,
+      "manifest_sha256": "1affd61d9302b74b14991f088d3e1eba5333c90e049c900aa19276a601e8e250"
+    },
+    {
+      "directory": "trace15",
+      "attempts": 3,
+      "active_seconds": 45.000895624,
+      "manifest_sha256": "2a45f018526d41bbb0f506dbd1c47cd7c4ad6e4e960c3c7d8ef5ad2ddd3b939b"
+    },
+    {
+      "directory": "equivalence-plain",
+      "attempts": 3,
+      "active_seconds": 0.055173083,
+      "manifest_sha256": "6e39e97199feebbbbf2022ceb290e4f4dbee03eb6fed5031596ea36f0a18ed6b"
+    },
+    {
+      "directory": "equivalence-traced",
+      "attempts": 3,
+      "active_seconds": 0.057451417,
+      "manifest_sha256": "7879a732f2322728c0e97b9c1f017d0a096e6f9d5dd894a40ffb2f711d52f7c0"
+    },
+    {
+      "directory": "no-pv-lmr",
+      "attempts": 11,
+      "active_seconds": 55.00268133400001,
+      "manifest_sha256": "f89bb438741c2c369c84b92697d8223537e6696525a6c4eecac9265ff4f1d9be"
+    },
+    {
+      "directory": "endpoints5",
+      "attempts": 2,
+      "active_seconds": 10.000572,
+      "manifest_sha256": "e7d2009e96c58290fea48ef0565adcdfa358a02577ef1e7125f443f5fef4e631"
+    },
+    {
+      "directory": "endpoints15",
+      "attempts": 2,
+      "active_seconds": 30.000525958,
+      "manifest_sha256": "c95babafffa9941a65b3771a072345c3f93a0c6009f60ca6ca5a21b6a85abfe6"
+    },
+    {
+      "directory": "passed-extension",
+      "attempts": 11,
+      "active_seconds": 55.004154376,
+      "manifest_sha256": "c2a2c17790d8c63908ca740acf2f2f7c64c71a8b8c7125a349e9372b0a17901f"
+    },
+    {
+      "directory": "pv-margin-verify",
+      "attempts": 11,
+      "active_seconds": 55.002858415000006,
+      "manifest_sha256": "74951bbf1f1bab20b94c277de81f01aa7fc2a83f94cc5edc2eaf3a9292d6f79a"
+    },
+    {
+      "directory": "bishop-candidate-trace5",
+      "attempts": 1,
+      "active_seconds": 5.000310833,
+      "manifest_sha256": "413052516cab13da9b94560088b161c5e4d5b7a46e8a3539b9b03cd132aabba9"
+    },
+    {
+      "directory": "bishop-candidate-trace15",
+      "attempts": 1,
+      "active_seconds": 15.000255333,
+      "manifest_sha256": "7d723f95848ce18bc6f2bd47cf21e70e421f31ac7b21039aa2b51792855bab97"
+    },
+    {
+      "directory": "queen-candidate-trace5",
+      "attempts": 1,
+      "active_seconds": 5.000260042,
+      "manifest_sha256": "7345c9e06cec993b522831dfa46c1249d1783af44958e88266e8e86f2ae8b5ae"
+    },
+    {
+      "directory": "queen-candidate-trace15",
+      "attempts": 1,
+      "active_seconds": 15.000238625,
+      "manifest_sha256": "38feae07d8a3b6e6de182f9b4ebd8231164a7b1b8e68af6d3ce8b87ff85f9339"
+    },
+    {
+      "directory": "threat-context",
+      "attempts": 3,
+      "active_seconds": 15.000818083,
+      "manifest_sha256": "3d41c03cbacd83833baddf30e89ae9fc8996403049d6b031e60124132f452dbd"
+    },
+    {
+      "directory": "pawn-race",
+      "attempts": 11,
+      "active_seconds": 55.002734958000005,
+      "manifest_sha256": "b44af0005dee202ed659da63d855715d8f7fe5759ab705bee1b0d2eae1d8e94d"
+    },
+    {
+      "directory": "threat-controls",
+      "attempts": 11,
+      "active_seconds": 55.002596376,
+      "manifest_sha256": "ca51f55def737a12bf0da9bd9b2b9a1e60a1cb08303f30eaa857e1c96384f645"
+    },
+    {
+      "directory": "threat-trace5",
+      "attempts": 1,
+      "active_seconds": 5.000225,
+      "manifest_sha256": "d0e9b5cec469ce68265929ed851bdb286fe1ef5df0e37dc21694ff1e0fd85e50"
+    },
+    {
+      "directory": "threat-trace15",
+      "attempts": 1,
+      "active_seconds": 15.000302,
+      "manifest_sha256": "859f7889007cecf512e1ea64e04de6c21e23a84c100d1e499933ca963553a86e"
+    },
+    {
+      "directory": "candidate-development",
+      "attempts": 160,
+      "active_seconds": 728.4520968019997,
+      "manifest_sha256": "364516325ca30204c044e7cd9805c917b46547a5b0bc1cd210cb5e380257f051"
+    },
+    {
+      "directory": "candidate-heldout",
+      "attempts": 80,
+      "active_seconds": 348.1547702509999,
+      "manifest_sha256": "91e1355a814979efa38eb76ede5790d11c4e7cda21328f48fd2f723cbd2b68e8"
+    },
+    {
+      "directory": "candidate-fast",
+      "attempts": 40,
+      "active_seconds": 36.05976991799999,
+      "manifest_sha256": "4e2c44dbf150c78d793ea1d6275a5bc80c2616014c730fb90103f26c43816fa5"
+    }
+  ],
+  "checks": [
+    "manifest/panel/driver/binary/artifact hashes",
+    "complete sequential ledgers, no orphan attempts",
+    "exact runtime input histories and FENs against manifest",
+    "native root restoration and PV admission",
+    "no native/reference overlap"
+  ],
+  "limitations": "Test reservation120s is conservative, not measured engine-only CPU. Reference120s reservation remains charged despite unused allowance. Reused predecessor measurements excluded from new resource use; full original receipts inMSH157. No matches."
+}

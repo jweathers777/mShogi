@@ -1,0 +1,18 @@
+{
+  "accounting": "Conservative upper-bound debit, not a measured active-search duration. Includes all local correctness-test engine work, including trial/test failures; compilation and wall receipts retained separately. No further engine tests authorized under this debit without reconciliation.",
+  "final_search_suite": {
+    "passed": 82,
+    "failed": 0,
+    "ignored": 1,
+    "filtered": 35,
+    "test_process_reported_seconds": 12.19
+  },
+  "console_claim_admission": {
+    "passed": 1,
+    "test_process_reported_seconds": 2.07
+  },
+  "focused_tests_reported_seconds": 0.6,
+  "note": "Earlier pawn-race focused fixture test passed; initial compile failure and invalid native-FEN fixture failure were fixed for trial then trial was reverted. These are not final production regressions.",
+  "reserved_upper_bound_seconds": 120,
+  "registry_accounting": "Existing120second external reservation is retained without refund; no fabricated CPU/wall receipt. Engine-only test time was not separately measured."
+}

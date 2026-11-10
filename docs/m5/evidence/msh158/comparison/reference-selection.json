@@ -1,0 +1,42 @@
+{
+  "panel_sha256": "aa2a65db7e380e44da9fb888e3e6cad0878ddcdce6f9d25d6fb1995a24e070e4",
+  "local_only_contains_source_rows": true,
+  "state": "FROZEN_FINAL_REFERENCE_PAIRS",
+  "selected": [
+    {
+      "partition": "development",
+      "id": "lichess-puzzle-28pJK",
+      "priority": "gained published preference",
+      "before": "f5f4",
+      "after": "f5c8"
+    }
+  ],
+  "reused": [
+    {
+      "id": "lichess-puzzle-28pJK",
+      "manifest": "/tmp/msh157-reference-initial/manifest.json",
+      "manifest_sha256": "8429ddb16d280c0c502762e079ab10ac118479e18cb70ad494390f772a264c85",
+      "queries": [
+        {
+          "query_index": 4,
+          "root_id": "lichess-puzzle-28pJK",
+          "root_move": "f5f4",
+          "seconds": 3,
+          "role": "candidate"
+        },
+        {
+          "query_index": 5,
+          "root_id": "lichess-puzzle-28pJK",
+          "root_move": "f5c8",
+          "seconds": 3,
+          "role": "anchor"
+        }
+      ],
+      "reason": "same full-history root and both actual moves under recorded equal3s reference conditions; inspect retained bound/PV receipts for final opinion"
+    }
+  ],
+  "queries": [],
+  "nominal_active_seconds": 0,
+  "rule": "unchanged exact/published/finite authority rubric; unlisted alternatives unresolved, never automatic zero. Independently analyse up to8 changed soft pairs per partition3s per forcedmove, prioritize lost published preference then gained then other change, IDlexicalwithinpriority; remaining unresolved explicit. Existing fullhistory reference pair for28pJK may be reused. Report all changes, exact goals/WDL separately and whole prior-exposed-family exclusion sensitivity. No broadimprovement claim from singleproblem or nominaldepth.",
+  "unselected_changed_soft_ids": []
+}

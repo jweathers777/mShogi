@@ -1,0 +1,12 @@
+{
+  "id": "lichess-puzzle-28pJK",
+  "before": "f5f4",
+  "after": "f5c8",
+  "rubric": "unresolved by published preference alone",
+  "independent_judgment": "supported local decision improvement, finite reference opinion",
+  "reference": "MSH157 initial query004/005; see comparison-review.md; reused byactualmove, notoldrole",
+  "exact_wdl_proved": false,
+  "new_reference_queries_needed": 0,
+  "remaining_primary_choices_unchanged": 239,
+  "heldout_transfer_demonstrated": false
+}

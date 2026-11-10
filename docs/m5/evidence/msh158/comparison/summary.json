@@ -1,0 +1,323 @@
+{
+  "created_utc": "2026-11-10T17:25:40.791150+00:00",
+  "state": "complete",
+  "partitions": {
+    "development": {
+      "state": "complete",
+      "planned": 160,
+      "compared": 160,
+      "missing_before": [],
+      "missing_after": [],
+      "summary_by_authority": [
+        {
+          "tier": "exact-mate-in-one",
+          "outcome": "unchanged-decision",
+          "count": 1
+        },
+        {
+          "tier": "exact-tablebase-wdl",
+          "outcome": "unchanged-decision",
+          "count": 32
+        },
+        {
+          "tier": "finite-reference-opinion",
+          "outcome": "unchanged-decision",
+          "count": 24
+        },
+        {
+          "tier": "published-puzzle-preference",
+          "outcome": "unchanged-decision",
+          "count": 62
+        },
+        {
+          "tier": "published-puzzle-preference",
+          "outcome": "unresolved",
+          "count": 1
+        },
+        {
+          "tier": "published-strategic-preference",
+          "outcome": "unchanged-decision",
+          "count": 40
+        }
+      ],
+      "exact_regressions": [],
+      "invalid_exact_comparisons": [],
+      "unresolved_ids": [
+        "lichess-puzzle-28pJK"
+      ],
+      "family_exclusion_sensitivity": {
+        "family": "near-root-cluster-001",
+        "excluded_ids": [
+          "syzygy-draw-7eb891d11b770c34",
+          "syzygy-draw-d92cad1caf419688"
+        ],
+        "compared": 158,
+        "summary_by_authority": [
+          {
+            "tier": "exact-mate-in-one",
+            "outcome": "unchanged-decision",
+            "count": 1
+          },
+          {
+            "tier": "exact-tablebase-wdl",
+            "outcome": "unchanged-decision",
+            "count": 30
+          },
+          {
+            "tier": "finite-reference-opinion",
+            "outcome": "unchanged-decision",
+            "count": 24
+          },
+          {
+            "tier": "published-puzzle-preference",
+            "outcome": "unchanged-decision",
+            "count": 62
+          },
+          {
+            "tier": "published-puzzle-preference",
+            "outcome": "unresolved",
+            "count": 1
+          },
+          {
+            "tier": "published-strategic-preference",
+            "outcome": "unchanged-decision",
+            "count": 40
+          }
+        ]
+      },
+      "provenance": {
+        "panel_sha256": "4c2dc1459b7be62201f04cb58cd7cbddc61483d8a90d9584fd16f3220bc00389",
+        "predecessor_directory": "/tmp/msh157-runs/candidate-development",
+        "candidate_directory": "/tmp/msh158/runs/candidate-development",
+        "predecessor_ledger_sha256": "e373e105f69bd8ddbad8a047067af80449f4ba8c82ef059c0b2a09ee4c1bde0b",
+        "candidate_ledger_sha256": "8847326dd8515a4f5df7fee419503e4a6d186f915abe5cfa125e9bea1aa92702"
+      },
+      "changed_count": 1,
+      "changes": [
+        {
+          "id": "lichess-puzzle-28pJK",
+          "before": "f5f4",
+          "after": "f5c8",
+          "outcome": "unresolved"
+        }
+      ]
+    },
+    "fast": {
+      "state": "complete",
+      "planned": 40,
+      "compared": 40,
+      "missing_before": [],
+      "missing_after": [],
+      "summary_by_authority": [
+        {
+          "tier": "exact-tablebase-wdl",
+          "outcome": "unchanged-decision",
+          "count": 10
+        },
+        {
+          "tier": "finite-reference-opinion",
+          "outcome": "unchanged-decision",
+          "count": 10
+        },
+        {
+          "tier": "published-puzzle-preference",
+          "outcome": "unchanged-decision",
+          "count": 10
+        },
+        {
+          "tier": "published-strategic-preference",
+          "outcome": "unchanged-decision",
+          "count": 10
+        }
+      ],
+      "exact_regressions": [],
+      "invalid_exact_comparisons": [],
+      "unresolved_ids": [],
+      "family_exclusion_sensitivity": {
+        "family": "near-root-cluster-001",
+        "excluded_ids": [
+          "syzygy-draw-7eb891d11b770c34",
+          "syzygy-draw-d92cad1caf419688"
+        ],
+        "compared": 39,
+        "summary_by_authority": [
+          {
+            "tier": "exact-tablebase-wdl",
+            "outcome": "unchanged-decision",
+            "count": 9
+          },
+          {
+            "tier": "finite-reference-opinion",
+            "outcome": "unchanged-decision",
+            "count": 10
+          },
+          {
+            "tier": "published-puzzle-preference",
+            "outcome": "unchanged-decision",
+            "count": 10
+          },
+          {
+            "tier": "published-strategic-preference",
+            "outcome": "unchanged-decision",
+            "count": 10
+          }
+        ]
+      },
+      "provenance": {
+        "panel_sha256": "85d1ed1cc6638d28164dce5e43dff50eafea660cf56f9471c942b813015da4f5",
+        "predecessor_directory": "/tmp/msh157-runs/fast-candidate",
+        "candidate_directory": "/tmp/msh158/runs/candidate-fast",
+        "predecessor_ledger_sha256": "821a305c2c78dac29009efc378eff929fc41057d2d3e6e8d826125220ace7c35",
+        "candidate_ledger_sha256": "2a5de8df2abd06b133bcc7ce7aca7f9dd07834aa263fd8590eafca3b60287825"
+      },
+      "changed_count": 0,
+      "changes": []
+    },
+    "heldout": {
+      "state": "complete",
+      "planned": 80,
+      "compared": 80,
+      "missing_before": [],
+      "missing_after": [],
+      "summary_by_authority": [
+        {
+          "tier": "exact-mate-in-one",
+          "outcome": "unchanged-decision",
+          "count": 2
+        },
+        {
+          "tier": "exact-tablebase-wdl",
+          "outcome": "unchanged-decision",
+          "count": 16
+        },
+        {
+          "tier": "finite-reference-opinion",
+          "outcome": "unchanged-decision",
+          "count": 12
+        },
+        {
+          "tier": "published-puzzle-preference",
+          "outcome": "unchanged-decision",
+          "count": 30
+        },
+        {
+          "tier": "published-strategic-preference",
+          "outcome": "unchanged-decision",
+          "count": 20
+        }
+      ],
+      "exact_regressions": [],
+      "invalid_exact_comparisons": [],
+      "unresolved_ids": [],
+      "family_exclusion_sensitivity": {
+        "family": "near-root-cluster-001",
+        "excluded_ids": [
+          "syzygy-draw-7eb891d11b770c34",
+          "syzygy-draw-d92cad1caf419688"
+        ],
+        "compared": 80,
+        "summary_by_authority": [
+          {
+            "tier": "exact-mate-in-one",
+            "outcome": "unchanged-decision",
+            "count": 2
+          },
+          {
+            "tier": "exact-tablebase-wdl",
+            "outcome": "unchanged-decision",
+            "count": 16
+          },
+          {
+            "tier": "finite-reference-opinion",
+            "outcome": "unchanged-decision",
+            "count": 12
+          },
+          {
+            "tier": "published-puzzle-preference",
+            "outcome": "unchanged-decision",
+            "count": 30
+          },
+          {
+            "tier": "published-strategic-preference",
+            "outcome": "unchanged-decision",
+            "count": 20
+          }
+        ]
+      },
+      "provenance": {
+        "panel_sha256": "b83342ce6944596fc4416e90a836a1f94360ddeb693a4871cf6e936d1a35d623",
+        "predecessor_directory": "/tmp/msh157-runs/heldout-candidate",
+        "candidate_directory": "/tmp/msh158/runs/candidate-heldout",
+        "predecessor_ledger_sha256": "52f93f12999fa565017d6b31d424f55c432285c2899f4709eb791a81ea1eb5ec",
+        "candidate_ledger_sha256": "0aaffe770373e44c1b17c8269b5f9fbe2d9ad4b801d449b11b299a9c77362b13"
+      },
+      "changed_count": 0,
+      "changes": []
+    }
+  },
+  "primary_summary": [
+    {
+      "tier": "exact-mate-in-one",
+      "outcome": "unchanged-decision",
+      "count": 3
+    },
+    {
+      "tier": "exact-tablebase-wdl",
+      "outcome": "unchanged-decision",
+      "count": 48
+    },
+    {
+      "tier": "finite-reference-opinion",
+      "outcome": "unchanged-decision",
+      "count": 36
+    },
+    {
+      "tier": "published-puzzle-preference",
+      "outcome": "unchanged-decision",
+      "count": 92
+    },
+    {
+      "tier": "published-puzzle-preference",
+      "outcome": "unresolved",
+      "count": 1
+    },
+    {
+      "tier": "published-strategic-preference",
+      "outcome": "unchanged-decision",
+      "count": 60
+    }
+  ],
+  "primary_without_exposed_family": [
+    {
+      "tier": "exact-mate-in-one",
+      "outcome": "unchanged-decision",
+      "count": 3
+    },
+    {
+      "tier": "exact-tablebase-wdl",
+      "outcome": "unchanged-decision",
+      "count": 46
+    },
+    {
+      "tier": "finite-reference-opinion",
+      "outcome": "unchanged-decision",
+      "count": 36
+    },
+    {
+      "tier": "published-puzzle-preference",
+      "outcome": "unchanged-decision",
+      "count": 92
+    },
+    {
+      "tier": "published-puzzle-preference",
+      "outcome": "unresolved",
+      "count": 1
+    },
+    {
+      "tier": "published-strategic-preference",
+      "outcome": "unchanged-decision",
+      "count": 60
+    }
+  ],
+  "limitations": "All changes retained. Authority tiers remain separate; unresolved alternative is not failure. Depth/work/score changes do not establish decision improvement. Source/candidate frozen; no retuning after heldout reveal."
+}

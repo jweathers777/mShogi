@@ -1,11 +1,11 @@
 ---
 id: MSH-158
 title: Chess Decision Corrections
-status: In Progress
+status: In Review
 assignee:
   - '@codex-coordinator'
 created_date: '2026-11-10T16:28:00Z'
-updated_date: '2026-11-10T17:04:00Z'
+updated_date: '2026-11-10T17:26:00Z'
 labels:
   - handle:chess-decision-corrections
 dependencies:
@@ -65,4 +65,6 @@ Coordinator owns existing clean codex/chess-adversarial-assessment worktree, bas
 Actual interior traces at5/15s completed for all3failures; focused endpoint traces added for2endings. Trace cap did not drop events, and depth4 traced/untraced decision/score/nodes/stats/PV equality passed for3roots. Queen5s Qc1 is generated/index26 atPVdepth6, reduced1ply, reducedscore173 fails belowalpha177 with no re-search; rootQc8 also reduced. PawnKh6 is actually searched unreduced and fails a narrow bound; bishop5s Kc3 is cut byKg7/returningBd6, while15s Bc1/Bd2 is searched but still values kingretreat/blockade poorly. Experiment1 noPV-LMR selectsQf6, finitepairedreference−368 vsoldQf4−438 stillfacesQc1: notadequatefix. Experiment2 advancedpassedpush extension selectsKc3 at5s butsame+1score andremainingplanweakness; all8successcontrols same. Experiment3 near-alpha reducedPVverification running; noheldoutaccess. Detailed raw records /tmp/msh158, sourcevariants frozen; final evidence packaging follows retained/rejected decision.
 
 Five isolated trials completed. Only cached null-mate threat context is retained provisionally: actual narrow/full-window re-search lost an extension; same native key/depth/credits reuse preserves the effective horizon and selects reference-supported Qc8 at5s twice, with all8successful control choices preserved. NoPV-LMR and near-alpha verification instead select still-inferior Qf6. Passed-push extension selects Kc3 at tied+1 without demonstrated blockade forecast; pawn-race trial changes none of3failed roots: both rejected. Final source removes temporary observers and evaluator trial. Independent source review approves freeze; targeted native admission/history/claim/cancellation tests pass. Wider local regression and160development/80heldout frozen comparison pending. Level1 portable search heuristic only; no required CI jobs, broader Linux/Windows/GUI evidence deferred to significant integration/release. MSH-153 remains held.
+
+Frozen source e93a750 completed160development5s,80heldout5s and40fast1s: only28pJK changes Qf4 toQc8; all239other primary and40fast choices unchanged. Independent preserved fullhistory reference pair supports Qc8 through Qc1 defense versus Rd2/Qa6 attack; finite opinion, not WDL. All48tablebase outcomes and3immediate-mate objectives preserved. 82Chesssearch tests pass,1manualprofile ignored; consoleclaim test passes. Complete audit:360native attempts and2newreference queries succeed,2894artifact hashes verified. Timedengine1568.80s; conservative registry charge1802.80/2400 including test/unusedreference reservations. No tuning afterfreeze. Report docs/m5/chess-decision-corrections.md and evidence/msh158; independent final outcome review pending. Both endgames unresolved; no broadstrengthclaim and MSH-153 remains held.
 <!-- SECTION:NOTES:END -->

@@ -1,0 +1,18 @@
+{
+  "frozen_utc": "2026-11-10T17:05:20.718668+00:00",
+  "candidate_source": "e93a750c058c82e8f85f8a05b92326747cd92aef",
+  "candidate_binary_sha256": "9102ea64c5ec31d821243b6308b8b9977f3ff43691ac50e03489a65c455ea50f",
+  "predecessor_source": "3b523149e55e990ae4dbb684a9ff724c6820b235",
+  "predecessor_binary_sha256": "8355ddddf7e53ee5de99a082f5f6bda12591eaffae2b5fe1298f172c50d65224",
+  "development_sha256": "4c2dc1459b7be62201f04cb58cd7cbddc61483d8a90d9584fd16f3220bc00389",
+  "heldout_sha256": "b83342ce6944596fc4416e90a836a1f94360ddeb693a4871cf6e936d1a35d623",
+  "fast_panel_sha256": "85d1ed1cc6638d28164dce5e43dff50eafea660cf56f9471c942b813015da4f5",
+  "runner_sha256": "c5b2c65d73aed9201e2bbc1d14d6f3921b9319ecec987696f77f702d2c2e9c92",
+  "grader_sha256": "02c3cc20fb8292d353b931711e635f86a340122b3307aba037a47c2e876b2e9e",
+  "primary": "160 development then80 heldout,5s each,fresh process,4096TTentries,samecompletehistories aspredecessor; reuse validMSH157 candidate receipts",
+  "secondary": "existing40development1s screen; reuse MSH157 fastcandidate receipts",
+  "judgment": "unchanged exact/published/finite authority rubric; unlisted alternatives unresolved, never automatic zero. Independently analyse up to8 changed soft pairs per partition3s per forcedmove, prioritize lost published preference then gained then other change, IDlexicalwithinpriority; remaining unresolved explicit. Existing fullhistory reference pair for28pJK may be reused. Report all changes, exact goals/WDL separately and whole prior-exposed-family exclusion sensitivity. No broadimprovement claim from singleproblem or nominaldepth.",
+  "rule": "No product retuning after heldoutreveal. Failedchecks retained. No matches. Active2400s globalcap.",
+  "scope": "Only exact-context detected nullmate extension reuse. Other4trials rejected.",
+  "heldout_exposure": "No current heldout inspection by product workers before this freeze."
+}

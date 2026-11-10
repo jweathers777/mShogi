@@ -1,11 +1,11 @@
 ---
 id: MSH-158
 title: Chess Decision Corrections
-status: In Review
+status: Done
 assignee:
   - '@codex-coordinator'
 created_date: '2026-11-10T16:28:00Z'
-updated_date: '2026-11-10T17:26:00Z'
+updated_date: '2026-11-10T17:28:00Z'
 labels:
   - handle:chess-decision-corrections
 dependencies:
@@ -33,18 +33,18 @@ Independent review, relevant local correctness, frozen candidate comparison and 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Actual interior traces establish meaningful failure mechanisms or precise unresolved obstacles for the three development roots, with successful controls.
-- [ ] #2 Focused general corrections are compared under controlled conditions; supported decisions justify any retained change, rejected experiments remain documented.
-- [ ] #3 Authoritative native state/history/outcome/restoration/cancellation and relevant correctness regressions pass independent review.
-- [ ] #4 Frozen candidate, if supported, receives existing development/heldout5s validation and fast checks; resources stay within2400new active seconds and conclusions distinguish exact outcomes, opinions and uncertainty.
+- [x] #1 Actual interior traces establish meaningful failure mechanisms or precise unresolved obstacles for the three development roots, with successful controls.
+- [x] #2 Focused general corrections are compared under controlled conditions; supported decisions justify any retained change, rejected experiments remain documented.
+- [x] #3 Authoritative native state/history/outcome/restoration/cancellation and relevant correctness regressions pass independent review.
+- [x] #4 Frozen candidate, if supported, receives existing development/heldout5s validation and fast checks; resources stay within2400new active seconds and conclusions distinguish exact outcomes, opinions and uncertainty.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -67,4 +67,12 @@ Actual interior traces at5/15s completed for all3failures; focused endpoint trac
 Five isolated trials completed. Only cached null-mate threat context is retained provisionally: actual narrow/full-window re-search lost an extension; same native key/depth/credits reuse preserves the effective horizon and selects reference-supported Qc8 at5s twice, with all8successful control choices preserved. NoPV-LMR and near-alpha verification instead select still-inferior Qf6. Passed-push extension selects Kc3 at tied+1 without demonstrated blockade forecast; pawn-race trial changes none of3failed roots: both rejected. Final source removes temporary observers and evaluator trial. Independent source review approves freeze; targeted native admission/history/claim/cancellation tests pass. Wider local regression and160development/80heldout frozen comparison pending. Level1 portable search heuristic only; no required CI jobs, broader Linux/Windows/GUI evidence deferred to significant integration/release. MSH-153 remains held.
 
 Frozen source e93a750 completed160development5s,80heldout5s and40fast1s: only28pJK changes Qf4 toQc8; all239other primary and40fast choices unchanged. Independent preserved fullhistory reference pair supports Qc8 through Qc1 defense versus Rd2/Qa6 attack; finite opinion, not WDL. All48tablebase outcomes and3immediate-mate objectives preserved. 82Chesssearch tests pass,1manualprofile ignored; consoleclaim test passes. Complete audit:360native attempts and2newreference queries succeed,2894artifact hashes verified. Timedengine1568.80s; conservative registry charge1802.80/2400 including test/unusedreference reservations. No tuning afterfreeze. Report docs/m5/chess-decision-corrections.md and evidence/msh158; independent final outcome review pending. Both endgames unresolved; no broadstrengthclaim and MSH-153 remains held.
+
+Independent final review approves retention and bounded closure with no material findings: docs/m5/evidence/msh158/final-outcome-review.md. Source e93a750 and evidence a3d6ca9 are fast-forward integrated into codex/rewrite in the primary checkout. The app-managed assessment checkout is the active chat primary checkout and cannot be archived (previous recorded app refusal); retain clean for this chat, not as a disposable build location. No benchmark/search processes remain. Both endgame failures and the absence of held-out transfer are explicit. No next engineering task selected; MSH-153 (Classical Compensation Calibration) remains held pending a separately justified valuation change.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Retained a general same-native-context mate-threat extension cache so full-window verification preserves the narrow search horizon. At five seconds, 28pJK now chooses reference-supported Qc8 instead of Qf4; the other 159 development and all 80 held-out choices are unchanged. All 40 one-second checks are unchanged; all 48 exact tablebase outcomes and 3 mate goals are preserved. Four distinct alternative trials were rejected. The king-route/pawn-race and bishop-blockade failures remain unresolved; no broad decision or strength improvement is claimed. Level 1 local verification passed 82 Chess search tests, one console admission test and independent source/outcome review. Source e93a750 and evidence a3d6ca9 integrated into codex/rewrite. Conservative resource accounting is 1802.80/2400 seconds; no matches or unrelated platform/GUI campaigns. Report and detailed trace archive: docs/m5/chess-decision-corrections.md and docs/m5/evidence/msh158. MSH-153 remains held; no follow-on implementation started.
+<!-- SECTION:FINAL_SUMMARY:END -->

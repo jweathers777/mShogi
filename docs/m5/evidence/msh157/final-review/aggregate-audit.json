@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "checks": {
+    "source_hashes": 96,
+    "artifact_hashes": 5343,
+    "pv_plies": 7005,
+    "native_results": 857,
+    "reference_events": 765,
+    "reference_pv_plies": 10538
+  },
+  "totals": {
+    "native": {
+      "attempts": 641,
+      "charged_active_seconds": 2627.376832918,
+      "cpu_seconds": 2667.512538000002,
+      "process_wall_seconds": 2719.8494578744285
+    },
+    "reference": {
+      "attempts": 20,
+      "charged_active_seconds": 60.00947545748204,
+      "cpu_seconds": 67.701015,
+      "process_wall_seconds": 68.20964524894953
+    },
+    "cost-profile": {
+      "attempts": 25,
+      "charged_active_seconds": 18.14734837571238,
+      "cpu_seconds": 18.202308999999996,
+      "process_wall_seconds": 18.968347542453557
+    }
+  },
+  "actual_engine_active_seconds": 2705.5336567511945,
+  "registry_effective_reserved_charge_seconds": 2847.376832918,
+  "global_ceiling_seconds": 3300,
+  "failures": [
+    {
+      "directory": "/tmp/msh157-cost-run",
+      "index": 0,
+      "status": "invalid-result",
+      "charge": 0.04128362471237779
+    }
+  ],
+  "search_utc_nonoverlap": true,
+  "interval_count": 686,
+  "limitations": [
+    "This audits original local artifact bytes; any reference-only STS archive intentionally omits payloads and must not be described as preserving those original bytes.",
+    "Compilation/tests/data retrieval/offline proof are separate resources; historical exposure scan CPU is separately recorded and may overlap native timing."
+  ]
+}

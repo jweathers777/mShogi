@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "selected_before_outcomes_by_timing": true,
+  "frozen_panel_sha256": "c31e794a8672958d85a1974a2d229d8c46ed1f209fe11c17a5afc72dd60169d9",
+  "roots": 19,
+  "runs": 38,
+  "equal_time_seconds": 5,
+  "same_binary_and_options_as_original": true,
+  "all_repeat_moves_equal_original": true,
+  "paired_order_verified": true,
+  "primary80_retained": true,
+  "extra_independent_sample": false
+}

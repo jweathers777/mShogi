@@ -1,0 +1,14 @@
+{
+  "passed": [
+    "success UTC and immutable aggregate receipt",
+    "reference reservation not double counted",
+    "worker failure charged wall",
+    "malformed result charged wall",
+    "pending marker blocks global registry",
+    "two and sixteen queries accepted",
+    "odd/excess query counts rejected",
+    "wrong panel hash and version roles rejected"
+  ],
+  "engine_queries": 0,
+  "artifacts": "/var/folders/0d/v4yn9m6n1yv6z8q3cj_fv2pc0000gn/T/msh157-reference-final-tests-4zlkn0i_"
+}

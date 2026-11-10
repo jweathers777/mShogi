@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "checks": {
+    "artifact_hashes": 4480,
+    "pv_plies": 5718,
+    "native_results": 560
+  },
+  "primary_roots": 240,
+  "secondary_fast_roots": 40,
+  "utc_intervals_nonoverlapping": true,
+  "paired_order_verified": [
+    "heldout",
+    "fast"
+  ],
+  "development_order": "predecessor batch then candidate batch",
+  "manifest_hashes": {
+    "baseline-development": "333c559cf041affe271b95384034b5822eae8302d08273628a7d869931c98a2d",
+    "candidate-development": "0ef64c3b51953deb37fee12aa5720935072d3ef813eb3a0881a773933056fdcc",
+    "heldout-predecessor": "f9b5d539335bb9bad7d491e7bbf94d8b24f6a04c7a3ba5a976ad633a85d303d6",
+    "heldout-candidate": "6950e8db152f80fe6a9eeb176811c2bb97f8c2e1d22c1296cbc4853ef309c4c5",
+    "fast-predecessor": "673b43a7e91f1e975faa67c9b344f6e805ef522401da26b016171f38cff26f8e",
+    "fast-candidate": "1778262597da7da5f56befe35b8d4ebecaf9ec3d6436df0675867a4c60a84375"
+  },
+  "ledger_hashes": {
+    "baseline-development": "e6f12e2b79e2cefc3f93f4980413359a77e0557970d52dad0a5e8be8e9864fda",
+    "candidate-development": "e373e105f69bd8ddbad8a047067af80449f4ba8c82ef059c0b2a09ee4c1bde0b",
+    "heldout-predecessor": "90341381c48dbbcd046e7e6c2926b55dce1b69a04a461dd44602c7c1ab2bbe88",
+    "heldout-candidate": "52f93f12999fa565017d6b31d424f55c432285c2899f4709eb791a81ea1eb5ec",
+    "fast-predecessor": "d929dfc3f2f833982bba55c7ca29041d9ff25a5ecbd2da3e83ce6b113a5384db",
+    "fast-candidate": "821a305c2c78dac29009efc378eff929fc41057d2d3e6e8d826125220ace7c35"
+  },
+  "source_revisions": {
+    "baseline-development": "d53f34413d808dc2b727a06a770b92f24191eabf",
+    "candidate-development": "3b523149e55e990ae4dbb684a9ff724c6820b235",
+    "heldout-predecessor": "d53f34413d808dc2b727a06a770b92f24191eabf",
+    "heldout-candidate": "3b523149e55e990ae4dbb684a9ff724c6820b235",
+    "fast-predecessor": "d53f34413d808dc2b727a06a770b92f24191eabf",
+    "fast-candidate": "3b523149e55e990ae4dbb684a9ff724c6820b235"
+  },
+  "binary_hashes": {
+    "baseline-development": "55b38b7411eed17038c1426630fd34a22a4f31d67fd5c3f9ce74612b5fd58ebf",
+    "candidate-development": "8355ddddf7e53ee5de99a082f5f6bda12591eaffae2b5fe1298f172c50d65224",
+    "heldout-predecessor": "55b38b7411eed17038c1426630fd34a22a4f31d67fd5c3f9ce74612b5fd58ebf",
+    "heldout-candidate": "8355ddddf7e53ee5de99a082f5f6bda12591eaffae2b5fe1298f172c50d65224",
+    "fast-predecessor": "55b38b7411eed17038c1426630fd34a22a4f31d67fd5c3f9ce74612b5fd58ebf",
+    "fast-candidate": "8355ddddf7e53ee5de99a082f5f6bda12591eaffae2b5fe1298f172c50d65224"
+  },
+  "engine_queries": 0
+}

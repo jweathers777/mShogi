@@ -1,0 +1,63 @@
+{
+  "state": "FROZEN_FINAL_REFERENCE_SELECTION",
+  "plan_sha256": "ae760214048c1c743a384d71e79ca69f023446aa7eb39117dcb9c6986f9dcdc9",
+  "new_pair_limit": 8,
+  "quota": {
+    "development": 2,
+    "heldout": 0
+  },
+  "selected": [
+    {
+      "id": "sts-STS(v2.2) Open Files and Diagonals.037",
+      "partition": "development",
+      "tier": "published-strategic-preference",
+      "domain": "sts:strategic",
+      "moves": [
+        "a2b1",
+        "e7b4"
+      ],
+      "raw_outcome_change": "unresolved"
+    },
+    {
+      "id": "sts-STS(v3.0) Knight Outposts/Centralization/Repositioning.023",
+      "partition": "development",
+      "tier": "published-strategic-preference",
+      "domain": "sts:strategic",
+      "moves": [
+        "a8h8",
+        "f7g5"
+      ],
+      "raw_outcome_change": "unresolved"
+    }
+  ],
+  "reused": [],
+  "eligible_rankings": {
+    "development": [
+      {
+        "id": "sts-STS(v2.2) Open Files and Diagonals.037",
+        "partition": "development",
+        "tier": "published-strategic-preference",
+        "domain": "sts:strategic",
+        "moves": [
+          "a2b1",
+          "e7b4"
+        ],
+        "raw_outcome_change": "unresolved"
+      },
+      {
+        "id": "sts-STS(v3.0) Knight Outposts/Centralization/Repositioning.023",
+        "partition": "development",
+        "tier": "published-strategic-preference",
+        "domain": "sts:strategic",
+        "moves": [
+          "a8h8",
+          "f7g5"
+        ],
+        "raw_outcome_change": "unresolved"
+      }
+    ],
+    "heldout": []
+  },
+  "selection_uses_outcome_direction": false,
+  "nominal_new_seconds": 12
+}

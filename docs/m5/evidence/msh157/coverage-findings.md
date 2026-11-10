@@ -4,7 +4,7 @@
 
 The development baseline has all32 exact tablebase root outcomes preserved and its one immediate-mate objective met;60 of63 published puzzle preferences selected; STS17 maximum-point choices,11 listed lower-point choices and12 unlisted alternatives;17 of24 finite-reference preferred choices. The latter tiers are not a common accuracy scale. No exact failure was available for causal diagnosis. Three puzzle mismatches plus five lower-point strategic choices were selected after the complete160-root pass, with two successful controls. No held-out data was accessed.
 
-## General weaknesses supported by independent continuations
+## Supported continuation weaknesses in the selected examples
 
 Bound-aware same-parent Stockfish19 analysis at common cold3s supports consequential deficits on three development puzzles:
 
@@ -23,7 +23,7 @@ The main ablations retain the conventional quiescent frontier. Exact SearchMode 
 | Root and matched depth | Default | No LMR | What follows |
 | --- | --- | --- | --- |
 | AT.065, depth8 | Qe7,+43 | Qd6,+33 | Selectivity changes the choice at the same nominal horizon. However Qe7 has not been independently condemned; published5 versus10 points do not prove a general defect. The original Qxa5 appears at deeper ordinary iterations, so the initial apparent improvement also had a horizon component. |
-| Recapturing.003, depth7 | Rxe4,+51 | Rxe4,+57 | The apparent no-LMR improvement at5s is explained by the earlier ordinary iteration choosing the same move. Deeper default search later selects Rxd8+. A reduced fail-low defect is not established. |
+| Recapturing.003, depth7 | Rxe4,+51 | Rxe4,+57 | The apparent no-LMR improvement at5s is consistent with a horizon confound: the earlier ordinary iteration chooses the same move. This does not uniquely explain deeper behavior or exclude an LMR defect at greater depth. Deeper default search later selects Rxd8+. A reduced fail-low defect is not established. |
 | 28pJK, depth6 | Qf4,−204 | Qf6,−193 | Selectivity changes a choice, but neither is the supported Qc8 and Qf6 remains unadjudicated. This does not demonstrate better tactical decisions from disabling reductions. |
 
 Removing main quiet omissions also changes some choices while reducing completed horizons. In Undermine.037 it chooses Rc2 with a native repetition PV/score0 instead of the strongly favorable baseline Rg5, providing a warning against blanket removal. The two controls retain expected move/outcome. Removing SEE pruning does not repair either difficult ending or the queen-coordination puzzle; the queen selects another unresolved Qf6. Removing delta pruning leaves all three puzzle choices unchanged, again with controls retained. There is no evidence here for turning either omission off globally.

@@ -213,6 +213,16 @@ authorized. Eventual strength qualification needs separately approved clock-base
 increment games and suitable independent opponents. Stop the round to reconsider
 its diagnosis if useful benefits do not materialize.
 
+Round outcome, 2026-11-10: MSH-156 (Independent Chess Benchmark) and MSH-157
+(Conventional Decision Improvement) completed the authorized coherent round.
+Exact native cost repairs were useful, but the broad decision-improvement gate
+failed: 238/240 primary moves and all 80 held-out moves were unchanged. See
+`docs/m5/chess-decision-round.md` and the revised roadmap. Preserve the frozen
+corpus plus its conservative prior-exposure overlay and do not retune against
+revealed held-out material. MSH-153 (Classical Compensation Calibration) remains
+held; no competitive campaign is justified by this round's evidence. Revisit the
+continuation-quality diagnosis before selecting further implementation work.
+
 ## Git and routine autonomy
 
 The established workflow permits ordinary local commits, non-destructive integration, normal pushes to the configured project remote, and cleanup of the agent's own completed disposable branches/worktrees. Use the designated rewrite branch as the integration target. Keep the original project history and default branch intact unless John explicitly changes that instruction.

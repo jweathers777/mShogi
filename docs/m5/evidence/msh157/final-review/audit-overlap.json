@@ -1,0 +1,340 @@
+{
+  "window_start": "2026-11-10T14:00:20+00:00",
+  "window_end": "2026-11-10T14:02:56.796000+00:00",
+  "attempts": [
+    {
+      "directory": "heldout-predecessor",
+      "index": 9,
+      "root_id": "lichess-eval-87b2cfeed2dc3cb2",
+      "active": 5.000187,
+      "cpu": 5.0699,
+      "start_utc": "2026-11-10T14:00:28.452393+00:00",
+      "end_utc": "2026-11-10T14:00:33.635604+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 10,
+      "root_id": "lichess-eval-b38730a554ff4c8e",
+      "active": 5.000190208,
+      "cpu": 5.065633,
+      "start_utc": "2026-11-10T14:00:33.868508+00:00",
+      "end_utc": "2026-11-10T14:00:39.043042+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 11,
+      "root_id": "lichess-eval-f5af7565ef9c99d4",
+      "active": 5.000214833,
+      "cpu": 5.069005,
+      "start_utc": "2026-11-10T14:00:49.917298+00:00",
+      "end_utc": "2026-11-10T14:00:55.028051+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 12,
+      "root_id": "lichess-puzzle-01rgi",
+      "active": 0.000632375,
+      "cpu": 0.086086,
+      "start_utc": "2026-11-10T14:00:55.233651+00:00",
+      "end_utc": "2026-11-10T14:00:55.383938+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 13,
+      "root_id": "lichess-puzzle-0GPZh",
+      "active": 5.000230166,
+      "cpu": 5.071807,
+      "start_utc": "2026-11-10T14:01:01.308981+00:00",
+      "end_utc": "2026-11-10T14:01:06.457824+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 14,
+      "root_id": "lichess-puzzle-0KhoZ",
+      "active": 5.000307042,
+      "cpu": 5.068538,
+      "start_utc": "2026-11-10T14:01:06.671961+00:00",
+      "end_utc": "2026-11-10T14:01:11.767646+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 15,
+      "root_id": "lichess-puzzle-0OkpH",
+      "active": 5.000303583,
+      "cpu": 5.0688070000000005,
+      "start_utc": "2026-11-10T14:01:22.708757+00:00",
+      "end_utc": "2026-11-10T14:01:27.885726+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 16,
+      "root_id": "lichess-puzzle-0Qt8Z",
+      "active": 5.000230792,
+      "cpu": 5.070211,
+      "start_utc": "2026-11-10T14:01:28.101433+00:00",
+      "end_utc": "2026-11-10T14:01:33.235743+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 17,
+      "root_id": "lichess-puzzle-0T4yt",
+      "active": 5.000219667,
+      "cpu": 5.069224,
+      "start_utc": "2026-11-10T14:01:44.207307+00:00",
+      "end_utc": "2026-11-10T14:01:49.388231+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 18,
+      "root_id": "lichess-puzzle-0iuzz",
+      "active": 0.006956167,
+      "cpu": 0.09285099999999999,
+      "start_utc": "2026-11-10T14:01:49.604331+00:00",
+      "end_utc": "2026-11-10T14:01:49.750758+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 19,
+      "root_id": "lichess-puzzle-0rPOy",
+      "active": 1.003050208,
+      "cpu": 1.089619,
+      "start_utc": "2026-11-10T14:01:51.663429+00:00",
+      "end_utc": "2026-11-10T14:01:52.852427+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 20,
+      "root_id": "lichess-puzzle-0uVZF",
+      "active": 0.90834775,
+      "cpu": 0.9911199999999999,
+      "start_utc": "2026-11-10T14:01:53.080277+00:00",
+      "end_utc": "2026-11-10T14:01:54.132566+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 21,
+      "root_id": "lichess-puzzle-0v8zz",
+      "active": 5.000279166,
+      "cpu": 5.068379,
+      "start_utc": "2026-11-10T14:02:01.108006+00:00",
+      "end_utc": "2026-11-10T14:02:06.275732+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 22,
+      "root_id": "lichess-puzzle-15dWB",
+      "active": 5.00020425,
+      "cpu": 5.070405,
+      "start_utc": "2026-11-10T14:02:06.502955+00:00",
+      "end_utc": "2026-11-10T14:02:11.625705+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 23,
+      "root_id": "lichess-puzzle-1LVie",
+      "active": 5.000213083,
+      "cpu": 5.071035,
+      "start_utc": "2026-11-10T14:02:22.651627+00:00",
+      "end_utc": "2026-11-10T14:02:27.792462+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 24,
+      "root_id": "lichess-puzzle-1NF5e",
+      "active": 5.00038325,
+      "cpu": 5.071864,
+      "start_utc": "2026-11-10T14:02:28.027801+00:00",
+      "end_utc": "2026-11-10T14:02:33.159079+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 25,
+      "root_id": "lichess-puzzle-1PWTs",
+      "active": 5.0002465,
+      "cpu": 5.070673,
+      "start_utc": "2026-11-10T14:02:44.176085+00:00",
+      "end_utc": "2026-11-10T14:02:49.304212+00:00"
+    },
+    {
+      "directory": "heldout-predecessor",
+      "index": 26,
+      "root_id": "lichess-puzzle-1fTrW",
+      "active": 5.000205458,
+      "cpu": 5.0691299999999995,
+      "start_utc": "2026-11-10T14:02:49.538317+00:00",
+      "end_utc": "2026-11-10T14:02:54.700839+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 8,
+      "root_id": "lichess-eval-75bd226ea938c4fd",
+      "active": 5.000207959,
+      "cpu": 5.070752,
+      "start_utc": "2026-11-10T14:00:17.752775+00:00",
+      "end_utc": "2026-11-10T14:00:22.860505+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 9,
+      "root_id": "lichess-eval-87b2cfeed2dc3cb2",
+      "active": 5.000206334,
+      "cpu": 5.06748,
+      "start_utc": "2026-11-10T14:00:23.068155+00:00",
+      "end_utc": "2026-11-10T14:00:28.242173+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 10,
+      "root_id": "lichess-eval-b38730a554ff4c8e",
+      "active": 5.000189833,
+      "cpu": 5.023467,
+      "start_utc": "2026-11-10T14:00:39.253795+00:00",
+      "end_utc": "2026-11-10T14:00:44.375554+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 11,
+      "root_id": "lichess-eval-f5af7565ef9c99d4",
+      "active": 5.000245666,
+      "cpu": 5.069543,
+      "start_utc": "2026-11-10T14:00:44.581739+00:00",
+      "end_utc": "2026-11-10T14:00:49.708918+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 12,
+      "root_id": "lichess-puzzle-01rgi",
+      "active": 0.000638125,
+      "cpu": 0.086338,
+      "start_utc": "2026-11-10T14:00:55.594990+00:00",
+      "end_utc": "2026-11-10T14:00:55.735638+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 13,
+      "root_id": "lichess-puzzle-0GPZh",
+      "active": 5.000299333,
+      "cpu": 5.0686100000000005,
+      "start_utc": "2026-11-10T14:00:55.949521+00:00",
+      "end_utc": "2026-11-10T14:01:01.095471+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 14,
+      "root_id": "lichess-puzzle-0KhoZ",
+      "active": 5.000259959,
+      "cpu": 5.068881,
+      "start_utc": "2026-11-10T14:01:11.981674+00:00",
+      "end_utc": "2026-11-10T14:01:17.108972+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 15,
+      "root_id": "lichess-puzzle-0OkpH",
+      "active": 5.000247667,
+      "cpu": 5.069386,
+      "start_utc": "2026-11-10T14:01:17.324498+00:00",
+      "end_utc": "2026-11-10T14:01:22.494105+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 16,
+      "root_id": "lichess-puzzle-0Qt8Z",
+      "active": 5.000245667,
+      "cpu": 5.073442999999999,
+      "start_utc": "2026-11-10T14:01:33.447948+00:00",
+      "end_utc": "2026-11-10T14:01:38.642408+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 17,
+      "root_id": "lichess-puzzle-0T4yt",
+      "active": 5.000173084,
+      "cpu": 5.067455,
+      "start_utc": "2026-11-10T14:01:38.856261+00:00",
+      "end_utc": "2026-11-10T14:01:43.992401+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 18,
+      "root_id": "lichess-puzzle-0iuzz",
+      "active": 0.006911292,
+      "cpu": 0.09381999999999999,
+      "start_utc": "2026-11-10T14:01:49.972207+00:00",
+      "end_utc": "2026-11-10T14:01:50.117459+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 19,
+      "root_id": "lichess-puzzle-0rPOy",
+      "active": 0.981946125,
+      "cpu": 1.066188,
+      "start_utc": "2026-11-10T14:01:50.338745+00:00",
+      "end_utc": "2026-11-10T14:01:51.442386+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 20,
+      "root_id": "lichess-puzzle-0uVZF",
+      "active": 0.884947875,
+      "cpu": 0.969526,
+      "start_utc": "2026-11-10T14:01:54.435544+00:00",
+      "end_utc": "2026-11-10T14:01:55.509062+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 21,
+      "root_id": "lichess-puzzle-0v8zz",
+      "active": 5.0002485839999995,
+      "cpu": 5.070761,
+      "start_utc": "2026-11-10T14:01:55.736857+00:00",
+      "end_utc": "2026-11-10T14:02:00.877661+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 22,
+      "root_id": "lichess-puzzle-15dWB",
+      "active": 5.00019275,
+      "cpu": 5.0665960000000005,
+      "start_utc": "2026-11-10T14:02:11.856974+00:00",
+      "end_utc": "2026-11-10T14:02:17.017332+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 23,
+      "root_id": "lichess-puzzle-1LVie",
+      "active": 5.000255,
+      "cpu": 5.0693090000000005,
+      "start_utc": "2026-11-10T14:02:17.253557+00:00",
+      "end_utc": "2026-11-10T14:02:22.409134+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 24,
+      "root_id": "lichess-puzzle-1NF5e",
+      "active": 5.000304792,
+      "cpu": 5.070986,
+      "start_utc": "2026-11-10T14:02:33.399354+00:00",
+      "end_utc": "2026-11-10T14:02:38.552462+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 25,
+      "root_id": "lichess-puzzle-1PWTs",
+      "active": 5.000239792,
+      "cpu": 5.070767,
+      "start_utc": "2026-11-10T14:02:38.788758+00:00",
+      "end_utc": "2026-11-10T14:02:43.942456+00:00"
+    },
+    {
+      "directory": "heldout-candidate",
+      "index": 26,
+      "root_id": "lichess-puzzle-1fTrW",
+      "active": 5.000235916,
+      "cpu": 5.073333,
+      "start_utc": "2026-11-10T14:02:54.933819+00:00",
+      "end_utc": "2026-11-10T14:03:00.052527+00:00"
+    }
+  ],
+  "interpretation": "Historical source audit consumed another core during these fixed-wall-time searches; preserve originals and inspect CPU/paired timing sensitivity before quality claims."
+}

@@ -1,0 +1,759 @@
+{
+  "scope": "Timestamp-selected19roots; original80rootprimaryretained. Repeat is sensitivity evidence, not independentextra sample.",
+  "rows": [
+    {
+      "id": "lichess-eval-75bd226ea938c4fd",
+      "predecessor": {
+        "original_move": "e4e5",
+        "repeat_move": "e4e5",
+        "same_move": true,
+        "original_depth": 7,
+        "repeat_depth": 7,
+        "original_visits": 2234104,
+        "repeat_visits": 2202280
+      },
+      "candidate": {
+        "original_move": "e4e5",
+        "repeat_move": "e4e5",
+        "same_move": true,
+        "original_depth": 7,
+        "repeat_depth": 7,
+        "original_visits": 2265521,
+        "repeat_visits": 2271459
+      },
+      "repeat_pair": {
+        "id": "lichess-eval-75bd226ea938c4fd",
+        "tier": "finite-reference-opinion",
+        "before": {
+          "tier": "finite-reference-opinion",
+          "move": "e4e5",
+          "judgment": "reference-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "finite-reference-opinion",
+          "move": "e4e5",
+          "judgment": "reference-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-eval-87b2cfeed2dc3cb2",
+      "predecessor": {
+        "original_move": "d3d4",
+        "repeat_move": "d3d4",
+        "same_move": true,
+        "original_depth": 8,
+        "repeat_depth": 8,
+        "original_visits": 2147610,
+        "repeat_visits": 2148690
+      },
+      "candidate": {
+        "original_move": "d3d4",
+        "repeat_move": "d3d4",
+        "same_move": true,
+        "original_depth": 8,
+        "repeat_depth": 8,
+        "original_visits": 2197891,
+        "repeat_visits": 2179798
+      },
+      "repeat_pair": {
+        "id": "lichess-eval-87b2cfeed2dc3cb2",
+        "tier": "finite-reference-opinion",
+        "before": {
+          "tier": "finite-reference-opinion",
+          "move": "d3d4",
+          "judgment": "reference-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "finite-reference-opinion",
+          "move": "d3d4",
+          "judgment": "reference-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-eval-b38730a554ff4c8e",
+      "predecessor": {
+        "original_move": "e7d6",
+        "repeat_move": "e7d6",
+        "same_move": true,
+        "original_depth": 9,
+        "repeat_depth": 10,
+        "original_visits": 1052949,
+        "repeat_visits": 1073378
+      },
+      "candidate": {
+        "original_move": "e7d6",
+        "repeat_move": "e7d6",
+        "same_move": true,
+        "original_depth": 9,
+        "repeat_depth": 10,
+        "original_visits": 1050480,
+        "repeat_visits": 1083133
+      },
+      "repeat_pair": {
+        "id": "lichess-eval-b38730a554ff4c8e",
+        "tier": "finite-reference-opinion",
+        "before": {
+          "tier": "finite-reference-opinion",
+          "move": "e7d6",
+          "judgment": "unresolved",
+          "value": null,
+          "reason": "unlisted alternative needs independent continuation adjudication"
+        },
+        "after": {
+          "tier": "finite-reference-opinion",
+          "move": "e7d6",
+          "judgment": "unresolved",
+          "value": null,
+          "reason": "unlisted alternative needs independent continuation adjudication"
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-eval-f5af7565ef9c99d4",
+      "predecessor": {
+        "original_move": "f7g6",
+        "repeat_move": "f7g6",
+        "same_move": true,
+        "original_depth": 9,
+        "repeat_depth": 9,
+        "original_visits": 2474848,
+        "repeat_visits": 2494789
+      },
+      "candidate": {
+        "original_move": "f7g6",
+        "repeat_move": "f7g6",
+        "same_move": true,
+        "original_depth": 9,
+        "repeat_depth": 9,
+        "original_visits": 2627927,
+        "repeat_visits": 2635345
+      },
+      "repeat_pair": {
+        "id": "lichess-eval-f5af7565ef9c99d4",
+        "tier": "finite-reference-opinion",
+        "before": {
+          "tier": "finite-reference-opinion",
+          "move": "f7g6",
+          "judgment": "reference-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "finite-reference-opinion",
+          "move": "f7g6",
+          "judgment": "reference-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-01rgi",
+      "predecessor": {
+        "original_move": "e4d6",
+        "repeat_move": "e4d6",
+        "same_move": true,
+        "original_depth": 128,
+        "repeat_depth": 128,
+        "original_visits": 325,
+        "repeat_visits": 325
+      },
+      "candidate": {
+        "original_move": "e4d6",
+        "repeat_move": "e4d6",
+        "same_move": true,
+        "original_depth": 128,
+        "repeat_depth": 128,
+        "original_visits": 325,
+        "repeat_visits": 325
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-01rgi",
+        "tier": "exact-mate-in-one",
+        "before": {
+          "tier": "exact-mate-in-one",
+          "move": "e4d6",
+          "judgment": "exact-goal-met",
+          "value": 1,
+          "goal": "immediate mate"
+        },
+        "after": {
+          "tier": "exact-mate-in-one",
+          "move": "e4d6",
+          "judgment": "exact-goal-met",
+          "value": 1,
+          "goal": "immediate mate"
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-0GPZh",
+      "predecessor": {
+        "original_move": "d2f2",
+        "repeat_move": "d2f2",
+        "same_move": true,
+        "original_depth": 9,
+        "repeat_depth": 9,
+        "original_visits": 1932506,
+        "repeat_visits": 1938034
+      },
+      "candidate": {
+        "original_move": "d2f2",
+        "repeat_move": "d2f2",
+        "same_move": true,
+        "original_depth": 9,
+        "repeat_depth": 9,
+        "original_visits": 2071856,
+        "repeat_visits": 2069214
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-0GPZh",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "d2f2",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "d2f2",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-0KhoZ",
+      "predecessor": {
+        "original_move": "f4g5",
+        "repeat_move": "f4g5",
+        "same_move": true,
+        "original_depth": 14,
+        "repeat_depth": 14,
+        "original_visits": 2654115,
+        "repeat_visits": 2590173
+      },
+      "candidate": {
+        "original_move": "f4g5",
+        "repeat_move": "f4g5",
+        "same_move": true,
+        "original_depth": 14,
+        "repeat_depth": 14,
+        "original_visits": 2919197,
+        "repeat_visits": 2931349
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-0KhoZ",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "f4g5",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "f4g5",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-0OkpH",
+      "predecessor": {
+        "original_move": "d3c2",
+        "repeat_move": "d3c2",
+        "same_move": true,
+        "original_depth": 8,
+        "repeat_depth": 8,
+        "original_visits": 1799759,
+        "repeat_visits": 1802607
+      },
+      "candidate": {
+        "original_move": "d3c2",
+        "repeat_move": "d3c2",
+        "same_move": true,
+        "original_depth": 8,
+        "repeat_depth": 8,
+        "original_visits": 1968523,
+        "repeat_visits": 1980220
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-0OkpH",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "d3c2",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "d3c2",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-0Qt8Z",
+      "predecessor": {
+        "original_move": "g2g3",
+        "repeat_move": "g2g3",
+        "same_move": true,
+        "original_depth": 13,
+        "repeat_depth": 13,
+        "original_visits": 1046418,
+        "repeat_visits": 1173675
+      },
+      "candidate": {
+        "original_move": "g2g3",
+        "repeat_move": "g2g3",
+        "same_move": true,
+        "original_depth": 14,
+        "repeat_depth": 14,
+        "original_visits": 2812768,
+        "repeat_visits": 2841789
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-0Qt8Z",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "g2g3",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "g2g3",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-0T4yt",
+      "predecessor": {
+        "original_move": "d5h5",
+        "repeat_move": "d5h5",
+        "same_move": true,
+        "original_depth": 9,
+        "repeat_depth": 10,
+        "original_visits": 2072433,
+        "repeat_visits": 2080548
+      },
+      "candidate": {
+        "original_move": "d5h5",
+        "repeat_move": "d5h5",
+        "same_move": true,
+        "original_depth": 10,
+        "repeat_depth": 10,
+        "original_visits": 2140898,
+        "repeat_visits": 2145568
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-0T4yt",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "d5h5",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "d5h5",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-0iuzz",
+      "predecessor": {
+        "original_move": "h6h7",
+        "repeat_move": "h6h7",
+        "same_move": true,
+        "original_depth": 128,
+        "repeat_depth": 128,
+        "original_visits": 1866,
+        "repeat_visits": 1866
+      },
+      "candidate": {
+        "original_move": "h6h7",
+        "repeat_move": "h6h7",
+        "same_move": true,
+        "original_depth": 128,
+        "repeat_depth": 128,
+        "original_visits": 1866,
+        "repeat_visits": 1866
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-0iuzz",
+        "tier": "exact-mate-in-one",
+        "before": {
+          "tier": "exact-mate-in-one",
+          "move": "h6h7",
+          "judgment": "exact-goal-met",
+          "value": 1,
+          "goal": "immediate mate"
+        },
+        "after": {
+          "tier": "exact-mate-in-one",
+          "move": "h6h7",
+          "judgment": "exact-goal-met",
+          "value": 1,
+          "goal": "immediate mate"
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-0rPOy",
+      "predecessor": {
+        "original_move": "b6f2",
+        "repeat_move": "b6f2",
+        "same_move": true,
+        "original_depth": 128,
+        "repeat_depth": 128,
+        "original_visits": 442206,
+        "repeat_visits": 442206
+      },
+      "candidate": {
+        "original_move": "b6f2",
+        "repeat_move": "b6f2",
+        "same_move": true,
+        "original_depth": 128,
+        "repeat_depth": 128,
+        "original_visits": 442206,
+        "repeat_visits": 442206
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-0rPOy",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "b6f2",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "b6f2",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-0uVZF",
+      "predecessor": {
+        "original_move": "f4f2",
+        "repeat_move": "f4f2",
+        "same_move": true,
+        "original_depth": 128,
+        "repeat_depth": 128,
+        "original_visits": 360773,
+        "repeat_visits": 360773
+      },
+      "candidate": {
+        "original_move": "f4f2",
+        "repeat_move": "f4f2",
+        "same_move": true,
+        "original_depth": 128,
+        "repeat_depth": 128,
+        "original_visits": 360773,
+        "repeat_visits": 360773
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-0uVZF",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "f4f2",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "f4f2",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-0v8zz",
+      "predecessor": {
+        "original_move": "c6a4",
+        "repeat_move": "c6a4",
+        "same_move": true,
+        "original_depth": 8,
+        "repeat_depth": 8,
+        "original_visits": 1550091,
+        "repeat_visits": 1556710
+      },
+      "candidate": {
+        "original_move": "c6a4",
+        "repeat_move": "c6a4",
+        "same_move": true,
+        "original_depth": 8,
+        "repeat_depth": 8,
+        "original_visits": 1786921,
+        "repeat_visits": 1795025
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-0v8zz",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "c6a4",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "c6a4",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-15dWB",
+      "predecessor": {
+        "original_move": "d4c5",
+        "repeat_move": "d4c5",
+        "same_move": true,
+        "original_depth": 9,
+        "repeat_depth": 9,
+        "original_visits": 1332318,
+        "repeat_visits": 1345504
+      },
+      "candidate": {
+        "original_move": "d4c5",
+        "repeat_move": "d4c5",
+        "same_move": true,
+        "original_depth": 9,
+        "repeat_depth": 9,
+        "original_visits": 1558993,
+        "repeat_visits": 1579629
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-15dWB",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "d4c5",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "d4c5",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-1LVie",
+      "predecessor": {
+        "original_move": "g4e3",
+        "repeat_move": "g4e3",
+        "same_move": true,
+        "original_depth": 10,
+        "repeat_depth": 10,
+        "original_visits": 1392284,
+        "repeat_visits": 1404194
+      },
+      "candidate": {
+        "original_move": "g4e3",
+        "repeat_move": "g4e3",
+        "same_move": true,
+        "original_depth": 10,
+        "repeat_depth": 10,
+        "original_visits": 1441352,
+        "repeat_visits": 1411805
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-1LVie",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "g4e3",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "g4e3",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-1NF5e",
+      "predecessor": {
+        "original_move": "d3c2",
+        "repeat_move": "d3c2",
+        "same_move": true,
+        "original_depth": 10,
+        "repeat_depth": 10,
+        "original_visits": 2269621,
+        "repeat_visits": 2292759
+      },
+      "candidate": {
+        "original_move": "d3c2",
+        "repeat_move": "d3c2",
+        "same_move": true,
+        "original_depth": 10,
+        "repeat_depth": 10,
+        "original_visits": 2477670,
+        "repeat_visits": 2514235
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-1NF5e",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "d3c2",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "d3c2",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-1PWTs",
+      "predecessor": {
+        "original_move": "e4g5",
+        "repeat_move": "e4g5",
+        "same_move": true,
+        "original_depth": 7,
+        "repeat_depth": 7,
+        "original_visits": 1215354,
+        "repeat_visits": 1204952
+      },
+      "candidate": {
+        "original_move": "e4g5",
+        "repeat_move": "e4g5",
+        "same_move": true,
+        "original_depth": 7,
+        "repeat_depth": 7,
+        "original_visits": 1302723,
+        "repeat_visits": 1309434
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-1PWTs",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "e4g5",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "e4g5",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    },
+    {
+      "id": "lichess-puzzle-1fTrW",
+      "predecessor": {
+        "original_move": "b8b4",
+        "repeat_move": "b8b4",
+        "same_move": true,
+        "original_depth": 11,
+        "repeat_depth": 11,
+        "original_visits": 1464899,
+        "repeat_visits": 1499899
+      },
+      "candidate": {
+        "original_move": "b8b4",
+        "repeat_move": "b8b4",
+        "same_move": true,
+        "original_depth": 11,
+        "repeat_depth": 11,
+        "original_visits": 1672513,
+        "repeat_visits": 1677306
+      },
+      "repeat_pair": {
+        "id": "lichess-puzzle-1fTrW",
+        "tier": "published-puzzle-preference",
+        "before": {
+          "tier": "published-puzzle-preference",
+          "move": "b8b4",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "after": {
+          "tier": "published-puzzle-preference",
+          "move": "b8b4",
+          "judgment": "published-preferred",
+          "value": null
+        },
+        "decision_change": "unchanged",
+        "outcome_change": "unchanged-decision"
+      }
+    }
+  ],
+  "within_version_move_changes": {
+    "predecessor": 0,
+    "candidate": 0
+  },
+  "repeat_pair_counts": {
+    "unchanged-decision": 19
+  }
+}

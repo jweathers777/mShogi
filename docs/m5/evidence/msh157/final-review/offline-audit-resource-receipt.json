@@ -1,0 +1,40 @@
+{
+  "known_cpu_seconds": 229.108857,
+  "known_cpu_is_lower_bound_not_total": true,
+  "interrupted_pass": {
+    "status": "terminated-incomplete-after-pause",
+    "paused_utc": "2026-11-10T14:02:56.796404+00:00",
+    "process": "48136 Tue Nov 10 15:00:20 2026     02:36   2:35.19  86.3",
+    "pid": 48136,
+    "reason": "coordinator requested pause to avoid further timing overlap; process state and partial scan retained in memory",
+    "results_not_accessed": true,
+    "terminated_utc": "2026-11-10T14:05:28.536073+00:00",
+    "cpu_seconds_before_pause": 155.19,
+    "start_utc": "2026-11-10T14:00:20+00:00",
+    "partial_evidence": "No completed hit/coverage receipt had been emitted; original script and process timing retained. No clean-exposure claim from interrupted pass. Restart will scan full bounded scope."
+  },
+  "broad_capped_pass": {
+    "status": 1,
+    "start_utc": "2026-11-10T14:15:41.795511+00:00",
+    "end_utc": "2026-11-10T14:16:56.129116+00:00",
+    "wall_seconds": 74.33330283267424,
+    "cpu_seconds": 73.918857,
+    "engine_queries": 0
+  },
+  "scoped_capped_pass": {
+    "status": "failed600MiBcap",
+    "script": "/tmp/msh157-exposure-audit-scoped.py",
+    "cpu_seconds": null,
+    "wall_seconds": null,
+    "script_created_utc": "2026-11-10T14:17:21.459349+00:00",
+    "next_scope_script_created_utc": "2026-11-10T14:19:19.192976+00:00"
+  },
+  "final_scoped_pass": {
+    "status": "passed",
+    "cpu_seconds": null,
+    "wall_seconds": null,
+    "script_created_utc": "2026-11-10T14:19:19.192976+00:00",
+    "result_receipt_written_utc": "2026-11-10T14:19:50.411234+00:00"
+  },
+  "measurement_limit": "The two directly launched scoped scripts lacked resource wrappers; exact child CPU/wall unavailable retrospectively. File timestamp windows are provenance markers, not exact process timings."
+}

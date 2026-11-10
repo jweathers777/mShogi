@@ -1,0 +1,3504 @@
+{
+  "rows": [
+    {
+      "id": "lichess-eval-098bd088843d1233",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "b8c8",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "b8c8",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "endgame/white"
+    },
+    {
+      "id": "lichess-eval-231c461273b25e49",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "b3e6",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "b3e6",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "opening/white"
+    },
+    {
+      "id": "lichess-eval-2975cc3579461cc7",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "g4g5",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "g4g5",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "opening/white"
+    },
+    {
+      "id": "lichess-eval-2dba4c3f2c42aa41",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "e2d2",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "e2d2",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "endgame/white"
+    },
+    {
+      "id": "lichess-eval-45ed0ffc0cdbe5a6",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "e5d4",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "e5d4",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "endgame/black"
+    },
+    {
+      "id": "lichess-eval-4a6c5e67997857e0",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "a2a4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "a2a4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "middle/white"
+    },
+    {
+      "id": "lichess-eval-525001253e36bf29",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "f5d6",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "f5d6",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "middle/black"
+    },
+    {
+      "id": "lichess-eval-577971c250d7a31d",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "a8b8",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "a8b8",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "opening/black"
+    },
+    {
+      "id": "lichess-eval-6766d6835641030d",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "c1b1",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "c1b1",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "middle/white"
+    },
+    {
+      "id": "lichess-eval-6ea6ee600dc8913e",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "e8g8",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "e8g8",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "opening/black"
+    },
+    {
+      "id": "lichess-eval-99a28ccc6e94e0c1",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "d7b6",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "d7b6",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "opening/black"
+    },
+    {
+      "id": "lichess-eval-9a9ec8b947a4876a",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "d7d5",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "d7d5",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "opening/black"
+    },
+    {
+      "id": "lichess-eval-9bca7be52ef84c6d",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "f5f6",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "f5f6",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "endgame/white"
+    },
+    {
+      "id": "lichess-eval-b8f5898f3c787879",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "b3a4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "b3a4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "middle/white"
+    },
+    {
+      "id": "lichess-eval-b9fac44d81917ef8",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "d1b3",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "d1b3",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "opening/white"
+    },
+    {
+      "id": "lichess-eval-c3ddf47932005fb2",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "f1e1",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "f1e1",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "endgame/black"
+    },
+    {
+      "id": "lichess-eval-df9f8a926a6d0c4b",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "a3c2",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "a3c2",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "middle/white"
+    },
+    {
+      "id": "lichess-eval-e0a01b4241f321ec",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "c7d8",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "c7d8",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "middle/black"
+    },
+    {
+      "id": "lichess-eval-e22c55dfdb392c4f",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "e3d4",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "e3d4",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "opening/white"
+    },
+    {
+      "id": "lichess-eval-e3940265618fa6cb",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "d8c7",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "d8c7",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "endgame/white"
+    },
+    {
+      "id": "lichess-eval-e490acc200edd5cf",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "c6c8",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "c6c8",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "middle/black"
+    },
+    {
+      "id": "lichess-eval-ecad5b84ca64d962",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "d6c5",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "d6c5",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "middle/black"
+    },
+    {
+      "id": "lichess-eval-ef6dcc5f131c431f",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "b5b4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "b5b4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "endgame/black"
+    },
+    {
+      "id": "lichess-eval-f2c22dfb510b09db",
+      "tier": "finite-reference-opinion",
+      "before": {
+        "tier": "finite-reference-opinion",
+        "move": "d7f6",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "finite-reference-opinion",
+        "move": "d7f6",
+        "judgment": "reference-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "evaluation",
+      "stratum": "endgame/black"
+    },
+    {
+      "id": "lichess-puzzle-02MvQ",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h3g3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h3g3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/medium"
+    },
+    {
+      "id": "lichess-puzzle-06pP5",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "g4g3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "g4g3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/hard"
+    },
+    {
+      "id": "lichess-puzzle-06qUU",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "g6g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "g6g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/medium"
+    },
+    {
+      "id": "lichess-puzzle-081MG",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h6g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h6g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/hard"
+    },
+    {
+      "id": "lichess-puzzle-0EVWD",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h4h6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h4h6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/easy"
+    },
+    {
+      "id": "lichess-puzzle-0K45A",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h5f3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h5f3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/hard"
+    },
+    {
+      "id": "lichess-puzzle-0LpVD",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "b6a4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "b6a4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/hard"
+    },
+    {
+      "id": "lichess-puzzle-0MpJ4",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "b7b8",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "b7b8",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/easy"
+    },
+    {
+      "id": "lichess-puzzle-0S6EN",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h4g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h4g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/medium"
+    },
+    {
+      "id": "lichess-puzzle-0UOyM",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h7g6",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h7g6",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/hard"
+    },
+    {
+      "id": "lichess-puzzle-0VG2o",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "e4e5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e4e5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/medium"
+    },
+    {
+      "id": "lichess-puzzle-0adzv",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "d4d5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "d4d5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/medium"
+    },
+    {
+      "id": "lichess-puzzle-0axFg",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "d4e3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "d4e3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/easy"
+    },
+    {
+      "id": "lichess-puzzle-0bBfG",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "b4b5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "b4b5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/medium"
+    },
+    {
+      "id": "lichess-puzzle-0d58A",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "e8e7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e8e7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/medium"
+    },
+    {
+      "id": "lichess-puzzle-0fs1z",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h6h7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h6h7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/hard"
+    },
+    {
+      "id": "lichess-puzzle-0hpl0",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "g7g6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "g7g6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/easy"
+    },
+    {
+      "id": "lichess-puzzle-0juLA",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h7g6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h7g6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/easy"
+    },
+    {
+      "id": "lichess-puzzle-0lGBY",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "a3e7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "a3e7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/hard"
+    },
+    {
+      "id": "lichess-puzzle-0m5mI",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "a3d6",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "a3d6",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/hard"
+    },
+    {
+      "id": "lichess-puzzle-0mUWL",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "e7g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e7g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/easy"
+    },
+    {
+      "id": "lichess-puzzle-0qigr",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "e2e6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e2e6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/medium"
+    },
+    {
+      "id": "lichess-puzzle-0rCNs",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "g8e8",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "g8e8",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/medium"
+    },
+    {
+      "id": "lichess-puzzle-14I6O",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "c3c2",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "c3c2",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/easy"
+    },
+    {
+      "id": "lichess-puzzle-184zV",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "c4b5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "c4b5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/hard"
+    },
+    {
+      "id": "lichess-puzzle-19g73",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "a5c3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "a5c3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/hard"
+    },
+    {
+      "id": "lichess-puzzle-1AVSS",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "d3c4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "d3c4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/easy"
+    },
+    {
+      "id": "lichess-puzzle-1B8vG",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h1b1",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h1b1",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/hard"
+    },
+    {
+      "id": "lichess-puzzle-1EXU4",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h6g7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h6g7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/medium"
+    },
+    {
+      "id": "lichess-puzzle-1Fhnr",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "e2g4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e2g4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/medium"
+    },
+    {
+      "id": "lichess-puzzle-1Fs7n",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "e8e5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e8e5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/medium"
+    },
+    {
+      "id": "lichess-puzzle-1MmQh",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "d3h7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "d3h7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/hard"
+    },
+    {
+      "id": "lichess-puzzle-1RgDw",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "a5a4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "a5a4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/easy"
+    },
+    {
+      "id": "lichess-puzzle-1RkHG",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "a5e1",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "a5e1",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/easy"
+    },
+    {
+      "id": "lichess-puzzle-1SqjM",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "g2g4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "g2g4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/medium"
+    },
+    {
+      "id": "lichess-puzzle-1aUc7",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "b8f4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "b8f4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/hard"
+    },
+    {
+      "id": "lichess-puzzle-1fh92",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "c3b2",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "c3b2",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/easy"
+    },
+    {
+      "id": "lichess-puzzle-1jhXA",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h7h8",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h7h8",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/easy"
+    },
+    {
+      "id": "lichess-puzzle-1pm64",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "d5f6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "d5f6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/easy"
+    },
+    {
+      "id": "lichess-puzzle-1ragx",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h1h6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h1h6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/medium"
+    },
+    {
+      "id": "lichess-puzzle-1wPuI",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "d8d6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "d8d6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/medium"
+    },
+    {
+      "id": "lichess-puzzle-1xLGS",
+      "tier": "exact-mate-in-one",
+      "before": {
+        "tier": "exact-mate-in-one",
+        "move": "c7h2",
+        "judgment": "exact-goal-met",
+        "value": 1,
+        "goal": "immediate mate"
+      },
+      "after": {
+        "tier": "exact-mate-in-one",
+        "move": "c7h2",
+        "judgment": "exact-goal-met",
+        "value": 1,
+        "goal": "immediate mate"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/easy"
+    },
+    {
+      "id": "lichess-puzzle-1z8BR",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "e5f3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e5f3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/easy"
+    },
+    {
+      "id": "lichess-puzzle-25AB3",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "f3g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "f3g5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/hard"
+    },
+    {
+      "id": "lichess-puzzle-25tg1",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "d1f3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "d1f3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/hard"
+    },
+    {
+      "id": "lichess-puzzle-26IYw",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h5h7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h5h7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/medium"
+    },
+    {
+      "id": "lichess-puzzle-28pJK",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "f5f4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "f5f4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted alternative needs independent continuation adjudication"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/medium"
+    },
+    {
+      "id": "lichess-puzzle-2B1S9",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h7h5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h7h5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/hard"
+    },
+    {
+      "id": "lichess-puzzle-2FHMj",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "h4f6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "h4f6",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/medium"
+    },
+    {
+      "id": "lichess-puzzle-2Q1UH",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "d5c7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "d5c7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/hard"
+    },
+    {
+      "id": "lichess-puzzle-2QpVB",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "d6f5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "d6f5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/medium"
+    },
+    {
+      "id": "lichess-puzzle-2Tejj",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "f5f4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "f5f4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/medium"
+    },
+    {
+      "id": "lichess-puzzle-2Xj7Z",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "c1c3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "c1c3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/easy"
+    },
+    {
+      "id": "lichess-puzzle-2fmdl",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "e1e4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e1e4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/hard"
+    },
+    {
+      "id": "lichess-puzzle-2jFoK",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "b4b3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "b4b3",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/hard"
+    },
+    {
+      "id": "lichess-puzzle-2kSBz",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "c3b4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "c3b4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/medium"
+    },
+    {
+      "id": "lichess-puzzle-2tbAe",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "f4g4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "f4g4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/medium"
+    },
+    {
+      "id": "lichess-puzzle-2xU2s",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "b3d4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "b3d4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/easy"
+    },
+    {
+      "id": "lichess-puzzle-2y4u4",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "e4h4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "e4h4",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/easy"
+    },
+    {
+      "id": "lichess-puzzle-39TvU",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "c2f5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "c2f5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/hard"
+    },
+    {
+      "id": "lichess-puzzle-3AGZf",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "a2a1",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "a2a1",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "tactical/easy"
+    },
+    {
+      "id": "lichess-puzzle-3Bqzs",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "c5h5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "c5h5",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "quiet/hard"
+    },
+    {
+      "id": "lichess-puzzle-3CYuQ",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "c3c1",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "c3c1",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "mate/easy"
+    },
+    {
+      "id": "lichess-puzzle-3K2ue",
+      "tier": "published-puzzle-preference",
+      "before": {
+        "tier": "published-puzzle-preference",
+        "move": "c6c7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "after": {
+        "tier": "published-puzzle-preference",
+        "move": "c6c7",
+        "judgment": "published-preferred",
+        "value": null
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "puzzle",
+      "stratum": "defensive/medium"
+    },
+    {
+      "id": "sts-STS(v1.0) Undermine.024",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "e6g7",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "e6g7",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v1.0) Undermine"
+    },
+    {
+      "id": "sts-STS(v1.0) Undermine.037",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "g2g5",
+        "judgment": "published-points",
+        "value": 2
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "g2g5",
+        "judgment": "published-points",
+        "value": 2
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v1.0) Undermine"
+    },
+    {
+      "id": "sts-STS(v1.0) Undermine.061",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "h4h5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "h4h5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v1.0) Undermine"
+    },
+    {
+      "id": "sts-STS(v1.0) Undermine.075",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "e6e5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "e6e5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v1.0) Undermine"
+    },
+    {
+      "id": "sts-STS(v10.0) Simplification.013",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "c4d5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "c4d5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v10.0) Simplification"
+    },
+    {
+      "id": "sts-STS(v10.0) Simplification.024",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "d2e4",
+        "judgment": "published-points",
+        "value": 2
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "d2e4",
+        "judgment": "published-points",
+        "value": 2
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v10.0) Simplification"
+    },
+    {
+      "id": "sts-STS(v10.0) Simplification.046",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "c4c6",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "c4c6",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v10.0) Simplification"
+    },
+    {
+      "id": "sts-STS(v10.0) Simplification.061",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "h4h5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "h4h5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v10.0) Simplification"
+    },
+    {
+      "id": "sts-STS(v12.0) Center Control.008",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "b6d5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "b6d5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v12.0) Center Control"
+    },
+    {
+      "id": "sts-STS(v12.0) Center Control.035",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "d4d5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "d4d5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v12.0) Center Control"
+    },
+    {
+      "id": "sts-STS(v12.0) Center Control.056",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "d2d4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "d2d4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v12.0) Center Control"
+    },
+    {
+      "id": "sts-STS(v12.0) Center Control.074",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "f3d5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "f3d5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v12.0) Center Control"
+    },
+    {
+      "id": "sts-STS(v15.0) AT.048",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "f3c3",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "f3c3",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v15.0) AT"
+    },
+    {
+      "id": "sts-STS(v15.0) AT.051",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "f5e4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "f5e4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v15.0) AT"
+    },
+    {
+      "id": "sts-STS(v15.0) AT.065",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "c7a5",
+        "judgment": "published-points",
+        "value": 3
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "c7a5",
+        "judgment": "published-points",
+        "value": 3
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v15.0) AT"
+    },
+    {
+      "id": "sts-STS(v15.0) AT.092",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "b8e8",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "b8e8",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v15.0) AT"
+    },
+    {
+      "id": "sts-STS(v2.2) Open Files and Diagonals.033",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "b3b4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "b3b4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v2.2) Open Files and Diagonals"
+    },
+    {
+      "id": "sts-STS(v2.2) Open Files and Diagonals.037",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "e7b4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "a2b1",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "changed",
+      "outcome_change": "unresolved",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v2.2) Open Files and Diagonals"
+    },
+    {
+      "id": "sts-STS(v2.2) Open Files and Diagonals.048",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "e4f3",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "e4f3",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v2.2) Open Files and Diagonals"
+    },
+    {
+      "id": "sts-STS(v2.2) Open Files and Diagonals.083",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "f1d3",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "f1d3",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v2.2) Open Files and Diagonals"
+    },
+    {
+      "id": "sts-STS(v3.0) Knight Outposts/Centralization/Repositioning.023",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "a8h8",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "f7g5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "changed",
+      "outcome_change": "unresolved",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v3.0) Knight Outposts/Repositioning/Centralization"
+    },
+    {
+      "id": "sts-STS(v3.0) Knight Outposts/Repositioning/Centralization.018",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "c3d5",
+        "judgment": "published-points",
+        "value": 9
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "c3d5",
+        "judgment": "published-points",
+        "value": 9
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v3.0) Knight Outposts/Repositioning/Centralization"
+    },
+    {
+      "id": "sts-STS(v3.0) Knight Outposts/Repositioning/Centralization.060",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "f6d7",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "f6d7",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v3.0) Knight Outposts/Repositioning/Centralization"
+    },
+    {
+      "id": "sts-STS(v3.0) Knight Outposts/Repositioning/Centralization.076",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "d2e3",
+        "judgment": "published-points",
+        "value": 4
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "d2e3",
+        "judgment": "published-points",
+        "value": 4
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v3.0) Knight Outposts/Repositioning/Centralization"
+    },
+    {
+      "id": "sts-STS(v4.0) Square Vacancy.007",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "b3a2",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "b3a2",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v4.0) Square Vacancy"
+    },
+    {
+      "id": "sts-STS(v4.0) Square Vacancy.026",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "g6e6",
+        "judgment": "published-points",
+        "value": 4
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "g6e6",
+        "judgment": "published-points",
+        "value": 4
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v4.0) Square Vacancy"
+    },
+    {
+      "id": "sts-STS(v4.0) Square Vacancy.059",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "d7g4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "d7g4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v4.0) Square Vacancy"
+    },
+    {
+      "id": "sts-STS(v4.0) Square Vacancy.061",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "d3f5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "d3f5",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v4.0) Square Vacancy"
+    },
+    {
+      "id": "sts-STS(v6.0) Recapturing.003",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "d3d8",
+        "judgment": "published-points",
+        "value": 3
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "d3d8",
+        "judgment": "published-points",
+        "value": 3
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v6.0) Recapturing"
+    },
+    {
+      "id": "sts-STS(v6.0) Recapturing.007",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "b5c4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "b5c4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v6.0) Recapturing"
+    },
+    {
+      "id": "sts-STS(v6.0) Recapturing.019",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "c5d4",
+        "judgment": "published-points",
+        "value": 6
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "c5d4",
+        "judgment": "published-points",
+        "value": 6
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v6.0) Recapturing"
+    },
+    {
+      "id": "sts-STS(v6.0) Recapturing.032",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "h5f4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "h5f4",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v6.0) Recapturing"
+    },
+    {
+      "id": "sts-STS(v7.0) Offer of Simplification.048",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "g2g4",
+        "judgment": "published-points",
+        "value": 4
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "g2g4",
+        "judgment": "published-points",
+        "value": 4
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v7.0) Offer of Simplification"
+    },
+    {
+      "id": "sts-STS(v7.0) Offer of Simplification.060",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "f7f5",
+        "judgment": "published-points",
+        "value": 4
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "f7f5",
+        "judgment": "published-points",
+        "value": 4
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v7.0) Offer of Simplification"
+    },
+    {
+      "id": "sts-STS(v7.0) Offer of Simplification.063",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "f6f3",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "f6f3",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v7.0) Offer of Simplification"
+    },
+    {
+      "id": "sts-STS(v7.0) Offer of Simplification.084",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "d7f8",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "d7f8",
+        "judgment": "published-points",
+        "value": 10
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v7.0) Offer of Simplification"
+    },
+    {
+      "id": "sts-STS(v8.0) AKPC.022",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "f6g4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "f6g4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v8.0) AKPC"
+    },
+    {
+      "id": "sts-STS(v8.0) AKPC.036",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "g2f3",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "g2f3",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v8.0) AKPC"
+    },
+    {
+      "id": "sts-STS(v8.0) AKPC.052",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "a2a4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "a2a4",
+        "judgment": "unresolved",
+        "value": null,
+        "reason": "unlisted STS alternative is not an automatic zero"
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v8.0) AKPC"
+    },
+    {
+      "id": "sts-STS(v8.0) AKPC.069",
+      "tier": "published-strategic-preference",
+      "before": {
+        "tier": "published-strategic-preference",
+        "move": "h4h3",
+        "judgment": "published-points",
+        "value": 6
+      },
+      "after": {
+        "tier": "published-strategic-preference",
+        "move": "h4h3",
+        "judgment": "published-points",
+        "value": 6
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "sts",
+      "stratum": "STS(v8.0) AKPC"
+    },
+    {
+      "id": "syzygy-draw-0DSOJ",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "h7f5",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "h7f5",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "rook"
+    },
+    {
+      "id": "syzygy-draw-14B12",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f4g6",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f4g6",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "rook"
+    },
+    {
+      "id": "syzygy-draw-2vhCS",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "h4h3",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "h4h3",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "rook"
+    },
+    {
+      "id": "syzygy-draw-7eb891d11b770c34",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "d7c6",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "d7c6",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "pawn"
+    },
+    {
+      "id": "syzygy-draw-b1258089ba61b58c",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "d6e7",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "d6e7",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "pawn"
+    },
+    {
+      "id": "syzygy-draw-d92cad1caf419688",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c7d7",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c7d7",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "root_value": 0
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "pawn"
+    },
+    {
+      "id": "syzygy-puzzle-0ErMS",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "g4g5",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "g4g5",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "minor"
+    },
+    {
+      "id": "syzygy-puzzle-0XwUt",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "h6h7",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "h6h7",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "minor"
+    },
+    {
+      "id": "syzygy-puzzle-0bMEv",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a8a4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a8a4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "rook"
+    },
+    {
+      "id": "syzygy-puzzle-0gJmB",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "b7b6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "b7b6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "queen"
+    },
+    {
+      "id": "syzygy-puzzle-0mb3b",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "h4g5",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "h4g5",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "minor"
+    },
+    {
+      "id": "syzygy-puzzle-0q59Y",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a5b4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a5b4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "minor"
+    },
+    {
+      "id": "syzygy-puzzle-0qLXz",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f3g4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f3g4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "minor"
+    },
+    {
+      "id": "syzygy-puzzle-13JLZ",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "d1h1",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "d1h1",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "queen"
+    },
+    {
+      "id": "syzygy-puzzle-1J4rA",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "e8b5",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "e8b5",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "queen"
+    },
+    {
+      "id": "syzygy-puzzle-1JpdQ",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "g1g6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "g1g6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "queen"
+    },
+    {
+      "id": "syzygy-puzzle-1MqoS",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "g8f7",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "g8f7",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "queen"
+    },
+    {
+      "id": "syzygy-puzzle-1Uyiw",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c6c7",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c6c7",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "rook"
+    },
+    {
+      "id": "syzygy-puzzle-1a30n",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a5a4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a5a4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "minor"
+    },
+    {
+      "id": "syzygy-puzzle-1i7Su",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "g7g2",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "g7g2",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "rook"
+    },
+    {
+      "id": "syzygy-puzzle-2APFz",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c7d7",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c7d7",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "queen"
+    },
+    {
+      "id": "syzygy-puzzle-2F3cE",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f5g6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f5g6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "pawn"
+    },
+    {
+      "id": "syzygy-puzzle-2Hc2X",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "e3c4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "e3c4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "minor"
+    },
+    {
+      "id": "syzygy-puzzle-2JtTu",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "b6a6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "b6a6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "minor"
+    },
+    {
+      "id": "syzygy-puzzle-2UJsk",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "g4g3",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "g4g3",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "rook"
+    },
+    {
+      "id": "syzygy-puzzle-2Yrwe",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a7a5",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a7a5",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "pawn"
+    },
+    {
+      "id": "syzygy-puzzle-2dQJM",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "b2b1",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "b2b1",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "rook"
+    },
+    {
+      "id": "syzygy-puzzle-2egOz",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c7c6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "c7c6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "queen"
+    },
+    {
+      "id": "syzygy-puzzle-2oWYm",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f5f6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f5f6",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "pawn"
+    },
+    {
+      "id": "syzygy-puzzle-2uFaq",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a3a4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "a3a4",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "pawn"
+    },
+    {
+      "id": "syzygy-puzzle-3CQ8d",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f4g3",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "f4g3",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "pawn"
+    },
+    {
+      "id": "syzygy-puzzle-3E6Ga",
+      "tier": "exact-tablebase-wdl",
+      "before": {
+        "tier": "exact-tablebase-wdl",
+        "move": "h8h2",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "after": {
+        "tier": "exact-tablebase-wdl",
+        "move": "h8h2",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "root_value": 1
+      },
+      "decision_change": "unchanged",
+      "outcome_change": "unchanged-decision",
+      "partition": "development",
+      "source_kind": "tablebase",
+      "stratum": "queen"
+    }
+  ],
+  "summary": [
+    {
+      "tier": "exact-mate-in-one",
+      "judgment": "unchanged-decision",
+      "count": 1
+    },
+    {
+      "tier": "exact-tablebase-wdl",
+      "judgment": "unchanged-decision",
+      "count": 32
+    },
+    {
+      "tier": "finite-reference-opinion",
+      "judgment": "unchanged-decision",
+      "count": 24
+    },
+    {
+      "tier": "published-puzzle-preference",
+      "judgment": "unchanged-decision",
+      "count": 63
+    },
+    {
+      "tier": "published-strategic-preference",
+      "judgment": "unchanged-decision",
+      "count": 38
+    },
+    {
+      "tier": "published-strategic-preference",
+      "judgment": "unresolved",
+      "count": 2
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "scope_revision": "fb87ca2",
+  "direct_board_family_match": "syzygy-draw-d92cad1caf419688",
+  "partition": "development",
+  "prior_path": "docs/m5/evidence/msh139/quality-results.json",
+  "prior_location": "results[13] (tb-1), chosen_native_admission.final_native_fen",
+  "prior_fen": "8/5k2/8/4K3/4P3/8/8/8 w - - 1 2",
+  "current_fen": "8/2k5/8/3K4/3P4/8/8/8 b - - 0 1",
+  "relation": "Current board placement is the horizontal reflection of prior admitted child board, but side-to-move and clocks differ; not an identical complete position. Prior evidence was an actual measured tablebase decision/transition, not a bulk public-source cache. Conservative known-family exposure.",
+  "affected_family": [
+    "syzygy-draw-7eb891d11b770c34",
+    "syzygy-draw-d92cad1caf419688"
+  ],
+  "family_key": "near-root-cluster-001",
+  "original_frozen_roots_retained": 240,
+  "direct_hit_exclusion_population": {
+    "total": 239,
+    "development": 159,
+    "heldout": 80
+  },
+  "conservative_family_exclusion_population": {
+    "total": 238,
+    "development": 158,
+    "heldout": 80
+  },
+  "excluded_family_primary_outcomes": [
+    {
+      "id": "syzygy-draw-7eb891d11b770c34",
+      "outcome": "unchanged-decision"
+    },
+    {
+      "id": "syzygy-draw-d92cad1caf419688",
+      "outcome": "unchanged-decision"
+    }
+  ],
+  "conservative_development_summary": {
+    "unchanged-decision": 156,
+    "unresolved": 2
+  },
+  "heldout_matches": 0,
+  "scope_limits": "2079 historical source/text/archive files,3013payloads261456408bytes;2896platformGUI/snapshot entries explicitly excluded; no matching selected heldout IDs/board/known-line fingerprints in included scope. Does not prove absence of unknown histories or latent related positions expressed without recognized FEN/source IDs.",
+  "future_policy": "Keep entire near-root-cluster-001 development/regression-exposed; do not reuse as heldout. Do not replace frozen cases after outcomes. Baseline/candidate original240 counts remain primary; report sensitivity separately."
+}

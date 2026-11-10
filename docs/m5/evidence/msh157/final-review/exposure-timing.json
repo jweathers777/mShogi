@@ -1,0 +1,12 @@
+{
+  "status": "terminated-incomplete-after-pause",
+  "paused_utc": "2026-11-10T14:02:56.796404+00:00",
+  "process": "48136 Tue Nov 10 15:00:20 2026     02:36   2:35.19  86.3",
+  "pid": 48136,
+  "reason": "coordinator requested pause to avoid further timing overlap; process state and partial scan retained in memory",
+  "results_not_accessed": true,
+  "terminated_utc": "2026-11-10T14:05:28.536073+00:00",
+  "cpu_seconds_before_pause": 155.19,
+  "start_utc": "2026-11-10T14:00:20+00:00",
+  "partial_evidence": "No completed hit/coverage receipt had been emitted; original script and process timing retained. No clean-exposure claim from interrupted pass. Restart will scan full bounded scope."
+}

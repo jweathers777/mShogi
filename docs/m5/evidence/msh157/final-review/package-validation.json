@@ -1,0 +1,11 @@
+{
+  "utc": "2026-11-10T14:27:50.850806+00:00",
+  "environment": "macOS-27.0.1-arm64-arm-64bit",
+  "archive_hashes_checked": 4516,
+  "source_original_artifact_hashes_checked": 5343,
+  "source_hashes_checked": 96,
+  "main_document_links": "passed",
+  "git_diff_check": "passed",
+  "backlog_doctor": "No duplicate IDs, self-referential dependencies, or dependency cycles found.",
+  "code_verification": "Unchanged production3b52314; reuse312localtests and releasebuild, independent native review; no new code edits."
+}

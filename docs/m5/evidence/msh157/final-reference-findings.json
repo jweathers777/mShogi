@@ -1,0 +1,141 @@
+{
+  "pairs": {
+    "sts-STS(v2.2) Open Files and Diagonals.037": {
+      "predecessor": {
+        "move": "e7b4",
+        "root_side_score_cp": 0,
+        "mate": null,
+        "reported_depth": 34,
+        "last_two_distinct_depth_nonbound_scores": [
+          {
+            "depth": 33,
+            "cp": 0,
+            "mate": null
+          },
+          {
+            "depth": 34,
+            "cp": 0,
+            "mate": null
+          }
+        ],
+        "short_continuation_san": [
+          "Qb4+",
+          "Kf2",
+          "Qd2+",
+          "Qxd2",
+          "Rxd2+",
+          "Ke3"
+        ],
+        "result_path": "/private/tmp/msh157-reference-final/query-000.result.json",
+        "result_sha256": "dee56ec8002d51ea6026cbb2c1ffb31d43bfb1659322a806bbd1242cae2ce7aa"
+      },
+      "candidate": {
+        "move": "a2b1",
+        "root_side_score_cp": 117,
+        "mate": null,
+        "reported_depth": 24,
+        "last_two_distinct_depth_nonbound_scores": [
+          {
+            "depth": 23,
+            "cp": 114,
+            "mate": null
+          },
+          {
+            "depth": 24,
+            "cp": 117,
+            "mate": null
+          }
+        ],
+        "short_continuation_san": [
+          "Bb1",
+          "Ne2",
+          "Be4",
+          "O-O",
+          "Qb7",
+          "e6"
+        ],
+        "result_path": "/private/tmp/msh157-reference-final/query-001.result.json",
+        "result_sha256": "dabad6bdb5737d56d97708f537ea299213c2545e2f28896e06d5b522329a2e6f"
+      },
+      "judgment": "finite-supported-local-preference-for-candidate-not-proved-WDL"
+    },
+    "sts-STS(v3.0) Knight Outposts/Centralization/Repositioning.023": {
+      "candidate": {
+        "move": "f7g5",
+        "root_side_score_cp": 48,
+        "mate": null,
+        "reported_depth": 25,
+        "last_two_distinct_depth_nonbound_scores": [
+          {
+            "depth": 24,
+            "cp": 47,
+            "mate": null
+          },
+          {
+            "depth": 25,
+            "cp": 48,
+            "mate": null
+          }
+        ],
+        "short_continuation_san": [
+          "Ng5",
+          "Qa1",
+          "Ne6",
+          "a5",
+          "Rf8",
+          "axb6"
+        ],
+        "result_path": "/private/tmp/msh157-reference-final/query-002.result.json",
+        "result_sha256": "5ff20c50241aa32b02be8cd38dc12c59aa77a41e8b1d38bc73af4ab5eb5189e2"
+      },
+      "predecessor": {
+        "move": "a8h8",
+        "root_side_score_cp": 17,
+        "mate": null,
+        "reported_depth": 29,
+        "last_two_distinct_depth_nonbound_scores": [
+          {
+            "depth": 28,
+            "cp": 17,
+            "mate": null
+          },
+          {
+            "depth": 29,
+            "cp": 17,
+            "mate": null
+          }
+        ],
+        "short_continuation_san": [
+          "Rh8",
+          "a5",
+          "bxa5",
+          "Nxa7",
+          "Rc4",
+          "Rxc4"
+        ],
+        "result_path": "/private/tmp/msh157-reference-final/query-003.result.json",
+        "result_sha256": "5484bc9edbd520dd71ad2442ddc2cbc9e96b8220c9be2172ca38ed9846a4a941"
+      },
+      "judgment": "small-finite-preference-not-established-material-improvement"
+    }
+  },
+  "receipt": {
+    "successful_queries": 4,
+    "failed_queries": 0,
+    "active_seconds": 12.003445707261562,
+    "cpu_seconds": 13.593692,
+    "process_wall_seconds": 13.81876387540251,
+    "start_utc": "2026-11-10T14:24:19.874428+00:00",
+    "end_utc": "2026-11-10T14:24:34.878744+00:00",
+    "reference_cumulative_active_seconds": 60.00947545748204,
+    "reference_reservation_seconds": 160,
+    "ledger_path": "/tmp/msh157-reference-final/runs.jsonl",
+    "ledger_sha256": "ed861d2a7b654a3dd998c12e0af60b068d3a45ccd2ad12b9996cbc821ef3d8a3",
+    "all_bestmove_aligned_nonbound": true,
+    "all_pvs_legal": true,
+    "no_additional_search_planned": true
+  },
+  "authority": "Finite reference opinions only; no raw-score-to-accuracy or rating conversion. Exact/published expectations remain frozen.",
+  "scope": "Two development changes; zero heldout changes eligible; candidate remained frozen.",
+  "source_rights": "No source FEN or full upstream fixture rows copied into this summary."
+}

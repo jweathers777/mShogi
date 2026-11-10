@@ -1,0 +1,452 @@
+{
+  "development": {
+    "before": [
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "reference-preferred",
+        "value": null,
+        "count": 17
+      },
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 7
+      },
+      {
+        "tier": "published-puzzle-preference",
+        "judgment": "published-preferred",
+        "value": null,
+        "count": 60
+      },
+      {
+        "tier": "published-puzzle-preference",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 3
+      },
+      {
+        "tier": "exact-mate-in-one",
+        "judgment": "exact-goal-met",
+        "value": 1,
+        "count": 1
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 12
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 2,
+        "count": 2
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 10,
+        "count": 17
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 3,
+        "count": 2
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 9,
+        "count": 1
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 4,
+        "count": 4
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 6,
+        "count": 2
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "count": 6
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "count": 26
+      }
+    ],
+    "after": [
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "reference-preferred",
+        "value": null,
+        "count": 17
+      },
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 7
+      },
+      {
+        "tier": "published-puzzle-preference",
+        "judgment": "published-preferred",
+        "value": null,
+        "count": 60
+      },
+      {
+        "tier": "published-puzzle-preference",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 3
+      },
+      {
+        "tier": "exact-mate-in-one",
+        "judgment": "exact-goal-met",
+        "value": 1,
+        "count": 1
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 10
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 2,
+        "count": 2
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 10,
+        "count": 19
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 3,
+        "count": 2
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 9,
+        "count": 1
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 4,
+        "count": 4
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 6,
+        "count": 2
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "count": 6
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "count": 26
+      }
+    ]
+  },
+  "heldout": {
+    "before": [
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "reference-preferred",
+        "value": null,
+        "count": 9
+      },
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 3
+      },
+      {
+        "tier": "exact-mate-in-one",
+        "judgment": "exact-goal-met",
+        "value": 1,
+        "count": 2
+      },
+      {
+        "tier": "published-puzzle-preference",
+        "judgment": "published-preferred",
+        "value": null,
+        "count": 30
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 10,
+        "count": 8
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 8
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 6,
+        "count": 1
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 4,
+        "count": 2
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 5,
+        "count": 1
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "count": 2
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "count": 14
+      }
+    ],
+    "after": [
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "reference-preferred",
+        "value": null,
+        "count": 9
+      },
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 3
+      },
+      {
+        "tier": "exact-mate-in-one",
+        "judgment": "exact-goal-met",
+        "value": 1,
+        "count": 2
+      },
+      {
+        "tier": "published-puzzle-preference",
+        "judgment": "published-preferred",
+        "value": null,
+        "count": 30
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 10,
+        "count": 8
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 8
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 6,
+        "count": 1
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 4,
+        "count": 2
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 5,
+        "count": 1
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "count": 2
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "count": 14
+      }
+    ]
+  },
+  "fast": {
+    "before": [
+      {
+        "tier": "published-puzzle-preference",
+        "judgment": "published-preferred",
+        "value": null,
+        "count": 9
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 4
+      },
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "reference-preferred",
+        "value": null,
+        "count": 8
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 4,
+        "count": 1
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "count": 6
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 10,
+        "count": 3
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 5,
+        "count": 1
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "count": 4
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 2,
+        "count": 1
+      },
+      {
+        "tier": "published-puzzle-preference",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 1
+      },
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 2
+      }
+    ],
+    "after": [
+      {
+        "tier": "published-puzzle-preference",
+        "judgment": "published-preferred",
+        "value": null,
+        "count": 9
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 4
+      },
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "reference-preferred",
+        "value": null,
+        "count": 9
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 4,
+        "count": 1
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 1,
+        "count": 6
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 10,
+        "count": 3
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 5,
+        "count": 1
+      },
+      {
+        "tier": "exact-tablebase-wdl",
+        "judgment": "exact-preserved",
+        "value": 0,
+        "count": 4
+      },
+      {
+        "tier": "published-strategic-preference",
+        "judgment": "published-points",
+        "value": 2,
+        "count": 1
+      },
+      {
+        "tier": "published-puzzle-preference",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 1
+      },
+      {
+        "tier": "finite-reference-opinion",
+        "judgment": "unresolved",
+        "value": null,
+        "count": 1
+      }
+    ]
+  }
+}

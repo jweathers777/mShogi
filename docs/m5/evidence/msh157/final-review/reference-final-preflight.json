@@ -1,0 +1,8 @@
+{
+  "queries": 4,
+  "seconds": 12,
+  "candidates_path": "/tmp/msh157-reference-final-candidates.json",
+  "candidates_sha256": "bea10c31baaa6ec3788dc2bebc2f91e15d2c296a5bd29e01acb60123613a30d8",
+  "all_move_roles_verified_against_frozen_ledgers": true,
+  "no_engine_search": true
+}

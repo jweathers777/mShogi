@@ -1,0 +1,16 @@
+{
+  "successful_queries": 4,
+  "failed_queries": 0,
+  "active_seconds": 12.003445707261562,
+  "cpu_seconds": 13.593692,
+  "process_wall_seconds": 13.81876387540251,
+  "start_utc": "2026-11-10T14:24:19.874428+00:00",
+  "end_utc": "2026-11-10T14:24:34.878744+00:00",
+  "reference_cumulative_active_seconds": 60.00947545748204,
+  "reference_reservation_seconds": 160,
+  "ledger_path": "/tmp/msh157-reference-final/runs.jsonl",
+  "ledger_sha256": "ed861d2a7b654a3dd998c12e0af60b068d3a45ccd2ad12b9996cbc821ef3d8a3",
+  "all_bestmove_aligned_nonbound": true,
+  "all_pvs_legal": true,
+  "no_additional_search_planned": true
+}

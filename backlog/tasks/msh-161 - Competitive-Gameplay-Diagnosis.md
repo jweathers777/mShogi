@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-10T20:59:00Z'
+updated_date: '2026-11-11T00:57:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -69,4 +69,6 @@ Primary builder Codex on codex/rewrite at 77101fe; unrelated worktrees preserved
 Preparation checkpoint: unchanged77101fe candidate/runner built and fingerprinted; Goldfish/Oxidation identities match retained binaries and Stockfish19 preflight passed. Independent qualification/source/analysis review recorded.14 offline analysis tests passed. Unattended four-game qualification batch launched; after_qualification software chain waits on shared OS lock then validates automatic reference smoke, analyzes every move and screens330master-source candidates. No model move supervision or repeated result polling. One app review scheduled for next checkpoint; README handoff records exact state/artifact paths. Main approximately200game coverage, method freeze and diagnosis remain unfinished. Sourcev2 resolves symmetry/center/castling coverage before any candidate results; no production changes.
 
 Preparation integrated on codex/rewrite at e066f58. Main study remains In Progress; no acceptance checks or final rankings claimed. Deferred review11November01:55Europe/Paris continues from README/state files; no need to poll individual moves. Live runtime outputs remain local pending completed-batch preservation.
+
+11November heartbeat: all4qualification games completed normally with native replay; candidate2winsOxidation,1win1drawGoldfish. No stronger-opponent selection yet. Reference chain stopped at overstrict zero-uncertainty smoke gate; independent review approved gate-only correction allowing its specifically flagged final-bound uncertainty, while comparison retains null loss.16 tests passed. Preserved original failed-chain receipts, reused successful smoke and resumed unattended fullmove analysis/source screen. Next single review03:15Europe/Paris. See smoke-recovery.md; no production changes or ranked conclusions.
 <!-- SECTION:NOTES:END -->

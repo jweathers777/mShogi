@@ -69,6 +69,15 @@
       "tests": 54,
       "seconds": 3.02,
       "log_sha256": "90594817f03820f166fe71939fdc4fcdaaf76951c1b2d867f10d274093648ebd"
+    },
+    {
+      "command": "Concurrent generation-pinned GCS retrieval; local all_jobs and verify_result for every job",
+      "outcome": "passed",
+      "objects": 1889,
+      "jobs": 121,
+      "local_store": "/private/tmp/msh162-independent-pilot-review",
+      "independent_scientific_review": "pilot/one-pair-scientific-review.json",
+      "independent_runtime_review": "pilot/one-pair-runtime-review.json"
     }
   ],
   "coverage": [
@@ -104,21 +113,23 @@
   ],
   "independent_review": "review.md; final source approved by separate reviewer after notification/cancellation fixes; all11 notification tests independently rerun.",
   "not_run": [
-    "one complete new cloud opening pair plus all-move screening/confirmations",
     "real failed-worker cloud recovery",
     "eight/sixteen VM throughput",
     "observed Cloud Billing cost",
     "full200game study",
-    "desktop/GUI and Windows (not in this targeted infrastructure scope)",
-    "actual Batch VM execution",
-    "live terminal PubSub event completion (initial terminal lookup already queued Codex successfully)"
+    "desktop/GUI and Windows (not in this targeted infrastructure scope)"
   ],
   "cloud_resources_created": true,
   "cloud_spend": null,
-  "cloud_spend_note": "Image and small GCS records now stored under approved pilot. First Batch job failed before task/VM creation; billed cost not yet available.",
-  "new_study_games_or_searches": 0,
-  "blocker": "One-pair retry scheduled; wait for event-driven completion, then verify full pipeline before eight-worker stage.",
-  "next_gate": "Retry the same frozen one-pair manifest after controller event identity correction; review complete results before eight workers within total US$30. Coordinator owns integration.",
+  "cloud_spend_note": "Estimated first successful VM lifecycle compute $0.14649; billed total unavailable. Registry, GCS, logs and overhead excluded from this estimate. Recovery probe900s/no retries; eight-worker stage retains approved limits.",
+  "new_study_games_or_searches": {
+    "games": 2,
+    "screening_queries": 434,
+    "confirmation_queries": 119,
+    "scope": "separate cloud pilot; not primary study evidence"
+  },
+  "blocker": "One-pair evidence passed independent review. Bounded cloud recovery probe submitted; event listener active. Eight-worker execution pending recovery result.",
+  "next_gate": "Review recovery probe on completion, then submit reviewed eight-pair manifest within existing US$30 total. No full study or primary integration.",
   "integration": {
     "branch": "codex/parallel-experiment-runner",
     "target": "codex/rewrite",
@@ -204,7 +215,28 @@
       "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
       "listener_pid": 54494,
       "notification_acceptance": "pending terminal event",
-      "budget": "same approved US$30 total; no increase"
+      "budget": "same approved US$30 total; no increase",
+      "state": "SUCCEEDED",
+      "completion_source": "pubsub-terminal-event",
+      "notification_accepted": true,
+      "batch_run_seconds": 2513.2062246,
+      "verified_jobs": 121,
+      "retrieved_objects": 1889,
+      "complete_games": 2,
+      "screening_queries": 434,
+      "confirmation_queries": 119,
+      "estimated_vm_compute_usd": 0.14649,
+      "actual_billed_cost": null,
+      "vm_and_disk_cleanup": "confirmed by independent instance/disk listing and delete audit"
+    },
+    {
+      "job": "msh162-pilot-recovery-v1",
+      "purpose": "Injected adapter failure then real5M confirmation retry and immutable completed-result reuse; not VM-loss recovery",
+      "max_run_seconds": 900,
+      "max_retries": 0,
+      "state_at_handoff": "submitted",
+      "listener_pid": 72758,
+      "evidence": "pilot/recovery-spec.json"
     }
   ],
   "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63"

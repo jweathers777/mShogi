@@ -46,3 +46,17 @@ alias matching after the first real Batch event exposed the mismatch. UID and
 full region/job validation remain required, followed by an authoritative lookup.
 The reviewer independently passed all28 GCP tests. The full controller suite
 passed54 tests on macOS. Worker source51351c48 and its image stay frozen.
+
+## Actual one-pair cloud execution
+
+Two independent reviewers accepted the completed one-pair pilot. Both games
+passed native replay; all217 decisions and434 screening queries were checked.
+The frozen selection produced119 completed5M confirmation jobs. Histories,
+options, source/binary hashes and uncertainty were preserved. All121 jobs were
+verified from1889 retrieved objects. These results validate execution, not strength.
+
+The actual numeric-project PubSub event resumed the chat. The VM and disk were
+removed. Estimated VM compute was$0.14649; actual billing remains unavailable.
+See pilot/one-pair-scientific-review.json and pilot/one-pair-runtime-review.json.
+A separately reviewed900s recovery probe is pending. The next eight distinct
+opening pairs are prepared and reviewed, but are not yet submitted.

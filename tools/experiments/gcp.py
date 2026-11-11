@@ -307,6 +307,20 @@ class BatchJobFailed(RuntimeError):
         super().__init__('Batch job ended unsuccessfully (' + result['job']['status']['state'] + '): ' + result['job']['name'])
 
 
+def _matches_job_resource(value, project, region, job_id):
+    """Accept a full Batch resource with the configured ID or numeric alias.
+
+    The numeric alias is safe only together with the independently fetched job
+    UID. Batch Pub/Sub uses project numbers while gcloud describe can use IDs.
+    Never use this name predicate alone as a job identity check.
+    """
+    if not isinstance(value, str):
+        return False
+    project_alias = '(?:' + re.escape(project) + r'|[1-9][0-9]*)'
+    pattern = 'projects/' + project_alias + '/locations/' + re.escape(region) + '/jobs/' + re.escape(job_id)
+    return re.fullmatch(pattern, value) is not None
+
+
 def wait_for_completion(job_id, config, subscription, client=None):
     """Wait on a pre-existing Pub/Sub subscription, without a polling loop.
 
@@ -337,8 +351,8 @@ def wait_for_completion(job_id, config, subscription, client=None):
     uid = initial.get('uid')
     expected_name = f"projects/{config['project']}/locations/{config['region']}/jobs/{job_id}"
     # Batch may canonicalize project ID to project number in the returned name.
-    # Always match notifications against the authoritative returned name and UID.
-    if (not isinstance(name, str) or not name.endswith('/locations/' + config['region'] + '/jobs/' + job_id)
+    # UID plus the full region/job path is stable across ID/number aliases.
+    if (not _matches_job_resource(name, config['project'], config['region'], job_id)
             or not isinstance(uid, str) or not uid):
         raise ValueError('Batch response lacks job identity: ' + expected_name)
     # Deletion/cancellation in progress ends this completion consumer as failure;
@@ -382,13 +396,16 @@ def wait_for_completion(job_id, config, subscription, client=None):
                     message.nack()
                     return
                 if (attributes.get('Type') != 'JOB_STATE_CHANGED' or
-                        attributes.get('JobUID') != uid or attributes.get('JobName') != name or
+                        attributes.get('JobUID') != uid or
+                        not _matches_job_resource(attributes.get('JobName'), config['project'], config['region'], job_id) or
+                        attributes.get('Region', config['region']) != config['region'] or
                         attributes.get('NewJobState') not in terminal):
                     message.ack()
                     return
                 try:
                     observed = status_job(job_id, config['project'], config['region'])
-                    if observed.get('uid') != uid or observed.get('name') != name:
+                    if (observed.get('uid') != uid or
+                            not _matches_job_resource(observed.get('name'), config['project'], config['region'], job_id)):
                         raise ValueError('Batch identity changed while awaiting completion')
                     if observed.get('status', {}).get('state') not in terminal:
                         # Retain this event for redelivery if the read model lags.

@@ -302,6 +302,51 @@ class NotificationTests(unittest.TestCase):
         self.assertTrue(all(m.acks == 1 for m in messages))
         self.assertTrue(client.stream.cancelled())
 
+    def test_numeric_project_notification_matches_id_describe(self):
+        event = Message(JobName='projects/216675633801/locations/us-central1/jobs/pilot-01', Region='us-central1')
+        with patch.object(gcp, 'status_job', side_effect=[observed('RUNNING'), observed('SUCCEEDED')]) as status:
+            result = gcp.wait_for_completion('pilot-01', NOTICE_CONFIG, SUBSCRIPTION, Subscriber([event]))
+        self.assertEqual(status.call_count, 2)
+        self.assertEqual(event.acks, 1)
+        self.assertEqual(result['notification']['JobName'], event.attributes['JobName'])
+        self.assertEqual(result['job']['name'], JOB_NAME)
+
+    def test_describe_alias_can_change_without_changing_uid(self):
+        initial = observed('RUNNING')
+        initial['name'] = 'projects/216675633801/locations/us-central1/jobs/pilot-01'
+        with patch.object(gcp, 'status_job', side_effect=[initial, observed('SUCCEEDED')]):
+            result = gcp.wait_for_completion('pilot-01', NOTICE_CONFIG, SUBSCRIPTION, Subscriber([Message()]))
+        self.assertEqual(result['job']['status']['state'], 'SUCCEEDED')
+
+    def test_numeric_alias_still_rejects_wrong_uid_job_region_and_path(self):
+        numeric = 'projects/216675633801/locations/us-central1/jobs/pilot-01'
+        messages = [Message(JobName=numeric, JobUID='other-uid'),
+                    Message(JobName=numeric.replace('pilot-01', 'other-job')),
+                    Message(JobName=numeric.replace('us-central1', 'us-east1')),
+                    Message(JobName=numeric, Region='us-east1'),
+                    Message(JobName=numeric.replace('projects/216675633801', 'projects/other-project')),
+                    Message(JobName='prefix/' + numeric),
+                    Message(JobName=numeric + '/extra'),
+                    Message(JobName=numeric)]
+        with patch.object(gcp, 'status_job', side_effect=[observed('RUNNING'), observed('SUCCEEDED')]) as status:
+            result = gcp.wait_for_completion('pilot-01', NOTICE_CONFIG, SUBSCRIPTION, Subscriber(messages))
+        self.assertEqual(status.call_count, 2)
+        self.assertTrue(all(event.acks == 1 for event in messages))
+        self.assertEqual(result['notification']['JobName'], numeric)
+
+    def test_event_alias_never_bypasses_authoritative_refetch_identity(self):
+        numeric = 'projects/216675633801/locations/us-central1/jobs/pilot-01'
+        for field, value in [('uid','replacement-uid'), ('name',numeric.replace('pilot-01','other-job')),
+                             ('name',numeric.replace('us-central1','us-east1'))]:
+            with self.subTest(field=field, value=value):
+                final = observed('SUCCEEDED'); final[field] = value
+                message = Message(JobName=numeric)
+                with patch.object(gcp, 'status_job', side_effect=[observed('RUNNING'), final]):
+                    with self.assertRaisesRegex(ValueError, 'identity changed'):
+                        gcp.wait_for_completion('pilot-01', NOTICE_CONFIG, SUBSCRIPTION, Subscriber([message]))
+                self.assertEqual(message.acks, 0)
+                self.assertEqual(message.nacks, 1)
+
     def test_failure_event_is_not_success_and_keeps_notification(self):
         client = Subscriber([Message(NewJobState='FAILED')])
         with patch.object(gcp, 'status_job', side_effect=[observed('RUNNING'), observed('FAILED')]):

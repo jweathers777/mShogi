@@ -113,11 +113,11 @@
   ],
   "independent_review": "review.md; final source approved by separate reviewer after notification/cancellation fixes; all11 notification tests independently rerun.",
   "not_run": [
-    "real failed-worker cloud recovery",
     "eight/sixteen VM throughput",
     "observed Cloud Billing cost",
     "full200game study",
-    "desktop/GUI and Windows (not in this targeted infrastructure scope)"
+    "desktop/GUI and Windows (not in this targeted infrastructure scope)",
+    "abrupt cloud VM loss and stale-claim recovery (local tests only)"
   ],
   "cloud_resources_created": true,
   "cloud_spend": null,
@@ -128,8 +128,8 @@
     "confirmation_queries": 119,
     "scope": "separate cloud pilot; not primary study evidence"
   },
-  "blocker": "One-pair evidence passed independent review. Bounded cloud recovery probe submitted; event listener active. Eight-worker execution pending recovery result.",
-  "next_gate": "Review recovery probe on completion, then submit reviewed eight-pair manifest within existing US$30 total. No full study or primary integration.",
+  "blocker": "Eight-worker pilot scheduled. Wait for completion event, then retrieve/verify all evidence and measure actual concurrency, throughput and cost.",
+  "next_gate": "Review completed eight-worker evidence independently, record all resource use and prepare coordinator integration handoff. Do not start full study or integrate into primary branch.",
   "integration": {
     "branch": "codex/parallel-experiment-runner",
     "target": "codex/rewrite",
@@ -236,7 +236,35 @@
       "max_retries": 0,
       "state_at_handoff": "submitted",
       "listener_pid": 72758,
-      "evidence": "pilot/recovery-spec.json"
+      "evidence": "pilot/recovery-spec.json",
+      "state": "SUCCEEDED",
+      "batch_run_seconds": 54.057846941,
+      "completion_source": "pubsub-terminal-event",
+      "probe_result": "passed",
+      "attempt_states": [
+        "failed",
+        "complete"
+      ],
+      "duplicate_execution": false,
+      "artifact_objects_retrieved": 15,
+      "successful_retry_wall_seconds": 8.905643329,
+      "successful_retry_child_cpu_seconds": 6.668821,
+      "scope_limit": "Application failure recovery; abrupt VM-loss recovery remains locally tested, not demonstrated on GCP.",
+      "independent_review": "pilot/recovery-review.json",
+      "vm_and_disk_cleanup": "confirmed by empty listings and completed deletion audit"
+    },
+    {
+      "job": "msh162-pilot-eight-v1",
+      "experiment": "msh162-cloud-pilot-eight-v1",
+      "state_at_handoff": "SCHEDULED",
+      "task_count": 8,
+      "parallelism": 8,
+      "opening_pairs": "main-01-01 through main-01-08",
+      "manifest_sha256": "acd4928de937178f0fdb27d26ce69763037064343ec794fe1e23f6ef6e1cdc42",
+      "listener_pid": 73734,
+      "budget": "same US$30 total authorization; no increase",
+      "worker_source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63"
     }
   ],
   "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63"

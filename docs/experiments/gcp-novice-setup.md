@@ -303,3 +303,21 @@ Do not delete the evidence bucket or image repository to stop computation.
 Billing and usage records can arrive later.
 
 For developer commands and recovery instructions, see [the runner operating guide](parallel-runner.md).
+
+## Check pilot progress
+
+Open Terminal on your Mac. Run these commands:
+
+```sh
+cd /Users/johnweathers/.codex/worktrees/parallel-experiment-runner/mShogi
+GOOGLE_CLOUD_PROJECT=mshogi /private/tmp/msh162-controller/bin/python -m tools.experiments.cli quick-status --manifest docs/experiments/pilot/eight-pair-manifest.json --store gs://mshogi-experiments-216675633801/msh161 --job-name msh162-pilot-eight-v1
+```
+
+The report shows saved progress and the current Batch state. It does not start or
+stop work. It does not check all result files. Confirmation totals can increase
+while analysis continues. A saved claim can refer to a running or interrupted job.
+
+The Python path above is the environment prepared for this pilot. If it is removed,
+create a Python environment and install `tools/experiments/requirements-controller.txt`.
+Use that environment's Python command instead. For a later experiment, change the
+manifest path and Batch job name. Add `--json` if you need JSON output.

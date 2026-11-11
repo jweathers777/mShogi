@@ -54,6 +54,21 @@
       "seconds": 4.689,
       "native_replay": "passed",
       "log_sha256": "6ec41bb61155993b681b018b9d6029406073e76447c58ff3064771b9ff075106"
+    },
+    {
+      "command": "Actual GCSStore put/get/delete plus ADC PubSub get_subscription",
+      "outcome": "passed",
+      "environment": "Google Cloud mshogi/us-central1",
+      "coverage": "create-only conflict preserved original bytes; read matched; own claim conditionally removed; subscription read matched expected topic"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /private/tmp/msh162-controller/bin/python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "macos controller",
+      "source_revision": "348926274cb56cedcb6328bbfd809f552910ae63",
+      "outcome": "passed",
+      "tests": 54,
+      "seconds": 3.02,
+      "log_sha256": "90594817f03820f166fe71939fdc4fcdaaf76951c1b2d867f10d274093648ebd"
     }
   ],
   "coverage": [
@@ -89,21 +104,21 @@
   ],
   "independent_review": "review.md; final source approved by separate reviewer after notification/cancellation fixes; all11 notification tests independently rerun.",
   "not_run": [
-    "actual GCS writes and Batch VM execution",
     "one complete new cloud opening pair plus all-move screening/confirmations",
     "real failed-worker cloud recovery",
     "eight/sixteen VM throughput",
     "observed Cloud Billing cost",
-    "live PubSub-to-Codex completion notification",
     "full200game study",
-    "desktop/GUI and Windows (not in this targeted infrastructure scope)"
+    "desktop/GUI and Windows (not in this targeted infrastructure scope)",
+    "actual Batch VM execution",
+    "live terminal PubSub event completion (initial terminal lookup already queued Codex successfully)"
   ],
-  "cloud_resources_created": false,
-  "cloud_spend": 0,
-  "cloud_spend_note": "No cloud pilot run; this is absence of created resources, not a measured billing statement.",
+  "cloud_resources_created": true,
+  "cloud_spend": null,
+  "cloud_spend_note": "Image and small GCS records now stored under approved pilot. First Batch job failed before task/VM creation; billed cost not yet available.",
   "new_study_games_or_searches": 0,
-  "blocker": "Spending approved up to US$30. Project setup incomplete: latest read-only check still shows Compute Engine, Batch, Artifact Registry and Pub/Sub APIs disabled. Await completion of novice setup guide, then verify IAM/storage/network/ADC/quota before upload or launch.",
-  "next_gate": "Complete and verify gcp-novice-setup.md, upload verified image and freeze registry digest; execute approved one-pair pilot then review before eight workers, within total US$30. Coordinator review required before primary study/integration.",
+  "blocker": "One-pair retry scheduled; wait for event-driven completion, then verify full pipeline before eight-worker stage.",
+  "next_gate": "Retry the same frozen one-pair manifest after controller event identity correction; review complete results before eight workers within total US$30. Coordinator owns integration.",
   "integration": {
     "branch": "codex/parallel-experiment-runner",
     "target": "codex/rewrite",
@@ -131,7 +146,7 @@
     "stockfish_compiler_self_report": "g++15.2.0 Linux, x86-64-bmi2, BMI2 AVX2 SSE41 SSSE3 SSE2 POPCNT",
     "local_worker_image": "msh162-worker:51351c48",
     "local_image_id": "sha256:f6353cb44e00c0cc26448a8a2480842c5a72e93fc64486dfe147037b9543666c",
-    "registry_digest": "not uploaded; must obtain real registry digest before final cloud manifest",
+    "registry_digest": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
     "image_build_exit_notification_accepted": true,
     "build_warning": "Docker warns PYTHON_BASE has no default; explicit digest supplied, build passed."
   },
@@ -139,7 +154,7 @@
     "project_id": "mshogi",
     "project_number": "216675633801",
     "billing_enabled": true,
-    "compute_batch_artifactregistry_pubsub_apis": "not enabled at observation",
+    "compute_batch_artifactregistry_pubsub_apis": "enabled; owner setup verified before pilot",
     "region_recommendation": "us-central1",
     "c3_standard_4_list_usd_hour": 0.201608,
     "pricing_source": "https://cloud.google.com/products/compute/pricing/general-purpose?hl=en",
@@ -160,5 +175,37 @@
       "sixteen workers",
       "spending beyond US$30"
     ]
-  }
+  },
+  "pilot_runs": [
+    {
+      "job": "msh162-pilot-one-v1",
+      "experiment": "msh162-cloud-pilot-one-v1",
+      "state": "FAILED",
+      "created_utc": "2026-11-11T19:37:18.882349901Z",
+      "failed_utc": "2026-11-11T19:37:22.873354806Z",
+      "reported_run_duration_seconds": 0,
+      "tasks_listed": 0,
+      "vm_operations_observed": 0,
+      "game_results": 0,
+      "failure_reason": "No diagnostic reason returned. Audit shows Batch service-agent IAM grant 0.445s before creation; first-use IAM propagation is the leading hypothesis, not proven.",
+      "completion_source": "initial terminal lookup",
+      "notification_accepted": true,
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+      "diagnostic_evidence": "pilot/one-pair-v1-iam-bootstrap.json"
+    },
+    {
+      "job": "msh162-pilot-one-v2",
+      "experiment": "msh162-cloud-pilot-one-v1",
+      "state_at_handoff": "SCHEDULED",
+      "uid": "msh162-pilot-one-v-151a5543-1aaf-4dbe0",
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63",
+      "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+      "listener_pid": 54494,
+      "notification_acceptance": "pending terminal event",
+      "budget": "same approved US$30 total; no increase"
+    }
+  ],
+  "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63"
 }

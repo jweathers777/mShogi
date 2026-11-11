@@ -1,0 +1,24 @@
+{
+  "pid": 54494,
+  "started_epoch": 1794426366.1078122,
+  "command": [
+    "/private/tmp/msh162-controller/bin/python",
+    "-m",
+    "tools.experiments.cli",
+    "wait-cloud",
+    "--manifest",
+    "docs/experiments/pilot/one-pair-manifest.json",
+    "--store",
+    "gs://mshogi-experiments-216675633801/msh161",
+    "--config",
+    "docs/experiments/mshogi-pilot-config.json",
+    "--job-name",
+    "msh162-pilot-one-v2",
+    "--subscription",
+    "projects/mshogi/subscriptions/mshogi-pilot-completion",
+    "--thread",
+    "01a1cbe2-d662-72b2-b7fa-d2365c731c53"
+  ],
+  "mode": "blocking PubSub stream; no periodic polling",
+  "notification_acceptance": "pending completion"
+}

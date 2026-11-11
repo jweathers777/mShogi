@@ -102,8 +102,8 @@
   "cloud_spend": 0,
   "cloud_spend_note": "No cloud pilot run; this is absence of created resources, not a measured billing statement.",
   "new_study_games_or_searches": 0,
-  "blocker": "Project mshogi and billing linked verified. Owner requested novice guide; required APIs/IAM/bucket/registry/network/PubSub/local ADC setup and US$30 pilot approval pending. Do not upload image or submit billable jobs before approval.",
-  "next_gate": "Complete reviewed gcp-novice-setup.md; verify project configuration, obtain pilot approval, upload locally verified image and freeze registry digest; validate one pair then eight concurrent workers. Coordinator reviews before primary study/integration.",
+  "blocker": "Spending approved up to US$30. Project setup incomplete: latest read-only check still shows Compute Engine, Batch, Artifact Registry and Pub/Sub APIs disabled. Await completion of novice setup guide, then verify IAM/storage/network/ADC/quota before upload or launch.",
+  "next_gate": "Complete and verify gcp-novice-setup.md, upload verified image and freeze registry digest; execute approved one-pair pilot then review before eight workers, within total US$30. Coordinator review required before primary study/integration.",
   "integration": {
     "branch": "codex/parallel-experiment-runner",
     "target": "codex/rewrite",
@@ -147,5 +147,18 @@
     "nominal_max_active_task_hours": 108,
     "nominal_max_active_compute_usd": 21.773664,
     "additional_charges": "VM startup/cleanup, disk, external IP, registry/storage, logs, PubSub and network; budget alert is not a hard cap"
+  },
+  "pilot_authorization": {
+    "date": "2026-11-11",
+    "owner": "John",
+    "approved_usd": 30,
+    "project": "mshogi",
+    "region": "us-central1",
+    "scope": "One opening pair first, then eight concurrent workers after review within the same allowance. Setup must be completed before launch.",
+    "excludes": [
+      "full200game study",
+      "sixteen workers",
+      "spending beyond US$30"
+    ]
   }
 }

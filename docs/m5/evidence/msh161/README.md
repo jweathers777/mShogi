@@ -95,3 +95,31 @@ correction preserves uncertainty/null losses;16 tests passed and original failed
 chain receipts remain. Full all-move analysis and root screening restarted via
 unattended chain(session90158), using existing smoke without engine rerun. Next
 single review03:15Europe/Paris11November. Inspect status once; no move polling.
+
+## Latest checkpoint —11November03:15review
+
+Initial all-move640decision/1280query analysis and330root screen completed with
+zero failed queries;978.664s reference wall/953.951s childCPU including original
+smoke. Full1618artifacts preserved with hashes in `initial-reference-evidence.tar.gz`
+and `initial-reference-bundle.json`; raw local analysis remains available.
+Blind gameplay review `qualification-gameplay-review.md` identifies several
+provisional questions and strong contrary examples, not engineering priorities.
+
+Neither reference is established stronger by the four start games. Independently
+chosen strict-balanced Spanish/French/Semi-Slav/Sicilian roots now drive16additional
+qualification games (both references/both colors), separate from main200sample.
+`qualification_extension.py` launched(session86454) runs25singleton5M queries on
+14pilotdecisions, then eight native pairs and allmove analysis, fully unattended.
+`extension-chain.json` is its stage authority; shared locks prevent overlap. It
+stops on failure rather than discarding/replacing work. Next single review08:30
+Europe/Paris11November. Do not alter frozen protocol/helpers until chain finishes.
+
+Pilot v0 drops too many finite screens:328/640 usable versus637numeric pairs,
+so method review introduces separate read-only `screen_v1.py`; original flags and
+v0 results are retained. Earlier aligned nonbound UCI reports are finite estimates,
+not proven completed iterations. Version1 retains last-two-depth spread and final
+same-move bound conflicts; it identifies followup, never confirms a mistake.
+Mainmethod/sample/opponent remain unfrozen. Strict source screen70accepted,
+244uncertain,16outsidebalance cannot itself supply90roots. Review v1 source
+judgments/37root confirmation proposal before further source work. Preserve
+structural quotas and all source selection/rejection provenance.

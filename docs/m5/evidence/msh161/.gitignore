@@ -1,2 +1,6 @@
 .execution.lock
 **/.lock
+# Raw initial reference JSON remains local and is preserved in the verified tar bundle.
+qualification/*/analysis/
+qualification/*/analysis-summary.json
+balance-screen/

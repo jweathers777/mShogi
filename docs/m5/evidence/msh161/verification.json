@@ -50,7 +50,7 @@
   "postbatch_launch_state": "waiting_for_qualification",
   "automation": {
     "id": "review-completed-chess-diagnosis-batch",
-    "scheduled_local": "2026-11-11T03:15:00+01:00",
+    "scheduled_local": "2026-11-11T08:30:00+01:00",
     "one_review": true
   },
   "qualification": {
@@ -67,5 +67,40 @@
     "test_receipt": "recovery-tests.log",
     "original_failure": "attempt0-postbatch-status.json",
     "analysis_policy_unchanged": true
+  },
+  "initial_reference": {
+    "queries": 1612,
+    "allmove_decisions": 640,
+    "allmove_queries": 1280,
+    "root_screen_queries": 330,
+    "smoke_queries": 2,
+    "bundle": "initial-reference-bundle.json",
+    "wall_seconds": 978.6642652456649,
+    "child_cpu_seconds": 953.9513519999999,
+    "failed_queries": 0,
+    "usable_v0_comparisons": 328,
+    "not_confirmed_findings": true,
+    "independent_gameplay_review": "qualification-gameplay-review.md",
+    "selection_review": "sources/selection-review-note.md"
+  },
+  "qualification_extension": {
+    "scheduled_games": 16,
+    "openings": 4,
+    "references": [
+      "goldfish113",
+      "oxidation060"
+    ],
+    "purpose": "Fixed reference suitability across structurally different independently balanced histories, separate from main200games",
+    "pilot_confirmation_decisions": 14,
+    "pilot_confirmation_queries": 25,
+    "schedule": "qualification-extension-schedule.json",
+    "launch_state": "running",
+    "chain_session": 86454,
+    "independent_chain_review": "execution_review: no launch blocker; frozen sequence uses unchanged bounded helpers"
+  },
+  "screen_v1": {
+    "method_review": "pilot-method-review.md",
+    "checks": "screen-v1-checks.json",
+    "ranked_findings": false
   }
 }

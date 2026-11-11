@@ -1,0 +1,128 @@
+[
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+    "game": 0,
+    "ply": 52,
+    "played": "g2h2",
+    "alternativefromexistingPV": "e4g3",
+    "reason": "target: usable advantage-dissipation screen",
+    "same_move_control": false
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+    "game": 0,
+    "ply": 54,
+    "played": "c2c4",
+    "alternativefromexistingPV": "c5b7",
+    "reason": "target: counterplay/advantage preservation",
+    "same_move_control": false
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+    "game": 1,
+    "ply": 41,
+    "played": "f6h5",
+    "alternativefromexistingPV": "f6h5",
+    "reason": "control: successful attacking response; initial score uncertain",
+    "same_move_control": true
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+    "game": 0,
+    "ply": 0,
+    "played": "g1f3",
+    "alternativefromexistingPV": "e2e4",
+    "reason": "control: quiet acceptable opening alternative; initial score uncertain",
+    "same_move_control": false
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+    "game": 0,
+    "ply": 51,
+    "played": "c6b5",
+    "alternativefromexistingPV": "h8c8",
+    "reason": "opponent event: queen-placement opportunity",
+    "same_move_control": false
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+    "game": 0,
+    "ply": 52,
+    "played": "c5a3",
+    "alternativefromexistingPV": "c5a3",
+    "reason": "control: successful opportunity response",
+    "same_move_control": true
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+    "game": 1,
+    "ply": 11,
+    "played": "e8g8",
+    "alternativefromexistingPV": "d7d5",
+    "reason": "target: castling and king safety",
+    "same_move_control": false
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+    "game": 1,
+    "ply": 12,
+    "played": "e2e4",
+    "alternativefromexistingPV": "g2g4",
+    "reason": "opponent event: missed attacking response; initial score uncertain",
+    "same_move_control": false
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+    "game": 1,
+    "ply": 15,
+    "played": "f6d7",
+    "alternativefromexistingPV": "f6e4",
+    "reason": "target: retreat and king safety; initial score uncertain",
+    "same_move_control": false
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+    "game": 1,
+    "ply": 16,
+    "played": "c3c4",
+    "alternativefromexistingPV": "h2h4",
+    "reason": "opponent event: second missed attack; initial score uncertain",
+    "same_move_control": false
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+    "game": 1,
+    "ply": 47,
+    "played": "e7f5",
+    "alternativefromexistingPV": "c7c6",
+    "reason": "target: opportunity response; initial score uncertain",
+    "same_move_control": false
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+    "game": 1,
+    "ply": 53,
+    "played": "e7g6",
+    "alternativefromexistingPV": "b8b1",
+    "reason": "target: missed active-rook opportunity; initial score uncertain",
+    "same_move_control": false
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+    "game": 1,
+    "ply": 67,
+    "played": "b8e8",
+    "alternativefromexistingPV": "b8e8",
+    "reason": "control: successful tactical admission before later choice",
+    "same_move_control": true
+  },
+  {
+    "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+    "game": 1,
+    "ply": 69,
+    "played": "e7e5",
+    "alternativefromexistingPV": "d5c4",
+    "reason": "target: premature tactical simplification; initial score uncertain",
+    "same_move_control": false
+  }
+]

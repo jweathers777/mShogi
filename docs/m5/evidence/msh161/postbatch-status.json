@@ -1,0 +1,62 @@
+{
+  "status": "completed_needs_independent_review",
+  "pid": 47886,
+  "started_epoch": 1794358602.323369,
+  "steps": [
+    {
+      "command": [
+        "/private/tmp/msh139/venv/bin/python",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/reference-smoke",
+        "--game",
+        "0",
+        "--ply",
+        "0"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.20472987461835146
+    },
+    {
+      "command": [
+        "/private/tmp/msh139/venv/bin/python",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/analysis"
+      ],
+      "started_epoch": 1794358602.530543,
+      "returncode": 0,
+      "wall_seconds": 372.9621925423853
+    },
+    {
+      "command": [
+        "/private/tmp/msh139/venv/bin/python",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/analysis"
+      ],
+      "started_epoch": 1794358975.7539258,
+      "returncode": 0,
+      "wall_seconds": 378.4633017499
+    },
+    {
+      "command": [
+        "/private/tmp/msh139/venv/bin/python",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/sources/balance-roots.json",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/balance-screen",
+        "--roots"
+      ],
+      "started_epoch": 1794359354.541816,
+      "returncode": 0,
+      "wall_seconds": 235.97437216620892
+    }
+  ],
+  "frozen": {
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/sources/balance-roots.json": "4235d92bddd09b2b695525bef4823dd10eacec37fce06714350a996d435f3a1c",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/../../competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c"
+  },
+  "last_epoch": 1794359590.516315
+}

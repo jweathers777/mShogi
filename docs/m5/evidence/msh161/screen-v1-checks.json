@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "counts": [
+    {
+      "all_decisions_with_receipts": 301,
+      "played_decisions": 301,
+      "numeric_comparisons": 301,
+      "followup_required": 127,
+      "uncertain_report_or_depth_evidence": 119,
+      "negative_raw_loss": 18,
+      "raw_loss_at_least_005": 41
+    },
+    {
+      "all_decisions_with_receipts": 339,
+      "played_decisions": 339,
+      "numeric_comparisons": 336,
+      "followup_required": 194,
+      "uncertain_report_or_depth_evidence": 189,
+      "raw_loss_at_least_005": 18,
+      "negative_raw_loss": 42,
+      "numeric_comparisons_unavailable": 3,
+      "numeric_comparison_unavailable": 3
+    }
+  ],
+  "synthetic_final_bound_conflicts_retained": [
+    "final_same_move_bound_conflicts_with_earlier_expected_score",
+    "final_same_move_bound_conflicts_with_earlier_cp"
+  ],
+  "no_engine_execution": true
+}

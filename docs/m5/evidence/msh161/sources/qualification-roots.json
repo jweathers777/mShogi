@@ -1,0 +1,90 @@
+[
+  {
+    "id": "master-65b720cc9c80e96e",
+    "fen": null,
+    "moves": [
+      "e2e4",
+      "e7e5",
+      "g1f3",
+      "b8c6",
+      "f1b5",
+      "g8f6",
+      "e1g1",
+      "f6e4",
+      "f1e1",
+      "e4d6",
+      "f3e5",
+      "f8e7",
+      "b5d3",
+      "c6e5",
+      "e1e5",
+      "e8g8"
+    ]
+  },
+  {
+    "id": "master-524a0e2ff6429b69",
+    "fen": null,
+    "moves": [
+      "e2e4",
+      "e7e6",
+      "d2d4",
+      "d7d5",
+      "b1c3",
+      "f8b4",
+      "e4e5",
+      "c7c5",
+      "a2a3",
+      "b4c3",
+      "b2c3",
+      "g8e7",
+      "g1f3",
+      "b7b6",
+      "f1b5",
+      "c8d7"
+    ]
+  },
+  {
+    "id": "master-3a47a461d9dc2253",
+    "fen": null,
+    "moves": [
+      "d2d4",
+      "d7d5",
+      "c2c4",
+      "c7c6",
+      "e2e3",
+      "g8f6",
+      "b1c3",
+      "e7e6",
+      "g1f3",
+      "b8d7",
+      "d1c2",
+      "f8d6",
+      "c1d2",
+      "e8g8",
+      "e1c1",
+      "e6e5"
+    ]
+  },
+  {
+    "id": "master-5fec4590ee6aebc1",
+    "fen": null,
+    "moves": [
+      "e2e4",
+      "c7c5",
+      "g1f3",
+      "d7d6",
+      "d2d4",
+      "c5d4",
+      "f3d4",
+      "g8f6",
+      "b1c3",
+      "a7a6",
+      "h2h3",
+      "e7e6",
+      "g2g4",
+      "d6d5",
+      "e4d5",
+      "f6d5"
+    ]
+  }
+]

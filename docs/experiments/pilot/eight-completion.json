@@ -1,0 +1,144 @@
+{
+  "completion_source": "pubsub-terminal-event",
+  "job": {
+    "allocationPolicy": {
+      "instances": [
+        {
+          "policy": {
+            "bootDisk": {
+              "sizeGb": "30",
+              "type": "pd-balanced"
+            },
+            "machineType": "c3-standard-4",
+            "provisioningModel": "STANDARD"
+          }
+        }
+      ],
+      "labels": {
+        "batch-job-id": "msh162-pilot-eight-v1"
+      },
+      "location": {
+        "allowedLocations": [
+          "regions/us-central1",
+          "zones/us-central1-a",
+          "zones/us-central1-b",
+          "zones/us-central1-c",
+          "zones/us-central1-f"
+        ]
+      },
+      "network": {
+        "networkInterfaces": [
+          {
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+          }
+        ]
+      },
+      "serviceAccount": {
+        "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+        "scopes": [
+          "https://www.googleapis.com/auth/cloud-platform"
+        ]
+      }
+    },
+    "createTime": "2026-11-11T20:37:12.243839752Z",
+    "labels": {
+      "application": "mshogi-experiments",
+      "schema": "v1"
+    },
+    "logsPolicy": {
+      "destination": "CLOUD_LOGGING"
+    },
+    "name": "projects/mshogi/locations/us-central1/jobs/msh162-pilot-eight-v1",
+    "notifications": [
+      {
+        "message": {
+          "type": "JOB_STATE_CHANGED"
+        },
+        "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+      }
+    ],
+    "status": {
+      "runDuration": "5180.046142731s",
+      "state": "SUCCEEDED",
+      "statusEvents": [
+        {
+          "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1.",
+          "eventTime": "2026-11-11T20:37:20.490473291Z",
+          "type": "STATUS_CHANGED"
+        },
+        {
+          "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1.",
+          "eventTime": "2026-11-11T20:38:37.535127614Z",
+          "type": "STATUS_CHANGED"
+        },
+        {
+          "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1.",
+          "eventTime": "2026-11-11T22:04:57.581270345Z",
+          "type": "STATUS_CHANGED"
+        }
+      ],
+      "taskGroups": {
+        "group0": {
+          "counts": {
+            "SUCCEEDED": "8"
+          },
+          "instances": [
+            {
+              "bootDisk": {
+                "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD",
+              "taskPack": "1"
+            }
+          ]
+        }
+      }
+    },
+    "taskGroups": [
+      {
+        "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1/taskGroups/group0",
+        "parallelism": "8",
+        "taskCount": "8",
+        "taskCountPerNode": "1",
+        "taskSpec": {
+          "computeResource": {
+            "cpuMilli": "4000",
+            "memoryMib": "12288"
+          },
+          "maxRetryCount": 1,
+          "maxRunDuration": "21600s",
+          "runnables": [
+            {
+              "container": {
+                "commands": [
+                  "-m",
+                  "tools.experiments.cli",
+                  "cloud-worker",
+                  "--manifest",
+                  "gs://mshogi-experiments-216675633801/msh161/msh162-cloud-pilot-eight-v1/manifest.json",
+                  "--store",
+                  "gs://mshogi-experiments-216675633801/msh161"
+                ],
+                "entrypoint": "python3",
+                "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "uid": "msh162-pilot-eight-a0d24cf9-68f1-4bfc0",
+    "updateTime": "2026-11-11T22:04:57.581270345Z"
+  },
+  "notification": {
+    "JobName": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1",
+    "JobUID": "msh162-pilot-eight-a0d24cf9-68f1-4bfc0",
+    "NewJobState": "SUCCEEDED",
+    "Region": "us-central1",
+    "Type": "JOB_STATE_CHANGED"
+  }
+}

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex-cloud-runner'
 created_date: '2026-11-11T18:35:00Z'
-updated_date: '2026-11-11T20:37:00Z'
+updated_date: '2026-11-11T21:31:00Z'
 labels:
   - handle:parallel-experiment-runner
 dependencies: []
@@ -54,6 +54,8 @@ Reviewed isolated branch handoff. Cloud pilot requires project/access/spending a
 3. Provide CLI and fixed Linux packaging.
 4. Level 2 macOS/Linux process/storage tests and independent review; actual cloud gate after owner authorization. No desktop campaign.
 5. Preserve isolated branch for coordinator integration.
+
+Owner-requested quick status: add a read-only concurrent receipt snapshot with plain-text and JSON output, optional Batch state, honest unknown/stale-state labels and no artifact verification. Add tests for partial/derived progress, retries, failures and no artifact reads. Remove obsolete tools/study_status scripts (no external references found). Update operating instructions, run focused/full relevant tests and independent review. Preserve the running frozen cloud worker and existing slow verification commands.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -78,4 +80,6 @@ Controller34892627 passed54tests and independent28-test GCP review. Retried unch
 Actual one-pair pilot SUCCEEDED:121jobs verified from1889retrieved objects,2native-replayed games,434screen queries and119deeper confirmations. Two independent reviews passed; see pilot/one-pair-scientific-review.json and one-pair-runtime-review.json. Actual PubSub event queued chat successfully. VM/disk deletion confirmed; estimated VM compute$0.14649, billed cost unavailable. Submitted reviewed recovery probe msh162-pilot-recovery-v1 (same image/C3,900s,no retries): inject adapter failure, preserve failure, run genuine confirmation retry, prove third call skips computation. Listener72758 queues chat; files /private/tmp/msh162-recovery-listener.*. Await event then inspect validation/recovery-v1.json. Eight distinct next pairs prepared/reviewed in pilot/eight-pair-manifest.json but not submitted. Remain within totalUS$30; no full study or integration.
 
 Recovery SUCCEEDED with independent actual-cloud verification: one failed attempt preserved, genuine5M retry complete, success bytes unchanged and third call skipped execution; all15objects retrieved. VM/disk/claim cleanup confirmed (pilot/recovery-review.json). Application failure only, not abrupt VM-loss evidence. Submitted authorized eight-worker pilot msh162-pilot-eight-v1, experiment msh162-cloud-pilot-eight-v1, next eight distinct frozen pairs main-01-01..08; state SCHEDULED,taskCount8,parallelism8. Same totalUS$30. Event listener PID73734 queues owning chat on completion; /private/tmp/msh162-eight-listener.*. Resume on event: parallel pinned-generation retrieval, verify all static/derived jobs, independent replay/scientific/runtime review, overlap throughput/cost and cleanup; then coordinator handoff. No full study or primary integration.
+
+Owner-requested quick-status delivered at cecb9e92: concurrent plan/possible-failure reads, completion-marker counts, optional manifest-bound Batch state, plain text/JSON, explicit unverified/stale-claim/unknown-total labels. No artifact reads or computation. Live check16.67s vs earlier fullreceipt scan45.69s (different evolving snapshots). All60 Mac tests and6focused Linux tests passed; independent6-test review approved. Removed four obsolete tools/study_status files; no callers found. Updated operating/novice guides. Frozen worker image and active eight-worker listener unchanged. Cloud pilot still pending completion; no integration or full study.
 <!-- SECTION:NOTES:END -->

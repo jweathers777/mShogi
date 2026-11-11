@@ -226,7 +226,11 @@ def main():
     if args.command=='prepare':value=make_manifest(args)
     elif args.command in ('run','resume'):value=notify(args,lambda:local_run(args))
     else:
-        manifest=read_manifest(args.manifest);validate_manifest(manifest);store=store_at(args.store)
+        manifest=read_manifest(args.manifest);validate_manifest(manifest)
+        if args.command=='quick-status':
+            from .quick_status import progress_store
+            store=progress_store(args.store)
+        else:store=store_at(args.store)
         if args.command=='cloud-worker':
             publish_manifest(manifest,store)
             if not 0<=args.index<len(manifest['pipelines']):raise ValueError('invalid task index')

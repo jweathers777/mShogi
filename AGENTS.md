@@ -271,6 +271,20 @@ to resume the owning idle chat. Do not use periodic watchers or guessed wake tim
 Use normal execution escalation for Codex local database access; preserve all
 security settings. Record computation status and notification acceptance separately.
 
+Owner cloud-migration direction,2026-11-11: stop further local MSH-161 batches.
+Preserve the active batch02; if the frozen runner cannot pause at a completed-pair
+boundary, allow that existing batch to finish safely. Do NOT launch local batch03,
+repeat searches or resume local execution from an older exit-notification message.
+Prepare an interim competitive assessment from sufficiently analyzed Mac evidence;
+no final engineering priorities or production corrections. The primary200-game
+study should replay ALL frozen opening pairs on standardized cloud workers after
+the coordinator reviews the separate cloud runner's validation. Mac evidence stays
+exploratory and separate, not pooled as one uniform hardware sample. The coordinator
+owns MSH-161/codex/rewrite and scientific interpretation; the cloud-runner agent owns
+its execution implementation on an isolated worktree/branch. Coordinate ONLY through
+repository records, not inter-chat messages. See the migration request and handoff
+under docs/m5/evidence/msh161/migration; preserve frozen live inputs unchanged.
+
 
 ## Git and routine autonomy
 

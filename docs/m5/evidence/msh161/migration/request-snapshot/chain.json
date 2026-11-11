@@ -1,0 +1,22 @@
+{
+  "completed": [],
+  "freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+  "hardware_note": "Shared unpinned macOS host; fixed equal thinking time, not isolated CPU throughput",
+  "host_load_start": [
+    3.7900390625,
+    3.48486328125,
+    3.68994140625
+  ],
+  "inflight": {
+    "command": [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/run_batch.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02-schedule.json",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/games"
+    ],
+    "label": "native20games",
+    "started_epoch": 1794411986.964083
+  },
+  "started_epoch": 1794411986.962092,
+  "status": "running"
+}

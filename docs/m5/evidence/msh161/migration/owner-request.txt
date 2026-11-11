@@ -1,0 +1,145 @@
+# MSH-161: Pause Local Execution and Prepare for Cloud Migration
+
+I want to change how we execute MSH-161 (Competitive Gameplay Diagnosis).
+
+The current serial Mac experiment is too slow. We will build a reusable parallel experiment system for GCP and then complete the main study on standardized cloud hardware.
+
+This does not change the scientific objective. We still want to understand why mShogi loses competitive Chess games, across diverse openings and complete games.
+
+Your immediate responsibilities are to stop local execution safely, preserve the evidence, produce an interim gameplay assessment, and coordinate with a separate cloud-runner development agent.
+
+## 1. Stop local computation safely
+
+Batch 02 was recently at 12 of 20 completed games. Check its actual current state before taking action.
+
+The existing `run_batch.py` runs opening pairs sequentially. `main_batch.py` manages the complete batch and subsequent analysis. The study also uses a completion notification through `notify_exit.py`.
+
+Do not assume that stopping the outer process will leave a valid checkpoint.
+
+Stop at the next safe completed opening-pair boundary if possible.
+
+Preserve the following:
+
+- All completed games and their complete histories.
+- Partial batch state and any completed pair reports.
+- Existing Stockfish analysis and confirmation results.
+- Frozen source, executable, schedule, and protocol identities.
+- Failure, process, and resource records.
+- The ability to resume or independently replay the unfinished work.
+
+Do not kill an active engine search or leave an unexplained incomplete pair.
+
+Do not change frozen source files while the running process depends on their hashes.
+
+If the current implementation cannot pause safely at a pair boundary, allow the current 20-game batch to finish. Do not start batch 03.
+
+Explain the actual stopping point and any incomplete analysis.
+
+Ensure that the completion notifier does not restart local computation or create a scheduling loop.
+
+## 2. Produce an interim competitive gameplay assessment
+
+Use the fully analyzed first batch and any additional completed evidence that is suitable for analysis.
+
+Do not wait for the full 200-game study.
+
+Reuse the established Stockfish analysis, independent gameplay findings, and category records. Do not repeat completed searches without a specific reason.
+
+Produce a durable interim report in the repository.
+
+The report should identify:
+
+1. Recurring weaknesses observed so far.
+2. Their game phases and opening families.
+3. Their observed frequency and severity, with correct denominators.
+4. Missed opportunities after opponent errors.
+5. Failures to preserve or convert advantages.
+6. Examples of successful mShogi play.
+7. Important uncertainties and gaps in coverage.
+8. Possible engineering research directions.
+
+Separate observed behavior from possible technical causes.
+
+For each substantial finding, reference representative games and decisions.
+
+Do not treat several related moves as independent failures.
+
+Do not assign unsupported mistake labels to games that have not received sufficient analysis.
+
+Keep the existing Stockfish judgments and their uncertainty. Do not adjust the analysis method to obtain preferred results.
+
+## 3. Preserve hypotheses without selecting solutions
+
+The interim report should preserve useful research hypotheses for later consideration.
+
+However, this is not the final competitive diagnosis.
+
+The available sample is small and may not represent the full range of opening and middlegame play.
+
+Do not rank final engineering priorities yet.
+
+Do not begin search, evaluation, or rules corrections.
+
+The purpose is to capture what we have learned before moving execution to the cloud.
+
+The full survey must still evaluate the broader set of games before selecting major engineering work.
+
+## 4. Coordinate with the cloud-runner agent
+
+A separate fresh Codex chat will develop a reusable parallel experiment runner.
+
+You own the current MSH-161 study and `codex/rewrite`.
+
+The cloud agent must work in an isolated worktree and dedicated branch.
+
+Provide or identify the frozen study inputs and existing source records that the cloud agent needs.
+
+The relevant files include:
+
+- `docs/m5/evidence/msh161/run_batch.py`
+- `docs/m5/evidence/msh161/main_batch.py`
+- `docs/m5/evidence/msh161/analysis.py`
+- `docs/m5/evidence/msh161/main-freeze.json`
+- The frozen opening schedules.
+- The existing Rust experiment runner.
+
+Do not make competing changes to these files.
+
+The cloud agent owns the new execution system. You own the scientific protocol, completed evidence, and final interpretation.
+
+Review the cloud system's validation evidence before using it for the main study.
+
+## 5. Prepare the cloud study
+
+Preserve the selected opponent, opening schedule, analysis rules, and original study objectives.
+
+The main study will use standardized cloud workers. Do not silently mix Mac and cloud results as one uniform hardware sample.
+
+The Mac results remain valid exploratory evidence.
+
+Prefer replaying the planned opening pairs on standardized cloud hardware for the primary 200-game comparison.
+
+Preserve the original frozen selection and include all planned games. Do not remove unfavorable games or change openings based on interim results.
+
+Do not impose an arbitrary scientific computation ceiling.
+
+Retain operational safeguards, cost monitoring, failure handling, and reproducible evidence.
+
+## 6. Completion and handoff
+
+When local execution has stopped safely and the interim assessment is complete, report:
+
+1. The exact local stopping point.
+2. The number of complete games and analyzed games.
+3. Where all preserved evidence is stored.
+4. The main provisional gameplay findings.
+5. Important uncertainty and missing coverage.
+6. What the cloud agent needs to resume the full study.
+
+Keep the conversational report concise. Put detailed evidence in the repository.
+
+Do not resume local batch execution automatically.
+
+Once the cloud runner is validated, coordinate the transition and continue the full competitive study without changing its scientific objective.
+
+**The priority is to preserve the current evidence, learn from it, and remove the serial execution bottleneck. Do not start another engine optimization tangent.**

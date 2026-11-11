@@ -1,0 +1,42 @@
+{
+  "local_only": true,
+  "git_excluded": true,
+  "purpose": "Preserve exactMac executablebytes for replay/provenance; notLinuxcloudbinaries. Rebuildcloudfromfrozen sources and recordnewhashes.",
+  "files": [
+    {
+      "engine": "candidate",
+      "original_path": "/private/tmp/msh161/mshogi",
+      "preserved_path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/migration/local-executables/candidate",
+      "sha256": "756510977054b3c3b52b90379215f2922a9ef8aea590d1f5df9766656686c666",
+      "bytes": 4881472
+    },
+    {
+      "engine": "runner",
+      "original_path": "/private/tmp/msh161/mshogi-match",
+      "preserved_path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/migration/local-executables/runner",
+      "sha256": "fb7760c0a45b760236a0108f16ea1a2b8d04f95bf0103b7f55b9ff221cd83605",
+      "bytes": 7926400
+    },
+    {
+      "engine": "goldfish113",
+      "original_path": "/private/tmp/msh139/goldfish113/build/goldfish.x",
+      "preserved_path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/migration/local-executables/goldfish113",
+      "sha256": "3459e8245299566018ba453d0895a2225f3a6abed47543ee88b7f42afb052c2c",
+      "bytes": 232024
+    },
+    {
+      "engine": "oxidation060",
+      "original_path": "/private/tmp/msh139/oxidation060/target/release/oxidation",
+      "preserved_path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/migration/local-executables/oxidation060",
+      "sha256": "1ad5a983873ba4e983adb1fb628a8f1506d2043c097e418c928b72e39e36d77e",
+      "bytes": 617728
+    },
+    {
+      "engine": "stockfish19",
+      "original_path": "/private/tmp/msh49/opponent/stockfish/stockfish-macos-universal",
+      "preserved_path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/migration/local-executables/stockfish19",
+      "sha256": "8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5",
+      "bytes": 105458632
+    }
+  ]
+}

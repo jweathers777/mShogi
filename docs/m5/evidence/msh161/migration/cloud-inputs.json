@@ -1,0 +1,135 @@
+{
+  "original_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+  "candidate_and_native_runner_source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+  "reference_opponent": {
+    "name": "Oxidation0.6.0",
+    "source": "46a705b80e7191e7c302838eb8b85053b5994d65",
+    "repository": "https://github.com/Mathmagician8191/Liberty-Chess.git"
+  },
+  "analysis_reference": "Stockfish19; originalMacidentity inbuild.json and acquisitionprovenance docs/m5/evidence/msh49/verification.json; verify cloudrelease/source/network identity separately",
+  "primary_cloud_games": 200,
+  "mac_games_are_exploratory": true,
+  "files": [
+    {
+      "repository_path": "docs/m5/evidence/msh161/main-method.md",
+      "sha256": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/main_batch.py",
+      "sha256": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/prepare_main.py",
+      "sha256": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/analysis.py",
+      "sha256": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/run_batch.py",
+      "sha256": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/screen_v1.py",
+      "sha256": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/summarize_analysis.py",
+      "sha256": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/phase_tags.py",
+      "sha256": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/build.json",
+      "sha256": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/sources/main-roots.json",
+      "sha256": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/sources/main-selection.json",
+      "sha256": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/competitive-gameplay-diagnosis.md",
+      "sha256": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+      "role": "originalfrozenstudyinput"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/main/batch-01-schedule.json",
+      "sha256": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+      "batch_index": 1,
+      "role": "originalpairedschedule"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/main/batch-02-schedule.json",
+      "sha256": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+      "batch_index": 2,
+      "role": "originalpairedschedule"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/main/batch-03-schedule.json",
+      "sha256": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+      "batch_index": 3,
+      "role": "originalpairedschedule"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/main/batch-04-schedule.json",
+      "sha256": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+      "batch_index": 4,
+      "role": "originalpairedschedule"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/main/batch-05-schedule.json",
+      "sha256": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+      "batch_index": 5,
+      "role": "originalpairedschedule"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/main/batch-06-schedule.json",
+      "sha256": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+      "batch_index": 6,
+      "role": "originalpairedschedule"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/main/batch-07-schedule.json",
+      "sha256": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+      "batch_index": 7,
+      "role": "originalpairedschedule"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/main/batch-08-schedule.json",
+      "sha256": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+      "batch_index": 8,
+      "role": "originalpairedschedule"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/main/batch-09-schedule.json",
+      "sha256": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+      "batch_index": 9,
+      "role": "originalpairedschedule"
+    },
+    {
+      "repository_path": "docs/m5/evidence/msh161/main/batch-10-schedule.json",
+      "sha256": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+      "batch_index": 10,
+      "role": "originalpairedschedule"
+    }
+  ],
+  "cloud_manifest_required": "Newversionedexecutionmanifest; preserveoriginalfreeze, mapabsolutepaths explicitly, recordworkerimage/source/compiler/binary/network/hardware/options/time identities and reviewed parity evidence."
+}

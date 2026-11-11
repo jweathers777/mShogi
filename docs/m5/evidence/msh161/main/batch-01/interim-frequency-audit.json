@@ -1,0 +1,2200 @@
+{
+  "scope": "Mac batch01 only;20 fully analyzed games; selected20M panels are not prevalence samples",
+  "denominators": {
+    "games": 20,
+    "prepared_games": 18,
+    "prepared_families": 7,
+    "unaided_games": 2,
+    "played_decisions": 2494,
+    "candidate_played_decisions": 1248,
+    "draw": 2,
+    "win": 10,
+    "loss": 8,
+    "selected20m_decisions_both_players": 73,
+    "selected20m_candidate_decisions": 49,
+    "selected20m_reference_decisions": 24,
+    "supported20m_candidate_move_events": 31,
+    "supported20m_candidate_affected_games": 18,
+    "candidate_affected_results": {
+      "loss": 8,
+      "win": 8,
+      "draw": 2
+    }
+  },
+  "candidate_status_counts": {
+    "unresolved": 5,
+    "supported_finite_event_20M": 16,
+    "supported_subthreshold_20M": 1,
+    "supported_finite_deterioration": 15,
+    "below_significance_threshold": 3,
+    "unresolved20m": 4,
+    "claim_policy_context_limits_actual_result_attribution": 1,
+    "stable_singleton_control": 4
+  },
+  "groups": {
+    "tactical_choices": {
+      "all_examples_supported_candidate20m": true,
+      "selected_move_examples": 5,
+      "distinct_affected_games": 5,
+      "distinct_prepared_families": 4,
+      "affected_results": {
+        "loss": 5
+      },
+      "examples": [
+        {
+          "pair": "main-01-02",
+          "game": 0,
+          "ply": 52,
+          "candidate": true,
+          "category": "tactical_alignment",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.4875,
+          "game_info": {
+            "pair": "main-01-02",
+            "game": 0,
+            "result": "loss",
+            "candidate_color": "white",
+            "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+          }
+        },
+        {
+          "pair": "main-01-03",
+          "game": 1,
+          "ply": 21,
+          "candidate": true,
+          "category": "pawn_break_tactics",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.4825,
+          "game_info": {
+            "pair": "main-01-03",
+            "game": 1,
+            "result": "loss",
+            "candidate_color": "black",
+            "family": "slav-semi-slav"
+          }
+        },
+        {
+          "pair": "main-01-04",
+          "game": 0,
+          "ply": 38,
+          "candidate": true,
+          "category": "passed_pawn_tactics",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.4975,
+          "game_info": {
+            "pair": "main-01-04",
+            "game": 0,
+            "result": "loss",
+            "candidate_color": "white",
+            "family": "nimzo-indian"
+          }
+        },
+        {
+          "pair": "main-01-06",
+          "game": 0,
+          "ply": 82,
+          "candidate": true,
+          "category": "quiet_tactical_defense",
+          "status": "supported_finite_deterioration",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-05-09.json",
+          "raw_difference": 0.989,
+          "game_info": {
+            "pair": "main-01-06",
+            "game": 0,
+            "result": "loss",
+            "candidate_color": "white",
+            "family": "slav-semi-slav"
+          }
+        },
+        {
+          "pair": "main-01-07",
+          "game": 0,
+          "ply": 32,
+          "candidate": true,
+          "category": "threatened_piece_defense",
+          "status": "supported_finite_deterioration",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-05-09.json",
+          "raw_difference": 0.48,
+          "game_info": {
+            "pair": "main-01-07",
+            "game": 0,
+            "result": "loss",
+            "candidate_color": "white",
+            "family": "queens-indian-bogo"
+          }
+        }
+      ],
+      "episode_policy": "At most one conservative game-category recurrence unit per game; multiple moves not independent episodes; group membership can overlap."
+    },
+    "attack_and_conversion": {
+      "all_examples_supported_candidate20m": true,
+      "selected_move_examples": 9,
+      "distinct_affected_games": 8,
+      "distinct_prepared_families": 5,
+      "affected_results": {
+        "win": 5,
+        "loss": 1,
+        "draw": 2
+      },
+      "examples": [
+        {
+          "pair": "main-01-00",
+          "game": 0,
+          "ply": 84,
+          "candidate": true,
+          "category": "preserving_attacking_pressure",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.5,
+          "game_info": {
+            "pair": "main-01-00",
+            "game": 0,
+            "result": "draw",
+            "candidate_color": "white",
+            "family": "queens-pawn-other"
+          }
+        },
+        {
+          "pair": "main-01-00",
+          "game": 0,
+          "ply": 92,
+          "candidate": true,
+          "category": "preserving_attacking_pressure",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.5,
+          "game_info": {
+            "pair": "main-01-00",
+            "game": 0,
+            "result": "draw",
+            "candidate_color": "white",
+            "family": "queens-pawn-other"
+          }
+        },
+        {
+          "pair": "main-01-00",
+          "game": 1,
+          "ply": 119,
+          "candidate": true,
+          "category": "endgame_king_activity",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.49850000000000005,
+          "game_info": {
+            "pair": "main-01-00",
+            "game": 1,
+            "result": "win",
+            "candidate_color": "black",
+            "family": "queens-pawn-other"
+          }
+        },
+        {
+          "pair": "main-01-01",
+          "game": 1,
+          "ply": 81,
+          "candidate": true,
+          "category": "passed_pawn_break_timing",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.5,
+          "game_info": {
+            "pair": "main-01-01",
+            "game": 1,
+            "result": "win",
+            "candidate_color": "black",
+            "family": "english"
+          }
+        },
+        {
+          "pair": "main-01-03",
+          "game": 0,
+          "ply": 30,
+          "candidate": true,
+          "category": "preserving_attacking_pressure",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.4195,
+          "game_info": {
+            "pair": "main-01-03",
+            "game": 0,
+            "result": "win",
+            "candidate_color": "white",
+            "family": "slav-semi-slav"
+          }
+        },
+        {
+          "pair": "main-01-04",
+          "game": 1,
+          "ply": 35,
+          "candidate": true,
+          "category": "tactical_opportunity_completion",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.512,
+          "game_info": {
+            "pair": "main-01-04",
+            "game": 1,
+            "result": "win",
+            "candidate_color": "black",
+            "family": "nimzo-indian"
+          }
+        },
+        {
+          "pair": "main-01-06",
+          "game": 1,
+          "ply": 81,
+          "candidate": true,
+          "category": "endgame_pawn_break_conversion",
+          "status": "supported_finite_deterioration",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-05-09.json",
+          "raw_difference": 0.5,
+          "game_info": {
+            "pair": "main-01-06",
+            "game": 1,
+            "result": "draw",
+            "candidate_color": "black",
+            "family": "slav-semi-slav"
+          }
+        },
+        {
+          "pair": "main-01-08",
+          "game": 0,
+          "ply": 34,
+          "candidate": true,
+          "category": "attack_preservation",
+          "status": "supported_finite_deterioration",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-05-09.json",
+          "raw_difference": 0.48850000000000005,
+          "game_info": {
+            "pair": "main-01-08",
+            "game": 0,
+            "result": "win",
+            "candidate_color": "white",
+            "family": "pirc-modern-other-semiopen"
+          }
+        },
+        {
+          "pair": "main-01-08",
+          "game": 1,
+          "ply": 63,
+          "candidate": true,
+          "category": "advantage_preservation",
+          "status": "supported_finite_deterioration",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-05-09.json",
+          "raw_difference": 0.493,
+          "game_info": {
+            "pair": "main-01-08",
+            "game": 1,
+            "result": "loss",
+            "candidate_color": "black",
+            "family": "pirc-modern-other-semiopen"
+          }
+        }
+      ],
+      "episode_policy": "At most one conservative game-category recurrence unit per game; multiple moves not independent episodes; group membership can overlap."
+    },
+    "active_defense": {
+      "all_examples_supported_candidate20m": true,
+      "selected_move_examples": 6,
+      "distinct_affected_games": 5,
+      "distinct_prepared_families": 4,
+      "affected_results": {
+        "loss": 4,
+        "draw": 1
+      },
+      "examples": [
+        {
+          "pair": "main-01-01",
+          "game": 0,
+          "ply": 106,
+          "candidate": true,
+          "category": "defensive_rook_activity",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.477,
+          "game_info": {
+            "pair": "main-01-01",
+            "game": 0,
+            "result": "loss",
+            "candidate_color": "white",
+            "family": "english"
+          }
+        },
+        {
+          "pair": "main-01-02",
+          "game": 1,
+          "ply": 87,
+          "candidate": true,
+          "category": "ending_transition",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.4615,
+          "game_info": {
+            "pair": "main-01-02",
+            "game": 1,
+            "result": "loss",
+            "candidate_color": "black",
+            "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+          }
+        },
+        {
+          "pair": "main-01-03",
+          "game": 1,
+          "ply": 61,
+          "candidate": true,
+          "category": "defensive_exchange_opportunity",
+          "status": "supported_finite_event_20M",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-00-04.json",
+          "raw_difference": 0.4785,
+          "game_info": {
+            "pair": "main-01-03",
+            "game": 1,
+            "result": "loss",
+            "candidate_color": "black",
+            "family": "slav-semi-slav"
+          }
+        },
+        {
+          "pair": "main-01-07",
+          "game": 0,
+          "ply": 108,
+          "candidate": true,
+          "category": "active_defensive_counterplay",
+          "status": "supported_finite_deterioration",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-05-09.json",
+          "raw_difference": 0.4445,
+          "game_info": {
+            "pair": "main-01-07",
+            "game": 0,
+            "result": "loss",
+            "candidate_color": "white",
+            "family": "queens-indian-bogo"
+          }
+        },
+        {
+          "pair": "main-01-07",
+          "game": 0,
+          "ply": 126,
+          "candidate": true,
+          "category": "endgame_recovery",
+          "status": "supported_finite_deterioration",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-05-09.json",
+          "raw_difference": 0.496,
+          "game_info": {
+            "pair": "main-01-07",
+            "game": 0,
+            "result": "loss",
+            "candidate_color": "white",
+            "family": "queens-indian-bogo"
+          }
+        },
+        {
+          "pair": "main-01-06",
+          "game": 1,
+          "ply": 89,
+          "candidate": true,
+          "category": "active_endgame_defense",
+          "status": "supported_finite_deterioration",
+          "counted_supported_candidate": true,
+          "source_overlay": "adjudicated20m-05-09.json",
+          "raw_difference": 0.479,
+          "game_info": {
+            "pair": "main-01-06",
+            "game": 1,
+            "result": "draw",
+            "candidate_color": "black",
+            "family": "slav-semi-slav"
+          }
+        }
+      ],
+      "episode_policy": "At most one conservative game-category recurrence unit per game; multiple moves not independent episodes; group membership can overlap."
+    }
+  },
+  "group_union_affected_games": 15,
+  "overlap_warning": "Affected-game groups overlap; their counts must not be summed. The20M panel was selectively chosen from the complete screen; no binomial prevalence inference. Multiple moves in one game are correlated.",
+  "claim_policy_exclusion": "06g1p97Ba8 remains finiteSF-loss/actual-result policy dependent, not counted supported candidate event here;06g1p98Bf3 is opponent and policy dependent. Superseded5M positives05g0p18/p30 and unresolved08g1p71 not counted.",
+  "source_hashes": {
+    "adjudicated20m-00-04.json": "9248805b70c6d4299689500ed179e86cdccd1597967c4e858a6d7d90d3f1ba7c",
+    "adjudicated20m-05-09.json": "4f2cef4d3756b3a30ba94b598e85b9c846696cc056c0e01b64937894ea3b0a0a",
+    "adjudication20m/chain.json": "e665e7e94f418957dc6924021ffa54bcaa1a33cd21623ffe3ca285f8ea0f8ee3"
+  },
+  "rows": [
+    {
+      "pair": "main-01-00",
+      "game": 0,
+      "ply": 28,
+      "candidate": true,
+      "category": "tactical_opportunity_completion",
+      "status": "unresolved",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.48550000000000004,
+      "game_info": {
+        "pair": "main-01-00",
+        "game": 0,
+        "result": "draw",
+        "candidate_color": "white",
+        "family": "queens-pawn-other"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 0,
+      "ply": 84,
+      "candidate": true,
+      "category": "preserving_attacking_pressure",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.5,
+      "game_info": {
+        "pair": "main-01-00",
+        "game": 0,
+        "result": "draw",
+        "candidate_color": "white",
+        "family": "queens-pawn-other"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.5,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 0,
+      "ply": 92,
+      "candidate": true,
+      "category": "preserving_attacking_pressure",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.5,
+      "game_info": {
+        "pair": "main-01-00",
+        "game": 0,
+        "result": "draw",
+        "candidate_color": "white",
+        "family": "queens-pawn-other"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.5,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 1,
+      "ply": 43,
+      "candidate": true,
+      "category": "tactical_opportunity_completion",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.20950000000000002,
+      "game_info": {
+        "pair": "main-01-00",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "queens-pawn-other"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.20950000000000002,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 1,
+      "ply": 119,
+      "candidate": true,
+      "category": "endgame_king_activity",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.49850000000000005,
+      "game_info": {
+        "pair": "main-01-00",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "queens-pawn-other"
+      },
+      "frozen_phase": "endgame",
+      "conservative_observed_range_margin": 0.49850000000000005,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 1,
+      "ply": 122,
+      "candidate": false,
+      "category": "opponent_recovery_choice",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.5,
+      "game_info": {
+        "pair": "main-01-00",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "queens-pawn-other"
+      },
+      "frozen_phase": "endgame"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 0,
+      "ply": 18,
+      "candidate": true,
+      "category": "king_safety_pawn_advance",
+      "status": "supported_subthreshold_20M",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.046499999999999986,
+      "game_info": {
+        "pair": "main-01-01",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "english"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 0,
+      "ply": 38,
+      "candidate": true,
+      "category": "king_safety_piece_exchange",
+      "status": "unresolved",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.24700000000000003,
+      "game_info": {
+        "pair": "main-01-01",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "english"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 0,
+      "ply": 106,
+      "candidate": true,
+      "category": "defensive_rook_activity",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.477,
+      "game_info": {
+        "pair": "main-01-01",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "english"
+      },
+      "frozen_phase": "endgame",
+      "conservative_observed_range_margin": 0.477,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 1,
+      "ply": 23,
+      "candidate": true,
+      "category": "king_safety_pawn_advance",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.11149999999999999,
+      "game_info": {
+        "pair": "main-01-01",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "english"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.11149999999999999,
+      "severity_band": "serious"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 1,
+      "ply": 81,
+      "candidate": true,
+      "category": "passed_pawn_break_timing",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.5,
+      "game_info": {
+        "pair": "main-01-01",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "english"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.5,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 1,
+      "ply": 84,
+      "candidate": false,
+      "category": "opponent_pawn_blockade",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.5,
+      "game_info": {
+        "pair": "main-01-01",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "english"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 0,
+      "ply": 39,
+      "candidate": false,
+      "category": "opponent_queenside_timing",
+      "status": "unresolved",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.10399999999999998,
+      "game_info": {
+        "pair": "main-01-02",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 0,
+      "ply": 40,
+      "candidate": true,
+      "category": "queenside_opportunity_response",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.09550000000000003,
+      "game_info": {
+        "pair": "main-01-02",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.08550000000000002,
+      "severity_band": "significant"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 0,
+      "ply": 52,
+      "candidate": true,
+      "category": "tactical_alignment",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.4875,
+      "game_info": {
+        "pair": "main-01-02",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.479,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 1,
+      "ply": 29,
+      "candidate": true,
+      "category": "piece_activity_opportunity",
+      "status": "unresolved",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.07199999999999995,
+      "game_info": {
+        "pair": "main-01-02",
+        "game": 1,
+        "result": "loss",
+        "candidate_color": "black",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 1,
+      "ply": 61,
+      "candidate": true,
+      "category": "tactical_opportunity_completion",
+      "status": "unresolved",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.10050000000000003,
+      "game_info": {
+        "pair": "main-01-02",
+        "game": 1,
+        "result": "loss",
+        "candidate_color": "black",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 1,
+      "ply": 87,
+      "candidate": true,
+      "category": "ending_transition",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.4615,
+      "game_info": {
+        "pair": "main-01-02",
+        "game": 1,
+        "result": "loss",
+        "candidate_color": "black",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "endgame",
+      "conservative_observed_range_margin": 0.4615,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 30,
+      "candidate": true,
+      "category": "preserving_attacking_pressure",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.4195,
+      "game_info": {
+        "pair": "main-01-03",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.4089999999999999,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 60,
+      "candidate": true,
+      "category": "attacking_sacrifice",
+      "status": "unresolved",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.39349999999999996,
+      "game_info": {
+        "pair": "main-01-03",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 63,
+      "candidate": false,
+      "category": "opponent_defensive_coordination",
+      "status": "unresolved",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.426,
+      "game_info": {
+        "pair": "main-01-03",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 1,
+      "ply": 21,
+      "candidate": true,
+      "category": "pawn_break_tactics",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.4825,
+      "game_info": {
+        "pair": "main-01-03",
+        "game": 1,
+        "result": "loss",
+        "candidate_color": "black",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "opening",
+      "conservative_observed_range_margin": 0.4825,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 1,
+      "ply": 60,
+      "candidate": false,
+      "category": "opponent_conversion",
+      "status": "unresolved",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.44400000000000006,
+      "game_info": {
+        "pair": "main-01-03",
+        "game": 1,
+        "result": "loss",
+        "candidate_color": "black",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 1,
+      "ply": 61,
+      "candidate": true,
+      "category": "defensive_exchange_opportunity",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.4785,
+      "game_info": {
+        "pair": "main-01-03",
+        "game": 1,
+        "result": "loss",
+        "candidate_color": "black",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.469,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 0,
+      "ply": 25,
+      "candidate": false,
+      "category": "opponent_material_tactics",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.4955,
+      "game_info": {
+        "pair": "main-01-04",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "nimzo-indian"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 0,
+      "ply": 30,
+      "candidate": true,
+      "category": "premature_simplification",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.40900000000000003,
+      "game_info": {
+        "pair": "main-01-04",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "nimzo-indian"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.4015000000000001,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 0,
+      "ply": 38,
+      "candidate": true,
+      "category": "passed_pawn_tactics",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.4975,
+      "game_info": {
+        "pair": "main-01-04",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "nimzo-indian"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.4965,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 1,
+      "ply": 28,
+      "candidate": false,
+      "category": "opponent_central_capture",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.5015,
+      "game_info": {
+        "pair": "main-01-04",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "nimzo-indian"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 1,
+      "ply": 35,
+      "candidate": true,
+      "category": "tactical_opportunity_completion",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.512,
+      "game_info": {
+        "pair": "main-01-04",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "nimzo-indian"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.512,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 1,
+      "ply": 60,
+      "candidate": false,
+      "category": "opponent_rook_placement",
+      "status": "supported_finite_event_20M",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-00-04.json",
+      "raw_difference": 0.491,
+      "game_info": {
+        "pair": "main-01-04",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "nimzo-indian"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 16,
+      "candidate": true,
+      "category": "exchange_decisions",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.0665,
+      "game_info": {
+        "pair": "main-01-05",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.0665,
+      "severity_band": "significant"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 18,
+      "candidate": true,
+      "category": "central_pawn_break_timing",
+      "status": "below_significance_threshold",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.0010000000000000009,
+      "game_info": {
+        "pair": "main-01-05",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 30,
+      "candidate": true,
+      "category": "advantage_preservation",
+      "status": "below_significance_threshold",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.0,
+      "game_info": {
+        "pair": "main-01-05",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 17,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "unresolved20m",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.09049999999999997,
+      "game_info": {
+        "pair": "main-01-05",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 27,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.4965,
+      "game_info": {
+        "pair": "main-01-05",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 1,
+      "ply": 27,
+      "candidate": true,
+      "category": "advantage_preservation",
+      "status": "unresolved20m",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.35950000000000004,
+      "game_info": {
+        "pair": "main-01-05",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 1,
+      "ply": 22,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.376,
+      "game_info": {
+        "pair": "main-01-05",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 1,
+      "ply": 30,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "unresolved20m",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.24,
+      "game_info": {
+        "pair": "main-01-05",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      },
+      "frozen_phase": "endgame"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 20,
+      "candidate": true,
+      "category": "central_pawn_break_timing",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.07049999999999995,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.066,
+      "severity_band": "significant"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 70,
+      "candidate": true,
+      "category": "central_pawn_break_timing",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.486,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.486,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 82,
+      "candidate": true,
+      "category": "quiet_tactical_defense",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.989,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.988,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 77,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.499,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 27,
+      "candidate": true,
+      "category": "tactical_exchange_sequence",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.467,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 1,
+        "result": "draw",
+        "candidate_color": "black",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.467,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 81,
+      "candidate": true,
+      "category": "endgame_pawn_break_conversion",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.5,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 1,
+        "result": "draw",
+        "candidate_color": "black",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "endgame",
+      "conservative_observed_range_margin": 0.5,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 89,
+      "candidate": true,
+      "category": "active_endgame_defense",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.479,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 1,
+        "result": "draw",
+        "candidate_color": "black",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "endgame",
+      "conservative_observed_range_margin": 0.4745,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 97,
+      "candidate": true,
+      "category": "active_endgame_defense",
+      "status": "claim_policy_context_limits_actual_result_attribution",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.5,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 1,
+        "result": "draw",
+        "candidate_color": "black",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "endgame"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 42,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.4940000000000001,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 1,
+        "result": "draw",
+        "candidate_color": "black",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 78,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.5,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 1,
+        "result": "draw",
+        "candidate_color": "black",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "endgame"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 90,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.49750000000000005,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 1,
+        "result": "draw",
+        "candidate_color": "black",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "endgame"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 98,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "claim_policy_context_limits_actual_result_attribution",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.0,
+      "game_info": {
+        "pair": "main-01-06",
+        "game": 1,
+        "result": "draw",
+        "candidate_color": "black",
+        "family": "slav-semi-slav"
+      },
+      "frozen_phase": "endgame"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 0,
+      "ply": 32,
+      "candidate": true,
+      "category": "threatened_piece_defense",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.48,
+      "game_info": {
+        "pair": "main-01-07",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "queens-indian-bogo"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.48,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 0,
+      "ply": 108,
+      "candidate": true,
+      "category": "active_defensive_counterplay",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.4445,
+      "game_info": {
+        "pair": "main-01-07",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "queens-indian-bogo"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.4445,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 0,
+      "ply": 126,
+      "candidate": true,
+      "category": "endgame_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.496,
+      "game_info": {
+        "pair": "main-01-07",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "queens-indian-bogo"
+      },
+      "frozen_phase": "endgame",
+      "conservative_observed_range_margin": 0.491,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 0,
+      "ply": 125,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.499,
+      "game_info": {
+        "pair": "main-01-07",
+        "game": 0,
+        "result": "loss",
+        "candidate_color": "white",
+        "family": "queens-indian-bogo"
+      },
+      "frozen_phase": "endgame"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 1,
+      "ply": 29,
+      "candidate": true,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "below_significance_threshold",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.03149999999999997,
+      "game_info": {
+        "pair": "main-01-07",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "queens-indian-bogo"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 1,
+      "ply": 51,
+      "candidate": true,
+      "category": "rook_activity",
+      "status": "stable_singleton_control",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": null,
+      "game_info": {
+        "pair": "main-01-07",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "queens-indian-bogo"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 1,
+      "ply": 50,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.4145,
+      "game_info": {
+        "pair": "main-01-07",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "queens-indian-bogo"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 24,
+      "candidate": true,
+      "category": "tactical_pawn_break",
+      "status": "stable_singleton_control",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": null,
+      "game_info": {
+        "pair": "main-01-08",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "pirc-modern-other-semiopen"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 34,
+      "candidate": true,
+      "category": "attack_preservation",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.48850000000000005,
+      "game_info": {
+        "pair": "main-01-08",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "pirc-modern-other-semiopen"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.48850000000000005,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 36,
+      "candidate": true,
+      "category": "king_attack",
+      "status": "stable_singleton_control",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": null,
+      "game_info": {
+        "pair": "main-01-08",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "pirc-modern-other-semiopen"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 23,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.354,
+      "game_info": {
+        "pair": "main-01-08",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "pirc-modern-other-semiopen"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 35,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.485,
+      "game_info": {
+        "pair": "main-01-08",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "pirc-modern-other-semiopen"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 31,
+      "candidate": true,
+      "category": "piece_coordination",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.07399999999999995,
+      "game_info": {
+        "pair": "main-01-08",
+        "game": 1,
+        "result": "loss",
+        "candidate_color": "black",
+        "family": "pirc-modern-other-semiopen"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.07199999999999995,
+      "severity_band": "significant"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 63,
+      "candidate": true,
+      "category": "advantage_preservation",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.493,
+      "game_info": {
+        "pair": "main-01-08",
+        "game": 1,
+        "result": "loss",
+        "candidate_color": "black",
+        "family": "pirc-modern-other-semiopen"
+      },
+      "frozen_phase": "middlegame",
+      "conservative_observed_range_margin": 0.493,
+      "severity_band": "major"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 71,
+      "candidate": true,
+      "category": "exchange_and_counterplay",
+      "status": "unresolved20m",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.5,
+      "game_info": {
+        "pair": "main-01-08",
+        "game": 1,
+        "result": "loss",
+        "candidate_color": "black",
+        "family": "pirc-modern-other-semiopen"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 34,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.45449999999999996,
+      "game_info": {
+        "pair": "main-01-08",
+        "game": 1,
+        "result": "loss",
+        "candidate_color": "black",
+        "family": "pirc-modern-other-semiopen"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 0,
+      "ply": 2,
+      "candidate": true,
+      "category": "opening_central_choices",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.061000000000000054,
+      "game_info": {
+        "pair": "main-01-unaided",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "unaided_start"
+      },
+      "frozen_phase": "opening",
+      "conservative_observed_range_margin": 0.05800000000000005,
+      "severity_band": "significant"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 0,
+      "ply": 16,
+      "candidate": true,
+      "category": "king_attack",
+      "status": "stable_singleton_control",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": null,
+      "game_info": {
+        "pair": "main-01-unaided",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "unaided_start"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 0,
+      "ply": 15,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.4585,
+      "game_info": {
+        "pair": "main-01-unaided",
+        "game": 0,
+        "result": "win",
+        "candidate_color": "white",
+        "family": "unaided_start"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 1,
+      "candidate": true,
+      "category": "opening_central_choices",
+      "status": "unresolved20m",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.035999999999999976,
+      "game_info": {
+        "pair": "main-01-unaided",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "unaided_start"
+      },
+      "frozen_phase": "opening"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 3,
+      "candidate": true,
+      "category": "opening_central_choices",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": true,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.0675,
+      "game_info": {
+        "pair": "main-01-unaided",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "unaided_start"
+      },
+      "frozen_phase": "opening",
+      "conservative_observed_range_margin": 0.0665,
+      "severity_band": "significant"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 55,
+      "candidate": true,
+      "category": "rook_activity",
+      "status": "unresolved20m",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.16849999999999998,
+      "game_info": {
+        "pair": "main-01-unaided",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "unaided_start"
+      },
+      "frozen_phase": "middlegame"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 56,
+      "candidate": false,
+      "category": "opponent_opportunity_or_recovery",
+      "status": "supported_finite_deterioration",
+      "counted_supported_candidate": false,
+      "source_overlay": "adjudicated20m-05-09.json",
+      "raw_difference": 0.471,
+      "game_info": {
+        "pair": "main-01-unaided",
+        "game": 1,
+        "result": "win",
+        "candidate_color": "black",
+        "family": "unaided_start"
+      },
+      "frozen_phase": "middlegame"
+    }
+  ],
+  "native_report_and_screen_hashes": {
+    "main-01-00": {
+      "native_report_sha256": "6836f6b0287812a676e011e54ef7bdbea24fa624d512ce778a6e151a807d8d94",
+      "screen_sha256": "fbc4dc074d1c5ec4f183e8126f84d8e061fa3fe2324453c8040b1b1c9dd4d027"
+    },
+    "main-01-01": {
+      "native_report_sha256": "4432b6695ebbe99c87d47fa273dd2b1a018712acbba0bc1860ca4fdfd7eb678a",
+      "screen_sha256": "5d4634f3258f84ade7dc75a516cec9a6acab3f00c9fa237c818bc51d21a6d64b"
+    },
+    "main-01-02": {
+      "native_report_sha256": "8b5cb5f219cdd5c7219fcb0e4cb5a567adc24927d13eb11141f6bf3709fdd524",
+      "screen_sha256": "7a10995ab25dccfdb3d7a1bc087eb55c837470fce7ab369b4324cac65d6fb66e"
+    },
+    "main-01-03": {
+      "native_report_sha256": "7088b8f8765ceefa40c3bd6ae152ed540cdd18413cca743d6bcd9b9a7a802daf",
+      "screen_sha256": "5fbe34f11c77c7b4c8ed22ff11f9827d023362cf414ad0d7321fcabf120d5b12"
+    },
+    "main-01-04": {
+      "native_report_sha256": "e2f0fe39286abb6da29385b2b173f046baa34fe5f331c93c1d0f41fd6f6b5dc4",
+      "screen_sha256": "69eabd79ec76f1716223c6b69aca1bd5efa50f282a46d58f8851bb049a5fa60b"
+    },
+    "main-01-05": {
+      "native_report_sha256": "44c60cf08504ba99883efbb21d0b991ef95720b624392a828f67e78c519fd6d6",
+      "screen_sha256": "6ac3f9516dfe94b0cf15d2358cfe95fe2a81f600e71247e7fcc50c4c4a535caa"
+    },
+    "main-01-06": {
+      "native_report_sha256": "968ca69b509f9db80298c2b1eb27fcb078de3bf9f250a1246156373a29b3eb01",
+      "screen_sha256": "153265c7bc8487775190a859046c157b31c0a312fec24e9cf7e75c873baccdb8"
+    },
+    "main-01-07": {
+      "native_report_sha256": "c1b559603a350eac72ffea7b5d252eb8add92d6b1f74c1afbbcd95f239e96fce",
+      "screen_sha256": "ecaa509e268a63e06c35a5f6f10abd62729fc986e8b2a6312769d34797217819"
+    },
+    "main-01-08": {
+      "native_report_sha256": "d229413fae0579cccf8cbb049447f0031725a31968a2cf25d6d42ab2379e136e",
+      "screen_sha256": "4c47d70bec2093013654bbd5a1fda0bce9abbb10ef5ae499aed40874df9fab7a"
+    },
+    "main-01-unaided": {
+      "native_report_sha256": "80993378e98389fac80a5509a58dba1f802184e521f7a542bf4ef22226e90e5e",
+      "screen_sha256": "f2c6173a4f02cd57265d2aacfb762d90f135e2ff3ee7fd1d4e6a0b062a2d6b86"
+    }
+  },
+  "main_selection_sha256": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+  "derivation": "Native candidate ownership from engines_by_color and screen decision.engine_index; native outcomes from report games conclusions; broad family from frozen main-selection root ID; latest20M overlay exact pair/game/ply statuses only. Deduplicate affected-game memberships; no added engines or statistical inference.",
+  "severity_phase_audit": {
+    "method": "Severity bands from conservative minimum alternative minus maximum played over lasttwo distinct-depth observed reports: >=.20major, >=.10serious, >=.05significant. This sensitivity envelope is not statisticalconfidence. Phase is exact frozen phases.json tag atdecisionroot, not reclassified.",
+    "supported_candidate_events": 31,
+    "selected_candidate20m": 49,
+    "candidate_played_choices": 1248,
+    "severity": {
+      "major": {
+        "events": 24,
+        "distinct_games": 15,
+        "games": [
+          {
+            "pair": "main-01-00",
+            "game": 0
+          },
+          {
+            "pair": "main-01-00",
+            "game": 1
+          },
+          {
+            "pair": "main-01-01",
+            "game": 0
+          },
+          {
+            "pair": "main-01-01",
+            "game": 1
+          },
+          {
+            "pair": "main-01-02",
+            "game": 0
+          },
+          {
+            "pair": "main-01-02",
+            "game": 1
+          },
+          {
+            "pair": "main-01-03",
+            "game": 0
+          },
+          {
+            "pair": "main-01-03",
+            "game": 1
+          },
+          {
+            "pair": "main-01-04",
+            "game": 0
+          },
+          {
+            "pair": "main-01-04",
+            "game": 1
+          },
+          {
+            "pair": "main-01-06",
+            "game": 0
+          },
+          {
+            "pair": "main-01-06",
+            "game": 1
+          },
+          {
+            "pair": "main-01-07",
+            "game": 0
+          },
+          {
+            "pair": "main-01-08",
+            "game": 0
+          },
+          {
+            "pair": "main-01-08",
+            "game": 1
+          }
+        ]
+      },
+      "serious": {
+        "events": 1,
+        "distinct_games": 1,
+        "games": [
+          {
+            "pair": "main-01-01",
+            "game": 1
+          }
+        ]
+      },
+      "significant": {
+        "events": 6,
+        "distinct_games": 6,
+        "games": [
+          {
+            "pair": "main-01-02",
+            "game": 0
+          },
+          {
+            "pair": "main-01-05",
+            "game": 0
+          },
+          {
+            "pair": "main-01-06",
+            "game": 0
+          },
+          {
+            "pair": "main-01-08",
+            "game": 1
+          },
+          {
+            "pair": "main-01-unaided",
+            "game": 0
+          },
+          {
+            "pair": "main-01-unaided",
+            "game": 1
+          }
+        ]
+      }
+    },
+    "phases": {
+      "opening": {
+        "candidate_played_choices": 45,
+        "games_with_candidate_choices": 14,
+        "selected_candidate20m": 4,
+        "games_selected20m": 3,
+        "supported_candidate_events": 3,
+        "affected_games": 3,
+        "severity_events": {
+          "major": 1,
+          "serious": 0,
+          "significant": 2
+        },
+        "affected_game_ids": [
+          {
+            "pair": "main-01-03",
+            "game": 1
+          },
+          {
+            "pair": "main-01-unaided",
+            "game": 0
+          },
+          {
+            "pair": "main-01-unaided",
+            "game": 1
+          }
+        ]
+      },
+      "middlegame": {
+        "candidate_played_choices": 638,
+        "games_with_candidate_choices": 20,
+        "selected_candidate20m": 38,
+        "games_selected20m": 20,
+        "supported_candidate_events": 22,
+        "affected_games": 14,
+        "severity_events": {
+          "major": 17,
+          "serious": 1,
+          "significant": 4
+        },
+        "affected_game_ids": [
+          {
+            "pair": "main-01-00",
+            "game": 0
+          },
+          {
+            "pair": "main-01-00",
+            "game": 1
+          },
+          {
+            "pair": "main-01-01",
+            "game": 1
+          },
+          {
+            "pair": "main-01-02",
+            "game": 0
+          },
+          {
+            "pair": "main-01-03",
+            "game": 0
+          },
+          {
+            "pair": "main-01-03",
+            "game": 1
+          },
+          {
+            "pair": "main-01-04",
+            "game": 0
+          },
+          {
+            "pair": "main-01-04",
+            "game": 1
+          },
+          {
+            "pair": "main-01-05",
+            "game": 0
+          },
+          {
+            "pair": "main-01-06",
+            "game": 0
+          },
+          {
+            "pair": "main-01-06",
+            "game": 1
+          },
+          {
+            "pair": "main-01-07",
+            "game": 0
+          },
+          {
+            "pair": "main-01-08",
+            "game": 0
+          },
+          {
+            "pair": "main-01-08",
+            "game": 1
+          }
+        ]
+      },
+      "endgame": {
+        "candidate_played_choices": 565,
+        "games_with_candidate_choices": 19,
+        "selected_candidate20m": 7,
+        "games_selected20m": 5,
+        "supported_candidate_events": 6,
+        "affected_games": 5,
+        "severity_events": {
+          "major": 6,
+          "serious": 0,
+          "significant": 0
+        },
+        "affected_game_ids": [
+          {
+            "pair": "main-01-00",
+            "game": 1
+          },
+          {
+            "pair": "main-01-01",
+            "game": 0
+          },
+          {
+            "pair": "main-01-02",
+            "game": 1
+          },
+          {
+            "pair": "main-01-06",
+            "game": 1
+          },
+          {
+            "pair": "main-01-07",
+            "game": 0
+          }
+        ]
+      }
+    },
+    "limitations": "Selected49 are nonrandom subsets of1248candidateplayedchoices. Neither31/49 norphase/severity ratios estimate prevalence. Distinct-game counts overlap acrossphase andseverity bins; do not sum them."
+  },
+  "frozen_phase_hashes": {
+    "main-01-00": "d42bdb5e58526a0300454e08c20dbfdcb0f700b363a974caa29bc7505a6d1ee8",
+    "main-01-01": "5d3c3b95576d196ccf29323b662d933636148725c304a5fd9021e0516d9b377d",
+    "main-01-02": "7b37926c3bc5ab8bb72a1c4d675f59f58df88f36e958488c6e95f1cb4b6f351e",
+    "main-01-03": "4751720005e675f7d32111f1c51a7f936cb46d4afc89d85ef95985a570c9d533",
+    "main-01-04": "5fdc7bd312afd95e1dd2754807b955bdd3f8fbf94fa682eb733389d5bcd1b31d",
+    "main-01-05": "0663fa02378e213c8930e9328816c1b8fc89076d75ba728509227f0019674e44",
+    "main-01-06": "625d1a1181d7acfdcc5f78b5e73e039211c660fd74b2f1ee93caa9d9e89f8f41",
+    "main-01-07": "c9b569d3fdba1a3eb1856f1f82f84487991080dfeb3fa4a92e0d42bb41b9e7f8",
+    "main-01-08": "9c1eb356a4fb95d489f436b9407963c4a0d52231096a922482fb69793d76a4aa",
+    "main-01-unaided": "7d88e3a147f1d32ffc73fb6b4039e832832421ef8dc09592a776cc7f0d8cb83d"
+  }
+}

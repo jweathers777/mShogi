@@ -1,0 +1,17 @@
+{
+  "authority": "owner-request.txt and owner repository-only coordination reply",
+  "status": "draining_existing_batch02",
+  "local_new_computation_authorized": false,
+  "local_batch03_authorized": false,
+  "safe_stop_policy": "No pair-boundary pause in frozen runner; allow existing bounded batch02 chain to finish, never interrupt active engine search. No new study jobs.",
+  "initial_observation": {
+    "completed_batch02_games": 14,
+    "completed_pairs": 7,
+    "inflight_pair": "main-02-07",
+    "batch01_analyzed_games": 20,
+    "batch02_reference_analysis_started": false
+  },
+  "completion_message_override": "Old batch02 notification says continuebatch03. Superseded: preserve final evidence/resource/process receipts, record exact stop, update interimreport/handoff, and STOP LOCAL. Do not launchbatch03 or newlocalanalysis.",
+  "cloud_primary_plan": "Replay all200frozen planned games on standardized cloudworkers after independent validationreview. Mac exploratory evidence separate.",
+  "coordination": "Repository only; no direct inter-chat messaging."
+}

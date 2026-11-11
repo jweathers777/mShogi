@@ -10,3 +10,6 @@ pilot-confirmations/
 final-balance-screen/
 # Live main computation output is packaged and reviewed per completed batch.
 main/batch-*/
+
+# Local frozen executable copies for replay; build output never committed.
+migration/local-executables/

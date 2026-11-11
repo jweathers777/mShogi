@@ -1,0 +1,209 @@
+{
+  "archive": "batch02-completed-pairs-at-request.tar.gz",
+  "sha256": "47ba918a8eaabf9aa503ba0cdada0c3d40af7bc76e9e044794e6d0b3222e04d4",
+  "complete_games": 14,
+  "complete_pairs": [
+    "main-02-00",
+    "main-02-01",
+    "main-02-02",
+    "main-02-03",
+    "main-02-04",
+    "main-02-05",
+    "main-02-06"
+  ],
+  "inflight_pair": "main-02-07",
+  "scope": "Snapshot only, not final stopping receipt. Activepair files deliberately left in original live directory, not copied as complete.",
+  "files": [
+    {
+      "path": "migration/request-snapshot/chain.json",
+      "sha256": "005e9c37778cfc9c11a8d83c2467fdd21ef38bd050dd14338f1c22f62cff0515",
+      "bytes": 820
+    },
+    {
+      "path": "migration/request-snapshot/batch.json",
+      "sha256": "206d6c9503b0c1416bdde0674ec1b4b23e2b3cc1f24a3bf4c98cc83cf0bd8815",
+      "bytes": 52683
+    },
+    {
+      "path": "migration/request-snapshot/main-batch-02.json",
+      "sha256": "55f9030ac086f8485f30ad140d63393728a65cc521e46504dc5170c2b3aee7d0",
+      "bytes": 652
+    },
+    {
+      "path": "main/batch-02/games/main-02-00/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-00/config.json",
+      "sha256": "2eb561b7d31ba225c0c91a66949b31ec61f3a8c75b7b3424dfc0eb121aca38c7",
+      "bytes": 1419
+    },
+    {
+      "path": "main/batch-02/games/main-02-00/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-00/report.json.gz",
+      "sha256": "d0e0ecaaa1c9f76d4f3a95110360bf9d0875b4841e403c8b7f5c714f52325715",
+      "bytes": 173376
+    },
+    {
+      "path": "main/batch-02/games/main-02-00/receipt.json",
+      "sha256": "1886400abe3373481b01b7a2a84e5af5a2c1cb023060a58a448592273e37b5ac",
+      "bytes": 6408
+    },
+    {
+      "path": "main/batch-02/games/main-02-01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-01/config.json",
+      "sha256": "ec1a84a883ada290f97bed91616bbddc975e71c5badb912241385ca32a59ea9b",
+      "bytes": 1419
+    },
+    {
+      "path": "main/batch-02/games/main-02-01/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-01/report.json.gz",
+      "sha256": "0e52896f307a2040ac3e361ba8531191ea6445a8c48eebed01d7c82c8ecfeb80",
+      "bytes": 152212
+    },
+    {
+      "path": "main/batch-02/games/main-02-01/receipt.json",
+      "sha256": "c2b2b2b86dfcc16c06de2b1cdf39e0b945a1fe69e32539089871471d559cb555",
+      "bytes": 5610
+    },
+    {
+      "path": "main/batch-02/games/main-02-02/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-02/config.json",
+      "sha256": "221192be05d4d5443204e1565e17dcaef007c44bfea4ff1cee2950bec6f982b4",
+      "bytes": 1419
+    },
+    {
+      "path": "main/batch-02/games/main-02-02/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-02/report.json.gz",
+      "sha256": "cefce91282d953aadacf8281e9baad90f83320c5f0db30935587947e07cf6786",
+      "bytes": 127205
+    },
+    {
+      "path": "main/batch-02/games/main-02-02/receipt.json",
+      "sha256": "d87246b50bde5ff1114ae9388ba3df111a9770f3e9873e67180724f5df22d56c",
+      "bytes": 6006
+    },
+    {
+      "path": "main/batch-02/games/main-02-03/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-03/config.json",
+      "sha256": "b200d3563c64f67692f2f1cc488e67b2c169eecb7f9f4ce921e2c62e27bbb7d9",
+      "bytes": 1419
+    },
+    {
+      "path": "main/batch-02/games/main-02-03/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-03/report.json.gz",
+      "sha256": "0769bae0732f713941c37c866e156aba0beae0d96230a663de2b67a365bcf877",
+      "bytes": 106483
+    },
+    {
+      "path": "main/batch-02/games/main-02-03/receipt.json",
+      "sha256": "b841c24811c1e439e97aa846dd90592a4b5e253b0bbe1ff33b071b6a559d6122",
+      "bytes": 5009
+    },
+    {
+      "path": "main/batch-02/games/main-02-04/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-04/config.json",
+      "sha256": "dec3f42aa5bcc2b8f34e19d16ee9660d4d0d2139d805b3ded223ee13b31e4e3a",
+      "bytes": 1419
+    },
+    {
+      "path": "main/batch-02/games/main-02-04/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-04/report.json.gz",
+      "sha256": "0ecbda60d3ca99e2ba2ddf7cac63fa6bb3940bf8a222ee38f118eee130f30c92",
+      "bytes": 156583
+    },
+    {
+      "path": "main/batch-02/games/main-02-04/receipt.json",
+      "sha256": "1d0d723021bf92b03a3656bf3e5ea93ec598aaa19d2e3eb1db3ea15b26fa424e",
+      "bytes": 5751
+    },
+    {
+      "path": "main/batch-02/games/main-02-05/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-05/config.json",
+      "sha256": "35349ca8138c1a27848840785b90ed588092722f3fc01f1cddec5e8ee1ca9958",
+      "bytes": 1419
+    },
+    {
+      "path": "main/batch-02/games/main-02-05/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-05/report.json.gz",
+      "sha256": "c4a5eced7ebfa90eebf6d7684ff31eaae5c240cd5c1b3c0c5f00858e7507542f",
+      "bytes": 157270
+    },
+    {
+      "path": "main/batch-02/games/main-02-05/receipt.json",
+      "sha256": "850b6bd2c411ce51f0acfa88f1e706a92fa7d073e469e1565145fa4667e9def2",
+      "bytes": 7261
+    },
+    {
+      "path": "main/batch-02/games/main-02-06/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-06/config.json",
+      "sha256": "34dad62e63cdc2cb579517ceaeea263d7f2bccce6459a3a1a72f5846c8691736",
+      "bytes": 1419
+    },
+    {
+      "path": "main/batch-02/games/main-02-06/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "main/batch-02/games/main-02-06/report.json.gz",
+      "sha256": "40b902d5f73e0ff3dc88fbac4eb24d5125cc317ee3e2de227dba23ba9e2390e6",
+      "bytes": 165914
+    },
+    {
+      "path": "main/batch-02/games/main-02-06/receipt.json",
+      "sha256": "55908f732aea9512c979661f4ffb3a96d6c80368f2760d0e0916b4a661d032e8",
+      "bytes": 6673
+    }
+  ],
+  "snapshot_state_write_utc": "2026-11-11T18:33:29.627775+00:00"
+}

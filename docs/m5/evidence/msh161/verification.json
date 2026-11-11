@@ -206,6 +206,26 @@
     "notification": "notifications/main-batch-02.json",
     "scheduled_games": 20,
     "freeze": "main-freeze.json",
-    "next": "completedbatch independentreview then20M consequentialadjudication; full200stillrequired"
+    "next": "On exit preserve/audit stoppedstate; no newlocalcomputation orbatch03. Owner migration policy supersedes previous queue message."
+  },
+  "migration": {
+    "owner_request": "migration/owner-request.txt",
+    "execution_policy": "migration/execution-policy.json",
+    "local_status": "draining_existing_batch02_not_stopped",
+    "local_new_jobs_authorized": false,
+    "safe_stop_review": "stop-safety-review.md",
+    "snapshot": "migration/request-snapshot-bundle.json",
+    "snapshot_completed_main_games": 34,
+    "snapshot_fully_analyzed_main_games": 20,
+    "separate_qualification_games": 20,
+    "interim_report": "../../msh161-interim-gameplay-assessment.md",
+    "interim_review": "migration/interim-review.md",
+    "cloud_handoff": "migration/cloud-study-handoff.md",
+    "cloud_inputs": "migration/cloud-inputs.json",
+    "cloud_jobs_launched": false,
+    "primary_cloud_sample": 200,
+    "mac_stratum": "exploratory_do_not_pool",
+    "coordination": "repository_only",
+    "frozen_live_files_changed": false
   }
 }

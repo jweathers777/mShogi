@@ -1,180 +1,235 @@
-# Set up mShogi on Google Cloud: a step-by-step guide
+# Set up mShogi on Google Cloud
 
-Prepared for John, 2026-11-11. Project **mShogi**, project ID **mshogi**, project
-number **216675633801**. Billing is already linked. No experiment resources have
-been created by the runner yet.
+Use this guide to configure the project. These steps do **not** start an experiment.
 
-These instructions configure the project; they do **not** start experiments.
-You can stop after any numbered step. Tell Codex which step failed and its error
-message, without pasting passwords, access tokens or private keys.
+- Project name: **mShogi**
+- Project ID: **mshogi**
+- Project number: **216675633801**
+- Date: **2026-11-11**
+- Billing: connected to the project
+- Pilot budget: **US$30 approved by John**
 
-## 1. Understand the proposed region and pilot cost
+The runner has not created cloud resources. You can stop after each numbered step.
+If a step fails, give Codex the step number and the error message.
+Do not send passwords, access tokens or private keys.
 
-Use **Iowa (`us-central1`)**. Latency to your computer is unimportant for these
-unattended jobs. C3 machines are offered in multiple Iowa zones, so the scheduler
-can choose a zone within that region. This is published availability, not a promise
-of immediate spare capacity; the pilot will check actual quota/capacity.
-[Google's region table](https://docs.cloud.google.com/compute/docs/regions-zones).
+## 1. Read the region and cost information
 
-The initial worker is **c3-standard-4**, an on-demand Linux VM with four vCPUs and
-16 GiB RAM. Google's Iowa list price checked today is **$0.201608 per VM-hour**,
-about **$1.61/hour for eight simultaneous workers**, before disk, external IP,
-storage, logs and network charges. This is VM pricing, not Cloud Build pricing.
-[Official VM price table](https://cloud.google.com/products/compute/pricing/general-purpose?hl=en).
+Use **Iowa (`us-central1`)**. These jobs operate without your input.
+The network delay between Iowa and your computer is not important for this work.
 
-Proposed approval: **US$30 for the pilot**, not the full 200-game study. First run
-one pair and its analysis, review it, then run eight pairs concurrently. With a
-six-hour per-task limit and at most one retry, these two submissions allow at most
-108 active task-hours: about **$21.77 of VM compute** before startup/cleanup and
-other charges. Most successful jobs should use less, but this has not been measured
-on GCP. Stop and ask before more submissions or a larger budget. A timeout records
-an incomplete job; it never shortens a game into a valid result.
+C3 machines are available in more than one Iowa zone. Google Batch can select a zone in this region.
+The pilot must confirm that Google has sufficient machines available.
+See [Google's region table](https://docs.cloud.google.com/compute/docs/regions-zones).
 
-Budget alerts are **not spending caps** and can be delayed. The runner's limited
-job count, worker count, retries and runtime prevent an open-ended experiment, but
-there is no promise of an exact hard billing cutoff. Storage persists after jobs
-finish. We will report measured costs separately from this estimate.
+Each worker uses one **c3-standard-4** Linux virtual machine (VM).
+Each VM has four virtual CPUs (vCPUs) and 16 GiB of memory.
 
-**Do not start a Batch job or upload the worker image until you explicitly approve
-the pilot spending.** Configuration below creates small empty resources; data
-storage, image uploads, Pub/Sub traffic and running VMs are the chargeable activity.
+The Iowa price checked on 2026-11-11 was **US$0.201608 per VM-hour**.
+Eight workers cost approximately **US$1.61 per hour** for VM operation.
+Disk, external IP address, storage, log and network charges are additional.
+See the [official VM price table](https://cloud.google.com/products/compute/pricing/general-purpose?hl=en).
+This price is for VMs. Cloud Build has different prices.
 
-## 2. Open the correct project and Cloud Shell
+John approved **US$30 for the pilot**. This approval does not include the full 200-game study.
+The pilot sequence is:
+
+1. Run one opening pair and its analysis.
+2. Review the results.
+3. Run eight opening pairs at the same time.
+
+Each task has a six-hour time limit and a maximum of one retry.
+Together, the two pilot submissions permit a maximum of 108 active task-hours.
+The estimated VM cost for those hours is **US$21.77**.
+VM start and cleanup time, and the other charges listed above, are additional.
+Actual GCP costs are not yet measured.
+
+Codex must stop and ask before additional submissions or an increased budget.
+If a task exceeds its time limit, the runner records an incomplete job.
+An incomplete game is not a valid result.
+
+**Budget alerts do not stop spending.** Alerts can arrive late.
+The runner limits task count, worker count, retries and operating time.
+These limits do not provide an exact billing cutoff.
+Stored data can cause charges after the jobs stop.
+Codex will report actual costs separately from estimates.
+
+**Complete and verify the setup before you upload the worker image or start a Batch job.**
+The steps below create empty resources.
+Data storage, image uploads, Pub/Sub messages and VM operation can cause charges.
+
+## 2. Open the project and Cloud Shell
 
 1. Open [the mShogi Cloud Console](https://console.cloud.google.com/home/dashboard?project=mshogi).
-2. Check the project selector at the top says **mShogi**. Its ID must be `mshogi`.
-3. Click the terminal icon near the top right (**Activate Cloud Shell**).
-4. If prompted, authorize Cloud Shell to use your signed-in Google account.
-5. Paste this command and press Enter:
+2. Make sure the project selector shows **mShogi**.
+3. Make sure the project ID is `mshogi`.
+4. Click the terminal icon near the top right. Its label is **Activate Cloud Shell**.
+5. If Google asks, give Cloud Shell permission to use your signed-in account.
+6. Paste the command below. Press Enter.
 
 ```sh
 gcloud config set project mshogi
 ```
 
-Cloud Shell is Google's browser terminal; you do not need to install software on
-your Mac for these setup commands. Run each block separately and wait for it to
-finish. Do not paste the Markdown triple-backtick lines.
+Cloud Shell is a terminal in your browser.
+You do not need to install software on your Mac to use these setup commands.
+Run one command block at a time. Wait for it to finish before you continue.
+Do not copy the lines with three backtick characters around a command block.
 
-## 3. Add a project-specific budget alert
+## 3. Add a budget alert for this project
 
 1. Open [Billing](https://console.cloud.google.com/billing?project=mshogi).
-2. Select the billing account already linked to this project.
-3. Open **Budgets & alerts**, then **Create budget**.
-4. Name it `mShogi experiment pilot`.
-5. Under scope, select **only the mshogi project**. Keep all services included.
-6. Use a monthly specified amount of **US$30** (or the amount you approve).
-7. Add actual-spend alerts at **50%, 90% and 100%**, and enable email notifications.
-8. Save. Verify the budget's scope still says `mshogi` rather than every project.
+2. Select the billing account connected to this project.
+3. Open **Budgets & alerts**.
+4. Select **Create budget**.
+5. Enter the name `mShogi experiment pilot`.
+6. Under scope, select **only the mshogi project**. Include all services.
+7. Set the monthly amount to **US$30**.
+8. Add actual-spend alerts at **50%, 90% and 100%**.
+9. Enable email notifications.
+10. Save the budget.
+11. Make sure the budget applies only to `mshogi`.
 
-This does not limit or change the billing of your other projects. If your account
-uses another currency, use the corresponding approved amount and tell Codex.
+This budget does not change billing for your other projects.
+If the account uses a different currency, use the equivalent approved amount. Tell Codex which currency you used.
 
 ## 4. Enable the required Google APIs
 
-Paste into Cloud Shell:
+An API lets software use a Google service.
+Paste this command into Cloud Shell:
 
 ```sh
 gcloud services enable compute.googleapis.com batch.googleapis.com artifactregistry.googleapis.com pubsub.googleapis.com storage.googleapis.com logging.googleapis.com --project=mshogi
 ```
 
-Wait for `Operation ... finished successfully`. This enables capabilities; it does
-not create or start a VM. Verify:
+Wait for `Operation ... finished successfully`.
+This command enables the services. It does not create or start a VM.
+Run this command to check the result:
 
 ```sh
 gcloud services list --enabled --project=mshogi --filter='config.name:(compute.googleapis.com batch.googleapis.com artifactregistry.googleapis.com pubsub.googleapis.com storage.googleapis.com logging.googleapis.com)' --format='value(config.name)'
 ```
 
-The six service names should appear. If Google says you need permission, stop and
-send the error rather than granting a broad role or changing organization policy.
+Make sure the output contains all six service names.
+If Google reports a permission error, stop. Send the error message to Codex.
+Do not add more access rights or change organization policy to bypass the error.
 
-## 5. Check CPU quota before creating jobs
+## 5. Check the CPU quota
+
+A quota is the maximum resource amount that Google permits for the project.
 
 1. Open [Quotas & System Limits](https://console.cloud.google.com/iam-admin/quotas?project=mshogi).
-2. Filter **Service = Compute Engine API**, **Region = us-central1**.
-3. Find the quota for **C3 CPUs** and any applicable overall regional CPU quota.
-4. Eight workers need **32 vCPUs**. If the available quota is below 32, request 32,
-   describing the use as “eight bounded on-demand Batch workers for chess experiments”.
-5. Do not request 64 yet; sixteen workers is a later decision based on measurements.
+2. Set the service filter to **Compute Engine API**.
+3. Set the region filter to **us-central1**.
+4. Find **C3 CPUs**. Also check any total CPU quota for this region.
+5. Make sure the available quota is at least **32 vCPUs** for eight workers.
+6. If the quota is lower, request 32 vCPUs.
+7. Use this description: “Eight on-demand Batch workers with operating limits for chess experiments.”
 
-Quota approval does not incur VM charges. Quota is permission to allocate, not a
-reservation or guarantee of capacity. We can validate one worker while an increase
-is pending if at least four C3 vCPUs are available.
+Do not request 64 vCPUs. Sixteen workers require a later decision based on pilot measurements.
 
-## 6. Create a worker service account
+Quota approval does not cause VM charges.
+Quota approval does not reserve machines or guarantee that machines are available.
+We can test one worker while a quota increase is pending, if at least four C3 vCPUs are available.
 
-A service account is the identity the experiment VMs use. It does not need a
-password or downloadable key.
+## 6. Create the worker service account
+
+A service account is an identity for software.
+The experiment VMs use this identity to access Google services.
+No password or downloaded key is necessary.
+
+Create the account:
 
 ```sh
 gcloud iam service-accounts create mshogi-batch-worker --display-name='mShogi Batch worker' --project=mshogi
 ```
 
-Grant the two operational roles it needs:
+Give the account these two roles:
 
 ```sh
 gcloud projects add-iam-policy-binding mshogi --member='serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com' --role='roles/batch.agentReporter'
 gcloud projects add-iam-policy-binding mshogi --member='serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com' --role='roles/logging.logWriter'
 ```
 
-Do **not** grant Owner or Editor to the worker. Do **not** create a service-account
-key. The Batch service agent is a separate Google-managed identity; the API manages
-its normal service-agent role.
+Do **not** give the worker the Owner or Editor role.
+Do **not** create a service-account key.
 
-## 7. Create the evidence bucket and its permissions
+The Batch service agent is a different identity. Google manages that identity and its normal role.
 
-The project number makes this bucket name unlikely to conflict with another owner:
+## 7. Create the evidence bucket
+
+A bucket stores files in Google Cloud Storage.
+The name below includes your project number to help prevent name conflicts.
+
+Create the bucket:
 
 ```sh
 gcloud storage buckets create gs://mshogi-experiments-216675633801 --project=mshogi --location=us-central1 --uniform-bucket-level-access --public-access-prevention
 ```
 
-Grant read/list and create-only access for evidence:
+Give the worker permission to read, list and create evidence files:
 
 ```sh
 gcloud storage buckets add-iam-policy-binding gs://mshogi-experiments-216675633801 --member='serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com' --role='roles/storage.objectViewer'
 gcloud storage buckets add-iam-policy-binding gs://mshogi-experiments-216675633801 --member='serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com' --role='roles/storage.objectCreator'
 ```
 
-The worker also needs to release its execution locks. Restrict delete/update rights
-to objects ending in `/claim.json`; successful results do not have that name:
+The worker uses claim files to prevent duplicate job execution.
+It must be able to remove its claim when a job ends.
+Give delete and update permission only for files with names that end in `/claim.json`:
 
 ```sh
 gcloud storage buckets add-iam-policy-binding gs://mshogi-experiments-216675633801 --member='serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com' --role='roles/storage.objectAdmin' --condition="expression=resource.name.endsWith('/claim.json'),title=execution-claims-only"
 ```
 
-Do not make the bucket public, add a retention lock, or add automatic evidence
-deletion. The runner writes immutable attempts and uses conditional object creation.
-If the name already exists and is not yours, stop and tell Codex; do not reuse an
-unknown bucket.
+Successful result files do not have this name.
+The runner does not replace successful results. It checks that an object does not exist before it creates that object.
+
+Do not make the bucket public.
+Do not add a retention lock or automatic evidence deletion.
+If the bucket name is already in use by another owner, stop and tell Codex.
+Do not use a bucket that you do not own.
 
 ## 8. Create the private image repository
 
-This is where the fixed Linux worker image will be stored:
+A worker image contains the Linux software and engine executables.
+The image repository stores that image.
+
+Create the repository and give the worker permission to read it:
 
 ```sh
 gcloud artifacts repositories create mshogi-experiments --repository-format=docker --location=us-central1 --description='Fixed mShogi experiment workers' --project=mshogi
 gcloud artifacts repositories add-iam-policy-binding mshogi-experiments --location=us-central1 --project=mshogi --member='serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com' --role='roles/artifactregistry.reader'
 ```
 
-Codex will prepare and verify the image. You do not need to build it manually or
-upload arbitrary engine executables. Image uploads wait for spending approval.
+Codex has built and checked the image locally.
+You do not need to build the image or upload engine executables.
+Codex will upload the checked image after the project setup is complete and verified.
+The upload is part of the approved pilot budget.
 
-## 9. Create a network with no incoming access
+## 9. Create the network
+
+Create the network and its subnet:
 
 ```sh
 gcloud compute networks create mshogi-batch --subnet-mode=custom --project=mshogi
 gcloud compute networks subnets create mshogi-batch-us-central1 --network=mshogi-batch --region=us-central1 --range=10.42.0.0/24 --enable-private-ip-google-access --project=mshogi
 ```
 
-Do not add SSH, HTTP or other incoming firewall rules. These workers only initiate
-outbound connections to Google APIs and the image repository. The initial design
-uses temporary external IP addresses for outbound access (a small additional
-charge while allocated), avoiding a separate Cloud NAT service. No static IPs,
-load balancer, website or public server are needed.
+Do not add SSH, HTTP or other incoming firewall rules.
+The workers start outgoing connections to Google APIs and the image repository.
 
-## 10. Create completion notifications
+The initial setup uses temporary external IP addresses for outgoing access.
+These addresses cause an additional charge while allocated.
+A separate Cloud NAT service is not necessary.
+Static IP addresses, a load balancer, a website and a public server are not necessary.
 
-This wakes the owning Codex chat when a job finishes instead of polling it repeatedly:
+## 10. Create job-completion notifications
+
+These notifications send an update to the owning Codex chat when a job ends.
+Codex does not need to check the job repeatedly.
+
+Create the topic and subscription. Give the worker permission to send notifications:
 
 ```sh
 gcloud pubsub topics create mshogi-batch-events --project=mshogi
@@ -182,16 +237,22 @@ gcloud pubsub subscriptions create mshogi-pilot-completion --topic=mshogi-batch-
 gcloud pubsub topics add-iam-policy-binding mshogi-batch-events --project=mshogi --member='serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com' --role='roles/pubsub.publisher'
 ```
 
-This subscription belongs to one completion consumer at a time. Codex will attach
-the local listener before leaving a submitted job unattended. The topic/subscription
-must exist **before** submission, so events survive a listener restart. You do not
-need to configure an HTTP endpoint or expose your Mac to the internet.
+A topic receives messages. A subscription holds messages for the software that reads them.
+Use this subscription for only one completion listener at a time.
+Codex will start the local listener before it leaves a submitted job unattended.
 
-## 11. Authorize local access on your Mac
+Create the topic and subscription **before** job submission.
+Messages then remain available if the listener restarts.
+You do not need an HTTP endpoint or incoming internet access to your Mac.
 
-The `gcloud` CLI on this Mac already lists `mshogi`. The Python storage/subscriber
-clients also need **Application Default Credentials**, a separate local login.
-In your Mac Terminal (not Cloud Shell), run:
+## 11. Give the local tools access
+
+The `gcloud` command on your Mac can already list the `mshogi` project.
+The Python storage and notification tools also need **Application Default Credentials**.
+These credentials require a separate local login.
+
+Open **Terminal on your Mac**. Do not use Cloud Shell for this step.
+Run these commands:
 
 ```sh
 gcloud auth application-default login
@@ -199,34 +260,46 @@ gcloud auth application-default set-quota-project mshogi
 gcloud auth configure-docker us-central1-docker.pkg.dev
 ```
 
-Complete the browser sign-in yourself using the account that owns this project.
-Accept Docker credential-helper configuration for this registry. Do not paste the
-resulting credential file into chat. If a command is unavailable or a permission
-prompt is unclear, tell Codex; do not download a service-account key as a workaround.
+Complete the browser sign-in yourself. Use the Google account that owns this project.
+Accept the Docker credential-helper configuration for this registry.
 
-## 12. Tell Codex you are ready
+Do not send the credential file to Codex.
+If a command is unavailable or a permission request is unclear, tell Codex.
+Do not download a service-account key to bypass a problem.
 
-Reply with the last successful step and whether you approve the **US$30 pilot**.
-If quotas are pending, include that fact. You do not need to send credentials.
-Codex will verify configuration read-only, freeze the exact image/build, and ask
-about any material difference before a billable launch.
+## 12. Tell Codex that setup is complete
+
+Give Codex the number of the last successful step.
+Tell Codex if a quota request is still pending.
+Do not send credentials.
+
+Your **US$30 pilot approval is already recorded**. You do not need to approve the same scope again.
+Codex will check the configuration without changing it.
+Codex will then record the exact image and build identities before the pilot starts.
+If the required setup has an important difference, Codex will ask you about the change.
 
 The prepared configuration is [mshogi-pilot-config.json](mshogi-pilot-config.json).
-The initial pilot is one complete pair with replay, screening and confirmations,
-then an eight-worker run after the first result is reviewed. The full 200-game
-study, sixteen workers and further spending are **not** authorized by following
-this setup guide. The MSH-161 coordinator must review validation before the main
-study starts.
+The first pilot runs one complete opening pair, native replay, screening and confirmation analysis.
+Codex must review those results before the eight-worker run.
 
-## If you need to stop a running pilot
+The full 200-game study, sixteen workers and additional spending are **not approved** by this guide.
+The coordinator for MSH-161 (Competitive Gameplay Diagnosis) must review the pilot evidence before the main study starts.
 
-Tell Codex to cancel it. A normal stop finishes the current job and starts no next
-job. For an urgent stop, open [Batch jobs](https://console.cloud.google.com/batch/jobs?project=mshogi),
-select the job and use its delete/cancel action. Wait for the operation to finish;
-requesting deletion alone is not proof all VMs have stopped. Then check
-[VM instances](https://console.cloud.google.com/compute/instances?project=mshogi)
-for Batch-created instances. Do not delete the evidence bucket or image repository
-as a way to stop computation. Billing and usage records can arrive later.
+## Stop a pilot
 
-For the developer commands and recovery rules, see
-[the runner operating guide](parallel-runner.md).
+For a normal stop, tell Codex to cancel the pilot.
+The runner finishes the current job and does not start the next job.
+
+For an urgent stop:
+
+1. Open [Batch jobs](https://console.cloud.google.com/batch/jobs?project=mshogi).
+2. Select the job.
+3. Select its delete or cancel action.
+4. Wait for the operation to finish.
+5. Check [VM instances](https://console.cloud.google.com/compute/instances?project=mshogi) for instances created by Batch.
+
+A deletion request alone does not prove that all VMs have stopped.
+Do not delete the evidence bucket or image repository to stop computation.
+Billing and usage records can arrive later.
+
+For developer commands and recovery instructions, see [the runner operating guide](parallel-runner.md).

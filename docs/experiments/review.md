@@ -74,3 +74,15 @@ After these checks, the approved eight-worker pilot was submitted as
 `msh162-pilot-eight-v1`. It uses the next eight distinct frozen opening pairs.
 The task is scheduled with parallelism8. Completion and throughput evidence
 remain pending; no full study or primary integration has started.
+
+## Quick status command
+
+At cecb9e92b74dffb448f27213aa8a73cd2f12cf5a, independent review approved the saved-marker fast path
+and independently passed six focused tests. The command reads plans and possible
+failed-attempt receipts, but does not read successful result contents or artifacts.
+It marks counts as unverified and claims as running or interrupted. Optional Batch
+state must match the stored manifest URI. The live check took16.67seconds; an
+earlier scan of all success receipts took45.69seconds on a different snapshot.
+All60 tests passed on macOS; six focused tests passed on Linux ARM.
+The old local-only study status scripts were removed at the owner request.
+The running cloud image and listener remain at their recorded frozen revisions.

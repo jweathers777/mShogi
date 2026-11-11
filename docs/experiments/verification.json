@@ -78,6 +78,22 @@
       "local_store": "/private/tmp/msh162-independent-pilot-review",
       "independent_scientific_review": "pilot/one-pair-scientific-review.json",
       "independent_runtime_review": "pilot/one-pair-runtime-review.json"
+    },
+    {
+      "source_revision": "cecb9e92b74dffb448f27213aa8a73cd2f12cf5a",
+      "command": "python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "macOS controller",
+      "outcome": "passed",
+      "tests": 60,
+      "log_sha256": "832bf142b92b8f4846e4dd9a6caf5c7ab9d9584f54b4016603133800c74da261"
+    },
+    {
+      "source_revision": "cecb9e92b74dffb448f27213aa8a73cd2f12cf5a",
+      "command": "python -m unittest tools.experiments.tests.test_quick_status -v",
+      "environment": "Docker Linux aarch64",
+      "outcome": "passed",
+      "tests": 6,
+      "log_sha256": "df29c7432b534dbd4d7e972ae7cb29538aa0fbfb123c958c71ff22f33fef49cf"
     }
   ],
   "coverage": [
@@ -267,5 +283,14 @@
       "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63"
     }
   ],
-  "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63"
+  "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63",
+  "quick_status_revision": "cecb9e92b74dffb448f27213aa8a73cd2f12cf5a",
+  "quick_status_live_check": {
+    "source_revision": "cecb9e92b74dffb448f27213aa8a73cd2f12cf5a",
+    "outcome": "passed",
+    "experiment": "msh162-cloud-pilot-eight-v1",
+    "seconds": 16.67,
+    "prior_receipt_scan_seconds": 45.69,
+    "limitations": "Different live snapshots; timing depends on storage/network and listing size. No artifact or success-content verification. No new computation."
+  }
 }

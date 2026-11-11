@@ -265,6 +265,12 @@ Use unattended software for games/reference analysis; agents inspect completed
 batches, not individual moves or repeated unchanged polling. No production changes,
 rating tournament, learned/cross-game work or speculative corrections. Stop for
 John's review after independently reviewed diagnosis and updated roadmap.
+Owner execution refinement,2026-11-11: computation wrappers must queue a message
+on exit(success or failure) with `codex queue --thread THREAD_UUID --message TEXT`
+to resume the owning idle chat. Do not use periodic watchers or guessed wake times.
+Use normal execution escalation for Codex local database access; preserve all
+security settings. Record computation status and notification acceptance separately.
+
 
 ## Git and routine autonomy
 

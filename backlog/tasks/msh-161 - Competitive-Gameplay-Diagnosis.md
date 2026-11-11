@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-11T02:23:00Z'
+updated_date: '2026-11-11T07:37:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -73,4 +73,8 @@ Preparation integrated on codex/rewrite at e066f58. Main study remains In Progre
 11November heartbeat: all4qualification games completed normally with native replay; candidate2winsOxidation,1win1drawGoldfish. No stronger-opponent selection yet. Reference chain stopped at overstrict zero-uncertainty smoke gate; independent review approved gate-only correction allowing its specifically flagged final-bound uncertainty, while comparison retains null loss.16 tests passed. Preserved original failed-chain receipts, reused successful smoke and resumed unattended fullmove analysis/source screen. Next single review03:15Europe/Paris. See smoke-recovery.md; no production changes or ranked conclusions.
 
 03:15review: initial640decision/1280query allmove analysis plus330source screens complete, zero failedqueries. Full1618artifacts compressed/hash-preserved. Blind gameplay reviewer found several provisional themes plus strongplay, no priorities;14decision25singleton5M confirmation panel frozen. Four strict-balanced contrasting masterroots selected without competitive outcomes;16additional qualification games followed by allmove analysis launched unattended, since neither reference yet established stronger. v1screen retains51of59 rawthresholdcrossings hidden by v0uncertainty without clearing flags or confirming events; offline checks pass, originalv0preserved. Main200game study/method/opponent still unfrozen. Next single review08:30Europe/Paris. See README, pilot-method-review.md, qualification-gameplay-review.md and extension-chain.json.
+
+Owner execution refinement11November: delete timedreview automation and replace future unattended launches with notify_exit.py -> codex queue to owning chat on success/failure, using normal local execution escalation for database access and no security changes. Extension is completed42steps:25pilotreference queries,16games,8allmove analyses/summaries; review is due now. Added receipt-based exit notifier, success/failure/queuefailure/duplicate tests and independent review. Main study remains active; no periodic watcher or guessed schedule remains.
+
+Exit-notification implementation verified:4tests pass covering success, commandfailure, signalwithhonestcleanupuncertainty, queuefailure and duplicate refusal. Initial sandbox/localgroup-probe failures preserved; notification cannot be suppressed by cleanup errors. Normal escalated actualvalidation of completedextension queued message01a1c989-56b4-78d2-a9ef-41ce90a11784 to owningchat, CLIexit0 and durable queueaccepted receipt. Timedautomationdeleted, no replacementtimer. TargetedLevel2macOSprocess/CLI evidence; no security settings changed, no Linux/Windows claims. Next action is queued substantive batchreview then study continuation via exitwrapped computations.
 <!-- SECTION:NOTES:END -->

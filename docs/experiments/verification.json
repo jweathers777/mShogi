@@ -94,6 +94,21 @@
       "outcome": "passed",
       "tests": 6,
       "log_sha256": "df29c7432b534dbd4d7e972ae7cb29538aa0fbfb123c958c71ff22f33fef49cf"
+    },
+    {
+      "source_revision": "6bac128c1104a1bf9495f70c0ec6e016f70e4bd6",
+      "command": "python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "macOS controller",
+      "outcome": "passed",
+      "tests": 64,
+      "log_sha256": "ef00d0a9fabbf9a68f12762f550e8f0a7a4fac7c12373e37b7bf74d0816ab449"
+    },
+    {
+      "source_revision": "6bac128c1104a1bf9495f70c0ec6e016f70e4bd6",
+      "command": "python3 tools/experiments/quick_status.py",
+      "environment": "normal macOS Python without google-cloud-storage; installed gcloud fallback",
+      "outcome": "passed",
+      "scope": "read-only live eight-worker pilot snapshot; no new cloud work"
     }
   ],
   "coverage": [
@@ -284,7 +299,7 @@
     }
   ],
   "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63",
-  "quick_status_revision": "cecb9e92b74dffb448f27213aa8a73cd2f12cf5a",
+  "quick_status_revision": "6bac128c1104a1bf9495f70c0ec6e016f70e4bd6",
   "quick_status_live_check": {
     "source_revision": "cecb9e92b74dffb448f27213aa8a73cd2f12cf5a",
     "outcome": "passed",

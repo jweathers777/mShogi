@@ -86,3 +86,12 @@ earlier scan of all success receipts took45.69seconds on a different snapshot.
 All60 tests passed on macOS; six focused tests passed on Linux ARM.
 The old local-only study status scripts were removed at the owner request.
 The running cloud image and listener remain at their recorded frozen revisions.
+
+## Direct status script
+
+At 6bac128c1104a1bf9495f70c0ec6e016f70e4bd6, the owner requested a normal Python script with saved defaults.
+Independent review passed ten focused tests. All64 tests passed on macOS. The
+exact direct command also passed against live GCP with normal Python, without
+the Cloud Storage Python package or temporary virtual environment. The fallback
+uses read-only gcloud commands. Partial SDK import failures are handled; credential
+failures remain errors. The active worker image and listener were not changed.

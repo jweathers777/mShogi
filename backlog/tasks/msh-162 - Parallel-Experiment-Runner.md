@@ -1,11 +1,11 @@
 ---
 id: MSH-162
 title: Parallel Experiment Runner
-status: In Progress
+status: In Review
 assignee:
   - '@codex-cloud-runner'
 created_date: '2026-11-11T18:35:00Z'
-updated_date: '2026-11-11T21:46:00Z'
+updated_date: '2026-11-11T22:30:00Z'
 labels:
   - handle:parallel-experiment-runner
 dependencies: []
@@ -26,14 +26,14 @@ Deliver reusable local and GCP Batch execution over native match/replay and froz
 Versioned immutable jobs, bounded workers, dependency scheduling and verified artifacts. Preserve frozen study and coordinator ownership.
 
 ## Completion
-Reviewed isolated branch handoff. Cloud pilot requires project/access/spending approval; coordinator owns integration.
+Implementation and authorized cloud pilot passed independent review. See docs/experiments/coordinator-handoff.md. Actual billed-cost reconciliation and coordinator integration remain open; no full study is authorized.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Game pair, all-move screening and confirmation jobs reuse native and frozen analysis authorities.
-- [ ] #2 Parallel local/GCP jobs support dependencies, integrity, retries, immutable success, status/retrieve/cancel and resources.
-- [ ] #3 Targeted macOS/Linux tests and independent source/execution review cover replay, failure and restart.
+- [x] #1 Game pair, all-move screening and confirmation jobs reuse native and frozen analysis authorities.
+- [x] #2 Parallel local/GCP jobs support dependencies, integrity, retries, immutable success, status/retrieve/cancel and resources.
+- [x] #3 Targeted macOS/Linux tests and independent source/execution review cover replay, failure and restart.
 - [ ] #4 Authorized cloud pilot proves complete pair and analysis, recovery and eight-worker throughput/cost.
 - [x] #5 Reviewed operating and integration handoff preserves frozen inputs.
 <!-- AC:END -->
@@ -41,8 +41,8 @@ Reviewed isolated branch handoff. Cloud pilot requires project/access/spending a
 ## Definition of Done
 <!-- DOD:BEGIN -->
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -86,4 +86,16 @@ Recovery SUCCEEDED with independent actual-cloud verification: one failed attemp
 Owner-requested quick-status delivered at cecb9e92: concurrent plan/possible-failure reads, completion-marker counts, optional manifest-bound Batch state, plain text/JSON, explicit unverified/stale-claim/unknown-total labels. No artifact reads or computation. Live check16.67s vs earlier fullreceipt scan45.69s (different evolving snapshots). All60 Mac tests and6focused Linux tests passed; independent6-test review approved. Removed four obsolete tools/study_status files; no callers found. Updated operating/novice guides. Frozen worker image and active eight-worker listener unchanged. Cloud pilot still pending completion; no integration or full study.
 
 Direct status follow-up delivered at6bac128c: python3 tools/experiments/quick_status.py reads status-settings.json and infers storage from manifest; no user-supplied identifiers or private/tmp interpreter. Normal Python without Google SDK succeeded live through read-only gcloud fallback. Credential errors propagate. All64tests pass; independent10-test review approved. Novice/operating guides updated. Running frozen worker image/listener unchanged; await eight-worker completion.
+
+Final evidence commit7dd13acb: all1841eight-worker jobs verified from27401objects/3.98GB; independent16game replay,5322screening queries and1825confirmations passed. Eight real matching C3workers overlapped; per-task elapsed6159.163s/102.65min, total jobwall8.56h. AggregateBatch duration5180s is inconsistent; task/GCS/audit timestamps used, alert delivered after finaltask. No failed eight-worker attempts/retries/claims; allVM/disksdeleted. Allpilot compute estimateUS$2.04140 before extras, actualbilling unavailable. AC4 remains unchecked only for actual billed-cost reconciliation; execution/recovery/throughput parts passed. Finalcontroller64tests passed on Mac/LinuxARM; frozenLinuxx86image validated on realC3. No native/frozenstudy source changes. In Review for coordinator handoff and actualbilling, not Done because integration explicitly deferred. Retain isolated worktree for these purposes. No fullstudy,16worker expansion or next engineering task launched.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Implemented reusable immutable job execution around frozen native pair/replay and Stockfish analysis; local/GCS storage, bounded parallel workers, retry/recovery, cancellation, event-driven completion and a direct quick-status script. Removed obsolete local monitors and supplied novice setup/operating guides.
+
+Reviewed initial-pair, real cloud failure/retry/no-duplicate check and eight-worker execution passed. Eight-worker run:16games,5322screening queries,1825confirmations,1841verified jobs in102.65min. Estimated allpilot VMcomputeUS$2.04140; actualbilling/extras not reconciled. Batch aggregate duration discrepancy retained; task-level timestamps establish elapsed time. AllVM/disks removed; GCS/image evidence retained.
+
+Source6bac128c and evidence7dd13acb on codex/parallel-experiment-runner. No integration into codex/rewrite, no fullstudy. See docs/experiments/coordinator-handoff.md for exact integration scope, image/source compatibility and remaining gates. Leave In Review until actualcost and coordinator integration are resolved.
+<!-- SECTION:FINAL_SUMMARY:END -->

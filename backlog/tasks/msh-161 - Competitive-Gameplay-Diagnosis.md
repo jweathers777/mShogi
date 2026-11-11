@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-11T00:57:00Z'
+updated_date: '2026-11-11T02:23:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -71,4 +71,6 @@ Preparation checkpoint: unchanged77101fe candidate/runner built and fingerprinte
 Preparation integrated on codex/rewrite at e066f58. Main study remains In Progress; no acceptance checks or final rankings claimed. Deferred review11November01:55Europe/Paris continues from README/state files; no need to poll individual moves. Live runtime outputs remain local pending completed-batch preservation.
 
 11November heartbeat: all4qualification games completed normally with native replay; candidate2winsOxidation,1win1drawGoldfish. No stronger-opponent selection yet. Reference chain stopped at overstrict zero-uncertainty smoke gate; independent review approved gate-only correction allowing its specifically flagged final-bound uncertainty, while comparison retains null loss.16 tests passed. Preserved original failed-chain receipts, reused successful smoke and resumed unattended fullmove analysis/source screen. Next single review03:15Europe/Paris. See smoke-recovery.md; no production changes or ranked conclusions.
+
+03:15review: initial640decision/1280query allmove analysis plus330source screens complete, zero failedqueries. Full1618artifacts compressed/hash-preserved. Blind gameplay reviewer found several provisional themes plus strongplay, no priorities;14decision25singleton5M confirmation panel frozen. Four strict-balanced contrasting masterroots selected without competitive outcomes;16additional qualification games followed by allmove analysis launched unattended, since neither reference yet established stronger. v1screen retains51of59 rawthresholdcrossings hidden by v0uncertainty without clearing flags or confirming events; offline checks pass, originalv0preserved. Main200game study/method/opponent still unfrozen. Next single review08:30Europe/Paris. See README, pilot-method-review.md, qualification-gameplay-review.md and extension-chain.json.
 <!-- SECTION:NOTES:END -->

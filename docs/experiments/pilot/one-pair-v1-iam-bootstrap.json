@@ -1,0 +1,20 @@
+[
+  {
+    "protoPayload": {
+      "serviceData": {
+        "@type": "type.googleapis.com/google.iam.v1.logging.AuditData",
+        "policyDelta": {
+          "bindingDeltas": [
+            {
+              "action": "ADD",
+              "member": "serviceAccount:service-216675633801@gcp-sa-cloudbatch.iam.gserviceaccount.com",
+              "role": "roles/batch.serviceAgent"
+            }
+          ]
+        }
+      },
+      "status": {}
+    },
+    "timestamp": "2026-11-11T19:37:18.437535Z"
+  }
+]

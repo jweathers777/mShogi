@@ -1,11 +1,11 @@
 ---
 id: MSH-162
 title: Parallel Experiment Runner
-status: In Review
+status: In Progress
 assignee:
   - '@codex-cloud-runner'
 created_date: '2026-11-11T18:35:00Z'
-updated_date: '2026-11-11T19:07:00Z'
+updated_date: '2026-11-11T19:46:00Z'
 labels:
   - handle:parallel-experiment-runner
 dependencies: []
@@ -68,4 +68,10 @@ Source checkpoint 14bea72cb326d77fe780927f07d2da60e66b6528 passes48tests on macO
 Owner supplied new project mshogi and requested novice setup Markdown. Read-only confirmed project216675633801 and billing linked; required Compute/Batch/ArtifactRegistry/PubSub setup absent. Added independently reviewed docs/experiments/gcp-novice-setup.md and exact pilot config; recommends Iowa at verified C3standard4 list$0.201608/hour and proposes$30 pilot, not authorized yet. Source51351c48ea1adf9ac96011aec1440e44ceb741a4 passes50tests on Mac/LinuxARM/packagedLinuxx86. Fixed frozen native and Oxidation Linuxx86 release builds succeeded; official Stockfish19 Linux release archive hash verified; actual native replay/UCI handshakes pass without searches. Local image f6353cb4 built and validated; compile/image exit notifications accepted. Single verification.json updated. Remaining gate is project setup, spending approval, image upload/final registry digest and actual cloud pilot. Task stays In Review; no integration or full study.
 
 Owner approved US$30 initial pilot on2026-11-11 for project mshogi/us-central1, conditional on setup completion: one opening pair first, then eight concurrent workers after review, all within the same allowance. Full200game study and sixteen workers remain unauthorized. Read-only prerequisite check after approval still finds Compute Engine, Batch, Artifact Registry and Pub/Sub APIs disabled; setup gate remains. No cloud resources created or pilot launched. Do not ask for spending approval again within this scope.
+
+Owner reports all12setup steps complete. Read-only preflight verifies required APIs, C3 CPU quota32 with zero usage, regional IP quota8, correct worker roles and conditional claim deletion, private registry, intended subnet and active dedicated PubSub subscription. Continue within previously approved US$30: upload validated image, freeze real registry digest and one-pair manifest, run one pair with all-move/confirmation pipeline and event-driven exit notification; review before eight-worker stage. No full study or integration.
+
+First approved pilot msh162-pilot-one-v1 failed before tasks/VMs with runDuration0s; initial-terminal listener queued completion successfully. Audit shows Batch service-agent IAM granted0.445s before job creation: propagation is the leading hypothesis, not proven. Real PubSub event exposed numeric project-name alias mismatch; corrected controller matching with UID and full region/job validation plus authoritative re-fetch. All54 local tests pass. Preserve frozen worker51351 image and manifest for bounded retry, with separate controller revision. Evidence in docs/experiments/pilot; full study and integration remain excluded.
+
+Controller34892627 passed54tests and independent28-test GCP review. Retried unchanged manifest/image as msh162-pilot-one-v2 within approved US$30; actual state SCHEDULED with one pending C3standard4 task. Event-driven listener PID54494 queues owning chat on exit; receipts/logs /private/tmp/msh162-pilot-one-v2-listener.*. No periodic polling. See verification.json and pilot/ for exact submission, identity and evidence. Resume on completion: retrieve/verify pair, replay, all-move and derived confirmations; review before eight workers. No primary integration. Keep this worktree active for listener and pilot.
 <!-- SECTION:NOTES:END -->

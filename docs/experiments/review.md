@@ -38,3 +38,11 @@ network commands were reviewed against official documentation. No cloud changes
 were made. All50 tests passed on Mac, Linux ARM and the actual packaged Linux
 x86_64 image (emulated locally); fixed native/opponent builds and native replay
 also passed. These establish local packaging/portability, not cloud throughput.
+
+## Controller project alias correction
+
+At controller revision 348926274cb56cedcb6328bbfd809f552910ae63, a separate reviewer approved numeric project
+alias matching after the first real Batch event exposed the mismatch. UID and
+full region/job validation remain required, followed by an authoritative lookup.
+The reviewer independently passed all28 GCP tests. The full controller suite
+passed54 tests on macOS. Worker source51351c48 and its image stay frozen.

@@ -211,12 +211,13 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__);subs=parser.add_subparsers(dest='command',required=True)
     make=subs.add_parser('prepare',help='Create jobs from every frozen opening, or an explicit pilot subset')
     make.add_argument('--build',required=True);make.add_argument('--experiment',required=True);make.add_argument('--source-revision',required=True);make.add_argument('--machine-type',default='c3-standard-4');make.add_argument('--pilot-pairs',type=int,choices=range(1,101));make.add_argument('--output',required=True);make.add_argument('--cloud-config');make.add_argument('--image')
-    for name in ('run','resume','status','verify','retrieve','cancel','report','recover','cloud-worker','submit','cloud-status','cloud-cancel','wait-cloud'):
+    for name in ('run','resume','status','quick-status','verify','retrieve','cancel','report','recover','cloud-worker','submit','cloud-status','cloud-cancel','wait-cloud'):
         p=subs.add_parser(name);p.add_argument('--manifest',required=True);p.add_argument('--store',required=True)
         if name in ('run','resume'):p.add_argument('--workers',type=int,default=1);p.add_argument('--thread',required=True)
         if name=='cloud-worker':p.add_argument('--index',type=int,default=int(os.environ.get('BATCH_TASK_INDEX','0')))
         if name=='retrieve':p.add_argument('--output',required=True)
         if name=='recover':p.add_argument('--job',required=True);p.add_argument('--workers-stopped',action='store_true',required=True)
+        if name=='quick-status':p.add_argument('--job-name');p.add_argument('--json',action='store_true')
         if name=='report':p.add_argument('--hourly-rate',type=float,required=True)
         if name in ('submit','cloud-status','cloud-cancel','wait-cloud'):p.add_argument('--config',required=True);p.add_argument('--job-name',required=True)
         if name=='wait-cloud':p.add_argument('--subscription',required=True);p.add_argument('--thread',required=True)
@@ -230,6 +231,24 @@ def main():
             publish_manifest(manifest,store)
             if not 0<=args.index<len(manifest['pipelines']):raise ValueError('invalid task index')
             pipeline(manifest,store,manifest['pipelines'][args.index]);value={'complete':True,'index':args.index}
+        elif args.command=='quick-status':
+            from .quick_status import snapshot, format_report
+            value=snapshot(manifest,store)
+            if args.job_name:
+                from . import gcp
+                config=manifest['jobs'][0]['environment'].get('cloud',{}).get('config')
+                if not config:raise ValueError('--job-name requires a cloud manifest')
+                observed=gcp.status_job(args.job_name,config['project'],config['region'])
+                expected_uri=args.store.rstrip('/')+'/'+manifest['experiment']+'/manifest.json'
+                commands=[r.get('container',{}).get('commands',[]) for group in observed.get('taskGroups',[]) for r in group.get('taskSpec',{}).get('runnables',[])]
+                if not any('cloud-worker' in c and '--manifest' in c and c[c.index('--manifest')+1:c.index('--manifest')+2]==[expected_uri] for c in commands):
+                    raise ValueError('Batch job does not run this stored manifest')
+                state=observed.get('status',{});counts={}
+                for group in state.get('taskGroups',{}).values():
+                    for name,count in group.get('counts',{}).items():counts[name]=counts.get(name,0)+int(count)
+                value['batch']={'name':observed['name'],'state':state.get('state','UNKNOWN'),'run_duration':state.get('runDuration','unknown'),'task_counts':counts}
+            if not args.json:
+                print(format_report(value));return
         elif args.command=='status':value=status(expanded(manifest,store),store)
         elif args.command=='verify':
             value=[verify_result(store,j)['job']['id'] for j in all_jobs(manifest,store)]

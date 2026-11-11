@@ -43,6 +43,29 @@ Other games can add adapters around their existing native protocol/replay; the
 storage, identity, allocation and retry services contain no game rules. They are
 not claimed implemented for other variants.
 
+## Quick progress report
+
+Use `quick-status` for a progress check. It lists saved completion markers and
+reads confirmation plans and possible failed-attempt records concurrently. It
+does not download game or analysis artifacts, verify results, or run engines.
+
+```sh
+python -m tools.experiments.cli quick-status --manifest docs/experiments/pilot/eight-pair-manifest.json --store gs://mshogi-experiments-216675633801/msh161 --job-name msh162-pilot-eight-v1
+```
+
+Use the Python environment with `requirements-controller.txt` installed. The
+current local environment is `/private/tmp/msh162-controller/bin/python`.
+Add `--json` for machine-readable output. Omit `--job-name` to read saved progress
+without a Batch lookup. Local storage paths also work.
+
+The report shows completed games, pairs, screening jobs, confirmation queries,
+known confirmation totals, claims, and failed attempts. Confirmation totals grow
+as workers publish plans. A claim can belong to a running or interrupted worker.
+Counts can change during the read. They are progress records, not verified results.
+Use `verify` for a full artifact check. The older `status` command also performs
+result checks and can take longer. The old `tools/study_status` scripts have been
+removed; they supported only the former local study layout.
+
 ## Linux artifacts and image
 
 Build native executables from frozen source

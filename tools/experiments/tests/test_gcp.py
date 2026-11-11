@@ -149,6 +149,32 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(container['commands'], ['-m', 'tools.experiments.cli', 'cloud-worker', '--manifest', MANIFEST, '--store', CONFIG['store_uri']])
         self.assertNotIn('script', group['taskSpec']['runnables'][0])
 
+    def test_explicit_network_is_emitted_without_default_network(self):
+        config = {**CONFIG, 'network':'projects/test-project/global/networks/experiment-workers',
+                  'subnetwork':'projects/test-project/regions/us-central1/subnetworks/experiment-workers'}
+        result = gcp.batch_config(MANIFEST, IMAGE, config, 1)
+        self.assertEqual(result['allocationPolicy']['network']['networkInterfaces'],
+                         [{'network':config['network'], 'subnetwork':config['subnetwork']}])
+        self.assertNotIn('network', gcp.batch_config(MANIFEST, IMAGE, CONFIG, 1)['allocationPolicy'])
+
+    def test_network_names_project_region_and_pair_are_validated(self):
+        network = 'projects/test-project/global/networks/experiment-workers'
+        subnet = 'projects/test-project/regions/us-central1/subnetworks/experiment-workers'
+        invalid = [
+            {'network': network}, {'subnetwork': subnet},
+            {'network': network.replace('test-project','other-project'), 'subnetwork': subnet},
+            {'network': network, 'subnetwork': subnet.replace('test-project','other-project')},
+            {'network': network, 'subnetwork': subnet.replace('us-central1','us-east1')},
+            {'network': network, 'subnetwork': subnet + '/'},
+            {'network': network + '/../../other', 'subnetwork': subnet},
+            {'network': 'global/networks/experiment-workers', 'subnetwork': subnet},
+            {'network': network.rsplit('/',1)[0] + '/Bad_name', 'subnetwork': subnet},
+            {'network': None, 'subnetwork': None},
+        ]
+        for values in invalid:
+            with self.subTest(values=values), self.assertRaises(ValueError):
+                gcp.validate_config({**CONFIG, **values})
+
     def test_small_pilot_and_sixteen_ceiling(self):
         self.assertEqual(gcp.batch_config(MANIFEST, IMAGE, CONFIG, 1)['taskGroups'][0]['parallelism'], '1')
         self.assertEqual(gcp.batch_config(MANIFEST, IMAGE, {**CONFIG, 'parallelism':16}, 100)['taskGroups'][0]['parallelism'], '16')

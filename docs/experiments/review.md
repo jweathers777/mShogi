@@ -95,3 +95,22 @@ exact direct command also passed against live GCP with normal Python, without
 the Cloud Storage Python package or temporary virtual environment. The fallback
 uses read-only gcloud commands. Partial SDK import failures are handled; credential
 failures remain errors. The active worker image and listener were not changed.
+
+## Final eight-worker execution review
+
+Both independent reviews passed. All 1,841 jobs passed full artifact integrity
+checks after 27,401 objects were retrieved. The scientific reviewer replayed all
+16 games, checked all 5,322 screening queries and 1,825 confirmations, and
+regenerated the saved interpretations and frozen selection. Uncertainty remains
+explicit. These results validate execution, not strength or final diagnosis.
+
+Runtime review verified eight matching C3 workers, concurrent task intervals,
+zero failed jobs/retries/claims, and successful VM/disk deletion. Task timestamps
+show 102.65 minutes; the inconsistent aggregate Batch duration is retained but
+not used. The exit message was queued after the final task. All pilot VM compute
+is estimated at US$2.04140; actual billing and other charges remain unreconciled.
+See the two pilot/eight-*-review.json records and coordinator-handoff.md.
+
+Final controller source also passed all 64 tests on Linux ARM. Prior Mac tests
+and exact frozen Linux x86 cloud evidence remain valid for their stated scopes.
+No primary integration, full study, or sixteen-worker run has occurred.

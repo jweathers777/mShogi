@@ -109,6 +109,33 @@
       "environment": "normal macOS Python without google-cloud-storage; installed gcloud fallback",
       "outcome": "passed",
       "scope": "read-only live eight-worker pilot snapshot; no new cloud work"
+    },
+    {
+      "command": "Concurrent generation-pinned GCS retrieval then all_jobs/verify_result for every result",
+      "outcome": "passed",
+      "objects": 27401,
+      "jobs": 1841,
+      "bytes": 3980915946,
+      "record": "pilot/eight-retrieval.json"
+    },
+    {
+      "command": "Independent eight-pair native replay, every raw query/history/options/limits audit and screen-v1 regeneration",
+      "outcome": "passed",
+      "record": "pilot/eight-scientific-review.json"
+    },
+    {
+      "command": "Independent per-task/VM receipt, overlap, cleanup and lifecycle cost audit",
+      "outcome": "passed",
+      "record": "pilot/eight-runtime-review.json"
+    },
+    {
+      "source_revision": "6bac128c",
+      "command": "docker run --rm <readonly checkout> python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "Docker Linux aarch64",
+      "outcome": "passed",
+      "tests": 64,
+      "seconds": 2.997,
+      "log_sha256": "becba7216b7f565fbc772c6e64c76486f6874d2c6c3a2d9eada74079baa95bf9"
     }
   ],
   "coverage": [
@@ -144,28 +171,29 @@
   ],
   "independent_review": "review.md; final source approved by separate reviewer after notification/cancellation fixes; all11 notification tests independently rerun.",
   "not_run": [
-    "eight/sixteen VM throughput",
     "observed Cloud Billing cost",
     "full200game study",
     "desktop/GUI and Windows (not in this targeted infrastructure scope)",
-    "abrupt cloud VM loss and stale-claim recovery (local tests only)"
+    "abrupt cloud VM loss and stale-claim recovery (local tests only)",
+    "sixteen-worker throughput (not authorized)"
   ],
   "cloud_resources_created": true,
   "cloud_spend": null,
-  "cloud_spend_note": "Estimated first successful VM lifecycle compute $0.14649; billed total unavailable. Registry, GCS, logs and overhead excluded from this estimate. Recovery probe900s/no retries; eight-worker stage retains approved limits.",
+  "cloud_spend_note": "Actual billed total unavailable. Audited VM lifecycle compute estimate US$2.04140 for initial pair, recovery and eight-worker pilots. Excludes disk/storage, registry, network/egress, logs and taxes. Persistent evidence/image retained.",
   "new_study_games_or_searches": {
-    "games": 2,
-    "screening_queries": 434,
-    "confirmation_queries": 119,
-    "scope": "separate cloud pilot; not primary study evidence"
+    "games": 18,
+    "screening_queries": 5756,
+    "confirmation_queries": 1944,
+    "additional_recovery_probe_queries": 1,
+    "scope": "Separate cloud pilot; not merged with primary study evidence."
   },
-  "blocker": "Eight-worker pilot scheduled. Wait for completion event, then retrieve/verify all evidence and measure actual concurrency, throughput and cost.",
-  "next_gate": "Review completed eight-worker evidence independently, record all resource use and prepare coordinator integration handoff. Do not start full study or integrate into primary branch.",
+  "blocker": "Implementation and execution review passed. Actual billed-cost reconciliation and coordinator acceptance/integration remain open.",
+  "next_gate": "Coordinator reviews coordinator-handoff.md and admits/integrates as appropriate after its active work. Reconcile actual billing. Full study needs separate coordinator review and spending scope; do not launch automatically.",
   "integration": {
     "branch": "codex/parallel-experiment-runner",
     "target": "codex/rewrite",
     "status": "not integrated by explicit owner instruction",
-    "worktree_purpose": "ongoing cloud pilot and coordinator handoff"
+    "worktree_purpose": "Retained for coordinator handoff/integration and billed-cost reconciliation; no running local listener or cloud worker requires it."
   },
   "previous_source_checkpoint": {
     "revision": "14bea72cb326d77fe780927f07d2da60e66b6528",
@@ -295,7 +323,27 @@
       "listener_pid": 73734,
       "budget": "same US$30 total authorization; no increase",
       "worker_source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
-      "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63"
+      "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63",
+      "state": "SUCCEEDED",
+      "completion_source": "pubsub-terminal-event",
+      "notification_accepted": true,
+      "verified_jobs": 1841,
+      "retrieved_objects": 27401,
+      "retrieved_bytes": 3980915946,
+      "complete_games": 16,
+      "screening_queries": 5322,
+      "confirmation_queries": 1825,
+      "task_elapsed_seconds": 6159.162759,
+      "all_eight_task_overlap_seconds": 2535.356663,
+      "aggregate_batch_duration_seconds": 5180.046142731,
+      "aggregate_duration_warning": "Inconsistent with task7/GCS server timestamps; use task-level elapsed time. Alert queued after actual final task.",
+      "estimated_vm_compute_usd": 1.8895609055922382,
+      "actual_billed_cost": null,
+      "independent_reviews": [
+        "pilot/eight-scientific-review.json",
+        "pilot/eight-runtime-review.json"
+      ],
+      "vm_and_disk_cleanup": "all eight deletion audits successful; empty current project VM/disk listings"
     }
   ],
   "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63",
@@ -307,5 +355,7 @@
     "seconds": 16.67,
     "prior_receipt_scan_seconds": 45.69,
     "limitations": "Different live snapshots; timing depends on storage/network and listing size. No artifact or success-content verification. No new computation."
-  }
+  },
+  "cloud_compute_still_running": false,
+  "estimated_all_pilot_vm_compute_usd": 2.041400562784367
 }

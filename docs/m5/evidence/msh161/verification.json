@@ -50,8 +50,8 @@
   "postbatch_launch_state": "waiting_for_qualification",
   "automation": {
     "id": "review-completed-chess-diagnosis-batch",
-    "scheduled_local": "2026-11-11T08:30:00+01:00",
-    "one_review": true
+    "status": "deleted_by_owner_request",
+    "replacement": "Computation exit invokes codex queue; no timed fallback"
   },
   "qualification": {
     "games": 4,
@@ -102,5 +102,26 @@
     "method_review": "pilot-method-review.md",
     "checks": "screen-v1-checks.json",
     "ranked_findings": false
+  },
+  "exit_notification": {
+    "verification_level": 2,
+    "reason": "Targeted macOS process/CLI integration; no production portability change",
+    "tests": 4,
+    "tests_receipt": "notification-tests.log",
+    "earlier_failures_preserved": [
+      "notification-tests-sandbox-failed.log",
+      "notification-tests-local-initial.log"
+    ],
+    "actual_queue_receipt": "notifications/qualification-extension-completed.json",
+    "queue_message_id": "01a1c989-56b4-78d2-a9ef-41ce90a11784",
+    "accepted": true,
+    "security_settings_changed": false,
+    "method": "Normal execution escalation; installed CodexCLI queue --thread --message, no configuration/sandbox overrides",
+    "cleanup_limitation": "Only own group; detached descendants and denied probes explicitly require reconciliation, not claimed clean",
+    "source_sha256": "501b67b9fb2b7cfed459dd7cad99070ee43450c60f92f00ffa8684d4ce7574b3",
+    "platform_checks_not_run": [
+      "Linux",
+      "Windows"
+    ]
   }
 }

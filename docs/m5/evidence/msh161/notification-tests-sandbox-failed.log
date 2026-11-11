@@ -1,0 +1,21 @@
+test_failure_queues_once (test_notify_exit.NotifyExit.test_failure_queues_once) ... ok
+test_queue_failure_is_visible (test_notify_exit.NotifyExit.test_queue_failure_is_visible) ... ok
+test_signal_queues_failure (test_notify_exit.NotifyExit.test_signal_queues_failure) ... FAIL
+test_success_queues_once (test_notify_exit.NotifyExit.test_success_queues_once) ... ok
+
+======================================================================
+FAIL: test_signal_queues_failure (test_notify_exit.NotifyExit.test_signal_queues_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/test_notify_exit.py", line 32, in test_signal_queues_failure
+    r=json.loads(receipt.read_text());self.assertEqual(r['status'],'failure');self.assertTrue(r['queue_accepted']);self.assertTrue(r['process_group_settled']);self.assertEqual(r['signal'],signal.SIGTERM)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'running' != 'failure'
+- running
++ failure
+
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.031s
+
+FAILED (failures=1)

@@ -329,3 +329,9 @@ Do not select the next engineering priority because a position is interesting, a
 **Determine which weaknesses cost mShogi the most competitive performance across complete games. Then recommend engineering work that addresses those weaknesses.**
 
 Owner follow-up: Use unattended software execution for games and Stockfish analysis. Do not use model reasoning to supervise individual moves or repeatedly poll unchanged results. Save structured results and have agents analyze completed batches. Preserve planned scientific coverage while keeping model usage efficient.
+
+Owner execution replacement,2026-11-11: Wake the scheduled review; thereafter the
+computation wrapper must queue a message on success or failure using
+codex queue --thread THREAD_UUID --message COMPLETION_MESSAGE. Remove periodic
+watchers and guessed times. Normal local execution escalation is authorized where
+needed to access Codex's database; preserve existing security settings.

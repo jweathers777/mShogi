@@ -123,3 +123,38 @@ Mainmethod/sample/opponent remain unfrozen. Strict source screen70accepted,
 244uncertain,16outsidebalance cannot itself supply90roots. Review v1 source
 judgments/37root confirmation proposal before further source work. Preserve
 structural quotas and all source selection/rejection provenance.
+
+## Owner update — completion-driven reviews
+
+Timed automation `review-completed-chess-diagnosis-batch` was deleted at the
+owner's request. Do not recreate it or guess review times. The extension completed
+all42steps, including16games and allmove analysis; its substantive review is now
+due. Main opponent/method/sample remain unfrozen.
+
+Every future unattended computation chain must be launched through
+`notify_exit.py --thread 01a1c734-6d54-75e1-80e5-58074ecdc4dd --codex ABSOLUTE_CODEX_CLI
+--receipt UNIQUE_RECEIPT.json --label LABEL --state CHAIN_STATE.json -- COMMAND...`.
+Use the installed CLI path returned by `command -v codex`; current verified path:
+`/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex`.
+Use normal execution escalation for this launch so the exit notification can
+access Codex's local database. Do not change security settings, approval stores,
+sandbox flags or CLI configuration. The wrapper calls only
+`codex queue --thread THREAD --message MESSAGE` on success or failure; existing
+helpers retain process bounds and artifact/state supervision. Launch under
+caffeinate if idle-sleep prevention remains useful.
+
+The notification receipt records computation exit and queue acceptance separately.
+A nonzero queue result or timeout remains visible; no automatic retry because
+an ambiguous timeout might already have queued the message. Refuse reused receipt
+paths to prevent duplicate computation. A process killed without cleanup (SIGKILL,
+host crash) cannot emit an exit message; preserved chain state remains the recovery
+authority. No polling watcher or timed fallback is installed.
+
+Actual completion wake verified: installed CLI accepted message
+`01a1c989-56b4-78d2-a9ef-41ce90a11784` for the owning chat after validating the
+completed extension and every allmove summary. Receipt:
+`notifications/qualification-extension-completed.json`. The scheduled review has
+been queued immediately; next action is its substantive gameplay/method review,
+not another queue test or scheduler. Four notifier tests pass; targeted macOS
+verification, no Linux/Windows claim. Group probes denied by the OS remain unknown
+and require cleanup review; failure notification still proceeds.

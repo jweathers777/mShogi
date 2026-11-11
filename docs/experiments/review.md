@@ -27,3 +27,14 @@ of actual Google Cloud execution, Linux x86_64 engine build correctness, fair C3
 competitive conditions, eight-VM throughput, billed cost, or successful live
 notification delivery is made. Those are pilot gates, not inferred from mocks.
 The reviewer did not authorize or integrate the coordinator branch.
+
+## Setup and Linux packaging continuation
+
+At source51351c48, a separate reviewer verified the novice guide and dedicated
+network configuration. Corrected the required role to roles/batch.agentReporter
+and included logging.googleapis.com. Bucket create-only permissions and conditional
+claim deletion, worker Pub/Sub publishing, private registry reading and no-ingress
+network commands were reviewed against official documentation. No cloud changes
+were made. All50 tests passed on Mac, Linux ARM and the actual packaged Linux
+x86_64 image (emulated locally); fixed native/opponent builds and native replay
+also passed. These establish local packaging/portability, not cloud throughput.

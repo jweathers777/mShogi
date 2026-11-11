@@ -1,6 +1,6 @@
 {
   "task": "MSH-162 (Parallel Experiment Runner)",
-  "source_revision": "14bea72cb326d77fe780927f07d2da60e66b6528",
+  "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
   "verification_level": 2,
   "reason": "Process management, concurrency, local/GCS persistence and cloud portability; no native production changes.",
   "environments": {
@@ -12,17 +12,17 @@
       "command": "PYTHONDONTWRITEBYTECODE=1 /private/tmp/msh139/venv/bin/python -m unittest discover -s tools/experiments/tests -v",
       "environment": "macos",
       "outcome": "passed",
-      "tests": 48,
-      "seconds": 2.624,
-      "log_sha256": "a1a598deb0b5829d1b034bd072f6882ad4f23d4a910931cdf6ba870c244cadf3"
+      "tests": 50,
+      "seconds": 3.273,
+      "log_sha256": "b87563c9dc0fd02c4d05b857c127d444f4082274dd2082cbc717a397fb77383e"
     },
     {
       "command": "docker run --rm -v /Users/johnweathers/.codex/worktrees/parallel-experiment-runner/mShogi:/workspace:ro msh162-execution-tests python -m unittest discover -s tools/experiments/tests -v",
       "environment": "linux",
       "outcome": "passed",
-      "tests": 48,
-      "seconds": 2.774,
-      "log_sha256": "7ca7b0a5b5a77287b118e2f28768223f86a73aee0e3a522f639dffa844db6d2f"
+      "tests": 50,
+      "seconds": 3.02,
+      "log_sha256": "38643e4eaef68703628fe206ed3d33e704ce1da2e2aba54be460556169a25701"
     },
     {
       "command": "python -m tools.experiments.cli prepare --build /private/tmp/msh162-local-build.json --experiment msh162-final-prepare --source-revision 14bea72cb326d77fe780927f07d2da60e66b6528 --output /private/tmp/msh162-final-prepare.json; status with empty local store",
@@ -45,6 +45,15 @@
     {
       "command": "git diff --check",
       "outcome": "passed"
+    },
+    {
+      "command": "docker run --rm --platform linux/amd64 --entrypoint python3 -v <reviewed tests>:/opt/mshogi/tools/experiments/tests:ro -v <existing replay>:/evidence:ro msh162-worker:51351c48 <unittest discover plus native replay>",
+      "environment": "Actual packaged Linux x86_64 image under local Docker emulation; not C3 hardware",
+      "outcome": "passed",
+      "tests": 50,
+      "seconds": 4.689,
+      "native_replay": "passed",
+      "log_sha256": "6ec41bb61155993b681b018b9d6029406073e76447c58ff3064771b9ff075106"
     }
   ],
   "coverage": [
@@ -80,7 +89,6 @@
   ],
   "independent_review": "review.md; final source approved by separate reviewer after notification/cancellation fixes; all11 notification tests independently rerun.",
   "not_run": [
-    "Linux x86_64 fixed native/opponent/reference builds",
     "actual GCS writes and Batch VM execution",
     "one complete new cloud opening pair plus all-move screening/confirmations",
     "real failed-worker cloud recovery",
@@ -94,12 +102,50 @@
   "cloud_spend": 0,
   "cloud_spend_note": "No cloud pilot run; this is absence of created resources, not a measured billing statement.",
   "new_study_games_or_searches": 0,
-  "blocker": "Owner GCP project/region/credentials/service account/bucket/registry and spending authorization not supplied. Asynchronously requested; do not create billable resources.",
-  "next_gate": "Create fixed Linux x86 artifacts/image, obtain concrete project/budget authorization, validate one pair then eight concurrent workers; coordinator reviews before primary study/integration.",
+  "blocker": "Project mshogi and billing linked verified. Owner requested novice guide; required APIs/IAM/bucket/registry/network/PubSub/local ADC setup and US$30 pilot approval pending. Do not upload image or submit billable jobs before approval.",
+  "next_gate": "Complete reviewed gcp-novice-setup.md; verify project configuration, obtain pilot approval, upload locally verified image and freeze registry digest; validate one pair then eight concurrent workers. Coordinator reviews before primary study/integration.",
   "integration": {
     "branch": "codex/parallel-experiment-runner",
     "target": "codex/rewrite",
     "status": "not integrated by explicit owner instruction",
     "worktree_purpose": "ongoing cloud pilot and coordinator handoff"
+  },
+  "previous_source_checkpoint": {
+    "revision": "14bea72cb326d77fe780927f07d2da60e66b6528",
+    "macos_tests": 48,
+    "linux_arm_tests": 48,
+    "outcome": "passed; superseded by dedicated-network source checkpoint"
+  },
+  "builds": {
+    "native_source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+    "native_release_build_seconds": 109,
+    "oxidation_source": "46a705b80e7191e7c302838eb8b85053b5994d65",
+    "oxidation_release_build_seconds": 45.26,
+    "architecture": "Linux x86_64",
+    "build_manifest": "linux-build.json",
+    "source_build_status": "passed",
+    "source_build_wrapper_seconds": 174.254826,
+    "source_build_exit_notification_accepted": true,
+    "official_stockfish19_archive_sha256": "9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f",
+    "handshakes": "mShogi UCI, Oxidation0.6.0 and Stockfish19 all reported uciok/readyok; no search commands",
+    "stockfish_compiler_self_report": "g++15.2.0 Linux, x86-64-bmi2, BMI2 AVX2 SSE41 SSSE3 SSE2 POPCNT",
+    "local_worker_image": "msh162-worker:51351c48",
+    "local_image_id": "sha256:f6353cb44e00c0cc26448a8a2480842c5a72e93fc64486dfe147037b9543666c",
+    "registry_digest": "not uploaded; must obtain real registry digest before final cloud manifest",
+    "image_build_exit_notification_accepted": true,
+    "build_warning": "Docker warns PYTHON_BASE has no default; explicit digest supplied, build passed."
+  },
+  "project_read_only_observation": {
+    "project_id": "mshogi",
+    "project_number": "216675633801",
+    "billing_enabled": true,
+    "compute_batch_artifactregistry_pubsub_apis": "not enabled at observation",
+    "region_recommendation": "us-central1",
+    "c3_standard_4_list_usd_hour": 0.201608,
+    "pricing_source": "https://cloud.google.com/products/compute/pricing/general-purpose?hl=en",
+    "proposed_pilot_usd": 30,
+    "nominal_max_active_task_hours": 108,
+    "nominal_max_active_compute_usd": 21.773664,
+    "additional_charges": "VM startup/cleanup, disk, external IP, registry/storage, logs, PubSub and network; budget alert is not a hard cap"
   }
 }

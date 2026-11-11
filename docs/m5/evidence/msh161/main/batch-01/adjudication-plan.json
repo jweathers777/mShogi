@@ -1,0 +1,810 @@
+[
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-00/report.json.gz",
+    "game": 0,
+    "ply": 28,
+    "moves": [
+      "e5d7",
+      "c4c5"
+    ],
+    "reason": "Batch review bounded adjudication: pair 00 game 0 ply 28; played e5d7 versus existing alternative c4c5; 5M raw expectation difference 0.48150000000000004; retained flags []. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-00/report.json.gz",
+    "game": 0,
+    "ply": 84,
+    "moves": [
+      "e1e5",
+      "a4a8"
+    ],
+    "reason": "Batch review bounded adjudication: pair 00 game 0 ply 84; played e1e5 versus existing alternative a4a8; 5M raw expectation difference 0.49550000000000005; retained flags []. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-00/report.json.gz",
+    "game": 0,
+    "ply": 92,
+    "moves": [
+      "h4h5",
+      "c2e4"
+    ],
+    "reason": "Batch review bounded adjudication: pair 00 game 0 ply 92; played h4h5 versus existing alternative c2e4; 5M raw expectation difference 0.5; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-00/report.json.gz",
+    "game": 1,
+    "ply": 43,
+    "moves": [
+      "a8b8",
+      "e7a3"
+    ],
+    "reason": "Batch review bounded adjudication: pair 00 game 1 ply 43; played a8b8 versus existing alternative e7a3; 5M raw expectation difference 0.4355; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-00/report.json.gz",
+    "game": 1,
+    "ply": 119,
+    "moves": [
+      "f7g8",
+      "f7e8"
+    ],
+    "reason": "Batch review bounded adjudication: pair 00 game 1 ply 119; played f7g8 versus existing alternative f7e8; 5M raw expectation difference 0.49950000000000006; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-00/report.json.gz",
+    "game": 1,
+    "ply": 122,
+    "moves": [
+      "f4g4",
+      "d4c5"
+    ],
+    "reason": "Batch review bounded adjudication: pair 00 game 1 ply 122; played f4g4 versus existing alternative d4c5; 5M raw expectation difference 0.5; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-01/report.json.gz",
+    "game": 0,
+    "ply": 18,
+    "moves": [
+      "g3g4",
+      "a1b1"
+    ],
+    "reason": "Batch review bounded adjudication: pair 01 game 0 ply 18; played g3g4 versus existing alternative a1b1; 5M raw expectation difference 0.051999999999999935; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-01/report.json.gz",
+    "game": 0,
+    "ply": 38,
+    "moves": [
+      "b4c6",
+      "g2h1"
+    ],
+    "reason": "Batch review bounded adjudication: pair 01 game 0 ply 38; played b4c6 versus existing alternative g2h1; 5M raw expectation difference 0.297; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-01/report.json.gz",
+    "game": 0,
+    "ply": 106,
+    "moves": [
+      "d4d1",
+      "d4d8"
+    ],
+    "reason": "Batch review bounded adjudication: pair 01 game 0 ply 106; played d4d1 versus existing alternative d4d8; 5M raw expectation difference 0.4755; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-01/report.json.gz",
+    "game": 1,
+    "ply": 23,
+    "moves": [
+      "h7h6",
+      "a8b8"
+    ],
+    "reason": "Batch review bounded adjudication: pair 01 game 1 ply 23; played h7h6 versus existing alternative a8b8; 5M raw expectation difference 0.11399999999999999; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-01/report.json.gz",
+    "game": 1,
+    "ply": 81,
+    "moves": [
+      "b4b3",
+      "c5c4"
+    ],
+    "reason": "Batch review bounded adjudication: pair 01 game 1 ply 81; played b4b3 versus existing alternative c5c4; 5M raw expectation difference 0.5; retained flags []. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-01/report.json.gz",
+    "game": 1,
+    "ply": 84,
+    "moves": [
+      "a2b3",
+      "a2a3"
+    ],
+    "reason": "Batch review bounded adjudication: pair 01 game 1 ply 84; played a2b3 versus existing alternative a2a3; 5M raw expectation difference 0.5; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-02/report.json.gz",
+    "game": 0,
+    "ply": 39,
+    "moves": [
+      "a6a5",
+      "h7h6"
+    ],
+    "reason": "Batch review bounded adjudication: pair 02 game 0 ply 39; played a6a5 versus existing alternative h7h6; 5M raw expectation difference 0.07550000000000001; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-02/report.json.gz",
+    "game": 0,
+    "ply": 40,
+    "moves": [
+      "e3g5",
+      "b2b4"
+    ],
+    "reason": "Batch review bounded adjudication: pair 02 game 0 ply 40; played e3g5 versus existing alternative b2b4; 5M raw expectation difference 0.08750000000000002; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-02/report.json.gz",
+    "game": 0,
+    "ply": 52,
+    "moves": [
+      "g2g3",
+      "d2e2"
+    ],
+    "reason": "Batch review bounded adjudication: pair 02 game 0 ply 52; played g2g3 versus existing alternative d2e2; 5M raw expectation difference 0.481; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-02/report.json.gz",
+    "game": 1,
+    "ply": 29,
+    "moves": [
+      "c8b7",
+      "h7h6"
+    ],
+    "reason": "Batch review bounded adjudication: pair 02 game 1 ply 29; played c8b7 versus existing alternative h7h6; 5M raw expectation difference 0.1180000000000001; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-02/report.json.gz",
+    "game": 1,
+    "ply": 61,
+    "moves": [
+      "d7b6",
+      "d7c5"
+    ],
+    "reason": "Batch review bounded adjudication: pair 02 game 1 ply 61; played d7b6 versus existing alternative d7c5; 5M raw expectation difference 0.26750000000000007; retained flags []. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-02/report.json.gz",
+    "game": 1,
+    "ply": 87,
+    "moves": [
+      "b6c6",
+      "g8f7"
+    ],
+    "reason": "Batch review bounded adjudication: pair 02 game 1 ply 87; played b6c6 versus existing alternative g8f7; 5M raw expectation difference 0.465; retained flags []. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-03/report.json.gz",
+    "game": 0,
+    "ply": 30,
+    "moves": [
+      "g2g4",
+      "c2b4"
+    ],
+    "reason": "Batch review bounded adjudication: pair 03 game 0 ply 30; played g2g4 versus existing alternative c2b4; 5M raw expectation difference 0.374; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-03/report.json.gz",
+    "game": 0,
+    "ply": 60,
+    "moves": [
+      "g1g6",
+      "h6h3"
+    ],
+    "reason": "Batch review bounded adjudication: pair 03 game 0 ply 60; played g1g6 versus existing alternative h6h3; 5M raw expectation difference 0.471; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-03/report.json.gz",
+    "game": 0,
+    "ply": 63,
+    "moves": [
+      "e8f8",
+      "d5d7"
+    ],
+    "reason": "Batch review bounded adjudication: pair 03 game 0 ply 63; played e8f8 versus existing alternative d5d7; 5M raw expectation difference 0.417; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-03/report.json.gz",
+    "game": 1,
+    "ply": 21,
+    "moves": [
+      "b5b4",
+      "c6d5"
+    ],
+    "reason": "Batch review bounded adjudication: pair 03 game 1 ply 21; played b5b4 versus existing alternative c6d5; 5M raw expectation difference 0.481; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-03/report.json.gz",
+    "game": 1,
+    "ply": 60,
+    "moves": [
+      "f1e1",
+      "d4d5"
+    ],
+    "reason": "Batch review bounded adjudication: pair 03 game 1 ply 60; played f1e1 versus existing alternative d4d5; 5M raw expectation difference 0.36; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-03/report.json.gz",
+    "game": 1,
+    "ply": 61,
+    "moves": [
+      "g7g6",
+      "a8e8"
+    ],
+    "reason": "Batch review bounded adjudication: pair 03 game 1 ply 61; played g7g6 versus existing alternative a8e8; 5M raw expectation difference 0.4225; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-04/report.json.gz",
+    "game": 0,
+    "ply": 25,
+    "moves": [
+      "a5b3",
+      "b4e7"
+    ],
+    "reason": "Batch review bounded adjudication: pair 04 game 0 ply 25; played a5b3 versus existing alternative b4e7; 5M raw expectation difference 0.4955; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-04/report.json.gz",
+    "game": 0,
+    "ply": 30,
+    "moves": [
+      "d3d8",
+      "d3c2"
+    ],
+    "reason": "Batch review bounded adjudication: pair 04 game 0 ply 30; played d3d8 versus existing alternative d3c2; 5M raw expectation difference 0.3365; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-04/report.json.gz",
+    "game": 0,
+    "ply": 38,
+    "moves": [
+      "g5f7",
+      "a7f7"
+    ],
+    "reason": "Batch review bounded adjudication: pair 04 game 0 ply 38; played g5f7 versus existing alternative a7f7; 5M raw expectation difference 0.469; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-04/report.json.gz",
+    "game": 1,
+    "ply": 28,
+    "moves": [
+      "c4d5",
+      "f4g5"
+    ],
+    "reason": "Batch review bounded adjudication: pair 04 game 1 ply 28; played c4d5 versus existing alternative f4g5; 5M raw expectation difference 0.503; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-04/report.json.gz",
+    "game": 1,
+    "ply": 35,
+    "moves": [
+      "f6d5",
+      "c5a5"
+    ],
+    "reason": "Batch review bounded adjudication: pair 04 game 1 ply 35; played f6d5 versus existing alternative c5a5; 5M raw expectation difference 0.5135000000000001; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-04/report.json.gz",
+    "game": 1,
+    "ply": 60,
+    "moves": [
+      "f2c2",
+      "g2f1"
+    ],
+    "reason": "Batch review bounded adjudication: pair 04 game 1 ply 60; played f2c2 versus existing alternative g2f1; 5M raw expectation difference 0.486; retained flags ['last_score_update_not_selected_exact_score']. See confirmation-results.json decision pair/game/ply and linked immutable raw receipts. Selected first/large/threshold or linked response case; compare same full history at20M, never infer production mechanism."
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-05/report.json.gz",
+    "game": 0,
+    "ply": 16,
+    "moves": [
+      "g5f6",
+      "f2f4"
+    ],
+    "reason": "Earliest and largest stable finite candidate deterioration: Bxf6 versus f4.",
+    "pair": "main-01-05",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-05/report.json.gz",
+    "game": 0,
+    "ply": 18,
+    "moves": [
+      "d4b5",
+      "f2f4"
+    ],
+    "reason": "Earlier gxf6 opportunity: unstable Ndb5 versus f4 judgment.",
+    "pair": "main-01-05",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-05/report.json.gz",
+    "game": 0,
+    "ply": 30,
+    "moves": [
+      "f4f5",
+      "e4e5"
+    ],
+    "reason": "Advantage preservation after opponent Nb4: f5 versus e5.",
+    "pair": "main-01-05",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-05/report.json.gz",
+    "game": 0,
+    "ply": 17,
+    "moves": [
+      "g7f6",
+      "e7f6"
+    ],
+    "reason": "Opponent recapture creates an alleged opportunity; unstable5M.",
+    "pair": "main-01-05",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-05/report.json.gz",
+    "game": 0,
+    "ply": 27,
+    "moves": [
+      "c6b4",
+      "f8d8"
+    ],
+    "reason": "Opponent Nb4 is the supported decisive attacking opportunity.",
+    "pair": "main-01-05",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-05/report.json.gz",
+    "game": 1,
+    "ply": 27,
+    "moves": [
+      "b7b6",
+      "e6e5"
+    ],
+    "reason": "Candidate b6 is largest apparent failure to preserve advantage; unstable5M.",
+    "pair": "main-01-05",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-05/report.json.gz",
+    "game": 1,
+    "ply": 22,
+    "moves": [
+      "d4d6",
+      "b2c3"
+    ],
+    "reason": "Opponent Qxd6 creates the preceding advantage; unstable5M.",
+    "pair": "main-01-05",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-05/report.json.gz",
+    "game": 1,
+    "ply": 30,
+    "moves": [
+      "d1d8",
+      "g2g3"
+    ],
+    "reason": "Opponent Rd8+ restores overwhelming candidate advantage.",
+    "pair": "main-01-05",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 0,
+    "ply": 20,
+    "moves": [
+      "c1d2",
+      "e3e4"
+    ],
+    "reason": "Earliest stable candidate deterioration: development move versus central break e4.",
+    "pair": "main-01-06",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 0,
+    "ply": 70,
+    "moves": [
+      "h4g5",
+      "d4d5"
+    ],
+    "reason": "Largest stable advantage loss: hxg5 versus d5.",
+    "pair": "main-01-06",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 0,
+    "ply": 82,
+    "moves": [
+      "e2e1",
+      "c4e6"
+    ],
+    "reason": "Largest apparent and final consequential reversal: Ke1 versus Be6, unstable5M.",
+    "pair": "main-01-06",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 0,
+    "ply": 77,
+    "moves": [
+      "g3h2",
+      "g3d6"
+    ],
+    "reason": "Opponent Bh2 restores a supported winning chance before candidate82.",
+    "pair": "main-01-06",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 1,
+    "ply": 27,
+    "moves": [
+      "d7e5",
+      "f6g4"
+    ],
+    "reason": "First major candidate deterioration: Ne5 tactical exchange sequence.",
+    "pair": "main-01-06",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 1,
+    "ply": 81,
+    "moves": [
+      "c5c4",
+      "b5b4"
+    ],
+    "reason": "Largest stable missed conversion: c4 versus b4 after opponent Kh2.",
+    "pair": "main-01-06",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 1,
+    "ply": 89,
+    "moves": [],
+    "reason": "Singleton Kxh6 has losing estimate after near-equal predecessor; no distinct alternative yet.",
+    "pair": "main-01-06",
+    "player": "mShogi",
+    "discovery": true
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 1,
+    "ply": 97,
+    "moves": [
+      "d5a8",
+      "b5b4"
+    ],
+    "reason": "Ba8 loses restored draw; verify subsequent opponent response too.",
+    "pair": "main-01-06",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 1,
+    "ply": 42,
+    "moves": [
+      "c3e4",
+      "e1d1"
+    ],
+    "reason": "Opponent Ne4 first restores candidate drawing chances.",
+    "pair": "main-01-06",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 1,
+    "ply": 78,
+    "moves": [
+      "g1h2",
+      "c2d3"
+    ],
+    "reason": "Opponent Kh2 creates a winning chance preceding81.",
+    "pair": "main-01-06",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 1,
+    "ply": 90,
+    "moves": [
+      "g3f4",
+      "g4f3"
+    ],
+    "reason": "Opponent Kf4 restores drawing chance after89.",
+    "pair": "main-01-06",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "game": 1,
+    "ply": 98,
+    "moves": [],
+    "reason": "Opponent Bf3 follows candidate Ba8; find whether winning Bf5 was missed.",
+    "pair": "main-01-06",
+    "player": "reference",
+    "discovery": true
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-07/report.json.gz",
+    "game": 0,
+    "ply": 32,
+    "moves": [
+      "b2b3",
+      "e5f4"
+    ],
+    "reason": "First and largest stable candidate deterioration: b3 leaves the bishop under attack and permits a knight tempo against the queen.",
+    "pair": "main-01-07",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-07/report.json.gz",
+    "game": 0,
+    "ply": 108,
+    "moves": [
+      "a5a7",
+      "g3g4"
+    ],
+    "reason": "Potential late recovery missed by Ra7 versus g4; not origin of defeat.",
+    "pair": "main-01-07",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-07/report.json.gz",
+    "game": 0,
+    "ply": 126,
+    "moves": [
+      "g4f5",
+      "a7a8"
+    ],
+    "reason": "Immediate missed recovery after opponent Kg8: Kf5 versus Ra8+.",
+    "pair": "main-01-07",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-07/report.json.gz",
+    "game": 0,
+    "ply": 125,
+    "moves": [
+      "f8g8",
+      "f8e8"
+    ],
+    "reason": "Opponent Kg8 creates the late draw chance.",
+    "pair": "main-01-07",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-07/report.json.gz",
+    "game": 1,
+    "ply": 29,
+    "moves": [
+      "f7f6",
+      "e4c3"
+    ],
+    "reason": "Candidate f6 is first near-threshold comparison; establish whether any significant deterioration exists.",
+    "pair": "main-01-07",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-07/report.json.gz",
+    "game": 1,
+    "ply": 51,
+    "moves": [
+      "a5a2"
+    ],
+    "reason": "Candidate Ra2 exploits opponent b4; success/continuation control.",
+    "pair": "main-01-07",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-07/report.json.gz",
+    "game": 1,
+    "ply": 50,
+    "moves": [
+      "b3b4",
+      "e2e3"
+    ],
+    "reason": "Opponent b4 creates the winning invasion; unstable5M.",
+    "pair": "main-01-07",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-08/report.json.gz",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "c3c4"
+    ],
+    "reason": "Candidate c4 tactical exploitation control; singleton advantage itself unstable.",
+    "pair": "main-01-08",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-08/report.json.gz",
+    "game": 0,
+    "ply": 34,
+    "moves": [
+      "e7d6",
+      "e7f6"
+    ],
+    "reason": "First/largest stable loss of winning advantage: Qd6 versus Qf6.",
+    "pair": "main-01-08",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-08/report.json.gz",
+    "game": 0,
+    "ply": 36,
+    "moves": [
+      "d6f6"
+    ],
+    "reason": "Candidate Qf6 exploits renewed opponent error; successful attack control.",
+    "pair": "main-01-08",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-08/report.json.gz",
+    "game": 0,
+    "ply": 23,
+    "moves": [
+      "e6d5",
+      "e6f5"
+    ],
+    "reason": "Opponent Bd5 creates tactical c4 chance; unstable5M.",
+    "pair": "main-01-08",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-08/report.json.gz",
+    "game": 0,
+    "ply": 35,
+    "moves": [
+      "d5a2",
+      "e8d8"
+    ],
+    "reason": "Opponent Qxa2 gives back advantage after Qd6.",
+    "pair": "main-01-08",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-08/report.json.gz",
+    "game": 1,
+    "ply": 31,
+    "moves": [
+      "g7f6",
+      "d8d7"
+    ],
+    "reason": "Earlier candidate Bf6 apparent error remains unstable; cannot assert later first error.",
+    "pair": "main-01-08",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-08/report.json.gz",
+    "game": 1,
+    "ply": 63,
+    "moves": [
+      "e5e4",
+      "d8e8"
+    ],
+    "reason": "Candidate e4 surrenders supported winning advantage versus Re8.",
+    "pair": "main-01-08",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-08/report.json.gz",
+    "game": 1,
+    "ply": 71,
+    "moves": [
+      "d6d1",
+      "d6g3"
+    ],
+    "reason": "Largest stable damage: queen-for-material sequence Qxd1+ versus Qg3.",
+    "pair": "main-01-08",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-08/report.json.gz",
+    "game": 1,
+    "ply": 34,
+    "moves": [
+      "g1h1",
+      "b1b3"
+    ],
+    "reason": "Opponent Kh1 creates candidate advantage; support conversion attribution.",
+    "pair": "main-01-08",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-unaided/report.json.gz",
+    "game": 0,
+    "ply": 2,
+    "moves": [
+      "e2e4",
+      "d2d4"
+    ],
+    "reason": "Opening e4 versus d4 straddles significance threshold; not an established bad move.",
+    "pair": "main-01-unaided",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-unaided/report.json.gz",
+    "game": 0,
+    "ply": 16,
+    "moves": [
+      "g5f6"
+    ],
+    "reason": "Candidate Bxf6 successful exploitation control.",
+    "pair": "main-01-unaided",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-unaided/report.json.gz",
+    "game": 0,
+    "ply": 15,
+    "moves": [
+      "d8e8",
+      "h7h6"
+    ],
+    "reason": "Opponent Qe8 creates the winning king-attack sequence.",
+    "pair": "main-01-unaided",
+    "player": "reference"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-unaided/report.json.gz",
+    "game": 1,
+    "ply": 1,
+    "moves": [
+      "b8c6",
+      "d7d5"
+    ],
+    "reason": "First candidate opening deterioration: Nc6 versus d5.",
+    "pair": "main-01-unaided",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-unaided/report.json.gz",
+    "game": 1,
+    "ply": 3,
+    "moves": [
+      "e7e6",
+      "d7d5"
+    ],
+    "reason": "Largest stable early candidate opening deterioration: e6 versus d5.",
+    "pair": "main-01-unaided",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-unaided/report.json.gz",
+    "game": 1,
+    "ply": 55,
+    "moves": [
+      "c2c6",
+      "c2d2"
+    ],
+    "reason": "Largest apparent later candidate missed opportunity: Rc6 versus Rd2, unstable5M.",
+    "pair": "main-01-unaided",
+    "player": "mShogi"
+  },
+  {
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-unaided/report.json.gz",
+    "game": 1,
+    "ply": 56,
+    "moves": [
+      "g2g3",
+      "e1d3"
+    ],
+    "reason": "Opponent g3 creates the decisive conversion opportunity.",
+    "pair": "main-01-unaided",
+    "player": "reference"
+  }
+]

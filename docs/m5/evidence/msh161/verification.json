@@ -142,5 +142,34 @@
     "notification_receipt": "notifications/main-batch-01.json",
     "main_completed_games_not_yet_counted": true
   },
-  "qualification_resource_record": "qualification-resource-total.json"
+  "qualification_resource_record": "qualification-resource-total.json",
+  "main_batch01": {
+    "stage": "independently_reviewed_pre20M",
+    "games": 20,
+    "required_main_games": 200,
+    "audit": "main/batch-01/audit.json",
+    "execution_review": "main/batch-01/verification-review.md",
+    "gameplay_reviews": [
+      "main/batch-01/review-00-04.md",
+      "main/batch-01/review-05-09.md"
+    ],
+    "all_played_dispositions": 2494,
+    "reference_queries_verified": 7578,
+    "query_failures": 0,
+    "audit_expansion_trigger": false,
+    "resource_record": "main/batch-01/audit.json#/totals",
+    "categories": "main/cumulative-categories.json",
+    "adjudication_plan": "main/batch-01/adjudication-plan.json",
+    "adjudication_status": "running_exit_notification",
+    "adjudication_session": 67182,
+    "adjudication_receipt": "notifications/main-batch-01-adjudication.json",
+    "offline_checks": [
+      "73decision10reportlegalpreflight passed",
+      "illegal/missingplayed/duplicate rejection passed",
+      "py_compile passed",
+      "independent orchestration review passed"
+    ],
+    "batch02": "not_started_pending20M_review",
+    "production_changes": false
+  }
 }

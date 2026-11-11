@@ -1,0 +1,3972 @@
+{
+  "status": "provisional_batch01_pre20M",
+  "main_games_completed": 20,
+  "main_games_required": 200,
+  "outcomes": {
+    "all": {
+      "draws": 2,
+      "losses": 8,
+      "wins": 10
+    },
+    "main-prepared": {
+      "draws": 2,
+      "losses": 8,
+      "wins": 8
+    },
+    "main-unaided": {
+      "draws": 0,
+      "losses": 0,
+      "wins": 2
+    }
+  },
+  "interpretation": "Discovery ledger, alphabetic categories; selected examples are not population frequencies or independent causes. Overlapping themes and opponent events remain explicit. No final priorities. First/largest and consequential claims need20M and episode adjudication. Unselected uncertainty remains in full decision dispositions.",
+  "categories": [
+    {
+      "category": "active_defensive_counterplay",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "queens-indian-bogo"
+      ],
+      "statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
+      },
+      "roles": {
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-07",
+          0,
+          108
+        ]
+      ]
+    },
+    {
+      "category": "active_endgame_defense",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
+      },
+      "roles": {
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-06",
+          1,
+          97
+        ]
+      ]
+    },
+    {
+      "category": "advantage_preservation",
+      "reviewed_examples": 5,
+      "affected_games": 4,
+      "families": [
+        "pirc-modern-other-semiopen",
+        "sicilian-najdorf-dragon-scheveningen-rauzer",
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 4,
+        "unresolved5m_candidate": 1
+      },
+      "roles": {
+        "candidate_weakness": 5
+      },
+      "event_keys": [
+        [
+          "main-01-05",
+          0,
+          30
+        ],
+        [
+          "main-01-05",
+          1,
+          27
+        ],
+        [
+          "main-01-06",
+          0,
+          62
+        ],
+        [
+          "main-01-08",
+          1,
+          43
+        ],
+        [
+          "main-01-08",
+          1,
+          63
+        ]
+      ]
+    },
+    {
+      "category": "attack_preservation",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "pirc-modern-other-semiopen"
+      ],
+      "statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
+      },
+      "roles": {
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-08",
+          0,
+          34
+        ]
+      ]
+    },
+    {
+      "category": "attacking_sacrifice",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-03",
+          0,
+          60
+        ]
+      ]
+    },
+    {
+      "category": "central_pawn_break_timing",
+      "reviewed_examples": 4,
+      "affected_games": 2,
+      "families": [
+        "sicilian-najdorf-dragon-scheveningen-rauzer",
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "unresolved5m_candidate": 1,
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 3
+      },
+      "roles": {
+        "candidate_weakness": 4
+      },
+      "event_keys": [
+        [
+          "main-01-05",
+          0,
+          18
+        ],
+        [
+          "main-01-06",
+          0,
+          20
+        ],
+        [
+          "main-01-06",
+          0,
+          24
+        ],
+        [
+          "main-01-06",
+          0,
+          70
+        ]
+      ]
+    },
+    {
+      "category": "defensive_exchange_opportunity",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-03",
+          1,
+          61
+        ]
+      ]
+    },
+    {
+      "category": "defensive_rook_activity",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "english"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-01",
+          0,
+          106
+        ]
+      ]
+    },
+    {
+      "category": "draw_defense",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "queens-pawn-other"
+      ],
+      "statuses": {
+        "not_in_5M_panel": 1
+      },
+      "roles": {
+        "contrary_success": 1
+      },
+      "event_keys": [
+        [
+          "main-01-00",
+          0,
+          178
+        ]
+      ]
+    },
+    {
+      "category": "endgame_capture_judgment",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "unresolved": 1
+      },
+      "roles": {
+        "unresolved_comparative_question": 1
+      },
+      "event_keys": [
+        [
+          "main-01-06",
+          1,
+          89
+        ]
+      ]
+    },
+    {
+      "category": "endgame_king_activity",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "queens-pawn-other"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-00",
+          1,
+          119
+        ]
+      ]
+    },
+    {
+      "category": "endgame_pawn_break_conversion",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
+      },
+      "roles": {
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-06",
+          1,
+          81
+        ]
+      ]
+    },
+    {
+      "category": "endgame_recovery",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "queens-indian-bogo"
+      ],
+      "statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
+      },
+      "roles": {
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-07",
+          0,
+          126
+        ]
+      ]
+    },
+    {
+      "category": "ending_transition",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-02",
+          1,
+          87
+        ]
+      ]
+    },
+    {
+      "category": "exchange_and_counterplay",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "pirc-modern-other-semiopen"
+      ],
+      "statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
+      },
+      "roles": {
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-08",
+          1,
+          71
+        ]
+      ]
+    },
+    {
+      "category": "exchange_decisions",
+      "reviewed_examples": 2,
+      "affected_games": 2,
+      "families": [
+        "pirc-modern-other-semiopen",
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
+      ],
+      "statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 2
+      },
+      "roles": {
+        "candidate_weakness": 2
+      },
+      "event_keys": [
+        [
+          "main-01-05",
+          0,
+          16
+        ],
+        [
+          "main-01-08",
+          1,
+          49
+        ]
+      ]
+    },
+    {
+      "category": "forcing_tactical_sequence",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
+      ],
+      "statuses": {
+        "observed_success_not_optimality_proof": 1
+      },
+      "roles": {
+        "contrary_success": 1
+      },
+      "event_keys": [
+        [
+          "main-01-05",
+          1,
+          23
+        ]
+      ]
+    },
+    {
+      "category": "king_attack",
+      "reviewed_examples": 3,
+      "affected_games": 3,
+      "families": [
+        "pirc-modern-other-semiopen",
+        "sicilian-najdorf-dragon-scheveningen-rauzer",
+        "unaided"
+      ],
+      "statuses": {
+        "observed_success_not_optimality_proof": 3
+      },
+      "roles": {
+        "contrary_success": 3
+      },
+      "event_keys": [
+        [
+          "main-01-05",
+          0,
+          28
+        ],
+        [
+          "main-01-08",
+          0,
+          36
+        ],
+        [
+          "main-01-unaided",
+          0,
+          16
+        ]
+      ]
+    },
+    {
+      "category": "king_safety_pawn_advance",
+      "reviewed_examples": 2,
+      "affected_games": 2,
+      "families": [
+        "english"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 2
+      },
+      "roles": {
+        "deterioration_candidate": 2
+      },
+      "event_keys": [
+        [
+          "main-01-01",
+          0,
+          18
+        ],
+        [
+          "main-01-01",
+          1,
+          23
+        ]
+      ]
+    },
+    {
+      "category": "king_safety_piece_exchange",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "english"
+      ],
+      "statuses": {
+        "unresolved": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-01",
+          0,
+          38
+        ]
+      ]
+    },
+    {
+      "category": "opening_central_choices",
+      "reviewed_examples": 3,
+      "affected_games": 2,
+      "families": [
+        "unaided"
+      ],
+      "statuses": {
+        "unresolved": 1,
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 2
+      },
+      "roles": {
+        "unresolved_comparative_question": 1,
+        "candidate_weakness": 2
+      },
+      "event_keys": [
+        [
+          "main-01-unaided",
+          0,
+          2
+        ],
+        [
+          "main-01-unaided",
+          1,
+          1
+        ],
+        [
+          "main-01-unaided",
+          1,
+          3
+        ]
+      ]
+    },
+    {
+      "category": "opponent_central_capture",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "nimzo-indian"
+      ],
+      "statuses": {
+        "unresolved": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-04",
+          1,
+          28
+        ]
+      ]
+    },
+    {
+      "category": "opponent_conversion",
+      "reviewed_examples": 4,
+      "affected_games": 3,
+      "families": [
+        "english",
+        "sicilian-najdorf-dragon-scheveningen-rauzer",
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "unresolved": 4
+      },
+      "roles": {
+        "deterioration_candidate": 4
+      },
+      "event_keys": [
+        [
+          "main-01-01",
+          0,
+          57
+        ],
+        [
+          "main-01-01",
+          0,
+          61
+        ],
+        [
+          "main-01-02",
+          1,
+          84
+        ],
+        [
+          "main-01-03",
+          1,
+          60
+        ]
+      ]
+    },
+    {
+      "category": "opponent_defensive_coordination",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "unresolved": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-03",
+          0,
+          63
+        ]
+      ]
+    },
+    {
+      "category": "opponent_king_safety",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "queens-pawn-other"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-00",
+          0,
+          81
+        ]
+      ]
+    },
+    {
+      "category": "opponent_material_tactics",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "nimzo-indian"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-04",
+          0,
+          25
+        ]
+      ]
+    },
+    {
+      "category": "opponent_pawn_blockade",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "english"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-01",
+          1,
+          84
+        ]
+      ]
+    },
+    {
+      "category": "opponent_queen_placement",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-02",
+          1,
+          38
+        ]
+      ]
+    },
+    {
+      "category": "opponent_queenside_timing",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-02",
+          0,
+          39
+        ]
+      ]
+    },
+    {
+      "category": "opponent_recovery_choice",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "queens-pawn-other"
+      ],
+      "statuses": {
+        "unresolved": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-00",
+          1,
+          122
+        ]
+      ]
+    },
+    {
+      "category": "opponent_rook_placement",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "nimzo-indian"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-04",
+          1,
+          60
+        ]
+      ]
+    },
+    {
+      "category": "opponent_tactical_alignment",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
+      ],
+      "statuses": {
+        "not_in_5M_panel": 1
+      },
+      "roles": {
+        "contrary_success": 1
+      },
+      "event_keys": [
+        [
+          "main-01-02",
+          0,
+          53
+        ]
+      ]
+    },
+    {
+      "category": "opportunity_exploitation",
+      "reviewed_examples": 2,
+      "affected_games": 2,
+      "families": [
+        "slav-semi-slav",
+        "unaided"
+      ],
+      "statuses": {
+        "observed_success_not_optimality_proof": 2
+      },
+      "roles": {
+        "contrary_success": 2
+      },
+      "event_keys": [
+        [
+          "main-01-06",
+          0,
+          78
+        ],
+        [
+          "main-01-unaided",
+          1,
+          57
+        ]
+      ]
+    },
+    {
+      "category": "passed_pawn_break_timing",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "english"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-01",
+          1,
+          81
+        ]
+      ]
+    },
+    {
+      "category": "passed_pawn_conversion",
+      "reviewed_examples": 3,
+      "affected_games": 3,
+      "families": [
+        "english",
+        "queens-pawn-other",
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "same_choice_control": 2,
+        "not_in_5M_panel": 1
+      },
+      "roles": {
+        "contrary_success": 3
+      },
+      "event_keys": [
+        [
+          "main-01-00",
+          1,
+          175
+        ],
+        [
+          "main-01-01",
+          1,
+          125
+        ],
+        [
+          "main-01-03",
+          0,
+          100
+        ]
+      ]
+    },
+    {
+      "category": "passed_pawn_tactics",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "nimzo-indian"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-04",
+          0,
+          38
+        ]
+      ]
+    },
+    {
+      "category": "pawn_break_tactics",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-03",
+          1,
+          21
+        ]
+      ]
+    },
+    {
+      "category": "piece_activity_opportunity",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-02",
+          1,
+          29
+        ]
+      ]
+    },
+    {
+      "category": "piece_coordination",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "pirc-modern-other-semiopen"
+      ],
+      "statuses": {
+        "unresolved5m_candidate": 1
+      },
+      "roles": {
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-08",
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "category": "premature_simplification",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "nimzo-indian"
+      ],
+      "statuses": {
+        "unresolved": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-04",
+          0,
+          30
+        ]
+      ]
+    },
+    {
+      "category": "preserving_attacking_pressure",
+      "reviewed_examples": 3,
+      "affected_games": 2,
+      "families": [
+        "queens-pawn-other",
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1,
+        "unresolved": 2
+      },
+      "roles": {
+        "deterioration_candidate": 3
+      },
+      "event_keys": [
+        [
+          "main-01-00",
+          0,
+          84
+        ],
+        [
+          "main-01-00",
+          0,
+          92
+        ],
+        [
+          "main-01-03",
+          0,
+          30
+        ]
+      ]
+    },
+    {
+      "category": "queenside_opportunity_response",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-02",
+          0,
+          40
+        ]
+      ]
+    },
+    {
+      "category": "quiet_piece_coordination",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
+      },
+      "roles": {
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-06",
+          0,
+          74
+        ]
+      ]
+    },
+    {
+      "category": "quiet_tactical_defense",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "unresolved5m_candidate": 1
+      },
+      "roles": {
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-06",
+          0,
+          82
+        ]
+      ]
+    },
+    {
+      "category": "recovery_defense",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "observed_success_not_optimality_proof": 1
+      },
+      "roles": {
+        "contrary_success": 1
+      },
+      "event_keys": [
+        [
+          "main-01-06",
+          1,
+          43
+        ]
+      ]
+    },
+    {
+      "category": "rook_activity",
+      "reviewed_examples": 2,
+      "affected_games": 2,
+      "families": [
+        "queens-indian-bogo",
+        "unaided"
+      ],
+      "statuses": {
+        "observed_success_not_optimality_proof": 1,
+        "unresolved5m_candidate": 1
+      },
+      "roles": {
+        "contrary_success": 1,
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-07",
+          1,
+          51
+        ],
+        [
+          "main-01-unaided",
+          1,
+          55
+        ]
+      ]
+    },
+    {
+      "category": "tactical_alignment",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 1
+      },
+      "roles": {
+        "deterioration_candidate": 1
+      },
+      "event_keys": [
+        [
+          "main-01-02",
+          0,
+          52
+        ]
+      ]
+    },
+    {
+      "category": "tactical_exchange_sequence",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
+      },
+      "roles": {
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-06",
+          1,
+          27
+        ]
+      ]
+    },
+    {
+      "category": "tactical_opportunity_completion",
+      "reviewed_examples": 6,
+      "affected_games": 4,
+      "families": [
+        "nimzo-indian",
+        "queens-pawn-other",
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
+      ],
+      "statuses": {
+        "supported_finite_event_5M": 3,
+        "unresolved": 1,
+        "same_choice_control": 1,
+        "not_in_5M_panel": 1
+      },
+      "roles": {
+        "deterioration_candidate": 4,
+        "contrary_success": 2
+      },
+      "event_keys": [
+        [
+          "main-01-00",
+          0,
+          28
+        ],
+        [
+          "main-01-00",
+          1,
+          43
+        ],
+        [
+          "main-01-02",
+          1,
+          61
+        ],
+        [
+          "main-01-04",
+          1,
+          35
+        ],
+        [
+          "main-01-04",
+          1,
+          29
+        ],
+        [
+          "main-01-04",
+          1,
+          135
+        ]
+      ]
+    },
+    {
+      "category": "tactical_pawn_break",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "pirc-modern-other-semiopen"
+      ],
+      "statuses": {
+        "observed_success_not_optimality_proof": 1
+      },
+      "roles": {
+        "contrary_success": 1
+      },
+      "event_keys": [
+        [
+          "main-01-08",
+          0,
+          24
+        ]
+      ]
+    },
+    {
+      "category": "threatened_piece_defense",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "queens-indian-bogo"
+      ],
+      "statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
+      },
+      "roles": {
+        "candidate_weakness": 1
+      },
+      "event_keys": [
+        [
+          "main-01-07",
+          0,
+          32
+        ]
+      ]
+    }
+  ],
+  "events": [
+    {
+      "pair": "main-01-00",
+      "game": 0,
+      "ply": 28,
+      "player": "candidate",
+      "played": "e5d7",
+      "alternative": "c4c5",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.48150000000000004,
+      "minimum_alternative_minus_maximum_played": 0.48150000000000004,
+      "retained_flags": [],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0012-e5d7/g000-p028-alternative-attempt0000.json",
+          "sha256": "cceab6a3f86f12bc7214fa116904f60af4ce2dea1c78997cd3b47a4931bd0606"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0012-c4c5/g000-p028-alternative-attempt0000.json",
+          "sha256": "08d9fba61ed7299cfe54406c1414aed4c8d483f693a1bd184f00de298cf9e2f0"
+        }
+      ],
+      "category": "tactical_opportunity_completion",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "e5d7": {
+          "last_two_expected_score_range": [
+            0.5185,
+            0.5185
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "c4c5": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "queens-pawn-other"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 0,
+      "ply": 84,
+      "player": "candidate",
+      "played": "e1e5",
+      "alternative": "a4a8",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.49550000000000005,
+      "minimum_alternative_minus_maximum_played": 0.49550000000000005,
+      "retained_flags": [],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0064-e1e5/g000-p084-alternative-attempt0000.json",
+          "sha256": "36821e5fdd51d833fb9052686a112a9dcf8f02807dd60cf83856f9a7c92f9417"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0064-a4a8/g000-p084-alternative-attempt0000.json",
+          "sha256": "d443162b8feb9474c110462fe9d6a383598ad0520dbca9c9d01479bd037112e7"
+        }
+      ],
+      "category": "preserving_attacking_pressure",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "e1e5": {
+          "last_two_expected_score_range": [
+            0.5045,
+            0.5045
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "a4a8": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "queens-pawn-other"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 0,
+      "ply": 92,
+      "player": "candidate",
+      "played": "h4h5",
+      "alternative": "c2e4",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.5,
+      "minimum_alternative_minus_maximum_played": 0.5,
+      "retained_flags": [
+        "final_same_move_bound_conflicts_with_earlier_cp",
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [
+        "final_same_move_bound_conflicts_with_earlier_cp"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0072-h4h5/g000-p092-alternative-attempt0000.json",
+          "sha256": "911820d4b0aad25e2a8d74793fdb72a405d2914fd6b3d6691a23764fc02a5710"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0072-c2e4/g000-p092-alternative-attempt0000.json",
+          "sha256": "3b5c119ebb2ef1017d043d83f7c6e468ed2ef76d4e0f12bc99bdc50b2516d2bd"
+        }
+      ],
+      "category": "preserving_attacking_pressure",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "h4h5": {
+          "last_two_expected_score_range": [
+            0.5,
+            0.5
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "c2e4": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ]
+        }
+      },
+      "family": "queens-pawn-other"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 0,
+      "ply": 81,
+      "player": "reference",
+      "played": "h8h7",
+      "alternative": "e7e8",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.5,
+      "minimum_alternative_minus_maximum_played": 0.5,
+      "retained_flags": [],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0062-h8h7/g000-p081-alternative-attempt0000.json",
+          "sha256": "273500c9d713830d052bc98865f581fc963ad70f870f2fbdf9c3d5497cee6278"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0062-e7e8/g000-p081-alternative-attempt0000.json",
+          "sha256": "c71916a70ef96c64419018f4a036de9d3aa09f3c1cb7a950812953e19e489141"
+        }
+      ],
+      "category": "opponent_king_safety",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "existing evidence retained; not cleared by omission",
+      "observed_ranges": {
+        "h8h7": {
+          "last_two_expected_score_range": [
+            0.0,
+            0.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "e7e8": {
+          "last_two_expected_score_range": [
+            0.5,
+            0.5
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "queens-pawn-other"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 1,
+      "ply": 43,
+      "player": "candidate",
+      "played": "a8b8",
+      "alternative": "e7a3",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.4355,
+      "minimum_alternative_minus_maximum_played": 0.405,
+      "retained_flags": [
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "blocking_flags": [
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0133-a8b8/g001-p043-alternative-attempt0000.json",
+          "sha256": "5c70987e63d553492086e1af2691b40cc8e8317ff74ca7f858daaa9742d3f0f5"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0133-e7a3/g001-p043-alternative-attempt0000.json",
+          "sha256": "d1f7d019dc34728c2105e8343f4008ac9680c8e28a422eba441b91586aa929b0"
+        }
+      ],
+      "category": "tactical_opportunity_completion",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "a8b8": {
+          "last_two_expected_score_range": [
+            0.5,
+            0.5
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "e7a3": {
+          "last_two_expected_score_range": [
+            0.905,
+            0.9355
+          ],
+          "last_two_spread": 0.03049999999999997,
+          "stable_report_heuristic": false,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score"
+          ]
+        }
+      },
+      "family": "queens-pawn-other"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 1,
+      "ply": 119,
+      "player": "candidate",
+      "played": "f7g8",
+      "alternative": "f7e8",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.49950000000000006,
+      "minimum_alternative_minus_maximum_played": 0.49950000000000006,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0205-f7g8/g001-p119-alternative-attempt0000.json",
+          "sha256": "d7afcd2b12d026159d5182a1905b37fe470cf7c24828d44bfd0769e73176477e"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0205-f7e8/g001-p119-alternative-attempt0000.json",
+          "sha256": "8b93386a2aa872d124fb874be522d20440b8a06df9417c4f9c2c16b8ff21a800"
+        }
+      ],
+      "category": "endgame_king_activity",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "f7g8": {
+          "last_two_expected_score_range": [
+            0.5,
+            0.5005
+          ],
+          "last_two_spread": 0.0004999999999999449,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "f7e8": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "queens-pawn-other"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 1,
+      "ply": 122,
+      "player": "reference",
+      "played": "f4g4",
+      "alternative": "d4c5",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.5,
+      "minimum_alternative_minus_maximum_played": 0.499,
+      "retained_flags": [
+        "final_same_move_bound_conflicts_with_earlier_cp",
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [
+        "final_same_move_bound_conflicts_with_earlier_cp"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0208-f4g4/g001-p122-alternative-attempt0000.json",
+          "sha256": "cbc4a1b04f300744542b497e3e01d33b950d551e0ffc5a169f204d3470c1fdc0"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0208-d4c5/g001-p122-alternative-attempt0000.json",
+          "sha256": "d4ad7559508f5af46afe4d6595965a0a1283958ce20ef91d1603e3428564ee12"
+        }
+      ],
+      "category": "opponent_recovery_choice",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "f4g4": {
+          "last_two_expected_score_range": [
+            0.0,
+            0.001
+          ],
+          "last_two_spread": 0.001,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ]
+        },
+        "d4c5": {
+          "last_two_expected_score_range": [
+            0.5,
+            0.5
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "queens-pawn-other"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 0,
+      "ply": 18,
+      "player": "candidate",
+      "played": "g3g4",
+      "alternative": "a1b1",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.051999999999999935,
+      "minimum_alternative_minus_maximum_played": 0.051999999999999935,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0241-g3g4/g000-p018-alternative-attempt0000.json",
+          "sha256": "46474f508e980c733af0d8b99a8f06ce7a4a75f246b78b3d54147b3c7915a04c"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0241-a1b1/g000-p018-alternative-attempt0000.json",
+          "sha256": "1455d5b1792acef66f5a1ffd2d2edbfa957b4ce71b17617cfb3e874680a8b320"
+        }
+      ],
+      "category": "king_safety_pawn_advance",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "g3g4": {
+          "last_two_expected_score_range": [
+            0.461,
+            0.4655
+          ],
+          "last_two_spread": 0.004500000000000004,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "a1b1": {
+          "last_two_expected_score_range": [
+            0.5175,
+            0.518
+          ],
+          "last_two_spread": 0.000500000000000056,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "english"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 0,
+      "ply": 38,
+      "player": "candidate",
+      "played": "b4c6",
+      "alternative": "g2h1",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.297,
+      "minimum_alternative_minus_maximum_played": 0.24400000000000002,
+      "retained_flags": [
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "blocking_flags": [
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0261-b4c6/g000-p038-alternative-attempt0000.json",
+          "sha256": "96a6b018ae4df838b8c3826a269393d4372f90342d430329f40dedf56bb1749a"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0261-g2h1/g000-p038-alternative-attempt0000.json",
+          "sha256": "13f8df807ade36d20dc79303bc3d101b6192b5d439dd4507caa3722ea7e5b5b6"
+        }
+      ],
+      "category": "king_safety_piece_exchange",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "b4c6": {
+          "last_two_expected_score_range": [
+            0.0145,
+            0.034
+          ],
+          "last_two_spread": 0.019500000000000003,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "g2h1": {
+          "last_two_expected_score_range": [
+            0.278,
+            0.3115
+          ],
+          "last_two_spread": 0.033499999999999974,
+          "stable_report_heuristic": false,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score"
+          ]
+        }
+      },
+      "family": "english"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 0,
+      "ply": 106,
+      "player": "candidate",
+      "played": "d4d1",
+      "alternative": "d4d8",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.4755,
+      "minimum_alternative_minus_maximum_played": 0.4755,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0324-d4d1/g000-p106-alternative-attempt0000.json",
+          "sha256": "a45f316bebf99b737234e31c4387d721f0f8de089211bcb803d13534592d09a9"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0324-d4d8/g000-p106-alternative-attempt0000.json",
+          "sha256": "b85a3293b718919cfec41f10b7b6d13c24f4b46f6966d2d1f8daee6cf301b0f5"
+        }
+      ],
+      "category": "defensive_rook_activity",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "d4d1": {
+          "last_two_expected_score_range": [
+            0.0,
+            0.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "d4d8": {
+          "last_two_expected_score_range": [
+            0.4755,
+            0.4755
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "english"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 0,
+      "ply": 57,
+      "player": "reference",
+      "played": "d6d5",
+      "alternative": "h7h5",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.388,
+      "minimum_alternative_minus_maximum_played": 0.361,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "blocking_flags": [
+        "last_two_report_estimates_unstable"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0278-d6d5/g000-p057-alternative-attempt0000.json",
+          "sha256": "bc9ffb0ed73b9b27694f613fbb7ed9ca7adc5a19cf6c367d817017371eb009b8"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0278-h7h5/g000-p057-alternative-attempt0000.json",
+          "sha256": "87ad13902b155f20591afba416f55b18388e23f24999decaae3f557515e09d11"
+        }
+      ],
+      "category": "opponent_conversion",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "existing evidence retained; not cleared by omission",
+      "observed_ranges": {
+        "d6d5": {
+          "last_two_expected_score_range": [
+            0.612,
+            0.638
+          ],
+          "last_two_spread": 0.026000000000000023,
+          "stable_report_heuristic": false,
+          "directional_bound_conflicts": []
+        },
+        "h7h5": {
+          "last_two_expected_score_range": [
+            0.999,
+            1.0
+          ],
+          "last_two_spread": 0.0010000000000000009,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "english"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 0,
+      "ply": 61,
+      "player": "reference",
+      "played": "d5d4",
+      "alternative": "e8e1",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.40900000000000003,
+      "minimum_alternative_minus_maximum_played": 0.3115,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "blocking_flags": [
+        "last_two_report_estimates_unstable"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0282-d5d4/g000-p061-alternative-attempt0000.json",
+          "sha256": "623f09455b0bc96d20a1aa5f83d8cce9487778e9281b321dd9244dd7058d199c"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0282-e8e1/g000-p061-alternative-attempt0000.json",
+          "sha256": "f4abb6345502acd7f048e137c06de6d5f87235e52b6f5d10848e2408410ad077"
+        }
+      ],
+      "category": "opponent_conversion",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "existing evidence retained; not cleared by omission",
+      "observed_ranges": {
+        "d5d4": {
+          "last_two_expected_score_range": [
+            0.502,
+            0.502
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "e8e1": {
+          "last_two_expected_score_range": [
+            0.8135,
+            0.911
+          ],
+          "last_two_spread": 0.09750000000000003,
+          "stable_report_heuristic": false,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "english"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 1,
+      "ply": 23,
+      "player": "candidate",
+      "played": "h7h6",
+      "alternative": "a8b8",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.11399999999999999,
+      "minimum_alternative_minus_maximum_played": 0.09399999999999997,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0347-h7h6/g001-p023-alternative-attempt0000.json",
+          "sha256": "9236b08fad406329e003a17395b04b67fd4b8200ca15f470a6252b02f3521973"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0347-a8b8/g001-p023-alternative-attempt0000.json",
+          "sha256": "be4a9b3a2ab082e1418e5fbc102fcf8bceaa067b320360dc64c539d714e691e0"
+        }
+      ],
+      "category": "king_safety_pawn_advance",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "h7h6": {
+          "last_two_expected_score_range": [
+            0.3835,
+            0.4035
+          ],
+          "last_two_spread": 0.020000000000000018,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "a8b8": {
+          "last_two_expected_score_range": [
+            0.4975,
+            0.4975
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "english"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 1,
+      "ply": 81,
+      "player": "candidate",
+      "played": "b4b3",
+      "alternative": "c5c4",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.5,
+      "minimum_alternative_minus_maximum_played": 0.5,
+      "retained_flags": [],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0395-b4b3/g001-p081-alternative-attempt0000.json",
+          "sha256": "fcba482f66cb634688bd4cb58b191a22a64aa6752af48535ffb88244a8b7a44a"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0395-c5c4/g001-p081-alternative-attempt0000.json",
+          "sha256": "714d9ef3ea6458e7ed3b1fd9167834e66af70ef83af15df7e000b422b4733c5a"
+        }
+      ],
+      "category": "passed_pawn_break_timing",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "b4b3": {
+          "last_two_expected_score_range": [
+            0.5,
+            0.5
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "c5c4": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "english"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 1,
+      "ply": 84,
+      "player": "reference",
+      "played": "a2b3",
+      "alternative": "a2a3",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.5,
+      "minimum_alternative_minus_maximum_played": 0.5,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0396-a2b3/g001-p084-alternative-attempt0000.json",
+          "sha256": "1a1836dbd18cfee80c270477df304379cf1c66f7119e58c1f05e9a27aa2c3b87"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0396-a2a3/g001-p084-alternative-attempt0000.json",
+          "sha256": "bb24af173e980b527a047ff2442a75640193ae7d37633d6b88cf93765e053940"
+        }
+      ],
+      "category": "opponent_pawn_blockade",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "a2b3": {
+          "last_two_expected_score_range": [
+            0.0,
+            0.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "a2a3": {
+          "last_two_expected_score_range": [
+            0.5,
+            0.5
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "english"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 0,
+      "ply": 39,
+      "player": "reference",
+      "played": "a6a5",
+      "alternative": "h7h6",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.07550000000000001,
+      "minimum_alternative_minus_maximum_played": 0.07550000000000001,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0431-a6a5/g000-p039-alternative-attempt0000.json",
+          "sha256": "67baa9573e284e784d90f303789d50815e807a13c9fbe37d6724838404340751"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0431-h7h6/g000-p039-alternative-attempt0000.json",
+          "sha256": "7b3141c252a2a7256213f59ce38889792a0b3c4389bf0ad4821402a41fa4edb5"
+        }
+      ],
+      "category": "opponent_queenside_timing",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "a6a5": {
+          "last_two_expected_score_range": [
+            0.386,
+            0.411
+          ],
+          "last_two_spread": 0.024999999999999967,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "h7h6": {
+          "last_two_expected_score_range": [
+            0.4865,
+            0.4865
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 0,
+      "ply": 40,
+      "player": "candidate",
+      "played": "e3g5",
+      "alternative": "b2b4",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.08750000000000002,
+      "minimum_alternative_minus_maximum_played": 0.08750000000000002,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0432-e3g5/g000-p040-alternative-attempt0000.json",
+          "sha256": "296fa2a47a03fa375aaed24e09a2632f035e6b0648d0aaa5207c1808fe31b38a"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0432-b2b4/g000-p040-alternative-attempt0000.json",
+          "sha256": "33336ee9986969b12724fea105fce63cfc9690ada7eaefe4b68b23913cdcb5a2"
+        }
+      ],
+      "category": "queenside_opportunity_response",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "e3g5": {
+          "last_two_expected_score_range": [
+            0.5105,
+            0.5105
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "b2b4": {
+          "last_two_expected_score_range": [
+            0.598,
+            0.598
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 0,
+      "ply": 52,
+      "player": "candidate",
+      "played": "g2g3",
+      "alternative": "d2e2",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.481,
+      "minimum_alternative_minus_maximum_played": 0.481,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0444-g2g3/g000-p052-alternative-attempt0000.json",
+          "sha256": "b69c6185f5d365ef9b41a4d0b96ce996ff204ad27e8c2435fc03514607d83447"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0444-d2e2/g000-p052-alternative-attempt0000.json",
+          "sha256": "7f32738d421924633b62f25f104a2db76ae491809d4884369adb7e05d17b7f2b"
+        }
+      ],
+      "category": "tactical_alignment",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "g2g3": {
+          "last_two_expected_score_range": [
+            0.0,
+            0.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "d2e2": {
+          "last_two_expected_score_range": [
+            0.481,
+            0.4815
+          ],
+          "last_two_spread": 0.0005000000000000004,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 1,
+      "ply": 29,
+      "player": "candidate",
+      "played": "c8b7",
+      "alternative": "h7h6",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.1180000000000001,
+      "minimum_alternative_minus_maximum_played": 0.1110000000000001,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0474-c8b7/g001-p029-alternative-attempt0000.json",
+          "sha256": "82d6504bd41a5a48c268be5c6e7d76e3225d61ba6a77728fa71bf9caa53b096a"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0474-h7h6/g001-p029-alternative-attempt0000.json",
+          "sha256": "5e346d0d5b53958e88b845563cc357b421bf490a7b7a445c2ea1983696182bfc"
+        }
+      ],
+      "category": "piece_activity_opportunity",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "c8b7": {
+          "last_two_expected_score_range": [
+            0.564,
+            0.564
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "h7h6": {
+          "last_two_expected_score_range": [
+            0.675,
+            0.682
+          ],
+          "last_two_spread": 0.007000000000000006,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 1,
+      "ply": 61,
+      "player": "candidate",
+      "played": "d7b6",
+      "alternative": "d7c5",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.26750000000000007,
+      "minimum_alternative_minus_maximum_played": 0.26750000000000007,
+      "retained_flags": [],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0506-d7b6/g001-p061-alternative-attempt0000.json",
+          "sha256": "6e4fa1e3e3c98c7521215e564231f3bd674f6e61225f886195bad053588c3432"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0506-d7c5/g001-p061-alternative-attempt0000.json",
+          "sha256": "35892bd0268c9e77d747f4e8cc711b1fb2955097029e04d5cb8be7e0ca45bf55"
+        }
+      ],
+      "category": "tactical_opportunity_completion",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "d7b6": {
+          "last_two_expected_score_range": [
+            0.5015,
+            0.5015
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "d7c5": {
+          "last_two_expected_score_range": [
+            0.769,
+            0.769
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 1,
+      "ply": 87,
+      "player": "candidate",
+      "played": "b6c6",
+      "alternative": "g8f7",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.465,
+      "minimum_alternative_minus_maximum_played": 0.465,
+      "retained_flags": [],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0531-b6c6/g001-p087-alternative-attempt0000.json",
+          "sha256": "f39d3f1de5442672908a4da913703da74c0a392c2a0a3d52ba10a0a0b55674c5"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0531-g8f7/g001-p087-alternative-attempt0000.json",
+          "sha256": "4fc84edd9025373a036142f101293bbcad8219f6514f10640550826fca58671c"
+        }
+      ],
+      "category": "ending_transition",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "b6c6": {
+          "last_two_expected_score_range": [
+            0.0,
+            0.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "g8f7": {
+          "last_two_expected_score_range": [
+            0.465,
+            0.465
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 1,
+      "ply": 38,
+      "player": "reference",
+      "played": "c2b3",
+      "alternative": "a3b4",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.3325,
+      "minimum_alternative_minus_maximum_played": 0.3325,
+      "retained_flags": [],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0483-c2b3/g001-p038-alternative-attempt0000.json",
+          "sha256": "13026d53b7ca7d583085deed26c5d3906c5729f20ff385d377228bd5de353987"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0483-a3b4/g001-p038-alternative-attempt0000.json",
+          "sha256": "c3d355cde42c4214d23d591b6e394dcac9a6225bfdb810f85e94f5a797ddc72e"
+        }
+      ],
+      "category": "opponent_queen_placement",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "existing evidence retained; not cleared by omission",
+      "observed_ranges": {
+        "c2b3": {
+          "last_two_expected_score_range": [
+            0.109,
+            0.109
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "a3b4": {
+          "last_two_expected_score_range": [
+            0.4415,
+            0.4415
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 1,
+      "ply": 84,
+      "player": "reference",
+      "played": "c3c4",
+      "alternative": "c3a5",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.41900000000000004,
+      "minimum_alternative_minus_maximum_played": 0.41700000000000004,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "blocking_flags": [
+        "last_two_report_estimates_unstable"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0528-c3c4/g001-p084-alternative-attempt0000.json",
+          "sha256": "8ef9e1d98f5116c564e3f8928c4aba0b9b0a11409d8d4950b272f534d377a6d6"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0528-c3a5/g001-p084-alternative-attempt0000.json",
+          "sha256": "6fba0f1d96030f3b43015ec154fa83a81eb0882ea3b6927948f33f074055dc2e"
+        }
+      ],
+      "category": "opponent_conversion",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "existing evidence retained; not cleared by omission",
+      "observed_ranges": {
+        "c3c4": {
+          "last_two_expected_score_range": [
+            0.549,
+            0.5805
+          ],
+          "last_two_spread": 0.03149999999999997,
+          "stable_report_heuristic": false,
+          "directional_bound_conflicts": []
+        },
+        "c3a5": {
+          "last_two_expected_score_range": [
+            0.9975,
+            0.9995
+          ],
+          "last_two_spread": 0.0020000000000000018,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 30,
+      "player": "candidate",
+      "played": "g2g4",
+      "alternative": "c2b4",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.374,
+      "minimum_alternative_minus_maximum_played": 0.374,
+      "retained_flags": [
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [
+        "final_same_move_bound_conflicts_with_earlier_expected_score"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0553-g2g4/g000-p030-alternative-attempt0000.json",
+          "sha256": "eef6be99e29316aba6e9dd76cfb98066cf8edf49b7410b5227db0327b9509bae"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0553-c2b4/g000-p030-alternative-attempt0000.json",
+          "sha256": "eeeb43ab17b1e43d3e61f2f85de49ee7a896e1d9321ac7b00d0b569429862089"
+        }
+      ],
+      "category": "preserving_attacking_pressure",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "g2g4": {
+          "last_two_expected_score_range": [
+            0.585,
+            0.585
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "c2b4": {
+          "last_two_expected_score_range": [
+            0.959,
+            0.9725
+          ],
+          "last_two_spread": 0.013500000000000068,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score"
+          ]
+        }
+      },
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 60,
+      "player": "candidate",
+      "played": "g1g6",
+      "alternative": "h6h3",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.471,
+      "minimum_alternative_minus_maximum_played": 0.4665,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0583-g1g6/g000-p060-alternative-attempt0000.json",
+          "sha256": "6c54b3df425367be190d72597efd8cad70adc980dfc49d13b9306615bd023b23"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0583-h6h3/g000-p060-alternative-attempt0000.json",
+          "sha256": "67ae1423e5987e4535a868cf52af8bb4aca3e09a91213fdb45775319d2365afe"
+        }
+      ],
+      "category": "attacking_sacrifice",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "g1g6": {
+          "last_two_expected_score_range": [
+            0.529,
+            0.5335
+          ],
+          "last_two_spread": 0.0044999999999999485,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "h6h3": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 63,
+      "player": "reference",
+      "played": "e8f8",
+      "alternative": "d5d7",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.417,
+      "minimum_alternative_minus_maximum_played": 0.417,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "blocking_flags": [
+        "last_two_report_estimates_unstable"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0586-e8f8/g000-p063-alternative-attempt0000.json",
+          "sha256": "2700e49537b0915e3e7a683e9e3c3b1af2a5061a462b13d0ceb8c152f64e84cf"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0586-d5d7/g000-p063-alternative-attempt0000.json",
+          "sha256": "f057caae44e0a2f649271ef0fcd1581c7e7c64d44539128824a4772fac3857e9"
+        }
+      ],
+      "category": "opponent_defensive_coordination",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "e8f8": {
+          "last_two_expected_score_range": [
+            0.0,
+            0.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "d5d7": {
+          "last_two_expected_score_range": [
+            0.417,
+            0.478
+          ],
+          "last_two_spread": 0.061,
+          "stable_report_heuristic": false,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 1,
+      "ply": 21,
+      "player": "candidate",
+      "played": "b5b4",
+      "alternative": "c6d5",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.481,
+      "minimum_alternative_minus_maximum_played": 0.474,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0611-b5b4/g001-p021-alternative-attempt0000.json",
+          "sha256": "85c644ef0b4e80d7c9bfe586631af86db76531f329f6b2321ea561985695d8f0"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0611-c6d5/g001-p021-alternative-attempt0000.json",
+          "sha256": "210e5d5df7b05337e2f2bb6341e1adb84e55b0209c8eb74999f9f0885fb807d4"
+        }
+      ],
+      "category": "pawn_break_tactics",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "b5b4": {
+          "last_two_expected_score_range": [
+            0.0025,
+            0.0025
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "c6d5": {
+          "last_two_expected_score_range": [
+            0.4765,
+            0.4835
+          ],
+          "last_two_spread": 0.007000000000000006,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 1,
+      "ply": 60,
+      "player": "reference",
+      "played": "f1e1",
+      "alternative": "d4d5",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.36,
+      "minimum_alternative_minus_maximum_played": 0.35750000000000004,
+      "retained_flags": [
+        "final_same_move_bound_conflicts_with_earlier_cp",
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [
+        "final_same_move_bound_conflicts_with_earlier_cp"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0636-f1e1/g001-p060-alternative-attempt0000.json",
+          "sha256": "0cdd428487f0d63d114f5689c78765cf851493dbac1a9a4b205d3a73b0747251"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0636-d4d5/g001-p060-alternative-attempt0000.json",
+          "sha256": "78b698d49691904d767740e3e52d1d3327e4c8229dce4f153b93b77ab8872fbf"
+        }
+      ],
+      "category": "opponent_conversion",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "f1e1": {
+          "last_two_expected_score_range": [
+            0.631,
+            0.631
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "d4d5": {
+          "last_two_expected_score_range": [
+            0.9885,
+            0.991
+          ],
+          "last_two_spread": 0.0024999999999999467,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ]
+        }
+      },
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 1,
+      "ply": 61,
+      "player": "candidate",
+      "played": "g7g6",
+      "alternative": "a8e8",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.4225,
+      "minimum_alternative_minus_maximum_played": 0.4205,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0637-g7g6/g001-p061-alternative-attempt0000.json",
+          "sha256": "be7677bfc87dfe4ac8d24fbc8b9116ee08d796f5c9bb86e6feee2a820d3df26d"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0637-a8e8/g001-p061-alternative-attempt0000.json",
+          "sha256": "3085827374aee908779bec25fc261edb749d8e7240057729f0caf2c33d59b913"
+        }
+      ],
+      "category": "defensive_exchange_opportunity",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "g7g6": {
+          "last_two_expected_score_range": [
+            0.003,
+            0.005
+          ],
+          "last_two_spread": 0.002,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "a8e8": {
+          "last_two_expected_score_range": [
+            0.4255,
+            0.4255
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 0,
+      "ply": 25,
+      "player": "reference",
+      "played": "a5b3",
+      "alternative": "b4e7",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.4955,
+      "minimum_alternative_minus_maximum_played": 0.491,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0660-a5b3/g000-p025-alternative-attempt0000.json",
+          "sha256": "145a7d19139493cef0c4f70c5fdc44c29237daaf99eeb92a6270218397537908"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0660-b4e7/g000-p025-alternative-attempt0000.json",
+          "sha256": "7afec18068137620fd2719af518842f79aa4d4035f3d39f822a2694c829c15fa"
+        }
+      ],
+      "category": "opponent_material_tactics",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "a5b3": {
+          "last_two_expected_score_range": [
+            0.0155,
+            0.02
+          ],
+          "last_two_spread": 0.0045000000000000005,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "b4e7": {
+          "last_two_expected_score_range": [
+            0.511,
+            0.511
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "nimzo-indian"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 0,
+      "ply": 30,
+      "player": "candidate",
+      "played": "d3d8",
+      "alternative": "d3c2",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.3365,
+      "minimum_alternative_minus_maximum_played": 0.33000000000000007,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "blocking_flags": [
+        "last_two_report_estimates_unstable"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0664-d3d8/g000-p030-alternative-attempt0000.json",
+          "sha256": "f62509a7ee37c29a17aa2681eaf0cd0736f25cbe9e17aeb989ee64eadbb35347"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0664-d3c2/g000-p030-alternative-attempt0000.json",
+          "sha256": "adc9482d7e5d7d3a42320750dcd91eb49ff381c9924b5009fcd9c7c0535ee738"
+        }
+      ],
+      "category": "premature_simplification",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "d3d8": {
+          "last_two_expected_score_range": [
+            0.625,
+            0.6555
+          ],
+          "last_two_spread": 0.03049999999999997,
+          "stable_report_heuristic": false,
+          "directional_bound_conflicts": []
+        },
+        "d3c2": {
+          "last_two_expected_score_range": [
+            0.9855,
+            0.992
+          ],
+          "last_two_spread": 0.00649999999999995,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "nimzo-indian"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 0,
+      "ply": 38,
+      "player": "candidate",
+      "played": "g5f7",
+      "alternative": "a7f7",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.469,
+      "minimum_alternative_minus_maximum_played": 0.4575,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0672-g5f7/g000-p038-alternative-attempt0000.json",
+          "sha256": "0264f2893c5219ccf252040a1c41ce11927da9dd374c88b9aa26819e45c18cd6"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0672-a7f7/g000-p038-alternative-attempt0000.json",
+          "sha256": "e9220736c0f2eed4d70c25246d535d0910527a8d0b8541816dc22b3b918c4cd7"
+        }
+      ],
+      "category": "passed_pawn_tactics",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "g5f7": {
+          "last_two_expected_score_range": [
+            0.0,
+            0.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "a7f7": {
+          "last_two_expected_score_range": [
+            0.4575,
+            0.469
+          ],
+          "last_two_spread": 0.011499999999999955,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "nimzo-indian"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 1,
+      "ply": 28,
+      "player": "reference",
+      "played": "c4d5",
+      "alternative": "f4g5",
+      "status": "unresolved",
+      "method_eligible": false,
+      "raw_difference": 0.503,
+      "minimum_alternative_minus_maximum_played": 0.503,
+      "retained_flags": [
+        "final_same_move_bound_conflicts_with_earlier_cp",
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [
+        "final_same_move_bound_conflicts_with_earlier_cp"
+      ],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0721-c4d5/g001-p028-alternative-attempt0000.json",
+          "sha256": "716187f3c03f67dfe868ed1ec94ae61c15410b2a90bf7218dbc553087732d9af"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0721-f4g5/g001-p028-alternative-attempt0000.json",
+          "sha256": "5d43b8126ecb98dea663e29d8080e80b940fd5912335132dd4ddfb4b0b3a6f44"
+        }
+      ],
+      "category": "opponent_central_capture",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "c4d5": {
+          "last_two_expected_score_range": [
+            0.0005,
+            0.0005
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ]
+        },
+        "f4g5": {
+          "last_two_expected_score_range": [
+            0.5035,
+            0.5035
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "nimzo-indian"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 1,
+      "ply": 35,
+      "player": "candidate",
+      "played": "f6d5",
+      "alternative": "c5a5",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.5135000000000001,
+      "minimum_alternative_minus_maximum_played": 0.5135000000000001,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0726-f6d5/g001-p035-alternative-attempt0000.json",
+          "sha256": "ba2a29492275f3b61d6ed44172f4015d5b4e799027340d4b9e46dc5bdf244dfc"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0726-c5a5/g001-p035-alternative-attempt0000.json",
+          "sha256": "014ffe4a9fbb6117032b8c28a5ed62dbc8e364a037cbbd6beeb9ddc0cd042c77"
+        }
+      ],
+      "category": "tactical_opportunity_completion",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "f6d5": {
+          "last_two_expected_score_range": [
+            0.4865,
+            0.4865
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "c5a5": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "nimzo-indian"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 1,
+      "ply": 60,
+      "player": "reference",
+      "played": "f2c2",
+      "alternative": "g2f1",
+      "status": "supported_finite_event_5M",
+      "method_eligible": true,
+      "raw_difference": 0.486,
+      "minimum_alternative_minus_maximum_played": 0.486,
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0751-f2c2/g001-p060-alternative-attempt0000.json",
+          "sha256": "1826ee7e91242594f5c515445cb85552a2cc95f108391f1b985b63bf19e18992"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0751-g2f1/g001-p060-alternative-attempt0000.json",
+          "sha256": "6bdb2c5b6522cfd5c456b2adc1b83fa979b8dcbfb87fac47c64115e780bc349e"
+        }
+      ],
+      "category": "opponent_rook_placement",
+      "evidence_role": "deterioration_candidate",
+      "final_ranking": false,
+      "adjudication": "20M planned",
+      "observed_ranges": {
+        "f2c2": {
+          "last_two_expected_score_range": [
+            0.0,
+            0.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "g2f1": {
+          "last_two_expected_score_range": [
+            0.486,
+            0.487
+          ],
+          "last_two_spread": 0.0010000000000000009,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "nimzo-indian"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 0,
+      "ply": 178,
+      "player": "candidate",
+      "status": "not_in_5M_panel",
+      "retained_flags": [],
+      "category": "draw_defense",
+      "evidence_role": "contrary_success",
+      "observed_consequence": "Kxe1 completes actual dead-position draw",
+      "final_ranking": false,
+      "success_status": "actual_game_consequence_verified; optimality not inferred",
+      "observed_ranges": {
+        "played": {
+          "last_two_expected_score_range": [
+            0.5,
+            0.5
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "unrestricted": {
+          "last_two_expected_score_range": [
+            0.5,
+            0.5
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "family": "queens-pawn-other"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 1,
+      "ply": 175,
+      "player": "candidate",
+      "played": "d2d1q",
+      "alternative": "d2d1q",
+      "status": "same_choice_control",
+      "method_eligible": true,
+      "raw_difference": 0.0,
+      "minimum_alternative_minus_maximum_played": 0.0,
+      "retained_flags": [],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0233-d2d1q/g001-p175-alternative-attempt0000.json",
+          "sha256": "3973196b474165037e7dfefa24f46dd95e6cb19e764cb26cc77a4d67cfb21b17"
+        }
+      ],
+      "category": "passed_pawn_conversion",
+      "evidence_role": "contrary_success",
+      "observed_consequence": "d1=Q converts supported passer and is followed by rook mate",
+      "final_ranking": false,
+      "success_status": "actual_game_consequence_verified; optimality not inferred",
+      "observed_ranges": {
+        "d2d1q": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "queens-pawn-other"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 1,
+      "ply": 125,
+      "player": "candidate",
+      "played": "b2b1q",
+      "alternative": "b2b1q",
+      "status": "same_choice_control",
+      "method_eligible": true,
+      "raw_difference": 0.0,
+      "minimum_alternative_minus_maximum_played": 0.0,
+      "retained_flags": [],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0408-b2b1q/g001-p125-alternative-attempt0000.json",
+          "sha256": "9b0d051c202290d28edacc7d99da8893d718e6891093cf89a848ab53d5ad17c0"
+        }
+      ],
+      "category": "passed_pawn_conversion",
+      "evidence_role": "contrary_success",
+      "observed_consequence": "b1=Q+ in actual winning conversion",
+      "final_ranking": false,
+      "success_status": "actual_game_consequence_verified; optimality not inferred",
+      "observed_ranges": {
+        "b2b1q": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "english"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 0,
+      "ply": 53,
+      "player": "reference",
+      "status": "not_in_5M_panel",
+      "retained_flags": [],
+      "category": "opponent_tactical_alignment",
+      "evidence_role": "contrary_success",
+      "observed_consequence": "Bg5 begins actual alignment tactic",
+      "final_ranking": false,
+      "success_status": "actual_game_consequence_verified; optimality not inferred",
+      "observed_ranges": {
+        "played": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "unrestricted": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 100,
+      "player": "candidate",
+      "status": "not_in_5M_panel",
+      "retained_flags": [],
+      "category": "passed_pawn_conversion",
+      "evidence_role": "contrary_success",
+      "observed_consequence": "d8=Q forces capture and c-pawn recapture promotion",
+      "final_ranking": false,
+      "success_status": "actual_game_consequence_verified; optimality not inferred",
+      "observed_ranges": {
+        "played": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "unrestricted": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 1,
+      "ply": 29,
+      "player": "candidate",
+      "played": "c6d4",
+      "alternative": "c6d4",
+      "status": "same_choice_control",
+      "method_eligible": true,
+      "raw_difference": 0.0,
+      "minimum_alternative_minus_maximum_played": 0.0,
+      "retained_flags": [],
+      "blocking_flags": [],
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "receipt_refs": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/confirmations/q0722-c6d4/g001-p029-alternative-attempt0000.json",
+          "sha256": "a81cd2256ed02884b1b73dda12ccfdaed828463aa39c094c1d2a679bde8350dd"
+        }
+      ],
+      "category": "tactical_opportunity_completion",
+      "evidence_role": "contrary_success",
+      "observed_consequence": "Nd4 exploits central opportunity",
+      "final_ranking": false,
+      "success_status": "actual_game_consequence_verified; optimality not inferred",
+      "observed_ranges": {
+        "c6d4": {
+          "last_two_expected_score_range": [
+            0.9995,
+            0.9995
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "family": "nimzo-indian"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 1,
+      "ply": 135,
+      "player": "candidate",
+      "status": "not_in_5M_panel",
+      "retained_flags": [],
+      "category": "tactical_opportunity_completion",
+      "evidence_role": "contrary_success",
+      "observed_consequence": "Qh2+ Kxh2 Nf3+ forks king and queen in actual game",
+      "final_ranking": false,
+      "success_status": "actual_game_consequence_verified; optimality not inferred",
+      "observed_ranges": {
+        "played": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        },
+        "unrestricted": {
+          "last_two_expected_score_range": [
+            1.0,
+            1.0
+          ],
+          "last_two_spread": 0.0,
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": []
+        }
+      },
+      "source": "main/batch-01/category-candidates-00-04.json",
+      "family": "nimzo-indian"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 16,
+      "san": "Bxf6",
+      "category": "exchange_decisions",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Premature bishop exchange compared with maintaining central pawn tension by f4.",
+      "raw5m_loss": 0.08200000000000002,
+      "observed_range_margin": 0.08200000000000002,
+      "alternative": "f2f4",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 18,
+      "san": "Ndb5",
+      "category": "central_pawn_break_timing",
+      "status": "unresolved5m_candidate",
+      "role": "candidate_weakness",
+      "observation": "Possible missed f4 opportunity after opponent weakened king; unstable reference.",
+      "raw5m_loss": 0.06500000000000006,
+      "observed_range_margin": null,
+      "alternative": "f2f4",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 28,
+      "san": "Qg3+",
+      "category": "king_attack",
+      "status": "observed_success_not_optimality_proof",
+      "role": "contrary_success",
+      "observation": "Found Qg3+ and converted opponent knight move into successful attack.",
+      "raw5m_loss": null,
+      "observed_range_margin": null,
+      "alternative": null,
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 30,
+      "san": "f5",
+      "category": "advantage_preservation",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "f5 less effective than e5 but retained a very large advantage.",
+      "raw5m_loss": 0.05900000000000005,
+      "observed_range_margin": 0.05900000000000005,
+      "alternative": "e4e5",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 1,
+      "ply": 27,
+      "san": "b6",
+      "category": "advantage_preservation",
+      "status": "unresolved5m_candidate",
+      "role": "candidate_weakness",
+      "observation": "b6 instead of e5 may surrender advantage; unresolved5M.",
+      "raw5m_loss": 0.4215,
+      "observed_range_margin": null,
+      "alternative": "e6e5",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 1,
+      "ply": 23,
+      "san": "Nxe2+",
+      "category": "forcing_tactical_sequence",
+      "status": "observed_success_not_optimality_proof",
+      "role": "contrary_success",
+      "observation": "Nxe2+ participates in successful knight combination after opponent Qxd6.",
+      "raw5m_loss": -0.028000000000000025,
+      "observed_range_margin": null,
+      "alternative": "d8d6",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 20,
+      "san": "Bd2",
+      "category": "central_pawn_break_timing",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Bd2 instead of central e4.",
+      "raw5m_loss": 0.11199999999999999,
+      "observed_range_margin": 0.11199999999999999,
+      "alternative": "e3e4",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 24,
+      "san": "Ng5",
+      "category": "central_pawn_break_timing",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Ng5 misses renewed e4 opportunity.",
+      "raw5m_loss": 0.29850000000000004,
+      "observed_range_margin": 0.29850000000000004,
+      "alternative": "e3e4",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 62,
+      "san": "h4",
+      "category": "advantage_preservation",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "h4 surrenders advantage compared with bishop coordination Be2.",
+      "raw5m_loss": 0.481,
+      "observed_range_margin": 0.481,
+      "alternative": "c4e2",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 70,
+      "san": "hxg5",
+      "category": "central_pawn_break_timing",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "hxg5 loses winning advantage compared with d5.",
+      "raw5m_loss": 0.494,
+      "observed_range_margin": 0.494,
+      "alternative": "d4d5",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 74,
+      "san": "Qc3",
+      "category": "quiet_piece_coordination",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Qc3 instead of Qb2 loses regained advantage.",
+      "raw5m_loss": 0.465,
+      "observed_range_margin": 0.465,
+      "alternative": "d2b2",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 82,
+      "san": "Ke1",
+      "category": "quiet_tactical_defense",
+      "status": "unresolved5m_candidate",
+      "role": "candidate_weakness",
+      "observation": "Ke1 permits bishop-diagonal threat against rook; Be6 is supported alternative but comparison unstable.",
+      "raw5m_loss": 0.728,
+      "observed_range_margin": null,
+      "alternative": "c4e6",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 78,
+      "san": "Ke2",
+      "category": "opportunity_exploitation",
+      "status": "observed_success_not_optimality_proof",
+      "role": "contrary_success",
+      "observation": "Ke2 keeps winning chance after opponent Bh2, before later reversal.",
+      "raw5m_loss": null,
+      "observed_range_margin": null,
+      "alternative": null,
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 27,
+      "san": "Ne5",
+      "category": "tactical_exchange_sequence",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Ne5 exchanges permit f4/e5 pressure against rook and king.",
+      "raw5m_loss": 0.46849999999999997,
+      "observed_range_margin": 0.457,
+      "alternative": "f6g4",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 81,
+      "san": "c4",
+      "category": "endgame_pawn_break_conversion",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "c4 misses winning b4 break.",
+      "raw5m_loss": 0.5,
+      "observed_range_margin": 0.5,
+      "alternative": "b5b4",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 97,
+      "san": "Ba8",
+      "category": "active_endgame_defense",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Passive Ba8 loses draw compared with b4 counterplay.",
+      "raw5m_loss": 0.4985,
+      "observed_range_margin": 0.4985,
+      "alternative": "b5b4",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 89,
+      "san": "Kxh6",
+      "category": "endgame_capture_judgment",
+      "status": "unresolved",
+      "role": "unresolved_comparative_question",
+      "observation": "Kxh6 singleton has poor estimate but no distinct alternative; discovery required.",
+      "raw5m_loss": null,
+      "observed_range_margin": null,
+      "alternative": null,
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 43,
+      "san": "Bd5",
+      "category": "recovery_defense",
+      "status": "observed_success_not_optimality_proof",
+      "role": "contrary_success",
+      "observation": "Bd5 retains drawing chance granted by opponent Ne4.",
+      "raw5m_loss": null,
+      "observed_range_margin": null,
+      "alternative": null,
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "slav-semi-slav"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 0,
+      "ply": 32,
+      "san": "b3",
+      "category": "threatened_piece_defense",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "b3 leaves attacked Be5 and allows Na3 tempo against queen; Bf4 retreats safely.",
+      "raw5m_loss": 0.488,
+      "observed_range_margin": 0.488,
+      "alternative": "e5f4",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "queens-indian-bogo"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 0,
+      "ply": 108,
+      "san": "Ra7",
+      "category": "active_defensive_counterplay",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Ra7 misses g4 recovery resource in earlier poor position.",
+      "raw5m_loss": 0.374,
+      "observed_range_margin": 0.3705,
+      "alternative": "g3g4",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "queens-indian-bogo"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 0,
+      "ply": 126,
+      "san": "Kf5",
+      "category": "endgame_recovery",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Kf5 misses Ra8+ defensive resource immediately after opponent Kg8.",
+      "raw5m_loss": 0.4745,
+      "observed_range_margin": 0.4745,
+      "alternative": "a7a8",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "queens-indian-bogo"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 1,
+      "ply": 51,
+      "san": "Ra2",
+      "category": "rook_activity",
+      "status": "observed_success_not_optimality_proof",
+      "role": "contrary_success",
+      "observation": "Ra2 exploits second-rank access after b4; successful conversion follows.",
+      "raw5m_loss": null,
+      "observed_range_margin": null,
+      "alternative": null,
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "queens-indian-bogo"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 24,
+      "san": "c4",
+      "category": "tactical_pawn_break",
+      "status": "observed_success_not_optimality_proof",
+      "role": "contrary_success",
+      "observation": "c4 attacks bishop and initiates advantageous tactical sequence; precise magnitude unstable.",
+      "raw5m_loss": null,
+      "observed_range_margin": null,
+      "alternative": null,
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "pirc-modern-other-semiopen"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 34,
+      "san": "Qd6",
+      "category": "attack_preservation",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Qd6 allows relieving queen exchanges; Qf6 retains attack.",
+      "raw5m_loss": 0.47350000000000003,
+      "observed_range_margin": 0.47350000000000003,
+      "alternative": "e7f6",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "pirc-modern-other-semiopen"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 36,
+      "san": "Qf6",
+      "category": "king_attack",
+      "status": "observed_success_not_optimality_proof",
+      "role": "contrary_success",
+      "observation": "Qf6 exploits second opportunity after opponent Qxa2.",
+      "raw5m_loss": null,
+      "observed_range_margin": null,
+      "alternative": null,
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "pirc-modern-other-semiopen"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 31,
+      "san": "Bf6",
+      "category": "piece_coordination",
+      "status": "unresolved5m_candidate",
+      "role": "candidate_weakness",
+      "observation": "Early Bf6 comparison unresolved; cannot claim first actual error.",
+      "raw5m_loss": 0.08050000000000002,
+      "observed_range_margin": null,
+      "alternative": "d8d7",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "pirc-modern-other-semiopen"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 43,
+      "san": "Qc6",
+      "category": "advantage_preservation",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Qc6 reduces but retains overwhelming advantage versus Qe5.",
+      "raw5m_loss": 0.0685,
+      "observed_range_margin": 0.0685,
+      "alternative": "d5e5",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "pirc-modern-other-semiopen"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 49,
+      "san": "Bxc3",
+      "category": "exchange_decisions",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Bxc3 gives up part of advantage compared with Bc6.",
+      "raw5m_loss": 0.24550000000000005,
+      "observed_range_margin": 0.244,
+      "alternative": "d7c6",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "pirc-modern-other-semiopen"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 63,
+      "san": "e4",
+      "category": "advantage_preservation",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "e4 surrenders advantage versus Re8.",
+      "raw5m_loss": 0.48550000000000004,
+      "observed_range_margin": 0.48550000000000004,
+      "alternative": "d8e8",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "pirc-modern-other-semiopen"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 71,
+      "san": "Qxd1+",
+      "category": "exchange_and_counterplay",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Qxd1+ liquidation loses resistance compared with active Qg3.",
+      "raw5m_loss": 0.5,
+      "observed_range_margin": 0.5,
+      "alternative": "d6g3",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "pirc-modern-other-semiopen"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 0,
+      "ply": 2,
+      "san": "e4",
+      "category": "opening_central_choices",
+      "status": "unresolved",
+      "role": "unresolved_comparative_question",
+      "observation": "e4 versus d4 difference straddles threshold; no claim e4 unsound.",
+      "raw5m_loss": 0.05149999999999999,
+      "observed_range_margin": 0.04299999999999993,
+      "alternative": "d2d4",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "unaided"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 0,
+      "ply": 16,
+      "san": "Bxf6",
+      "category": "king_attack",
+      "status": "observed_success_not_optimality_proof",
+      "role": "contrary_success",
+      "observation": "Bxf6 exploits exposed king in this context, contrary to pair05 premature exchange.",
+      "raw5m_loss": null,
+      "observed_range_margin": null,
+      "alternative": null,
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "unaided"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 1,
+      "san": "Nc6",
+      "category": "opening_central_choices",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "Nc6 versus d5 modest finite loss; not a book-popularity judgment.",
+      "raw5m_loss": 0.055499999999999994,
+      "observed_range_margin": 0.055499999999999994,
+      "alternative": "d7d5",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "unaided"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 3,
+      "san": "e6",
+      "category": "opening_central_choices",
+      "status": "stable5m_finite_candidate_pending20m_for_critical_claims",
+      "role": "candidate_weakness",
+      "observation": "e6 delays alternative central d5; modest finite loss.",
+      "raw5m_loss": 0.07300000000000001,
+      "observed_range_margin": 0.05499999999999999,
+      "alternative": "d7d5",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "unaided"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 55,
+      "san": "Rc6",
+      "category": "rook_activity",
+      "status": "unresolved5m_candidate",
+      "role": "candidate_weakness",
+      "observation": "Rc6 may miss active Rd2 opportunity; unstable5M.",
+      "raw5m_loss": 0.18599999999999994,
+      "observed_range_margin": null,
+      "alternative": "c2d2",
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "unaided"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 57,
+      "san": "Ne6",
+      "category": "opportunity_exploitation",
+      "status": "observed_success_not_optimality_proof",
+      "role": "contrary_success",
+      "observation": "Ne6 begins successful conversion after opponent g3; intermediate score unstable.",
+      "raw5m_loss": null,
+      "observed_range_margin": null,
+      "alternative": null,
+      "mechanism_claim": null,
+      "source": "main/batch-01/category-candidates-05-09.json",
+      "family": "unaided"
+    }
+  ],
+  "sources": [
+    {
+      "path": "main/batch-01/category-candidates-00-04.json",
+      "sha256": "68b0ccb8cf3e242b1f13a39f830158a91e43b88c552c14151b4a805bf602e8a5"
+    },
+    {
+      "path": "main/batch-01/category-candidates-05-09.json",
+      "sha256": "1b33365bc2546e5da9881dbce92a0cabcc1b10c338bb623e3551d30ff7a3f73d"
+    },
+    {
+      "path": "main/batch-01/decision-dispositions-00-04.json",
+      "sha256": "496c06993b3899d29eccae4b1d68b8686fce25e441dc7098abfaac79091a4333"
+    },
+    {
+      "path": "main/batch-01/adjudication-05-09.json",
+      "sha256": "a3c9712aeede15faf3701d18ac148e0ea8d5312f8c9457352b58366892fc9fda"
+    },
+    {
+      "path": "main/batch-01/audit.json",
+      "sha256": "cf690939778a9d2161d48c20b3c3c2a668c6171fcc8e1419b555576c4b2801f0"
+    }
+  ]
+}

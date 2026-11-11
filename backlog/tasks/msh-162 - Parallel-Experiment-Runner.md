@@ -1,11 +1,11 @@
 ---
 id: MSH-162
 title: Parallel Experiment Runner
-status: In Progress
+status: In Review
 assignee:
   - '@codex-cloud-runner'
 created_date: '2026-11-11T18:35:00Z'
-updated_date: '2026-11-11T18:52:00Z'
+updated_date: '2026-11-11T18:54:00Z'
 labels:
   - handle:parallel-experiment-runner
 dependencies: []
@@ -35,7 +35,7 @@ Reviewed isolated branch handoff. Cloud pilot requires project/access/spending a
 - [ ] #2 Parallel local/GCP jobs support dependencies, integrity, retries, immutable success, status/retrieve/cancel and resources.
 - [ ] #3 Targeted macOS/Linux tests and independent source/execution review cover replay, failure and restart.
 - [ ] #4 Authorized cloud pilot proves complete pair and analysis, recovery and eight-worker throughput/cost.
-- [ ] #5 Reviewed operating and integration handoff preserves frozen inputs.
+- [x] #5 Reviewed operating and integration handoff preserves frozen inputs.
 <!-- AC:END -->
 
 ## Definition of Done
@@ -62,4 +62,6 @@ Reviewed isolated branch handoff. Cloud pilot requires project/access/spending a
 Owner codex-cloud-runner; branch codex/parallel-experiment-runner; worktree /Users/johnweathers/.codex/worktrees/parallel-experiment-runner/mShogi; base c01d54bf. Cached CLI 1.55.1 matches baseline; PATH 1.55.0 will not mutate records.
 
 Implementation ready for source checkpoint: versioned immutable local/GCS jobs, native pair/replay and frozen screening/confirmation adapter, Linux physical-core process isolation, Batch one task per VM, status/recovery/retrieve/cancel/resources and event-driven Pub/Sub exit notification. Independent reviews found and resolved dependency substitution, missing derived confirmations, signal cleanup, notification accounting, runtime/store identity and pipeline coverage defects. Targeted Mac/Linux ARM tests and native replay performed; exact final-source record follows. No new study searches/matches, cloud resources, integration or coordinator communication. Pending owner GCP project/region/service-account/bucket/registry and spending authorization, fixed Linux x86 artifacts and real pilot.
+
+Source checkpoint 14bea72cb326d77fe780927f07d2da60e66b6528 passes48tests on macOS and local Docker Linux aarch64 (2.624s/2.774s), including eight concurrent execution fixtures and detached-child termination. Full frozen schedule preparation yields100pairs/200pending initialjobs with no execution. Existing complete Mac pair native replay passes. Independent source handoff approved after all findings resolved; see docs/experiments/review.md and single structured verification.json. Actual fixed Linux x86 build/GCS/Batch/pilot/throughput/cost/live notification remain NOT RUN. No billable resources created or new study computation. Await owner project/access/spending inputs and coordinator validation; no integration. Keep app-managed worktree for this explicit ongoing purpose. AC5 records reviewed operating/integration handoff only; other criteria remain unchecked until execution gates are evidenced.
 <!-- SECTION:NOTES:END -->

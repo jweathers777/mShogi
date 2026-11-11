@@ -1,8 +1,17 @@
 """Read saved progress concurrently. Do not verify artifacts or run engines."""
 import concurrent.futures
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+# Direct script execution must not make chess.py shadow the python-chess package.
+if __package__ in (None, ''):
+    sys.path.pop(0)
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from collections import Counter
 from datetime import datetime, timezone
-from .core import decode, prefix, validate_job, validate_manifest
+from tools.experiments.core import decode, prefix, validate_job, validate_manifest
 
 
 def snapshot(manifest, store, workers=12):
@@ -76,3 +85,78 @@ def format_report(value):
     if value['unlisted_completion_records']:
         lines.append(f"Other completion records outside known plans: {value['unlisted_completion_records']}")
     return '\n'.join(lines + ['Saved completion markers only. Results were not verified.', value['limitations']])
+
+
+class GcloudReadStore:
+    """Read-only fallback for a normal Python install with the gcloud CLI."""
+    def __init__(self, uri):
+        from tools.experiments.gcp import parse_uri
+        parse_uri(uri)
+        self.uri = uri.rstrip('/')
+
+    def _run(self, args):
+        try:
+            result = subprocess.run(['gcloud', 'storage', *args], capture_output=True, timeout=120)
+        except FileNotFoundError as exc:
+            raise RuntimeError('Install Google Cloud CLI and sign in with gcloud auth login.') from exc
+        if result.returncode:
+            raise RuntimeError(result.stderr.decode(errors='replace').strip())
+        return result.stdout
+
+    def get(self, key):
+        from tools.experiments.gcp import _key
+        _key(key)
+        return self._run(['cat', self.uri + '/' + key])
+
+    def list(self, prefix):
+        from tools.experiments.gcp import _key
+        _key(prefix, prefix=True)
+        output = self._run(['ls', self.uri + '/' + prefix + '**']).decode()
+        base = self.uri + '/'
+        result = []
+        for line in output.splitlines():
+            if not line.startswith(base):
+                raise ValueError('Unexpected Cloud Storage listing entry')
+            result.append(line[len(base):])
+        return result
+
+
+def progress_store(uri):
+    if not uri.startswith('gs://'):
+        from tools.experiments.core import LocalStore
+        return LocalStore(uri)
+    try:
+        from tools.experiments.gcp import GCSStore
+        return GCSStore(uri)
+    except ImportError as exc:
+        if not (exc.name or '').startswith('google'):
+            raise
+        return GcloudReadStore(uri)
+
+
+def main():
+    """Use saved defaults; keep advanced CLI options available as overrides."""
+    import argparse
+    from tools.experiments import cli
+    root = Path(__file__).resolve().parents[2]
+    parser = argparse.ArgumentParser(description='Show current experiment progress. Does not run or change jobs.')
+    parser.add_argument('--settings', type=Path, default=Path(__file__).with_name('status-settings.json'))
+    parser.add_argument('--json', action='store_true')
+    args = parser.parse_args()
+    settings = decode(args.settings.read_bytes())
+    manifest_path = root / settings['manifest']
+    manifest = decode(manifest_path.read_bytes())
+    config = manifest['jobs'][0]['environment']['cloud']['config']
+    command = ['quick-status', '--manifest', str(manifest_path), '--store', config['store_uri'],
+               '--job-name', settings['job_name']]
+    if args.json:
+        command.append('--json')
+    sys.argv = [sys.argv[0], *command]
+    try:
+        cli.main()
+    except (RuntimeError, ValueError, OSError, subprocess.SubprocessError) as exc:
+        raise SystemExit('Status check failed: ' + str(exc)) from exc
+
+
+if __name__ == '__main__':
+    main()

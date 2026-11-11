@@ -1,4 +1,8 @@
 import unittest
+import subprocess
+import sys
+from pathlib import Path
+from unittest.mock import patch, Mock
 from tools.experiments import core, quick_status
 from tools.experiments.tests import test_core
 
@@ -80,3 +84,36 @@ class QuickStatusTests(unittest.TestCase):
                                selection={'screen_job':'wrong'},game=0,ply=0,move='e2e4'))
         self.records.data[core.prefix(self.screen)+'/derived-jobs.json'] = [confirm]
         with self.assertRaisesRegex(ValueError,'Invalid saved'):quick_status.snapshot(self.manifest,self.records)
+
+
+class DirectStatusTests(unittest.TestCase):
+    def test_direct_script_help_outside_repo(self):
+        script = Path(quick_status.__file__).resolve()
+        result = subprocess.run([sys.executable, str(script), '--help'], cwd='/tmp',
+                                capture_output=True, text=True, check=True)
+        self.assertIn('Show current experiment progress', result.stdout)
+
+    def test_gcloud_fallback_for_partial_sdk_install(self):
+        with patch('tools.experiments.gcp.GCSStore', side_effect=ImportError('storage missing', name='google.cloud')):
+            self.assertIsInstance(quick_status.progress_store('gs://test-bucket/study'), quick_status.GcloudReadStore)
+        with patch('tools.experiments.gcp.GCSStore', side_effect=PermissionError('credentials')):
+            with self.assertRaises(PermissionError):quick_status.progress_store('gs://test-bucket/study')
+
+    def test_gcloud_only_runs_read_commands_and_maps_keys(self):
+        store = quick_status.GcloudReadStore('gs://test-bucket/study')
+        with patch.object(store, '_run', return_value=b'gs://test-bucket/study/exp/jobs/id/success.json\n') as call:
+            self.assertEqual(['exp/jobs/id/success.json'], store.list('exp/jobs/'))
+            call.assert_called_once_with(['ls','gs://test-bucket/study/exp/jobs/**'])
+        with patch.object(store, '_run', return_value=b'{}') as call:
+            self.assertEqual(b'{}', store.get('exp/jobs/id/success.json'))
+            call.assert_called_once_with(['cat','gs://test-bucket/study/exp/jobs/id/success.json'])
+        with self.assertRaises(ValueError):store.get('../escape')
+
+    def test_settings_resolve_from_repo_and_infer_store(self):
+        with patch.object(sys, 'argv', ['quick_status.py', '--json']), patch('tools.experiments.cli.main') as run:
+            quick_status.main()
+            run.assert_called_once()
+            argv = sys.argv
+            self.assertTrue(Path(argv[argv.index('--manifest')+1]).is_absolute())
+            self.assertEqual('gs://mshogi-experiments-216675633801/msh161',argv[argv.index('--store')+1])
+            self.assertIn('--json',argv)

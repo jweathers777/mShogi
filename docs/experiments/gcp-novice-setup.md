@@ -306,18 +306,21 @@ For developer commands and recovery instructions, see [the runner operating guid
 
 ## Check pilot progress
 
-Open Terminal on your Mac. Run these commands:
+Open Terminal in the experiment-runner repository. Run:
 
 ```sh
-cd /Users/johnweathers/.codex/worktrees/parallel-experiment-runner/mShogi
-GOOGLE_CLOUD_PROJECT=mshogi /private/tmp/msh162-controller/bin/python -m tools.experiments.cli quick-status --manifest docs/experiments/pilot/eight-pair-manifest.json --store gs://mshogi-experiments-216675633801/msh161 --job-name msh162-pilot-eight-v1
+python3 tools/experiments/quick_status.py
 ```
+
+The script uses the current experiment settings saved in the repository. You do
+not need to enter a manifest path, storage path, or job name. It works with normal
+Python and the Google Cloud CLI installed during setup. It does not need the
+private temporary Python environment.
 
 The report shows saved progress and the current Batch state. It does not start or
 stop work. It does not check all result files. Confirmation totals can increase
 while analysis continues. A saved claim can refer to a running or interrupted job.
+Add `--json` if you need JSON output.
 
-The Python path above is the environment prepared for this pilot. If it is removed,
-create a Python environment and install `tools/experiments/requirements-controller.txt`.
-Use that environment's Python command instead. For a later experiment, change the
-manifest path and Batch job name. Add `--json` if you need JSON output.
+The experiment operator updates `tools/experiments/status-settings.json` when the
+active experiment changes. Normal progress checks need no settings changes.

@@ -45,26 +45,35 @@ not claimed implemented for other variants.
 
 ## Quick progress report
 
-Use `quick-status` for a progress check. It lists saved completion markers and
-reads confirmation plans and possible failed-attempt records concurrently. It
-does not download game or analysis artifacts, verify results, or run engines.
+From the repository, run:
 
 ```sh
-python -m tools.experiments.cli quick-status --manifest docs/experiments/pilot/eight-pair-manifest.json --store gs://mshogi-experiments-216675633801/msh161 --job-name msh162-pilot-eight-v1
+python3 tools/experiments/quick_status.py
 ```
 
-Use the Python environment with `requirements-controller.txt` installed. The
-current local environment is `/private/tmp/msh162-controller/bin/python`.
-Add `--json` for machine-readable output. Omit `--job-name` to read saved progress
-without a Batch lookup. Local storage paths also work.
+The script reads `tools/experiments/status-settings.json`. The operator updates
+this file when the active experiment changes. Storage settings come from the
+selected manifest. Paths resolve from the repository, not the working directory.
+Add `--json` for machine-readable output, or `--settings FILE` for another saved
+configuration. No private temporary Python environment is required.
 
-The report shows completed games, pairs, screening jobs, confirmation queries,
-known confirmation totals, claims, and failed attempts. Confirmation totals grow
-as workers publish plans. A claim can belong to a running or interrupted worker.
-Counts can change during the read. They are progress records, not verified results.
-Use `verify` for a full artifact check. The older `status` command also performs
-result checks and can take longer. The old `tools/study_status` scripts have been
-removed; they supported only the former local study layout.
+With the Python Cloud Storage package installed, the script uses Application
+Default Credentials. Otherwise, it uses the installed Google Cloud CLI and its
+signed-in account for read-only storage access. Credential errors are reported;
+they do not trigger a change of account. Batch status uses the Google Cloud CLI.
+A missing experiment or inaccessible storage produces an error, not zero progress.
+
+The report lists saved completion markers and reads confirmation plans and
+possible failed-attempt records concurrently. It does not download game or
+analysis artifacts, verify results, or run engines. Confirmation totals grow as
+workers publish plans. A claim can belong to a running or interrupted worker.
+Counts can change during the read. Use `verify` for a full artifact check. The
+older `status` command also performs result checks and can take longer.
+
+Advanced callers can still use `python -m tools.experiments.cli quick-status`
+with explicit `--manifest`, `--store`, and optional `--job-name` arguments. Local
+storage paths are supported through that interface. The old `tools/study_status`
+scripts were removed; they supported only the former local study layout.
 
 ## Linux artifacts and image
 

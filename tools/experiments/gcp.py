@@ -160,13 +160,21 @@ def validate_config(config):
     """Normalize the small, explicitly provisioned execution configuration."""
     allowed = {'project', 'region', 'store_uri', 'machine_type', 'parallelism',
                'max_run_seconds', 'max_retries', 'service_account', 'cpu_milli',
-               'memory_mib', 'boot_disk_gb', 'boot_image', 'vm_hourly_usd', 'notification_topic'}
+               'memory_mib', 'boot_disk_gb', 'boot_image', 'vm_hourly_usd', 'notification_topic',
+               'network', 'subnetwork'}
     if not isinstance(config, dict) or set(config) - allowed:
         raise ValueError('Unknown cloud configuration fields')
     result = dict(config)
     result['project'] = _identifier(config.get('project'), r'[a-z][a-z0-9-]{4,61}[a-z0-9]', 'project')
     result['region'] = _identifier(config.get('region'), r'[a-z]+(?:-[a-z]+)+[0-9]', 'region')
     parse_uri(config.get('store_uri', ''))
+    if ('network' in config) != ('subnetwork' in config):
+        raise ValueError('network and subnetwork must be specified together')
+    if 'network' in config:
+        resource_name = r'[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?'
+        base = 'projects/' + re.escape(result['project'])
+        _identifier(config['network'], base + '/global/networks/' + resource_name, 'same-project network')
+        _identifier(config['subnetwork'], base + '/regions/' + re.escape(result['region']) + '/subnetworks/' + resource_name, 'same-project and region subnetwork')
     result['service_account'] = _identifier(config.get('service_account'),
         r'[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.iam\.gserviceaccount\.com', 'service account')
     # Fixed C3 x86 hardware: changing to another family requires an explicit code
@@ -229,6 +237,9 @@ def batch_config(manifest_uri, image, config, task_count):
         'logsPolicy': {'destination': 'CLOUD_LOGGING'},
         'labels': {'application': 'mshogi-experiments', 'schema': 'v1'},
     }
+    if 'network' in config:
+        result['allocationPolicy']['network'] = {'networkInterfaces': [{
+            'network': config['network'], 'subnetwork': config['subnetwork']}]}
     if config.get('notification_topic'):
         result['notifications'] = [{'pubsubTopic': config['notification_topic'],
                                     'message': {'type': 'JOB_STATE_CHANGED'}}]

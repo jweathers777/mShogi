@@ -1,0 +1,1406 @@
+{
+  "status": "structure_gap_queries_required_before_main_freeze",
+  "nodes_requested": 5000000,
+  "deficits": {
+    "opposite_castled": 2,
+    "closed": 1
+  },
+  "selection_rule": "All unresolved reserve roots carrying a deficient structural kind, in original source order; no game-result or score-size ordering. Not all need be used if confirmed replacements meet quotas.",
+  "roots": [
+    {
+      "id": "master-adaf429ab80ad51b",
+      "fen": null,
+      "moves": [
+        "e2e4",
+        "e7e6",
+        "d1e2",
+        "d7d5",
+        "e4d5",
+        "d8d5",
+        "b1c3",
+        "d5d8",
+        "b2b3",
+        "g8f6",
+        "c1b2",
+        "f8e7",
+        "e1c1",
+        "e8g8",
+        "g2g4",
+        "c7c5"
+      ],
+      "family": "french",
+      "candidate_rank": 1,
+      "structural_kinds": [
+        "opposite_castled"
+      ],
+      "previous_screen": {
+        "id": "master-adaf429ab80ad51b",
+        "family": "french",
+        "candidate_rank": 1,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {
+          "kind": "cp",
+          "value": 128
+        },
+        "expected_score_white_proxy": 0.881,
+        "inside_numeric_window": false,
+        "original_flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ],
+        "blocking_flags": [
+          "distinct_depth_stability_not_met",
+          "last_two_report_estimates_unstable"
+        ],
+        "last_two_depth_expected_score_range": [
+          0.881,
+          0.9535
+        ],
+        "last_two_spread": 0.07250000000000001,
+        "selected_report": {
+          "depth": 17,
+          "hashfull": 47,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 442117,
+          "nps": 919162,
+          "pv": [
+            "g4g5",
+            "f6d5",
+            "g1f3",
+            "b8c6",
+            "h1g1",
+            "a7a6",
+            "h2h4",
+            "b7b5",
+            "c1b1",
+            "a8a7",
+            "c3e4",
+            "a7c7",
+            "d1e1",
+            "e6e5",
+            "f3e5",
+            "c6d4",
+            "e2h5"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 128
+          },
+          "seldepth": 33,
+          "tbhits": 0,
+          "time": 481,
+          "upperbound": false,
+          "wdl": [
+            762,
+            238,
+            0
+          ]
+        },
+        "final_report": {
+          "depth": 18,
+          "hashfull": 52,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 500400,
+          "nps": 919852,
+          "pv": [
+            "g4g5",
+            "f6d5"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 131
+          },
+          "seldepth": 31,
+          "tbhits": 0,
+          "time": 544,
+          "upperbound": true,
+          "wdl": [
+            782,
+            218,
+            0
+          ]
+        },
+        "receipt": "balance-screen/g045-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "528b46423f363ab83fe2dd024adc6fb99ef31b65e2f075640a511d77aac39fc8"
+      }
+    },
+    {
+      "id": "master-d61357476d979338",
+      "fen": null,
+      "moves": [
+        "e2e4",
+        "e7e6",
+        "d2d4",
+        "d7d5",
+        "e4d5",
+        "e6d5",
+        "f1d3",
+        "b8c6",
+        "g1f3",
+        "c8g4",
+        "c2c3",
+        "d8d7",
+        "e1g1",
+        "e8c8",
+        "b1d2",
+        "f8d6"
+      ],
+      "family": "french",
+      "candidate_rank": 6,
+      "structural_kinds": [
+        "opposite_castled"
+      ],
+      "previous_screen": {
+        "id": "master-d61357476d979338",
+        "family": "french",
+        "candidate_rank": 6,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {
+          "kind": "cp",
+          "value": 93
+        },
+        "expected_score_white_proxy": 0.716,
+        "inside_numeric_window": false,
+        "original_flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ],
+        "blocking_flags": [
+          "distinct_depth_stability_not_met",
+          "last_two_report_estimates_unstable"
+        ],
+        "last_two_depth_expected_score_range": [
+          0.6755,
+          0.716
+        ],
+        "last_two_spread": 0.04049999999999998,
+        "selected_report": {
+          "depth": 17,
+          "hashfull": 25,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 233768,
+          "nps": 978108,
+          "pv": [
+            "b2b4",
+            "c8b8",
+            "f1e1",
+            "d8e8",
+            "b4b5",
+            "c6a5",
+            "e1e8",
+            "d7e8"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 93
+          },
+          "seldepth": 25,
+          "tbhits": 0,
+          "time": 239,
+          "upperbound": false,
+          "wdl": [
+            432,
+            568,
+            0
+          ]
+        },
+        "final_report": {
+          "depth": 18,
+          "hashfull": 50,
+          "lowerbound": true,
+          "multipv": 1,
+          "nodes": 500338,
+          "nps": 951212,
+          "pv": [
+            "b2b4",
+            "g4f5"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 88
+          },
+          "seldepth": 31,
+          "tbhits": 0,
+          "time": 526,
+          "upperbound": false,
+          "wdl": [
+            384,
+            616,
+            0
+          ]
+        },
+        "receipt": "balance-screen/g050-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "505e9fc568a2a0afa27397f6abc523ec9fdcc62810dec8c10956936d61f8a7bf"
+      }
+    },
+    {
+      "id": "master-12c37391208dda76",
+      "fen": null,
+      "moves": [
+        "e2e4",
+        "a7a6",
+        "d2d4",
+        "e7e6",
+        "f1d3",
+        "d7d5",
+        "e4e5",
+        "c7c5",
+        "c2c3",
+        "c8d7",
+        "g1f3",
+        "c5d4",
+        "c3d4",
+        "d7b5",
+        "e1g1",
+        "b8c6"
+      ],
+      "family": "french",
+      "candidate_rank": 10,
+      "structural_kinds": [
+        "closed"
+      ],
+      "previous_screen": {
+        "id": "master-12c37391208dda76",
+        "family": "french",
+        "candidate_rank": 10,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {
+          "kind": "cp",
+          "value": 55
+        },
+        "expected_score_white_proxy": 0.567,
+        "inside_numeric_window": true,
+        "original_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score"
+        ],
+        "blocking_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score"
+        ],
+        "last_two_depth_expected_score_range": [
+          0.5525,
+          0.567
+        ],
+        "last_two_spread": 0.014499999999999957,
+        "selected_report": {
+          "depth": 19,
+          "hashfull": 23,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 256689,
+          "nps": 1056333,
+          "pv": [
+            "d3b5",
+            "a6b5",
+            "b1c3",
+            "b5b4",
+            "c3e2",
+            "g8e7",
+            "e2g3",
+            "h7h5",
+            "c1g5",
+            "d8c7",
+            "d1d2",
+            "e7g6",
+            "h2h3",
+            "f8e7",
+            "f1c1",
+            "c7d7",
+            "g3e2",
+            "e8g8",
+            "e2f4",
+            "e7g5",
+            "f3g5",
+            "g6f4",
+            "d2f4"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 55
+          },
+          "seldepth": 36,
+          "tbhits": 0,
+          "time": 243,
+          "upperbound": false,
+          "wdl": [
+            136,
+            862,
+            2
+          ]
+        },
+        "final_report": {
+          "depth": 20,
+          "hashfull": 48,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 500214,
+          "nps": 1004445,
+          "pv": [
+            "d3b5",
+            "a6b5"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 42
+          },
+          "seldepth": 48,
+          "tbhits": 0,
+          "time": 498,
+          "upperbound": true,
+          "wdl": [
+            85,
+            912,
+            3
+          ]
+        },
+        "receipt": "balance-screen/g054-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "6b2bcb75a59a91f6a64f18dc45008c124a4385f7ccafd0286292be7a60410899"
+      }
+    },
+    {
+      "id": "master-3410abf3823a2f8e",
+      "fen": null,
+      "moves": [
+        "e2e4",
+        "c7c6",
+        "d2d4",
+        "d7d5",
+        "e4e5",
+        "c8f5",
+        "g1f3",
+        "e7e6",
+        "f1e2",
+        "b8d7",
+        "e1g1",
+        "g8e7",
+        "c2c3",
+        "h7h6",
+        "b1a3",
+        "a7a6"
+      ],
+      "family": "caro-kann",
+      "candidate_rank": 3,
+      "structural_kinds": [
+        "closed"
+      ],
+      "previous_screen": {
+        "id": "master-3410abf3823a2f8e",
+        "family": "caro-kann",
+        "candidate_rank": 3,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {
+          "kind": "cp",
+          "value": 37
+        },
+        "expected_score_white_proxy": 0.5365,
+        "inside_numeric_window": true,
+        "original_flags": [
+          "fewer_than_two_distinct_depth_numeric_reports",
+          "last_score_update_not_selected_exact_score"
+        ],
+        "blocking_flags": [
+          "distinct_depth_stability_not_met",
+          "fewer_than_two_distinct_depth_numeric_reports"
+        ],
+        "last_two_depth_expected_score_range": [
+          0.5365,
+          0.5365
+        ],
+        "last_two_spread": null,
+        "selected_report": {
+          "depth": 17,
+          "hashfull": 22,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 238260,
+          "nps": 1013872,
+          "pv": [
+            "b2b4",
+            "a6a5",
+            "b4b5",
+            "d7b6",
+            "b5c6",
+            "b7c6",
+            "f3e1",
+            "a8b8",
+            "e1d3",
+            "e7c8",
+            "a1b1",
+            "f8e7",
+            "a3c2"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 37
+          },
+          "seldepth": 27,
+          "tbhits": 0,
+          "time": 235,
+          "upperbound": false,
+          "wdl": [
+            77,
+            919,
+            4
+          ]
+        },
+        "final_report": {
+          "depth": 18,
+          "hashfull": 48,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 500534,
+          "nps": 981439,
+          "pv": [
+            "b2b4",
+            "d7b6"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 25
+          },
+          "seldepth": 35,
+          "tbhits": 0,
+          "time": 510,
+          "upperbound": true,
+          "wdl": [
+            49,
+            944,
+            7
+          ]
+        },
+        "receipt": "balance-screen/g062-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "13c9c629b250f391baa1abb76ba362419d096e479fbfd16aa77e2956ea2be214"
+      }
+    },
+    {
+      "id": "master-4ba74223451b5a9e",
+      "fen": null,
+      "moves": [
+        "e2e4",
+        "c7c5",
+        "b2b3",
+        "b8c6",
+        "c1b2",
+        "d7d6",
+        "f2f4",
+        "a7a6",
+        "g1f3",
+        "e7e6",
+        "d1e2",
+        "g8f6",
+        "b1c3",
+        "f8e7",
+        "e1c1",
+        "e8g8"
+      ],
+      "family": "sicilian-closed-anti",
+      "candidate_rank": 3,
+      "structural_kinds": [
+        "opposite_castled"
+      ],
+      "previous_screen": {
+        "id": "master-4ba74223451b5a9e",
+        "family": "sicilian-closed-anti",
+        "candidate_rank": 3,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {
+          "kind": "cp",
+          "value": 66
+        },
+        "expected_score_white_proxy": 0.602,
+        "inside_numeric_window": false,
+        "original_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score"
+        ],
+        "blocking_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score"
+        ],
+        "last_two_depth_expected_score_range": [
+          0.602,
+          0.6045
+        ],
+        "last_two_spread": 0.0025000000000000577,
+        "selected_report": {
+          "depth": 18,
+          "hashfull": 33,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 380492,
+          "nps": 1028356,
+          "pv": [
+            "d2d4",
+            "c5d4",
+            "f3d4",
+            "d6d5",
+            "g2g4",
+            "d8c7",
+            "e4e5",
+            "f6d7",
+            "f1g2",
+            "e7b4",
+            "e2d2",
+            "c6d4",
+            "d2d4",
+            "b4c5",
+            "d4d2",
+            "b7b5",
+            "c1b1",
+            "c8b7",
+            "c3e2",
+            "a6a5",
+            "e2d4",
+            "a5a4",
+            "b3b4"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 66
+          },
+          "seldepth": 31,
+          "tbhits": 0,
+          "time": 370,
+          "upperbound": false,
+          "wdl": [
+            205,
+            794,
+            1
+          ]
+        },
+        "final_report": {
+          "depth": 19,
+          "hashfull": 43,
+          "lowerbound": true,
+          "multipv": 1,
+          "nodes": 500438,
+          "nps": 1042579,
+          "pv": [
+            "d2d4",
+            "c6d4"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 75
+          },
+          "seldepth": 32,
+          "tbhits": 0,
+          "time": 480,
+          "upperbound": false,
+          "wdl": [
+            271,
+            728,
+            1
+          ]
+        },
+        "receipt": "balance-screen/g077-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "dbc5527311ceb921a2be57e6a8e06b7795fac6ef5cbfaa4b2636e4b3a9586d7c"
+      }
+    },
+    {
+      "id": "master-74d4433804c4ee15",
+      "fen": null,
+      "moves": [
+        "e2e4",
+        "c7c5",
+        "g1f3",
+        "e7e6",
+        "c2c3",
+        "d7d5",
+        "e4e5",
+        "d5d4",
+        "d2d3",
+        "b8c6",
+        "g2g3",
+        "g8e7",
+        "f1g2",
+        "g7g6",
+        "e1g1",
+        "f8g7"
+      ],
+      "family": "sicilian-classical-sveshnikov-taimanov",
+      "candidate_rank": 2,
+      "structural_kinds": [
+        "closed"
+      ],
+      "previous_screen": {
+        "id": "master-74d4433804c4ee15",
+        "family": "sicilian-classical-sveshnikov-taimanov",
+        "candidate_rank": 2,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {
+          "kind": "cp",
+          "value": 94
+        },
+        "expected_score_white_proxy": 0.718,
+        "inside_numeric_window": false,
+        "original_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score"
+        ],
+        "blocking_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score"
+        ],
+        "last_two_depth_expected_score_range": [
+          0.7145,
+          0.718
+        ],
+        "last_two_spread": 0.0034999999999999476,
+        "selected_report": {
+          "depth": 18,
+          "hashfull": 30,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 376453,
+          "nps": 941132,
+          "pv": [
+            "f1e1",
+            "e8g8",
+            "c3c4",
+            "a8b8",
+            "c1f4",
+            "b7b5",
+            "b2b3",
+            "b5c4",
+            "b3c4",
+            "c8b7",
+            "a2a3",
+            "e7c8",
+            "b1d2",
+            "c8b6",
+            "h2h4"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 94
+          },
+          "seldepth": 31,
+          "tbhits": 0,
+          "time": 400,
+          "upperbound": false,
+          "wdl": [
+            436,
+            564,
+            0
+          ]
+        },
+        "final_report": {
+          "depth": 19,
+          "hashfull": 41,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 500539,
+          "nps": 895418,
+          "pv": [
+            "f1e1",
+            "d4c3"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 85
+          },
+          "seldepth": 33,
+          "tbhits": 0,
+          "time": 559,
+          "upperbound": true,
+          "wdl": [
+            356,
+            643,
+            1
+          ]
+        },
+        "receipt": "balance-screen/g091-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "46ee44015732f8c4691950cfc40da2aff81c8ef1a5a1d71b378d68919095a649"
+      }
+    },
+    {
+      "id": "master-59946652f4dfd29a",
+      "fen": null,
+      "moves": [
+        "e2e4",
+        "d7d5",
+        "e4d5",
+        "d8d5",
+        "b1c3",
+        "d5d6",
+        "d2d4",
+        "g8f6",
+        "g1f3",
+        "g7g6",
+        "c1g5",
+        "f8g7",
+        "d1d2",
+        "e8g8",
+        "e1c1",
+        "a7a6"
+      ],
+      "family": "pirc-modern-other-semiopen",
+      "candidate_rank": 1,
+      "structural_kinds": [
+        "opposite_castled"
+      ],
+      "previous_screen": {
+        "id": "master-59946652f4dfd29a",
+        "family": "pirc-modern-other-semiopen",
+        "candidate_rank": 1,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {
+          "kind": "cp",
+          "value": 72
+        },
+        "expected_score_white_proxy": 0.62,
+        "inside_numeric_window": false,
+        "original_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ],
+        "blocking_flags": [
+          "distinct_depth_stability_not_met",
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_two_report_estimates_unstable"
+        ],
+        "last_two_depth_expected_score_range": [
+          0.62,
+          0.716
+        ],
+        "last_two_spread": 0.09599999999999997,
+        "selected_report": {
+          "depth": 17,
+          "hashfull": 38,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 412914,
+          "nps": 938440,
+          "pv": [
+            "g5f4",
+            "d6b6",
+            "f3e5",
+            "b8c6",
+            "h2h4",
+            "c8f5",
+            "c3a4",
+            "b6b4",
+            "e5c6",
+            "b4d2",
+            "f4d2",
+            "b7c6",
+            "f2f3",
+            "f6h5",
+            "g2g4",
+            "h5g3",
+            "h1h3"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 72
+          },
+          "seldepth": 27,
+          "tbhits": 0,
+          "time": 440,
+          "upperbound": false,
+          "wdl": [
+            241,
+            758,
+            1
+          ]
+        },
+        "final_report": {
+          "depth": 18,
+          "hashfull": 47,
+          "lowerbound": true,
+          "multipv": 1,
+          "nodes": 500410,
+          "nps": 940620,
+          "pv": [
+            "g5f4",
+            "d6b6"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 87
+          },
+          "seldepth": 25,
+          "tbhits": 0,
+          "time": 532,
+          "upperbound": false,
+          "wdl": [
+            374,
+            626,
+            0
+          ]
+        },
+        "receipt": "balance-screen/g120-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "f67ec4dcddf47eee51eccec1ceddb3df46e64ee652f1050ec6287c72a5e7c956"
+      }
+    },
+    {
+      "id": "master-6c5cd70d5cf275c4",
+      "fen": null,
+      "moves": [
+        "d2d4",
+        "g8f6",
+        "c2c4",
+        "e7e6",
+        "g1f3",
+        "f8b4",
+        "b1d2",
+        "e8g8",
+        "a2a3",
+        "b4e7",
+        "e2e4",
+        "d7d6",
+        "f1e2",
+        "c7c5",
+        "d4d5",
+        "e6e5"
+      ],
+      "family": "queens-indian-bogo",
+      "candidate_rank": 3,
+      "structural_kinds": [
+        "closed"
+      ],
+      "previous_screen": {
+        "id": "master-6c5cd70d5cf275c4",
+        "family": "queens-indian-bogo",
+        "candidate_rank": 3,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {
+          "kind": "cp",
+          "value": 108
+        },
+        "expected_score_white_proxy": 0.7895,
+        "inside_numeric_window": false,
+        "original_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score"
+        ],
+        "blocking_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score"
+        ],
+        "last_two_depth_expected_score_range": [
+          0.7895,
+          0.7965
+        ],
+        "last_two_spread": 0.007000000000000006,
+        "selected_report": {
+          "depth": 18,
+          "hashfull": 37,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 369266,
+          "nps": 964140,
+          "pv": [
+            "h2h4",
+            "b8a6",
+            "f3h2",
+            "f6e8",
+            "g2g3",
+            "a6c7",
+            "d2b1",
+            "c8d7",
+            "a3a4",
+            "c7a6",
+            "b1c3",
+            "a6b4",
+            "e2g4",
+            "d7g4",
+            "h2g4",
+            "d8d7"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 108
+          },
+          "seldepth": 28,
+          "tbhits": 0,
+          "time": 383,
+          "upperbound": false,
+          "wdl": [
+            579,
+            421,
+            0
+          ]
+        },
+        "final_report": {
+          "depth": 19,
+          "hashfull": 54,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 500298,
+          "nps": 943958,
+          "pv": [
+            "h2h4",
+            "b8a6"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 101
+          },
+          "seldepth": 28,
+          "tbhits": 0,
+          "time": 530,
+          "upperbound": true,
+          "wdl": [
+            506,
+            494,
+            0
+          ]
+        },
+        "receipt": "balance-screen/g212-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "54d1087e6919278713604c6db26cbdfd7b6671f863139667ce3b22b7b47d136e"
+      }
+    },
+    {
+      "id": "master-358402e70661a59b",
+      "fen": null,
+      "moves": [
+        "d2d4",
+        "g8f6",
+        "c2c4",
+        "e7e6",
+        "b1c3",
+        "f8b4",
+        "d1c2",
+        "e8g8",
+        "e2e4",
+        "d7d5",
+        "e4e5",
+        "f6e4",
+        "f1d3",
+        "c7c5",
+        "g1e2",
+        "f7f5"
+      ],
+      "family": "nimzo-indian",
+      "candidate_rank": 1,
+      "structural_kinds": [
+        "closed"
+      ],
+      "previous_screen": {
+        "id": "master-358402e70661a59b",
+        "family": "nimzo-indian",
+        "candidate_rank": 1,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {
+          "kind": "cp",
+          "value": 50
+        },
+        "expected_score_white_proxy": 0.559,
+        "inside_numeric_window": true,
+        "original_flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ],
+        "blocking_flags": [
+          "distinct_depth_stability_not_met",
+          "last_two_report_estimates_unstable"
+        ],
+        "last_two_depth_expected_score_range": [
+          0.5295,
+          0.559
+        ],
+        "last_two_spread": 0.02950000000000008,
+        "selected_report": {
+          "depth": 20,
+          "hashfull": 32,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 385364,
+          "nps": 1061608,
+          "pv": [
+            "e5f6",
+            "e4f6",
+            "c4d5",
+            "c5d4",
+            "e2d4",
+            "e6d5",
+            "e1g1",
+            "b8c6",
+            "c1e3",
+            "g8h8",
+            "h2h3",
+            "c8d7",
+            "a1d1",
+            "a8c8",
+            "a2a3",
+            "b4a5",
+            "d4f3",
+            "a5b6",
+            "e3g5"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 50
+          },
+          "seldepth": 32,
+          "tbhits": 0,
+          "time": 363,
+          "upperbound": false,
+          "wdl": [
+            121,
+            876,
+            3
+          ]
+        },
+        "final_report": {
+          "depth": 21,
+          "hashfull": 43,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 500098,
+          "nps": 1041870,
+          "pv": [
+            "e5f6",
+            "e4f6"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 42
+          },
+          "seldepth": 34,
+          "tbhits": 0,
+          "time": 480,
+          "upperbound": true,
+          "wdl": [
+            89,
+            907,
+            4
+          ]
+        },
+        "receipt": "balance-screen/g225-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "1e2fa4e1b1e44dc1c4e58e8566121ae5d9f14605946da95a2174a6f5a9c1c438"
+      }
+    },
+    {
+      "id": "master-433deca1da621ce1",
+      "fen": null,
+      "moves": [
+        "g1f3",
+        "d7d5",
+        "g2g3",
+        "b8c6",
+        "d2d4",
+        "c8g4",
+        "f1g2",
+        "d8d7",
+        "e1g1",
+        "e8c8",
+        "c2c4",
+        "d5c4",
+        "b1d2",
+        "e7e5",
+        "d1a4",
+        "a7a6"
+      ],
+      "family": "reti",
+      "candidate_rank": 2,
+      "structural_kinds": [
+        "opposite_castled"
+      ],
+      "previous_screen": {
+        "id": "master-433deca1da621ce1",
+        "family": "reti",
+        "candidate_rank": 2,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {
+          "kind": "cp",
+          "value": 88
+        },
+        "expected_score_white_proxy": 0.6905,
+        "inside_numeric_window": false,
+        "original_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ],
+        "blocking_flags": [
+          "distinct_depth_stability_not_met",
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_two_report_estimates_unstable"
+        ],
+        "last_two_depth_expected_score_range": [
+          0.63,
+          0.6905
+        ],
+        "last_two_spread": 0.0605,
+        "selected_report": {
+          "depth": 19,
+          "hashfull": 40,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 417918,
+          "nps": 1024308,
+          "pv": [
+            "d4e5",
+            "c6e5",
+            "a4d7",
+            "e5d7",
+            "d2c4",
+            "g8f6",
+            "c1f4",
+            "f6d5",
+            "f4d2",
+            "d5b6",
+            "f1c1",
+            "f7f6",
+            "c4a5",
+            "d7c5"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 88
+          },
+          "seldepth": 34,
+          "tbhits": 0,
+          "time": 408,
+          "upperbound": false,
+          "wdl": [
+            381,
+            619,
+            0
+          ]
+        },
+        "final_report": {
+          "depth": 20,
+          "hashfull": 46,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 500304,
+          "nps": 1006647,
+          "pv": [
+            "d4e5",
+            "c6e5"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": 79
+          },
+          "seldepth": 28,
+          "tbhits": 0,
+          "time": 497,
+          "upperbound": true,
+          "wdl": [
+            301,
+            698,
+            1
+          ]
+        },
+        "receipt": "balance-screen/g271-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "d522cd0088e8b4da4071a50c36e3d54552ab265341c2dc7bf7f81e93fe08d2b1"
+      }
+    },
+    {
+      "id": "master-dc4425bb99d4158f",
+      "fen": null,
+      "moves": [
+        "g2g3",
+        "d7d5",
+        "f1g2",
+        "e7e5",
+        "d2d3",
+        "b8c6",
+        "g1f3",
+        "f7f6",
+        "e1g1",
+        "c8e6",
+        "b1c3",
+        "d8d7",
+        "e2e4",
+        "g8e7",
+        "a2a3",
+        "e8c8"
+      ],
+      "family": "other-flank-indian-dutch",
+      "candidate_rank": 7,
+      "structural_kinds": [
+        "opposite_castled"
+      ],
+      "previous_screen": {
+        "id": "master-dc4425bb99d4158f",
+        "family": "other-flank-indian-dutch",
+        "candidate_rank": 7,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {},
+        "expected_score_white_proxy": null,
+        "inside_numeric_window": false,
+        "original_flags": [
+          "fewer_than_two_distinct_depth_numeric_reports",
+          "no_aligned_nonbound_numeric_estimate",
+          "no_nonbound_score_aligned_with_bestmove",
+          "pv_not_verified_legal"
+        ],
+        "blocking_flags": [
+          "distinct_depth_stability_not_met",
+          "fewer_than_two_distinct_depth_numeric_reports",
+          "no_aligned_nonbound_numeric_estimate",
+          "no_nonbound_score_aligned_with_bestmove",
+          "pv_not_verified_legal",
+          "unverified_legal_pv"
+        ],
+        "last_two_depth_expected_score_range": null,
+        "last_two_spread": null,
+        "selected_report": {},
+        "final_report": {
+          "depth": 18,
+          "hashfull": 46,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 500011,
+          "nps": 980413,
+          "pv": [
+            "c3d5",
+            "e7d5"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": -28
+          },
+          "seldepth": 38,
+          "tbhits": 0,
+          "time": 510,
+          "upperbound": true,
+          "wdl": [
+            6,
+            941,
+            53
+          ]
+        },
+        "receipt": "balance-screen/g291-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "c81d326646e5d2c05b6d3d93a5fea34e9f69c58017e50fcd6336e7b5c4862138"
+      }
+    },
+    {
+      "id": "master-50454f23813c3328",
+      "fen": null,
+      "moves": [
+        "d2d4",
+        "d7d5",
+        "b1c3",
+        "c8f5",
+        "f2f3",
+        "e7e6",
+        "e2e4",
+        "f5g6",
+        "c1f4",
+        "g8f6",
+        "d1d2",
+        "d5e4",
+        "e1c1",
+        "f8b4",
+        "g1e2",
+        "e8g8"
+      ],
+      "family": "queens-pawn-other",
+      "candidate_rank": 5,
+      "structural_kinds": [
+        "opposite_castled"
+      ],
+      "previous_screen": {
+        "id": "master-50454f23813c3328",
+        "family": "queens-pawn-other",
+        "candidate_rank": 5,
+        "status": "unresolved",
+        "excluded_qualification_exposure": false,
+        "white_score": {
+          "kind": "cp",
+          "value": -87
+        },
+        "expected_score_white_proxy": 0.3165,
+        "inside_numeric_window": false,
+        "original_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score"
+        ],
+        "blocking_flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score"
+        ],
+        "last_two_depth_expected_score_range": [
+          0.2995,
+          0.3165
+        ],
+        "last_two_spread": 0.017000000000000015,
+        "selected_report": {
+          "depth": 18,
+          "hashfull": 31,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 333244,
+          "nps": 1000732,
+          "pv": [
+            "a2a3",
+            "e4f3",
+            "g2f3",
+            "b4d6",
+            "f4g5",
+            "b8d7",
+            "h2h4",
+            "g6h5",
+            "f1g2",
+            "c7c6",
+            "c1b1",
+            "d8a5",
+            "h1g1",
+            "f8e8",
+            "e2f4",
+            "d6f4",
+            "d2f4"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": -87
+          },
+          "seldepth": 34,
+          "tbhits": 0,
+          "time": 333,
+          "upperbound": false,
+          "wdl": [
+            1,
+            631,
+            368
+          ]
+        },
+        "final_report": {
+          "depth": 19,
+          "hashfull": 48,
+          "lowerbound": false,
+          "multipv": 1,
+          "nodes": 500010,
+          "nps": 982337,
+          "pv": [
+            "a2a3",
+            "e4f3"
+          ],
+          "score": {
+            "kind": "cp",
+            "value": -94
+          },
+          "seldepth": 31,
+          "tbhits": 0,
+          "time": 509,
+          "upperbound": true,
+          "wdl": [
+            0,
+            561,
+            439
+          ]
+        },
+        "receipt": "balance-screen/g304-p016-unrestricted-attempt0000.json",
+        "receipt_sha256": "920706955ce76659c620fae8512377123de41e690538db752516106f2f473aaf"
+      }
+    }
+  ]
+}

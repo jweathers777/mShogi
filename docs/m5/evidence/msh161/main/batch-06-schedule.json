@@ -1,0 +1,259 @@
+{
+  "stage": "main",
+  "seed": "msh161-main-coverage-v1",
+  "pairs": [
+    {
+      "id": "main-06-00",
+      "phase": "main-prepared",
+      "opponent": "oxidation060",
+      "opening": {
+        "id": "master-65a6d3a2e02ffb21",
+        "fen": null,
+        "moves": [
+          "e2e4",
+          "c7c5",
+          "b2b3",
+          "b8c6",
+          "c1b2",
+          "d7d5",
+          "e4d5",
+          "d8d5",
+          "b1c3",
+          "d5e5",
+          "d1e2",
+          "e5e2",
+          "g1e2",
+          "c8f5",
+          "e1c1",
+          "e8c8"
+        ]
+      }
+    },
+    {
+      "id": "main-06-01",
+      "phase": "main-prepared",
+      "opponent": "oxidation060",
+      "opening": {
+        "id": "master-1725c1970305a9f8",
+        "fen": null,
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1b5",
+          "g8f6",
+          "d2d3",
+          "d7d6",
+          "e1g1",
+          "c8d7",
+          "f1e1",
+          "g7g6",
+          "d3d4",
+          "f8g7",
+          "d4d5",
+          "c6e7"
+        ]
+      }
+    },
+    {
+      "id": "main-06-02",
+      "phase": "main-prepared",
+      "opponent": "oxidation060",
+      "opening": {
+        "id": "master-77f9302c5b2f8fa1",
+        "fen": null,
+        "moves": [
+          "d2d4",
+          "d7d5",
+          "g1f3",
+          "g8f6",
+          "e2e3",
+          "c8f5",
+          "f3h4",
+          "f5e6",
+          "f1d3",
+          "g7g6",
+          "c2c3",
+          "f8g7",
+          "b1d2",
+          "b8d7",
+          "e1g1",
+          "c7c5"
+        ]
+      }
+    },
+    {
+      "id": "main-06-03",
+      "phase": "main-prepared",
+      "opponent": "oxidation060",
+      "opening": {
+        "id": "master-af1c491f541fcd63",
+        "fen": null,
+        "moves": [
+          "e2e4",
+          "c7c5",
+          "g1f3",
+          "b8c6",
+          "d2d4",
+          "c5d4",
+          "f3d4",
+          "e7e5",
+          "d4b5",
+          "d7d6",
+          "c2c4",
+          "f8e7",
+          "b2b3",
+          "f7f5",
+          "e4f5",
+          "c8f5"
+        ]
+      }
+    },
+    {
+      "id": "main-06-04",
+      "phase": "main-prepared",
+      "opponent": "oxidation060",
+      "opening": {
+        "id": "master-e8896406a3539181",
+        "fen": null,
+        "moves": [
+          "g1f3",
+          "d7d5",
+          "g2g3",
+          "g8f6",
+          "f1g2",
+          "e7e6",
+          "e1g1",
+          "f8e7",
+          "d2d3",
+          "b8c6",
+          "b1d2",
+          "e6e5",
+          "e2e4",
+          "d5d4",
+          "d2c4",
+          "f6d7"
+        ]
+      }
+    },
+    {
+      "id": "main-06-05",
+      "phase": "main-prepared",
+      "opponent": "oxidation060",
+      "opening": {
+        "id": "master-20f401fe690ac6b1",
+        "fen": null,
+        "moves": [
+          "c2c4",
+          "g7g6",
+          "g1f3",
+          "f8g7",
+          "g2g3",
+          "g8f6",
+          "f1g2",
+          "c7c5",
+          "b1c3",
+          "e8g8",
+          "d2d4",
+          "d7d5",
+          "c4d5",
+          "f6d5",
+          "e1g1",
+          "c5d4"
+        ]
+      }
+    },
+    {
+      "id": "main-06-06",
+      "phase": "main-prepared",
+      "opponent": "oxidation060",
+      "opening": {
+        "id": "master-cf44fc282a4611c8",
+        "fen": null,
+        "moves": [
+          "g1f3",
+          "g8f6",
+          "c2c4",
+          "c7c5",
+          "g2g3",
+          "b7b6",
+          "f1g2",
+          "c8b7",
+          "e1g1",
+          "g7g6",
+          "b1c3",
+          "f8g7",
+          "f1e1",
+          "d7d6",
+          "e2e4",
+          "e7e5"
+        ]
+      }
+    },
+    {
+      "id": "main-06-07",
+      "phase": "main-prepared",
+      "opponent": "oxidation060",
+      "opening": {
+        "id": "master-5b241c103df24fe4",
+        "fen": null,
+        "moves": [
+          "e2e4",
+          "c7c6",
+          "d2d4",
+          "d7d5",
+          "b1d2",
+          "d5e4",
+          "d2e4",
+          "g8f6",
+          "e4f6",
+          "e7f6",
+          "d1e2",
+          "f8e7",
+          "c1e3",
+          "e8g8",
+          "e1c1",
+          "f8e8"
+        ]
+      }
+    },
+    {
+      "id": "main-06-08",
+      "phase": "main-prepared",
+      "opponent": "oxidation060",
+      "opening": {
+        "id": "master-e88a56cc34a465e5",
+        "fen": null,
+        "moves": [
+          "e2e3",
+          "g7g6",
+          "d2d4",
+          "g8f6",
+          "c2c4",
+          "f8g7",
+          "g1f3",
+          "e8g8",
+          "f1e2",
+          "d7d6",
+          "b1c3",
+          "b8d7",
+          "b2b4",
+          "e7e5",
+          "c1b2",
+          "f8e8"
+        ]
+      }
+    },
+    {
+      "id": "main-06-unaided",
+      "phase": "main-unaided",
+      "opponent": "oxidation060",
+      "opening": {
+        "id": "unaided-main-06",
+        "fen": null,
+        "moves": []
+      }
+    }
+  ]
+}

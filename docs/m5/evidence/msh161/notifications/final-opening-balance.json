@@ -1,0 +1,26 @@
+{
+  "label": "MSH-161 final opening balance checks",
+  "thread": "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+  "command": [
+    "/private/tmp/msh139/venv/bin/python",
+    "docs/m5/evidence/msh161/analysis.py",
+    "docs/m5/evidence/msh161/sources/next-balance-roots-v1.json",
+    "docs/m5/evidence/msh161/final-balance-screen",
+    "--roots",
+    "--nodes",
+    "5000000"
+  ],
+  "state_artifact": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/final-balance-screen/resources.json",
+  "wrapper_pid": 81653,
+  "started_epoch": 1794382950.481588,
+  "status": "success",
+  "queue_attempted": true,
+  "cleanup_scope": "Own child process group only; engines detached by existing helpers require their own receipts/reconciliation; not a descendant-tree cleanup guarantee",
+  "child_pid": 81678,
+  "computation_returncode": 0,
+  "residual_group_detected": false,
+  "process_group_settled": true,
+  "finished_epoch": 1794383126.222373,
+  "queue_returncode": 0,
+  "queue_accepted": true
+}

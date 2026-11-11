@@ -1,0 +1,10 @@
+{
+  "scope": "20qualificationgames,allmoveinitial+extension,source500k+32deeper,25pilotqueries+2originalsmoke",
+  "native_pair_wall_seconds": 11531.1454933309,
+  "native_child_cpu_seconds": 11550.604626,
+  "reference_query_wall_seconds": 3644.0797803364694,
+  "reference_child_cpu_seconds": 3556.681776,
+  "reference_attempts": 5655,
+  "failed_reference_attempts": 0,
+  "no_double_count": "Parent chain elapsed overlaps child/query times; not added. Smoke reused withoutqueries countedonce. OS/gate failures separately preserved. Build/tests/notification time separate."
+}

@@ -1,0 +1,37 @@
+{
+  "status": "supplement_selection_frozen_before_reference_screen",
+  "purpose": "Repair post-qualification-exclusion opposite-castling and closed-center coverage deficits; all sources are from original master archives, no new corpus or competitive-outcome selection.",
+  "method": "Original family order round-robin; within family original SHA selection_hash order; exclude all330original reserve roots; choose12opposite-castled then8closed-center roots without repeats.",
+  "counts": {
+    "opposite_castled": 12,
+    "closed": 8
+  },
+  "original_candidate_sha256": "6781434f8f8f1202c6984499d5f2ab6e40a1cbc2f481a119672d42db9b9b462d",
+  "original_source_manifest_sha256": "ed7f3b36dcd3038024651d9b924da5767c2736ba3d03f4f36ce97b83ed2703b0",
+  "eligible_pool_sha256": "d44e5562482d1876e62ce47b389df87afec97abd943370b740993e426bf84337",
+  "supplement_sha256": "555cb20bacf9ae88e15f1d9cc5a44cb5e3e45643876037d3a12b8f5885b0914b",
+  "next_input_sha256": "162bea12c8f1a0a3a0123cb9a9319e6fab8e9232abf7937027520ee3e006fbed",
+  "next_input_roots": 32,
+  "ids": [
+    "master-e53f97f454dd4d39",
+    "master-e40ca51df84d949f",
+    "master-d09b3abd544fbe19",
+    "master-e12c66fe745992c1",
+    "master-ef6716a85a2b70dc",
+    "master-fb64d2bdc38b222e",
+    "master-c65a97ca6a65125c",
+    "master-079d6a81cc13b094",
+    "master-d05549b1bf38bbb5",
+    "master-f79cfe68ff7d6d63",
+    "master-7fe96550773cbb02",
+    "master-9edaaa5d89c04dce",
+    "master-7f71e05e8f73cfb3",
+    "master-f83e36573ccb3635",
+    "master-7b301f909d6c6db4",
+    "master-d5ac1dc809beab96",
+    "master-a8ba9923a1d215d0",
+    "master-85279a2809714757",
+    "master-a9afe34422cec856",
+    "master-ca6c93ee8e581932"
+  ]
+}

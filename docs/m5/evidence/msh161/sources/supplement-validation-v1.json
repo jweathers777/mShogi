@@ -1,0 +1,8 @@
+{
+  "supplement_records": 20,
+  "complete_source_histories_legally_replayed": 20,
+  "exact_root_histories_and_fens": 20,
+  "unique_roots_excluding_original330": 20,
+  "supplement_sha256": "555cb20bacf9ae88e15f1d9cc5a44cb5e3e45643876037d3a12b8f5885b0914b",
+  "engine_runs": 0
+}

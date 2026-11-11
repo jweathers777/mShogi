@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "schedules": 10,
+  "prepared_pairs": 90,
+  "unaided_pairs": 10,
+  "main_games": 200,
+  "unique_prepared": 90,
+  "opponent": "oxidation060",
+  "freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+  "engines_run": false
+}

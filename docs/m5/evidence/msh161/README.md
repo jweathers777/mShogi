@@ -158,3 +158,38 @@ been queued immediately; next action is its substantive gameplay/method review,
 not another queue test or scheduler. Four notifier tests pass; targeted macOS
 verification, no Linux/Windows claim. Group probes denied by the OS remain unknown
 and require cleanup review; failure notification still proceeds.
+
+## Current authoritative handoff — main study launched
+
+Oxidation0.6.0 is now the FIXED main opponent. Independent completed20game
+qualification review supports practical prepared-position resistance, with explicit
+uncertainty and level combined start/prepared score. Do not switch references in
+response to main outcomes. `main-method.md` is the adopted v1procedure;
+`main-freeze.json` binds all source/helpers/schedules. `freeze-review.md` and
+`main-opening-review.md` passed.90roots across22families meet every unchangedquota
+(16symmetric,12oppositecastled,15closed,30open); original4qualificationroots excluded.
+All32deeper source checks succeeded; source admission is complete.
+
+Ten frozen20game batches each contain9preparedpairs+1unaidedpair,200main games
+in total. Batch01 launched through notify_exit(session72092), state
+`main/batch-01/chain.json`, notificationreceipt `notifications/main-batch-01.json`.
+The reviewed main_batch software runs native games/replay, both-player500k
+analysis, phase-tagged v1screening and5Mmatched singleton followups plus stratified
+10%nonflagged audit. It does not silently confirm chess mistakes. Completed-batch
+review must adjudicate consequential claims at20M as specified, review linked
+opportunities/successes, update cumulative categories and then launch batch02
+through notify_exit. Never stop coverage at the first plausible weakness.
+
+The final-opening-balance exit notification was already handled in this turn:
+its32checks completed, admission/review/freeze succeeded, and batch01 is running.
+If that queued message arrives now, treat it as already consumed; do not duplicate
+source screens, freeze files or batch01. Await the actual main-batch exit message.
+No timer is installed. No production search/evaluation/rules changed.
+
+Full completed qualification/reference evidence is in
+`qualification-complete-evidence.tar.gz`/`qualification-complete-bundle.json`,
+plus the earlier initial-reference bundle; raw local directories support review.
+`qualification-resource-total.json` records20games and5655reference attempts,
+including32deeper sources and25pilot queries. Do not count overlapping parentchain
+walltimes again. Selected source and method judgments remain finite estimates,
+not mathematical proofs. All final study deliverables remain unfinished.

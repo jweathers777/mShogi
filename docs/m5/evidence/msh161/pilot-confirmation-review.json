@@ -1,0 +1,5368 @@
+{
+  "schema": 1,
+  "method": "screen_v1.describe retained without clearing flags",
+  "decisions": [
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+        "game": 0,
+        "ply": 52,
+        "played": "g2h2",
+        "alternativefromexistingPV": "e4g3",
+        "reason": "target: usable advantage-dissipation screen",
+        "same_move_control": false
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q00-e4g3/g000-p052-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "e4g3",
+            "expected_score_mover": 0.9995,
+            "selected_report": {
+              "depth": 25,
+              "hashfull": 380,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 4189125,
+              "nps": 1030535,
+              "pv": [
+                "e4g3",
+                "f7d5",
+                "g2g1",
+                "h5g3",
+                "f2g3",
+                "d8d6",
+                "a3a4",
+                "h8g8",
+                "g3g4",
+                "f5f4",
+                "e1e5",
+                "f4f3",
+                "c1b2",
+                "f3h3",
+                "g1e1",
+                "h3h1",
+                "e1e3",
+                "e8f8",
+                "e5e7",
+                "f8f1",
+                "e3e5",
+                "f1b1",
+                "b2c3"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 250
+              },
+              "seldepth": 57,
+              "tbhits": 0,
+              "time": 4065,
+              "upperbound": false,
+              "wdl": [
+                999,
+                1,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 24,
+                "hashfull": 278,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 2978031,
+                "nps": 1015699,
+                "pv": [
+                  "e4g3",
+                  "h5g3",
+                  "g2g3",
+                  "d8d6",
+                  "g3c3",
+                  "a5a4",
+                  "b3a4",
+                  "f7d5",
+                  "a4a5",
+                  "f5f3",
+                  "e1e3",
+                  "f3e3",
+                  "c3e3",
+                  "e8a8",
+                  "e3c3",
+                  "d6h2",
+                  "d2e2",
+                  "h2f4",
+                  "e2e3",
+                  "f4f2",
+                  "e3e7"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 284
+                },
+                "seldepth": 52,
+                "tbhits": 0,
+                "time": 2932,
+                "upperbound": false,
+                "wdl": [
+                  1000,
+                  0,
+                  0
+                ]
+              },
+              {
+                "depth": 25,
+                "hashfull": 380,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4189125,
+                "nps": 1030535,
+                "pv": [
+                  "e4g3",
+                  "f7d5",
+                  "g2g1",
+                  "h5g3",
+                  "f2g3",
+                  "d8d6",
+                  "a3a4",
+                  "h8g8",
+                  "g3g4",
+                  "f5f4",
+                  "e1e5",
+                  "f4f3",
+                  "c1b2",
+                  "f3h3",
+                  "g1e1",
+                  "h3h1",
+                  "e1e3",
+                  "e8f8",
+                  "e5e7",
+                  "f8f1",
+                  "e3e5",
+                  "f1b1",
+                  "b2c3"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 250
+                },
+                "seldepth": 57,
+                "tbhits": 0,
+                "time": 4065,
+                "upperbound": false,
+                "wdl": [
+                  999,
+                  1,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.9995,
+              1.0
+            ],
+            "last_two_spread": 0.0004999999999999449,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 26,
+              "hashfull": 441,
+              "lowerbound": true,
+              "multipv": 1,
+              "nodes": 5000396,
+              "nps": 1026143,
+              "pv": [
+                "e4g3",
+                "f7d5"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 286
+              },
+              "seldepth": 45,
+              "tbhits": 0,
+              "time": 4873,
+              "upperbound": false,
+              "wdl": [
+                1000,
+                0,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [
+              "final_same_move_bound_conflicts_with_earlier_cp"
+            ],
+            "flags": [
+              "final_same_move_bound_conflicts_with_earlier_cp",
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        },
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q00-g2h2/g000-p052-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "g2h2",
+            "expected_score_mover": 0.897,
+            "selected_report": {
+              "depth": 26,
+              "hashfull": 484,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000021,
+              "nps": 948590,
+              "pv": [
+                "g2h2",
+                "f7d5",
+                "c5b7",
+                "d8a8",
+                "e4c5",
+                "a5a4",
+                "b3b4",
+                "h5f4",
+                "h3h4",
+                "e8g8",
+                "f2f3",
+                "g8f8",
+                "b7a5",
+                "a8e8",
+                "c5a4",
+                "e7e5",
+                "e1e3",
+                "e8f7",
+                "d4e5",
+                "f4e6",
+                "c1b2",
+                "f5f3",
+                "e3f3",
+                "f7f3"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 128
+              },
+              "seldepth": 41,
+              "tbhits": 0,
+              "time": 5271,
+              "upperbound": false,
+              "wdl": [
+                794,
+                206,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 25,
+                "hashfull": 468,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4839658,
+                "nps": 948208,
+                "pv": [
+                  "g2h2",
+                  "f7d5",
+                  "c5b7",
+                  "d8a8",
+                  "e4c5",
+                  "a5a4",
+                  "b3b4",
+                  "h5f4",
+                  "h3h4",
+                  "e8g8",
+                  "f2f3",
+                  "g8f8",
+                  "b7a5",
+                  "a8e8",
+                  "c5a4",
+                  "e7e5",
+                  "e1e3",
+                  "e8f7",
+                  "d4e5",
+                  "f4e6",
+                  "c1b2",
+                  "f5f3",
+                  "e3f3",
+                  "f7f3"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 128
+                },
+                "seldepth": 41,
+                "tbhits": 0,
+                "time": 5104,
+                "upperbound": false,
+                "wdl": [
+                  794,
+                  206,
+                  0
+                ]
+              },
+              {
+                "depth": 26,
+                "hashfull": 484,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 5000021,
+                "nps": 948590,
+                "pv": [
+                  "g2h2",
+                  "f7d5",
+                  "c5b7",
+                  "d8a8",
+                  "e4c5",
+                  "a5a4",
+                  "b3b4",
+                  "h5f4",
+                  "h3h4",
+                  "e8g8",
+                  "f2f3",
+                  "g8f8",
+                  "b7a5",
+                  "a8e8",
+                  "c5a4",
+                  "e7e5",
+                  "e1e3",
+                  "e8f7",
+                  "d4e5",
+                  "f4e6",
+                  "c1b2",
+                  "f5f3",
+                  "e3f3",
+                  "f7f3"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 128
+                },
+                "seldepth": 41,
+                "tbhits": 0,
+                "time": 5271,
+                "upperbound": false,
+                "wdl": [
+                  794,
+                  206,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.897,
+              0.897
+            ],
+            "last_two_spread": 0.0,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 26,
+              "hashfull": 484,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000021,
+              "nps": 948590,
+              "pv": [
+                "g2h2",
+                "f7d5",
+                "c5b7",
+                "d8a8",
+                "e4c5",
+                "a5a4",
+                "b3b4",
+                "h5f4",
+                "h3h4",
+                "e8g8",
+                "f2f3",
+                "g8f8",
+                "b7a5",
+                "a8e8",
+                "c5a4",
+                "e7e5",
+                "e1e3",
+                "e8f7",
+                "d4e5",
+                "f4e6",
+                "c1b2",
+                "f5f3",
+                "e3f3",
+                "f7f3"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 128
+              },
+              "seldepth": 41,
+              "tbhits": 0,
+              "time": 5271,
+              "upperbound": false,
+              "wdl": [
+                794,
+                206,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.10250000000000004,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [
+        "final_same_move_bound_conflicts_with_earlier_cp",
+        "last_score_update_not_selected_exact_score"
+      ],
+      "classification": "direction_repeated_but_conflicting_bound_unresolved"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+        "game": 0,
+        "ply": 54,
+        "played": "c2c4",
+        "alternativefromexistingPV": "c5b7",
+        "reason": "target: counterplay/advantage preservation",
+        "same_move_control": false
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q01-c2c4/g000-p054-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "c2c4",
+            "expected_score_mover": 0.529,
+            "selected_report": {
+              "depth": 26,
+              "hashfull": 419,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000472,
+              "nps": 1065517,
+              "pv": [
+                "c2c4",
+                "e7e5",
+                "e4g3",
+                "f5g5",
+                "e1e4",
+                "d8f6",
+                "f2f3",
+                "f4h5",
+                "g3h5",
+                "g5h5",
+                "d4e5",
+                "f6f3",
+                "d2d3",
+                "f3f1",
+                "d3d1",
+                "f1f3",
+                "h2d2",
+                "f7e6",
+                "e4e3",
+                "f3f4",
+                "c5e6",
+                "e8e6",
+                "d1e1",
+                "h8g7"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 43
+              },
+              "seldepth": 49,
+              "tbhits": 0,
+              "time": 4693,
+              "upperbound": false,
+              "wdl": [
+                59,
+                940,
+                1
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 25,
+                "hashfull": 406,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4817332,
+                "nps": 1063428,
+                "pv": [
+                  "c2c4",
+                  "e7e5",
+                  "e4g3",
+                  "f5g5",
+                  "e1e4",
+                  "d8f6",
+                  "f2f3",
+                  "f4h5",
+                  "g3h5",
+                  "g5h5",
+                  "d4e5",
+                  "f6f3",
+                  "d2d3",
+                  "f3f1",
+                  "d3d1",
+                  "f1f3",
+                  "h2d2",
+                  "f7e6",
+                  "e4e3",
+                  "f3f4",
+                  "c5e6",
+                  "e8e6",
+                  "d1e1",
+                  "h8g7"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 43
+                },
+                "seldepth": 49,
+                "tbhits": 0,
+                "time": 4530,
+                "upperbound": false,
+                "wdl": [
+                  59,
+                  940,
+                  1
+                ]
+              },
+              {
+                "depth": 26,
+                "hashfull": 419,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 5000472,
+                "nps": 1065517,
+                "pv": [
+                  "c2c4",
+                  "e7e5",
+                  "e4g3",
+                  "f5g5",
+                  "e1e4",
+                  "d8f6",
+                  "f2f3",
+                  "f4h5",
+                  "g3h5",
+                  "g5h5",
+                  "d4e5",
+                  "f6f3",
+                  "d2d3",
+                  "f3f1",
+                  "d3d1",
+                  "f1f3",
+                  "h2d2",
+                  "f7e6",
+                  "e4e3",
+                  "f3f4",
+                  "c5e6",
+                  "e8e6",
+                  "d1e1",
+                  "h8g7"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 43
+                },
+                "seldepth": 49,
+                "tbhits": 0,
+                "time": 4693,
+                "upperbound": false,
+                "wdl": [
+                  59,
+                  940,
+                  1
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.529,
+              0.529
+            ],
+            "last_two_spread": 0.0,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 26,
+              "hashfull": 419,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000472,
+              "nps": 1065517,
+              "pv": [
+                "c2c4",
+                "e7e5",
+                "e4g3",
+                "f5g5",
+                "e1e4",
+                "d8f6",
+                "f2f3",
+                "f4h5",
+                "g3h5",
+                "g5h5",
+                "d4e5",
+                "f6f3",
+                "d2d3",
+                "f3f1",
+                "d3d1",
+                "f1f3",
+                "h2d2",
+                "f7e6",
+                "e4e3",
+                "f3f4",
+                "c5e6",
+                "e8e6",
+                "d1e1",
+                "h8g7"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 43
+              },
+              "seldepth": 49,
+              "tbhits": 0,
+              "time": 4693,
+              "upperbound": false,
+              "wdl": [
+                59,
+                940,
+                1
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [],
+            "status": "complete"
+          }
+        },
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q01-c5b7/g000-p054-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "c5b7",
+            "expected_score_mover": 0.7515,
+            "selected_report": {
+              "depth": 24,
+              "hashfull": 375,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 4023949,
+              "nps": 1002228,
+              "pv": [
+                "c5b7",
+                "d8c8",
+                "b7c5",
+                "e7e5",
+                "h2g3",
+                "c8d8",
+                "g3c3",
+                "d8d5",
+                "c1b2",
+                "e5d4",
+                "d2d4",
+                "d5e5",
+                "c5d7",
+                "e5g7",
+                "d7f6",
+                "e8c8",
+                "d4d7",
+                "f4d5",
+                "f6d5",
+                "c6d5",
+                "c3g7",
+                "h8g7",
+                "e4c5",
+                "g7f8",
+                "e1e2",
+                "h7h5",
+                "f2f4",
+                "f5f4"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 100
+              },
+              "seldepth": 46,
+              "tbhits": 0,
+              "time": 4015,
+              "upperbound": false,
+              "wdl": [
+                503,
+                497,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 23,
+                "hashfull": 334,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3432688,
+                "nps": 991819,
+                "pv": [
+                  "c5b7",
+                  "d8c8",
+                  "e4c5",
+                  "a5a4",
+                  "b3a4",
+                  "g6g5",
+                  "a4a5",
+                  "h7h5",
+                  "a5a6",
+                  "f7c4",
+                  "e1e4",
+                  "e8f8",
+                  "h3h4",
+                  "g5g4",
+                  "b7a5",
+                  "c4a6",
+                  "h2g3",
+                  "f4g6",
+                  "g3e3",
+                  "f8f6",
+                  "e4e6",
+                  "c8f8",
+                  "e6c6",
+                  "f5f3"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 103
+                },
+                "seldepth": 50,
+                "tbhits": 0,
+                "time": 3461,
+                "upperbound": false,
+                "wdl": [
+                  539,
+                  461,
+                  0
+                ]
+              },
+              {
+                "depth": 24,
+                "hashfull": 375,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4023949,
+                "nps": 1002228,
+                "pv": [
+                  "c5b7",
+                  "d8c8",
+                  "b7c5",
+                  "e7e5",
+                  "h2g3",
+                  "c8d8",
+                  "g3c3",
+                  "d8d5",
+                  "c1b2",
+                  "e5d4",
+                  "d2d4",
+                  "d5e5",
+                  "c5d7",
+                  "e5g7",
+                  "d7f6",
+                  "e8c8",
+                  "d4d7",
+                  "f4d5",
+                  "f6d5",
+                  "c6d5",
+                  "c3g7",
+                  "h8g7",
+                  "e4c5",
+                  "g7f8",
+                  "e1e2",
+                  "h7h5",
+                  "f2f4",
+                  "f5f4"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 100
+                },
+                "seldepth": 46,
+                "tbhits": 0,
+                "time": 4015,
+                "upperbound": false,
+                "wdl": [
+                  503,
+                  497,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.7515,
+              0.7695
+            ],
+            "last_two_spread": 0.018000000000000016,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 25,
+              "hashfull": 453,
+              "lowerbound": true,
+              "multipv": 1,
+              "nodes": 5000481,
+              "nps": 1017391,
+              "pv": [
+                "c5b7",
+                "d8c8"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 107
+              },
+              "seldepth": 54,
+              "tbhits": 0,
+              "time": 4915,
+              "upperbound": false,
+              "wdl": [
+                579,
+                421,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [
+              "final_same_move_bound_conflicts_with_earlier_expected_score"
+            ],
+            "flags": [
+              "final_same_move_bound_conflicts_with_earlier_expected_score",
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.22249999999999992,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_score_update_not_selected_exact_score"
+      ],
+      "classification": "direction_repeated_but_conflicting_bound_unresolved"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+        "game": 1,
+        "ply": 41,
+        "played": "f6h5",
+        "alternativefromexistingPV": "f6h5",
+        "reason": "control: successful attacking response; initial score uncertain",
+        "same_move_control": true
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q02-f6h5/g001-p041-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "f6h5",
+            "expected_score_mover": 1.0,
+            "selected_report": {
+              "depth": 27,
+              "hashfull": 451,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000420,
+              "nps": 1092987,
+              "pv": [
+                "f6h5",
+                "f3f4",
+                "d8h4",
+                "f4e5",
+                "h5f4",
+                "d2f4",
+                "h4f4",
+                "b4c3",
+                "a8a5",
+                "c3d4",
+                "f4d4",
+                "d1d4",
+                "a5e5",
+                "e2f3",
+                "e6h3",
+                "f1d1",
+                "f8e8",
+                "d4d8",
+                "g8f8",
+                "d8e8",
+                "f8e8",
+                "f3d5",
+                "g7g6",
+                "f2f4",
+                "e5e2",
+                "d1a1",
+                "e8e7",
+                "c2c3",
+                "h3c8"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 285
+              },
+              "seldepth": 60,
+              "tbhits": 0,
+              "time": 4575,
+              "upperbound": false,
+              "wdl": [
+                1000,
+                0,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 26,
+                "hashfull": 366,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4020720,
+                "nps": 1082876,
+                "pv": [
+                  "f6h5",
+                  "f3f4",
+                  "d8h4",
+                  "f4e5",
+                  "h5f4",
+                  "d2f4",
+                  "h4f4",
+                  "b4c3",
+                  "a8a5",
+                  "c3d4",
+                  "f4d4",
+                  "d1d4",
+                  "a5e5",
+                  "e2f3",
+                  "e6h3",
+                  "f1d1",
+                  "f8e8",
+                  "d4d8",
+                  "g8f8",
+                  "d8e8",
+                  "f8e8",
+                  "f3d5",
+                  "g7g6",
+                  "f2f4",
+                  "e5e2",
+                  "d1a1",
+                  "e8e7",
+                  "c2c3",
+                  "h3c8"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 285
+                },
+                "seldepth": 60,
+                "tbhits": 0,
+                "time": 3713,
+                "upperbound": false,
+                "wdl": [
+                  1000,
+                  0,
+                  0
+                ]
+              },
+              {
+                "depth": 27,
+                "hashfull": 451,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 5000420,
+                "nps": 1092987,
+                "pv": [
+                  "f6h5",
+                  "f3f4",
+                  "d8h4",
+                  "f4e5",
+                  "h5f4",
+                  "d2f4",
+                  "h4f4",
+                  "b4c3",
+                  "a8a5",
+                  "c3d4",
+                  "f4d4",
+                  "d1d4",
+                  "a5e5",
+                  "e2f3",
+                  "e6h3",
+                  "f1d1",
+                  "f8e8",
+                  "d4d8",
+                  "g8f8",
+                  "d8e8",
+                  "f8e8",
+                  "f3d5",
+                  "g7g6",
+                  "f2f4",
+                  "e5e2",
+                  "d1a1",
+                  "e8e7",
+                  "c2c3",
+                  "h3c8"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 285
+                },
+                "seldepth": 60,
+                "tbhits": 0,
+                "time": 4575,
+                "upperbound": false,
+                "wdl": [
+                  1000,
+                  0,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              1.0,
+              1.0
+            ],
+            "last_two_spread": 0.0,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 27,
+              "hashfull": 451,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000420,
+              "nps": 1092987,
+              "pv": [
+                "f6h5",
+                "f3f4",
+                "d8h4",
+                "f4e5",
+                "h5f4",
+                "d2f4",
+                "h4f4",
+                "b4c3",
+                "a8a5",
+                "c3d4",
+                "f4d4",
+                "d1d4",
+                "a5e5",
+                "e2f3",
+                "e6h3",
+                "f1d1",
+                "f8e8",
+                "d4d8",
+                "g8f8",
+                "d8e8",
+                "f8e8",
+                "f3d5",
+                "g7g6",
+                "f2f4",
+                "e5e2",
+                "d1a1",
+                "e8e7",
+                "c2c3",
+                "h3c8"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 285
+              },
+              "seldepth": 60,
+              "tbhits": 0,
+              "time": 4575,
+              "upperbound": false,
+              "wdl": [
+                1000,
+                0,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.0,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [],
+      "classification": "successful_control_stable"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "game": 0,
+        "ply": 0,
+        "played": "g1f3",
+        "alternativefromexistingPV": "e2e4",
+        "reason": "control: quiet acceptable opening alternative; initial score uncertain",
+        "same_move_control": false
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q03-e2e4/g000-p000-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "e2e4",
+            "expected_score_mover": 0.518,
+            "selected_report": {
+              "depth": 32,
+              "hashfull": 373,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 4185647,
+              "nps": 1009562,
+              "pv": [
+                "e2e4",
+                "e7e5",
+                "g1f3",
+                "b8c6",
+                "f1b5",
+                "g8f6",
+                "e1g1",
+                "f6e4",
+                "f1e1",
+                "e4d6",
+                "f3e5",
+                "f8e7",
+                "b5f1",
+                "c6e5",
+                "e1e5",
+                "e8g8",
+                "d2d4",
+                "e7f6",
+                "e5e1",
+                "f8e8",
+                "c1f4",
+                "e8e1",
+                "d1e1",
+                "d6e8",
+                "c2c3",
+                "d7d5",
+                "b1d2",
+                "c7c6",
+                "a2a4",
+                "a7a5",
+                "h2h3"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 23
+              },
+              "seldepth": 48,
+              "tbhits": 0,
+              "time": 4146,
+              "upperbound": false,
+              "wdl": [
+                44,
+                948,
+                8
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 31,
+                "hashfull": 328,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3680183,
+                "nps": 1011873,
+                "pv": [
+                  "e2e4",
+                  "e7e5",
+                  "g1f3",
+                  "b8c6",
+                  "f1b5",
+                  "g8f6",
+                  "e1g1",
+                  "f6e4",
+                  "f1e1",
+                  "e4d6",
+                  "f3e5",
+                  "f8e7",
+                  "b5f1",
+                  "c6e5",
+                  "e1e5",
+                  "e8g8",
+                  "d2d4",
+                  "e7f6",
+                  "e5e1",
+                  "f8e8",
+                  "c1f4",
+                  "e8e1",
+                  "d1e1",
+                  "d6e8",
+                  "c2c3",
+                  "d7d5",
+                  "b1d2",
+                  "c7c6",
+                  "e1e3",
+                  "d8e7",
+                  "a1e1",
+                  "e7e3",
+                  "f2e3",
+                  "g7g5",
+                  "f4g3"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 20
+                },
+                "seldepth": 47,
+                "tbhits": 0,
+                "time": 3637,
+                "upperbound": false,
+                "wdl": [
+                  41,
+                  951,
+                  8
+                ]
+              },
+              {
+                "depth": 32,
+                "hashfull": 373,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4185647,
+                "nps": 1009562,
+                "pv": [
+                  "e2e4",
+                  "e7e5",
+                  "g1f3",
+                  "b8c6",
+                  "f1b5",
+                  "g8f6",
+                  "e1g1",
+                  "f6e4",
+                  "f1e1",
+                  "e4d6",
+                  "f3e5",
+                  "f8e7",
+                  "b5f1",
+                  "c6e5",
+                  "e1e5",
+                  "e8g8",
+                  "d2d4",
+                  "e7f6",
+                  "e5e1",
+                  "f8e8",
+                  "c1f4",
+                  "e8e1",
+                  "d1e1",
+                  "d6e8",
+                  "c2c3",
+                  "d7d5",
+                  "b1d2",
+                  "c7c6",
+                  "a2a4",
+                  "a7a5",
+                  "h2h3"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 23
+                },
+                "seldepth": 48,
+                "tbhits": 0,
+                "time": 4146,
+                "upperbound": false,
+                "wdl": [
+                  44,
+                  948,
+                  8
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.5165,
+              0.518
+            ],
+            "last_two_spread": 0.0015000000000000568,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 33,
+              "hashfull": 434,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000374,
+              "nps": 1007733,
+              "pv": [
+                "e2e4",
+                "e7e5"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 18
+              },
+              "seldepth": 46,
+              "tbhits": 0,
+              "time": 4962,
+              "upperbound": true,
+              "wdl": [
+                37,
+                954,
+                9
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        },
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q03-g1f3/g000-p000-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "g1f3",
+            "expected_score_mover": 0.5255,
+            "selected_report": {
+              "depth": 28,
+              "hashfull": 324,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 3306360,
+              "nps": 983450,
+              "pv": [
+                "g1f3",
+                "d7d5",
+                "d2d4",
+                "g8f6",
+                "c2c4",
+                "e7e6",
+                "g2g3",
+                "d5c4",
+                "f1g2",
+                "f8b4",
+                "c1d2",
+                "a7a5",
+                "d1c2",
+                "b8c6",
+                "c2c4",
+                "d8d5",
+                "c4d3",
+                "d5e4",
+                "d3e4",
+                "f6e4",
+                "e2e3",
+                "e4d2",
+                "f3d2",
+                "e6e5",
+                "d4d5",
+                "c6e7",
+                "e1g1",
+                "c8d7"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 29
+              },
+              "seldepth": 42,
+              "tbhits": 0,
+              "time": 3362,
+              "upperbound": false,
+              "wdl": [
+                57,
+                937,
+                6
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 27,
+                "hashfull": 198,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 1949277,
+                "nps": 982993,
+                "pv": [
+                  "g1f3",
+                  "d7d5",
+                  "d2d4",
+                  "g8f6",
+                  "c2c4",
+                  "e7e6",
+                  "g2g3",
+                  "d5c4",
+                  "f1g2",
+                  "f8b4",
+                  "c1d2",
+                  "a7a5",
+                  "d1c1",
+                  "b4d2",
+                  "c1d2",
+                  "c7c6",
+                  "a2a4",
+                  "f6e4",
+                  "d2c2",
+                  "e4d6",
+                  "b1d2",
+                  "b8a6",
+                  "d2c4",
+                  "a6b4",
+                  "c4d6",
+                  "d8d6",
+                  "c2c3"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 20
+                },
+                "seldepth": 35,
+                "tbhits": 0,
+                "time": 1983,
+                "upperbound": false,
+                "wdl": [
+                  40,
+                  952,
+                  8
+                ]
+              },
+              {
+                "depth": 28,
+                "hashfull": 324,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3306360,
+                "nps": 983450,
+                "pv": [
+                  "g1f3",
+                  "d7d5",
+                  "d2d4",
+                  "g8f6",
+                  "c2c4",
+                  "e7e6",
+                  "g2g3",
+                  "d5c4",
+                  "f1g2",
+                  "f8b4",
+                  "c1d2",
+                  "a7a5",
+                  "d1c2",
+                  "b8c6",
+                  "c2c4",
+                  "d8d5",
+                  "c4d3",
+                  "d5e4",
+                  "d3e4",
+                  "f6e4",
+                  "e2e3",
+                  "e4d2",
+                  "f3d2",
+                  "e6e5",
+                  "d4d5",
+                  "c6e7",
+                  "e1g1",
+                  "c8d7"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 29
+                },
+                "seldepth": 42,
+                "tbhits": 0,
+                "time": 3362,
+                "upperbound": false,
+                "wdl": [
+                  57,
+                  937,
+                  6
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.516,
+              0.5255
+            ],
+            "last_two_spread": 0.009499999999999953,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 29,
+              "hashfull": 460,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000290,
+              "nps": 981603,
+              "pv": [
+                "g1f3",
+                "d7d5"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 22
+              },
+              "seldepth": 42,
+              "tbhits": 0,
+              "time": 5094,
+              "upperbound": true,
+              "wdl": [
+                42,
+                950,
+                8
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": -0.007499999999999951,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "classification": "quiet_control_no_material_separation_with_flags"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "game": 0,
+        "ply": 51,
+        "played": "c6b5",
+        "alternativefromexistingPV": "h8c8",
+        "reason": "opponent event: queen-placement opportunity",
+        "same_move_control": false
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q04-c6b5/g000-p051-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "c6b5",
+            "expected_score_mover": 0.0035,
+            "selected_report": {
+              "depth": 24,
+              "hashfull": 365,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 3978897,
+              "nps": 1140085,
+              "pv": [
+                "c6b5",
+                "c5a3",
+                "b5b8",
+                "d4d5",
+                "h8d8",
+                "f3f4",
+                "g7g5",
+                "c4c6",
+                "g5f4",
+                "c6f6",
+                "d7e8",
+                "e3f4",
+                "d8d5",
+                "c1e1",
+                "e8d8",
+                "f6f7",
+                "b8b6",
+                "g1h2",
+                "d5d7",
+                "a3e7",
+                "d8c8",
+                "e1e5",
+                "b6d4",
+                "f7h7"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": -193
+              },
+              "seldepth": 54,
+              "tbhits": 0,
+              "time": 3490,
+              "upperbound": false,
+              "wdl": [
+                0,
+                7,
+                993
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 23,
+                "hashfull": 315,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3284118,
+                "nps": 1122008,
+                "pv": [
+                  "c6b5",
+                  "c5a3",
+                  "b5b8",
+                  "d4d5",
+                  "h8d8",
+                  "f3f4",
+                  "g7g5",
+                  "c4c6",
+                  "g5f4",
+                  "c6f6",
+                  "d7e8",
+                  "e3f4",
+                  "d8d5",
+                  "c1e1",
+                  "e8d8",
+                  "f6f7",
+                  "b8b6",
+                  "g1h2",
+                  "d5d7",
+                  "a3e7",
+                  "d8c8",
+                  "e1e5",
+                  "c8c7",
+                  "f7f5",
+                  "b6f2",
+                  "e7c5"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": -167
+                },
+                "seldepth": 54,
+                "tbhits": 0,
+                "time": 2927,
+                "upperbound": false,
+                "wdl": [
+                  0,
+                  26,
+                  974
+                ]
+              },
+              {
+                "depth": 24,
+                "hashfull": 365,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3978897,
+                "nps": 1140085,
+                "pv": [
+                  "c6b5",
+                  "c5a3",
+                  "b5b8",
+                  "d4d5",
+                  "h8d8",
+                  "f3f4",
+                  "g7g5",
+                  "c4c6",
+                  "g5f4",
+                  "c6f6",
+                  "d7e8",
+                  "e3f4",
+                  "d8d5",
+                  "c1e1",
+                  "e8d8",
+                  "f6f7",
+                  "b8b6",
+                  "g1h2",
+                  "d5d7",
+                  "a3e7",
+                  "d8c8",
+                  "e1e5",
+                  "b6d4",
+                  "f7h7"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": -193
+                },
+                "seldepth": 54,
+                "tbhits": 0,
+                "time": 3490,
+                "upperbound": false,
+                "wdl": [
+                  0,
+                  7,
+                  993
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.0035,
+              0.013
+            ],
+            "last_two_spread": 0.0095,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 25,
+              "hashfull": 437,
+              "lowerbound": true,
+              "multipv": 1,
+              "nodes": 5000204,
+              "nps": 1153715,
+              "pv": [
+                "c6b5",
+                "c5a3"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": -196
+              },
+              "seldepth": 59,
+              "tbhits": 0,
+              "time": 4334,
+              "upperbound": false,
+              "wdl": [
+                0,
+                6,
+                994
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        },
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q04-h8c8/g000-p051-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "h8c8",
+            "expected_score_mover": 0.5,
+            "selected_report": {
+              "depth": 35,
+              "hashfull": 416,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000219,
+              "nps": 1241673,
+              "pv": [
+                "h8c8",
+                "c1a1",
+                "g7g5",
+                "a1a5",
+                "c8a8",
+                "c4a4",
+                "c6a4",
+                "a5a4",
+                "a8a4",
+                "g2g4",
+                "a4a1",
+                "g1g2",
+                "h5h4",
+                "b2b4",
+                "a1a2",
+                "g2g1",
+                "a2d2",
+                "e3e4",
+                "d2d3",
+                "g1f2",
+                "d3d2"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 0
+              },
+              "seldepth": 22,
+              "tbhits": 0,
+              "time": 4027,
+              "upperbound": false,
+              "wdl": [
+                5,
+                990,
+                5
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 34,
+                "hashfull": 380,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4543427,
+                "nps": 1232617,
+                "pv": [
+                  "h8c8",
+                  "c1a1",
+                  "g7g5",
+                  "a1a5",
+                  "c8a8",
+                  "c4a4",
+                  "c6a4",
+                  "a5a4",
+                  "a8a4",
+                  "g2g4",
+                  "a4a1",
+                  "g1g2",
+                  "h5h4",
+                  "b2b4",
+                  "a1a2",
+                  "g2g1",
+                  "a2d2",
+                  "e3e4",
+                  "d2d3",
+                  "g1f2",
+                  "d3d2"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 0
+                },
+                "seldepth": 22,
+                "tbhits": 0,
+                "time": 3686,
+                "upperbound": false,
+                "wdl": [
+                  5,
+                  990,
+                  5
+                ]
+              },
+              {
+                "depth": 35,
+                "hashfull": 416,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 5000219,
+                "nps": 1241673,
+                "pv": [
+                  "h8c8",
+                  "c1a1",
+                  "g7g5",
+                  "a1a5",
+                  "c8a8",
+                  "c4a4",
+                  "c6a4",
+                  "a5a4",
+                  "a8a4",
+                  "g2g4",
+                  "a4a1",
+                  "g1g2",
+                  "h5h4",
+                  "b2b4",
+                  "a1a2",
+                  "g2g1",
+                  "a2d2",
+                  "e3e4",
+                  "d2d3",
+                  "g1f2",
+                  "d3d2"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 0
+                },
+                "seldepth": 22,
+                "tbhits": 0,
+                "time": 4027,
+                "upperbound": false,
+                "wdl": [
+                  5,
+                  990,
+                  5
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.5,
+              0.5
+            ],
+            "last_two_spread": 0.0,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 35,
+              "hashfull": 416,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000219,
+              "nps": 1241673,
+              "pv": [
+                "h8c8",
+                "c1a1",
+                "g7g5",
+                "a1a5",
+                "c8a8",
+                "c4a4",
+                "c6a4",
+                "a5a4",
+                "a8a4",
+                "g2g4",
+                "a4a1",
+                "g1g2",
+                "h5h4",
+                "b2b4",
+                "a1a2",
+                "g2g1",
+                "a2d2",
+                "e3e4",
+                "d2d3",
+                "g1f2",
+                "d3d2"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 0
+              },
+              "seldepth": 22,
+              "tbhits": 0,
+              "time": 4027,
+              "upperbound": false,
+              "wdl": [
+                5,
+                990,
+                5
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.4965,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "classification": "large_direction_repeated_with_retained_report_uncertainty"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "game": 0,
+        "ply": 52,
+        "played": "c5a3",
+        "alternativefromexistingPV": "c5a3",
+        "reason": "control: successful opportunity response",
+        "same_move_control": true
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q05-c5a3/g000-p052-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "c5a3",
+            "expected_score_mover": 0.9805,
+            "selected_report": {
+              "depth": 25,
+              "hashfull": 366,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 4030749,
+              "nps": 1113159,
+              "pv": [
+                "c5a3",
+                "b5b6",
+                "c1c3",
+                "h8e8",
+                "c4c5",
+                "b6b7",
+                "e3e4",
+                "e8d8",
+                "d4d5",
+                "b7b6",
+                "g1h2",
+                "b6d6",
+                "h2h1",
+                "g7g5",
+                "c5a5",
+                "d6b6",
+                "a5c5",
+                "g5g4",
+                "f3g4",
+                "h5g4",
+                "d5d6",
+                "d7e8",
+                "c5d5",
+                "b6a6",
+                "h3g4",
+                "a6f1",
+                "h1h2",
+                "f1f4",
+                "h2h3",
+                "e8f8",
+                "d6d7",
+                "f8g7"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 160
+              },
+              "seldepth": 40,
+              "tbhits": 0,
+              "time": 3621,
+              "upperbound": false,
+              "wdl": [
+                961,
+                39,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 24,
+                "hashfull": 315,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3455673,
+                "nps": 1115813,
+                "pv": [
+                  "c5a3",
+                  "b5b6",
+                  "c1c3",
+                  "h8e8",
+                  "c4c5",
+                  "b6b7",
+                  "h3h4",
+                  "a5a4",
+                  "g1h2",
+                  "b7b8",
+                  "f3f4",
+                  "g7g5",
+                  "h4g5",
+                  "f6g5",
+                  "c5g5",
+                  "e8c8",
+                  "g5d5",
+                  "d7e6",
+                  "d5e5",
+                  "e6f6",
+                  "a3e7",
+                  "f6g7",
+                  "e5g5",
+                  "g7h6"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 172
+                },
+                "seldepth": 54,
+                "tbhits": 0,
+                "time": 3097,
+                "upperbound": false,
+                "wdl": [
+                  980,
+                  20,
+                  0
+                ]
+              },
+              {
+                "depth": 25,
+                "hashfull": 366,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4030749,
+                "nps": 1113159,
+                "pv": [
+                  "c5a3",
+                  "b5b6",
+                  "c1c3",
+                  "h8e8",
+                  "c4c5",
+                  "b6b7",
+                  "e3e4",
+                  "e8d8",
+                  "d4d5",
+                  "b7b6",
+                  "g1h2",
+                  "b6d6",
+                  "h2h1",
+                  "g7g5",
+                  "c5a5",
+                  "d6b6",
+                  "a5c5",
+                  "g5g4",
+                  "f3g4",
+                  "h5g4",
+                  "d5d6",
+                  "d7e8",
+                  "c5d5",
+                  "b6a6",
+                  "h3g4",
+                  "a6f1",
+                  "h1h2",
+                  "f1f4",
+                  "h2h3",
+                  "e8f8",
+                  "d6d7",
+                  "f8g7"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 160
+                },
+                "seldepth": 40,
+                "tbhits": 0,
+                "time": 3621,
+                "upperbound": false,
+                "wdl": [
+                  961,
+                  39,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.9805,
+              0.99
+            ],
+            "last_two_spread": 0.009499999999999953,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 26,
+              "hashfull": 446,
+              "lowerbound": true,
+              "multipv": 1,
+              "nodes": 5000059,
+              "nps": 1115586,
+              "pv": [
+                "c5a3",
+                "b5b6"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 150
+              },
+              "seldepth": 56,
+              "tbhits": 0,
+              "time": 4482,
+              "upperbound": false,
+              "wdl": [
+                938,
+                62,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.0,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "classification": "successful_control_direction_supported_with_flags"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "game": 1,
+        "ply": 11,
+        "played": "e8g8",
+        "alternativefromexistingPV": "d7d5",
+        "reason": "target: castling and king safety",
+        "same_move_control": false
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q06-d7d5/g001-p011-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "d7d5",
+            "expected_score_mover": 0.4995,
+            "selected_report": {
+              "depth": 32,
+              "hashfull": 459,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000099,
+              "nps": 927490,
+              "pv": [
+                "d7d5",
+                "f3e5",
+                "f6e4",
+                "h2h4",
+                "b8d7",
+                "f2f3",
+                "e4g3",
+                "h1h3",
+                "g3f1",
+                "e1f1",
+                "b7b6",
+                "h3g3",
+                "d8h4",
+                "g3g7",
+                "d7e5",
+                "d4e5",
+                "h4h1",
+                "f1f2",
+                "h1h4"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 0
+              },
+              "seldepth": 22,
+              "tbhits": 0,
+              "time": 5391,
+              "upperbound": false,
+              "wdl": [
+                12,
+                975,
+                13
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 31,
+                "hashfull": 422,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4607420,
+                "nps": 926300,
+                "pv": [
+                  "d7d5",
+                  "f3e5",
+                  "f6e4",
+                  "h2h4",
+                  "b8d7",
+                  "f2f3",
+                  "e4g3",
+                  "h1h3",
+                  "g3f1",
+                  "e1f1",
+                  "b7b6",
+                  "h3g3",
+                  "d8h4",
+                  "g3g7",
+                  "d7e5",
+                  "d4e5",
+                  "h4h1",
+                  "f1f2",
+                  "h1h4"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 0
+                },
+                "seldepth": 22,
+                "tbhits": 0,
+                "time": 4974,
+                "upperbound": false,
+                "wdl": [
+                  12,
+                  975,
+                  13
+                ]
+              },
+              {
+                "depth": 32,
+                "hashfull": 459,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 5000099,
+                "nps": 927490,
+                "pv": [
+                  "d7d5",
+                  "f3e5",
+                  "f6e4",
+                  "h2h4",
+                  "b8d7",
+                  "f2f3",
+                  "e4g3",
+                  "h1h3",
+                  "g3f1",
+                  "e1f1",
+                  "b7b6",
+                  "h3g3",
+                  "d8h4",
+                  "g3g7",
+                  "d7e5",
+                  "d4e5",
+                  "h4h1",
+                  "f1f2",
+                  "h1h4"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 0
+                },
+                "seldepth": 22,
+                "tbhits": 0,
+                "time": 5391,
+                "upperbound": false,
+                "wdl": [
+                  12,
+                  975,
+                  13
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.4995,
+              0.4995
+            ],
+            "last_two_spread": 0.0,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 32,
+              "hashfull": 459,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000099,
+              "nps": 927490,
+              "pv": [
+                "d7d5",
+                "f3e5",
+                "f6e4",
+                "h2h4",
+                "b8d7",
+                "f2f3",
+                "e4g3",
+                "h1h3",
+                "g3f1",
+                "e1f1",
+                "b7b6",
+                "h3g3",
+                "d8h4",
+                "g3g7",
+                "d7e5",
+                "d4e5",
+                "h4h1",
+                "f1f2",
+                "h1h4"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 0
+              },
+              "seldepth": 22,
+              "tbhits": 0,
+              "time": 5391,
+              "upperbound": false,
+              "wdl": [
+                12,
+                975,
+                13
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [],
+            "status": "complete"
+          }
+        },
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q06-e8g8/g001-p011-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "e8g8",
+            "expected_score_mover": 0.0015,
+            "selected_report": {
+              "depth": 27,
+              "hashfull": 484,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000226,
+              "nps": 956797,
+              "pv": [
+                "e8g8",
+                "g2g4",
+                "d7d6",
+                "g4g5",
+                "h6g5",
+                "c1g5",
+                "e6e5",
+                "d4e5",
+                "d6e5",
+                "h1g1",
+                "d8d3",
+                "c2d3",
+                "f6h5",
+                "f3e5",
+                "f7f6",
+                "e5g6",
+                "f6g5",
+                "g6f8",
+                "g8f8",
+                "g1g5",
+                "h5f4",
+                "e1d2",
+                "f4e6",
+                "g5h5",
+                "f8g8",
+                "a1c1"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": -234
+              },
+              "seldepth": 61,
+              "tbhits": 0,
+              "time": 5226,
+              "upperbound": false,
+              "wdl": [
+                0,
+                3,
+                997
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 26,
+                "hashfull": 354,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3555730,
+                "nps": 963612,
+                "pv": [
+                  "e8g8",
+                  "g2g4",
+                  "d7d6",
+                  "g4g5",
+                  "h6g5",
+                  "c1g5",
+                  "e6e5",
+                  "d4e5",
+                  "d6e5",
+                  "h1g1",
+                  "d8d3",
+                  "c2d3",
+                  "f6h5",
+                  "f3e5",
+                  "f7f6",
+                  "e5g6",
+                  "f6g5",
+                  "g6f8",
+                  "g8f8",
+                  "g1g5",
+                  "h5f4",
+                  "e1d2",
+                  "f4e6",
+                  "g5h5",
+                  "f8g8",
+                  "a1c1"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": -234
+                },
+                "seldepth": 61,
+                "tbhits": 0,
+                "time": 3690,
+                "upperbound": false,
+                "wdl": [
+                  0,
+                  3,
+                  997
+                ]
+              },
+              {
+                "depth": 27,
+                "hashfull": 484,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 5000226,
+                "nps": 956797,
+                "pv": [
+                  "e8g8",
+                  "g2g4",
+                  "d7d6",
+                  "g4g5",
+                  "h6g5",
+                  "c1g5",
+                  "e6e5",
+                  "d4e5",
+                  "d6e5",
+                  "h1g1",
+                  "d8d3",
+                  "c2d3",
+                  "f6h5",
+                  "f3e5",
+                  "f7f6",
+                  "e5g6",
+                  "f6g5",
+                  "g6f8",
+                  "g8f8",
+                  "g1g5",
+                  "h5f4",
+                  "e1d2",
+                  "f4e6",
+                  "g5h5",
+                  "f8g8",
+                  "a1c1"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": -234
+                },
+                "seldepth": 61,
+                "tbhits": 0,
+                "time": 5226,
+                "upperbound": false,
+                "wdl": [
+                  0,
+                  3,
+                  997
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.0015,
+              0.0015
+            ],
+            "last_two_spread": 0.0,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 27,
+              "hashfull": 484,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000226,
+              "nps": 956797,
+              "pv": [
+                "e8g8",
+                "g2g4",
+                "d7d6",
+                "g4g5",
+                "h6g5",
+                "c1g5",
+                "e6e5",
+                "d4e5",
+                "d6e5",
+                "h1g1",
+                "d8d3",
+                "c2d3",
+                "f6h5",
+                "f3e5",
+                "f7f6",
+                "e5g6",
+                "f6g5",
+                "g6f8",
+                "g8f8",
+                "g1g5",
+                "h5f4",
+                "e1d2",
+                "f4e6",
+                "g5h5",
+                "f8g8",
+                "a1c1"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": -234
+              },
+              "seldepth": 61,
+              "tbhits": 0,
+              "time": 5226,
+              "upperbound": false,
+              "wdl": [
+                0,
+                3,
+                997
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.498,
+      "confirmed": true,
+      "interpretation": "Supported finite-budget move comparison, not a proven game-theoretic value or production mechanism.",
+      "retained_flags": [],
+      "classification": "consequential_same_root_difference_supported"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "game": 1,
+        "ply": 12,
+        "played": "e2e4",
+        "alternativefromexistingPV": "g2g4",
+        "reason": "opponent event: missed attacking response; initial score uncertain",
+        "same_move_control": false
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q07-e2e4/g001-p012-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "e2e4",
+            "expected_score_mover": 0.529,
+            "selected_report": {
+              "depth": 27,
+              "hashfull": 329,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 3660069,
+              "nps": 988406,
+              "pv": [
+                "e2e4",
+                "d7d5",
+                "e4e5",
+                "f6e4",
+                "f3d2",
+                "f7f5",
+                "g2g4",
+                "d8h4",
+                "d2e4",
+                "f5e4",
+                "d3g3",
+                "h4g3",
+                "h2g3",
+                "c7c5",
+                "f2f4",
+                "c5d4",
+                "c3d4",
+                "c8d7",
+                "c1e3",
+                "b8c6",
+                "c2c4",
+                "c6e7",
+                "a1c1",
+                "f8c8",
+                "e1f2",
+                "b7b5",
+                "c4b5"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 37
+              },
+              "seldepth": 43,
+              "tbhits": 0,
+              "time": 3703,
+              "upperbound": false,
+              "wdl": [
+                60,
+                938,
+                2
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 26,
+                "hashfull": 284,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3109142,
+                "nps": 981730,
+                "pv": [
+                  "e2e4",
+                  "d7d5",
+                  "e4e5",
+                  "f6e4",
+                  "f3d2",
+                  "f7f5",
+                  "e5f6",
+                  "e4f6",
+                  "f1e2",
+                  "c7c5",
+                  "d4c5",
+                  "b8d7",
+                  "d3e3",
+                  "e6e5",
+                  "a3a4",
+                  "d8c7",
+                  "d2b3",
+                  "b7b6",
+                  "c1a3",
+                  "f8e8",
+                  "e1g1",
+                  "d7c5",
+                  "b3c5",
+                  "b6c5",
+                  "e3c5",
+                  "c7f7",
+                  "a3b4",
+                  "c8f5",
+                  "e2b5"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 31
+                },
+                "seldepth": 44,
+                "tbhits": 0,
+                "time": 3167,
+                "upperbound": false,
+                "wdl": [
+                  47,
+                  950,
+                  3
+                ]
+              },
+              {
+                "depth": 27,
+                "hashfull": 329,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3660069,
+                "nps": 988406,
+                "pv": [
+                  "e2e4",
+                  "d7d5",
+                  "e4e5",
+                  "f6e4",
+                  "f3d2",
+                  "f7f5",
+                  "g2g4",
+                  "d8h4",
+                  "d2e4",
+                  "f5e4",
+                  "d3g3",
+                  "h4g3",
+                  "h2g3",
+                  "c7c5",
+                  "f2f4",
+                  "c5d4",
+                  "c3d4",
+                  "c8d7",
+                  "c1e3",
+                  "b8c6",
+                  "c2c4",
+                  "c6e7",
+                  "a1c1",
+                  "f8c8",
+                  "e1f2",
+                  "b7b5",
+                  "c4b5"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 37
+                },
+                "seldepth": 43,
+                "tbhits": 0,
+                "time": 3703,
+                "upperbound": false,
+                "wdl": [
+                  60,
+                  938,
+                  2
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.522,
+              0.529
+            ],
+            "last_two_spread": 0.007000000000000006,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 28,
+              "hashfull": 441,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000707,
+              "nps": 985555,
+              "pv": [
+                "e2e4",
+                "d7d5"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 30
+              },
+              "seldepth": 46,
+              "tbhits": 0,
+              "time": 5074,
+              "upperbound": true,
+              "wdl": [
+                46,
+                951,
+                3
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        },
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q07-g2g4/g001-p012-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "g2g4",
+            "expected_score_mover": 0.998,
+            "selected_report": {
+              "depth": 29,
+              "hashfull": 471,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000420,
+              "nps": 984140,
+              "pv": [
+                "g2g4",
+                "d7d6",
+                "g4g5",
+                "h6g5",
+                "c1g5",
+                "e6e5",
+                "d4e5",
+                "d6e5",
+                "h1g1",
+                "d8d3",
+                "c2d3",
+                "f6h5",
+                "f3e5",
+                "f7f6",
+                "e5g6",
+                "f6g5",
+                "g6f8",
+                "g8f8",
+                "g1g5",
+                "h5f4",
+                "e1d2",
+                "f4e6",
+                "g5g3",
+                "b8d7",
+                "f1h3",
+                "d7f6",
+                "a1g1",
+                "f6e8",
+                "e2e4",
+                "e6c5",
+                "g1e1"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 227
+              },
+              "seldepth": 51,
+              "tbhits": 0,
+              "time": 5081,
+              "upperbound": false,
+              "wdl": [
+                996,
+                4,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 28,
+                "hashfull": 431,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4523427,
+                "nps": 980157,
+                "pv": [
+                  "g2g4",
+                  "d7d6",
+                  "g4g5",
+                  "h6g5",
+                  "c1g5",
+                  "e6e5",
+                  "d4e5",
+                  "d6e5",
+                  "h1g1",
+                  "d8d3",
+                  "c2d3",
+                  "f6h5",
+                  "f3e5",
+                  "f7f6",
+                  "e5g6",
+                  "f6g5",
+                  "g6f8",
+                  "g8f8",
+                  "g1g5",
+                  "h5f4",
+                  "e1d2",
+                  "f4e6",
+                  "g5g3",
+                  "b8d7",
+                  "f1h3",
+                  "d7f6",
+                  "a1g1",
+                  "f6e8",
+                  "e2e4",
+                  "e6c5",
+                  "g1e1"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 227
+                },
+                "seldepth": 51,
+                "tbhits": 0,
+                "time": 4615,
+                "upperbound": false,
+                "wdl": [
+                  996,
+                  4,
+                  0
+                ]
+              },
+              {
+                "depth": 29,
+                "hashfull": 471,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 5000420,
+                "nps": 984140,
+                "pv": [
+                  "g2g4",
+                  "d7d6",
+                  "g4g5",
+                  "h6g5",
+                  "c1g5",
+                  "e6e5",
+                  "d4e5",
+                  "d6e5",
+                  "h1g1",
+                  "d8d3",
+                  "c2d3",
+                  "f6h5",
+                  "f3e5",
+                  "f7f6",
+                  "e5g6",
+                  "f6g5",
+                  "g6f8",
+                  "g8f8",
+                  "g1g5",
+                  "h5f4",
+                  "e1d2",
+                  "f4e6",
+                  "g5g3",
+                  "b8d7",
+                  "f1h3",
+                  "d7f6",
+                  "a1g1",
+                  "f6e8",
+                  "e2e4",
+                  "e6c5",
+                  "g1e1"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 227
+                },
+                "seldepth": 51,
+                "tbhits": 0,
+                "time": 5081,
+                "upperbound": false,
+                "wdl": [
+                  996,
+                  4,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.998,
+              0.998
+            ],
+            "last_two_spread": 0.0,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 29,
+              "hashfull": 471,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000420,
+              "nps": 984140,
+              "pv": [
+                "g2g4",
+                "d7d6",
+                "g4g5",
+                "h6g5",
+                "c1g5",
+                "e6e5",
+                "d4e5",
+                "d6e5",
+                "h1g1",
+                "d8d3",
+                "c2d3",
+                "f6h5",
+                "f3e5",
+                "f7f6",
+                "e5g6",
+                "f6g5",
+                "g6f8",
+                "g8f8",
+                "g1g5",
+                "h5f4",
+                "e1d2",
+                "f4e6",
+                "g5g3",
+                "b8d7",
+                "f1h3",
+                "d7f6",
+                "a1g1",
+                "f6e8",
+                "e2e4",
+                "e6c5",
+                "g1e1"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 227
+              },
+              "seldepth": 51,
+              "tbhits": 0,
+              "time": 5081,
+              "upperbound": false,
+              "wdl": [
+                996,
+                4,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.469,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "classification": "large_direction_repeated_with_retained_report_uncertainty"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "game": 1,
+        "ply": 15,
+        "played": "f6d7",
+        "alternativefromexistingPV": "f6e4",
+        "reason": "target: retreat and king safety; initial score uncertain",
+        "same_move_control": false
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q08-f6d7/g001-p015-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "f6d7",
+            "expected_score_mover": 0.025,
+            "selected_report": {
+              "depth": 27,
+              "hashfull": 333,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 3461671,
+              "nps": 1034879,
+              "pv": [
+                "f6d7",
+                "h2h4",
+                "c7c5",
+                "f3g5",
+                "f7f5",
+                "g5e6",
+                "d7e5",
+                "e6d8",
+                "e5d3",
+                "f1d3",
+                "c5c4",
+                "d8b7",
+                "c8b7",
+                "d3e2",
+                "b7c6",
+                "c1f4",
+                "b8d7",
+                "a1b1",
+                "a8e8",
+                "f2f3",
+                "f8f7",
+                "g2g3",
+                "f7e7",
+                "h1h2",
+                "d7f6"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": -168
+              },
+              "seldepth": 55,
+              "tbhits": 0,
+              "time": 3345,
+              "upperbound": false,
+              "wdl": [
+                0,
+                50,
+                950
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 26,
+                "hashfull": 177,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 1875185,
+                "nps": 1045836,
+                "pv": [
+                  "f6d7",
+                  "h2h4",
+                  "c7c5",
+                  "f3g5",
+                  "f7f5",
+                  "g5e6",
+                  "d7e5",
+                  "e6d8",
+                  "e5d3",
+                  "f1d3",
+                  "c5c4",
+                  "d8b7",
+                  "c4d3",
+                  "b7d6",
+                  "d3c2",
+                  "c1f4",
+                  "b8d7",
+                  "e1d2",
+                  "c8a6",
+                  "a3a4",
+                  "d7f6",
+                  "f2f3",
+                  "f6h5",
+                  "f4e5",
+                  "a8d8",
+                  "h1g1"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": -179
+                },
+                "seldepth": 54,
+                "tbhits": 0,
+                "time": 1793,
+                "upperbound": false,
+                "wdl": [
+                  0,
+                  31,
+                  969
+                ]
+              },
+              {
+                "depth": 27,
+                "hashfull": 333,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3461671,
+                "nps": 1034879,
+                "pv": [
+                  "f6d7",
+                  "h2h4",
+                  "c7c5",
+                  "f3g5",
+                  "f7f5",
+                  "g5e6",
+                  "d7e5",
+                  "e6d8",
+                  "e5d3",
+                  "f1d3",
+                  "c5c4",
+                  "d8b7",
+                  "c8b7",
+                  "d3e2",
+                  "b7c6",
+                  "c1f4",
+                  "b8d7",
+                  "a1b1",
+                  "a8e8",
+                  "f2f3",
+                  "f8f7",
+                  "g2g3",
+                  "f7e7",
+                  "h1h2",
+                  "d7f6"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": -168
+                },
+                "seldepth": 55,
+                "tbhits": 0,
+                "time": 3345,
+                "upperbound": false,
+                "wdl": [
+                  0,
+                  50,
+                  950
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.0155,
+              0.025
+            ],
+            "last_two_spread": 0.009500000000000001,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 28,
+              "hashfull": 454,
+              "lowerbound": true,
+              "multipv": 1,
+              "nodes": 5000355,
+              "nps": 1015506,
+              "pv": [
+                "f6d7",
+                "h2h4"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": -179
+              },
+              "seldepth": 55,
+              "tbhits": 0,
+              "time": 4924,
+              "upperbound": false,
+              "wdl": [
+                0,
+                30,
+                970
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        },
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q08-f6e4/g001-p015-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "f6e4",
+            "expected_score_mover": 0.47,
+            "selected_report": {
+              "depth": 27,
+              "hashfull": 374,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 3933748,
+              "nps": 993370,
+              "pv": [
+                "f6e4",
+                "f3d2",
+                "f7f5",
+                "e5f6",
+                "e4f6",
+                "f1e2",
+                "b7b6",
+                "d3e3",
+                "d8e8",
+                "e1g1",
+                "c8a6",
+                "e2a6",
+                "b8a6",
+                "a3a4",
+                "c7c5",
+                "e3e2",
+                "a6c7",
+                "f1e1",
+                "e8g6",
+                "d2f3",
+                "g6f5",
+                "e2e5",
+                "a8c8",
+                "d4c5",
+                "b6c5",
+                "e5f5",
+                "e6f5"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": -38
+              },
+              "seldepth": 38,
+              "tbhits": 0,
+              "time": 3960,
+              "upperbound": false,
+              "wdl": [
+                2,
+                936,
+                62
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 26,
+                "hashfull": 319,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3330789,
+                "nps": 999036,
+                "pv": [
+                  "f6e4",
+                  "f3d2",
+                  "f7f5",
+                  "e5f6",
+                  "e4f6",
+                  "f1e2",
+                  "c7c5",
+                  "e1g1",
+                  "d8c7",
+                  "a3a4",
+                  "b7b6",
+                  "a4a5",
+                  "b6a5",
+                  "d4c5",
+                  "e6e5",
+                  "c3c4",
+                  "d5d4",
+                  "c2c3",
+                  "d4c3",
+                  "d3c3",
+                  "b8c6",
+                  "e2f3",
+                  "c8b7",
+                  "f3d5",
+                  "g8h8"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": -39
+                },
+                "seldepth": 35,
+                "tbhits": 0,
+                "time": 3334,
+                "upperbound": false,
+                "wdl": [
+                  2,
+                  934,
+                  64
+                ]
+              },
+              {
+                "depth": 27,
+                "hashfull": 374,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3933748,
+                "nps": 993370,
+                "pv": [
+                  "f6e4",
+                  "f3d2",
+                  "f7f5",
+                  "e5f6",
+                  "e4f6",
+                  "f1e2",
+                  "b7b6",
+                  "d3e3",
+                  "d8e8",
+                  "e1g1",
+                  "c8a6",
+                  "e2a6",
+                  "b8a6",
+                  "a3a4",
+                  "c7c5",
+                  "e3e2",
+                  "a6c7",
+                  "f1e1",
+                  "e8g6",
+                  "d2f3",
+                  "g6f5",
+                  "e2e5",
+                  "a8c8",
+                  "d4c5",
+                  "b6c5",
+                  "e5f5",
+                  "e6f5"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": -38
+                },
+                "seldepth": 38,
+                "tbhits": 0,
+                "time": 3960,
+                "upperbound": false,
+                "wdl": [
+                  2,
+                  936,
+                  62
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.469,
+              0.47
+            ],
+            "last_two_spread": 0.0010000000000000009,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 28,
+              "hashfull": 468,
+              "lowerbound": true,
+              "multipv": 1,
+              "nodes": 5000455,
+              "nps": 993731,
+              "pv": [
+                "f6e4",
+                "f3d2"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": -36
+              },
+              "seldepth": 42,
+              "tbhits": 0,
+              "time": 5032,
+              "upperbound": false,
+              "wdl": [
+                3,
+                940,
+                57
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.44499999999999995,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "classification": "large_direction_repeated_with_retained_report_uncertainty"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "game": 1,
+        "ply": 16,
+        "played": "c3c4",
+        "alternativefromexistingPV": "h2h4",
+        "reason": "opponent event: second missed attack; initial score uncertain",
+        "same_move_control": false
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q09-c3c4/g001-p016-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "c3c4",
+            "expected_score_mover": 0.4995,
+            "selected_report": {
+              "depth": 28,
+              "hashfull": 362,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 3879802,
+              "nps": 999176,
+              "pv": [
+                "c3c4",
+                "d5c4",
+                "d3e4",
+                "d7b6",
+                "a3a4",
+                "a7a5",
+                "e4g4",
+                "f7f5",
+                "g4h3",
+                "d8d5",
+                "f1e2",
+                "d5e4",
+                "c1h6",
+                "f5f4",
+                "h3g4",
+                "e4h7",
+                "h6f4",
+                "h7e4",
+                "g2g3",
+                "b8c6",
+                "h1g1",
+                "c6d4",
+                "f3d4",
+                "e4d4",
+                "a1d1",
+                "d4c3",
+                "d1d2",
+                "c3b4"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 0
+              },
+              "seldepth": 33,
+              "tbhits": 0,
+              "time": 3883,
+              "upperbound": false,
+              "wdl": [
+                12,
+                975,
+                13
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 27,
+                "hashfull": 338,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3631541,
+                "nps": 1002080,
+                "pv": [
+                  "c3c4",
+                  "d5c4",
+                  "d3e4",
+                  "d7b6",
+                  "a3a4",
+                  "a7a5",
+                  "e4g4",
+                  "f7f5",
+                  "g4h3",
+                  "d8d5",
+                  "f1e2",
+                  "d5e4",
+                  "c1h6",
+                  "f5f4",
+                  "h3g4",
+                  "e4h7",
+                  "h6f4",
+                  "h7e4",
+                  "g2g3",
+                  "b8c6",
+                  "h1g1",
+                  "c6d4",
+                  "f3d4",
+                  "e4d4",
+                  "a1d1",
+                  "d4c3",
+                  "d1d2",
+                  "b6a4"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 0
+                },
+                "seldepth": 46,
+                "tbhits": 0,
+                "time": 3624,
+                "upperbound": false,
+                "wdl": [
+                  13,
+                  975,
+                  12
+                ]
+              },
+              {
+                "depth": 28,
+                "hashfull": 362,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3879802,
+                "nps": 999176,
+                "pv": [
+                  "c3c4",
+                  "d5c4",
+                  "d3e4",
+                  "d7b6",
+                  "a3a4",
+                  "a7a5",
+                  "e4g4",
+                  "f7f5",
+                  "g4h3",
+                  "d8d5",
+                  "f1e2",
+                  "d5e4",
+                  "c1h6",
+                  "f5f4",
+                  "h3g4",
+                  "e4h7",
+                  "h6f4",
+                  "h7e4",
+                  "g2g3",
+                  "b8c6",
+                  "h1g1",
+                  "c6d4",
+                  "f3d4",
+                  "e4d4",
+                  "a1d1",
+                  "d4c3",
+                  "d1d2",
+                  "c3b4"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 0
+                },
+                "seldepth": 33,
+                "tbhits": 0,
+                "time": 3883,
+                "upperbound": false,
+                "wdl": [
+                  12,
+                  975,
+                  13
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.4995,
+              0.5005
+            ],
+            "last_two_spread": 0.0009999999999999454,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 29,
+              "hashfull": 464,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000539,
+              "nps": 983777,
+              "pv": [
+                "c3c4",
+                "d5c4"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": -2
+              },
+              "seldepth": 44,
+              "tbhits": 0,
+              "time": 5083,
+              "upperbound": true,
+              "wdl": [
+                11,
+                975,
+                14
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        },
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q09-h2h4/g001-p016-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "h2h4",
+            "expected_score_mover": 0.987,
+            "selected_report": {
+              "depth": 25,
+              "hashfull": 428,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 4441419,
+              "nps": 958855,
+              "pv": [
+                "h2h4",
+                "c7c5",
+                "c1h6",
+                "g7h6",
+                "f3g5",
+                "f7f5",
+                "g5e6",
+                "d8e7",
+                "e6f8",
+                "d7f8",
+                "c3c4",
+                "c8e6",
+                "c4d5",
+                "e6d5",
+                "c2c4",
+                "d5f7",
+                "d3g3",
+                "g8h8",
+                "d4d5",
+                "b8d7",
+                "f2f4",
+                "b7b5",
+                "f1e2",
+                "b5c4",
+                "e2c4"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 183
+              },
+              "seldepth": 55,
+              "tbhits": 0,
+              "time": 4632,
+              "upperbound": false,
+              "wdl": [
+                974,
+                26,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 24,
+                "hashfull": 246,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 2426750,
+                "nps": 952787,
+                "pv": [
+                  "h2h4",
+                  "c7c5",
+                  "f1e2",
+                  "c5d4",
+                  "c3d4",
+                  "b8c6",
+                  "c2c3",
+                  "f7f6",
+                  "f3g5",
+                  "f6f5",
+                  "a3a4",
+                  "d7b6",
+                  "d3g3",
+                  "h6g5",
+                  "h4g5",
+                  "g8f7",
+                  "h1h7",
+                  "f8g8",
+                  "c1a3"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 181
+                },
+                "seldepth": 49,
+                "tbhits": 0,
+                "time": 2547,
+                "upperbound": false,
+                "wdl": [
+                  971,
+                  29,
+                  0
+                ]
+              },
+              {
+                "depth": 25,
+                "hashfull": 428,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4441419,
+                "nps": 958855,
+                "pv": [
+                  "h2h4",
+                  "c7c5",
+                  "c1h6",
+                  "g7h6",
+                  "f3g5",
+                  "f7f5",
+                  "g5e6",
+                  "d8e7",
+                  "e6f8",
+                  "d7f8",
+                  "c3c4",
+                  "c8e6",
+                  "c4d5",
+                  "e6d5",
+                  "c2c4",
+                  "d5f7",
+                  "d3g3",
+                  "g8h8",
+                  "d4d5",
+                  "b8d7",
+                  "f2f4",
+                  "b7b5",
+                  "f1e2",
+                  "b5c4",
+                  "e2c4"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 183
+                },
+                "seldepth": 55,
+                "tbhits": 0,
+                "time": 4632,
+                "upperbound": false,
+                "wdl": [
+                  974,
+                  26,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.9855,
+              0.987
+            ],
+            "last_two_spread": 0.0014999999999999458,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 26,
+              "hashfull": 473,
+              "lowerbound": true,
+              "multipv": 1,
+              "nodes": 5000490,
+              "nps": 967025,
+              "pv": [
+                "h2h4",
+                "c7c5"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 198
+              },
+              "seldepth": 63,
+              "tbhits": 0,
+              "time": 5171,
+              "upperbound": false,
+              "wdl": [
+                986,
+                14,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.4875,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "classification": "large_direction_repeated_with_retained_report_uncertainty"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "game": 1,
+        "ply": 47,
+        "played": "e7f5",
+        "alternativefromexistingPV": "c7c6",
+        "reason": "target: opportunity response; initial score uncertain",
+        "same_move_control": false
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q10-c7c6/g001-p047-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "c7c6",
+            "expected_score_mover": 0.997,
+            "selected_report": {
+              "depth": 24,
+              "hashfull": 281,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 3304600,
+              "nps": 1103740,
+              "pv": [
+                "c7c6",
+                "b1b8",
+                "f8b8",
+                "f1f2",
+                "e7g6",
+                "e2f1",
+                "b8b1",
+                "e3a7",
+                "g6h4",
+                "c3h3",
+                "c6c7",
+                "a7d4",
+                "h4f5",
+                "h3c3",
+                "c7b7",
+                "a3a4",
+                "f5h4",
+                "c3g3",
+                "h4g2",
+                "f2g2",
+                "b1f1",
+                "g1f1",
+                "d5g2",
+                "f1e1"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 205
+              },
+              "seldepth": 65,
+              "tbhits": 0,
+              "time": 2994,
+              "upperbound": false,
+              "wdl": [
+                994,
+                6,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 23,
+                "hashfull": 220,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 2445893,
+                "nps": 1088030,
+                "pv": [
+                  "c7c6",
+                  "b1b8",
+                  "f8b8",
+                  "f1f2",
+                  "e7g6",
+                  "e2f1",
+                  "b8b1",
+                  "h2h3",
+                  "g6h4",
+                  "g1h2",
+                  "a7a6",
+                  "e3a7",
+                  "b1c1",
+                  "c3d2",
+                  "c1a1",
+                  "d2b4"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 175
+                },
+                "seldepth": 63,
+                "tbhits": 0,
+                "time": 2248,
+                "upperbound": false,
+                "wdl": [
+                  975,
+                  25,
+                  0
+                ]
+              },
+              {
+                "depth": 24,
+                "hashfull": 281,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3304600,
+                "nps": 1103740,
+                "pv": [
+                  "c7c6",
+                  "b1b8",
+                  "f8b8",
+                  "f1f2",
+                  "e7g6",
+                  "e2f1",
+                  "b8b1",
+                  "e3a7",
+                  "g6h4",
+                  "c3h3",
+                  "c6c7",
+                  "a7d4",
+                  "h4f5",
+                  "h3c3",
+                  "c7b7",
+                  "a3a4",
+                  "f5h4",
+                  "c3g3",
+                  "h4g2",
+                  "f2g2",
+                  "b1f1",
+                  "g1f1",
+                  "d5g2",
+                  "f1e1"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 205
+                },
+                "seldepth": 65,
+                "tbhits": 0,
+                "time": 2994,
+                "upperbound": false,
+                "wdl": [
+                  994,
+                  6,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.9875,
+              0.997
+            ],
+            "last_two_spread": 0.009499999999999953,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 25,
+              "hashfull": 424,
+              "lowerbound": true,
+              "multipv": 1,
+              "nodes": 5000516,
+              "nps": 1105086,
+              "pv": [
+                "c7c6",
+                "b1b8"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 192
+              },
+              "seldepth": 49,
+              "tbhits": 0,
+              "time": 4525,
+              "upperbound": false,
+              "wdl": [
+                989,
+                11,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        },
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q10-e7f5/g001-p047-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "e7f5",
+            "expected_score_mover": 0.6105,
+            "selected_report": {
+              "depth": 24,
+              "hashfull": 395,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 4336764,
+              "nps": 1038497,
+              "pv": [
+                "e7f5",
+                "b1c1",
+                "c7c6",
+                "f1f2",
+                "b8b7",
+                "e3d2",
+                "f8b8",
+                "g2g4",
+                "f5e7",
+                "c1f1",
+                "b7b1",
+                "d2c1",
+                "b8c8",
+                "c1e3",
+                "b1f1",
+                "e2f1",
+                "c8b8",
+                "e3a7",
+                "b8b1",
+                "h2h3",
+                "e7g6",
+                "g1h2",
+                "g6h4",
+                "h2g3",
+                "h4f3"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 74
+              },
+              "seldepth": 39,
+              "tbhits": 0,
+              "time": 4176,
+              "upperbound": false,
+              "wdl": [
+                221,
+                779,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 23,
+                "hashfull": 304,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3178299,
+                "nps": 1038999,
+                "pv": [
+                  "e7f5",
+                  "b1c1",
+                  "f5e3",
+                  "c3e3",
+                  "f8d8",
+                  "h2h3",
+                  "b8b2",
+                  "e2f3",
+                  "b2a2",
+                  "f1d1",
+                  "c7a5",
+                  "f3d5",
+                  "a2a3",
+                  "e3e4",
+                  "e6d5",
+                  "e4d4",
+                  "a5c3",
+                  "d4f2",
+                  "c3e3",
+                  "c1b1"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 69
+                },
+                "seldepth": 41,
+                "tbhits": 0,
+                "time": 3059,
+                "upperbound": false,
+                "wdl": [
+                  185,
+                  815,
+                  0
+                ]
+              },
+              {
+                "depth": 24,
+                "hashfull": 395,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4336764,
+                "nps": 1038497,
+                "pv": [
+                  "e7f5",
+                  "b1c1",
+                  "c7c6",
+                  "f1f2",
+                  "b8b7",
+                  "e3d2",
+                  "f8b8",
+                  "g2g4",
+                  "f5e7",
+                  "c1f1",
+                  "b7b1",
+                  "d2c1",
+                  "b8c8",
+                  "c1e3",
+                  "b1f1",
+                  "e2f1",
+                  "c8b8",
+                  "e3a7",
+                  "b8b1",
+                  "h2h3",
+                  "e7g6",
+                  "g1h2",
+                  "g6h4",
+                  "h2g3",
+                  "h4f3"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 74
+                },
+                "seldepth": 39,
+                "tbhits": 0,
+                "time": 4176,
+                "upperbound": false,
+                "wdl": [
+                  221,
+                  779,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.5925,
+              0.6105
+            ],
+            "last_two_spread": 0.018000000000000016,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 25,
+              "hashfull": 448,
+              "lowerbound": true,
+              "multipv": 1,
+              "nodes": 5000536,
+              "nps": 1039180,
+              "pv": [
+                "e7f5",
+                "b1c1"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 73
+              },
+              "seldepth": 40,
+              "tbhits": 0,
+              "time": 4812,
+              "upperbound": false,
+              "wdl": [
+                210,
+                790,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.38649999999999995,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "classification": "large_direction_repeated_with_retained_report_uncertainty"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "game": 1,
+        "ply": 53,
+        "played": "e7g6",
+        "alternativefromexistingPV": "b8b1",
+        "reason": "target: missed active-rook opportunity; initial score uncertain",
+        "same_move_control": false
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q11-b8b1/g001-p053-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "b8b1",
+            "expected_score_mover": 0.9425,
+            "selected_report": {
+              "depth": 23,
+              "hashfull": 344,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 3780311,
+              "nps": 1027537,
+              "pv": [
+                "b8b1",
+                "f1b1",
+                "f8c8",
+                "b1b5",
+                "c7d7",
+                "b5c5",
+                "c8b8",
+                "g1f2",
+                "d7b7",
+                "c3e1",
+                "e7g6",
+                "f4f5",
+                "g6f4",
+                "f2g3",
+                "d5h1",
+                "e1f2",
+                "b7e4",
+                "f2f4",
+                "e4g2",
+                "g3h4",
+                "g2e2",
+                "f4f2",
+                "e2e4",
+                "c2c3",
+                "e6f5",
+                "f2f5",
+                "e4g2"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 142
+              },
+              "seldepth": 44,
+              "tbhits": 0,
+              "time": 3679,
+              "upperbound": false,
+              "wdl": [
+                885,
+                115,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 22,
+                "hashfull": 194,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 2032758,
+                "nps": 1019437,
+                "pv": [
+                  "b8b1",
+                  "f1b1",
+                  "f8c8",
+                  "c3e3",
+                  "d5a8",
+                  "b1f1",
+                  "c4c3",
+                  "h2h3",
+                  "c7c6",
+                  "e2f3",
+                  "c6a4",
+                  "f3a8",
+                  "c8a8",
+                  "f4f5",
+                  "a4c2",
+                  "f5e6",
+                  "f7e6",
+                  "e3c3",
+                  "c2g6",
+                  "f1f3",
+                  "a8d8",
+                  "c3c4",
+                  "g8h7",
+                  "d4c5",
+                  "d8c8",
+                  "g1h2",
+                  "g6b1",
+                  "c4e6",
+                  "c8c5",
+                  "e6e7"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 126
+                },
+                "seldepth": 45,
+                "tbhits": 0,
+                "time": 1994,
+                "upperbound": false,
+                "wdl": [
+                  784,
+                  216,
+                  0
+                ]
+              },
+              {
+                "depth": 23,
+                "hashfull": 344,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3780311,
+                "nps": 1027537,
+                "pv": [
+                  "b8b1",
+                  "f1b1",
+                  "f8c8",
+                  "b1b5",
+                  "c7d7",
+                  "b5c5",
+                  "c8b8",
+                  "g1f2",
+                  "d7b7",
+                  "c3e1",
+                  "e7g6",
+                  "f4f5",
+                  "g6f4",
+                  "f2g3",
+                  "d5h1",
+                  "e1f2",
+                  "b7e4",
+                  "f2f4",
+                  "e4g2",
+                  "g3h4",
+                  "g2e2",
+                  "f4f2",
+                  "e2e4",
+                  "c2c3",
+                  "e6f5",
+                  "f2f5",
+                  "e4g2"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 142
+                },
+                "seldepth": 44,
+                "tbhits": 0,
+                "time": 3679,
+                "upperbound": false,
+                "wdl": [
+                  885,
+                  115,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.892,
+              0.9425
+            ],
+            "last_two_spread": 0.05049999999999999,
+            "stable_report_heuristic": false,
+            "final_report": {
+              "depth": 24,
+              "hashfull": 450,
+              "lowerbound": true,
+              "multipv": 1,
+              "nodes": 5000286,
+              "nps": 1024858,
+              "pv": [
+                "b8b1",
+                "f1b1"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 133
+              },
+              "seldepth": 42,
+              "tbhits": 0,
+              "time": 4879,
+              "upperbound": false,
+              "wdl": [
+                833,
+                167,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score",
+              "last_two_report_estimates_unstable"
+            ],
+            "status": "complete"
+          }
+        },
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q11-e7g6/g001-p053-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "e7g6",
+            "expected_score_mover": 0.5005,
+            "selected_report": {
+              "depth": 32,
+              "hashfull": 441,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000220,
+              "nps": 1113386,
+              "pv": [
+                "e7g6",
+                "b1b8",
+                "f8b8",
+                "f4f5",
+                "g6h4",
+                "c3h3",
+                "c7d8",
+                "f1d1",
+                "g7g5",
+                "d4f2",
+                "d8c7",
+                "f2h4",
+                "c7e5",
+                "h3g3",
+                "e5b2",
+                "g3e3",
+                "g5h4",
+                "e3h6",
+                "b2c2",
+                "e2f3",
+                "d5f3",
+                "h6g5",
+                "g8f8",
+                "d1d8",
+                "b8d8",
+                "g5d8",
+                "f8g7",
+                "d8g5",
+                "g7h7",
+                "g5h5",
+                "h7g8",
+                "h5g5",
+                "g8h7"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 0
+              },
+              "seldepth": 54,
+              "tbhits": 0,
+              "time": 4491,
+              "upperbound": false,
+              "wdl": [
+                8,
+                985,
+                7
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 31,
+                "hashfull": 426,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4821614,
+                "nps": 1116631,
+                "pv": [
+                  "e7g6",
+                  "b1b8",
+                  "f8b8",
+                  "f4f5",
+                  "g6h4",
+                  "c3h3",
+                  "c7d8",
+                  "f1d1",
+                  "g7g5",
+                  "d4f2",
+                  "d8c7",
+                  "f2h4",
+                  "c7e5",
+                  "h3g3",
+                  "e5b2",
+                  "g3e3",
+                  "g5h4",
+                  "e3h6",
+                  "b2c2",
+                  "e2f3",
+                  "d5f3",
+                  "h6g5",
+                  "g8f8",
+                  "d1d8",
+                  "b8d8",
+                  "g5d8",
+                  "f8g7",
+                  "d8g5",
+                  "g7h7",
+                  "g5h5",
+                  "h7g8",
+                  "h5g5",
+                  "g8h7"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 0
+                },
+                "seldepth": 54,
+                "tbhits": 0,
+                "time": 4318,
+                "upperbound": false,
+                "wdl": [
+                  8,
+                  985,
+                  7
+                ]
+              },
+              {
+                "depth": 32,
+                "hashfull": 441,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 5000220,
+                "nps": 1113386,
+                "pv": [
+                  "e7g6",
+                  "b1b8",
+                  "f8b8",
+                  "f4f5",
+                  "g6h4",
+                  "c3h3",
+                  "c7d8",
+                  "f1d1",
+                  "g7g5",
+                  "d4f2",
+                  "d8c7",
+                  "f2h4",
+                  "c7e5",
+                  "h3g3",
+                  "e5b2",
+                  "g3e3",
+                  "g5h4",
+                  "e3h6",
+                  "b2c2",
+                  "e2f3",
+                  "d5f3",
+                  "h6g5",
+                  "g8f8",
+                  "d1d8",
+                  "b8d8",
+                  "g5d8",
+                  "f8g7",
+                  "d8g5",
+                  "g7h7",
+                  "g5h5",
+                  "h7g8",
+                  "h5g5",
+                  "g8h7"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 0
+                },
+                "seldepth": 54,
+                "tbhits": 0,
+                "time": 4491,
+                "upperbound": false,
+                "wdl": [
+                  8,
+                  985,
+                  7
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.5005,
+              0.5005
+            ],
+            "last_two_spread": 0.0,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 32,
+              "hashfull": 441,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000220,
+              "nps": 1113386,
+              "pv": [
+                "e7g6",
+                "b1b8",
+                "f8b8",
+                "f4f5",
+                "g6h4",
+                "c3h3",
+                "c7d8",
+                "f1d1",
+                "g7g5",
+                "d4f2",
+                "d8c7",
+                "f2h4",
+                "c7e5",
+                "h3g3",
+                "e5b2",
+                "g3e3",
+                "g5h4",
+                "e3h6",
+                "b2c2",
+                "e2f3",
+                "d5f3",
+                "h6g5",
+                "g8f8",
+                "d1d8",
+                "b8d8",
+                "g5d8",
+                "f8g7",
+                "d8g5",
+                "g7h7",
+                "g5h5",
+                "h7g8",
+                "h5g5",
+                "g8h7"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 0
+              },
+              "seldepth": 54,
+              "tbhits": 0,
+              "time": 4491,
+              "upperbound": false,
+              "wdl": [
+                8,
+                985,
+                7
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.44200000000000006,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "classification": "direction_repeated_but_depth_unstable_unresolved"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "game": 1,
+        "ply": 67,
+        "played": "b8e8",
+        "alternativefromexistingPV": "b8e8",
+        "reason": "control: successful tactical admission before later choice",
+        "same_move_control": true
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q12-b8e8/g001-p067-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "b8e8",
+            "expected_score_mover": 1.0,
+            "selected_report": {
+              "depth": 27,
+              "hashfull": 398,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000467,
+              "nps": 1296801,
+              "pv": [
+                "b8e8",
+                "e2c4",
+                "d5c4",
+                "a1e1",
+                "e7d7",
+                "e3f4",
+                "d7d5",
+                "f5f6",
+                "g7g5",
+                "f4e3",
+                "c4b5",
+                "h2h4",
+                "b5c6",
+                "e3g3",
+                "d5c5",
+                "g1f1",
+                "c6b5",
+                "f1g2",
+                "c5c2",
+                "g2g1",
+                "g8h7",
+                "h4g5",
+                "h6g5",
+                "g3h2",
+                "c2h2",
+                "g1h2",
+                "e8c8"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 281
+              },
+              "seldepth": 51,
+              "tbhits": 0,
+              "time": 3856,
+              "upperbound": false,
+              "wdl": [
+                1000,
+                0,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 26,
+                "hashfull": 377,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4734235,
+                "nps": 1298473,
+                "pv": [
+                  "b8e8",
+                  "e2c4",
+                  "d5c4",
+                  "a1e1",
+                  "e7d7",
+                  "e3f4",
+                  "d7d5",
+                  "f5f6",
+                  "g7g5",
+                  "f4e3",
+                  "c4b5",
+                  "h2h4",
+                  "b5c6",
+                  "e3g3",
+                  "d5c5",
+                  "g1f1",
+                  "c6b5",
+                  "f1g2",
+                  "c5c2",
+                  "g2g1",
+                  "g8h7",
+                  "h4g5",
+                  "h6g5",
+                  "g3h2",
+                  "c2h2",
+                  "g1h2",
+                  "e8c8"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 281
+                },
+                "seldepth": 51,
+                "tbhits": 0,
+                "time": 3646,
+                "upperbound": false,
+                "wdl": [
+                  1000,
+                  0,
+                  0
+                ]
+              },
+              {
+                "depth": 27,
+                "hashfull": 398,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 5000467,
+                "nps": 1296801,
+                "pv": [
+                  "b8e8",
+                  "e2c4",
+                  "d5c4",
+                  "a1e1",
+                  "e7d7",
+                  "e3f4",
+                  "d7d5",
+                  "f5f6",
+                  "g7g5",
+                  "f4e3",
+                  "c4b5",
+                  "h2h4",
+                  "b5c6",
+                  "e3g3",
+                  "d5c5",
+                  "g1f1",
+                  "c6b5",
+                  "f1g2",
+                  "c5c2",
+                  "g2g1",
+                  "g8h7",
+                  "h4g5",
+                  "h6g5",
+                  "g3h2",
+                  "c2h2",
+                  "g1h2",
+                  "e8c8"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 281
+                },
+                "seldepth": 51,
+                "tbhits": 0,
+                "time": 3856,
+                "upperbound": false,
+                "wdl": [
+                  1000,
+                  0,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              1.0,
+              1.0
+            ],
+            "last_two_spread": 0.0,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 27,
+              "hashfull": 398,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000467,
+              "nps": 1296801,
+              "pv": [
+                "b8e8",
+                "e2c4",
+                "d5c4",
+                "a1e1",
+                "e7d7",
+                "e3f4",
+                "d7d5",
+                "f5f6",
+                "g7g5",
+                "f4e3",
+                "c4b5",
+                "h2h4",
+                "b5c6",
+                "e3g3",
+                "d5c5",
+                "g1f1",
+                "c6b5",
+                "f1g2",
+                "c5c2",
+                "g2g1",
+                "g8h7",
+                "h4g5",
+                "h6g5",
+                "g3h2",
+                "c2h2",
+                "g1h2",
+                "e8c8"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 281
+              },
+              "seldepth": 51,
+              "tbhits": 0,
+              "time": 3856,
+              "upperbound": false,
+              "wdl": [
+                1000,
+                0,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.0,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [],
+      "classification": "successful_control_stable"
+    },
+    {
+      "plan": {
+        "report": "docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+        "game": 1,
+        "ply": 69,
+        "played": "e7e5",
+        "alternativefromexistingPV": "d5c4",
+        "reason": "target: premature tactical simplification; initial score uncertain",
+        "same_move_control": false
+      },
+      "queries": [
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q13-d5c4/g001-p069-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "d5c4",
+            "expected_score_mover": 1.0,
+            "selected_report": {
+              "depth": 27,
+              "hashfull": 436,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000346,
+              "nps": 1217517,
+              "pv": [
+                "d5c4",
+                "a1e1",
+                "e7d7",
+                "e3f4",
+                "c4a6",
+                "e5c3",
+                "e8e1",
+                "c3e1",
+                "d7d1",
+                "f4e4",
+                "a6b7",
+                "e4b7",
+                "d1e1",
+                "g1g2",
+                "e1d2",
+                "g2f3",
+                "d2c3",
+                "f3g4",
+                "c3a3",
+                "b7e4",
+                "g8h7",
+                "c2c4",
+                "a3a1",
+                "e4d5",
+                "a5a4",
+                "d5f7",
+                "a1g1",
+                "g4h3"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 296
+              },
+              "seldepth": 58,
+              "tbhits": 0,
+              "time": 4107,
+              "upperbound": false,
+              "wdl": [
+                1000,
+                0,
+                0
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 26,
+                "hashfull": 409,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4733659,
+                "nps": 1215316,
+                "pv": [
+                  "d5c4",
+                  "a1e1",
+                  "e7d7",
+                  "e3f4",
+                  "c4a6",
+                  "e5c3",
+                  "e8e1",
+                  "c3e1",
+                  "d7d1",
+                  "f4e4",
+                  "a6b7",
+                  "e4b7",
+                  "d1e1",
+                  "g1g2",
+                  "e1d2",
+                  "g2f3",
+                  "d2c3",
+                  "f3g4",
+                  "c3a3",
+                  "b7e4",
+                  "g8h7",
+                  "c2c4",
+                  "a3a1",
+                  "e4d5",
+                  "a5a4",
+                  "d5f7",
+                  "a1g1",
+                  "g4h3"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 296
+                },
+                "seldepth": 58,
+                "tbhits": 0,
+                "time": 3895,
+                "upperbound": false,
+                "wdl": [
+                  1000,
+                  0,
+                  0
+                ]
+              },
+              {
+                "depth": 27,
+                "hashfull": 436,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 5000346,
+                "nps": 1217517,
+                "pv": [
+                  "d5c4",
+                  "a1e1",
+                  "e7d7",
+                  "e3f4",
+                  "c4a6",
+                  "e5c3",
+                  "e8e1",
+                  "c3e1",
+                  "d7d1",
+                  "f4e4",
+                  "a6b7",
+                  "e4b7",
+                  "d1e1",
+                  "g1g2",
+                  "e1d2",
+                  "g2f3",
+                  "d2c3",
+                  "f3g4",
+                  "c3a3",
+                  "b7e4",
+                  "g8h7",
+                  "c2c4",
+                  "a3a1",
+                  "e4d5",
+                  "a5a4",
+                  "d5f7",
+                  "a1g1",
+                  "g4h3"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 296
+                },
+                "seldepth": 58,
+                "tbhits": 0,
+                "time": 4107,
+                "upperbound": false,
+                "wdl": [
+                  1000,
+                  0,
+                  0
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              1.0,
+              1.0
+            ],
+            "last_two_spread": 0.0,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 27,
+              "hashfull": 436,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000346,
+              "nps": 1217517,
+              "pv": [
+                "d5c4",
+                "a1e1",
+                "e7d7",
+                "e3f4",
+                "c4a6",
+                "e5c3",
+                "e8e1",
+                "c3e1",
+                "d7d1",
+                "f4e4",
+                "a6b7",
+                "e4b7",
+                "d1e1",
+                "g1g2",
+                "e1d2",
+                "g2f3",
+                "d2c3",
+                "f3g4",
+                "c3a3",
+                "b7e4",
+                "g8h7",
+                "c2c4",
+                "a3a1",
+                "e4d5",
+                "a5a4",
+                "d5f7",
+                "a1g1",
+                "g4h3"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 296
+              },
+              "seldepth": 58,
+              "tbhits": 0,
+              "time": 4107,
+              "upperbound": false,
+              "wdl": [
+                1000,
+                0,
+                0
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [],
+            "status": "complete"
+          }
+        },
+        {
+          "path": "docs/m5/evidence/msh161/pilot-confirmations/q13-e7e5/g001-p069-alternative-attempt0000.json",
+          "assessment": {
+            "bestmove": "e7e5",
+            "expected_score_mover": 0.501,
+            "selected_report": {
+              "depth": 34,
+              "hashfull": 337,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 4396920,
+              "nps": 1465151,
+              "pv": [
+                "e7e5",
+                "e3e5",
+                "e8e5",
+                "c4d3",
+                "f7f6",
+                "a1f1",
+                "d5e4",
+                "f1f4",
+                "e4d3",
+                "c2d3",
+                "e5d5",
+                "d3d4",
+                "d5b5",
+                "g1g2",
+                "g8f7",
+                "f4f2",
+                "a5a4",
+                "g2g3",
+                "b5d5",
+                "f2f4",
+                "g7g6",
+                "f5g6",
+                "f7g6",
+                "g3f3",
+                "f6f5",
+                "f3e3",
+                "g6g5",
+                "h2h4",
+                "g5f6",
+                "f4f1",
+                "d5b5",
+                "e3f4"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 5
+              },
+              "seldepth": 47,
+              "tbhits": 0,
+              "time": 3001,
+              "upperbound": false,
+              "wdl": [
+                6,
+                990,
+                4
+              ]
+            },
+            "last_two_distinct_depth_reports": [
+              {
+                "depth": 33,
+                "hashfull": 268,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 3547508,
+                "nps": 1456882,
+                "pv": [
+                  "e7e5",
+                  "e3e5",
+                  "e8e5",
+                  "c4d3",
+                  "g8f8",
+                  "a1b1",
+                  "f7f6",
+                  "b1f1",
+                  "d5e4",
+                  "f1f4",
+                  "e4d3",
+                  "c2d3",
+                  "e5d5",
+                  "d3d4",
+                  "d5d8",
+                  "g1f2",
+                  "d8c8",
+                  "f2e3",
+                  "c8c3",
+                  "e3e4",
+                  "c3a3",
+                  "e4d5",
+                  "a5a4",
+                  "d5d6",
+                  "g7g5",
+                  "f5g6",
+                  "f8g7",
+                  "f4f2",
+                  "g7g6",
+                  "d4d5",
+                  "f6f5",
+                  "d6e6",
+                  "a3e3",
+                  "e6d7",
+                  "g6f6",
+                  "d5d6",
+                  "a4a3",
+                  "f2c2"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 6
+                },
+                "seldepth": 44,
+                "tbhits": 0,
+                "time": 2435,
+                "upperbound": false,
+                "wdl": [
+                  7,
+                  989,
+                  4
+                ]
+              },
+              {
+                "depth": 34,
+                "hashfull": 337,
+                "lowerbound": false,
+                "multipv": 1,
+                "nodes": 4396920,
+                "nps": 1465151,
+                "pv": [
+                  "e7e5",
+                  "e3e5",
+                  "e8e5",
+                  "c4d3",
+                  "f7f6",
+                  "a1f1",
+                  "d5e4",
+                  "f1f4",
+                  "e4d3",
+                  "c2d3",
+                  "e5d5",
+                  "d3d4",
+                  "d5b5",
+                  "g1g2",
+                  "g8f7",
+                  "f4f2",
+                  "a5a4",
+                  "g2g3",
+                  "b5d5",
+                  "f2f4",
+                  "g7g6",
+                  "f5g6",
+                  "f7g6",
+                  "g3f3",
+                  "f6f5",
+                  "f3e3",
+                  "g6g5",
+                  "h2h4",
+                  "g5f6",
+                  "f4f1",
+                  "d5b5",
+                  "e3f4"
+                ],
+                "score": {
+                  "kind": "cp",
+                  "value": 5
+                },
+                "seldepth": 47,
+                "tbhits": 0,
+                "time": 3001,
+                "upperbound": false,
+                "wdl": [
+                  6,
+                  990,
+                  4
+                ]
+              }
+            ],
+            "last_two_expected_score_range": [
+              0.501,
+              0.5015
+            ],
+            "last_two_spread": 0.0004999999999999449,
+            "stable_report_heuristic": true,
+            "final_report": {
+              "depth": 35,
+              "hashfull": 379,
+              "lowerbound": false,
+              "multipv": 1,
+              "nodes": 5000088,
+              "nps": 1475822,
+              "pv": [
+                "e7e5",
+                "e3e5"
+              ],
+              "score": {
+                "kind": "cp",
+                "value": 1
+              },
+              "seldepth": 47,
+              "tbhits": 0,
+              "time": 3388,
+              "upperbound": true,
+              "wdl": [
+                5,
+                990,
+                5
+              ]
+            },
+            "directional_bound_conflicts": [],
+            "flags": [
+              "last_score_update_not_selected_exact_score"
+            ],
+            "status": "complete"
+          }
+        }
+      ],
+      "raw_alternative_minus_played": 0.499,
+      "confirmed": false,
+      "interpretation": "Retain flags and classification; no blanket confirmation or mechanism attribution.",
+      "retained_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "classification": "large_direction_repeated_with_retained_report_uncertainty"
+    }
+  ],
+  "summary": {
+    "decisions": 14,
+    "queries": 25,
+    "large_pairwise_directions_repeated": 10,
+    "clean_both_move_consequential_comparisons": 1,
+    "bound_conflict_decisions": [
+      0,
+      1
+    ],
+    "depth_unstable_decisions": [
+      11
+    ],
+    "quiet_control_index": 3,
+    "same_move_controls": [
+      2,
+      5,
+      12
+    ],
+    "note": "Indices are zero-based plan indices. Stability is heuristic; retained flags are not waived."
+  }
+}

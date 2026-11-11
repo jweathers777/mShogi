@@ -123,5 +123,24 @@
       "Linux",
       "Windows"
     ]
-  }
+  },
+  "main_freeze": {
+    "file": "main-freeze.json",
+    "sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+    "independent_reviews": [
+      "freeze-review.md",
+      "main-opening-review.md",
+      "qualification-final-review.md"
+    ],
+    "opponent": "oxidation060",
+    "games_planned": 200,
+    "opening_roots": 90,
+    "phase_tests": 7,
+    "plan_checks": "main-plan-checks.json",
+    "batch01_launched": true,
+    "launch_state": "running",
+    "notification_receipt": "notifications/main-batch-01.json",
+    "main_completed_games_not_yet_counted": true
+  },
+  "qualification_resource_record": "qualification-resource-total.json"
 }

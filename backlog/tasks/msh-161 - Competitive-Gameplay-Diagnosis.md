@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-11T07:37:00Z'
+updated_date: '2026-11-11T07:53:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -77,4 +77,6 @@ Preparation integrated on codex/rewrite at e066f58. Main study remains In Progre
 Owner execution refinement11November: delete timedreview automation and replace future unattended launches with notify_exit.py -> codex queue to owning chat on success/failure, using normal local execution escalation for database access and no security changes. Extension is completed42steps:25pilotreference queries,16games,8allmove analyses/summaries; review is due now. Added receipt-based exit notifier, success/failure/queuefailure/duplicate tests and independent review. Main study remains active; no periodic watcher or guessed schedule remains.
 
 Exit-notification implementation verified:4tests pass covering success, commandfailure, signalwithhonestcleanupuncertainty, queuefailure and duplicate refusal. Initial sandbox/localgroup-probe failures preserved; notification cannot be suppressed by cleanup errors. Normal escalated actualvalidation of completedextension queued message01a1c989-56b4-78d2-a9ef-41ce90a11784 to owningchat, CLIexit0 and durable queueaccepted receipt. Timedautomationdeleted, no replacementtimer. TargetedLevel2macOSprocess/CLI evidence; no security settings changed, no Linux/Windows claims. Next action is queued substantive batchreview then study continuation via exitwrapped computations.
+
+Completed independent qualification review selects fixedOxidation practical prepared reference(3opponent wins/4draws/1loss; combinedstart+prepared level, no statisticalsuperiority claim). Mainv1method and90sourcehistories frozen after32deeper checks, no relaxedquota:22families,16sym12opposite15closed30open. Main-opening and freeze reviews pass;7phase tests/200gameplan audit pass. Ten20game batches scheduled(180prepared+20unaided). Batch01 now running through exitnotification wrapper with native replay, allmove500k, v1screen and5Mmatched confirmations/audit. No timedwatcher. Final-opening-balance wake already consumed; avoid duplicate launch. Remaining:all200main games, completedbatch/20Mconsequential adjudication and final independent rankings/roadmap. See main-freeze.json, main-method.md, README and qualification resource/bundles.
 <!-- SECTION:NOTES:END -->

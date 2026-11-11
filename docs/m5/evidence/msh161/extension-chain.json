@@ -1,0 +1,681 @@
+{
+  "status": "completed_needs_review",
+  "started_epoch": 1794363617.366397,
+  "pid": 56602,
+  "frozen": {
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmation-plan.json": "0f90a9e603a24c9dd85f0d1ee8096ea9232957fd7ad8b1220179803b6d4efa39",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension-schedule.json": "60d0c620468cd0b4ea50d4d495338feea96a6e5d2c21928bd71ef14ac08577cc",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/../../competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c"
+  },
+  "commands": [
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q00-g2h2",
+      "--game",
+      "0",
+      "--ply",
+      "52",
+      "--move",
+      "g2h2",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q00-e4g3",
+      "--game",
+      "0",
+      "--ply",
+      "52",
+      "--move",
+      "e4g3",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q01-c2c4",
+      "--game",
+      "0",
+      "--ply",
+      "54",
+      "--move",
+      "c2c4",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q01-c5b7",
+      "--game",
+      "0",
+      "--ply",
+      "54",
+      "--move",
+      "c5b7",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q02-f6h5",
+      "--game",
+      "1",
+      "--ply",
+      "41",
+      "--move",
+      "f6h5",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q03-g1f3",
+      "--game",
+      "0",
+      "--ply",
+      "0",
+      "--move",
+      "g1f3",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q03-e2e4",
+      "--game",
+      "0",
+      "--ply",
+      "0",
+      "--move",
+      "e2e4",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q04-c6b5",
+      "--game",
+      "0",
+      "--ply",
+      "51",
+      "--move",
+      "c6b5",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q04-h8c8",
+      "--game",
+      "0",
+      "--ply",
+      "51",
+      "--move",
+      "h8c8",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q05-c5a3",
+      "--game",
+      "0",
+      "--ply",
+      "52",
+      "--move",
+      "c5a3",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q06-e8g8",
+      "--game",
+      "1",
+      "--ply",
+      "11",
+      "--move",
+      "e8g8",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q06-d7d5",
+      "--game",
+      "1",
+      "--ply",
+      "11",
+      "--move",
+      "d7d5",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q07-e2e4",
+      "--game",
+      "1",
+      "--ply",
+      "12",
+      "--move",
+      "e2e4",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q07-g2g4",
+      "--game",
+      "1",
+      "--ply",
+      "12",
+      "--move",
+      "g2g4",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q08-f6d7",
+      "--game",
+      "1",
+      "--ply",
+      "15",
+      "--move",
+      "f6d7",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q08-f6e4",
+      "--game",
+      "1",
+      "--ply",
+      "15",
+      "--move",
+      "f6e4",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q09-c3c4",
+      "--game",
+      "1",
+      "--ply",
+      "16",
+      "--move",
+      "c3c4",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q09-h2h4",
+      "--game",
+      "1",
+      "--ply",
+      "16",
+      "--move",
+      "h2h4",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q10-e7f5",
+      "--game",
+      "1",
+      "--ply",
+      "47",
+      "--move",
+      "e7f5",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q10-c7c6",
+      "--game",
+      "1",
+      "--ply",
+      "47",
+      "--move",
+      "c7c6",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q11-e7g6",
+      "--game",
+      "1",
+      "--ply",
+      "53",
+      "--move",
+      "e7g6",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q11-b8b1",
+      "--game",
+      "1",
+      "--ply",
+      "53",
+      "--move",
+      "b8b1",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q12-b8e8",
+      "--game",
+      "1",
+      "--ply",
+      "67",
+      "--move",
+      "b8e8",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q13-e7e5",
+      "--game",
+      "1",
+      "--ply",
+      "69",
+      "--move",
+      "e7e5",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-goldfish113-start/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/pilot-confirmations/q13-d5c4",
+      "--game",
+      "1",
+      "--ply",
+      "69",
+      "--move",
+      "d5c4",
+      "--nodes",
+      "5000000"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/run_batch.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension-schedule.json",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-00-goldfish113/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-00-goldfish113/analysis"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/summarize_analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-00-goldfish113/analysis",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-00-goldfish113/analysis-summary.json"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-00-oxidation060/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-00-oxidation060/analysis"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/summarize_analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-00-oxidation060/analysis",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-00-oxidation060/analysis-summary.json"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-01-oxidation060/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-01-oxidation060/analysis"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/summarize_analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-01-oxidation060/analysis",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-01-oxidation060/analysis-summary.json"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-01-goldfish113/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-01-goldfish113/analysis"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/summarize_analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-01-goldfish113/analysis",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-01-goldfish113/analysis-summary.json"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-02-goldfish113/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-02-goldfish113/analysis"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/summarize_analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-02-goldfish113/analysis",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-02-goldfish113/analysis-summary.json"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-02-oxidation060/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-02-oxidation060/analysis"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/summarize_analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-02-oxidation060/analysis",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-02-oxidation060/analysis-summary.json"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-03-oxidation060/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-03-oxidation060/analysis"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/summarize_analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-03-oxidation060/analysis",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-03-oxidation060/analysis-summary.json"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-03-goldfish113/report.json.gz",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-03-goldfish113/analysis"
+    ],
+    [
+      "/private/tmp/msh139/venv/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/summarize_analysis.py",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-03-goldfish113/analysis",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification-extension/extension-03-goldfish113/analysis-summary.json"
+    ]
+  ],
+  "completed": [
+    {
+      "index": 0,
+      "returncode": 0,
+      "wall_seconds": 5.804382000118494
+    },
+    {
+      "index": 1,
+      "returncode": 0,
+      "wall_seconds": 5.264765624888241
+    },
+    {
+      "index": 2,
+      "returncode": 0,
+      "wall_seconds": 5.088238625321537
+    },
+    {
+      "index": 3,
+      "returncode": 0,
+      "wall_seconds": 5.308736541308463
+    },
+    {
+      "index": 4,
+      "returncode": 0,
+      "wall_seconds": 4.975679375231266
+    },
+    {
+      "index": 5,
+      "returncode": 0,
+      "wall_seconds": 5.556887459009886
+    },
+    {
+      "index": 6,
+      "returncode": 0,
+      "wall_seconds": 5.429158375132829
+    },
+    {
+      "index": 7,
+      "returncode": 0,
+      "wall_seconds": 4.788822541944683
+    },
+    {
+      "index": 8,
+      "returncode": 0,
+      "wall_seconds": 4.484725625254214
+    },
+    {
+      "index": 9,
+      "returncode": 0,
+      "wall_seconds": 4.8853119583800435
+    },
+    {
+      "index": 10,
+      "returncode": 0,
+      "wall_seconds": 5.62949987500906
+    },
+    {
+      "index": 11,
+      "returncode": 0,
+      "wall_seconds": 5.799488083925098
+    },
+    {
+      "index": 12,
+      "returncode": 0,
+      "wall_seconds": 5.49001424992457
+    },
+    {
+      "index": 13,
+      "returncode": 0,
+      "wall_seconds": 5.48745262529701
+    },
+    {
+      "index": 14,
+      "returncode": 0,
+      "wall_seconds": 5.3431624583899975
+    },
+    {
+      "index": 15,
+      "returncode": 0,
+      "wall_seconds": 5.474096290767193
+    },
+    {
+      "index": 16,
+      "returncode": 0,
+      "wall_seconds": 5.489884833805263
+    },
+    {
+      "index": 17,
+      "returncode": 0,
+      "wall_seconds": 5.579695290885866
+    },
+    {
+      "index": 18,
+      "returncode": 0,
+      "wall_seconds": 5.213348083663732
+    },
+    {
+      "index": 19,
+      "returncode": 0,
+      "wall_seconds": 4.936730000190437
+    },
+    {
+      "index": 20,
+      "returncode": 0,
+      "wall_seconds": 4.907085292041302
+    },
+    {
+      "index": 21,
+      "returncode": 0,
+      "wall_seconds": 5.304732708260417
+    },
+    {
+      "index": 22,
+      "returncode": 0,
+      "wall_seconds": 4.262541125062853
+    },
+    {
+      "index": 23,
+      "returncode": 0,
+      "wall_seconds": 3.796030541881919
+    },
+    {
+      "index": 24,
+      "returncode": 0,
+      "wall_seconds": 4.536073375027627
+    },
+    {
+      "index": 25,
+      "returncode": 0,
+      "wall_seconds": 8436.849574583117
+    },
+    {
+      "index": 26,
+      "returncode": 0,
+      "wall_seconds": 364.45442466717213
+    },
+    {
+      "index": 27,
+      "returncode": 0,
+      "wall_seconds": 0.2529892916791141
+    },
+    {
+      "index": 28,
+      "returncode": 0,
+      "wall_seconds": 282.27986833266914
+    },
+    {
+      "index": 29,
+      "returncode": 0,
+      "wall_seconds": 0.20205666590481997
+    },
+    {
+      "index": 30,
+      "returncode": 0,
+      "wall_seconds": 373.10615900019184
+    },
+    {
+      "index": 31,
+      "returncode": 0,
+      "wall_seconds": 0.2597541669383645
+    },
+    {
+      "index": 32,
+      "returncode": 0,
+      "wall_seconds": 233.61600320832804
+    },
+    {
+      "index": 33,
+      "returncode": 0,
+      "wall_seconds": 0.17416549986228347
+    },
+    {
+      "index": 34,
+      "returncode": 0,
+      "wall_seconds": 269.2310532499105
+    },
+    {
+      "index": 35,
+      "returncode": 0,
+      "wall_seconds": 0.18371887505054474
+    },
+    {
+      "index": 36,
+      "returncode": 0,
+      "wall_seconds": 254.85170416673645
+    },
+    {
+      "index": 37,
+      "returncode": 0,
+      "wall_seconds": 0.1681351251900196
+    },
+    {
+      "index": 38,
+      "returncode": 0,
+      "wall_seconds": 274.0754574579187
+    },
+    {
+      "index": 39,
+      "returncode": 0,
+      "wall_seconds": 0.22333679115399718
+    },
+    {
+      "index": 40,
+      "returncode": 0,
+      "wall_seconds": 339.2829203750007
+    },
+    {
+      "index": 41,
+      "returncode": 0,
+      "wall_seconds": 0.20090145897120237
+    }
+  ],
+  "last_epoch": 1794374575.699132
+}

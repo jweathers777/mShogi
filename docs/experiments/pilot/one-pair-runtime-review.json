@@ -1,0 +1,112 @@
+{
+  "observed_epoch": 1794429130.038038,
+  "experiment": "msh162-cloud-pilot-one-v1",
+  "bucket_objects": 1889,
+  "bucket_bytes": 204296640,
+  "successes": 121,
+  "claims": [],
+  "receipt_counts": [
+    {
+      "kind": "confirmation",
+      "status": "complete",
+      "count": 119
+    },
+    {
+      "kind": "game_pair",
+      "status": "complete",
+      "count": 1
+    },
+    {
+      "kind": "reference_screening",
+      "status": "complete",
+      "count": 1
+    }
+  ],
+  "per_kind": {
+    "confirmation": {
+      "attempts": 119,
+      "wall_seconds": 946.6641115400025,
+      "child_cpu_seconds": 692.6711619999994,
+      "failed": 0
+    },
+    "game_pair": {
+      "attempts": 1,
+      "wall_seconds": 873.440044751,
+      "child_cpu_seconds": 878.5999609999999,
+      "failed": 0
+    },
+    "reference_screening": {
+      "attempts": 1,
+      "wall_seconds": 507.05438971500007,
+      "child_cpu_seconds": 408.39491200000015,
+      "failed": 0
+    }
+  },
+  "total_attempt_wall_seconds": 2327.1585460060023,
+  "total_child_cpu_seconds": 1979.6660349999993,
+  "environments": [
+    {
+      "architecture": "x86_64",
+      "platform": "Linux-6.6.159+-x86_64-with-glibc2.41",
+      "cpu_count": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gcp": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "8656954862440380648",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-a"
+      },
+      "batch": {
+        "BATCH_JOB_UID": "msh162-pilot-one-v-151a5543-1aaf-4dbe0",
+        "BATCH_TASK_COUNT": "1",
+        "BATCH_TASK_INDEX": "0",
+        "BATCH_TASK_RETRY_ATTEMPT": "0"
+      }
+    }
+  ],
+  "source_revisions": [
+    "51351c48ea1adf9ac96011aec1440e44ceb741a4"
+  ],
+  "native_revisions": [
+    "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+  ],
+  "cleanup": {
+    "project_instances": [],
+    "project_disks": [],
+    "vm_id": "8656954862440380648",
+    "insert_request": "2026-11-11T19:46:14.701676+00:00",
+    "delete_completed": "2026-11-11T20:29:50.458253+00:00",
+    "audit_status": {},
+    "audit_lifecycle_seconds": 2615.756577
+  },
+  "cost_estimate": {
+    "rate_usd_vm_hour": 0.201608,
+    "pilot_lifecycle_compute_usd": 0.14648818110439335,
+    "eight_max_task_hours_including_one_retry": 96,
+    "eight_task_compute_usd": 19.354368,
+    "probe900seconds_task_compute_usd": 0.050402,
+    "excludes": "VM provisioning overhead, disk, storage, network, registry, logs, tax. Billing actual not obtained; not a hard spending cap."
+  },
+  "next_eight_manifest_review": {
+    "sha256": "acd4928de937178f0fdb27d26ce69763037064343ec794fe1e23f6ef6e1cdc42",
+    "outcome": "passed",
+    "job_count": 16,
+    "pipeline_count": 8,
+    "pair_ids": [
+      "main-01-01",
+      "main-01-02",
+      "main-01-03",
+      "main-01-04",
+      "main-01-05",
+      "main-01-06",
+      "main-01-07",
+      "main-01-08"
+    ],
+    "frozen_build_environment_sources_match_pilot": true
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "status": "failed_needs_review",
+  "pid": 43125,
+  "started_epoch": 1794344321.7550561,
+  "steps": [
+    {
+      "command": [
+        "/private/tmp/msh139/venv/bin/python",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/qualification/qualification-oxidation060-start/report.json.gz",
+        "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/reference-smoke",
+        "--game",
+        "0",
+        "--ply",
+        "0"
+      ],
+      "returncode": 0,
+      "wall_seconds": 1.8005872503854334
+    }
+  ],
+  "frozen": {
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/sources/balance-roots.json": "4235d92bddd09b2b695525bef4823dd10eacec37fce06714350a996d435f3a1c",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/../../competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c"
+  },
+  "error": "AssertionError()",
+  "last_epoch": 1794346952.596411
+}

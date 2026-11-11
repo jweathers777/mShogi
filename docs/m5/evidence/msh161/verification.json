@@ -50,7 +50,22 @@
   "postbatch_launch_state": "waiting_for_qualification",
   "automation": {
     "id": "review-completed-chess-diagnosis-batch",
-    "scheduled_local": "2026-11-11T01:55:00+01:00",
+    "scheduled_local": "2026-11-11T03:15:00+01:00",
     "one_review": true
+  },
+  "qualification": {
+    "games": 4,
+    "healthy_native_replay": true,
+    "wall_seconds": 3094.519030123949,
+    "cpu_seconds": 3094.481428,
+    "record": "qualification/batch.json",
+    "not_strength_conclusion": true
+  },
+  "recovery": {
+    "record": "smoke-recovery.md",
+    "tests": 16,
+    "test_receipt": "recovery-tests.log",
+    "original_failure": "attempt0-postbatch-status.json",
+    "analysis_policy_unchanged": true
   }
 }

@@ -84,3 +84,14 @@ Launch receipts: native batch unified-exec session74120; follow-on chain session
 (under caffeinate idle-sleep prevention). Read JSON states rather than assuming a
 session ID proves continued execution. Initial follow-on state verified waiting
 for qualification. The app review is scheduled for01:55 Europe/Paris,11November.
+
+## Latest checkpoint —11November01:55review
+
+Qualification completed all4games with native replay. Candidate scored2wins
+against Oxidation and1win/1draw against Goldfish; opponent selection remains open,
+not a strength conclusion. See `smoke-recovery.md`: the follow-on gate stopped on
+correctly flagged finite Stockfish uncertainty. Independently reviewed gate-only
+correction preserves uncertainty/null losses;16 tests passed and original failed
+chain receipts remain. Full all-move analysis and root screening restarted via
+unattended chain(session90158), using existing smoke without engine rerun. Next
+single review03:15Europe/Paris11November. Inspect status once; no move polling.

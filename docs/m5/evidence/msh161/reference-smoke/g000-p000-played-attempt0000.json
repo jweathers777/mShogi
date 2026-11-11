@@ -1,0 +1,1038 @@
+{
+  "assessment": {
+    "bestmove": "b1c3",
+    "expected_score_mover": 0.5015,
+    "score": {
+      "depth": 21,
+      "hashfull": 48,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 500558,
+      "nps": 960763,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "c8f5",
+        "c1f4",
+        "e7e6",
+        "c3b5",
+        "f8d6",
+        "b5d6",
+        "c7d6",
+        "e2e3",
+        "b8c6",
+        "f1d3",
+        "f5d3",
+        "d1d3",
+        "a8c8",
+        "g1e2",
+        "g8f6",
+        "c2c3",
+        "h7h6",
+        "f4g3"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 2
+      },
+      "seldepth": 30,
+      "tbhits": 0,
+      "time": 521,
+      "upperbound": false,
+      "wdl": [
+        20,
+        963,
+        17
+      ]
+    },
+    "uncertainty": []
+  },
+  "child_cpu_seconds": 0.7032919999999999,
+  "decision": {
+    "engine_index": 0,
+    "game": 0,
+    "history": [],
+    "history_origin": "standard_start",
+    "initial_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+    "mover": "white",
+    "native_event": 1,
+    "opening_id": "unaided-start-qualification",
+    "origin": "played",
+    "pairing": 0,
+    "played": "b1c3",
+    "ply": 0
+  },
+  "engine_sha256": "8eed61129d1493c5d1f2fd9323f0c54c47ac49319911fbde18c6b9c87e8b13c5",
+  "exit_code": 0,
+  "finished_utc": "2026-11-10T21:42:32.586674+00:00",
+  "forced_move": "b1c3",
+  "nodes_requested": 500000,
+  "options": {
+    "Hash": 64,
+    "Ponder": "false",
+    "Skill Level": 20,
+    "Threads": 1,
+    "UCI_LimitStrength": "false",
+    "UCI_ShowWDL": "true"
+  },
+  "process_group_settled": true,
+  "pv_independent_legal": true,
+  "query": "g000-p000-played",
+  "raw_retained_bytes": 7706,
+  "raw_truncated": false,
+  "raw_uci": [
+    {
+      "direction": "send",
+      "line": "uci"
+    },
+    {
+      "direction": "stdout",
+      "line": "Stockfish 19 by the Stockfish developers (see AUTHORS file)"
+    },
+    {
+      "direction": "stdout",
+      "line": "id name Stockfish 19"
+    },
+    {
+      "direction": "stdout",
+      "line": "id author the Stockfish developers (see AUTHORS file)"
+    },
+    {
+      "direction": "stdout",
+      "line": ""
+    },
+    {
+      "direction": "stdout",
+      "line": "option name Debug Log File type string default <empty>"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name NumaPolicy type string default auto"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name Threads type spin default 1 min 1 max 1024"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name Hash type spin default 16 min 1 max 33554432"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name Clear Hash type button"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name Ponder type check default false"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name MultiPV type spin default 1 min 1 max 256"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name Skill Level type spin default 20 min 0 max 20"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name Move Overhead type spin default 10 min 0 max 5000"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name nodestime type spin default 0 min 0 max 10000"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name UCI_Chess960 type check default false"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name UCI_LimitStrength type check default false"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name UCI_Elo type spin default 1320 min 1320 max 3190"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name UCI_ShowWDL type check default false"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name SyzygyPath type string default <empty>"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name SyzygyProbeDepth type spin default 1 min 1 max 100"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name Syzygy50MoveRule type check default true"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name SyzygyProbeLimit type spin default 7 min 0 max 7"
+    },
+    {
+      "direction": "stdout",
+      "line": "option name EvalFile type string default nn-1a298aa575a0.nnue"
+    },
+    {
+      "direction": "stdout",
+      "line": "uciok"
+    },
+    {
+      "direction": "send",
+      "line": "setoption name Threads value 1"
+    },
+    {
+      "direction": "send",
+      "line": "setoption name Hash value 64"
+    },
+    {
+      "direction": "send",
+      "line": "setoption name UCI_ShowWDL value true"
+    },
+    {
+      "direction": "send",
+      "line": "setoption name UCI_LimitStrength value false"
+    },
+    {
+      "direction": "send",
+      "line": "setoption name Skill Level value 20"
+    },
+    {
+      "direction": "send",
+      "line": "setoption name Ponder value false"
+    },
+    {
+      "direction": "send",
+      "line": "isready"
+    },
+    {
+      "direction": "stdout",
+      "line": "info string Using 1 thread"
+    },
+    {
+      "direction": "stdout",
+      "line": "readyok"
+    },
+    {
+      "direction": "send",
+      "line": "ucinewgame"
+    },
+    {
+      "direction": "send",
+      "line": "setoption name Clear Hash"
+    },
+    {
+      "direction": "send",
+      "line": "isready"
+    },
+    {
+      "direction": "stdout",
+      "line": "readyok"
+    },
+    {
+      "direction": "send",
+      "line": "position fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    },
+    {
+      "direction": "send",
+      "line": "go nodes 500000 searchmoves b1c3"
+    },
+    {
+      "direction": "stdout",
+      "line": "info string Available processors: 0-9"
+    },
+    {
+      "direction": "stdout",
+      "line": "info string Using 1 thread"
+    },
+    {
+      "direction": "stdout",
+      "line": "info string NNUE evaluation using nn-1a298aa575a0.nnue (109MiB, (86896, 1024, 32, 32, 1))"
+    },
+    {
+      "direction": "stdout",
+      "line": "info string Network replica 1: Local memory. Shared memory not supported by the OS. Local allocation fallback."
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 1 seldepth 2 multipv 1 score cp 15 wdl 33 957 10 nodes 1 nps 1000 hashfull 0 tbhits 0 time 1 pv b1c3"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 2 seldepth 3 multipv 1 score cp 14 wdl 32 957 11 nodes 4 nps 4000 hashfull 0 tbhits 0 time 1 pv b1c3 a7a6"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 3 seldepth 4 multipv 1 score cp 4 wdl 21 963 16 nodes 102 nps 102000 hashfull 0 tbhits 0 time 1 pv b1c3 d7d5 d2d4"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 4 seldepth 5 multipv 1 score cp 8 wdl 26 961 13 nodes 128 nps 128000 hashfull 0 tbhits 0 time 1 pv b1c3 d7d5 d2d4 c7c6"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 5 seldepth 8 multipv 1 score cp -14 wdl 11 957 32 nodes 374 nps 374000 hashfull 0 tbhits 0 time 1 pv b1c3 g8f6 d2d4 d7d5 a2a3"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 6 seldepth 9 multipv 1 score cp 8 wdl 26 961 13 nodes 1342 nps 671000 hashfull 0 tbhits 0 time 2 pv b1c3 d7d5 g1f3"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 7 seldepth 15 multipv 1 score cp 6 wdl 24 962 14 nodes 2371 nps 790333 hashfull 0 tbhits 0 time 3 pv b1c3 d7d5 g1f3 c8f5 d2d4"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 8 seldepth 10 multipv 1 score cp 9 wdl 26 961 13 nodes 3335 nps 833750 hashfull 0 tbhits 0 time 4 pv b1c3 g8f6 d2d4 d7d5 g1f3 c8f5 c1f4 b8c6 f3h4"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 9 seldepth 12 multipv 1 score cp 16 wdl 34 956 10 nodes 4731 nps 946200 hashfull 0 tbhits 0 time 5 pv b1c3 g8f6 g1f3 d7d5 d2d4 c8f5"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 10 seldepth 19 multipv 1 score cp 1 wdl 19 964 17 nodes 16099 nps 1073266 hashfull 1 tbhits 0 time 15 pv b1c3 d7d5 d2d4 c8f5 f2f3"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 11 seldepth 17 multipv 1 score cp 0 wdl 19 963 18 nodes 21322 nps 1122210 hashfull 1 tbhits 0 time 19 pv b1c3 d7d5 d2d4 g8f6 c1f4"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 12 seldepth 13 multipv 1 score cp 0 wdl 18 963 19 nodes 21917 nps 1095850 hashfull 1 tbhits 0 time 20 pv b1c3 d7d5 d2d4 g8f6 g1f3 c7c6 c1f4 f6h5 e2e3 h5f4 e3f4"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 13 seldepth 18 multipv 1 score cp -1 wdl 17 964 19 nodes 31899 nps 1099965 hashfull 1 tbhits 0 time 29 pv b1c3 d7d5 d2d4 g8f6 g1f3 c7c6 c1f4 d8b6 c3a4 b6a5 c2c3 b8d7"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 14 seldepth 20 multipv 1 score cp -4 wdl 16 962 22 nodes 37211 nps 1094441 hashfull 1 tbhits 0 time 34 pv b1c3 d7d5 d2d4 g8f6 g1f3 c7c6 c1f4 d8a5 f3d2 a5b6 d2b3 b8d7"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 15 seldepth 19 multipv 1 score cp 0 wdl 19 963 18 nodes 43199 nps 1107666 hashfull 1 tbhits 0 time 39 pv b1c3 d7d5 d2d4 g8f6 g1f3 c8f5 f3h4 f5c8"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 16 seldepth 28 multipv 1 score cp 2 wdl 20 963 17 nodes 57267 nps 1080509 hashfull 3 tbhits 0 time 53 pv b1c3 d7d5 d2d4 g8f6 g1f3 c8f5 c1f4 e7e6 e2e3 c7c6 f3e5 f8d6 f1d3 f5d3 c2d3 e8g8"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 17 seldepth 25 multipv 1 score cp 2 wdl 20 963 17 nodes 102766 nps 1007509 hashfull 7 tbhits 0 time 102 pv b1c3 d7d5 d2d4 c8f5 c1f4 e7e6 e2e3 c7c6 f1d3 g8f6 g1f3 f5g6 h2h3 b8d7 e1g1 f8e7"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 18 seldepth 24 multipv 1 score cp 0 wdl 19 963 18 nodes 135040 nps 992941 hashfull 10 tbhits 0 time 136 pv b1c3 d7d5 d2d4 c8f5 c1f4 e7e6 e2e3 c7c6 g1f3 g8f6 f1d3 f8e7 h2h3 b8d7 c3e2 f5g6"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 19 seldepth 23 multipv 1 score cp 2 wdl 20 963 17 nodes 163137 nps 1000840 hashfull 12 tbhits 0 time 163 pv b1c3 d7d5 d2d4 c8f5 c1f4 e7e6 e2e3 a7a6 f1d3 f5d3 c2d3 f8d6 d1b3"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 20 seldepth 30 multipv 1 score cp 2 wdl 20 963 17 nodes 496030 nps 961298 hashfull 48 tbhits 0 time 516 pv b1c3 d7d5 d2d4 c8f5 c1f4 e7e6 c3b5 f8d6 b5d6 c7d6 e2e3 b8c6 f1d3 f5d3 d1d3 a8c8 g1e2 g8f6 c2c3 h7h6 f4g3"
+    },
+    {
+      "direction": "stdout",
+      "line": "info depth 21 seldepth 30 multipv 1 score cp 2 wdl 20 963 17 nodes 500558 nps 960763 hashfull 48 tbhits 0 time 521 pv b1c3 d7d5 d2d4 c8f5 c1f4 e7e6 c3b5 f8d6 b5d6 c7d6 e2e3 b8c6 f1d3 f5d3 d1d3 a8c8 g1e2 g8f6 c2c3 h7h6 f4g3"
+    },
+    {
+      "direction": "stdout",
+      "line": "bestmove b1c3 ponder d7d5"
+    },
+    {
+      "direction": "send",
+      "line": "quit"
+    }
+  ],
+  "schema": 1,
+  "score_perspective": "root_side_to_move",
+  "score_updates": [
+    {
+      "depth": 1,
+      "hashfull": 0,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 1,
+      "nps": 1000,
+      "pv": [
+        "b1c3"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 15
+      },
+      "seldepth": 2,
+      "tbhits": 0,
+      "time": 1,
+      "upperbound": false,
+      "wdl": [
+        33,
+        957,
+        10
+      ]
+    },
+    {
+      "depth": 2,
+      "hashfull": 0,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 4,
+      "nps": 4000,
+      "pv": [
+        "b1c3",
+        "a7a6"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 14
+      },
+      "seldepth": 3,
+      "tbhits": 0,
+      "time": 1,
+      "upperbound": false,
+      "wdl": [
+        32,
+        957,
+        11
+      ]
+    },
+    {
+      "depth": 3,
+      "hashfull": 0,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 102,
+      "nps": 102000,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 4
+      },
+      "seldepth": 4,
+      "tbhits": 0,
+      "time": 1,
+      "upperbound": false,
+      "wdl": [
+        21,
+        963,
+        16
+      ]
+    },
+    {
+      "depth": 4,
+      "hashfull": 0,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 128,
+      "nps": 128000,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "c7c6"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 8
+      },
+      "seldepth": 5,
+      "tbhits": 0,
+      "time": 1,
+      "upperbound": false,
+      "wdl": [
+        26,
+        961,
+        13
+      ]
+    },
+    {
+      "depth": 5,
+      "hashfull": 0,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 374,
+      "nps": 374000,
+      "pv": [
+        "b1c3",
+        "g8f6",
+        "d2d4",
+        "d7d5",
+        "a2a3"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": -14
+      },
+      "seldepth": 8,
+      "tbhits": 0,
+      "time": 1,
+      "upperbound": false,
+      "wdl": [
+        11,
+        957,
+        32
+      ]
+    },
+    {
+      "depth": 6,
+      "hashfull": 0,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 1342,
+      "nps": 671000,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "g1f3"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 8
+      },
+      "seldepth": 9,
+      "tbhits": 0,
+      "time": 2,
+      "upperbound": false,
+      "wdl": [
+        26,
+        961,
+        13
+      ]
+    },
+    {
+      "depth": 7,
+      "hashfull": 0,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 2371,
+      "nps": 790333,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "g1f3",
+        "c8f5",
+        "d2d4"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 6
+      },
+      "seldepth": 15,
+      "tbhits": 0,
+      "time": 3,
+      "upperbound": false,
+      "wdl": [
+        24,
+        962,
+        14
+      ]
+    },
+    {
+      "depth": 8,
+      "hashfull": 0,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 3335,
+      "nps": 833750,
+      "pv": [
+        "b1c3",
+        "g8f6",
+        "d2d4",
+        "d7d5",
+        "g1f3",
+        "c8f5",
+        "c1f4",
+        "b8c6",
+        "f3h4"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 9
+      },
+      "seldepth": 10,
+      "tbhits": 0,
+      "time": 4,
+      "upperbound": false,
+      "wdl": [
+        26,
+        961,
+        13
+      ]
+    },
+    {
+      "depth": 9,
+      "hashfull": 0,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 4731,
+      "nps": 946200,
+      "pv": [
+        "b1c3",
+        "g8f6",
+        "g1f3",
+        "d7d5",
+        "d2d4",
+        "c8f5"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 16
+      },
+      "seldepth": 12,
+      "tbhits": 0,
+      "time": 5,
+      "upperbound": false,
+      "wdl": [
+        34,
+        956,
+        10
+      ]
+    },
+    {
+      "depth": 10,
+      "hashfull": 1,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 16099,
+      "nps": 1073266,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "c8f5",
+        "f2f3"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 1
+      },
+      "seldepth": 19,
+      "tbhits": 0,
+      "time": 15,
+      "upperbound": false,
+      "wdl": [
+        19,
+        964,
+        17
+      ]
+    },
+    {
+      "depth": 11,
+      "hashfull": 1,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 21322,
+      "nps": 1122210,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "g8f6",
+        "c1f4"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 0
+      },
+      "seldepth": 17,
+      "tbhits": 0,
+      "time": 19,
+      "upperbound": false,
+      "wdl": [
+        19,
+        963,
+        18
+      ]
+    },
+    {
+      "depth": 12,
+      "hashfull": 1,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 21917,
+      "nps": 1095850,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "g8f6",
+        "g1f3",
+        "c7c6",
+        "c1f4",
+        "f6h5",
+        "e2e3",
+        "h5f4",
+        "e3f4"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 0
+      },
+      "seldepth": 13,
+      "tbhits": 0,
+      "time": 20,
+      "upperbound": false,
+      "wdl": [
+        18,
+        963,
+        19
+      ]
+    },
+    {
+      "depth": 13,
+      "hashfull": 1,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 31899,
+      "nps": 1099965,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "g8f6",
+        "g1f3",
+        "c7c6",
+        "c1f4",
+        "d8b6",
+        "c3a4",
+        "b6a5",
+        "c2c3",
+        "b8d7"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": -1
+      },
+      "seldepth": 18,
+      "tbhits": 0,
+      "time": 29,
+      "upperbound": false,
+      "wdl": [
+        17,
+        964,
+        19
+      ]
+    },
+    {
+      "depth": 14,
+      "hashfull": 1,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 37211,
+      "nps": 1094441,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "g8f6",
+        "g1f3",
+        "c7c6",
+        "c1f4",
+        "d8a5",
+        "f3d2",
+        "a5b6",
+        "d2b3",
+        "b8d7"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": -4
+      },
+      "seldepth": 20,
+      "tbhits": 0,
+      "time": 34,
+      "upperbound": false,
+      "wdl": [
+        16,
+        962,
+        22
+      ]
+    },
+    {
+      "depth": 15,
+      "hashfull": 1,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 43199,
+      "nps": 1107666,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "g8f6",
+        "g1f3",
+        "c8f5",
+        "f3h4",
+        "f5c8"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 0
+      },
+      "seldepth": 19,
+      "tbhits": 0,
+      "time": 39,
+      "upperbound": false,
+      "wdl": [
+        19,
+        963,
+        18
+      ]
+    },
+    {
+      "depth": 16,
+      "hashfull": 3,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 57267,
+      "nps": 1080509,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "g8f6",
+        "g1f3",
+        "c8f5",
+        "c1f4",
+        "e7e6",
+        "e2e3",
+        "c7c6",
+        "f3e5",
+        "f8d6",
+        "f1d3",
+        "f5d3",
+        "c2d3",
+        "e8g8"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 2
+      },
+      "seldepth": 28,
+      "tbhits": 0,
+      "time": 53,
+      "upperbound": false,
+      "wdl": [
+        20,
+        963,
+        17
+      ]
+    },
+    {
+      "depth": 17,
+      "hashfull": 7,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 102766,
+      "nps": 1007509,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "c8f5",
+        "c1f4",
+        "e7e6",
+        "e2e3",
+        "c7c6",
+        "f1d3",
+        "g8f6",
+        "g1f3",
+        "f5g6",
+        "h2h3",
+        "b8d7",
+        "e1g1",
+        "f8e7"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 2
+      },
+      "seldepth": 25,
+      "tbhits": 0,
+      "time": 102,
+      "upperbound": false,
+      "wdl": [
+        20,
+        963,
+        17
+      ]
+    },
+    {
+      "depth": 18,
+      "hashfull": 10,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 135040,
+      "nps": 992941,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "c8f5",
+        "c1f4",
+        "e7e6",
+        "e2e3",
+        "c7c6",
+        "g1f3",
+        "g8f6",
+        "f1d3",
+        "f8e7",
+        "h2h3",
+        "b8d7",
+        "c3e2",
+        "f5g6"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 0
+      },
+      "seldepth": 24,
+      "tbhits": 0,
+      "time": 136,
+      "upperbound": false,
+      "wdl": [
+        19,
+        963,
+        18
+      ]
+    },
+    {
+      "depth": 19,
+      "hashfull": 12,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 163137,
+      "nps": 1000840,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "c8f5",
+        "c1f4",
+        "e7e6",
+        "e2e3",
+        "a7a6",
+        "f1d3",
+        "f5d3",
+        "c2d3",
+        "f8d6",
+        "d1b3"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 2
+      },
+      "seldepth": 23,
+      "tbhits": 0,
+      "time": 163,
+      "upperbound": false,
+      "wdl": [
+        20,
+        963,
+        17
+      ]
+    },
+    {
+      "depth": 20,
+      "hashfull": 48,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 496030,
+      "nps": 961298,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "c8f5",
+        "c1f4",
+        "e7e6",
+        "c3b5",
+        "f8d6",
+        "b5d6",
+        "c7d6",
+        "e2e3",
+        "b8c6",
+        "f1d3",
+        "f5d3",
+        "d1d3",
+        "a8c8",
+        "g1e2",
+        "g8f6",
+        "c2c3",
+        "h7h6",
+        "f4g3"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 2
+      },
+      "seldepth": 30,
+      "tbhits": 0,
+      "time": 516,
+      "upperbound": false,
+      "wdl": [
+        20,
+        963,
+        17
+      ]
+    },
+    {
+      "depth": 21,
+      "hashfull": 48,
+      "lowerbound": false,
+      "multipv": 1,
+      "nodes": 500558,
+      "nps": 960763,
+      "pv": [
+        "b1c3",
+        "d7d5",
+        "d2d4",
+        "c8f5",
+        "c1f4",
+        "e7e6",
+        "c3b5",
+        "f8d6",
+        "b5d6",
+        "c7d6",
+        "e2e3",
+        "b8c6",
+        "f1d3",
+        "f5d3",
+        "d1d3",
+        "a8c8",
+        "g1e2",
+        "g8f6",
+        "c2c3",
+        "h7h6",
+        "f4g3"
+      ],
+      "score": {
+        "kind": "cp",
+        "value": 2
+      },
+      "seldepth": 30,
+      "tbhits": 0,
+      "time": 521,
+      "upperbound": false,
+      "wdl": [
+        20,
+        963,
+        17
+      ]
+    }
+  ],
+  "started_utc": "2026-11-10T21:42:31.838803+00:00",
+  "status": "complete",
+  "wall_seconds": 0.7478625001385808
+}

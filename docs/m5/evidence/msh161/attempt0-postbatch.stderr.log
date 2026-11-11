@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/after_qualification.py", line 67, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/after_qualification.py", line 40, in main
+    assert r['status']=='complete' and not r['assessment']['uncertainty']
+AssertionError

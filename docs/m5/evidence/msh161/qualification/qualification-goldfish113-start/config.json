@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "qualification-goldfish113-start",
+  "engines": [
+    {
+      "path": "/private/tmp/msh161/mshogi",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "candidate/77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+      "deterministic": false
+    },
+    {
+      "path": "/private/tmp/msh139/goldfish113/build/goldfish.x",
+      "args": [],
+      "options": [],
+      "model_path": null,
+      "model_identity": "goldfish113/b7aed1c1b9188c55f4d773fd4fac43de30c83cbb",
+      "deterministic": false
+    }
+  ],
+  "openings": [
+    {
+      "id": "unaided-start-qualification",
+      "fen": null,
+      "moves": []
+    }
+  ],
+  "paired": true,
+  "claim_policy": "auto_claim",
+  "time_control": "untimed",
+  "work": {
+    "depth": null,
+    "nodes": null,
+    "movetime_ms": 5000
+  },
+  "max_plies": 512,
+  "watchdogs": {
+    "handshake_ms": 5000,
+    "ready_ms": 5000,
+    "response_ms": 15000,
+    "write_ms": 2000,
+    "cleanup_ms": 1000
+  },
+  "io": {
+    "line_bytes": 4096,
+    "queued_lines": 32,
+    "transcript_bytes": 2097152,
+    "stderr_bytes": 16384,
+    "command_bytes": 4096
+  }
+}

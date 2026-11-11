@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex-cloud-runner'
 created_date: '2026-11-11T18:35:00Z'
-updated_date: '2026-11-11T20:34:00Z'
+updated_date: '2026-11-11T20:37:00Z'
 labels:
   - handle:parallel-experiment-runner
 dependencies: []
@@ -76,4 +76,6 @@ First approved pilot msh162-pilot-one-v1 failed before tasks/VMs with runDuratio
 Controller34892627 passed54tests and independent28-test GCP review. Retried unchanged manifest/image as msh162-pilot-one-v2 within approved US$30; actual state SCHEDULED with one pending C3standard4 task. Event-driven listener PID54494 queues owning chat on exit; receipts/logs /private/tmp/msh162-pilot-one-v2-listener.*. No periodic polling. See verification.json and pilot/ for exact submission, identity and evidence. Resume on completion: retrieve/verify pair, replay, all-move and derived confirmations; review before eight workers. No primary integration. Keep this worktree active for listener and pilot.
 
 Actual one-pair pilot SUCCEEDED:121jobs verified from1889retrieved objects,2native-replayed games,434screen queries and119deeper confirmations. Two independent reviews passed; see pilot/one-pair-scientific-review.json and one-pair-runtime-review.json. Actual PubSub event queued chat successfully. VM/disk deletion confirmed; estimated VM compute$0.14649, billed cost unavailable. Submitted reviewed recovery probe msh162-pilot-recovery-v1 (same image/C3,900s,no retries): inject adapter failure, preserve failure, run genuine confirmation retry, prove third call skips computation. Listener72758 queues chat; files /private/tmp/msh162-recovery-listener.*. Await event then inspect validation/recovery-v1.json. Eight distinct next pairs prepared/reviewed in pilot/eight-pair-manifest.json but not submitted. Remain within totalUS$30; no full study or integration.
+
+Recovery SUCCEEDED with independent actual-cloud verification: one failed attempt preserved, genuine5M retry complete, success bytes unchanged and third call skipped execution; all15objects retrieved. VM/disk/claim cleanup confirmed (pilot/recovery-review.json). Application failure only, not abrupt VM-loss evidence. Submitted authorized eight-worker pilot msh162-pilot-eight-v1, experiment msh162-cloud-pilot-eight-v1, next eight distinct frozen pairs main-01-01..08; state SCHEDULED,taskCount8,parallelism8. Same totalUS$30. Event listener PID73734 queues owning chat on completion; /private/tmp/msh162-eight-listener.*. Resume on event: parallel pinned-generation retrieval, verify all static/derived jobs, independent replay/scientific/runtime review, overlap throughput/cost and cleanup; then coordinator handoff. No full study or primary integration.
 <!-- SECTION:NOTES:END -->

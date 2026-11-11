@@ -60,3 +60,17 @@ removed. Estimated VM compute was$0.14649; actual billing remains unavailable.
 See pilot/one-pair-scientific-review.json and pilot/one-pair-runtime-review.json.
 A separately reviewed900s recovery probe is pending. The next eight distinct
 opening pairs are prepared and reviewed, but are not yet submitted.
+
+## Cloud recovery and eight-worker continuation
+
+The independently reviewed recovery check passed on real C3/GCS. It preserved
+one intentional failed attempt, completed a genuine5M confirmation on retry,
+and reused the immutable success without a third execution. All15 objects were
+retrieved and verified. The reviewer confirmed no remaining claim, VM or disk.
+This proves application failure recovery; it does not prove abrupt VM-loss
+recovery. See pilot/recovery-review.json.
+
+After these checks, the approved eight-worker pilot was submitted as
+`msh162-pilot-eight-v1`. It uses the next eight distinct frozen opening pairs.
+The task is scheduled with parallelism8. Completion and throughput evidence
+remain pending; no full study or primary integration has started.

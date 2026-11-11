@@ -1,0 +1,58 @@
+{
+  "reviewed_utc": "2026-11-11T20:36:42.772160+00:00",
+  "outcome": "passed",
+  "probe_job_id": "1f2b06e8d87d050cb69eae9fc8e8cd7d1a1adab414ea7cf36583e3851a36976c",
+  "batch_job": "msh162-pilot-recovery-v1",
+  "success_sha256": "b9f9b68f3123e482792b6d7633acd3a42e6b7ff9f96947be35f8bc0b0fd678a8",
+  "success_unchanged_since_probe": true,
+  "verify_result_passed": true,
+  "all_attempt_artifact_hashes_passed": true,
+  "claims": [],
+  "attempts": [
+    {
+      "attempt": "96474d9ae9b249cca5c7b6736d91f078",
+      "status": "failed",
+      "error": "RuntimeError('intentional cloud recovery validation failure')",
+      "wall_seconds": 0.9425198999999935,
+      "child_cpu_seconds": 0.0
+    },
+    {
+      "attempt": "f8e64e87cd2c4ddcba807a213d26efb2",
+      "status": "complete",
+      "error": null,
+      "wall_seconds": 8.905643329,
+      "child_cpu_seconds": 6.668821
+    }
+  ],
+  "environment": {
+    "cpu-platform": "Intel Sapphire Rapids",
+    "id": "7242332724086271904",
+    "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+    "zone": "projects/216675633801/zones/us-central1-a"
+  },
+  "remaining_project_instances": [],
+  "remaining_project_disks": [],
+  "vm_lifecycle_audit": [
+    {
+      "timestamp": "2026-11-11T20:35:58.202983Z",
+      "method": "v1.compute.instances.delete",
+      "status": {}
+    },
+    {
+      "timestamp": "2026-11-11T20:35:41.239524Z",
+      "method": "v1.compute.instances.delete",
+      "status": {}
+    },
+    {
+      "timestamp": "2026-11-11T20:34:30.766756Z",
+      "method": "v1.compute.instances.insert",
+      "status": {}
+    },
+    {
+      "timestamp": "2026-11-11T20:34:22.644702Z",
+      "method": "v1.compute.instances.insert",
+      "status": {}
+    }
+  ],
+  "scope": "Application failure then explicit retry and no-duplicate success reuse; not VM-loss recovery."
+}

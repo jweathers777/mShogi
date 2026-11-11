@@ -1,5 +1,5 @@
 {
-  "status": "provisional_batch01_pre20M",
+  "status": "batch01_checkpoint_complete_unresolved_retained",
   "main_games_completed": 20,
   "main_games_required": 200,
   "outcomes": {
@@ -19,67 +19,64 @@
       "wins": 2
     }
   },
-  "interpretation": "Discovery ledger, alphabetic categories; selected examples are not population frequencies or independent causes. Overlapping themes and opponent events remain explicit. No final priorities. First/largest and consequential claims need20M and episode adjudication. Unselected uncertainty remains in full decision dispositions.",
+  "interpretation": "Descriptive selected-example ledger, alphabetic categories and separate actors; not population frequencies or independent causal mistakes. Exact20M overlay supersedes5M at queried decisions including unresolved and removed apparent errors. Original flags/labels remain. Episode/earlier uncertainty and auto-claim limitations prevent final first/largest/ranking claims. Full200games required.",
   "categories": [
     {
-      "category": "active_defensive_counterplay",
-      "reviewed_examples": 1,
-      "affected_games": 1,
+      "category": "advantage preservation/conversion",
+      "actor": "candidate",
+      "reviewed_examples": 12,
+      "affected_games": 9,
       "families": [
-        "queens-indian-bogo"
-      ],
-      "statuses": {
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
-      },
-      "roles": {
-        "candidate_weakness": 1
-      },
-      "event_keys": [
-        [
-          "main-01-07",
-          0,
-          108
-        ]
-      ]
-    },
-    {
-      "category": "active_endgame_defense",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "slav-semi-slav"
-      ],
-      "statuses": {
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
-      },
-      "roles": {
-        "candidate_weakness": 1
-      },
-      "event_keys": [
-        [
-          "main-01-06",
-          1,
-          97
-        ]
-      ]
-    },
-    {
-      "category": "advantage_preservation",
-      "reviewed_examples": 5,
-      "affected_games": 4,
-      "families": [
+        "english",
         "pirc-modern-other-semiopen",
+        "queens-pawn-other",
         "sicilian-najdorf-dragon-scheveningen-rauzer",
         "slav-semi-slav"
       ],
-      "statuses": {
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 4,
-        "unresolved5m_candidate": 1
+      "phases": {
+        "middlegame": 9,
+        "endgame": 3
       },
-      "roles": {
-        "candidate_weakness": 5
+      "current_statuses": {
+        "supported_finite_event_20M": 3,
+        "same_choice_control": 2,
+        "not_in_5M_panel": 1,
+        "below_significance_threshold": 1,
+        "unresolved20m": 1,
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 2,
+        "supported_finite_deterioration": 2
       },
       "event_keys": [
+        [
+          "main-01-00",
+          0,
+          84
+        ],
+        [
+          "main-01-00",
+          0,
+          92
+        ],
+        [
+          "main-01-03",
+          0,
+          30
+        ],
+        [
+          "main-01-00",
+          1,
+          175
+        ],
+        [
+          "main-01-01",
+          1,
+          125
+        ],
+        [
+          "main-01-03",
+          0,
+          100
+        ],
         [
           "main-01-05",
           0,
@@ -97,6 +94,11 @@
         ],
         [
           "main-01-08",
+          0,
+          34
+        ],
+        [
+          "main-01-08",
           1,
           43
         ],
@@ -105,419 +107,148 @@
           1,
           63
         ]
-      ]
-    },
-    {
-      "category": "attack_preservation",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "pirc-modern-other-semiopen"
       ],
-      "statuses": {
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
+      "supported20M_comparison_severity": {
+        "major": 5
       },
-      "roles": {
-        "candidate_weakness": 1
-      },
-      "event_keys": [
-        [
-          "main-01-08",
-          0,
-          34
-        ]
-      ]
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
     },
     {
-      "category": "attacking_sacrifice",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "slav-semi-slav"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-03",
-          0,
-          60
-        ]
-      ]
-    },
-    {
-      "category": "central_pawn_break_timing",
+      "category": "advantage preservation/conversion",
+      "actor": "reference",
       "reviewed_examples": 4,
-      "affected_games": 2,
+      "affected_games": 3,
       "families": [
+        "english",
         "sicilian-najdorf-dragon-scheveningen-rauzer",
         "slav-semi-slav"
       ],
-      "statuses": {
-        "unresolved5m_candidate": 1,
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 3
+      "phases": {
+        "endgame": 2,
+        "middlegame": 2
       },
-      "roles": {
-        "candidate_weakness": 4
-      },
-      "event_keys": [
-        [
-          "main-01-05",
-          0,
-          18
-        ],
-        [
-          "main-01-06",
-          0,
-          20
-        ],
-        [
-          "main-01-06",
-          0,
-          24
-        ],
-        [
-          "main-01-06",
-          0,
-          70
-        ]
-      ]
-    },
-    {
-      "category": "defensive_exchange_opportunity",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "slav-semi-slav"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-03",
-          1,
-          61
-        ]
-      ]
-    },
-    {
-      "category": "defensive_rook_activity",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "english"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
+      "current_statuses": {
+        "unresolved": 4
       },
       "event_keys": [
         [
           "main-01-01",
           0,
-          106
-        ]
-      ]
-    },
-    {
-      "category": "draw_defense",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "queens-pawn-other"
-      ],
-      "statuses": {
-        "not_in_5M_panel": 1
-      },
-      "roles": {
-        "contrary_success": 1
-      },
-      "event_keys": [
+          57
+        ],
         [
-          "main-01-00",
+          "main-01-01",
           0,
-          178
+          61
+        ],
+        [
+          "main-01-02",
+          1,
+          84
+        ],
+        [
+          "main-01-03",
+          1,
+          60
         ]
-      ]
+      ],
+      "supported20M_comparison_severity": {},
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
     },
     {
-      "category": "endgame_capture_judgment",
-      "reviewed_examples": 1,
-      "affected_games": 1,
+      "category": "coordination/activity",
+      "actor": "candidate",
+      "reviewed_examples": 4,
+      "affected_games": 4,
       "families": [
-        "slav-semi-slav"
+        "pirc-modern-other-semiopen",
+        "queens-indian-bogo",
+        "slav-semi-slav",
+        "unaided"
       ],
-      "statuses": {
-        "unresolved": 1
+      "phases": {
+        "middlegame": 4
       },
-      "roles": {
-        "unresolved_comparative_question": 1
+      "current_statuses": {
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1,
+        "stable_singleton_control": 1,
+        "supported_finite_deterioration": 1,
+        "unresolved20m": 1
       },
       "event_keys": [
         [
           "main-01-06",
-          1,
-          89
-        ]
-      ]
-    },
-    {
-      "category": "endgame_king_activity",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "queens-pawn-other"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-00",
-          1,
-          119
-        ]
-      ]
-    },
-    {
-      "category": "endgame_pawn_break_conversion",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "slav-semi-slav"
-      ],
-      "statuses": {
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
-      },
-      "roles": {
-        "candidate_weakness": 1
-      },
-      "event_keys": [
-        [
-          "main-01-06",
-          1,
-          81
-        ]
-      ]
-    },
-    {
-      "category": "endgame_recovery",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "queens-indian-bogo"
-      ],
-      "statuses": {
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
-      },
-      "roles": {
-        "candidate_weakness": 1
-      },
-      "event_keys": [
+          0,
+          74
+        ],
         [
           "main-01-07",
-          0,
-          126
+          1,
+          51
+        ],
+        [
+          "main-01-08",
+          1,
+          31
+        ],
+        [
+          "main-01-unaided",
+          1,
+          55
         ]
-      ]
+      ],
+      "supported20M_comparison_severity": {
+        "significant": 1
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
     },
     {
-      "category": "ending_transition",
-      "reviewed_examples": 1,
-      "affected_games": 1,
+      "category": "coordination/activity",
+      "actor": "reference",
+      "reviewed_examples": 2,
+      "affected_games": 2,
       "families": [
+        "nimzo-indian",
         "sicilian-najdorf-dragon-scheveningen-rauzer"
       ],
-      "statuses": {
-        "supported_finite_event_5M": 1
+      "phases": {
+        "middlegame": 2
       },
-      "roles": {
-        "deterioration_candidate": 1
+      "current_statuses": {
+        "supported_finite_event_5M": 1,
+        "supported_finite_event_20M": 1
       },
       "event_keys": [
         [
           "main-01-02",
           1,
-          87
-        ]
-      ]
-    },
-    {
-      "category": "exchange_and_counterplay",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "pirc-modern-other-semiopen"
-      ],
-      "statuses": {
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
-      },
-      "roles": {
-        "candidate_weakness": 1
-      },
-      "event_keys": [
-        [
-          "main-01-08",
-          1,
-          71
-        ]
-      ]
-    },
-    {
-      "category": "exchange_decisions",
-      "reviewed_examples": 2,
-      "affected_games": 2,
-      "families": [
-        "pirc-modern-other-semiopen",
-        "sicilian-najdorf-dragon-scheveningen-rauzer"
-      ],
-      "statuses": {
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 2
-      },
-      "roles": {
-        "candidate_weakness": 2
-      },
-      "event_keys": [
-        [
-          "main-01-05",
-          0,
-          16
-        ],
-        [
-          "main-01-08",
-          1,
-          49
-        ]
-      ]
-    },
-    {
-      "category": "forcing_tactical_sequence",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "sicilian-najdorf-dragon-scheveningen-rauzer"
-      ],
-      "statuses": {
-        "observed_success_not_optimality_proof": 1
-      },
-      "roles": {
-        "contrary_success": 1
-      },
-      "event_keys": [
-        [
-          "main-01-05",
-          1,
-          23
-        ]
-      ]
-    },
-    {
-      "category": "king_attack",
-      "reviewed_examples": 3,
-      "affected_games": 3,
-      "families": [
-        "pirc-modern-other-semiopen",
-        "sicilian-najdorf-dragon-scheveningen-rauzer",
-        "unaided"
-      ],
-      "statuses": {
-        "observed_success_not_optimality_proof": 3
-      },
-      "roles": {
-        "contrary_success": 3
-      },
-      "event_keys": [
-        [
-          "main-01-05",
-          0,
-          28
-        ],
-        [
-          "main-01-08",
-          0,
-          36
-        ],
-        [
-          "main-01-unaided",
-          0,
-          16
-        ]
-      ]
-    },
-    {
-      "category": "king_safety_pawn_advance",
-      "reviewed_examples": 2,
-      "affected_games": 2,
-      "families": [
-        "english"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 2
-      },
-      "roles": {
-        "deterioration_candidate": 2
-      },
-      "event_keys": [
-        [
-          "main-01-01",
-          0,
-          18
-        ],
-        [
-          "main-01-01",
-          1,
-          23
-        ]
-      ]
-    },
-    {
-      "category": "king_safety_piece_exchange",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "english"
-      ],
-      "statuses": {
-        "unresolved": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-01",
-          0,
           38
+        ],
+        [
+          "main-01-04",
+          1,
+          60
         ]
-      ]
+      ],
+      "supported20M_comparison_severity": {
+        "major": 1
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
     },
     {
-      "category": "opening_central_choices",
+      "category": "development/opening choices",
+      "actor": "candidate",
       "reviewed_examples": 3,
       "affected_games": 2,
       "families": [
         "unaided"
       ],
-      "statuses": {
-        "unresolved": 1,
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 2
+      "phases": {
+        "opening": 3
       },
-      "roles": {
-        "unresolved_comparative_question": 1,
-        "candidate_weakness": 2
+      "current_statuses": {
+        "supported_finite_deterioration": 2,
+        "unresolved20m": 1
       },
       "event_keys": [
         [
@@ -535,660 +266,260 @@
           1,
           3
         ]
-      ]
+      ],
+      "supported20M_comparison_severity": {
+        "significant": 2
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
     },
     {
-      "category": "opponent_central_capture",
-      "reviewed_examples": 1,
-      "affected_games": 1,
+      "category": "endgame decisions",
+      "actor": "candidate",
+      "reviewed_examples": 7,
+      "affected_games": 5,
       "families": [
-        "nimzo-indian"
+        "english",
+        "queens-indian-bogo",
+        "queens-pawn-other",
+        "slav-semi-slav"
       ],
-      "statuses": {
-        "unresolved": 1
+      "phases": {
+        "endgame": 7
       },
-      "roles": {
-        "deterioration_candidate": 1
+      "current_statuses": {
+        "supported_finite_event_20M": 2,
+        "not_in_5M_panel": 1,
+        "supported_finite_deterioration": 3,
+        "claim_policy_context_limits_actual_result_attribution": 1
       },
       "event_keys": [
         [
-          "main-01-04",
+          "main-01-00",
           1,
-          28
+          119
+        ],
+        [
+          "main-01-01",
+          0,
+          106
+        ],
+        [
+          "main-01-00",
+          0,
+          178
+        ],
+        [
+          "main-01-06",
+          1,
+          81
+        ],
+        [
+          "main-01-06",
+          1,
+          97
+        ],
+        [
+          "main-01-06",
+          1,
+          89
+        ],
+        [
+          "main-01-07",
+          0,
+          126
         ]
-      ]
+      ],
+      "supported20M_comparison_severity": {
+        "major": 5
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
     },
     {
-      "category": "opponent_conversion",
-      "reviewed_examples": 4,
-      "affected_games": 3,
+      "category": "exchanges",
+      "actor": "candidate",
+      "reviewed_examples": 6,
+      "affected_games": 5,
       "families": [
-        "english",
+        "nimzo-indian",
+        "pirc-modern-other-semiopen",
         "sicilian-najdorf-dragon-scheveningen-rauzer",
         "slav-semi-slav"
       ],
-      "statuses": {
-        "unresolved": 4
+      "phases": {
+        "endgame": 1,
+        "middlegame": 5
       },
-      "roles": {
-        "deterioration_candidate": 4
+      "current_statuses": {
+        "supported_finite_event_20M": 3,
+        "supported_finite_deterioration": 1,
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1,
+        "unresolved20m": 1
       },
       "event_keys": [
         [
-          "main-01-01",
-          0,
-          57
+          "main-01-02",
+          1,
+          87
         ],
         [
-          "main-01-01",
-          0,
+          "main-01-03",
+          1,
           61
         ],
         [
-          "main-01-02",
-          1,
-          84
-        ],
-        [
-          "main-01-03",
-          1,
-          60
-        ]
-      ]
-    },
-    {
-      "category": "opponent_defensive_coordination",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "slav-semi-slav"
-      ],
-      "statuses": {
-        "unresolved": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-03",
-          0,
-          63
-        ]
-      ]
-    },
-    {
-      "category": "opponent_king_safety",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "queens-pawn-other"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-00",
-          0,
-          81
-        ]
-      ]
-    },
-    {
-      "category": "opponent_material_tactics",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "nimzo-indian"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
           "main-01-04",
           0,
-          25
-        ]
-      ]
-    },
-    {
-      "category": "opponent_pawn_blockade",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "english"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-01",
-          1,
-          84
-        ]
-      ]
-    },
-    {
-      "category": "opponent_queen_placement",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "sicilian-najdorf-dragon-scheveningen-rauzer"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-02",
-          1,
-          38
-        ]
-      ]
-    },
-    {
-      "category": "opponent_queenside_timing",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "sicilian-najdorf-dragon-scheveningen-rauzer"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-02",
-          0,
-          39
-        ]
-      ]
-    },
-    {
-      "category": "opponent_recovery_choice",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "queens-pawn-other"
-      ],
-      "statuses": {
-        "unresolved": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-00",
-          1,
-          122
-        ]
-      ]
-    },
-    {
-      "category": "opponent_rook_placement",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "nimzo-indian"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-04",
-          1,
-          60
-        ]
-      ]
-    },
-    {
-      "category": "opponent_tactical_alignment",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "sicilian-najdorf-dragon-scheveningen-rauzer"
-      ],
-      "statuses": {
-        "not_in_5M_panel": 1
-      },
-      "roles": {
-        "contrary_success": 1
-      },
-      "event_keys": [
-        [
-          "main-01-02",
-          0,
-          53
-        ]
-      ]
-    },
-    {
-      "category": "opportunity_exploitation",
-      "reviewed_examples": 2,
-      "affected_games": 2,
-      "families": [
-        "slav-semi-slav",
-        "unaided"
-      ],
-      "statuses": {
-        "observed_success_not_optimality_proof": 2
-      },
-      "roles": {
-        "contrary_success": 2
-      },
-      "event_keys": [
-        [
-          "main-01-06",
-          0,
-          78
+          30
         ],
         [
-          "main-01-unaided",
-          1,
-          57
-        ]
-      ]
-    },
-    {
-      "category": "passed_pawn_break_timing",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "english"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-01",
-          1,
-          81
-        ]
-      ]
-    },
-    {
-      "category": "passed_pawn_conversion",
-      "reviewed_examples": 3,
-      "affected_games": 3,
-      "families": [
-        "english",
-        "queens-pawn-other",
-        "slav-semi-slav"
-      ],
-      "statuses": {
-        "same_choice_control": 2,
-        "not_in_5M_panel": 1
-      },
-      "roles": {
-        "contrary_success": 3
-      },
-      "event_keys": [
-        [
-          "main-01-00",
-          1,
-          175
-        ],
-        [
-          "main-01-01",
-          1,
-          125
-        ],
-        [
-          "main-01-03",
+          "main-01-05",
           0,
-          100
-        ]
-      ]
-    },
-    {
-      "category": "passed_pawn_tactics",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "nimzo-indian"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-04",
-          0,
-          38
-        ]
-      ]
-    },
-    {
-      "category": "pawn_break_tactics",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "slav-semi-slav"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-03",
-          1,
-          21
-        ]
-      ]
-    },
-    {
-      "category": "piece_activity_opportunity",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "sicilian-najdorf-dragon-scheveningen-rauzer"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
-        [
-          "main-01-02",
-          1,
-          29
-        ]
-      ]
-    },
-    {
-      "category": "piece_coordination",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "pirc-modern-other-semiopen"
-      ],
-      "statuses": {
-        "unresolved5m_candidate": 1
-      },
-      "roles": {
-        "candidate_weakness": 1
-      },
-      "event_keys": [
+          16
+        ],
         [
           "main-01-08",
           1,
-          31
+          49
+        ],
+        [
+          "main-01-08",
+          1,
+          71
         ]
-      ]
+      ],
+      "supported20M_comparison_severity": {
+        "major": 3,
+        "significant": 1
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
     },
     {
-      "category": "premature_simplification",
-      "reviewed_examples": 1,
-      "affected_games": 1,
+      "category": "king safety",
+      "actor": "candidate",
+      "reviewed_examples": 6,
+      "affected_games": 5,
       "families": [
-        "nimzo-indian"
+        "english",
+        "pirc-modern-other-semiopen",
+        "sicilian-najdorf-dragon-scheveningen-rauzer",
+        "unaided"
       ],
-      "statuses": {
-        "unresolved": 1
+      "phases": {
+        "middlegame": 6
       },
-      "roles": {
-        "deterioration_candidate": 1
+      "current_statuses": {
+        "supported_subthreshold_20M": 1,
+        "unresolved": 1,
+        "supported_finite_event_20M": 1,
+        "observed_success_not_optimality_proof": 1,
+        "stable_singleton_control": 2
       },
       "event_keys": [
         [
-          "main-01-04",
+          "main-01-01",
           0,
-          30
+          18
+        ],
+        [
+          "main-01-01",
+          0,
+          38
+        ],
+        [
+          "main-01-01",
+          1,
+          23
+        ],
+        [
+          "main-01-05",
+          0,
+          28
+        ],
+        [
+          "main-01-08",
+          0,
+          36
+        ],
+        [
+          "main-01-unaided",
+          0,
+          16
         ]
-      ]
-    },
-    {
-      "category": "preserving_attacking_pressure",
-      "reviewed_examples": 3,
-      "affected_games": 2,
-      "families": [
-        "queens-pawn-other",
-        "slav-semi-slav"
       ],
-      "statuses": {
-        "supported_finite_event_5M": 1,
-        "unresolved": 2
+      "supported20M_comparison_severity": {
+        "serious": 1
       },
-      "roles": {
-        "deterioration_candidate": 3
-      },
-      "event_keys": [
-        [
-          "main-01-00",
-          0,
-          84
-        ],
-        [
-          "main-01-00",
-          0,
-          92
-        ],
-        [
-          "main-01-03",
-          0,
-          30
-        ]
-      ]
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
     },
     {
-      "category": "queenside_opportunity_response",
+      "category": "king safety",
+      "actor": "reference",
       "reviewed_examples": 1,
       "affected_games": 1,
       "families": [
-        "sicilian-najdorf-dragon-scheveningen-rauzer"
+        "queens-pawn-other"
       ],
-      "statuses": {
+      "phases": {
+        "middlegame": 1
+      },
+      "current_statuses": {
         "supported_finite_event_5M": 1
       },
-      "roles": {
-        "deterioration_candidate": 1
+      "event_keys": [
+        [
+          "main-01-00",
+          0,
+          81
+        ]
+      ],
+      "supported20M_comparison_severity": {},
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
+    },
+    {
+      "category": "opportunity response",
+      "actor": "candidate",
+      "reviewed_examples": 11,
+      "affected_games": 8,
+      "families": [
+        "nimzo-indian",
+        "queens-indian-bogo",
+        "queens-pawn-other",
+        "sicilian-najdorf-dragon-scheveningen-rauzer",
+        "slav-semi-slav",
+        "unaided"
+      ],
+      "phases": {
+        "middlegame": 10,
+        "endgame": 1
+      },
+      "current_statuses": {
+        "unresolved": 3,
+        "supported_finite_event_20M": 3,
+        "same_choice_control": 1,
+        "not_in_5M_panel": 1,
+        "observed_success_not_optimality_proof": 2,
+        "below_significance_threshold": 1
       },
       "event_keys": [
+        [
+          "main-01-00",
+          0,
+          28
+        ],
+        [
+          "main-01-00",
+          1,
+          43
+        ],
         [
           "main-01-02",
           0,
           40
-        ]
-      ]
-    },
-    {
-      "category": "quiet_piece_coordination",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "slav-semi-slav"
-      ],
-      "statuses": {
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
-      },
-      "roles": {
-        "candidate_weakness": 1
-      },
-      "event_keys": [
-        [
-          "main-01-06",
-          0,
-          74
-        ]
-      ]
-    },
-    {
-      "category": "quiet_tactical_defense",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "slav-semi-slav"
-      ],
-      "statuses": {
-        "unresolved5m_candidate": 1
-      },
-      "roles": {
-        "candidate_weakness": 1
-      },
-      "event_keys": [
-        [
-          "main-01-06",
-          0,
-          82
-        ]
-      ]
-    },
-    {
-      "category": "recovery_defense",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "slav-semi-slav"
-      ],
-      "statuses": {
-        "observed_success_not_optimality_proof": 1
-      },
-      "roles": {
-        "contrary_success": 1
-      },
-      "event_keys": [
-        [
-          "main-01-06",
-          1,
-          43
-        ]
-      ]
-    },
-    {
-      "category": "rook_activity",
-      "reviewed_examples": 2,
-      "affected_games": 2,
-      "families": [
-        "queens-indian-bogo",
-        "unaided"
-      ],
-      "statuses": {
-        "observed_success_not_optimality_proof": 1,
-        "unresolved5m_candidate": 1
-      },
-      "roles": {
-        "contrary_success": 1,
-        "candidate_weakness": 1
-      },
-      "event_keys": [
-        [
-          "main-01-07",
-          1,
-          51
         ],
-        [
-          "main-01-unaided",
-          1,
-          55
-        ]
-      ]
-    },
-    {
-      "category": "tactical_alignment",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "sicilian-najdorf-dragon-scheveningen-rauzer"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 1
-      },
-      "roles": {
-        "deterioration_candidate": 1
-      },
-      "event_keys": [
         [
           "main-01-02",
-          0,
-          52
-        ]
-      ]
-    },
-    {
-      "category": "tactical_exchange_sequence",
-      "reviewed_examples": 1,
-      "affected_games": 1,
-      "families": [
-        "slav-semi-slav"
-      ],
-      "statuses": {
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
-      },
-      "roles": {
-        "candidate_weakness": 1
-      },
-      "event_keys": [
-        [
-          "main-01-06",
           1,
-          27
-        ]
-      ]
-    },
-    {
-      "category": "tactical_opportunity_completion",
-      "reviewed_examples": 6,
-      "affected_games": 4,
-      "families": [
-        "nimzo-indian",
-        "queens-pawn-other",
-        "sicilian-najdorf-dragon-scheveningen-rauzer"
-      ],
-      "statuses": {
-        "supported_finite_event_5M": 3,
-        "unresolved": 1,
-        "same_choice_control": 1,
-        "not_in_5M_panel": 1
-      },
-      "roles": {
-        "deterioration_candidate": 4,
-        "contrary_success": 2
-      },
-      "event_keys": [
-        [
-          "main-01-00",
-          0,
-          28
-        ],
-        [
-          "main-01-00",
-          1,
-          43
+          29
         ],
         [
           "main-01-02",
@@ -1209,50 +540,398 @@
           "main-01-04",
           1,
           135
+        ],
+        [
+          "main-01-06",
+          0,
+          78
+        ],
+        [
+          "main-01-unaided",
+          1,
+          57
+        ],
+        [
+          "main-01-07",
+          1,
+          29
         ]
-      ]
+      ],
+      "supported20M_comparison_severity": {
+        "major": 2,
+        "significant": 1
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
     },
     {
-      "category": "tactical_pawn_break",
-      "reviewed_examples": 1,
-      "affected_games": 1,
+      "category": "opportunity response",
+      "actor": "reference",
+      "reviewed_examples": 17,
+      "affected_games": 11,
       "families": [
-        "pirc-modern-other-semiopen"
+        "pirc-modern-other-semiopen",
+        "queens-indian-bogo",
+        "queens-pawn-other",
+        "sicilian-najdorf-dragon-scheveningen-rauzer",
+        "slav-semi-slav",
+        "unaided"
       ],
-      "statuses": {
-        "observed_success_not_optimality_proof": 1
+      "phases": {
+        "endgame": 6,
+        "middlegame": 11
       },
-      "roles": {
-        "contrary_success": 1
+      "current_statuses": {
+        "supported_finite_event_20M": 1,
+        "unresolved20m": 2,
+        "supported_finite_deterioration": 13,
+        "claim_policy_context_limits_actual_result_attribution": 1
       },
       "event_keys": [
+        [
+          "main-01-00",
+          1,
+          122
+        ],
+        [
+          "main-01-05",
+          0,
+          17
+        ],
+        [
+          "main-01-05",
+          0,
+          27
+        ],
+        [
+          "main-01-05",
+          1,
+          22
+        ],
+        [
+          "main-01-05",
+          1,
+          30
+        ],
+        [
+          "main-01-06",
+          0,
+          77
+        ],
+        [
+          "main-01-06",
+          1,
+          42
+        ],
+        [
+          "main-01-06",
+          1,
+          78
+        ],
+        [
+          "main-01-06",
+          1,
+          90
+        ],
+        [
+          "main-01-06",
+          1,
+          98
+        ],
+        [
+          "main-01-07",
+          0,
+          125
+        ],
+        [
+          "main-01-07",
+          1,
+          50
+        ],
+        [
+          "main-01-08",
+          0,
+          23
+        ],
+        [
+          "main-01-08",
+          0,
+          35
+        ],
+        [
+          "main-01-08",
+          1,
+          34
+        ],
+        [
+          "main-01-unaided",
+          0,
+          15
+        ],
+        [
+          "main-01-unaided",
+          1,
+          56
+        ]
+      ],
+      "supported20M_comparison_severity": {
+        "major": 14
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
+    },
+    {
+      "category": "pawn structures/breaks",
+      "actor": "candidate",
+      "reviewed_examples": 6,
+      "affected_games": 4,
+      "families": [
+        "english",
+        "pirc-modern-other-semiopen",
+        "sicilian-najdorf-dragon-scheveningen-rauzer",
+        "slav-semi-slav"
+      ],
+      "phases": {
+        "middlegame": 6
+      },
+      "current_statuses": {
+        "supported_finite_event_20M": 1,
+        "below_significance_threshold": 1,
+        "supported_finite_deterioration": 2,
+        "stable5m_finite_candidate_pending20m_for_critical_claims": 1,
+        "stable_singleton_control": 1
+      },
+      "event_keys": [
+        [
+          "main-01-01",
+          1,
+          81
+        ],
+        [
+          "main-01-05",
+          0,
+          18
+        ],
+        [
+          "main-01-06",
+          0,
+          20
+        ],
+        [
+          "main-01-06",
+          0,
+          24
+        ],
+        [
+          "main-01-06",
+          0,
+          70
+        ],
         [
           "main-01-08",
           0,
           24
         ]
-      ]
+      ],
+      "supported20M_comparison_severity": {
+        "major": 2,
+        "significant": 1
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
     },
     {
-      "category": "threatened_piece_defense",
-      "reviewed_examples": 1,
-      "affected_games": 1,
+      "category": "pawn structures/breaks",
+      "actor": "reference",
+      "reviewed_examples": 3,
+      "affected_games": 3,
       "families": [
-        "queens-indian-bogo"
+        "english",
+        "nimzo-indian",
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
       ],
-      "statuses": {
-        "stable5m_finite_candidate_pending20m_for_critical_claims": 1
+      "phases": {
+        "middlegame": 3
       },
-      "roles": {
-        "candidate_weakness": 1
+      "current_statuses": {
+        "supported_finite_event_20M": 2,
+        "unresolved": 1
       },
       "event_keys": [
+        [
+          "main-01-01",
+          1,
+          84
+        ],
+        [
+          "main-01-02",
+          0,
+          39
+        ],
+        [
+          "main-01-04",
+          1,
+          28
+        ]
+      ],
+      "supported20M_comparison_severity": {
+        "major": 2
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
+    },
+    {
+      "category": "quiet defense",
+      "actor": "candidate",
+      "reviewed_examples": 4,
+      "affected_games": 3,
+      "families": [
+        "queens-indian-bogo",
+        "slav-semi-slav"
+      ],
+      "phases": {
+        "middlegame": 4
+      },
+      "current_statuses": {
+        "supported_finite_deterioration": 3,
+        "observed_success_not_optimality_proof": 1
+      },
+      "event_keys": [
+        [
+          "main-01-06",
+          0,
+          82
+        ],
+        [
+          "main-01-06",
+          1,
+          43
+        ],
         [
           "main-01-07",
           0,
           32
+        ],
+        [
+          "main-01-07",
+          0,
+          108
         ]
-      ]
+      ],
+      "supported20M_comparison_severity": {
+        "major": 3
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
+    },
+    {
+      "category": "quiet defense",
+      "actor": "reference",
+      "reviewed_examples": 1,
+      "affected_games": 1,
+      "families": [
+        "slav-semi-slav"
+      ],
+      "phases": {
+        "middlegame": 1
+      },
+      "current_statuses": {
+        "unresolved": 1
+      },
+      "event_keys": [
+        [
+          "main-01-03",
+          0,
+          63
+        ]
+      ],
+      "supported20M_comparison_severity": {},
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
+    },
+    {
+      "category": "tactical calculation",
+      "actor": "candidate",
+      "reviewed_examples": 6,
+      "affected_games": 6,
+      "families": [
+        "nimzo-indian",
+        "sicilian-najdorf-dragon-scheveningen-rauzer",
+        "slav-semi-slav"
+      ],
+      "phases": {
+        "middlegame": 5,
+        "opening": 1
+      },
+      "current_statuses": {
+        "supported_finite_event_20M": 3,
+        "unresolved": 1,
+        "observed_success_not_optimality_proof": 1,
+        "supported_finite_deterioration": 1
+      },
+      "event_keys": [
+        [
+          "main-01-02",
+          0,
+          52
+        ],
+        [
+          "main-01-03",
+          0,
+          60
+        ],
+        [
+          "main-01-03",
+          1,
+          21
+        ],
+        [
+          "main-01-04",
+          0,
+          38
+        ],
+        [
+          "main-01-05",
+          1,
+          23
+        ],
+        [
+          "main-01-06",
+          1,
+          27
+        ]
+      ],
+      "supported20M_comparison_severity": {
+        "major": 4
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
+    },
+    {
+      "category": "tactical calculation",
+      "actor": "reference",
+      "reviewed_examples": 2,
+      "affected_games": 2,
+      "families": [
+        "nimzo-indian",
+        "sicilian-najdorf-dragon-scheveningen-rauzer"
+      ],
+      "phases": {
+        "middlegame": 2
+      },
+      "current_statuses": {
+        "supported_finite_event_20M": 1,
+        "not_in_5M_panel": 1
+      },
+      "event_keys": [
+        [
+          "main-01-04",
+          0,
+          25
+        ],
+        [
+          "main-01-02",
+          0,
+          53
+        ]
+      ],
+      "supported20M_comparison_severity": {
+        "major": 1
+      },
+      "counting_limit": "Selected comparisons, not independent causal episodes or final frequency."
     }
   ],
   "events": [
@@ -1304,7 +983,26 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "queens-pawn-other"
+      "family": "queens-pawn-other",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "unresolved",
+        "severity": "unresolved",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": []
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "unresolved"
     },
     {
       "pair": "main-01-00",
@@ -1354,7 +1052,32 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "queens-pawn-other"
+      "family": "queens-pawn-other",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              28,
+              42,
+              48,
+              55,
+              56
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-00",
@@ -1411,7 +1134,33 @@
           ]
         }
       },
-      "family": "queens-pawn-other"
+      "family": "queens-pawn-other",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              28,
+              42,
+              48,
+              55,
+              56,
+              89
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-00",
@@ -1461,7 +1210,11 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "queens-pawn-other"
+      "family": "queens-pawn-other",
+      "actor": "reference",
+      "parent_category": "king safety",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_5M"
     },
     {
       "pair": "main-01-00",
@@ -1520,7 +1273,29 @@
           ]
         }
       },
-      "family": "queens-pawn-other"
+      "family": "queens-pawn-other",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              40,
+              42
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-00",
@@ -1572,7 +1347,53 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "queens-pawn-other"
+      "family": "queens-pawn-other",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              40,
+              42,
+              55,
+              59,
+              60,
+              61,
+              62,
+              63,
+              67,
+              69,
+              70,
+              73,
+              75,
+              76,
+              84,
+              86,
+              89,
+              100,
+              102,
+              108,
+              109,
+              111,
+              112,
+              113,
+              117,
+              118
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "endgame decisions",
+      "phase": "endgame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-00",
@@ -1629,7 +1450,53 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "queens-pawn-other"
+      "family": "queens-pawn-other",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              40,
+              42,
+              55,
+              59,
+              60,
+              61,
+              62,
+              63,
+              67,
+              69,
+              70,
+              73,
+              75,
+              76,
+              84,
+              86,
+              89,
+              100,
+              102,
+              108,
+              109,
+              111,
+              112,
+              113,
+              117,
+              118
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "endgame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-01",
@@ -1681,7 +1548,26 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "english"
+      "family": "english",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_subthreshold_20M",
+        "severity": "subthreshold",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": []
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "king safety",
+      "phase": "middlegame",
+      "current_status": "supported_subthreshold_20M"
     },
     {
       "pair": "main-01-01",
@@ -1740,7 +1626,35 @@
           ]
         }
       },
-      "family": "english"
+      "family": "english",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "unresolved",
+        "severity": "unresolved",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              22,
+              24,
+              25,
+              28,
+              29,
+              34,
+              35,
+              37
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "king safety",
+      "phase": "middlegame",
+      "current_status": "unresolved"
     },
     {
       "pair": "main-01-01",
@@ -1792,7 +1706,48 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "english"
+      "family": "english",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              22,
+              24,
+              25,
+              28,
+              29,
+              34,
+              35,
+              37,
+              38,
+              46,
+              47,
+              57,
+              58,
+              59,
+              60,
+              61,
+              82,
+              98,
+              100,
+              103,
+              105
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "endgame decisions",
+      "phase": "endgame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-01",
@@ -1847,7 +1802,11 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "english"
+      "family": "english",
+      "actor": "reference",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "endgame",
+      "current_status": "unresolved"
     },
     {
       "pair": "main-01-01",
@@ -1902,7 +1861,11 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "english"
+      "family": "english",
+      "actor": "reference",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "endgame",
+      "current_status": "unresolved"
     },
     {
       "pair": "main-01-01",
@@ -1954,7 +1917,26 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "english"
+      "family": "english",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "serious",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": []
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "king safety",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-01",
@@ -2004,7 +1986,38 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "english"
+      "family": "english",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              24,
+              25,
+              40,
+              43,
+              44,
+              46,
+              53,
+              64,
+              69,
+              71,
+              80
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "pawn structures/breaks",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-01",
@@ -2056,7 +2069,38 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "english"
+      "family": "english",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              24,
+              25,
+              40,
+              43,
+              44,
+              46,
+              53,
+              64,
+              69,
+              71,
+              80
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "reference",
+      "parent_category": "pawn structures/breaks",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-02",
@@ -2108,7 +2152,26 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "unresolved",
+        "severity": "unresolved",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": []
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "reference",
+      "parent_category": "pawn structures/breaks",
+      "phase": "middlegame",
+      "current_status": "unresolved"
     },
     {
       "pair": "main-01-02",
@@ -2160,7 +2223,28 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "significant",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              39
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-02",
@@ -2212,7 +2296,28 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              39
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "tactical calculation",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-02",
@@ -2264,7 +2369,29 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "unresolved",
+        "severity": "unresolved",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              20,
+              28
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "unresolved"
     },
     {
       "pair": "main-01-02",
@@ -2314,7 +2441,40 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "unresolved",
+        "severity": "unresolved",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              20,
+              28,
+              29,
+              33,
+              36,
+              37,
+              43,
+              45,
+              46,
+              48,
+              49,
+              53,
+              60
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "unresolved"
     },
     {
       "pair": "main-01-02",
@@ -2364,7 +2524,46 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              20,
+              28,
+              29,
+              33,
+              36,
+              37,
+              43,
+              45,
+              46,
+              48,
+              49,
+              53,
+              60,
+              61,
+              67,
+              69,
+              80,
+              83,
+              84
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "exchanges",
+      "phase": "endgame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-02",
@@ -2414,7 +2613,11 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "actor": "reference",
+      "parent_category": "coordination/activity",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_5M"
     },
     {
       "pair": "main-01-02",
@@ -2469,7 +2672,11 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "actor": "reference",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "middlegame",
+      "current_status": "unresolved"
     },
     {
       "pair": "main-01-03",
@@ -2526,7 +2733,26 @@
           ]
         }
       },
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": []
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-03",
@@ -2578,7 +2804,36 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "unresolved",
+        "severity": "unresolved",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              35,
+              38,
+              39,
+              40,
+              41,
+              42,
+              53,
+              54,
+              58
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "tactical calculation",
+      "phase": "middlegame",
+      "current_status": "unresolved"
     },
     {
       "pair": "main-01-03",
@@ -2633,7 +2888,37 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "unresolved",
+        "severity": "unresolved",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              35,
+              38,
+              39,
+              40,
+              41,
+              42,
+              53,
+              54,
+              58,
+              60
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "reference",
+      "parent_category": "quiet defense",
+      "phase": "middlegame",
+      "current_status": "unresolved"
     },
     {
       "pair": "main-01-03",
@@ -2685,7 +2970,26 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": []
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "tactical calculation",
+      "phase": "opening",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-03",
@@ -2742,7 +3046,33 @@
           ]
         }
       },
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "unresolved",
+        "severity": "unresolved",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              26,
+              49,
+              50,
+              54,
+              56,
+              58
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "reference",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "middlegame",
+      "current_status": "unresolved"
     },
     {
       "pair": "main-01-03",
@@ -2794,7 +3124,34 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              26,
+              49,
+              50,
+              54,
+              56,
+              58,
+              60
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "exchanges",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-04",
@@ -2846,7 +3203,26 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "nimzo-indian"
+      "family": "nimzo-indian",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": []
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "reference",
+      "parent_category": "tactical calculation",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-04",
@@ -2901,7 +3277,26 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "nimzo-indian"
+      "family": "nimzo-indian",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": []
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "exchanges",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-04",
@@ -2953,7 +3348,29 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "nimzo-indian"
+      "family": "nimzo-indian",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              31,
+              32
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "tactical calculation",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-04",
@@ -3010,7 +3427,26 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "nimzo-indian"
+      "family": "nimzo-indian",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": []
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "reference",
+      "parent_category": "pawn structures/breaks",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-04",
@@ -3062,7 +3498,26 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "nimzo-indian"
+      "family": "nimzo-indian",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": []
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-04",
@@ -3114,7 +3569,28 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "nimzo-indian"
+      "family": "nimzo-indian",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-00-04.json",
+        "status": "supported_finite_event_20M",
+        "severity": "major",
+        "remaining_dependencies": [
+          {
+            "kind": "earlier_unresolved_or_threshold_rows_both_players",
+            "plies": [
+              58
+            ]
+          },
+          {
+            "kind": "event_context",
+            "note": "Opportunity-response, supplied disadvantage, and already-lost secondary classification remain episode-level questions; do not count this numerical comparison as an independent causal error automatically."
+          }
+        ]
+      },
+      "actor": "reference",
+      "parent_category": "coordination/activity",
+      "phase": "middlegame",
+      "current_status": "supported_finite_event_20M"
     },
     {
       "pair": "main-01-00",
@@ -3149,7 +3625,11 @@
         }
       },
       "source": "main/batch-01/category-candidates-00-04.json",
-      "family": "queens-pawn-other"
+      "family": "queens-pawn-other",
+      "actor": "candidate",
+      "parent_category": "endgame decisions",
+      "phase": "endgame",
+      "current_status": "not_in_5M_panel"
     },
     {
       "pair": "main-01-00",
@@ -3187,7 +3667,11 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "queens-pawn-other"
+      "family": "queens-pawn-other",
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "endgame",
+      "current_status": "same_choice_control"
     },
     {
       "pair": "main-01-01",
@@ -3225,7 +3709,11 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "english"
+      "family": "english",
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "endgame",
+      "current_status": "same_choice_control"
     },
     {
       "pair": "main-01-02",
@@ -3260,7 +3748,11 @@
         }
       },
       "source": "main/batch-01/category-candidates-00-04.json",
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "actor": "reference",
+      "parent_category": "tactical calculation",
+      "phase": "middlegame",
+      "current_status": "not_in_5M_panel"
     },
     {
       "pair": "main-01-03",
@@ -3295,7 +3787,11 @@
         }
       },
       "source": "main/batch-01/category-candidates-00-04.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "endgame",
+      "current_status": "not_in_5M_panel"
     },
     {
       "pair": "main-01-04",
@@ -3333,7 +3829,11 @@
           "directional_bound_conflicts": []
         }
       },
-      "family": "nimzo-indian"
+      "family": "nimzo-indian",
+      "actor": "candidate",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "same_choice_control"
     },
     {
       "pair": "main-01-04",
@@ -3368,7 +3868,11 @@
         }
       },
       "source": "main/batch-01/category-candidates-00-04.json",
-      "family": "nimzo-indian"
+      "family": "nimzo-indian",
+      "actor": "candidate",
+      "parent_category": "opportunity response",
+      "phase": "endgame",
+      "current_status": "not_in_5M_panel"
     },
     {
       "pair": "main-01-05",
@@ -3384,7 +3888,23 @@
       "alternative": "f2f4",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.0665,
+          "raw_band": "significant",
+          "conservative_observed_range_band": "significant",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "exchanges",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-05",
@@ -3400,7 +3920,23 @@
       "alternative": "f2f4",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "below_significance_threshold",
+        "severity": {
+          "raw_expected_score_loss": 0.0010000000000000009,
+          "raw_band": "below_significance",
+          "conservative_observed_range_band": "below_significance",
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "pawn structures/breaks",
+      "phase": "middlegame",
+      "current_status": "below_significance_threshold"
     },
     {
       "pair": "main-01-05",
@@ -3416,7 +3952,11 @@
       "alternative": null,
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "actor": "candidate",
+      "parent_category": "king safety",
+      "phase": "middlegame",
+      "current_status": "observed_success_not_optimality_proof"
     },
     {
       "pair": "main-01-05",
@@ -3432,7 +3972,23 @@
       "alternative": "e4e5",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "below_significance_threshold",
+        "severity": {
+          "raw_expected_score_loss": 0.0,
+          "raw_band": "below_significance",
+          "conservative_observed_range_band": "below_significance",
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "middlegame",
+      "current_status": "below_significance_threshold"
     },
     {
       "pair": "main-01-05",
@@ -3448,7 +4004,25 @@
       "alternative": "e6e5",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "unresolved20m",
+        "severity": {
+          "raw_expected_score_loss": 0.35950000000000004,
+          "raw_band": "major",
+          "conservative_observed_range_band": null,
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": [
+          "20M instability/directional conflict retained; no further repeat automatically authorized by this review."
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "middlegame",
+      "current_status": "unresolved20m"
     },
     {
       "pair": "main-01-05",
@@ -3464,7 +4038,11 @@
       "alternative": "d8d6",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "sicilian-najdorf-dragon-scheveningen-rauzer"
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "actor": "candidate",
+      "parent_category": "tactical calculation",
+      "phase": "middlegame",
+      "current_status": "observed_success_not_optimality_proof"
     },
     {
       "pair": "main-01-06",
@@ -3480,7 +4058,23 @@
       "alternative": "e3e4",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.07049999999999995,
+          "raw_band": "significant",
+          "conservative_observed_range_band": "significant",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "pawn structures/breaks",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-06",
@@ -3496,7 +4090,11 @@
       "alternative": "e3e4",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "actor": "candidate",
+      "parent_category": "pawn structures/breaks",
+      "phase": "middlegame",
+      "current_status": "stable5m_finite_candidate_pending20m_for_critical_claims"
     },
     {
       "pair": "main-01-06",
@@ -3512,7 +4110,11 @@
       "alternative": "c4e2",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "middlegame",
+      "current_status": "stable5m_finite_candidate_pending20m_for_critical_claims"
     },
     {
       "pair": "main-01-06",
@@ -3528,7 +4130,23 @@
       "alternative": "d4d5",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.486,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "pawn structures/breaks",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-06",
@@ -3544,7 +4162,11 @@
       "alternative": "d2b2",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "actor": "candidate",
+      "parent_category": "coordination/activity",
+      "phase": "middlegame",
+      "current_status": "stable5m_finite_candidate_pending20m_for_critical_claims"
     },
     {
       "pair": "main-01-06",
@@ -3560,7 +4182,25 @@
       "alternative": "c4e6",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.989,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": [
+          "Intervening80.Bc5/81...Qh4 retain5M uncertainty; root82 comparison is supported but earlier origin of renewed winning chance is not fully attributed."
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "quiet defense",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-06",
@@ -3576,7 +4216,11 @@
       "alternative": null,
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "actor": "candidate",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "observed_success_not_optimality_proof"
     },
     {
       "pair": "main-01-06",
@@ -3592,7 +4236,23 @@
       "alternative": "f6g4",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.467,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "tactical calculation",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-06",
@@ -3608,7 +4268,23 @@
       "alternative": "b5b4",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.5,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "endgame decisions",
+      "phase": "endgame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-06",
@@ -3624,7 +4300,26 @@
       "alternative": "b5b4",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "claim_policy_context_limits_actual_result_attribution",
+        "severity": {
+          "raw_expected_score_loss": 0.5,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound",
+          "supported_for_actual_result_attribution": false
+        },
+        "remaining_dependencies": [
+          "Actual p98 Bf3, p99 ...Bd5 permits native unconditional White auto-claim by intended(unplayed)Bf3-g4; SF finite winning evaluations do not model this study-policy choice as an actual win. Native counterfactual claim-policy admission needed before actual-result attribution."
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "endgame decisions",
+      "phase": "endgame",
+      "current_status": "claim_policy_context_limits_actual_result_attribution"
     },
     {
       "pair": "main-01-06",
@@ -3640,7 +4335,23 @@
       "alternative": null,
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.479,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "endgame decisions",
+      "phase": "endgame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-06",
@@ -3656,7 +4367,11 @@
       "alternative": null,
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "slav-semi-slav"
+      "family": "slav-semi-slav",
+      "actor": "candidate",
+      "parent_category": "quiet defense",
+      "phase": "middlegame",
+      "current_status": "observed_success_not_optimality_proof"
     },
     {
       "pair": "main-01-07",
@@ -3672,7 +4387,23 @@
       "alternative": "e5f4",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "queens-indian-bogo"
+      "family": "queens-indian-bogo",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.48,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "quiet defense",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-07",
@@ -3688,7 +4419,23 @@
       "alternative": "g3g4",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "queens-indian-bogo"
+      "family": "queens-indian-bogo",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.4445,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "quiet defense",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-07",
@@ -3704,7 +4451,23 @@
       "alternative": "a7a8",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "queens-indian-bogo"
+      "family": "queens-indian-bogo",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.496,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "endgame decisions",
+      "phase": "endgame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-07",
@@ -3720,7 +4483,25 @@
       "alternative": null,
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "queens-indian-bogo"
+      "family": "queens-indian-bogo",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "stable_singleton_control",
+        "severity": {
+          "raw_expected_score_loss": null,
+          "raw_band": null,
+          "conservative_observed_range_band": null,
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": [
+          "Successful/high-valued played line; no distinct matched alternative, so no proof of optimality."
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "coordination/activity",
+      "phase": "middlegame",
+      "current_status": "stable_singleton_control"
     },
     {
       "pair": "main-01-08",
@@ -3736,7 +4517,25 @@
       "alternative": null,
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "pirc-modern-other-semiopen"
+      "family": "pirc-modern-other-semiopen",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "stable_singleton_control",
+        "severity": {
+          "raw_expected_score_loss": null,
+          "raw_band": null,
+          "conservative_observed_range_band": null,
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": [
+          "Successful/high-valued played line; no distinct matched alternative, so no proof of optimality."
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "pawn structures/breaks",
+      "phase": "middlegame",
+      "current_status": "stable_singleton_control"
     },
     {
       "pair": "main-01-08",
@@ -3752,7 +4551,23 @@
       "alternative": "e7f6",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "pirc-modern-other-semiopen"
+      "family": "pirc-modern-other-semiopen",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.48850000000000005,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-08",
@@ -3768,7 +4583,25 @@
       "alternative": null,
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "pirc-modern-other-semiopen"
+      "family": "pirc-modern-other-semiopen",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "stable_singleton_control",
+        "severity": {
+          "raw_expected_score_loss": null,
+          "raw_band": null,
+          "conservative_observed_range_band": null,
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": [
+          "Successful/high-valued played line; no distinct matched alternative, so no proof of optimality."
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "king safety",
+      "phase": "middlegame",
+      "current_status": "stable_singleton_control"
     },
     {
       "pair": "main-01-08",
@@ -3784,7 +4617,23 @@
       "alternative": "d8d7",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "pirc-modern-other-semiopen"
+      "family": "pirc-modern-other-semiopen",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.07399999999999995,
+          "raw_band": "significant",
+          "conservative_observed_range_band": "significant",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "coordination/activity",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-08",
@@ -3800,7 +4649,11 @@
       "alternative": "d5e5",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "pirc-modern-other-semiopen"
+      "family": "pirc-modern-other-semiopen",
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "middlegame",
+      "current_status": "stable5m_finite_candidate_pending20m_for_critical_claims"
     },
     {
       "pair": "main-01-08",
@@ -3816,7 +4669,11 @@
       "alternative": "d7c6",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "pirc-modern-other-semiopen"
+      "family": "pirc-modern-other-semiopen",
+      "actor": "candidate",
+      "parent_category": "exchanges",
+      "phase": "middlegame",
+      "current_status": "stable5m_finite_candidate_pending20m_for_critical_claims"
     },
     {
       "pair": "main-01-08",
@@ -3832,7 +4689,23 @@
       "alternative": "d8e8",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "pirc-modern-other-semiopen"
+      "family": "pirc-modern-other-semiopen",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.493,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "advantage preservation/conversion",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-08",
@@ -3848,7 +4721,25 @@
       "alternative": "d6g3",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "pirc-modern-other-semiopen"
+      "family": "pirc-modern-other-semiopen",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "unresolved20m",
+        "severity": {
+          "raw_expected_score_loss": 0.5,
+          "raw_band": "major",
+          "conservative_observed_range_band": null,
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": [
+          "20M instability/directional conflict retained; no further repeat automatically authorized by this review."
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "exchanges",
+      "phase": "middlegame",
+      "current_status": "unresolved20m"
     },
     {
       "pair": "main-01-unaided",
@@ -3864,7 +4755,23 @@
       "alternative": "d2d4",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "unaided"
+      "family": "unaided",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.061000000000000054,
+          "raw_band": "significant",
+          "conservative_observed_range_band": "significant",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "development/opening choices",
+      "phase": "opening",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-unaided",
@@ -3880,7 +4787,25 @@
       "alternative": null,
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "unaided"
+      "family": "unaided",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "stable_singleton_control",
+        "severity": {
+          "raw_expected_score_loss": null,
+          "raw_band": null,
+          "conservative_observed_range_band": null,
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": [
+          "Successful/high-valued played line; no distinct matched alternative, so no proof of optimality."
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "king safety",
+      "phase": "middlegame",
+      "current_status": "stable_singleton_control"
     },
     {
       "pair": "main-01-unaided",
@@ -3896,7 +4821,25 @@
       "alternative": "d7d5",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "unaided"
+      "family": "unaided",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "unresolved20m",
+        "severity": {
+          "raw_expected_score_loss": 0.035999999999999976,
+          "raw_band": "below_significance",
+          "conservative_observed_range_band": null,
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": [
+          "20M instability/directional conflict retained; no further repeat automatically authorized by this review."
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "development/opening choices",
+      "phase": "opening",
+      "current_status": "unresolved20m"
     },
     {
       "pair": "main-01-unaided",
@@ -3912,7 +4855,23 @@
       "alternative": "d7d5",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "unaided"
+      "family": "unaided",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.0675,
+          "raw_band": "significant",
+          "conservative_observed_range_band": "significant",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "development/opening choices",
+      "phase": "opening",
+      "current_status": "supported_finite_deterioration"
     },
     {
       "pair": "main-01-unaided",
@@ -3928,7 +4887,25 @@
       "alternative": "c2d2",
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "unaided"
+      "family": "unaided",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "unresolved20m",
+        "severity": {
+          "raw_expected_score_loss": 0.16849999999999998,
+          "raw_band": "serious",
+          "conservative_observed_range_band": null,
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": [
+          "20M instability/directional conflict retained; no further repeat automatically authorized by this review."
+        ]
+      },
+      "actor": "candidate",
+      "parent_category": "coordination/activity",
+      "phase": "middlegame",
+      "current_status": "unresolved20m"
     },
     {
       "pair": "main-01-unaided",
@@ -3944,7 +4921,443 @@
       "alternative": null,
       "mechanism_claim": null,
       "source": "main/batch-01/category-candidates-05-09.json",
-      "family": "unaided"
+      "family": "unaided",
+      "actor": "candidate",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "observed_success_not_optimality_proof"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 17,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "unresolved20m",
+        "severity": {
+          "raw_expected_score_loss": 0.09049999999999997,
+          "raw_band": "significant",
+          "conservative_observed_range_band": null,
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": [
+          "20M instability/directional conflict retained; no further repeat automatically authorized by this review."
+        ]
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "unresolved20m"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 27,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.4965,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 1,
+      "ply": 22,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.376,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 1,
+      "ply": 30,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "unresolved20m",
+        "severity": {
+          "raw_expected_score_loss": 0.24,
+          "raw_band": "major",
+          "conservative_observed_range_band": null,
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": [
+          "20M instability/directional conflict retained; no further repeat automatically authorized by this review."
+        ]
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "endgame",
+      "current_status": "unresolved20m"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 77,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "slav-semi-slav",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.499,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 42,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "slav-semi-slav",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.4940000000000001,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 78,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "slav-semi-slav",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.5,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "endgame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 90,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "slav-semi-slav",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.49750000000000005,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "endgame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 98,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "slav-semi-slav",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "claim_policy_context_limits_actual_result_attribution",
+        "severity": {
+          "raw_expected_score_loss": 0.0,
+          "raw_band": "below_significance",
+          "conservative_observed_range_band": "below_significance",
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound",
+          "supported_for_actual_result_attribution": false
+        },
+        "remaining_dependencies": [
+          "Actual p98 Bf3, p99 ...Bd5 permits native unconditional White auto-claim by intended(unplayed)Bf3-g4; SF finite winning evaluations do not model this study-policy choice as an actual win. Native counterfactual claim-policy admission needed before actual-result attribution."
+        ]
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "endgame",
+      "current_status": "claim_policy_context_limits_actual_result_attribution"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 0,
+      "ply": 125,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "queens-indian-bogo",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.499,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "endgame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 1,
+      "ply": 29,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "queens-indian-bogo",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "below_significance_threshold",
+        "severity": {
+          "raw_expected_score_loss": 0.03149999999999997,
+          "raw_band": "below_significance",
+          "conservative_observed_range_band": "below_significance",
+          "supported": false,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "candidate",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "below_significance_threshold"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 1,
+      "ply": 50,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "queens-indian-bogo",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.4145,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 23,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "pirc-modern-other-semiopen",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.354,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 35,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "pirc-modern-other-semiopen",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.485,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 34,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "pirc-modern-other-semiopen",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.45449999999999996,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 0,
+      "ply": 15,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "unaided",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.4585,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 56,
+      "category": "opponent_opportunity_or_recovery",
+      "source": "main/batch-01/adjudicated20m-05-09.json",
+      "family": "unaided",
+      "status": "added_at20M_review",
+      "adjudication20m": {
+        "source": "main/batch-01/adjudicated20m-05-09.json",
+        "status": "supported_finite_deterioration",
+        "severity": {
+          "raw_expected_score_loss": 0.471,
+          "raw_band": "major",
+          "conservative_observed_range_band": "major",
+          "supported": true,
+          "interpretation": "Observed last-two-report sensitivity, not statistical/game-theoretic bound"
+        },
+        "remaining_dependencies": []
+      },
+      "actor": "reference",
+      "parent_category": "opportunity response",
+      "phase": "middlegame",
+      "current_status": "supported_finite_deterioration"
     }
   ],
   "sources": [
@@ -3967,6 +5380,62 @@
     {
       "path": "main/batch-01/audit.json",
       "sha256": "cf690939778a9d2161d48c20b3c3c2a668c6171fcc8e1419b555576c4b2801f0"
+    },
+    {
+      "path": "main/batch-01/adjudicated20m-00-04.json",
+      "sha256": "9248805b70c6d4299689500ed179e86cdccd1597967c4e858a6d7d90d3f1ba7c"
+    },
+    {
+      "path": "main/batch-01/adjudicated20m-05-09.json",
+      "sha256": "4f2cef4d3756b3a30ba94b598e85b9c846696cc056c0e01b64937894ea3b0a0a"
+    },
+    {
+      "path": "main/batch-01/adjudication20m/audit.json",
+      "sha256": "98d5bc56aa7c0c564a7590e2c200463684f48de45e9316b1635e1225d3a2bb35"
     }
-  ]
+  ],
+  "taxonomy": "main/category-taxonomy.json",
+  "adjudication20m_status_counts": {
+    "unresolved": 8,
+    "supported_finite_event_20M": 21,
+    "supported_subthreshold_20M": 1,
+    "supported_finite_deterioration": 28,
+    "below_significance_threshold": 3,
+    "unresolved20m": 6,
+    "claim_policy_context_limits_actual_result_attribution": 2,
+    "stable_singleton_control": 4
+  },
+  "claim_policy_limitation": {
+    "pair": "main-01-06",
+    "game": 1,
+    "native_report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-01/games/main-01-06/report.json.gz",
+    "source": "report_json.games[1].match_record_json.events[-1]",
+    "actual_sequence": [
+      {
+        "ply": 97,
+        "move": "d5a8"
+      },
+      {
+        "ply": 98,
+        "move": "g4f3"
+      },
+      {
+        "ply": 99,
+        "move": "a8d5"
+      }
+    ],
+    "claim_actor": "white",
+    "claim_reason": "threefold",
+    "claim_intended_unplayed": "f3g4",
+    "request_version": 85,
+    "reply_version": 86,
+    "native_conclusion": {
+      "chess": {
+        "draw": {
+          "claimed": "threefold"
+        }
+      }
+    },
+    "interpretation": "Native recorded draw governs actual result. SF Bf3/Bf5 bothE1.0 cannot by themselves assign actual conversion success/failure under unconditional controller auto-claim."
+  }
 }

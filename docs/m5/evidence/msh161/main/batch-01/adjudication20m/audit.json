@@ -1,0 +1,90 @@
+{
+  "accounting_rule": "These are additional20M attempts, absent from initial batch audit; query/stage/chain wall intervals overlap and must not be summed together. Native games remain20; no games added here.",
+  "assessment_uncertainty_flags": {
+    "last_score_update_not_selected_exact_score": 72
+  },
+  "auditor_script_sha256": "14b115c763912dd8a6a55d48c0f2a16fbdb20fe9abcc470f77e9d52dba0f518c",
+  "chain_sha256": "e665e7e94f418957dc6924021ffa54bcaa1a33cd21623ffe3ca285f8ea0f8ee3",
+  "combined_native_and_reference_child_cpu_seconds": 26494.27642100001,
+  "combined_native_and_reference_process_wall_seconds": 26720.849701060448,
+  "combined_unique_reference_attempts": 7722,
+  "data_quality": {
+    "directional_bound_conflict_queries": 6,
+    "discovery_decisions": 2,
+    "missing_numeric_estimate_queries": 0,
+    "stable_report_heuristic_queries": 135
+  },
+  "decisions": 73,
+  "failures": 0,
+  "freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+  "inflight_or_partial_files": 0,
+  "initial_batch_audit_sha256": "cf690939778a9d2161d48c20b3c3c2a668c6171fcc8e1419b555576c4b2801f0",
+  "integrity_blocker_batch02": false,
+  "native_draw_context": [
+    {
+      "candidate_color": "white",
+      "conclusion": {
+        "chess": {
+          "draw": "dead_position"
+        }
+      },
+      "full_history_plies": 179,
+      "game": 0,
+      "pair": "main-01-00",
+      "prepared_plies": 16,
+      "stratum": "main-prepared"
+    },
+    {
+      "accepted_final_claim_request": {
+        "actor": "white",
+        "at_ns": 420115873792,
+        "command": {
+          "claim": {
+            "intended": "f3g4",
+            "reason": "threefold"
+          }
+        },
+        "version": 85
+      },
+      "candidate_color": "black",
+      "claim_policy": "auto_claim",
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "full_history_plies": 100,
+      "game": 1,
+      "interpretation": "Controller exercises native automatic claim; Stockfish self-play WDL does not certify conversion under this mandatory policy. Intended move is not played.",
+      "pair": "main-01-06",
+      "prepared_plies": 16,
+      "stratum": "main-prepared"
+    }
+  ],
+  "notification_queue_accepted": true,
+  "notification_receipt_sha256": "3e629a92fab7992c34d0fdae3c735e769ceaf3e67c04365e06298ea3b268dedc",
+  "overlapping_query_intervals": 0,
+  "plan_sha256": "db8131a2cfd5ae855e73d37609ba87490722d7b9641004cc466a963ef6feeefc",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.11.0",
+  "python_chess": "1.11.2",
+  "query_attempts": 144,
+  "query_process_steps": 142,
+  "remaining_gate": "Independent finite-event/episode adjudication, dispositions and any audit expansion decision; no automatic chess conclusions from execution pass.",
+  "reports": 10,
+  "resources": {
+    "artifact_bytes_before_audit": 8876522,
+    "chain_elapsed_seconds": 2578.5321991443634,
+    "query_child_cpu_seconds": 2540.2664740000005,
+    "query_wall_max": 22.884108416270465,
+    "query_wall_median": 18.627168749459088,
+    "query_wall_min": 10.30189225031063,
+    "query_wall_seconds": 2546.3934461325407,
+    "stage_wall_seconds": 2574.359694744926
+  },
+  "scope": "Independent offline73-decision20M integrity, matching, legalPV and accounting audit; no engine/native invocation",
+  "status": "passed",
+  "unreferenced_attempts": 0
+}

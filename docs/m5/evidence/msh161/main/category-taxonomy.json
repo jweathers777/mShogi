@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "purpose": "Descriptive parent labels for raw analyst themes; no mechanism or priority. Original labels preserved; overlapping themes are not independent causes. Actor/episode/severity reported separately. Revisit ambiguous parent labels in final challenge.",
+  "groups": {
+    "development/opening choices": [
+      "opening_central_choices"
+    ],
+    "king safety": [
+      "king_attack",
+      "king_safety_pawn_advance",
+      "king_safety_piece_exchange",
+      "opponent_king_safety"
+    ],
+    "tactical calculation": [
+      "attacking_sacrifice",
+      "forcing_tactical_sequence",
+      "passed_pawn_tactics",
+      "pawn_break_tactics",
+      "tactical_alignment",
+      "tactical_exchange_sequence",
+      "opponent_material_tactics",
+      "opponent_tactical_alignment"
+    ],
+    "quiet defense": [
+      "active_defensive_counterplay",
+      "quiet_tactical_defense",
+      "threatened_piece_defense",
+      "opponent_defensive_coordination",
+      "recovery_defense"
+    ],
+    "coordination/activity": [
+      "piece_coordination",
+      "quiet_piece_coordination",
+      "rook_activity",
+      "opponent_queen_placement",
+      "opponent_rook_placement"
+    ],
+    "pawn structures/breaks": [
+      "central_pawn_break_timing",
+      "passed_pawn_break_timing",
+      "tactical_pawn_break",
+      "opponent_central_capture",
+      "opponent_pawn_blockade",
+      "opponent_queenside_timing"
+    ],
+    "exchanges": [
+      "defensive_exchange_opportunity",
+      "ending_transition",
+      "exchange_and_counterplay",
+      "exchange_decisions",
+      "premature_simplification"
+    ],
+    "opportunity response": [
+      "opportunity_exploitation",
+      "piece_activity_opportunity",
+      "queenside_opportunity_response",
+      "tactical_opportunity_completion",
+      "opponent_recovery_choice",
+      "opponent_opportunity_or_recovery"
+    ],
+    "advantage preservation/conversion": [
+      "advantage_preservation",
+      "attack_preservation",
+      "preserving_attacking_pressure",
+      "passed_pawn_conversion",
+      "opponent_conversion"
+    ],
+    "endgame decisions": [
+      "active_endgame_defense",
+      "defensive_rook_activity",
+      "draw_defense",
+      "endgame_capture_judgment",
+      "endgame_king_activity",
+      "endgame_pawn_break_conversion",
+      "endgame_recovery"
+    ]
+  }
+}

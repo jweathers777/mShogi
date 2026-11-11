@@ -159,57 +159,72 @@ not another queue test or scheduler. Four notifier tests pass; targeted macOS
 verification, no Linux/Windows claim. Group probes denied by the OS remain unknown
 and require cleanup review; failure notification still proceeds.
 
-## Current authoritative handoff — batch01 reviewed,20M adjudication running
+## Current authoritative handoff — batch01 checkpoint complete;batch02 running
 
-Oxidation0.6.0 remains the FIXED main opponent; production source77101fe unchanged.
-`main-method.md`/`main-freeze.json` bind90master histories and all ten20game batches
-(180prepared+20unaided). All opening quotas/source reviews remain valid. Do not
-switch reference or truncate the study in response to this initial sample.
+Main conditions remain frozen in `main-method.md`/`main-freeze.json`: Oxidation0.6.0,
+production77101fe, equal5s/move,90master histories paired plus10unaided pairs,
+200games total. No production changes or final priorities. Keep all10batches;
+20completedgames do not establish population strength or a rating.
 
-Batch01 completed20games: candidate10W2D8L, split prepared8W2D8L and unaided2W.
-Independent execution audit passed native replay, original histories, exact hashes,
-serial5s conditions and all7578referencequeries (5564initial+2014matched5M),
-zero failures.1341confirmation decisions include all1167v1followups and174stratified
-audit rows. No stable significant missed-error audit crossing triggered expansion.
-`main/batch-01/audit.json` and `verification-review.md` retain complete evidence.
-Actual nativewall11929.047s, initialreference3264.835s,5Mreference8980.574s;
-parentchain24822.438s overlaps these and must not be added again.
+Batch01 native result is10W2D8L (prepared8W2D8L,unaided2W). The completed independent
+execution and two gameplay reviews passed the continuation checkpoint. All2494played
+moves retain their original dispositions;73queried decisions now have superseding20M
+overlays. All7722unique reference queries succeeded (5564initial,2014at5M,144at20M).
+The174nonflagged audit decisions revealed no stable significant missed-error trigger.
+See `main/batch-01/{audit.json,verification-review.md}`, the two `review20m-*.md`
+reviews and `adjudication20m/{audit.json,verification-review.md}`.
 
-Two independent gameplay reviewers inspected both players in all20completedgames
-without prior engineering explanations. `review-00-04.md`/`review-05-09.md` preserve
-legal continuations, successes and uncertain opportunities. All2494played decisions
-have explicit provisional dispositions (`decision-dispositions-00-04.json` and
-`adjudication-05-09.json`). Lone stale-report flags remain visible but do not alone
-exclude finite support. `main/cumulative-categories.json` is a provisional discovery
-ledger of78selected examples including16contrary successes, not a ranking or
-population-frequency table. Raw category names await consolidation after adjudication;
-overlapping themes, opponent events, earlier uncertainty and already-lost context
-must be reconciled before final counting. Do not equate same-choice controls with
-proof of good play or unrelated adjacent-root swings with an established error.
+The73deeper comparisons comprise49supported finite deteriorations across BOTH
+players,4subthreshold,14unresolved,4stable singleton controls and2claim-policy-limited
+judgments. These are selected comparison dispositions, not independent causal errors
+or prevalence estimates.20M supersedes5M even when it removes support. No automatic
+fallback to convenient earlier scores; no absolute first/largest claims with earlier
+uncertainty. `adjudicated20m-00-04.json` and `adjudicated20m-05-09.json` overlay the
+unchanged complete ledgers (`decision-dispositions-00-04.json`,`adjudication-05-09.json`).
+All legal histories/PVs, flags, sensitivity ranges and dependencies remain available.
+Two literal stability flags at decimal.025 are identified as numerical-boundary
+sensitivity, not silently waived or evidence of a large unstable swing.
 
-The merged `main/batch-01/adjudication-plan.json` contains73decisions, including
-two unrestricted discovery cases followed by matched discovered alternatives.
-Every planned choice was validated against its original history; offline negative
-checks reject illegal moves, missing played choices and duplicate decisions.
-Independent review approved `review_checks.py`; frozen main helpers are unchanged.
-20M adjudication is RUNNING through notify_exit, execution session67182, state
-`main/batch-01/adjudication20m/chain.json`, notification
-`notifications/main-batch-01-adjudication.json`. Its exit will queue this chat on
-success/failure using normal local access. NO timer or periodic watcher exists.
-Do not poll or duplicate this computation. Preserve failed state before any retry.
+Important interpretation limit: pair06/game1 is a native draw by White's automatic
+threefold claim with intended UNPLAYED Bf3–g4 after50.Bf3 Bd5 (zero-basedp98/99).
+Stockfish20M gives E1.0 to bothBf3/Bf5 atp98. Keep the native draw; its automatic
+claim policy differs from Stockfish continuations in which a winning player may
+decline a claim. Do not infer actual-result conversion failure/recovery there from
+reference scores alone, or call this a rules/search defect. Both reviewers preserve
+this limitation, with exact native event pointers. No mid-study policy change.
 
-NEXT on exit: independently review the completed20M receipts/continuations, reconcile
-consequential claims and remaining episode dependencies, update categories/dispositions,
-then launch main_batch.py2 through notify_exit. No batch02 process has launched yet.
-Unqueued uncertainty remains open; this panel is not exhaustive clearance and has
-no aggregate compute ceiling. Additional targeted confirmation is warranted if a
-claim needs it; no repeated search until a desired label appears. Continue all200
-games in reviewed batches, then independent final diagnosis/roadmap and STOP for
-John before engineering. All final task criteria remain unfinished.
+`main/cumulative-categories.json` now joins95selected examples and73overlays into
+10descriptive parent categories, with actors/families/phases/support/severity separated;
+`main/category-taxonomy.json` preserves every original analyst label. This is a
+provisional discovery ledger, not a ranking. Retain successes, overlapping themes,
+already-lost context and unqueried/linked uncertainty before final episode counting.
+Further targeted work must answer a documented outstanding claim, never repeat until
+a desired label appears. Complete all200games before final independent prioritization.
 
-Completed batch01 pre20M raw reports/reviews/plan are preserved in
-`main/batch-01-pre20m-evidence.tar.gz` with per-file verifiedSHA manifest
-`main/batch-01-pre20m-bundle.json`; raw directories remain available locally.
-Completed qualification is separate in its earlier verified bundles/resource record.
-20M outputs will be packaged separately after completion. No production changes,
-new rating inference, or Linux/Windows/GUI verification claim.
+Actual batch01 processwall: native11929.047s, initialreference3264.835s,
+5Mreference8980.574s,20Mreference2546.393s (20MchildCPU2540.266s). Chain elapsed
+figures overlap and must not be added again. Audits retain exact accounting and
+failure/cleanup provenance; no resource cap truncated scientific coverage.
+
+Batch02 is RUNNING through `notify_exit.py`, execution session1756, state
+`main/batch-02/chain.json`, notification `notifications/main-batch-02.json`.
+Its frozen10pairs/20games are followed unattended by500k allmove analysis and5M
+matched followups/audit. Normal local execution access permits exit notification;
+no security settings changed. NO timer or periodic watcher. Do not poll or duplicate
+this computation; its success/failure exit queues the owning chat.
+
+NEXT on exit: independently validate/review completedbatch02, obtain consequential20M
+checks, update cumulative categories/dispositions and then continuebatch03. Preserve
+any failure state and reconcile before retry. Continue to200games, final independent
+diagnosis and roadmap, then STOP for John before production engineering.
+
+Verified archives: `main/batch-01-pre20m-evidence.tar.gz` (15792artifacts) and
+`main/batch-01-20m-evidence.tar.gz` (723artifacts), each with its SHA/per-file
+`*-bundle.json`. Raw local directories remain available. To restore a bundle in
+another checkout, extract it from this evidence directory; archive paths are relative
+to this directory. The20Mbundle includes the reviewed category snapshot and notification.
+Earlier qualification/reference bundles remain separate. `verification.json` links
+current stage evidence. No new Linux/Windows/GUI claim; study analysis is localLevel1,
+with recorded localmacOSprocess/notification evidence. All final task criteria remain
+unfinished. The separate committed read-only status tools are preserved unchanged;
+this workflow does not launch a timed watcher.

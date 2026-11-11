@@ -144,7 +144,7 @@
   },
   "qualification_resource_record": "qualification-resource-total.json",
   "main_batch01": {
-    "stage": "independently_reviewed_pre20M",
+    "stage": "completed_batch_checkpoint_unresolved_retained",
     "games": 20,
     "required_main_games": 200,
     "audit": "main/batch-01/audit.json",
@@ -160,7 +160,7 @@
     "resource_record": "main/batch-01/audit.json#/totals",
     "categories": "main/cumulative-categories.json",
     "adjudication_plan": "main/batch-01/adjudication-plan.json",
-    "adjudication_status": "running_exit_notification",
+    "adjudication_status": "reviewed",
     "adjudication_session": 67182,
     "adjudication_receipt": "notifications/main-batch-01-adjudication.json",
     "offline_checks": [
@@ -169,7 +169,43 @@
       "py_compile passed",
       "independent orchestration review passed"
     ],
-    "batch02": "not_started_pending20M_review",
-    "production_changes": false
+    "batch02": "running_session1756_exit_notification",
+    "production_changes": false,
+    "adjudication_audit": "main/batch-01/adjudication20m/audit.json",
+    "adjudication_reviews": [
+      "main/batch-01/review20m-00-04.md",
+      "main/batch-01/review20m-05-09.md"
+    ],
+    "adjudicated_decisions": 73,
+    "additional_reference_queries": 144,
+    "combined_reference_queries": 7722,
+    "comparison_dispositions": {
+      "supported_finite": 49,
+      "subthreshold": 4,
+      "unresolved": 14,
+      "stable_singleton_controls": 4,
+      "claim_policy_limited": 2
+    },
+    "additional_resources": {
+      "artifact_bytes_before_audit": 8876522,
+      "chain_elapsed_seconds": 2578.5321991443634,
+      "query_child_cpu_seconds": 2540.2664740000005,
+      "query_wall_max": 22.884108416270465,
+      "query_wall_median": 18.627168749459088,
+      "query_wall_min": 10.30189225031063,
+      "query_wall_seconds": 2546.3934461325407,
+      "stage_wall_seconds": 2574.359694744926
+    },
+    "claim_policy_limitation": "main/batch-01/adjudicated20m-05-09.json#/claim_policy_context",
+    "final_priorities": false
+  },
+  "main_batch02": {
+    "status": "running",
+    "session": 1756,
+    "state": "main/batch-02/chain.json",
+    "notification": "notifications/main-batch-02.json",
+    "scheduled_games": 20,
+    "freeze": "main-freeze.json",
+    "next": "completedbatch independentreview then20M consequentialadjudication; full200stillrequired"
   }
 }

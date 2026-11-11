@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-11T14:58:00Z'
+updated_date: '2026-11-11T15:48:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -81,4 +81,6 @@ Exit-notification implementation verified:4tests pass covering success, commandf
 Completed independent qualification review selects fixedOxidation practical prepared reference(3opponent wins/4draws/1loss; combinedstart+prepared level, no statisticalsuperiority claim). Mainv1method and90sourcehistories frozen after32deeper checks, no relaxedquota:22families,16sym12opposite15closed30open. Main-opening and freeze reviews pass;7phase tests/200gameplan audit pass. Ten20game batches scheduled(180prepared+20unaided). Batch01 now running through exitnotification wrapper with native replay, allmove500k, v1screen and5Mmatched confirmations/audit. No timedwatcher. Final-opening-balance wake already consumed; avoid duplicate launch. Remaining:all200main games, completedbatch/20Mconsequential adjudication and final independent rankings/roadmap. See main-freeze.json, main-method.md, README and qualification resource/bundles.
 
 Batch01 independent execution/gameplay review completed:20games10W2D8L(prepared8W2D8L,unaided2W),native replay/history/hash/conditions and7578referencequeries verified withzero failures. All2494played decisions have provisional dispositions;174nonflagged audit rows show no stable significant missed-error trigger.78behavior examples including16successes retained without final ranking.73decision20Mpanel now running through reviewed review_checks.py and notify_exit(session67182); two cases discover missing alternatives before matched comparison. Full15792artifact pre20M bundle verified31.3MB. Next queued exit: adjudicate consequential20M/episodes, update categories, then launchbatch02. All200games stillrequired; no production changes, timer or rating claim. Level1studyreview and localmacOSprocess evidence only. See latest README, main/batch-01/audit.json, reviews, cumulative-categories.json and verification.json.
+
+Batch01 completed20M independent checkpoint:73decisions144queries verified,0failures;49finite deteriorations(bothplayers),4subthreshold,14unresolved,4controls,2claim-policy-limited.20M supersedes5M including removed support. Native06g1automatic intendedthreefold draw despiteSFwinning estimates explicitly limitsactual-result attribution; no rulesbug/policychange inferred. All2494played dispositions and earlier/linked uncertainty preserved. Updated provisional categoryledger95examples/10parents, nofinalpriorities. Additional20Mwall2546.393s/CPU2540.266s; total7722referencequeries, no parentdoublecounting.723artifact20Mbundle hashes verified. Bothgameplay reviewers andexecution audit approve continuation. Batch02 now running20games+allmove+5M via notify_exit(session1756), receipt notifications/main-batch-02.json; next exitreview thenbatch03. Full200required, no timer/security/productionchanges. Review evidence and latest README/verification.json authoritative.
 <!-- SECTION:NOTES:END -->

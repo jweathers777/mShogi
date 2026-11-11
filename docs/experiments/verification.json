@@ -1,0 +1,105 @@
+{
+  "task": "MSH-162 (Parallel Experiment Runner)",
+  "source_revision": "14bea72cb326d77fe780927f07d2da60e66b6528",
+  "verification_level": 2,
+  "reason": "Process management, concurrency, local/GCS persistence and cloud portability; no native production changes.",
+  "environments": {
+    "macos": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "linux": "Local Docker Linux aarch64, python3.13-alpine; image sha256:cbe98306012f5df54efcbf1a9d14caef5a1aec0d895d0eec1c2b6bd80bf6d3cb"
+  },
+  "checks": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /private/tmp/msh139/venv/bin/python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "macos",
+      "outcome": "passed",
+      "tests": 48,
+      "seconds": 2.624,
+      "log_sha256": "a1a598deb0b5829d1b034bd072f6882ad4f23d4a910931cdf6ba870c244cadf3"
+    },
+    {
+      "command": "docker run --rm -v /Users/johnweathers/.codex/worktrees/parallel-experiment-runner/mShogi:/workspace:ro msh162-execution-tests python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "linux",
+      "outcome": "passed",
+      "tests": 48,
+      "seconds": 2.774,
+      "log_sha256": "7ca7b0a5b5a77287b118e2f28768223f86a73aee0e3a522f639dffa844db6d2f"
+    },
+    {
+      "command": "python -m tools.experiments.cli prepare --build /private/tmp/msh162-local-build.json --experiment msh162-final-prepare --source-revision 14bea72cb326d77fe780927f07d2da60e66b6528 --output /private/tmp/msh162-final-prepare.json; status with empty local store",
+      "outcome": "passed",
+      "pairs": 100,
+      "static_jobs": 200,
+      "pending": 200,
+      "executed": 0,
+      "manifest_sha256": "30874f0de22ebd7c25f8344d7d775a2a3224a86b01ad6903aa8708bd751d67d9"
+    },
+    {
+      "command": "/private/tmp/msh161/mshogi-match experiment-external-replay /private/tmp/msh162-replay/report.json",
+      "environment": "macos",
+      "outcome": "passed",
+      "stdout": "replayed actual external adapter evidence",
+      "engine_sha256": "fb7760c0a45b760236a0108f16ea1a2b8d04f95bf0103b7f55b9ff221cd83605",
+      "input_sha256": "2ebb8cb5aac220a20089ec26576aa7d2f5d76488051a1b4ba1c3226edbce2ad3",
+      "input_origin": "Existing primary checkout main/batch-01/games/main-01-00/report.json.gz; decompressed read-only copy. No new game/search."
+    },
+    {
+      "command": "git diff --check",
+      "outcome": "passed"
+    }
+  ],
+  "coverage": [
+    "immutable write races",
+    "failure evidence and explicit interrupted-claim recovery",
+    "completed result reuse without recomputation",
+    "missing/corrupt outputs",
+    "dependency identity substitution",
+    "derived confirmation obligations after interrupted publication",
+    "eight actual concurrent fixture processes",
+    "real detached unresponsive child SIGTERM cleanup",
+    "frozen equal-time pair config and native replay",
+    "both-player full-history query extraction and uncertainty",
+    "Batch allocation and GCS preconditions with mocked transport",
+    "event-driven terminal notification identity/cancellation and separate queue failure accounting"
+  ],
+  "prior_failures": [
+    {
+      "check": "initial process fixture",
+      "outcome": "failed",
+      "reason": "Fixture omitted required history key; corrected fixture."
+    },
+    {
+      "check": "real SIGTERM child cleanup",
+      "outcome": "failed",
+      "reason": "selectors swallowed InterruptedError from signal handler; RuntimeError now reaches frozen cleanup, regression passes."
+    },
+    {
+      "check": "initial environment",
+      "outcome": "failed",
+      "reason": "PATH Backlog1.55.0 differed from baseline and escalated Node had broken dylib; cached native Backlog1.55.1 used. No incompatible record mutations."
+    }
+  ],
+  "independent_review": "review.md; final source approved by separate reviewer after notification/cancellation fixes; all11 notification tests independently rerun.",
+  "not_run": [
+    "Linux x86_64 fixed native/opponent/reference builds",
+    "actual GCS writes and Batch VM execution",
+    "one complete new cloud opening pair plus all-move screening/confirmations",
+    "real failed-worker cloud recovery",
+    "eight/sixteen VM throughput",
+    "observed Cloud Billing cost",
+    "live PubSub-to-Codex completion notification",
+    "full200game study",
+    "desktop/GUI and Windows (not in this targeted infrastructure scope)"
+  ],
+  "cloud_resources_created": false,
+  "cloud_spend": 0,
+  "cloud_spend_note": "No cloud pilot run; this is absence of created resources, not a measured billing statement.",
+  "new_study_games_or_searches": 0,
+  "blocker": "Owner GCP project/region/credentials/service account/bucket/registry and spending authorization not supplied. Asynchronously requested; do not create billable resources.",
+  "next_gate": "Create fixed Linux x86 artifacts/image, obtain concrete project/budget authorization, validate one pair then eight concurrent workers; coordinator reviews before primary study/integration.",
+  "integration": {
+    "branch": "codex/parallel-experiment-runner",
+    "target": "codex/rewrite",
+    "status": "not integrated by explicit owner instruction",
+    "worktree_purpose": "ongoing cloud pilot and coordinator handoff"
+  }
+}

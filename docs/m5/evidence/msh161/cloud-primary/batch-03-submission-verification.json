@@ -1,0 +1,8 @@
+{
+  "job": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b03-v1",
+  "uid": "msh161-primary-b03-b58d20e4-9257-41760",
+  "initial_state": "QUEUED",
+  "pipeline_tasks": 10,
+  "maximum_parallelism": 8,
+  "submitted_runnable_matches_original_manifest_image": true
+}

@@ -1,0 +1,15 @@
+{
+  "status": "passed_receipt_bindings",
+  "submission_uid": "msh161-primary-b05-c99ebe6c-0f4e-41fc0",
+  "retrieval_receipt_sha256": "c125735ffc6431bf362f2f8f21d08e9a36c4ac82cb05cee931ba22d672c496a6",
+  "terminal_sha256": "1895c0104c2223b1f1bc3fb7c7db0569c2365742653612ba104faab4fc4736d4",
+  "wrapper_success": true,
+  "own_process_group_settled": true,
+  "notification_accepted": true,
+  "verified_jobs": 1751,
+  "objects": 26191,
+  "bytes": 2980337096,
+  "cloud_worker_cleanup": "independent runtime audit pending",
+  "scientific_review": "independent panels pending",
+  "no_duplicate_retrieval_or_queries": true
+}

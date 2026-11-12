@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 04 closed; original Batch 05 submitted
+## Current state: Batch 05 completed; independent review in progress
 
 **80 games are fully reviewed: 33 wins / 23 draws / 24 losses.** Prepared results
 are 27/22/23; unaided results are 6/1/1. `primary-cumulative.json` includes all four
@@ -34,14 +34,33 @@ Full-study mean compute is US$29.61; the US$35–90 inclusive scenario and Satur
 14 November Paris estimate remain conditional, not billed costs or promises.
 See `batch-04-followup/forecast-update.json`; its pre-closure review count is historical.
 
-Original Batch 05 was accepted as `msh161-primary-b05-v1`, QUEUED at submission,
-from reviewed checkpoint `6ce5bf98`. The submitted original runnable, ten tasks
-and maximum eight-worker parallelism passed verification. One exit wrapper
-(PID 43389) runs `wait_retrieve_batch.py 5`. See `batch-05-submission.json`,
-`batch-05-submission-verification.json` and `batch-05-wait-launch.json`.
-Do not duplicate submission, retrieval or wrapper. On completion review the fresh
-batch with independent gameplay and integrity panels, obtain required matched 20M
-and distinct alternative checks, update cumulative records, then launch Batch 06.
+Original Batch 05 completed under `msh161-primary-b05-v1`; retrieval verified
+1,751 jobs / 26,191 objects (2,980,337,096 bytes). Coordinator receipt bindings
+passed: exact submitted/completed UID, manifest/helper hashes, terminal/retrieval
+hashes, wrapper success, own process-group cleanup and notification acceptance.
+See `batch-05-review/coordinator-reconciliation.json` and separate receipts.
+Independent gameplay panels and native/query/runtime audits passed.
+There are 100 played games and 80 fully reviewed games; do not merge Batch 05 into
+the scientific cumulative record before required deep review.
+Batch 05 native results are 8 wins / 6 draws / 6 losses (prepared 6/6/6,
+unaided 2/0/0). Five draws were automatic threefold claims; one was a native dead
+position. Every move has frozen coverage: 5,196 initial and 1,731 matched 5M
+queries. Four audit controls remain uncertain; no stable missed-error trigger.
+Actual peak concurrency was eight, no allocation or scientific failures occurred,
+and all workers were deleted. Primary cumulative estimate is US$13.599458 compute
+across 67.454951 VM-hours, with the Batch 05 deeper panel still pending. The updated
+full-study compute mean is US$29.12; see `batch-05-review/forecast-update.json`.
+
+Both independent gameplay panels froze 453 selected roots for 699 jobs / 714
+queries, including 15 unrestricted discoveries. Plan SHA256:
+`2660bb0e79542c0dc5f71af41a63bc52cbfe995fd2450649c4e867d6ed84cf1f`. The plan preserves the
+original image, binaries, histories and reference budget. Exact full ledgers,
+review index and inventory are losslessly archived with binding manifests.
+Next: launch this plan once through `notify_exit.py`. On completion reconcile
+submission, computation, verification, cleanup and notification independently;
+review against both narratives and obtain only distinct new alternative obligations.
+Preserve earlier/linked uncertainty, secondary tags and claim limits, then close
+Batch 05 and launch original Batch 06. No duplicate queries or retrieval.
 Restore archived JSON bytes locally when needed; do not retrieve again.
 Continue all 200 games with no Mac engines, duplicate searches, production changes,
 timers or periodic polling. Stop for John after final independent diagnosis and

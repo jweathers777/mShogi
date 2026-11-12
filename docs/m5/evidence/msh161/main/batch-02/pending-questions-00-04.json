@@ -1,0 +1,937 @@
+{
+  "scope": "bounded offline batch02 migration review; separate from batch01 denominator",
+  "engine_execution_authorized": false,
+  "validated_5M_queries": 988,
+  "legal_selected_PV_plies": 26720,
+  "questions": [
+    {
+      "pair": "main-02-00",
+      "game": 0,
+      "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/games/main-02-00/report.json.gz",
+      "question": "Separate candidate recapture/continuation losses from renewed opponent opportunities and actual successful conversion.",
+      "evidence": [
+        {
+          "ply": 44,
+          "played": "d4c5",
+          "alternative": "b4c5",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "d4c5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0028-d4c5/g000-p044-alternative-attempt0000.json",
+              "sha256": "11b75cbabe6a4f396e9efba4302c1f876d986900013357dea94b465067fcf646",
+              "range": [
+                0.613,
+                0.613
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "b4c5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0028-b4c5/g000-p044-alternative-attempt0000.json",
+              "sha256": "a8f8ca38cf008c83083036870ec1232549fa50795a6ef2f1ad124bce68f5fc9c",
+              "range": [
+                0.865,
+                0.865
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 46,
+          "played": "e2c4",
+          "alternative": "c3a4",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "e2c4",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0030-e2c4/g000-p046-alternative-attempt0000.json",
+              "sha256": "4841aecfd95365fac0ac13bf553404a704612c1ca29562fe614c7250706dc310",
+              "range": [
+                0.503,
+                0.5035
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            },
+            {
+              "move": "c3a4",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0030-c3a4/g000-p046-alternative-attempt0000.json",
+              "sha256": "42cb5d4068bba5ef7314c683646ea08bc30a767b5977081c0f6f07e8934be414",
+              "range": [
+                0.999,
+                0.999
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 49,
+          "played": "d7e5",
+          "alternative": "d8c7",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "d7e5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0033-d7e5/g000-p049-alternative-attempt0000.json",
+              "sha256": "528ec2b626fd8520418abad0a35ec8498a24f684cd8b02f78a69cd174fc208a1",
+              "range": [
+                0.0005,
+                0.0005
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "d8c7",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0033-d8c7/g000-p049-alternative-attempt0000.json",
+              "sha256": "5dfc85cd690e6c1f43dbf414c84adea556674cc2901c11f40313f7b0459f4928",
+              "range": [
+                0.4745,
+                0.4815
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        }
+      ],
+      "next_action": "Preserve for future authorized adjudication; no local engines or20M authorized; no absolute first/largest conclusion."
+    },
+    {
+      "pair": "main-02-00",
+      "game": 1,
+      "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/games/main-02-00/report.json.gz",
+      "question": "Assess knight exchange versus rook move and pawn break versus bishop relocation; keep later successful conversion as contrary evidence.",
+      "evidence": [
+        {
+          "ply": 31,
+          "played": "a8b8",
+          "alternative": "f6d5",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "a8b8",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0072-a8b8/g001-p031-alternative-attempt0000.json",
+              "sha256": "f633db774856a31b8d88a43c7403bb2f5a6dafba5bdc821838f395690f3b5b8b",
+              "range": [
+                0.339,
+                0.339
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "f6d5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0072-f6d5/g001-p031-alternative-attempt0000.json",
+              "sha256": "b29bd37f5da91bc38b14d4a949ae89d375d99fbaa52c1f8e251e6bebc2d690de",
+              "range": [
+                0.494,
+                0.494
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 49,
+          "played": "e8b5",
+          "alternative": "b7b5",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "e8b5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0090-e8b5/g001-p049-alternative-attempt0000.json",
+              "sha256": "394aad02c2e20474e486c2796848b8b75479e1944868867be1d6a5905cd72a4a",
+              "range": [
+                0.511,
+                0.511
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "b7b5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0090-b7b5/g001-p049-alternative-attempt0000.json",
+              "sha256": "a9113e47ad370c0b332dff8ac549a7b94b1ec49f29e8bc415efc906ae3bf0827",
+              "range": [
+                0.7755,
+                0.78
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        }
+      ],
+      "next_action": "Preserve for future authorized adjudication; no local engines or20M authorized; no absolute first/largest conclusion."
+    },
+    {
+      "pair": "main-02-01",
+      "game": 0,
+      "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/games/main-02-01/report.json.gz",
+      "question": "Preserve opponent recapture error and candidate successful alternative attack control; test no claim of perfect candidate play.",
+      "evidence": [
+        {
+          "ply": 21,
+          "played": "g7f6",
+          "alternative": "e7f6",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "g7f6",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0148-g7f6/g000-p021-alternative-attempt0000.json",
+              "sha256": "b0ef940647fa6faf1481c464f5b9fcbebc6de861b3008e98511bcdeffcd3f434",
+              "range": [
+                0.0,
+                0.0
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "e7f6",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0148-e7f6/g000-p021-alternative-attempt0000.json",
+              "sha256": "430021a7e6f164dc0155ef0bd6888ad212ed4d26cc87e49b49d33be5cdf951d9",
+              "range": [
+                0.5005,
+                0.5005
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 22,
+          "played": "d1d2",
+          "alternative": "c3e2",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "d1d2",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0149-d1d2/g000-p022-alternative-attempt0000.json",
+              "sha256": "ab649aa4c150bf46c0e9d2a22a5b84e6dbea172ed980cf4927bc45e57ece9902",
+              "range": [
+                1.0,
+                1.0
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "c3e2",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0149-c3e2/g000-p022-alternative-attempt0000.json",
+              "sha256": "8116aa9cf2e57f31d61196ddfcec1785e8dd509d37848d28a7c17e9ff630e96d",
+              "range": [
+                1.0,
+                1.0
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        }
+      ],
+      "next_action": "Preserve for future authorized adjudication; no local engines or20M authorized; no absolute first/largest conclusion."
+    },
+    {
+      "pair": "main-02-01",
+      "game": 1,
+      "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/games/main-02-01/report.json.gz",
+      "question": "Preserve opponent queen capture and actual Bxg2/Bxf1 response; candidate success does not prove every move optimal.",
+      "evidence": [
+        {
+          "ply": 36,
+          "played": "d1d4",
+          "alternative": "f4e5",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "d1d4",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0184-d1d4/g001-p036-alternative-attempt0000.json",
+              "sha256": "5545dce26a6c93d44eaf3f464a6d63eabb661ca9194976c74cd96517964daaf9",
+              "range": [
+                0.0,
+                0.0
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "f4e5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0184-f4e5/g001-p036-alternative-attempt0000.json",
+              "sha256": "ecc9260b03947e2e16a60f581591f09363feac331563497843434f48c761a724",
+              "range": [
+                0.465,
+                0.475
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        }
+      ],
+      "next_action": "Preserve for future authorized adjudication; no local engines or20M authorized; no absolute first/largest conclusion."
+    },
+    {
+      "pair": "main-02-02",
+      "game": 0,
+      "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/games/main-02-02/report.json.gz",
+      "question": "Distinguish original defensive miss, immediate opponent reprieve and later minor-piece ending chances; do not treat repeated mistakes as independent causes.",
+      "evidence": [
+        {
+          "ply": 50,
+          "played": "a1e1",
+          "alternative": "e2d2",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "a1e1",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0241-a1e1/g000-p050-alternative-attempt0000.json",
+              "sha256": "4da04082196889b436b20139143ac519441d769cc204e911bd5fb5e5487a586c",
+              "range": [
+                0.0025,
+                0.0025
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "e2d2",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0241-e2d2/g000-p050-alternative-attempt0000.json",
+              "sha256": "bc4ca2e7d41d68fb64e87ac59a439aec8510a6817f7bc3532e2e28860d0184b1",
+              "range": [
+                0.4735,
+                0.4755
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 51,
+          "played": "f8f6",
+          "alternative": "f8b8",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "f8f6",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0242-f8f6/g000-p051-alternative-attempt0000.json",
+              "sha256": "7b70ed2e422f908419cf6dcbb12e30cc33ae2115d9079d5d59ffe473ab0dd180",
+              "range": [
+                0.508,
+                0.508
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            },
+            {
+              "move": "f8b8",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0242-f8b8/g000-p051-alternative-attempt0000.json",
+              "sha256": "14ab479460b31622c49f880b740fa8623f2acdbaca5f700799f7fc7c0f401c8b",
+              "range": [
+                0.9965,
+                0.9975
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 110,
+          "played": "c3c4",
+          "alternative": "d4e5",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "c3c4",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0292-c3c4/g000-p110-alternative-attempt0000.json",
+              "sha256": "9a703ef74196835018b22283324d9fe57b29843fcc5c3664275cf2583f9601b8",
+              "range": [
+                0.5015,
+                0.5015
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            },
+            {
+              "move": "d4e5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0292-d4e5/g000-p110-alternative-attempt0000.json",
+              "sha256": "f31a6d7ea57197f5e1fb1175b73f943e986a841bd6e44b2e16b1837e9f849ee6",
+              "range": [
+                1.0,
+                1.0
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 144,
+          "played": "d4f5",
+          "alternative": "d4e6",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "d4f5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0323-d4f5/g000-p144-alternative-attempt0000.json",
+              "sha256": "528c0f299e794398b070b086b53be5d071c735cb72aa15740b9a14bdd28778c9",
+              "range": [
+                0.5,
+                0.5
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "d4e6",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0323-d4e6/g000-p144-alternative-attempt0000.json",
+              "sha256": "1c291b1283c27d77e09aba515c6904b7bca1b70a906f16089278d66d939a12b7",
+              "range": [
+                1.0,
+                1.0
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        }
+      ],
+      "next_action": "Preserve for future authorized adjudication; no local engines or20M authorized; no absolute first/largest conclusion."
+    },
+    {
+      "pair": "main-02-02",
+      "game": 1,
+      "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/games/main-02-02/report.json.gz",
+      "question": "Preserve opponent pawn push and candidate Nf6 positive control with subsequent attack/conversion.",
+      "evidence": [
+        {
+          "ply": 34,
+          "played": "h3h4",
+          "alternative": "f3d2",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "h3h4",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0352-h3h4/g001-p034-alternative-attempt0000.json",
+              "sha256": "45909241d7c71a709fdba85d6a1eaec930330acd889a135bf3b6671580a0f843",
+              "range": [
+                0.004,
+                0.0105
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            },
+            {
+              "move": "f3d2",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0352-f3d2/g001-p034-alternative-attempt0000.json",
+              "sha256": "9aeb25a4352455e34ba34ff945209910df709a0c2d56bb40070c51f167adcbe3",
+              "range": [
+                0.459,
+                0.4625
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 35,
+          "played": "d7f6",
+          "alternative": "d7f6",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "d7f6",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0353-d7f6/g001-p035-alternative-attempt0000.json",
+              "sha256": "d913e32aafca70a29ec90ff136f26e488596c7a1f7be573c038cec66675ea33f",
+              "range": [
+                0.987,
+                0.987
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        }
+      ],
+      "next_action": "Preserve for future authorized adjudication; no local engines or20M authorized; no absolute first/largest conclusion."
+    },
+    {
+      "pair": "main-02-03",
+      "game": 0,
+      "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/games/main-02-03/report.json.gz",
+      "question": "Assess advantage-preserving queen moves separately from native final repetition; history/claim-policy context needed before result attribution.",
+      "evidence": [
+        {
+          "ply": 50,
+          "played": "e5f4",
+          "alternative": "e5e2",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "e5f4",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0411-e5f4/g000-p050-alternative-attempt0000.json",
+              "sha256": "0b616666d7432090d16db4d3f248e24fa9b75b227dedaf61d08a937f75f7fd1f",
+              "range": [
+                0.503,
+                0.5035
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            },
+            {
+              "move": "e5e2",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0411-e5e2/g000-p050-alternative-attempt0000.json",
+              "sha256": "eba747b8e22fe96b532aa43bcf37cb51f9992eb6b247b6da159e07d627c6a0f1",
+              "range": [
+                0.982,
+                0.982
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 86,
+          "played": "e6g6",
+          "alternative": "e6f5",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "e6g6",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0444-e6g6/g000-p086-alternative-attempt0000.json",
+              "sha256": "38a9896bf10f893a83d5ff3cfb29a25ab010544a48a45171a0db615239daaae1",
+              "range": [
+                0.5,
+                0.5
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "e6f5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0444-e6f5/g000-p086-alternative-attempt0000.json",
+              "sha256": "7fc764e29825c87910ab8e29eaa961eca20479b69c356ebbc347a5fd495c295f",
+              "range": [
+                0.974,
+                0.98
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        }
+      ],
+      "next_action": "Preserve for future authorized adjudication; no local engines or20M authorized; no absolute first/largest conclusion."
+    },
+    {
+      "pair": "main-02-03",
+      "game": 1,
+      "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/games/main-02-03/report.json.gz",
+      "question": "Preserve opponent rook move and actual b4 tactical response as success, without generic opening diagnosis.",
+      "evidence": [
+        {
+          "ply": 26,
+          "played": "a1d1",
+          "alternative": "f3e5",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "a1d1",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0462-a1d1/g001-p026-alternative-attempt0000.json",
+              "sha256": "408edf1780a1b6d781794907532734ccf4aa6bfba6ca2416556db0ba3ed66337",
+              "range": [
+                0.0,
+                0.0
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "f3e5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0462-f3e5/g001-p026-alternative-attempt0000.json",
+              "sha256": "54bf5d16f960ee8d99a5eadaf666aca2021912d371c2c7ba519375ad8d14ee0f",
+              "range": [
+                0.462,
+                0.464
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        }
+      ],
+      "next_action": "Preserve for future authorized adjudication; no local engines or20M authorized; no absolute first/largest conclusion."
+    },
+    {
+      "pair": "main-02-04",
+      "game": 0,
+      "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/games/main-02-04/report.json.gz",
+      "question": "Separate initial tactical choice, opponent reprieve and later active-rook defense/recovery episodes.",
+      "evidence": [
+        {
+          "ply": 32,
+          "played": "f3g5",
+          "alternative": "c2b2",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "f3g5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0494-f3g5/g000-p032-alternative-attempt0000.json",
+              "sha256": "c93c8607e5d8753440fc76c4ea1763195f5f6b06732d0b0824442a183aeace7e",
+              "range": [
+                0.0165,
+                0.0165
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "c2b2",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0494-c2b2/g000-p032-alternative-attempt0000.json",
+              "sha256": "3f66bbf6a2f89275494478fe4ec7d354add502f3ffea1f9e9d398cf6a169db95",
+              "range": [
+                0.4875,
+                0.491
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 33,
+          "played": "h7h6",
+          "alternative": "c6e5",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "h7h6",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0495-h7h6/g000-p033-alternative-attempt0000.json",
+              "sha256": "b6bc39caa4a24743e86f0e63804ef2f38bafa65b2fd34484afd22c896cdb6e9b",
+              "range": [
+                0.4935,
+                0.495
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            },
+            {
+              "move": "c6e5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0495-c6e5/g000-p033-alternative-attempt0000.json",
+              "sha256": "5c3bab780cf062a0226e7e75e76fcc913009e9b6d7ddda1745d25836a7a5a862",
+              "range": [
+                0.9405,
+                0.963
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 90,
+          "played": "c3c5",
+          "alternative": "c3c8",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "c3c5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0548-c3c5/g000-p090-alternative-attempt0000.json",
+              "sha256": "e62a4e09187d7a45da5de33e627e52bbc94a1da2e1d0dc20318f9ce89e923726",
+              "range": [
+                0.5,
+                0.5
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "c3c8",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0548-c3c8/g000-p090-alternative-attempt0000.json",
+              "sha256": "3340e0f0f1322382bdfc6ef9b29b949ab5196fed1f2969c6a927f8e19026a667",
+              "range": [
+                0.9405,
+                0.9585
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 108,
+          "played": "d8e8",
+          "alternative": "d8h8",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "d8e8",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0561-d8e8/g000-p108-alternative-attempt0000.json",
+              "sha256": "1ff6737a18a8cc80f0155198fe123f5fc55bc658a23cdaad9823157626e8a257",
+              "range": [
+                0.0,
+                0.0
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "d8h8",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0561-d8h8/g000-p108-alternative-attempt0000.json",
+              "sha256": "613961888b4ca069b2cb78eb78a68e491e712da23ce9d512e6f41eca7d896dda",
+              "range": [
+                0.483,
+                0.486
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        }
+      ],
+      "next_action": "Preserve for future authorized adjudication; no local engines or20M authorized; no absolute first/largest conclusion."
+    },
+    {
+      "pair": "main-02-04",
+      "game": 1,
+      "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/games/main-02-04/report.json.gz",
+      "question": "Distinguish early queen/central choices from late opponent recovery opportunity and candidate pawn-versus-king recapture; no mechanism inference.",
+      "evidence": [
+        {
+          "ply": 19,
+          "played": "c5h5",
+          "alternative": "f6d5",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "c5h5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0581-c5h5/g001-p019-alternative-attempt0000.json",
+              "sha256": "91de6fb5f6297bf8d83a8b47cf1d8fa7e69b9e6abccc795f47fbb179ee27c5e8",
+              "range": [
+                0.359,
+                0.3785
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            },
+            {
+              "move": "f6d5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0581-f6d5/g001-p019-alternative-attempt0000.json",
+              "sha256": "d8104ba8c829dd3f8b2b6004bc8e3fbdfee5a90512384f7b1f1153e4e5926222",
+              "range": [
+                0.492,
+                0.492
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 25,
+          "played": "e6e5",
+          "alternative": "e8g8",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "e6e5",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0587-e6e5/g001-p025-alternative-attempt0000.json",
+              "sha256": "5f8270420d7d0efe30475e8b5156afc5023d0fccfba0e542fbfa3962852e4474",
+              "range": [
+                0.316,
+                0.316
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "e8g8",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0587-e8g8/g001-p025-alternative-attempt0000.json",
+              "sha256": "54a4dd250bab099cc287b65537a8c7a44c17b899d0ff435975a7fca95961d631",
+              "range": [
+                0.4835,
+                0.4855
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 29,
+          "played": "e5e4",
+          "alternative": "f6d7",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "e5e4",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0590-e5e4/g001-p029-alternative-attempt0000.json",
+              "sha256": "13455d3f3e3b71e2bc02d4cedd2ec6c20db08ee65e1c7f3e0d67213f394468e9",
+              "range": [
+                0.0485,
+                0.0545
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            },
+            {
+              "move": "f6d7",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0590-f6d7/g001-p029-alternative-attempt0000.json",
+              "sha256": "824367fc0d08bee5f3720b7a60195262099d3506b5184b73010a062bd7f0cb49",
+              "range": [
+                0.239,
+                0.239
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 70,
+          "played": "h5g6",
+          "alternative": "d8h8",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "h5g6",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0629-h5g6/g001-p070-alternative-attempt0000.json",
+              "sha256": "f3c8466c53a7354aae7daeab1d73fa8c7aa60107b752f7ecdeaf8ba5124e298e",
+              "range": [
+                0.5015,
+                0.5015
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "d8h8",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0629-d8h8/g001-p070-alternative-attempt0000.json",
+              "sha256": "d4dbd3b05f20d2d29f118235fd40367cf41b3b68aad134eebf0c70bdc6a9ade1",
+              "range": [
+                1.0,
+                1.0
+              ],
+              "flags": [],
+              "stable": true
+            }
+          ]
+        },
+        {
+          "ply": 71,
+          "played": "f7g6",
+          "alternative": "h7g6",
+          "method_eligible_5M": true,
+          "status": "provisional_finite_5M",
+          "queries": [
+            {
+              "move": "f7g6",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0630-f7g6/g001-p071-alternative-attempt0000.json",
+              "sha256": "6f6f2d77938d46be6bb080953a37ff02eab30b69bdee04c4939734469051065a",
+              "range": [
+                0.0,
+                0.0
+              ],
+              "flags": [],
+              "stable": true
+            },
+            {
+              "move": "h7g6",
+              "receipt": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/main/batch-02/confirmations/q0630-h7g6/g001-p071-alternative-attempt0000.json",
+              "sha256": "a302b0226fc325b842be11b3ad7241023cb2a304028b9816d381c383dea5fc7c",
+              "range": [
+                0.4965,
+                0.497
+              ],
+              "flags": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "stable": true
+            }
+          ]
+        }
+      ],
+      "next_action": "Preserve for future authorized adjudication; no local engines or20M authorized; no absolute first/largest conclusion."
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "status": "batch01_checkpoint_complete_unresolved_retained",
-  "main_games_completed": 20,
+  "main_games_completed": 40,
   "main_games_required": 200,
   "outcomes": {
     "all": {
@@ -5437,5 +5437,37 @@
       }
     },
     "interpretation": "Native recorded draw governs actual result. SF Bf3/Bf5 bothE1.0 cannot by themselves assign actual conversion success/failure under unconditional controller auto-claim."
+  },
+  "category_example_denominator_games": 20,
+  "category_example_scope": "Batch01 original95examples/73selected20M overlays only; do not divide by40orpool provisionalbatch02.",
+  "primary_cloud_games_completed_by_this_coordinator": 0,
+  "primary_cloud_games_required": 200,
+  "hardware_stratum": "Mac_exploratory",
+  "additional_mac_batch02": {
+    "games": 20,
+    "native_outcomes": {
+      "all": {
+        "draws": 3,
+        "losses": 6,
+        "wins": 11
+      },
+      "main-prepared": {
+        "draws": 3,
+        "losses": 6,
+        "wins": 9
+      },
+      "main-unaided": {
+        "draws": 0,
+        "losses": 0,
+        "wins": 2
+      }
+    },
+    "audit": "main/batch-02/audit.json",
+    "reference_status": "500kandmatched5Mcomplete;20Mnotrun_ownerpause",
+    "category_status": "separate_provisional_qualitative_reviews_not_pooled_with_batch01",
+    "review_paths": [
+      "main/batch-02/migration-review-00-04.md",
+      "main/batch-02/migration-review-05-09.md"
+    ]
   }
 }

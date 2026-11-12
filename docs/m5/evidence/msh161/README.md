@@ -1,4 +1,4 @@
-# ACTIVE OWNER OVERRIDE — LOCAL DRAIN AND CLOUD MIGRATION
+# ACTIVE OWNER OVERRIDE — LOCAL EXECUTION STOPPED; CLOUD MIGRATION
 
 Read `migration/execution-policy.json` and `migration/owner-request.txt` FIRST.
 The older batch02 completion message and continuation instructions below are
@@ -10,16 +10,18 @@ Current migration deliverables:
 - Scientific inputs, ownership and integration gates: `migration/cloud-study-handoff.md`
   and `migration/cloud-inputs.json`. Repository-only coordination.
 - Safe-stop source review: `stop-safety-review.md`. No cooperative pause hook;
-  existingbatch02 includes analysis and is allowed to drain, not yet stopped.
+  batch02 finished games/analysis and stopped. See `migration/local-stop-observation.json`.
 - Verified14-game completed-pair snapshot: `migration/request-snapshot-bundle.json`
   and its tar archive. Snapshot is not a final batch/stopping receipt.
 - Exact Mac binaries retained locally, ignored by Git, indexed by
   `migration/local-executables-manifest.json`; original live paths unchanged.
 
-Existing batch02 is allowed to finish safely because its frozen runner has no
-pair-boundary pause hook. It is not yet stopped. On exit preserve/reconcile its
-evidence and report the exact stopping point; do not obey the stale request to
-launchbatch03. Cloud coordination is through repository records only.
+Batch02 finished its existing games/500k/5M chain without interruption. Recorded
+wrapper/child/native PIDs are absent, the execution lock is free, and no batch03
+exists.40Mac main games have complete histories and500k/5M coverage;20(batch01)
+also have selected20M adjudication.20qualification games remain separate. No
+batch02 consequential20M or final episode adjudication was run. Preserve uncertainty
+and do not resume locally. Cloud coordination is through repository records only.
 
 # MSH-161 (Competitive Gameplay Diagnosis): active study handoff
 
@@ -182,7 +184,7 @@ not another queue test or scheduler. Four notifier tests pass; targeted macOS
 verification, no Linux/Windows claim. Group probes denied by the OS remain unknown
 and require cleanup review; failure notification still proceeds.
 
-## Batch01 evidence and local drain handoff (migration override applies)
+## Completed Mac evidence and stopped local execution
 
 Main conditions remain frozen in `main-method.md`/`main-freeze.json`: Oxidation0.6.0,
 production77101fe, equal5s/move,90master histories paired plus10unaided pairs,
@@ -229,18 +231,25 @@ Actual batch01 processwall: native11929.047s, initialreference3264.835s,
 figures overlap and must not be added again. Audits retain exact accounting and
 failure/cleanup provenance; no resource cap truncated scientific coverage.
 
-Batch02 is RUNNING through `notify_exit.py`, execution session1756, state
-`main/batch-02/chain.json`, notification `notifications/main-batch-02.json`.
-Its frozen10pairs/20games are followed unattended by500k allmove analysis and5M
-matched followups/audit. Normal local execution access permits exit notification;
-no security settings changed. NO timer or periodic watcher. Do not poll or duplicate
-this computation; its success/failure exit queues the owning chat.
+Batch02 COMPLETED its entire existing chain and local execution is STOPPED.
+`main/batch-02/audit.json` and `verification-review.md` verify20native games
+(11W3D6L),2732played+288prepared decisions,6040initialqueries and2203matched5M
+queries for1451selected decisions. All8243queries succeeded;202audit selections
+show no stable significant missed-error trigger. Uncertain references remain.
+`migration/local-stop-observation.json` confirms recorded process PIDs absent,
+executionlock free, settled notifier and no batch03. No signal or new engine run.
 
-NEXT on exit: follow `migration/execution-policy.json`: preserve completed/failed
-batch02 evidence, verify cleanup, record exact stopped counts and incomplete analysis,
-update the interim report/handoff and STOP LOCAL. No batch03, new20M queries or
-automatic retries. Resume the full primary200games only on validated standardized
-cloud execution, keeping this Mac exploratory stratum separate.
+The40Mac main games total21W5D14L (prepared17W5D14L over36games,unaided4W).
+All40have500k/5M coverage; onlybatch01 has selected20M adjudication. Batch02
+completed-game reviews remain provisional at5M; no consequential20M or final
+first/largest episode adjudication was performed. Mainreference attempts15965,
+including144at20M; qualification20games andtheirresources remain separate.
+AllMac evidence is exploratory, not credited as uniformcloudprimary observations.
+
+The batch02 callback has been consumed under `migration/execution-policy.json`.
+No batch03, new20M or automaticretry. The next execution step requires reviewed
+cloud-runner validation and a distinct primary200-game standardizedcloud freeze,
+with alloriginalplanned openings retained. Repository-only coordination.
 
 Verified archives: `main/batch-01-pre20m-evidence.tar.gz` (15792artifacts) and
 `main/batch-01-20m-evidence.tar.gz` (723artifacts), each with its SHA/per-file

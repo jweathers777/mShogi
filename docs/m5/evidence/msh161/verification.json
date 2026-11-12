@@ -200,18 +200,58 @@
     "final_priorities": false
   },
   "main_batch02": {
-    "status": "running",
+    "status": "completed_local_stopped_no_further_engine_jobs",
     "session": 1756,
     "state": "main/batch-02/chain.json",
     "notification": "notifications/main-batch-02.json",
     "scheduled_games": 20,
     "freeze": "main-freeze.json",
-    "next": "On exit preserve/audit stoppedstate; no newlocalcomputation orbatch03. Owner migration policy supersedes previous queue message."
+    "next": "Repository cloudhandoff; no localbatch03,20M,retry orautomaticresume.",
+    "audit": "main/batch-02/audit.json",
+    "execution_review": "main/batch-02/verification-review.md",
+    "games": 20,
+    "reference_queries": 8243,
+    "played_decisions": 2732,
+    "matched_confirmation_decisions": 1451,
+    "query_failures": 0,
+    "resources": {
+      "confirmation_reference": {
+        "attempts": 2203,
+        "cpu_seconds": 9011.508337999996,
+        "wall_seconds": 9111.500624178443
+      },
+      "confirmation_selection": {
+        "missing_alternatives": 0,
+        "same_choice_controls": 699,
+        "stratified-nonflagged-audit": 202,
+        "v1-followup": 1249
+      },
+      "coverage": {
+        "played_decisions": 2732,
+        "prepared_decisions": 288
+      },
+      "initial_reference": {
+        "attempts": 6040,
+        "cpu_seconds": 3332.8578489999973,
+        "wall_seconds": 3497.2001354075037
+      },
+      "initial_screen": {
+        "negative_rows": 309,
+        "raw_threshold_rows": 220,
+        "uncertain_rows": 1186
+      },
+      "native": {
+        "active_response_seconds": 13160.648208518001,
+        "cpu_seconds": 13151.963839999999,
+        "wall_seconds": 13163.04746266501
+      }
+    },
+    "consequential20M": "not_run_owner_local_pause"
   },
   "migration": {
     "owner_request": "migration/owner-request.txt",
     "execution_policy": "migration/execution-policy.json",
-    "local_status": "draining_existing_batch02_not_stopped",
+    "local_status": "stopped_after_batch02_games500k5M",
     "local_new_jobs_authorized": false,
     "safe_stop_review": "stop-safety-review.md",
     "snapshot": "migration/request-snapshot-bundle.json",
@@ -226,6 +266,34 @@
     "primary_cloud_sample": 200,
     "mac_stratum": "exploratory_do_not_pool",
     "coordination": "repository_only",
-    "frozen_live_files_changed": false
+    "frozen_live_files_changed": false,
+    "stop_observation": "migration/local-stop-observation.json",
+    "completed_main_games": 40,
+    "main_games_with_full500k5M": 40,
+    "main_games_with_selected20M": 20,
+    "main_reference_queries": 15965,
+    "main_outcomes": {
+      "wins": 21,
+      "draws": 5,
+      "losses": 14
+    },
+    "batch02_outcomes": {
+      "all": {
+        "draws": 3,
+        "losses": 6,
+        "wins": 11
+      },
+      "main-prepared": {
+        "draws": 3,
+        "losses": 6,
+        "wins": 9
+      },
+      "main-unaided": {
+        "draws": 0,
+        "losses": 0,
+        "wins": 2
+      }
+    },
+    "unperformed": "Batch02 consequential20M and final episode adjudication; primary200cloudcampaign pendingvalidatedrunner."
   }
 }

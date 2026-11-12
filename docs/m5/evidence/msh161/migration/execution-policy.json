@@ -1,6 +1,6 @@
 {
   "authority": "owner-request.txt and owner repository-only coordination reply",
-  "status": "draining_existing_batch02",
+  "status": "local_stopped_after_completed_batch02",
   "local_new_computation_authorized": false,
   "local_batch03_authorized": false,
   "safe_stop_policy": "No pair-boundary pause in frozen runner; allow existing bounded batch02 chain to finish, never interrupt active engine search. No new study jobs.",
@@ -11,7 +11,13 @@
     "batch01_analyzed_games": 20,
     "batch02_reference_analysis_started": false
   },
-  "completion_message_override": "Old batch02 notification says continuebatch03. Superseded: preserve final evidence/resource/process receipts, record exact stop, update interimreport/handoff, and STOP LOCAL. Do not launchbatch03 or newlocalanalysis.",
+  "completion_message_override": "Consumed batch02 callback. Native+500k+5M chain completed; preserve/audit/review offline only. STOP LOCAL. No batch03, new20M or automaticretry. Primary200cloudstudy follows reviewedrunner validation.",
   "cloud_primary_plan": "Replay all200frozen planned games on standardized cloudworkers after independent validationreview. Mac exploratory evidence separate.",
-  "coordination": "Repository only; no direct inter-chat messaging."
+  "coordination": "Repository only; no direct inter-chat messaging.",
+  "stop_observation": "local-stop-observation.json",
+  "completed_mac_main_games": 40,
+  "mac_main_games_with500k_and5M": 40,
+  "mac_main_games_with_selected20M": 20,
+  "separate_qualification_games": 20,
+  "unperformed_analysis": "Batch02 consequential20M and final episode adjudication; no local searches authorized."
 }

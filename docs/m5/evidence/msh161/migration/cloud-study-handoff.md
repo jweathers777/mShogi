@@ -23,22 +23,33 @@ parent does not safely cancel/reconcile the independently grouped native process
 We chose the owner's fallback: allow the **already running batch02 chain** to finish,
 including its existing all-move and5M stages. No source mutations, signals, new
 engine jobs or polling watcher were used to attempt a synthetic checkpoint.
-This is a draining state, **not a claim that local execution has stopped**.
+That drain has now completed. **Local execution is stopped after all20batch02
+games and their500k/5M analysis.** See the final state below.
 
-The only active chain is `../main/batch-02/chain.json`; wrapper receipt is
-`../notifications/main-batch-02.json` (execution session1756). The notifier queues
-a chat message; it does not run batch03. Its old message instructing continuation
-to batch03 is explicitly superseded. On its exit, the coordinator must preserve
-all final/failed outputs, verify cleanup, record actual completed/analyzed counts,
-and mark the local state stopped. **No local batch03, new20M probes, or retry may
-be launched automatically.** Preserve failures and investigate without restarting.
-Do not modify any file in the original freeze while the chain depends on it.
+Final completed chain: `../main/batch-02/chain.json`; wrapper receipt:
+`../notifications/main-batch-02.json` (former execution session1756). The callback
+was consumed under the stop directive. It did not launch another batch. Read-only
+OS observation found all recorded wrapper/child/native PIDs absent and the study
+execution lock available; no batch03 exists. See `local-stop-observation.json`.
+All query/native cleanup receipts and full coverage passed the independent offline
+`../main/batch-02/verification-review.md` audit. No active search was interrupted.
+
+There are now **40completed Mac main games**, all with full500k screening and
+matched5M coverage; only the first20have selected20M adjudication. Batch02 has
+20games/8243referencequeries and no failed or incomplete stages. Consequential20M
+and final episode adjudication forbatch02 were deliberately NOT run under the
+owner pause.20qualification games are separate. Batch02gameplay reviews preserve
+5Mprovisional questions, not additional confirmed20M counts. Macmainoutcomes are
+21W5D14L; these are exploratory results, not a uniform part of the cloudprimary200.
+**No local batch03, new20M probes, retry or automatic resume is authorized.**
 
 `request-snapshot-bundle.json` verifies the captured state and completed pair
 artifacts in `batch02-completed-pairs-at-request.tar.gz`. Active pair files remain
 untouched in the live directory; they are not falsely archived as complete.
-This snapshot is not the final stopping receipt. Existing batch01 pre20M and20M
-bundles preserve all completed raw evidence. The five exact Mac executables have
+This historical snapshot is not the final stopping receipt. The completedbatch02
+bundle `../main/batch-02-complete-evidence.tar.gz` and SHA/per-file manifest
+`../main/batch-02-complete-bundle.json` preserve the final batch and offline reviews.
+Existing batch01 pre20M and20M bundles preserve its completed raw evidence. The five exact Mac executables have
 verified local copies in ignored `local-executables/`, indexed by
 `local-executables-manifest.json`; binary build output is not committed to Git.
 

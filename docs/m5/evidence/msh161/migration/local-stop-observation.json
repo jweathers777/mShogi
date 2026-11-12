@@ -1,0 +1,23 @@
+{
+  "recorded_wrapper_child_native_pids": [
+    16291,
+    16295,
+    16298,
+    17303,
+    17697,
+    18219,
+    18588,
+    19309,
+    19875,
+    20462,
+    27651,
+    31673
+  ],
+  "ps_returncode": 1,
+  "surviving_pid_observations": "",
+  "execution_lock_available": true,
+  "notification_settled": true,
+  "notification_queue_accepted": true,
+  "batch03_exists": false,
+  "scope": "Read-only PID observation plus temporary releaseable lock probe; no signals or engine calls. Individual reference query cleanup also audited from receipts."
+}

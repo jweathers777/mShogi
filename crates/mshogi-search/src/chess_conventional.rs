@@ -79,6 +79,9 @@ pub struct SearchDiagnostics {
 /// Bounded per-invocation configuration; no table or history leaks between requests.
 #[derive(Clone, Copy, Debug)]
 pub struct SearchOptions {
+    /// Whether the consumer can exercise optional current/intended draw claims.
+    /// False suppresses claim choices at every real node; mandatory outcomes remain native.
+    pub allow_draw_claims: bool,
     /// Diagnostic versus playing algorithm.
     pub mode: SearchMode,
     /// Optional soft/hard wall-time allocation.
@@ -92,6 +95,7 @@ impl Default for SearchOptions {
     fn default() -> Self {
         Self {
             mode: SearchMode::Conventional,
+            allow_draw_claims: true,
             time: None,
             table_entries: TABLE_ENTRIES,
             diagnostics: SearchDiagnostics::default(),
@@ -273,6 +277,7 @@ pub fn search_with_options(
             seldepth: 0,
         },
         mode: options.mode,
+        allow_draw_claims: options.allow_draw_claims,
         diagnostics: options.diagnostics,
         table: vec![None; options.table_entries.min(MAX_TABLE_ENTRIES)],
         history: vec![0; 2 * 64 * 64],
@@ -435,6 +440,7 @@ struct Entry {
     generation: u16,
 }
 struct Engine<'a> {
+    allow_draw_claims: bool,
     cursor: SearchCursor,
     eval: EvalState,
     work: Work<'a>,
@@ -639,6 +645,9 @@ impl Engine<'_> {
         None
     }
     fn claim(&mut self) -> Option<(SearchChoice, bool)> {
+        if !self.allow_draw_claims {
+            return None;
+        }
         let forced = self
             .cursor
             .game()
@@ -1094,7 +1103,7 @@ impl Engine<'_> {
                 Classification::Check | Classification::Checkmate
             );
             let mut critical = child_node.outcome.is_some()
-                || !child_node.claims.is_empty()
+                || (self.allow_draw_claims && !child_node.claims.is_empty())
                 || matches!(
                     child_node.classification,
                     Classification::Checkmate | Classification::Stalemate
@@ -1529,7 +1538,7 @@ impl Engine<'_> {
                 Classification::Check | Classification::Checkmate
             );
             let critical = child_node.outcome.is_some()
-                || !child_node.claims.is_empty()
+                || (self.allow_draw_claims && !child_node.claims.is_empty())
                 || matches!(
                     child_node.classification,
                     Classification::Checkmate | Classification::Stalemate

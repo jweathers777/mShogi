@@ -10,6 +10,7 @@ fn exact(g: &AdjudicatedGame, depth: u16, entries: usize) -> ConventionalResult 
         SearchLimits { depth, nodes: None },
         SearchOptions {
             mode: SearchMode::Exact,
+            allow_draw_claims: true,
             table_entries: entries,
             time: None,
             diagnostics: SearchDiagnostics::default(),
@@ -232,6 +233,7 @@ fn engine<'a>(
     mode: SearchMode,
 ) -> Engine<'a> {
     Engine {
+        allow_draw_claims: true,
         cursor: SearchCursor::new(g),
         eval: EvalState::new(g.position()),
         work: Work {
@@ -2580,4 +2582,104 @@ fn cached_threat_admission_preserves_native_outcomes_claims_and_cancellation() {
     assert_eq!(e.cursor.game(), Some(&g));
     assert_eq!(e.cursor.key(), key);
     assert_eq!(e.eval, EvalState::new(g.position()));
+}
+
+#[test]
+fn unavailable_claims_search_real_moves_at_root_interior_and_quiescence() {
+    for policy in [ClaimPolicy::ExplicitOnly, ClaimPolicy::AutoClaim] {
+        for clock in [98, 99, 100] {
+            let g =
+                AdjudicatedGame::from_fen(&format!("7k/8/8/8/8/8/8/KR6 b - - {clock} 1"), policy)
+                    .unwrap();
+            for (mode, table_entries) in [
+                (SearchMode::Exact, 0),
+                (SearchMode::Exact, 4096),
+                (SearchMode::Conventional, 0),
+                (SearchMode::Conventional, 4096),
+            ] {
+                let r = search_with_options(
+                    &g,
+                    SearchLimits {
+                        depth: 2,
+                        nodes: Some(30_000),
+                    },
+                    SearchOptions {
+                        mode,
+                        table_entries,
+                        allow_draw_claims: false,
+                        ..SearchOptions::default()
+                    },
+                    || false,
+                )
+                .unwrap();
+                assert_eq!(r.result.completed_depth, 2, "{clock} {mode:?}");
+                assert!(
+                    r.result.score.unwrap() < -100,
+                    "{clock} {mode:?}: {:?}",
+                    r.result
+                );
+                assert!(matches!(
+                    r.result.decision,
+                    Some(SearchDecision::Choose(SearchChoice::Move(_)))
+                ));
+                assert!(
+                    r.result
+                        .principal_variation
+                        .iter()
+                        .all(|c| matches!(c, SearchChoice::Move(_)))
+                );
+                replay(&g, &r);
+            }
+        }
+    }
+    // Native claim-capable callers keep their existing default semantics.
+    let g = game("7k/8/8/8/8/8/8/KR6 b - - 100 1");
+    let native = search(
+        &g,
+        SearchLimits {
+            depth: 1,
+            nodes: None,
+        },
+    )
+    .unwrap();
+    assert!(matches!(
+        native.result.decision,
+        Some(SearchDecision::Choose(SearchChoice::Claim(_)))
+    ));
+    let mut stop = || false;
+    let mut e = engine(&g, &mut stop, SearchMode::Conventional);
+    e.allow_draw_claims = false;
+    let q = e.quiescence(0, -INF, INF, Q_PLIES, None).ok().unwrap();
+    assert!(
+        q.score < -100,
+        "qsearch must not install an optional draw floor"
+    );
+}
+
+#[test]
+fn unavailable_claims_keep_mandatory_outcomes_and_mate_precedence() {
+    for (fen, expected) in [
+        ("7k/8/8/8/8/8/8/KR6 b - - 149 1", 0),
+        ("7k/8/8/8/8/8/8/KR6 b - - 150 1", 0),
+        ("7k/8/5KQ1/8/8/8/8/8 w - - 149 1", MATE_SCORE - 1),
+        ("7k/5K2/6Q1/8/8/8/8/8 b - - 100 1", 0),
+        ("7k/8/8/8/8/8/8/K7 w - - 100 1", 0),
+    ] {
+        let g = game(fen);
+        let r = search_with_options(
+            &g,
+            SearchLimits {
+                depth: 1,
+                nodes: None,
+            },
+            SearchOptions {
+                allow_draw_claims: false,
+                ..SearchOptions::default()
+            },
+            || false,
+        )
+        .unwrap();
+        assert_eq!(r.result.score, Some(expected), "{fen}");
+        replay(&g, &r);
+    }
 }

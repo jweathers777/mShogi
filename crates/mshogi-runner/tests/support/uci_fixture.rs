@@ -41,7 +41,11 @@ fn main() {
             if mode == "stderr_flood" {
                 let _ = io::stderr().write_all(&vec![b'e'; 1_048_576]);
             }
-            println!("id name runner fixture");
+            if mode == "cycle" || mode == "quiet_threshold" {
+                println!("id name mShogi scripted-policy-fixture");
+            } else {
+                println!("id name runner fixture");
+            }
             println!("uciok");
             let _ = io::stdout().flush();
             if mode == "blocked_writer" {
@@ -67,7 +71,18 @@ fn main() {
                 std::thread::sleep(std::time::Duration::from_secs(60));
                 return;
             }
-            if mode == "oversized" {
+            if mode == "cycle" || mode == "quiet_threshold" {
+                let ply = position
+                    .split(" moves ")
+                    .nth(1)
+                    .map_or(0, |m| m.split_whitespace().count());
+                let moves = if mode == "cycle" {
+                    ["g1f3", "g8f6", "f3g1", "f6g8"]
+                } else {
+                    ["h8g8", "b1b2", "g8h8", "b2b1"]
+                };
+                println!("bestmove {}", moves[ply % 4]);
+            } else if mode == "oversized" {
                 println!("{}", "x".repeat(70000));
             } else if mode == "flood" {
                 for _ in 0..1000 {

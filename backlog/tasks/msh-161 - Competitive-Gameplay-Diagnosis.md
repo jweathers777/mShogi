@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T13:33:00Z'
+updated_date: '2026-11-12T13:51:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -61,6 +61,8 @@ Deliver independently challenged diagnosis, ranked investigations and updated ro
 4. Confirm events, independently challenge rankings, update roadmap, integrate and stop before engineering.
 
 Primary cloud batch01 review: independent full-history gameplay panels and artifact/method audit; freeze required20M selections and use existing pinned worker confirmation API with a separate immutable, hash-bound plan and bounded eight-worker dispatcher. Independently review controller-only orchestration before submission; event wait plus plan-aware retrieval/verification runs unattended with notify_exit.py. Review completed20M and update measured full200 time/cost forecast before batch02. No production changes or Mac engines.
+
+Owner-directed bounded draw correction before batch03: inspect native mandatory outcomes, optionalclaim availability in conventionalsearch, UCI and externalrunner; retain ExplicitOnly native rules while suppressing unavailable claims throughout UCI search. Remove externalrunner AutoClaim-only restriction without changing historicalpolicy support. Focused native/search/UCI/runner regressions plusone shortactual mShogi/Oxidation match. Independentreview(Level2 protocol/runner/deployment scope), buildcorrectedLinuxbinaries/newimage, freezeversionedremaining160jobmanifests andbinaryidentities, continuebatch03 automatically afterverifieddeployment. Preserveall40priorprimarygames asAutoClaim stratum/flag12claimdraws; nointerrupt/replay/unrelatedengineering.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -113,4 +115,8 @@ Reviewedbatch02adjudication workflowlaunchedunattended viaoutercaffeinate+notify
 Batch02initial20M completed627jobs663queries withsuccess/return0/ownprocessgroupsettled/queueaccepted. Independentintegrity/PV/history/source/runtimeauditPASS,no failedscientificattempts;8actualVMsclean,noallocationfailures,4.400461VMh/~USD0.88717compute. Cumulative2base+2panels29.369163VMh/~USD5.92106estimated,notbill. Bothgameplay20Moverlays/crossreviews complete but2newforcedalternativesrequired beforeclosure:02g0p65g8g7 discovered20M,08g0p96c5e4 fromnewlyexposedp95continuation. Existingplayed20M receipts mustbereused; no repeatgames/playedsearches. Preparinghash-boundfollowupplan2newqueries,2C3tasks. Controllerpermits1..8nonemptybins toavoidemptyVMs; nofrozenworker/enginechange.11controller+4followupoffline testsPASS, independentadmissionpending. Primarycumulative still20fullyreviewed/40completeduntilfollowup; no batch03yet.
 
 Twoqueryfollowup plan independentlyadmitted SHA5fa4df35fd4cf41df4f337ba8b9f1c309420c65ba7d7cfe15e30b2ce5b24ad10; matchedplayed20Mreused andp95supportbound; no repeats.11controller+4followuptestsPASS andindependentnegativepreflightsPASS;2nonemptyC3assignments, frozenworkerunchanged. Checkpoint8b0e99df. LaunchedsingleexitworkflowPID81834 targetingmsh161-primary-b02-followup-v1; localwrapperrunning/noerror atattachment, actualcloudUID/acceptanceinsubmission-result.json afterdriverchecks. Onexit independentlyreview2newalternatives, finalizebatch02supersession/cumulative40gamecategories/resources thenfrozenbatch03. No newgamebatchuntilgate; full200/noMacengines/no productionchanges remain.
+
+Newexplicitowner12Novemberdirection authorizes small production draw-policy correction andnecessarydeployment, superseding oldfrozen/noengineeringrestriction onlyinthisscope. Fullrequirements cloud-primary/policy-transition/owner-direction.md. Currentbatch02andfollowupscomplete,cleanupverified; no activeworkers/no batch03submitted. CoordinatorownsMSH161/codex-rewrite; boundedimplementation/review/deployment now beforecontinuation. No newlargevalidationcampaign.
+
+Bounded draw-policy correction: native/search/UCI/runner focused checks pass (builder receipt under cloud-primary/policy-transition/native-verification.json); independent Rust review in progress. Batch02 and two-query followup completed, no active workers; batch03 remains gated on corrected Linux image, one short actual two-engine validation and amended manifest admission. Earlier40games remain AutoClaim; remaining160 will be separate automatic-threshold-only stratum. No replay or unrelated production changes.
 <!-- SECTION:NOTES:END -->

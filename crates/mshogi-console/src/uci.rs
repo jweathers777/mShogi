@@ -229,7 +229,13 @@ impl Adapter {
                     .transpose()?;
                 let context = self
                     .worker
-                    .submit_with_time(&self.game, self.version, go.limits, go.time)
+                    .submit_with_claim_availability(
+                        &self.game,
+                        self.version,
+                        go.limits,
+                        go.time,
+                        false,
+                    )
                     .map_err(|e| e.to_string())?;
                 self.running = Some(Running {
                     context,
@@ -350,9 +356,11 @@ impl Adapter {
                 writeln!(out, "{info}")?;
                 match result.decision {
                     Some(SearchDecision::Choose(SearchChoice::Move(action))) => best = Some(action),
-                    Some(SearchDecision::Choose(SearchChoice::Claim(_))) => eprintln!(
-                        "uci: draw claim available; UCI has no claim channel; returning legal fallback for controller adjudication"
-                    ),
+                    Some(SearchDecision::Choose(SearchChoice::Claim(_))) => {
+                        return Err(io::Error::other(
+                            "UCI search returned an unavailable draw claim",
+                        ));
+                    }
                     Some(SearchDecision::Finished(_)) => {}
                     None => eprintln!("uci: no completed iteration; returning legal fallback"),
                 }

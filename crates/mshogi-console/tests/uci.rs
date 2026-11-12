@@ -195,37 +195,65 @@ fn position_replays_history_and_invalid_sequence_is_atomic() {
     assert!(engine.finish().contains("move 2:"));
 }
 #[test]
-fn optional_claim_channel_limitation_and_recorded_auto_policy_are_explicit() {
+fn uci_claims_are_unavailable_at_root_and_interior_under_both_legacy_options() {
     let mut engine = Engine::new();
-    let fen = "7k/8/5KQ1/8/8/8/8/8 w - - 100 1";
-    engine.send(&format!("position fen {fen}\ngo depth 1\n"));
-    assert_eq!(
-        engine.best().0,
-        "g6g7",
-        "explicit policy may prefer mate over claim"
-    );
-    engine.send("setoption name ClaimPolicy value auto\n");
-    engine.send(&format!("position fen {fen}\ngo depth 1\n"));
-    let (fallback, info) = engine.best();
-    legal(fen, &fallback);
-    assert!(info[0].contains("score cp 0"));
-    engine.send("setoption name ClaimPolicy value explicit\nposition fen 7k/8/8/8/8/8/8/KR6 b - - 98 1\ngo depth 1\n");
-    assert!(losing_rook_score(&engine.best().1[0]));
-    engine.send("setoption name ClaimPolicy value auto\nposition fen 7k/8/8/8/8/8/8/KR6 b - - 98 1\ngo depth 1\n");
-    assert!(
-        engine.best().1[0].contains("score cp 0"),
-        "auto policy must reach future search nodes"
-    );
-    assert!(engine.finish().contains("UCI has no claim channel"));
+    for policy in ["explicit", "auto"] {
+        engine.send(&format!("setoption name ClaimPolicy value {policy}\n"));
+        engine.send("position fen 7k/8/5KQ1/8/8/8/8/8 w - - 100 1\ngo depth 1\n");
+        assert_eq!(
+            engine.best().0,
+            "g6g7",
+            "unavailable claim must not hide mate"
+        );
+        for clock in [98, 99, 100] {
+            let fen = format!("7k/8/8/8/8/8/8/KR6 b - - {clock} 1");
+            engine.send(&format!("position fen {fen}\ngo depth 2\n"));
+            let (best, info) = engine.best();
+            legal(&fen, &best);
+            assert!(info[0].starts_with("info depth 2 "));
+            assert!(losing_rook_score(&info[0]), "{}", info[0]);
+            assert_eq!(
+                info[0]
+                    .split(" pv ")
+                    .nth(1)
+                    .unwrap()
+                    .split_whitespace()
+                    .next(),
+                Some(best.as_str())
+            );
+        }
+    }
+    let stderr = engine.finish();
+    assert!(!stderr.contains("fallback"), "{stderr}");
 }
 #[test]
-fn same_fen_with_different_known_repetition_history_changes_search() {
+fn uci_continues_optional_repetitions_but_stops_at_native_fivefold() {
     let mut engine = Engine::new();
-    engine.send("position fen 6nk/8/8/8/8/8/8/KR4N1 b - - 0 1 moves g8f6 g1f3 f6g8 f3g1 g8f6 g1f3 f6g8 f3g1\ngo depth 1\n");
-    assert!(engine.best().1[0].contains("score cp 0"));
-    engine.send("position fen 6nk/8/8/8/8/8/8/KR4N1 b - - 8 5\ngo depth 1\n");
-    assert!(losing_rook_score(&engine.best().1[0]));
-    assert!(engine.finish().contains("draw claim available"));
+    let cycle = "g8f6 g1f3 f6g8 f3g1 ";
+    for repeats in [2, 3, 4] {
+        engine.send(&format!(
+            "position fen 6nk/8/8/8/8/8/8/KR4N1 b - - 0 1 moves {}\ngo depth 1\n",
+            cycle.repeat(repeats)
+        ));
+        let (best, info) = engine.best();
+        if repeats == 4 {
+            assert_eq!(best, "0000");
+            assert!(info[0].contains("score cp 0"));
+        } else {
+            assert_ne!(best, "0000");
+            assert!(losing_rook_score(&info[0]), "{}", info[0]);
+            assert_eq!(
+                info[0]
+                    .split(" pv ")
+                    .nth(1)
+                    .unwrap()
+                    .split_whitespace()
+                    .next(),
+                Some(best.as_str())
+            );
+        }
+    }
+    assert!(!engine.finish().contains("fallback"));
 }
 #[test]
 fn movetime_and_increment_clock_budgets_stop_live_search() {

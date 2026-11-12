@@ -1,0 +1,60 @@
+# MSH-161 (Competitive Gameplay Diagnosis): forecast before cloud batch02
+
+Estimate as of12November2026, after20primary cloud games and their required20M
+review. The full200-game study remains authorized. These are planning ranges,
+not a bill, deadline, statistical confidence interval or compute cap.
+
+| Scope | Processing, retrieval and verification | Cloud cost before tax |
+| --- | ---: | ---: |
+| Full200games | 29–48hours | US$35–90 |
+| Remaining180games | 26–43hours | US$32–82 |
+
+The measured batch01 workload repeated ten times gives33.1processing hours and
+US$28.35VM compute alone (remaining29.8hours andUS$25.52compute). The inclusive
+cost ranges add storage, data transfer, operations, disks, addresses, registry
+and logs, plus workload/recovery sensitivity. Actual billed charges are not yet
+available. Previous pilots and Mac computation are excluded from this primary
+cohort estimate; ongoing retention after the assumed month costs extra.
+
+Review adds elapsed time without keeping completed workers running. Nine
+one-hour review windows would add nine hours. Allowing an additional2–4hours
+for final synthesis and independent report review gives a conditional full-study
+calendar estimate of roughly40–61hours, or37–56hours for the remaining work.
+These review allowances are assumptions, not measured service guarantees. Owner
+availability, longer reviews or regional capacity shortages can extend them.
+
+## Measurements and assumptions
+
+- Base20games plus500k/5M analysis:2h19m from cloud submission to completion,
+ 10.2458VM-hours, estimatedUS$2.0656. Actual peak concurrency was6of8requested;
+ preserve53failed VM insertion operations, distinct from scientific attempts.
+- Consequential20M:558queries/298selected decisions,29m56s cloud elapsed,
+ 3.8178VM-hours, estimatedUS$0.7697; eight actual workers. Mean query21.184s.
+ All31discoveries returned the played move, so this panel needs no extra
+ discovered-alternative singleton. Later panels may need them.
+- Initial retrieval/verification:6m53s. After20M cloud completion:22m36s for
+ event handling, retrieval, verification and publication together. Do not call
+ the latter download time. The conservative forecast retains it.
+- A controller-only scan repair produced the exact same verification bytes in
+ 4.97seconds on warm local data. It removes repeated cache scans; it does not
+ measure future network or end-to-end savings. No engine/worker changed.
+- Full base-plus20M artifacts scale to51.55GiB. One complete Internet copy at the
+ recorded Europe tariff is aboutUS$6.19; one full month of storage aboutUS$1.03.
+ Repeated downloads, dependency reads, extra panels and retained failures add cost.
+- The range permits later20M panels at0.5–2times this workload,0–25% extra compute,
+ and the documented50–200GiB transfer /50–100GiB-month storage and request-cost
+ scenarios. No free allowance is assumed. These are sensitivities, not bounds
+ on scientific coverage or unavailability. The recorded C3 rate isUS$0.201608/VM-hour.
+
+The full arithmetic, ancillary price sources and resource records are in
+`batch-01-runtime-review.md/.json` and
+`batch-01-adjudication/runtime-integrity-review.md/.json`. Provider sources include
+[Cloud Storage pricing](https://cloud.google.com/storage/pricing),
+[Compute disk pricing](https://cloud.google.com/compute/disks-image-pricing), and
+[VPC network pricing](https://cloud.google.com/vpc/network-pricing).
+
+Cloud processing was faster than the earlier Mac batch in observed elapsed time,
+but the end-to-end study also includes retrieval, deeper checks and independent
+review. The earlier Mac base batch took6h54m versus2h19m for this cloud base batch;
+different games, query workloads and hardware prevent treating this as a
+controlled speedup. Configured eight-way parallelism is not guaranteed availability.

@@ -199,7 +199,7 @@
       "update_time": "2026-11-11T19:29:02+0000"
     }
   },
-  "forecast_status": "Draft updated with complete primary stage totals and retrieved bytes; actual cloud20M panel and billed charges remain pending.",
+  "forecast_status": "Updated with measured first cloud20M panel; variable later scientific workload, controller optimization and actual billing remain uncertain.",
   "draft_forecast": {
     "full200_base_compute_usd": [
       20.66,
@@ -263,5 +263,41 @@
     "retrieved_bytes": 4582665719,
     "retrieval_seconds": 413.085,
     "stable_audit_miss_triggers": []
+  },
+  "measured_20m": {
+    "jobs": 527,
+    "queries": 558,
+    "decisions": 298,
+    "query_wall_seconds": 11820.747137252993,
+    "query_wall_mean_seconds": 21.18413465457527,
+    "job_wall_seconds": 12666.016268917003,
+    "vm_lifecycle_hours": 3.8178086162275737,
+    "estimated_compute_usd": 0.7697007595004087,
+    "submission_to_last_task_seconds": 1795.923465013504,
+    "after_last_cloud_task_to_wrapper_finish_seconds": 1356.0089428424835,
+    "local_plan_bytes": 952276772
+  },
+  "updated_forecast": {
+    "full200_base_and_repeated20m_compute_usd": 28.3534286119555,
+    "remaining180_samework_compute_usd": 25.51808575075995,
+    "full200_scenario_before_tax_usd": [
+      35,
+      90
+    ],
+    "remaining180_scenario_before_tax_usd": [
+      32,
+      82
+    ],
+    "full_processing_and_observed_transferverification_hours_reference": 33.07491891373528,
+    "full_calendar_reference_plus_nine_onehour_reviews": 42.07491891373528,
+    "scenario_limit": "20M workloads assumed0.5x\u20132x firstbatch; retryvariation0\u201325%; ancillary assumptions inMarkdown, no guarantee/cap; exclude priorpilots/Mac.",
+    "full_processing_hours_scenario": [
+      29,
+      48
+    ],
+    "remaining_processing_hours_scenario": [
+      26,
+      43
+    ]
   }
 }

@@ -1,0 +1,225 @@
+{
+  "status": "passed_scientific_execution_cleanup_reconciled",
+  "audit_execution_note": "First read-only audit was stopped by SIGTERM after repeated entire-cache enumeration caused excessive delay. No engine/study worker affected. Re-run uses one scoped attempt inventory; no scientific query repeated.",
+  "plan_sha256": "066c4b94d6b6e21cb45c78200dfd95d3a46ca87eb13178083e233a638cfd72f5",
+  "verification_sha256": "fc9ce7f0a6ee00d8977c82410de5ff0fca6903f1e55ce32b1cda75d70b7cf7fd",
+  "audit_script_sha256": "4b5c76e5ff6fe878fce3a5d00d64d0dbac6c6bd7e081d3c8b7bdca6d74f68342",
+  "jobs": 527,
+  "queries": 558,
+  "decisions": 298,
+  "discovery_jobs": 31,
+  "failed_attempts": 0,
+  "unresolved_claims": 0,
+  "job_wall_seconds": 12666.016268917003,
+  "job_cpu_seconds": 11834.948071999994,
+  "query_wall_seconds": 11820.747137252993,
+  "query_cpu_seconds": 11818.149336000002,
+  "query_wall_mean_seconds": 21.18413465457527,
+  "query_wall_max_seconds": 27.916204502000028,
+  "flags": {
+    "directional_bound_conflicts": 57,
+    "stable_report_heuristic": 497,
+    "last_score_update_not_selected_exact_score": 302
+  },
+  "workers": {
+    "8670656332100549512": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "8670656332100549512",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "1431819972117019528": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "1431819972117019528",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "2992926664500460424": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "2992926664500460424",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "3066815855931702152": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "3066815855931702152",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "7893726044226075528": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "7893726044226075528",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "6829342073495763848": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "6829342073495763848",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "8702334726680624008": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "8702334726680624008",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "4634714128560700296": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "4634714128560700296",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    }
+  },
+  "tasks": [
+    {
+      "task": "0",
+      "start": "2026-11-12T09:23:07.713079784Z",
+      "end": "2026-11-12T09:50:19.746153078Z",
+      "seconds": 1632.0330741405487
+    },
+    {
+      "task": "1",
+      "start": "2026-11-12T09:23:08.195356823Z",
+      "end": "2026-11-12T09:49:58.819072808Z",
+      "seconds": 1610.6237161159515
+    },
+    {
+      "task": "2",
+      "start": "2026-11-12T09:23:08.838400299Z",
+      "end": "2026-11-12T09:52:21.352366154Z",
+      "seconds": 1752.5139660835266
+    },
+    {
+      "task": "3",
+      "start": "2026-11-12T09:23:09.406272856Z",
+      "end": "2026-11-12T09:51:23.090931955Z",
+      "seconds": 1693.6846590042114
+    },
+    {
+      "task": "4",
+      "start": "2026-11-12T09:23:10.297053907Z",
+      "end": "2026-11-12T09:51:18.744896356Z",
+      "seconds": 1688.44784283638
+    },
+    {
+      "task": "5",
+      "start": "2026-11-12T09:23:10.390007171Z",
+      "end": "2026-11-12T09:50:06.168374797Z",
+      "seconds": 1615.7783670425415
+    },
+    {
+      "task": "6",
+      "start": "2026-11-12T09:23:09.403991473Z",
+      "end": "2026-11-12T09:50:28.737163488Z",
+      "seconds": 1639.333172082901
+    },
+    {
+      "task": "7",
+      "start": "2026-11-12T09:23:10.821401220Z",
+      "end": "2026-11-12T09:51:04.103635529Z",
+      "seconds": 1673.2822341918945
+    }
+  ],
+  "task_elapsed_seconds": 1753.639286994934,
+  "submission_to_last_task_seconds": 1795.923465013504,
+  "concurrency_seconds": {
+    "0": 0.0,
+    "1": 58.743711948394775,
+    "2": 4.989078998565674,
+    "3": 15.206851959228516,
+    "4": 35.36875295639038,
+    "5": 9.881791114807129,
+    "6": 13.670732975006104,
+    "7": 7.780695915222168,
+    "8": 1607.9976711273193
+  },
+  "peak_concurrency": 8,
+  "vm_lifecycle_hours": 3.8178086162275737,
+  "vms": [
+    {
+      "id": "1431819972117019528",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b01-80bf5bb0-d8c3-43290-group0-0-1j25",
+      "start": "2026-11-12T09:22:46.936330Z",
+      "deleted": "2026-11-12T09:52:45.982639Z",
+      "seconds": 1799.0463089942932
+    },
+    {
+      "id": "8702334726680624008",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b01-80bf5bb0-d8c3-43290-group0-0-1kfv",
+      "start": "2026-11-12T09:22:46.899505Z",
+      "deleted": "2026-11-12T09:51:54.754565Z",
+      "seconds": 1747.8550601005554
+    },
+    {
+      "id": "7893726044226075528",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b01-80bf5bb0-d8c3-43290-group0-0-m1cb",
+      "start": "2026-11-12T09:22:46.963647Z",
+      "deleted": "2026-11-12T09:51:52.378394Z",
+      "seconds": 1745.4147469997406
+    },
+    {
+      "id": "8670656332100549512",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b01-80bf5bb0-d8c3-43290-group0-0-3xll",
+      "start": "2026-11-12T09:22:46.951184Z",
+      "deleted": "2026-11-12T09:51:29.221064Z",
+      "seconds": 1722.2698800563812
+    },
+    {
+      "id": "2992926664500460424",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b01-80bf5bb0-d8c3-43290-group0-0-w7rg",
+      "start": "2026-11-12T09:22:47.200533Z",
+      "deleted": "2026-11-12T09:51:01.457012Z",
+      "seconds": 1694.256479024887
+    },
+    {
+      "id": "4634714128560700296",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b01-80bf5bb0-d8c3-43290-group0-0-lsgc",
+      "start": "2026-11-12T09:22:46.973115Z",
+      "deleted": "2026-11-12T09:51:01.093728Z",
+      "seconds": 1694.1206130981445
+    },
+    {
+      "id": "6829342073495763848",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b01-80bf5bb0-d8c3-43290-group0-0-ww76",
+      "start": "2026-11-12T09:22:47.091564Z",
+      "deleted": "2026-11-12T09:50:39.175296Z",
+      "seconds": 1672.0837321281433
+    },
+    {
+      "id": "3066815855931702152",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b01-80bf5bb0-d8c3-43290-group0-0-dqft",
+      "start": "2026-11-12T09:22:46.946796Z",
+      "deleted": "2026-11-12T09:50:36.010994Z",
+      "seconds": 1669.0641980171204
+    }
+  ],
+  "estimated_compute_usd": 0.7697007595004087,
+  "price_basis": "Recorded0.201608USD/VM-hour; actual billing unknown",
+  "wrapper_status": "failure",
+  "computation_returncode": 0,
+  "wrapper_cleanup_error": "PermissionError(1, 'Operation not permitted')",
+  "queue_accepted": true,
+  "local_reconciliation": {
+    "pids_checked": [
+      40795,
+      40796
+    ],
+    "pgid_checked": 40796,
+    "matching_ps_rows": "",
+    "observation_utc": "2026-11-12T10:15:56.215972+00:00",
+    "method": "ps entire process table filtered by exactPID orPGID; no signal/probe sent",
+    "scope": "No current matching processes; does not rewrite historical EPERM receipt or prove universal descendants"
+  },
+  "remaining_instances": [],
+  "remaining_disks": [],
+  "wait_verify_elapsed_seconds": 3094.2595558166504,
+  "after_last_cloud_task_to_wrapper_finish_seconds": 1356.0089428424835,
+  "postcloud_timing_limit": "Combined PubSub delivery, download, hash/PV/resource verification, receipt publication and local shutdown; exact download-only span not instrumented",
+  "resource_note": "Query totals nested inside jobs; VM lifecycle includes idle/startup/cleanup. Do not add overlapping totals.",
+  "scientific_limit": "No confirmed errors or strength conclusion. Distinct discovered alternatives and consequential review remain.",
+  "local_plan_objects": 6355,
+  "local_plan_bytes": 952276772,
+  "transfer_note": "Local plan-object bytes, not a network meter: consumed-success reads and protocol/list operations are additional; cache refetches may repeat bytes.",
+  "verification_file_mtime_utc": "2026-11-12T10:14:55.165498+00:00"
+}

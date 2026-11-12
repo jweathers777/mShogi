@@ -1,0 +1,721 @@
+{
+  "scope": "Primary standardized cloud only; provisional cumulative record after batch01, not final priorities or population error prevalence",
+  "games_completed": 20,
+  "games_planned": 200,
+  "batches_reviewed": [
+    "01"
+  ],
+  "outcomes": {
+    "wins": 8,
+    "draws": 5,
+    "losses": 7
+  },
+  "prepared_outcomes": {
+    "wins": 7,
+    "draws": 4,
+    "losses": 7
+  },
+  "unaided_outcomes": {
+    "wins": 1,
+    "draws": 1,
+    "losses": 0
+  },
+  "played_decisions": 2491,
+  "supplied_context_decisions": 288,
+  "initial_queries": 5558,
+  "matched5m_queries": 2390,
+  "selected20m_decisions": 298,
+  "queries20m": 558,
+  "discovery_roots": 31,
+  "new_distinct_discovery_alternatives": 0,
+  "selected20m_statuses_both_players": {
+    "same_choice_control": 56,
+    "supported_finite": 117,
+    "unresolved": 85,
+    "supported_subthreshold": 39,
+    "claim_policy_limited": 1
+  },
+  "selected20m_candidate_decisions": 178,
+  "candidate_statuses": {
+    "same_choice_control": 48,
+    "supported_finite": 58,
+    "unresolved": 44,
+    "supported_subthreshold": 27,
+    "claim_policy_limited": 1
+  },
+  "candidate_supported_games": 18,
+  "candidate_supported_severity": {
+    "significant": 13,
+    "major": 42,
+    "serious": 3
+  },
+  "candidate_selected_finite_sensitivity_counts": {
+    "0.04": 61,
+    "0.05": 58,
+    "0.06": 55
+  },
+  "supported_candidate_examples": [
+    {
+      "pair": "main-01-00",
+      "game": 0,
+      "ply": 24,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.055499999999999994,
+      "played": "d3b5",
+      "alternative": "a4a5",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 0,
+      "ply": 48,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.571,
+      "played": "h2h4",
+      "alternative": "f1d1",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 1,
+      "ply": 23,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.14249999999999996,
+      "played": "d8d7",
+      "alternative": "e4c5",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 1,
+      "ply": 75,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "e2e3",
+      "alternative": "e4e3",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 1,
+      "ply": 97,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "d3d7",
+      "alternative": "d3g3",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-00",
+      "game": 1,
+      "ply": 101,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.4615,
+      "played": "c7d6",
+      "alternative": "c7b7",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 0,
+      "ply": 24,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.07450000000000001,
+      "played": "a1b1",
+      "alternative": "f2f4",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 0,
+      "ply": 28,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.3545,
+      "played": "g5e4",
+      "alternative": "g5f3",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 0,
+      "ply": 60,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.49,
+      "played": "e1f1",
+      "alternative": "d2c3",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 1,
+      "ply": 43,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.05499999999999999,
+      "played": "a6b6",
+      "alternative": "b7b5",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 1,
+      "ply": 49,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.1755,
+      "played": "e8b8",
+      "alternative": "d7c6",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 1,
+      "ply": 109,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "b3d4",
+      "alternative": "c7c2",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-01",
+      "game": 1,
+      "ply": 115,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.4685,
+      "played": "d6d7",
+      "alternative": "e2d4",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 0,
+      "ply": 32,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.4865,
+      "played": "d3c4",
+      "alternative": "e3c1",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 1,
+      "ply": 21,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.07150000000000001,
+      "played": "c8e6",
+      "alternative": "g4f6",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-02",
+      "game": 1,
+      "ply": 33,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.25749999999999995,
+      "played": "e5e4",
+      "alternative": "d5e6",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 48,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.49950000000000006,
+      "played": "f4f5",
+      "alternative": "d2c3",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 60,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.497,
+      "played": "d5d6",
+      "alternative": "d5c6",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 84,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.49349999999999994,
+      "played": "b3b4",
+      "alternative": "g1f2",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 100,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.49950000000000006,
+      "played": "b7a7",
+      "alternative": "f4e3",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 102,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5015000000000001,
+      "played": "d2c1",
+      "alternative": "h6h7",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-03",
+      "game": 0,
+      "ply": 116,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "a7h7",
+      "alternative": "a7a1",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 0,
+      "ply": 26,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.3225,
+      "played": "h2h3",
+      "alternative": "c2a2",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 0,
+      "ply": 48,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.4655,
+      "played": "f2e3",
+      "alternative": "c7c8",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 0,
+      "ply": 74,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.49850000000000005,
+      "played": "g2f1",
+      "alternative": "b7b6",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 0,
+      "ply": 88,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "d5b4",
+      "alternative": "e2e4",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 1,
+      "ply": 23,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.16599999999999998,
+      "played": "h7h6",
+      "alternative": "d8e7",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 1,
+      "ply": 29,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.264,
+      "played": "d8e7",
+      "alternative": "f6h5",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-04",
+      "game": 1,
+      "ply": 63,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "d2c2",
+      "alternative": "g8f7",
+      "source": "adjudicated20m-00-04.json"
+    },
+    {
+      "pair": "main-01-05",
+      "game": 0,
+      "ply": 16,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.0665,
+      "played": "g5f6",
+      "alternative": "f2f4",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 20,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.066,
+      "played": "c1d2",
+      "alternative": "e3e4",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 0,
+      "ply": 76,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "a5c3",
+      "alternative": "a5d2",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 19,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.21949999999999997,
+      "played": "b7b5",
+      "alternative": "e6e5",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 25,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.49950000000000006,
+      "played": "e4f2",
+      "alternative": "e4c5",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-06",
+      "game": 1,
+      "ply": 51,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.4295,
+      "played": "d5c7",
+      "alternative": "f8f6",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 0,
+      "ply": 52,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "b4c5",
+      "alternative": "c3e4",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 1,
+      "ply": 33,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.4505,
+      "played": "d7d5",
+      "alternative": "c7c5",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 1,
+      "ply": 41,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.322,
+      "played": "e7c5",
+      "alternative": "d5a2",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-07",
+      "game": 1,
+      "ply": 107,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "e7d6",
+      "alternative": "d1e1",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 36,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.4215000000000001,
+      "played": "a1d1",
+      "alternative": "h2h4",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 38,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.49650000000000005,
+      "played": "d1d7",
+      "alternative": "e5d4",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 52,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.25450000000000006,
+      "played": "c3a5",
+      "alternative": "e2e3",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 88,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.48150000000000004,
+      "played": "h4f5",
+      "alternative": "h4g2",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 102,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "b6d8",
+      "alternative": "d4e2",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 0,
+      "ply": 120,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "f4e5",
+      "alternative": "c7b6",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 31,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.07199999999999995,
+      "played": "g7f6",
+      "alternative": "d8d7",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 43,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.07899999999999996,
+      "played": "d5c6",
+      "alternative": "d5e5",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 49,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.21650000000000003,
+      "played": "f6c3",
+      "alternative": "d7c6",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-08",
+      "game": 1,
+      "ply": 53,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.4185,
+      "played": "e6d4",
+      "alternative": "a5a4",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 0,
+      "ply": 22,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.0615,
+      "played": "c3b5",
+      "alternative": "e3d4",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 0,
+      "ply": 46,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5005,
+      "played": "d2b4",
+      "alternative": "d5f7",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 0,
+      "ply": 50,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.4995,
+      "played": "c4b3",
+      "alternative": "g1h1",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 0,
+      "ply": 94,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.47450000000000003,
+      "played": "g3f4",
+      "alternative": "g3g4",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 0,
+      "ply": 212,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.5,
+      "played": "c2e4",
+      "alternative": "f4g5",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 3,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.0665,
+      "played": "e7e6",
+      "alternative": "d7d5",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 5,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.058499999999999996,
+      "played": "f8b4",
+      "alternative": "g8f6",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 29,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.08699999999999997,
+      "played": "e4f3",
+      "alternative": "e7e8",
+      "source": "dispositions20m-05-09.json"
+    },
+    {
+      "pair": "main-01-unaided",
+      "game": 1,
+      "ply": 41,
+      "candidate": true,
+      "status": "supported_finite",
+      "margin": 0.07900000000000007,
+      "played": "f6d5",
+      "alternative": "e7d5",
+      "source": "dispositions20m-05-09.json"
+    }
+  ],
+  "qualitative_categories_unranked": [
+    "Tactical and material transitions",
+    "Maintaining favorable play across continuations",
+    "Active defense and renewed opportunities",
+    "Central timing and piece coordination"
+  ],
+  "contrary_evidence": [
+    "Successful exposed-king attacks and forcing combinations",
+    "Long conversions and recovery after opponent errors",
+    "Native bishop-and-knight mate in pair08 game0"
+  ],
+  "interpretation_limits": [
+    "Selected decisions within a game are correlated; categories overlap and are not separate loss causes",
+    "Earlier unqueried or unresolved events prevent absolute first/largest claims",
+    "Five native automatic-claim draws remain authoritative; intended claim actions are unplayed",
+    "Finite Stockfish expectation is not empirical candidate win probability or tablebase proof",
+    "No Mac or pilot games are pooled; no final strength/rating/engineering priority inferred"
+  ],
+  "sources": {
+    "adjudicated20m-00-04.json": "7842363205e8687621060bd12da2f1d70b51c1f54ce39ca6b30b491f905b1c76",
+    "dispositions20m-05-09.json": "b04f2d92c6c506ba9c70439879d75d3045da165952e7c1661eb112db248e5cf0",
+    "review20m-00-04.md": "1c1120ba908e320533834c504736b55834ee7c0d6cd7974a70b5b0e657b6c76c",
+    "gameplay20m-05-09.md": "233dc74e8d7e1677b1ab5e1f04facced66ed8f6d329aa22eaf771042df733b8c"
+  }
+}

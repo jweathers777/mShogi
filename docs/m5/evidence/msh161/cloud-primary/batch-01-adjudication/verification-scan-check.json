@@ -1,0 +1,10 @@
+{
+  "elapsed_seconds": 4.970731082838029,
+  "process_cpu_seconds": 4.206827,
+  "old_verification_sha256": "fc9ce7f0a6ee00d8977c82410de5ff0fca6903f1e55ce32b1cda75d70b7cf7fd",
+  "new_verification_sha256": "fc9ce7f0a6ee00d8977c82410de5ff0fca6903f1e55ce32b1cda75d70b7cf7fd",
+  "exact_json_equal": true,
+  "controller_sha256": "0cfe835d5c54b7d585396cd01cdc38cd868f2a36d53d3d7434be5686a21f677f",
+  "command": "offline controller.verify on existing527-job plan with one inventory; no engines/network",
+  "limitations": "Warm local cache; not a controlled network timing comparison. Original22m36 combined retrieval+verification cannot be entirely attributed to scans."
+}

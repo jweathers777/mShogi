@@ -1,0 +1,23 @@
+{
+  "reviewer": "coordinator/root independent of execution_review author",
+  "status": "PASS",
+  "scope": "Local event wait then existing generation-pinned retrieval, under unchanged exit notifier; no engine/worker changes",
+  "source_sha256": "006f038dfc613233f1b704f245ba58c3f7aff674646707a84770006f2eea9b55",
+  "test_sha256": "4c970d8745d8f4c07f95c2a7d5ecda4c8ffdf20508a56744e15bff220ab3e88d",
+  "tests": {
+    "command": "/private/tmp/msh162-controller/bin/python docs/m5/evidence/msh161/cloud-primary/test_wait_retrieve_batch.py",
+    "passed": 4
+  },
+  "checks": [
+    "Exact manifest/image/task count and saved UID bind the terminal event",
+    "One existing PubSub consumer; no polling or new queue call",
+    "Immutable terminal receipts preserve failed batch evidence",
+    "Pinned retriever and local inputs; only existing no-engine retrieval subprocess",
+    "No auto retry; distinct computation and notification receipts",
+    "Outer caffeinate will cover wrapper lifetime; notifier directly owns Python child as successful earlier retrieval did; no notifier or security changes"
+  ],
+  "limitations": [
+    "Actual batch02 end-to-end event/retrieval evidence pending",
+    "No claim that rearranging caffeinate fixes historical EPERM; preserve any future cleanup limitation"
+  ]
+}

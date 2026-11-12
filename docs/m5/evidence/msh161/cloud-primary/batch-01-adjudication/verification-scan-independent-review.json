@@ -1,0 +1,27 @@
+{
+  "review": "independent bounded controller-only inventory optimization",
+  "date": "2026-11-12",
+  "controller_sha256": "0cfe835d5c54b7d585396cd01cdc38cd868f2a36d53d3d7434be5686a21f677f",
+  "test_sha256": "9fe79ab368b89ae20101347dccfa22ab0292bd49a63a87f0e2da34eda215e4cf",
+  "outcome": "approved",
+  "scope": "One experiment job inventory replaces527 repeated entirecache scans; grouping preserves exact perjob attempt receipt membership/order and ignores unrelated/artifact receipts. No worker/core/scientific changes.",
+  "independent_tests": {
+    "command": "/private/tmp/msh139/venv/bin/python -m unittest discover -s docs/m5/evidence/msh161/cloud-primary -p test_adjudication_control.py -v",
+    "tests": 10,
+    "result": "passed",
+    "seconds": 0.922
+  },
+  "reused_completed_result_evidence": {
+    "elapsed_seconds": 4.970731082838029,
+    "process_cpu_seconds": 4.206827,
+    "old_verification_sha256": "fc9ce7f0a6ee00d8977c82410de5ff0fca6903f1e55ce32b1cda75d70b7cf7fd",
+    "new_verification_sha256": "fc9ce7f0a6ee00d8977c82410de5ff0fca6903f1e55ce32b1cda75d70b7cf7fd",
+    "exact_json_equal": true,
+    "controller_sha256": "0cfe835d5c54b7d585396cd01cdc38cd868f2a36d53d3d7434be5686a21f677f",
+    "command": "offline controller.verify on existing527-job plan with one inventory; no engines/network",
+    "limitations": "Warm local cache; not a controlled network timing comparison. Original22m36 combined retrieval+verification cannot be entirely attributed to scans."
+  },
+  "failed_first_fixture_note": "Initial author fixture omitted dependency/rawbestmove fields required by existing verification; corrected fixture passed. No experiment or acceptance rule changed.",
+  "provenance": "Original submitted plan/controller identity retained unchanged; this controller version applies to future verification.",
+  "limitations": "4.9707s warmcache recheck does not measure download/network speed or prove entire historical22m36 delay removed."
+}

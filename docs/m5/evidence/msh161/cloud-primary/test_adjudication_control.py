@@ -59,6 +59,33 @@ class Tests(unittest.TestCase):
   p,store,args=self.dispatcher_fixture();args[-1]='0'*64
   with patch.object(d,'GCSStore',return_value=store),patch.object(d.core,'run_job',side_effect=AssertionError('No execution allowed')),patch.object(sys,'argv',args):
    with self.assertRaises(ValueError):d.main()
+ def test_verify_single_inventory_preserves_failed_attempts(self):
+  import argparse
+  p=copy.deepcopy(self.plan);p['jobs']=p['jobs'][:2];p['bins']=c.balanced(p['jobs'])
+  p['consumed_successes']=[];p['original_manifest']={'key':'manifest','sha256':c.core.digest(b'fixture')}
+  store=Memory();store.exists=lambda key:False
+  store.data['manifest']=b'fixture';store.data[p['plan_prefix']+'/plan.json']=c.core.encode(p)
+  receipts={};results={}
+  for j in p['jobs']:
+   prefix=c.core.prefix(j);artifacts={}
+   for i,move in enumerate([j['move']] if j['move'] is not None else [None,j['adjudication']['decision']['played']]):
+    key=prefix+'/q'+str(i);artifacts['analysis/g000-p000-attempt'+str(i)+'.json']={'key':key}
+    store.data[key]=c.core.encode({'forced_move':move,'decision':j['adjudication']['decision'],'nodes_requested':20000000,'engine_sha256':j['build']['engines']['stockfish19']['sha256'],'status':'complete','exit_code':0,'process_group_settled':True,'raw_truncated':False,'assessment':{'score':{},'bestmove':move},'pv_independent_legal':True})
+   results[j['id']]={'wall_seconds':3,'child_cpu_seconds':2,'artifacts':artifacts}
+   store.data[prefix+'/success.json']=c.core.encode(results[j['id']])
+   for name,status in [('a','failed'),('b','complete')]:
+    key=prefix+'/attempts/'+name+'/receipt.json';receipts[key]=True
+    store.data[key]=c.core.encode({'status':status,'wall_seconds':1,'child_cpu_seconds':.5})
+  unrelated=p['experiment']+'/jobs/unrelated/attempts/a/receipt.json'
+  store.data[unrelated]=c.core.encode({'status':'failed','wall_seconds':999})
+  inventory=sorted([*receipts,unrelated,p['experiment']+'/jobs/unrelated/attempts/a/artifacts/receipt.json'])
+  with patch.object(c,'read',return_value=p),patch.object(Path,'read_bytes',return_value=c.core.encode(p)),patch.object(c.core,'LocalStore',return_value=store),patch.object(c.core,'verify_result',side_effect=lambda s,j:results[j['id']]),patch.object(c.core,'file_hash',return_value='hash'),patch.object(c,'save_new') as save:
+   with patch.object(store,'list',create=True,return_value=inventory) as listing:
+    c.verify(argparse.Namespace(plan='plan',cache='cache',output='out'))
+    listing.assert_called_once_with(p['experiment']+'/jobs/')
+  result=save.call_args.args[1]
+  self.assertEqual({r['key'] for r in result['attempts']},set(receipts))
+  self.assertEqual(result['failed_attempts'],2);self.assertEqual(result['all_attempt_wall_seconds'],4)
  def wait_fixture(self,directory):
   planpath=Path(directory)/'plan.json';c.save_new(planpath,self.plan)
   (Path(directory)/'dispatcher.py').write_bytes((HERE/'batch-01-adjudication/dispatcher.py').read_bytes())

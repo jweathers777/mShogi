@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T09:23:00Z'
+updated_date: '2026-11-12T10:27:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -99,4 +99,6 @@ Primarycloudbatch01 terminalSUCCEEDED10pipelines; completioneventqueuedcoordinat
 Primary cloud retrieval verified34,461objects/4,582,665,719bytes. Independent offline audit passes20games8W5D7L,2,410jobs/7,948queries, exactfrozen500k/5Mcoverage and0stableauditcrossings; nofailedattempts/claims. Gameplay reviewers retain complete dispositions, linked opportunity/recovery events, constructive successes and nativeautomaticclaimlimits. Required20M panel being harmonized/cross-reviewed; batch02 remains unsubmitted. See cloud-primary/batch-01-review/integrity-audit.md and gameplay reviews. Full200forecast still pending measured20M; actualbilling unknown.
 
 Cloudbatch01 independentlyreviewed20games/completehistories; bothgameplaypanels harmonized andcross-reviewed, fulluncertainty/strongplay/nativeclaimlimits retained. Frozen20Mplan298decisions/527jobs/558queries incl31discovery; semantic+independentcontrollerreview PASS,9offlineorchestrationtests pass (Level2 targetedcloudprocess/storage scope; real20M execution pending). Committedfd44e820. Submittedmsh161-primary-b01-20m-v1 UIDmsh161-primary-b01-80bf5bb0-d8c3-43290 initialQUEUED2026-11-12T09:22:25Z. SinglePubSubwait/retrieve/planverify throughnotify_exit.py PID40795 queuesowningchat onexit; no periodicpolling/Macengines. See cloud-primary/batch-01-adjudication andREADME. Onexit verifyactual20M/linkedcontinuations anddistinctdiscoveryalternatives, measureVMresources, finalizefull200time/costforecast BEFOREbatch02. No batch02, finalpriorities orproductionchanges.
+
+Primarycloudbatch01 completed20M review:527jobs/558queries298roots,0scientificfailures; all31discoveries choseplayed so nofurtherdistinctalternatives. Independentfullhistory/PV/integrity andbothgameplaycrossreviews PASS. Primarycumulative candidate58supported/178selected across18games,44selectedunresolved; severity42major3serious13significant, sensitivity61/58/55 at.04/.05/.06. Purposivecorrelatedchoices,earlieruncertainty/claimlimits/strongplay retained; nofinalpriorities. Wrapperreturn0 butcleanupEPERMhistoricalfailurepreserved; independentPID/PGID/VM/diskabsence reconciliation, no scientificretry. Cloud20M29m56/8workers/3.8178VMh/~USD0.7697; actualbillingunknown. Controlleroneinventory repair independentlyreviewed10tests+byteidenticalexistingverification4.97s; noengine/workerchange. New eventwait->existingretrieval glue independentlyreviewed4tests forsingleexitcallback. Full200forecast presentedBEFOREbatch02:29-48processingh/USD35-90pretax;remaining18026-43h/USD32-82; assumedreviews+synthesis40-61hfull/37-56remaining. Detailedassumptions/independentadmission in cloud-primary/full-study-forecast.md,batch-01-closure.md,batch-01-admission-review.md. Next launch existingfrozenprimarybatch02; noMacengines/productionchanges.
 <!-- SECTION:NOTES:END -->

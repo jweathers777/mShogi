@@ -8,7 +8,9 @@
     "Failures/retries, worker startup/cleanup and review pauses"
   ],
   "deliverable": "Total campaign and remaining time/cost ranges, assumptions, measured versus projected values, estimated versus billed charges; preserve full200coverage.",
-  "status": "runtime_measured_retrieval_and20M_pending",
+  "status": "completed_presented_before_batch02",
   "runtime_review": "batch-01-runtime-review.json",
-  "note": "SixsuccessfulVMsdespiterequestedeight;resourcepoolfailuresretained. Forecastmustincludeactualcapacityandlater20Mbeforebatch02."
+  "note": "Measured base and20M stages, actual6/8worker concurrency, allocationfailures, retrieval/verification, sensitivity, ancillarycosts and review/synthesis allowances included. Presented toJohn in commentary beforebatch02. Actualbilling unreconciled.",
+  "forecast": "full-study-forecast.md",
+  "admission_review": "batch-01-admission-review.md"
 }

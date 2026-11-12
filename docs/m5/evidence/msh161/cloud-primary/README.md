@@ -33,69 +33,54 @@ obligations; completion of a pipeline alone does not confirm chess mistakes.
 
 ## Current batch and next review
 
-Primary batch01 completed successfully as `msh161-primary-b01-v1`. All10cloud
-pipelines reached success. The event listener queued the coordinator; its terminal
-response is `batch-01-listener.stdout.log`. Runtime review records2h10m35s from
-first task start to last completion and2h19m02s from submission. Only6VMs started
-because of resource shortages, despite requested parallelism8;53failed insertion
-operations are separate from game-attempt failures. Task/VM records govern timing.
+Primary batch01 is reviewed through required20M. Native20-game result:8W/5D/7L.
+`batch-01-closure.md` and `primary-cumulative.json` preserve the full dispositions,
+provisional unranked categories, contrary successes and limitations. Both independent
+gameplay panels and cross-reviews passed. No final first/largest claim or engineering
+priority is inferred. Mac and pilot evidence remains separate.
 
-Raw retrieval completed and independently verified. State:
-`batch-01-review/retrieval-state.json`; notification:
-`batch-01-retrieval-notification.json`. The ignored `local-cache/` contains all
-34,461 objects / 4,582,665,719 bytes. Immutable cloud objects remain authoritative.
-Generation/CRC checks and every result-artifact SHA passed. Retrieval used no
-engines. Do not repeat it. `batch-01-review/review-index.json` locates all results.
+Base integrity passed2,410jobs/7,948queries:5,558initial500k and2,390matched5M.
+All2,491played and288supplied context decisions remain in full native histories.
+There was no eligible stable missed-error audit crossing. The selected20M panel
+passed527jobs/558queries for298decisions. All31discoveries chose the existing played
+move, so both followup-selection files are empty; no further singleton is missing.
+Selected candidate finite comparisons:58of178queried decisions across18games;
+44selected candidate decisions remain unresolved. Related decisions are not
+independent loss causes and unqueried earlier uncertainty remains explicit.
 
-The independent offline audit (`batch-01-review/integrity-audit.md` and `.json`)
-passed all 2,410 jobs and 7,948 queries: 5,558 initial and 2,390 selected 5M queries.
-The 20 games finished 8W/5D/7L; native histories contain 2,491 played and 288 supplied
-prefix decisions. All frozen selections matched, with zero stable missed-error
-audit crossings. This does not establish absence of other errors. Gameplay reviews
-and full decision dispositions are under `batch-01-review/`. Their proposed 20M
-panels retain linked opponent events, successful controls and unresolved earlier
-choices. No final first/largest labels or weakness priorities are established.
+The20M job `msh161-primary-b01-20m-v1` succeeded. Local verification also succeeded.
+`batch-01-adjudication/notification.json` retains the wrapper's failure caused by
+EPERM during post-exit process-group inspection, and its accepted queue notification.
+Independent reconciliation found no recorded PID/process group or cloud VM/disk
+remaining. This does not require a scientific retry. See runtime-integrity-review
+under that directory. Do not relaunch the completed wrapper or searches.
 
-Large review metadata is stored byte-for-byte in `batch-01-review/*.json.gz`.
-`metadata-archives.json` records the expanded and compressed SHA-256 values. Restore
-an expanded file with Python `gzip.decompress` before a tool that expects JSON; keep
-it beside its archive. The expanded index and inventory are ignored by Git. These
-are metadata, not replacements for the immutable raw cloud evidence.
+Measured main run:2h19m cloud elapsed, actual6of8workers and53failed allocation
+operations. Measured20M:29m56s cloud elapsed, actual8workers, estimated$0.7697compute.
+Both cleanup and failure histories are retained. Actual billing remains unknown.
+`full-study-forecast.md` supplies the required full200/remaining180 forecast before
+batch02; earlier unmeasured ranges in historical records are superseded. The
+combined admission passed and the forecast was presented toJohn beforebatch02.
 
-Next gate: independent scientific/gameplay review of retrieved artifacts, required
-cloud20M adjudication, and the requested full200time/cost forecast BEFOREbatch02.
-The runtime estimate alone is not the final forecast: analysis/review pauses,
-ancillary costs and uncertain capacity remain material. No batch02 submitted.
+A reviewed controller-only repair lists the local cache once, preserving exact
+verification output and failed-attempt coverage;10offline tests passed and the
+existing527-job result was byte-identical after a4.97s warm-cache recheck. It changes
+neither frozen worker files nor engines, science, plans or historical measurements.
+Do not attribute all historical22m36s post-cloud delay to scans; transfer was not
+separately timed. Use existing immutable worker-source manifests for later batches.
 
-The independently reviewed first 20M plan is `batch-01-adjudication/plan.json`:
-298 decisions, 527 jobs, 558 queries, including 31 unrestricted-plus-played discovery
-jobs. Both gameplay panels use the same sensitivity/consequential selection rule.
-Cross-reviews and semantic admission pass; `coordinator-execution-review.json`
-records the controller review and nine passing offline tests. Only explicit
-confirmation jobs run in the existing image; no games are repeated. Eight balanced
-task assignments retain the existing C3 allocation and process bounds.
+Raw cloud evidence is authoritative inGCS and in ignored `local-cache/`. Original
+retrieval and review indexes are under `batch-01-review/`;20M receipts and overlays
+are under `batch-01-adjudication/`. Large metadata has byte-exact `.json.gz` archives
+and expanded/hash records in `metadata-archives.json`. Restore compressed JSON
+beside its archive when a script needs the expanded form; never substitute Mac
+reports that happen to share the same pair identifiers.
 
-Submitted as `msh161-primary-b01-20m-v1`, UID
-`msh161-primary-b01-80bf5bb0-d8c3-43290`, on2026-11-12 at09:22:25UTC; initial
-stateQUEUED. Submission and exact response are under `batch-01-adjudication/`.
-The reviewed source/plan checkpoint is `fd44e820`. Exit-wrapperPID40795 is attached;
-`wait-launch.json` records its command, and `notification.json` separately records
-computation and queue acceptance. Completion data will be under
-`batch-01-adjudication/results/`. Do not duplicate this submission or listener.
-On failure inspect preserved receipts and reconcile the exact job before retry.
-No batch02 has been submitted. The first panel's558queries supersede the earlier
-illustrative1,000–4,000whole-study query-count assumption; see the runtime review's
-workload update. Actual20M timing and billing remain pending.
-
-`adjudication_control.py wait-verify` uses the existing Pub/Sub terminal event,
-then fetches only plan results and verifies them locally. It publishes separate
-immutable plan verification/completion receipts. Run it through `notify_exit.py`
-with normal local access to queue this chat on success or failure. The ordinary
-manifest status does not enumerate these additional jobs. Distinct alternatives
-found by discovery still need a later matched singleton query if not already in
-the plan; initial completion cannot close that scientific obligation. No timed
-watcher or local engine is needed. Inspect submission and notification receipts
-before restarting any process; an ambiguous submission must be reconciled.
+Batch02 has passed its review and forecast gates; launch its existing frozen
+20-game manifest after the recorded empty-prefix preflight. A single
+`notify_exit.py` wrapper must wait on the cloud terminal event and retrieve/verify
+the completed batch before queueing this chat. No timer, periodic watcher or Mac
+engine execution. Inspect receipts before restarting any process.
 
 On retrieval/adjudication completion:
 

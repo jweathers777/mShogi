@@ -122,6 +122,12 @@ def validate_plan(plan):
 def verify(a):
     plan=read(a.plan);validate_plan(plan)
     store=core.LocalStore(a.cache) if a.cache else gcp.GCSStore(plan['store_uri']);totals={};results=[];attempts=[]
+    # Completed-plan verification: enumerate once, not one full cache walk per job.
+    attempt_keys={core.prefix(j):[] for j in plan['jobs']}
+    for key in store.list(plan['experiment']+'/jobs/'):
+        if key.endswith('/receipt.json') and '/artifacts/' not in key:
+            prefix=key.split('/attempts/',1)[0]
+            if prefix in attempt_keys:attempt_keys[prefix].append(key)
     if store.get(plan['plan_prefix']+'/plan.json')!=Path(a.plan).read_bytes():raise ValueError('Published plan mismatch')
     for ref in [plan['original_manifest']]+plan['consumed_successes']:
         if core.digest(store.get(ref['key']))!=ref['sha256']:raise ValueError('Plan dependency changed')
@@ -138,9 +144,8 @@ def verify(a):
             if q['assessment']['score'] is None and 'no_nonbound_score_aligned_with_bestmove' not in q['assessment']['uncertainty']:raise ValueError('Missing score uncertainty')
             if q['forced_move'] and q['assessment']['bestmove']!=q['forced_move']:raise ValueError('Forced root differs')
         if store.exists(core.prefix(j)+'/claim.json'):raise ValueError('Unresolved plan claim')
-        for key in store.list(core.prefix(j)+'/attempts/'):
-            if key.endswith('/receipt.json') and '/artifacts/' not in key:
-                receipt=core.decode(store.get(key));attempts.append({'key':key,'status':receipt['status'],'wall_seconds':receipt.get('wall_seconds',0),'child_cpu_seconds':receipt.get('child_cpu_seconds',0)})
+        for key in attempt_keys[core.prefix(j)]:
+            receipt=core.decode(store.get(key));attempts.append({'key':key,'status':receipt['status'],'wall_seconds':receipt.get('wall_seconds',0),'child_cpu_seconds':receipt.get('child_cpu_seconds',0)})
     result={'plan_sha256':core.file_hash(a.plan),'jobs':len(results),'decisions':len(plan['decisions']),'results':results,'successful_job_totals':totals,'attempts':attempts,'all_attempt_wall_seconds':sum(r['wall_seconds'] for r in attempts),'failed_attempts':sum(r['status']!='complete' for r in attempts),'status':'complete_needs_scientific_review','confirmed_events':False}
     save_new(a.output,result);return {'jobs':len(results),'status':result['status']}
 

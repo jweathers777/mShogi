@@ -1,0 +1,2148 @@
+{
+  "epoch": 1794518397.3096309,
+  "manifest_sha256": "ff2f0574e94fff05273422548077b28ded79a06ebc76168b0f188471f9172953",
+  "closure_sha256": "a60f8119820f725dc0494bed03699726a660a1856f3f20a224fe73377a2046e4",
+  "no_active_jobs": true,
+  "empty_experiment_prefix": true,
+  "original_image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+  "review_commit": "6ce5bf98174bdaa6837bdb0aa80f6a56e54be980",
+  "existing_jobs": [
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-primary-b03-20m-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T16:16:35.416387062Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b03-20m-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "2258.053474868s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-20m-v1.",
+            "eventTime": "2026-11-12T16:16:42.485723901Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-20m-v1.",
+            "eventTime": "2026-11-12T16:17:27.548243106Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-20m-v1.",
+            "eventTime": "2026-11-12T16:55:05.601717974Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "8"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-20m-v1/taskGroups/group0",
+          "parallelism": "8",
+          "taskCount": "8",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-c",
+                    "\"\"\"Pinned-image explicit confirmation dispatcher; submitted as reviewed Python bytes.\"\"\"\nimport argparse, os\nfrom tools.experiments import core, cli\nfrom tools.experiments.gcp import GCSStore\n\ndef main():\n    p=argparse.ArgumentParser();p.add_argument('--store',required=True);p.add_argument('--plan-key',required=True);p.add_argument('--plan-sha256',required=True)\n    a=p.parse_args();store=GCSStore(a.store);raw=store.get(a.plan_key)\n    if core.digest(raw)!=a.plan_sha256:raise ValueError('Plan hash mismatch')\n    plan=core.decode(raw)\n    if plan['schema']!='msh161-adjudication-v1':raise ValueError('Unknown plan schema')\n    if a.store!=plan['store_uri']:raise ValueError('Wrong store')\n    if core.digest(store.get(plan['original_manifest']['key']))!=plan['original_manifest']['sha256']:raise ValueError('Original manifest changed')\n    index=int(os.environ['BATCH_TASK_INDEX']);bins=plan['bins'];jobs={j['id']:j for j in plan['jobs']}\n    if len(jobs)!=len(plan['jobs']) or sorted(x for b in bins for x in b)!=sorted(jobs):raise ValueError('Invalid bin coverage')\n    if not 0<=index<len(bins):raise ValueError('Invalid task index')\n    refs={r['key']:r for key in bins[index] for r in jobs[key]['adjudication']['consumed_successes']}\n    for ref in refs.values():\n        if core.digest(store.get(ref['key']))!=ref['sha256']:raise ValueError('Consumed result changed')\n    cli.install_signal_handlers()\n    completed=[]\n    for key in bins[index]:\n        j=jobs[key];core.validate_job(j)\n        if j['kind']!='confirmation' or j['nodes']!=20000000 or j['experiment']!=plan['experiment']:raise ValueError('Only planned20M confirmations allowed')\n        if j['adjudication']['plan_id']!=plan['plan_id']:raise ValueError('Wrong scientific plan')\n        r=core.run_job(j,store,cli.REPO)\n        completed.append({'job':key,'success_sha256':core.digest(store.get(core.prefix(j)+'/success.json'))})\n    key=plan['plan_prefix']+'/task-'+str(index)+'.json';raw=core.encode({'plan_sha256':a.plan_sha256,'index':index,'completed':completed})\n    if not store.put(key,raw) and store.get(key)!=raw:raise ValueError('Task receipt conflict')\n\nif __name__=='__main__':main()\n",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+                    "--plan-key",
+                    "msh161-primary-v1-batch-03/adjudication/consequential20m-v1/plan.json",
+                    "--plan-sha256",
+                    "3ad0916deaef5ce2e150f38ab782a3aea5fe556c441ca37d63e436479dceb626"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-primary-b03-2f9aaa94-cb44-4c4f0",
+      "updateTime": "2026-11-12T16:55:05.601717974Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh162-pilot-eight-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-11T20:37:12.243839752Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh162-pilot-eight-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "5180.046142731s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1.",
+            "eventTime": "2026-11-11T20:37:20.490473291Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1.",
+            "eventTime": "2026-11-11T20:38:37.535127614Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1.",
+            "eventTime": "2026-11-11T22:04:57.581270345Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "8"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1/taskGroups/group0",
+          "parallelism": "8",
+          "taskCount": "8",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-m",
+                    "tools.experiments.cli",
+                    "cloud-worker",
+                    "--manifest",
+                    "gs://mshogi-experiments-216675633801/msh161/msh162-cloud-pilot-eight-v1/manifest.json",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh162-pilot-eight-a0d24cf9-68f1-4bfc0",
+      "updateTime": "2026-11-11T22:04:57.581270345Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-primary-b04-20m-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T20:04:14.801982484Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b04-20m-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "2854.758829915s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-20m-v1.",
+            "eventTime": "2026-11-12T20:04:17.974893997Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-20m-v1.",
+            "eventTime": "2026-11-12T20:04:54.272803162Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "VM in Managed Instance Group meets error: Batch Error: code - CODE_GCE_ZONE_RESOURCE_POOL_EXHAUSTED, description - error count is 5, latest message example: Instance 'msh161-primary-b04-281084b8-d185-48300-group0-0-kktx' creation failed: The zone 'projects/mshogi/zones/us-central1-a' does not have enough resources available to fulfill the request.  '(resource type:compute)'.",
+            "eventTime": "2026-11-12T20:09:03.155Z",
+            "type": "OPERATIONAL_INFO"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-20m-v1.",
+            "eventTime": "2026-11-12T20:52:29.031633077Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "8"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-20m-v1/taskGroups/group0",
+          "parallelism": "8",
+          "taskCount": "8",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-c",
+                    "\"\"\"Pinned-image explicit confirmation dispatcher; submitted as reviewed Python bytes.\"\"\"\nimport argparse, os\nfrom tools.experiments import core, cli\nfrom tools.experiments.gcp import GCSStore\n\ndef main():\n    p=argparse.ArgumentParser();p.add_argument('--store',required=True);p.add_argument('--plan-key',required=True);p.add_argument('--plan-sha256',required=True)\n    a=p.parse_args();store=GCSStore(a.store);raw=store.get(a.plan_key)\n    if core.digest(raw)!=a.plan_sha256:raise ValueError('Plan hash mismatch')\n    plan=core.decode(raw)\n    if plan['schema']!='msh161-adjudication-v1':raise ValueError('Unknown plan schema')\n    if a.store!=plan['store_uri']:raise ValueError('Wrong store')\n    if core.digest(store.get(plan['original_manifest']['key']))!=plan['original_manifest']['sha256']:raise ValueError('Original manifest changed')\n    index=int(os.environ['BATCH_TASK_INDEX']);bins=plan['bins'];jobs={j['id']:j for j in plan['jobs']}\n    if len(jobs)!=len(plan['jobs']) or sorted(x for b in bins for x in b)!=sorted(jobs):raise ValueError('Invalid bin coverage')\n    if not 0<=index<len(bins):raise ValueError('Invalid task index')\n    refs={r['key']:r for key in bins[index] for r in jobs[key]['adjudication']['consumed_successes']}\n    for ref in refs.values():\n        if core.digest(store.get(ref['key']))!=ref['sha256']:raise ValueError('Consumed result changed')\n    cli.install_signal_handlers()\n    completed=[]\n    for key in bins[index]:\n        j=jobs[key];core.validate_job(j)\n        if j['kind']!='confirmation' or j['nodes']!=20000000 or j['experiment']!=plan['experiment']:raise ValueError('Only planned20M confirmations allowed')\n        if j['adjudication']['plan_id']!=plan['plan_id']:raise ValueError('Wrong scientific plan')\n        r=core.run_job(j,store,cli.REPO)\n        completed.append({'job':key,'success_sha256':core.digest(store.get(core.prefix(j)+'/success.json'))})\n    key=plan['plan_prefix']+'/task-'+str(index)+'.json';raw=core.encode({'plan_sha256':a.plan_sha256,'index':index,'completed':completed})\n    if not store.put(key,raw) and store.get(key)!=raw:raise ValueError('Task receipt conflict')\n\nif __name__=='__main__':main()\n",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+                    "--plan-key",
+                    "msh161-primary-v1-batch-04/adjudication/consequential20m-v1/plan.json",
+                    "--plan-sha256",
+                    "5cb6fcda4a0832e3ea8c5c53ab7e284e5c349a6d60f36f8c8e7f31b17a7350cc"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-primary-b04-281084b8-d185-48300",
+      "updateTime": "2026-11-12T20:52:29.031633077Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-primary-b02-followup-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T13:33:24.468369675Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b02-followup-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "29.828391700s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-followup-v1.",
+            "eventTime": "2026-11-12T13:33:32.910236713Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-followup-v1.",
+            "eventTime": "2026-11-12T13:34:16.985295214Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-followup-v1.",
+            "eventTime": "2026-11-12T13:34:46.813686914Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "2"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-followup-v1/taskGroups/group0",
+          "parallelism": "2",
+          "taskCount": "2",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-c",
+                    "\"\"\"Pinned-image explicit confirmation dispatcher; submitted as reviewed Python bytes.\"\"\"\nimport argparse, os\nfrom tools.experiments import core, cli\nfrom tools.experiments.gcp import GCSStore\n\ndef main():\n    p=argparse.ArgumentParser();p.add_argument('--store',required=True);p.add_argument('--plan-key',required=True);p.add_argument('--plan-sha256',required=True)\n    a=p.parse_args();store=GCSStore(a.store);raw=store.get(a.plan_key)\n    if core.digest(raw)!=a.plan_sha256:raise ValueError('Plan hash mismatch')\n    plan=core.decode(raw)\n    if plan['schema']!='msh161-adjudication-v1':raise ValueError('Unknown plan schema')\n    if a.store!=plan['store_uri']:raise ValueError('Wrong store')\n    if core.digest(store.get(plan['original_manifest']['key']))!=plan['original_manifest']['sha256']:raise ValueError('Original manifest changed')\n    index=int(os.environ['BATCH_TASK_INDEX']);bins=plan['bins'];jobs={j['id']:j for j in plan['jobs']}\n    if len(jobs)!=len(plan['jobs']) or sorted(x for b in bins for x in b)!=sorted(jobs):raise ValueError('Invalid bin coverage')\n    if not 0<=index<len(bins):raise ValueError('Invalid task index')\n    refs={r['key']:r for key in bins[index] for r in jobs[key]['adjudication']['consumed_successes']}\n    for ref in refs.values():\n        if core.digest(store.get(ref['key']))!=ref['sha256']:raise ValueError('Consumed result changed')\n    cli.install_signal_handlers()\n    completed=[]\n    for key in bins[index]:\n        j=jobs[key];core.validate_job(j)\n        if j['kind']!='confirmation' or j['nodes']!=20000000 or j['experiment']!=plan['experiment']:raise ValueError('Only planned20M confirmations allowed')\n        if j['adjudication']['plan_id']!=plan['plan_id']:raise ValueError('Wrong scientific plan')\n        r=core.run_job(j,store,cli.REPO)\n        completed.append({'job':key,'success_sha256':core.digest(store.get(core.prefix(j)+'/success.json'))})\n    key=plan['plan_prefix']+'/task-'+str(index)+'.json';raw=core.encode({'plan_sha256':a.plan_sha256,'index':index,'completed':completed})\n    if not store.put(key,raw) and store.get(key)!=raw:raise ValueError('Task receipt conflict')\n\nif __name__=='__main__':main()\n",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+                    "--plan-key",
+                    "msh161-primary-v1-batch-02/adjudication/batch02-followup-v1/plan.json",
+                    "--plan-sha256",
+                    "5fa4df35fd4cf41df4f337ba8b9f1c309420c65ba7d7cfe15e30b2ce5b24ad10"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-primary-b02-77114ab6-ceb8-42df0",
+      "updateTime": "2026-11-12T13:34:46.813686914Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-primary-b03-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T14:21:29.431139425Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b03-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "5695.207560326s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-v1.",
+            "eventTime": "2026-11-12T14:21:34.085402837Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-v1.",
+            "eventTime": "2026-11-12T14:22:07.729041289Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-v1.",
+            "eventTime": "2026-11-12T15:57:02.936601615Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "10"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-v1/taskGroups/group0",
+          "parallelism": "8",
+          "taskCount": "10",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-m",
+                    "tools.experiments.cli",
+                    "cloud-worker",
+                    "--manifest",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1/msh161-primary-v1-batch-03/manifest.json",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-primary-b03-b58d20e4-9257-41760",
+      "updateTime": "2026-11-12T15:57:02.936601615Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-primary-b02-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T10:29:49.825839288Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b02-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "6502.789350058s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-v1.",
+            "eventTime": "2026-11-12T10:29:53.886821400Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-v1.",
+            "eventTime": "2026-11-12T10:30:28.874021991Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-v1.",
+            "eventTime": "2026-11-12T12:18:51.663372049Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "10"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-v1/taskGroups/group0",
+          "parallelism": "8",
+          "taskCount": "10",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-m",
+                    "tools.experiments.cli",
+                    "cloud-worker",
+                    "--manifest",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1/msh161-primary-v1-batch-02/manifest.json",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-primary-b02-fff81736-b9df-43bd0",
+      "updateTime": "2026-11-12T12:18:51.663372049Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-primary-b03-followup-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T17:15:29.362689698Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b03-followup-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "36.121028777s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-followup-v1.",
+            "eventTime": "2026-11-12T17:15:34.671873268Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-followup-v1.",
+            "eventTime": "2026-11-12T17:16:10.618659184Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-followup-v1.",
+            "eventTime": "2026-11-12T17:16:46.739687961Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "7"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-primary-b03-followup-v1/taskGroups/group0",
+          "parallelism": "7",
+          "taskCount": "7",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-c",
+                    "\"\"\"Pinned-image explicit confirmation dispatcher; submitted as reviewed Python bytes.\"\"\"\nimport argparse, os\nfrom tools.experiments import core, cli\nfrom tools.experiments.gcp import GCSStore\n\ndef main():\n    p=argparse.ArgumentParser();p.add_argument('--store',required=True);p.add_argument('--plan-key',required=True);p.add_argument('--plan-sha256',required=True)\n    a=p.parse_args();store=GCSStore(a.store);raw=store.get(a.plan_key)\n    if core.digest(raw)!=a.plan_sha256:raise ValueError('Plan hash mismatch')\n    plan=core.decode(raw)\n    if plan['schema']!='msh161-adjudication-v1':raise ValueError('Unknown plan schema')\n    if a.store!=plan['store_uri']:raise ValueError('Wrong store')\n    if core.digest(store.get(plan['original_manifest']['key']))!=plan['original_manifest']['sha256']:raise ValueError('Original manifest changed')\n    index=int(os.environ['BATCH_TASK_INDEX']);bins=plan['bins'];jobs={j['id']:j for j in plan['jobs']}\n    if len(jobs)!=len(plan['jobs']) or sorted(x for b in bins for x in b)!=sorted(jobs):raise ValueError('Invalid bin coverage')\n    if not 0<=index<len(bins):raise ValueError('Invalid task index')\n    refs={r['key']:r for key in bins[index] for r in jobs[key]['adjudication']['consumed_successes']}\n    for ref in refs.values():\n        if core.digest(store.get(ref['key']))!=ref['sha256']:raise ValueError('Consumed result changed')\n    cli.install_signal_handlers()\n    completed=[]\n    for key in bins[index]:\n        j=jobs[key];core.validate_job(j)\n        if j['kind']!='confirmation' or j['nodes']!=20000000 or j['experiment']!=plan['experiment']:raise ValueError('Only planned20M confirmations allowed')\n        if j['adjudication']['plan_id']!=plan['plan_id']:raise ValueError('Wrong scientific plan')\n        r=core.run_job(j,store,cli.REPO)\n        completed.append({'job':key,'success_sha256':core.digest(store.get(core.prefix(j)+'/success.json'))})\n    key=plan['plan_prefix']+'/task-'+str(index)+'.json';raw=core.encode({'plan_sha256':a.plan_sha256,'index':index,'completed':completed})\n    if not store.put(key,raw) and store.get(key)!=raw:raise ValueError('Task receipt conflict')\n\nif __name__=='__main__':main()\n",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+                    "--plan-key",
+                    "msh161-primary-v1-batch-03/adjudication/matched-followup-v1/plan.json",
+                    "--plan-sha256",
+                    "309aba6b7a616a8b1870c52e91808388c82537efd496cca358efcb525a70a4d9"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-primary-b03-9e54b249-d3ec-4b260",
+      "updateTime": "2026-11-12T17:16:46.739687961Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-primary-b01-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T06:32:55.551460458Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b01-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "7834.911132553s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b01-v1.",
+            "eventTime": "2026-11-12T06:33:01.015774026Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "VM in Managed Instance Group meets error: Batch Error: code - CODE_GCE_ZONE_RESOURCE_POOL_EXHAUSTED, description - error count is 51, latest message example: Instance 'msh161-primary-b01-c12991aa-17f5-43260-group0-0-mmf9' creation failed: The zone 'projects/mshogi/zones/us-central1-b' does not have enough resources available to fulfill the request.  '(resource type:compute)'.",
+            "eventTime": "2026-11-12T07:48:27.232Z",
+            "type": "OPERATIONAL_INFO"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b01-v1.",
+            "eventTime": "2026-11-12T06:41:22.593729125Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b01-v1.",
+            "eventTime": "2026-11-12T08:51:57.504861678Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "10"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-primary-b01-v1/taskGroups/group0",
+          "parallelism": "8",
+          "taskCount": "10",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-m",
+                    "tools.experiments.cli",
+                    "cloud-worker",
+                    "--manifest",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1/msh161-primary-v1-batch-01/manifest.json",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-primary-b01-c12991aa-17f5-43260",
+      "updateTime": "2026-11-12T08:51:57.504861678Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-primary-b02-20m-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T12:40:27.782675608Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b02-20m-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "1976.481297996s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-20m-v1.",
+            "eventTime": "2026-11-12T12:40:31.507450424Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-20m-v1.",
+            "eventTime": "2026-11-12T12:41:10.357424673Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-20m-v1.",
+            "eventTime": "2026-11-12T13:14:06.838722669Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "8"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-primary-b02-20m-v1/taskGroups/group0",
+          "parallelism": "8",
+          "taskCount": "8",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-c",
+                    "\"\"\"Pinned-image explicit confirmation dispatcher; submitted as reviewed Python bytes.\"\"\"\nimport argparse, os\nfrom tools.experiments import core, cli\nfrom tools.experiments.gcp import GCSStore\n\ndef main():\n    p=argparse.ArgumentParser();p.add_argument('--store',required=True);p.add_argument('--plan-key',required=True);p.add_argument('--plan-sha256',required=True)\n    a=p.parse_args();store=GCSStore(a.store);raw=store.get(a.plan_key)\n    if core.digest(raw)!=a.plan_sha256:raise ValueError('Plan hash mismatch')\n    plan=core.decode(raw)\n    if plan['schema']!='msh161-adjudication-v1':raise ValueError('Unknown plan schema')\n    if a.store!=plan['store_uri']:raise ValueError('Wrong store')\n    if core.digest(store.get(plan['original_manifest']['key']))!=plan['original_manifest']['sha256']:raise ValueError('Original manifest changed')\n    index=int(os.environ['BATCH_TASK_INDEX']);bins=plan['bins'];jobs={j['id']:j for j in plan['jobs']}\n    if len(jobs)!=len(plan['jobs']) or sorted(x for b in bins for x in b)!=sorted(jobs):raise ValueError('Invalid bin coverage')\n    if not 0<=index<len(bins):raise ValueError('Invalid task index')\n    refs={r['key']:r for key in bins[index] for r in jobs[key]['adjudication']['consumed_successes']}\n    for ref in refs.values():\n        if core.digest(store.get(ref['key']))!=ref['sha256']:raise ValueError('Consumed result changed')\n    cli.install_signal_handlers()\n    completed=[]\n    for key in bins[index]:\n        j=jobs[key];core.validate_job(j)\n        if j['kind']!='confirmation' or j['nodes']!=20000000 or j['experiment']!=plan['experiment']:raise ValueError('Only planned20M confirmations allowed')\n        if j['adjudication']['plan_id']!=plan['plan_id']:raise ValueError('Wrong scientific plan')\n        r=core.run_job(j,store,cli.REPO)\n        completed.append({'job':key,'success_sha256':core.digest(store.get(core.prefix(j)+'/success.json'))})\n    key=plan['plan_prefix']+'/task-'+str(index)+'.json';raw=core.encode({'plan_sha256':a.plan_sha256,'index':index,'completed':completed})\n    if not store.put(key,raw) and store.get(key)!=raw:raise ValueError('Task receipt conflict')\n\nif __name__=='__main__':main()\n",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+                    "--plan-key",
+                    "msh161-primary-v1-batch-02/adjudication/batch02-20m-v1/plan.json",
+                    "--plan-sha256",
+                    "15ba357c687baa600d9802b1986664ed2621593cd8b2c2488dcdf22ecec8ce99"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-primary-b02-b2c6c65f-572b-45180",
+      "updateTime": "2026-11-12T13:14:06.838722669Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-primary-b04-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T17:26:19.717438168Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b04-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "8290.693982355s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-v1.",
+            "eventTime": "2026-11-12T17:26:23.338639630Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-v1.",
+            "eventTime": "2026-11-12T17:28:56.032771549Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "VM in Managed Instance Group meets error: Batch Error: code - CODE_GCE_ZONE_RESOURCE_POOL_EXHAUSTED, description - error count is 50, latest message example: Instance 'msh161-primary-b04-1c45b9b8-19df-4fe30-group0-0-2879' creation failed: The zone 'projects/mshogi/zones/us-central1-c' does not have enough resources available to fulfill the request.  '(resource type:compute)'.",
+            "eventTime": "2026-11-12T18:42:08.926Z",
+            "type": "OPERATIONAL_INFO"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-v1.",
+            "eventTime": "2026-11-12T19:47:06.726753904Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "10"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-v1/taskGroups/group0",
+          "parallelism": "8",
+          "taskCount": "10",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-m",
+                    "tools.experiments.cli",
+                    "cloud-worker",
+                    "--manifest",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1/msh161-primary-v1-batch-04/manifest.json",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-primary-b04-1c45b9b8-19df-4fe30",
+      "updateTime": "2026-11-12T19:47:06.726753904Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh162-pilot-one-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-11T19:37:18.882349901Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh162-pilot-one-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "0s",
+        "state": "FAILED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to FAILED for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-one-v1.",
+            "eventTime": "2026-11-11T19:37:22.873354806Z",
+            "type": "STATUS_CHANGED"
+          }
+        ]
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-one-v1/taskGroups/group0",
+          "parallelism": "1",
+          "taskCount": "1",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-m",
+                    "tools.experiments.cli",
+                    "cloud-worker",
+                    "--manifest",
+                    "gs://mshogi-experiments-216675633801/msh161/msh162-cloud-pilot-one-v1/manifest.json",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh162-pilot-one-v-d99b9f4d-cebf-48020",
+      "updateTime": "2026-11-11T19:37:22.885696716Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh162-pilot-one-v2"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-11T19:45:50.602372392Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh162-pilot-one-v2",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "2513.206224600s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-one-v2.",
+            "eventTime": "2026-11-11T19:45:55.271308698Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-one-v2.",
+            "eventTime": "2026-11-11T19:47:38.688070253Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-one-v2.",
+            "eventTime": "2026-11-11T20:29:31.894294853Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "1"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-one-v2/taskGroups/group0",
+          "parallelism": "1",
+          "taskCount": "1",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-m",
+                    "tools.experiments.cli",
+                    "cloud-worker",
+                    "--manifest",
+                    "gs://mshogi-experiments-216675633801/msh161/msh162-cloud-pilot-one-v1/manifest.json",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh162-pilot-one-v-151a5543-1aaf-4dbe0",
+      "updateTime": "2026-11-11T20:29:31.894294853Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh162-pilot-recovery-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-11T20:34:01.670953513Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh162-pilot-recovery-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "54.057846941s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-recovery-v1.",
+            "eventTime": "2026-11-11T20:34:04.167380474Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-recovery-v1.",
+            "eventTime": "2026-11-11T20:34:43.636880741Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh162-pilot-recovery-v1.",
+            "eventTime": "2026-11-11T20:35:37.694727682Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "1"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-recovery-v1/taskGroups/group0",
+          "parallelism": "1",
+          "taskCount": "1",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "environment": {
+              "variables": {
+                "MSH162_PROBE_SHA256": "4363951a5ba02ca9fd2186c51d9a7733386b45ae6b888a4d94786362a2428668"
+              }
+            },
+            "maxRunDuration": "900s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-c",
+                    "\"\"\"Cloud recovery check. Uses one real confirmation, not a game or study result.\"\"\"\nimport hashlib,json,os\nfrom pathlib import Path\nfrom tools.experiments import core,cli\nfrom tools.experiments.gcp import GCSStore\nstore=GCSStore('gs://mshogi-experiments-216675633801/msh161')\nmanifest=core.decode(store.get('msh162-cloud-pilot-one-v1/manifest.json'))\nscreen=next(j for j in manifest['jobs'] if j['kind']=='reference_screening')\ncompleted=core.verify_result(store,screen)\noriginal=cli.derived_confirmations(screen,completed,store)[0]\ncore.verify_result(store,original)\nprobe=core.seal(dict(original,validation_probe='msh162-cloud-failed-job-recovery-v1',probe_script_sha256=os.environ['MSH162_PROBE_SHA256']))\nbase=core.prefix(probe)\nassert not store.exists(base+'/success.json'), 'Probe already completed; inspect its receipt instead'\ndef fail(job,out,*args):\n    (out/'injected-failure.txt').write_text('Intentional validation failure before any engine query.\\n')\n    raise RuntimeError('intentional cloud recovery validation failure')\ntry:\n    core.run_job(probe,store,cli.REPO,fail)\nexcept RuntimeError as exc:\n    assert str(exc)=='intentional cloud recovery validation failure'\nelse:\n    raise AssertionError('Expected injected failure')\nassert not store.exists(base+'/success.json')\nassert not store.exists(base+'/claim.json')\nresult=core.run_job(probe,store,cli.REPO)\nbefore=store.get(base+'/success.json')\ndef forbidden(*args):raise AssertionError('Completed job executed twice')\nassert core.run_job(probe,store,cli.REPO,forbidden)==result\nassert store.get(base+'/success.json')==before\nreceipts=[core.decode(store.get(k)) for k in store.list(base+'/attempts/') if k.endswith('/receipt.json') and '/artifacts/' not in k]\nassert len(receipts)==2 and sorted(r['status'] for r in receipts)==['complete','failed']\nrecord={'probe_job':probe,'original_job':original['id'],'outcome':'passed','attempts':len(receipts),'statuses':[r['status'] for r in receipts],'success_sha256':hashlib.sha256(before).hexdigest(),'duplicate_execution':False,'scope':'Injected adapter failure on real C3/GCS; retry executes one genuine frozen5M confirmation. This is infrastructure validation, excluded from scientific totals. Not abrupt VM termination.'}\nassert store.put('msh162-cloud-pilot-one-v1/validation/recovery-v1.json',core.encode(record))\nprint(json.dumps(record,indent=2))\n"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh162-pilot-recov-001c2409-e6b2-4f970",
+      "updateTime": "2026-11-11T20:35:37.694727682Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-primary-b01-20m-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T09:22:25.428901619Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b01-20m-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "1753.639286370s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b01-20m-v1.",
+            "eventTime": "2026-11-12T09:22:30.662305569Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b01-20m-v1.",
+            "eventTime": "2026-11-12T09:23:07.713079784Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b01-20m-v1.",
+            "eventTime": "2026-11-12T09:52:21.352366154Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "8"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-primary-b01-20m-v1/taskGroups/group0",
+          "parallelism": "8",
+          "taskCount": "8",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-c",
+                    "\"\"\"Pinned-image explicit confirmation dispatcher; submitted as reviewed Python bytes.\"\"\"\nimport argparse, os\nfrom tools.experiments import core, cli\nfrom tools.experiments.gcp import GCSStore\n\ndef main():\n    p=argparse.ArgumentParser();p.add_argument('--store',required=True);p.add_argument('--plan-key',required=True);p.add_argument('--plan-sha256',required=True)\n    a=p.parse_args();store=GCSStore(a.store);raw=store.get(a.plan_key)\n    if core.digest(raw)!=a.plan_sha256:raise ValueError('Plan hash mismatch')\n    plan=core.decode(raw)\n    if plan['schema']!='msh161-adjudication-v1':raise ValueError('Unknown plan schema')\n    if a.store!=plan['store_uri']:raise ValueError('Wrong store')\n    if core.digest(store.get(plan['original_manifest']['key']))!=plan['original_manifest']['sha256']:raise ValueError('Original manifest changed')\n    index=int(os.environ['BATCH_TASK_INDEX']);bins=plan['bins'];jobs={j['id']:j for j in plan['jobs']}\n    if len(jobs)!=len(plan['jobs']) or sorted(x for b in bins for x in b)!=sorted(jobs):raise ValueError('Invalid bin coverage')\n    if not 0<=index<len(bins):raise ValueError('Invalid task index')\n    refs={r['key']:r for key in bins[index] for r in jobs[key]['adjudication']['consumed_successes']}\n    for ref in refs.values():\n        if core.digest(store.get(ref['key']))!=ref['sha256']:raise ValueError('Consumed result changed')\n    cli.install_signal_handlers()\n    completed=[]\n    for key in bins[index]:\n        j=jobs[key];core.validate_job(j)\n        if j['kind']!='confirmation' or j['nodes']!=20000000 or j['experiment']!=plan['experiment']:raise ValueError('Only planned20M confirmations allowed')\n        if j['adjudication']['plan_id']!=plan['plan_id']:raise ValueError('Wrong scientific plan')\n        r=core.run_job(j,store,cli.REPO)\n        completed.append({'job':key,'success_sha256':core.digest(store.get(core.prefix(j)+'/success.json'))})\n    key=plan['plan_prefix']+'/task-'+str(index)+'.json';raw=core.encode({'plan_sha256':a.plan_sha256,'index':index,'completed':completed})\n    if not store.put(key,raw) and store.get(key)!=raw:raise ValueError('Task receipt conflict')\n\nif __name__=='__main__':main()\n",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+                    "--plan-key",
+                    "msh161-primary-v1-batch-01/adjudication/batch01-20m-v1/plan.json",
+                    "--plan-sha256",
+                    "066c4b94d6b6e21cb45c78200dfd95d3a46ca87eb13178083e233a638cfd72f5"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-primary-b01-80bf5bb0-d8c3-43290",
+      "updateTime": "2026-11-12T09:52:21.352366154Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-primary-b04-followup-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T21:12:20.590626783Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b04-followup-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "78.862673490s",
+        "state": "SUCCEEDED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-followup-v1.",
+            "eventTime": "2026-11-12T21:12:23.655316985Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-followup-v1.",
+            "eventTime": "2026-11-12T21:13:13.427171233Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to SUCCEEDED for job projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-followup-v1.",
+            "eventTime": "2026-11-12T21:14:32.289844723Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "SUCCEEDED": "8"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-primary-b04-followup-v1/taskGroups/group0",
+          "parallelism": "8",
+          "taskCount": "8",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRetryCount": 1,
+            "maxRunDuration": "21600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "-c",
+                    "\"\"\"Pinned-image explicit confirmation dispatcher; submitted as reviewed Python bytes.\"\"\"\nimport argparse, os\nfrom tools.experiments import core, cli\nfrom tools.experiments.gcp import GCSStore\n\ndef main():\n    p=argparse.ArgumentParser();p.add_argument('--store',required=True);p.add_argument('--plan-key',required=True);p.add_argument('--plan-sha256',required=True)\n    a=p.parse_args();store=GCSStore(a.store);raw=store.get(a.plan_key)\n    if core.digest(raw)!=a.plan_sha256:raise ValueError('Plan hash mismatch')\n    plan=core.decode(raw)\n    if plan['schema']!='msh161-adjudication-v1':raise ValueError('Unknown plan schema')\n    if a.store!=plan['store_uri']:raise ValueError('Wrong store')\n    if core.digest(store.get(plan['original_manifest']['key']))!=plan['original_manifest']['sha256']:raise ValueError('Original manifest changed')\n    index=int(os.environ['BATCH_TASK_INDEX']);bins=plan['bins'];jobs={j['id']:j for j in plan['jobs']}\n    if len(jobs)!=len(plan['jobs']) or sorted(x for b in bins for x in b)!=sorted(jobs):raise ValueError('Invalid bin coverage')\n    if not 0<=index<len(bins):raise ValueError('Invalid task index')\n    refs={r['key']:r for key in bins[index] for r in jobs[key]['adjudication']['consumed_successes']}\n    for ref in refs.values():\n        if core.digest(store.get(ref['key']))!=ref['sha256']:raise ValueError('Consumed result changed')\n    cli.install_signal_handlers()\n    completed=[]\n    for key in bins[index]:\n        j=jobs[key];core.validate_job(j)\n        if j['kind']!='confirmation' or j['nodes']!=20000000 or j['experiment']!=plan['experiment']:raise ValueError('Only planned20M confirmations allowed')\n        if j['adjudication']['plan_id']!=plan['plan_id']:raise ValueError('Wrong scientific plan')\n        r=core.run_job(j,store,cli.REPO)\n        completed.append({'job':key,'success_sha256':core.digest(store.get(core.prefix(j)+'/success.json'))})\n    key=plan['plan_prefix']+'/task-'+str(index)+'.json';raw=core.encode({'plan_sha256':a.plan_sha256,'index':index,'completed':completed})\n    if not store.put(key,raw) and store.get(key)!=raw:raise ValueError('Task receipt conflict')\n\nif __name__=='__main__':main()\n",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+                    "--plan-key",
+                    "msh161-primary-v1-batch-04/adjudication/matched-followup-v1/plan.json",
+                    "--plan-sha256",
+                    "dbe214a18f63e0dbc3595f4a6ad47764c7705ac2032da7353750eef8628fe66a"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-primary-b04-4e91731b-6802-41440",
+      "updateTime": "2026-11-12T21:14:32.289844723Z"
+    },
+    {
+      "allocationPolicy": {
+        "instances": [
+          {
+            "policy": {
+              "bootDisk": {
+                "sizeGb": "30",
+                "type": "pd-balanced"
+              },
+              "machineType": "c3-standard-4",
+              "provisioningModel": "STANDARD"
+            }
+          }
+        ],
+        "labels": {
+          "batch-job-id": "msh161-policy-validation-v1"
+        },
+        "location": {
+          "allowedLocations": [
+            "regions/us-central1",
+            "zones/us-central1-a",
+            "zones/us-central1-b",
+            "zones/us-central1-c",
+            "zones/us-central1-f"
+          ]
+        },
+        "network": {
+          "networkInterfaces": [
+            {
+              "network": "projects/mshogi/global/networks/mshogi-batch",
+              "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+            }
+          ]
+        },
+        "serviceAccount": {
+          "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        }
+      },
+      "createTime": "2026-11-12T14:01:46.012837594Z",
+      "labels": {
+        "application": "mshogi-experiments",
+        "schema": "v1"
+      },
+      "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
+      },
+      "name": "projects/mshogi/locations/us-central1/jobs/msh161-policy-validation-v1",
+      "notifications": [
+        {
+          "message": {
+            "type": "JOB_STATE_CHANGED"
+          },
+          "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events"
+        }
+      ],
+      "status": {
+        "runDuration": "9.282370026s",
+        "state": "FAILED",
+        "statusEvents": [
+          {
+            "description": "Job state is set from QUEUED to SCHEDULED for job projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1.",
+            "eventTime": "2026-11-12T14:01:52.193371535Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from SCHEDULED to RUNNING for job projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1.",
+            "eventTime": "2026-11-12T14:02:45.740450809Z",
+            "type": "STATUS_CHANGED"
+          },
+          {
+            "description": "Job state is set from RUNNING to FAILED for job projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1.Job failed due to task failure. Specifically, task with index 0 failed due to the following task event: \"Task state is updated from RUNNING to FAILED on zones/us-central1-a/instances/4113885159929444352 with exit code 1.\"",
+            "eventTime": "2026-11-12T14:02:55.022820835Z",
+            "type": "STATUS_CHANGED"
+          }
+        ],
+        "taskGroups": {
+          "group0": {
+            "counts": {
+              "FAILED": "1"
+            },
+            "instances": [
+              {
+                "bootDisk": {
+                  "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00",
+                  "sizeGb": "30",
+                  "type": "pd-balanced"
+                },
+                "machineType": "c3-standard-4",
+                "provisioningModel": "STANDARD",
+                "taskPack": "1"
+              }
+            ]
+          }
+        }
+      },
+      "taskGroups": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0",
+          "parallelism": "1",
+          "taskCount": "1",
+          "taskCountPerNode": "1",
+          "taskSpec": {
+            "computeResource": {
+              "cpuMilli": "4000",
+              "memoryMib": "12288"
+            },
+            "maxRunDuration": "600s",
+            "runnables": [
+              {
+                "container": {
+                  "commands": [
+                    "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py",
+                    "--build",
+                    "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json",
+                    "--output",
+                    "/tmp/msh161-policy-validation",
+                    "--store",
+                    "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+                    "--prefix",
+                    "policy-transition-validation-v1"
+                  ],
+                  "entrypoint": "python3",
+                  "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "uid": "msh161-policy-vali-db2ce255-0435-45300",
+      "updateTime": "2026-11-12T14:02:55.022820835Z"
+    }
+  ]
+}

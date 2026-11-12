@@ -1,0 +1,16 @@
+{
+  "status": "passed_receipt_bindings",
+  "computation": "retrieved_verified_needs_independent_review",
+  "submission_uid": "msh161-primary-b04-1c45b9b8-19df-4fe30",
+  "retrieval_receipt_sha256": "4ce19d1d8c142a50b5bea7d17267b99bfb4f6f2c9da8abf4a9379e6a8061abcd",
+  "terminal_sha256": "7946888b3141acd5b1cf391690ee507d3defb5453f7cca3f377bc98424f08a76",
+  "wrapper_success": true,
+  "own_process_group_settled": true,
+  "notification_accepted": true,
+  "verified_jobs": 2223,
+  "objects": 32263,
+  "bytes": 4044009484,
+  "cloud_worker_cleanup": "independent runtime audit pending",
+  "scientific_review": "independent panels pending",
+  "no_duplicate_retrieval_or_queries": true
+}

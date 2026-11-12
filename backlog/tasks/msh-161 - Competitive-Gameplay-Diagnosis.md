@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T17:26:00Z'
+updated_date: '2026-11-12T19:58:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -147,4 +147,6 @@ Seven-query Batch 03 followup launched through existing exit notifier: wrapper P
 Batch 03 closed after independent gameplay panels, plan-aware execution review and seven distinct matched followups. Final overlays preserve pre-followup ledgers; unstable comparisons remain unresolved, with earlier/linked and AutoClaim limits retained. Primary cumulative now 60 reviewed games (26W/17D/17L), 24,967 reference queries and 43.042446 VM-hours / US$8.677702 estimated compute, not billed cost. See cloud-primary/batch-03-review/closure.md and closure-summary.json. Original Batch 04 offline provenance passed; proceed with original AutoClaim binaries/image and existing exit-notification workflow. Remaining 140 games authorized; no production changes or final priorities.
 
 Original Batch 04 accepted as msh161-primary-b04-v1 (QUEUED at submission), UID msh161-primary-b04-1c45b9b8-19df-4fe30, from review commit 64debb5c. Original manifest SHA, image, runnable, 10 paired tasks and maximum eight-worker parallelism verified; no other active job or existing experiment prefix before submission. One notify_exit.py wrapper PID 32923 runs the existing wait/retrieve chain and will queue this chat on exit. See cloud-primary/batch-04-{preflight,submission,submission-verification,wait-launch}.json. Current coverage is 60 reviewed / 200; Batch 04 adds the next 20 fresh games. No duplicate searches, Mac engines or policy changes.
+
+Batch 04 base execution and independent gameplay/integrity reviews passed: 20 games, 7W/6D/7L (three dead positions, three automatic threefold claims), 5,604 initial and 2,203 matched5M queries, zero scientific failures. Actual peak was five workers rather than eight: 53 resource-pool insert failures and 100 not-found failed-allocation cleanup notices preserved; all workers deleted. Primary compute estimate now US$10.722203 / 53.183419 VM-hours; full compute mean US$29.07. Eighty played, 60 fully reviewed. Frozen required20M plan has 480 roots / 765 jobs / 793 queries including 28 discoveries, SHA256 5cb6fcda4a0832e3ea8c5c53ab7e284e5c349a6d60f36f8c8e7f31b17a7350cc. Independent narratives, exact compressed ledgers and audit in cloud-primary/batch-04-review; plan in batch-04-adjudication. Preserve unselected earlier uncertainty and secondary/AutoClaim limits; no final priorities. Next launch one exit-notified deep plan, then review before Batch 05.
 <!-- SECTION:NOTES:END -->

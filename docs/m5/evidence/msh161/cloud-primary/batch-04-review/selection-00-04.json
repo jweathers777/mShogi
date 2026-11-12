@@ -1,0 +1,2342 @@
+[
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "f2f4",
+      "e3g5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 27,
+    "moves": [
+      "d4e2",
+      "f6h5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 28,
+    "moves": [
+      "c3e2",
+      "c3e2"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 40,
+    "moves": [
+      "d3d5",
+      "d3d5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 48,
+    "moves": [
+      "c3d5",
+      "c3d5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 51,
+    "moves": [
+      "e8c8",
+      "c4c3"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 54,
+    "moves": [
+      "h3h4",
+      "d5e3"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 57,
+    "moves": [
+      "c8c6",
+      "e5f4"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 61,
+    "moves": [
+      "e5f5",
+      "c6d6"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 63,
+    "moves": [
+      "g5h4",
+      "c6a6"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 64,
+    "moves": [
+      "d5f4",
+      "d5f4"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 66,
+    "moves": [
+      "g2b7",
+      "g2b7"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 68,
+    "moves": [
+      "d1d7",
+      "d1d7"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 70,
+    "moves": [
+      "h2h3",
+      "h2h3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 72,
+    "moves": [
+      "d7a7",
+      "d7a7"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 82,
+    "moves": [
+      "g3g4",
+      "f6h7"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 0,
+    "ply": 142,
+    "moves": [
+      "f5f6",
+      "d5f6"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 18,
+    "moves": [
+      "c3a4",
+      "c3d5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 20,
+    "moves": [
+      "c2c4",
+      "b2b3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 21,
+    "moves": [
+      "b4c3",
+      "b4c3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 23,
+    "moves": [
+      "e8g8",
+      "f6d7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 24,
+    "moves": [
+      "a1c1",
+      "c3d5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 25,
+    "moves": [
+      "c6d4",
+      "c8a6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 26,
+    "moves": [
+      "g1h1",
+      "b2b3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 32,
+    "moves": [
+      "g3g4",
+      "h1h2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 35,
+    "moves": [
+      "b8b4",
+      "g8h7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 37,
+    "moves": [
+      "g7f6",
+      "g7f6"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 39,
+    "moves": [
+      "d4c6",
+      "c8d8"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 40,
+    "moves": [
+      "d5b4",
+      "d5f6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 41,
+    "moves": [
+      "c5b4",
+      "c6b4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 42,
+    "moves": [
+      "d3d4",
+      "d3d4"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-00",
+    "game": 1,
+    "ply": 43,
+    "moves": [
+      "c8b8",
+      "h5g4"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75/attempts/36548c6a622f4ea8abc79e64f586de7c/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 20,
+    "moves": [
+      "e1g1",
+      "e1c1"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 21,
+    "moves": [
+      "f6h5",
+      "f6e8"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "g2g3",
+      "a1e1"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 28,
+    "moves": [
+      "f1d1",
+      "e2e3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 31,
+    "moves": [
+      "a8a6",
+      "b7b5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 32,
+    "moves": [
+      "a3a4",
+      "e2e1"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 33,
+    "moves": [
+      "g8h8",
+      "f5f4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 34,
+    "moves": [
+      "a1a3",
+      "e2e1"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 35,
+    "moves": [
+      "a6b6",
+      "f5f4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 36,
+    "moves": [
+      "h2h4",
+      "g1g2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 39,
+    "moves": [
+      "d8d7",
+      "b4b6"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 41,
+    "moves": [
+      "h7h5",
+      "b4b6"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 43,
+    "moves": [
+      "d7e7",
+      "b4b6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 45,
+    "moves": [
+      "e7d6",
+      "g4f3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 46,
+    "moves": [
+      "f3g5",
+      "f3g5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 48,
+    "moves": [
+      "f2f3",
+      "f2f3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 50,
+    "moves": [
+      "c3a2",
+      "c3b5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 55,
+    "moves": [
+      "b7b5",
+      "g7h6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 56,
+    "moves": [
+      "c4b5",
+      "c4b5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 58,
+    "moves": [
+      "d3c3",
+      "d3c3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 60,
+    "moves": [
+      "c3c4",
+      "a2c1"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 61,
+    "moves": [
+      "d7b5",
+      "g7h6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 62,
+    "moves": [
+      "c4c1",
+      "c4c3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 63,
+    "moves": [
+      "b5d7",
+      "g7h6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 64,
+    "moves": [
+      "g3f4",
+      "b3b4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 66,
+    "moves": [
+      "a2c3",
+      "b3b4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 67,
+    "moves": [
+      "c5c4",
+      null
+    ],
+    "reason": "Unrestricted discovery for negative matched finite comparison; retain prior alternative and uncertainty",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 68,
+    "moves": [
+      "c1a1",
+      "c1a1"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 70,
+    "moves": [
+      "a3b3",
+      "a3b3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 71,
+    "moves": [
+      "g7e5",
+      "h8g8"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 72,
+    "moves": [
+      "e1f2",
+      "a1a2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 73,
+    "moves": [
+      "c7c6",
+      "h8g8"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 0,
+    "ply": 74,
+    "moves": [
+      "f2d2",
+      "a1c1"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 18,
+    "moves": [
+      "a1c1",
+      "h2h3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 22,
+    "moves": [
+      "b2b4",
+      "f3d2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 23,
+    "moves": [
+      "a5b4",
+      "a5b4"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 25,
+    "moves": [
+      "c5a4",
+      "c5e4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 26,
+    "moves": [
+      "c3a4",
+      "f3d2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 28,
+    "moves": [
+      "b4b5",
+      "e1g1"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 29,
+    "moves": [
+      "f8a8",
+      "f8a8"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 31,
+    "moves": [
+      "f6g4",
+      "a4a2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 39,
+    "moves": [
+      "g7f6",
+      "b7b6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 40,
+    "moves": [
+      "f2f3",
+      "c4c5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 41,
+    "moves": [
+      "g4d7",
+      "g4d7"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 42,
+    "moves": [
+      "c4c5",
+      "b5b6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 43,
+    "moves": [
+      "a2e2",
+      "f6g5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 44,
+    "moves": [
+      "e3d2",
+      "c5d6"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 45,
+    "moves": [
+      "d6c5",
+      "f6g5"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 56,
+    "moves": [
+      "g2g3",
+      "c3e2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 57,
+    "moves": [
+      "d7h3",
+      "g5e3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 58,
+    "moves": [
+      "f1e1",
+      "f1b1"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 59,
+    "moves": [
+      "g5d2",
+      "g5d2"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 60,
+    "moves": [
+      "e1d1",
+      "e1b1"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 61,
+    "moves": [
+      "d2e3",
+      "d2e3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 63,
+    "moves": [
+      "e3f2",
+      "e3d4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 65,
+    "moves": [
+      "f2e3",
+      "g8g7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 66,
+    "moves": [
+      "c4c3",
+      "c4b3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 70,
+    "moves": [
+      "c3c4",
+      "c3b3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 71,
+    "moves": [
+      "a8a5",
+      "a8a5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 73,
+    "moves": [
+      "h3d7",
+      "h3d7"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 74,
+    "moves": [
+      "h1g1",
+      "h2h4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 75,
+    "moves": [
+      "h6h3",
+      "g8g7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-01",
+    "game": 1,
+    "ply": 87,
+    "moves": [
+      "d7f5",
+      "d7g4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203/attempts/c21851c5178e4a94b139b3c5cbdd14b5/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 20,
+    "moves": [
+      "b5c6",
+      "h2h3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 21,
+    "moves": [
+      "b7c6",
+      "f6c6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 31,
+    "moves": [
+      "b8b6",
+      "f6d6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 32,
+    "moves": [
+      "a1b1",
+      "a2a4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 73,
+    "moves": [
+      "c1c6",
+      "g6f7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 74,
+    "moves": [
+      "e6d4",
+      "e6d4"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 76,
+    "moves": [
+      "d4b5",
+      "d4b5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 78,
+    "moves": [
+      "f2c2",
+      "f2a2"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 80,
+    "moves": [
+      "c2c7",
+      "h2g2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 82,
+    "moves": [
+      "c7b7",
+      "h2g3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 98,
+    "moves": [
+      "b7b3",
+      "b7b3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 0,
+    "ply": 104,
+    "moves": [
+      "f3f5",
+      "f3d3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 20,
+    "moves": [
+      "a1c1",
+      "d3e3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 21,
+    "moves": [
+      "f7f6",
+      "h7h6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 25,
+    "moves": [
+      "f8e8",
+      "c6a5"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 26,
+    "moves": [
+      "a4b3",
+      null
+    ],
+    "reason": "Unrestricted discovery for negative matched finite comparison; retain prior alternative and uncertainty",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 27,
+    "moves": [
+      "b7b5",
+      "c8e6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 34,
+    "moves": [
+      "f2f3",
+      "h4f5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 35,
+    "moves": [
+      "e4g3",
+      "e4g3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 37,
+    "moves": [
+      "g3f5",
+      "g3f5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 39,
+    "moves": [
+      "d6d7",
+      "d6d7"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 41,
+    "moves": [
+      "c7c6",
+      "c7c6"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 63,
+    "moves": [
+      "f7d6",
+      "f7h8"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 67,
+    "moves": [
+      "f6f5",
+      "d6f5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 69,
+    "moves": [
+      "d6f5",
+      "g8h8"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 71,
+    "moves": [
+      "g5f4",
+      "g5f4"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 73,
+    "moves": [
+      "f5h4",
+      "f5h4"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 139,
+    "moves": [
+      "g5f6",
+      "b2b5"
+    ],
+    "reason": "500k/5M disagreement; test consequence and preserve negative or uncertain finite evidence",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 141,
+    "moves": [
+      "f6e7",
+      "e5c6"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 143,
+    "moves": [
+      "b2b3",
+      "e5c6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042/attempts/905d1853a6dc4a9fb3198c96304b8d00/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 0,
+    "ply": 19,
+    "moves": [
+      "a7a5",
+      "b7b6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 0,
+    "ply": 21,
+    "moves": [
+      "b7b5",
+      "b7b6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 0,
+    "ply": 22,
+    "moves": [
+      "c4c1",
+      "c4b3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "b1c3",
+      "b1c3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 0,
+    "ply": 26,
+    "moves": [
+      "e1g1",
+      "e1g1"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 0,
+    "ply": 34,
+    "moves": [
+      "b4c5",
+      "b4c5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 0,
+    "ply": 76,
+    "moves": [
+      "c1c7",
+      "f2g2"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 0,
+    "ply": 78,
+    "moves": [
+      "b6f6",
+      "b6b3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 17,
+    "moves": [
+      "f6d5",
+      "a8c8"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 19,
+    "moves": [
+      "d8a5",
+      null
+    ],
+    "reason": "Unrestricted discovery for negative matched finite comparison; retain prior alternative and uncertainty",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 20,
+    "moves": [
+      "b1c3",
+      "b1d2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 21,
+    "moves": [
+      "h8g8",
+      "a5b4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 42,
+    "moves": [
+      "e2e4",
+      "c6b5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 45,
+    "moves": [
+      "d2c2",
+      "g8d8"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 46,
+    "moves": [
+      "c6b7",
+      "a3a6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 47,
+    "moves": [
+      "c8d6",
+      "c8b6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 48,
+    "moves": [
+      "a3a7",
+      "b7a6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 49,
+    "moves": [
+      "c2c7",
+      "c2c7"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 51,
+    "moves": [
+      "g8a8",
+      "g8a8"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 53,
+    "moves": [
+      "f7f6",
+      "c7a7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 54,
+    "moves": [
+      "e4e5",
+      "a2a4"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e/attempts/6ea608aa4e7b431fb71572b39514b327/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 17,
+    "moves": [
+      "c8g4",
+      "d8c7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 18,
+    "moves": [
+      "d1b3",
+      "h2h3"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 20,
+    "moves": [
+      "h2h3",
+      "a2a4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 22,
+    "moves": [
+      "c3d4",
+      "f3g5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "c1d2",
+      "f3g5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 25,
+    "moves": [
+      "a8c8",
+      "f6d7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 26,
+    "moves": [
+      "f3g5",
+      "f3g5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 27,
+    "moves": [
+      "e6c4",
+      "e6d7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 35,
+    "moves": [
+      "d7c5",
+      "c6a7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 40,
+    "moves": [
+      "g5f3",
+      "b4b5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 41,
+    "moves": [
+      "a4c3",
+      "c6a7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 45,
+    "moves": [
+      "e7b4",
+      "b6d8"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 46,
+    "moves": [
+      "c3b2",
+      "c3b2"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 48,
+    "moves": [
+      "b2b3",
+      "b2b3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 50,
+    "moves": [
+      "b3b4",
+      "b3b4"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 52,
+    "moves": [
+      "c1c8",
+      "c1c8"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 0,
+    "ply": 54,
+    "moves": [
+      "c8c4",
+      "c8c4"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 22,
+    "moves": [
+      "c2d1",
+      "c2e2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 23,
+    "moves": [
+      "e7d6",
+      "f6d7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 31,
+    "moves": [
+      "a7a6",
+      "c6e7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 36,
+    "moves": [
+      "a3a4",
+      "f3h4"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 38,
+    "moves": [
+      "d1b3",
+      "c1b1"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 39,
+    "moves": [
+      "d7e6",
+      "d7e6"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 41,
+    "moves": [
+      "b6b5",
+      "a6a5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 42,
+    "moves": [
+      "a4b5",
+      "a4a5"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 43,
+    "moves": [
+      "a6b5",
+      "a6b5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 44,
+    "moves": [
+      "f3h4",
+      "c1c2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 45,
+    "moves": [
+      "a8a2",
+      "a8a2"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 47,
+    "moves": [
+      "f6d7",
+      "c8a8"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 49,
+    "moves": [
+      "a2a3",
+      "a2a3"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 51,
+    "moves": [
+      "d6e6",
+      "d6e6"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 53,
+    "moves": [
+      "e6h3",
+      "d7b6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 54,
+    "moves": [
+      "e1g2",
+      "f1g1"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 55,
+    "moves": [
+      "g7g5",
+      "g8h7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 56,
+    "moves": [
+      "f2f3",
+      "h1g1"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 57,
+    "moves": [
+      "g8h7",
+      "d7b6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 58,
+    "moves": [
+      "g3g4",
+      "f1f2"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 59,
+    "moves": [
+      "f7f6",
+      "d7b6"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 61,
+    "moves": [
+      "h7g7",
+      "d7f8"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 63,
+    "moves": [
+      "a3d3",
+      "a3a7"
+    ],
+    "reason": "20M check for consequential or 0.04/0.06 threshold-sensitive comparison; retain linked episode and earlier uncertainty; Threefold-draw game: preceding decision/response control; do not attribute draw itself as weakness",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 64,
+    "moves": [
+      "g2e1",
+      "g2e1"
+    ],
+    "reason": "Threefold-draw game: preceding decision/response control; do not attribute draw itself as weakness",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 65,
+    "moves": [
+      "d3d2",
+      "d3d2"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history; Threefold-draw game: preceding decision/response control; do not attribute draw itself as weakness",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 66,
+    "moves": [
+      "b2d2",
+      "b2d2"
+    ],
+    "reason": "Threefold-draw game: preceding decision/response control; do not attribute draw itself as weakness",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 67,
+    "moves": [
+      "c6e7",
+      "h6h5"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history; Threefold-draw game: preceding decision/response control; do not attribute draw itself as weakness",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 68,
+    "moves": [
+      "c1c8",
+      "c1c8"
+    ],
+    "reason": "Threefold-draw game: preceding decision/response control; do not attribute draw itself as weakness",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 69,
+    "moves": [
+      "e7c8",
+      "e7c8"
+    ],
+    "reason": "Threefold-draw game: preceding decision/response control; do not attribute draw itself as weakness",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 131,
+    "moves": [
+      "d6e7",
+      "d6e7"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history; Threefold-draw game: preceding decision/response control; do not attribute draw itself as weakness",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 132,
+    "moves": [
+      "g6g7",
+      "g6g7"
+    ],
+    "reason": "Threefold-draw game: preceding decision/response control; do not attribute draw itself as weakness",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 133,
+    "moves": [
+      "e7d6",
+      "e7d6"
+    ],
+    "reason": "Contrary success or favorable-episode boundary control; compare actual response in its full history; Threefold-draw game: preceding decision/response control; do not attribute draw itself as weakness",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-04/jobs/9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57/attempts/da433c567fb34b36824729cbea544f0e/artifacts/pair/report.json.gz"
+  }
+]

@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 03 reviewed; original Batch 04 submitted
+## Current state: Batch 04 completed; independent review in progress
 
 Batches 01–03 are fully reviewed: **60 games, 26 wins / 17 draws / 17 losses**.
 Batch 03 finished 9/5/6. Independent gameplay panels and execution review closed
@@ -30,15 +30,37 @@ no failed attempts or allocation failures occurred. Primary cumulative compute i
 `batch-03-followup/forecast-update.json`; the measured full-study compute estimate
 is about US$28.93, with ancillary costs and runtime uncertainty retained separately.
 
-Original Batch 04 was accepted as `msh161-primary-b04-v1` (QUEUED at submission),
-from reviewed checkpoint `64debb5c`. Its original runnable, 10 paired tasks and
-maximum eight-worker parallelism passed submission verification. One exit wrapper
-(PID 32923) runs `wait_retrieve_batch.py 4`; see `batch-04-wait-launch.json`,
-`batch-04-submission.json` and `batch-04-submission-verification.json`.
-Do not start another wrapper or submit the batch again.
-On completion, reconcile computation, cleanup and notification; review completed
-games with independent gameplay/integrity panels, obtain required 20M checks and
-only distinct discovered-alternative obligations, then continue Batch 05.
+Original Batch 04 completed under `msh161-primary-b04-v1`; retrieval and artifact
+verification passed for 2,223 jobs / 32,263 objects (4,044,009,484 bytes). Submission,
+terminal and retrieval hashes match; the wrapper returned success, settled its
+child group and queued the accepted exit notification. See
+`batch-04-review/coordinator-reconciliation.json` and the separate receipts.
+Independent gameplay panels and native/query/runtime audit are now in progress.
+There are 80 played games, of which 60 are fully reviewed; Batch 04 is not yet
+admitted into the scientific cumulative record. Keep this distinction explicit.
+
+Independent gameplay and integrity review passed. Native Batch 04 results are
+7 wins / 6 draws / 7 losses (prepared 5/6/7; unaided 2/0/0). Three draws are native
+dead positions and three automatic threefold claims. All 5,604 initial queries and
+2,203 matched 5M queries are accounted for, with no stable missed-error audit trigger.
+Uncertain audit comparisons remain explicit. All five actual workers were deleted;
+53 resource-pool insertion failures and 100 not-found cleanup notices on failed
+allocations are preserved separately from zero scientific failures. Actual peak
+concurrency was five, despite eight requested workers. Runtime/cost/forecast is in
+`batch-04-review/runtime-integrity-review.md/json`: US$10.72 primary compute so far,
+about US$29.07 projected full compute; billed and ancillary costs remain unknown.
+
+The frozen 20M plan in `batch-04-adjudication` contains 480 selected roots,
+765 jobs / 793 queries, including 28 unrestricted discoveries. It covers both panels'
+consequential and linked comparisons, episode boundaries and contrary-success
+controls. No selection is a confirmation. Full decision ledgers, review index and
+inventory are losslessly archived as `.json.gz`; their binding manifests preserve
+original bytes/hashes. Restore locally if needed; do not download again.
+Next: launch this prepared plan once via `notify_exit.py`. On completion review all
+selected comparisons against the independent narratives, preserve earlier and linked
+uncertainty/secondary tags, and obtain only distinct new alternative obligations.
+Close Batch 04 before launching original Batch 05. The scientific cumulative record
+remains at 60 fully reviewed games until this gate closes.
 Do not duplicate retrieval/searches, run Mac engines, use timers or periodic polling.
 Full 200-game coverage remains required. Stop for John after the independently
 reviewed diagnosis and roadmap, before engineering. No final priorities yet.

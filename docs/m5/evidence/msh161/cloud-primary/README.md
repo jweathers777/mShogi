@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 04 completed; independent review in progress
+## Current state: Batch 04 required 20M plan launched
 
 Batches 01–03 are fully reviewed: **60 games, 26 wins / 17 draws / 17 losses**.
 Batch 03 finished 9/5/6. Independent gameplay panels and execution review closed
@@ -56,7 +56,13 @@ consequential and linked comparisons, episode boundaries and contrary-success
 controls. No selection is a confirmation. Full decision ledgers, review index and
 inventory are losslessly archived as `.json.gz`; their binding manifests preserve
 original bytes/hashes. Restore locally if needed; do not download again.
-Next: launch this prepared plan once via `notify_exit.py`. On completion review all
+The prepared plan was launched once through `notify_exit.py`, PID 38445, from
+reviewed commit `20c70895`; job name `msh161-primary-b04-20m-v1`. See
+`batch-04-adjudication/launch.json`. The wrapper performs provenance preflight,
+submission, event wait, retrieval and plan-aware verification; actual cloud
+acceptance remains separate in `submission-result.json`. Do not start another
+wrapper, submit again, or repeat its queries. On exit, reconcile acceptance,
+completion, verification, cleanup and notification separately. Review all
 selected comparisons against the independent narratives, preserve earlier and linked
 uncertainty/secondary tags, and obtain only distinct new alternative obligations.
 Close Batch 04 before launching original Batch 05. The scientific cumulative record

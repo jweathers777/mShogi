@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T06:36:00Z'
+updated_date: '2026-11-12T08:04:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -89,4 +89,6 @@ Owner cloud-migration direction11November supersedes localcontinuation: NO newlo
 Localbatch02 safelycompleted20games+500k+5M; offlineaudit verifies8243queries/1451selecteddecisions,0failures,0stableaudittrigger. OSobservation recordedPIDsabsent/lockfree/no03. Localmain40complete (21W5D14L),40screened5M,onlybatch01selected20M;20qualificationseparate. Fullbatch02bundle preserved; provisionalgameplayreviews/interimaddendum independentlyreviewed, old20gamequantitativecounts notpooled. No newlocalenginejobs. Latesthuman12Novemberinstruction authorizesfullcloudstudy fromMSH162handoff. Independentcloudruntime/scientificadmission PASS tested51351c48 image,8C3workers, freshall200plannedgames with20gamereviewcadence and separateMac/pilotcohorts. Prepareexactworker-source manifests, integrateisolatedrunner withoutreplacingcoordinatorrecords. Recordedpilotrate extrapolation~USD23.62VMcompute plus storage/transfer/20M/etc, notbill/hardcap. Existing30dollarpilotonlyapprovalhistorical; currentfullstudyexplicitlyauthorized. Actualmanifestadmission andcloudlaunch forthcoming; see migration/cloud-*-admission-review.md.
 
 Cloudrunner integrated bb5e698e;64integrationtests pass. All200freshprimarygames frozen at6eaccc35 in10original20gamebatches, eightC3workers, exacttestedworker51351c48/digestad95d85 withnewercontroller. Independentactualmanifestadmission passesall100pair/source/protocol identities andno pilotreuse. GCPpreflight noactivejobs/priorlistener,image/subscriptionverified,primaryprefixempty. Submitted firstprimary20 as msh161-primary-b01-v1 UIDmsh161-primary-b01-c12991aa-17f5-43260; initialQUEUED. PubSubeventlistenerPID6829 queuesowningchat; no periodicpolling orlocalengines. Store gs://mshogi-experiments-216675633801/msh161-primary-v1. Oncompletion retrieve/verify, independentgameplayreview andrequiredcloud20M thennextbatch, throughall200. Mac40gamesremainexploratory. See cloud-primary/README.md, cohort-freeze.json, manifest-admission.json andsubmission/listenerreceipts. Localenginepausecontinues; latestownerfullcloudauthorization recorded.
+
+Owner addition: completedprimarybatch01 review MUST include full200game elapsedtime andcost forecast beforecloudbatch02 submission. Use measuredtask/VM lifecycle, actualanalysis/data volume and fixed8workers; include deeper20M, startup/retries/reviewpauses andancillarycharges. Report total+remainingranges withassumptions andestimatedvsbilled distinction. Do not truncatecoverage. Durablegate cloud-primary/forecast-request.json andREADME updated; await existingcompletionevent, no additionalpolling.
 <!-- SECTION:NOTES:END -->

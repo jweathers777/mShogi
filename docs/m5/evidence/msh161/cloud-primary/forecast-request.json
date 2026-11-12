@@ -1,0 +1,12 @@
+{
+  "owner_request": "Before cloud batch02, estimate elapsed time and cost to process full200games.",
+  "gate": "Include in completed primarybatch01 review before submitting primarybatch02.",
+  "basis": [
+    "Actual task/VM lifecycle timestamps rather than discrepant aggregate Batch duration",
+    "Measured game,500k,5M and necessary20M work; fixed8worker allocation",
+    "Storage volume and operations, transfer/egress, disks, logs, registry and retained data",
+    "Failures/retries, worker startup/cleanup and review pauses"
+  ],
+  "deliverable": "Total campaign and remaining time/cost ranges, assumptions, measured versus projected values, estimated versus billed charges; preserve full200coverage.",
+  "status": "pending_completed_batch01_measurements"
+}

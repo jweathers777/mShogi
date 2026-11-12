@@ -65,8 +65,12 @@ On the completion message:
    Preserve earlier/linked uncertainty. Do not repeat games to obtain analysis or
    overwrite the original manifest/success objects. See any adjudication execution
    notes added here before the first such submission.
-5. Review the completed adjudication and update primary categories and resource
-   totals before submitting batch02. Continue this cycle through all200games.
+5. Before submitting batch02, provide the owner-requested full200-game time and
+   cost forecast (`forecast-request.json`). Use actual batch01 task/VM lifecycle,
+   analysis and data measurements; include remaining20M work, ancillary charges,
+   retry/startup overhead and review pauses. Give total and remaining ranges,
+   assumptions, and distinguish estimated from billed costs. Then review the
+   completed adjudication and update primary categories and resource totals. Continue this cycle through all200games.
    No final ranking or production correction before full independent diagnosis.
 
 For a user-requested progress view, run `python3 tools/experiments/quick_status.py`.

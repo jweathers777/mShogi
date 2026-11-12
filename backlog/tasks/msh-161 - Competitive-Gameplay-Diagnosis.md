@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T21:20:00Z'
+updated_date: '2026-11-12T23:03:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -159,4 +159,8 @@ Ten-query Batch 04 followup chain launched through notify_exit.py PID 41699, job
 Batch 04 closed after independent ten-alternative followup review and execution audit. All obligations covered; four new comparisons remain unresolved and three strengthen existing roots, without new event roots. Original ledgers preserved with separate closure overlays. Primary cumulative now80 fully reviewed games,33W/23D/24L; prepared27/22/23,unaided6/1/1. Twenty actual automatic-claim draws and three dead positions remain distinct. See batch-04-review/closure.md and closure-summary.json. Totals33,577queries/11,340jobs/58.750612VM-hours/US$11.844593 estimated compute; full meanUS$29.61. Batch04 base/deep/followup concurrency5/8/6 with allocation failures53/5/6 retained separately from zero scientific failures. Original Batch05 offline provenance passed; proceed with original AutoClaim and one exit-notification chain.120games remain; no final priorities or production engineering.
 
 Original Batch 05 accepted as msh161-primary-b05-v1 (QUEUED at submission), UID msh161-primary-b05-c99ebe6c-0f4e-41fc0, from reviewed checkpoint 6ce5bf98. Original manifest/image/runnable and ten tasks with maximum eight-worker parallelism verified. One notify_exit.py wrapper PID 43389 runs the existing event-driven wait/retrieve workflow; its local receipt reports running and waiting for terminal completion. See cloud-primary/batch-05 launch and submission receipts. No duplicate processes or searches. Current scientific coverage is 80 fully reviewed games; the remaining 120 proceed in original-condition reviewed batches.
+
+Batch 05 base computation, retrieval and notification succeeded. Coordinator receipt bindings passed for 1,751 jobs / 26,191 objects; no duplicate retrieval. Independent gameplay panels and native/query/runtime audit are underway before required 20M selection. There are 100 played games and 80 fully reviewed games; preserve this distinction until scientific closure. Original AutoClaim, binaries, image and cloud configuration remain unchanged. Next freeze required deep comparisons, launch one exit-notified plan and review before Batch 06.
+
+Batch 05 independent gameplay/integrity reviews passed: 8 wins, 6 draws, 6 losses; 5,196 initial queries and 1,731 matched 5M queries. Four uncertain audit controls retained, no stable missed-error trigger. Eight actual workers, no allocation/scientific failures, all deleted. Primary cumulative estimate US$13.599458 / 67.454951 VM-hours; full compute mean US$29.12. Frozen required 20M plan in batch-05-adjudication has 453 roots / 699 jobs / 714 queries, including 15 discoveries. Exact ledgers and index preserved as gzip archives. Launch one existing exit-notified plan, independently review results and distinct new alternatives, then close Batch 05 before Batch 06. Current scientific cumulative remains 80 reviewed / 100 played.
 <!-- SECTION:NOTES:END -->

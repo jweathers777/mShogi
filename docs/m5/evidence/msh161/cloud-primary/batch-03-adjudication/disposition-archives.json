@@ -1,0 +1,16 @@
+{
+  "before_followup": true,
+  "files": [
+    {
+      "file": "dispositions20m-00-04.json.gz",
+      "sha256": "4fb1c8c054a32f517d5a222373d913e694e1cb24e27387878772c6d054353a81",
+      "uncompressed_sha256": "1862e1fda57df3c865bfb9974a7c53c31880afaecf4fde99baafba1b927e02dd"
+    },
+    {
+      "file": "dispositions20m-05-09.json.gz",
+      "sha256": "9c3bbf2c1ca1b7442a564302254277bd5eb2f08b01a085fedc198f87d6c8527d",
+      "uncompressed_sha256": "fdc7c3f5ca3d8f9417cd3854fc080c2564ff84743fb30f75d88939fe505d47cf"
+    }
+  ],
+  "update_policy": "Preserve these pre-followup ledgers; write a separate followup/closure overlay. A secondary finite comparison remains separate from a primary loss cause; normalize threshold support and secondary tags explicitly when merging cumulative counts."
+}

@@ -1,0 +1,68 @@
+{
+  "status": "admitted",
+  "plan_sha256": "309aba6b7a616a8b1870c52e91808388c82537efd496cca358efcb525a70a4d9",
+  "new_queries": 7,
+  "reused_played_queries": 7,
+  "bins": 7,
+  "exact_supporting_histories_and_PV_moves_checked": true,
+  "original_build_image_preserved": true,
+  "rows": [
+    {
+      "pair": "main-03-01",
+      "game": 1,
+      "ply": 33,
+      "played": "b6c7",
+      "new_alternative": "b6d8",
+      "origin": "linked played PV"
+    },
+    {
+      "pair": "main-03-01",
+      "game": 1,
+      "ply": 67,
+      "played": "c5f8",
+      "new_alternative": "g8h7",
+      "origin": "linked played PV"
+    },
+    {
+      "pair": "main-03-01",
+      "game": 1,
+      "ply": 69,
+      "played": "f8e7",
+      "new_alternative": "g8h7",
+      "origin": "linked played PV"
+    },
+    {
+      "pair": "main-03-02",
+      "game": 0,
+      "ply": 18,
+      "played": "e4f6",
+      "new_alternative": "g1f3",
+      "origin": "linked played PV"
+    },
+    {
+      "pair": "main-03-02",
+      "game": 0,
+      "ply": 21,
+      "played": "a7a5",
+      "new_alternative": "b7b5",
+      "origin": "linked played PV"
+    },
+    {
+      "pair": "main-03-02",
+      "game": 0,
+      "ply": 33,
+      "played": "d8d6",
+      "new_alternative": "a6b6",
+      "origin": "linked played PV"
+    },
+    {
+      "pair": "main-03-06",
+      "game": 0,
+      "ply": 22,
+      "played": "h4g5",
+      "new_alternative": "g2g3",
+      "origin": "unrestricted discovery"
+    }
+  ],
+  "scope": "Only these seven distinct new alternatives; no repeat played searches or games. Other unresolved comparisons remain unresolved."
+}

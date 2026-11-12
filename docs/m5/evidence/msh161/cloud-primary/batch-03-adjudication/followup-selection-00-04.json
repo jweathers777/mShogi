@@ -1,0 +1,92 @@
+[
+  {
+    "pair": "main-03-01",
+    "game": 1,
+    "ply": 33,
+    "moves": [
+      "b6c7",
+      "b6d8"
+    ],
+    "reason": "Distinct reply in the preceding played 20M PV needs an equal-work singleton before a linked opportunity/defense claim. Adjacent-root values alone do not establish its value. Reuse existing played 20M evidence; do not repeat existing alternatives.",
+    "supporting_root": {
+      "pair": "main-03-01",
+      "game": 1,
+      "ply": 32
+    }
+  },
+  {
+    "pair": "main-03-01",
+    "game": 1,
+    "ply": 67,
+    "moves": [
+      "c5f8",
+      "g8h7"
+    ],
+    "reason": "Distinct reply in the preceding played 20M PV needs an equal-work singleton before a linked opportunity/defense claim. Adjacent-root values alone do not establish its value. Reuse existing played 20M evidence; do not repeat existing alternatives.",
+    "supporting_root": {
+      "pair": "main-03-01",
+      "game": 1,
+      "ply": 66
+    }
+  },
+  {
+    "pair": "main-03-01",
+    "game": 1,
+    "ply": 69,
+    "moves": [
+      "f8e7",
+      "g8h7"
+    ],
+    "reason": "Distinct reply in the preceding played 20M PV needs an equal-work singleton before a linked opportunity/defense claim. Adjacent-root values alone do not establish its value. Reuse existing played 20M evidence; do not repeat existing alternatives.",
+    "supporting_root": {
+      "pair": "main-03-01",
+      "game": 1,
+      "ply": 68
+    }
+  },
+  {
+    "pair": "main-03-02",
+    "game": 0,
+    "ply": 18,
+    "moves": [
+      "e4f6",
+      "g1f3"
+    ],
+    "reason": "Distinct reply in the preceding played 20M PV needs an equal-work singleton before a linked opportunity/defense claim. Adjacent-root values alone do not establish its value. Reuse existing played 20M evidence; do not repeat existing alternatives.",
+    "supporting_root": {
+      "pair": "main-03-02",
+      "game": 0,
+      "ply": 17
+    }
+  },
+  {
+    "pair": "main-03-02",
+    "game": 0,
+    "ply": 21,
+    "moves": [
+      "a7a5",
+      "b7b5"
+    ],
+    "reason": "Distinct reply in the preceding played 20M PV needs an equal-work singleton before a linked opportunity/defense claim. Adjacent-root values alone do not establish its value. Reuse existing played 20M evidence; do not repeat existing alternatives.",
+    "supporting_root": {
+      "pair": "main-03-02",
+      "game": 0,
+      "ply": 20
+    }
+  },
+  {
+    "pair": "main-03-02",
+    "game": 0,
+    "ply": 33,
+    "moves": [
+      "d8d6",
+      "a6b6"
+    ],
+    "reason": "Distinct reply in the preceding played 20M PV needs an equal-work singleton before a linked opportunity/defense claim. Adjacent-root values alone do not establish its value. Reuse existing played 20M evidence; do not repeat existing alternatives.",
+    "supporting_root": {
+      "pair": "main-03-02",
+      "game": 0,
+      "ply": 32
+    }
+  }
+]

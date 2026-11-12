@@ -1,0 +1,15 @@
+[
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 22,
+    "moves": [
+      "h4g5",
+      "g2g3"
+    ],
+    "reason": "Unrestricted 20M discovery selected a distinct alternative. Require its singleton 20M; reuse existing hash-bound played singleton without rerun.",
+    "reuse_played_jobs": [
+      "ab8f7825479cb698d50cf89adee1c613451f0cb5a6490e7b0f79a54e8233e826"
+    ]
+  }
+]

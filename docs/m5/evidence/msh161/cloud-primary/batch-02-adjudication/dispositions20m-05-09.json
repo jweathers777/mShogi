@@ -1,14 +1,13 @@
 {
   "scope": "fresh primary Linux batch02;201selected decisions;20M supersedes5M only queried roots; selectedlegalPVs verified offline",
-  "verified_raw_queries": 359,
-  "last_two_PV_plies_verified": 23484,
+  "verified_raw_queries": 360,
+  "last_two_PV_plies_verified": 23552,
   "plan_sha256": "15ba357c687baa600d9802b1986664ed2621593cd8b2c2488dcdf22ecec8ce99",
   "status_counts": {
     "unresolved20m": 43,
-    "supported20m": 75,
+    "supported20m": 76,
     "same_choice_control20m": 51,
-    "subthreshold_or_reverse20m": 31,
-    "awaiting_linked_singleton20m": 1
+    "subthreshold_or_reverse20m": 31
   },
   "decisions": [
     {
@@ -9411,10 +9410,10 @@
       "ply": 96,
       "engine": 0,
       "played": "f4f5",
-      "compared_alternative": "f3e4",
+      "compared_alternative": "c5e4",
       "prior_status": "subthreshold_reverse",
-      "status": "awaiting_linked_singleton20m",
-      "observed_margin": 0.0035000000000000586,
+      "status": "supported20m",
+      "observed_margin": 0.4950000000000001,
       "queries": [
         {
           "job": "ed6d8aa84c152818561382661e9cad32f075b27a936d1dae4ef403b03c4b5807",
@@ -9457,14 +9456,35 @@
             "sha256": "f982972e41020719efd2c68659c41130bef9ff44452a215f32e29bcf2eabc3f8"
           },
           "san": "f5"
+        },
+        {
+          "job": "2f7eca6ddbf6dfdfa340d12c7b489a33b6e084c42fce5c7c1e7f26a25afab637",
+          "forced_move": "c5e4",
+          "bestmove": "c5e4",
+          "role": "alternative",
+          "range": [
+            0.9995,
+            0.9995
+          ],
+          "E": 0.9995,
+          "stable_eligible": true,
+          "flags": [],
+          "pv_san": "Ne4 gxf4 Kxf4 Kg7 Nd6 Rc1 e7 Rf1+ Kg4 Nh7 Bh5 Nf6+ Kg5 Nh7+ Kxh4 Nf6 b5 Kh6 e8=Q Nxe8 Bxe8 Rf3 b6 axb6 a4 Rf6 Nc8 Rf4+ Kg3 Kg5 Bd7 Rb4 Kf3 Rb5",
+          "raw_artifact": {
+            "bytes": 45864,
+            "key": "msh161-primary-v1-batch-02/jobs/2f7eca6ddbf6dfdfa340d12c7b489a33b6e084c42fce5c7c1e7f26a25afab637/attempts/1f5b344bd2c04faf81e1f9c6a78e1b68/artifacts/analysis/g000-p096-alternative-attempt0000.json",
+            "sha256": "ca3a6a5f17749565348cf8ee77cc8d00d6a3c5a03048e285126dd13e6e046ca7"
+          },
+          "san": "Ne4"
         }
       ],
       "remaining_dependencies": [
-        "earlier/linked uncertainty retained; see episode review; no absolute first/largest claim",
-        "New20M p95 played ...g5 PV exposes Ne4(c5e4), absent from frozen p96 forced alternatives. Existing f5 versus Ke4 is subthreshold only; broader opportunity unresolved until newforcedsingleton."
+        "Earlier p88\u201392 and unqueried/linked uncertainty retained; no final first/largest or causal-chain claim.",
+        "New Ne4 forced20M and reused f5 support finite difference; prior f5/Ke4 result preserved only within that narrower comparison.",
+        "No exact tablebase or actual-native-result attribution from finite estimates."
       ],
-      "nominal_margin_severity": null,
-      "severity": null,
+      "nominal_margin_severity": "major",
+      "severity": "major",
       "discovery_status": "not_requested",
       "first_largest_final": false,
       "existing_comparison_status": "subthreshold_or_reverse20m",
@@ -9475,10 +9495,31 @@
           0.5045
         ],
         "alternative": [
-          0.508,
-          0.508
+          0.9995,
+          0.9995
         ]
-      }
+      },
+      "pre_followup_disposition": {
+        "status": "awaiting_linked_singleton20m",
+        "compared_alternative": "f3e4",
+        "observed_margin": 0.0035000000000000586,
+        "existing_comparison_status": "subthreshold_or_reverse20m",
+        "comparison_ranges": {
+          "played": [
+            0.504,
+            0.5045
+          ],
+          "alternative": [
+            0.508,
+            0.508
+          ]
+        },
+        "remaining_dependencies": [
+          "earlier/linked uncertainty retained; see episode review; no absolute first/largest claim",
+          "New20M p95 played ...g5 PV exposes Ne4(c5e4), absent from frozen p96 forced alternatives. Existing f5 versus Ke4 is subthreshold only; broader opportunity unresolved until newforcedsingleton."
+        ]
+      },
+      "followup_receipt": "../batch-02-followup/review-08g0p96.json"
     },
     {
       "pair": "main-02-08",
@@ -13965,5 +14006,12 @@
     "Selected20M supersedes5M at queriedroots only.",
     "Stableforcedcontrols do not clear an unstable unrestricted estimate.",
     "No first/largest orfinalpriorities; literal .05/.025 eligibility arithmetic."
-  ]
+  ],
+  "followup_summary": {
+    "completed_new_singletons": 1,
+    "reused_played_queries": 1,
+    "remaining_new_singletons": 0,
+    "receipt": "../batch-02-followup/review-08g0p96.json",
+    "superseded_overlay": "dispositions20m-05-09-before-followup.json"
+  }
 }

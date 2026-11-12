@@ -17,3 +17,7 @@ Independently checked the additional08/game0p96request: its full native history 
 The report retains07/0threefold and08/1fifty-move native draws with their unplayed intended moves. Finite earlier board opportunities are not presented as proved missed native outcomes. Repeated attack/ending opportunities are correlated histories, not independent mistake counts.
 
 No blocking interpretation findings remain. This receipt supports the proposed one-query followup and combined review; it does not close the missing-singleton gate or confirm an unqueried alternative.
+
+## Completed followup supersession
+
+The previously pending08/game0p96Ne4 singleton is now complete and independently passes [the followup cross-review](../batch-02-followup/cross-review-08g0p96.md), which binds the revised overlay/narrative bytes. Matched margin.4950000000000001 supports major finite difference; old played/Ke4 evidence and the original pending snapshot remain. Current second-half counts are76supported,43unresolved,51controls and31subthreshold. No missing singleton remains. The original hash bindings above intentionally record the pre-followup review state.

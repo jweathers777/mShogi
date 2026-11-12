@@ -1,0 +1,15 @@
+{
+  "verification": "9 offline transition tests passed:7cohort admission,2smoke validator with7negative mutations",
+  "command": "/private/tmp/msh162-controller/bin/python -m unittest discover -s docs/m5/evidence/msh161/cloud-primary/policy-transition -p 'test_*.py'",
+  "files": {
+    "build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+    "build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+    "prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+    "run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+    "test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+    "test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+    "validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2"
+  },
+  "review": "deployment-script-review.md and native-independent-review.md; root caught/corrected native start-event shape before actual match",
+  "actual_match": "not yet run"
+}

@@ -1,0 +1,24 @@
+{
+  "measured_primary_games": 40,
+  "measured_base_batches": 2,
+  "measured20m_panels": 2,
+  "measured_followup_queries": 2,
+  "measured_reference_queries": 17783,
+  "measured_scientific_jobs": 5942,
+  "failed_scientific_attempts": 0,
+  "estimated_completed_primary_vm_hours": 29.40975371155474,
+  "estimated_completed_primary_compute_usd": 5.929241626279128,
+  "actual_billed_cost": null,
+  "full200_mean_workload_compute_reference_usd": 29.646208131395642,
+  "remaining160_mean_workload_compute_reference_usd": 23.716966505116513,
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "inclusive_remaining160_conditional_before_tax_usd": [
+    30,
+    80
+  ],
+  "scope": "Two basebatches+two panels+two actualfollowupqueries. Reusedplayedqueries counted only inoriginalpanel; no doublecount. Mac/pilots excluded.",
+  "forecast_limit": "Mean scaling only; laterpanel/followupcounts differ. Ancillary/scenario assumptions retained, not bill/cap/confidenceinterval."
+}

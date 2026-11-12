@@ -58,3 +58,20 @@ but the end-to-end study also includes retrieval, deeper checks and independent
 review. The earlier Mac base batch took6h54m versus2h19m for this cloud base batch;
 different games, query workloads and hardware prevent treating this as a
 controlled speedup. Configured eight-way parallelism is not guaranteed availability.
+
+## Update at the batch02 policy boundary
+
+Two reviewed batches, both20M panels and the two distinct followup queries total
+29.409754VM-hours and US$5.929242estimated compute for40primary games and17,783
+reference queries. These are measured VM lifetimes priced at the recorded rate,
+not reconciled bills. See `batch-02-followup/forecast-update.json` and its runtime
+integrity review; reused played queries are counted only once.
+
+Mean-workload scaling gives US$29.65compute for200games, US$23.72remaining. Retain
+US$35–90full /US$30–80remaining160 as conditional inclusive planning ranges. The
+new automatic-threshold-only policy can lengthen games and change which events
+need deeper analysis; those effects are not yet measured. The prior29–48processing
+hours is an AutoClaim-based scenario, not a forecast guaranteed for the amended
+policy. Update timing/cost after the first corrected batch. Build/deployment,
+short validation and review pauses are separate overhead, to be recorded when
+observed. Scientific coverage remains200games regardless of these estimates.

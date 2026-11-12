@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "native_source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+  "build_sha256": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+  "log_sha256": "b9285338d4cb7d2fbb715bad533a353d63c96021e771c73843fbcfc322f8b8cc",
+  "wall_seconds": 113.92923855781555,
+  "all_four_binary_hashes_verified": true,
+  "opponent_reference_reused_unchanged": true,
+  "wrapper_settled": true,
+  "queue_accepted": true,
+  "runtime_embedded_revision_check": "Pending actual cloud runner validation; build alone does not establish it"
+}

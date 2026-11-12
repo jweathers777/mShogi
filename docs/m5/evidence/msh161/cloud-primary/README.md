@@ -6,7 +6,23 @@ MSH-162 (Parallel Experiment Runner) at `bb5e698e`. All64 local integration test
 passed. Independent runtime/scientific reviews are in `../migration/`; the actual
 manifest review is `manifest-admission.json`. No new pilot was needed.
 
-## Frozen primary sample
+## Current owner-authorized policy transition
+
+The12November draw-policy direction supersedes the AutoClaim freeze for future
+batches. Batch02 and its two-query followup are complete; no workers remain and
+batch03 has not started. The40completed primary games remain authoritative under
+their original conditions. Their12optional-claim draws are potentially affected.
+Do not replay or discard them. See `policy-transition/owner-direction.md`.
+
+Before batch03: verify the bounded search/UCI/runner correction, build corrected
+Linux binaries and pinned worker image, run one short actual two-engine match,
+and admit amended manifests for the remaining160games. Opening pairs, equal5s
+thinking time and full reference coverage remain unchanged. Future results form
+a separate policy/source stratum; do not pool draw/conversion rates as uniform.
+Earlier continuation instructions below are historical and cannot bypass this
+deployment gate. No unrelated engineering is authorized.
+
+## Original frozen primary sample
 
 `cohort-freeze.json` covers all100original pairs /200games, in ten20-game batches.
 Each batch has9prepared pairs and1unaided pair. `prepare_cohort.py` exported the
@@ -31,7 +47,26 @@ remain frozen. Each batch runs games, full500k screening and selected matched5M
 queries. Consequential20M work and independent episode review remain separate
 obligations; completion of a pipeline alone does not confirm chess mistakes.
 
-## Current batch and next review
+## Completed batches and current deployment gate
+
+Batch02 review is now closed, including both distinct20Mfollowups and independent
+cross-reviews. `batch-02-review/closure.md` and `primary-cumulative.json` record
+40games:17wins,12draws,11losses. `policy-transition/policy-strata.json` binds all
+native records and flags11threefold/one50-move claim draws. The110supported
+candidate comparisons are selected correlated events, not population error rates
+or final priorities. Earlier/linked uncertainty remains.
+
+Reviewed correction commit: `ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0`.
+The bounded Linux build succeeded through `policy-transition/build_linux.py`
+and the exit notifier; see its launch/state/notification records. Do not duplicate
+it. Native binary hashes and wrapper exit/notification passed. Build/push the worker image, perform the
+short cloud two-engine validation, admit amended manifests and continue batch03.
+No new owner approval is required. Preserve the original40games and all failures.
+
+The older batch narrative below is retained for provenance. Its pending-followup
+and frozen-policy continuation wording is superseded by this current gate.
+
+### Batch01 and historical batch02 execution records
 
 Primary batch01 is reviewed through required20M. Native20-game result:8W/5D/7L.
 `batch-01-closure.md` and `primary-cumulative.json` preserve the full dispositions,

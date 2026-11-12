@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T13:51:00Z'
+updated_date: '2026-11-12T13:56:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -119,4 +119,6 @@ Twoqueryfollowup plan independentlyadmitted SHA5fa4df35fd4cf41df4f337ba8b9f1c309
 Newexplicitowner12Novemberdirection authorizes small production draw-policy correction andnecessarydeployment, superseding oldfrozen/noengineeringrestriction onlyinthisscope. Fullrequirements cloud-primary/policy-transition/owner-direction.md. Currentbatch02andfollowupscomplete,cleanupverified; no activeworkers/no batch03submitted. CoordinatorownsMSH161/codex-rewrite; boundedimplementation/review/deployment now beforecontinuation. No newlargevalidationcampaign.
 
 Bounded draw-policy correction: native/search/UCI/runner focused checks pass (builder receipt under cloud-primary/policy-transition/native-verification.json); independent Rust review in progress. Batch02 and two-query followup completed, no active workers; batch03 remains gated on corrected Linux image, one short actual two-engine validation and amended manifest admission. Earlier40games remain AutoClaim; remaining160 will be separate automatic-threshold-only stratum. No replay or unrelated production changes.
+
+Reviewed draw-policy correction integrated at ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0. Focused native/search/UCI/runner tests and14adapter tests pass; broader Python suite66/67 has pre-existing quick-status old-store expectation mismatch. Targeted Level2; Linux build launched unattended with exit callback (policy-transition/linux-build-launch.json), no cloud worker or game started. Batch02 closure and primary cumulative40game record derived independently;12optional-claim draws retained/flagged. Next: corrected image, one short actual cloud match, final amended manifest admission, batch03; no further approval needed.
 <!-- SECTION:NOTES:END -->

@@ -1,0 +1,9 @@
+# MSH-161 (Competitive Gameplay Diagnosis): linked08/game0p96 followup
+
+**Supported finite comparison; no further query required.** New Ne4 (`c5e4`) at the exact fresh-cloud p96root has observed20M range[.9995,.9995], no flags and stable aligned reports. Reused played f5 (`f4f5`) has[.504,.5045], stable with the permitted lone stale-report flag. Literal minimum-alternative minus maximum-played margin is.4950000000000001: major under the frozen method. The old Ke4[.508,.508] comparison remains subthreshold in its narrower scope; the earlier pending disposition and all original queries are preserved.
+
+The new result passed core result/hash verification, settled/untruncated20M execution and native complete-history identity. The supporting p95 ...g5 record's complete history plus the actual played g6g5 equals this root, and its PV explicitly proposes Ne4. All102plies in the new selected and last-two PVs are legal. The new PV begins **Ne4 gxf4 Kxf4 Kg7 Nd6 Rc1 e7 Rf1+ Kg4 Nh7 Bh5 Nf6+ Kg5 Nh7+ Kxh4**, giving a concrete defensive/coordination resource followed by passed-pawn play. This is finite reference support, not a forced line, tablebase result or empirical win probability.
+
+The sequence p94 e6, p95 ...g5, p96 f5 therefore contains an independently supported renewed opportunity and response comparison. Earlier p88–92 uncertainty remains, so this does not establish an absolute first/largest or uninterrupted cause of defeat. Later p104 Kd4 remains a separate supported board-choice comparison. Native game loss is unchanged.
+
+Exactly one new forced singleton was used; the existing played20M result was reused without rerun. `review-08g0p96.json` retains query/source/native hashes, full ranges, report description and legal continuations. The canonical batch02 overlay/narrative now incorporates this result; `*-before-followup` files preserve their original pending bytes. No engines or cloud calls were made by this review.

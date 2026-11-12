@@ -1,0 +1,31 @@
+{
+  "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+  "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+  "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+  "architecture": "x86_64",
+  "system": "Linux",
+  "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+  "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+  "engines": {
+    "candidate": {
+      "path": "/opt/engines/mshogi",
+      "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+      "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+    },
+    "runner": {
+      "path": "/opt/engines/mshogi-match",
+      "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+      "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+    },
+    "oxidation060": {
+      "path": "/opt/engines/oxidation",
+      "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+      "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+    },
+    "stockfish19": {
+      "path": "/opt/engines/stockfish",
+      "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+      "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+    }
+  }
+}

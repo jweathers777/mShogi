@@ -1,0 +1,121 @@
+{
+  "status": "passed_scientific_execution_cleanup_reconciled",
+  "audit_execution_note": "Offline audit uses one scoped attempt inventory. No engines, scientific queries, retries or submissions.",
+  "plan_sha256": "5fa4df35fd4cf41df4f337ba8b9f1c309420c65ba7d7cfe15e30b2ce5b24ad10",
+  "verification_sha256": "bf49a87c157a4c14906e37bde85ffdf3d4658f20afbe51ddd0a443c015b035ad",
+  "audit_script_sha256": "c4022ab6998400c8452afcedf41d478c149ae9d9067697df2c73d2ea347d98d4",
+  "jobs": 2,
+  "queries": 2,
+  "decisions": 2,
+  "discovery_jobs": 0,
+  "failed_attempts": 0,
+  "unresolved_claims": 0,
+  "job_wall_seconds": 42.469356766,
+  "job_cpu_seconds": 34.002668,
+  "query_wall_seconds": 33.937263552,
+  "query_cpu_seconds": 33.926692,
+  "query_wall_mean_seconds": 16.968631776,
+  "query_wall_max_seconds": 18.345115213,
+  "flags": {
+    "directional_bound_conflicts": 0,
+    "stable_report_heuristic": 2
+  },
+  "workers": {
+    "1110895042187787947": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "1110895042187787947",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "5311239621631835819": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "5311239621631835819",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    }
+  },
+  "tasks": [
+    {
+      "task": "0",
+      "start": "2026-11-12T13:34:24.761450394Z",
+      "end": "2026-11-12T13:34:46.813686914Z",
+      "seconds": 22.0522358417511
+    },
+    {
+      "task": "1",
+      "start": "2026-11-12T13:34:16.985295214Z",
+      "end": "2026-11-12T13:34:46.810546054Z",
+      "seconds": 29.82525086402893
+    }
+  ],
+  "task_elapsed_seconds": 29.8283908367157,
+  "submission_to_last_task_seconds": 82.34531688690186,
+  "concurrency_seconds": {
+    "0": 0.0,
+    "1": 7.779294967651367,
+    "2": 22.04909586906433
+  },
+  "peak_concurrency": 2,
+  "vm_lifecycle_hours": 0.04059023771021101,
+  "vms": [
+    {
+      "id": "5311239621631835819",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-77114ab6-ceb8-42df0-group0-0-vcvh",
+      "start": "2026-11-12T13:33:55.671099Z",
+      "deleted": "2026-11-12T13:35:09.016455Z",
+      "seconds": 73.34535598754883
+    },
+    {
+      "id": "1110895042187787947",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-77114ab6-ceb8-42df0-group0-0-r42g",
+      "start": "2026-11-12T13:33:55.709638Z",
+      "deleted": "2026-11-12T13:35:08.489138Z",
+      "seconds": 72.77949976921082
+    }
+  ],
+  "estimated_compute_usd": 0.00818331664428022,
+  "price_basis": "Recorded0.201608USD/VM-hour; actual billing unknown",
+  "wrapper_status": "success",
+  "computation_returncode": 0,
+  "wrapper_cleanup_error": null,
+  "queue_accepted": true,
+  "local_reconciliation": {
+    "method": "No current local process census; successful wrapper settled-group receipt reused",
+    "wrapper_pid": 81834,
+    "child_pid": 81836,
+    "recorded_process_group_settled": true
+  },
+  "remaining_instances": [],
+  "remaining_disks": [],
+  "wait_verify_elapsed_seconds": 115.58038115501404,
+  "after_last_cloud_task_to_wrapper_finish_seconds": 33.708067178726196,
+  "postcloud_timing_limit": "Combined PubSub delivery, download, hash/PV/resource verification, receipt publication and local shutdown; exact download-only span not instrumented",
+  "resource_note": "Query totals nested inside jobs; VM lifecycle includes idle/startup/cleanup. Do not add overlapping totals.",
+  "scientific_limit": "New and reused20M comparison execution established; scientific comparison/claim interpretation remains separate.",
+  "reused_comparisons": [
+    {
+      "pair": "main-02-02",
+      "game": 0,
+      "ply": 65,
+      "new_move": "g8g7",
+      "reused_played": "f6f8",
+      "reused_job": "b236dd035944c6addfd6a842b23d3f56635e8cbac2e0d30cd16be3a926d8d94f",
+      "reused_artifact_sha256": "6c46e1d16a04c278a6b416c4b1ccef65c351b757094d4b823582db343b2df95c",
+      "same_history_budget_options_engine": true
+    },
+    {
+      "pair": "main-02-08",
+      "game": 0,
+      "ply": 96,
+      "new_move": "c5e4",
+      "reused_played": "f4f5",
+      "reused_job": "9b422919039805f20898fc910e26ef83185fc0250d982ffe9243f122083312c1",
+      "reused_artifact_sha256": "f982972e41020719efd2c68659c41130bef9ff44452a215f32e29bcf2eabc3f8",
+      "same_history_budget_options_engine": true
+    }
+  ],
+  "submission_preflight_seconds": 13.760967016220093,
+  "whole_driver_seconds": 131.5545699596405,
+  "failed_insert_completion_count": 0,
+  "operational_notices": []
+}

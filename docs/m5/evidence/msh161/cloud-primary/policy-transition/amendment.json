@@ -1,0 +1,15 @@
+{
+  "schema": "msh161-automatic-thresholds-v1",
+  "claim_policy": "explicit_only",
+  "uci_optional_claims_available": false,
+  "native_source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+  "original_study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+  "owner_direction": "docs/m5/evidence/msh161/cloud-primary/policy-transition/owner-direction.md",
+  "first_corrected_batch": 3,
+  "preserved_autoclaim_batches": [
+    1,
+    2
+  ],
+  "remaining_games": 160,
+  "scope": "Only controller optional claims and UCI unavailable-claim search handling; original opening pairs/opponents/time/reference coverage retained."
+}

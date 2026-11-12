@@ -1,0 +1,57 @@
+{
+  "native_revision": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+  "started_epoch": 1794491705.6192052,
+  "status": "success",
+  "commands": [
+    [
+      "git",
+      "clone",
+      "--no-hardlinks",
+      "--no-checkout",
+      "/Users/johnweathers/Development/Personal/mShogi",
+      "/private/tmp/msh161-policy-linux-build/source"
+    ],
+    [
+      "git",
+      "-C",
+      "/private/tmp/msh161-policy-linux-build/source",
+      "checkout",
+      "--detach",
+      "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+    ],
+    [
+      "/usr/local/bin/docker",
+      "run",
+      "--rm",
+      "--platform",
+      "linux/amd64",
+      "--name",
+      "msh161-policy-native-build",
+      "-v",
+      "/private/tmp/msh161-policy-linux-build/source:/src:ro",
+      "-v",
+      "/private/tmp/msh162-linux-target:/target",
+      "-v",
+      "/private/tmp/msh161-policy-linux-build/bin:/output",
+      "-e",
+      "CARGO_TARGET_DIR=/target",
+      "-e",
+      "RUSTFLAGS=-C target-cpu=x86-64",
+      "-e",
+      "GIT_CONFIG_COUNT=1",
+      "-e",
+      "GIT_CONFIG_KEY_0=safe.directory",
+      "-e",
+      "GIT_CONFIG_VALUE_0=/src",
+      "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+      "sh",
+      "-c",
+      "set -eu; apt-get update -qq; apt-get install -y -qq git gcc g++ libc6-dev pkg-config; rustc --version; cargo --version; dpkg-query -W git gcc g++ libc6-dev pkg-config; cd /src; timeout 1200 cargo build --release --locked -j2 -p mshogi-console --bin mshogi -p mshogi-runner --bin mshogi-match; cp /target/release/mshogi /target/release/mshogi-match /output/"
+    ]
+  ],
+  "build_sha256": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+  "binaries": "/private/tmp/msh161-policy-linux-build/bin",
+  "source_checkout": "/private/tmp/msh161-policy-linux-build/source",
+  "finished_epoch": 1794491819.5484438,
+  "log": "/private/tmp/msh161-policy-linux-build/build.log"
+}

@@ -1,0 +1,1552 @@
+{
+  "schema": "msh161-policy-strata-v1",
+  "paths_relative_to": "docs/m5/evidence/msh161/cloud-primary",
+  "owner_direction": {
+    "path": "policy-transition/owner-direction.md",
+    "sha256": "4b29a641bcb3c06cdd01b8acfb312cf2a35caae03576fdce4a0f3982f9518ba4"
+  },
+  "historical_results_preserved": true,
+  "replay_or_replacement_authorized": false,
+  "strata": [
+    {
+      "id": "primary-autoclaim-b01-b02",
+      "batches": [
+        "01",
+        "02"
+      ],
+      "games_completed": 40,
+      "controller_claim_policy": "auto_claim",
+      "uci_search_claim_policy": "historical optional claims admitted under recorded native policy",
+      "games_potentially_affected_by_controller_policy": 40,
+      "games_potentially_affected_by_search_policy": 40,
+      "actual_optional_claim_draws": 12,
+      "status": "completed_reviewed_evidence_preserved",
+      "native_games": [
+        {
+          "batch": "01",
+          "pair": "main-01-00",
+          "game": 0,
+          "candidate_result": "losses",
+          "played_decisions": 74,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/d99759ec1a4d7007b3b3bf85939bfb6dc8a8c74a41de1ea921d7a134506ff0a8/attempts/08d66d2331c049838a4f8d37fbfcc17f/artifacts/pair/report.json.gz",
+            "sha256": "d05bbe53e8c28f21e9dabbf7b90784e9838539f6966006e87c44a1a09cd78baf",
+            "key": "msh161-primary-v1-batch-01/jobs/d99759ec1a4d7007b3b3bf85939bfb6dc8a8c74a41de1ea921d7a134506ff0a8/attempts/08d66d2331c049838a4f8d37fbfcc17f/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-00",
+          "game": 1,
+          "candidate_result": "losses",
+          "played_decisions": 127,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/d99759ec1a4d7007b3b3bf85939bfb6dc8a8c74a41de1ea921d7a134506ff0a8/attempts/08d66d2331c049838a4f8d37fbfcc17f/artifacts/pair/report.json.gz",
+            "sha256": "d05bbe53e8c28f21e9dabbf7b90784e9838539f6966006e87c44a1a09cd78baf",
+            "key": "msh161-primary-v1-batch-01/jobs/d99759ec1a4d7007b3b3bf85939bfb6dc8a8c74a41de1ea921d7a134506ff0a8/attempts/08d66d2331c049838a4f8d37fbfcc17f/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "white"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-01",
+          "game": 0,
+          "candidate_result": "losses",
+          "played_decisions": 80,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/b9087e5c3ac434014361e3d4c72f5e4ba787edcaf8df8125f3186c2fb8eaefe3/attempts/5b4793566bd6471f9d8e10ecce1ba739/artifacts/pair/report.json.gz",
+            "sha256": "d9c3b97c901be28c39e45a58e49c1b2a486981a23f118b15c37d85958ec58700",
+            "key": "msh161-primary-v1-batch-01/jobs/b9087e5c3ac434014361e3d4c72f5e4ba787edcaf8df8125f3186c2fb8eaefe3/attempts/5b4793566bd6471f9d8e10ecce1ba739/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-01",
+          "game": 1,
+          "candidate_result": "draws",
+          "played_decisions": 156,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/b9087e5c3ac434014361e3d4c72f5e4ba787edcaf8df8125f3186c2fb8eaefe3/attempts/5b4793566bd6471f9d8e10ecce1ba739/artifacts/pair/report.json.gz",
+            "sha256": "d9c3b97c901be28c39e45a58e49c1b2a486981a23f118b15c37d85958ec58700",
+            "key": "msh161-primary-v1-batch-01/jobs/b9087e5c3ac434014361e3d4c72f5e4ba787edcaf8df8125f3186c2fb8eaefe3/attempts/5b4793566bd6471f9d8e10ecce1ba739/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-02",
+          "game": 0,
+          "candidate_result": "wins",
+          "played_decisions": 135,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/4540ba9a1cdf2f187c35647cbe5b3b4da8edaa9d71ddfdb7c1b7cbe2d878d78a/attempts/350cc3e7c49246c9bf9c9f0392f341f7/artifacts/pair/report.json.gz",
+            "sha256": "6e4870170143e9a9d51c6a086e5cb49cfec5adb1e51eda63c950cce321f69a98",
+            "key": "msh161-primary-v1-batch-01/jobs/4540ba9a1cdf2f187c35647cbe5b3b4da8edaa9d71ddfdb7c1b7cbe2d878d78a/attempts/350cc3e7c49246c9bf9c9f0392f341f7/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "white"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-02",
+          "game": 1,
+          "candidate_result": "draws",
+          "played_decisions": 38,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/4540ba9a1cdf2f187c35647cbe5b3b4da8edaa9d71ddfdb7c1b7cbe2d878d78a/attempts/350cc3e7c49246c9bf9c9f0392f341f7/artifacts/pair/report.json.gz",
+            "sha256": "6e4870170143e9a9d51c6a086e5cb49cfec5adb1e51eda63c950cce321f69a98",
+            "key": "msh161-primary-v1-batch-01/jobs/4540ba9a1cdf2f187c35647cbe5b3b4da8edaa9d71ddfdb7c1b7cbe2d878d78a/attempts/350cc3e7c49246c9bf9c9f0392f341f7/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-03",
+          "game": 0,
+          "candidate_result": "draws",
+          "played_decisions": 131,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/d290b2dd421122f6815e70982b5a09e04cf5f1b24c0c4ee6cf6a514820eaae9d/attempts/8ae1cde5b79e49d49d1732c67990a38c/artifacts/pair/report.json.gz",
+            "sha256": "c01bf9cc200b705390482b7e8bebe7f6f32595fcb8d37e519f70522745170236",
+            "key": "msh161-primary-v1-batch-01/jobs/d290b2dd421122f6815e70982b5a09e04cf5f1b24c0c4ee6cf6a514820eaae9d/attempts/8ae1cde5b79e49d49d1732c67990a38c/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-03",
+          "game": 1,
+          "candidate_result": "wins",
+          "played_decisions": 108,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/d290b2dd421122f6815e70982b5a09e04cf5f1b24c0c4ee6cf6a514820eaae9d/attempts/8ae1cde5b79e49d49d1732c67990a38c/artifacts/pair/report.json.gz",
+            "sha256": "c01bf9cc200b705390482b7e8bebe7f6f32595fcb8d37e519f70522745170236",
+            "key": "msh161-primary-v1-batch-01/jobs/d290b2dd421122f6815e70982b5a09e04cf5f1b24c0c4ee6cf6a514820eaae9d/attempts/8ae1cde5b79e49d49d1732c67990a38c/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-04",
+          "game": 0,
+          "candidate_result": "losses",
+          "played_decisions": 154,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/ccbeca98cf75bafb275db73d1fd40955bea0a67be0837a1843380f9b13f85d55/attempts/02ac9ec3459e412ab7d3e5d7a73577ec/artifacts/pair/report.json.gz",
+            "sha256": "a3b349c7be04a1654dec5cee11fdaf691eb8c2149c45d63bd222a8250d5f9921",
+            "key": "msh161-primary-v1-batch-01/jobs/ccbeca98cf75bafb275db73d1fd40955bea0a67be0837a1843380f9b13f85d55/attempts/02ac9ec3459e412ab7d3e5d7a73577ec/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-04",
+          "game": 1,
+          "candidate_result": "wins",
+          "played_decisions": 154,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/ccbeca98cf75bafb275db73d1fd40955bea0a67be0837a1843380f9b13f85d55/attempts/02ac9ec3459e412ab7d3e5d7a73577ec/artifacts/pair/report.json.gz",
+            "sha256": "a3b349c7be04a1654dec5cee11fdaf691eb8c2149c45d63bd222a8250d5f9921",
+            "key": "msh161-primary-v1-batch-01/jobs/ccbeca98cf75bafb275db73d1fd40955bea0a67be0837a1843380f9b13f85d55/attempts/02ac9ec3459e412ab7d3e5d7a73577ec/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-05",
+          "game": 0,
+          "candidate_result": "wins",
+          "played_decisions": 53,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+            "sha256": "13b96490c86620fb96f170b4ea3bf5381d6122a0d5eec78458aabc6c85466463",
+            "key": "msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "white"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-05",
+          "game": 1,
+          "candidate_result": "wins",
+          "played_decisions": 78,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+            "sha256": "13b96490c86620fb96f170b4ea3bf5381d6122a0d5eec78458aabc6c85466463",
+            "key": "msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-06",
+          "game": 0,
+          "candidate_result": "losses",
+          "played_decisions": 86,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+            "sha256": "f381cb88a9e6366d660ac76c9ef19a9c48c2aa49cc1193ca423f3a02c3d10222",
+            "key": "msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-06",
+          "game": 1,
+          "candidate_result": "losses",
+          "played_decisions": 75,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+            "sha256": "f381cb88a9e6366d660ac76c9ef19a9c48c2aa49cc1193ca423f3a02c3d10222",
+            "key": "msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "white"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-07",
+          "game": 0,
+          "candidate_result": "draws",
+          "played_decisions": 63,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+            "sha256": "7b5c7e09808eaf034216beec1fd6dcf82cc9905db21040b3986c1e3867dcbb32",
+            "key": "msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-07",
+          "game": 1,
+          "candidate_result": "losses",
+          "played_decisions": 137,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+            "sha256": "7b5c7e09808eaf034216beec1fd6dcf82cc9905db21040b3986c1e3867dcbb32",
+            "key": "msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "white"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-08",
+          "game": 0,
+          "candidate_result": "wins",
+          "played_decisions": 275,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+            "sha256": "0fa74574794384e06fc0e5d6385c6aa9e7edac9bb978b13fb345f51db586afeb",
+            "key": "msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "white"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-08",
+          "game": 1,
+          "candidate_result": "wins",
+          "played_decisions": 110,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+            "sha256": "0fa74574794384e06fc0e5d6385c6aa9e7edac9bb978b13fb345f51db586afeb",
+            "key": "msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-unaided",
+          "game": 0,
+          "candidate_result": "draws",
+          "played_decisions": 311,
+          "supplied_context_decisions": 0,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+            "sha256": "10f2d1213fcfc0ef90c0de02e25c352034c1f9a340092c058f6ef2f10b9a671c",
+            "key": "msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "01",
+          "pair": "main-01-unaided",
+          "game": 1,
+          "candidate_result": "wins",
+          "played_decisions": 146,
+          "supplied_context_decisions": 0,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+            "sha256": "10f2d1213fcfc0ef90c0de02e25c352034c1f9a340092c058f6ef2f10b9a671c",
+            "key": "msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-00",
+          "game": 0,
+          "candidate_result": "losses",
+          "played_decisions": 122,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784/attempts/bf77a810ea874838a94ad2949fb04d65/artifacts/pair/report.json.gz",
+            "sha256": "a67d54901892206a0ede5c8462e427f22b363f8c9c53b8ff671821678ad2b86d",
+            "key": "msh161-primary-v1-batch-02/jobs/b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784/attempts/bf77a810ea874838a94ad2949fb04d65/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-00",
+          "game": 1,
+          "candidate_result": "draws",
+          "played_decisions": 111,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784/attempts/bf77a810ea874838a94ad2949fb04d65/artifacts/pair/report.json.gz",
+            "sha256": "a67d54901892206a0ede5c8462e427f22b363f8c9c53b8ff671821678ad2b86d",
+            "key": "msh161-primary-v1-batch-02/jobs/b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784/attempts/bf77a810ea874838a94ad2949fb04d65/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-01",
+          "game": 0,
+          "candidate_result": "losses",
+          "played_decisions": 74,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/ef1e68048ab7fdf137b7dd7530a5240c0d7067e18ecad2fd409acebe577dce35/attempts/24d4891aef6e44538b057bd4e378efe8/artifacts/pair/report.json.gz",
+            "sha256": "2039d5a179b8315aa7a35f16060baecaa2966ce01237f893dfcd483701f7a111",
+            "key": "msh161-primary-v1-batch-02/jobs/ef1e68048ab7fdf137b7dd7530a5240c0d7067e18ecad2fd409acebe577dce35/attempts/24d4891aef6e44538b057bd4e378efe8/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-01",
+          "game": 1,
+          "candidate_result": "draws",
+          "played_decisions": 96,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/ef1e68048ab7fdf137b7dd7530a5240c0d7067e18ecad2fd409acebe577dce35/attempts/24d4891aef6e44538b057bd4e378efe8/artifacts/pair/report.json.gz",
+            "sha256": "2039d5a179b8315aa7a35f16060baecaa2966ce01237f893dfcd483701f7a111",
+            "key": "msh161-primary-v1-batch-02/jobs/ef1e68048ab7fdf137b7dd7530a5240c0d7067e18ecad2fd409acebe577dce35/attempts/24d4891aef6e44538b057bd4e378efe8/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-02",
+          "game": 0,
+          "candidate_result": "draws",
+          "played_decisions": 101,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/2fe380e07211066ec8af93eb89373327b9e8e54a4534f67da901ae8f1d946437/attempts/6099e1e710a44753ab38caf380d96afd/artifacts/pair/report.json.gz",
+            "sha256": "2db7aff8afaf5e0458eee5db596f527b3f5644ff60c4773004c2c5bf01e02fe3",
+            "key": "msh161-primary-v1-batch-02/jobs/2fe380e07211066ec8af93eb89373327b9e8e54a4534f67da901ae8f1d946437/attempts/6099e1e710a44753ab38caf380d96afd/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-02",
+          "game": 1,
+          "candidate_result": "draws",
+          "played_decisions": 227,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/2fe380e07211066ec8af93eb89373327b9e8e54a4534f67da901ae8f1d946437/attempts/6099e1e710a44753ab38caf380d96afd/artifacts/pair/report.json.gz",
+            "sha256": "2db7aff8afaf5e0458eee5db596f527b3f5644ff60c4773004c2c5bf01e02fe3",
+            "key": "msh161-primary-v1-batch-02/jobs/2fe380e07211066ec8af93eb89373327b9e8e54a4534f67da901ae8f1d946437/attempts/6099e1e710a44753ab38caf380d96afd/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-03",
+          "game": 0,
+          "candidate_result": "draws",
+          "played_decisions": 115,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/234d60dfb81a042e35cc394f0aed2175782910129f2e73ed8a409aa52bbe3f8b/attempts/bf7fbb33546d4e58b3d21107e72f335e/artifacts/pair/report.json.gz",
+            "sha256": "5cc7a671b63cbe7e6ac5d4f19e5193a64802f18dd9481b48066e4b5280d9c4a4",
+            "key": "msh161-primary-v1-batch-02/jobs/234d60dfb81a042e35cc394f0aed2175782910129f2e73ed8a409aa52bbe3f8b/attempts/bf7fbb33546d4e58b3d21107e72f335e/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-03",
+          "game": 1,
+          "candidate_result": "wins",
+          "played_decisions": 96,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/234d60dfb81a042e35cc394f0aed2175782910129f2e73ed8a409aa52bbe3f8b/attempts/bf7fbb33546d4e58b3d21107e72f335e/artifacts/pair/report.json.gz",
+            "sha256": "5cc7a671b63cbe7e6ac5d4f19e5193a64802f18dd9481b48066e4b5280d9c4a4",
+            "key": "msh161-primary-v1-batch-02/jobs/234d60dfb81a042e35cc394f0aed2175782910129f2e73ed8a409aa52bbe3f8b/attempts/bf7fbb33546d4e58b3d21107e72f335e/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-04",
+          "game": 0,
+          "candidate_result": "wins",
+          "played_decisions": 115,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/7a5cf021737548f6589192b73f055f4cd07408c6a1fb45e507a7f82d7bb34acb/attempts/8c7c11956a4145cba3716ba2494530d9/artifacts/pair/report.json.gz",
+            "sha256": "84a7e6daca7615b5ad95523a912a9b2cd913fc7639e6b873f5ae2e5631a68508",
+            "key": "msh161-primary-v1-batch-02/jobs/7a5cf021737548f6589192b73f055f4cd07408c6a1fb45e507a7f82d7bb34acb/attempts/8c7c11956a4145cba3716ba2494530d9/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "white"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-04",
+          "game": 1,
+          "candidate_result": "wins",
+          "played_decisions": 120,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/7a5cf021737548f6589192b73f055f4cd07408c6a1fb45e507a7f82d7bb34acb/attempts/8c7c11956a4145cba3716ba2494530d9/artifacts/pair/report.json.gz",
+            "sha256": "84a7e6daca7615b5ad95523a912a9b2cd913fc7639e6b873f5ae2e5631a68508",
+            "key": "msh161-primary-v1-batch-02/jobs/7a5cf021737548f6589192b73f055f4cd07408c6a1fb45e507a7f82d7bb34acb/attempts/8c7c11956a4145cba3716ba2494530d9/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-05",
+          "game": 0,
+          "candidate_result": "wins",
+          "played_decisions": 189,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+            "sha256": "ee3aa398518f547ec38d0efa6b0be8be1701a71e3dcb254394e3532d1eeab5c9",
+            "key": "msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "white"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-05",
+          "game": 1,
+          "candidate_result": "wins",
+          "played_decisions": 226,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+            "sha256": "ee3aa398518f547ec38d0efa6b0be8be1701a71e3dcb254394e3532d1eeab5c9",
+            "key": "msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-06",
+          "game": 0,
+          "candidate_result": "wins",
+          "played_decisions": 127,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+            "sha256": "1d7b814bf90c92c052193bcb361bed7a84b52fbd1bda2ef7fa081920cbbf8b0a",
+            "key": "msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "white"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-06",
+          "game": 1,
+          "candidate_result": "wins",
+          "played_decisions": 166,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+            "sha256": "1d7b814bf90c92c052193bcb361bed7a84b52fbd1bda2ef7fa081920cbbf8b0a",
+            "key": "msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-07",
+          "game": 0,
+          "candidate_result": "draws",
+          "played_decisions": 87,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+            "sha256": "56eb9e99f264e416153ad5beb10e76349792894c5f762c7537a24aa9fff144a4",
+            "key": "msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-07",
+          "game": 1,
+          "candidate_result": "wins",
+          "played_decisions": 214,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+            "sha256": "56eb9e99f264e416153ad5beb10e76349792894c5f762c7537a24aa9fff144a4",
+            "key": "msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-08",
+          "game": 0,
+          "candidate_result": "losses",
+          "played_decisions": 138,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+            "sha256": "5533b1e2df0ddda8795b7a000f09552d661c280a7a5b2fc35449624a407fb947",
+            "key": "msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-08",
+          "game": 1,
+          "candidate_result": "draws",
+          "played_decisions": 254,
+          "supplied_context_decisions": 16,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+            "sha256": "5533b1e2df0ddda8795b7a000f09552d661c280a7a5b2fc35449624a407fb947",
+            "key": "msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "fifty_move"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": true
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-unaided",
+          "game": 0,
+          "candidate_result": "losses",
+          "played_decisions": 142,
+          "supplied_context_decisions": 0,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+            "sha256": "3f3768c011bc3e52af6ab316b6164d29a77a1327fdcfef6705b5c98ff28ca2f8",
+            "key": "msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        },
+        {
+          "batch": "02",
+          "pair": "main-02-unaided",
+          "game": 1,
+          "candidate_result": "wins",
+          "played_decisions": 120,
+          "supplied_context_decisions": 0,
+          "native_report": {
+            "path": "local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+            "sha256": "3f3768c011bc3e52af6ab316b6164d29a77a1327fdcfef6705b5c98ff28ca2f8",
+            "key": "msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz"
+          },
+          "native_conclusion": {
+            "chess": {
+              "checkmate": {
+                "winner": "black"
+              }
+            }
+          },
+          "controller_policy": "auto_claim",
+          "optional_claim_policy_potentially_affected": true,
+          "search_policy_potentially_affected": true,
+          "actual_optional_claim_draw": false
+        }
+      ]
+    },
+    {
+      "id": "primary-explicit-only-b03-b10",
+      "batches": [
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10"
+      ],
+      "games_planned": 160,
+      "games_completed": 0,
+      "controller_claim_policy": "explicit_only",
+      "uci_search_claim_policy": "optional claims unavailable throughout UCI search; mandatory native outcomes retained",
+      "status": "pending_deployment_and_execution",
+      "openings_opponent_time_analysis": "Original remaining paired roots/unaided starts, fixed opponent, equal practical time and analysis coverage retained.",
+      "source_and_worker_identity": "To be frozen and verified by deployment; no future binary/image/source identity assumed here."
+    }
+  ],
+  "optional_claim_draws": [
+    {
+      "batch": "01",
+      "pair": "main-01-01",
+      "game": 1,
+      "event_index": 157,
+      "played_plies_including_preparation": 172,
+      "reason": "threefold",
+      "actor": "white",
+      "intended_move_unplayed": "e6f5",
+      "request_version": 157,
+      "reply_version": 158,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-01/jobs/b9087e5c3ac434014361e3d4c72f5e4ba787edcaf8df8125f3186c2fb8eaefe3/attempts/5b4793566bd6471f9d8e10ecce1ba739/artifacts/pair/report.json.gz",
+        "sha256": "d9c3b97c901be28c39e45a58e49c1b2a486981a23f118b15c37d85958ec58700",
+        "key": "msh161-primary-v1-batch-01/jobs/b9087e5c3ac434014361e3d4c72f5e4ba787edcaf8df8125f3186c2fb8eaefe3/attempts/5b4793566bd6471f9d8e10ecce1ba739/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 780237040255,
+          "version": 157,
+          "actor": "white",
+          "command": {
+            "claim": {
+              "reason": "threefold",
+              "intended": "e6f5"
+            }
+          }
+        },
+        "reply": {
+          "version": 158,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    },
+    {
+      "batch": "01",
+      "pair": "main-01-02",
+      "game": 1,
+      "event_index": 39,
+      "played_plies_including_preparation": 54,
+      "reason": "threefold",
+      "actor": "white",
+      "intended_move_unplayed": "d1e1",
+      "request_version": 39,
+      "reply_version": 40,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-01/jobs/4540ba9a1cdf2f187c35647cbe5b3b4da8edaa9d71ddfdb7c1b7cbe2d878d78a/attempts/350cc3e7c49246c9bf9c9f0392f341f7/artifacts/pair/report.json.gz",
+        "sha256": "6e4870170143e9a9d51c6a086e5cb49cfec5adb1e51eda63c950cce321f69a98",
+        "key": "msh161-primary-v1-batch-01/jobs/4540ba9a1cdf2f187c35647cbe5b3b4da8edaa9d71ddfdb7c1b7cbe2d878d78a/attempts/350cc3e7c49246c9bf9c9f0392f341f7/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 190074351030,
+          "version": 39,
+          "actor": "white",
+          "command": {
+            "claim": {
+              "reason": "threefold",
+              "intended": "d1e1"
+            }
+          }
+        },
+        "reply": {
+          "version": 40,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    },
+    {
+      "batch": "01",
+      "pair": "main-01-03",
+      "game": 0,
+      "event_index": 132,
+      "played_plies_including_preparation": 147,
+      "reason": "threefold",
+      "actor": "black",
+      "intended_move_unplayed": "f6f7",
+      "request_version": 132,
+      "reply_version": 133,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-01/jobs/d290b2dd421122f6815e70982b5a09e04cf5f1b24c0c4ee6cf6a514820eaae9d/attempts/8ae1cde5b79e49d49d1732c67990a38c/artifacts/pair/report.json.gz",
+        "sha256": "c01bf9cc200b705390482b7e8bebe7f6f32595fcb8d37e519f70522745170236",
+        "key": "msh161-primary-v1-batch-01/jobs/d290b2dd421122f6815e70982b5a09e04cf5f1b24c0c4ee6cf6a514820eaae9d/attempts/8ae1cde5b79e49d49d1732c67990a38c/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 655206067653,
+          "version": 132,
+          "actor": "black",
+          "command": {
+            "claim": {
+              "reason": "threefold",
+              "intended": "f6f7"
+            }
+          }
+        },
+        "reply": {
+          "version": 133,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    },
+    {
+      "batch": "01",
+      "pair": "main-01-07",
+      "game": 0,
+      "event_index": 64,
+      "played_plies_including_preparation": 79,
+      "reason": "threefold",
+      "actor": "black",
+      "intended_move_unplayed": "f7g8",
+      "request_version": 64,
+      "reply_version": 65,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+        "sha256": "7b5c7e09808eaf034216beec1fd6dcf82cc9905db21040b3986c1e3867dcbb32",
+        "key": "msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 315111223824,
+          "version": 64,
+          "actor": "black",
+          "command": {
+            "claim": {
+              "reason": "threefold",
+              "intended": "f7g8"
+            }
+          }
+        },
+        "reply": {
+          "version": 65,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    },
+    {
+      "batch": "01",
+      "pair": "main-01-unaided",
+      "game": 0,
+      "event_index": 312,
+      "played_plies_including_preparation": 311,
+      "reason": "threefold",
+      "actor": "black",
+      "intended_move_unplayed": "e4e7",
+      "request_version": 312,
+      "reply_version": 313,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+        "sha256": "10f2d1213fcfc0ef90c0de02e25c352034c1f9a340092c058f6ef2f10b9a671c",
+        "key": "msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 1555495347622,
+          "version": 312,
+          "actor": "black",
+          "command": {
+            "claim": {
+              "reason": "threefold",
+              "intended": "e4e7"
+            }
+          }
+        },
+        "reply": {
+          "version": 313,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    },
+    {
+      "batch": "02",
+      "pair": "main-02-00",
+      "game": 1,
+      "event_index": 112,
+      "played_plies_including_preparation": 127,
+      "reason": "threefold",
+      "actor": "black",
+      "intended_move_unplayed": "d1c2",
+      "request_version": 112,
+      "reply_version": 113,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-02/jobs/b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784/attempts/bf77a810ea874838a94ad2949fb04d65/artifacts/pair/report.json.gz",
+        "sha256": "a67d54901892206a0ede5c8462e427f22b363f8c9c53b8ff671821678ad2b86d",
+        "key": "msh161-primary-v1-batch-02/jobs/b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784/attempts/bf77a810ea874838a94ad2949fb04d65/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 555176247849,
+          "version": 112,
+          "actor": "black",
+          "command": {
+            "claim": {
+              "reason": "threefold",
+              "intended": "d1c2"
+            }
+          }
+        },
+        "reply": {
+          "version": 113,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    },
+    {
+      "batch": "02",
+      "pair": "main-02-01",
+      "game": 1,
+      "event_index": 97,
+      "played_plies_including_preparation": 112,
+      "reason": "threefold",
+      "actor": "white",
+      "intended_move_unplayed": "e4e3",
+      "request_version": 97,
+      "reply_version": 98,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-02/jobs/ef1e68048ab7fdf137b7dd7530a5240c0d7067e18ecad2fd409acebe577dce35/attempts/24d4891aef6e44538b057bd4e378efe8/artifacts/pair/report.json.gz",
+        "sha256": "2039d5a179b8315aa7a35f16060baecaa2966ce01237f893dfcd483701f7a111",
+        "key": "msh161-primary-v1-batch-02/jobs/ef1e68048ab7fdf137b7dd7530a5240c0d7067e18ecad2fd409acebe577dce35/attempts/24d4891aef6e44538b057bd4e378efe8/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 480151477954,
+          "version": 97,
+          "actor": "white",
+          "command": {
+            "claim": {
+              "reason": "threefold",
+              "intended": "e4e3"
+            }
+          }
+        },
+        "reply": {
+          "version": 98,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    },
+    {
+      "batch": "02",
+      "pair": "main-02-02",
+      "game": 0,
+      "event_index": 102,
+      "played_plies_including_preparation": 117,
+      "reason": "threefold",
+      "actor": "black",
+      "intended_move_unplayed": "d6e7",
+      "request_version": 102,
+      "reply_version": 103,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-02/jobs/2fe380e07211066ec8af93eb89373327b9e8e54a4534f67da901ae8f1d946437/attempts/6099e1e710a44753ab38caf380d96afd/artifacts/pair/report.json.gz",
+        "sha256": "2db7aff8afaf5e0458eee5db596f527b3f5644ff60c4773004c2c5bf01e02fe3",
+        "key": "msh161-primary-v1-batch-02/jobs/2fe380e07211066ec8af93eb89373327b9e8e54a4534f67da901ae8f1d946437/attempts/6099e1e710a44753ab38caf380d96afd/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 505159862603,
+          "version": 102,
+          "actor": "black",
+          "command": {
+            "claim": {
+              "reason": "threefold",
+              "intended": "d6e7"
+            }
+          }
+        },
+        "reply": {
+          "version": 103,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    },
+    {
+      "batch": "02",
+      "pair": "main-02-02",
+      "game": 1,
+      "event_index": 228,
+      "played_plies_including_preparation": 243,
+      "reason": "threefold",
+      "actor": "black",
+      "intended_move_unplayed": "e4e3",
+      "request_version": 228,
+      "reply_version": 229,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-02/jobs/2fe380e07211066ec8af93eb89373327b9e8e54a4534f67da901ae8f1d946437/attempts/6099e1e710a44753ab38caf380d96afd/artifacts/pair/report.json.gz",
+        "sha256": "2db7aff8afaf5e0458eee5db596f527b3f5644ff60c4773004c2c5bf01e02fe3",
+        "key": "msh161-primary-v1-batch-02/jobs/2fe380e07211066ec8af93eb89373327b9e8e54a4534f67da901ae8f1d946437/attempts/6099e1e710a44753ab38caf380d96afd/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 1135349274392,
+          "version": 228,
+          "actor": "black",
+          "command": {
+            "claim": {
+              "reason": "threefold",
+              "intended": "e4e3"
+            }
+          }
+        },
+        "reply": {
+          "version": 229,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    },
+    {
+      "batch": "02",
+      "pair": "main-02-03",
+      "game": 0,
+      "event_index": 116,
+      "played_plies_including_preparation": 131,
+      "reason": "threefold",
+      "actor": "black",
+      "intended_move_unplayed": "c3d1",
+      "request_version": 116,
+      "reply_version": 117,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-02/jobs/234d60dfb81a042e35cc394f0aed2175782910129f2e73ed8a409aa52bbe3f8b/attempts/bf7fbb33546d4e58b3d21107e72f335e/artifacts/pair/report.json.gz",
+        "sha256": "5cc7a671b63cbe7e6ac5d4f19e5193a64802f18dd9481b48066e4b5280d9c4a4",
+        "key": "msh161-primary-v1-batch-02/jobs/234d60dfb81a042e35cc394f0aed2175782910129f2e73ed8a409aa52bbe3f8b/attempts/bf7fbb33546d4e58b3d21107e72f335e/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 575184981215,
+          "version": 116,
+          "actor": "black",
+          "command": {
+            "claim": {
+              "reason": "threefold",
+              "intended": "c3d1"
+            }
+          }
+        },
+        "reply": {
+          "version": 117,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    },
+    {
+      "batch": "02",
+      "pair": "main-02-07",
+      "game": 0,
+      "event_index": 88,
+      "played_plies_including_preparation": 103,
+      "reason": "threefold",
+      "actor": "black",
+      "intended_move_unplayed": "h6h7",
+      "request_version": 88,
+      "reply_version": 89,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+        "sha256": "56eb9e99f264e416153ad5beb10e76349792894c5f762c7537a24aa9fff144a4",
+        "key": "msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 435140792641,
+          "version": 88,
+          "actor": "black",
+          "command": {
+            "claim": {
+              "reason": "threefold",
+              "intended": "h6h7"
+            }
+          }
+        },
+        "reply": {
+          "version": 89,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "threefold"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    },
+    {
+      "batch": "02",
+      "pair": "main-02-08",
+      "game": 1,
+      "event_index": 255,
+      "played_plies_including_preparation": 270,
+      "reason": "fifty_move",
+      "actor": "white",
+      "intended_move_unplayed": "c3c1",
+      "request_version": 255,
+      "reply_version": 256,
+      "native_report": {
+        "path": "local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+        "sha256": "5533b1e2df0ddda8795b7a000f09552d661c280a7a5b2fc35449624a407fb947",
+        "key": "msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz"
+      },
+      "native_event": {
+        "request": {
+          "at_ns": 1265404294411,
+          "version": 255,
+          "actor": "white",
+          "command": {
+            "claim": {
+              "reason": "fifty_move",
+              "intended": "c3c1"
+            }
+          }
+        },
+        "reply": {
+          "version": 256,
+          "remaining_ns": null,
+          "active": null,
+          "conclusion": {
+            "chess": {
+              "draw": {
+                "claimed": "fifty_move"
+              }
+            }
+          },
+          "rejection": null
+        }
+      },
+      "policy_potentially_affected": true,
+      "interpretation": "Actual native draw preserved; optional intended action unplayed. No counterfactual result assigned."
+    }
+  ],
+  "interpretation": "Terminal optional draws are exact observed events; potential policy effects extend to all40games and future lines searched. Preserve17W12D11L as actual historical outcomes, do not impute counterfactual scores or silently pool draw/conversion rates across policy/source strata. Mac/pilot remain separate.",
+  "native_policy_verification": "All20native pair configs and40match initial records explicitly record auto_claim; not inferred from outcomes."
+}

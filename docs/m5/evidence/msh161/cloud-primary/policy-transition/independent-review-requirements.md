@@ -1,0 +1,28 @@
+# MSH-161 (Competitive Gameplay Diagnosis): independent draw-policy review requirements
+
+Scope: owner-directed automatic-threshold-only competitive continuation before batch03. This is an independent requirements/source inspection, not an implementation or test-pass receipt. No production edits, engine matches or cloud calls performed. Builder owns the Rust changes; root owns integration/deployment.
+
+## Source findings and boundaries
+
+Native `Game::automatic_outcome_with_classification` already checks position outcomes (checkmate, stalemate, recognized dead position) before current repetition count>=5 and halfmove clock>=150. Existing native adjudication tests include Qg7# from halfmove149 and four knight cycles ending in fivefold. Reuse these rules-owned paths and evidence; do not create a second outcome authority or modify optional manual claims in ExplicitOnly.
+
+UCI currently defaults to ExplicitOnly, but conventional search still offers optional Claim choices and UCI converts a selected Claim into lexically sorted legal fallback. A completed result must instead contain a searched move when this transport cannot communicate claims. A request-scoped availability flag must apply at root, interior, leaf and quiescence draw floors/claim cutoffs. Child critical-node guards also inspect claim availability; review consistency there. Native mandatory outcomes remain active with the flag disabled. The legacy UCI ClaimPolicy option may parse for compatibility but must not revive an unavailable claim channel. Unexpected completed Claim should be explicit failure, distinct from the existing zero-completed-iteration fallback.
+
+The conventional TT is fresh per search invocation. An immutable availability flag fixed throughout that invocation therefore cannot mix enabled/disabled semantics within its table; no alteration of native repetition identity is necessary. Ensure asynchronous request context carries the setting immutably and existing stale-result checks still reject superseded work. Other search/native consumers keep their existing default manual-claim behavior.
+
+Runner inspection found a concrete generated-command validation mismatch: `run.rs` emits own-engine `ClaimPolicy explicit` under ExplicitOnly, but `report.rs` originally accepted only the generated `... value auto` command. Fix the validator against the actual configured policy, rather than accepting arbitrary values. Old AutoClaim reports must still replay, and policy-tampered transcripts must fail. Future paired opening history/config generation must agree on ExplicitOnly; archived AutoClaim evidence remains unchanged.
+
+The coordinator independently checked [FIDE Laws of Chess, Articles9.6.1–9.6.2](https://handbook.fide.com/chapter/E012023): fivefold and75-move automatic draws, with checkmate taking precedence on the last move. This records the coordinator’s source check; this reviewer’s work is the repository/contract inspection. Existing native dead-position recognition scope is unchanged.
+
+## Focused independently specified fixtures
+
+1. From standard start, repeat `g1f3 g8f6 f3g1 f6g8`. After two cycles the start position has occurred three times; after three cycles four times. Competitive control continues through both. On the fourth cycle the fifth occurrence is a native automatic draw; no later move may be committed.
+2. From `7k/8/8/8/8/8/8/KR6 w - - 99 1`, a legal quiet rook move reaches100half-moves without ending ExplicitOnly play; a corresponding149root reaches mandatory150draw. These are non-dead KR/K positions, avoiding accidental dead-position termination.
+3. From `7k/8/5KQ1/8/8/8/8/8 w - - 149 1`, `g6g7` is checkmate on the same move that reaches150; checkmate wins. Also exercise UCI/search terminal handling at150and at fivefold, not just live native play.
+4. Losing KR/K side at halfmove100 with optional claims available: unavailable-claim UCI search at completed bounded depth returns an actual legal move, matching its emitted PV first move and with completed work. Do not merely assert legal output, because the previous arbitrary fallback was legal. No selected-Claim diagnostic or artificial zero claim floor.
+5. Losing root at halfmove98: search descends through the99/100claim boundary with claims unavailable; compare default manual-enabled behavior and unavailable behavior under representative TT-on/off settings. This distinguishes root-only output suppression from correct interior/quiescent handling. Automatic150outcomes remain zero under unavailable claims.
+6. Use the known repetition fixture `6nk/8/8/8/8/8/8/KR4N1 b - - 0 1` with `g8f6 g1f3 f6g8 f3g1` twice/three times. Search must continue at three/four occurrences without optional claim flooring; native fivefold still ends. Full history, not FEN alone, establishes repetition.
+7. Preserve existing native ExplicitOnly current-position and intended-move manual-claim tests and default non-UCI search claim tests. The change belongs to the UCI consumer's availability, not the rule that optional claims exist for other consumers.
+8. Replay a short explicit-policy runner report with the generated own-UCI explicit option and reject a tampered auto command/config mismatch. Preserve historical AutoClaim replay. Actual-runner smoke validation with both engines is separately owned by the coordinator under the owner's bounded authorization.
+
+Protocol/process/request propagation changes warrant targeted Level2 verification. Required Linux worker build/identity and bounded actual-runner validation must be recorded by the owner of those executions; no platform success or match result is implied by this source review. Review the final diff and concrete focused results before admission.

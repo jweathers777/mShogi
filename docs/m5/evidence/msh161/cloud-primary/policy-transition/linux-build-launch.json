@@ -1,0 +1,30 @@
+{
+  "pid": 94700,
+  "started_epoch": 1794491705.54443,
+  "command": [
+    "/usr/bin/caffeinate",
+    "-i",
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/notify_exit.py",
+    "--thread",
+    "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+    "--codex",
+    "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+    "--receipt",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build-notification.json",
+    "--label",
+    "MSH-161 corrected automatic-threshold Linux build",
+    "--state",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build-state.json",
+    "--message",
+    "Read policy-transition/README.md. Reconcile Linux build and wrapper status; package/push corrected worker image and run one short cloud match validation before batch03. Preserve40AutoClaim games; remaining160 use corrected policy. No duplicate build, no Mac engine study, no timer. Continue authorized deployment and study without further permission.",
+    "--",
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py",
+    "--revision",
+    "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+    "--workspace",
+    "/private/tmp/msh161-policy-linux-build"
+  ],
+  "native_revision": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+}

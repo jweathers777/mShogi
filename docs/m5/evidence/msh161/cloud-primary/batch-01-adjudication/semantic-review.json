@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "scope": "semantic admission only; no engines/jobs/full raw hash replay",
+  "plan_sha256": "066c4b94d6b6e21cb45c78200dfd95d3a46ca87eb13178083e233a638cfd72f5",
+  "semantic_payload_sha256": "5404308cd1ad570751ee45f66a0fda46a7aaddf38ad5b3035ff907a1c357dac9",
+  "selection_roots": 298,
+  "jobs": 527,
+  "discovery_roots": 31,
+  "initial_reference_queries": 558,
+  "future_discovered_alternative_queries": "Only distinct discovered alternatives require subsequent matched20M singleton; existing moves deduplicated. Not part of this initialsealedjob count.",
+  "cloud_native_parents": 10,
+  "review_index_sha256": "e6d23d1f7abf3d6428870fc59ffa9fe5f143ed79e7815c902c6042a1501833f3",
+  "selection_files": [
+    {
+      "file": "20m-selection-00-04.json",
+      "sha256": "9bfe1aabef87fdbb938cabaad4cde3113d13ff12397d5bd097c0e27773b89aec"
+    },
+    {
+      "file": "20m-selection-05-09.json",
+      "sha256": "76d0c6032b05b930bf3b07a1e294884dd46edf4408379c4812202fde1b3d83ff"
+    }
+  ],
+  "checks": [
+    "All 298 selected roots are represented exactly.",
+    "Played moves and existing alternatives are covered; discovery replaces an explicit played-only job because its contract includes unrestricted and played queries.",
+    "No duplicate jobs or moves exist per root.",
+    "Full history, mover, played move and native event equal the cloud-screen decisions.",
+    "Native-parent and screen-success hashes match the verified cloud index.",
+    "Linux x86_64 build and freeze match the fresh native parents.",
+    "Only 20M confirmation/discovery jobs are present; no new games, Mac parents or pilot parents."
+  ],
+  "packaging_refresh": {
+    "previous_plan_sha256": "8af200f059a3763b7151f0cdfd0791230052309a8708db0f445695d6cff54693",
+    "new_plan_sha256": "066c4b94d6b6e21cb45c78200dfd95d3a46ca87eb13178083e233a638cfd72f5",
+    "controller_sha256": "2bd0dd3ae4a196a0e811d855f377831fb2e0dbbbef4a5d093f527e0f6a96da12",
+    "scientific_payload_unchanged": true,
+    "method": "Recomputed identical canonical job root/move/work/parent/full-decision payload; selection hashes and counts unchanged. No duplicate raw replay or engine/cloud call."
+  }
+}

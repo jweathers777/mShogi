@@ -1,0 +1,14 @@
+test_actual_plan_identity_and_discovery (test_adjudication_control.Tests.test_actual_plan_identity_and_discovery) ... ok
+test_dispatch_assigned_only_and_immutable_reuse (test_adjudication_control.Tests.test_dispatch_assigned_only_and_immutable_reuse) ... ok
+test_duplicate_bins_refused (test_adjudication_control.Tests.test_duplicate_bins_refused) ... ok
+test_request_dispatch_hash_binding (test_adjudication_control.Tests.test_request_dispatch_hash_binding) ... ok
+test_wait_failure_preserves_terminal_evidence (test_adjudication_control.Tests.test_wait_failure_preserves_terminal_evidence) ... ok
+test_wait_wrong_job_refused_before_cloud (test_adjudication_control.Tests.test_wait_wrong_job_refused_before_cloud) ... ok
+test_wait_wrong_uid_no_fetch (test_adjudication_control.Tests.test_wait_wrong_uid_no_fetch) ... ok
+test_wrong_budget_and_modified_job_refused (test_adjudication_control.Tests.test_wrong_budget_and_modified_job_refused) ... ok
+test_wrong_plan_hash_no_execution (test_adjudication_control.Tests.test_wrong_plan_hash_no_execution) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.823s
+
+OK

@@ -1,0 +1,2070 @@
+[
+  {
+    "pair": "main-01-05",
+    "game": 0,
+    "ply": 16,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "g5f6",
+      "f2f4"
+    ],
+    "reason": "Sicilian attack: initial exchange and linked reference defensive choices; preserve successful attack controls. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 0,
+    "ply": 17,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "g7f6",
+      "e7f6"
+    ],
+    "reason": "Sicilian attack: initial exchange and linked reference defensive choices; preserve successful attack controls. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 0,
+    "ply": 18,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "d4b5",
+      "f2f4"
+    ],
+    "reason": "Sicilian attack: initial exchange and linked reference defensive choices; preserve successful attack controls. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 0,
+    "ply": 19,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "c6e5",
+      "d8b6"
+    ],
+    "reason": "Sicilian attack: initial exchange and linked reference defensive choices; preserve successful attack controls. Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 0,
+    "ply": 20,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "d3d4"
+    ],
+    "reason": "Sicilian attack: initial exchange and linked reference defensive choices; preserve successful attack controls. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 0,
+    "ply": 21,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "e5c6",
+      "a7a6"
+    ],
+    "reason": "Sicilian attack: initial exchange and linked reference defensive choices; preserve successful attack controls. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 0,
+    "ply": 22,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "d4e3"
+    ],
+    "reason": "Sicilian attack: initial exchange and linked reference defensive choices; preserve successful attack controls. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 0,
+    "ply": 23,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "c6e5",
+      "a7a6"
+    ],
+    "reason": "Sicilian attack: initial exchange and linked reference defensive choices; preserve successful attack controls. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 0,
+    "ply": 24,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "b5a7"
+    ],
+    "reason": "Sicilian attack: initial exchange and linked reference defensive choices; preserve successful attack controls. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 0,
+    "ply": 48,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "g4g7"
+    ],
+    "reason": "Sicilian attack: initial exchange and linked reference defensive choices; preserve successful attack controls. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 0,
+    "ply": 62,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "g1g6"
+    ],
+    "reason": "Sicilian attack: initial exchange and linked reference defensive choices; preserve successful attack controls. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 1,
+    "ply": 16,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "f1e2",
+      "f2f4"
+    ],
+    "reason": "Sicilian forcing exchanges and advantageous ending; linked missed preservation and reference replies. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 1,
+    "ply": 17,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "c6d4"
+    ],
+    "reason": "Sicilian forcing exchanges and advantageous ending; linked missed preservation and reference replies. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 1,
+    "ply": 19,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "f6e4"
+    ],
+    "reason": "Sicilian forcing exchanges and advantageous ending; linked missed preservation and reference replies. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 1,
+    "ply": 22,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "d4d6",
+      "b2c3"
+    ],
+    "reason": "Sicilian forcing exchanges and advantageous ending; linked missed preservation and reference replies. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 1,
+    "ply": 23,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "c3e2",
+      "d8d6"
+    ],
+    "reason": "Sicilian forcing exchanges and advantageous ending; linked missed preservation and reference replies. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 1,
+    "ply": 26,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7d6"
+    ],
+    "reason": "Sicilian forcing exchanges and advantageous ending; linked missed preservation and reference replies. Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-05",
+    "game": 1,
+    "ply": 27,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "b7b6",
+      "e6e5"
+    ],
+    "reason": "Sicilian forcing exchanges and advantageous ending; linked missed preservation and reference replies. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 1,
+    "ply": 30,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "d1d8",
+      "g2g3"
+    ],
+    "reason": "Sicilian forcing exchanges and advantageous ending; linked missed preservation and reference replies. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-05",
+    "game": 1,
+    "ply": 31,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba/attempts/6120446d867944b7b6046259f75efd6f/artifacts/pair/report.json.gz",
+    "moves": [
+      "f8e7"
+    ],
+    "reason": "Sicilian forcing exchanges and advantageous ending; linked missed preservation and reference replies. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 20,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "c1d2",
+      "e3e4"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 22,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "c3e4",
+      "c3a4"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 24,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "d3e4"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 27,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "a8c8",
+      "c6c5"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 28,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "c2b3"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 29,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "d8e7",
+      "g8h8"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 30,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "a2a3",
+      "f3g5"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 31,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "a7a5",
+      "c6c5"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 32,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "a3b4"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 38,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "d3c4",
+      "a1a7"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 40,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "a1a4",
+      "e3e4"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 43,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "h7h6",
+      "f6g6"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 44,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "g5h3"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 64,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "b2b3",
+      "c4e2"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 65,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "c7f7",
+      "g5g4"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 66,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "e4e5",
+      "e4f5"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 68,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "d1d6",
+      "d1d8"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 70,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "f3g4",
+      "h3g4"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 0,
+    "ply": 76,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "a5c3",
+      "a5d2"
+    ],
+    "reason": "Slav: central resources, repeated attacking opportunities then king defense failure. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 19,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "b7b5",
+      "e6e5"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 20,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "a2a4",
+      "c3e4"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 24,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "c2c6",
+      "d3e4"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 25,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "e4f2",
+      "e4c5"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 27,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "d7b6",
+      "d8b6"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 28,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "f3g5",
+      "e3e4"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 33,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "c8a6",
+      "c8b7"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 47,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "h7h6",
+      "e7d7"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 48,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "e3e4"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 49,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "f5e4"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 50,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "e2e4"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 51,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5c7",
+      "f8f6"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-06",
+    "game": 1,
+    "ply": 52,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150/attempts/929b4044bfd6489598d50f65e8d86f47/artifacts/pair/report.json.gz",
+    "moves": [
+      "b5c4"
+    ],
+    "reason": "Slav: early pawn choice, missed tactical opportunity, then rook activity defense. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-07",
+    "game": 0,
+    "ply": 32,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "h3e6",
+      "e5f4"
+    ],
+    "reason": "Queen Indian: bishop tactics, lost favorable episode, terminal auto-claim qualification. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 0,
+    "ply": 37,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "b7f3",
+      "e5d4"
+    ],
+    "reason": "Queen Indian: bishop tactics, lost favorable episode, terminal auto-claim qualification. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 0,
+    "ply": 38,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "e2f3"
+    ],
+    "reason": "Queen Indian: bishop tactics, lost favorable episode, terminal auto-claim qualification. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 0,
+    "ply": 45,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "b6b5",
+      "a7a5"
+    ],
+    "reason": "Queen Indian: bishop tactics, lost favorable episode, terminal auto-claim qualification. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 0,
+    "ply": 46,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "b2b4"
+    ],
+    "reason": "Queen Indian: bishop tactics, lost favorable episode, terminal auto-claim qualification. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-07",
+    "game": 0,
+    "ply": 52,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "b4c5",
+      "c3e4"
+    ],
+    "reason": "Queen Indian: bishop tactics, lost favorable episode, terminal auto-claim qualification. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 0,
+    "ply": 54,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "e3e5",
+      "e3d3"
+    ],
+    "reason": "Queen Indian: bishop tactics, lost favorable episode, terminal auto-claim qualification. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 0,
+    "ply": 77,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "g8f7"
+    ],
+    "reason": "Queen Indian: bishop tactics, lost favorable episode, terminal auto-claim qualification. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 0,
+    "ply": 78,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "c1d1",
+      "e6e2"
+    ],
+    "reason": "Queen Indian: bishop tactics, lost favorable episode, terminal auto-claim qualification. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; POLICY-LIMITED: native Black claims intended ...Kg8 next; SF comparison cannot establish actual-result loss",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 23,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "a7a5",
+      "c6a5"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 24,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "f3e5",
+      "f1d1"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 25,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "c6e5"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 29,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5e4"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 33,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "d7d5",
+      "c7c5"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 34,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "f1d1"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 40,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "c2d3",
+      "a2a3"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 41,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7c5",
+      "d5a2"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 42,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "f4g5"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 76,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "g3g4",
+      "f6f5"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 77,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "b6b5"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 107,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7d6",
+      "d1e1"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-07",
+    "game": 1,
+    "ply": 108,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f/attempts/114d606500bf404e8ab15038f82b90d0/artifacts/pair/report.json.gz",
+    "moves": [
+      "b5b7"
+    ],
+    "reason": "Queen Indian: quiet pressure, repeated defensive chances and rook ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 23,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "e6d5",
+      "e6f5"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 24,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "c3c4"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 28,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d1e2"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 29,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "g7a1"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 30,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "f1a1"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 31,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "h7h6",
+      "d8d5"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 36,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "a1d1",
+      "h2h4"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 37,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5c5",
+      "d5e6"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 38,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d1d7",
+      "e5d4"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 39,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "c5b4",
+      "f8d8"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 40,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "e5b2"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 50,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "a3a4",
+      "d2f1"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 52,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "c3a5",
+      "e2e3"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 54,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d2f1"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 59,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7e5",
+      "e8d8"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 60,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "a4a5"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 86,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "f5h4"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 88,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "h4f5",
+      "h4g2"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 101,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "g6f6",
+      "e4e3"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 102,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "b6d8",
+      "d4e2"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 104,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d4f5",
+      "d4e2"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 105,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "f4f3",
+      "b1b3"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 106,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d8c7"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 120,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "f4e5",
+      "c7b6"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 121,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "f7g6",
+      "a4a2"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 122,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "c7b6"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 220,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "c5a7"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 0,
+    "ply": 290,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d2c3"
+    ],
+    "reason": "Pirc/Modern: attack preservation, minor pieces versus rook ending and repeated renewed chances. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 26,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "b5d4",
+      "d1e1"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 27,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "b6c7"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 29,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "c7a5"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 30,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d1e1",
+      "d1c1"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 31,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "g7f6",
+      "d8d7"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 34,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "g1h1",
+      "b1b3"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 35,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "a5a2"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 43,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5c6",
+      "d5e5"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 48,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "e1c1",
+      "a3b3"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 49,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "f6c3",
+      "d7c6"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 51,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "a6a5"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 52,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d3e2",
+      "f1e1"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 53,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "e6d4",
+      "a5a4"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 54,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "e2d3",
+      "e3d4"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 55,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "a8c8",
+      "a5a4"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 57,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d7c6",
+      "d7g4"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 61,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "c6e4"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 62,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "f4e5",
+      "e3g1"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-08",
+    "game": 1,
+    "ply": 83,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685/attempts/67a9269ac435493ba717825f9cd4ee83/artifacts/pair/report.json.gz",
+    "moves": [
+      "d8d2",
+      "f4g2"
+    ],
+    "reason": "Pirc/Modern: positional advantage, delayed pawn advance and successful tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 9,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "f6g4",
+      "d7d6"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 10,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "e1g1"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 11,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "g4f2",
+      "d7d6"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 12,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "f1f2"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 22,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "c3b5",
+      "e3d4"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 23,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "d4b5",
+      "d4f3"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 24,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "c4b5"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 38,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "d1b1",
+      "e4h7"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 40,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "b1a2"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 44,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "g2f3",
+      "d5f3"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 46,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "d2b4",
+      "d5f7"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 49,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "b5a4",
+      "b5c6"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 50,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "c4b3",
+      "g1h1"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 55,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "f6g6",
+      "f5e4"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 61,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "g6f6",
+      "g6h6"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 62,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "a2b1"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 64,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "b1f1"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 72,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "f5c8"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 74,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "e4b7"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 82,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "d6c7",
+      "d6b4"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 83,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "a5b5",
+      "a5a3"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 90,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "g4g3",
+      "d4c3"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 91,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "h7h6",
+      "g8f7"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 94,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "g3f4",
+      "g3g4"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 95,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "g7g6",
+      "g7g5"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 96,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "d4e5",
+      "f4g4"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 97,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "a5c5",
+      "f7e6"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 98,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "d3d4"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 99,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "c5c1",
+      "c5c8"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 100,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "d4d5"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 102,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "e5d4",
+      "e5b2"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 211,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "a5a3",
+      "a5b5"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 212,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "c2e4",
+      "f4g5"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 0,
+    "ply": 310,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "e3d2"
+    ],
+    "reason": "Unaided White: sacrifice acceptance, attack defense, bishop pair versus rook ending and claim. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 1,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "b8c6",
+      "d7d5"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 2,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "b1c3",
+      "d2d4"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 3,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7e6",
+      "d7d5"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 5,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "f8b4",
+      "g8f6"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 6,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "f1e2",
+      "c3e2"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 8,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "a2a3",
+      "d2d4"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 13,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "e8g8",
+      "e6e5"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 14,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "e1g1",
+      "c1g5"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 26,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "e3c5",
+      "e4d5"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 27,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5e4"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 29,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "e4f3",
+      "e7e8"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 32,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "e3e2",
+      "e7f6"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 33,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "c6e7"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 35,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "c7c6",
+      "f8c8"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 37,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "b7b5",
+      "e7g6"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 38,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "c4c5",
+      "e5c5"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 39,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "a6a5",
+      "e7g6"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 41,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "f6d5",
+      "e7d5"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim; Consequential initial screen remains unresolved or reversed at5M; preserve flags and test matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 42,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "e5e1",
+      "a3a4"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Existing5M comparison reaches .04 sensitivity threshold; consequential or threshold adjudication, not a final first/largest claim",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-01-unaided",
+    "game": 1,
+    "ply": 125,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51/attempts/e9bee7f7191243bb8859c83421ff27df/artifacts/pair/report.json.gz",
+    "moves": [
+      "c5c4"
+    ],
+    "reason": "Unaided Black: threshold opening costs, forcing exchange choices, later conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  }
+]

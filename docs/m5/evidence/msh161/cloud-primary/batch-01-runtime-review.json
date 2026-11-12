@@ -199,7 +199,7 @@
       "update_time": "2026-11-11T19:29:02+0000"
     }
   },
-  "forecast_status": "Draft: measured task/VM basis plus current official ancillary prices; primary stage receipts and first cloud20M panel pending.",
+  "forecast_status": "Draft updated with complete primary stage totals and retrieved bytes; actual cloud20M panel and billed charges remain pending.",
   "draft_forecast": {
     "full200_base_compute_usd": [
       20.66,
@@ -230,5 +230,38 @@
       50
     ],
     "status": "Conditional scenario, not cap or confidence interval; assumptions detailed in Markdown; primary stage totals and cloud20M pending"
+  },
+  "scientific_execution_audit": {
+    "status": "passed",
+    "path": "batch-01-review/integrity-audit.json",
+    "verified_jobs": 2410,
+    "queries": 7948,
+    "stages": {
+      "game_pair": {
+        "jobs": 10,
+        "wall_seconds": 12049.771710076997,
+        "cpu_seconds": 12133.1963
+      },
+      "reference_screening": {
+        "jobs": 10,
+        "wall_seconds": 5974.388342383001,
+        "cpu_seconds": 5084.364805,
+        "queries": 5558,
+        "query_wall_seconds": 5107.976018930001,
+        "query_cpu_seconds": 5084.078851999995
+      },
+      "confirmation": {
+        "jobs": 2390,
+        "wall_seconds": 15781.498243437985,
+        "cpu_seconds": 12322.109623999992,
+        "queries": 2390,
+        "query_wall_seconds": 12254.751985615985,
+        "query_cpu_seconds": 12244.114510000021
+      }
+    },
+    "retrieved_objects": 34461,
+    "retrieved_bytes": 4582665719,
+    "retrieval_seconds": 413.085,
+    "stable_audit_miss_triggers": []
   }
 }

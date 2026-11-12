@@ -1,6 +1,6 @@
 # Primary cloud batch 01: runtime and provisional forecast
 
-Independent read-only execution_review, 2026-11-12. Job `msh161-primary-b01-v1`, UID `msh161-primary-b01-c12991aa-17f5-43260`. This review queried completed Batch tasks, Compute lifecycle audit logs, current instances/disks and project-visible BigQuery datasets. No jobs/configuration changes or searches were performed. Exact task/VM records and observations are retained in `batch-01-runtime-review.json` and `batch-01-runtime-observations.json.gz`. Artifact integrity and scientific accounting are separate checks; stage receipt totals remain to be incorporated after retrieval.
+Independent read-only execution_review, 2026-11-12. Job `msh161-primary-b01-v1`, UID `msh161-primary-b01-c12991aa-17f5-43260`. This review queried completed Batch tasks, Compute lifecycle audit logs, current instances/disks and project-visible BigQuery datasets. No jobs/configuration changes or searches were performed. Exact task/VM records and observations are retained in `batch-01-runtime-review.json` and `batch-01-runtime-observations.json.gz`. Artifact integrity and scientific accounting are separate checks; complete stage receipts are now incorporated in the update below.
 
 ## Observed runtime and cleanup
 
@@ -16,7 +16,7 @@ Mac main batch 01 took 6h54m22s. This cloud batch's task span is about 3.17 time
 
 ## Draft forecast before batch 02
 
-The following is a transparent workload extrapolation, not a completed end-to-end diagnosis estimate or a confidence interval. Cloud 20M adjudication has not yet been measured. Full-stage receipts, actual transfer volume and the selected 20M workload must update this draft before presenting it as the final forecast.
+The following is a transparent workload extrapolation, not a completed end-to-end diagnosis estimate or a confidence interval. Cloud 20M adjudication has not yet been measured. The selected 20M workload and measured cloud20M rate must update this draft before presenting it as the final forecast.
 
 | Games + initial screening + selected 5M | Full 200 games | Remaining 180 games |
 | --- | ---: | ---: |
@@ -41,7 +41,7 @@ Calendar time is base processing plus adjudication waves plus provisioning/recov
 
 ### Storage and other charges
 
-The eight-pair pilot retrieved 3.981 GB; linear scaling suggests about 49.76 GB for the base 200 games, or 44.79 GB for 180. This is provisional pending the primary batch transfer measurement. More adjudication, preserved failures, duplicate downloads and retention add volume. Transfer cost depends on destination/route and provider allowances; retained storage depends on duration. Include measured GB-months, downloaded GB, object-operation counts, VM boot-disk GB-hours, registry/log volumes and any taxes at verified applicable rates when reconciling costs. Neither US$21–24 nor the illustrative adjudication compute sensitivity is an all-in dollar forecast. The following official-price check now supplies ancillary rates; compute remains at the recorded pilot rate.
+The eight-pair pilot retrieved 3.981 GB; linear scaling suggests about 49.76 GB for the base 200 games, or 44.79 GB for 180. This is provisional superseded by the primary batch transfer measurement below. More adjudication, preserved failures, duplicate downloads and retention add volume. Transfer cost depends on destination/route and provider allowances; retained storage depends on duration. Include measured GB-months, downloaded GB, object-operation counts, VM boot-disk GB-hours, registry/log volumes and any taxes at verified applicable rates when reconciling costs. Neither US$21–24 nor the illustrative adjudication compute sensitivity is an all-in dollar forecast. The following official-price check now supplies ancillary rates; compute remains at the recorded pilot rate.
 
 ## Official ancillary rates and provisional inclusive scenario
 
@@ -67,3 +67,13 @@ For elapsed time, a conditional planning scenario is **roughly 22–41 processin
 ## Admission implication
 
 The runtime evidence shows successful task completion and cleanup, with a significant availability limitation but no demonstrated runtime defect requiring worker changes. Before batch 02, combine this record with complete artifact/stage verification and a concrete first-20M plan, then issue the requested updated end-to-end estimate with measured versus assumed components explicit. Preserve all 200 games and required adjudication; do not fit scientific coverage to the favorable base-cost estimate.
+
+## Completed stage audit update
+
+The independent offline scientific execution audit now passes all 2,410 jobs and 7,948 query attempts, with no failed attempts or unresolved claims. Exact frozen coverage is 5,558 initial queries and 2,390 5M singleton queries for 1,569 selected decisions. Zero eligible stable nonflagged audit comparisons cross .05. See `batch-01-review/integrity-audit.json` and its reproducible helper.
+
+Measured parent wall time is 12,049.772s native pairs, 5,974.388s screening and 15,781.498s confirmations; parent CPU totals are 12,133.196s, 5,084.365s and 12,322.110s respectively. Query-only wall time is 5,107.976s screening and 12,254.752s confirmations; these are nested subtotals. Thus replay/artifact overhead is material, especially for the many individual confirmation jobs, and cannot be removed from the cloud forecast. The 5M query average is 5.127s; a linear fourfold node extrapolation suggests about 20.51s per 20M query, **not a measured20M rate**. Preserve the wider sensitivity pending the first panel.
+
+Actual retrieval was 34,461 objects / 4,582,665,719 bytes in 413.085 seconds. A ten-batch scaling is 45.827GB decimal =42.68GiB, versus the pilot illustration46.34GiB; remaining nine batches are approximately38.41GiB. At the verified $0.12/GiB tariff, one complete Internet copy is about $5.12 full / $4.61 remaining before any allowance; retained full-month storage is about $0.85 full / $0.77 remaining at the Standard rate. These are base artifacts only; extra20M outputs, repeat downloads and retention remain additional. Object count is not an exact operations count because dependency verification repeatedly reads existing artifacts.
+
+The provisional inclusive dollar and calendar scenarios remain unchanged: observed base resource costs fit them, while actual20M work, retrieval repetition, request totals and billed usage are still unknown. The update resolves the stage-data gap; it does not close the20M forecast gap or any scientific adjudication obligation.

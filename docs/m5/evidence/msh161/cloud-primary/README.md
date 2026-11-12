@@ -40,18 +40,50 @@ first task start to last completion and2h19m02s from submission. Only6VMs starte
 because of resource shortages, despite requested parallelism8;53failed insertion
 operations are separate from game-attempt failures. Task/VM records govern timing.
 
-Raw retrieval is RUNNING through `retrieve_batch.py` and `notify_exit.py`, local
-control session12054. State: `batch-01-review/retrieval-state.json`; notification:
-`batch-01-retrieval-notification.json`. The local cache is `local-cache/` (ignored
-byGit); immutable cloudobjects remain authoritative. It uses32bounded downloads,
-generation/CRC checks and full result-artifactSHA verification. It runs no engines.
-Do not duplicate or poll this retrieval. Its exit queues this chat automatically.
-The review index will be `batch-01-review/review-index.json` when complete.
+Raw retrieval completed and independently verified. State:
+`batch-01-review/retrieval-state.json`; notification:
+`batch-01-retrieval-notification.json`. The ignored `local-cache/` contains all
+34,461 objects / 4,582,665,719 bytes. Immutable cloud objects remain authoritative.
+Generation/CRC checks and every result-artifact SHA passed. Retrieval used no
+engines. Do not repeat it. `batch-01-review/review-index.json` locates all results.
+
+The independent offline audit (`batch-01-review/integrity-audit.md` and `.json`)
+passed all 2,410 jobs and 7,948 queries: 5,558 initial and 2,390 selected 5M queries.
+The 20 games finished 8W/5D/7L; native histories contain 2,491 played and 288 supplied
+prefix decisions. All frozen selections matched, with zero stable missed-error
+audit crossings. This does not establish absence of other errors. Gameplay reviews
+and full decision dispositions are under `batch-01-review/`. Their proposed 20M
+panels retain linked opponent events, successful controls and unresolved earlier
+choices. No final first/largest labels or weakness priorities are established.
+
+Large review metadata is stored byte-for-byte in `batch-01-review/*.json.gz`.
+`metadata-archives.json` records the expanded and compressed SHA-256 values. Restore
+an expanded file with Python `gzip.decompress` before a tool that expects JSON; keep
+it beside its archive. The expanded index and inventory are ignored by Git. These
+are metadata, not replacements for the immutable raw cloud evidence.
 
 Next gate: independent scientific/gameplay review of retrieved artifacts, required
 cloud20M adjudication, and the requested full200time/cost forecast BEFOREbatch02.
 The runtime estimate alone is not the final forecast: analysis/review pauses,
 ancillary costs and uncertain capacity remain material. No batch02 submitted.
+
+The independently reviewed first 20M plan is `batch-01-adjudication/plan.json`:
+298 decisions, 527 jobs, 558 queries, including 31 unrestricted-plus-played discovery
+jobs. Both gameplay panels use the same sensitivity/consequential selection rule.
+Cross-reviews and semantic admission pass; `coordinator-execution-review.json`
+records the controller review and nine passing offline tests. Only explicit
+confirmation jobs run in the existing image; no games are repeated. Eight balanced
+task assignments retain the existing C3 allocation and process bounds.
+
+`adjudication_control.py wait-verify` uses the existing Pub/Sub terminal event,
+then fetches only plan results and verifies them locally. It publishes separate
+immutable plan verification/completion receipts. Run it through `notify_exit.py`
+with normal local access to queue this chat on success or failure. The ordinary
+manifest status does not enumerate these additional jobs. Distinct alternatives
+found by discovery still need a later matched singleton query if not already in
+the plan; initial completion cannot close that scientific obligation. No timed
+watcher or local engine is needed. Inspect submission and notification receipts
+before restarting any process; an ambiguous submission must be reconciled.
 
 On retrieval/adjudication completion:
 

@@ -16,3 +16,9 @@ migration/local-executables/
 
 # Cloud raw evidence remains immutable in GCS and in this local verified cache.
 cloud-primary/local-cache/
+
+# Byte-exact compressed review metadata is tracked; expanded JSON is a local convenience.
+cloud-primary/batch-01-review/remote-inventory.json
+cloud-primary/batch-01-review/review-index.json
+cloud-primary/batch-01-review/dispositions-00-04.json
+cloud-primary/batch-01-review/evidence-05-09.json

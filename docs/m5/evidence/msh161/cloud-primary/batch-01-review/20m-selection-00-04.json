@@ -1,0 +1,1226 @@
+[
+  {
+    "pair": "main-01-00",
+    "game": 0,
+    "ply": 18,
+    "moves": [
+      "e1g1"
+    ],
+    "reason": "Positive or quiet control: verify actual successful response/continuation, not an inferred error from deviation from bestmove. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M same_choice_control; observed margin -0.0015000000000000568; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 0,
+    "ply": 23,
+    "moves": [
+      "g7g5",
+      "e6e5"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.068; initial500k difference 0.06299999999999994; current supported_finite_provisional; retained flags ['last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "d3b5",
+      "a4a5"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M threshold_straddling; observed margin 0.03500000000000003; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 0,
+    "ply": 32,
+    "moves": [
+      "e5g4",
+      "d2c4"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M threshold_straddling; observed margin 0.04999999999999999; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 0,
+    "ply": 33,
+    "moves": [
+      "g8h8",
+      "f5g4"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.18149999999999994; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 0,
+    "ply": 34,
+    "moves": [
+      "b2a3",
+      "c3c4"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.10199999999999998; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 0,
+    "ply": 37,
+    "moves": [
+      "d6c7",
+      "b7a6"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.1325; initial500k difference 0.16999999999999998; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 0,
+    "ply": 41,
+    "moves": [
+      "f8f6",
+      "e7f6"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.258; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 0,
+    "ply": 46,
+    "moves": [
+      "d4c5",
+      "a4a5"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.404; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 0,
+    "ply": 48,
+    "moves": [
+      "h2h4",
+      "f1d1"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.5575; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 20,
+    "moves": [
+      "f3e5",
+      "c2c4"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.20799999999999996; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 23,
+    "moves": [
+      "d8d7",
+      "e4c5"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.15800000000000003; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 30,
+    "moves": [
+      "c2c4",
+      "c1d1"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.43; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 31,
+    "moves": [
+      "d5d4"
+    ],
+    "reason": "Positive or quiet control: verify actual successful response/continuation, not an inferred error from deviation from bestmove. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M same_choice_control; observed margin 0.0; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 59,
+    "moves": [
+      "h7h6",
+      "e5f6"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M threshold_straddling; observed margin 0.034500000000000086; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 60,
+    "moves": [
+      "d3d7",
+      "h3g4"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.016; initial500k difference 0.1545; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 69,
+    "moves": [
+      "e6e5",
+      "e2c2"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.4395; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 70,
+    "moves": [
+      "d6b8",
+      "h3g4"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.294; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 75,
+    "moves": [
+      "e2e3",
+      "e4e3"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.497; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 97,
+    "moves": [
+      "d3d7",
+      "d3g3"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.5; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 98,
+    "moves": [
+      "g6h7",
+      "f4f5"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.49750000000000005; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-00",
+    "game": 1,
+    "ply": 101,
+    "moves": [
+      "c7d6",
+      "c7b7"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.496; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 18,
+    "moves": [
+      "g3g4",
+      "a1b1"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.051999999999999935; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 21,
+    "moves": [
+      "d8b6",
+      "f7f5"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.08350000000000002; initial500k difference 0.10049999999999992; current supported_finite_provisional; retained flags ['last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 22,
+    "moves": [
+      "f3g5",
+      "a2a3"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M threshold_straddling; observed margin 0.046499999999999986; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "a1b1",
+      "f2f4"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.05249999999999999; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 25,
+    "moves": [
+      "f7f6",
+      "f7f5"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.08800000000000008; initial500k difference 0.137; current unresolved; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 26,
+    "moves": [
+      "c3d5",
+      "g5f3"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.05499999999999999; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 28,
+    "moves": [
+      "g5e4",
+      "g5f3"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.2905; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 32,
+    "moves": [
+      "b2b4",
+      "d2c3"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.15799999999999997; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 37,
+    "moves": [
+      "d8c8",
+      "c6b4"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.138; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 38,
+    "moves": [
+      "b4c6",
+      "g2h1"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.24400000000000002; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 57,
+    "moves": [
+      "g7e5",
+      "c8f8"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.469; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 0,
+    "ply": 60,
+    "moves": [
+      "e1f1",
+      "d2c3"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.49; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 30,
+    "moves": [
+      "c3b5",
+      "h2h3"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.05300000000000005; initial500k difference 0.05950000000000005; current supported_finite_provisional; retained flags ['last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 43,
+    "moves": [
+      "a6b6",
+      "b7b5"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.05399999999999999; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 49,
+    "moves": [
+      "e8b8",
+      "d7c6"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.09150000000000003; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 52,
+    "moves": [
+      "b1b2",
+      "b4c5"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.20650000000000002; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 53,
+    "moves": [
+      "b6a7",
+      "c5b4"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.15000000000000002; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 55,
+    "moves": [
+      "d6e5"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin -0.0625; initial500k difference -0.14649999999999996; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty. Unrestricted discovery required for consequential unresolved same-choice/missing-alternative root; any discovered distinct move needs matched singleton verification.",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 56,
+    "moves": [
+      "b4c5",
+      "b2f2"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.07750000000000001; initial500k difference 0.24150000000000005; current unresolved; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 90,
+    "moves": [
+      "g4g5",
+      "e3h6"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.05399999999999994; initial500k difference 0.06549999999999995; current supported_finite_provisional; retained flags ['last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 94,
+    "moves": [
+      "e3f2",
+      "e3g1"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.37549999999999994; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 95,
+    "moves": [
+      "b5c6",
+      "f5f4"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.37350000000000005; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 102,
+    "moves": [
+      "h1g1",
+      "e1e2"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.4975; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 109,
+    "moves": [
+      "b3d4",
+      "c7c2"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.5; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 110,
+    "moves": [
+      "g1h1",
+      "d1a1"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.5; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 111,
+    "moves": [
+      "c7c2",
+      "a2f2"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.09599999999999997; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 112,
+    "moves": [
+      "e1f1"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin -0.0165; initial500k difference 0.11199999999999999; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty. Unrestricted discovery required for consequential unresolved same-choice/missing-alternative root; any discovered distinct move needs matched singleton verification.",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-01",
+    "game": 1,
+    "ply": 115,
+    "moves": [
+      "d6d7",
+      "e2d4"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.38650000000000007; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 0,
+    "ply": 32,
+    "moves": [
+      "d3c4",
+      "e3c1"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.4805; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 0,
+    "ply": 43,
+    "moves": [
+      "f6e4",
+      "f6d7"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.8405; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 0,
+    "ply": 44,
+    "moves": [
+      "d3e4"
+    ],
+    "reason": "Positive or quiet control: verify actual successful response/continuation, not an inferred error from deviation from bestmove. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M same_choice_control; observed margin 0.0; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 0,
+    "ply": 46,
+    "moves": [
+      "c3e4"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin -0.012499999999999956; initial500k difference -0.1735; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty. Unrestricted discovery required for consequential unresolved same-choice/missing-alternative root; any discovered distinct move needs matched singleton verification.",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-02",
+    "game": 0,
+    "ply": 47,
+    "moves": [
+      "c8c2"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin -0.188; initial500k difference 0.15050000000000002; current unresolved; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty. Unrestricted discovery required for consequential unresolved same-choice/missing-alternative root; any discovered distinct move needs matched singleton verification.",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-02",
+    "game": 0,
+    "ply": 48,
+    "moves": [
+      "e4g3",
+      "e3b6"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin -0.00550000000000006; initial500k difference -0.13249999999999995; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 0,
+    "ply": 49,
+    "moves": [
+      "f7f5",
+      "c2g6"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin -0.040499999999999994; initial500k difference 0.169; current unresolved; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 0,
+    "ply": 52,
+    "moves": [
+      "c1b1"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin -0.01849999999999996; initial500k difference -0.11199999999999999; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty. Unrestricted discovery required for consequential unresolved same-choice/missing-alternative root; any discovered distinct move needs matched singleton verification.",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-02",
+    "game": 1,
+    "ply": 21,
+    "moves": [
+      "c8e6",
+      "g4f6"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.067; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 1,
+    "ply": 22,
+    "moves": [
+      "d5e7",
+      "c2c4"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.08200000000000007; initial500k difference 0.027000000000000024; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 1,
+    "ply": 33,
+    "moves": [
+      "e5e4",
+      "d5e6"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.16649999999999998; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 1,
+    "ply": 35,
+    "moves": [
+      "e4d3",
+      "d5f5"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.2675; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 1,
+    "ply": 38,
+    "moves": [
+      "c2d3",
+      "g4h4"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.04749999999999999; initial500k difference -0.020499999999999963; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 1,
+    "ply": 40,
+    "moves": [
+      "g4g5",
+      "f6c3"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.3035000000000001; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 1,
+    "ply": 45,
+    "moves": [
+      "c6b4",
+      "e2e6"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.1355; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 1,
+    "ply": 46,
+    "moves": [
+      "a1e1",
+      "f1e1"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.05149999999999999; initial500k difference 0.09150000000000003; current supported_finite_provisional; retained flags ['last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-02",
+    "game": 1,
+    "ply": 53,
+    "moves": [
+      "c2e2",
+      "f8e8"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.07250000000000001; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 27,
+    "moves": [
+      "a8c8",
+      "f7f5"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.4395; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 29,
+    "moves": [
+      "g8h8",
+      "c8a8"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.11349999999999999; initial500k difference 0.275; current supported_finite_provisional; retained flags []. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 48,
+    "moves": [
+      "f4f5",
+      "d2c3"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.4730000000000001; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 49,
+    "moves": [
+      "g7g6",
+      "e6f5"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.4435; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 60,
+    "moves": [
+      "d5d6",
+      "d5c6"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.493; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 69,
+    "moves": [
+      "h7e4",
+      "h7f5"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.03749999999999998; initial500k difference 0.265; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 70,
+    "moves": [
+      "h5h6",
+      "d2e1"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.021500000000000002; initial500k difference 0.3095; current unresolved; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 73,
+    "moves": [
+      "e5f6",
+      "e4f5"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.4315; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 78,
+    "moves": [
+      "g3f4",
+      "a2b4"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.09600000000000003; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 84,
+    "moves": [
+      "b3b4",
+      "g1f2"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.2695; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 85,
+    "moves": [
+      "f6c3",
+      "h7g6"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.483; initial500k difference 0.4085; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 87,
+    "moves": [
+      "e8g8",
+      "c3f6"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.22949999999999998; initial500k difference 0.379; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 88,
+    "moves": [
+      "g1f1",
+      "g1f2"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.19600000000000006; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 90,
+    "moves": [
+      "f1e2",
+      "f1f2"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.0655; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 95,
+    "moves": [
+      "f8e8",
+      "d7f5"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.448; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 96,
+    "moves": [
+      "e3e4"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin -0.09650000000000003; initial500k difference 0.127; current unresolved; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty. Unrestricted discovery required for consequential unresolved same-choice/missing-alternative root; any discovered distinct move needs matched singleton verification.",
+    "discovery": true
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 98,
+    "moves": [
+      "e4e5",
+      "f4e3"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin -0.0685; initial500k difference 0.34750000000000003; current unresolved; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 99,
+    "moves": [
+      "e8h8",
+      "g6f5"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.428; initial500k difference 0.425; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 100,
+    "moves": [
+      "b7a7",
+      "f4e3"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.49950000000000006; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 101,
+    "moves": [
+      "h8g8",
+      "g6f5"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.5005; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 102,
+    "moves": [
+      "d2c1",
+      "h6h7"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.5005; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 105,
+    "moves": [
+      "d4c3",
+      "f5g4"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.457; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 0,
+    "ply": 116,
+    "moves": [
+      "a7h7",
+      "a7a1"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.5; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 1,
+    "ply": 26,
+    "moves": [
+      "f2f3",
+      "f2f4"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.502; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-03",
+    "game": 1,
+    "ply": 27,
+    "moves": [
+      "f6g4"
+    ],
+    "reason": "Positive or quiet control: verify actual successful response/continuation, not an inferred error from deviation from bestmove. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M same_choice_control; observed margin 0.0; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 26,
+    "moves": [
+      "h2h3",
+      "c2a2"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.2625; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 27,
+    "moves": [
+      "g4f6",
+      "b7f3"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.22399999999999998; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 33,
+    "moves": [
+      "c7c4",
+      "d7d6"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.21649999999999997; initial500k difference 0.14850000000000002; current supported_finite_provisional; retained flags ['last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 42,
+    "moves": [
+      "f3d4",
+      "e3d4"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.09099999999999997; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 43,
+    "moves": [
+      "c6c7",
+      "c6c4"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.0655; initial500k difference 0.15000000000000002; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 45,
+    "moves": [
+      "d5e3",
+      "h7h5"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.0805; initial500k difference 0.2495; current supported_finite_provisional; retained flags ['last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 47,
+    "moves": [
+      "b7g2",
+      "d8c7"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.0925; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 48,
+    "moves": [
+      "f2e3",
+      "c7c8"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.46099999999999997; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 55,
+    "moves": [
+      "e5f6",
+      "e5d6"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.23700000000000002; initial500k difference 0.3065; current unresolved; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 57,
+    "moves": [
+      "e6e5",
+      "g8f7"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.174; initial500k difference 0.0855; current unresolved; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 60,
+    "moves": [
+      "b6d5",
+      "f3d2"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.11150000000000004; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 62,
+    "moves": [
+      "e3e4",
+      "c7b7"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.3540000000000001; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 69,
+    "moves": [
+      "b8c6",
+      "f6g5"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.4815; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 74,
+    "moves": [
+      "g2f1",
+      "b7b6"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.496; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 79,
+    "moves": [
+      "h7h5",
+      "g5e3"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.4665; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 88,
+    "moves": [
+      "d5b4",
+      "e2e4"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.5; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 0,
+    "ply": 92,
+    "moves": [
+      "b4d3",
+      "b4c6"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.4985; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 23,
+    "moves": [
+      "h7h6",
+      "d8e7"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.21699999999999997; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 24,
+    "moves": [
+      "f3d4",
+      "f3e5"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.051999999999999935; initial500k difference 0.04799999999999993; current unresolved; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 29,
+    "moves": [
+      "d8e7",
+      "f6h5"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.267; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 30,
+    "moves": [
+      "f4e5",
+      "e2e4"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.257; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 38,
+    "moves": [
+      "a2a4",
+      "f3d5"
+    ],
+    "reason": "Harmonized both-actor sensitivity/consequential uncertainty selection: observed margin 0.04300000000000004; initial500k difference 0.04250000000000009; current supported_subthreshold; retained flags ['last_score_update_not_selected_exact_score']. PRIMARY CLOUD Linux native history only via review-index.json. Margin .04 selection uses1e-12 tolerance only; frozen support arithmetic unchanged. Preserve final-first/largest uncertainty."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 54,
+    "moves": [
+      "e3b3",
+      "f1b1"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.33599999999999997; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 55,
+    "moves": [
+      "e4c5",
+      "g8h7"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.25849999999999995; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 63,
+    "moves": [
+      "d2c2",
+      "g8f7"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.477; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 64,
+    "moves": [
+      "e5d6",
+      "e5c7"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.4920000000000001; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 88,
+    "moves": [
+      "c6c4",
+      "e6e7"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M supported_finite_provisional; observed margin 0.499; retained flags ['last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 89,
+    "moves": [
+      "c8b7"
+    ],
+    "reason": "Positive or quiet control: verify actual successful response/continuation, not an inferred error from deviation from bestmove. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M same_choice_control; observed margin 0.0; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 113,
+    "moves": [
+      "f8e7",
+      "b3d5"
+    ],
+    "reason": "Candidate threshold/first-largest/consequential comparison; includes unstable or conflicting cases without discarding earlier uncertainty. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.275; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 114,
+    "moves": [
+      "f4f5",
+      "e5c5"
+    ],
+    "reason": "Linked opponent opportunity, defensive reprieve or conversion event needed to distinguish candidate deterioration/recovery episodes. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 5M unresolved; observed margin 0.3075; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  },
+  {
+    "pair": "main-01-04",
+    "game": 1,
+    "ply": 115,
+    "moves": [
+      "b3d5"
+    ],
+    "reason": "Positive or quiet control: verify actual successful response/continuation, not an inferred error from deviation from bestmove. PRIMARY CLOUD Linux only; resolve report through review-index.json, never Mac same pair IDs. Current 500k same_choice_control; observed margin 0.0; retained flags []. Full ranges/hashed provenance in dispositions-00-04.json. Claim-policy/earlier uncertainty retained; not a final first/largest claim."
+  }
+]

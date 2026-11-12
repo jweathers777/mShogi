@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T08:58:00Z'
+updated_date: '2026-11-12T09:11:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -59,6 +59,8 @@ Deliver independently challenged diagnosis, ranked investigations and updated ro
 2. Fingerprint unchanged engines; pilot games, native replay and full-move analysis.
 3. Complete broad coverage in reviewed batches, preserving failures and resource use.
 4. Confirm events, independently challenge rankings, update roadmap, integrate and stop before engineering.
+
+Primary cloud batch01 review: independent full-history gameplay panels and artifact/method audit; freeze required20M selections and use existing pinned worker confirmation API with a separate immutable, hash-bound plan and bounded eight-worker dispatcher. Independently review controller-only orchestration before submission; event wait plus plan-aware retrieval/verification runs unattended with notify_exit.py. Review completed20M and update measured full200 time/cost forecast before batch02. No production changes or Mac engines.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -93,4 +95,6 @@ Cloudrunner integrated bb5e698e;64integrationtests pass. All200freshprimarygames
 Owner addition: completedprimarybatch01 review MUST include full200game elapsedtime andcost forecast beforecloudbatch02 submission. Use measuredtask/VM lifecycle, actualanalysis/data volume and fixed8workers; include deeper20M, startup/retries/reviewpauses andancillarycharges. Report total+remainingranges withassumptions andestimatedvsbilled distinction. Do not truncatecoverage. Durablegate cloud-primary/forecast-request.json andREADME updated; await existingcompletionevent, no additionalpolling.
 
 Primarycloudbatch01 terminalSUCCEEDED10pipelines; completioneventqueuedcoordinator. Independentruntime audit taskelapsed7834.911s(2h10m35),submitelapsed8341.953s(2h19m02),peak6workers despite8requested:6VMlifecycles and53failedVMinsertoperations fromresourcepoolshortage,notfailedgameattempts. VM/disksnowabsent;~10.2458VMh/$2.0656computeestimate atrecordedrate,notactualbill. Fullrawretrieval/verification nowunattended viaexitwrapper(session12054),generationCRC/SHAchecks, cachecloud-primary/local-cache ignored; noengines. Awaitexitthenindependentscientific/gameplayreview andrequiredcloud20M. Ownerfull200time/costforecastexplicitgate BEFOREbatch02; includeactualcapacity,stagetime,20M,reviewpauses andancillarycost. Batch02notlaunched. Seecloud-primary/README andforecast-request.json.
+
+Primary cloud retrieval verified34,461objects/4,582,665,719bytes. Independent offline audit passes20games8W5D7L,2,410jobs/7,948queries, exactfrozen500k/5Mcoverage and0stableauditcrossings; nofailedattempts/claims. Gameplay reviewers retain complete dispositions, linked opportunity/recovery events, constructive successes and nativeautomaticclaimlimits. Required20M panel being harmonized/cross-reviewed; batch02 remains unsubmitted. See cloud-primary/batch-01-review/integrity-audit.md and gameplay reviews. Full200forecast still pending measured20M; actualbilling unknown.
 <!-- SECTION:NOTES:END -->

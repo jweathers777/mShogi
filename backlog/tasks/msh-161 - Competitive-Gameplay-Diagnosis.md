@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T14:01:00Z'
+updated_date: '2026-11-12T14:06:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -123,4 +123,8 @@ Bounded draw-policy correction: native/search/UCI/runner focused checks pass (bu
 Reviewed draw-policy correction integrated at ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0. Focused native/search/UCI/runner tests and14adapter tests pass; broader Python suite66/67 has pre-existing quick-status old-store expectation mismatch. Targeted Level2; Linux build launched unattended with exit callback (policy-transition/linux-build-launch.json), no cloud worker or game started. Batch02 closure and primary cumulative40game record derived independently;12optional-claim draws retained/flagged. Next: corrected image, one short actual cloud match, final amended manifest admission, batch03; no further approval needed.
 
 Linux build PASS: native ab7ef8f1, candidateSHA4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23, runnerSHAd533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3; originalOx/SF bytes reused. Independent native/deployment-script reviews passed;9offline transition tests passed. Worker checkpoint d9271a29. One unattended image-push + short cloud validation chain launched (policy-transition/deployment-launch.json, wrapper96307), with exit notification; no further permission needed after admission. Batch03 designated first correctedpolicy batch but not yet started. Do not duplicate from older native-build callback.
+
+Deployment gate FAILED: image544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f published, but actual short cloud pair exposed incompatible Oxidation. At halfmove100 it returns0000 and refuses native-legal searched mShogi h8g7 continuation. Native runner/replay bothreturn0, exact clean ab7ef8f1 provenance; this is preserved protocol failure, not completedgames. Independent frozen-source review confirms unconditional50move/threefold terminal handling with no configurableoption. Ownerchoice requested: narrowlyidentified Oxidation draw compatibility patch(recommended) or compatible replacement qualification; fixedexternalreference change needs decision. No retries/batch03 active; current staged manifests bind incompatible unchangedOx and mustnotactivate. Preserve failedcloud/wrapper/notification/cleanup/resource records; see policy-transition/README.md and oxidation-draw-policy-review.md.
+
+Independent failed-validation reconciliation complete:12artifact/provenance checks pass; taskFAILED/exit1 preserved; localwrapperPIDs absent/nativeandreplay groups settled; cloudVM deletion completed and matchingVM/disk inventories empty. One short validation, zero scoredstudy games.63.461652VMseconds, estimatedUSD0.003554compute atrecordedrate, notbill/all-in. No duplicateprocesses, retries or capacity left running. Await requested externalreference choice; all prior40games preserved.
 <!-- SECTION:NOTES:END -->

@@ -192,8 +192,9 @@
   "integration": {
     "branch": "codex/parallel-experiment-runner",
     "target": "codex/rewrite",
-    "status": "not integrated by explicit owner instruction",
-    "worktree_purpose": "Retained for coordinator handoff/integration and billed-cost reconciliation; no running local listener or cloud worker requires it."
+    "status": "merged_by_coordinator",
+    "worktree_purpose": "Retained for remaining actualpilotbillingreconciliation; integratedcode andhandoff nowinprimary; no activecloudjob/listener uses thisworktree.",
+    "target_revision": "bb5e698e"
   },
   "previous_source_checkpoint": {
     "revision": "14bea72cb326d77fe780927f07d2da60e66b6528",
@@ -357,5 +358,16 @@
     "limitations": "Different live snapshots; timing depends on storage/network and listing size. No artifact or success-content verification. No new computation."
   },
   "cloud_compute_still_running": false,
-  "estimated_all_pilot_vm_compute_usd": 2.041400562784367
+  "estimated_all_pilot_vm_compute_usd": 2.041400562784367,
+  "coordinator_admission": {
+    "owner_full_study_authorized": true,
+    "date": "2026-11-12",
+    "reviews": [
+      "../m5/evidence/msh161/migration/cloud-runtime-admission-review.md",
+      "../m5/evidence/msh161/migration/cloud-scientific-admission-review.md"
+    ],
+    "primary": "../m5/evidence/msh161/cloud-primary/cohort-freeze.json",
+    "primary_first_job": "msh161-primary-b01-v1",
+    "pilot_actual_billing": "still_unavailable_not_fabricated"
+  }
 }

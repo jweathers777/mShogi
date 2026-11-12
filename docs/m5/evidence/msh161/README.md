@@ -1,3 +1,12 @@
+## Current cloud study — primary batch01 submitted
+
+John authorized the fullcloudstudy on12November2026 after runner handoff.
+See `cloud-primary/README.md` and `cohort-freeze.json` there. All200originalgames
+are frozen in10reviewed batches; first20run on up to8standardizedC3workers.
+Macengines remain STOPPED. Cloud control/listener processes do not run Macengines.
+The old local callback cannot start localbatch03. New cloudcompletion callbacks
+resume cloudreview, not localexecution.
+
 # ACTIVE OWNER OVERRIDE — LOCAL EXECUTION STOPPED; CLOUD MIGRATION
 
 Read `migration/execution-policy.json` and `migration/owner-request.txt` FIRST.

@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex-cloud-runner'
 created_date: '2026-11-11T18:35:00Z'
-updated_date: '2026-11-11T22:30:00Z'
+updated_date: '2026-11-12T06:37:00Z'
 labels:
   - handle:parallel-experiment-runner
 dependencies: []
@@ -26,7 +26,7 @@ Deliver reusable local and GCP Batch execution over native match/replay and froz
 Versioned immutable jobs, bounded workers, dependency scheduling and verified artifacts. Preserve frozen study and coordinator ownership.
 
 ## Completion
-Implementation and authorized cloud pilot passed independent review. See docs/experiments/coordinator-handoff.md. Actual billed-cost reconciliation and coordinator integration remain open; no full study is authorized.
+Implementation, cloud pilots and independent review passed; coordinator integrated at bb5e698e and authorized primary execution is now underway in MSH-161. Actual pilot billed-cost reconciliation remains open, so keep this task In Review. See docs/experiments/coordinator-handoff.md and verification.json.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -88,6 +88,8 @@ Owner-requested quick-status delivered at cecb9e92: concurrent plan/possible-fai
 Direct status follow-up delivered at6bac128c: python3 tools/experiments/quick_status.py reads status-settings.json and infers storage from manifest; no user-supplied identifiers or private/tmp interpreter. Normal Python without Google SDK succeeded live through read-only gcloud fallback. Credential errors propagate. All64tests pass; independent10-test review approved. Novice/operating guides updated. Running frozen worker image/listener unchanged; await eight-worker completion.
 
 Final evidence commit7dd13acb: all1841eight-worker jobs verified from27401objects/3.98GB; independent16game replay,5322screening queries and1825confirmations passed. Eight real matching C3workers overlapped; per-task elapsed6159.163s/102.65min, total jobwall8.56h. AggregateBatch duration5180s is inconsistent; task/GCS/audit timestamps used, alert delivered after finaltask. No failed eight-worker attempts/retries/claims; allVM/disksdeleted. Allpilot compute estimateUS$2.04140 before extras, actualbilling unavailable. AC4 remains unchecked only for actual billed-cost reconciliation; execution/recovery/throughput parts passed. Finalcontroller64tests passed on Mac/LinuxARM; frozenLinuxx86image validated on realC3. No native/frozenstudy source changes. In Review for coordinator handoff and actualbilling, not Done because integration explicitly deferred. Retain isolated worktree for these purposes. No fullstudy,16worker expansion or next engineering task launched.
+
+Coordinator12November: accepted runtime/scientificpilot evidence, mergedisolatedbranch into codex/rewrite atbb5e698e, andreran64integrationtests PASS. Latesthumanrequestauthorizesfull200primarycloudstudy; first20submitted msh161-primary-b01-v1 with8workers usingexacttested51351image/newercontroller. NoMac/pilotpooling. Actualpilotbilledcost remainsunavailable; nofabricatedreconciliation orDone claim. Isolatedworktree hasno activeworker/listener dependency andisretained solelyforremainingpilotbillingreconciliation; integration/evidence nowinprimary. CoordinatorownsMSH161/scientificreview; nointerchatmessaging.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

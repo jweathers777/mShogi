@@ -1,3 +1,13 @@
+## Coordinator update —12November2026
+
+Integrated into `codex/rewrite` at `bb5e698e`. Runtime/scientific admission and
+64integration tests passed. John authorized the fullcloudstudy. All200freshprimary
+games are frozen in `docs/m5/evidence/msh161/cloud-primary/cohort-freeze.json`;
+first20submitted as `msh161-primary-b01-v1`, maximum8C3workers. Mac/pilot evidence
+stays separate. Actualpilotbilling remains open; the worktree is retained only for
+that reconciliation, not execution. Older no-integration/no-full-study statements
+below describe the original handoff and are superseded by this update.
+
 # Parallel runner handoff
 
 MSH-162 (Parallel Experiment Runner) is on `codex/parallel-experiment-runner`.

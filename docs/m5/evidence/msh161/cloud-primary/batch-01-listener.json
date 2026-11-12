@@ -1,0 +1,29 @@
+{
+  "pid": 6829,
+  "started_epoch": 1794465218.984287,
+  "command": [
+    "caffeinate",
+    "-i",
+    "/private/tmp/msh162-controller/bin/python",
+    "-m",
+    "tools.experiments.cli",
+    "wait-cloud",
+    "--manifest",
+    "docs/m5/evidence/msh161/cloud-primary/batch-01-manifest.json",
+    "--store",
+    "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+    "--config",
+    "docs/m5/evidence/msh161/cloud-primary/cloud-config.json",
+    "--job-name",
+    "msh161-primary-b01-v1",
+    "--subscription",
+    "projects/mshogi/subscriptions/mshogi-pilot-completion",
+    "--thread",
+    "01a1c734-6d54-75e1-80e5-58074ecdc4dd"
+  ],
+  "controller_revision": "6eaccc3542807695852504574dbca2da49bee822",
+  "manifest_sha256": "f4a4f9101ffe5a7c4734d7e9dd2f0c684269f0a68bcf025a5194e2626c250fd6",
+  "mode": "InitialstatuslookupthenPubSubterminalevents;queuesowningchatonexit. Noperiodicpolling orlocalengineexecution.",
+  "notification_acceptance": "pendingterminalevent",
+  "job_uid": "msh161-primary-b01-c12991aa-17f5-43260"
+}

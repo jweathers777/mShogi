@@ -295,5 +295,32 @@
       }
     },
     "unperformed": "Batch02 consequential20M and final episode adjudication; primary200cloudcampaign pendingvalidatedrunner."
+  },
+  "cloud_primary": {
+    "status": "batch01_submitted_listener_active",
+    "owner_authorization": "12November2026humanrequestproceedfullcloudstudy",
+    "cohort": "cloud-primary/cohort-freeze.json",
+    "games_frozen": 200,
+    "batches": 10,
+    "games_per_review": 20,
+    "parallelism": 8,
+    "machine_type": "c3-standard-4",
+    "worker_source": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+    "controller_integration": "bb5e698e",
+    "manifest_commit": "6eaccc35",
+    "admission": "cloud-primary/manifest-admission.json",
+    "preflight": "cloud-primary/cloud-preflight.json",
+    "integration_tests": "cloud-primary/integration-tests.log",
+    "tests_passed": 64,
+    "job": "msh161-primary-b01-v1",
+    "submission": "cloud-primary/batch-01-submission.json",
+    "listener": "cloud-primary/batch-01-listener.json",
+    "listener_pid": 6829,
+    "local_engines_running": false,
+    "mac_or_pilot_results_counted": false,
+    "cost": "Pilot-scaledVMcomputeestimate23.62USD atrecordedrate;notbill/cap;ancillarycostsandlater20Mextra;trackattempts/lifecycletime/billing.",
+    "next": "Oncompletionretrieveverifyreviewfirst20freshcloudgames;performconsequential20M oncloud;reviewbeforebatch02.",
+    "initial_status_receipt": "cloud-primary/batch-01-initial-status.json",
+    "last_observed_state": "SCHEDULED"
   }
 }

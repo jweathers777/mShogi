@@ -19,5 +19,8 @@
   "mac_main_games_with500k_and5M": 40,
   "mac_main_games_with_selected20M": 20,
   "separate_qualification_games": 20,
-  "unperformed_analysis": "Batch02 consequential20M and final episode adjudication; no local searches authorized."
+  "unperformed_analysis": "Batch02 consequential20M and final episode adjudication; no local searches authorized.",
+  "cloud_authorization": "12November2026humanrequest:readcoordinatorhandoffandproceedfullcloudstudy",
+  "cloud_status": "firstprimary20gamebatchsubmitted;8workers;all200frozen;reviewper20",
+  "local_control_processes": "Cloudsubmission/retrieval/eventlistener allowed; no localenginejobs"
 }

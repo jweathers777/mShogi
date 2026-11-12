@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T08:04:00Z'
+updated_date: '2026-11-12T08:58:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -91,4 +91,6 @@ Localbatch02 safelycompleted20games+500k+5M; offlineaudit verifies8243queries/14
 Cloudrunner integrated bb5e698e;64integrationtests pass. All200freshprimarygames frozen at6eaccc35 in10original20gamebatches, eightC3workers, exacttestedworker51351c48/digestad95d85 withnewercontroller. Independentactualmanifestadmission passesall100pair/source/protocol identities andno pilotreuse. GCPpreflight noactivejobs/priorlistener,image/subscriptionverified,primaryprefixempty. Submitted firstprimary20 as msh161-primary-b01-v1 UIDmsh161-primary-b01-c12991aa-17f5-43260; initialQUEUED. PubSubeventlistenerPID6829 queuesowningchat; no periodicpolling orlocalengines. Store gs://mshogi-experiments-216675633801/msh161-primary-v1. Oncompletion retrieve/verify, independentgameplayreview andrequiredcloud20M thennextbatch, throughall200. Mac40gamesremainexploratory. See cloud-primary/README.md, cohort-freeze.json, manifest-admission.json andsubmission/listenerreceipts. Localenginepausecontinues; latestownerfullcloudauthorization recorded.
 
 Owner addition: completedprimarybatch01 review MUST include full200game elapsedtime andcost forecast beforecloudbatch02 submission. Use measuredtask/VM lifecycle, actualanalysis/data volume and fixed8workers; include deeper20M, startup/retries/reviewpauses andancillarycharges. Report total+remainingranges withassumptions andestimatedvsbilled distinction. Do not truncatecoverage. Durablegate cloud-primary/forecast-request.json andREADME updated; await existingcompletionevent, no additionalpolling.
+
+Primarycloudbatch01 terminalSUCCEEDED10pipelines; completioneventqueuedcoordinator. Independentruntime audit taskelapsed7834.911s(2h10m35),submitelapsed8341.953s(2h19m02),peak6workers despite8requested:6VMlifecycles and53failedVMinsertoperations fromresourcepoolshortage,notfailedgameattempts. VM/disksnowabsent;~10.2458VMh/$2.0656computeestimate atrecordedrate,notactualbill. Fullrawretrieval/verification nowunattended viaexitwrapper(session12054),generationCRC/SHAchecks, cachecloud-primary/local-cache ignored; noengines. Awaitexitthenindependentscientific/gameplayreview andrequiredcloud20M. Ownerfull200time/costforecastexplicitgate BEFOREbatch02; includeactualcapacity,stagetime,20M,reviewpauses andancillarycost. Batch02notlaunched. Seecloud-primary/README andforecast-request.json.
 <!-- SECTION:NOTES:END -->

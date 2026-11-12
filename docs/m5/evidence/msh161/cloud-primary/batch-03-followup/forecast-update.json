@@ -1,0 +1,31 @@
+{
+  "completed_primary_games": 60,
+  "fully_adjudicated_primary_games_at_this_audit": 40,
+  "pending_batch03_scientific_closure": true,
+  "measured_base_batches": 3,
+  "measured20m_panels": 3,
+  "measured_extra_singleton_queries": 9,
+  "new_distinct_alternative_queries_pending": 0,
+  "measured_reference_queries": 24967,
+  "measured_scientific_jobs": 8342,
+  "failed_scientific_attempts": 0,
+  "measured_primary_vm_hours": 43.042446447809546,
+  "estimated_primary_compute_usd": 8.677701543449986,
+  "actual_billed_cost": null,
+  "full200_mean_workload_compute_usd": 28.925671811499956,
+  "remaining140_mean_workload_compute_usd": 20.24797026804997,
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "full_processing_hours_conditional_scenario": [
+    29,
+    48
+  ],
+  "scope": "Three completed base batches, three completed20M panels and nine new followup singleton queries (two batch02, seven batch03). Seven reused batch03 played queries remain counted only in the original panel. Mac/pilots/abandoned transition costs remain separate.",
+  "limits": "VM lifetime measured, compute priced at recorded rate not billed. Later panel sizes/followups vary. Existing inclusive processing/cost scenarios remain conditional, not confidence intervals, deadlines or caps. Ancillary storage/transfer/operations, taxes, retries and review pauses are not in compute mean.",
+  "measured_cloud_submission_to_final_task_hours_sum": 7.472828764650557,
+  "full200_mean_cloud_stage_elapsed_hours": 24.909429215501856,
+  "remaining140_mean_cloud_stage_elapsed_hours": 17.436600450851298,
+  "time_note": "Sum of sequential cloud creation-to-final-task spans, not VM-hours or end-to-end elapsed. Excludes preflight/retrieval/review. No known additional required query remains from current seven-query plan; scientific reviewers own closure."
+}

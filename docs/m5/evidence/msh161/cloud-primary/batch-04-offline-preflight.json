@@ -1,0 +1,11 @@
+{
+  "status": "original_conditions_verified_waiting_batch03_closure",
+  "manifest_sha256": "d0f0e0e0a0a654478a268e3e6692199ee7f93093b25156a77b5749d93a2f0051",
+  "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+  "native_source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+  "worker_source": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+  "pairs": 10,
+  "games": 20,
+  "policy": "auto_claim",
+  "no_new_job_or_queries": true
+}

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T17:15:00Z'
+updated_date: '2026-11-12T17:25:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -143,4 +143,6 @@ Batch 03 20M plan completed: 676 jobs / 692 queries, zero failed attempts, plan-
 Batch 03 20M independent panels and runtime audit completed. Preserve all 397 root dispositions before followup, legal continuations, secondary/already-lost tags, earlier uncertainty and AutoClaim limits. Admitted only seven distinct singleton alternatives: one unrestricted discovery and six linked played-PV replies, each verified against exact supporting history and compared with reused played 20M evidence. Plan SHA309aba6b7a616a8b1870c52e91808388c82537efd496cca358efcb525a70a4d9. No repeat games or played searches. Eight previous workers deleted, no failures; primary estimated compute USD8.640040/42.855643VMh, not billed. After seven-query review, close Batch 03 and update cumulative categories before original Batch 04.
 
 Seven-query Batch 03 followup launched through existing exit notifier: wrapper PID31181, job msh161-primary-b03-followup-v1, reviewed checkpoint a766ab8e. Seven new forced alternatives and seven reused played queries; no repeated engine work. Await notification, reconcile all status layers, independently disposition these seven linked events with retained prior ledgers, close Batch 03 and update cumulative categories/resources before original Batch 04. Full 200-game coverage remains required, without timers or unrelated engineering.
+
+Batch 03 closed after independent gameplay panels, plan-aware execution review and seven distinct matched followups. Final overlays preserve pre-followup ledgers; unstable comparisons remain unresolved, with earlier/linked and AutoClaim limits retained. Primary cumulative now 60 reviewed games (26W/17D/17L), 24,967 reference queries and 43.042446 VM-hours / US$8.677702 estimated compute, not billed cost. See cloud-primary/batch-03-review/closure.md and closure-summary.json. Original Batch 04 offline provenance passed; proceed with original AutoClaim binaries/image and existing exit-notification workflow. Remaining 140 games authorized; no production changes or final priorities.
 <!-- SECTION:NOTES:END -->

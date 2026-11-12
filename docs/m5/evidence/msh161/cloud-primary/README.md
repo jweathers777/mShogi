@@ -1,90 +1,43 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Active owner decision: original AutoClaim restored
+## Current state: Batch 03 reviewed; original Batch 04 ready
 
-John cancelled the draw-policy transition and directed resumption of all remaining
-160games with the original verified mShogi/Oxidation binaries, AutoClaim policy,
-worker image and cloud configuration used in batches01–02. No Oxidation patch,
-replacement reference or further draw-policy work is authorized. The transition
-sections below are retained historical evidence and do not govern execution.
+Batches 01–03 are fully reviewed: **60 games, 26 wins / 17 draws / 17 losses**.
+Batch 03 finished 9/5/6. Independent gameplay panels and execution review closed
+its 692-query 20M panel and seven new alternatives. All required coverage passed;
+unstable comparisons remain unresolved. See `batch-03-review/closure.md`,
+`closure-summary.json`, the final disposition overlays in `batch-03-adjudication`,
+and the independent reviews in `batch-03-followup`. Pre-followup ledgers and the
+exact former 40-game cumulative record remain preserved. No searches were repeated.
 
-`autoclaim-restoration.json` verifies all ten original manifest hashes, the frozen
-scientific inputs, original source bundle, binary identities,5s/move AutoClaim
-configuration and remaining80pairs. Existing manifests were never activated to
-the attempted v2configuration, so reuse requires no regeneration or new matches.
-Batch03 uses original image digest `ad95d85a…dcc43f7`, native source `77101fe3…`,
-and worker source `51351c48…`; the corrected transition image is NOT used.
+`primary-cumulative.json` includes all 60 games, earlier/linked uncertainty,
+secondary tags and unranked category examples. Selected comparisons are correlated
+and do not establish population error rates or independent loss causes. All 17
+draws were native automatic claims (16 threefold, one fifty-move). Draws alone are
+not weakness evidence; claims can limit observation of advantage conversion.
 
-Batch 03 completed and was retrieved and verified: 20 games, native result
-9 wins / 5 draws / 6 losses, no failures or unscored games. The retrieval receipt
-verifies 1,717 jobs and 25,375 objects (2,767,781,004 bytes). The wrapper returned
-success, recorded a settled child group, and its completion notification was
-accepted. Independent gameplay and integrity reviews at the initial/5M stage
-passed under `batch-03-review`. The required 20M plan has now completed and its
-scientific dispositions and distinct followup alternatives are under review.
-Do not duplicate completed games, searches or retrieval. Batch 04 is not launched.
-Continue through all 200 games using reviewed batches and exit notifications.
-The first 40 reviewed games and all failed transition evidence remain preserved.
+John restored the original AutoClaim conditions. All remaining 140 games use the
+original unmodified mShogi/Oxidation binaries, worker image and cloud configuration.
+`autoclaim-restoration.json` and `batch-04-offline-preflight.json` bind those inputs.
+The policy transition is abandoned; preserve its failed validation without further
+policy work, opponent changes or production engineering. The historical sections
+below do not govern current execution.
 
-Batch 03 integrity and runtime reviews passed in `batch-03-review`. All 6,485
-reference queries are accounted for, with no stable missed-error expansion
-trigger. Two uncertain audit comparisons remain explicit. Actual concurrency
-was eight workers, with no failed VM insertions and all workers deleted.
-The gameplay panels selected 397 decisions for required 20M analysis (16
-unrestricted discovery roots). Their full decision ledgers are losslessly saved
-as `gameplay-00-04.json.gz` and `gameplay-05-09.json.gz`; raw and compressed hashes
-are in `gameplay-ledger-artifacts.json`. Selections are not confirmations.
+Batch 03 followup submission, cloud completion, plan-aware verification, cleanup
+and notification were independently reconciled. All seven workers were deleted;
+no failed attempts or allocation failures occurred. Primary cumulative compute is
+43.042446 VM-hours, estimated US$8.677702, not billed/all-in cost. See
+`batch-03-followup/forecast-update.json`; the measured full-study compute estimate
+is about US$28.93, with ancillary costs and runtime uncertainty retained separately.
 
-The admitted Batch 03 deeper plan is `batch-03-adjudication/plan.json`, SHA256
-`3ad0916deaef5ce2e150f38ab782a3aea5fe556c441ca37d63e436479dceb626`: 676 jobs /
-692 queries for 397 selected decisions, including 16 unrestricted discoveries.
-It preserves the original native/Stockfish binaries, image, exact histories and
-20M budget. One offline preparation attempt rejected a selection serialization
-error before any engine/cloud work; the original selection and its intent-preserving
-correction are retained in `selection-schema-reconciliation.json`. No searches
-were repeated. The full review index/inventory are archived losslessly as gzip;
-restore exact JSON bytes locally if a helper needs them, without downloading again.
-
-Completed execution: the Batch 03 20M submit/wait/verify chain ran under
-exit wrapper PID 28235, job `msh161-primary-b03-20m-v1`, from reviewed checkpoint
-`ba750de9`. See `batch-03-adjudication/launch.json`; cloud acceptance is recorded
-separately in `submission-result.json`, and cleanup/notification in `notification.json`.
-The 676 jobs / 692 queries completed with no failed attempts; plan-aware
-verification passed and the wrapper recorded success, settled cleanup and an
-accepted notification. Do not duplicate the wrapper, queries, or retrieval. Reconcile all layers,
-review the completed plan against both gameplay panels, obtain any distinct new
-alternative singleton checks, then update cumulative categories/resources and
-launch original Batch 04. Preserve unresolved earlier/linked events and AutoClaim
-limits. Do not rank final engineering priorities until all 200 games are reviewed.
-
-Batch 03 20M scientific review is complete pending seven distinct followup
-alternatives. Both review narratives are in `batch-03-adjudication`; pre-followup
-dispositions are preserved as lossless `.json.gz` archives. One unrestricted
-discovery and six linked played-PV replies need new singleton comparisons; their
-seven existing played results are hash-bound and reused. The admitted small plan
-is `batch-03-followup/plan.json`, SHA256
-`309aba6b7a616a8b1870c52e91808388c82537efd496cca358efcb525a70a4d9`.
-No other unresolved comparison is repeated to obtain a label. Once these seven
-results are reviewed, close Batch 03, update cumulative categories/resources with
-secondary/already-lost tags and earlier uncertainty, then launch original Batch 04.
-The completed panel used eight workers, all deleted, with no failed scientific
-attempts or allocation failures. Primary compute estimate is now US$8.640040
-(42.855643 VM-hours), not billed cost; see its runtime review and forecast update.
-
-The seven-query followup is now launched under exit wrapper PID 31181, job
-`msh161-primary-b03-followup-v1`, from reviewed checkpoint `a766ab8e`.
-`batch-03-followup/launch.json` records the command; submission acceptance,
-computation verification, cleanup and notification remain separate receipts.
-Do not duplicate this computation or retrieval. On its exit, review only the
-seven new comparisons with their reused played evidence; preserve the original
-pre-followup ledgers and write final overlays. Keep unqueried/earlier uncertainty
-and AutoClaim limits. Then close Batch 03 and launch original Batch 04 through
-the existing completion workflow. No timed watcher or further policy work.
-
-Final interpretation: automatic claims can limit observation of advantage
-conversion. Analyze the decisions leading to a claim, preserving earlier/linked
-uncertainty; the draw itself is not proof of engine weakness. No final priorities
-from partial coverage, unrelated engineering, Mac engine execution or timers.
+Next: submit the original Batch 04 manifest and start one `notify_exit.py` wrapper
+around `wait_retrieve_batch.py 4`. Save submission and launch receipts separately.
+On completion, reconcile computation, cleanup and notification; review completed
+games with independent gameplay/integrity panels, obtain required 20M checks and
+only distinct discovered-alternative obligations, then continue Batch 05.
+Do not duplicate retrieval/searches, run Mac engines, use timers or periodic polling.
+Full 200-game coverage remains required. Stop for John after the independently
+reviewed diagnosis and roadmap, before engineering. No final priorities yet.
 
 ## Historical transition records (superseded)
 

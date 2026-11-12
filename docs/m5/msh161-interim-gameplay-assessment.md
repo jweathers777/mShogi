@@ -2,7 +2,7 @@
 
 This is an **exploratory assessment of the 20 fully analyzed local Mac games in main batch 01**, not the conclusion of the intended 200-game study. The evidence repeatedly shows missed tactical resources, loss of an advantage through the wrong continuation, and missed active defenses. It also shows successful attacks, recoveries and long conversions. Those observations justify broader observation, not a final weakness ranking, a rating claim, or an engine change.
 
-The owner's revised execution direction is to let the current local batch 02 chain finish, including its analysis, then pause local work and migrate the primary 200-game study to standard cloud execution. **Local execution has not stopped yet. No local batch 03 is authorized.** Batch 02 had 14 completed games at the initial scope-change snapshot, but **has no completed gameplay analysis for this assessment**. None of its games contributes a mistake label, affected-game denominator or conclusion here. The 20 earlier qualification games are also separate; their opponent-selection evidence is not pooled into this main-batch analysis. Cloud comparability and source/configuration provenance must be recorded when the new primary run is frozen; these Mac results remain an explicitly labeled exploratory stratum.
+**Local execution is now stopped after batch 02**, including its existing games,500k screening and5M confirmations. There are40complete Mac main games; the quantitative findings below retain their original20-game batch-01 denominator and selected20M evidence. The separate batch-02 addendum records additional provisional5M observations without pooling those evidence levels. The20earlier qualification games remain separate. No localbatch03, new20M or automatic retry is authorized. The primary200-game study will replay all original planned pairs on validated standardized cloud workers; Mac evidence stays an exploratory hardware stratum. See the [repository cloud handoff](evidence/msh161/migration/cloud-study-handoff.md).
 
 ## Evidence base and limits
 
@@ -80,4 +80,62 @@ The following are possible **future engineering research questions**, not diagno
 | A strong first tactical move is found but its continuation fails | Different branch coverage at subsequent roots; unstable advantage estimates; inadequate consequence valuation | Follow the whole opportunity-response episode across actual roots, recording what was searched and valued. Include successful episodes as controls so the explanation predicts both success and failure. |
 | Native outcomes differ from favorable reference continuations around repetition | Automatic-claim semantics rather than playing judgment; history-sensitive reference limitations | Replay the native claim event and compare explicitly defined claim-policy counterfactuals. Keep the actual result authoritative and avoid treating an intended claim move as a played move. |
 
-Preserve this interim assessment, all superseded evidence and resource receipts as the exploratory Mac handoff. Let the current batch 02 chain complete, including its analysis, then stop local continuation; do not launch batch 03. Keep batch 02 results and completed analysis separately identified from this batch-01-only interim assessment. The primary cloud study needs its own concrete frozen execution/provenance record; it should not silently merge hardware/time-condition strata or relabel these exploratory observations as a completed 200-game diagnosis. No final ranking, engineering change or strength conclusion is proposed here.
+Preserve this assessment, all superseded evidence and resource receipts as the exploratory Mac handoff. Batch 02 has completed, including its 500k screening and 5M confirmations, and local execution is stopped; no batch 03 was launched. Its provisional addendum remains separate from batch 01’s 20M quantitative findings. The primary cloud study needs its own concrete frozen execution/provenance record; it should not silently merge hardware/time-condition strata or relabel these exploratory observations as a completed 200-game diagnosis. No final ranking, engineering change or strength conclusion is proposed here.
+
+
+## Completed batch02 addendum — provisional5M evidence,12 November2026
+
+The [independent offline audit](evidence/msh161/main/batch-02/verification-review.md)
+verified20additional complete native games and8,243successful reference queries:
+6,040initial queries cover2,732played and288prepared-prefix decisions;2,203singleton
+5Mqueries cover all1,249flagged followups and202fixed-hash audit decisions after
+same-choice deduplication. No stable significant missed-error audit crossing was
+found. This is completed computational coverage, not proof that all judgments are
+resolved. No20Mqueries were run forbatch02, and no final episode adjudication or
+absolute first/largest labels are claimed.
+
+Batch02 scored11W/3D/6L (prepared9W/3D/6L over18games,unaided2W). Combined Mac
+main outcomes are21W/5D/14L over40games; prepared17W/5D/14L over36,unaided4W.
+These hardware-specific exploratory outcomes are neither a rating nor40completed
+observations in the future standardized cloudprimary200. Across both main batches,
+15,965reference attempts are preserved, including batch01's144at20M; qualification
+resources and outcomes remain separate.
+
+Two independent reviewers examined full histories and existing analysis for
+[pairs00–04](evidence/msh161/main/batch-02/migration-review-00-04.md) and
+[pairs05–08/unaided](evidence/msh161/main/batch-02/migration-review-05-09.md).
+The additional observations resemble earlier behavioral questions, but remain
+**5Mprovisional**, with flags, alternative moves and related episodes preserved:
+
+- Opportunity and attack preservation: batch02 pair00/game0 p44/p46 occurs within
+  one opportunity sequence before an actual win; pair08/game0 p26 Nxb7 versus h4
+  raises another attack-versus-pawn-collection question. Neither extends the earlier
+  eight-of20 count or establishes an evaluation mechanism.
+- Active defense and ending choices: pair04/game0 p90 Rc5 versus Rc8 and p108 Re8
+  versus Rh8 are separate potential recovery episodes; pair05/game0 p64 Rxe5 versus
+  fxe5 and p98 Qc3+ versus a4 involve two pawn-ending transitions separated by an
+  opponent-created reprieve. Do not count downstream moves as independent causes.
+- Concrete defensive resources: pair07/game0 p76 Bxb5 allows the actual
+  ...Qc1+ Bf1 f3 sequence; pair07/game1 p31 ...Bxh3 versus ...Nf6 raises a defense
+  and counterplay question. Both await consequential adjudication; these are not
+  newly certified20M mistakes.
+- Contrary successes: both Sicilian games in pair01 show tactical responses and
+  long conversions; pair03/game1 finds ...b4 and central-passer play; pair06/game0
+  eventually uses king activity and converts; both unaided games win. A win or a
+  panel with no eligible deterioration does not certify flawless play.
+
+The three native draws comprise an Italian dead-position draw and two threefold
+claims, including pair05/game1's intended **unplayed Qd2–e2** after218played plies.
+Automatic-claim policy again limits direct translation of favorable Stockfish
+continuations into actual-result conversion failures. Preserve the native outcomes
+and full claim histories. Deferred linked questions are recorded in the reviewers'
+JSON ledgers; they are **not executable search authorizations**.
+
+The exact stopping observation found the recorded wrapper/child/native PIDs absent,
+the execution lock free, successful settled notification and no batch03. All native
+and query cleanup receipts passed audit. No search was interrupted and no new engine
+process was launched for this offline review. The completed batch02 archive/manifest,
+local executable copies, original freezes and cloud integration gates are indexed
+in the [evidence README](evidence/msh161/README.md). Further computation requires the
+validated cloud transition; uncertainty is carried forward rather than cleared by
+new local searches. Final engineering priorities remain unselected.

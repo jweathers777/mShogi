@@ -1,0 +1,17 @@
+{
+  "lossless_gzip": true,
+  "files": [
+    {
+      "file": "gameplay-00-04.json.gz",
+      "sha256": "1c9737509da653b49e786eb5ea501f59208c63372b4c007efc11e5c12d4dbb4c",
+      "uncompressed_sha256": "b36bb3aa42273bf66799c93f1d40303c244f6b8074738fe0a7b9ef890392046b",
+      "uncompressed_bytes": 1589875
+    },
+    {
+      "file": "gameplay-05-09.json.gz",
+      "sha256": "f6e433c81624e2d448438069b8e9b6ed8cc49962aa2a46d831024b7f3c305e11",
+      "uncompressed_sha256": "9f06f516c9fc173e6f2221003f9fa90d6f0f7632aa390c6e30abde1fb640c58a",
+      "uncompressed_bytes": 8064393
+    }
+  ]
+}

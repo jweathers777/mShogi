@@ -1,0 +1,14 @@
+{
+  "status": "admitted_for_authorized_cloud20M",
+  "plan_sha256": "3ad0916deaef5ce2e150f38ab782a3aea5fe556c441ca37d63e436479dceb626",
+  "decisions": 397,
+  "jobs": 676,
+  "queries": 692,
+  "unrestricted_discoveries": 16,
+  "assignments": 8,
+  "source_and_original_autoclaim_build_image_preserved": true,
+  "selection_matches_independent_reviews": true,
+  "no_repeat_game_or_prior_budget_query": true,
+  "limits": "Selected correlated decisions, not independent causes. All consequential interpretations provisional; discovered alternatives need separate matched20M if distinct. Earlier uncertainties and AutoClaim limits remain.",
+  "schema_fix": "../batch-03-review/selection-schema-reconciliation.json"
+}

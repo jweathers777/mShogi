@@ -1,0 +1,17 @@
+{
+  "files": [
+    {
+      "file": "review-index.json.gz",
+      "sha256": "3a5fc6d072d5bbba9222be44e95ac1049c5f03a43039117db86e933441ee600b",
+      "uncompressed_sha256": "c213ed76d7c7691c4dd7405d229c5e507dd64acf29dcfe0e2edee82d6bb262c6",
+      "bytes": 23799824
+    },
+    {
+      "file": "remote-inventory.json.gz",
+      "sha256": "9fa95250f91daf0acd1aefe40b7c5cbc02f34178b22f1f2cca09bafeae993dde",
+      "uncompressed_sha256": "5ba9f7919b48adf22a0efaa6a672b3319294d8946f6d716c4f1536a5a6a230e3",
+      "bytes": 6598473
+    }
+  ],
+  "restore": "Decompress exact bytes locally when a helper needs the original JSON path; no retrieval or queries required."
+}

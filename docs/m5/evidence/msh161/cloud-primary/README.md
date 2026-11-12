@@ -15,12 +15,34 @@ the attempted v2configuration, so reuse requires no regeneration or new matches.
 Batch03 uses original image digest `ad95d85a…dcc43f7`, native source `77101fe3…`,
 and worker source `51351c48…`; the corrected transition image is NOT used.
 
-See `batch-03-preflight.json`, `batch-03-submission.json` and
-`batch-03-wait-launch.json` for the current execution. One existing completion
-workflow waits on Pub/Sub, retrieves/verifies, then queues this chat. Do not
-duplicate submission or retrieval. Review completed games independently, perform
-required20M checks, then continue batches04–10 through200games as authorized.
-All40completed games/searches and failed transition evidence remain preserved.
+Batch 03 completed and was retrieved and verified: 20 games, native result
+9 wins / 5 draws / 6 losses, no failures or unscored games. The retrieval receipt
+verifies 1,717 jobs and 25,375 objects (2,767,781,004 bytes). The wrapper returned
+success, recorded a settled child group, and its completion notification was
+accepted. Independent gameplay and integrity reviews are now in progress under
+`batch-03-review`; required 20M selection and analysis follow those reviews.
+Do not duplicate completed games, searches or retrieval. Batch 04 is not launched.
+Continue through all 200 games using reviewed batches and exit notifications.
+The first 40 reviewed games and all failed transition evidence remain preserved.
+
+Batch 03 integrity and runtime reviews passed in `batch-03-review`. All 6,485
+reference queries are accounted for, with no stable missed-error expansion
+trigger. Two uncertain audit comparisons remain explicit. Actual concurrency
+was eight workers, with no failed VM insertions and all workers deleted.
+The gameplay panels selected 397 decisions for required 20M analysis (16
+unrestricted discovery roots). Their full decision ledgers are losslessly saved
+as `gameplay-00-04.json.gz` and `gameplay-05-09.json.gz`; raw and compressed hashes
+are in `gameplay-ledger-artifacts.json`. Selections are not confirmations.
+
+The admitted Batch 03 deeper plan is `batch-03-adjudication/plan.json`, SHA256
+`3ad0916deaef5ce2e150f38ab782a3aea5fe556c441ca37d63e436479dceb626`: 676 jobs /
+692 queries for 397 selected decisions, including 16 unrestricted discoveries.
+It preserves the original native/Stockfish binaries, image, exact histories and
+20M budget. One offline preparation attempt rejected a selection serialization
+error before any engine/cloud work; the original selection and its intent-preserving
+correction are retained in `selection-schema-reconciliation.json`. No searches
+were repeated. The full review index/inventory are archived losslessly as gzip;
+restore exact JSON bytes locally if a helper needs them, without downloading again.
 
 Final interpretation: automatic claims can limit observation of advantage
 conversion. Analyze the decisions leading to a claim, preserving earlier/linked

@@ -1,0 +1,104 @@
+{
+  "failure": "Offline prepare rejected moves:null; no engine or cloud operation occurred",
+  "resolution": "Encode the 16 already-requested unrestricted discoveries as [actual_played,null] as required by the existing controller. Scientific roots, discovery intent and budgets unchanged.",
+  "original_sha256": "b3f775db7b129d365c7c164d5304716eb607d4159657b06c5eeac47e8dcca79b",
+  "corrected_sha256": "5a86607c35849f9d115cae644aca63aae09983f3e5ba1b2d8edb86161e899642",
+  "rows": [
+    {
+      "pair": "main-03-05",
+      "game": 1,
+      "ply": 24,
+      "played": "b2c3"
+    },
+    {
+      "pair": "main-03-05",
+      "game": 1,
+      "ply": 26,
+      "played": "c1d2"
+    },
+    {
+      "pair": "main-03-05",
+      "game": 1,
+      "ply": 41,
+      "played": "d7c5"
+    },
+    {
+      "pair": "main-03-06",
+      "game": 0,
+      "ply": 22,
+      "played": "h4g5"
+    },
+    {
+      "pair": "main-03-06",
+      "game": 0,
+      "ply": 23,
+      "played": "h6g5"
+    },
+    {
+      "pair": "main-03-06",
+      "game": 1,
+      "ply": 45,
+      "played": "c5g1"
+    },
+    {
+      "pair": "main-03-06",
+      "game": 1,
+      "ply": 111,
+      "played": "g5e6"
+    },
+    {
+      "pair": "main-03-07",
+      "game": 0,
+      "ply": 24,
+      "played": "e2c3"
+    },
+    {
+      "pair": "main-03-07",
+      "game": 0,
+      "ply": 38,
+      "played": "e1g1"
+    },
+    {
+      "pair": "main-03-07",
+      "game": 1,
+      "ply": 39,
+      "played": "f6d7"
+    },
+    {
+      "pair": "main-03-07",
+      "game": 1,
+      "ply": 51,
+      "played": "c5c4"
+    },
+    {
+      "pair": "main-03-08",
+      "game": 0,
+      "ply": 30,
+      "played": "e4e5"
+    },
+    {
+      "pair": "main-03-08",
+      "game": 0,
+      "ply": 32,
+      "played": "e5d6"
+    },
+    {
+      "pair": "main-03-unaided",
+      "game": 0,
+      "ply": 33,
+      "played": "g7h6"
+    },
+    {
+      "pair": "main-03-unaided",
+      "game": 1,
+      "ply": 27,
+      "played": "d5e4"
+    },
+    {
+      "pair": "main-03-unaided",
+      "game": 1,
+      "ply": 33,
+      "played": "c6e7"
+    }
+  ]
+}

@@ -1,0 +1,2688 @@
+[
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 22,
+    "moves": [
+      "g1f3",
+      "f2f3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "c5c6",
+      "h1e1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 25,
+    "moves": [
+      "d7c6",
+      "b7c6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 26,
+    "moves": [
+      "f3d4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 30,
+    "moves": [
+      "a2a3",
+      "c1b1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 31,
+    "moves": [
+      "g8h8",
+      "f6e8"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 32,
+    "moves": [
+      "g2g4",
+      "h1e1"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 34,
+    "moves": [
+      "f4f5",
+      "c3d5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 36,
+    "moves": [
+      "e3e1",
+      "f5f6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 37,
+    "moves": [
+      "d6c4",
+      "b5b4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 38,
+    "moves": [
+      "h2h4",
+      "d1d3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 39,
+    "moves": [
+      "e6f5",
+      "b5b4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 40,
+    "moves": [
+      "d4b3",
+      "c3d5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 42,
+    "moves": [
+      "d1d5",
+      "g4f5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 57,
+    "moves": [
+      "c7c4",
+      "c7d8"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 58,
+    "moves": [
+      "f1f4",
+      "e4c4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 59,
+    "moves": [
+      "c4e4",
+      "c4c5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 60,
+    "moves": [
+      "c3e4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 61,
+    "moves": [
+      "h8g8",
+      "f8d8"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 62,
+    "moves": [
+      "g4g5",
+      "e4d6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 63,
+    "moves": [
+      "f8d8"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 64,
+    "moves": [
+      "e4c3",
+      "b2b3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 65,
+    "moves": [
+      "c8c4",
+      "d8d3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 66,
+    "moves": [
+      "f4c4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 107,
+    "moves": [
+      "b3c2",
+      "b3a4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 108,
+    "moves": [
+      "d2e4",
+      "d2f3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 111,
+    "moves": [
+      "b3a3",
+      "b3c2"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 0,
+    "ply": 112,
+    "moves": [
+      "c5e4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 21,
+    "moves": [
+      "c8c5",
+      "a5c5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 23,
+    "moves": [
+      "c5c3",
+      "c5c8"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 24,
+    "moves": [
+      "b2c3",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 25,
+    "moves": [
+      "a5a2",
+      "b8c6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 26,
+    "moves": [
+      "c1d2",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 28,
+    "moves": [
+      "d1b1",
+      "f2f3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 29,
+    "moves": [
+      "b7b6",
+      "a5c7"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 30,
+    "moves": [
+      "b1b4",
+      "f2f3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 35,
+    "moves": [
+      "a8c8",
+      "f6d7"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 36,
+    "moves": [
+      "e3d4",
+      "h1e1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 37,
+    "moves": [
+      "f6d7",
+      "b6b5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 38,
+    "moves": [
+      "h1d1",
+      "b4b1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 39,
+    "moves": [
+      "f7f6",
+      "b6b5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 40,
+    "moves": [
+      "d1e1"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 41,
+    "moves": [
+      "d7c5",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 42,
+    "moves": [
+      "d3f1",
+      "g2g4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 43,
+    "moves": [
+      "a5a3",
+      "c6e8"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 44,
+    "moves": [
+      "f1b5",
+      "b4b1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 45,
+    "moves": [
+      "a7a5",
+      "c6b5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 46,
+    "moves": [
+      "b4b1"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-05",
+    "game": 1,
+    "ply": 48,
+    "moves": [
+      "b1b5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178/attempts/b43541796bda41c1a69b541aa9321b81/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 18,
+    "moves": [
+      "h2h4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 20,
+    "moves": [
+      "f1e1",
+      "d1d3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 21,
+    "moves": [
+      "e8g8",
+      "c8g4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 22,
+    "moves": [
+      "h4g5",
+      null
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 23,
+    "moves": [
+      "h6g5",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "g1h1",
+      "g2g3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 25,
+    "moves": [
+      "c8g4",
+      "f7f6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 26,
+    "moves": [
+      "d1d2",
+      "c3e4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 31,
+    "moves": [
+      "a8a6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 35,
+    "moves": [
+      "a6e6",
+      "f8e8"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 49,
+    "moves": [
+      "d5d4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 0,
+    "ply": 55,
+    "moves": [
+      "d4e4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 20,
+    "moves": [
+      "g1h1",
+      "d1d3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 21,
+    "moves": [
+      "e8g8",
+      "c8g4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 22,
+    "moves": [
+      "c1d2",
+      "d4d5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 23,
+    "moves": [
+      "c8e6",
+      "c8g4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 24,
+    "moves": [
+      "h4g5",
+      "d1e2"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 25,
+    "moves": [
+      "h6g5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 26,
+    "moves": [
+      "d1e1",
+      "d4d5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 27,
+    "moves": [
+      "b8c6",
+      "b8d7"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 28,
+    "moves": [
+      "a1d1",
+      "d4d5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 29,
+    "moves": [
+      "e6c4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 39,
+    "moves": [
+      "d8d5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 40,
+    "moves": [
+      "d2f4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 41,
+    "moves": [
+      "d5a5",
+      "d5f5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 45,
+    "moves": [
+      "c5g1",
+      null
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 48,
+    "moves": [
+      "f3h2",
+      "f3e1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 49,
+    "moves": [
+      "f6d4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 51,
+    "moves": [
+      "e8e4",
+      "g4g3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 52,
+    "moves": [
+      "d1e1"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 56,
+    "moves": [
+      "h2g4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 57,
+    "moves": [
+      "g8g7",
+      "e8e2"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 108,
+    "moves": [
+      "f4f5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 109,
+    "moves": [
+      "e6g5",
+      "e6g7"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 110,
+    "moves": [
+      "e4d5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-06",
+    "game": 1,
+    "ply": 111,
+    "moves": [
+      "g5e6",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788/attempts/e67cefeb08724438b2077d0630a9d812/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 20,
+    "moves": [
+      "c2c3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 22,
+    "moves": [
+      "g5f6",
+      "e2c3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 23,
+    "moves": [
+      "g7f6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "e2c3",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 25,
+    "moves": [
+      "a7a6",
+      "c7c6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 26,
+    "moves": [
+      "b5a6",
+      "f1e2"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 28,
+    "moves": [
+      "d3d4",
+      "d1c1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 32,
+    "moves": [
+      "d4e5",
+      "d1b3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 35,
+    "moves": [
+      "e7c6",
+      "c7c5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 36,
+    "moves": [
+      "f1c4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 38,
+    "moves": [
+      "e1g1",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 39,
+    "moves": [
+      "b4d6",
+      "b4c5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 78,
+    "moves": [
+      "b8f8",
+      "f3d1"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 80,
+    "moves": [
+      "f8b8"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 81,
+    "moves": [
+      "c4e6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 0,
+    "ply": 82,
+    "moves": [
+      "b8f8",
+      "f3d1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 26,
+    "moves": [
+      "g5d2",
+      "g5e3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 27,
+    "moves": [
+      "a7a6",
+      "c7c6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 38,
+    "moves": [
+      "g1h1",
+      "d1c1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 39,
+    "moves": [
+      "f6d7",
+      null
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 40,
+    "moves": [
+      "d2c1",
+      "d2e3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 41,
+    "moves": [
+      "a3a2",
+      "a3a1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 43,
+    "moves": [
+      "c6d4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 51,
+    "moves": [
+      "c5c4",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 52,
+    "moves": [
+      "d3c4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 53,
+    "moves": [
+      "e6c4",
+      "d7c5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 54,
+    "moves": [
+      "e2c4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 62,
+    "moves": [
+      "b4d4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 65,
+    "moves": [
+      "a2a4",
+      "a8e8"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 66,
+    "moves": [
+      "c4c3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 67,
+    "moves": [
+      "a4a5",
+      "c6b5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 68,
+    "moves": [
+      "c1e3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 71,
+    "moves": [
+      "e8e3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 72,
+    "moves": [
+      "c3e3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 82,
+    "moves": [
+      "g2g4",
+      "c1c7"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 83,
+    "moves": [
+      "a4a2",
+      "h5g4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 85,
+    "moves": [
+      "h5g4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 87,
+    "moves": [
+      "g8g7",
+      "g6g5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 88,
+    "moves": [
+      "g4g5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 89,
+    "moves": [
+      "a2f2",
+      "a2a6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 90,
+    "moves": [
+      "c1f1",
+      "d3d4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 91,
+    "moves": [
+      "f2e2",
+      "f2f1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 92,
+    "moves": [
+      "f1f3",
+      "f1c1"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 94,
+    "moves": [
+      "d3d5",
+      "d3d4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 95,
+    "moves": [
+      "c5e6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-07",
+    "game": 1,
+    "ply": 98,
+    "moves": [
+      "d5f5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f/attempts/246dd05940564ccb805ae2cb233faaac/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 16,
+    "moves": [
+      "f3g3",
+      "g2g4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 17,
+    "moves": [
+      "e8g8",
+      "b8d7"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 18,
+    "moves": [
+      "g5h6",
+      "f2f4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 19,
+    "moves": [
+      "f6h5",
+      "f6e8"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 20,
+    "moves": [
+      "g3g4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 22,
+    "moves": [
+      "g4h5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "f2f4",
+      "h5h6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 25,
+    "moves": [
+      "b7b5",
+      "b8d7"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 26,
+    "moves": [
+      "h5h6",
+      "f1d3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 27,
+    "moves": [
+      "b5b4",
+      "f8g8"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 28,
+    "moves": [
+      "f1d3",
+      "d1d3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 30,
+    "moves": [
+      "e4e5",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 32,
+    "moves": [
+      "e5d6",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 35,
+    "moves": [
+      "c8b7",
+      "b8d7"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 36,
+    "moves": [
+      "f4f5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 38,
+    "moves": [
+      "d4f5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 44,
+    "moves": [
+      "f5d6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 54,
+    "moves": [
+      "h1e1"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 56,
+    "moves": [
+      "e1e5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 58,
+    "moves": [
+      "h8e5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 0,
+    "ply": 74,
+    "moves": [
+      "d6c7"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 17,
+    "moves": [
+      "h7h6",
+      "b8d7"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 19,
+    "moves": [
+      "e8g8",
+      "b7b5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 20,
+    "moves": [
+      "b1a1",
+      "g2g4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 21,
+    "moves": [
+      "e6e5",
+      "b7b5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 27,
+    "moves": [
+      "b7b5",
+      "c6b4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 28,
+    "moves": [
+      "f1e2",
+      "c3d5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 29,
+    "moves": [
+      "c6b4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 30,
+    "moves": [
+      "d1d2",
+      "a1b1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 31,
+    "moves": [
+      "b4c6",
+      "f8c8"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 32,
+    "moves": [
+      "c3d5",
+      "h2h4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 34,
+    "moves": [
+      "e4d5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 35,
+    "moves": [
+      "c6a5",
+      "c6d4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 36,
+    "moves": [
+      "b2b3",
+      "e3h6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 37,
+    "moves": [
+      "c7c3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 39,
+    "moves": [
+      "a8c8",
+      "a5c4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 40,
+    "moves": [
+      "e2d3",
+      "f5d3"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 41,
+    "moves": [
+      "g7g6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 43,
+    "moves": [
+      "f7f5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 45,
+    "moves": [
+      "e5e4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 47,
+    "moves": [
+      "e7f6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 49,
+    "moves": [
+      "f6d4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 51,
+    "moves": [
+      "c3d4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 81,
+    "moves": [
+      "c3d3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 95,
+    "moves": [
+      "b3f3",
+      "b3c4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-08",
+    "game": 1,
+    "ply": 101,
+    "moves": [
+      "b2b1q"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf/attempts/3290e45f96ee49ada1d6a46e46836f08/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 9,
+    "moves": [
+      "b4d6",
+      "f6e4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 10,
+    "moves": [
+      "d5f6",
+      "e1g1"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 18,
+    "moves": [
+      "e1g1"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 27,
+    "moves": [
+      "g8h8",
+      "h7h6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 30,
+    "moves": [
+      "g5f3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 31,
+    "moves": [
+      "c7c5",
+      "f7f6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 32,
+    "moves": [
+      "e3h6",
+      "b4c5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 33,
+    "moves": [
+      "g7h6",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 34,
+    "moves": [
+      "h5h6"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 36,
+    "moves": [
+      "b4c5",
+      "f3h4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 37,
+    "moves": [
+      "d6c5",
+      "d6c7"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 38,
+    "moves": [
+      "b2b4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 46,
+    "moves": [
+      "f3h4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 66,
+    "moves": [
+      "a1a5",
+      "a1b1"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 68,
+    "moves": [
+      "b2b7"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 98,
+    "moves": [
+      "c7c8q"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 102,
+    "moves": [
+      "f5e7",
+      "a7g7"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 0,
+    "ply": 118,
+    "moves": [
+      "a7h7"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 1,
+    "moves": [
+      "b8c6",
+      "d7d5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 2,
+    "moves": [
+      "b1c3",
+      "d2d4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 3,
+    "moves": [
+      "e7e6",
+      "d7d5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 5,
+    "moves": [
+      "f8b4",
+      "g8f6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 6,
+    "moves": [
+      "f1e2",
+      "c3e2"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 7,
+    "moves": [
+      "d7d6",
+      "d7d5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 8,
+    "moves": [
+      "a2a3",
+      "d2d4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 13,
+    "moves": [
+      "e8g8",
+      "e6e5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 14,
+    "moves": [
+      "e1g1",
+      "c1g5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 25,
+    "moves": [
+      "d6d5",
+      "f6h5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 26,
+    "moves": [
+      "e3c5",
+      "e4d5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 27,
+    "moves": [
+      "d5e4",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 29,
+    "moves": [
+      "e4f3",
+      "e7e8"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 30,
+    "moves": [
+      "c5e7"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 31,
+    "moves": [
+      "f3e2"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 32,
+    "moves": [
+      "e3e2",
+      "e7f6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 33,
+    "moves": [
+      "c6e7",
+      null
+    ],
+    "reason": "linked response, episode boundary or constructive-play control; unrestricted discovery required; retain played singleton",
+    "discovery": true,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 35,
+    "moves": [
+      "c7c6",
+      "f8c8"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 37,
+    "moves": [
+      "f8e8",
+      "e7f5"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 41,
+    "moves": [
+      "f6d5",
+      "a8b8"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 46,
+    "moves": [
+      "g2g3",
+      "c3c4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 49,
+    "moves": [
+      "e6d5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 50,
+    "moves": [
+      "d2e2",
+      "e1e8"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 51,
+    "moves": [
+      "f6e4",
+      "e8d8"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 55,
+    "moves": [
+      "e8e6",
+      "g7g6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 56,
+    "moves": [
+      "h3h4",
+      "e2e4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 57,
+    "moves": [
+      "g7g5",
+      "f5d6"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 58,
+    "moves": [
+      "d7b7",
+      "e2e4"
+    ],
+    "reason": "5M margin>=.04 or consequential unresolved initial screen",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 59,
+    "moves": [
+      "a8e8"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 63,
+    "moves": [
+      "e4d2",
+      "g5g4"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 65,
+    "moves": [
+      "d2f3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 71,
+    "moves": [
+      "f3e1"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 83,
+    "moves": [
+      "c4d5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 85,
+    "moves": [
+      "f4d5"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-03-unaided",
+    "game": 1,
+    "ply": 111,
+    "moves": [
+      "d2g2",
+      "h4f3"
+    ],
+    "reason": "linked response, episode boundary or constructive-play control",
+    "discovery": false,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84/attempts/6b0b9fbc008347ce835723553631eb8d/artifacts/pair/report.json.gz"
+  }
+]

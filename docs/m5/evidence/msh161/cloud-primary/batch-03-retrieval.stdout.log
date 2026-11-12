@@ -1,0 +1,26 @@
+retrieved 1000
+retrieved 2000
+retrieved 3000
+retrieved 4000
+retrieved 5000
+retrieved 6000
+retrieved 7000
+retrieved 8000
+retrieved 9000
+retrieved 10000
+retrieved 11000
+retrieved 12000
+retrieved 13000
+retrieved 14000
+retrieved 15000
+retrieved 16000
+retrieved 17000
+retrieved 18000
+retrieved 19000
+retrieved 20000
+retrieved 21000
+retrieved 22000
+retrieved 23000
+retrieved 24000
+retrieved 25000
+{"status": "retrieved_verified_needs_independent_review", "experiment": "msh161-primary-v1-batch-03", "started_epoch": 1794499053.58565, "local_store": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache", "objects": 25375, "bytes": 2767781004, "verified_jobs": 1717, "pairs": 10, "seconds": 305.2548196669668, "inventory_sha256": "5ba9f7919b48adf22a0efaa6a672b3319294d8946f6d716c4f1536a5a6a230e3", "method": "32generation-pinnedCRC32Cdownloads;existingcacheCRCchecked;allstatic/derivedsuccessartifactSHA256verified", "no_engines": true, "ended_epoch": 1794499358.847031}

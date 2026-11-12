@@ -75,3 +75,23 @@ hours is an AutoClaim-based scenario, not a forecast guaranteed for the amended
 policy. Update timing/cost after the first corrected batch. Build/deployment,
 short validation and review pauses are separate overhead, to be recorded when
 observed. Scientific coverage remains200games regardless of these estimates.
+
+
+## Batch 03 update under restored original AutoClaim conditions
+
+Batch 03 completed its games and initial/5M analysis in 1 h 35 min 34 s from
+submission to the final task, using eight actual workers. Retrieval and
+verification took 305.25 seconds. All workers were deleted; no allocation
+failure was observed for this batch. See `batch-03-review/runtime-review.md/json`.
+The abandoned policy change no longer affects future game-length assumptions.
+
+Primary compute so far totals 37.845525 VM-hours, estimated US$7.629961. This
+covers 60 completed games and base analysis, but only the first 40 games' required
+20M panels and followups. Mean workload scaling gives US$28.21 full-study compute
+and US$20.58 remaining compute, including Batch 03's pending deeper analysis.
+These exclude the separate transition validation and are not bills or limits.
+Retain the conditional US$35–90 full-study inclusive estimate and the original
+29–48 processing-hour scenario, with independent review and synthesis adding
+calendar time. The conversational completion estimate remains approximately
+30–60 hours from the 12 November afternoon checkpoint, conditional on continued
+capacity, review workload and followup needs; it is not a deadline guarantee.

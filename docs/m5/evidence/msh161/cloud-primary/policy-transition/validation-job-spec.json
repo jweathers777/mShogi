@@ -1,0 +1,84 @@
+{
+  "taskGroups": [
+    {
+      "taskCount": "1",
+      "parallelism": "1",
+      "taskCountPerNode": "1",
+      "taskSpec": {
+        "computeResource": {
+          "cpuMilli": "4000",
+          "memoryMib": "12288"
+        },
+        "maxRetryCount": 0,
+        "maxRunDuration": "600s",
+        "runnables": [
+          {
+            "container": {
+              "imageUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f",
+              "entrypoint": "python3",
+              "commands": [
+                "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py",
+                "--build",
+                "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json",
+                "--output",
+                "/tmp/msh161-policy-validation",
+                "--store",
+                "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+                "--prefix",
+                "policy-transition-validation-v1"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "allocationPolicy": {
+    "instances": [
+      {
+        "policy": {
+          "machineType": "c3-standard-4",
+          "provisioningModel": "STANDARD",
+          "bootDisk": {
+            "sizeGb": "30",
+            "type": "pd-balanced"
+          }
+        }
+      }
+    ],
+    "location": {
+      "allowedLocations": [
+        "regions/us-central1"
+      ]
+    },
+    "serviceAccount": {
+      "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+      "scopes": [
+        "https://www.googleapis.com/auth/cloud-platform"
+      ]
+    },
+    "network": {
+      "networkInterfaces": [
+        {
+          "network": "projects/mshogi/global/networks/mshogi-batch",
+          "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+        }
+      ]
+    }
+  },
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  },
+  "labels": {
+    "application": "mshogi-experiments",
+    "schema": "v1"
+  },
+  "notifications": [
+    {
+      "pubsubTopic": "projects/mshogi/topics/mshogi-batch-events",
+      "message": {
+        "type": "JOB_STATE_CHANGED"
+      }
+    }
+  ]
+}

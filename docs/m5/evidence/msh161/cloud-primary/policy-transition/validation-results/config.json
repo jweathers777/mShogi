@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "msh161-automatic-threshold-policy-smoke",
+  "engines": [
+    {
+      "path": "/opt/engines/mshogi",
+      "args": [
+        "uci"
+      ],
+      "options": [],
+      "model_path": null,
+      "model_identity": "candidate/ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+      "deterministic": false
+    },
+    {
+      "path": "/opt/engines/oxidation",
+      "args": [],
+      "options": [],
+      "model_path": null,
+      "model_identity": "oxidation060/46a705b80e7191e7c302838eb8b85053b5994d65",
+      "deterministic": false
+    }
+  ],
+  "openings": [
+    {
+      "id": "kr-k-optional-fifty",
+      "fen": "7k/8/8/8/8/8/8/KR6 b - - 100 1",
+      "moves": []
+    }
+  ],
+  "paired": true,
+  "claim_policy": "explicit_only",
+  "time_control": "untimed",
+  "work": {
+    "depth": null,
+    "nodes": null,
+    "movetime_ms": 5000
+  },
+  "max_plies": 4,
+  "watchdogs": {
+    "handshake_ms": 5000,
+    "ready_ms": 5000,
+    "response_ms": 15000,
+    "write_ms": 2000,
+    "cleanup_ms": 1000
+  },
+  "io": {
+    "line_bytes": 4096,
+    "queued_lines": 32,
+    "transcript_bytes": 2097152,
+    "stderr_bytes": 16384,
+    "command_bytes": 4096
+  }
+}

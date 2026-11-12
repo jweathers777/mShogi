@@ -1,0 +1,22 @@
+{
+  "label": "MSH-161 corrected worker image and short cloud match validation",
+  "thread": "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+  "command": [
+    "/private/tmp/msh162-controller/bin/python",
+    "-c",
+    "import subprocess,json; steps=json.loads('[[\"/private/tmp/msh162-controller/bin/python\", \"/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py\", \"--source-revision\", \"d9271a294cb92e1e87d366d49dfd409bbfd662b6\", \"--workspace\", \"/private/tmp/msh161-policy-worker-image\"], [\"/private/tmp/msh162-controller/bin/python\", \"/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py\"]]'); [subprocess.run(step,check=True) for step in steps]"
+  ],
+  "state_artifact": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/validation-state.json",
+  "wrapper_pid": 96307,
+  "started_epoch": 1794492079.9508858,
+  "status": "failure",
+  "queue_attempted": true,
+  "cleanup_scope": "Own child process group only; engines detached by existing helpers require their own receipts/reconciliation; not a descendant-tree cleanup guarantee",
+  "child_pid": 96309,
+  "computation_returncode": 1,
+  "residual_group_detected": false,
+  "process_group_settled": true,
+  "finished_epoch": 1794492196.8825889,
+  "queue_returncode": 0,
+  "queue_accepted": true
+}

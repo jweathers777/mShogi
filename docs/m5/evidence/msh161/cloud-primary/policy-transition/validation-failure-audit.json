@@ -1,0 +1,2005 @@
+{
+  "snapshot_utc": "2026-11-12T14:04:33.805762+00:00",
+  "snapshot": {
+    "tasks": {
+      "command": [
+        "gcloud",
+        "batch",
+        "tasks",
+        "list",
+        "--job=msh161-policy-validation-v1",
+        "--location=us-central1",
+        "--project=mshogi",
+        "--format=json"
+      ],
+      "returncode": 0,
+      "data": [
+        {
+          "name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0/tasks/0",
+          "status": {
+            "state": "FAILED",
+            "statusEvents": [
+              {
+                "eventTime": "2026-11-12T14:01:52.245916395Z",
+                "taskState": "PENDING",
+                "type": "CREATED"
+              },
+              {
+                "description": "Task state is updated from PENDING to ASSIGNED on zones/us-central1-a/instances/4113885159929444352",
+                "eventTime": "2026-11-12T14:02:45.740445676Z",
+                "taskState": "ASSIGNED",
+                "type": "CREATED"
+              },
+              {
+                "description": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/4113885159929444352",
+                "eventTime": "2026-11-12T14:02:45.740450809Z",
+                "taskState": "RUNNING",
+                "type": "RUNNING"
+              },
+              {
+                "description": "Task state is updated from RUNNING to FAILED on zones/us-central1-a/instances/4113885159929444352 with exit code 1.",
+                "eventTime": "2026-11-12T14:02:55.022820835Z",
+                "taskExecution": {
+                  "exitCode": 1
+                },
+                "taskState": "FAILED",
+                "type": "FAILED"
+              }
+            ]
+          }
+        }
+      ],
+      "stderr": ""
+    },
+    "instances": {
+      "command": [
+        "gcloud",
+        "compute",
+        "instances",
+        "list",
+        "--project=mshogi",
+        "--filter=labels.batch-job-id=msh161-policy-validation-v1",
+        "--format=json"
+      ],
+      "returncode": 0,
+      "data": [],
+      "stderr": "WARNING: The following filter keys were not present in any resource : labels.batch-job-id\n"
+    },
+    "disks": {
+      "command": [
+        "gcloud",
+        "compute",
+        "disks",
+        "list",
+        "--project=mshogi",
+        "--filter=name~msh161-policy-vali",
+        "--format=json"
+      ],
+      "returncode": 0,
+      "data": [],
+      "stderr": "WARNING: The following filter keys were not present in any resource : name\n"
+    },
+    "vm_audit": {
+      "command": [
+        "gcloud",
+        "logging",
+        "read",
+        "resource.type=\"gce_instance\" AND timestamp>=\"2026-11-12T14:01:40Z\" AND (resource.labels.instance_id=\"4113885159929444352\" OR protoPayload.resourceName:\"msh161-policy-vali\")",
+        "--project=mshogi",
+        "--format=json",
+        "--limit=100"
+      ],
+      "returncode": 0,
+      "data": [
+        {
+          "insertId": "-x9s22hd7g66",
+          "labels": {
+            "compute.googleapis.com/root_trigger_id": "85c93ee8-b812-46fc-bc5f-45cb10ba6d5b"
+          },
+          "logName": "projects/mshogi/logs/cloudaudit.googleapis.com%2Factivity",
+          "operation": {
+            "id": "operation-1794492189472-66014c58177bd-62200c31-424fffc4",
+            "last": true,
+            "producer": "compute.googleapis.com"
+          },
+          "protoPayload": {
+            "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+            "authenticationInfo": {
+              "principalEmail": "216675633801@cloudservices.gserviceaccount.com",
+              "principalSubject": "serviceAccount:216675633801@cloudservices.gserviceaccount.com"
+            },
+            "methodName": "v1.compute.instances.delete",
+            "request": {
+              "@type": "type.googleapis.com/compute.instances.delete"
+            },
+            "requestMetadata": {
+              "callerSuppliedUserAgent": "GCE Managed Instance Group for Cloud Batch",
+              "destinationAttributes": {},
+              "requestAttributes": {}
+            },
+            "resourceName": "projects/216675633801/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "serviceName": "compute.googleapis.com",
+            "status": {}
+          },
+          "receiveTimestamp": "2026-11-12T14:03:26.400610899Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "NOTICE",
+          "timestamp": "2026-11-12T14:03:26.062062Z"
+        },
+        {
+          "insertId": "3",
+          "jsonPayload": {
+            "@type": "type.googleapis.com/cloud_integrity.IntegrityEvent",
+            "bootCounter": "1",
+            "shutdownEvent": {}
+          },
+          "logName": "projects/mshogi/logs/compute.googleapis.com%2Fshielded_vm_integrity",
+          "receiveTimestamp": "2026-11-12T14:03:13.779343521Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "NOTICE",
+          "timestamp": "2026-11-12T14:03:11.770581311Z"
+        },
+        {
+          "insertId": "5k096ie9q3qd",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:03:10.5314Z",
+            "message": "GCE Agent Stopped",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/GCEGuestAgent",
+          "receiveTimestamp": "2026-11-12T14:03:10.631898098Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "main.go",
+            "function": "main.runAgent",
+            "line": "263"
+          },
+          "timestamp": "2026-11-12T14:03:10.531424994Z"
+        },
+        {
+          "insertId": "5k096ie9q3qc",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:03:10.5313Z",
+            "message": "Error watching metadata: context canceled",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/GCEGuestAgent",
+          "receiveTimestamp": "2026-11-12T14:03:10.631898098Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "ERROR",
+          "sourceLocation": {
+            "file": "metadata.go",
+            "function": "github.com/GoogleCloudPlatform/guest-agent/google_guest_agent/events/metadata.(*Watcher).Run",
+            "line": "68"
+          },
+          "timestamp": "2026-11-12T14:03:10.531330537Z"
+        },
+        {
+          "insertId": "uk5otmf8g3jyy",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:03:10.2033Z",
+            "message": "No shutdown scripts to run.",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/google_metadata_script_runner",
+          "receiveTimestamp": "2026-11-12T14:03:10.327337548Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "main.go",
+            "function": "main.main",
+            "line": "476"
+          },
+          "timestamp": "2026-11-12T14:03:10.203324636Z"
+        },
+        {
+          "insertId": "uk5otmf8g3jyx",
+          "jsonPayload": {
+            "logging.googleapis.com/diagnostic": {
+              "instrumentation_source": [
+                {
+                  "name": "go",
+                  "version": "1.7.0"
+                }
+              ],
+              "runtime": "1.25.12"
+            }
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/diagnostic-log",
+          "receiveTimestamp": "2026-11-12T14:03:10.327337548Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "timestamp": "2026-11-12T14:03:10.201037750Z"
+        },
+        {
+          "insertId": "uk5otmf8g3jyw",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:03:10.2009Z",
+            "message": "Starting shutdown scripts (version 2026.10.19.00).",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/google_metadata_script_runner",
+          "receiveTimestamp": "2026-11-12T14:03:10.327337548Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "main.go",
+            "function": "main.main",
+            "line": "468"
+          },
+          "timestamp": "2026-11-12T14:03:10.200982268Z"
+        },
+        {
+          "insertId": "-b209eqe5m58c",
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "compute.googleapis.com/root_trigger_id": "85c93ee8-b812-46fc-bc5f-45cb10ba6d5b"
+          },
+          "logName": "projects/mshogi/logs/cloudaudit.googleapis.com%2Factivity",
+          "operation": {
+            "first": true,
+            "id": "operation-1794492189472-66014c58177bd-62200c31-424fffc4",
+            "producer": "compute.googleapis.com"
+          },
+          "protoPayload": {
+            "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+            "authenticationInfo": {
+              "principalEmail": "216675633801@cloudservices.gserviceaccount.com",
+              "principalSubject": "serviceAccount:216675633801@cloudservices.gserviceaccount.com"
+            },
+            "authorizationInfo": [
+              {
+                "granted": true,
+                "permission": "compute.instances.delete",
+                "permissionType": "ADMIN_WRITE",
+                "resource": "projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                "resourceAttributes": {
+                  "name": "projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                  "service": "compute",
+                  "type": "compute.instances"
+                }
+              }
+            ],
+            "methodName": "v1.compute.instances.delete",
+            "request": {
+              "@type": "type.googleapis.com/compute.instances.delete",
+              "noGracefulShutdown": false,
+              "requestId": "fab548fc-639c-433e-a668-88514875e04f"
+            },
+            "requestMetadata": {
+              "callerSuppliedUserAgent": "GCE Managed Instance Group for Cloud Batch",
+              "destinationAttributes": {},
+              "requestAttributes": {
+                "auth": {},
+                "time": "2026-11-12T14:03:09.724476Z"
+              }
+            },
+            "resourceLocation": {
+              "currentLocations": [
+                "us-central1-a"
+              ]
+            },
+            "resourceName": "projects/216675633801/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "response": {
+              "@type": "type.googleapis.com/operation",
+              "clientOperationId": "fab548fc-639c-433e-a668-88514875e04f",
+              "id": "3844454998093625842",
+              "insertTime": "2026-11-12T06:03:09.629-08:00",
+              "name": "operation-1794492189472-66014c58177bd-62200c31-424fffc4",
+              "operationType": "delete",
+              "progress": "0",
+              "selfLink": "https://www.googleapis.com/compute/v1/projects/mshogi/zones/us-central1-a/operations/operation-1794492189472-66014c58177bd-62200c31-424fffc4",
+              "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/mshogi/zones/us-central1-a/operations/3844454998093625842",
+              "startTime": "2026-11-12T06:03:09.669-08:00",
+              "status": "RUNNING",
+              "targetId": "4113885159929444352",
+              "targetLink": "https://www.googleapis.com/compute/v1/projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+              "user": "216675633801@cloudservices.gserviceaccount.com",
+              "zone": "https://www.googleapis.com/compute/v1/projects/mshogi/zones/us-central1-a"
+            },
+            "serviceName": "compute.googleapis.com",
+            "status": {}
+          },
+          "receiveTimestamp": "2026-11-12T14:03:09.883336830Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "NOTICE",
+          "timestamp": "2026-11-12T14:03:09.440907Z"
+        },
+        {
+          "insertId": "1x39jj7f7u9rn4",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:55.043128423Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "ERROR",
+          "textPayload": "Task task/msh161-policy-vali-db2ce255-0435-45300-group0-0/0/0: failed runnables [0]",
+          "timestamp": "2026-11-12T14:02:55.022735626Z"
+        },
+        {
+          "insertId": "1x39jj7f7u9rn3",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:55.043128423Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Task task/msh161-policy-vali-db2ce255-0435-45300-group0-0/0/0 background runnables all exited on their own.",
+          "timestamp": "2026-11-12T14:02:55.022729732Z"
+        },
+        {
+          "insertId": "1x39jj7f7u9rn2",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:55.043128423Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "ERROR",
+          "textPayload": "Task task/msh161-policy-vali-db2ce255-0435-45300-group0-0/0/0 runnable 0 execution err: command failed with exitCode 1\n",
+          "timestamp": "2026-11-12T14:02:55.022714063Z"
+        },
+        {
+          "insertId": "1x39jj7f7u9rn1",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:55.043128423Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Task task/msh161-policy-vali-db2ce255-0435-45300-group0-0/0/0 runnable 0 exited with status 1",
+          "timestamp": "2026-11-12T14:02:55.022707772Z"
+        },
+        {
+          "insertId": "1x39jj7f7u9rn0",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:55.043128423Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "WARNING",
+          "textPayload": "Task task/msh161-policy-vali-db2ce255-0435-45300-group0-0/0/0 runnable 0 wait error: exit status 1",
+          "timestamp": "2026-11-12T14:02:55.022691208Z"
+        },
+        {
+          "insertId": "1x39jj7f7u9rmz",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:55.043128423Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Runnable command line: docker run --rm --name 52a20e05-e0a0-4847-9688-66027bd91ce6 --entrypoint python3 --env BATCH_TASK_COUNT=1 --env BATCH_TASK_INDEX=0 --env BATCH_TASK_RETRY_ATTEMPT=0 --env BATCH_TASK_UID=msh161-policy-vali-db2ce255-0435-45300-group0-0 --env CLOUDSDK_PYTHON=/usr/bin/python3 --env BATCH_JOB_UID=msh161-policy-vali-db2ce255-0435-45300 --env BATCH_JOB_ID=msh161-policy-validation-v1 us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py --build docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json --output /tmp/msh161-policy-validation --store gs://mshogi-experiments-216675633801/msh161-primary-v1 --prefix policy-transition-validation-v1",
+          "timestamp": "2026-11-12T14:02:45.740842303Z"
+        },
+        {
+          "insertId": "1x39jj7f7u9rmy",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:55.043128423Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Executing runnable container:{image_uri:\"us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f\" commands:\"docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py\" commands:\"--build\" commands:\"docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json\" commands:\"--output\" commands:\"/tmp/msh161-policy-validation\" commands:\"--store\" commands:\"gs://mshogi-experiments-216675633801/msh161-primary-v1\" commands:\"--prefix\" commands:\"policy-transition-validation-v1\" entrypoint:\"python3\"} for Task task/msh161-policy-vali-db2ce255-0435-45300-group0-0/0/0 in TaskGroup group0 of Job msh161-policy-vali-db2ce255-0435-45300.",
+          "timestamp": "2026-11-12T14:02:45.740831757Z"
+        },
+        {
+          "insertId": "1x39jj7f7u9rmx",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:55.043128423Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Container name is 52a20e05-e0a0-4847-9688-66027bd91ce6",
+          "timestamp": "2026-11-12T14:02:45.740533981Z"
+        },
+        {
+          "insertId": "1x39jj7f7u9rmw",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:55.043128423Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Server response for instance 4113885159929444352: tasks:{task:\"action/STARTUP/0/0/group0\" status:{state:SUCCEEDED status_events:{type:\"ASSIGNED\" description:\"task action/STARTUP/0/0/group0 ASSIGNED\" event_time:{seconds:1794492161 nanos:850583468} task_state:ASSIGNED} status_events:{type:\"RUNNING\" description:\"task action/STARTUP/0/0/group0 RUNNING\" event_time:{seconds:1794492161 nanos:850586748} task_state:RUNNING} status_events:{type:\"SUCCEEDED\" description:\"succeeded\" event_time:{seconds:1794492165 nanos:525935173} task_state:SUCCEEDED}} intended_state:ASSIGNED job_uid:\"msh161-policy-vali-db2ce255-0435-45300\" task_group_id:\"group0\" location:\"us-central1\" job_id:\"msh161-policy-validation-v1\"} tasks:{task:\"task/msh161-policy-vali-db2ce255-0435-45300-group0-0/0/0\" spec:{runnables:{container:{image_uri:\"us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f\" commands:\"docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py\" commands:\"--build\" commands:\"docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json\" commands:\"--output\" commands:\"/tmp/msh161-policy-validation\" commands:\"--store\" commands:\"gs://mshogi-experiments-216675633801/msh161-primary-v1\" commands:\"--prefix\" commands:\"policy-transition-validation-v1\" entrypoint:\"python3\"}} compute_resource:{cpu_milli:4000 memory_mib:12288} max_run_duration:{seconds:600} environment:{variables:{key:\"BATCH_TASK_COUNT\" value:\"1\"} variables:{key:\"BATCH_TASK_INDEX\" value:\"0\"} variables:{key:\"BATCH_TASK_UID\" value:\"msh161-policy-vali-db2ce255-0435-45300-group0-0\"} variables:{key:\"CLOUDSDK_PYTHON\" value:\"/usr/bin/python3\"}}} agent_task_spec:{logging_option:{labels:{key:\"application\" value:\"mshogi-experiments\"} labels:{key:\"schema\" value:\"v1\"}}} status:{state:PENDING} intended_state:ASSIGNED task_source:USER job_uid:\"msh161-policy-vali-db2ce255-0435-45300\" task_group_id:\"group0\" location:\"us-central1\" job_id:\"msh161-policy-validation-v1\"} use_batch_monitored_resource:true.",
+          "timestamp": "2026-11-12T14:02:45.740431735Z"
+        },
+        {
+          "insertId": "1x39jj7f7u9rmv",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:55.043128423Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "report agent state: metadata:{parent:\"projects/216675633801/locations/us-central1\" zone:\"us-central1-a\" instance:\"msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3\" instance_id:4113885159929444352 creation_time:{seconds:1794492158 nanos:122448526} creator:\"projects/216675633801/regions/us-central1/instanceGroupManagers/msh161-policy-vali-db2ce255-0435-45300-group0-0\" version:\"cloud-batch-agent_20261023.00_p00\" os_release:{key:\"BUILD_ID\" value:\"18867.652.7\"} os_release:{key:\"ID\" value:\"cos\"} os_release:{key:\"NAME\" value:\"Container-Optimized OS\"} os_release:{key:\"VERSION\" value:\"121\"} os_release:{key:\"VERSION_ID\" value:\"121\"} image_version:\"batch-cos-stable-20261025-00-p00\" machine_type:\"c3-standard-4\"} agent_info:{state:AGENT_RUNNING job_id:\"msh161-policy-vali-db2ce255-0435-45300\" user_project_num:216675633801 tasks:{task_id:\"action/STARTUP/0/0/group0\" task_status:{state:SUCCEEDED status_events:{type:\"ASSIGNED\" description:\"task action/STARTUP/0/0/group0 ASSIGNED\" event_time:{seconds:1794492161 nanos:850583468} task_state:ASSIGNED} status_events:{type:\"RUNNING\" description:\"task action/STARTUP/0/0/group0 RUNNING\" event_time:{seconds:1794492161 nanos:850586748} task_state:RUNNING} status_events:{type:\"SUCCEEDED\" description:\"succeeded\" event_time:{seconds:1794492165 nanos:525935173} task_state:SUCCEEDED}}} report_time:{seconds:1794492165 nanos:526054960} task_group_id:\"group0\"} agent_timing_info:{boot_time:{seconds:1794492152 nanos:590180046} script_startup_time:{seconds:1794492157 nanos:570180046} agent_startup_time:{seconds:1794492158 nanos:122448526}}",
+          "timestamp": "2026-11-12T14:02:45.526177843Z"
+        },
+        {
+          "insertId": "1x39jj7f7u9rmu",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:55.043128423Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Scheduler reported task \"action/STARTUP/0/0/group0\"",
+          "timestamp": "2026-11-12T14:02:45.525948311Z"
+        },
+        {
+          "insertId": "kk92t3f7xlegj",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Task action/STARTUP/0/0/group0 succeeded",
+          "timestamp": "2026-11-12T14:02:45.525864599Z"
+        },
+        {
+          "insertId": "kk92t3f7xlegi",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Task action/STARTUP/0/0/group0 background runnables all exited on their own.",
+          "timestamp": "2026-11-12T14:02:45.525861563Z"
+        },
+        {
+          "insertId": "kk92t3f7xlegh",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Task action/STARTUP/0/0/group0 runnable 1 exited with status 0",
+          "timestamp": "2026-11-12T14:02:45.525843827Z"
+        },
+        {
+          "insertId": "kk92t3f7xleev",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Runnable command line: /bin/sh -c # This script helps to install docker credential helper for jobs using GCR or\n# GAR images.\n# It has been tested successfully with the following operating systems:\n# - Debian GNU/Linux 10 (buster, amd64 built on 20220317, supports Shielded VM features)\n# - Debian GNU/Linux 11 (bullseye, amd64 built on 20220822, supports Shielded VM features)\n# - Debian GNU/Linux 11 (bullseye, arm64 built on 20230912, supports Shielded VM features)\n# - Debian GNU/Linux 12 (bookworm, amd64 built on 20260817, supports Shielded VM features)\n# - CentOS 7 (x86_64 built on 20220406, supports Shielded VM features)\n# - Rocky 8 (x86_64 built on 20240111, supports Shielded VM features)\n# It may or may not work correctly with other operating systems and versions.\n\ndocker_credential_gcr_installed() {\n  echo \"[BATCH Docker Credential GCR Installation]: Checking for existing docker-credential-gcr installation.\"\n  docker_credential_gcr_version=$(docker-credential-gcr version 2> /dev/null || echo \"\")\n  if [ ! -z \"$docker_credential_gcr_version\" ]; then\n    echo \"[BATCH Docker Credential GCR Installation]: Found docker-credential-gcr with version $docker_credential_gcr_version.\"\n    return 0\n  fi\n  echo \"[BATCH Docker Credential GCR Installation]: No docker-credential-gcr found, will install.\"\n  return 1\n}\n\ncheckDockerImagePullError() {\n  result=$?\n  if [ $result != 0 ]; then\n    echo \"[Batch Action] Docker image pull error.\"\n    return $result;\n  fi\n}\n\nconfigure_docker_credential_helper() {\n  OSID=\"$(. /etc/os-release && echo \"$ID\")\"\n  OSVERSION=\"$(. /etc/os-release && echo \"$VERSION_ID\")\"\n  if [ ! \"$OSID\" = \"debian\" ] && [ ! -f /etc/centos-release ] && [ ! -f /etc/rocky-release ] && ! grep -qi cos /etc/os-release; then\n    echo '[Batch Docker Credential Helper Installation] Warning: this is not a tested operating system, the installation may fail.'\n  fi\n  REGISTRIES=us-central1-docker.pkg.dev\n  if [ -f /etc/centos-release ]; then\n    if [ ! -x /usr/bin/python3 ]; then\n      # CentOS 7 does not have pre-installed python3.\n      yum install -y python3\n    fi\n  fi\n\n  # docker-credential-gcr is pre-installed in Batch custom images.\n  if ! grep -qi cos /etc/os-release; then\n    if ! docker_credential_gcr_installed; then\n      MACHINE=\"$(uname -m)\"\n      if [ \"$OSID\" = \"rocky\" ] && [ \"${OSVERSION%%.*}\" = \"8\" ]; then\n        # Use python3.9 as Rocky Linux 8 pre-installed python3.6 which does not work with CLOUD SDK.\n        echo '[Batch Docker Credential Helper Installation]: Install python3.9 for Rocky Linux 8.'\n        dnf install -y python39\n      fi\n      gcloud storage cp gs://batch-agent-prod-us/docker-credential-gcr-tool/docker-credential-gcr-$MACHINE.tar.gz docker-credential-gcr.tar.gz\n      tar -xzf docker-credential-gcr.tar.gz\n      chmod +x docker-credential-gcr\n      cp docker-credential-gcr /usr/local/bin/\n      if [ -x /usr/local/bin/docker-credential-gcr ]; then\n        echo \"[BATCH Docker Credential Helper]: Docker Credential Helper installed.\"\n      else\n        echo \"[BATCH Docker Credential Helper]: Docker Credential Helper installation failed.\"\n        return 1  # Indicate failure\n      fi\n    fi\n\n    if [ ! -z $REGISTRIES ]; then\n      PATH=$PATH:/usr/local/bin docker-credential-gcr configure-docker --registries=$REGISTRIES\n    fi\n    PATH=$PATH:/usr/local/bin docker pull us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f\n    if ! checkDockerImagePullError; then return 1; fi\n  else\n    if [ ! -z $REGISTRIES ]; then\n      sudo HOME=/var/lib/google docker-credential-gcr configure-docker --registries=$REGISTRIES\n    fi\n    sudo HOME=/var/lib/google docker pull us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f\n    if ! checkDockerImagePullError; then return 1; fi\n  fi\n}\n\n# Try a given function with n times including retries with exponential back off.\n# function signature: retry retryTimes description functionName\nretry() {\n  local tries=$1\n  local count=0\n  local description=$2\n  local wait=1\n  until \"$3\"; do\n    exit=$?\n    # If failed, wait 3 ** count seconds until next retry.\n    wait=$(($wait*3))\n    count=$(($count + 1))\n    if [ $count -lt $tries ]; then\n      echo \"[Batch Action] $description exited $exit (tried $count/$tries), retrying in $wait seconds.\"\n      sleep $wait\n    else\n      echo \"[Batch Action] $description exited $exit (tried $count/$tries), no more retries left.\"\n      return $exit\n    fi\n  done\n  echo \"[Batch Action] $description succeeded.\"\n  return 0\n}\n\nretry 4 \"Docker credential helper\" configure_docker_credential_helper\n",
+          "timestamp": "2026-11-12T14:02:42.090126412Z"
+        },
+        {
+          "insertId": "kk92t3f7xleeu",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Executing runnable script:{text:\"# This script helps to install docker credential helper for jobs using GCR or\\n# GAR images.\\n# It has been tested successfully with the following operating systems:\\n# - Debian GNU/Linux 10 (buster, amd64 built on 20220317, supports Shielded VM features)\\n# - Debian GNU/Linux 11 (bullseye, amd64 built on 20220822, supports Shielded VM features)\\n# - Debian GNU/Linux 11 (bullseye, arm64 built on 20230912, supports Shielded VM features)\\n# - Debian GNU/Linux 12 (bookworm, amd64 built on 20260817, supports Shielded VM features)\\n# - CentOS 7 (x86_64 built on 20220406, supports Shielded VM features)\\n# - Rocky 8 (x86_64 built on 20240111, supports Shielded VM features)\\n# It may or may not work correctly with other operating systems and versions.\\n\\ndocker_credential_gcr_installed() {\\n  echo \\\"[BATCH Docker Credential GCR Installation]: Checking for existing docker-credential-gcr installation.\\\"\\n  docker_credential_gcr_version=$(docker-credential-gcr version 2> /dev/null || echo \\\"\\\")\\n  if [ ! -z \\\"$docker_credential_gcr_version\\\" ]; then\\n    echo \\\"[BATCH Docker Credential GCR Installation]: Found docker-credential-gcr with version $docker_credential_gcr_version.\\\"\\n    return 0\\n  fi\\n  echo \\\"[BATCH Docker Credential GCR Installation]: No docker-credential-gcr found, will install.\\\"\\n  return 1\\n}\\n\\ncheckDockerImagePullError() {\\n  result=$?\\n  if [ $result != 0 ]; then\\n    echo \\\"[Batch Action] Docker image pull error.\\\"\\n    return $result;\\n  fi\\n}\\n\\nconfigure_docker_credential_helper() {\\n  OSID=\\\"$(. /etc/os-release && echo \\\"$ID\\\")\\\"\\n  OSVERSION=\\\"$(. /etc/os-release && echo \\\"$VERSION_ID\\\")\\\"\\n  if [ ! \\\"$OSID\\\" = \\\"debian\\\" ] && [ ! -f /etc/centos-release ] && [ ! -f /etc/rocky-release ] && ! grep -qi cos /etc/os-release; then\\n    echo '[Batch Docker Credential Helper Installation] Warning: this is not a tested operating system, the installation may fail.'\\n  fi\\n  REGISTRIES=us-central1-docker.pkg.dev\\n  if [ -f /etc/centos-release ]; then\\n    if [ ! -x /usr/bin/python3 ]; then\\n      # CentOS 7 does not have pre-installed python3.\\n      yum install -y python3\\n    fi\\n  fi\\n\\n  # docker-credential-gcr is pre-installed in Batch custom images.\\n  if ! grep -qi cos /etc/os-release; then\\n    if ! docker_credential_gcr_installed; then\\n      MACHINE=\\\"$(uname -m)\\\"\\n      if [ \\\"$OSID\\\" = \\\"rocky\\\" ] && [ \\\"${OSVERSION%%.*}\\\" = \\\"8\\\" ]; then\\n        # Use python3.9 as Rocky Linux 8 pre-installed python3.6 which does not work with CLOUD SDK.\\n        echo '[Batch Docker Credential Helper Installation]: Install python3.9 for Rocky Linux 8.'\\n        dnf install -y python39\\n      fi\\n      gcloud storage cp gs://batch-agent-prod-us/docker-credential-gcr-tool/docker-credential-gcr-$MACHINE.tar.gz docker-credential-gcr.tar.gz\\n      tar -xzf docker-credential-gcr.tar.gz\\n      chmod +x docker-credential-gcr\\n      cp docker-credential-gcr /usr/local/bin/\\n      if [ -x /usr/local/bin/docker-credential-gcr ]; then\\n        echo \\\"[BATCH Docker Credential Helper]: Docker Credential Helper installed.\\\"\\n      else\\n        echo \\\"[BATCH Docker Credential Helper]: Docker Credential Helper installation failed.\\\"\\n        return 1  # Indicate failure\\n      fi\\n    fi\\n\\n    if [ ! -z $REGISTRIES ]; then\\n      PATH=$PATH:/usr/local/bin docker-credential-gcr configure-docker --registries=$REGISTRIES\\n    fi\\n    PATH=$PATH:/usr/local/bin docker pull us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f\\n    if ! checkDockerImagePullError; then return 1; fi\\n  else\\n    if [ ! -z $REGISTRIES ]; then\\n      sudo HOME=/var/lib/google docker-credential-gcr configure-docker --registries=$REGISTRIES\\n    fi\\n    sudo HOME=/var/lib/google docker pull us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f\\n    if ! checkDockerImagePullError; then return 1; fi\\n  fi\\n}\\n\\n# Try a given function with n times including retries with exponential back off.\\n# function signature: retry retryTimes description functionName\\nretry() {\\n  local tries=$1\\n  local count=0\\n  local description=$2\\n  local wait=1\\n  until \\\"$3\\\"; do\\n    exit=$?\\n    # If failed, wait 3 ** count seconds until next retry.\\n    wait=$(($wait*3))\\n    count=$(($count + 1))\\n    if [ $count -lt $tries ]; then\\n      echo \\\"[Batch Action] $description exited $exit (tried $count/$tries), retrying in $wait seconds.\\\"\\n      sleep $wait\\n    else\\n      echo \\\"[Batch Action] $description exited $exit (tried $count/$tries), no more retries left.\\\"\\n      return $exit\\n    fi\\n  done\\n  echo \\\"[Batch Action] $description succeeded.\\\"\\n  return 0\\n}\\n\\nretry 4 \\\"Docker credential helper\\\" configure_docker_credential_helper\\n\"} for Task action/STARTUP/0/0/group0 in TaskGroup group0 of Job msh161-policy-vali-db2ce255-0435-45300.",
+          "timestamp": "2026-11-12T14:02:42.090107755Z"
+        },
+        {
+          "insertId": "kk92t3f7xleet",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Task action/STARTUP/0/0/group0 runnable 0 exited with status 0",
+          "timestamp": "2026-11-12T14:02:42.089777135Z"
+        },
+        {
+          "insertId": "kk92t3f7xleeq",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Runnable command line: /bin/sh -c # This script helps install docker.\n# It has been tested successfully with the following operating systems:\n# - Debian GNU/Linux 10 (buster, amd64 built on 20220317, supports Shielded VM features)\n# - Debian GNU/Linux 11 (bullseye, amd64 built on 20220822, supports Shielded VM features)\n# - Debian GNU/Linux 11 (bullseye, arm64 built on 20230912, supports Shielded VM features)\n# - Debian GNU/Linux 12 (bookworm, amd64 built on 20260817, supports Shielded VM features)\n# - CentOS 7 (x86_64 built on 20220406, supports Shielded VM features)\n# - Rocky 8 (x86_64 built on 20240111, supports Shielded VM features)\n# It may or may not work correctly with other operating systems and versions.\n\ndocker_installed() {\n  echo \"[BATCH Docker Installation]: Checking for existing docker installation.\"\n  docker_version=$(docker --version 2> /dev/null || echo \"\")\n  if [ ! -z \"$docker_version\" ]; then\n    echo \"[BATCH Docker Installation]: Found docker with version $docker_version.\"\n    return 0\n  fi\n  echo \"[BATCH Docker Installation]: No docker found, will install.\"\n  return 1\n}\n\nOSID=\"$(. /etc/os-release && echo \"$ID\")\"\nif [ ! \"$OSID\" = \"debian\" ] && [ ! -f /etc/centos-release ] && [ ! -f /etc/rocky-release ] && ! grep -qi cos /etc/os-release; then\n    echo \"[BATCH Docker Installation] Warning: this is not a tested operating system, this installation may fail.\"\nfi\nif [ -f /etc/centos-release ] || [ -f /etc/rocky-release ]; then\n    if ! docker_installed; then\n      yum install -y yum-utils\n      yum-config-manager \\\n        --add-repo \\\n        https://download.docker.com/linux/centos/docker-ce.repo\n      yum install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin\n    fi\n    systemctl start docker\nelse\n    if docker_installed; then\n      exit 0\n    fi\n    apt-get -o Acquire::Retries=3 -o DPkg::Lock::Timeout=60 install --yes ca-certificates curl gnupg lsb-release\n    mkdir -p /etc/apt/keyrings\n    curl --retry 5 -m 10 -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg\n    echo \\\n      \"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \\\n      $(lsb_release -cs) stable\" | tee /etc/apt/sources.list.d/docker.list > /dev/null\n    apt-get -o Acquire::Retries=3 -o DPkg::Lock::Timeout=60 update\n    apt-get -o Acquire::Retries=3 -o DPkg::Lock::Timeout=60 install --yes docker-ce docker-ce-cli containerd.io docker-compose-plugin\nfi\n",
+          "timestamp": "2026-11-12T14:02:41.851733297Z"
+        },
+        {
+          "insertId": "kk92t3f7xleep",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Executing runnable script:{text:\"# This script helps install docker.\\n# It has been tested successfully with the following operating systems:\\n# - Debian GNU/Linux 10 (buster, amd64 built on 20220317, supports Shielded VM features)\\n# - Debian GNU/Linux 11 (bullseye, amd64 built on 20220822, supports Shielded VM features)\\n# - Debian GNU/Linux 11 (bullseye, arm64 built on 20230912, supports Shielded VM features)\\n# - Debian GNU/Linux 12 (bookworm, amd64 built on 20260817, supports Shielded VM features)\\n# - CentOS 7 (x86_64 built on 20220406, supports Shielded VM features)\\n# - Rocky 8 (x86_64 built on 20240111, supports Shielded VM features)\\n# It may or may not work correctly with other operating systems and versions.\\n\\ndocker_installed() {\\n  echo \\\"[BATCH Docker Installation]: Checking for existing docker installation.\\\"\\n  docker_version=$(docker --version 2> /dev/null || echo \\\"\\\")\\n  if [ ! -z \\\"$docker_version\\\" ]; then\\n    echo \\\"[BATCH Docker Installation]: Found docker with version $docker_version.\\\"\\n    return 0\\n  fi\\n  echo \\\"[BATCH Docker Installation]: No docker found, will install.\\\"\\n  return 1\\n}\\n\\nOSID=\\\"$(. /etc/os-release && echo \\\"$ID\\\")\\\"\\nif [ ! \\\"$OSID\\\" = \\\"debian\\\" ] && [ ! -f /etc/centos-release ] && [ ! -f /etc/rocky-release ] && ! grep -qi cos /etc/os-release; then\\n    echo \\\"[BATCH Docker Installation] Warning: this is not a tested operating system, this installation may fail.\\\"\\nfi\\nif [ -f /etc/centos-release ] || [ -f /etc/rocky-release ]; then\\n    if ! docker_installed; then\\n      yum install -y yum-utils\\n      yum-config-manager \\\\\\n        --add-repo \\\\\\n        https://download.docker.com/linux/centos/docker-ce.repo\\n      yum install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin\\n    fi\\n    systemctl start docker\\nelse\\n    if docker_installed; then\\n      exit 0\\n    fi\\n    apt-get -o Acquire::Retries=3 -o DPkg::Lock::Timeout=60 install --yes ca-certificates curl gnupg lsb-release\\n    mkdir -p /etc/apt/keyrings\\n    curl --retry 5 -m 10 -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg\\n    echo \\\\\\n      \\\"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \\\\\\n      $(lsb_release -cs) stable\\\" | tee /etc/apt/sources.list.d/docker.list > /dev/null\\n    apt-get -o Acquire::Retries=3 -o DPkg::Lock::Timeout=60 update\\n    apt-get -o Acquire::Retries=3 -o DPkg::Lock::Timeout=60 install --yes docker-ce docker-ce-cli containerd.io docker-compose-plugin\\nfi\\n\"} for Task action/STARTUP/0/0/group0 in TaskGroup group0 of Job msh161-policy-vali-db2ce255-0435-45300.",
+          "timestamp": "2026-11-12T14:02:41.851716391Z"
+        },
+        {
+          "insertId": "kk92t3f7xleeo",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Server response for instance 4113885159929444352: tasks:{task:\"action/STARTUP/0/0/group0\" spec:{runnables:{script:{text:\"# This script helps install docker.\\n# It has been tested successfully with the following operating systems:\\n# - Debian GNU/Linux 10 (buster, amd64 built on 20220317, supports Shielded VM features)\\n# - Debian GNU/Linux 11 (bullseye, amd64 built on 20220822, supports Shielded VM features)\\n# - Debian GNU/Linux 11 (bullseye, arm64 built on 20230912, supports Shielded VM features)\\n# - Debian GNU/Linux 12 (bookworm, amd64 built on 20260817, supports Shielded VM features)\\n# - CentOS 7 (x86_64 built on 20220406, supports Shielded VM features)\\n# - Rocky 8 (x86_64 built on 20240111, supports Shielded VM features)\\n# It may or may not work correctly with other operating systems and versions.\\n\\ndocker_installed() {\\n  echo \\\"[BATCH Docker Installation]: Checking for existing docker installation.\\\"\\n  docker_version=$(docker --version 2> /dev/null || echo \\\"\\\")\\n  if [ ! -z \\\"$docker_version\\\" ]; then\\n    echo \\\"[BATCH Docker Installation]: Found docker with version $docker_version.\\\"\\n    return 0\\n  fi\\n  echo \\\"[BATCH Docker Installation]: No docker found, will install.\\\"\\n  return 1\\n}\\n\\nOSID=\\\"$(. /etc/os-release && echo \\\"$ID\\\")\\\"\\nif [ ! \\\"$OSID\\\" = \\\"debian\\\" ] && [ ! -f /etc/centos-release ] && [ ! -f /etc/rocky-release ] && ! grep -qi cos /etc/os-release; then\\n    echo \\\"[BATCH Docker Installation] Warning: this is not a tested operating system, this installation may fail.\\\"\\nfi\\nif [ -f /etc/centos-release ] || [ -f /etc/rocky-release ]; then\\n    if ! docker_installed; then\\n      yum install -y yum-utils\\n      yum-config-manager \\\\\\n        --add-repo \\\\\\n        https://download.docker.com/linux/centos/docker-ce.repo\\n      yum install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin\\n    fi\\n    systemctl start docker\\nelse\\n    if docker_installed; then\\n      exit 0\\n    fi\\n    apt-get -o Acquire::Retries=3 -o DPkg::Lock::Timeout=60 install --yes ca-certificates curl gnupg lsb-release\\n    mkdir -p /etc/apt/keyrings\\n    curl --retry 5 -m 10 -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg\\n    echo \\\\\\n      \\\"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \\\\\\n      $(lsb_release -cs) stable\\\" | tee /etc/apt/sources.list.d/docker.list > /dev/null\\n    apt-get -o Acquire::Retries=3 -o DPkg::Lock::Timeout=60 update\\n    apt-get -o Acquire::Retries=3 -o DPkg::Lock::Timeout=60 install --yes docker-ce docker-ce-cli containerd.io docker-compose-plugin\\nfi\\n\"}} runnables:{script:{text:\"# This script helps to install docker credential helper for jobs using GCR or\\n# GAR images.\\n# It has been tested successfully with the following operating systems:\\n# - Debian GNU/Linux 10 (buster, amd64 built on 20220317, supports Shielded VM features)\\n# - Debian GNU/Linux 11 (bullseye, amd64 built on 20220822, supports Shielded VM features)\\n# - Debian GNU/Linux 11 (bullseye, arm64 built on 20230912, supports Shielded VM features)\\n# - Debian GNU/Linux 12 (bookworm, amd64 built on 20260817, supports Shielded VM features)\\n# - CentOS 7 (x86_64 built on 20220406, supports Shielded VM features)\\n# - Rocky 8 (x86_64 built on 20240111, supports Shielded VM features)\\n# It may or may not work correctly with other operating systems and versions.\\n\\ndocker_credential_gcr_installed() {\\n  echo \\\"[BATCH Docker Credential GCR Installation]: Checking for existing docker-credential-gcr installation.\\\"\\n  docker_credential_gcr_version=$(docker-credential-gcr version 2> /dev/null || echo \\\"\\\")\\n  if [ ! -z \\\"$docker_credential_gcr_version\\\" ]; then\\n    echo \\\"[BATCH Docker Credential GCR Installation]: Found docker-credential-gcr with version $docker_credential_gcr_version.\\\"\\n    return 0\\n  fi\\n  echo \\\"[BATCH Docker Credential GCR Installation]: No docker-credential-gcr found, will install.\\\"\\n  return 1\\n}\\n\\ncheckDockerImagePullError() {\\n  result=$?\\n  if [ $result != 0 ]; then\\n    echo \\\"[Batch Action] Docker image pull error.\\\"\\n    return $result;\\n  fi\\n}\\n\\nconfigure_docker_credential_helper() {\\n  OSID=\\\"$(. /etc/os-release && echo \\\"$ID\\\")\\\"\\n  OSVERSION=\\\"$(. /etc/os-release && echo \\\"$VERSION_ID\\\")\\\"\\n  if [ ! \\\"$OSID\\\" = \\\"debian\\\" ] && [ ! -f /etc/centos-release ] && [ ! -f /etc/rocky-release ] && ! grep -qi cos /etc/os-release; then\\n    echo '[Batch Docker Credential Helper Installation] Warning: this is not a tested operating system, the installation may fail.'\\n  fi\\n  REGISTRIES=us-central1-docker.pkg.dev\\n  if [ -f /etc/centos-release ]; then\\n    if [ ! -x /usr/bin/python3 ]; then\\n      # CentOS 7 does not have pre-installed python3.\\n      yum install -y python3\\n    fi\\n  fi\\n\\n  # docker-credential-gcr is pre-installed in Batch custom images.\\n  if ! grep -qi cos /etc/os-release; then\\n    if ! docker_credential_gcr_installed; then\\n      MACHINE=\\\"$(uname -m)\\\"\\n      if [ \\\"$OSID\\\" = \\\"rocky\\\" ] && [ \\\"${OSVERSION%%.*}\\\" = \\\"8\\\" ]; then\\n        # Use python3.9 as Rocky Linux 8 pre-installed python3.6 which does not work with CLOUD SDK.\\n        echo '[Batch Docker Credential Helper Installation]: Install python3.9 for Rocky Linux 8.'\\n        dnf install -y python39\\n      fi\\n      gcloud storage cp gs://batch-agent-prod-us/docker-credential-gcr-tool/docker-credential-gcr-$MACHINE.tar.gz docker-credential-gcr.tar.gz\\n      tar -xzf docker-credential-gcr.tar.gz\\n      chmod +x docker-credential-gcr\\n      cp docker-credential-gcr /usr/local/bin/\\n      if [ -x /usr/local/bin/docker-credential-gcr ]; then\\n        echo \\\"[BATCH Docker Credential Helper]: Docker Credential Helper installed.\\\"\\n      else\\n        echo \\\"[BATCH Docker Credential Helper]: Docker Credential Helper installation failed.\\\"\\n        return 1  # Indicate failure\\n      fi\\n    fi\\n\\n    if [ ! -z $REGISTRIES ]; then\\n      PATH=$PATH:/usr/local/bin docker-credential-gcr configure-docker --registries=$REGISTRIES\\n    fi\\n    PATH=$PATH:/usr/local/bin docker pull us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f\\n    if ! checkDockerImagePullError; then return 1; fi\\n  else\\n    if [ ! -z $REGISTRIES ]; then\\n      sudo HOME=/var/lib/google docker-credential-gcr configure-docker --registries=$REGISTRIES\\n    fi\\n    sudo HOME=/var/lib/google docker pull us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f\\n    if ! checkDockerImagePullError; then return 1; fi\\n  fi\\n}\\n\\n# Try a given function with n times including retries with exponential back off.\\n# function signature: retry retryTimes description functionName\\nretry() {\\n  local tries=$1\\n  local count=0\\n  local description=$2\\n  local wait=1\\n  until \\\"$3\\\"; do\\n    exit=$?\\n    # If failed, wait 3 ** count seconds until next retry.\\n    wait=$(($wait*3))\\n    count=$(($count + 1))\\n    if [ $count -lt $tries ]; then\\n      echo \\\"[Batch Action] $description exited $exit (tried $count/$tries), retrying in $wait seconds.\\\"\\n      sleep $wait\\n    else\\n      echo \\\"[Batch Action] $description exited $exit (tried $count/$tries), no more retries left.\\\"\\n      return $exit\\n    fi\\n  done\\n  echo \\\"[Batch Action] $description succeeded.\\\"\\n  return 0\\n}\\n\\nretry 4 \\\"Docker credential helper\\\" configure_docker_credential_helper\\n\"}} max_run_duration:{seconds:3600}} agent_task_spec:{logging_option:{labels:{key:\"application\" value:\"mshogi-experiments\"} labels:{key:\"schema\" value:\"v1\"}}} status:{state:PENDING} intended_state:ASSIGNED task_source:BATCH_INTERNAL job_uid:\"msh161-policy-vali-db2ce255-0435-45300\" task_group_id:\"group0\" location:\"us-central1\" job_id:\"msh161-policy-validation-v1\"} min_report_interval:{seconds:3} use_batch_monitored_resource:true.",
+          "timestamp": "2026-11-12T14:02:41.842883132Z"
+        },
+        {
+          "insertId": "kk92t3f7xleen",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "report agent state: metadata:{parent:\"projects/216675633801/locations/us-central1\" zone:\"us-central1-a\" instance:\"msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3\" instance_id:4113885159929444352 creation_time:{seconds:1794492158 nanos:122448526} creator:\"projects/216675633801/regions/us-central1/instanceGroupManagers/msh161-policy-vali-db2ce255-0435-45300-group0-0\" version:\"cloud-batch-agent_20261023.00_p00\" os_release:{key:\"BUILD_ID\" value:\"18867.652.7\"} os_release:{key:\"ID\" value:\"cos\"} os_release:{key:\"NAME\" value:\"Container-Optimized OS\"} os_release:{key:\"VERSION\" value:\"121\"} os_release:{key:\"VERSION_ID\" value:\"121\"} image_version:\"batch-cos-stable-20261025-00-p00\" machine_type:\"c3-standard-4\"} agent_info:{state:AGENT_RUNNING job_id:\"msh161-policy-vali-db2ce255-0435-45300\" user_project_num:216675633801 report_time:{seconds:1794492158 nanos:627239312} task_group_id:\"group0\"} agent_timing_info:{boot_time:{seconds:1794492152 nanos:590180046} script_startup_time:{seconds:1794492157 nanos:570180046} agent_startup_time:{seconds:1794492158 nanos:122448526}}",
+          "timestamp": "2026-11-12T14:02:38.627462937Z"
+        },
+        {
+          "insertId": "kk92t3f7xleem",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Report status every \"30s\".",
+          "timestamp": "2026-11-12T14:02:38.627225590Z"
+        },
+        {
+          "insertId": "kk92t3f7xleel",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Report.Start: config={ReportInterval:30s MinReportInterval:20s Connection:0x2e86429c0008 PubSubConnection:<nil> Metadata:parent:\"projects/216675633801/locations/us-central1\" zone:\"us-central1-a\" instance:\"msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3\" instance_id:4113885159929444352 creation_time:{seconds:1794492158 nanos:122448526} creator:\"projects/216675633801/regions/us-central1/instanceGroupManagers/msh161-policy-vali-db2ce255-0435-45300-group0-0\" version:\"cloud-batch-agent_20261023.00_p00\" os_release:{key:\"BUILD_ID\" value:\"18867.652.7\"} os_release:{key:\"ID\" value:\"cos\"} os_release:{key:\"NAME\" value:\"Container-Optimized OS\"} os_release:{key:\"VERSION\" value:\"121\"} os_release:{key:\"VERSION_ID\" value:\"121\"} image_version:\"batch-cos-stable-20261025-00-p00\" TimingInfo:boot_time:{seconds:1794492152 nanos:590180046} script_startup_time:{seconds:1794492157 nanos:570180046} agent_startup_time:{seconds:1794492158 nanos:122448526} JobUID:msh161-policy-vali-db2ce255-0435-45300 DataflowJobID: taskGroupName:0x2e8642378180 LogsPath:cloudbatch-cloudlogging-logspath UseAgentAPIServer:false NodePoolUID: ResourceProjectNum:216675633801 UserProjectNum:216675633801 NodePoolAgentSocketKill:false NodePoolAgentNoRestart:false nodePoolName:<nil> HandlePreemptionsGracefully:true}.",
+          "timestamp": "2026-11-12T14:02:38.624937277Z"
+        },
+        {
+          "insertId": "kk92t3f7xleek",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Connecting to \"batch.googleapis.com:443\".",
+          "timestamp": "2026-11-12T14:02:38.471330909Z"
+        },
+        {
+          "insertId": "kk92t3f7xleej",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "TLS Mode: using TLS transport with OAuth Application Default Credentials.",
+          "timestamp": "2026-11-12T14:02:38.471308228Z"
+        },
+        {
+          "insertId": "kk92t3f7xleei",
+          "jsonPayload": {
+            "logging.googleapis.com/diagnostic": {
+              "instrumentation_source": [
+                {
+                  "name": "go",
+                  "version": "1.11.0"
+                }
+              ],
+              "runtime": "1.28.0--20261015-RC02 cl/1000353293 +18a2e1f59d X:fieldtrack,boringcrypto,simd,nogolistexportnewformat"
+            }
+          },
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/diagnostic-log",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "timestamp": "2026-11-12T14:02:38.470694281Z"
+        },
+        {
+          "insertId": "kk92t3f7xleeh",
+          "labels": {
+            "hostname": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "job_uid": "msh161-policy-vali-db2ce255-0435-45300",
+            "task_group_name": "projects/216675633801/locations/us-central1/jobs/msh161-policy-validation-v1/taskGroups/group0"
+          },
+          "logName": "projects/mshogi/logs/batch_agent_logs",
+          "receiveTimestamp": "2026-11-12T14:02:45.545930815Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "textPayload": "Cloud Batch server: \"batch.googleapis.com:443\"",
+          "timestamp": "2026-11-12T14:02:38.470689774Z"
+        },
+        {
+          "insertId": "vxuyvnf8do3pe",
+          "jsonPayload": {
+            "logging.googleapis.com/diagnostic": {
+              "instrumentation_source": [
+                {
+                  "name": "go",
+                  "version": "1.13.0"
+                }
+              ],
+              "runtime": "1.25.12"
+            }
+          },
+          "labels": {
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/diagnostic-log",
+          "receiveTimestamp": "2026-11-12T14:02:42.059900109Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "timestamp": "2026-11-12T14:02:37.920708340Z"
+        },
+        {
+          "insertId": "vxuyvnf8do3pd",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.9206Z",
+            "message": "OSConfig Agent (version 20260119.00) started.",
+            "omitempty": null
+          },
+          "labels": {
+            "agent_version": "20260119.00",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/OSConfigAgent",
+          "receiveTimestamp": "2026-11-12T14:02:42.059900109Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "main.go",
+            "function": "main.run",
+            "line": "152"
+          },
+          "timestamp": "2026-11-12T14:02:37.920671178Z"
+        },
+        {
+          "insertId": "1m0t672fa1hg8t",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.6402Z",
+            "message": "startup-script: [Batch Startup] Google Cloud Batch service VM agent log file is ready.",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/google_metadata_script_runner",
+          "receiveTimestamp": "2026-11-12T14:02:41.764842881Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "main.go",
+            "function": "main.setupAndRunScript",
+            "line": "283"
+          },
+          "timestamp": "2026-11-12T14:02:37.640282048Z"
+        },
+        {
+          "insertId": "1m0t672fa1hg8s",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.5674Z",
+            "message": "Found startup-script in metadata.",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/google_metadata_script_runner",
+          "receiveTimestamp": "2026-11-12T14:02:41.764842881Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "main.go",
+            "function": "main.main",
+            "line": "485"
+          },
+          "timestamp": "2026-11-12T14:02:37.567500900Z"
+        },
+        {
+          "insertId": "1m0t672fa1hg8r",
+          "jsonPayload": {
+            "logging.googleapis.com/diagnostic": {
+              "instrumentation_source": [
+                {
+                  "name": "go",
+                  "version": "1.7.0"
+                }
+              ],
+              "runtime": "1.25.12"
+            }
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/diagnostic-log",
+          "receiveTimestamp": "2026-11-12T14:02:41.764842881Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "timestamp": "2026-11-12T14:02:37.566022602Z"
+        },
+        {
+          "insertId": "1m0t672fa1hg8q",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.5659Z",
+            "message": "Starting startup scripts (version 2026.10.19.00).",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/google_metadata_script_runner",
+          "receiveTimestamp": "2026-11-12T14:02:41.764842881Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "main.go",
+            "function": "main.main",
+            "line": "468"
+          },
+          "timestamp": "2026-11-12T14:02:37.565974596Z"
+        },
+        {
+          "insertId": "1ubx4w5f7osy0o",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.0518Z",
+            "message": "Completed adding/removing routes for aliases, forwarded IP and target-instance IPs",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/GCEGuestAgent",
+          "receiveTimestamp": "2026-11-12T14:02:42.250711848Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "addresses.go",
+            "function": "main.(*addressMgr).Set",
+            "line": "419"
+          },
+          "timestamp": "2026-11-12T14:02:37.051850637Z"
+        },
+        {
+          "insertId": "1ubx4w5f7osy0n",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.0488Z",
+            "message": "Network interface setup disabled, skipping...",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/GCEGuestAgent",
+          "receiveTimestamp": "2026-11-12T14:02:42.250711848Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "manager.go",
+            "function": "github.com/GoogleCloudPlatform/guest-agent/google_guest_agent/network/manager.SetupInterfaces",
+            "line": "189"
+          },
+          "timestamp": "2026-11-12T14:02:37.048838119Z"
+        },
+        {
+          "insertId": "1ubx4w5f7osy0m",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.0482Z",
+            "message": "Scheduler - added: [now 2026-11-12 14:02:37.048247054 +0000 UTC entry 1 next 2026-11-13 14:02:37 +0000 UTC]",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/GCEGuestAgent",
+          "receiveTimestamp": "2026-11-12T14:02:42.250711848Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "logger.go",
+            "function": "github.com/GoogleCloudPlatform/guest-agent/google_guest_agent/scheduler.(*cronLogger).Info",
+            "line": "24"
+          },
+          "timestamp": "2026-11-12T14:02:37.048302372Z"
+        },
+        {
+          "insertId": "1ubx4w5f7osy0l",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.0482Z",
+            "message": "Invoking job \"telemetryJobID\"",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/GCEGuestAgent",
+          "receiveTimestamp": "2026-11-12T14:02:42.250711848Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "scheduler.go",
+            "function": "github.com/GoogleCloudPlatform/guest-agent/google_guest_agent/scheduler.(*Scheduler).ScheduleJob.(*Scheduler).getFunc.func1",
+            "line": "72"
+          },
+          "timestamp": "2026-11-12T14:02:37.048290812Z"
+        },
+        {
+          "insertId": "1ubx4w5f7osy0k",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.0482Z",
+            "message": "Successfully scheduled job telemetryJobID",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/GCEGuestAgent",
+          "receiveTimestamp": "2026-11-12T14:02:42.250711848Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "scheduler.go",
+            "function": "github.com/GoogleCloudPlatform/guest-agent/google_guest_agent/scheduler.ScheduleJobs.func1",
+            "line": "179"
+          },
+          "timestamp": "2026-11-12T14:02:37.048241859Z"
+        },
+        {
+          "insertId": "1ubx4w5f7osy0j",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.0481Z",
+            "message": "Scheduling job \"telemetryJobID\" to run at 24.000000 hr interval",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/GCEGuestAgent",
+          "receiveTimestamp": "2026-11-12T14:02:42.250711848Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "scheduler.go",
+            "function": "github.com/GoogleCloudPlatform/guest-agent/google_guest_agent/scheduler.(*Scheduler).jobInit",
+            "line": "112"
+          },
+          "timestamp": "2026-11-12T14:02:37.048205002Z"
+        },
+        {
+          "insertId": "1ubx4w5f7osy0i",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.0476Z",
+            "message": "Scheduling job: telemetryJobID",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/GCEGuestAgent",
+          "receiveTimestamp": "2026-11-12T14:02:42.250711848Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "scheduler.go",
+            "function": "github.com/GoogleCloudPlatform/guest-agent/google_guest_agent/scheduler.(*Scheduler).ScheduleJob",
+            "line": "90"
+          },
+          "timestamp": "2026-11-12T14:02:37.047634341Z"
+        },
+        {
+          "insertId": "1ubx4w5f7osy0h",
+          "jsonPayload": {
+            "logging.googleapis.com/diagnostic": {
+              "instrumentation_source": [
+                {
+                  "name": "go",
+                  "version": "1.7.0"
+                }
+              ],
+              "runtime": "1.25.12"
+            }
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/diagnostic-log",
+          "receiveTimestamp": "2026-11-12T14:02:42.250711848Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "timestamp": "2026-11-12T14:02:37.046036022Z"
+        },
+        {
+          "insertId": "1ubx4w5f7osy0g",
+          "jsonPayload": {
+            "localTimestamp": "2026-11-12T14:02:37.0458Z",
+            "message": "Starting the scheduler to run jobs",
+            "omitempty": null
+          },
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "instance_name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3"
+          },
+          "logName": "projects/mshogi/logs/GCEGuestAgent",
+          "receiveTimestamp": "2026-11-12T14:02:42.250711848Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "INFO",
+          "sourceLocation": {
+            "file": "scheduler.go",
+            "function": "github.com/GoogleCloudPlatform/guest-agent/google_guest_agent/scheduler.(*Scheduler).start",
+            "line": "155"
+          },
+          "timestamp": "2026-11-12T14:02:37.045978634Z"
+        },
+        {
+          "insertId": "2",
+          "jsonPayload": {
+            "@type": "type.googleapis.com/cloud_integrity.IntegrityEvent",
+            "bootCounter": "1",
+            "lateBootReportEvent": {
+              "actualMeasurements": [
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_0",
+                  "value": "0KUbR/mg3+8bwW0xjQtbxWh/1gI="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_1",
+                  "value": "VMFl28iFWpDFAz29D/xwwA3i9v8="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_2",
+                  "value": "sqg7Dr8vg3Qpmlsr38MeqVWtcjY="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_3",
+                  "value": "sqg7Dr8vg3Qpmlsr38MeqVWtcjY="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_4",
+                  "value": "oGg0/1F3i7KY/ZRaVU7MkGgYRlE="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_5",
+                  "value": "nzxkb2QGwzb5dRx1bLcWNO4wvM4="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_6",
+                  "value": "sqg7Dr8vg3Qpmlsr38MeqVWtcjY="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_7",
+                  "value": "pAoIG5z/hRrdOXh2ymd7p6+HmrM="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_8",
+                  "value": "vTGbHbYcS1zVYwTomWKQEUgRffI="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_9",
+                  "value": "x2d0ANKDaqQXMYnA+k4jaSq8m4w="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_14",
+                  "value": "aM3TjXTF9hoNwb1HGNiPY9LYP3Q="
+                }
+              ],
+              "policyEvaluationPassed": true,
+              "policyMeasurements": [
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_0",
+                  "value": "0KUbR/mg3+8bwW0xjQtbxWh/1gI="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_4",
+                  "value": "oGg0/1F3i7KY/ZRaVU7MkGgYRlE="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_7",
+                  "value": "pAoIG5z/hRrdOXh2ymd7p6+HmrM="
+                }
+              ]
+            }
+          },
+          "logName": "projects/mshogi/logs/compute.googleapis.com%2Fshielded_vm_integrity",
+          "receiveTimestamp": "2026-11-12T14:02:35.502464472Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "NOTICE",
+          "timestamp": "2026-11-12T14:02:33.489993784Z"
+        },
+        {
+          "insertId": "1",
+          "jsonPayload": {
+            "@type": "type.googleapis.com/cloud_integrity.IntegrityEvent",
+            "bootCounter": "1",
+            "earlyBootReportEvent": {
+              "actualMeasurements": [
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_0",
+                  "value": "0KUbR/mg3+8bwW0xjQtbxWh/1gI="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_1",
+                  "value": "VMFl28iFWpDFAz29D/xwwA3i9v8="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_2",
+                  "value": "sqg7Dr8vg3Qpmlsr38MeqVWtcjY="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_3",
+                  "value": "sqg7Dr8vg3Qpmlsr38MeqVWtcjY="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_4",
+                  "value": "2ygjSLAYh43q6ay9JX2IYAFCj0c="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_5",
+                  "value": "dpsSjoqTbKHimTprxh8OFM4SuYk="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_6",
+                  "value": "sqg7Dr8vg3Qpmlsr38MeqVWtcjY="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_7",
+                  "value": "vK4mQdFax7iDhIKHtaElZrp9tGI="
+                }
+              ],
+              "policyEvaluationPassed": true,
+              "policyMeasurements": [
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_0",
+                  "value": "0KUbR/mg3+8bwW0xjQtbxWh/1gI="
+                },
+                {
+                  "hashAlgo": "SHA1",
+                  "pcrNum": "PCR_7",
+                  "value": "vK4mQdFax7iDhIKHtaElZrp9tGI="
+                }
+              ]
+            }
+          },
+          "logName": "projects/mshogi/logs/compute.googleapis.com%2Fshielded_vm_integrity",
+          "receiveTimestamp": "2026-11-12T14:02:31.055570155Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "NOTICE",
+          "timestamp": "2026-11-12T14:02:30.610718536Z"
+        },
+        {
+          "insertId": "gz926dd8pw4",
+          "labels": {
+            "compute.googleapis.com/root_trigger_id": "7294200f-ba32-4ecc-8f3e-c9ed7c1cc1e2"
+          },
+          "logName": "projects/mshogi/logs/cloudaudit.googleapis.com%2Factivity",
+          "operation": {
+            "id": "operation-1794492142740-66014c2b865f0-bfb60013-2ed68175",
+            "last": true,
+            "producer": "compute.googleapis.com"
+          },
+          "protoPayload": {
+            "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+            "authenticationInfo": {
+              "principalEmail": "216675633801@cloudservices.gserviceaccount.com",
+              "principalSubject": "serviceAccount:216675633801@cloudservices.gserviceaccount.com"
+            },
+            "methodName": "v1.compute.instances.insert",
+            "request": {
+              "@type": "type.googleapis.com/compute.instances.insert"
+            },
+            "requestMetadata": {
+              "callerSuppliedUserAgent": "GCE Managed Instance Group for Cloud Batch",
+              "destinationAttributes": {},
+              "requestAttributes": {}
+            },
+            "resourceName": "projects/216675633801/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "serviceName": "compute.googleapis.com",
+            "status": {}
+          },
+          "receiveTimestamp": "2026-11-12T14:02:30.814120147Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "NOTICE",
+          "timestamp": "2026-11-12T14:02:30.452511Z"
+        },
+        {
+          "insertId": "0",
+          "jsonPayload": {
+            "@type": "type.googleapis.com/cloud_integrity.IntegrityEvent",
+            "bootCounter": "1",
+            "startupEvent": {}
+          },
+          "logName": "projects/mshogi/logs/compute.googleapis.com%2Fshielded_vm_integrity",
+          "receiveTimestamp": "2026-11-12T14:02:31.055570155Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "NOTICE",
+          "timestamp": "2026-11-12T14:02:29.046234131Z"
+        },
+        {
+          "insertId": "-ycqfgadxglw",
+          "labels": {
+            "compute.googleapis.com/instance_group_manager/name": "msh161-policy-vali-db2ce255-0435-45300-group0-0",
+            "compute.googleapis.com/instance_group_manager/region": "us-central1",
+            "compute.googleapis.com/root_trigger_id": "7294200f-ba32-4ecc-8f3e-c9ed7c1cc1e2"
+          },
+          "logName": "projects/mshogi/logs/cloudaudit.googleapis.com%2Factivity",
+          "operation": {
+            "first": true,
+            "id": "operation-1794492142740-66014c2b865f0-bfb60013-2ed68175",
+            "producer": "compute.googleapis.com"
+          },
+          "protoPayload": {
+            "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+            "authenticationInfo": {
+              "principalEmail": "216675633801@cloudservices.gserviceaccount.com",
+              "principalSubject": "serviceAccount:216675633801@cloudservices.gserviceaccount.com"
+            },
+            "authorizationInfo": [
+              {
+                "granted": true,
+                "permission": "compute.instances.create",
+                "permissionType": "ADMIN_WRITE",
+                "resource": "projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                "resourceAttributes": {
+                  "name": "projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                  "service": "compute",
+                  "type": "compute.instances"
+                }
+              },
+              {
+                "granted": true,
+                "permission": "compute.disks.create",
+                "permissionType": "ADMIN_WRITE",
+                "resource": "projects/mshogi/zones/us-central1-a/disks/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                "resourceAttributes": {
+                  "name": "projects/mshogi/zones/us-central1-a/disks/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                  "service": "compute",
+                  "type": "compute.disks"
+                }
+              },
+              {
+                "granted": true,
+                "permission": "compute.disks.setLabels",
+                "permissionType": "ADMIN_WRITE",
+                "resource": "projects/mshogi/zones/us-central1-a/disks/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                "resourceAttributes": {
+                  "name": "projects/mshogi/zones/us-central1-a/disks/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                  "service": "compute",
+                  "type": "compute.disks"
+                }
+              },
+              {
+                "granted": true,
+                "permission": "compute.subnetworks.use",
+                "permissionType": "ADMIN_WRITE",
+                "resource": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+                "resourceAttributes": {
+                  "name": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+                  "service": "compute",
+                  "type": "compute.subnetworks"
+                }
+              },
+              {
+                "granted": true,
+                "permission": "compute.subnetworks.useExternalIp",
+                "permissionType": "ADMIN_WRITE",
+                "resource": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+                "resourceAttributes": {
+                  "name": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+                  "service": "compute",
+                  "type": "compute.subnetworks"
+                }
+              },
+              {
+                "granted": true,
+                "permission": "compute.instances.setMetadata",
+                "permissionType": "ADMIN_WRITE",
+                "resource": "projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                "resourceAttributes": {
+                  "name": "projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                  "service": "compute",
+                  "type": "compute.instances"
+                }
+              },
+              {
+                "granted": true,
+                "permission": "compute.instances.setLabels",
+                "permissionType": "ADMIN_WRITE",
+                "resource": "projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                "resourceAttributes": {
+                  "name": "projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                  "service": "compute",
+                  "type": "compute.instances"
+                }
+              },
+              {
+                "granted": true,
+                "permission": "compute.instances.setServiceAccount",
+                "permissionType": "ADMIN_WRITE",
+                "resource": "projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                "resourceAttributes": {
+                  "name": "projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+                  "service": "compute",
+                  "type": "compute.instances"
+                }
+              }
+            ],
+            "metadata": {
+              "usedResources": {
+                "attachedDisks": [
+                  {
+                    "isBootDisk": true,
+                    "sourceImage": "https://www.googleapis.com/compute/v1/projects/898310590178/global/images/batch-cos-stable-official-20261025-00-p00",
+                    "sourceImageId": "3962480484638700281"
+                  }
+                ]
+              }
+            },
+            "methodName": "v1.compute.instances.insert",
+            "request": {
+              "@type": "type.googleapis.com/compute.instances.insert",
+              "disks": [
+                {
+                  "autoDelete": true,
+                  "boot": true,
+                  "deviceName": "boot",
+                  "initializeParams": {
+                    "diskSizeGb": "30",
+                    "diskType": "projects/216675633801/zones/us-central1-a/diskTypes/pd-balanced",
+                    "labels": [
+                      {
+                        "key": "batch-job-id",
+                        "value": "msh161-policy-validation-v1"
+                      },
+                      {
+                        "key": "batch-job-uid",
+                        "value": "msh161-policy-vali-db2ce255-0435-45300"
+                      },
+                      {
+                        "key": "batch-node",
+                        "value": ""
+                      },
+                      {
+                        "key": "goog-batch-node",
+                        "value": ""
+                      }
+                    ],
+                    "onUpdateAction": "RECREATE_DISK_IF_SOURCE_CHANGED",
+                    "sourceImage": "projects/batch-custom-image/global/images/batch-cos-stable-official-20261025-00-p00"
+                  },
+                  "interface": "SCSI",
+                  "mode": "READ_WRITE",
+                  "type": "PERSISTENT"
+                }
+              ],
+              "labels": [
+                {
+                  "key": "batch-job-id",
+                  "value": "msh161-policy-validation-v1"
+                },
+                {
+                  "key": "batch-job-uid",
+                  "value": "msh161-policy-vali-db2ce255-0435-45300"
+                },
+                {
+                  "key": "batch-node",
+                  "value": ""
+                },
+                {
+                  "key": "goog-batch-node",
+                  "value": ""
+                }
+              ],
+              "machineType": "projects/216675633801/zones/us-central1-a/machineTypes/c3-standard-4",
+              "name": "msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+              "networkInterfaces": [
+                {
+                  "accessConfigs": [
+                    {
+                      "networkTier": "PREMIUM",
+                      "type": "ONE_TO_ONE_NAT"
+                    }
+                  ],
+                  "name": "nic0",
+                  "network": "https://www.googleapis.com/compute/v1/projects/mshogi/global/networks/mshogi-batch",
+                  "subnetwork": "https://www.googleapis.com/compute/v1/projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+                }
+              ],
+              "requestId": "6ed6b062-eba5-335a-b4e8-a88398c8898c",
+              "scheduling": {
+                "automaticRestart": false,
+                "onHostMaintenance": "MIGRATE",
+                "preemptible": false,
+                "provisioningModel": "STANDARD"
+              },
+              "serviceAccounts": [
+                {
+                  "email": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+                  "scopes": [
+                    "https://www.googleapis.com/auth/cloud-platform"
+                  ]
+                }
+              ]
+            },
+            "requestMetadata": {
+              "callerSuppliedUserAgent": "GCE Managed Instance Group for Cloud Batch",
+              "destinationAttributes": {},
+              "requestAttributes": {
+                "auth": {},
+                "time": "2026-11-12T14:02:23.424463Z"
+              }
+            },
+            "resourceLocation": {
+              "currentLocations": [
+                "us-central1-a"
+              ]
+            },
+            "resourceName": "projects/216675633801/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+            "response": {
+              "@type": "type.googleapis.com/operation",
+              "clientOperationId": "6ed6b062-eba5-335a-b4e8-a88398c8898c",
+              "id": "906333442165733376",
+              "insertTime": "2026-11-12T06:02:23.297-08:00",
+              "name": "operation-1794492142740-66014c2b865f0-bfb60013-2ed68175",
+              "operationType": "insert",
+              "progress": "0",
+              "selfLink": "https://www.googleapis.com/compute/v1/projects/mshogi/zones/us-central1-a/operations/operation-1794492142740-66014c2b865f0-bfb60013-2ed68175",
+              "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/mshogi/zones/us-central1-a/operations/906333442165733376",
+              "startTime": "2026-11-12T06:02:23.361-08:00",
+              "status": "RUNNING",
+              "targetId": "4113885159929444352",
+              "targetLink": "https://www.googleapis.com/compute/v1/projects/mshogi/zones/us-central1-a/instances/msh161-policy-vali-db2ce255-0435-45300-group0-0-bcp3",
+              "user": "216675633801@cloudservices.gserviceaccount.com",
+              "zone": "https://www.googleapis.com/compute/v1/projects/mshogi/zones/us-central1-a"
+            },
+            "serviceName": "compute.googleapis.com",
+            "status": {}
+          },
+          "receiveTimestamp": "2026-11-12T14:02:23.698339465Z",
+          "resource": {
+            "labels": {
+              "instance_id": "4113885159929444352",
+              "project_id": "mshogi",
+              "zone": "us-central1-a"
+            },
+            "type": "gce_instance"
+          },
+          "severity": "NOTICE",
+          "timestamp": "2026-11-12T14:02:22.600410Z"
+        }
+      ],
+      "stderr": ""
+    },
+    "local_processes": {
+      "command": [
+        "ps",
+        "-p",
+        "96307,96309",
+        "-o",
+        "pid=,ppid=,pgid=,command="
+      ],
+      "returncode": 1,
+      "data": "",
+      "stderr": ""
+    }
+  },
+  "schema": "msh161-policy-validation-failure-audit-v1",
+  "integrity_checks": {
+    "retrieved_hashes": true,
+    "artifact_manifest_hashes": true,
+    "upload_manifest_hashes": true,
+    "build_identity": true,
+    "helper_identity": true,
+    "image_identity": true,
+    "job_uid": true,
+    "job_resource": true,
+    "native_embedded_revision_clean": true,
+    "report_inner_hash": true,
+    "candidate_opponent_binary_hashes": true,
+    "explicit_only_config": true
+  },
+  "integrity_pass": true,
+  "validation_pass": false,
+  "submission_uid": "msh161-policy-vali-db2ce255-0435-45300",
+  "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f",
+  "native_source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+  "worker_source": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+  "failed_games": [
+    {
+      "pairing": 0,
+      "stop": "failure",
+      "failure": {
+        "kind": "invalid_move",
+        "engine": 1,
+        "phase": "bestmove",
+        "at_ns": 23861687,
+        "watchdog_ms": null,
+        "deadline_ns": null,
+        "detail": "raw \"bestmove 0000\": expected lowercase coordinate action, e.g. e2e4 or e7e8q",
+        "exit": null,
+        "last_output": "bestmove 0000"
+      }
+    },
+    {
+      "pairing": 1,
+      "stop": "failure",
+      "failure": {
+        "kind": "missing_response",
+        "engine": 1,
+        "phase": "bestmove",
+        "at_ns": 5027124179,
+        "watchdog_ms": null,
+        "deadline_ns": null,
+        "detail": "EOF before required bestmove",
+        "exit": {
+          "code": 0,
+          "signal": null,
+          "success": true,
+          "description": "exit status: 0"
+        },
+        "last_output": "info string servererror illegal move h8g7 from 7k/8/8/8/8/8/8/KR6 b - - 100 1"
+      }
+    }
+  ],
+  "resources": {
+    "task_running_seconds": 9.282370026,
+    "vm_insert_request_to_delete_completion_seconds": 63.461652,
+    "vm_hours": 0.01762823666666667,
+    "recorded_vm_hourly_usd": 0.201608,
+    "compute_estimate_usd": 0.0035539935378933337,
+    "actual_billing": "Unavailable; estimate excludes disk/network/storage and local build resources",
+    "validation_helper_wall_seconds": 5.102551624,
+    "validation_helper_child_cpu_seconds": 5.10351,
+    "validation_controller_wall_seconds": 93.7628870010376,
+    "image_build_wall_seconds": 22.93853783607483,
+    "outer_deployment_wall_seconds": 116.93170309066772,
+    "accounting": "Nested timing intervals are not additive. One failed validation task; zero completed study games."
+  },
+  "cleanup": {
+    "native_runner_and_replay_groups_settled": true,
+    "wrapper_group_settled": true,
+    "recorded_local_pids_absent": true,
+    "matching_cloud_instances": 0,
+    "matching_cloud_disks": 0,
+    "vm_delete_completed_at": "2026-11-12T14:03:26.062062Z",
+    "notification_failure_delivered": true
+  },
+  "evidence_hashes": {
+    "validation-state.json": "25b26ac2aa0e491463b89300cbace111fa7182352b060a0dad351e471fab8b63",
+    "validation-submission.json": "da330ac028c1a21969324bea64a92fd57a893e36a0354c656a994302a21c70ef",
+    "validation-cloud-failure.json": "31ccd56517d30ea58e81c08b1a2ebbd74f628d763944a21209f78a5bdac2ce96",
+    "deployment-notification.json": "35bd6237c3d531195faba3e8c20d5d74c4e857bc09e82151135f5a0e272ec0f9",
+    "package-receipt.json": "4e11f6f27e24ef72405d9deb4d91f17a2ae3d5fdc4020735cff0fa712c5cded5",
+    "validation-results/report.json": "aa66ea79a862ae7b5d9344f1bbbc258b83865ab0a4c2e5d58a408b925fc2f452",
+    "validation-results/receipt.json": "fd244d179500d363ef7424353ed9e21ba7249b89577e20fd656f402155711d80"
+  }
+}

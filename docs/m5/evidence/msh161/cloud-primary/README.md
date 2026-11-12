@@ -6,6 +6,18 @@ MSH-162 (Parallel Experiment Runner) at `bb5e698e`. All64 local integration test
 passed. Independent runtime/scientific reviews are in `../migration/`; the actual
 manifest review is `manifest-admission.json`. No new pilot was needed.
 
+## Current blocking compatibility finding
+
+The corrected image was published, but the short actual cloud validation FAILED.
+Unchanged Oxidation ends internally at50moves/threefold and cannot continue under
+the requested controller policy. mShogi returned a searched legal move; native
+replay passed. See `policy-transition/oxidation-draw-policy-review.md` and the
+preserved validation report. No retry or batch03 is running. John has been asked
+to select a narrow reference draw-policy patch or a compatible replacement.
+Await this material reference decision; do not activate staged manifests that
+still bind the incompatible reference. This gate supersedes older continuation
+instructions below. All40completed games and the failed validation are preserved.
+
 ## Current owner-authorized policy transition
 
 The12November draw-policy direction supersedes the AutoClaim freeze for future

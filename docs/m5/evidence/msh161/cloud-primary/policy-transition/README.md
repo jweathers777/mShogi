@@ -45,26 +45,35 @@ validation and final manifest/image admission are recorded. Long build and cloud
 operations use the existing exit notifier; no periodic watcher or guessed wake.
 
 
-Current execution: native build and wrapper succeeded; reviewed worker source is
-`d9271a294cb92e1e87d366d49dfd409bbfd662b6`. `deployment-launch.json` records the
-single running image-build/push then cloud-validation chain (wrapper PID96307).
-It queues this chat on success or failure. Do not start another build, validation,
-completion consumer, or batch03 while it runs. An older native-build completion
-message is already reconciled and must not restart this chain.
+Current gate: **short cloud validation failed; batch03 is not admitted.** The
+image build/push succeeded (`image-build-state.json`, digest544b12cb…3215f).
+The one validation task failed with preserved reports; runner and native replay
+returned0 with exact clean native revision, but both games stopped on Oxidation
+protocol failures. At halfmove100 Oxidation returned `bestmove 0000`; after mShogi
+searched and played legal `h8g7`, Oxidation rejected that continuation. This is
+not a mShogi arbitrary-fallback failure or a successful two-engine validation.
 
-On deployment exit, inspect `image-build-state.json`, `validation-state.json`,
-`deployment-notification.json`, exact saved submission/cloud completion and bounded
-validation artifacts. Check settled process state and cloud cleanup separately;
-retain VM allocation failures and actual resource accounting. If image construction
-fails before validation, the validation state may not exist: inspect image state
-and wrapper stderr instead. Preserve all partial artifacts before a deliberate retry.
+`oxidation-draw-policy-review.md` independently traces the frozen reference's
+unconditional halfmove100 and threefold terminal handling and lack of runtime
+policy options. Do not falsify the supplied halfmove clock/history or silently
+count a reference refusal as a completed game. No retry or batch03 is authorized
+by a stale success/build callback. The original image,40games,12claimdraws,
+staged manifests and failed validation remain preserved.
 
-After success: verify staged batch03–10 identities against `amendment.json`, the
-new registry digest, package receipt and original frozen schedule/spec hashes.
-Preserve original unrun manifest bytes from staging/originals. Activate the amended
-manifests in the existing primary locations only after this admission, record
-new/old mappings and source/policy stratum, and submit batch03 under the same
-8-worker C3 configuration. Use the existing wait/retrieve helper with exit notifier.
-No new approval is needed. Keep the complete200game study and review gates; no
-other engine engineering is authorized. Cleanup the temporary native source clone
-once no build/process needs it, preserving reusable binaries/cache and receipts.
+The coordinator has requested John's choice: a narrowly scoped, separately
+identified Oxidation draw-policy compatibility patch (recommended), or selection
+and qualification of a compatible replacement. This materially changes the fixed
+external reference, beyond the completed mShogi correction. Await that choice
+before dependent execution. No engine/build/cloud retry is currently running;
+no timer or periodic watcher is scheduled. Runtime/cleanup reconciliation passed in
+`validation-failure-audit.md/.json`: exact artifacts/provenance verified, task
+FAILED, native/replay and local wrapper groups settled, cloud VM deleted and no
+matching VM/disk remaining. Estimated compute was US$0.003554 (not a bill). Preserve failed task status,
+wrapper failure with successful notification, and actual resource use separately.
+
+After the owner selects the reference treatment, bind its changed source/binary
+and corresponding scientific amendment; the present staged manifests assume the
+unchanged reference and MUST NOT be activated. Retain their provenance. Validate
+only the corrected compatibility path with a short bounded actual runner match,
+then admit the remaining160original opening games and continue batch03 without
+additional unrelated engineering. The existing full200-game coverage is retained.

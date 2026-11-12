@@ -1,0 +1,38 @@
+{
+  "started_utc": "2026-11-12T14:02:47.903854+00:00",
+  "status": "failed",
+  "smoke_pass": false,
+  "helper_sha256": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+  "process_budget_seconds": 180,
+  "build_sha256": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+  "runner": {
+    "command": [
+      "/opt/engines/mshogi-match",
+      "experiment-external",
+      "uci",
+      "/tmp/msh161-policy-validation/config.json",
+      "/tmp/msh161-policy-validation/report.json"
+    ],
+    "started_utc": "2026-11-12T14:02:47.925759+00:00",
+    "pid": 7,
+    "returncode": 0,
+    "process_group_settled": true,
+    "ended_utc": "2026-11-12T14:02:52.999273+00:00"
+  },
+  "replay": {
+    "command": [
+      "/opt/engines/mshogi-match",
+      "experiment-external-replay",
+      "/tmp/msh161-policy-validation/report.json"
+    ],
+    "started_utc": "2026-11-12T14:02:53.000930+00:00",
+    "pid": 30,
+    "returncode": 0,
+    "process_group_settled": true,
+    "ended_utc": "2026-11-12T14:02:53.004015+00:00"
+  },
+  "error": "AssertionError({'healthy': False, 'complete': False, 'summary': {'opening_id': 'kr-k-optional-fifty', 'games': 2, 'wins': [0, 0], 'draws': 0, 'unscored': 2, 'failures': 2}, 'stops': ['failure', 'failure'], 'searched_plies': 2, 'response_seconds_by_engine': [[5.001396993], [7.9578e-05]], 'active_response_seconds': 5.001476571})",
+  "ended_utc": "2026-11-12T14:02:53.006389+00:00",
+  "wall_seconds": 5.102551624,
+  "cpu_seconds": 5.10351
+}

@@ -1,0 +1,2916 @@
+{
+  "automatic_confirmations": true,
+  "cohort": "gcp-primary",
+  "experiment": "msh161-primary-v2-batch-04",
+  "full_study_requires_coordinator_review": true,
+  "jobs": [
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "134a3cd0126fd02fcb0d7a197fca05b5bed9dce4a7beae7e5346950b814326e3",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-00",
+        "opening": {
+          "fen": null,
+          "id": "master-c198f2ebb267af77",
+          "moves": [
+            "e2e4",
+            "c7c5",
+            "b1c3",
+            "b8c6",
+            "g1e2",
+            "g8f6",
+            "g2g3",
+            "g7g6",
+            "f1g2",
+            "f8g7",
+            "d2d3",
+            "d7d6",
+            "e1g1",
+            "a8b8",
+            "h2h3",
+            "b7b5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "4ae8a9e23e37ecdcf9a993b8b82c4f277e0519be943b0b65f8c14bedd8b70896",
+      "inputs": {
+        "report": {
+          "job": "134a3cd0126fd02fcb0d7a197fca05b5bed9dce4a7beae7e5346950b814326e3",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-00",
+        "opening": {
+          "fen": null,
+          "id": "master-c198f2ebb267af77",
+          "moves": [
+            "e2e4",
+            "c7c5",
+            "b1c3",
+            "b8c6",
+            "g1e2",
+            "g8f6",
+            "g2g3",
+            "g7g6",
+            "f1g2",
+            "f8g7",
+            "d2d3",
+            "d7d6",
+            "e1g1",
+            "a8b8",
+            "h2h3",
+            "b7b5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "1b20a5f6cc9bbca25d9aa0319c2d1573d462017347ff3a2446c310c0ecc57924",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-01",
+        "opening": {
+          "fen": null,
+          "id": "master-68b3c08140484de9",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c2c4",
+            "g7g6",
+            "b1c3",
+            "f8g7",
+            "e2e4",
+            "d7d6",
+            "f1e2",
+            "b8d7",
+            "c1e3",
+            "e7e5",
+            "d4d5",
+            "d7c5",
+            "d1c2",
+            "a7a5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "73b2e7bd9507b7192d12102b954a17c76eab6d4a4e02b5d11ae6aae5e79da9d6",
+      "inputs": {
+        "report": {
+          "job": "1b20a5f6cc9bbca25d9aa0319c2d1573d462017347ff3a2446c310c0ecc57924",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-01",
+        "opening": {
+          "fen": null,
+          "id": "master-68b3c08140484de9",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c2c4",
+            "g7g6",
+            "b1c3",
+            "f8g7",
+            "e2e4",
+            "d7d6",
+            "f1e2",
+            "b8d7",
+            "c1e3",
+            "e7e5",
+            "d4d5",
+            "d7c5",
+            "d1c2",
+            "a7a5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "528837740164f785b18aec611d15936d70820bbf1cb4eb48eccd32ffd9e83a31",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-02",
+        "opening": {
+          "fen": null,
+          "id": "master-67bf6c6e6e7b0c65",
+          "moves": [
+            "e2e4",
+            "e7e6",
+            "d2d4",
+            "d7d5",
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e4d5",
+            "e6d5",
+            "f1b5",
+            "f8b4",
+            "e1g1",
+            "e8g8",
+            "c1g5",
+            "b4c3"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "7a11eaf7f0d63b14b636574fb60c3606018b12382845db4bc2fe0b256f23ecb4",
+      "inputs": {
+        "report": {
+          "job": "528837740164f785b18aec611d15936d70820bbf1cb4eb48eccd32ffd9e83a31",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-02",
+        "opening": {
+          "fen": null,
+          "id": "master-67bf6c6e6e7b0c65",
+          "moves": [
+            "e2e4",
+            "e7e6",
+            "d2d4",
+            "d7d5",
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e4d5",
+            "e6d5",
+            "f1b5",
+            "f8b4",
+            "e1g1",
+            "e8g8",
+            "c1g5",
+            "b4c3"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "d0a36c79b2542f5217b13f9b654a36c6093bb67f06ef78295a16a80daba98617",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-03",
+        "opening": {
+          "fen": null,
+          "id": "master-2532d03fa7232fad",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c2c4",
+            "e7e6",
+            "g2g3",
+            "d7d5",
+            "f1g2",
+            "d5c4",
+            "g1f3",
+            "c8d7",
+            "d1c2",
+            "c7c5",
+            "c2c4",
+            "d7c6",
+            "d4c5",
+            "b8d7"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "47c1cc8ad773b81887efb82114ff9a69989803f3dbc621ae5d0a4eee0e2d3312",
+      "inputs": {
+        "report": {
+          "job": "d0a36c79b2542f5217b13f9b654a36c6093bb67f06ef78295a16a80daba98617",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-03",
+        "opening": {
+          "fen": null,
+          "id": "master-2532d03fa7232fad",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c2c4",
+            "e7e6",
+            "g2g3",
+            "d7d5",
+            "f1g2",
+            "d5c4",
+            "g1f3",
+            "c8d7",
+            "d1c2",
+            "c7c5",
+            "c2c4",
+            "d7c6",
+            "d4c5",
+            "b8d7"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "322ede0360c570bd2c7785df35220f5566d9d91df1ac3ede606b6f91965a620c",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-04",
+        "opening": {
+          "fen": null,
+          "id": "master-f16be117ae340691",
+          "moves": [
+            "e2e4",
+            "c7c5",
+            "d2d3",
+            "b8c6",
+            "g2g3",
+            "d7d5",
+            "b1d2",
+            "g8f6",
+            "f1g2",
+            "e7e5",
+            "g1f3",
+            "f8e7",
+            "e1g1",
+            "e8g8",
+            "c2c3",
+            "d5d4"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "3079fd11da0083d6b8480e61f2853dc4a723525b7a4a9fcc11330b9fc2fa9779",
+      "inputs": {
+        "report": {
+          "job": "322ede0360c570bd2c7785df35220f5566d9d91df1ac3ede606b6f91965a620c",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-04",
+        "opening": {
+          "fen": null,
+          "id": "master-f16be117ae340691",
+          "moves": [
+            "e2e4",
+            "c7c5",
+            "d2d3",
+            "b8c6",
+            "g2g3",
+            "d7d5",
+            "b1d2",
+            "g8f6",
+            "f1g2",
+            "e7e5",
+            "g1f3",
+            "f8e7",
+            "e1g1",
+            "e8g8",
+            "c2c3",
+            "d5d4"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "209598ed7a5d36ea4252f5d5a703569b25094f78b2c557c28c3655d94256c212",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-05",
+        "opening": {
+          "fen": null,
+          "id": "master-8eb1cb5ca1f60632",
+          "moves": [
+            "e2e4",
+            "e7e5",
+            "g1f3",
+            "g8f6",
+            "d2d4",
+            "f6e4",
+            "f1d3",
+            "d7d5",
+            "f3e5",
+            "b8d7",
+            "e5d7",
+            "c8d7",
+            "e1g1",
+            "d8h4",
+            "c2c4",
+            "e8c8"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "d9dddc7c6de9133d51541d129271b1d1bd863255560ba542487360886e8de96b",
+      "inputs": {
+        "report": {
+          "job": "209598ed7a5d36ea4252f5d5a703569b25094f78b2c557c28c3655d94256c212",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-05",
+        "opening": {
+          "fen": null,
+          "id": "master-8eb1cb5ca1f60632",
+          "moves": [
+            "e2e4",
+            "e7e5",
+            "g1f3",
+            "g8f6",
+            "d2d4",
+            "f6e4",
+            "f1d3",
+            "d7d5",
+            "f3e5",
+            "b8d7",
+            "e5d7",
+            "c8d7",
+            "e1g1",
+            "d8h4",
+            "c2c4",
+            "e8c8"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "dfa0cf1f53a68ab0a96ddaf641d312f0b6c4dab59a366b58f0f065b41ebeb294",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-06",
+        "opening": {
+          "fen": null,
+          "id": "master-96ee4d6a7022fce6",
+          "moves": [
+            "e2e4",
+            "c7c5",
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6",
+            "d2d4",
+            "c5d4",
+            "f3d4",
+            "d8c7",
+            "c1e3",
+            "a7a6",
+            "d1d2",
+            "g8f6",
+            "e1c1",
+            "f8e7"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "fbc7a0cfa4b9b145da8ce206ab2be6a36c4b00ad5e7010711f9a042e4e30d2d3",
+      "inputs": {
+        "report": {
+          "job": "dfa0cf1f53a68ab0a96ddaf641d312f0b6c4dab59a366b58f0f065b41ebeb294",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-06",
+        "opening": {
+          "fen": null,
+          "id": "master-96ee4d6a7022fce6",
+          "moves": [
+            "e2e4",
+            "c7c5",
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6",
+            "d2d4",
+            "c5d4",
+            "f3d4",
+            "d8c7",
+            "c1e3",
+            "a7a6",
+            "d1d2",
+            "g8f6",
+            "e1c1",
+            "f8e7"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "4c22ac8817ad7300e898f633637bc1f2d04a7a2c4fdb47de2b43b2f0df854743",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-07",
+        "opening": {
+          "fen": null,
+          "id": "master-59ba420811ab7cac",
+          "moves": [
+            "d2d4",
+            "d7d5",
+            "c1f4",
+            "e7e6",
+            "e2e3",
+            "g8f6",
+            "g1f3",
+            "f8d6",
+            "b1d2",
+            "d6f4",
+            "e3f4",
+            "c7c5",
+            "d4c5",
+            "d8c7",
+            "g2g3",
+            "c7c5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "9ccccdca106abd8ec981874a4828cdd2947241552d4202155bfb2a4f1b3718f5",
+      "inputs": {
+        "report": {
+          "job": "4c22ac8817ad7300e898f633637bc1f2d04a7a2c4fdb47de2b43b2f0df854743",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-07",
+        "opening": {
+          "fen": null,
+          "id": "master-59ba420811ab7cac",
+          "moves": [
+            "d2d4",
+            "d7d5",
+            "c1f4",
+            "e7e6",
+            "e2e3",
+            "g8f6",
+            "g1f3",
+            "f8d6",
+            "b1d2",
+            "d6f4",
+            "e3f4",
+            "c7c5",
+            "d4c5",
+            "d8c7",
+            "g2g3",
+            "c7c5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "fab0a2878acf317e9e16fcfb9398f0e3045c62b228980f5777b6b79a2e87c366",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-08",
+        "opening": {
+          "fen": null,
+          "id": "master-b0f5de26afd15880",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c2c4",
+            "e7e6",
+            "g1f3",
+            "d7d5",
+            "g2g3",
+            "d5c4",
+            "f1g2",
+            "f8b4",
+            "c1d2",
+            "a7a5",
+            "e1g1",
+            "e8g8",
+            "d1c2",
+            "b4d2"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "f4ac6fa8cee7ee9eb7efe4ff5d351d78cf19527e08d3d5902c458e29908c7dc4",
+      "inputs": {
+        "report": {
+          "job": "fab0a2878acf317e9e16fcfb9398f0e3045c62b228980f5777b6b79a2e87c366",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-08",
+        "opening": {
+          "fen": null,
+          "id": "master-b0f5de26afd15880",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c2c4",
+            "e7e6",
+            "g1f3",
+            "d7d5",
+            "g2g3",
+            "d5c4",
+            "f1g2",
+            "f8b4",
+            "c1d2",
+            "a7a5",
+            "e1g1",
+            "e8g8",
+            "d1c2",
+            "b4d2"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "07f5fd81d8c20773caa57b6a9a2bc6125822aa21e517f7db3db769d678aaee27",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-unaided",
+        "opening": {
+          "fen": null,
+          "id": "unaided-main-04",
+          "moves": []
+        },
+        "opponent": "oxidation060",
+        "phase": "main-unaided"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "d533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3",
+            "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+        "system": "Linux"
+      },
+      "claim_policy": "explicit_only",
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v2-batch-04",
+      "id": "70134268301da52a04636c42f466df8bca95e50fcce63909d51e2eded730cbf3",
+      "inputs": {
+        "report": {
+          "job": "07f5fd81d8c20773caa57b6a9a2bc6125822aa21e517f7db3db769d678aaee27",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_linux.py": "b89fb923fad20ec8bae74251e196e6306dd9cf7dffa4fafdc88ba24f7e27f8cc",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py": "5ece0655a90eb7b1e1044d4eab2c3f6e1a589f21fcb7584ec6f4f693a72ad82e",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/linux-build.json": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/prepare_corrected_cohort.py": "d9adb71f5f782791a34a6e73e4ec7c5dbf13b74f1389e7fa156bbace8cac027c",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py": "ee73d15b88d646e0ed3acbc1ff04f45f9b67c7182153b18798b7cd612cbfbdea",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_prepare_corrected_cohort.py": "347f8598e622b40772c57820608b4c79a02abf13e3973cb72745f2cbd8a3743d",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/test_validate_policy_match.py": "7e49feb79e827c071615ac37d027e28118054889c4436c872b5497f2426102ef",
+        "docs/m5/evidence/msh161/cloud-primary/policy-transition/validate_policy_match.py": "a888ab4a3524ba9b0666c7553e7c688ec3a77dc37a8887c60e8f039581f79ca2",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+        "tools/experiments/cli.py": "8bb004983b9d2a990b1ebdb67b3c656a4ed249f5cd2523dfd7ffab5b736bbde1",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "f973fe25231f6254b4216901fabb7409f02e9095d13913ed3e170265fad3bdc3",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66",
+        "tools/experiments/quick_status.py": "c82247077202a10bc8149a3c4f0530466afe6d6b803a54324137f62a8bf7d7d0"
+      },
+      "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "spec": {
+        "id": "main-04-unaided",
+        "opening": {
+          "fen": null,
+          "id": "unaided-main-04",
+          "moves": []
+        },
+        "opponent": "oxidation060",
+        "phase": "main-unaided"
+      },
+      "study_amendment": {
+        "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+        "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    }
+  ],
+  "pilot_pairs": null,
+  "pipelines": [
+    "134a3cd0126fd02fcb0d7a197fca05b5bed9dce4a7beae7e5346950b814326e3",
+    "1b20a5f6cc9bbca25d9aa0319c2d1573d462017347ff3a2446c310c0ecc57924",
+    "528837740164f785b18aec611d15936d70820bbf1cb4eb48eccd32ffd9e83a31",
+    "d0a36c79b2542f5217b13f9b654a36c6093bb67f06ef78295a16a80daba98617",
+    "322ede0360c570bd2c7785df35220f5566d9d91df1ac3ede606b6f91965a620c",
+    "209598ed7a5d36ea4252f5d5a703569b25094f78b2c557c28c3655d94256c212",
+    "dfa0cf1f53a68ab0a96ddaf641d312f0b6c4dab59a366b58f0f065b41ebeb294",
+    "4c22ac8817ad7300e898f633637bc1f2d04a7a2c4fdb47de2b43b2f0df854743",
+    "fab0a2878acf317e9e16fcfb9398f0e3045c62b228980f5777b6b79a2e87c366",
+    "07f5fd81d8c20773caa57b6a9a2bc6125822aa21e517f7db3db769d678aaee27"
+  ],
+  "policy_transition": {
+    "claim_policy": "explicit_only",
+    "package_only": false,
+    "predecessor_experiment": "msh161-primary-v1-batch-04",
+    "study_amendment": {
+      "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+      "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+    }
+  },
+  "primary_batch": {
+    "cohort": "msh161-primary-v2",
+    "full_cohort_games": 200,
+    "full_cohort_pairs": 100,
+    "index": 4,
+    "original_schedule_sha256": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+    "reason": "Ownerapprovedfullstudy;20gamereviewcadence;notpilotselection",
+    "total_batches": 10
+  },
+  "schema": 1
+}

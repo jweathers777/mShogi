@@ -1,0 +1,9 @@
+{
+  "image_summary": {
+    "digest": "sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f",
+    "fully_qualified_digest": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f",
+    "registry": "us-central1-docker.pkg.dev",
+    "repository": "mshogi-experiments",
+    "slsa_build_level": "unknown"
+  }
+}

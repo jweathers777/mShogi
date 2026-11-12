@@ -1,0 +1,60 @@
+{
+  "status": "failure",
+  "started_epoch": 1794492103.062572,
+  "job_id": "msh161-policy-validation-v1",
+  "store_prefix": "policy-transition-validation-v1",
+  "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f",
+  "submission_intent_epoch": 1794492104.72839,
+  "error": "BatchJobFailed('Batch job ended unsuccessfully (FAILED): projects/mshogi/locations/us-central1/jobs/msh161-policy-validation-v1')",
+  "retrieved_objects": [
+    {
+      "key": "policy-transition-validation-v1/artifact-manifest.json",
+      "sha256": "64753900fbf97b10ce3bb6b4dc02213120150e6794fb8a57891bc2b53587ea9e"
+    },
+    {
+      "key": "policy-transition-validation-v1/build-input.json",
+      "sha256": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef"
+    },
+    {
+      "key": "policy-transition-validation-v1/config.json",
+      "sha256": "0c3c51032f79b5d2e5eb7e1ba64fef08b5704971a0e79c28d5f0482055089936"
+    },
+    {
+      "key": "policy-transition-validation-v1/receipt.json",
+      "sha256": "fd244d179500d363ef7424353ed9e21ba7249b89577e20fd656f402155711d80"
+    },
+    {
+      "key": "policy-transition-validation-v1/replay.process.json",
+      "sha256": "090e63741f0f7fa3ec8b1456203d5f65f649cd16ab46aed541bd7a33a77181c9"
+    },
+    {
+      "key": "policy-transition-validation-v1/replay.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "key": "policy-transition-validation-v1/replay.stdout.log",
+      "sha256": "c1fb059fd244fcbae6a552a11a08f34662005fccf905502f4caaab25c03fc98a"
+    },
+    {
+      "key": "policy-transition-validation-v1/report.json",
+      "sha256": "aa66ea79a862ae7b5d9344f1bbbc258b83865ab0a4c2e5d58a408b925fc2f452"
+    },
+    {
+      "key": "policy-transition-validation-v1/runner.process.json",
+      "sha256": "faf322ddcaf5c0623a9bfab4cb9b47b3f44e7f93e2a8785e5a99b0848af652c9"
+    },
+    {
+      "key": "policy-transition-validation-v1/runner.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "key": "policy-transition-validation-v1/runner.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "key": "policy-transition-validation-v1/upload.json",
+      "sha256": "8eb484d17d9c89bd5cc3caa1ed09d3aa8cd38f22fb7270c738b252f30356f5e6"
+    }
+  ],
+  "finished_epoch": 1794492196.825459
+}

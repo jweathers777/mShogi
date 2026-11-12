@@ -1,0 +1,32 @@
+{
+  "status": "success",
+  "started_epoch": 1794492080.063956,
+  "worker_source": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+  "commands": [
+    [
+      "/usr/local/bin/docker",
+      "build",
+      "--platform",
+      "linux/amd64",
+      "--build-arg",
+      "PYTHON_BASE=python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+      "-f",
+      "/private/tmp/msh161-policy-worker-image/context/tools/experiments/Dockerfile",
+      "-t",
+      "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker:msh161-policy-d9271a294cb9",
+      "/private/tmp/msh161-policy-worker-image/context"
+    ],
+    [
+      "/usr/local/bin/docker",
+      "push",
+      "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker:msh161-policy-d9271a294cb9"
+    ]
+  ],
+  "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f",
+  "tag": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker:msh161-policy-d9271a294cb9",
+  "context": "/private/tmp/msh161-policy-worker-image/context",
+  "staging": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/staged-manifests",
+  "cohort_sha256": "499326a91a996b8bb3f6e60eed652fa8340191f3b3624c0cd5526a31d2669c31",
+  "finished_epoch": 1794492103.0024939,
+  "log": "/private/tmp/msh161-policy-worker-image/image.log"
+}

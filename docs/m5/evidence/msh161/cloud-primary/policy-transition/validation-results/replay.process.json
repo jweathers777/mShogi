@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/opt/engines/mshogi-match",
+    "experiment-external-replay",
+    "/tmp/msh161-policy-validation/report.json"
+  ],
+  "started_utc": "2026-11-12T14:02:53.000930+00:00",
+  "pid": 30,
+  "returncode": 0,
+  "process_group_settled": true,
+  "ended_utc": "2026-11-12T14:02:53.004015+00:00"
+}

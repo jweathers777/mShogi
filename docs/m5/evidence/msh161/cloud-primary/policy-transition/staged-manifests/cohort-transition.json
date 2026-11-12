@@ -1,0 +1,163 @@
+{
+  "activation": "Not activated; independent admission and explicit controller activation required",
+  "batches": [
+    {
+      "index": 3,
+      "manifest": "batch-03-manifest.json",
+      "original_sha256": "1433ce03d24009d11b18d4ed0d47006de198bcafeb13ef1cae8d065b90a754cb",
+      "pair_ids": [
+        "main-03-00",
+        "main-03-01",
+        "main-03-02",
+        "main-03-03",
+        "main-03-04",
+        "main-03-05",
+        "main-03-06",
+        "main-03-07",
+        "main-03-08",
+        "main-03-unaided"
+      ],
+      "sha256": "96598724c3027bb0c1bf071cc1b82ea1ac00832251c9ae8514c49b5ab4bc7112"
+    },
+    {
+      "index": 4,
+      "manifest": "batch-04-manifest.json",
+      "original_sha256": "d0f0e0e0a0a654478a268e3e6692199ee7f93093b25156a77b5749d93a2f0051",
+      "pair_ids": [
+        "main-04-00",
+        "main-04-01",
+        "main-04-02",
+        "main-04-03",
+        "main-04-04",
+        "main-04-05",
+        "main-04-06",
+        "main-04-07",
+        "main-04-08",
+        "main-04-unaided"
+      ],
+      "sha256": "bd906bc6cc9205c7dbe11fd75d33132a58f1059706cad9b7b5aa68ed048a6f2c"
+    },
+    {
+      "index": 5,
+      "manifest": "batch-05-manifest.json",
+      "original_sha256": "ff2f0574e94fff05273422548077b28ded79a06ebc76168b0f188471f9172953",
+      "pair_ids": [
+        "main-05-00",
+        "main-05-01",
+        "main-05-02",
+        "main-05-03",
+        "main-05-04",
+        "main-05-05",
+        "main-05-06",
+        "main-05-07",
+        "main-05-08",
+        "main-05-unaided"
+      ],
+      "sha256": "f9787706a24879145e94525ecf1c4d535c269c15c2185d1a5a82440438ae5460"
+    },
+    {
+      "index": 6,
+      "manifest": "batch-06-manifest.json",
+      "original_sha256": "38cdefef02dd7a4012edaed185a543fcb006a42d545626945f1bdd614d26137f",
+      "pair_ids": [
+        "main-06-00",
+        "main-06-01",
+        "main-06-02",
+        "main-06-03",
+        "main-06-04",
+        "main-06-05",
+        "main-06-06",
+        "main-06-07",
+        "main-06-08",
+        "main-06-unaided"
+      ],
+      "sha256": "b525f575f9b01a2d14bcac66f2b8950956ce28611ac3da2348f901ceccf0a570"
+    },
+    {
+      "index": 7,
+      "manifest": "batch-07-manifest.json",
+      "original_sha256": "73584f11aef9f6b6d3c8ee792ffd5f4d6bc8440a709d61c6aa73b2ba58b2847a",
+      "pair_ids": [
+        "main-07-00",
+        "main-07-01",
+        "main-07-02",
+        "main-07-03",
+        "main-07-04",
+        "main-07-05",
+        "main-07-06",
+        "main-07-07",
+        "main-07-08",
+        "main-07-unaided"
+      ],
+      "sha256": "7719c6831bee0c9bc60e38a15359b18389712ecf27e1ee31c848df0232cab213"
+    },
+    {
+      "index": 8,
+      "manifest": "batch-08-manifest.json",
+      "original_sha256": "b7631c6806511a15ec436b58ed780576b60c069bf5fdc5b42172ef3aa5bcf58f",
+      "pair_ids": [
+        "main-08-00",
+        "main-08-01",
+        "main-08-02",
+        "main-08-03",
+        "main-08-04",
+        "main-08-05",
+        "main-08-06",
+        "main-08-07",
+        "main-08-08",
+        "main-08-unaided"
+      ],
+      "sha256": "c3d76e075d897843cd8b68a140a4d39de1531cd0a210488f195cf1149aec89f9"
+    },
+    {
+      "index": 9,
+      "manifest": "batch-09-manifest.json",
+      "original_sha256": "fe47d95119b50471830e830cdff0f8e821420579ee19ef026b5ace98b448998d",
+      "pair_ids": [
+        "main-09-00",
+        "main-09-01",
+        "main-09-02",
+        "main-09-03",
+        "main-09-04",
+        "main-09-05",
+        "main-09-06",
+        "main-09-07",
+        "main-09-08",
+        "main-09-unaided"
+      ],
+      "sha256": "eef1f77f9aca1ef67b7fb273c5843e872744b8e27d5abb10f60a4bb97f196f38"
+    },
+    {
+      "index": 10,
+      "manifest": "batch-10-manifest.json",
+      "original_sha256": "ffc621e5697f74a016cc7854808fa7d586f678128359d5bac0151e31eafc69aa",
+      "pair_ids": [
+        "main-10-00",
+        "main-10-01",
+        "main-10-02",
+        "main-10-03",
+        "main-10-04",
+        "main-10-05",
+        "main-10-06",
+        "main-10-07",
+        "main-10-08",
+        "main-10-unaided"
+      ],
+      "sha256": "d178693c35c9b5b10347c7b552a9a66caf8f68ff685c2efb248db10c450e92bf"
+    }
+  ],
+  "build_sha256": "ac6f6b13f213cac07ab24d725a947e8f1c43f0f15078f692d7e192e882505cef",
+  "games": 160,
+  "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f",
+  "native_source": "ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0",
+  "original_cohort_sha256": "60e7a9e7dd16af1ef13899fc1cd824f29b24a9ea2b0c94789b977d8ea561d7d3",
+  "original_study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+  "package_only": false,
+  "pairs": 80,
+  "schema": "msh161-corrected-cohort-v1",
+  "source_revision": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+  "study_amendment": {
+    "path": "docs/m5/evidence/msh161/cloud-primary/policy-transition/amendment.json",
+    "sha256": "a12027aa8a3dbade8a6888961ba190a4b5629890706ed76e3f5e699ae19d0788"
+  }
+}

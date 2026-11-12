@@ -1,0 +1,80 @@
+{
+  "task": "MSH-161 (Competitive Gameplay Diagnosis) bounded optional-claim correction",
+  "verification_level": 2,
+  "platform": "macOS local; Linux real-runner deployment/validation owned by coordinator, not claimed here",
+  "base_revision": "1c2c1a9090ab3ad62df9d8d176575b3aa5424934",
+  "files": {
+    "crates/mshogi-console/src/uci.rs": "02c9c96ba2b4406d3cedb6bd40ee9a20e4baa0afb9614ce1ffb54be3ba6c6a0a",
+    "crates/mshogi-console/tests/uci.rs": "95558c49888db3a6e0fad7b000f5843df107700b7283e80326f794061974fe81",
+    "crates/mshogi-runner/src/config.rs": "9842455810b74c80d9e18b484862c967263be284b73ce0edc1e5429044079a80",
+    "crates/mshogi-runner/src/report.rs": "5bd2a0b32cc1c1c544b1252768c799786fdcdaf1383fc14b34d71883cdbbab5f",
+    "crates/mshogi-runner/tests/runner.rs": "5f607c6f8d1bde355e2679f858e5a487098a5361ac60e0dd17b6c6cdbccf3299",
+    "crates/mshogi-runner/tests/support/uci_fixture.rs": "f15dde6c111ce11704cabd5b044d97a91bbfff29b4b61f024e1116219e7ebcd8",
+    "crates/mshogi-search/examples/chess_frontier_profile.rs": "334ad9514ee5b5fa78013d2aaa1a9c99dfc838ed7838202d48099149d4e8527e",
+    "crates/mshogi-search/src/chess_conventional.rs": "3e97faf2ab9d3a7e843d6b65b92ac2daaae2c987c4039a071a204d984fddbe1a",
+    "crates/mshogi-search/src/chess_conventional_tests.rs": "994c6e47871b7959732147dab052edbe38c13ae221668bcc65ee11c74dbbd745",
+    "crates/mshogi-search/src/coordination.rs": "57c4a216456c5a373b08d10e5cece2550c46b8cb94ce1680e2ce79c7f995ec29",
+    "docs/match-runner.md": "207985e4e5e830fac6f7401d4e9e7db1f6edc6b18660aa5d23d1d6d85581c40a",
+    "docs/uci.md": "ce677e0e36dc7a5b5222efe04dae1a6a3934e717eecf8de2828da511ddfe82cd"
+  },
+  "checks": [
+    {
+      "command": "cargo check -p mshogi-search -p mshogi-console -p mshogi-runner --locked",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test -p mshogi-search --lib --locked",
+      "result": "118 passed, 2 existing ignored",
+      "log": "/private/tmp/msh161-policy-search-tests.log",
+      "durable_log": "docs/m5/evidence/msh161/cloud-primary/policy-transition/native-test-logs/msh161-policy-search-tests.log"
+    },
+    {
+      "command": "cargo test -p mshogi-core --test adjudication --test game_record --test matchplay --locked",
+      "result": "9+5+10 passed",
+      "log": "/private/tmp/msh161-policy-core-tests.log",
+      "durable_log": "docs/m5/evidence/msh161/cloud-primary/policy-transition/native-test-logs/msh161-policy-core-tests.log"
+    },
+    {
+      "command": "cargo test -p mshogi-console --test uci --locked",
+      "result": "11 passed"
+    },
+    {
+      "command": "cargo test -p mshogi-runner --test runner --locked",
+      "result": "17 passed"
+    },
+    {
+      "command": "cargo test -p mshogi-search --lib unavailable_claims --locked",
+      "result": "2 passed after final TT-on/off test variants"
+    },
+    {
+      "command": "cargo check -p mshogi-console -p mshogi-runner -p mshogi-engine -p mshogi-search --all-targets --locked",
+      "result": "PASS final",
+      "log": "/private/tmp/msh161-policy-consumers-check-final.log",
+      "durable_log": "docs/m5/evidence/msh161/cloud-primary/policy-transition/native-test-logs/msh161-policy-consumers-check-final.log"
+    },
+    {
+      "command": "cargo fmt --all -- --check; git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "failures_preserved": [
+    {
+      "stage": "initial search focusedtest compilation",
+      "error": "Existing exact-test SearchOptions literal missing newfield; new qsearch test unwrap required unavailable Halt Debug",
+      "resolution": "Added true to legacy helper and used existing ok().unwrap() convention; focusedtests pass."
+    },
+    {
+      "stage": "initial consumer all-targets compilation",
+      "error": "frontier_profile example fullSearchOptions literal missing newfield",
+      "log": "/private/tmp/msh161-policy-consumers-check.log",
+      "resolution": "Explicittrue preserves native diagnostic default; finalcheck passes."
+    }
+  ],
+  "not_run": [
+    "engine matches",
+    "cloudbuilds/jobs",
+    "Linux/Windows tests",
+    "unrelated GUI/fullrelease checks"
+  ],
+  "review": "opening_sources independent review in progress; root ownsintegration/deployment"
+}

@@ -434,7 +434,7 @@ fn strict_configuration_and_replay_reject_inconsistent_or_oversized_evidence() {
     let base = serde_json::to_value(&c).unwrap();
     for (key, value) in [
         ("schema_version", json!(2)),
-        ("claim_policy", json!("explicit_only")),
+        ("claim_policy", json!("unknown_policy")),
         ("max_plies", json!(513)),
         ("unknown", json!(true)),
     ] {
@@ -675,4 +675,76 @@ fn participant_limits_follow_engine_across_color_pairs_and_replay() {
     c.engine_work.as_mut().unwrap()[1].movetime_ms = Some(1);
     assert!(!c.rerun_determinism_eligible());
     assert_eq!(c.work_for(2), None);
+}
+
+#[test]
+fn explicit_only_runner_continues_threefold_fourfold_then_native_fivefold() {
+    let mut c = config("cycle");
+    c.claim_policy = ClaimPolicy::ExplicitOnly;
+    c.openings[0].fen = None;
+    c.openings[0].moves.clear();
+    c.max_plies = 32;
+    let r = run(&c);
+    let game = &r.games[0];
+    assert_eq!(game.stop, GameStop::ChessConclusion);
+    assert_eq!(
+        game.conclusion,
+        Some(MatchConclusion::Chess(ChessOutcome::Draw(
+            DrawReason::Fivefold
+        )))
+    );
+    let replay = r.replay().unwrap();
+    assert_eq!(replay[0].game().history().ply_count(), 16);
+    assert_eq!(replay[0].game().history().current_occurrences(), 5);
+    assert!(
+        game.transcript
+            .entries
+            .iter()
+            .any(|e| e.text == "setoption name ClaimPolicy value explicit")
+    );
+    // Report replay must bind generated policy options to the recorded policy.
+    let mut altered = r.clone();
+    let entry = altered.games[0]
+        .transcript
+        .entries
+        .iter_mut()
+        .find(|e| e.text == "setoption name ClaimPolicy value explicit")
+        .unwrap();
+    entry.text = "setoption name ClaimPolicy value auto".into();
+    assert!(altered.replay().is_err());
+}
+
+#[test]
+fn explicit_only_runner_passes_fifty_moves_but_obeys_seventy_five() {
+    for (clock, outcome) in [
+        (99, None),
+        (
+            149,
+            Some(MatchConclusion::Chess(ChessOutcome::Draw(
+                DrawReason::SeventyFiveMove,
+            ))),
+        ),
+    ] {
+        let mut c = config("quiet_threshold");
+        c.claim_policy = ClaimPolicy::ExplicitOnly;
+        c.openings[0].fen = Some(format!("7k/8/8/8/8/8/8/KR6 b - - {clock} 1"));
+        c.max_plies = 1;
+        let r = run(&c);
+        assert_eq!(r.games[0].conclusion, outcome);
+        assert_eq!(
+            r.games[0].stop,
+            if outcome.is_some() {
+                GameStop::ChessConclusion
+            } else {
+                GameStop::PlyLimit
+            }
+        );
+        let replay = r.replay().unwrap();
+        assert_eq!(replay[0].game().history().ply_count(), 1);
+        assert_eq!(replay[0].game().position().halfmove_clock(), clock + 1);
+        assert_eq!(
+            replay[0].game().history().claim_policy(),
+            ClaimPolicy::ExplicitOnly
+        );
+    }
 }

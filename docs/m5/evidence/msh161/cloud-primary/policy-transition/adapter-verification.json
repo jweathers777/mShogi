@@ -1,0 +1,18 @@
+{
+  "checks": [
+    {
+      "command": "/private/tmp/msh162-controller/bin/python -m unittest tools.experiments.tests.test_chess",
+      "result": "14 passed"
+    },
+    {
+      "command": "/private/tmp/msh162-controller/bin/python -m unittest discover -s tools/experiments/tests",
+      "result": "66 passed; one pre-existing status configuration expectation failure",
+      "failure": "test_settings_resolve_from_repo_and_infer_store expects old pilot /msh161; unchanged HEAD settings resolve primary /msh161-primary-v1",
+      "log": "python-suite.log"
+    }
+  ],
+  "files": {
+    "tools/experiments/chess.py": "d0aa463eec9a30e223926626aa2f0a370edde4bbdf482baf0448a250f0e2830b",
+    "tools/experiments/tests/test_chess.py": "bc70610e9fc90ca78fef06d61c636917ddf13f3843acdbe6e9bf5a9073d5bf06"
+  }
+}

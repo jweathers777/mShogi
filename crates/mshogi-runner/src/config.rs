@@ -170,11 +170,6 @@ impl ExperimentConfig {
         if self.schema_version != 1 {
             return err("unsupported experiment schema");
         }
-        if self.claim_policy != ClaimPolicy::AutoClaim {
-            return err(
-                "runner v1 requires explicit recorded auto_claim policy; UCI has no optional-claim channel",
-            );
-        }
         if !text(&self.id, 128) || self.openings.is_empty() || self.openings.len() > 32 {
             return err("invalid label/opening count (1..=32)");
         }

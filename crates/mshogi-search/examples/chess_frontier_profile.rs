@@ -119,6 +119,7 @@ fn main() {
             u16::try_from(v.as_u64().expect("depth must be nonnegative")).unwrap()
         });
         let options = SearchOptions {
+            allow_draw_claims: true,
             mode: match input["mode"].as_str() {
                 Some("exact") => SearchMode::Exact,
                 None | Some("conventional") => SearchMode::Conventional,

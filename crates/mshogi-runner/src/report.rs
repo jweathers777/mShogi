@@ -429,7 +429,17 @@ impl ExperimentReport {
                                         .iter()
                                         .any(|id| id.starts_with("id name mShogi "))
                                 })
-                                && entry.text == "setoption name ClaimPolicy value auto")
+                                && entry.text
+                                    == format!(
+                                        "setoption name ClaimPolicy value {}",
+                                        if self.config.claim_policy
+                                            == mshogi_core::chess::ClaimPolicy::AutoClaim
+                                        {
+                                            "auto"
+                                        } else {
+                                            "explicit"
+                                        }
+                                    ))
                         }
                         _ => false,
                     };

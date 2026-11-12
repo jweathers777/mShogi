@@ -62,6 +62,43 @@ def _check_build(build, required):
             raise ValueError('Executable identity mismatch: ' + key)
 
 
+def _claim_policy(job, repo):
+    """Bind the owner-authorized policy amendment without rewriting old evidence."""
+    policy = job.get('claim_policy', 'auto_claim')
+    ref = job.get('study_amendment')
+    if ref is None:
+        if policy != 'auto_claim':
+            raise ValueError('Changed claim policy requires a bound study amendment')
+        return policy
+    path = (Path(repo) / ref['path']).resolve()
+    path.relative_to(Path(repo).resolve())
+    if job['source_files'].get(ref['path']) != ref['sha256'] or _sha(path) != ref['sha256']:
+        raise ValueError('Study amendment hash mismatch')
+    amendment = json.loads(path.read_text())
+    if (amendment.get('schema') != 'msh161-automatic-thresholds-v1'
+            or policy != 'explicit_only' or amendment.get('claim_policy') != policy
+            or amendment.get('uci_optional_claims_available') is not False
+            or amendment.get('original_study_freeze_sha256') != job['study_freeze_sha256']):
+        raise ValueError('Unsupported study policy amendment')
+    source = amendment['native_source']
+    if job['build']['source'] != source or any(
+            job['build']['engines'][name]['source'] != source for name in ('candidate', 'runner')):
+        raise ValueError('Native source differs from policy amendment')
+    return policy
+
+
+def _configure_native(native, policy):
+    # _modules supplies a fresh, hash-verified module for each attempt. Retain its
+    # supervision/audit code; only the versioned emitted configuration changes.
+    if policy == 'explicit_only':
+        original = native.config
+        def config(build, spec):
+            result = original(build, spec)
+            result['claim_policy'] = policy
+            return result
+        native.config = config
+
+
 def _replay(report, runner, output):
     # Native replay expects uncompressed JSON; retain exact bytes in the attempt.
     replay_input = output / 'replay-input.json'
@@ -117,10 +154,14 @@ def confirmation_plan(pair, screen, decisions, games, phase_tags):
 
 def execute(job, output, inputs, repo):
     """Execute a fresh attempt; failed work remains evidence, never a result."""
+    if job.get("package_only"):
+        raise ValueError("Package-only job cannot execute")
     output, repo = Path(output), Path(repo)
     output.mkdir(parents=True, exist_ok=True)
     modules = _modules(repo)
     native, analysis, screen = (modules[k] for k in ('run_batch', 'analysis', 'screen_v1'))
+    policy = _claim_policy(job, repo)
+    _configure_native(native, policy)
     kind, build = job['kind'], job['build']
     if kind == 'game_pair':
         spec = job['spec']
@@ -140,6 +181,8 @@ def execute(job, output, inputs, repo):
     report = Path(inputs['report'])
     replay = _replay(report, build['engines']['runner']['path'], output)
     native_report = analysis.load_report(replay)
+    if native_report['config'].get('claim_policy', 'auto_claim') != policy:
+        raise ValueError('Native report claim policy differs from job')
     # Replay legality alone is not complete competitive evidence.
     if len(native_report['games']) != 2 or any(
         g.get('failure') or g.get('diagnostic_failures') or g.get('stop') != 'chess_conclusion'

@@ -143,6 +143,17 @@ class AdapterTests(unittest.TestCase):
                                 self.root / 'out', {'report': self.report}, REPO)
         query_call.assert_not_called()
 
+    def test_wrong_report_claim_policy_never_starts_analysis(self):
+        value = report(); value['config']['claim_policy'] = 'explicit_only'
+        self.report.write_text(json.dumps(value))
+        with patch.object(adapter, '_modules', return_value=self.modules), \
+             patch.object(adapter, '_replay', return_value=self.report), \
+             patch.object(self.modules['analysis'], 'query') as query_call:
+            with self.assertRaisesRegex(ValueError, 'claim policy differs'):
+                adapter.execute({'kind': 'reference_screening', 'build': self.build},
+                                self.root / 'out', {'report': self.report}, REPO)
+        query_call.assert_not_called()
+
     def test_frozen_config_keeps_equal_time_and_pairing(self):
         cfg = self.modules['run_batch'].config(self.build, {'id': 'pair', 'opponent': 'opponent', 'opening': {'id': 'opening', 'fen': None, 'moves': []}})
         self.assertEqual(cfg['work']['movetime_ms'], 5000)
@@ -150,6 +161,47 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(cfg['max_plies'], 512)
         self.assertEqual(cfg['claim_policy'], 'auto_claim')
 
+class ClaimPolicyAmendmentTests(unittest.TestCase):
+    def test_fresh_module_override_changes_only_policy_and_does_not_leak(self):
+        modules = adapter._modules(REPO)
+        native = modules['run_batch']
+        build = {'source': 'a'*40, 'engines': {k: {'path': '/'+k, 'source': 'b'*40}
+                 for k in ['candidate', 'oxidation060']}}
+        pair = {'id': 'policy-fixture', 'opponent': 'oxidation060',
+                'opening': {'id': 'root', 'fen': None, 'moves': []}}
+        original = native.config(build, pair)
+        adapter._configure_native(native, 'explicit_only')
+        amended = native.config(build, pair)
+        expected = copy.deepcopy(original); expected['claim_policy'] = 'explicit_only'
+        self.assertEqual(amended, expected)
+        fresh = adapter._modules(REPO)['run_batch']
+        self.assertEqual(fresh.config(build, pair), original)
+        self.assertEqual(original['claim_policy'], 'auto_claim')
+
+    def test_amendment_binds_policy_source_and_bytes(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t); path = root/'amendment.json'; source = 'a'*40
+            value = {'schema': 'msh161-automatic-thresholds-v1', 'claim_policy': 'explicit_only',
+                     'uci_optional_claims_available': False, 'native_source': source,
+                     'original_study_freeze_sha256': 'f'*64}
+            path.write_text(json.dumps(value)); sha = adapter._sha(path)
+            job = {'claim_policy': 'explicit_only', 'study_amendment': {'path': 'amendment.json', 'sha256': sha},
+                   'source_files': {'amendment.json': sha}, 'study_freeze_sha256': 'f'*64,
+                   'build': {'source': source, 'engines': {k: {'source': source} for k in ['candidate','runner']}}}
+            self.assertEqual(adapter._claim_policy(job, root), 'explicit_only')
+            bad = copy.deepcopy(job); del bad['study_amendment']
+            with self.assertRaises(ValueError): adapter._claim_policy(bad, root)
+            bad = copy.deepcopy(job); bad['claim_policy'] = 'auto_claim'
+            with self.assertRaises(ValueError): adapter._claim_policy(bad, root)
+            bad = copy.deepcopy(job); bad['build']['engines']['candidate']['source'] = 'b'*40
+            with self.assertRaises(ValueError): adapter._claim_policy(bad, root)
+            path.write_text(json.dumps(dict(value, native_source='b'*40)))
+            with self.assertRaises(ValueError): adapter._claim_policy(job, root)
+            self.assertEqual(adapter._claim_policy({}, root), 'auto_claim')
+
+    def test_package_only_cannot_launch(self):
+        with self.assertRaisesRegex(ValueError, 'Package-only'):
+            adapter.execute({'package_only': True}, None, {}, REPO)
 
 if __name__ == '__main__':
     unittest.main()

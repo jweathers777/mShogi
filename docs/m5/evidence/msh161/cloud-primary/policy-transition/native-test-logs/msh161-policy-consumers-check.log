@@ -1,0 +1,13 @@
+    Checking mshogi-search v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-search)
+   Compiling mshogi-runner v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-runner)
+    Checking mshogi-engine v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-engine)
+    Checking mshogi-desktop-session v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-desktop-session)
+error[E0063]: missing field `allow_draw_claims` in initializer of `SearchOptions`
+   --> crates/mshogi-search/examples/chess_frontier_profile.rs:121:23
+    |
+121 |         let options = SearchOptions {
+    |                       ^^^^^^^^^^^^^ missing `allow_draw_claims`
+
+For more information about this error, try `rustc --explain E0063`.
+error: could not compile `mshogi-search` (example "chess_frontier_profile") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

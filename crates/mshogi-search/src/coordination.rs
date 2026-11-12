@@ -1,6 +1,6 @@
 //! One bounded native search worker, request identity and stale-result checking.
 use crate::{
-    chess_conventional::{TimeBudget, search_with_time},
+    chess_conventional::{SearchOptions, TimeBudget, search_with_options},
     search::{SearchError, SearchLimits, SearchResult},
 };
 use mshogi_core::chess::{AdjudicatedGame, GameRecord};
@@ -34,6 +34,7 @@ pub struct RequestContext {
     base: GameRecord,
     limits: SearchLimits,
     time: Option<TimeBudget>,
+    allow_draw_claims: bool,
 }
 impl RequestContext {
     /// Unique request identity.
@@ -51,6 +52,10 @@ impl RequestContext {
     /// Recorded deterministic search limits.
     pub const fn limits(&self) -> SearchLimits {
         self.limits
+    }
+    /// Whether optional draw claims are available throughout this request.
+    pub const fn allow_draw_claims(&self) -> bool {
+        self.allow_draw_claims
     }
     /// Exact optional soft/hard thinking limits; absent means deterministic work.
     pub const fn time(&self) -> Option<TimeBudget> {
@@ -183,6 +188,19 @@ impl SearchCoordinator {
         limits: SearchLimits,
         time: Option<TimeBudget>,
     ) -> Result<RequestContext, SubmitError> {
+        self.submit_with_claim_availability(game, version, limits, time, true)
+    }
+
+    /// Submit with the consumer's ability to exercise optional draw claims.
+    /// Availability is immutable request context and applies at every search node.
+    pub fn submit_with_claim_availability(
+        &self,
+        game: &AdjudicatedGame,
+        version: u64,
+        limits: SearchLimits,
+        time: Option<TimeBudget>,
+        allow_draw_claims: bool,
+    ) -> Result<RequestContext, SubmitError> {
         if !(1..=crate::search::MAX_DEPTH).contains(&limits.depth) {
             return Err(SubmitError::Search(SearchError::InvalidDepth(limits.depth)));
         }
@@ -199,6 +217,7 @@ impl SearchCoordinator {
             base: game.record(),
             limits,
             time,
+            allow_draw_claims,
         });
         let pending = Pending {
             context: context.clone(),
@@ -335,10 +354,14 @@ fn worker(shared: Arc<Shared>) {
             state.active = Some(pending.context.id);
             pending
         };
-        let searched = search_with_time(
+        let searched = search_with_options(
             &pending.game,
             pending.context.limits,
-            pending.context.time,
+            SearchOptions {
+                time: pending.context.time,
+                allow_draw_claims: pending.context.allow_draw_claims,
+                ..SearchOptions::default()
+            },
             || pending.stop.load(Ordering::Acquire),
         );
         let selective_depth = searched.as_ref().ok().map(|r| r.selective_depth);
@@ -395,6 +418,12 @@ mod tests {
         assert_eq!(completion.selective_depth(), Some(0));
         assert!(completion.result().as_ref().unwrap().decision.is_none());
         assert_eq!(coordinator.accept_result(&completion, &game, 1), Ok(()));
+        let mut forged_claims = completion.clone();
+        Arc::make_mut(&mut forged_claims.context).allow_draw_claims = false;
+        assert_eq!(
+            coordinator.accept_result(&forged_claims, &game, 1),
+            Err(StaleResult::Superseded)
+        );
         let mut forged = completion.clone();
         Arc::make_mut(&mut forged.context).time = Some(TimeBudget {
             soft: Duration::ZERO,

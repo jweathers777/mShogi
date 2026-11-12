@@ -1,0 +1,45 @@
+   Compiling mshogi-conformance v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-conformance)
+   Compiling mshogi-core v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.37s
+     Running tests/adjudication.rs (target/debug/deps/adjudication-50ceab3af15715ba)
+
+running 9 tests
+test intended_claim_legality_does_not_depend_on_fullmove_representability ... ok
+test invalid_claims_and_wrong_actor_are_atomic ... ok
+test independent_automatic_results_and_bounded_dead_recognition ... ok
+test live_path_refuses_continuation_after_automatic_result_and_undo_restores_it ... ok
+test policy_returns_the_exact_profile_priority_and_square_order ... ok
+test profile_claim_thresholds_and_intended_actions ... ok
+test optional_claims_conclude_only_when_exercised_and_round_trip_without_playing_intention ... ok
+test policy_selection_current_before_intended_and_intended_before_prospective_mate ... ok
+test claim_catalog_prerequisite_shortcut_matches_individually_validated_requests ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests/game_record.rs (target/debug/deps/game_record-72c0dbb4a57b8a5c)
+
+running 5 tests
+test strict_coordinate_identity_is_shared_without_legalizing_actions ... ok
+test every_observation_variant_round_trips_and_preserves_context ... ok
+test canonical_record_has_an_independent_expected_encoding ... ok
+test ordered_same_ply_observations_and_intended_claim_are_preserved_without_execution ... ok
+test invalid_versions_metadata_effects_contexts_and_actions_are_rejected ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/matchplay.rs (target/debug/deps/matchplay-2c9b0aaa44d89924)
+
+running 10 tests
+test hypothetical_mate_is_article_three_reachability_not_counter_or_claim_policy ... ok
+test bad_certificate_does_not_cancel_an_explicit_resignation ... ok
+test expiry_precedes_move_and_invalid_witness_never_delays_it ... ok
+test claims_stop_clock_and_intention_stays_unplayed ... ok
+test records_reject_corrupted_observations_and_unknown_schema_fields ... ok
+test rejected_moves_stale_context_and_increment_overflow_charge_time_without_moving ... ok
+test nested_outcomes_and_direct_serde_identity_cannot_bypass_record_checks ... ok
+test offers_require_recorded_first_moves_persist_and_reject_atomically ... ok
+test profile_resign_and_flag_possible_impossible_and_unresolved ... ok
+test execute_independent_clock_profile_fixtures ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T13:32:00Z'
+updated_date: '2026-11-12T13:33:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -111,4 +111,6 @@ Batch02 independentauditPASS20games9W7D4L,2,840played+288prefix,6,256initial+2,3
 Reviewedbatch02adjudication workflowlaunchedunattended viaoutercaffeinate+notify_exit.py PID70945, targetmsh161-primary-b02-20m-v1, checkpointfce0d5c3. Driver performsimmutablesubmissionchecks/submission thenonePubSubwait/planretrieval/verification; callbackcoverssuccessorfailure. Localstatusrunning, noerror atstartup; actualcloudUID/acceptance recordedlaterinsubmission-result.json, notassumedfromPopen. No modelwait/poll or guessedwake. See cloud-primary/batch-02-adjudication/{launch,notification,plan}.json andREADME. Nextonexit review371roots/663queries and anydistinctdiscoveredalternatives, reconcileactualresources andclosebatch02 beforebatch03. Full200remainsrequired, no Macengines/productionchanges.
 
 Batch02initial20M completed627jobs663queries withsuccess/return0/ownprocessgroupsettled/queueaccepted. Independentintegrity/PV/history/source/runtimeauditPASS,no failedscientificattempts;8actualVMsclean,noallocationfailures,4.400461VMh/~USD0.88717compute. Cumulative2base+2panels29.369163VMh/~USD5.92106estimated,notbill. Bothgameplay20Moverlays/crossreviews complete but2newforcedalternativesrequired beforeclosure:02g0p65g8g7 discovered20M,08g0p96c5e4 fromnewlyexposedp95continuation. Existingplayed20M receipts mustbereused; no repeatgames/playedsearches. Preparinghash-boundfollowupplan2newqueries,2C3tasks. Controllerpermits1..8nonemptybins toavoidemptyVMs; nofrozenworker/enginechange.11controller+4followupoffline testsPASS, independentadmissionpending. Primarycumulative still20fullyreviewed/40completeduntilfollowup; no batch03yet.
+
+Twoqueryfollowup plan independentlyadmitted SHA5fa4df35fd4cf41df4f337ba8b9f1c309420c65ba7d7cfe15e30b2ce5b24ad10; matchedplayed20Mreused andp95supportbound; no repeats.11controller+4followuptestsPASS andindependentnegativepreflightsPASS;2nonemptyC3assignments, frozenworkerunchanged. Checkpoint8b0e99df. LaunchedsingleexitworkflowPID81834 targetingmsh161-primary-b02-followup-v1; localwrapperrunning/noerror atattachment, actualcloudUID/acceptanceinsubmission-result.json afterdriverchecks. Onexit independentlyreview2newalternatives, finalizebatch02supersession/cumulative40gamecategories/resources thenfrozenbatch03. No newgamebatchuntilgate; full200/noMacengines/no productionchanges remain.
 <!-- SECTION:NOTES:END -->

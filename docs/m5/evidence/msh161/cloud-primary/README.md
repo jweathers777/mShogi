@@ -125,8 +125,13 @@ The full20M overlays and detailed legal continuations are under
 claim draws and strong play remain explicit. In particular02g0p65's existing
 same-choice control has a pending new comparison; it is not wholly settled.
 Batch03 has not been launched; cumulative categories still cover20fullyreviewed
-primarygames while40games have completed. Next execute the two-query followup,
-review its results, update primarycumulative/resources, thencontinuefrozenbatch03.
+primarygames while40games have completed. The two-query followup is now running under exit-wrapperPID81834, targeting
+`msh161-primary-b02-followup-v1`; checkpoint `8b0e99df`. Exact command/hashes are
+in `batch-02-followup/launch.json`; cloud UID/acceptance appears in
+`submission-result.json` after driver submission, and computation/cleanup/queue
+states are separate in `notification.json`. Do not duplicate the wrapper, queries
+or retrieval. On its exit review the two results with reusedplayed evidence,
+update primarycumulative/resources and closebatch02, thencontinuefrozenbatch03.
 Use the same single exit-notification workflow; no timer, polling, Mac engine or
 production engineering. Preserve full200coverage and all failure/provenance records.
 

@@ -1,0 +1,30 @@
+[
+  {
+    "path": "remote-inventory.json",
+    "sha256": "e8b9db50516a316af7f9e06ff670267838568739cb2f026c69b20664ecff45ae",
+    "bytes": 9027854,
+    "archive": "remote-inventory.json.gz",
+    "archive_sha256": "f3b37551c967d739fb272f85c534b1d5f0c3fa02bd8c77340a5e05e0e11bee86"
+  },
+  {
+    "path": "review-index.json",
+    "sha256": "bc8a3171e62eda53d372275e7706309420f1f65fb9d2196d89d5f4f96dafc541",
+    "bytes": 32718559,
+    "archive": "review-index.json.gz",
+    "archive_sha256": "b9342d7e2dddc675d95d69c21dcbeea8e34224141a51ea64b9eab403575054fc"
+  },
+  {
+    "path": "dispositions-00-04.json",
+    "sha256": "a90c0eac14845ffa9806bf16dc39db0ef481d4e47ac13260491c37665f659459",
+    "bytes": 9953388,
+    "archive": "dispositions-00-04.json.gz",
+    "archive_sha256": "933d4bf663f6e7300b24f474011a3b3f019a3be66f68a49ae1654805cf5ff16c"
+  },
+  {
+    "path": "evidence-05-09.json",
+    "sha256": "54b07b7781a3d334760fe25ab25c72e41f4075b6d889dae77ad953f9ea808003",
+    "bytes": 2104104,
+    "archive": "evidence-05-09.json.gz",
+    "archive_sha256": "bc3a2fedbcd8bbf6fd63178a198d09614baefc0d35e93838a1d5e44a01af4740"
+  }
+]

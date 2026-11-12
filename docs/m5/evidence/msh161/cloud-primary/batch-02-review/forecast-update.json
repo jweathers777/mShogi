@@ -1,0 +1,25 @@
+{
+  "status": "updated_reference_not_bill_or_bound",
+  "completed_primary_games": 40,
+  "remaining_primary_games": 160,
+  "completed20m_panels": 1,
+  "pending_batch02_20m": true,
+  "base_compute_per20game_batch_mean_usd": 2.132094687392237,
+  "measured20m_panel_compute_usd": 0.7697007595004087,
+  "full200_reference_compute_usd": 29.017954468926455,
+  "remaining160_plus_batch02_adjudication_reference_compute_usd": 23.984064334641573,
+  "incurred_estimated_compute_primary_usd": 5.033890134284882,
+  "reference_basis": "Mean observed cloudbatch01/02 base lifecycle plus repeated first298decision20M panel. New batch02 selection/rate pending; no scientific truncation to match forecast.",
+  "inclusive_full200_scenario_before_tax_usd": [
+    35,
+    90
+  ],
+  "inclusive_remaining160_and_all_pending20m_scenario_before_tax_usd": [
+    30,
+    80
+  ],
+  "assumptions": "Previous0.5\u20132x panelwork/0\u201325% extra compute, explicittransfer/ops/monthretention provisions; not confidenceinterval/cap, excludespriorpilots/Mac; actualbillingunverified.",
+  "full_processing_reference_hours": 30.635322281665267,
+  "remaining_processing_reference_hours": 25.383794605292213,
+  "timing_note": "Retains actual firstpanel22m36 postcloud overhead conservatively despite later4.97s localverification recheck; add reviewpauses/provisioning variations separately."
+}

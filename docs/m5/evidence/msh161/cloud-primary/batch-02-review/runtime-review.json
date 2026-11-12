@@ -1,0 +1,231 @@
+{
+  "review_scope": "Independent read-only completed primarycloudbatch02 runtime; scientific audit recorded separately",
+  "job_name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b02-v1",
+  "job_uid": "msh161-primary-b02-fff81736-b9df-43bd0",
+  "task_records": [
+    {
+      "task": "0",
+      "start": "2026-11-12T10:30:30.699861115Z",
+      "end": "2026-11-12T11:34:46.813018914Z",
+      "seconds": 3856.1131570339203,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/1881090950191131615",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "1",
+      "start": "2026-11-12T11:16:29.730392900Z",
+      "end": "2026-11-12T12:00:55.480562043Z",
+      "seconds": 2665.750169992447,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/5022677798558903263",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "2",
+      "start": "2026-11-12T10:30:29.510114559Z",
+      "end": "2026-11-12T11:54:25.447188729Z",
+      "seconds": 5035.937073945999,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/6999289922193992671",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "3",
+      "start": "2026-11-12T10:30:33.013345738Z",
+      "end": "2026-11-12T11:22:29.476937015Z",
+      "seconds": 3116.4635920524597,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/5608005210197208031",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "4",
+      "start": "2026-11-12T10:30:30.137892314Z",
+      "end": "2026-11-12T11:16:29.615831995Z",
+      "seconds": 2759.477938890457,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/5022677798558903263",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "5",
+      "start": "2026-11-12T10:30:33.088917594Z",
+      "end": "2026-11-12T11:55:08.626031676Z",
+      "seconds": 5075.537113904953,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/5886158351826955231",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "6",
+      "start": "2026-11-12T10:30:31.323153977Z",
+      "end": "2026-11-12T11:32:33.247378485Z",
+      "seconds": 3721.924225091934,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/2744315690912066527",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "7",
+      "start": "2026-11-12T10:30:29.954280971Z",
+      "end": "2026-11-12T11:32:27.595184421Z",
+      "seconds": 3717.640904188156,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/1980211558362917855",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "8",
+      "start": "2026-11-12T10:30:28.874021991Z",
+      "end": "2026-11-12T12:01:36.152880928Z",
+      "seconds": 5467.27885890007,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/4602851664567217119",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "9",
+      "start": "2026-11-12T11:22:29.590160217Z",
+      "end": "2026-11-12T12:18:51.663372049Z",
+      "seconds": 3382.073212146759,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/5608005210197208031",
+      "state": "SUCCEEDED"
+    }
+  ],
+  "task_elapsed_seconds": 6502.789350986481,
+  "submission_to_last_task_seconds": 6541.837532997131,
+  "task_seconds_sum": 38798.196246147156,
+  "concurrency_seconds": {
+    "0": 0.0,
+    "1": 1036.1465849876404,
+    "2": 41.11648392677307,
+    "3": 347.038143157959,
+    "4": 43.74081206321716,
+    "5": 1179.2574617862701,
+    "6": 135.2558319568634,
+    "7": 5.955549955368042,
+    "8": 3714.2784831523895
+  },
+  "peak_task_concurrency": 8,
+  "vms": [
+    {
+      "id": "5608005210197208031",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-fff81736-b9df-43bd0-group0-0-btvw",
+      "start": "2026-11-12T10:30:07.955121Z",
+      "deleted": "2026-11-12T12:19:17.725532Z",
+      "seconds": 6549.770411014557
+    },
+    {
+      "id": "4602851664567217119",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-fff81736-b9df-43bd0-group0-0-6mgf",
+      "start": "2026-11-12T10:30:07.980839Z",
+      "deleted": "2026-11-12T12:02:17.902139Z",
+      "seconds": 5529.921299934387
+    },
+    {
+      "id": "5022677798558903263",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-fff81736-b9df-43bd0-group0-0-n5rk",
+      "start": "2026-11-12T10:30:07.890981Z",
+      "deleted": "2026-11-12T12:01:31.921163Z",
+      "seconds": 5484.030182123184
+    },
+    {
+      "id": "5886158351826955231",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-fff81736-b9df-43bd0-group0-0-zjpg",
+      "start": "2026-11-12T10:30:07.945173Z",
+      "deleted": "2026-11-12T11:55:38.358942Z",
+      "seconds": 5130.413769006729
+    },
+    {
+      "id": "6999289922193992671",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-fff81736-b9df-43bd0-group0-0-3dg3",
+      "start": "2026-11-12T10:30:07.934198Z",
+      "deleted": "2026-11-12T11:54:59.931899Z",
+      "seconds": 5091.99770116806
+    },
+    {
+      "id": "1881090950191131615",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-fff81736-b9df-43bd0-group0-0-jslm",
+      "start": "2026-11-12T10:30:07.903386Z",
+      "deleted": "2026-11-12T11:35:17.691124Z",
+      "seconds": 3909.7877378463745
+    },
+    {
+      "id": "2744315690912066527",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-fff81736-b9df-43bd0-group0-0-kvbx",
+      "start": "2026-11-12T10:30:07.907630Z",
+      "deleted": "2026-11-12T11:33:18.056286Z",
+      "seconds": 3790.148656129837
+    },
+    {
+      "id": "1980211558362917855",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-fff81736-b9df-43bd0-group0-0-5c4c",
+      "start": "2026-11-12T10:30:07.943695Z",
+      "deleted": "2026-11-12T11:33:00.088806Z",
+      "seconds": 3772.145110845566
+    }
+  ],
+  "vm_lifecycle_hours": 10.905059685574637,
+  "recorded_rate_usd_per_hour": 0.201608,
+  "estimated_vm_compute_usd": 2.1985472730893316,
+  "actual_billed_cost": null,
+  "failed_insert_completion_count": 0,
+  "failed_insert_zones": {},
+  "operational_notice_error_count": 0,
+  "remaining_instances": [],
+  "remaining_disks": [],
+  "billing_export_observation": "Not re-queried; prior project-visible billing export unavailable. Actual billing remains unverified.",
+  "raw_observation_hashes": {
+    "tasks": "8daed6148624fbd8bca18c59947a08c819f9a4c30c16bbd7bc2a60879cd49f2c",
+    "vm-audit": "6cfc84dfb36f477eb6257ab6d402de5e3de38e6076f20c36ae9726b987796df6",
+    "instances": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "disks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "notification": {
+    "status": "success",
+    "computation_returncode": 0,
+    "queue_returncode": 0,
+    "queue_accepted": true,
+    "process_group_settled": true,
+    "started_epoch": 1794479413.901738,
+    "finished_epoch": 1794486388.7107918
+  },
+  "retrieval": {
+    "bytes": 4441259122,
+    "ended_epoch": 1794486388.2432158,
+    "experiment": "msh161-primary-v1-batch-02",
+    "inventory_sha256": "e8b9db50516a316af7f9e06ff670267838568739cb2f026c69b20664ecff45ae",
+    "local_store": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache",
+    "method": "32generation-pinnedCRC32Cdownloads;existingcacheCRCchecked;allstatic/derivedsuccessartifactSHA256verified",
+    "no_engines": true,
+    "objects": 34751,
+    "pairs": 10,
+    "seconds": 443.25116637488827,
+    "started_epoch": 1794485944.980453,
+    "status": "retrieved_verified_needs_independent_review",
+    "verified_jobs": 2376
+  },
+  "submission_through_verified_retrieval_seconds": 6998.528825998306,
+  "wait_retrieve_sha256": "6eede9cb686d0684785f11d1d70ebd6ea949d92a46e4f643578eead77ae0eb44",
+  "scientific_audit": {
+    "status": "passed",
+    "verified_jobs": 2376,
+    "queries": 8612,
+    "stages": {
+      "game_pair": {
+        "jobs": 10,
+        "wall_seconds": 13843.902177920001,
+        "cpu_seconds": 13938.940052
+      },
+      "reference_screening": {
+        "jobs": 10,
+        "wall_seconds": 6688.1165696570015,
+        "cpu_seconds": 5673.549437000001,
+        "queries": 6256,
+        "query_wall_seconds": 5700.232141882017,
+        "query_cpu_seconds": 5673.240164999996
+      },
+      "confirmation": {
+        "jobs": 2356,
+        "wall_seconds": 15418.623148353,
+        "cpu_seconds": 11878.61732899996,
+        "queries": 2356,
+        "query_wall_seconds": 11812.718577201951,
+        "query_cpu_seconds": 11802.549401000006
+      }
+    },
+    "stable_audit_miss_triggers": []
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "scope": "Offline semantic/execution admission; no engines, cloud calls or submissions",
+  "plan_sha256": "15ba357c687baa600d9802b1986664ed2621593cd8b2c2488dcdf22ecec8ce99",
+  "controller_sha256": "0cfe835d5c54b7d585396cd01cdc38cd868f2a36d53d3d7434be5686a21f677f",
+  "dispatcher_sha256": "03eb02253a73b48d66e67199894a220a3cfbd096529ad99ed769b6d9ccce3505",
+  "driver_sha256": "36fa3407cb7cb2fd6edd610b6b2d88df651ca747ded7f119c744c836e8cdc47c",
+  "batch_request_sha256": "856154d04743ab133f2cb38d6afd1b8b532cdd9225b977e62adb380531834304",
+  "selection_files": [
+    {
+      "file": "20m-selection-00-04.json",
+      "sha256": "563d3af13678384537916fb9b3984e638056efd5367741eee44b2c9d8097878d"
+    },
+    {
+      "file": "20m-selection-05-09.json",
+      "sha256": "35f5683f9f6609fd4f3259cf68e8774c2e3c8d6658a1efbaca4fdefa407a380b"
+    }
+  ],
+  "roots": 371,
+  "jobs": 627,
+  "discovery_jobs": 36,
+  "queries": 663,
+  "bin_query_weights": [
+    83,
+    83,
+    83,
+    83,
+    83,
+    83,
+    83,
+    82
+  ],
+  "bound_success_receipts": 597,
+  "native_parents": 10,
+  "checks": [
+    "Exact both-reviewer final selections and reasons; all roots represented",
+    "Full native historical decision/mover/played data and all selected moves independently legal",
+    "Discovery includes actual played20M; duplicate played-only singleton omitted; distinct prior alternatives retained",
+    "No duplicate root/move20M jobs, Mac/pilot parents or new game jobs",
+    "Original immutable primarycloudbatch02 manifest; exact native report and consumed-success hashes",
+    "Worker source/build/image/source_files inherited unchanged from verified cloud screen",
+    "Current controller, dispatcher, independently reviewed sequential driver and full saved request match",
+    "Eight deterministic work-weighted bins cover every job exactly once"
+  ],
+  "limitations": [
+    "Execution not launched or proved by this admission",
+    "A newly discovered distinct alternative needs subsequent matched20M verification if not already covered",
+    "Scientific confirmation/claim policy and full-study conclusions remain separate"
+  ]
+}

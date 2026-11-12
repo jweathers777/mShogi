@@ -76,24 +76,40 @@ and expanded/hash records in `metadata-archives.json`. Restore compressed JSON
 beside its archive when a script needs the expanded form; never substitute Mac
 reports that happen to share the same pair identifiers.
 
-Batch02 passed independent review/forecast gates and empty-prefix preflight, then
-was submitted as `msh161-primary-b02-v1`, UID
-`msh161-primary-b02-fff81736-b9df-43bd0` (initialQUEUED). Its original frozen manifest
-is unchanged. Review/forecast/controller checkpoint: `ad7f5769`. There are still
-20reviewed primary games; the next20are submitted, not yet counted as completed.
+Batch02 completed successfully as `msh161-primary-b02-v1`, UID
+`msh161-primary-b02-fff81736-b9df-43bd0`. Its original frozen manifest is unchanged.
+The combined event/retrieval wrapper returnedzero, settled its own process group
+without a residual, and successfully queued this chat. Computation, cleanup and
+notification are independently recorded in `batch-02-notification.json` and
+`batch-02-wait-retrieve.json`; preserve those receipts. Do not duplicate retrieval.
 
-Single exit-wrapperPID50193 (child50195) is waiting for the terminal event through
-`wait_retrieve_batch.py`. It will run the existing generation-pinned32-download
-retriever and verify all base/derived results, then `notify_exit.py` queues this
-chat on success or failure. State:`batch-02-wait-retrieve.json`; submission and
-`batch-02-wait-launch.json` preserve identity/command; `batch-02-notification.json`
-records computation and queue acceptance separately. Caffeinate covers the outer
-wrapper lifetime; notifier/security settings are unchanged. Do not duplicate this
-submission, listener or retrieval. No timer, periodic watcher or Mac engine.
+Retrieval verified2,376jobs,34,751objects /4,441,259,122bytes in443.25seconds.
+Independent audit passed8,612queries (6,256initial500k plus2,356matched5M), all
+2,840played+288prefix decisions and exactly frozen selection/audit coverage. Native
+result9W/7D/4L, with six threefold and one fifty-move automatic claims. No scientific
+failures or eligible stable missed-error audit trigger; two uncertain audit
+comparisons remain uncertain. Runtime:8actualworkers,1h49m02cloud elapsed,
+10.90506VM-hours/~$2.19855compute, no failed VM insertions and verified cleanup.
 
-On its exit, review fresh primarycloudbatch02 independently, run requiredcloud20M,
-update cumulative episodes/resources/forecast and proceed tobatch03 only after
-review. Preserve the full200-game obligation and stop before production engineering.
+Both gameplay panels and cross-reviews passed. The frozen consequential20M plan
+is `batch-02-adjudication/plan.json`:371decisions,627jobs/663queries,36discovery roots.
+It retains linked opponent events, constructive controls, literal frozen thresholds,
+earlier uncertainty and native claim-policy limits. First-half02g1p40 rose above
+.05at5M but was already selected by v1-followup; it was not a missed audit-stratum
+case. No absolute first/largest labels or final weakness priorities are established.
+
+There are40completed primary games, but onlybatch01's20are reviewed through required
+20M and included in cumulative scientific categories. Batch03 has not been launched.
+Actual-plan admission passed (`batch-02-adjudication/admission-review.md`).
+Next runbatch02's20M panel in the existing pinned image. `run_adjudication_plan.py` calls reviewed submit then event-wait/retrieval/
+verification in one unattended process under `notify_exit.py`; submission failure
+also queues the chat, with no automatic retry. The small driver passed independent
+review/threeoffline tests. No model waits/polls through submission or individualmoves.
+
+On exit reconcile receipts, review20M and distinct discovered alternatives, update
+cumulative episodes/resources/forecast, then continue the remaining160games in
+reviewed batches. Preserve full200coverage; no timer, periodic watcher, Mac engine
+execution or production engineering. Immutable cloud evidence remains authoritative.
 
 On retrieval/adjudication completion:
 
@@ -121,7 +137,9 @@ On retrieval/adjudication completion:
    No final ranking or production correction before full independent diagnosis.
 
 For a user-requested progress view, run `python3 tools/experiments/quick_status.py`.
-Its settings now point to primarybatch02. It is a read-only snapshot, not an
+Its settings point to the completed primarybatch02 base graph; they do not enumerate
+its additional20M plan. For that stage inspect the adjudication submission/plan
+receipts and exact Batch job identity. It is a read-only snapshot, not an
 integrity check. Do not turn it into a periodic model watcher. Local Mac computation
 remains stopped; the old local batch02 callback cannot authorize localbatch03.
 

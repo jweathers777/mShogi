@@ -1,0 +1,1205 @@
+{
+  "status": "passed",
+  "scope": "Independent offline full artifact/hash/native history/query/PV/selection audit; existing native replay receipts reused, no engines or native replay launched",
+  "script_sha256": "da528a1e265cbf3f772252e4415c0e3f7529d0779f29351318f2c89b110500e2",
+  "review_index_sha256": "bc8a3171e62eda53d372275e7706309420f1f65fb9d2196d89d5f4f96dafc541",
+  "manifest_sha256": "ca175bf34a09e16c29186f9d05af32d4c51a9a757115b73f2f30f8b8fe003331",
+  "counts": {
+    "prepared_decisions": 288,
+    "played_decisions": 2840,
+    "v1-followup": 1364,
+    "confirmation_decisions": 1554,
+    "same_choice_controls": 752,
+    "missing_alternatives": 0,
+    "stratified-nonflagged-audit": 190,
+    "stable_two_choice_audits": 95,
+    "uncertain_two_choice_audits": 2
+  },
+  "stages": {
+    "game_pair": {
+      "jobs": 10,
+      "wall_seconds": 13843.902177920001,
+      "cpu_seconds": 13938.940052
+    },
+    "reference_screening": {
+      "jobs": 10,
+      "wall_seconds": 6688.1165696570015,
+      "cpu_seconds": 5673.549437000001,
+      "queries": 6256,
+      "query_wall_seconds": 5700.232141882017,
+      "query_cpu_seconds": 5673.240164999996
+    },
+    "confirmation": {
+      "jobs": 2356,
+      "wall_seconds": 15418.623148353,
+      "cpu_seconds": 11878.61732899996,
+      "queries": 2356,
+      "query_wall_seconds": 11812.718577201951,
+      "query_cpu_seconds": 11802.549401000006
+    }
+  },
+  "flags": {
+    "reference_screening": {
+      "directional_bound_conflict": 429,
+      "stable_report_heuristic": 5858,
+      "last_score_update_not_selected_exact_score": 2369,
+      "no_nonbound_score_aligned_with_bestmove": 14
+    },
+    "confirmation": {
+      "last_score_update_not_selected_exact_score": 1014,
+      "directional_bound_conflict": 141,
+      "stable_report_heuristic": 2243
+    }
+  },
+  "outcomes_candidate": {
+    "all": {
+      "wins": 9,
+      "draws": 7,
+      "losses": 4
+    },
+    "main-prepared": {
+      "wins": 8,
+      "draws": 7,
+      "losses": 3
+    },
+    "main-unaided": {
+      "wins": 1,
+      "draws": 0,
+      "losses": 1
+    }
+  },
+  "games": [
+    {
+      "pair": "main-02-00",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 138
+    },
+    {
+      "pair": "main-02-00",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "history_plies": 127
+    },
+    {
+      "pair": "main-02-01",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 90
+    },
+    {
+      "pair": "main-02-01",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "history_plies": 112
+    },
+    {
+      "pair": "main-02-02",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "history_plies": 117
+    },
+    {
+      "pair": "main-02-02",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "history_plies": 243
+    },
+    {
+      "pair": "main-02-03",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "history_plies": 131
+    },
+    {
+      "pair": "main-02-03",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 112
+    },
+    {
+      "pair": "main-02-04",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "history_plies": 131
+    },
+    {
+      "pair": "main-02-04",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 136
+    },
+    {
+      "pair": "main-02-05",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "history_plies": 205
+    },
+    {
+      "pair": "main-02-05",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 242
+    },
+    {
+      "pair": "main-02-06",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "history_plies": 143
+    },
+    {
+      "pair": "main-02-06",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 182
+    },
+    {
+      "pair": "main-02-07",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "history_plies": 103
+    },
+    {
+      "pair": "main-02-07",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 230
+    },
+    {
+      "pair": "main-02-08",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 154
+    },
+    {
+      "pair": "main-02-08",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "fifty_move"
+          }
+        }
+      },
+      "history_plies": 270
+    },
+    {
+      "pair": "main-02-unaided",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 142
+    },
+    {
+      "pair": "main-02-unaided",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 120
+    }
+  ],
+  "audit_strata": [
+    {
+      "pair": "main-02-00",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-00",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 14,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-00",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 19,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-00",
+      "cell": [
+        1,
+        0,
+        "opening"
+      ],
+      "population": 1,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-00",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 6,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-00",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 5,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-01",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 6,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-01",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 6,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-01",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 21,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-01",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 21,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-01",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 1,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-01",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-01",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-02",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 9,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-02",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 8,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-02",
+      "cell": [
+        1,
+        1,
+        "opening"
+      ],
+      "population": 1,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-02",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 3,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-02",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 3,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-02",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 30,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-02",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 30,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-03",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 4,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-03",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 3,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-03",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 9,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-03",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 7,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-03",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 29,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-03",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 29,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-03",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 9,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-03",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 9,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-04",
+      "cell": [
+        0,
+        0,
+        "opening"
+      ],
+      "population": 3,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-04",
+      "cell": [
+        0,
+        1,
+        "opening"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-04",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 17,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-04",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 23,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-04",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 24,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-04",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 22,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-04",
+      "cell": [
+        1,
+        0,
+        "opening"
+      ],
+      "population": 1,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-04",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-04",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 1,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-04",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 37,
+      "selected": 4
+    },
+    {
+      "pair": "main-02-04",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 39,
+      "selected": 4
+    },
+    {
+      "pair": "main-02-05",
+      "cell": [
+        0,
+        1,
+        "opening"
+      ],
+      "population": 1,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-05",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 39,
+      "selected": 4
+    },
+    {
+      "pair": "main-02-05",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 41,
+      "selected": 5
+    },
+    {
+      "pair": "main-02-05",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 16,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-05",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 15,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-05",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 8,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-05",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 9,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-05",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 81,
+      "selected": 9
+    },
+    {
+      "pair": "main-02-05",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 81,
+      "selected": 9
+    },
+    {
+      "pair": "main-02-06",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 13,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-06",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 14,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-06",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 36,
+      "selected": 4
+    },
+    {
+      "pair": "main-02-06",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 36,
+      "selected": 4
+    },
+    {
+      "pair": "main-02-06",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 13,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-06",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 17,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-06",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 29,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-06",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 27,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-07",
+      "cell": [
+        0,
+        1,
+        "opening"
+      ],
+      "population": 7,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-07",
+      "cell": [
+        0,
+        0,
+        "opening"
+      ],
+      "population": 6,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-07",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 25,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-07",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 23,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-07",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-07",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-07",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 69,
+      "selected": 7
+    },
+    {
+      "pair": "main-02-07",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 72,
+      "selected": 8
+    },
+    {
+      "pair": "main-02-08",
+      "cell": [
+        0,
+        0,
+        "opening"
+      ],
+      "population": 4,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-08",
+      "cell": [
+        0,
+        1,
+        "opening"
+      ],
+      "population": 5,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-08",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 6,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-08",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 5,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-08",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 22,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-08",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 24,
+      "selected": 3
+    },
+    {
+      "pair": "main-02-08",
+      "cell": [
+        1,
+        1,
+        "opening"
+      ],
+      "population": 1,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-08",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 49,
+      "selected": 5
+    },
+    {
+      "pair": "main-02-08",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 46,
+      "selected": 5
+    },
+    {
+      "pair": "main-02-unaided",
+      "cell": [
+        0,
+        1,
+        "opening"
+      ],
+      "population": 6,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-unaided",
+      "cell": [
+        0,
+        0,
+        "opening"
+      ],
+      "population": 5,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-unaided",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-unaided",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-02-unaided",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 48,
+      "selected": 5
+    },
+    {
+      "pair": "main-02-unaided",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 47,
+      "selected": 5
+    },
+    {
+      "pair": "main-02-unaided",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 20,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-unaided",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 19,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-unaided",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 12,
+      "selected": 2
+    },
+    {
+      "pair": "main-02-unaided",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 11,
+      "selected": 2
+    }
+  ],
+  "stable_audit_miss_triggers": [],
+  "worker_environments": {
+    "1881090950191131615": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "1881090950191131615",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "5022677798558903263": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "5022677798558903263",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "6999289922193992671": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "6999289922193992671",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "5608005210197208031": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "5608005210197208031",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "5886158351826955231": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "5886158351826955231",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "2744315690912066527": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "2744315690912066527",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "1980211558362917855": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "1980211558362917855",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "4602851664567217119": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "4602851664567217119",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    }
+  },
+  "failed_job_attempts": 0,
+  "unresolved_claims": 0,
+  "verified_jobs": 2376,
+  "resource_note": "Parent job CPU/wall includes native replay and helper query setup/cleanup. Query subtotals overlap job totals; never add both. VM lifecycle additionally includes idle/provisioning.",
+  "limitations": [
+    "Finite analysis remains unadjudicated; cloud20M required for consequential decisions",
+    "Recorded cleanup is not a new live process census",
+    "CPU/platform conditions and identities verified; no Mac/cloud pooling"
+  ]
+}

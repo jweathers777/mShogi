@@ -22,3 +22,9 @@ cloud-primary/batch-01-review/remote-inventory.json
 cloud-primary/batch-01-review/review-index.json
 cloud-primary/batch-01-review/dispositions-00-04.json
 cloud-primary/batch-01-review/evidence-05-09.json
+
+# Batch02 expanded metadata; byte-exact archives are tracked.
+cloud-primary/batch-02-review/remote-inventory.json
+cloud-primary/batch-02-review/review-index.json
+cloud-primary/batch-02-review/dispositions-00-04.json
+cloud-primary/batch-02-review/evidence-05-09.json

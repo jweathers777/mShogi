@@ -1,0 +1,1666 @@
+[
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 36,
+    "moves": [
+      "f3e5",
+      "e2g3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_subthreshold; observed margin 0.041000000000000036; initial500k difference 0.013499999999999956; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 74,
+    "moves": [
+      "d5f6"
+    ],
+    "reason": "Linked checking/passed-pawn episode: successful active resistance and responses around promotion/recovery; retain uncertainty before late defense. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.0010000000000000009; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 76,
+    "moves": [
+      "d7e7",
+      "f6h5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.499; initial500k difference 0.429; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 77,
+    "moves": [
+      "a2b2"
+    ],
+    "reason": "Linked checking/passed-pawn episode: successful active resistance and responses around promotion/recovery; retain uncertainty before late defense. Current 5M same_choice_control; observed margin -0.0010000000000000009; initial500k difference -0.012500000000000067; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 80,
+    "moves": [
+      "g1f2",
+      "g1h2"
+    ],
+    "reason": "Linked checking/passed-pawn episode: successful active resistance and responses around promotion/recovery; retain uncertainty before late defense. Current 5M unresolved; observed margin 0.0; initial500k difference 0.051; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 81,
+    "moves": [
+      "b3b2"
+    ],
+    "reason": "Linked checking/passed-pawn episode: successful active resistance and responses around promotion/recovery; retain uncertainty before late defense. Current 5M unresolved; observed margin 0.0; initial500k difference 0.0; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 83,
+    "moves": [
+      "b1f1"
+    ],
+    "reason": "Linked checking/passed-pawn episode: successful active resistance and responses around promotion/recovery; retain uncertainty before late defense. Current 5M unresolved; observed margin 0.0; initial500k difference 0.0004999999999999449; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 86,
+    "moves": [
+      "f1g2",
+      "f1f2"
+    ],
+    "reason": "Linked checking/passed-pawn episode: successful active resistance and responses around promotion/recovery; retain uncertainty before late defense. Current 5M unresolved; observed margin 0.0; initial500k difference 0.0; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 87,
+    "moves": [
+      "g7f8",
+      "c2b3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.3225; initial500k difference 0.263; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 88,
+    "moves": [
+      "e7f7",
+      "f4f7"
+    ],
+    "reason": "Linked checking/passed-pawn episode: successful active resistance and responses around promotion/recovery; retain uncertainty before late defense. Current 5M supported_subthreshold; observed margin -0.169; initial500k difference 0.0855; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 89,
+    "moves": [
+      "f8g8",
+      "f8e8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.38949999999999996; initial500k difference 0.22550000000000003; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 94,
+    "moves": [
+      "f7e7",
+      "f7f6"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.498; initial500k difference 0.499; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 0,
+    "ply": 95,
+    "moves": [
+      "g6g5"
+    ],
+    "reason": "Linked checking/passed-pawn episode: successful active resistance and responses around promotion/recovery; retain uncertainty before late defense. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 34,
+    "moves": [
+      "d1d2",
+      "h1e1"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.007500000000000007; initial500k difference 0.197; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 36,
+    "moves": [
+      "e2d1",
+      "d2c2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.12450000000000003; initial500k difference 0.11599999999999999; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 38,
+    "moves": [
+      "d1b3",
+      "c1b1"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.07799999999999999; initial500k difference 0.04999999999999999; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 41,
+    "moves": [
+      "a8c8",
+      "a5a4"
+    ],
+    "reason": "Active rook/passer success and linked responses to repeated promotion opportunities; terminal checking control. Claims remain separate from board counterfactuals. Current 5M supported_subthreshold; observed margin 0.02100000000000002; initial500k difference 0.0645; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 47,
+    "moves": [
+      "c8c5",
+      "g8g7"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.25449999999999995; initial500k difference 0.3955000000000001; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 48,
+    "moves": [
+      "d3d4",
+      "h1e1"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.20199999999999999; initial500k difference 0.2805; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 49,
+    "moves": [
+      "b7d5",
+      "c5c8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.48750000000000004; initial500k difference 0.45199999999999996; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 50,
+    "moves": [
+      "d4c5"
+    ],
+    "reason": "Active rook/passer success and linked responses to repeated promotion opportunities; terminal checking control. Claims remain separate from board counterfactuals. Current 5M same_choice_control; observed margin 0.0; initial500k difference -0.000500000000000056; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 66,
+    "moves": [
+      "c2c7",
+      "c2d2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.2855; initial500k difference 0.455; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 67,
+    "moves": [
+      "b4b3"
+    ],
+    "reason": "Active rook/passer success and linked responses to repeated promotion opportunities; terminal checking control. Claims remain separate from board counterfactuals. Current 5M same_choice_control; observed margin 0.0; initial500k difference -0.382; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 71,
+    "moves": [
+      "d4b2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.41000000000000003; initial500k difference 0.16599999999999993; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 74,
+    "moves": [
+      "f7d7",
+      "c7b7"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.187; initial500k difference 0.1495; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 80,
+    "moves": [
+      "c7b7"
+    ],
+    "reason": "Active rook/passer success and linked responses to repeated promotion opportunities; terminal checking control. Claims remain separate from board counterfactuals. Current 5M same_choice_control; observed margin 0.0; initial500k difference -0.002; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 81,
+    "moves": [
+      "f6e5",
+      "b2b1q"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.49950000000000006; initial500k difference 0.47050000000000003; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 82,
+    "moves": [
+      "d3e3",
+      "b7b5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.5; initial500k difference 0.477; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 83,
+    "moves": [
+      "e5d4",
+      "e5d5"
+    ],
+    "reason": "Active rook/passer success and linked responses to repeated promotion opportunities; terminal checking control. Claims remain separate from board counterfactuals. Current 5M supported_subthreshold; observed margin 0.0; initial500k difference 0.0; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 91,
+    "moves": [
+      "d4c4",
+      "b2b1q"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.5; initial500k difference 0.49550000000000005; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 92,
+    "moves": [
+      "e3e4"
+    ],
+    "reason": "Active rook/passer success and linked responses to repeated promotion opportunities; terminal checking control. Claims remain separate from board counterfactuals. Current 5M same_choice_control; observed margin 0.0; initial500k difference -0.475; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 93,
+    "moves": [
+      "c4c3",
+      "c4d3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.008499999999999952; initial500k difference 0.15449999999999997; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 98,
+    "moves": [
+      "e4e2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.0685; initial500k difference -0.10050000000000003; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 100,
+    "moves": [
+      "e2e1"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.02949999999999997; initial500k difference -0.11700000000000002; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 102,
+    "moves": [
+      "e1e2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.02849999999999997; initial500k difference 0.22349999999999998; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 112,
+    "moves": [
+      "c8b8",
+      "c8d8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.5; initial500k difference 0.494; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 113,
+    "moves": [
+      "a1a2",
+      "b2b1q"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.5; initial500k difference 0.5; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 114,
+    "moves": [
+      "b8d8"
+    ],
+    "reason": "Active rook/passer success and linked responses to repeated promotion opportunities; terminal checking control. Claims remain separate from board counterfactuals. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.0005000000000000004; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-00",
+    "game": 1,
+    "ply": 126,
+    "moves": [
+      "c8d8"
+    ],
+    "reason": "Active rook/passer success and linked responses to repeated promotion opportunities; terminal checking control. Claims remain separate from board counterfactuals. Current 500k same_choice_control; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "c3d5",
+      "f3d2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.07450000000000001; initial500k difference 0.11549999999999999; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 25,
+    "moves": [
+      "f6b2"
+    ],
+    "reason": "Linked central/material episode and forcing response controls; early unresolved continuation may alter first/largest attribution; later passer conversion illustrates successful reference play. Current 5M unresolved; observed margin -0.023499999999999965; initial500k difference 0.009499999999999953; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 26,
+    "moves": [
+      "a1b1"
+    ],
+    "reason": "Linked central/material episode and forcing response controls; early unresolved continuation may alter first/largest attribution; later passer conversion illustrates successful reference play. Current 5M unresolved; observed margin -0.013500000000000012; initial500k difference 0.035999999999999976; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 27,
+    "moves": [
+      "a5a2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.0034999999999999476; initial500k difference 0.11199999999999999; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 28,
+    "moves": [
+      "d5f4",
+      "c2c3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.3685; initial500k difference 0.3435; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 29,
+    "moves": [
+      "a8d8"
+    ],
+    "reason": "Linked central/material episode and forcing response controls; early unresolved continuation may alter first/largest attribution; later passer conversion illustrates successful reference play. Current 5M unresolved; observed margin -0.03049999999999997; initial500k difference -0.021499999999999964; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 30,
+    "moves": [
+      "d1e2",
+      "f4d3"
+    ],
+    "reason": "Linked central/material episode and forcing response controls; early unresolved continuation may alter first/largest attribution; later passer conversion illustrates successful reference play. Current 5M unresolved; observed margin -0.156; initial500k difference 0.0655; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 32,
+    "moves": [
+      "b1b7",
+      "e1c1"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.1025; initial500k difference 0.127; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 33,
+    "moves": [
+      "f8e8",
+      "e6c4"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.16149999999999998; initial500k difference 0.15649999999999997; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 34,
+    "moves": [
+      "e2f1",
+      "g2h3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.3215; initial500k difference 0.217; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 35,
+    "moves": [
+      "c3e1"
+    ],
+    "reason": "Linked central/material episode and forcing response controls; early unresolved continuation may alter first/largest attribution; later passer conversion illustrates successful reference play. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 0,
+    "ply": 47,
+    "moves": [
+      "a6f1"
+    ],
+    "reason": "Linked central/material episode and forcing response controls; early unresolved continuation may alter first/largest attribution; later passer conversion illustrates successful reference play. Current 500k same_choice_control; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 32,
+    "moves": [
+      "a1c1",
+      "a1d1"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.134; initial500k difference 0.2769999999999999; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 33,
+    "moves": [
+      "f8e8",
+      "d4d3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.1935; initial500k difference 0.16600000000000004; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 35,
+    "moves": [
+      "d4d3"
+    ],
+    "reason": "Passed-pawn/queen-for-rooks sequence, response to opportunity and defensive checking controls; link renewed chances to actual draw without changing claim policy. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.0014999999999999458; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 39,
+    "moves": [
+      "e2f1q",
+      "e2f1r"
+    ],
+    "reason": "Passed-pawn/queen-for-rooks sequence, response to opportunity and defensive checking controls; link renewed chances to actual draw without changing claim policy. Current 5M supported_subthreshold; observed margin 0.0; initial500k difference -0.0034999999999999476; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 49,
+    "moves": [
+      "d1d2",
+      "f6d5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.20849999999999996; initial500k difference 0.123; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 50,
+    "moves": [
+      "b6a5",
+      "a2a4"
+    ],
+    "reason": "Passed-pawn/queen-for-rooks sequence, response to opportunity and defensive checking controls; link renewed chances to actual draw without changing claim policy. Current 5M unresolved; observed margin 0.034499999999999975; initial500k difference None; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 56,
+    "moves": [
+      "e3c5",
+      "e3d3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.013000000000000012; initial500k difference -0.15100000000000002; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 61,
+    "moves": [
+      "f6e4",
+      "e8a8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.339; initial500k difference 0.422; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 62,
+    "moves": [
+      "c5c7",
+      "c5c6"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.009499999999999953; initial500k difference 0.11050000000000004; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 63,
+    "moves": [
+      "e4d6",
+      "e8f8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M threshold_straddling; observed margin 0.043; initial500k difference 0.0195; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 64,
+    "moves": [
+      "a5a6",
+      "c4f1"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.5165; initial500k difference 0.524; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 65,
+    "moves": [
+      "d6c4"
+    ],
+    "reason": "Passed-pawn/queen-for-rooks sequence, response to opportunity and defensive checking controls; link renewed chances to actual draw without changing claim policy. Current 5M same_choice_control; observed margin -0.0015000000000000568; initial500k difference -0.005499999999999949; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 71,
+    "moves": [
+      "d8a8",
+      "h7h6"
+    ],
+    "reason": "Passed-pawn/queen-for-rooks sequence, response to opportunity and defensive checking controls; link renewed chances to actual draw without changing claim policy. Current 5M supported_subthreshold; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 74,
+    "moves": [
+      "g2g3",
+      "f4f5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.025499999999999967; initial500k difference 0.11150000000000004; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 77,
+    "moves": [
+      "h7h5",
+      "f7f5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.498; initial500k difference 0.493; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 78,
+    "moves": [
+      "g3h4",
+      "f4f5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.242; initial500k difference 0.14800000000000002; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 79,
+    "moves": [
+      "d8e8",
+      "g8g7"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.2975; initial500k difference 0.107; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 80,
+    "moves": [
+      "f4f5"
+    ],
+    "reason": "Passed-pawn/queen-for-rooks sequence, response to opportunity and defensive checking controls; link renewed chances to actual draw without changing claim policy. Current 500k same_choice_control; observed margin 0.0024999999999999467; initial500k difference 0.0024999999999999467; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 82,
+    "moves": [
+      "f5g6",
+      "h4g5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.41800000000000004; initial500k difference 0.23050000000000004; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 83,
+    "moves": [
+      "g7g6"
+    ],
+    "reason": "Passed-pawn/queen-for-rooks sequence, response to opportunity and defensive checking controls; link renewed chances to actual draw without changing claim policy. Current 5M unresolved; observed margin -0.04949999999999999; initial500k difference -0.024499999999999966; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 96,
+    "moves": [
+      "h4h5",
+      "f3c6"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_subthreshold; observed margin 0.04849999999999999; initial500k difference 0.05249999999999999; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 97,
+    "moves": [
+      "g8h8"
+    ],
+    "reason": "Passed-pawn/queen-for-rooks sequence, response to opportunity and defensive checking controls; link renewed chances to actual draw without changing claim policy. Current 5M same_choice_control; observed margin -0.01050000000000001; initial500k difference 0.13099999999999998; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-01",
+    "game": 1,
+    "ply": 100,
+    "moves": [
+      "h3h4",
+      "f3b7"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.05149999999999999; initial500k difference 0.1825; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 24,
+    "moves": [
+      "f3e5"
+    ],
+    "reason": "Successful central simplification, linked passer/defensive continuation, recovery after reference bishop moves and terminal draw control. Current 5M same_choice_control; observed margin 0.0; initial500k difference -0.0040000000000000036; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 50,
+    "moves": [
+      "e2d2",
+      "f2f3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.05249999999999999; initial500k difference 0.08950000000000002; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 51,
+    "moves": [
+      "c7c6"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.044499999999999984; initial500k difference -0.13849999999999996; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 52,
+    "moves": [
+      "d2e2",
+      "b2b3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.242; initial500k difference 0.18250000000000002; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 53,
+    "moves": [
+      "d8b8"
+    ],
+    "reason": "Successful central simplification, linked passer/defensive continuation, recovery after reference bishop moves and terminal draw control. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.0535000000000001; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 54,
+    "moves": [
+      "c2c3",
+      "f2f3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.0445; initial500k difference -0.1515; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 55,
+    "moves": [
+      "f4f3"
+    ],
+    "reason": "Successful central simplification, linked passer/defensive continuation, recovery after reference bishop moves and terminal draw control. Current 5M same_choice_control; observed margin 0.0; initial500k difference -0.013500000000000068; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 58,
+    "moves": [
+      "e5f3",
+      "h3h4"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.084; initial500k difference 0.0915; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 65,
+    "moves": [
+      "f6f8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.08050000000000002; initial500k difference 0.15449999999999997; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 66,
+    "moves": [
+      "e8f8",
+      "f3d4"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.1305; initial500k difference 0.0595; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 68,
+    "moves": [
+      "f3d4"
+    ],
+    "reason": "Successful central simplification, linked passer/defensive continuation, recovery after reference bishop moves and terminal draw control. Current 5M unresolved; observed margin -0.0005; initial500k difference 0.001; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 95,
+    "moves": [
+      "d5e6",
+      "h5h3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.4495; initial500k difference 0.09099999999999997; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 96,
+    "moves": [
+      "e2d4"
+    ],
+    "reason": "Successful central simplification, linked passer/defensive continuation, recovery after reference bishop moves and terminal draw control. Current 5M same_choice_control; observed margin -0.007000000000000006; initial500k difference -0.046999999999999986; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 97,
+    "moves": [
+      "e6d7",
+      "h5h2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.0615; initial500k difference 0.08099999999999996; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 98,
+    "moves": [
+      "d4f3",
+      "a8a6"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.11900000000000005; initial500k difference 0.16699999999999998; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 99,
+    "moves": [
+      "h5c5",
+      "d7e6"
+    ],
+    "reason": "Successful central simplification, linked passer/defensive continuation, recovery after reference bishop moves and terminal draw control. Current 5M unresolved; observed margin 0.03849999999999998; initial500k difference 0.05750000000000011; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 116,
+    "moves": [
+      "h7h6",
+      "e5f3"
+    ],
+    "reason": "Successful central simplification, linked passer/defensive continuation, recovery after reference bishop moves and terminal draw control. Current 5M supported_subthreshold; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 26,
+    "moves": [
+      "g2g4",
+      "c3d5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.15849999999999997; initial500k difference 0.026499999999999968; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 27,
+    "moves": [
+      "a6a5",
+      "c6b8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.07699999999999996; initial500k difference 0.022499999999999964; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 28,
+    "moves": [
+      "c3d5",
+      "f1f2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.199; initial500k difference 0.23850000000000002; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 29,
+    "moves": [
+      "f6d7",
+      "c6b8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.10799999999999998; initial500k difference 0.19000000000000006; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 30,
+    "moves": [
+      "b2b4",
+      "d3e2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.3225; initial500k difference 0.277; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 31,
+    "moves": [
+      "b7b6",
+      "c6e7"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.367; initial500k difference 0.268; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 33,
+    "moves": [
+      "g7g5",
+      "c6e7"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.29500000000000004; initial500k difference 0.3375; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 34,
+    "moves": [
+      "c1d1",
+      "f3g1"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.24250000000000005; initial500k difference 0.34650000000000003; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 35,
+    "moves": [
+      "c6e7",
+      "a5b4"
+    ],
+    "reason": "Linked tactical opportunities, active-piece/passer successes and long ending transition; knight/rook-pawn comparison requires full-history context; terminal control does not certify earlier conversion. Current 5M supported_subthreshold; observed margin -0.025999999999999968; initial500k difference 0.0005000000000000004; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 39,
+    "moves": [
+      "d8c7",
+      "d7f6"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.08649999999999997; initial500k difference 0.10599999999999998; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 40,
+    "moves": [
+      "h3h4",
+      "f3g1"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.09650000000000003; initial500k difference 0.041000000000000036; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 49,
+    "moves": [
+      "c7a7",
+      "c7c8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.4985; initial500k difference None; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 50,
+    "moves": [
+      "f3h4",
+      "g3h3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.4790000000000001; initial500k difference 0.15300000000000002; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 51,
+    "moves": [
+      "a7a6",
+      "a7a3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.058499999999999996; initial500k difference 0.10100000000000003; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 52,
+    "moves": [
+      "b4b5"
+    ],
+    "reason": "Linked tactical opportunities, active-piece/passer successes and long ending transition; knight/rook-pawn comparison requires full-history context; terminal control does not certify earlier conversion. Current 5M unresolved; observed margin -0.21299999999999997; initial500k difference 0.02400000000000002; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 53,
+    "moves": [
+      "a6a5",
+      "c6b5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.4245; initial500k difference 0.2975; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 54,
+    "moves": [
+      "h4f5",
+      "b5c6"
+    ],
+    "reason": "Linked tactical opportunities, active-piece/passer successes and long ending transition; knight/rook-pawn comparison requires full-history context; terminal control does not certify earlier conversion. Current 5M unresolved; observed margin -0.0014999999999999458; initial500k difference -0.02100000000000002; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 55,
+    "moves": [
+      "c6b5",
+      "a5b4"
+    ],
+    "reason": "Linked tactical opportunities, active-piece/passer successes and long ending transition; knight/rook-pawn comparison requires full-history context; terminal control does not certify earlier conversion. Current 5M unresolved; observed margin 0.0; initial500k difference 0.0; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 56,
+    "moves": [
+      "c3b5",
+      "g3h3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.5; initial500k difference 0.5; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 74,
+    "moves": [
+      "h6f7",
+      "d6c8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.518; initial500k difference 0.524; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 75,
+    "moves": [
+      "g7f7"
+    ],
+    "reason": "Linked tactical opportunities, active-piece/passer successes and long ending transition; knight/rook-pawn comparison requires full-history context; terminal control does not certify earlier conversion. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.000500000000000056; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 131,
+    "moves": [
+      "e3e2"
+    ],
+    "reason": "Linked tactical opportunities, active-piece/passer successes and long ending transition; knight/rook-pawn comparison requires full-history context; terminal control does not certify earlier conversion. Current 5M same_choice_control; observed margin 0.0; initial500k difference None; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 150,
+    "moves": [
+      "g1f2"
+    ],
+    "reason": "Linked tactical opportunities, active-piece/passer successes and long ending transition; knight/rook-pawn comparison requires full-history context; terminal control does not certify earlier conversion. Current 500k same_choice_control; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 151,
+    "moves": [
+      "h3h2",
+      "f3g5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.5; initial500k difference 0.45299999999999996; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 152,
+    "moves": [
+      "f2g2"
+    ],
+    "reason": "Linked tactical opportunities, active-piece/passer successes and long ending transition; knight/rook-pawn comparison requires full-history context; terminal control does not certify earlier conversion. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.03149999999999997; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 183,
+    "moves": [
+      "d7d6",
+      "d7e6"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.15300000000000002; initial500k difference -0.19700000000000006; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 189,
+    "moves": [
+      "d7d8",
+      "d7d6"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.019499999999999962; initial500k difference 0.10999999999999999; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-02",
+    "game": 1,
+    "ply": 242,
+    "moves": [
+      "g2h1"
+    ],
+    "reason": "Linked tactical opportunities, active-piece/passer successes and long ending transition; knight/rook-pawn comparison requires full-history context; terminal control does not certify earlier conversion. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.0020000000000000018; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 33,
+    "moves": [
+      "c6c5",
+      "b6a7"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.07149999999999995; initial500k difference 0.1285; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 34,
+    "moves": [
+      "b2b4",
+      "f3e5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.0625; initial500k difference 0.11499999999999999; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 41,
+    "moves": [
+      "f7f5",
+      "h8g8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.42050000000000004; initial500k difference 0.369; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 42,
+    "moves": [
+      "e4d5",
+      "e4f5"
+    ],
+    "reason": "Linked responses to pressure/recovery, successful liquidation and knight-ending checking/claim context; preserve unsettled earlier opportunities. Current 5M unresolved; observed margin 0.0040000000000000036; initial500k difference -0.020499999999999963; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 44,
+    "moves": [
+      "a2d5",
+      "g1g2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.07050000000000001; initial500k difference 0.07950000000000002; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 45,
+    "moves": [
+      "a3a2",
+      "d7e6"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.042; initial500k difference 0.10350000000000001; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 50,
+    "moves": [
+      "e5f4",
+      "e5e2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.47850000000000004; initial500k difference 0.45399999999999996; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 51,
+    "moves": [
+      "a7a4",
+      "f8d8"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.1825; initial500k difference 0.08000000000000002; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 52,
+    "moves": [
+      "d3c4",
+      "d2c4"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.2915; initial500k difference 0.24950000000000006; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 65,
+    "moves": [
+      "a6e6",
+      "a6b7"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.33699999999999997; initial500k difference 0.1335; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 66,
+    "moves": [
+      "c1c7"
+    ],
+    "reason": "Linked responses to pressure/recovery, successful liquidation and knight-ending checking/claim context; preserve unsettled earlier opportunities. Current 5M unresolved; observed margin -0.014499999999999957; initial500k difference -0.04399999999999993; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 68,
+    "moves": [
+      "c7c2",
+      "e3c3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.402; initial500k difference 0.11950000000000005; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 69,
+    "moves": [
+      "b6b1"
+    ],
+    "reason": "Linked responses to pressure/recovery, successful liquidation and knight-ending checking/claim context; preserve unsettled earlier opportunities. Current 5M same_choice_control; observed margin -0.0015000000000000013; initial500k difference 0.0050000000000000044; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 75,
+    "moves": [
+      "d5b7",
+      "d5d4"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.182; initial500k difference 0.29000000000000004; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 77,
+    "moves": [
+      "a4d4"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.026500000000000024; initial500k difference -0.2245; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 78,
+    "moves": [
+      "c5c7",
+      "c2a2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.09150000000000003; initial500k difference 0.35150000000000003; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 79,
+    "moves": [
+      "b7d5"
+    ],
+    "reason": "Linked responses to pressure/recovery, successful liquidation and knight-ending checking/claim context; preserve unsettled earlier opportunities. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.0015000000000000013; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 92,
+    "moves": [
+      "a1a2"
+    ],
+    "reason": "Linked responses to pressure/recovery, successful liquidation and knight-ending checking/claim context; preserve unsettled earlier opportunities. Current 5M same_choice_control; observed margin 0.0; initial500k difference -0.0004999999999999449; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 128,
+    "moves": [
+      "f2e1",
+      "f2g2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.5; initial500k difference 0.5; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 129,
+    "moves": [
+      "d1c3"
+    ],
+    "reason": "Linked responses to pressure/recovery, successful liquidation and knight-ending checking/claim context; preserve unsettled earlier opportunities. Current 500k same_choice_control; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 0,
+    "ply": 130,
+    "moves": [
+      "e1f2",
+      "d4e6"
+    ],
+    "reason": "Linked responses to pressure/recovery, successful liquidation and knight-ending checking/claim context; preserve unsettled earlier opportunities. Current 500k supported_subthreshold; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 1,
+    "ply": 30,
+    "moves": [
+      "g1h1",
+      "d2e3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.4795; initial500k difference 0.486; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 1,
+    "ply": 31,
+    "moves": [
+      "d7f8"
+    ],
+    "reason": "Contrary success controls: exploitation, coordinated attack, checks despite enemy promotion, liquidation and mating finish; no unique-best inference. Current 500k same_choice_control; observed margin 0.0020000000000000018; initial500k difference 0.0020000000000000018; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 1,
+    "ply": 43,
+    "moves": [
+      "e6d4",
+      "e6d8"
+    ],
+    "reason": "Contrary success controls: exploitation, coordinated attack, checks despite enemy promotion, liquidation and mating finish; no unique-best inference. Current 500k supported_subthreshold; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 1,
+    "ply": 59,
+    "moves": [
+      "f6g4"
+    ],
+    "reason": "Contrary success controls: exploitation, coordinated attack, checks despite enemy promotion, liquidation and mating finish; no unique-best inference. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 1,
+    "ply": 67,
+    "moves": [
+      "e6e3",
+      "g4e5"
+    ],
+    "reason": "Contrary success controls: exploitation, coordinated attack, checks despite enemy promotion, liquidation and mating finish; no unique-best inference. Current 5M supported_subthreshold; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 1,
+    "ply": 73,
+    "moves": [
+      "g4e5",
+      "g8f7"
+    ],
+    "reason": "Contrary success controls: exploitation, coordinated attack, checks despite enemy promotion, liquidation and mating finish; no unique-best inference. Current 500k supported_subthreshold; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-03",
+    "game": 1,
+    "ply": 89,
+    "moves": [
+      "e3f1"
+    ],
+    "reason": "Contrary success controls: exploitation, coordinated attack, checks despite enemy promotion, liquidation and mating finish; no unique-best inference. Current 500k same_choice_control; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 0,
+    "ply": 21,
+    "moves": [
+      "b4a5",
+      "b4c3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.4485; initial500k difference 0.4545; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 0,
+    "ply": 22,
+    "moves": [
+      "b2b4"
+    ],
+    "reason": "Contrary success controls across material advantage, rook coordination, safe development, passed-pawn conversion and mate; selected uncertain same-choice roots retain discovery. Current 5M same_choice_control; observed margin 0.0; initial500k difference -0.0014999999999999458; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 0,
+    "ply": 26,
+    "moves": [
+      "c2b1"
+    ],
+    "reason": "Contrary success controls across material advantage, rook coordination, safe development, passed-pawn conversion and mate; selected uncertain same-choice roots retain discovery. Current 5M same_choice_control; observed margin 0.0; initial500k difference 0.0050000000000000044; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 0,
+    "ply": 27,
+    "moves": [
+      "b4d3"
+    ],
+    "reason": "Contrary success controls across material advantage, rook coordination, safe development, passed-pawn conversion and mate; selected uncertain same-choice roots retain discovery. Current 5M unresolved; observed margin -0.0005000000000000004; initial500k difference 0.001; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-04",
+    "game": 0,
+    "ply": 44,
+    "moves": [
+      "d2c3",
+      "e2d4"
+    ],
+    "reason": "Contrary success controls across material advantage, rook coordination, safe development, passed-pawn conversion and mate; selected uncertain same-choice roots retain discovery. Current 5M unresolved; observed margin 0.0; initial500k difference 0.0; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 0,
+    "ply": 58,
+    "moves": [
+      "a8h8",
+      "e3f4"
+    ],
+    "reason": "Contrary success controls across material advantage, rook coordination, safe development, passed-pawn conversion and mate; selected uncertain same-choice roots retain discovery. Current 500k supported_subthreshold; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 0,
+    "ply": 96,
+    "moves": [
+      "h8d8"
+    ],
+    "reason": "Contrary success controls across material advantage, rook coordination, safe development, passed-pawn conversion and mate; selected uncertain same-choice roots retain discovery. Current 500k same_choice_control; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 19,
+    "moves": [
+      "e8g8",
+      "f6d5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.15749999999999997; initial500k difference 0.09299999999999997; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 20,
+    "moves": [
+      "b2b4"
+    ],
+    "reason": "Linked early uncertainty and favorable tactical rook/pawn conversion; successful forcing sequence and promotion controls remain distinct from comparative error attribution. Current 5M unresolved; observed margin -0.0040000000000000036; initial500k difference 0.03400000000000003; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 22,
+    "moves": [
+      "f1e2",
+      "g1f3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.09199999999999997; initial500k difference 0.129; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 36,
+    "moves": [
+      "c3d3",
+      "c3c2"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.10399999999999998; initial500k difference 0.16099999999999998; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 39,
+    "moves": [
+      "a7a6"
+    ],
+    "reason": "Linked early uncertainty and favorable tactical rook/pawn conversion; successful forcing sequence and promotion controls remain distinct from comparative error attribution. Current 5M unresolved; observed margin -0.1110000000000001; initial500k difference -0.07350000000000001; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 40,
+    "moves": [
+      "f3e5",
+      "b5a6"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.09300000000000003; initial500k difference 0.10600000000000001; retained flags ['final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 42,
+    "moves": [
+      "b5a6"
+    ],
+    "reason": "Linked early uncertainty and favorable tactical rook/pawn conversion; successful forcing sequence and promotion controls remain distinct from comparative error attribution. Current 5M unresolved; observed margin -0.12099999999999997; initial500k difference 0.046999999999999986; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 43,
+    "moves": [
+      "b7a6"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin -0.06400000000000006; initial500k difference 0.10200000000000009; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 44,
+    "moves": [
+      "a4a5",
+      "e2d1"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M supported_finite_provisional; observed margin 0.176; initial500k difference 0.1945; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 45,
+    "moves": [
+      "f7f6",
+      "a8b8"
+    ],
+    "reason": "Linked early uncertainty and favorable tactical rook/pawn conversion; successful forcing sequence and promotion controls remain distinct from comparative error attribution. Current 5M supported_subthreshold; observed margin 0.016000000000000014; initial500k difference 0.030000000000000027; retained flags ['last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 47,
+    "moves": [
+      "a8c8",
+      "e8b5"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.17600000000000005; initial500k difference 0.26150000000000007; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'final_same_move_bound_conflicts_with_earlier_expected_score', 'last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 48,
+    "moves": [
+      "d3d1",
+      "f2f3"
+    ],
+    "reason": "Frozen harmonized selection baseline: both actors margin>=.04 (1e-12 selection-only tolerance) OR unresolved absolute initial500k difference>=.10. Frozen eligibility arithmetic unchanged. Current 5M unresolved; observed margin 0.119; initial500k difference 0.137; retained flags ['last_score_update_not_selected_exact_score', 'last_two_report_estimates_unstable']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 49,
+    "moves": [
+      "d5c3"
+    ],
+    "reason": "Linked early uncertainty and favorable tactical rook/pawn conversion; successful forcing sequence and promotion controls remain distinct from comparative error attribution. Current 500k same_choice_control; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 67,
+    "moves": [
+      "e4f2",
+      "g8f7"
+    ],
+    "reason": "Linked early uncertainty and favorable tactical rook/pawn conversion; successful forcing sequence and promotion controls remain distinct from comparative error attribution. Current 500k supported_subthreshold; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 69,
+    "moves": [
+      "d4d2"
+    ],
+    "reason": "Linked early uncertainty and favorable tactical rook/pawn conversion; successful forcing sequence and promotion controls remain distinct from comparative error attribution. Current 5M unresolved; observed margin 0.0; initial500k difference 0.0; retained flags ['final_same_move_bound_conflicts_with_earlier_cp', 'last_score_update_not_selected_exact_score']. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution. Consequential unresolved same-choice/missing alternative: unrestricted discovery plus played; any distinct discovery needs matched singleton.",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-04",
+    "game": 1,
+    "ply": 75,
+    "moves": [
+      "e3e2"
+    ],
+    "reason": "Linked early uncertainty and favorable tactical rook/pawn conversion; successful forcing sequence and promotion controls remain distinct from comparative error attribution. Current 500k same_choice_control; observed margin 0.0; initial500k difference 0.0; retained flags []. Exact PRIMARY CLOUD batch02 root from review-index.json; earlier/linked uncertainty prevents final first/largest attribution."
+  }
+]

@@ -1,0 +1,2371 @@
+[
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 17,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "a8c8",
+      "e8g8"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 18,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "c3b5",
+      "c4d5"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 23,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5c4",
+      "c7c5"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 24,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "b3c4"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 26,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "d4d5"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 28,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "f3d2",
+      "f3h4"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 33,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "d8c7",
+      "e8g8"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 34,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "c1b2",
+      "f1d1"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 37,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "d7b6",
+      "c5c4"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 39,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "a6b5"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 42,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "g2e4",
+      "e2e4"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 43,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "g8h8",
+      "h7h6"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 44,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "f1a1",
+      "e4h7"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 45,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7d6",
+      "c7d6"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 46,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "d2f1",
+      "e4h7"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 47,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "b6a4",
+      "b6c4"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 48,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "a1a4"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 50,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "f1e3",
+      "e4h7"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 51,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "f7f6",
+      "d6e5"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 52,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "e3c4",
+      "e4h7"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 53,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "f8d8",
+      "b8a8"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 54,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "a7a4",
+      "e4h7"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 55,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "c7e7",
+      "c7f7"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 56,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "b2a3",
+      "b2c3"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 57,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "d6c7",
+      "b8a8"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 58,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "c4e3"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 59,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "c7b6",
+      "b8a8"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 60,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "a4c4",
+      "e4h7"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 61,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7d6",
+      "b7a6"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 62,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "a3c5",
+      "e4h7"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 67,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "d8d7",
+      "b8c8"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 68,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "c2c3",
+      "e4f3"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 69,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "b8e8",
+      "d7d8"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 70,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "c3b2",
+      "h2h4"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 71,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "d7e7",
+      "e8c8"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 72,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "e4f3"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 73,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7f7",
+      "h8g7"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 76,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "b4b6",
+      "g1g2"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 77,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "d6e7",
+      "d6e5"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 78,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "e3c4"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 172,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "c1a1",
+      "f4f5"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 0,
+    "ply": 194,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "d7e8"
+    ],
+    "reason": "Queen Indian: central knight route and recurring Bxh7 attack chances, linked defensive replies, later promotion conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 1,
+    "ply": 50,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "g1h1",
+      "e5d4"
+    ],
+    "reason": "Queen Indian: central restriction, tactical recovery of sacrificed material, successful long rook/knight conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 1,
+    "ply": 51,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "f7f6"
+    ],
+    "reason": "Queen Indian: central restriction, tactical recovery of sacrificed material, successful long rook/knight conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-05",
+    "game": 1,
+    "ply": 52,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "e5g3",
+      "e5f4"
+    ],
+    "reason": "Queen Indian: central restriction, tactical recovery of sacrificed material, successful long rook/knight conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 1,
+    "ply": 53,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "e6e5"
+    ],
+    "reason": "Queen Indian: central restriction, tactical recovery of sacrificed material, successful long rook/knight conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 1,
+    "ply": 55,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "e8d6",
+      "e8c7"
+    ],
+    "reason": "Queen Indian: central restriction, tactical recovery of sacrificed material, successful long rook/knight conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 1,
+    "ply": 60,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "f3e5",
+      "c3e3"
+    ],
+    "reason": "Queen Indian: central restriction, tactical recovery of sacrificed material, successful long rook/knight conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 1,
+    "ply": 61,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "f6e5"
+    ],
+    "reason": "Queen Indian: central restriction, tactical recovery of sacrificed material, successful long rook/knight conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 1,
+    "ply": 63,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "e4g2"
+    ],
+    "reason": "Queen Indian: central restriction, tactical recovery of sacrificed material, successful long rook/knight conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 1,
+    "ply": 65,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "c8d8",
+      "c6d6"
+    ],
+    "reason": "Queen Indian: central restriction, tactical recovery of sacrificed material, successful long rook/knight conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 1,
+    "ply": 83,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "b2b6"
+    ],
+    "reason": "Queen Indian: central restriction, tactical recovery of sacrificed material, successful long rook/knight conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-05",
+    "game": 1,
+    "ply": 217,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+    "moves": [
+      "h2h1q",
+      "d3e4"
+    ],
+    "reason": "Queen Indian: central restriction, tactical recovery of sacrificed material, successful long rook/knight conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 0,
+    "ply": 17,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5c4",
+      "f8e8"
+    ],
+    "reason": "Reti: queenside pressure, renewed opportunity after queen error, active rooks and promotion finish. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 0,
+    "ply": 23,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "b7b5",
+      "f6d5"
+    ],
+    "reason": "Reti: queenside pressure, renewed opportunity after queen error, active rooks and promotion finish. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 0,
+    "ply": 27,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "g8h8",
+      "c6c5"
+    ],
+    "reason": "Reti: queenside pressure, renewed opportunity after queen error, active rooks and promotion finish. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 0,
+    "ply": 28,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "a2a4",
+      "c1c2"
+    ],
+    "reason": "Reti: queenside pressure, renewed opportunity after queen error, active rooks and promotion finish. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 0,
+    "ply": 32,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "c1a1",
+      "c1c8"
+    ],
+    "reason": "Reti: queenside pressure, renewed opportunity after queen error, active rooks and promotion finish. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 0,
+    "ply": 33,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "b6e6",
+      "d7c5"
+    ],
+    "reason": "Reti: queenside pressure, renewed opportunity after queen error, active rooks and promotion finish. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 0,
+    "ply": 34,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "d2a5",
+      "a1a5"
+    ],
+    "reason": "Reti: queenside pressure, renewed opportunity after queen error, active rooks and promotion finish. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 0,
+    "ply": 58,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "b7f7",
+      "e3c4"
+    ],
+    "reason": "Reti: queenside pressure, renewed opportunity after queen error, active rooks and promotion finish. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 0,
+    "ply": 62,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "b1b7"
+    ],
+    "reason": "Reti: queenside pressure, renewed opportunity after queen error, active rooks and promotion finish. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 0,
+    "ply": 72,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "f7f6"
+    ],
+    "reason": "Reti: queenside pressure, renewed opportunity after queen error, active rooks and promotion finish. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 0,
+    "ply": 142,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7e8q",
+      "c6c8"
+    ],
+    "reason": "Reti: queenside pressure, renewed opportunity after queen error, active rooks and promotion finish. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 24,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "d1c2",
+      "a2a3"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 29,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5d4",
+      "a7a5"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 30,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "c1c4",
+      "a2a3"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 31,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "h6d2",
+      "a7a5"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 40,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "g3g4",
+      "c2c1"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 41,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "h7h6",
+      "f6g4"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 51,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "f6g4"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 55,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "e5e4",
+      "g8g7"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 58,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "b2d4"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 61,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "e4c3"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 62,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "d4d3",
+      "h1g2"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 63,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "a8c8",
+      "g8g7"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 105,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "b4b3",
+      "c4d4"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 106,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7e5"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 109,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "h7g8",
+      "h7g7"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 128,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7c5",
+      "e7b4"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 131,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "e5d4"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 133,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5f4",
+      "e6e4"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 138,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "b5c5",
+      "b5a5"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 140,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "d1h5",
+      "c5d4"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 141,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "g6h5"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-06",
+    "game": 1,
+    "ply": 165,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9/attempts/39b86bb62e0b44dc9d17ce3ccf84c1b5/artifacts/pair/report.json.gz",
+    "moves": [
+      "b2b1q"
+    ],
+    "reason": "Reti: attack maintenance, release of central tension, renewed defensive chances in queen/passer ending. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 18,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "e1f2",
+      "e2e3"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 20,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "f2g1",
+      "e2e3"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 21,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "g8h8",
+      "b8a6"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 22,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "h3f2",
+      "e2e3"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 24,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "g2g3",
+      "a1e1"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 25,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7e5",
+      "f6h5"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 26,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "f4g5"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 28,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "g5e3",
+      "g5f6"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 29,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "b7b5"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 66,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "g3f5",
+      "h1g1"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 68,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "f4e3",
+      "f4g4"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 100,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "g5g7"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; native automatic-claim context: terminal continuation estimates do not establish actual-result conversion failure",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 0,
+    "ply": 102,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "g7g5",
+      "c2e3"
+    ],
+    "reason": "Neo-Grunfeld: king/development choices, recurring defensive chances, terminal native auto-claim limitation. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; native automatic-claim context: terminal continuation estimates do not establish actual-result conversion failure",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 25,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "f8e7",
+      "c6b4"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 28,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "c2c3",
+      "c2b1"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 40,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "f1e1",
+      "e6e2"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 41,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "d8e8",
+      "c6e5"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 42,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "a2a4",
+      "e6e2"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 43,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "b7b6",
+      "c6e5"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 44,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "g2g3",
+      "g1f1"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 45,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "a7a6",
+      "c6e5"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 46,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "h3f2",
+      "g1f2"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 47,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "h6h5",
+      "c6e5"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 49,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "h5h4"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 50,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "g3h4",
+      "f4g5"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 51,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "h8h4",
+      "e8g8"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 53,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "e8g8"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 58,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "f2d3",
+      "f1e2"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 59,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "f6h5"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 60,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "d3f4",
+      "f3f4"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 61,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "h5f4"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 69,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "g5g1",
+      "g5g4"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 73,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "g7e7"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 75,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "g4f4",
+      "e7e2"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 77,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7e2"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-07",
+    "game": 1,
+    "ply": 101,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585/attempts/cdd0b26a78c54c5ba03588c9da5cb3d1/artifacts/pair/report.json.gz",
+    "moves": [
+      "d6d5",
+      "h2g2"
+    ],
+    "reason": "Neo-Grunfeld: repeated central knight opportunities, rook attack and eventual rook-ending conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 19,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "g8h8",
+      "b8d7"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 22,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "f3g5"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 24,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "c4d6",
+      "h2h4"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 26,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "d6b7",
+      "h2h4"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 35,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "f7f5",
+      "c6d5"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 36,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "e4d6"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 72,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "g3f3"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 88,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "c4f7",
+      "c4d4"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 90,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "b3f7"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 91,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "b6c6",
+      "a7a5"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 92,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "g2f3"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 94,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "e5e6",
+      "f7d5"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 95,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "g6g5",
+      "h6g7"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 96,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "f4f5",
+      "f3e4"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 102,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "h3g4"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 103,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "h4h3"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 104,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "e3d4",
+      "g4g5"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 105,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "h3h2"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 117,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "f1f2"
+    ],
+    "reason": "Semi-Slav: material capture versus maintaining initiative, favorable minor-piece ending lost to passed pawns. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 17,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "c5d4",
+      "b7b5"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 18,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "f3d4"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 26,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "c4e5",
+      "c4a5"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 27,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "e4d6"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 29,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "d6b7",
+      "f8d8"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 30,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "e2e4",
+      "g2g4"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 31,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "a7a6",
+      "f7f6"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 34,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "e5g4",
+      "e5d3"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 35,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "e6e5",
+      "f8d8"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 36,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "d1c1",
+      "f3f4"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 37,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "c8g4",
+      "c8e6"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 40,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "h1f1",
+      "g4g5"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 42,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "e2d3",
+      "f1f3"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 69,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "d6e4",
+      "d6b5"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 70,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "b3d3",
+      "b4b5"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 71,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "b8a8",
+      "g8h7"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 136,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "d8f8",
+      "d8d5"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 137,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "b3b4",
+      "b3b2"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 138,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "f8f5"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 151,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "e4e3"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 163,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "g2g6",
+      "e5e4"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 170,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "e8e3"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-08",
+    "game": 1,
+    "ply": 269,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43/attempts/203af06351e74dd281b949085e9a5b61/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5d4",
+      "h2h5"
+    ],
+    "reason": "Semi-Slav: early bishop exchange, renewed middlegame chances, rook-ending activity and native fifty-move draw. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; native automatic-claim context: terminal continuation estimates do not establish actual-result conversion failure",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 9,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "f6g4",
+      "d7d6"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 10,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "e1g1"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 11,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "g4f2",
+      "d7d6"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 12,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "f1f2"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "screen_only"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 14,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "g1f2"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 26,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "a2c4",
+      "f2g1"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 27,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "c6d4",
+      "f7f6"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 28,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "f3d4",
+      "f2g1"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 30,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "d1h5",
+      "f2g1"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 32,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "g5f4",
+      "g5d2"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 33,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "a8e8"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 34,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "c2c3",
+      "f4g3"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 35,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "g7g5",
+      "c7c6"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 36,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "h5e8",
+      "f4g3"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 0,
+    "ply": 38,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5c7"
+    ],
+    "reason": "Unaided White: accepted sacrifice, king safety, lost recovery after queen-for-rook tactic. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 1,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "b8c6",
+      "d7d5"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 2,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "b1c3",
+      "d2d4"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 3,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7e6",
+      "d7d5"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 5,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "f8b4",
+      "g8f6"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 6,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "f1e2",
+      "c3e2"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 8,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "a2a3",
+      "d2d4"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 13,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "e8g8",
+      "e6e5"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; literal .04999999999999999 margin below .05, decimal-grid sensitivity only",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 14,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "e1g1",
+      "c1g5"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 24,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "a3a4",
+      "c3c4"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 25,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "d6d5",
+      "f8d8"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 27,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "d5e4"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 29,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "e4f3",
+      "e7e8"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "subthreshold_reverse"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 31,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "f3e2"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 32,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "e3e2",
+      "e7f6"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim; Consequential absolute initial500k difference remains unresolved at5M; preserve flags and matched alternatives",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 33,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "c6e7"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained; same-choice/missing alternative requires unrestricted discovery plus played and distinct discovered singleton",
+    "prior_status": "unresolved",
+    "discovery": true
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 35,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "e7d5",
+      "f8c8"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "unresolved"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 36,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "a4a5",
+      "c3c4"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 37,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "b7b6",
+      "f8c8"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 38,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "a5b6",
+      "f1e1"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Existing5M observed-range comparison reaches .04 sensitivity threshold; consequential/threshold adjudication, no final first/largest claim",
+    "prior_status": "provisional"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 39,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "c7b6"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 73,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "b4b3"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  },
+  {
+    "pair": "main-02-unaided",
+    "game": 1,
+    "ply": 93,
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5/attempts/432fe0da26db42469ba13380953d072c/artifacts/pair/report.json.gz",
+    "moves": [
+      "f4e2"
+    ],
+    "reason": "Unaided Black: opening sensitivity, forcing central pawn exchanges, rook coordination and successful passer/tactical conversion. Linked opportunity response, favorable-episode boundary or constructive-play/ending control; earlier uncertainty retained",
+    "prior_status": "same_choice"
+  }
+]

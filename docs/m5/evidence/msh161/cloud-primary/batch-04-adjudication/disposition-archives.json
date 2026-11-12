@@ -1,0 +1,21 @@
+{
+  "note": "Exact pre-followup ledgers preserved; write separate closure overlays after followup review.",
+  "files": [
+    {
+      "original": "dispositions20m-00-04.json",
+      "archive": "dispositions20m-00-04.json.gz",
+      "original_sha256": "7a2d6cb7d431ca6cd5edfa77ef0113ff59080e386f346d9c4b822e8b1474b5bb",
+      "archive_sha256": "b5a5992c891e3f2eeb33f725aaeffe06d19b7741d53609e5f98d04403bddddcb",
+      "original_bytes": 1012106,
+      "archive_bytes": 93591
+    },
+    {
+      "original": "dispositions20m-05-09.json",
+      "archive": "dispositions20m-05-09.json.gz",
+      "original_sha256": "6ac015a307f859760fd76bb1137000dd303641dc43362741534aa0bddb7ef475",
+      "archive_sha256": "0e43a32c47f2ed81c7eb5cb385a8ace9dd7a342f546ef87a1c7fb5786170d714",
+      "original_bytes": 6022979,
+      "archive_bytes": 350788
+    }
+  ]
+}

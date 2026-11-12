@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T19:59:00Z'
+updated_date: '2026-11-12T21:11:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -151,4 +151,6 @@ Original Batch 04 accepted as msh161-primary-b04-v1 (QUEUED at submission), UID 
 Batch 04 base execution and independent gameplay/integrity reviews passed: 20 games, 7W/6D/7L (three dead positions, three automatic threefold claims), 5,604 initial and 2,203 matched5M queries, zero scientific failures. Actual peak was five workers rather than eight: 53 resource-pool insert failures and 100 not-found failed-allocation cleanup notices preserved; all workers deleted. Primary compute estimate now US$10.722203 / 53.183419 VM-hours; full compute mean US$29.07. Eighty played, 60 fully reviewed. Frozen required20M plan has 480 roots / 765 jobs / 793 queries including 28 discoveries, SHA256 5cb6fcda4a0832e3ea8c5c53ab7e284e5c349a6d60f36f8c8e7f31b17a7350cc. Independent narratives, exact compressed ledgers and audit in cloud-primary/batch-04-review; plan in batch-04-adjudication. Preserve unselected earlier uncertainty and secondary/AutoClaim limits; no final priorities. Next launch one exit-notified deep plan, then review before Batch 05.
 
 Launched Batch 04 consequential20M submit/wait/verify chain through notify_exit.py PID 38445 from reviewed commit 20c70895, job msh161-primary-b04-20m-v1. Exact plan hash and command are in cloud-primary/batch-04-adjudication/launch.json. Cloud acceptance is separate in submission-result.json after provenance preflight; do not duplicate submission or queries. Wrapper queues this chat on success or failure. Reconcile each layer, independently review results and any distinct new alternative obligations, then update cumulative and launch original Batch 05. Audit clarification preserved: nine uncertain audit controls = seven two-choice plus two same-choice; no stable missed-error trigger.
+
+Batch 04 required20M completed: 765 jobs/793 queries/480 roots/28 discoveries, zero scientific failures. Submission, plan verification, cleanup and notification independently passed. Eight actual panel workers, five failed insertions and ten not-found cleanup notices preserved separately from base-stage53/100; all workers deleted. Primary resource total 58.586983 VM-hours / US$11.811604 estimated compute, full mean US$29.53. Both independent gameplay panels completed; pre-followup ledgers archived losslessly. Ten new alternatives (five discovery/five linked replies) require singleton20M, reusing ten exact played queries. Root independently verified exact histories, PV/discovery sources, legal moves and no duplicate forced alternatives. Plan SHA256 dbe214a18f63e0dbc3595f4a6ad47764c7705ac2032da7353750eef8628fe66a in cloud-primary/batch-04-followup. No repeated unstable searches or recursive PV chain. Keep 60 fully reviewed/80 played distinction until closure, then update cumulative and launch original Batch 05.
 <!-- SECTION:NOTES:END -->

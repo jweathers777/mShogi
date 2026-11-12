@@ -1,0 +1,77 @@
+[
+  {
+    "pair": "main-04-02",
+    "game": 1,
+    "ply": 26,
+    "moves": [
+      "a4b3",
+      "f3h4"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-04-02",
+      "game": 1,
+      "ply": 25
+    }
+  },
+  {
+    "pair": "main-04-03",
+    "game": 1,
+    "ply": 46,
+    "moves": [
+      "c6b7",
+      "c6a4"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-04-03",
+      "game": 1,
+      "ply": 45
+    }
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 44,
+    "moves": [
+      "f3h4",
+      "c1c5"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-04-04",
+      "game": 1,
+      "ply": 43
+    }
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 55,
+    "moves": [
+      "g7g5",
+      "h3g4"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-04-04",
+      "game": 1,
+      "ply": 54
+    }
+  },
+  {
+    "pair": "main-04-04",
+    "game": 1,
+    "ply": 59,
+    "moves": [
+      "f7f6",
+      "d7f8"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-04-04",
+      "game": 1,
+      "ply": 58
+    }
+  }
+]

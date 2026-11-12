@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T09:11:00Z'
+updated_date: '2026-11-12T09:23:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -97,4 +97,6 @@ Owner addition: completedprimarybatch01 review MUST include full200game elapsedt
 Primarycloudbatch01 terminalSUCCEEDED10pipelines; completioneventqueuedcoordinator. Independentruntime audit taskelapsed7834.911s(2h10m35),submitelapsed8341.953s(2h19m02),peak6workers despite8requested:6VMlifecycles and53failedVMinsertoperations fromresourcepoolshortage,notfailedgameattempts. VM/disksnowabsent;~10.2458VMh/$2.0656computeestimate atrecordedrate,notactualbill. Fullrawretrieval/verification nowunattended viaexitwrapper(session12054),generationCRC/SHAchecks, cachecloud-primary/local-cache ignored; noengines. Awaitexitthenindependentscientific/gameplayreview andrequiredcloud20M. Ownerfull200time/costforecastexplicitgate BEFOREbatch02; includeactualcapacity,stagetime,20M,reviewpauses andancillarycost. Batch02notlaunched. Seecloud-primary/README andforecast-request.json.
 
 Primary cloud retrieval verified34,461objects/4,582,665,719bytes. Independent offline audit passes20games8W5D7L,2,410jobs/7,948queries, exactfrozen500k/5Mcoverage and0stableauditcrossings; nofailedattempts/claims. Gameplay reviewers retain complete dispositions, linked opportunity/recovery events, constructive successes and nativeautomaticclaimlimits. Required20M panel being harmonized/cross-reviewed; batch02 remains unsubmitted. See cloud-primary/batch-01-review/integrity-audit.md and gameplay reviews. Full200forecast still pending measured20M; actualbilling unknown.
+
+Cloudbatch01 independentlyreviewed20games/completehistories; bothgameplaypanels harmonized andcross-reviewed, fulluncertainty/strongplay/nativeclaimlimits retained. Frozen20Mplan298decisions/527jobs/558queries incl31discovery; semantic+independentcontrollerreview PASS,9offlineorchestrationtests pass (Level2 targetedcloudprocess/storage scope; real20M execution pending). Committedfd44e820. Submittedmsh161-primary-b01-20m-v1 UIDmsh161-primary-b01-80bf5bb0-d8c3-43290 initialQUEUED2026-11-12T09:22:25Z. SinglePubSubwait/retrieve/planverify throughnotify_exit.py PID40795 queuesowningchat onexit; no periodicpolling/Macengines. See cloud-primary/batch-01-adjudication andREADME. Onexit verifyactual20M/linkedcontinuations anddistinctdiscoveryalternatives, measureVMresources, finalizefull200time/costforecast BEFOREbatch02. No batch02, finalpriorities orproductionchanges.
 <!-- SECTION:NOTES:END -->

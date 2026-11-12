@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T21:19:00Z'
+updated_date: '2026-11-12T21:20:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -157,4 +157,6 @@ Batch 04 required20M completed: 765 jobs/793 queries/480 roots/28 discoveries, z
 Ten-query Batch 04 followup chain launched through notify_exit.py PID 41699, job msh161-primary-b04-followup-v1, reviewed checkpoint 0be87a46. See batch-04-followup/launch.json; submission acceptance is separate. One automatic success/failure callback will resume independent review, preserve original ledgers with closure overlays, update cumulative and launch original Batch 05. No timer or duplicate processes.
 
 Batch 04 closed after independent ten-alternative followup review and execution audit. All obligations covered; four new comparisons remain unresolved and three strengthen existing roots, without new event roots. Original ledgers preserved with separate closure overlays. Primary cumulative now80 fully reviewed games,33W/23D/24L; prepared27/22/23,unaided6/1/1. Twenty actual automatic-claim draws and three dead positions remain distinct. See batch-04-review/closure.md and closure-summary.json. Totals33,577queries/11,340jobs/58.750612VM-hours/US$11.844593 estimated compute; full meanUS$29.61. Batch04 base/deep/followup concurrency5/8/6 with allocation failures53/5/6 retained separately from zero scientific failures. Original Batch05 offline provenance passed; proceed with original AutoClaim and one exit-notification chain.120games remain; no final priorities or production engineering.
+
+Original Batch 05 accepted as msh161-primary-b05-v1 (QUEUED at submission), UID msh161-primary-b05-c99ebe6c-0f4e-41fc0, from reviewed checkpoint 6ce5bf98. Original manifest/image/runnable and ten tasks with maximum eight-worker parallelism verified. One notify_exit.py wrapper PID 43389 runs the existing event-driven wait/retrieve workflow; its local receipt reports running and waiting for terminal completion. See cloud-primary/batch-05 launch and submission receipts. No duplicate processes or searches. Current scientific coverage is 80 fully reviewed games; the remaining 120 proceed in original-condition reviewed batches.
 <!-- SECTION:NOTES:END -->

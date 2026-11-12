@@ -31,7 +31,11 @@ are hash-bound and reused. No unstable query is repeated and no recursive PV
 investigation is opened. `batch-04-followup/plan.json` and its coordinator review
 bind exact native histories, sources, legal moves and absence of duplicate forced
 queries. Plan SHA256: `dbe214a18f63e0dbc3595f4a6ad47764c7705ac2032da7353750eef8628fe66a`.
-Next: launch this plan once via the existing exit-notification wrapper. On exit,
+The plan is launched through exit wrapper PID 41699, job
+`msh161-primary-b04-followup-v1`, from reviewed checkpoint `0be87a46`.
+See `batch-04-followup/launch.json`. Actual cloud acceptance remains separate in
+`submission-result.json`; completion, verification, cleanup and notification each
+have their own receipts. Do not duplicate the wrapper, submission or queries. On exit,
 review only the new comparisons against reused played evidence, write separate
 closure overlays, update cumulative categories/resources, then launch original
 Batch 05. Coverage completion does not clear remaining scientific uncertainty.

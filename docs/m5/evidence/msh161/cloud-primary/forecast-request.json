@@ -8,5 +8,7 @@
     "Failures/retries, worker startup/cleanup and review pauses"
   ],
   "deliverable": "Total campaign and remaining time/cost ranges, assumptions, measured versus projected values, estimated versus billed charges; preserve full200coverage.",
-  "status": "pending_completed_batch01_measurements"
+  "status": "runtime_measured_retrieval_and20M_pending",
+  "runtime_review": "batch-01-runtime-review.json",
+  "note": "SixsuccessfulVMsdespiterequestedeight;resourcepoolfailuresretained. Forecastmustincludeactualcapacityandlater20Mbeforebatch02."
 }

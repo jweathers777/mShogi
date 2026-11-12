@@ -33,22 +33,27 @@ obligations; completion of a pipeline alone does not confirm chess mistakes.
 
 ## Current batch and next review
 
-Primary batch01 submitted successfully as `msh161-primary-b01-v1`, UID
-`msh161-primary-b01-c12991aa-17f5-43260`. Its manifest is
-`batch-01-manifest.json`; the submission response is `batch-01-submission.json`.
-The submission response was QUEUED; one startup check then reported SCHEDULED
-(`batch-01-initial-status.json`). No completed games or running-worker count is
-inferred from these startup states.
+Primary batch01 completed successfully as `msh161-primary-b01-v1`. All10cloud
+pipelines reached success. The event listener queued the coordinator; its terminal
+response is `batch-01-listener.stdout.log`. Runtime review records2h10m35s from
+first task start to last completion and2h19m02s from submission. Only6VMs started
+because of resource shortages, despite requested parallelism8;53failed insertion
+operations are separate from game-attempt failures. Task/VM records govern timing.
 
-The event listener started as PID6829; command and identity are in
-`batch-01-listener.json`. It uses the existing subscription
-`projects/mshogi/subscriptions/mshogi-pilot-completion`, after confirming that the
-prior consumer and all pilot workers had stopped. Only one job consumer uses this
-subscription. The listener makes one initial lookup, then waits for Pub/Sub terminal
-events and queues this coordinator chat on success or failure. It does not poll
-moves or run local engines. Notification acceptance will be recorded separately.
+Raw retrieval is RUNNING through `retrieve_batch.py` and `notify_exit.py`, local
+control session12054. State: `batch-01-review/retrieval-state.json`; notification:
+`batch-01-retrieval-notification.json`. The local cache is `local-cache/` (ignored
+byGit); immutable cloudobjects remain authoritative. It uses32bounded downloads,
+generation/CRC checks and full result-artifactSHA verification. It runs no engines.
+Do not duplicate or poll this retrieval. Its exit queues this chat automatically.
+The review index will be `batch-01-review/review-index.json` when complete.
 
-On the completion message:
+Next gate: independent scientific/gameplay review of retrieved artifacts, required
+cloud20M adjudication, and the requested full200time/cost forecast BEFOREbatch02.
+The runtime estimate alone is not the final forecast: analysis/review pauses,
+ancillary costs and uncertain capacity remain material. No batch02 submitted.
+
+On retrieval/adjudication completion:
 
 1. Read the completion/submission/attempt records. Verify the actual terminal state
    and cleanup. If failed, preserve all attempts and reconcile claims only after

@@ -1,0 +1,234 @@
+{
+  "review_scope": "Read-only completed cloud runtime observation; artifact/stage accounting pending separate retrieval",
+  "job_name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b01-v1",
+  "job_uid": "msh161-primary-b01-c12991aa-17f5-43260",
+  "task_records": [
+    {
+      "task": "0",
+      "start": "2026-11-12T07:11:38.399288601Z",
+      "end": "2026-11-12T08:00:49.498353681Z",
+      "seconds": 2951.099065065384,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-c/instances/4479282650847698526",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "1",
+      "start": "2026-11-12T06:46:33.888823610Z",
+      "end": "2026-11-12T07:52:15.270622649Z",
+      "seconds": 3941.3817989826202,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-f/instances/3481830316586884700",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "2",
+      "start": "2026-11-12T06:46:25.778018271Z",
+      "end": "2026-11-12T07:30:22.190536320Z",
+      "seconds": 2636.4125180244446,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-f/instances/5836948514924977730",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "3",
+      "start": "2026-11-12T07:52:24.063446269Z",
+      "end": "2026-11-12T08:51:57.504861678Z",
+      "seconds": 3573.4414150714874,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-f/instances/3481830316586884700",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "4",
+      "start": "2026-11-12T07:32:19.129077321Z",
+      "end": "2026-11-12T08:45:51.270518759Z",
+      "seconds": 4412.141441106796,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-c/instances/7485712629371560338",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "5",
+      "start": "2026-11-12T06:46:28.439496071Z",
+      "end": "2026-11-12T07:11:20.062478119Z",
+      "seconds": 1491.6229820251465,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-c/instances/4479282650847698526",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "6",
+      "start": "2026-11-12T07:30:22.308457286Z",
+      "end": "2026-11-12T08:12:10.468901765Z",
+      "seconds": 2508.160444021225,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-f/instances/5836948514924977730",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "7",
+      "start": "2026-11-12T06:41:22.593729125Z",
+      "end": "2026-11-12T07:32:13.159239320Z",
+      "seconds": 3050.565510034561,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-c/instances/7485712629371560338",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "8",
+      "start": "2026-11-12T06:54:17.107520483Z",
+      "end": "2026-11-12T08:22:31.600581127Z",
+      "seconds": 5294.493060827255,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/2522852436802591853",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "9",
+      "start": "2026-11-12T06:54:25.643988223Z",
+      "end": "2026-11-12T08:44:33.685965311Z",
+      "seconds": 6608.0419771671295,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/5416246272029416545",
+      "state": "SUCCEEDED"
+    }
+  ],
+  "task_elapsed_seconds": 7834.911132097244,
+  "submission_to_last_task_seconds": 8341.953401088715,
+  "task_seconds_sum": 36467.36021232605,
+  "concurrency_seconds": {
+    "0": 0.0,
+    "1": 669.4186320304871,
+    "2": 80.2460310459137,
+    "3": 1327.5347111225128,
+    "4": 1084.3503770828247,
+    "5": 722.7244083881378,
+    "6": 3950.636972427368
+  },
+  "peak_task_concurrency": 6,
+  "vms": [
+    {
+      "id": "3481830316586884700",
+      "name": "projects/216675633801/zones/us-central1-f/instances/msh161-primary-b01-c12991aa-17f5-43260-group0-0-qnf2",
+      "start": "2026-11-12T06:46:11.569133Z",
+      "deleted": "2026-11-12T08:52:45.274230Z",
+      "seconds": 7593.705096960068
+    },
+    {
+      "id": "7485712629371560338",
+      "name": "projects/216675633801/zones/us-central1-c/instances/msh161-primary-b01-c12991aa-17f5-43260-group0-0-d07s",
+      "start": "2026-11-12T06:41:00.842663Z",
+      "deleted": "2026-11-12T08:46:33.055788Z",
+      "seconds": 7532.213124990463
+    },
+    {
+      "id": "5416246272029416545",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b01-c12991aa-17f5-43260-group0-0-mdcr",
+      "start": "2026-11-12T06:54:05.919407Z",
+      "deleted": "2026-11-12T08:45:18.692775Z",
+      "seconds": 6672.7733681201935
+    },
+    {
+      "id": "2522852436802591853",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b01-c12991aa-17f5-43260-group0-0-g1x3",
+      "start": "2026-11-12T06:53:53.568486Z",
+      "deleted": "2026-11-12T08:23:10.580283Z",
+      "seconds": 5357.011796951294
+    },
+    {
+      "id": "5836948514924977730",
+      "name": "projects/216675633801/zones/us-central1-f/instances/msh161-primary-b01-c12991aa-17f5-43260-group0-0-p4p6",
+      "start": "2026-11-12T06:46:05.664721Z",
+      "deleted": "2026-11-12T08:12:41.137820Z",
+      "seconds": 5195.473098993301
+    },
+    {
+      "id": "4479282650847698526",
+      "name": "projects/216675633801/zones/us-central1-c/instances/msh161-primary-b01-c12991aa-17f5-43260-group0-0-xrgm",
+      "start": "2026-11-12T06:46:09.223482Z",
+      "deleted": "2026-11-12T08:01:43.049407Z",
+      "seconds": 4533.825925111771
+    }
+  ],
+  "vm_lifecycle_hours": 10.245834003090858,
+  "recorded_rate_usd_per_hour": 0.201608,
+  "estimated_vm_compute_usd": 2.0656421016951416,
+  "actual_billed_cost": null,
+  "failed_insert_completion_count": 53,
+  "failed_insert_zones": {
+    "us-central1-b": 22,
+    "us-central1-a": 12,
+    "us-central1-f": 10,
+    "us-central1-c": 9
+  },
+  "operational_notice_error_count": 51,
+  "remaining_instances": [],
+  "remaining_disks": [],
+  "billing_export_observation": "bq ls --format=json --project_id=mshogi returned empty output with exit0; no accessible dataset demonstrated. Does not establish absence of exports in other projects.",
+  "raw_observation_hashes": {
+    "tasks": "b373aa87f627f7c71b4ba5d12adb22815f7efb25c6920958c028fbc48f0f3f90",
+    "vm-audit": "02ad131cbfcdf2ab4db5a855690e89e2811542b1c9601096e59782e4e44aa6c5",
+    "instances": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "disks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "bq-datasets": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "official_price_check": {
+    "date": "2026-11-12",
+    "storage_source": "https://cloud.google.com/storage/pricing",
+    "iowa_standard_usd_per_gib_hour": 2.7397e-05,
+    "standard_flat_class_a_per1000": 0.005,
+    "standard_flat_class_b_per1000": 0.0004,
+    "internet_to_europe_first10tib_usd_per_gib": 0.12,
+    "pd_source": "https://cloud.google.com/compute/disks-image-pricing?hl=en",
+    "balanced_disk_usd_per_gib_hour": 0.000136986,
+    "external_ipv4_source": "https://cloud.google.com/vpc/network-pricing",
+    "standard_external_ipv4_usd_per_hour": 0.005,
+    "registry_source": "https://cloud.google.com/artifact-registry/pricing",
+    "registry_storage_usd_per_gib_hour": 0.000136986,
+    "logging_source": "https://cloud.google.com/products/observability/pricing?hl=en",
+    "logging_usd_per_gib": 0.5,
+    "pubsub_source": "https://cloud.google.com/pubsub/pricing",
+    "pubsub_usd_per_tib": 40,
+    "free_tier_credits": "not assumed; availability unknown",
+    "actual_bucket_metadata": {
+      "creation_time": "2026-11-11T19:28:28+0000",
+      "default_storage_class": "STANDARD",
+      "generation": 1794425308149004790,
+      "location": "US-CENTRAL1",
+      "location_type": "region",
+      "metageneration": 4,
+      "name": "mshogi-experiments-216675633801",
+      "public_access_prevention": "enforced",
+      "soft_delete_policy": {
+        "effectiveTime": "2026-11-11T19:28:28.600000+00:00",
+        "retentionDurationSeconds": "604800"
+      },
+      "storage_url": "gs://mshogi-experiments-216675633801/",
+      "uniform_bucket_level_access": true,
+      "update_time": "2026-11-11T19:29:02+0000"
+    }
+  },
+  "forecast_status": "Draft: measured task/VM basis plus current official ancillary prices; primary stage receipts and first cloud20M panel pending.",
+  "draft_forecast": {
+    "full200_base_compute_usd": [
+      20.66,
+      23.62
+    ],
+    "remaining180_base_compute_usd": [
+      18.59,
+      21.26
+    ],
+    "full200_inclusive_scenario_before_tax_usd": [
+      30,
+      85
+    ],
+    "remaining180_plus_outstanding_adjudication_scenario_before_tax_usd": [
+      30,
+      80
+    ],
+    "full_processing_hours_scenario": [
+      22,
+      41
+    ],
+    "remaining_processing_hours_scenario": [
+      20,
+      38
+    ],
+    "full_calendar_hours_if_nine_one_hour_review_pauses": [
+      31,
+      50
+    ],
+    "status": "Conditional scenario, not cap or confidence interval; assumptions detailed in Markdown; primary stage totals and cloud20M pending"
+  }
+}

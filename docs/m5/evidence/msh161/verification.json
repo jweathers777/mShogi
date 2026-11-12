@@ -297,7 +297,7 @@
     "unperformed": "Batch02 consequential20M and final episode adjudication; primary200cloudcampaign pendingvalidatedrunner."
   },
   "cloud_primary": {
-    "status": "batch01_submitted_listener_active",
+    "status": "batch01_cloud_succeeded_retrieval_running",
     "owner_authorization": "12November2026humanrequestproceedfullcloudstudy",
     "cohort": "cloud-primary/cohort-freeze.json",
     "games_frozen": 200,
@@ -321,6 +321,11 @@
     "cost": "Pilot-scaledVMcomputeestimate23.62USD atrecordedrate;notbill/cap;ancillarycostsandlater20Mextra;trackattempts/lifecycletime/billing.",
     "next": "Oncompletionretrieveverifyreviewfirst20freshcloudgames;performconsequential20M oncloud;reviewbeforebatch02.",
     "initial_status_receipt": "cloud-primary/batch-01-initial-status.json",
-    "last_observed_state": "SCHEDULED"
+    "last_observed_state": "SUCCEEDED",
+    "runtime_review": "cloud-primary/batch-01-runtime-review.json",
+    "retrieval_state": "cloud-primary/batch-01-review/retrieval-state.json",
+    "retrieval_session": 12054,
+    "forecast": "required_before_batch02_pending_retrieval_and20M",
+    "batch02": "not_submitted"
   }
 }

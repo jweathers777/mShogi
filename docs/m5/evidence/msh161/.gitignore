@@ -13,3 +13,6 @@ main/batch-*/
 
 # Local frozen executable copies for replay; build output never committed.
 migration/local-executables/
+
+# Cloud raw evidence remains immutable in GCS and in this local verified cache.
+cloud-primary/local-cache/

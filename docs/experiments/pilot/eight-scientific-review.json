@@ -1,0 +1,438 @@
+{
+  "checks": [
+    "All native pair outcomes audited by frozen helper and independently replayed on Mac native executable; no searches.",
+    "All screening and confirmation queries: exact native histories, root coordinates, forced moves, node settings, options, engine hashes, process exit and full coverage.",
+    "Every screen-v1 interpretation regenerated from its raw query receipts and compared after excluding location-only path strings.",
+    "Frozen deterministic selection regenerated, all derived job identities checked, and uncertainty/bounds preserved.",
+    "Parent separately retrieves and verifies complete artifact manifests; this review hashes each consumed artifact and binds duplicate replay input hashes/lengths to independently replayed original pair bytes."
+  ],
+  "complete_jobs_checked": 1841,
+  "experiment": "msh162-cloud-pilot-eight-v1",
+  "games": 16,
+  "limitations": [
+    "Sixteen games are execution validation, not a rating estimate, competitive diagnosis or final engineering priorities.",
+    "Finite Stockfish screening/5M confirmations do not independently adjudicate consequential events or establish game-theoretic values.",
+    "No pooling with Mac exploratory games.",
+    "Full200game study remains coordinator-owned and requires separate transition review."
+  ],
+  "manifest_sha256": "acd4928de937178f0fdb27d26ce69763037064343ec794fe1e23f6ef6e1cdc42",
+  "native_replay_executable_sha256": "fb7760c0a45b760236a0108f16ea1a2b8d04f95bf0103b7f55b9ff221cd83605",
+  "pairs": [
+    {
+      "confirmation_queries": 186,
+      "histories": [
+        {
+          "decisions": 152,
+          "game": 0,
+          "prepared_plies": 16
+        },
+        {
+          "decisions": 125,
+          "game": 1,
+          "prepared_plies": 16
+        }
+      ],
+      "native_replay": {
+        "returncode": 0,
+        "stdout": "replayed actual external adapter evidence"
+      },
+      "native_summary": {
+        "draws": 0,
+        "failures": 0,
+        "games": 2,
+        "opening_id": "master-c9d97817c6793df3",
+        "unscored": 0,
+        "wins": [
+          0,
+          2
+        ]
+      },
+      "opening_id": "master-c9d97817c6793df3",
+      "pair_id": "main-01-01",
+      "pair_wall_seconds": 1172.455444307,
+      "played_decisions_by_engine": {
+        "0": 122,
+        "1": 123
+      },
+      "prepared_decisions": 32,
+      "screening_decisions": 277,
+      "screening_queries": 554,
+      "searched_plies": 245,
+      "selected_confirmation_decisions": 122,
+      "selection_reasons": {
+        "stratified-nonflagged-audit": 17,
+        "v1-followup": 105
+      },
+      "worker_instance_ids": [
+        "628509247786282238"
+      ]
+    },
+    {
+      "confirmation_queries": 322,
+      "histories": [
+        {
+          "decisions": 144,
+          "game": 0,
+          "prepared_plies": 16
+        },
+        {
+          "decisions": 221,
+          "game": 1,
+          "prepared_plies": 16
+        }
+      ],
+      "native_replay": {
+        "returncode": 0,
+        "stdout": "replayed actual external adapter evidence"
+      },
+      "native_summary": {
+        "draws": 0,
+        "failures": 0,
+        "games": 2,
+        "opening_id": "master-d8ac3f83c2e6dabb",
+        "unscored": 0,
+        "wins": [
+          0,
+          2
+        ]
+      },
+      "opening_id": "master-d8ac3f83c2e6dabb",
+      "pair_id": "main-01-02",
+      "pair_wall_seconds": 1612.390730594,
+      "played_decisions_by_engine": {
+        "0": 166,
+        "1": 167
+      },
+      "prepared_decisions": 32,
+      "screening_decisions": 365,
+      "screening_queries": 730,
+      "searched_plies": 333,
+      "selected_confirmation_decisions": 216,
+      "selection_reasons": {
+        "stratified-nonflagged-audit": 18,
+        "v1-followup": 198
+      },
+      "worker_instance_ids": [
+        "6222696845086911742"
+      ]
+    },
+    {
+      "confirmation_queries": 236,
+      "histories": [
+        {
+          "decisions": 198,
+          "game": 0,
+          "prepared_plies": 16
+        },
+        {
+          "decisions": 126,
+          "game": 1,
+          "prepared_plies": 16
+        }
+      ],
+      "native_replay": {
+        "returncode": 0,
+        "stdout": "replayed actual external adapter evidence"
+      },
+      "native_summary": {
+        "draws": 0,
+        "failures": 0,
+        "games": 2,
+        "opening_id": "master-83059f3308bff336",
+        "unscored": 0,
+        "wins": [
+          1,
+          1
+        ]
+      },
+      "opening_id": "master-83059f3308bff336",
+      "pair_id": "main-01-03",
+      "pair_wall_seconds": 1401.345207641,
+      "played_decisions_by_engine": {
+        "0": 146,
+        "1": 146
+      },
+      "prepared_decisions": 32,
+      "screening_decisions": 324,
+      "screening_queries": 648,
+      "searched_plies": 292,
+      "selected_confirmation_decisions": 150,
+      "selection_reasons": {
+        "stratified-nonflagged-audit": 22,
+        "v1-followup": 128
+      },
+      "worker_instance_ids": [
+        "3618059154433338622"
+      ]
+    },
+    {
+      "confirmation_queries": 134,
+      "histories": [
+        {
+          "decisions": 131,
+          "game": 0,
+          "prepared_plies": 16
+        },
+        {
+          "decisions": 148,
+          "game": 1,
+          "prepared_plies": 16
+        }
+      ],
+      "native_replay": {
+        "returncode": 0,
+        "stdout": "replayed actual external adapter evidence"
+      },
+      "native_summary": {
+        "draws": 0,
+        "failures": 0,
+        "games": 2,
+        "opening_id": "master-997d3e9e04a10b65",
+        "unscored": 0,
+        "wins": [
+          2,
+          0
+        ]
+      },
+      "opening_id": "master-997d3e9e04a10b65",
+      "pair_id": "main-01-04",
+      "pair_wall_seconds": 1181.065583163,
+      "played_decisions_by_engine": {
+        "0": 124,
+        "1": 123
+      },
+      "prepared_decisions": 32,
+      "screening_decisions": 279,
+      "screening_queries": 558,
+      "searched_plies": 247,
+      "selected_confirmation_decisions": 78,
+      "selection_reasons": {
+        "stratified-nonflagged-audit": 22,
+        "v1-followup": 56
+      },
+      "worker_instance_ids": [
+        "8189428203184024830"
+      ]
+    },
+    {
+      "confirmation_queries": 89,
+      "histories": [
+        {
+          "decisions": 155,
+          "game": 0,
+          "prepared_plies": 16
+        },
+        {
+          "decisions": 116,
+          "game": 1,
+          "prepared_plies": 16
+        }
+      ],
+      "native_replay": {
+        "returncode": 0,
+        "stdout": "replayed actual external adapter evidence"
+      },
+      "native_summary": {
+        "draws": 0,
+        "failures": 0,
+        "games": 2,
+        "opening_id": "master-fe4b67c0ad8f8ad3",
+        "unscored": 0,
+        "wins": [
+          2,
+          0
+        ]
+      },
+      "opening_id": "master-fe4b67c0ad8f8ad3",
+      "pair_id": "main-01-05",
+      "pair_wall_seconds": 1134.484136283,
+      "played_decisions_by_engine": {
+        "0": 120,
+        "1": 119
+      },
+      "prepared_decisions": 32,
+      "screening_decisions": 271,
+      "screening_queries": 542,
+      "searched_plies": 239,
+      "selected_confirmation_decisions": 63,
+      "selection_reasons": {
+        "stratified-nonflagged-audit": 23,
+        "v1-followup": 40
+      },
+      "worker_instance_ids": [
+        "653522304094530814"
+      ]
+    },
+    {
+      "confirmation_queries": 223,
+      "histories": [
+        {
+          "decisions": 150,
+          "game": 0,
+          "prepared_plies": 16
+        },
+        {
+          "decisions": 143,
+          "game": 1,
+          "prepared_plies": 16
+        }
+      ],
+      "native_replay": {
+        "returncode": 0,
+        "stdout": "replayed actual external adapter evidence"
+      },
+      "native_summary": {
+        "draws": 0,
+        "failures": 0,
+        "games": 2,
+        "opening_id": "master-51f28ba0fde3a67d",
+        "unscored": 0,
+        "wins": [
+          0,
+          2
+        ]
+      },
+      "opening_id": "master-51f28ba0fde3a67d",
+      "pair_id": "main-01-06",
+      "pair_wall_seconds": 1249.385815824,
+      "played_decisions_by_engine": {
+        "0": 130,
+        "1": 131
+      },
+      "prepared_decisions": 32,
+      "screening_decisions": 293,
+      "screening_queries": 586,
+      "searched_plies": 261,
+      "selected_confirmation_decisions": 150,
+      "selection_reasons": {
+        "stratified-nonflagged-audit": 16,
+        "v1-followup": 134
+      },
+      "worker_instance_ids": [
+        "2053142151748480254"
+      ]
+    },
+    {
+      "confirmation_queries": 271,
+      "histories": [
+        {
+          "decisions": 273,
+          "game": 0,
+          "prepared_plies": 16
+        },
+        {
+          "decisions": 120,
+          "game": 1,
+          "prepared_plies": 16
+        }
+      ],
+      "native_replay": {
+        "returncode": 0,
+        "stdout": "replayed actual external adapter evidence"
+      },
+      "native_summary": {
+        "draws": 1,
+        "failures": 0,
+        "games": 2,
+        "opening_id": "master-2b7e0562e1a741a8",
+        "unscored": 0,
+        "wins": [
+          1,
+          0
+        ]
+      },
+      "opening_id": "master-2b7e0562e1a741a8",
+      "pair_id": "main-01-07",
+      "pair_wall_seconds": 1776.643110478,
+      "played_decisions_by_engine": {
+        "0": 181,
+        "1": 180
+      },
+      "prepared_decisions": 32,
+      "screening_decisions": 393,
+      "screening_queries": 786,
+      "searched_plies": 361,
+      "selected_confirmation_decisions": 185,
+      "selection_reasons": {
+        "stratified-nonflagged-audit": 24,
+        "v1-followup": 161
+      },
+      "worker_instance_ids": [
+        "4216939940964560126"
+      ]
+    },
+    {
+      "confirmation_queries": 364,
+      "histories": [
+        {
+          "decisions": 171,
+          "game": 0,
+          "prepared_plies": 16
+        },
+        {
+          "decisions": 288,
+          "game": 1,
+          "prepared_plies": 16
+        }
+      ],
+      "native_replay": {
+        "returncode": 0,
+        "stdout": "replayed actual external adapter evidence"
+      },
+      "native_summary": {
+        "draws": 0,
+        "failures": 0,
+        "games": 2,
+        "opening_id": "master-549106bea01ad2af",
+        "unscored": 0,
+        "wins": [
+          2,
+          0
+        ]
+      },
+      "opening_id": "master-549106bea01ad2af",
+      "pair_id": "main-01-08",
+      "pair_wall_seconds": 2085.3296717919998,
+      "played_decisions_by_engine": {
+        "0": 214,
+        "1": 213
+      },
+      "prepared_decisions": 32,
+      "screening_decisions": 459,
+      "screening_queries": 918,
+      "searched_plies": 427,
+      "selected_confirmation_decisions": 245,
+      "selection_reasons": {
+        "stratified-nonflagged-audit": 26,
+        "v1-followup": 219
+      },
+      "worker_instance_ids": [
+        "5603988827365010686"
+      ]
+    }
+  ],
+  "raw_truncated_queries": {},
+  "review": "No scientific/native blocking finding in eight-worker validation evidence.",
+  "score_update_bounds_retained": {
+    "(500000, 'lowerbound')": 1009,
+    "(500000, 'upperbound')": 790,
+    "(5000000, 'lowerbound')": 529,
+    "(5000000, 'upperbound')": 266
+  },
+  "total_confirmation_decisions": 1209,
+  "total_confirmation_queries": 1825,
+  "total_prepared_decisions": 256,
+  "total_screening_decisions": 2661,
+  "total_screening_queries": 5322,
+  "total_searched_plies": 2405,
+  "uncertainty_counts": {
+    "(500000, 'last_score_update_not_selected_exact_score')": 1793,
+    "(500000, 'no_nonbound_score_aligned_with_bestmove')": 6,
+    "(5000000, 'last_score_update_not_selected_exact_score')": 795
+  },
+  "wins_draws_losses_candidate": [
+    8,
+    1,
+    7
+  ]
+}

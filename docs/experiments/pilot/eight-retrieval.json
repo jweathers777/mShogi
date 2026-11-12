@@ -1,0 +1,10 @@
+{
+  "bytes": 3980915946,
+  "experiment": "msh162-cloud-pilot-eight-v1",
+  "method": "32 concurrent generation-pinned downloads with CRC32C then local full result SHA256 verification",
+  "objects": 27401,
+  "seconds": 308.8088815417141,
+  "source": "gs://mshogi-experiments-216675633801/msh161/msh162-cloud-pilot-eight-v1",
+  "store": "/private/tmp/msh162-eight-review",
+  "verified_jobs": 1841
+}

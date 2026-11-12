@@ -1,0 +1,66 @@
+{
+  "artifact_contents_downloaded_and_hash_checked": 1401,
+  "artifact_manifest_entries_checked": 1520,
+  "confirmation_flags": {
+    "last_score_update_not_selected_exact_score": 59
+  },
+  "confirmation_jobs_queries": 119,
+  "cpu_seconds": 1979.6660349999988,
+  "duplicate_replay_inputs_checked_by_hash_and_length_against_pair_bytes": 119,
+  "experiment": "msh162-cloud-pilot-one-v1",
+  "limitations": [
+    "One paired opening is execution validation, not strength measurement or competitive diagnosis.",
+    "Uncertainty and finite score bounds remain; selected 5M searches do not by themselves adjudicate events.",
+    "Mac and Linux results remain separate.",
+    "Eight-worker allocation/throughput/recovery stage still requires its own evidence."
+  ],
+  "native_histories": [
+    {
+      "decisions": 131,
+      "game": 0,
+      "prepared_plies": 16
+    },
+    {
+      "decisions": 86,
+      "game": 1,
+      "prepared_plies": 16
+    }
+  ],
+  "native_outcomes": [
+    {
+      "draws": 0,
+      "failures": 0,
+      "games": 2,
+      "opening_id": "master-776cc760ed5d7c73",
+      "unscored": 0,
+      "wins": [
+        2,
+        0
+      ]
+    }
+  ],
+  "pair_complete": true,
+  "played_decisions_by_engine": {
+    "0": 93,
+    "1": 92
+  },
+  "replay_note": "Native worker replay success independently repeated on existing Mac native runner; no searches. Confirmation replay inputs not redownloaded: their content hashes/lengths match independently replayed pair bytes.",
+  "review": "No scientific/native blocking finding for the already authorized eight-worker validation stage.",
+  "screening_by_origin": {
+    "played": 185,
+    "prepared": 32
+  },
+  "screening_decisions": 217,
+  "screening_flags": {
+    "last_score_update_not_selected_exact_score": 122,
+    "no_nonbound_score_aligned_with_bestmove": 2
+  },
+  "screening_queries": 434,
+  "searched_plies": 185,
+  "selected_confirmation_decisions": 75,
+  "selection_reasons": {
+    "stratified-nonflagged-audit": 16,
+    "v1-followup": 59
+  },
+  "wall_seconds": 2327.1585460060023
+}

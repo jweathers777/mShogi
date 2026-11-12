@@ -1,0 +1,107 @@
+{
+  "project_roles": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com"
+        ],
+        "role": "roles/batch.agentReporter"
+      },
+      {
+        "members": [
+          "serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com"
+        ],
+        "role": "roles/logging.logWriter"
+      }
+    ]
+  },
+  "bucket_roles": {
+    "bindings": [
+      {
+        "condition": {
+          "expression": "resource.name.endsWith('/claim.json')",
+          "title": "execution-claims-only"
+        },
+        "members": [
+          "serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storage.objectAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storage.objectCreator"
+      },
+      {
+        "members": [
+          "serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storage.objectViewer"
+      }
+    ]
+  },
+  "registry": {
+    "createTime": "2026-11-11T19:29:36.507033Z",
+    "description": "Fixed mShogi experiment workers",
+    "format": "DOCKER",
+    "mode": "STANDARD_REPOSITORY",
+    "name": "projects/mshogi/locations/us-central1/repositories/mshogi-experiments",
+    "registryUri": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments",
+    "satisfiesPzi": true,
+    "updateTime": "2026-11-11T19:29:36.507033Z",
+    "vulnerabilityScanningConfig": {
+      "enablementState": "SCANNING_DISABLED",
+      "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+      "lastEnableTime": "2026-11-11T19:29:18.417155070Z"
+    }
+  },
+  "registry_roles": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com"
+        ],
+        "role": "roles/artifactregistry.reader"
+      }
+    ]
+  },
+  "subnet": {
+    "allowSubnetCidrRoutesOverlap": false,
+    "creationTimestamp": "2026-11-11T11:31:41.317-08:00",
+    "fingerprint": "Ykft2rFp72U=",
+    "gatewayAddress": "10.42.0.1",
+    "id": "73333133631126642",
+    "ipCidrRange": "10.42.0.0/24",
+    "kind": "compute#subnetwork",
+    "name": "mshogi-batch-us-central1",
+    "network": "https://www.googleapis.com/compute/v1/projects/mshogi/global/networks/mshogi-batch",
+    "privateIpGoogleAccess": true,
+    "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+    "purpose": "PRIVATE",
+    "region": "https://www.googleapis.com/compute/v1/projects/mshogi/regions/us-central1",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+    "stackType": "IPV4_ONLY"
+  },
+  "topic_roles": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:mshogi-batch-worker@mshogi.iam.gserviceaccount.com"
+        ],
+        "role": "roles/pubsub.publisher"
+      }
+    ]
+  },
+  "subscription": {
+    "ackDeadlineSeconds": 60,
+    "expirationPolicy": {
+      "ttl": "2678400s"
+    },
+    "messageRetentionDuration": "604800s",
+    "name": "projects/mshogi/subscriptions/mshogi-pilot-completion",
+    "pushConfig": {},
+    "state": "ACTIVE",
+    "topic": "projects/mshogi/topics/mshogi-batch-events"
+  }
+}

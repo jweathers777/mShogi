@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 03 reviewed; original Batch 04 ready
+## Current state: Batch 03 reviewed; original Batch 04 submitted
 
 Batches 01–03 are fully reviewed: **60 games, 26 wins / 17 draws / 17 losses**.
 Batch 03 finished 9/5/6. Independent gameplay panels and execution review closed
@@ -30,8 +30,12 @@ no failed attempts or allocation failures occurred. Primary cumulative compute i
 `batch-03-followup/forecast-update.json`; the measured full-study compute estimate
 is about US$28.93, with ancillary costs and runtime uncertainty retained separately.
 
-Next: submit the original Batch 04 manifest and start one `notify_exit.py` wrapper
-around `wait_retrieve_batch.py 4`. Save submission and launch receipts separately.
+Original Batch 04 was accepted as `msh161-primary-b04-v1` (QUEUED at submission),
+from reviewed checkpoint `64debb5c`. Its original runnable, 10 paired tasks and
+maximum eight-worker parallelism passed submission verification. One exit wrapper
+(PID 32923) runs `wait_retrieve_batch.py 4`; see `batch-04-wait-launch.json`,
+`batch-04-submission.json` and `batch-04-submission-verification.json`.
+Do not start another wrapper or submit the batch again.
 On completion, reconcile computation, cleanup and notification; review completed
 games with independent gameplay/integrity panels, obtain required 20M checks and
 only distinct discovered-alternative obligations, then continue Batch 05.

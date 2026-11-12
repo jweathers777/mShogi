@@ -77,3 +77,15 @@ Measured parent wall time is 12,049.772s native pairs, 5,974.388s screening and 
 Actual retrieval was 34,461 objects / 4,582,665,719 bytes in 413.085 seconds. A ten-batch scaling is 45.827GB decimal =42.68GiB, versus the pilot illustration46.34GiB; remaining nine batches are approximately38.41GiB. At the verified $0.12/GiB tariff, one complete Internet copy is about $5.12 full / $4.61 remaining before any allowance; retained full-month storage is about $0.85 full / $0.77 remaining at the Standard rate. These are base artifacts only; extra20M outputs, repeat downloads and retention remain additional. Object count is not an exact operations count because dependency verification repeatedly reads existing artifacts.
 
 The provisional inclusive dollar and calendar scenarios remain unchanged: observed base resource costs fit them, while actual20M work, retrieval repetition, request totals and billed usage are still unknown. The update resolves the stage-data gap; it does not close the20M forecast gap or any scientific adjudication obligation.
+
+## Frozen first 20M workload update
+
+The independently reviewed first cloud panel now contains298decisions and558
+queries in527jobs, including31unrestricted-plus-played discovery jobs. The earlier
+1,000–4,000query whole-study scenario is superseded as a count assumption: linear
+scaling of this panel is5,580initial20Mqueries for200games, with further distinct
+discovered alternatives and justified followups still additional. Coverage is not
+capped to fit a forecast. At the unmeasured fourfold5M rate of20.51seconds, that is
+about31.8query-worker-hours before replay, storage, provisioning and idle time.
+This is only a rate extrapolation; actual cloud20M measurements must replace it.
+The final forecast gate beforebatch02 remains open.

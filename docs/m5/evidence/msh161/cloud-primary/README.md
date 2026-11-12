@@ -75,6 +75,18 @@ records the controller review and nine passing offline tests. Only explicit
 confirmation jobs run in the existing image; no games are repeated. Eight balanced
 task assignments retain the existing C3 allocation and process bounds.
 
+Submitted as `msh161-primary-b01-20m-v1`, UID
+`msh161-primary-b01-80bf5bb0-d8c3-43290`, on2026-11-12 at09:22:25UTC; initial
+stateQUEUED. Submission and exact response are under `batch-01-adjudication/`.
+The reviewed source/plan checkpoint is `fd44e820`. Exit-wrapperPID40795 is attached;
+`wait-launch.json` records its command, and `notification.json` separately records
+computation and queue acceptance. Completion data will be under
+`batch-01-adjudication/results/`. Do not duplicate this submission or listener.
+On failure inspect preserved receipts and reconcile the exact job before retry.
+No batch02 has been submitted. The first panel's558queries supersede the earlier
+illustrative1,000–4,000whole-study query-count assumption; see the runtime review's
+workload update. Actual20M timing and billing remain pending.
+
 `adjudication_control.py wait-verify` uses the existing Pub/Sub terminal event,
 then fetches only plan results and verifies them locally. It publishes separate
 immutable plan verification/completion receipts. Run it through `notify_exit.py`

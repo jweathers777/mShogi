@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T14:06:00Z'
+updated_date: '2026-11-12T14:22:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -127,4 +127,8 @@ Linux build PASS: native ab7ef8f1, candidateSHA4a5795d2abf3d3311d190f0e5f7ca1c8b
 Deployment gate FAILED: image544b12cbefb4c78e75bd982fe2f62ec189869b5d2f10aae7d81ee1e28173215f published, but actual short cloud pair exposed incompatible Oxidation. At halfmove100 it returns0000 and refuses native-legal searched mShogi h8g7 continuation. Native runner/replay bothreturn0, exact clean ab7ef8f1 provenance; this is preserved protocol failure, not completedgames. Independent frozen-source review confirms unconditional50move/threefold terminal handling with no configurableoption. Ownerchoice requested: narrowlyidentified Oxidation draw compatibility patch(recommended) or compatible replacement qualification; fixedexternalreference change needs decision. No retries/batch03 active; current staged manifests bind incompatible unchangedOx and mustnotactivate. Preserve failedcloud/wrapper/notification/cleanup/resource records; see policy-transition/README.md and oxidation-draw-policy-review.md.
 
 Independent failed-validation reconciliation complete:12artifact/provenance checks pass; taskFAILED/exit1 preserved; localwrapperPIDs absent/nativeandreplay groups settled; cloudVM deletion completed and matchingVM/disk inventories empty. One short validation, zero scoredstudy games.63.461652VMseconds, estimatedUSD0.003554compute atrecordedrate, notbill/all-in. No duplicateprocesses, retries or capacity left running. Await requested externalreference choice; all prior40games preserved.
+
+Owner supersedes transition: restore original AutoClaim and unmodified mShogi/Oxidation binaries from01–02; no opponent patch/replacement/furtherdrawchanges. Verified alloriginal manifests/config/sourcebundle/build identities unchanged, remaining80pairs160games; reuse oldad95d85image/77101fe3native/51351c48worker. Failedtransition and40completedgames/searches preserved; v2staging cancelled neveractivate. Resume03 with original completion-aware workflow. Finaldiagnosis must discuss automaticclaim limits onconversion observations, analyze precedingdecisions, and never treatdraw alone asweakness. See cloud-primary/autoclaim-restoration.json and updatedREADME; no extra reviewproject or engineering.
+
+Batch03 resumed as msh161-primary-b03-v1 UIDmsh161-primary-b03-b58d20e4-9257-41760; initialQUEUED,10originalpairedtasks max8C3workers, exactsubmittedrunnable/image verified. ExitwrapperPID5820 ownsPubSubwait/retrieve/verification/queue. No furtherpolling/duplicatework; oncompletion independentbatchreview+required20M then04through10. OriginalAutoClaim sample remains uniform acrosscompletedandremaininggames; no correctedtransitionbinary/image used.
 <!-- SECTION:NOTES:END -->

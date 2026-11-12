@@ -1,5 +1,34 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
+## Active owner decision: original AutoClaim restored
+
+John cancelled the draw-policy transition and directed resumption of all remaining
+160games with the original verified mShogi/Oxidation binaries, AutoClaim policy,
+worker image and cloud configuration used in batches01–02. No Oxidation patch,
+replacement reference or further draw-policy work is authorized. The transition
+sections below are retained historical evidence and do not govern execution.
+
+`autoclaim-restoration.json` verifies all ten original manifest hashes, the frozen
+scientific inputs, original source bundle, binary identities,5s/move AutoClaim
+configuration and remaining80pairs. Existing manifests were never activated to
+the attempted v2configuration, so reuse requires no regeneration or new matches.
+Batch03 uses original image digest `ad95d85a…dcc43f7`, native source `77101fe3…`,
+and worker source `51351c48…`; the corrected transition image is NOT used.
+
+See `batch-03-preflight.json`, `batch-03-submission.json` and
+`batch-03-wait-launch.json` for the current execution. One existing completion
+workflow waits on Pub/Sub, retrieves/verifies, then queues this chat. Do not
+duplicate submission or retrieval. Review completed games independently, perform
+required20M checks, then continue batches04–10 through200games as authorized.
+All40completed games/searches and failed transition evidence remain preserved.
+
+Final interpretation: automatic claims can limit observation of advantage
+conversion. Analyze the decisions leading to a claim, preserving earlier/linked
+uncertainty; the draw itself is not proof of engine weakness. No final priorities
+from partial coverage, unrelated engineering, Mac engine execution or timers.
+
+## Historical transition records (superseded)
+
 John authorized the full cloud study on12November2026 after reading the runner
 handoff. The coordinator admitted the existing pilot evidence and integrated
 MSH-162 (Parallel Experiment Runner) at `bb5e698e`. All64 local integration tests

@@ -1,5 +1,17 @@
 # MSH-161 (Competitive Gameplay Diagnosis): automatic draw threshold transition
 
+**ABANDONED by owner decision on12November2026.** Restore the original verified
+AutoClaim study conditions and unmodified binaries from batches01–02. No opponent
+patch/replacement or further draw-policy work. The request for a reference choice
+is withdrawn by this decision. All evidence below, including the failed cloud
+validation and staged v2manifests, is historical; NEVER activate those manifests.
+See `../autoclaim-restoration.json` and `../README.md` for current batch03 execution.
+The historical `policy-strata.json` planned explicit-only160game stratum was never
+executed and is cancelled; it remains unchanged as hash-bound prior evidence.
+The existing production correction commit is not used by this study: execution
+selects the original immutable image/binaries, with no new production edits.
+
+
 The owner authorized this bounded correction before primary cloud batch03. See
 `owner-direction.md`. The existing primary40games remain AutoClaim evidence;
 the remaining160games retain their frozen openings, opponent and5s/move conditions

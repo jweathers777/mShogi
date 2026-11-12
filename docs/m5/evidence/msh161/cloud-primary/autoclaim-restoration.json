@@ -1,0 +1,110 @@
+{
+  "status": "offline_original_conditions_verified",
+  "decision": "Owner restores original AutoClaim; transition abandoned, no opponent patch/replacement; corrected native/image excluded from study",
+  "original_worker_source": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+  "original_image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+  "original_build": {
+    "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+    "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+    "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+    "architecture": "x86_64",
+    "system": "Linux",
+    "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+    "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+    "engines": {
+      "candidate": {
+        "path": "/opt/engines/mshogi",
+        "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+      },
+      "runner": {
+        "path": "/opt/engines/mshogi-match",
+        "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+      },
+      "oxidation060": {
+        "path": "/opt/engines/oxidation",
+        "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+        "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+      },
+      "stockfish19": {
+        "path": "/opt/engines/stockfish",
+        "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+        "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+      }
+    }
+  },
+  "cloud_config": {
+    "project": "mshogi",
+    "region": "us-central1",
+    "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+    "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+    "machine_type": "c3-standard-4",
+    "parallelism": 8,
+    "max_run_seconds": 21600,
+    "max_retries": 1,
+    "boot_disk_gb": 30,
+    "vm_hourly_usd": 0.201608,
+    "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+    "network": "projects/mshogi/global/networks/mshogi-batch",
+    "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+    "cpu_milli": 4000,
+    "memory_mib": 12288
+  },
+  "remaining_batches": [
+    {
+      "batch": 3,
+      "sha256": "1433ce03d24009d11b18d4ed0d47006de198bcafeb13ef1cae8d065b90a754cb",
+      "pairs": 10
+    },
+    {
+      "batch": 4,
+      "sha256": "d0f0e0e0a0a654478a268e3e6692199ee7f93093b25156a77b5749d93a2f0051",
+      "pairs": 10
+    },
+    {
+      "batch": 5,
+      "sha256": "ff2f0574e94fff05273422548077b28ded79a06ebc76168b0f188471f9172953",
+      "pairs": 10
+    },
+    {
+      "batch": 6,
+      "sha256": "38cdefef02dd7a4012edaed185a543fcb006a42d545626945f1bdd614d26137f",
+      "pairs": 10
+    },
+    {
+      "batch": 7,
+      "sha256": "73584f11aef9f6b6d3c8ee792ffd5f4d6bc8440a709d61c6aa73b2ba58b2847a",
+      "pairs": 10
+    },
+    {
+      "batch": 8,
+      "sha256": "b7631c6806511a15ec436b58ed780576b60c069bf5fdc5b42172ef3aa5bcf58f",
+      "pairs": 10
+    },
+    {
+      "batch": 9,
+      "sha256": "fe47d95119b50471830e830cdff0f8e821420579ee19ef026b5ace98b448998d",
+      "pairs": 10
+    },
+    {
+      "batch": 10,
+      "sha256": "ffc621e5697f74a016cc7854808fa7d586f678128359d5bac0151e31eafc69aa",
+      "pairs": 10
+    }
+  ],
+  "claim_policy": "auto_claim",
+  "movetime_ms": 5000,
+  "source_bundle_verified": true,
+  "prior40_preserved": true,
+  "failed_transition_preserved": true,
+  "interpretation": "Optional automatic claims limit conversion observations; analyze preceding decisions; a draw itself is not proof of weakness.",
+  "submission_verified": {
+    "job": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b03-v1",
+    "uid": "msh161-primary-b03-b58d20e4-9257-41760",
+    "initial_state": "QUEUED",
+    "pipeline_tasks": 10,
+    "maximum_parallelism": 8,
+    "submitted_runnable_matches_original_manifest_image": true
+  }
+}

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T17:25:00Z'
+updated_date: '2026-11-12T17:26:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -145,4 +145,6 @@ Batch 03 20M independent panels and runtime audit completed. Preserve all 397 ro
 Seven-query Batch 03 followup launched through existing exit notifier: wrapper PID31181, job msh161-primary-b03-followup-v1, reviewed checkpoint a766ab8e. Seven new forced alternatives and seven reused played queries; no repeated engine work. Await notification, reconcile all status layers, independently disposition these seven linked events with retained prior ledgers, close Batch 03 and update cumulative categories/resources before original Batch 04. Full 200-game coverage remains required, without timers or unrelated engineering.
 
 Batch 03 closed after independent gameplay panels, plan-aware execution review and seven distinct matched followups. Final overlays preserve pre-followup ledgers; unstable comparisons remain unresolved, with earlier/linked and AutoClaim limits retained. Primary cumulative now 60 reviewed games (26W/17D/17L), 24,967 reference queries and 43.042446 VM-hours / US$8.677702 estimated compute, not billed cost. See cloud-primary/batch-03-review/closure.md and closure-summary.json. Original Batch 04 offline provenance passed; proceed with original AutoClaim binaries/image and existing exit-notification workflow. Remaining 140 games authorized; no production changes or final priorities.
+
+Original Batch 04 accepted as msh161-primary-b04-v1 (QUEUED at submission), UID msh161-primary-b04-1c45b9b8-19df-4fe30, from review commit 64debb5c. Original manifest SHA, image, runnable, 10 paired tasks and maximum eight-worker parallelism verified; no other active job or existing experiment prefix before submission. One notify_exit.py wrapper PID 32923 runs the existing wait/retrieve chain and will queue this chat on exit. See cloud-primary/batch-04-{preflight,submission,submission-verification,wait-launch}.json. Current coverage is 60 reviewed / 200; Batch 04 adds the next 20 fresh games. No duplicate searches, Mac engines or policy changes.
 <!-- SECTION:NOTES:END -->

@@ -17,8 +17,14 @@
   "state_artifact": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-02-adjudication",
   "wrapper_pid": 70945,
   "started_epoch": 1794486984.718375,
-  "status": "running",
-  "queue_attempted": false,
+  "status": "success",
+  "queue_attempted": true,
   "cleanup_scope": "Own child process group only; engines detached by existing helpers require their own receipts/reconciliation; not a descendant-tree cleanup guarantee",
-  "child_pid": 70947
+  "child_pid": 70947,
+  "computation_returncode": 0,
+  "residual_group_detected": false,
+  "process_group_settled": true,
+  "finished_epoch": 1794489921.078563,
+  "queue_returncode": 0,
+  "queue_accepted": true
 }

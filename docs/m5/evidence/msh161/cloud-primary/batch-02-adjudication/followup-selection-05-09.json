@@ -1,0 +1,20 @@
+[
+  {
+    "pair": "main-02-08",
+    "game": 0,
+    "ply": 96,
+    "moves": [
+      "f4f5",
+      "c5e4"
+    ],
+    "reason": "New20M linked p95 played ...g5 comparison/PV changes5M assessment and exposes Ne4, absent from p96 frozen alternative Ke4. Require one newforced20M c5e4; reuse existing played f4f5 query, no rerun. Existing matched f5/Ke4 does not adjudicate this newly exposed opportunity.",
+    "supporting_root": {
+      "pair": "main-02-08",
+      "game": 0,
+      "ply": 95
+    },
+    "reuse_played_jobs": [
+      "9b422919039805f20898fc910e26ef83185fc0250d982ffe9243f122083312c1"
+    ]
+  }
+]

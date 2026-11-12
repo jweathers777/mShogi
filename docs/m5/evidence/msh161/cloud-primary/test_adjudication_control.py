@@ -26,6 +26,12 @@ class Tests(unittest.TestCase):
  def test_duplicate_bins_refused(self):
   p=copy.deepcopy(self.plan);p['bins'][1].append(p['bins'][0][0])
   with self.assertRaises(ValueError):c.validate_plan(p)
+ def test_small_panels_have_no_empty_workers(self):
+  p=copy.deepcopy(self.plan);p['jobs']=p['jobs'][:2];p['bins']=c.balanced(p['jobs'])
+  self.assertEqual(len(p['bins']),2);c.validate_plan(p)
+  p['bins'].append([])
+  with self.assertRaises(ValueError):c.validate_plan(p)
+  with self.assertRaises(ValueError):c.balanced([])
  def test_wrong_budget_and_modified_job_refused(self):
   p=copy.deepcopy(self.plan);p['jobs'][0]['nodes']=5000000
   with self.assertRaises(ValueError):c.validate_plan(p)

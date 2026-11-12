@@ -13,6 +13,8 @@ def save_new(p,value):
 def put_same(store,key,data):
     if not store.put(key,data) and store.get(key)!=data:raise ValueError('Immutable key conflict: '+key)
 def balanced(jobs,n=8):
+    n=min(n,8,len(jobs))
+    if n<1:raise ValueError('Nonempty bounded assignments required')
     bins=[[] for _ in range(n)];loads=[0]*n
     for j in sorted(jobs,key=lambda j:(-(2 if j.get('move') is None else 1),j['id'])):
         i=min(range(n),key=lambda i:(loads[i],i));bins[i].append(j['id']);loads[i]+=2 if j.get('move') is None else 1
@@ -113,7 +115,7 @@ def submit(a):
 def validate_plan(plan):
     if plan['schema']!='msh161-adjudication-v1':raise ValueError('Wrong plan schema')
     ids=[j['id'] for j in plan['jobs']]
-    if len(ids)!=len(set(ids)) or len(plan['bins'])!=8 or sorted(ids)!=sorted(k for b in plan['bins'] for k in b):raise ValueError('Invalid bins/job coverage')
+    if not ids or len(ids)!=len(set(ids)) or not 1<=len(plan['bins'])<=8 or any(not b for b in plan['bins']) or sorted(ids)!=sorted(k for b in plan['bins'] for k in b):raise ValueError('Invalid bins/job coverage')
     for j in plan['jobs']:
         core.validate_job(j)
         if j['kind']!='confirmation' or j['nodes']!=20000000 or j['experiment']!=plan['experiment'] or j['environment']['cloud']!=plan['cloud']:raise ValueError('Wrong job kind/budget/cohort')

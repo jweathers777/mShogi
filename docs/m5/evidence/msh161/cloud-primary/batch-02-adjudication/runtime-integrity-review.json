@@ -1,0 +1,225 @@
+{
+  "status": "passed_scientific_execution_cleanup_reconciled",
+  "audit_execution_note": "Offline audit uses one scoped attempt inventory. No engines, scientific queries, retries or submissions.",
+  "plan_sha256": "15ba357c687baa600d9802b1986664ed2621593cd8b2c2488dcdf22ecec8ce99",
+  "verification_sha256": "bb01e6892c1eba98fff22efca810f3b56218808d2a4dd50e7c49f7ad08914397",
+  "audit_script_sha256": "3bdd6ac5c704e616186e4655f912003c4bf6eb63f27a99dbd23dda93058cff91",
+  "jobs": 627,
+  "queries": 663,
+  "decisions": 371,
+  "discovery_jobs": 36,
+  "failed_attempts": 0,
+  "unresolved_claims": 0,
+  "job_wall_seconds": 14595.224608958008,
+  "job_cpu_seconds": 13589.310916999997,
+  "query_wall_seconds": 13572.211627444,
+  "query_cpu_seconds": 13569.05456100001,
+  "query_wall_mean_seconds": 20.47090743204223,
+  "query_wall_max_seconds": 27.269001598999978,
+  "flags": {
+    "directional_bound_conflicts": 44,
+    "stable_report_heuristic": 590,
+    "last_score_update_not_selected_exact_score": 322
+  },
+  "workers": {
+    "3094270991989738813": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "3094270991989738813",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "1927802176983797053": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "1927802176983797053",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "1034348575965318461": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "1034348575965318461",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "8771329081323556157": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "8771329081323556157",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "1667586863186578749": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "1667586863186578749",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "3645344506139118909": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "3645344506139118909",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "2973681543112297789": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "2973681543112297789",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    },
+    "3247603742523526461": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "3247603742523526461",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-a"
+    }
+  },
+  "tasks": [
+    {
+      "task": "0",
+      "start": "2026-11-12T12:41:11.020749425Z",
+      "end": "2026-11-12T13:13:45.086252609Z",
+      "seconds": 1954.0655028820038
+    },
+    {
+      "task": "1",
+      "start": "2026-11-12T12:41:11.407931660Z",
+      "end": "2026-11-12T13:13:25.263709158Z",
+      "seconds": 1933.855777978897
+    },
+    {
+      "task": "2",
+      "start": "2026-11-12T12:41:10.911757166Z",
+      "end": "2026-11-12T13:13:39.935140265Z",
+      "seconds": 1949.0233829021454
+    },
+    {
+      "task": "3",
+      "start": "2026-11-12T12:41:11.727472072Z",
+      "end": "2026-11-12T13:14:06.838722669Z",
+      "seconds": 1975.111249923706
+    },
+    {
+      "task": "4",
+      "start": "2026-11-12T12:41:11.781254937Z",
+      "end": "2026-11-12T13:12:34.477372381Z",
+      "seconds": 1882.6961178779602
+    },
+    {
+      "task": "5",
+      "start": "2026-11-12T12:41:10.357424673Z",
+      "end": "2026-11-12T13:13:46.126992601Z",
+      "seconds": 1955.7695679664612
+    },
+    {
+      "task": "6",
+      "start": "2026-11-12T12:41:11.760909316Z",
+      "end": "2026-11-12T13:13:17.035371578Z",
+      "seconds": 1925.2744619846344
+    },
+    {
+      "task": "7",
+      "start": "2026-11-12T12:41:10.776332472Z",
+      "end": "2026-11-12T13:11:17.966204606Z",
+      "seconds": 1807.1898720264435
+    }
+  ],
+  "task_elapsed_seconds": 1976.4812979698181,
+  "submission_to_last_task_seconds": 2019.056046962738,
+  "concurrency_seconds": {
+    "0": 0.0,
+    "1": 21.130637884140015,
+    "2": 1.1761651039123535,
+    "3": 5.260104179382324,
+    "4": 15.058612823486328,
+    "5": 8.547878980636597,
+    "6": 42.59143614768982,
+    "7": 76.53151297569275,
+    "8": 1806.184949874878
+  },
+  "peak_concurrency": 8,
+  "vm_lifecycle_hours": 4.400461168951458,
+  "vms": [
+    {
+      "id": "3094270991989738813",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-b2c6c65f-572b-45180-group0-0-jl2r",
+      "start": "2026-11-12T12:40:49.721899Z",
+      "deleted": "2026-11-12T13:14:39.759808Z",
+      "seconds": 2030.0379090309143
+    },
+    {
+      "id": "1927802176983797053",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-b2c6c65f-572b-45180-group0-0-8nfc",
+      "start": "2026-11-12T12:40:49.763004Z",
+      "deleted": "2026-11-12T13:14:39.698998Z",
+      "seconds": 2029.9359939098358
+    },
+    {
+      "id": "1034348575965318461",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-b2c6c65f-572b-45180-group0-0-59rp",
+      "start": "2026-11-12T12:40:49.749287Z",
+      "deleted": "2026-11-12T13:14:27.561671Z",
+      "seconds": 2017.8123841285706
+    },
+    {
+      "id": "2973681543112297789",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-b2c6c65f-572b-45180-group0-0-m9qr",
+      "start": "2026-11-12T12:40:49.773012Z",
+      "deleted": "2026-11-12T13:14:09.721029Z",
+      "seconds": 1999.9480171203613
+    },
+    {
+      "id": "1667586863186578749",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-b2c6c65f-572b-45180-group0-0-1ffc",
+      "start": "2026-11-12T12:40:49.910925Z",
+      "deleted": "2026-11-12T13:13:54.370306Z",
+      "seconds": 1984.4593811035156
+    },
+    {
+      "id": "8771329081323556157",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-b2c6c65f-572b-45180-group0-0-ft7h",
+      "start": "2026-11-12T12:40:49.786709Z",
+      "deleted": "2026-11-12T13:13:52.508490Z",
+      "seconds": 1982.7217810153961
+    },
+    {
+      "id": "3645344506139118909",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-b2c6c65f-572b-45180-group0-0-gtdj",
+      "start": "2026-11-12T12:40:49.687517Z",
+      "deleted": "2026-11-12T13:13:00.176621Z",
+      "seconds": 1930.4891040325165
+    },
+    {
+      "id": "3247603742523526461",
+      "name": "projects/216675633801/zones/us-central1-a/instances/msh161-primary-b02-b2c6c65f-572b-45180-group0-0-spf0",
+      "start": "2026-11-12T12:40:49.814270Z",
+      "deleted": "2026-11-12T13:11:56.069908Z",
+      "seconds": 1866.25563788414
+    }
+  ],
+  "estimated_compute_usd": 0.8871681753499656,
+  "price_basis": "Recorded0.201608USD/VM-hour; actual billing unknown",
+  "wrapper_status": "success",
+  "computation_returncode": 0,
+  "wrapper_cleanup_error": null,
+  "queue_accepted": true,
+  "local_reconciliation": {
+    "method": "No current local process census; successful wrapper settled-group receipt reused",
+    "wrapper_pid": 70945,
+    "child_pid": 70947,
+    "recorded_process_group_settled": true
+  },
+  "remaining_instances": [],
+  "remaining_disks": [],
+  "wait_verify_elapsed_seconds": 2692.7641940116882,
+  "after_last_cloud_task_to_wrapper_finish_seconds": 674.2398409843445,
+  "postcloud_timing_limit": "Combined PubSub delivery, download, hash/PV/resource verification, receipt publication and local shutdown; exact download-only span not instrumented",
+  "resource_note": "Query totals nested inside jobs; VM lifecycle includes idle/startup/cleanup. Do not add overlapping totals.",
+  "scientific_limit": "No confirmed errors or strength conclusion. Distinct discovered alternatives and consequential review remain.",
+  "submission_preflight_seconds": 241.57461023330688,
+  "wrapper_start_to_cloud_create_seconds": 243.06430006027222,
+  "whole_submit_wait_retrieve_verify_seconds": 2936.3601880073547,
+  "preflight_timing_scope": "Local driver start to durable submission marker; includescontrollerchecks, consumed-success hashing andplanpublication. Not engine time; precise substage split notinstrumented.",
+  "local_plan_objects": 7560,
+  "local_plan_bytes": 1133730952,
+  "transfer_note": "Local plan object bytes, not network meter; consumed-success reads, retries or cache copies can differ.",
+  "failed_insert_completion_count": 0,
+  "operational_notices": []
+}

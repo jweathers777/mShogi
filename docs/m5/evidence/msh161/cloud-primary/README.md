@@ -100,26 +100,35 @@ case. No absolute first/largest labels or final weakness priorities are establis
 
 There are40completed primary games, but onlybatch01's20are reviewed through required
 20M and included in cumulative scientific categories. Batch03 has not been launched.
-Actual-plan admission passed (`batch-02-adjudication/admission-review.md`). The
-unattended submit/20M/event/retrieval/verification workflow is now running under
-exit-wrapperPID70945, targeting `msh161-primary-b02-20m-v1`. Review checkpoint:
-`fce0d5c3`; immutable plan SHA begins `15ba357c687b`. `batch-02-adjudication/launch.json`
-records the exact command and hashes. Cloud acceptance/UID will be recorded in
-`submission-result.json` after the driver finishes its immutable-dependency checks;
-do not infer cloud acceptance merely from the local wrapper running.
+Batch02's initial20M workflow completed successfully:627jobs/663queries, wrapper
+returnzero, own process group settled and queue accepted. Independent source/hash/
+history/PV audit and both gameplay cross-reviews passed. Eight actual cloudworkers,
+no allocation failures, all VMs/disks deleted. The panel used4.400461VM-hours,
+estimated$0.88717compute. The two completed base batches plus their initial20M
+panels total29.369163VM-hours/~$5.92106compute, not actual billing. See
+`batch-02-adjudication/runtime-integrity-review.*` and `forecast-update.json`.
 
-`run_adjudication_plan.py` calls reviewed submit then event-wait/retrieval/verification
-in one unattended process under `notify_exit.py`. Submission failure also queues
-this chat, with no automatic retry. The small driver passed independent review and
-threeoffline tests. `notification.json` records computation, process-group cleanup
-and queue acceptance separately; `results/` will contain terminal/verification
-receipts. Do not duplicate this workflow or poll unchanged output. No timed wake.
-The ordinary base-manifest status does not enumerate these627additional20M jobs.
+Two further singleton alternatives are required beforebatch02closure:
+- main-02-02 game0 ply65: forceg8g7, from unrestricted20M discovery; reuseplayedf6f8.
+- main-02-08 game0 ply96: forcec5e4, from the newly clarifiedp95continuation;
+  reuseplayedf4f5. The originalf5/Ke4 comparison cannot settle this new alternative.
 
-On exit reconcile receipts, review20M and distinct discovered alternatives, update
-cumulative episodes/resources/forecast, then continue the remaining160games in
-reviewed batches. Preserve full200coverage; no timer, periodic watcher, Mac engine
-execution or production engineering. Immutable cloud evidence remains authoritative.
+Both are legal at the exact full-history roots and independently reviewed.
+`batch-02-followup/plan.json` (SHA begins5fa4df35) adds onlytwoqueries and binds the
+existing equal-work played receipts and supportingp95evidence. It uses twoC3tasks,
+not eight with empty assignments. The small controller-only change allows1..8
+nonempty bins; independent tests/admission passed. Frozen engine/worker code,
+scientific thresholds and original completed plans remain unchanged.
+
+The full20M overlays and detailed legal continuations are under
+`batch-02-adjudication/`. Earlier/unqueried uncertainty, supersession, sevennative
+claim draws and strong play remain explicit. In particular02g0p65's existing
+same-choice control has a pending new comparison; it is not wholly settled.
+Batch03 has not been launched; cumulative categories still cover20fullyreviewed
+primarygames while40games have completed. Next execute the two-query followup,
+review its results, update primarycumulative/resources, thencontinuefrozenbatch03.
+Use the same single exit-notification workflow; no timer, polling, Mac engine or
+production engineering. Preserve full200coverage and all failure/provenance records.
 
 On retrieval/adjudication completion:
 

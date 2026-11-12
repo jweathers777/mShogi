@@ -1,0 +1,24 @@
+{
+  "measured_primary_games": 40,
+  "measured_completed20m_panels": 2,
+  "measured_scientific_queries": 17781,
+  "measured_jobs": 5940,
+  "failed_scientific_attempts": 0,
+  "estimated_completed_primary_vm_hours": 29.369163473844527,
+  "estimated_completed_primary_compute_usd": 5.921058309634848,
+  "recorded_vm_hourly_usd": 0.201608,
+  "actual_billed_cost": null,
+  "full200_compute_reference_usd": 29.60529154817424,
+  "remaining160_compute_reference_usd": 23.68423323853939,
+  "additional_pending_batch02_singleton_queries": 2,
+  "pending_followup_cost": "Not included inmeasuredtotal; recordactualruntimeafterexecution. No newquerylaunched bythisreview.",
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "inclusive_remaining160_conditional_before_tax_usd": [
+    30,
+    80
+  ],
+  "basis": "Two observedbasebatches plus twoobserved20Mpanels; repeatmeanworkload, variablefuturepanels/recovery/storage/transfer/operations remain scenario inputs, not cap/bill/confidenceinterval."
+}

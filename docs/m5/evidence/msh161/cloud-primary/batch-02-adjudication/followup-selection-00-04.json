@@ -1,0 +1,12 @@
+[
+  {
+    "pair": "main-02-02",
+    "game": 0,
+    "ply": 65,
+    "moves": [
+      "f6f8",
+      "g8g7"
+    ],
+    "reason": "Distinct unrestricted20M discovery needs matched forced20M alternative; reuse existing played20M receipt at this exact full-history root. Existing comparison does not establish this new alternative."
+  }
+]

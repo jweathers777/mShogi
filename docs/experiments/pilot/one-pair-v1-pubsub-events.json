@@ -1,0 +1,12 @@
+[
+  {
+    "attributes": {
+      "JobName": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-one-v1",
+      "NewJobState": "FAILED",
+      "Type": "JOB_STATE_CHANGED",
+      "JobUID": "msh162-pilot-one-v-d99b9f4d-cebf-48020",
+      "Region": "us-central1"
+    },
+    "data": "Job state was updated: jobName=projects/216675633801/locations/us-central1/jobs/msh162-pilot-one-v1, jobUID=msh162-pilot-one-v-d99b9f4d-cebf-48020, previousState=QUEUED, currentState=FAILED, timestamp=2026-11-11T11:37:22-08:00"
+  }
+]

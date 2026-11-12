@@ -1,0 +1,627 @@
+{
+  "reviewed_utc": "2026-11-11T22:24:58.464306+00:00",
+  "experiment": "msh162-cloud-pilot-eight-v1",
+  "counts": {
+    "confirmation:complete": 1825,
+    "reference_screening:complete": 8,
+    "game_pair:complete": 8
+  },
+  "success_markers": 1841,
+  "known_jobs": 1841,
+  "claims": [],
+  "workers": {
+    "3618059154433338622": {
+      "environment": {
+        "architecture": "x86_64",
+        "batch": {
+          "BATCH_JOB_UID": "msh162-pilot-eight-a0d24cf9-68f1-4bfc0",
+          "BATCH_TASK_COUNT": "8",
+          "BATCH_TASK_INDEX": "2",
+          "BATCH_TASK_RETRY_ATTEMPT": "0"
+        },
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "cpu_count": 4,
+        "gcp": {
+          "cpu-platform": "Intel Sapphire Rapids",
+          "id": "3618059154433338622",
+          "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+          "zone": "projects/216675633801/zones/us-central1-a"
+        },
+        "platform": "Linux-6.6.159+-x86_64-with-glibc2.41"
+      },
+      "jobs": 238,
+      "wall_seconds": 3752.6871947319987,
+      "cpu_seconds": 3214.6413620000017,
+      "start": 1794429491.4059775,
+      "end": 1794433541.5921822,
+      "kinds": {
+        "confirmation": 236,
+        "reference_screening": 1,
+        "game_pair": 1
+      },
+      "retry_attempts": [
+        "0"
+      ],
+      "audit_lifecycle_seconds": 4113.815941,
+      "audit": [
+        {
+          "time": "2026-11-11T21:46:11.407256Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T21:45:56.158801Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:54.726816Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:37.591315Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        }
+      ]
+    },
+    "6222696845086911742": {
+      "environment": {
+        "architecture": "x86_64",
+        "batch": {
+          "BATCH_JOB_UID": "msh162-pilot-eight-a0d24cf9-68f1-4bfc0",
+          "BATCH_TASK_COUNT": "8",
+          "BATCH_TASK_INDEX": "1",
+          "BATCH_TASK_RETRY_ATTEMPT": "0"
+        },
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "cpu_count": 4,
+        "gcp": {
+          "cpu-platform": "Intel Sapphire Rapids",
+          "id": "6222696845086911742",
+          "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+          "zone": "projects/216675633801/zones/us-central1-a"
+        },
+        "platform": "Linux-6.6.159+-x86_64-with-glibc2.41"
+      },
+      "jobs": 324,
+      "wall_seconds": 4809.080222453997,
+      "cpu_seconds": 4142.592121999998,
+      "start": 1794429492.6676066,
+      "end": 1794434696.527234,
+      "kinds": {
+        "confirmation": 322,
+        "reference_screening": 1,
+        "game_pair": 1
+      },
+      "retry_attempts": [
+        "0"
+      ],
+      "audit_lifecycle_seconds": 5276.198652,
+      "audit": [
+        {
+          "time": "2026-11-11T22:05:33.782536Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T22:05:16.785477Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:54.551218Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:37.583884Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        }
+      ]
+    },
+    "5603988827365010686": {
+      "environment": {
+        "architecture": "x86_64",
+        "batch": {
+          "BATCH_JOB_UID": "msh162-pilot-eight-a0d24cf9-68f1-4bfc0",
+          "BATCH_TASK_COUNT": "8",
+          "BATCH_TASK_INDEX": "7",
+          "BATCH_TASK_RETRY_ATTEMPT": "0"
+        },
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "cpu_count": 4,
+        "gcp": {
+          "cpu-platform": "Intel Sapphire Rapids",
+          "id": "5603988827365010686",
+          "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+          "zone": "projects/216675633801/zones/us-central1-a"
+        },
+        "platform": "Linux-6.6.159+-x86_64-with-glibc2.41"
+      },
+      "jobs": 366,
+      "wall_seconds": 5699.021788002997,
+      "cpu_seconds": 4971.768940999996,
+      "start": 1794429492.9208012,
+      "end": 1794435645.5071783,
+      "kinds": {
+        "confirmation": 364,
+        "reference_screening": 1,
+        "game_pair": 1
+      },
+      "retry_attempts": [
+        "0"
+      ],
+      "audit_lifecycle_seconds": 6223.527167,
+      "audit": [
+        {
+          "time": "2026-11-11T22:21:21.058633Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T22:21:03.482072Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:56.972529Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:37.531466Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        }
+      ]
+    },
+    "4216939940964560126": {
+      "environment": {
+        "architecture": "x86_64",
+        "batch": {
+          "BATCH_JOB_UID": "msh162-pilot-eight-a0d24cf9-68f1-4bfc0",
+          "BATCH_TASK_COUNT": "8",
+          "BATCH_TASK_INDEX": "6",
+          "BATCH_TASK_RETRY_ATTEMPT": "0"
+        },
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "cpu_count": 4,
+        "gcp": {
+          "cpu-platform": "Intel Sapphire Rapids",
+          "id": "4216939940964560126",
+          "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+          "zone": "projects/216675633801/zones/us-central1-a"
+        },
+        "platform": "Linux-6.6.159+-x86_64-with-glibc2.41"
+      },
+      "jobs": 273,
+      "wall_seconds": 4566.467814391009,
+      "cpu_seconds": 3977.1684919999975,
+      "start": 1794429490.6096716,
+      "end": 1794434403.763072,
+      "kinds": {
+        "confirmation": 271,
+        "reference_screening": 1,
+        "game_pair": 1
+      },
+      "retry_attempts": [
+        "0"
+      ],
+      "audit_lifecycle_seconds": 4970.817392,
+      "audit": [
+        {
+          "time": "2026-11-11T22:00:28.406532Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T22:00:11.266169Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:54.879161Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:37.589140Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        }
+      ]
+    },
+    "8189428203184024830": {
+      "environment": {
+        "architecture": "x86_64",
+        "batch": {
+          "BATCH_JOB_UID": "msh162-pilot-eight-a0d24cf9-68f1-4bfc0",
+          "BATCH_TASK_COUNT": "8",
+          "BATCH_TASK_INDEX": "3",
+          "BATCH_TASK_RETRY_ATTEMPT": "0"
+        },
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "cpu_count": 4,
+        "gcp": {
+          "cpu-platform": "Intel Sapphire Rapids",
+          "id": "8189428203184024830",
+          "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+          "zone": "projects/216675633801/zones/us-central1-a"
+        },
+        "platform": "Linux-6.6.159+-x86_64-with-glibc2.41"
+      },
+      "jobs": 136,
+      "wall_seconds": 2813.550143073003,
+      "cpu_seconds": 2431.6522839999993,
+      "start": 1794429491.818168,
+      "end": 1794432500.0330038,
+      "kinds": {
+        "confirmation": 134,
+        "reference_screening": 1,
+        "game_pair": 1
+      },
+      "retry_attempts": [
+        "0"
+      ],
+      "audit_lifecycle_seconds": 3075.978734,
+      "audit": [
+        {
+          "time": "2026-11-11T21:28:53.526957Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T21:28:36.862432Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:59.118611Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:37.548223Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        }
+      ]
+    },
+    "2053142151748480254": {
+      "environment": {
+        "architecture": "x86_64",
+        "batch": {
+          "BATCH_JOB_UID": "msh162-pilot-eight-a0d24cf9-68f1-4bfc0",
+          "BATCH_TASK_COUNT": "8",
+          "BATCH_TASK_INDEX": "5",
+          "BATCH_TASK_RETRY_ATTEMPT": "0"
+        },
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "cpu_count": 4,
+        "gcp": {
+          "cpu-platform": "Intel Sapphire Rapids",
+          "id": "2053142151748480254",
+          "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+          "zone": "projects/216675633801/zones/us-central1-a"
+        },
+        "platform": "Linux-6.6.159+-x86_64-with-glibc2.41"
+      },
+      "jobs": 225,
+      "wall_seconds": 3552.095667031997,
+      "cpu_seconds": 3038.5111399999973,
+      "start": 1794429491.0328035,
+      "end": 1794433329.756691,
+      "kinds": {
+        "confirmation": 223,
+        "reference_screening": 1,
+        "game_pair": 1
+      },
+      "retry_attempts": [
+        "0"
+      ],
+      "audit_lifecycle_seconds": 3913.586885,
+      "audit": [
+        {
+          "time": "2026-11-11T21:42:51.174677Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T21:42:36.387640Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:55.030882Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:37.587792Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        }
+      ]
+    },
+    "628509247786282238": {
+      "environment": {
+        "architecture": "x86_64",
+        "batch": {
+          "BATCH_JOB_UID": "msh162-pilot-eight-a0d24cf9-68f1-4bfc0",
+          "BATCH_TASK_COUNT": "8",
+          "BATCH_TASK_INDEX": "0",
+          "BATCH_TASK_RETRY_ATTEMPT": "0"
+        },
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "cpu_count": 4,
+        "gcp": {
+          "cpu-platform": "Intel Sapphire Rapids",
+          "id": "628509247786282238",
+          "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+          "zone": "projects/216675633801/zones/us-central1-a"
+        },
+        "platform": "Linux-6.6.159+-x86_64-with-glibc2.41"
+      },
+      "jobs": 188,
+      "wall_seconds": 3233.3240913770014,
+      "cpu_seconds": 2782.765347,
+      "start": 1794429490.5870256,
+      "end": 1794432970.0635924,
+      "kinds": {
+        "confirmation": 186,
+        "game_pair": 1,
+        "reference_screening": 1
+      },
+      "retry_attempts": [
+        "0"
+      ],
+      "audit_lifecycle_seconds": 3554.84873,
+      "audit": [
+        {
+          "time": "2026-11-11T21:36:52.424832Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T21:36:36.765590Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:54.645978Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:37.576102Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        }
+      ]
+    },
+    "653522304094530814": {
+      "environment": {
+        "architecture": "x86_64",
+        "batch": {
+          "BATCH_JOB_UID": "msh162-pilot-eight-a0d24cf9-68f1-4bfc0",
+          "BATCH_TASK_COUNT": "8",
+          "BATCH_TASK_INDEX": "4",
+          "BATCH_TASK_RETRY_ATTEMPT": "0"
+        },
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "cpu_count": 4,
+        "gcp": {
+          "cpu-platform": "Intel Sapphire Rapids",
+          "id": "653522304094530814",
+          "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+          "zone": "projects/216675633801/zones/us-central1-a"
+        },
+        "platform": "Linux-6.6.159+-x86_64-with-glibc2.41"
+      },
+      "jobs": 91,
+      "wall_seconds": 2389.747709763,
+      "cpu_seconds": 2098.7245449999996,
+      "start": 1794429490.4575193,
+      "end": 1794432024.1262434,
+      "kinds": {
+        "confirmation": 89,
+        "reference_screening": 1,
+        "game_pair": 1
+      },
+      "retry_attempts": [
+        "0"
+      ],
+      "audit_lifecycle_seconds": 2612.046606,
+      "audit": [
+        {
+          "time": "2026-11-11T21:21:09.625699Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T21:20:36.457939Z",
+          "method": "v1.compute.instances.delete",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:54.754636Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        },
+        {
+          "time": "2026-11-11T20:37:37.579093Z",
+          "method": "v1.compute.instances.insert",
+          "status": {}
+        }
+      ]
+    }
+  },
+  "wall_seconds_sum": 30815.974630825003,
+  "cpu_seconds_sum": 26657.824232999992,
+  "first_attempt_start_to_last_end_seconds": 6155.049659013748,
+  "aggregate_job_wall_over_elapsed": 5.00661673552814,
+  "all_eight_worker_intervals_overlap_seconds": 2531.2054421901703,
+  "remaining_project_instances": [],
+  "remaining_project_disks": [],
+  "estimated_vm_lifecycle_hours": 9.372450029722224,
+  "estimated_compute_usd": 1.8895609055922382,
+  "price_per_vm_hour_usd": 0.201608,
+  "source_revisions": [
+    "51351c48ea1adf9ac96011aec1440e44ceb741a4"
+  ],
+  "build_hashes": [
+    "9fee4ebdb971cb08392046f04290e01711aad0759c77c5f5adee9b63deb570ea"
+  ],
+  "limitations": [
+    "Receipt metadata reviewed; full artifact integrity is separate.",
+    "Worker-span overlap proves simultaneous pipelines, not continuous CPU utilization.",
+    "Wall-sum/elapsed compares same-cloud work, not measured serial baseline or Mac speed.",
+    "Cost estimate excludes storage, disk, networking, logs and tax; actual billing unavailable.",
+    "Coordinator scientific review and full-study authorization remain separate.",
+    "Aggregate Batch completion timestamp is inconsistent with last task completion; task-level/VM lifecycle and receipt evidence used instead."
+  ],
+  "final_object_server_timestamps": {
+    "receipt_key": "msh162-cloud-pilot-eight-v1/jobs/02bfcec4e6c00b811e75fc4c99662b799666d449411cb4ee316fcc688c4cc801/attempts/1229fb39f2714553be585c7f5b3320e4/receipt.json",
+    "receipt_created": "2026-11-11T22:20:45.570000+00:00",
+    "receipt_updated": "2026-11-11T22:20:45.570000+00:00",
+    "success_created": "2026-11-11T22:20:45.640000+00:00",
+    "receipt_ended_epoch": 1794435645.5071783
+  },
+  "authoritative_task_events": [
+    [
+      "0",
+      "RUNNING",
+      "2026-11-11T20:38:07.472466078Z"
+    ],
+    [
+      "0",
+      "SUCCEEDED",
+      "2026-11-11T21:36:11.081295762Z"
+    ],
+    [
+      "1",
+      "RUNNING",
+      "2026-11-11T20:38:09.507862041Z"
+    ],
+    [
+      "1",
+      "SUCCEEDED",
+      "2026-11-11T22:04:57.581270345Z"
+    ],
+    [
+      "2",
+      "RUNNING",
+      "2026-11-11T20:38:08.504883412Z"
+    ],
+    [
+      "2",
+      "SUCCEEDED",
+      "2026-11-11T21:45:42.649079399Z"
+    ],
+    [
+      "3",
+      "RUNNING",
+      "2026-11-11T20:38:08.968083267Z"
+    ],
+    [
+      "3",
+      "SUCCEEDED",
+      "2026-11-11T21:28:21.218820221Z"
+    ],
+    [
+      "4",
+      "RUNNING",
+      "2026-11-11T20:38:07.376962567Z"
+    ],
+    [
+      "4",
+      "SUCCEEDED",
+      "2026-11-11T21:20:25.279914715Z"
+    ],
+    [
+      "5",
+      "RUNNING",
+      "2026-11-11T20:38:08.174906512Z"
+    ],
+    [
+      "5",
+      "SUCCEEDED",
+      "2026-11-11T21:42:10.832086059Z"
+    ],
+    [
+      "6",
+      "RUNNING",
+      "2026-11-11T20:38:07.778946451Z"
+    ],
+    [
+      "6",
+      "SUCCEEDED",
+      "2026-11-11T22:00:04.844058976Z"
+    ],
+    [
+      "7",
+      "RUNNING",
+      "2026-11-11T20:38:09.923251235Z"
+    ],
+    [
+      "7",
+      "SUCCEEDED",
+      "2026-11-11T22:20:46.539721144Z"
+    ]
+  ],
+  "batch_aggregate_time_discrepancy": {
+    "aggregate_run_seconds": 5180.046142731,
+    "aggregate_succeeded_at": "2026-11-11T22:04:57.581270345Z",
+    "last_task_succeeded_at": "2026-11-11T22:20:46.539721144Z",
+    "interpretation": "Aggregate timestamp agrees task1 but predates task7 terminal receipt/server task metadata. Do not use aggregate runDuration as full elapsed duration. Cause not established."
+  },
+  "combined_pilots_estimated_compute_usd": 2.041400562784367,
+  "actual_billing": "Unavailable; not queried from a configured billing export; estimates are not actual charges.",
+  "task_api_start_to_last_success_seconds": 6159.162759,
+  "task_api_all_eight_overlap_seconds": 2535.356663,
+  "verified_environment": "All8 x86_64 C3standard4,4vCPU affinity0..3, SapphireRapids, same frozen source/build, no Batch retries.",
+  "review_outcome": "Runtime/cleanup passed; aggregate Batch timing discrepancy documented, use task-level duration. Scientific artifact review remains separate."
+}

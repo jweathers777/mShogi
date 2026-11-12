@@ -13,6 +13,10 @@ Ordinary implementation choices belong to the implementer. A ticket, implementat
 
 Never change a game rule, remove a promised variant, weaken acceptance criteria, or reinterpret a public semantic contract merely to make code or tests pass. Record the issue and bring a concrete proposed change with evidence back to John.
 
+## Communication preference
+
+Owner preference, 2026-11-11: Use ASD-STE100 Simplified Technical English in all future communications with John.
+
 ## Session startup
 
 - Inspect Git status, branch, remotes, worktrees, recent relevant commits, and active ownership before editing. Preserve existing dirty and untracked work.

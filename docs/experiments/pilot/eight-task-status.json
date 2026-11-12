@@ -1,0 +1,250 @@
+[
+  {
+    "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1/taskGroups/group0/tasks/0",
+    "status": {
+      "state": "SUCCEEDED",
+      "statusEvents": [
+        {
+          "eventTime": "2026-11-11T20:37:20.527592856Z",
+          "taskState": "PENDING",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from PENDING to ASSIGNED on zones/us-central1-a/instances/628509247786282238",
+          "eventTime": "2026-11-11T20:38:07.472462172Z",
+          "taskState": "ASSIGNED",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/628509247786282238",
+          "eventTime": "2026-11-11T20:38:07.472466078Z",
+          "taskState": "RUNNING",
+          "type": "RUNNING"
+        },
+        {
+          "description": "Task state is updated from RUNNING to SUCCEEDED on zones/us-central1-a/instances/628509247786282238",
+          "eventTime": "2026-11-11T21:36:11.081295762Z",
+          "taskState": "SUCCEEDED",
+          "type": "SUCCEEDED"
+        }
+      ]
+    }
+  },
+  {
+    "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1/taskGroups/group0/tasks/1",
+    "status": {
+      "state": "SUCCEEDED",
+      "statusEvents": [
+        {
+          "eventTime": "2026-11-11T20:37:20.527633236Z",
+          "taskState": "PENDING",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from PENDING to ASSIGNED on zones/us-central1-a/instances/6222696845086911742",
+          "eventTime": "2026-11-11T20:38:09.507856030Z",
+          "taskState": "ASSIGNED",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/6222696845086911742",
+          "eventTime": "2026-11-11T20:38:09.507862041Z",
+          "taskState": "RUNNING",
+          "type": "RUNNING"
+        },
+        {
+          "description": "Task state is updated from RUNNING to SUCCEEDED on zones/us-central1-a/instances/6222696845086911742",
+          "eventTime": "2026-11-11T22:04:57.581270345Z",
+          "taskState": "SUCCEEDED",
+          "type": "SUCCEEDED"
+        }
+      ]
+    }
+  },
+  {
+    "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1/taskGroups/group0/tasks/2",
+    "status": {
+      "state": "SUCCEEDED",
+      "statusEvents": [
+        {
+          "eventTime": "2026-11-11T20:37:20.527664326Z",
+          "taskState": "PENDING",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from PENDING to ASSIGNED on zones/us-central1-a/instances/3618059154433338622",
+          "eventTime": "2026-11-11T20:38:08.504880071Z",
+          "taskState": "ASSIGNED",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/3618059154433338622",
+          "eventTime": "2026-11-11T20:38:08.504883412Z",
+          "taskState": "RUNNING",
+          "type": "RUNNING"
+        },
+        {
+          "description": "Task state is updated from RUNNING to SUCCEEDED on zones/us-central1-a/instances/3618059154433338622",
+          "eventTime": "2026-11-11T21:45:42.649079399Z",
+          "taskState": "SUCCEEDED",
+          "type": "SUCCEEDED"
+        }
+      ]
+    }
+  },
+  {
+    "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1/taskGroups/group0/tasks/3",
+    "status": {
+      "state": "SUCCEEDED",
+      "statusEvents": [
+        {
+          "eventTime": "2026-11-11T20:37:20.527676966Z",
+          "taskState": "PENDING",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from PENDING to ASSIGNED on zones/us-central1-a/instances/8189428203184024830",
+          "eventTime": "2026-11-11T20:38:08.968077858Z",
+          "taskState": "ASSIGNED",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/8189428203184024830",
+          "eventTime": "2026-11-11T20:38:08.968083267Z",
+          "taskState": "RUNNING",
+          "type": "RUNNING"
+        },
+        {
+          "description": "Task state is updated from RUNNING to SUCCEEDED on zones/us-central1-a/instances/8189428203184024830",
+          "eventTime": "2026-11-11T21:28:21.218820221Z",
+          "taskState": "SUCCEEDED",
+          "type": "SUCCEEDED"
+        }
+      ]
+    }
+  },
+  {
+    "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1/taskGroups/group0/tasks/4",
+    "status": {
+      "state": "SUCCEEDED",
+      "statusEvents": [
+        {
+          "eventTime": "2026-11-11T20:37:20.527686966Z",
+          "taskState": "PENDING",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from PENDING to ASSIGNED on zones/us-central1-a/instances/653522304094530814",
+          "eventTime": "2026-11-11T20:38:07.376959157Z",
+          "taskState": "ASSIGNED",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/653522304094530814",
+          "eventTime": "2026-11-11T20:38:07.376962567Z",
+          "taskState": "RUNNING",
+          "type": "RUNNING"
+        },
+        {
+          "description": "Task state is updated from RUNNING to SUCCEEDED on zones/us-central1-a/instances/653522304094530814",
+          "eventTime": "2026-11-11T21:20:25.279914715Z",
+          "taskState": "SUCCEEDED",
+          "type": "SUCCEEDED"
+        }
+      ]
+    }
+  },
+  {
+    "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1/taskGroups/group0/tasks/5",
+    "status": {
+      "state": "SUCCEEDED",
+      "statusEvents": [
+        {
+          "eventTime": "2026-11-11T20:37:20.527697486Z",
+          "taskState": "PENDING",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from PENDING to ASSIGNED on zones/us-central1-a/instances/2053142151748480254",
+          "eventTime": "2026-11-11T20:38:08.174901252Z",
+          "taskState": "ASSIGNED",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/2053142151748480254",
+          "eventTime": "2026-11-11T20:38:08.174906512Z",
+          "taskState": "RUNNING",
+          "type": "RUNNING"
+        },
+        {
+          "description": "Task state is updated from RUNNING to SUCCEEDED on zones/us-central1-a/instances/2053142151748480254",
+          "eventTime": "2026-11-11T21:42:10.832086059Z",
+          "taskState": "SUCCEEDED",
+          "type": "SUCCEEDED"
+        }
+      ]
+    }
+  },
+  {
+    "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1/taskGroups/group0/tasks/6",
+    "status": {
+      "state": "SUCCEEDED",
+      "statusEvents": [
+        {
+          "eventTime": "2026-11-11T20:37:20.527708486Z",
+          "taskState": "PENDING",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from PENDING to ASSIGNED on zones/us-central1-a/instances/4216939940964560126",
+          "eventTime": "2026-11-11T20:38:07.778941053Z",
+          "taskState": "ASSIGNED",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/4216939940964560126",
+          "eventTime": "2026-11-11T20:38:07.778946451Z",
+          "taskState": "RUNNING",
+          "type": "RUNNING"
+        },
+        {
+          "description": "Task state is updated from RUNNING to SUCCEEDED on zones/us-central1-a/instances/4216939940964560126",
+          "eventTime": "2026-11-11T22:00:04.844058976Z",
+          "taskState": "SUCCEEDED",
+          "type": "SUCCEEDED"
+        }
+      ]
+    }
+  },
+  {
+    "name": "projects/216675633801/locations/us-central1/jobs/msh162-pilot-eight-v1/taskGroups/group0/tasks/7",
+    "status": {
+      "state": "SUCCEEDED",
+      "statusEvents": [
+        {
+          "eventTime": "2026-11-11T20:37:20.527718176Z",
+          "taskState": "PENDING",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from PENDING to ASSIGNED on zones/us-central1-a/instances/5603988827365010686",
+          "eventTime": "2026-11-11T20:38:09.923246214Z",
+          "taskState": "ASSIGNED",
+          "type": "CREATED"
+        },
+        {
+          "description": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-a/instances/5603988827365010686",
+          "eventTime": "2026-11-11T20:38:09.923251235Z",
+          "taskState": "RUNNING",
+          "type": "RUNNING"
+        },
+        {
+          "description": "Task state is updated from RUNNING to SUCCEEDED on zones/us-central1-a/instances/5603988827365010686",
+          "eventTime": "2026-11-11T22:20:46.539721144Z",
+          "taskState": "SUCCEEDED",
+          "type": "SUCCEEDED"
+        }
+      ]
+    }
+  }
+]

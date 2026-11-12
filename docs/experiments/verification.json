@@ -1,0 +1,361 @@
+{
+  "task": "MSH-162 (Parallel Experiment Runner)",
+  "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+  "verification_level": 2,
+  "reason": "Process management, concurrency, local/GCS persistence and cloud portability; no native production changes.",
+  "environments": {
+    "macos": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "linux": "Local Docker Linux aarch64, python3.13-alpine; image sha256:cbe98306012f5df54efcbf1a9d14caef5a1aec0d895d0eec1c2b6bd80bf6d3cb"
+  },
+  "checks": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /private/tmp/msh139/venv/bin/python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "macos",
+      "outcome": "passed",
+      "tests": 50,
+      "seconds": 3.273,
+      "log_sha256": "b87563c9dc0fd02c4d05b857c127d444f4082274dd2082cbc717a397fb77383e"
+    },
+    {
+      "command": "docker run --rm -v /Users/johnweathers/.codex/worktrees/parallel-experiment-runner/mShogi:/workspace:ro msh162-execution-tests python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "linux",
+      "outcome": "passed",
+      "tests": 50,
+      "seconds": 3.02,
+      "log_sha256": "38643e4eaef68703628fe206ed3d33e704ce1da2e2aba54be460556169a25701"
+    },
+    {
+      "command": "python -m tools.experiments.cli prepare --build /private/tmp/msh162-local-build.json --experiment msh162-final-prepare --source-revision 14bea72cb326d77fe780927f07d2da60e66b6528 --output /private/tmp/msh162-final-prepare.json; status with empty local store",
+      "outcome": "passed",
+      "pairs": 100,
+      "static_jobs": 200,
+      "pending": 200,
+      "executed": 0,
+      "manifest_sha256": "30874f0de22ebd7c25f8344d7d775a2a3224a86b01ad6903aa8708bd751d67d9"
+    },
+    {
+      "command": "/private/tmp/msh161/mshogi-match experiment-external-replay /private/tmp/msh162-replay/report.json",
+      "environment": "macos",
+      "outcome": "passed",
+      "stdout": "replayed actual external adapter evidence",
+      "engine_sha256": "fb7760c0a45b760236a0108f16ea1a2b8d04f95bf0103b7f55b9ff221cd83605",
+      "input_sha256": "2ebb8cb5aac220a20089ec26576aa7d2f5d76488051a1b4ba1c3226edbce2ad3",
+      "input_origin": "Existing primary checkout main/batch-01/games/main-01-00/report.json.gz; decompressed read-only copy. No new game/search."
+    },
+    {
+      "command": "git diff --check",
+      "outcome": "passed"
+    },
+    {
+      "command": "docker run --rm --platform linux/amd64 --entrypoint python3 -v <reviewed tests>:/opt/mshogi/tools/experiments/tests:ro -v <existing replay>:/evidence:ro msh162-worker:51351c48 <unittest discover plus native replay>",
+      "environment": "Actual packaged Linux x86_64 image under local Docker emulation; not C3 hardware",
+      "outcome": "passed",
+      "tests": 50,
+      "seconds": 4.689,
+      "native_replay": "passed",
+      "log_sha256": "6ec41bb61155993b681b018b9d6029406073e76447c58ff3064771b9ff075106"
+    },
+    {
+      "command": "Actual GCSStore put/get/delete plus ADC PubSub get_subscription",
+      "outcome": "passed",
+      "environment": "Google Cloud mshogi/us-central1",
+      "coverage": "create-only conflict preserved original bytes; read matched; own claim conditionally removed; subscription read matched expected topic"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /private/tmp/msh162-controller/bin/python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "macos controller",
+      "source_revision": "348926274cb56cedcb6328bbfd809f552910ae63",
+      "outcome": "passed",
+      "tests": 54,
+      "seconds": 3.02,
+      "log_sha256": "90594817f03820f166fe71939fdc4fcdaaf76951c1b2d867f10d274093648ebd"
+    },
+    {
+      "command": "Concurrent generation-pinned GCS retrieval; local all_jobs and verify_result for every job",
+      "outcome": "passed",
+      "objects": 1889,
+      "jobs": 121,
+      "local_store": "/private/tmp/msh162-independent-pilot-review",
+      "independent_scientific_review": "pilot/one-pair-scientific-review.json",
+      "independent_runtime_review": "pilot/one-pair-runtime-review.json"
+    },
+    {
+      "source_revision": "cecb9e92b74dffb448f27213aa8a73cd2f12cf5a",
+      "command": "python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "macOS controller",
+      "outcome": "passed",
+      "tests": 60,
+      "log_sha256": "832bf142b92b8f4846e4dd9a6caf5c7ab9d9584f54b4016603133800c74da261"
+    },
+    {
+      "source_revision": "cecb9e92b74dffb448f27213aa8a73cd2f12cf5a",
+      "command": "python -m unittest tools.experiments.tests.test_quick_status -v",
+      "environment": "Docker Linux aarch64",
+      "outcome": "passed",
+      "tests": 6,
+      "log_sha256": "df29c7432b534dbd4d7e972ae7cb29538aa0fbfb123c958c71ff22f33fef49cf"
+    },
+    {
+      "source_revision": "6bac128c1104a1bf9495f70c0ec6e016f70e4bd6",
+      "command": "python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "macOS controller",
+      "outcome": "passed",
+      "tests": 64,
+      "log_sha256": "ef00d0a9fabbf9a68f12762f550e8f0a7a4fac7c12373e37b7bf74d0816ab449"
+    },
+    {
+      "source_revision": "6bac128c1104a1bf9495f70c0ec6e016f70e4bd6",
+      "command": "python3 tools/experiments/quick_status.py",
+      "environment": "normal macOS Python without google-cloud-storage; installed gcloud fallback",
+      "outcome": "passed",
+      "scope": "read-only live eight-worker pilot snapshot; no new cloud work"
+    },
+    {
+      "command": "Concurrent generation-pinned GCS retrieval then all_jobs/verify_result for every result",
+      "outcome": "passed",
+      "objects": 27401,
+      "jobs": 1841,
+      "bytes": 3980915946,
+      "record": "pilot/eight-retrieval.json"
+    },
+    {
+      "command": "Independent eight-pair native replay, every raw query/history/options/limits audit and screen-v1 regeneration",
+      "outcome": "passed",
+      "record": "pilot/eight-scientific-review.json"
+    },
+    {
+      "command": "Independent per-task/VM receipt, overlap, cleanup and lifecycle cost audit",
+      "outcome": "passed",
+      "record": "pilot/eight-runtime-review.json"
+    },
+    {
+      "source_revision": "6bac128c",
+      "command": "docker run --rm <readonly checkout> python -m unittest discover -s tools/experiments/tests -v",
+      "environment": "Docker Linux aarch64",
+      "outcome": "passed",
+      "tests": 64,
+      "seconds": 2.997,
+      "log_sha256": "becba7216b7f565fbc772c6e64c76486f6874d2c6c3a2d9eada74079baa95bf9"
+    }
+  ],
+  "coverage": [
+    "immutable write races",
+    "failure evidence and explicit interrupted-claim recovery",
+    "completed result reuse without recomputation",
+    "missing/corrupt outputs",
+    "dependency identity substitution",
+    "derived confirmation obligations after interrupted publication",
+    "eight actual concurrent fixture processes",
+    "real detached unresponsive child SIGTERM cleanup",
+    "frozen equal-time pair config and native replay",
+    "both-player full-history query extraction and uncertainty",
+    "Batch allocation and GCS preconditions with mocked transport",
+    "event-driven terminal notification identity/cancellation and separate queue failure accounting"
+  ],
+  "prior_failures": [
+    {
+      "check": "initial process fixture",
+      "outcome": "failed",
+      "reason": "Fixture omitted required history key; corrected fixture."
+    },
+    {
+      "check": "real SIGTERM child cleanup",
+      "outcome": "failed",
+      "reason": "selectors swallowed InterruptedError from signal handler; RuntimeError now reaches frozen cleanup, regression passes."
+    },
+    {
+      "check": "initial environment",
+      "outcome": "failed",
+      "reason": "PATH Backlog1.55.0 differed from baseline and escalated Node had broken dylib; cached native Backlog1.55.1 used. No incompatible record mutations."
+    }
+  ],
+  "independent_review": "review.md; final source approved by separate reviewer after notification/cancellation fixes; all11 notification tests independently rerun.",
+  "not_run": [
+    "observed Cloud Billing cost",
+    "full200game study",
+    "desktop/GUI and Windows (not in this targeted infrastructure scope)",
+    "abrupt cloud VM loss and stale-claim recovery (local tests only)",
+    "sixteen-worker throughput (not authorized)"
+  ],
+  "cloud_resources_created": true,
+  "cloud_spend": null,
+  "cloud_spend_note": "Actual billed total unavailable. Audited VM lifecycle compute estimate US$2.04140 for initial pair, recovery and eight-worker pilots. Excludes disk/storage, registry, network/egress, logs and taxes. Persistent evidence/image retained.",
+  "new_study_games_or_searches": {
+    "games": 18,
+    "screening_queries": 5756,
+    "confirmation_queries": 1944,
+    "additional_recovery_probe_queries": 1,
+    "scope": "Separate cloud pilot; not merged with primary study evidence."
+  },
+  "blocker": "Implementation and execution review passed. Actual billed-cost reconciliation and coordinator acceptance/integration remain open.",
+  "next_gate": "Coordinator reviews coordinator-handoff.md and admits/integrates as appropriate after its active work. Reconcile actual billing. Full study needs separate coordinator review and spending scope; do not launch automatically.",
+  "integration": {
+    "branch": "codex/parallel-experiment-runner",
+    "target": "codex/rewrite",
+    "status": "not integrated by explicit owner instruction",
+    "worktree_purpose": "Retained for coordinator handoff/integration and billed-cost reconciliation; no running local listener or cloud worker requires it."
+  },
+  "previous_source_checkpoint": {
+    "revision": "14bea72cb326d77fe780927f07d2da60e66b6528",
+    "macos_tests": 48,
+    "linux_arm_tests": 48,
+    "outcome": "passed; superseded by dedicated-network source checkpoint"
+  },
+  "builds": {
+    "native_source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+    "native_release_build_seconds": 109,
+    "oxidation_source": "46a705b80e7191e7c302838eb8b85053b5994d65",
+    "oxidation_release_build_seconds": 45.26,
+    "architecture": "Linux x86_64",
+    "build_manifest": "linux-build.json",
+    "source_build_status": "passed",
+    "source_build_wrapper_seconds": 174.254826,
+    "source_build_exit_notification_accepted": true,
+    "official_stockfish19_archive_sha256": "9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f",
+    "handshakes": "mShogi UCI, Oxidation0.6.0 and Stockfish19 all reported uciok/readyok; no search commands",
+    "stockfish_compiler_self_report": "g++15.2.0 Linux, x86-64-bmi2, BMI2 AVX2 SSE41 SSSE3 SSE2 POPCNT",
+    "local_worker_image": "msh162-worker:51351c48",
+    "local_image_id": "sha256:f6353cb44e00c0cc26448a8a2480842c5a72e93fc64486dfe147037b9543666c",
+    "registry_digest": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+    "image_build_exit_notification_accepted": true,
+    "build_warning": "Docker warns PYTHON_BASE has no default; explicit digest supplied, build passed."
+  },
+  "project_read_only_observation": {
+    "project_id": "mshogi",
+    "project_number": "216675633801",
+    "billing_enabled": true,
+    "compute_batch_artifactregistry_pubsub_apis": "enabled; owner setup verified before pilot",
+    "region_recommendation": "us-central1",
+    "c3_standard_4_list_usd_hour": 0.201608,
+    "pricing_source": "https://cloud.google.com/products/compute/pricing/general-purpose?hl=en",
+    "proposed_pilot_usd": 30,
+    "nominal_max_active_task_hours": 108,
+    "nominal_max_active_compute_usd": 21.773664,
+    "additional_charges": "VM startup/cleanup, disk, external IP, registry/storage, logs, PubSub and network; budget alert is not a hard cap"
+  },
+  "pilot_authorization": {
+    "date": "2026-11-11",
+    "owner": "John",
+    "approved_usd": 30,
+    "project": "mshogi",
+    "region": "us-central1",
+    "scope": "One opening pair first, then eight concurrent workers after review within the same allowance. Setup must be completed before launch.",
+    "excludes": [
+      "full200game study",
+      "sixteen workers",
+      "spending beyond US$30"
+    ]
+  },
+  "pilot_runs": [
+    {
+      "job": "msh162-pilot-one-v1",
+      "experiment": "msh162-cloud-pilot-one-v1",
+      "state": "FAILED",
+      "created_utc": "2026-11-11T19:37:18.882349901Z",
+      "failed_utc": "2026-11-11T19:37:22.873354806Z",
+      "reported_run_duration_seconds": 0,
+      "tasks_listed": 0,
+      "vm_operations_observed": 0,
+      "game_results": 0,
+      "failure_reason": "No diagnostic reason returned. Audit shows Batch service-agent IAM grant 0.445s before creation; first-use IAM propagation is the leading hypothesis, not proven.",
+      "completion_source": "initial terminal lookup",
+      "notification_accepted": true,
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+      "diagnostic_evidence": "pilot/one-pair-v1-iam-bootstrap.json"
+    },
+    {
+      "job": "msh162-pilot-one-v2",
+      "experiment": "msh162-cloud-pilot-one-v1",
+      "state_at_handoff": "SCHEDULED",
+      "uid": "msh162-pilot-one-v-151a5543-1aaf-4dbe0",
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63",
+      "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+      "listener_pid": 54494,
+      "notification_acceptance": "pending terminal event",
+      "budget": "same approved US$30 total; no increase",
+      "state": "SUCCEEDED",
+      "completion_source": "pubsub-terminal-event",
+      "notification_accepted": true,
+      "batch_run_seconds": 2513.2062246,
+      "verified_jobs": 121,
+      "retrieved_objects": 1889,
+      "complete_games": 2,
+      "screening_queries": 434,
+      "confirmation_queries": 119,
+      "estimated_vm_compute_usd": 0.14649,
+      "actual_billed_cost": null,
+      "vm_and_disk_cleanup": "confirmed by independent instance/disk listing and delete audit"
+    },
+    {
+      "job": "msh162-pilot-recovery-v1",
+      "purpose": "Injected adapter failure then real5M confirmation retry and immutable completed-result reuse; not VM-loss recovery",
+      "max_run_seconds": 900,
+      "max_retries": 0,
+      "state_at_handoff": "submitted",
+      "listener_pid": 72758,
+      "evidence": "pilot/recovery-spec.json",
+      "state": "SUCCEEDED",
+      "batch_run_seconds": 54.057846941,
+      "completion_source": "pubsub-terminal-event",
+      "probe_result": "passed",
+      "attempt_states": [
+        "failed",
+        "complete"
+      ],
+      "duplicate_execution": false,
+      "artifact_objects_retrieved": 15,
+      "successful_retry_wall_seconds": 8.905643329,
+      "successful_retry_child_cpu_seconds": 6.668821,
+      "scope_limit": "Application failure recovery; abrupt VM-loss recovery remains locally tested, not demonstrated on GCP.",
+      "independent_review": "pilot/recovery-review.json",
+      "vm_and_disk_cleanup": "confirmed by empty listings and completed deletion audit"
+    },
+    {
+      "job": "msh162-pilot-eight-v1",
+      "experiment": "msh162-cloud-pilot-eight-v1",
+      "state_at_handoff": "SCHEDULED",
+      "task_count": 8,
+      "parallelism": 8,
+      "opening_pairs": "main-01-01 through main-01-08",
+      "manifest_sha256": "acd4928de937178f0fdb27d26ce69763037064343ec794fe1e23f6ef6e1cdc42",
+      "listener_pid": 73734,
+      "budget": "same US$30 total authorization; no increase",
+      "worker_source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63",
+      "state": "SUCCEEDED",
+      "completion_source": "pubsub-terminal-event",
+      "notification_accepted": true,
+      "verified_jobs": 1841,
+      "retrieved_objects": 27401,
+      "retrieved_bytes": 3980915946,
+      "complete_games": 16,
+      "screening_queries": 5322,
+      "confirmation_queries": 1825,
+      "task_elapsed_seconds": 6159.162759,
+      "all_eight_task_overlap_seconds": 2535.356663,
+      "aggregate_batch_duration_seconds": 5180.046142731,
+      "aggregate_duration_warning": "Inconsistent with task7/GCS server timestamps; use task-level elapsed time. Alert queued after actual final task.",
+      "estimated_vm_compute_usd": 1.8895609055922382,
+      "actual_billed_cost": null,
+      "independent_reviews": [
+        "pilot/eight-scientific-review.json",
+        "pilot/eight-runtime-review.json"
+      ],
+      "vm_and_disk_cleanup": "all eight deletion audits successful; empty current project VM/disk listings"
+    }
+  ],
+  "controller_revision": "348926274cb56cedcb6328bbfd809f552910ae63",
+  "quick_status_revision": "6bac128c1104a1bf9495f70c0ec6e016f70e4bd6",
+  "quick_status_live_check": {
+    "source_revision": "cecb9e92b74dffb448f27213aa8a73cd2f12cf5a",
+    "outcome": "passed",
+    "experiment": "msh162-cloud-pilot-eight-v1",
+    "seconds": 16.67,
+    "prior_receipt_scan_seconds": 45.69,
+    "limitations": "Different live snapshots; timing depends on storage/network and listing size. No artifact or success-content verification. No new computation."
+  },
+  "cloud_compute_still_running": false,
+  "estimated_all_pilot_vm_compute_usd": 2.041400562784367
+}

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T14:22:00Z'
+updated_date: '2026-11-12T16:11:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -131,4 +131,8 @@ Independent failed-validation reconciliation complete:12artifact/provenance chec
 Owner supersedes transition: restore original AutoClaim and unmodified mShogi/Oxidation binaries from01–02; no opponent patch/replacement/furtherdrawchanges. Verified alloriginal manifests/config/sourcebundle/build identities unchanged, remaining80pairs160games; reuse oldad95d85image/77101fe3native/51351c48worker. Failedtransition and40completedgames/searches preserved; v2staging cancelled neveractivate. Resume03 with original completion-aware workflow. Finaldiagnosis must discuss automaticclaim limits onconversion observations, analyze precedingdecisions, and never treatdraw alone asweakness. See cloud-primary/autoclaim-restoration.json and updatedREADME; no extra reviewproject or engineering.
 
 Batch03 resumed as msh161-primary-b03-v1 UIDmsh161-primary-b03-b58d20e4-9257-41760; initialQUEUED,10originalpairedtasks max8C3workers, exactsubmittedrunnable/image verified. ExitwrapperPID5820 ownsPubSubwait/retrieve/verification/queue. No furtherpolling/duplicatework; oncompletion independentbatchreview+required20M then04through10. OriginalAutoClaim sample remains uniform acrosscompletedandremaininggames; no correctedtransitionbinary/image used.
+
+Primary cloud Batch 03 completed under restored original AutoClaim conditions. Retrieved and verified 1,717 jobs / 25,375 objects / 2,767,781,004 bytes without duplicate retrieval. Native result 9 wins, 5 draws, 6 losses; no failures or unscored games. Wrapper success, process group settled and notification accepted. Fresh independent gameplay panels and integrity/runtime review in progress; select required 20M comparisons, preserve earlier/linked uncertainty and automatic-claim interpretation limits, then continue Batch 04 after review. No engineering or draw-policy work.
+
+Batch 03 independent integrity/gameplay reviews complete at 500k/5M stage. 6,485 queries covered, no stable missed-error expansion trigger; two uncertain audit roots retained. Native 9W/5D/6L, all five draws automatic threefold; do not infer weakness from draw alone. Eight actual workers, no allocation failures, all deleted. Primary compute estimate USD7.629961 through three base batches/two deep panels; 60 games played, 40 fully adjudicated. Admitted original-condition 20M plan selects 397 decisions / 676 jobs / 692 queries (16 discovery roots), SHA3ad0916deaef5ce2e150f38ab782a3aea5fe556c441ca37d63e436479dceb626. Selection null/list serialization failure corrected offline with originals preserved; no engine/search rerun. Next launch existing exit-notified cloud plan, review deeper results/discovered alternatives, then Batch 04.
 <!-- SECTION:NOTES:END -->

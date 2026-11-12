@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T17:14:00Z'
+updated_date: '2026-11-12T17:15:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -141,4 +141,6 @@ Launched admitted Batch 03 consequential 20M chain through existing notify_exit 
 Batch 03 20M plan completed: 676 jobs / 692 queries, zero failed attempts, plan-aware verification SHA fffa301665d45a44774438c1341d28cfc0faa40f664f24eae38e2ef1aa8a0b38. Wrapper succeeded, settled its group and queued notification. Independent panels now review all 397 selected roots, legal continuations and distinct discovery/linked alternatives; execution audit runs separately. Reuse completed played 20M evidence for any new singleton alternatives. Original AutoClaim conditions retained; no draw-policy work, duplicated searches or premature Batch 04 launch.
 
 Batch 03 20M independent panels and runtime audit completed. Preserve all 397 root dispositions before followup, legal continuations, secondary/already-lost tags, earlier uncertainty and AutoClaim limits. Admitted only seven distinct singleton alternatives: one unrestricted discovery and six linked played-PV replies, each verified against exact supporting history and compared with reused played 20M evidence. Plan SHA309aba6b7a616a8b1870c52e91808388c82537efd496cca358efcb525a70a4d9. No repeat games or played searches. Eight previous workers deleted, no failures; primary estimated compute USD8.640040/42.855643VMh, not billed. After seven-query review, close Batch 03 and update cumulative categories before original Batch 04.
+
+Seven-query Batch 03 followup launched through existing exit notifier: wrapper PID31181, job msh161-primary-b03-followup-v1, reviewed checkpoint a766ab8e. Seven new forced alternatives and seven reused played queries; no repeated engine work. Await notification, reconcile all status layers, independently disposition these seven linked events with retained prior ledgers, close Batch 03 and update cumulative categories/resources before original Batch 04. Full 200-game coverage remains required, without timers or unrelated engineering.
 <!-- SECTION:NOTES:END -->

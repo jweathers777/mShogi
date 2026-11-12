@@ -76,11 +76,24 @@ and expanded/hash records in `metadata-archives.json`. Restore compressed JSON
 beside its archive when a script needs the expanded form; never substitute Mac
 reports that happen to share the same pair identifiers.
 
-Batch02 has passed its review and forecast gates; launch its existing frozen
-20-game manifest after the recorded empty-prefix preflight. A single
-`notify_exit.py` wrapper must wait on the cloud terminal event and retrieve/verify
-the completed batch before queueing this chat. No timer, periodic watcher or Mac
-engine execution. Inspect receipts before restarting any process.
+Batch02 passed independent review/forecast gates and empty-prefix preflight, then
+was submitted as `msh161-primary-b02-v1`, UID
+`msh161-primary-b02-fff81736-b9df-43bd0` (initialQUEUED). Its original frozen manifest
+is unchanged. Review/forecast/controller checkpoint: `ad7f5769`. There are still
+20reviewed primary games; the next20are submitted, not yet counted as completed.
+
+Single exit-wrapperPID50193 (child50195) is waiting for the terminal event through
+`wait_retrieve_batch.py`. It will run the existing generation-pinned32-download
+retriever and verify all base/derived results, then `notify_exit.py` queues this
+chat on success or failure. State:`batch-02-wait-retrieve.json`; submission and
+`batch-02-wait-launch.json` preserve identity/command; `batch-02-notification.json`
+records computation and queue acceptance separately. Caffeinate covers the outer
+wrapper lifetime; notifier/security settings are unchanged. Do not duplicate this
+submission, listener or retrieval. No timer, periodic watcher or Mac engine.
+
+On its exit, review fresh primarycloudbatch02 independently, run requiredcloud20M,
+update cumulative episodes/resources/forecast and proceed tobatch03 only after
+review. Preserve the full200-game obligation and stop before production engineering.
 
 On retrieval/adjudication completion:
 
@@ -108,7 +121,7 @@ On retrieval/adjudication completion:
    No final ranking or production correction before full independent diagnosis.
 
 For a user-requested progress view, run `python3 tools/experiments/quick_status.py`.
-Its settings now point to this primary batch. It is a read-only snapshot, not an
+Its settings now point to primarybatch02. It is a read-only snapshot, not an
 integrity check. Do not turn it into a periodic model watcher. Local Mac computation
 remains stopped; the old local batch02 callback cannot authorize localbatch03.
 

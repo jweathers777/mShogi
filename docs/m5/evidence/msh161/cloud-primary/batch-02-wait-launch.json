@@ -1,0 +1,32 @@
+{
+  "caffeinate_launcher_pid": 50193,
+  "started_epoch": 1794479413.872971,
+  "command": [
+    "caffeinate",
+    "-i",
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/notify_exit.py",
+    "--thread",
+    "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+    "--codex",
+    "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+    "--receipt",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-02-notification.json",
+    "--label",
+    "MSH-161 primary cloud batch02 games, analysis, retrieval and verification",
+    "--state",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-02-wait-retrieve.json",
+    "--message",
+    "Read cloud-primary/README.md and primary-cumulative.json. Reconcile computation, wrapper cleanup and notification independently. Review completed fresh primary cloud batch02 with independent gameplay/integrity agents and required20M, preserve earlierlinkeduncertainty, automaticclaimlimits, actualconcurrency/resourcepool failures and measuredtime/cost. Continue authorized200game study in reviewedbatches aftergate; no Mac engines, no production changes, no timer or periodic watcher. Do not duplicate retrieval if verified.",
+    "--",
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/wait_retrieve_batch.py",
+    "2",
+    "--subscription",
+    "projects/mshogi/subscriptions/mshogi-pilot-completion"
+  ],
+  "controller_revision": "ad7f5769",
+  "job_uid": "msh161-primary-b02-fff81736-b9df-43bd0",
+  "mode": "One terminalevent then retrieval/fullverification; unchanged notify_exit queues owningchat on success/failure. Caffeinate outside notifier childgroup.",
+  "notification_acceptance": "pendingexit"
+}

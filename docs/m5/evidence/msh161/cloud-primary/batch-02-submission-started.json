@@ -1,0 +1,22 @@
+{
+  "started_epoch": 1794479386.713662,
+  "command": [
+    "/private/tmp/msh162-controller/bin/python",
+    "-m",
+    "tools.experiments.cli",
+    "submit",
+    "--manifest",
+    "docs/m5/evidence/msh161/cloud-primary/batch-02-manifest.json",
+    "--store",
+    "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+    "--config",
+    "docs/m5/evidence/msh161/cloud-primary/cloud-config.json",
+    "--job-name",
+    "msh161-primary-b02-v1",
+    "--image",
+    "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+    "--spending-approved"
+  ],
+  "reviewed_revision": "ad7f5769",
+  "forecast_presented_before_submission": true
+}

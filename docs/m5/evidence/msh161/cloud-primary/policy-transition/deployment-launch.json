@@ -1,0 +1,41 @@
+{
+  "pid": 96307,
+  "started_epoch": 1794492079.913547,
+  "worker_source": "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+  "steps": [
+    [
+      "/private/tmp/msh162-controller/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py",
+      "--source-revision",
+      "d9271a294cb92e1e87d366d49dfd409bbfd662b6",
+      "--workspace",
+      "/private/tmp/msh161-policy-worker-image"
+    ],
+    [
+      "/private/tmp/msh162-controller/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py"
+    ]
+  ],
+  "command": [
+    "/usr/bin/caffeinate",
+    "-i",
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/notify_exit.py",
+    "--thread",
+    "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+    "--codex",
+    "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+    "--receipt",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/deployment-notification.json",
+    "--label",
+    "MSH-161 corrected worker image and short cloud match validation",
+    "--state",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/validation-state.json",
+    "--message",
+    "Read policy-transition/README.md and image-build-state.json. Reconcile image push, cloud validation, exact native provenance, cleanup and notification. On success admit staged corrected manifests and launch primarybatch03 via exit notification; no further owner permission. Preserve40AutoClaim games/12claimdraws and remaining160corrected stratum. On failure preserve evidence and reconcile before retry; no duplicate jobs/builds, no Macengine study or timer.",
+    "--",
+    "/private/tmp/msh162-controller/bin/python",
+    "-c",
+    "import subprocess,json; steps=json.loads('[[\"/private/tmp/msh162-controller/bin/python\", \"/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/build_worker_image.py\", \"--source-revision\", \"d9271a294cb92e1e87d366d49dfd409bbfd662b6\", \"--workspace\", \"/private/tmp/msh161-policy-worker-image\"], [\"/private/tmp/msh162-controller/bin/python\", \"/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/policy-transition/run_cloud_validation.py\"]]'); [subprocess.run(step,check=True) for step in steps]"
+  ]
+}

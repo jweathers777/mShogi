@@ -66,6 +66,11 @@ No new owner approval is required. Preserve the original40games and all failures
 The older batch narrative below is retained for provenance. Its pending-followup
 and frozen-policy continuation wording is superseded by this current gate.
 
+The Linux build is verified. One image-push/short-cloud-validation chain is now
+running from worker source `d9271a294cb92e1e87d366d49dfd409bbfd662b6`; see
+`policy-transition/deployment-launch.json`. Its exit callback owns the next review.
+Do not duplicate it or start batch03 before success/admission.
+
 ### Batch01 and historical batch02 execution records
 
 Primary batch01 is reviewed through required20M. Native20-game result:8W/5D/7L.

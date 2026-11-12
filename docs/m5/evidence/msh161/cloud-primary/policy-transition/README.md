@@ -43,3 +43,28 @@ limits. No final engineering priorities follow from this partial study.
 Linux build succeeded from reviewed native commit `ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0`; allfourbinary hashes and wrapper exit/notification were checked. See `linux-build-verification.json`. Image deployment and cloud validation remain pending. Do not launch batch03 until Linux provenance, short match
 validation and final manifest/image admission are recorded. Long build and cloud
 operations use the existing exit notifier; no periodic watcher or guessed wake.
+
+
+Current execution: native build and wrapper succeeded; reviewed worker source is
+`d9271a294cb92e1e87d366d49dfd409bbfd662b6`. `deployment-launch.json` records the
+single running image-build/push then cloud-validation chain (wrapper PID96307).
+It queues this chat on success or failure. Do not start another build, validation,
+completion consumer, or batch03 while it runs. An older native-build completion
+message is already reconciled and must not restart this chain.
+
+On deployment exit, inspect `image-build-state.json`, `validation-state.json`,
+`deployment-notification.json`, exact saved submission/cloud completion and bounded
+validation artifacts. Check settled process state and cloud cleanup separately;
+retain VM allocation failures and actual resource accounting. If image construction
+fails before validation, the validation state may not exist: inspect image state
+and wrapper stderr instead. Preserve all partial artifacts before a deliberate retry.
+
+After success: verify staged batch03–10 identities against `amendment.json`, the
+new registry digest, package receipt and original frozen schedule/spec hashes.
+Preserve original unrun manifest bytes from staging/originals. Activate the amended
+manifests in the existing primary locations only after this admission, record
+new/old mappings and source/policy stratum, and submit batch03 under the same
+8-worker C3 configuration. Use the existing wait/retrieve helper with exit notifier.
+No new approval is needed. Keep the complete200game study and review gates; no
+other engine engineering is authorized. Cleanup the temporary native source clone
+once no build/process needs it, preserving reusable binaries/cache and receipts.

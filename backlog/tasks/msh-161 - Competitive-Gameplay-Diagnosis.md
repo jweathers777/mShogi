@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T13:56:00Z'
+updated_date: '2026-11-12T14:01:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -121,4 +121,6 @@ Newexplicitowner12Novemberdirection authorizes small production draw-policy corr
 Bounded draw-policy correction: native/search/UCI/runner focused checks pass (builder receipt under cloud-primary/policy-transition/native-verification.json); independent Rust review in progress. Batch02 and two-query followup completed, no active workers; batch03 remains gated on corrected Linux image, one short actual two-engine validation and amended manifest admission. Earlier40games remain AutoClaim; remaining160 will be separate automatic-threshold-only stratum. No replay or unrelated production changes.
 
 Reviewed draw-policy correction integrated at ab7ef8f10d9b9023dbe525fcbc47e54a40c423e0. Focused native/search/UCI/runner tests and14adapter tests pass; broader Python suite66/67 has pre-existing quick-status old-store expectation mismatch. Targeted Level2; Linux build launched unattended with exit callback (policy-transition/linux-build-launch.json), no cloud worker or game started. Batch02 closure and primary cumulative40game record derived independently;12optional-claim draws retained/flagged. Next: corrected image, one short actual cloud match, final amended manifest admission, batch03; no further approval needed.
+
+Linux build PASS: native ab7ef8f1, candidateSHA4a5795d2abf3d3311d190f0e5f7ca1c8be4e4be50ad98550cf24623e99f1ae23, runnerSHAd533833b333c0806e82002120f4e4c38774dd4da54fbac739e282731dd50a7a3; originalOx/SF bytes reused. Independent native/deployment-script reviews passed;9offline transition tests passed. Worker checkpoint d9271a29. One unattended image-push + short cloud validation chain launched (policy-transition/deployment-launch.json, wrapper96307), with exit notification; no further permission needed after admission. Batch03 designated first correctedpolicy batch but not yet started. Do not duplicate from older native-build callback.
 <!-- SECTION:NOTES:END -->

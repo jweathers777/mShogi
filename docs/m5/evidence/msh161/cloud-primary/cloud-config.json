@@ -1,0 +1,15 @@
+{
+  "project": "mshogi",
+  "region": "us-central1",
+  "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+  "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+  "machine_type": "c3-standard-4",
+  "parallelism": 8,
+  "max_run_seconds": 21600,
+  "max_retries": 1,
+  "boot_disk_gb": 30,
+  "vm_hourly_usd": 0.201608,
+  "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+  "network": "projects/mshogi/global/networks/mshogi-batch",
+  "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1"
+}

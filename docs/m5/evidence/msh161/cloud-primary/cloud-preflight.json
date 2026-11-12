@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "active_jobs": [],
+  "dedicated_subscription_reused_after_prior_listener_exit": "projects/mshogi/subscriptions/mshogi-pilot-completion",
+  "topic": "projects/mshogi/topics/mshogi-batch-events",
+  "worker_image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+  "registry": {
+    "image_summary": {
+      "digest": "sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+      "fully_qualified_digest": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+      "registry": "us-central1-docker.pkg.dev",
+      "repository": "mshogi-experiments",
+      "slsa_build_level": "unknown"
+    }
+  },
+  "primary_prefix_empty": true,
+  "new_resources_or_iam_changes": false
+}

@@ -1,0 +1,130 @@
+{
+  "reviewer": "opening_sources; independent read-only manifest admission",
+  "status": "PASS",
+  "admission": "First20game batch01 may launch under recorded owner authorization. Later batches preserve20game review cadence; this is no claim of executed games.",
+  "games": 200,
+  "pairs": 100,
+  "batches": [
+    {
+      "index": 1,
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-01-manifest.json",
+      "sha256": "f4a4f9101ffe5a7c4734d7e9dd2f0c684269f0a68bcf025a5194e2626c250fd6",
+      "pairs": 10,
+      "games": 20,
+      "static_jobs": 20,
+      "validate_manifest": "pass",
+      "original_specs_order_dependencies": "pass"
+    },
+    {
+      "index": 2,
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-02-manifest.json",
+      "sha256": "ca175bf34a09e16c29186f9d05af32d4c51a9a757115b73f2f30f8b8fe003331",
+      "pairs": 10,
+      "games": 20,
+      "static_jobs": 20,
+      "validate_manifest": "pass",
+      "original_specs_order_dependencies": "pass"
+    },
+    {
+      "index": 3,
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-03-manifest.json",
+      "sha256": "1433ce03d24009d11b18d4ed0d47006de198bcafeb13ef1cae8d065b90a754cb",
+      "pairs": 10,
+      "games": 20,
+      "static_jobs": 20,
+      "validate_manifest": "pass",
+      "original_specs_order_dependencies": "pass"
+    },
+    {
+      "index": 4,
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-04-manifest.json",
+      "sha256": "d0f0e0e0a0a654478a268e3e6692199ee7f93093b25156a77b5749d93a2f0051",
+      "pairs": 10,
+      "games": 20,
+      "static_jobs": 20,
+      "validate_manifest": "pass",
+      "original_specs_order_dependencies": "pass"
+    },
+    {
+      "index": 5,
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-05-manifest.json",
+      "sha256": "ff2f0574e94fff05273422548077b28ded79a06ebc76168b0f188471f9172953",
+      "pairs": 10,
+      "games": 20,
+      "static_jobs": 20,
+      "validate_manifest": "pass",
+      "original_specs_order_dependencies": "pass"
+    },
+    {
+      "index": 6,
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-06-manifest.json",
+      "sha256": "38cdefef02dd7a4012edaed185a543fcb006a42d545626945f1bdd614d26137f",
+      "pairs": 10,
+      "games": 20,
+      "static_jobs": 20,
+      "validate_manifest": "pass",
+      "original_specs_order_dependencies": "pass"
+    },
+    {
+      "index": 7,
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-07-manifest.json",
+      "sha256": "73584f11aef9f6b6d3c8ee792ffd5f4d6bc8440a709d61c6aa73b2ba58b2847a",
+      "pairs": 10,
+      "games": 20,
+      "static_jobs": 20,
+      "validate_manifest": "pass",
+      "original_specs_order_dependencies": "pass"
+    },
+    {
+      "index": 8,
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-08-manifest.json",
+      "sha256": "b7631c6806511a15ec436b58ed780576b60c069bf5fdc5b42172ef3aa5bcf58f",
+      "pairs": 10,
+      "games": 20,
+      "static_jobs": 20,
+      "validate_manifest": "pass",
+      "original_specs_order_dependencies": "pass"
+    },
+    {
+      "index": 9,
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-09-manifest.json",
+      "sha256": "fe47d95119b50471830e830cdff0f8e821420579ee19ef026b5ace98b448998d",
+      "pairs": 10,
+      "games": 20,
+      "static_jobs": 20,
+      "validate_manifest": "pass",
+      "original_specs_order_dependencies": "pass"
+    },
+    {
+      "index": 10,
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-10-manifest.json",
+      "sha256": "ffc621e5697f74a016cc7854808fa7d586f678128359d5bac0151e31eafc69aa",
+      "pairs": 10,
+      "games": 20,
+      "static_jobs": 20,
+      "validate_manifest": "pass",
+      "original_specs_order_dependencies": "pass"
+    }
+  ],
+  "checks": [
+    "Latest integrated controller validate_manifest passed all10manifests",
+    "All100original schedule specs exactly once in original per-batch order;9prepared plus1unaided per batch inherited without edits",
+    "Paired-color native config,auto_claim,5000ms,512ply and fixedOxidation preserved",
+    "All200static job IDs unique and disjoint from both pilot manifests; fresh primary experiment/store identities, no external/pilot dependencies",
+    "Every source export file hashed against disk and git51351c48 bytes; complete map identical to tested eight-worker pilot",
+    "Linux build/image matches validated pilot; original mainfreeze and every frozeninput/schedule hash intact",
+    "Allocation rendered locally as10tasks,max8parallel,one per standardC3VM; no submission",
+    "500k screening and automatic5M derivation preserved by exact worker source"
+  ],
+  "cohort_freeze_sha256": "60e7a9e7dd16af1ef13899fc1cd824f29b24a9ea2b0c94789b977d8ea561d7d3",
+  "cloud_config_sha256": "82f88f23570ad19323691c02052a0075688dba33c08bcbeaea447356b315a935",
+  "worker_export_sha256": "8f4756760f1d8779f0926ffbe5dba87e08752e3b3f2877e2459ff3a85ace3dd2",
+  "prepare_script_sha256": "40f59c07724ba01139b56532ed1915baf44a6a0409cb8b95215df8fd55ebbb7c",
+  "controller_core_sha256": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+  "worker_image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+  "limitations": [
+    "Offline manifest/source validation only; no cloud jobs,engines or network calls. Remote object namespace emptiness not queried; no pilot reuse is established structurally by experiment/job identities and dependency graph.",
+    "Completed-batch actual machine,time,rawquery/native replay and integrity checks remain required. Consequential20M/discovery and independent gameplay review remain separate obligations.",
+    "Pilot/Mac observations remain outside fresh primary200game denominator."
+  ]
+}

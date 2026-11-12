@@ -1,0 +1,317 @@
+{
+  "cohort": "msh161-primary-v1",
+  "games": 200,
+  "pairs": 100,
+  "fresh_primary": true,
+  "pilot_or_mac_results_reused": false,
+  "review_every_games": 20,
+  "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+  "worker_image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+  "config_sha256": "82f88f23570ad19323691c02052a0075688dba33c08bcbeaea447356b315a935",
+  "original_study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+  "batches": [
+    {
+      "index": 1,
+      "experiment": "msh161-primary-v1-batch-01",
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-01-manifest.json",
+      "sha256": "f4a4f9101ffe5a7c4734d7e9dd2f0c684269f0a68bcf025a5194e2626c250fd6",
+      "pair_ids": [
+        "main-01-00",
+        "main-01-01",
+        "main-01-02",
+        "main-01-03",
+        "main-01-04",
+        "main-01-05",
+        "main-01-06",
+        "main-01-07",
+        "main-01-08",
+        "main-01-unaided"
+      ],
+      "game_pair_job_ids": [
+        "d99759ec1a4d7007b3b3bf85939bfb6dc8a8c74a41de1ea921d7a134506ff0a8",
+        "b9087e5c3ac434014361e3d4c72f5e4ba787edcaf8df8125f3186c2fb8eaefe3",
+        "4540ba9a1cdf2f187c35647cbe5b3b4da8edaa9d71ddfdb7c1b7cbe2d878d78a",
+        "d290b2dd421122f6815e70982b5a09e04cf5f1b24c0c4ee6cf6a514820eaae9d",
+        "ccbeca98cf75bafb275db73d1fd40955bea0a67be0837a1843380f9b13f85d55",
+        "362f9c92fb0fe9bb1e562132df29bbfc35a32b749804a8a9e674f4cf04551dba",
+        "af2a95189748ecd729db1c7864d694765f3cbbc3505bbc0a3a5a20c558c03150",
+        "1e1f3c1af19fce59ce6ef23b2fa901f5d4bb527f89532e6366900b4b79aeaf5f",
+        "4fd29a863befc776435d2388772586eb2fa6e5b4390fbe41e3633cadfbd28685",
+        "14ef819a5c4bcf7ef5d6bd44c11ffb32958489db1a945de8b16beec1f78dff51"
+      ]
+    },
+    {
+      "index": 2,
+      "experiment": "msh161-primary-v1-batch-02",
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-02-manifest.json",
+      "sha256": "ca175bf34a09e16c29186f9d05af32d4c51a9a757115b73f2f30f8b8fe003331",
+      "pair_ids": [
+        "main-02-00",
+        "main-02-01",
+        "main-02-02",
+        "main-02-03",
+        "main-02-04",
+        "main-02-05",
+        "main-02-06",
+        "main-02-07",
+        "main-02-08",
+        "main-02-unaided"
+      ],
+      "game_pair_job_ids": [
+        "b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784",
+        "ef1e68048ab7fdf137b7dd7530a5240c0d7067e18ecad2fd409acebe577dce35",
+        "2fe380e07211066ec8af93eb89373327b9e8e54a4534f67da901ae8f1d946437",
+        "234d60dfb81a042e35cc394f0aed2175782910129f2e73ed8a409aa52bbe3f8b",
+        "7a5cf021737548f6589192b73f055f4cd07408c6a1fb45e507a7f82d7bb34acb",
+        "f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1",
+        "0b48f8cca0a4379d3ba8595621e4f7ca1252ae25ae3b5b1307493f2f822147b9",
+        "70e824a961da7e24cfcd1498f8da21dee4422cd2f634aaaa1d59f99aca50d585",
+        "1fe5dd95e0d6ef498ddc418dcd9cd71ca00f852641973be21fd30645e65a4b43",
+        "cd4840a850c373167125adb2d3740e6d889357d08d2fdb33fb85e173d1d733c5"
+      ]
+    },
+    {
+      "index": 3,
+      "experiment": "msh161-primary-v1-batch-03",
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-03-manifest.json",
+      "sha256": "1433ce03d24009d11b18d4ed0d47006de198bcafeb13ef1cae8d065b90a754cb",
+      "pair_ids": [
+        "main-03-00",
+        "main-03-01",
+        "main-03-02",
+        "main-03-03",
+        "main-03-04",
+        "main-03-05",
+        "main-03-06",
+        "main-03-07",
+        "main-03-08",
+        "main-03-unaided"
+      ],
+      "game_pair_job_ids": [
+        "9f4c900aac0e53b27e3c39c76ca8223b1d3488e5fa63b2690e3ef40e31943388",
+        "46ce5379c8c3a9a679223d3b71d109935051531ee5f3d49e6be80b8ad15e3abb",
+        "aa1396b8befca4439060ddf3f8db6259f97474a5d8cfcb24e73943d799fe4415",
+        "049f39316ba8207dc014812645e87e0f6ed24b1e3f8976b5bc08d6e98f32ac1a",
+        "87cb5a0e1efba7cd8db96f1ae56b613600d99e40d5a2bec69cdfbb258a59b2f3",
+        "3deaa6bba0c73f4a41af12ce77ca26d5b22113410d9df617e025a25f81e2f178",
+        "25480702ec803cf3d901a9aef4572d52d7a231b68a9b51e4ed2ab81203d46788",
+        "b29d8b8e05daa74c525f97c001a8d278e0df092fb4f779d7bf2f2205ca486f6f",
+        "637fe52c8461b8e9093acc0cd6d537aa9fce6418cf5b54ad586f96d8b6c8facf",
+        "84ab33f6023a506fd03485f0c3206a6c066a1bd46461723ed79084f834b28c84"
+      ]
+    },
+    {
+      "index": 4,
+      "experiment": "msh161-primary-v1-batch-04",
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-04-manifest.json",
+      "sha256": "d0f0e0e0a0a654478a268e3e6692199ee7f93093b25156a77b5749d93a2f0051",
+      "pair_ids": [
+        "main-04-00",
+        "main-04-01",
+        "main-04-02",
+        "main-04-03",
+        "main-04-04",
+        "main-04-05",
+        "main-04-06",
+        "main-04-07",
+        "main-04-08",
+        "main-04-unaided"
+      ],
+      "game_pair_job_ids": [
+        "c239d294502c8bc29711b1aa89c4fb4ed51d72e43e9da5264ec8ed0b0db55c75",
+        "00d22bb8895f94b6bfda7d63e568f9307cfe0cd35da39704a84ae800d9b8d203",
+        "db7e7689643c1e96e9d70702619d0e299209bf3ce4bc3d20b9b390aa7d122042",
+        "b1964ae51a1cb251065395c32ae5f4405779e657f0b14342068c66585f09e03e",
+        "9ec8f49aaf85039555062fb1cb208be225d64924b7ba28eee41e691904febe57",
+        "43e3811c141d9b58548098eaad409eafa36ba88b00c9209ae9db3537233171b1",
+        "dfc7f4142635672b1c504bc786001a3218f9c474fe2e1c69a85e637939b99e35",
+        "3c93cc2f8dea9f42f3f79b122ba987ea8b014c57bf60f3c747f690699334b86a",
+        "7fa838ef857d6935bb1aeb507cdaa15e0ece8633418a729fe77ec48e2bb00d9b",
+        "4f0537c2fe4162ef04801e9507fc0bdbc7f9d88fd7e2cee9888a0d268675fc1a"
+      ]
+    },
+    {
+      "index": 5,
+      "experiment": "msh161-primary-v1-batch-05",
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-05-manifest.json",
+      "sha256": "ff2f0574e94fff05273422548077b28ded79a06ebc76168b0f188471f9172953",
+      "pair_ids": [
+        "main-05-00",
+        "main-05-01",
+        "main-05-02",
+        "main-05-03",
+        "main-05-04",
+        "main-05-05",
+        "main-05-06",
+        "main-05-07",
+        "main-05-08",
+        "main-05-unaided"
+      ],
+      "game_pair_job_ids": [
+        "412845100754b1bbf6f6094cacb24ec80af0f9feb5414a0a74cc670efe6ff0c0",
+        "a0f99e9b8e72bc96ae38210fe072695bbdc477ff74af6ef78e475c91a171c603",
+        "29ae5784d398253cdd7fbe407a5b91872216dc8f842529ecfbf987221d179bdb",
+        "d00d63735c34b41168f1010df1d251592313e8e40620c848a7c5527c1f990a5a",
+        "2a9ff0ceb6223df8f0443a71c7358c40e90cdbfff041ecc5625112173368a495",
+        "818933443c9c46bb06b92db5b57de27f3cc0def74ba494d22cf99cda21d806a8",
+        "0feb598999a64b281ea48160b3595b6d014ca2552ab1d5c026b3a8d562147d12",
+        "96649fdf643147a4c6bb0cd7a73d19095b47fd75f09a7a01ef2017f6fc62e9c4",
+        "5a015d6d2055190dc687e49eb883342ef4d55bb25f5c7ca612432c089b14f19e",
+        "3260e4d87bf42891e4c1c9ce7639e565a3b8eba12666443701f9eaab04adea43"
+      ]
+    },
+    {
+      "index": 6,
+      "experiment": "msh161-primary-v1-batch-06",
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-06-manifest.json",
+      "sha256": "38cdefef02dd7a4012edaed185a543fcb006a42d545626945f1bdd614d26137f",
+      "pair_ids": [
+        "main-06-00",
+        "main-06-01",
+        "main-06-02",
+        "main-06-03",
+        "main-06-04",
+        "main-06-05",
+        "main-06-06",
+        "main-06-07",
+        "main-06-08",
+        "main-06-unaided"
+      ],
+      "game_pair_job_ids": [
+        "53007e95a1198baed7a590dbaed06f79e1927bbc08a450dc3fe7f25c61d7c419",
+        "20b683473baf21de0cc4cd400197434d179295c6c1372993092d6c275de2e9b6",
+        "b8c6e9579aca16e018409a3971dd17d67b885f10fe1ab8bcddbbffb0f8593aff",
+        "8defad724d09be1da841b4851b3921bcd61f3f0c59d4bca49838b42608a4b75c",
+        "97c2be641abf858913bc5c2910f81a81f2747508d5c6e006d59a166e3262d4cf",
+        "95ee9991fdd883a3d168afa0af0723d6c79b96887150e72be7e8682c453bfdb7",
+        "d48c91b60522b12e277c9593bfa657ba6dafd936ae05d66469402f1ddd321747",
+        "5dd115d75e96e600f360d65300432bee314f7b549439e2902b157f3eb1f6e19c",
+        "326678f9bb8ed54fa8a5b39ccce1ae766f1833247bbafad7973ea810d3e2bade",
+        "66a05af509e7a8ae356d92de8b1b6d9c4a05ac2f18309d29222471462f626f6e"
+      ]
+    },
+    {
+      "index": 7,
+      "experiment": "msh161-primary-v1-batch-07",
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-07-manifest.json",
+      "sha256": "73584f11aef9f6b6d3c8ee792ffd5f4d6bc8440a709d61c6aa73b2ba58b2847a",
+      "pair_ids": [
+        "main-07-00",
+        "main-07-01",
+        "main-07-02",
+        "main-07-03",
+        "main-07-04",
+        "main-07-05",
+        "main-07-06",
+        "main-07-07",
+        "main-07-08",
+        "main-07-unaided"
+      ],
+      "game_pair_job_ids": [
+        "f2bab16389c54774d81ab8f8b0a0af6a36256022b430d2599abe26fb97ceaf2d",
+        "b8e47a9921a98cbf358eec8c6af54079fdf8d278e5c5c6a3c96c367c7b92b69a",
+        "e8ccfeafddf1ab8b8477f1a1373d1867241b1ebe877e73a59b2b775e29750b0f",
+        "d2dd1174ce74ca476f328c43ecd9ecaccddc13e043bfc4b64b2854db422fe943",
+        "11fdb05acdc2a33cc5effd7ab0367501ce8a008c979731e9510a947e5ef16a21",
+        "28a416b276b6ebe98736625daea272a8fd6a63c8a306373bb2e16cd4d8a6ea3d",
+        "1b5aab832a71daba8db7a5b9f2b346915edda73ddb076c1bde8f4fabac38162b",
+        "59979c45071e7d68aaf8ef6672dd78f84abec852cd7c3863192bd1fae6538889",
+        "d961466e44a5c2a33a19d8f1a240fdf1a59cef1f6436671b35b63d031a58164f",
+        "9a1f56f814e793a03e725344adac31ad0a6f8fb7f9ee847addc1483bebbe1670"
+      ]
+    },
+    {
+      "index": 8,
+      "experiment": "msh161-primary-v1-batch-08",
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-08-manifest.json",
+      "sha256": "b7631c6806511a15ec436b58ed780576b60c069bf5fdc5b42172ef3aa5bcf58f",
+      "pair_ids": [
+        "main-08-00",
+        "main-08-01",
+        "main-08-02",
+        "main-08-03",
+        "main-08-04",
+        "main-08-05",
+        "main-08-06",
+        "main-08-07",
+        "main-08-08",
+        "main-08-unaided"
+      ],
+      "game_pair_job_ids": [
+        "0987f826779daab941154d7a473d57b331c0ad1a29232f60dc0f8a9a11f9a890",
+        "7f4d88cde8f771bafc89c5f8e366ee9e42fdad2ec3884e54b139deaaa143e789",
+        "840cc3174cda95c4a790aa704ddf573584be37713676ad5b933344ec0209e797",
+        "704d56d2241e711a5928f423bfbf1aefc44056ba79f43a56d9b28784e9c5c2c7",
+        "a20375cf736edb3b97bfae7d9d31b68c3ce6209381814fbadf5dc792e37305c3",
+        "5d754a0203acac3034306bfbbf76065a68dee7e06841a1af3c83f9a325c67077",
+        "1629f5de44cc600cab714ba4adf9102880a361104a3da794b8e640aab5ed92c5",
+        "6a6271bfa60217b785592ae4b6be8878999e479958b1b3508ef878db61fa2c4e",
+        "4f9bc3299b59b0902418a7627ce1ac17fd2e1813336ef71c4cc51013d75c6070",
+        "c469f3f45ac765205a9a24d382af1c0e8340f1a433893b32bc05108946770ff6"
+      ]
+    },
+    {
+      "index": 9,
+      "experiment": "msh161-primary-v1-batch-09",
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-09-manifest.json",
+      "sha256": "fe47d95119b50471830e830cdff0f8e821420579ee19ef026b5ace98b448998d",
+      "pair_ids": [
+        "main-09-00",
+        "main-09-01",
+        "main-09-02",
+        "main-09-03",
+        "main-09-04",
+        "main-09-05",
+        "main-09-06",
+        "main-09-07",
+        "main-09-08",
+        "main-09-unaided"
+      ],
+      "game_pair_job_ids": [
+        "3008f7beb75860f8547067cf7b703e10c6d1c5ec77fa007f030c36e672e11d51",
+        "759ee6b4db8d20f30409ee6dacf6bb92b447304c2292282f88e1c712dcc5c554",
+        "757aba4d884eecb92f9262db48ba400b22f8b8b0580d826e0a6b33cd87df99ff",
+        "34a05d80d93f9c935ae91cbb94304aba985d508636cb74c2cce110871a38275b",
+        "54db24fe808582271cd6ca993a578ecfd2620fe17457fc5b995736ca0c2f07b8",
+        "59b663d5464cc86342c0d3826ced2347d4de6cc8ef9e74f1157f7982756ebeba",
+        "3bc5ea704c8f31edb3a50b9f2069b224a52dfa993584de6900c0f2d627c9c0c0",
+        "30ec6eaf8a82bad5d3e4b258cc05f59a96042c171154fba162bb2236569128bf",
+        "639932c2f4bf44800c187b0c34970f5a822990d3525594c6e3d2c3148fd5e375",
+        "e609a5d42b6d3bbd6f3bb261b6712a53cbef593cb8474153797d340146d787fb"
+      ]
+    },
+    {
+      "index": 10,
+      "experiment": "msh161-primary-v1-batch-10",
+      "manifest": "docs/m5/evidence/msh161/cloud-primary/batch-10-manifest.json",
+      "sha256": "ffc621e5697f74a016cc7854808fa7d586f678128359d5bac0151e31eafc69aa",
+      "pair_ids": [
+        "main-10-00",
+        "main-10-01",
+        "main-10-02",
+        "main-10-03",
+        "main-10-04",
+        "main-10-05",
+        "main-10-06",
+        "main-10-07",
+        "main-10-08",
+        "main-10-unaided"
+      ],
+      "game_pair_job_ids": [
+        "6f65907bb5d8d1b30d79db5be499c9f9c798c4244b185ee1ab0db29b4aa7b12c",
+        "b17c907f7ad10bee1a29f76d0a9b382f0f8c0cd177a2472b00a30c26cc150f47",
+        "73e749a5abc92d9b30b96909533aa3c21dca7a3047e23437fef78c280b549213",
+        "ef872b25b5d0460ab55535eb2641cea0acb94fe40ec83e72d01830a2810c18ca",
+        "6a1e342ccfcfb8ca4a46375593935535dd712a5ab706970f4713500bb3a2bd08",
+        "b14538fbd68342c5039c162595549c9a7118251d13b0990a3acc4df7f3d6bba3",
+        "8d91b4c46bbe34270511a4c6a220a7f50de25e8b73eefdb3468b5c5a37462460",
+        "045b8258d5ea4620c9a2a8bcb762febedf55a409b27f0023f4e332c02331e37d",
+        "074f1eb480303892ec203031083ca42f412b386e3a41bd557effb5066feb828f",
+        "d789e494b504d2a323991e0a7fbb8d69848e1c68c4685408c933a462b315a1c2"
+      ]
+    }
+  ],
+  "launch_policy": "Submitonebatchat atimeafterreview;max8dedicatedC3workers;consequential20Madjudicationseparate;noautomaticwholecampaignlaunch",
+  "owner_authorization": "Human12November2026: Readthehandoffandproceedwiththefullcloudstudy.",
+  "cost_scope": "Full200gamesandnecessaryanalysis authorized;recordactualresource/cost. PilotUS30restrictiondoesnotdefinefullstudyscope. No16workerexpansion."
+}

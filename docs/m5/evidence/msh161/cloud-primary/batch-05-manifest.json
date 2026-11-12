@@ -1,0 +1,2607 @@
+{
+  "automatic_confirmations": true,
+  "cohort": "gcp-primary",
+  "experiment": "msh161-primary-v1-batch-05",
+  "full_study_requires_coordinator_review": true,
+  "jobs": [
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "412845100754b1bbf6f6094cacb24ec80af0f9feb5414a0a74cc670efe6ff0c0",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-00",
+        "opening": {
+          "fen": null,
+          "id": "master-516b79dc6c6507b8",
+          "moves": [
+            "g1f3",
+            "d7d5",
+            "g2g3",
+            "c7c5",
+            "f1g2",
+            "g7g6",
+            "e1g1",
+            "f8g7",
+            "c2c4",
+            "g8f6",
+            "c4d5",
+            "f6d5",
+            "d2d4",
+            "c5d4",
+            "f3d4",
+            "e8g8"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "b05d973333598a75b4a88889d8c1d628ede21c9a37b4dbee3c0d4d955cb127c3",
+      "inputs": {
+        "report": {
+          "job": "412845100754b1bbf6f6094cacb24ec80af0f9feb5414a0a74cc670efe6ff0c0",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-00",
+        "opening": {
+          "fen": null,
+          "id": "master-516b79dc6c6507b8",
+          "moves": [
+            "g1f3",
+            "d7d5",
+            "g2g3",
+            "c7c5",
+            "f1g2",
+            "g7g6",
+            "e1g1",
+            "f8g7",
+            "c2c4",
+            "g8f6",
+            "c4d5",
+            "f6d5",
+            "d2d4",
+            "c5d4",
+            "f3d4",
+            "e8g8"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "a0f99e9b8e72bc96ae38210fe072695bbdc477ff74af6ef78e475c91a171c603",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-01",
+        "opening": {
+          "fen": null,
+          "id": "master-88e510412b64d587",
+          "moves": [
+            "d2d4",
+            "d7d5",
+            "c2c4",
+            "e7e6",
+            "g1f3",
+            "g8f6",
+            "e2e3",
+            "c7c5",
+            "b1c3",
+            "b8c6",
+            "c4d5",
+            "f6d5",
+            "f1b5",
+            "c5d4",
+            "f3d4",
+            "d5c3"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "170aa065f77a0fdef9c05245370ada1b1c6a3a7e9065d1b9bc6fe1245ef84e25",
+      "inputs": {
+        "report": {
+          "job": "a0f99e9b8e72bc96ae38210fe072695bbdc477ff74af6ef78e475c91a171c603",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-01",
+        "opening": {
+          "fen": null,
+          "id": "master-88e510412b64d587",
+          "moves": [
+            "d2d4",
+            "d7d5",
+            "c2c4",
+            "e7e6",
+            "g1f3",
+            "g8f6",
+            "e2e3",
+            "c7c5",
+            "b1c3",
+            "b8c6",
+            "c4d5",
+            "f6d5",
+            "f1b5",
+            "c5d4",
+            "f3d4",
+            "d5c3"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "29ae5784d398253cdd7fbe407a5b91872216dc8f842529ecfbf987221d179bdb",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-02",
+        "opening": {
+          "fen": null,
+          "id": "master-70138d6515b2a17c",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c2c4",
+            "g7g6",
+            "b1c3",
+            "d7d5",
+            "g1f3",
+            "f8g7",
+            "e2e3",
+            "e8g8",
+            "c4d5",
+            "f6d5",
+            "f1c4",
+            "d5b6",
+            "c4b3",
+            "c7c5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "eac77d80d6c79fcd36f966d43c966ed6cdabe64b0d25a890aa7845bc4d474613",
+      "inputs": {
+        "report": {
+          "job": "29ae5784d398253cdd7fbe407a5b91872216dc8f842529ecfbf987221d179bdb",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-02",
+        "opening": {
+          "fen": null,
+          "id": "master-70138d6515b2a17c",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c2c4",
+            "g7g6",
+            "b1c3",
+            "d7d5",
+            "g1f3",
+            "f8g7",
+            "e2e3",
+            "e8g8",
+            "c4d5",
+            "f6d5",
+            "f1c4",
+            "d5b6",
+            "c4b3",
+            "c7c5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "d00d63735c34b41168f1010df1d251592313e8e40620c848a7c5527c1f990a5a",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-03",
+        "opening": {
+          "fen": null,
+          "id": "master-12db6d9fd4e16fe8",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c2c4",
+            "g7g6",
+            "g2g3",
+            "f8g7",
+            "f1g2",
+            "e8g8",
+            "g1f3",
+            "d7d6",
+            "e1g1",
+            "c7c5",
+            "d4c5",
+            "d6c5",
+            "f3e5",
+            "d8c7"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "4f8b1da5d9a8592f2b113502c9c38f79808b9d1f121adb4308239c64f84375f2",
+      "inputs": {
+        "report": {
+          "job": "d00d63735c34b41168f1010df1d251592313e8e40620c848a7c5527c1f990a5a",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-03",
+        "opening": {
+          "fen": null,
+          "id": "master-12db6d9fd4e16fe8",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c2c4",
+            "g7g6",
+            "g2g3",
+            "f8g7",
+            "f1g2",
+            "e8g8",
+            "g1f3",
+            "d7d6",
+            "e1g1",
+            "c7c5",
+            "d4c5",
+            "d6c5",
+            "f3e5",
+            "d8c7"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "2a9ff0ceb6223df8f0443a71c7358c40e90cdbfff041ecc5625112173368a495",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-04",
+        "opening": {
+          "fen": null,
+          "id": "master-d6db7f6a2850a013",
+          "moves": [
+            "d2d4",
+            "d7d5",
+            "g1f3",
+            "g8f6",
+            "c2c4",
+            "e7e6",
+            "g2g3",
+            "d5c4",
+            "f1g2",
+            "a7a6",
+            "e1g1",
+            "b8c6",
+            "e2e3",
+            "c8d7",
+            "b1c3",
+            "f6d5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "97fc145cb64fc5055442d5f3207594795f28f413364138fa1600a55f762f61f4",
+      "inputs": {
+        "report": {
+          "job": "2a9ff0ceb6223df8f0443a71c7358c40e90cdbfff041ecc5625112173368a495",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-04",
+        "opening": {
+          "fen": null,
+          "id": "master-d6db7f6a2850a013",
+          "moves": [
+            "d2d4",
+            "d7d5",
+            "g1f3",
+            "g8f6",
+            "c2c4",
+            "e7e6",
+            "g2g3",
+            "d5c4",
+            "f1g2",
+            "a7a6",
+            "e1g1",
+            "b8c6",
+            "e2e3",
+            "c8d7",
+            "b1c3",
+            "f6d5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "818933443c9c46bb06b92db5b57de27f3cc0def74ba494d22cf99cda21d806a8",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-05",
+        "opening": {
+          "fen": null,
+          "id": "master-1219570080add14c",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c1f4",
+            "e7e6",
+            "e2e3",
+            "b7b6",
+            "d1f3",
+            "b8c6",
+            "b1c3",
+            "c8b7",
+            "e1c1",
+            "a7a6",
+            "e3e4",
+            "b6b5",
+            "d4d5",
+            "c6e7"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "d401a78fc7e825de6ebd1737dc63f4f0761d8ecc221dd227bb34a8a62db77152",
+      "inputs": {
+        "report": {
+          "job": "818933443c9c46bb06b92db5b57de27f3cc0def74ba494d22cf99cda21d806a8",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-05",
+        "opening": {
+          "fen": null,
+          "id": "master-1219570080add14c",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "c1f4",
+            "e7e6",
+            "e2e3",
+            "b7b6",
+            "d1f3",
+            "b8c6",
+            "b1c3",
+            "c8b7",
+            "e1c1",
+            "a7a6",
+            "e3e4",
+            "b6b5",
+            "d4d5",
+            "c6e7"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "0feb598999a64b281ea48160b3595b6d014ca2552ab1d5c026b3a8d562147d12",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-06",
+        "opening": {
+          "fen": null,
+          "id": "master-711fe9c5430c66eb",
+          "moves": [
+            "g1f3",
+            "d7d5",
+            "b2b3",
+            "g8f6",
+            "c1b2",
+            "e7e6",
+            "e2e3",
+            "f8e7",
+            "c2c4",
+            "e8g8",
+            "d2d4",
+            "c7c5",
+            "d4c5",
+            "e7c5",
+            "c4d5",
+            "e6d5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "eb0a08bbeb67514c9dd44d8d71c579f79487bd1187334930763cad118e5aa586",
+      "inputs": {
+        "report": {
+          "job": "0feb598999a64b281ea48160b3595b6d014ca2552ab1d5c026b3a8d562147d12",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-06",
+        "opening": {
+          "fen": null,
+          "id": "master-711fe9c5430c66eb",
+          "moves": [
+            "g1f3",
+            "d7d5",
+            "b2b3",
+            "g8f6",
+            "c1b2",
+            "e7e6",
+            "e2e3",
+            "f8e7",
+            "c2c4",
+            "e8g8",
+            "d2d4",
+            "c7c5",
+            "d4c5",
+            "e7c5",
+            "c4d5",
+            "e6d5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "96649fdf643147a4c6bb0cd7a73d19095b47fd75f09a7a01ef2017f6fc62e9c4",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-07",
+        "opening": {
+          "fen": null,
+          "id": "master-2197d97d45ec8598",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "g1f3",
+            "g7g6",
+            "c1f4",
+            "f8g7",
+            "b1c3",
+            "e8g8",
+            "e2e4",
+            "d7d6",
+            "d1d2",
+            "c8g4",
+            "e1c1",
+            "b8c6",
+            "f4h6",
+            "g4f3"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "78f9d9f429d1dd018983cc8abc69cadc831748d7324b97ede87fdb0c7ba234a0",
+      "inputs": {
+        "report": {
+          "job": "96649fdf643147a4c6bb0cd7a73d19095b47fd75f09a7a01ef2017f6fc62e9c4",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-07",
+        "opening": {
+          "fen": null,
+          "id": "master-2197d97d45ec8598",
+          "moves": [
+            "d2d4",
+            "g8f6",
+            "g1f3",
+            "g7g6",
+            "c1f4",
+            "f8g7",
+            "b1c3",
+            "e8g8",
+            "e2e4",
+            "d7d6",
+            "d1d2",
+            "c8g4",
+            "e1c1",
+            "b8c6",
+            "f4h6",
+            "g4f3"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "5a015d6d2055190dc687e49eb883342ef4d55bb25f5c7ca612432c089b14f19e",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-08",
+        "opening": {
+          "fen": null,
+          "id": "master-c4225a3ca37cb057",
+          "moves": [
+            "e2e4",
+            "e7e5",
+            "g1f3",
+            "b8c6",
+            "f1b5",
+            "g8f6",
+            "d2d3",
+            "f8c5",
+            "b1c3",
+            "e8g8",
+            "b5c6",
+            "d7c6",
+            "f3e5",
+            "d8d4",
+            "c1e3",
+            "d4e5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "86324d5ec44c4bf259019c3d75bafe04e69c83f23f271f96b0edc4066a856973",
+      "inputs": {
+        "report": {
+          "job": "5a015d6d2055190dc687e49eb883342ef4d55bb25f5c7ca612432c089b14f19e",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-08",
+        "opening": {
+          "fen": null,
+          "id": "master-c4225a3ca37cb057",
+          "moves": [
+            "e2e4",
+            "e7e5",
+            "g1f3",
+            "b8c6",
+            "f1b5",
+            "g8f6",
+            "d2d3",
+            "f8c5",
+            "b1c3",
+            "e8g8",
+            "b5c6",
+            "d7c6",
+            "f3e5",
+            "d8d4",
+            "c1e3",
+            "d4e5"
+          ]
+        },
+        "opponent": "oxidation060",
+        "phase": "main-prepared"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "pair/report.json.gz",
+        "pair/receipt.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "3260e4d87bf42891e4c1c9ce7639e565a3b8eba12666443701f9eaab04adea43",
+      "inputs": {},
+      "kind": "game_pair",
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-unaided",
+        "opening": {
+          "fen": null,
+          "id": "unaided-main-05",
+          "moves": []
+        },
+        "opponent": "oxidation060",
+        "phase": "main-unaided"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    },
+    {
+      "build": {
+        "architecture": "x86_64",
+        "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+        "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+        "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+        "engines": {
+          "candidate": {
+            "path": "/opt/engines/mshogi",
+            "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "oxidation060": {
+            "path": "/opt/engines/oxidation",
+            "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+            "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+          },
+          "runner": {
+            "path": "/opt/engines/mshogi-match",
+            "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+            "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+          },
+          "stockfish19": {
+            "path": "/opt/engines/stockfish",
+            "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+            "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+          }
+        },
+        "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+        "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+        "system": "Linux"
+      },
+      "environment": {
+        "architecture": "x86_64",
+        "cloud": {
+          "config": {
+            "boot_disk_gb": 30,
+            "cpu_milli": 4000,
+            "machine_type": "c3-standard-4",
+            "max_retries": 1,
+            "max_run_seconds": 21600,
+            "memory_mib": 12288,
+            "network": "projects/mshogi/global/networks/mshogi-batch",
+            "notification_topic": "projects/mshogi/topics/mshogi-batch-events",
+            "parallelism": 8,
+            "project": "mshogi",
+            "region": "us-central1",
+            "service_account": "mshogi-batch-worker@mshogi.iam.gserviceaccount.com",
+            "store_uri": "gs://mshogi-experiments-216675633801/msh161-primary-v1",
+            "subnetwork": "projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1",
+            "vm_hourly_usd": 0.201608
+          },
+          "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7"
+        },
+        "machine_type": "c3-standard-4",
+        "system": "Linux"
+      },
+      "expected_outputs": [
+        "analysis/manifest.json",
+        "screen-v1.json",
+        "confirmation-plan.json"
+      ],
+      "experiment": "msh161-primary-v1-batch-05",
+      "id": "2a4058ecc48ddb8ba82281d15f13b10f75818f63c37fa8b196c088ed8e3fced2",
+      "inputs": {
+        "report": {
+          "job": "3260e4d87bf42891e4c1c9ce7639e565a3b8eba12666443701f9eaab04adea43",
+          "path": "pair/report.json.gz"
+        }
+      },
+      "kind": "reference_screening",
+      "nodes": 500000,
+      "schema": 1,
+      "source_files": {
+        "docs/m5/competitive-gameplay-diagnosis.md": "f4da22279e232c4ca13675c9b83ce82c91ded8f1bd98db83078e1d472975ba8c",
+        "docs/m5/evidence/msh161/analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+        "docs/m5/evidence/msh161/build.json": "0baeebe80d85b05860d49fe055243882f63d24c55b49c0d2b56841c40e7fe86e",
+        "docs/m5/evidence/msh161/main-freeze.json": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8",
+        "docs/m5/evidence/msh161/main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+        "docs/m5/evidence/msh161/main/batch-01-schedule.json": "8db525b8cbe0c908a9dc0bf967dfd8bc5fd76ad7b7b54683ccdceabbe13f3b70",
+        "docs/m5/evidence/msh161/main/batch-02-schedule.json": "a65547e3e0e7dd6ab6a2c97a25f801172e05c89674c1798c1a3ea254de09791a",
+        "docs/m5/evidence/msh161/main/batch-03-schedule.json": "d8d3aff942d9721e782e94ccff2de83882778469e238d5c28524c512b62e954b",
+        "docs/m5/evidence/msh161/main/batch-04-schedule.json": "7d52db23ddfc00a4488055ecf3babb204b7055695d220d4ae2cbd786e9e6b633",
+        "docs/m5/evidence/msh161/main/batch-05-schedule.json": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+        "docs/m5/evidence/msh161/main/batch-06-schedule.json": "36fc8999c3c450dfee65c91f8a41686d6e09ae1e7e7a58bc09c94fdaca257beb",
+        "docs/m5/evidence/msh161/main/batch-07-schedule.json": "e71478fc23a4661d896848629c115928e3728e9d1dd53c0925d911f6c97b38ba",
+        "docs/m5/evidence/msh161/main/batch-08-schedule.json": "a413fe24c9b3db9afea71ff5aa15c2f5eee0f1a78644a531d5be61143737e5b1",
+        "docs/m5/evidence/msh161/main/batch-09-schedule.json": "e1efc15360f4f6ed5138a4b9984cf3c24cbaf0f3781ff32195b3950d82b7452f",
+        "docs/m5/evidence/msh161/main/batch-10-schedule.json": "9efea3c621275d37d963c6b473db5aa991d29e496c87d02fbc89899973526e8f",
+        "docs/m5/evidence/msh161/main_batch.py": "495e7d294dd1d13b40e7f21365f2b88e9b9df165a066af94c911d48d42a3f2e4",
+        "docs/m5/evidence/msh161/phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b",
+        "docs/m5/evidence/msh161/prepare_main.py": "3934381e7e733f631106a48abc26a0e694ee9073cecab0a1488946b4beea7fa1",
+        "docs/m5/evidence/msh161/run_batch.py": "78879435fb93753991ba3809de732153c5907c3ad228a5ee3ed3663361cf69b1",
+        "docs/m5/evidence/msh161/screen_v1.py": "7179cbff7722b50082d072b53c976bb11097e6772d98826aefa670c0766f2761",
+        "docs/m5/evidence/msh161/sources/main-roots.json": "8e2defc63c839d215ccbd4f1f667b777bfdfced74ef44a90a6698a8cca8de332",
+        "docs/m5/evidence/msh161/sources/main-selection.json": "6e50ef5f46c7e782d32be6149dcbe0d14fc81af2b2cca311d46fba4a22bd8f4b",
+        "docs/m5/evidence/msh161/summarize_analysis.py": "5ed528b567354a37bd4c3d72ca6e565e9ca1682f882714c73dc808213de07465",
+        "tools/experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tools/experiments/chess.py": "6d3725584cc73c1fce418b732440c266911ce7c7c05e86c43e1a94431e6b0fc8",
+        "tools/experiments/cli.py": "f97b61590baebb2510b5c0ef90527c75555bf7ffe2adf75d99f3e793b63dd8d7",
+        "tools/experiments/core.py": "34e4c395f6889da485d278b1dc85dc1f3a15e0e0b4ebdecb5ea405a013962fed",
+        "tools/experiments/gcp.py": "dc14d0a492cf5cfb1aba7c872a7f9a7caa45ae63fecda7954728ce6b7831f4be",
+        "tools/experiments/package.py": "2f7c49e3d47480da3321cd817241459faf0422f3e5190c7c6d6d2c7f29dd1d66"
+      },
+      "source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+      "spec": {
+        "id": "main-05-unaided",
+        "opening": {
+          "fen": null,
+          "id": "unaided-main-05",
+          "moves": []
+        },
+        "opponent": "oxidation060",
+        "phase": "main-unaided"
+      },
+      "study_freeze_sha256": "67f923d6dda70e156a306279b3746ee223565d9c1bd5d8a805f6be7404cddff8"
+    }
+  ],
+  "pilot_pairs": null,
+  "pipelines": [
+    "412845100754b1bbf6f6094cacb24ec80af0f9feb5414a0a74cc670efe6ff0c0",
+    "a0f99e9b8e72bc96ae38210fe072695bbdc477ff74af6ef78e475c91a171c603",
+    "29ae5784d398253cdd7fbe407a5b91872216dc8f842529ecfbf987221d179bdb",
+    "d00d63735c34b41168f1010df1d251592313e8e40620c848a7c5527c1f990a5a",
+    "2a9ff0ceb6223df8f0443a71c7358c40e90cdbfff041ecc5625112173368a495",
+    "818933443c9c46bb06b92db5b57de27f3cc0def74ba494d22cf99cda21d806a8",
+    "0feb598999a64b281ea48160b3595b6d014ca2552ab1d5c026b3a8d562147d12",
+    "96649fdf643147a4c6bb0cd7a73d19095b47fd75f09a7a01ef2017f6fc62e9c4",
+    "5a015d6d2055190dc687e49eb883342ef4d55bb25f5c7ca612432c089b14f19e",
+    "3260e4d87bf42891e4c1c9ce7639e565a3b8eba12666443701f9eaab04adea43"
+  ],
+  "schema": 1,
+  "primary_batch": {
+    "index": 5,
+    "total_batches": 10,
+    "cohort": "msh161-primary-v1",
+    "original_schedule_sha256": "25817fde1becd8ab9c4c4758153a02df57e4d9e5484e0a1b01fa8010f8ea30e4",
+    "full_cohort_pairs": 100,
+    "full_cohort_games": 200,
+    "reason": "Ownerapprovedfullstudy;20gamereviewcadence;notpilotselection"
+  }
+}

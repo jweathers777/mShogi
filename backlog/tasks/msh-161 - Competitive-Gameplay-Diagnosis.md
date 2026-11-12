@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T12:35:00Z'
+updated_date: '2026-11-12T12:37:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -107,4 +107,6 @@ Aftercombinedadmission+forecastpresentation, frozenprimarybatch02 submitted asms
 Primarycloudbatch02 basepipeline+retrieval complete, notify_exitstatussuccess/return0/ownprocessgroupsettled/queueaccepted. Retrieval2,376jobs34,751objects4,441,259,122bytes443.25s verified, no duplicate retrieval. Independentgameplayhalves andmethod/integrity auditactive onfreshLinuxindex, preserving Macseparation/completehistories/claimlimits. Runtimeonesnapshot10tasks8actualVMs,peak8,6541.838s submit-to-last,10.90506VMh/~USD2.19855computeestimate; noVMinsertfailures,currentVM/disksabsent.40primarygamescompleted,20reviewedthroughrequired20M; batch03unsubmitted. Nextfreeze/crossreviewbatch02consequential20Mplan andrunexistingpinnedworkerunattended throughsingleexitnotification; full200coverage andno productionengineeringremain.
 
 Batch02 independentauditPASS20games9W7D4L,2,840played+288prefix,6,256initial+2,3565M=8,612queries; frozen1,364followups+190audits exact,0stablemissederrortrigger,2uncertainevidencecasesretained. Bothgameplayhalves/crossreviewsPASS fullhistories/claims/strongplay. Final20Mplan371decisions627jobs663queries36discovery, planSHA15ba357c687baa600d9802b1986664ed2621593cd8b2c2488dcdf22ecec8ce99 independentlyadmitted exactsource/597consumedsuccesshashes/eightbalancedbins. Literalclassificationboundariespreserved; no finalpriorities. Newtinysequentialsubmit->wait_verify driver independentlyreviewed3offline tests; single notify_exit wrapswholechain including submissionfailures, avoidmodelpollingpreflight. No worker/engine/sciencechanges. Nextlaunchrequiredcloud20M theneventreview beforebatch03; currentcumulativecategoriesremain20fullyreviewedgames. See cloud-primary/batch-02-review andbatch-02-adjudication/admission-review.
+
+Reviewedbatch02adjudication workflowlaunchedunattended viaoutercaffeinate+notify_exit.py PID70945, targetmsh161-primary-b02-20m-v1, checkpointfce0d5c3. Driver performsimmutablesubmissionchecks/submission thenonePubSubwait/planretrieval/verification; callbackcoverssuccessorfailure. Localstatusrunning, noerror atstartup; actualcloudUID/acceptance recordedlaterinsubmission-result.json, notassumedfromPopen. No modelwait/poll or guessedwake. See cloud-primary/batch-02-adjudication/{launch,notification,plan}.json andREADME. Nextonexit review371roots/663queries and anydistinctdiscoveredalternatives, reconcileactualresources andclosebatch02 beforebatch03. Full200remainsrequired, no Macengines/productionchanges.
 <!-- SECTION:NOTES:END -->

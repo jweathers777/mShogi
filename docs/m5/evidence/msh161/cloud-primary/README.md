@@ -100,11 +100,21 @@ case. No absolute first/largest labels or final weakness priorities are establis
 
 There are40completed primary games, but onlybatch01's20are reviewed through required
 20M and included in cumulative scientific categories. Batch03 has not been launched.
-Actual-plan admission passed (`batch-02-adjudication/admission-review.md`).
-Next runbatch02's20M panel in the existing pinned image. `run_adjudication_plan.py` calls reviewed submit then event-wait/retrieval/
-verification in one unattended process under `notify_exit.py`; submission failure
-also queues the chat, with no automatic retry. The small driver passed independent
-review/threeoffline tests. No model waits/polls through submission or individualmoves.
+Actual-plan admission passed (`batch-02-adjudication/admission-review.md`). The
+unattended submit/20M/event/retrieval/verification workflow is now running under
+exit-wrapperPID70945, targeting `msh161-primary-b02-20m-v1`. Review checkpoint:
+`fce0d5c3`; immutable plan SHA begins `15ba357c687b`. `batch-02-adjudication/launch.json`
+records the exact command and hashes. Cloud acceptance/UID will be recorded in
+`submission-result.json` after the driver finishes its immutable-dependency checks;
+do not infer cloud acceptance merely from the local wrapper running.
+
+`run_adjudication_plan.py` calls reviewed submit then event-wait/retrieval/verification
+in one unattended process under `notify_exit.py`. Submission failure also queues
+this chat, with no automatic retry. The small driver passed independent review and
+threeoffline tests. `notification.json` records computation, process-group cleanup
+and queue acceptance separately; `results/` will contain terminal/verification
+receipts. Do not duplicate this workflow or poll unchanged output. No timed wake.
+The ordinary base-manifest status does not enumerate these627additional20M jobs.
 
 On exit reconcile receipts, review20M and distinct discovered alternatives, update
 cumulative episodes/resources/forecast, then continue the remaining160games in

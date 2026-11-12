@@ -71,6 +71,16 @@ The completed panel used eight workers, all deleted, with no failed scientific
 attempts or allocation failures. Primary compute estimate is now US$8.640040
 (42.855643 VM-hours), not billed cost; see its runtime review and forecast update.
 
+The seven-query followup is now launched under exit wrapper PID 31181, job
+`msh161-primary-b03-followup-v1`, from reviewed checkpoint `a766ab8e`.
+`batch-03-followup/launch.json` records the command; submission acceptance,
+computation verification, cleanup and notification remain separate receipts.
+Do not duplicate this computation or retrieval. On its exit, review only the
+seven new comparisons with their reused played evidence; preserve the original
+pre-followup ledgers and write final overlays. Keep unqueried/earlier uncertainty
+and AutoClaim limits. Then close Batch 03 and launch original Batch 04 through
+the existing completion workflow. No timed watcher or further policy work.
+
 Final interpretation: automatic claims can limit observation of advantage
 conversion. Analyze the decisions leading to a claim, preserving earlier/linked
 uncertainty; the draw itself is not proof of engine weakness. No final priorities

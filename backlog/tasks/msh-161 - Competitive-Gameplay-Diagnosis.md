@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T16:11:00Z'
+updated_date: '2026-11-12T16:12:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -135,4 +135,6 @@ Batch03 resumed as msh161-primary-b03-v1 UIDmsh161-primary-b03-b58d20e4-9257-417
 Primary cloud Batch 03 completed under restored original AutoClaim conditions. Retrieved and verified 1,717 jobs / 25,375 objects / 2,767,781,004 bytes without duplicate retrieval. Native result 9 wins, 5 draws, 6 losses; no failures or unscored games. Wrapper success, process group settled and notification accepted. Fresh independent gameplay panels and integrity/runtime review in progress; select required 20M comparisons, preserve earlier/linked uncertainty and automatic-claim interpretation limits, then continue Batch 04 after review. No engineering or draw-policy work.
 
 Batch 03 independent integrity/gameplay reviews complete at 500k/5M stage. 6,485 queries covered, no stable missed-error expansion trigger; two uncertain audit roots retained. Native 9W/5D/6L, all five draws automatic threefold; do not infer weakness from draw alone. Eight actual workers, no allocation failures, all deleted. Primary compute estimate USD7.629961 through three base batches/two deep panels; 60 games played, 40 fully adjudicated. Admitted original-condition 20M plan selects 397 decisions / 676 jobs / 692 queries (16 discovery roots), SHA3ad0916deaef5ce2e150f38ab782a3aea5fe556c441ca37d63e436479dceb626. Selection null/list serialization failure corrected offline with originals preserved; no engine/search rerun. Next launch existing exit-notified cloud plan, review deeper results/discovered alternatives, then Batch 04.
+
+Launched admitted Batch 03 consequential 20M chain through existing notify_exit workflow, wrapper PID28235, job msh161-primary-b03-20m-v1, reviewed checkpoint ba750de9. 692 queries / 676 jobs / 397 decisions; original AutoClaim engines and image. Cloud acceptance and final computation/cleanup/queue status are separate receipts. Await completion callback without polling; review all selected events and distinct discovery alternatives before closing Batch 03 and starting original Batch 04. Preserved raw log newline warning from git diff --check; no source/test failure or engine rerun.
 <!-- SECTION:NOTES:END -->

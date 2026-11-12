@@ -44,6 +44,16 @@ correction are retained in `selection-schema-reconciliation.json`. No searches
 were repeated. The full review index/inventory are archived losslessly as gzip;
 restore exact JSON bytes locally if a helper needs them, without downloading again.
 
+Current execution: the Batch 03 20M submit/wait/verify chain was launched under
+exit wrapper PID 28235, job `msh161-primary-b03-20m-v1`, from reviewed checkpoint
+`ba750de9`. See `batch-03-adjudication/launch.json`; cloud acceptance is recorded
+separately in `submission-result.json`, and cleanup/notification in `notification.json`.
+Do not duplicate the wrapper, queries, or retrieval. On exit, reconcile all layers,
+review the completed plan against both gameplay panels, obtain any distinct new
+alternative singleton checks, then update cumulative categories/resources and
+launch original Batch 04. Preserve unresolved earlier/linked events and AutoClaim
+limits. Do not rank final engineering priorities until all 200 games are reviewed.
+
 Final interpretation: automatic claims can limit observation of advantage
 conversion. Analyze the decisions leading to a claim, preserving earlier/linked
 uncertainty; the draw itself is not proof of engine weakness. No final priorities

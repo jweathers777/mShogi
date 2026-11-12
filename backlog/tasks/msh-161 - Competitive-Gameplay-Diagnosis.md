@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T16:12:00Z'
+updated_date: '2026-11-12T17:14:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -137,4 +137,8 @@ Primary cloud Batch 03 completed under restored original AutoClaim conditions. R
 Batch 03 independent integrity/gameplay reviews complete at 500k/5M stage. 6,485 queries covered, no stable missed-error expansion trigger; two uncertain audit roots retained. Native 9W/5D/6L, all five draws automatic threefold; do not infer weakness from draw alone. Eight actual workers, no allocation failures, all deleted. Primary compute estimate USD7.629961 through three base batches/two deep panels; 60 games played, 40 fully adjudicated. Admitted original-condition 20M plan selects 397 decisions / 676 jobs / 692 queries (16 discovery roots), SHA3ad0916deaef5ce2e150f38ab782a3aea5fe556c441ca37d63e436479dceb626. Selection null/list serialization failure corrected offline with originals preserved; no engine/search rerun. Next launch existing exit-notified cloud plan, review deeper results/discovered alternatives, then Batch 04.
 
 Launched admitted Batch 03 consequential 20M chain through existing notify_exit workflow, wrapper PID28235, job msh161-primary-b03-20m-v1, reviewed checkpoint ba750de9. 692 queries / 676 jobs / 397 decisions; original AutoClaim engines and image. Cloud acceptance and final computation/cleanup/queue status are separate receipts. Await completion callback without polling; review all selected events and distinct discovery alternatives before closing Batch 03 and starting original Batch 04. Preserved raw log newline warning from git diff --check; no source/test failure or engine rerun.
+
+Batch 03 20M plan completed: 676 jobs / 692 queries, zero failed attempts, plan-aware verification SHA fffa301665d45a44774438c1341d28cfc0faa40f664f24eae38e2ef1aa8a0b38. Wrapper succeeded, settled its group and queued notification. Independent panels now review all 397 selected roots, legal continuations and distinct discovery/linked alternatives; execution audit runs separately. Reuse completed played 20M evidence for any new singleton alternatives. Original AutoClaim conditions retained; no draw-policy work, duplicated searches or premature Batch 04 launch.
+
+Batch 03 20M independent panels and runtime audit completed. Preserve all 397 root dispositions before followup, legal continuations, secondary/already-lost tags, earlier uncertainty and AutoClaim limits. Admitted only seven distinct singleton alternatives: one unrestricted discovery and six linked played-PV replies, each verified against exact supporting history and compared with reused played 20M evidence. Plan SHA309aba6b7a616a8b1870c52e91808388c82537efd496cca358efcb525a70a4d9. No repeat games or played searches. Eight previous workers deleted, no failures; primary estimated compute USD8.640040/42.855643VMh, not billed. After seven-query review, close Batch 03 and update cumulative categories before original Batch 04.
 <!-- SECTION:NOTES:END -->

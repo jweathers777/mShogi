@@ -1,0 +1,29 @@
+{
+  "command": [
+    "/usr/bin/caffeinate",
+    "-i",
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/notify_exit.py",
+    "--thread",
+    "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+    "--codex",
+    "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+    "--receipt",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-06-notification.json",
+    "--label",
+    "MSH-161 original AutoClaim cloud Batch 06 games, analysis, retrieval and verification",
+    "--state",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-06-wait-retrieve.json",
+    "--message",
+    "Read cloud-primary/README.md and primary-cumulative.json. Original AutoClaim and unchanged native binaries, Oxidation and worker image remain authoritative. Reconcile computation, plan verification, cleanup and notification separately. Review completed Batch 06 with independent gameplay and integrity panels and required 20M checks; complete distinct new alternative obligations, preserve earlier and linked uncertainty and secondary tags, update cumulative categories and resources, then launch original Batch 07 after review. Full 200-game coverage is required. Automatic claims limit conversion observations; draws alone are not weakness. No duplicate searches or retrieval, Mac engines, production changes, timers or periodic polling. On failure reconcile preserved state before retry.",
+    "--",
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/wait_retrieve_batch.py",
+    "6",
+    "--subscription",
+    "projects/mshogi/subscriptions/mshogi-pilot-completion"
+  ],
+  "epoch": 1794528559.434165,
+  "pid": 68667,
+  "submission_uid": "msh161-primary-b06-c50373b2-1bf7-4ab50"
+}

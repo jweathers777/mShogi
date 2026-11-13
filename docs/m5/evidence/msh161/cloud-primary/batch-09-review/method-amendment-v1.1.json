@@ -1,0 +1,90 @@
+{
+  "schema": "msh161-method-amendment-v1",
+  "version": "main-method-v1.1-audit-expansion-01",
+  "status": "recorded_pending_independent_method_review",
+  "original_method": "../../main-method.md",
+  "original_method_sha256": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+  "proposal": "audit-expansion-proposal.json",
+  "proposal_sha256": "25849101b758e5d25bffdf22a607e9e5fdd51472c12bcd2521a8a65da4458c08",
+  "trigger": {
+    "pair": "main-09-00",
+    "game": 0,
+    "engine_index": 1,
+    "mover": "black",
+    "phase": "endgame",
+    "ply": 65,
+    "played": "h7h5",
+    "alternative": "c3b3",
+    "screening_loss": 0.02849999999999997,
+    "screening_flags": [],
+    "followup_required": false,
+    "existing_selection_reason": "stratified-nonflagged-audit",
+    "existing_5m": [
+      {
+        "move": "h7h5",
+        "job": "797bb0bf534926bb62e78b913fa29018901d6262904de7a2d6d321a7841ae21d",
+        "success_sha256": "63168a50151ad8ad8bc4c55ccbb52169a1a8db76c7880727b2667f8c1936d926",
+        "artifact": {
+          "bytes": 29486,
+          "key": "msh161-primary-v1-batch-09/jobs/797bb0bf534926bb62e78b913fa29018901d6262904de7a2d6d321a7841ae21d/attempts/cbf03bca83b3449688b1e4cb68edecee/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+          "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/797bb0bf534926bb62e78b913fa29018901d6262904de7a2d6d321a7841ae21d/attempts/cbf03bca83b3449688b1e4cb68edecee/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+          "sha256": "8a4acdbdec1e56779af907acd0b5eb24a1e90216e89b3cd5f6e7da0da7f13ab1"
+        },
+        "expected_score_mover": 0.929,
+        "range": [
+          0.929,
+          0.929
+        ],
+        "stable": true,
+        "conflicts": [],
+        "flags": []
+      },
+      {
+        "move": "c3b3",
+        "job": "ce2e47d90b0bdc310e0adcdbc90b9f90ae1d27d802ce8bec44fe12ac7846d74c",
+        "success_sha256": "46cec709d50f1a2336f7a234cbea9708822636ecbc6b511d8d8ab343c27b9fa9",
+        "artifact": {
+          "bytes": 32872,
+          "key": "msh161-primary-v1-batch-09/jobs/ce2e47d90b0bdc310e0adcdbc90b9f90ae1d27d802ce8bec44fe12ac7846d74c/attempts/491fbe11edb6407aa78fa8d4b95103d3/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+          "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/ce2e47d90b0bdc310e0adcdbc90b9f90ae1d27d802ce8bec44fe12ac7846d74c/attempts/491fbe11edb6407aa78fa8d4b95103d3/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+          "sha256": "5eb6d53eba1a3787fda1a66c92949266fd8c1526cc674e0f4a5eaa67832e98d9"
+        },
+        "expected_score_mover": 0.996,
+        "range": [
+          0.9925,
+          0.996
+        ],
+        "stable": true,
+        "conflicts": [],
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      }
+    ],
+    "new_forced_moves_required": []
+  },
+  "trigger_conservative_margin": 0.0635,
+  "scope": {
+    "pair": "main-09-00",
+    "game": 0,
+    "engine_index": 1,
+    "player": "reference Oxidation (Black)",
+    "phase": "endgame"
+  },
+  "all_stratum_decisions": 21,
+  "reused_existing5m_decisions": 19,
+  "new_expansion_roots": 2,
+  "new_queries20m": 3,
+  "selection": "audit-expansion-selection.json",
+  "selection_sha256": "5f0dcf3875b3ae8695bb6096923598f16f4257773b3ccfbbd495b871450a4ef0",
+  "procedure": "Reuse all completed screening and19 matched5M roots. Add only the2 uncovered roots, with deduplicated played/initial alternatives, to pending20M plan. Review trigger and expanded roots independently. If uncertainty persists retain it; any distinct discovered alternative follows existing singleton obligation. Do not rerun5M or existing searches.",
+  "rationale": "Frozen method requires expansion after a stable missed-important audit comparison. A conservative .0635 margin meets primary significance despite favorable playedE. Direct20M exceeds the5M work floor and avoids another cloud submission/review ladder; source v1 and scientific/native conditions remain immutable.",
+  "limits": [
+    "One observed cell expansion, not certification of other unqueried cells.",
+    "Reference still retains favorable finiteE; no lost-game/conversion or engine-mechanism claim.",
+    "20M may withdraw support; retain both5M and20M evidence.",
+    "No final ranking before full200-game coverage and independent challenge.",
+    "Expanded cell has mixed work budgets:19 reused5M roots and2 new20M roots; do not report a uniform5M cell sample or infer a cell error rate."
+  ],
+  "review_required_before_launch": true
+}

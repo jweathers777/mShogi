@@ -1,0 +1,58 @@
+{
+  "status": "passed_independent_method_review_before_launch",
+  "reviewer": "batch03_integrity independent execution/method reviewer",
+  "scope": "Exact versioned overlay and selection admission; no new scientific scope, search, retrieval or code change",
+  "bindings": {
+    "method-amendment-v1.1.json": "0652e66c5537c4aaad4c6de057119e5229ad81f12150286553cd611168bfc9b9",
+    "audit-expansion-selection.json": "5f0dcf3875b3ae8695bb6096923598f16f4257773b3ccfbbd495b871450a4ef0",
+    "audit-expansion-proposal.json": "25849101b758e5d25bffdf22a607e9e5fdd51472c12bcd2521a8a65da4458c08",
+    "selection-00-04.json": "048ac162281110d1b23f8890c7d4de04187e70e447232c6c2910681cc6f52529"
+  },
+  "original_method": {
+    "path": "../../main-method.md",
+    "sha256": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+    "path_and_hash_verified": true
+  },
+  "trigger": {
+    "pair": "main-09-00",
+    "game": 0,
+    "ply": 65,
+    "engine_index": 1,
+    "mover": "black",
+    "phase": "endgame",
+    "played": "h7h5",
+    "alternative": "c3b3",
+    "point_loss": 0.067,
+    "conservative_margin": 0.0635,
+    "matched20m_retained_in": "selection-00-04.json"
+  },
+  "approved_expansion": {
+    "existing5m_roots_reused": 19,
+    "new20m_roots": 2,
+    "new_singleton_queries": 3,
+    "complete_cell_roots": 21,
+    "queries": [
+      {
+        "ply": 57,
+        "move": "a1c1"
+      },
+      {
+        "ply": 57,
+        "move": "g7f8"
+      },
+      {
+        "ply": 75,
+        "move": "c8c6"
+      }
+    ]
+  },
+  "assessment": "Sound bounded direct-20M substitution for otherwise new 5M work. Identical histories, options, engine identities and initial choices preserve the intended comparison; larger budgets satisfy the minimum work floor without repeating existing queries. Frozen v1 remains immutable and v1.1 is an explicit overlay.",
+  "required_interpretation": [
+    "Cell coverage is 19 reused 5M roots plus two new 20M roots, not a uniform 5M sample.",
+    "Do not infer a cell error rate or generalize coverage to other cells.",
+    "Retain original 5M trigger and matched 20M confirmation even if later support changes.",
+    "High remaining mover E does not waive the trigger; no game-loss or mechanism claim follows from it.",
+    "Retain all unstable or conflicting results as unresolved; do not repeat until a preferred label appears."
+  ],
+  "binding_reconciliation": "The proposal hash was refreshed before this review after the proposal gained the already reviewed stronger-work assessment. All current internal bindings now pass. Reviewed proposal and amendment must not be mutated after these hash bindings."
+}

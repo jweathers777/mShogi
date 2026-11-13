@@ -1,0 +1,1190 @@
+{
+  "status": "verified_trigger_expansion_proposal_not_executed",
+  "trigger": {
+    "pair": "main-09-00",
+    "game": 0,
+    "engine_index": 1,
+    "mover": "black",
+    "phase": "endgame",
+    "ply": 65,
+    "played": "h7h5",
+    "alternative": "c3b3",
+    "screening_loss": 0.02849999999999997,
+    "screening_flags": [],
+    "followup_required": false,
+    "existing_selection_reason": "stratified-nonflagged-audit",
+    "existing_5m": [
+      {
+        "move": "h7h5",
+        "job": "797bb0bf534926bb62e78b913fa29018901d6262904de7a2d6d321a7841ae21d",
+        "success_sha256": "63168a50151ad8ad8bc4c55ccbb52169a1a8db76c7880727b2667f8c1936d926",
+        "artifact": {
+          "bytes": 29486,
+          "key": "msh161-primary-v1-batch-09/jobs/797bb0bf534926bb62e78b913fa29018901d6262904de7a2d6d321a7841ae21d/attempts/cbf03bca83b3449688b1e4cb68edecee/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+          "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/797bb0bf534926bb62e78b913fa29018901d6262904de7a2d6d321a7841ae21d/attempts/cbf03bca83b3449688b1e4cb68edecee/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+          "sha256": "8a4acdbdec1e56779af907acd0b5eb24a1e90216e89b3cd5f6e7da0da7f13ab1"
+        },
+        "expected_score_mover": 0.929,
+        "range": [
+          0.929,
+          0.929
+        ],
+        "stable": true,
+        "conflicts": [],
+        "flags": []
+      },
+      {
+        "move": "c3b3",
+        "job": "ce2e47d90b0bdc310e0adcdbc90b9f90ae1d27d802ce8bec44fe12ac7846d74c",
+        "success_sha256": "46cec709d50f1a2336f7a234cbea9708822636ecbc6b511d8d8ab343c27b9fa9",
+        "artifact": {
+          "bytes": 32872,
+          "key": "msh161-primary-v1-batch-09/jobs/ce2e47d90b0bdc310e0adcdbc90b9f90ae1d27d802ce8bec44fe12ac7846d74c/attempts/491fbe11edb6407aa78fa8d4b95103d3/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+          "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/ce2e47d90b0bdc310e0adcdbc90b9f90ae1d27d802ce8bec44fe12ac7846d74c/attempts/491fbe11edb6407aa78fa8d4b95103d3/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+          "sha256": "5eb6d53eba1a3787fda1a66c92949266fd8c1526cc674e0f4a5eaa67832e98d9"
+        },
+        "expected_score_mover": 0.996,
+        "range": [
+          0.9925,
+          0.996
+        ],
+        "stable": true,
+        "conflicts": [],
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      }
+    ],
+    "new_forced_moves_required": []
+  },
+  "trigger_point_loss": 0.06699999999999995,
+  "trigger_conservative_margin": 0.0635,
+  "stratum": {
+    "pair": "main-09-00",
+    "game": 0,
+    "engine_index": 1,
+    "player": "reference Oxidation (Black)",
+    "phase": "endgame"
+  },
+  "all_stratum_decisions": 21,
+  "existing_v1_followup_decisions": 18,
+  "existing_audit_decisions": 1,
+  "untested_decisions": 2,
+  "new_queries_required": 3,
+  "inventory": [
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 45,
+      "played": "b2b3",
+      "alternative": "g7f6",
+      "screening_loss": 0.009499999999999953,
+      "screening_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "b2b3",
+          "job": "1c286e7a82ab1b90d84be0fed7e9b98b6bf46feda1aece18c94e914eb14b343d",
+          "success_sha256": "f64067fd23ba007440f1861b72f068dc5170839aa7975a631199ba0c33edb029",
+          "artifact": {
+            "bytes": 35374,
+            "key": "msh161-primary-v1-batch-09/jobs/1c286e7a82ab1b90d84be0fed7e9b98b6bf46feda1aece18c94e914eb14b343d/attempts/272f654b84464d118b9dc0d5ea73a504/artifacts/analysis/g000-p045-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/1c286e7a82ab1b90d84be0fed7e9b98b6bf46feda1aece18c94e914eb14b343d/attempts/272f654b84464d118b9dc0d5ea73a504/artifacts/analysis/g000-p045-alternative-attempt0000.json",
+            "sha256": "142a1caa330bb0019018d4f1bc55545035d49d5f64cc7f84a127a7215b86f4ed"
+          },
+          "expected_score_mover": 0.955,
+          "range": [
+            0.955,
+            0.955
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        },
+        {
+          "move": "g7f6",
+          "job": "ae1bd904e8997e62046981b8278bb2aeff627619967e94e2d361b00b1ee19318",
+          "success_sha256": "28b8ffce9c669879fb3680432265c29948d30110a362f81c0a11cfa7652da1e5",
+          "artifact": {
+            "bytes": 29946,
+            "key": "msh161-primary-v1-batch-09/jobs/ae1bd904e8997e62046981b8278bb2aeff627619967e94e2d361b00b1ee19318/attempts/d182513928e845b989da68ec41d7d901/artifacts/analysis/g000-p045-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/ae1bd904e8997e62046981b8278bb2aeff627619967e94e2d361b00b1ee19318/attempts/d182513928e845b989da68ec41d7d901/artifacts/analysis/g000-p045-alternative-attempt0000.json",
+            "sha256": "aef2f1c63b52f2578bfd8698c485b8a86c307057e4156440ed8cc6889a5ea3f9"
+          },
+          "expected_score_mover": 0.9865,
+          "range": [
+            0.9865,
+            0.9895
+          ],
+          "stable": true,
+          "conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 47,
+      "played": "b3a3",
+      "alternative": "b3a3",
+      "screening_loss": -0.0010000000000000009,
+      "screening_flags": [],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "b3a3",
+          "job": "6da420e4ec9801be37ed6d9f06fbf9ab1f0e117fe42ced6d3c7e069ff5d94fdc",
+          "success_sha256": "45bcaedb4e48f8d0bd8d436b8aaaeb910c3609bf5a74b8e1b7ed829f3086e351",
+          "artifact": {
+            "bytes": 29489,
+            "key": "msh161-primary-v1-batch-09/jobs/6da420e4ec9801be37ed6d9f06fbf9ab1f0e117fe42ced6d3c7e069ff5d94fdc/attempts/df2381f57cf94d939cbc08b05fd2bb54/artifacts/analysis/g000-p047-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/6da420e4ec9801be37ed6d9f06fbf9ab1f0e117fe42ced6d3c7e069ff5d94fdc/attempts/df2381f57cf94d939cbc08b05fd2bb54/artifacts/analysis/g000-p047-alternative-attempt0000.json",
+            "sha256": "8d47312af758f977d7c4cf02c8e02bc20a7d4f5af63920f1c8e666f9462478e3"
+          },
+          "expected_score_mover": 0.986,
+          "range": [
+            0.986,
+            0.986
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 49,
+      "played": "c8b8",
+      "alternative": "c8b8",
+      "screening_loss": 0.018500000000000072,
+      "screening_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "c8b8",
+          "job": "ccbfd59eb23c7a7398b0de4ac22f2783fe04a94fa695fedd94fd1bff4d574553",
+          "success_sha256": "7bd3e53e483d26fe8e4629efbd048bde86d0bebf5ee3f56e3c038a147f19ce7a",
+          "artifact": {
+            "bytes": 29578,
+            "key": "msh161-primary-v1-batch-09/jobs/ccbfd59eb23c7a7398b0de4ac22f2783fe04a94fa695fedd94fd1bff4d574553/attempts/cba349e12e5d46b9b7b7bdeb86cca948/artifacts/analysis/g000-p049-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/ccbfd59eb23c7a7398b0de4ac22f2783fe04a94fa695fedd94fd1bff4d574553/attempts/cba349e12e5d46b9b7b7bdeb86cca948/artifacts/analysis/g000-p049-alternative-attempt0000.json",
+            "sha256": "4c806d501ad48ca18b6483449c0b97e92daafc3c689e69bbd9466b786ef7acf9"
+          },
+          "expected_score_mover": 0.9765,
+          "range": [
+            0.9765,
+            0.984
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 51,
+      "played": "b8e8",
+      "alternative": "e7e6",
+      "screening_loss": -0.013499999999999956,
+      "screening_flags": [],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "b8e8",
+          "job": "47240d3ddb877e5506a60629a94b271803c0f3f8a1b1af22528090eba2856f61",
+          "success_sha256": "f66fbb86a6b3229821a3bc58affc9023101ebe0706a9bc63d05e140ef896ca82",
+          "artifact": {
+            "bytes": 31051,
+            "key": "msh161-primary-v1-batch-09/jobs/47240d3ddb877e5506a60629a94b271803c0f3f8a1b1af22528090eba2856f61/attempts/3f9ad5bc74014c11b610c6ff28dee76b/artifacts/analysis/g000-p051-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/47240d3ddb877e5506a60629a94b271803c0f3f8a1b1af22528090eba2856f61/attempts/3f9ad5bc74014c11b610c6ff28dee76b/artifacts/analysis/g000-p051-alternative-attempt0000.json",
+            "sha256": "d085fd0bf95dac5cf53b9bc6084835f6a0e8ea8d0a634b65363d2c3db39cdefa"
+          },
+          "expected_score_mover": 0.991,
+          "range": [
+            0.991,
+            0.991
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        },
+        {
+          "move": "e7e6",
+          "job": "8732411368911d03967a6740c99edc1abf1f95869bd860170e17c15f6c250b88",
+          "success_sha256": "e120eb48643d06eeee3ffc3f20587e3128f11877d59df7fd72c7c9c4f5a7fe64",
+          "artifact": {
+            "bytes": 30128,
+            "key": "msh161-primary-v1-batch-09/jobs/8732411368911d03967a6740c99edc1abf1f95869bd860170e17c15f6c250b88/attempts/451d17e5b0ac49468d72fe015bb7f629/artifacts/analysis/g000-p051-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/8732411368911d03967a6740c99edc1abf1f95869bd860170e17c15f6c250b88/attempts/451d17e5b0ac49468d72fe015bb7f629/artifacts/analysis/g000-p051-alternative-attempt0000.json",
+            "sha256": "72b94238eeeb526a3b3756e26dc5bc7a135215ec851c1f11d26eb2f3fe06ff33"
+          },
+          "expected_score_mover": 0.9465,
+          "range": [
+            0.9465,
+            0.9605
+          ],
+          "stable": true,
+          "conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score",
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "final_same_move_bound_conflicts_with_earlier_expected_score",
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 53,
+      "played": "a3a1",
+      "alternative": "a3a1",
+      "screening_loss": 0.0050000000000000044,
+      "screening_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "a3a1",
+          "job": "f3def52d20d1975a4a041ed0058ad61664c2c496b026e844722043f946d0be46",
+          "success_sha256": "e4b2e709fb99728093b093b39dfe7e514cdd6964e7398674d36fbd5312cffc05",
+          "artifact": {
+            "bytes": 33767,
+            "key": "msh161-primary-v1-batch-09/jobs/f3def52d20d1975a4a041ed0058ad61664c2c496b026e844722043f946d0be46/attempts/8f90557b7a5346edbfa0008bb1d3b79c/artifacts/analysis/g000-p053-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/f3def52d20d1975a4a041ed0058ad61664c2c496b026e844722043f946d0be46/attempts/8f90557b7a5346edbfa0008bb1d3b79c/artifacts/analysis/g000-p053-alternative-attempt0000.json",
+            "sha256": "f85df091f8d55530bd0fe94778c24b3139e8d9d70dbedd83730fff4840d72969"
+          },
+          "expected_score_mover": 0.9905,
+          "range": [
+            0.966,
+            0.9905
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 55,
+      "played": "e7e6",
+      "alternative": "e7e6",
+      "screening_loss": -0.020000000000000018,
+      "screening_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "e7e6",
+          "job": "ab80b93b8177536f5a887aa17ec6f2024184796bcff84009533ba2b1a6bfab81",
+          "success_sha256": "e5c031f53e6645e12696b26e4844c8b6cbccec832a5798b5d8eda81a72bb9c28",
+          "artifact": {
+            "bytes": 31709,
+            "key": "msh161-primary-v1-batch-09/jobs/ab80b93b8177536f5a887aa17ec6f2024184796bcff84009533ba2b1a6bfab81/attempts/ba1fb2ff3b664e88bd570bb94035343d/artifacts/analysis/g000-p055-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/ab80b93b8177536f5a887aa17ec6f2024184796bcff84009533ba2b1a6bfab81/attempts/ba1fb2ff3b664e88bd570bb94035343d/artifacts/analysis/g000-p055-alternative-attempt0000.json",
+            "sha256": "ee64fca432eda12478a65e3b86f90b44e2e149b95fe60fcc00f61e81da4a1bf3"
+          },
+          "expected_score_mover": 0.991,
+          "range": [
+            0.991,
+            0.991
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 57,
+      "played": "a1c1",
+      "alternative": "g7f8",
+      "screening_loss": 0.0015000000000000568,
+      "screening_flags": [],
+      "followup_required": false,
+      "existing_selection_reason": null,
+      "existing_5m": [],
+      "new_forced_moves_required": [
+        "a1c1",
+        "g7f8"
+      ]
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 59,
+      "played": "c1c3",
+      "alternative": "c1c2",
+      "screening_loss": -0.08399999999999996,
+      "screening_flags": [
+        "final_same_move_bound_conflicts_with_earlier_cp",
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "c1c3",
+          "job": "e04714452b21f8cb11724bafb9ad4638b0e4ed391a4d44037fc38a60e8894ff5",
+          "success_sha256": "e3ea29a5da194f7f45a1b1a8993fb1a63df88b69f2fedd09a1fe52d4429d0001",
+          "artifact": {
+            "bytes": 28944,
+            "key": "msh161-primary-v1-batch-09/jobs/e04714452b21f8cb11724bafb9ad4638b0e4ed391a4d44037fc38a60e8894ff5/attempts/f1459aa37afc4ebda95ac953d49678ea/artifacts/analysis/g000-p059-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/e04714452b21f8cb11724bafb9ad4638b0e4ed391a4d44037fc38a60e8894ff5/attempts/f1459aa37afc4ebda95ac953d49678ea/artifacts/analysis/g000-p059-alternative-attempt0000.json",
+            "sha256": "ebabe8b27e9d0eab02667740932fd99090bb6ad49c23e58c86cb44fe08ae566c"
+          },
+          "expected_score_mover": 0.9975,
+          "range": [
+            0.996,
+            0.9975
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        },
+        {
+          "move": "c1c2",
+          "job": "987cce4f8c8fc49b10c431caae4bd45b155ed9fb1fb1b419d6b3af01d87b3fd9",
+          "success_sha256": "6e8ee5564289ec37b0b2d2ef2aa327e840ad6ab28623d9a612d826bc254a5aae",
+          "artifact": {
+            "bytes": 30370,
+            "key": "msh161-primary-v1-batch-09/jobs/987cce4f8c8fc49b10c431caae4bd45b155ed9fb1fb1b419d6b3af01d87b3fd9/attempts/161bfe8b22ca4f318ba4f3fd5fa72b0b/artifacts/analysis/g000-p059-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/987cce4f8c8fc49b10c431caae4bd45b155ed9fb1fb1b419d6b3af01d87b3fd9/attempts/161bfe8b22ca4f318ba4f3fd5fa72b0b/artifacts/analysis/g000-p059-alternative-attempt0000.json",
+            "sha256": "effecafa01eb99953882e1937088dae51edeb7f0cecbdd24f3a3b5e28c7e3647"
+          },
+          "expected_score_mover": 0.999,
+          "range": [
+            0.999,
+            0.999
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 61,
+      "played": "g8f8",
+      "alternative": "g7f8",
+      "screening_loss": 0.011499999999999955,
+      "screening_flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "g8f8",
+          "job": "87066cb2f02fa4a2eedcc854753717a9b330bd88e858137540a808e5c5c2a042",
+          "success_sha256": "4640636d24488a74f04c69ea908329ffe7258724afd7879ae806c2bf9975f329",
+          "artifact": {
+            "bytes": 34900,
+            "key": "msh161-primary-v1-batch-09/jobs/87066cb2f02fa4a2eedcc854753717a9b330bd88e858137540a808e5c5c2a042/attempts/ac9571d689ae48d7b612a8427141da3f/artifacts/analysis/g000-p061-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/87066cb2f02fa4a2eedcc854753717a9b330bd88e858137540a808e5c5c2a042/attempts/ac9571d689ae48d7b612a8427141da3f/artifacts/analysis/g000-p061-alternative-attempt0000.json",
+            "sha256": "469de21ed207b438d6cd3d452093a585ead3b06706ff730588aa1605892d7d5e"
+          },
+          "expected_score_mover": 0.9995,
+          "range": [
+            0.9995,
+            0.9995
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        },
+        {
+          "move": "g7f8",
+          "job": "96eaca96c7ac7e8bc8e3e7137790207f2332aba47d0828f70381135febfd9bba",
+          "success_sha256": "cd3a7b38997f7a60efb615a92920604e7040de1eaa59f4f296b60a80053c7a4b",
+          "artifact": {
+            "bytes": 38131,
+            "key": "msh161-primary-v1-batch-09/jobs/96eaca96c7ac7e8bc8e3e7137790207f2332aba47d0828f70381135febfd9bba/attempts/db5651d9181f46e59b7702e845a64d34/artifacts/analysis/g000-p061-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/96eaca96c7ac7e8bc8e3e7137790207f2332aba47d0828f70381135febfd9bba/attempts/db5651d9181f46e59b7702e845a64d34/artifacts/analysis/g000-p061-alternative-attempt0000.json",
+            "sha256": "4e026eb29acc2c7bd26e7c69c3ea7dad58da27c3f0d5b10cc1be6bb28eed1928"
+          },
+          "expected_score_mover": 0.9955,
+          "range": [
+            0.9955,
+            0.9955
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 63,
+      "played": "e8c8",
+      "alternative": "e8c8",
+      "screening_loss": 0.0040000000000000036,
+      "screening_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "e8c8",
+          "job": "b9c5653515b2d89cab36b6d1426c9849c9fa2d5bbf118b0d7005ea21f01e421c",
+          "success_sha256": "1178c8885e7d260b66c311193d54fa1807c5df2039e22f771c6b5f2f304ccdf7",
+          "artifact": {
+            "bytes": 28471,
+            "key": "msh161-primary-v1-batch-09/jobs/b9c5653515b2d89cab36b6d1426c9849c9fa2d5bbf118b0d7005ea21f01e421c/attempts/7dd139bbe6944fb4b721c9128204966c/artifacts/analysis/g000-p063-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/b9c5653515b2d89cab36b6d1426c9849c9fa2d5bbf118b0d7005ea21f01e421c/attempts/7dd139bbe6944fb4b721c9128204966c/artifacts/analysis/g000-p063-alternative-attempt0000.json",
+            "sha256": "c622563e15d9d78a32ddbd036018b32168e890fb87abe8dd070518215589583c"
+          },
+          "expected_score_mover": 0.997,
+          "range": [
+            0.9955,
+            0.997
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 65,
+      "played": "h7h5",
+      "alternative": "c3b3",
+      "screening_loss": 0.02849999999999997,
+      "screening_flags": [],
+      "followup_required": false,
+      "existing_selection_reason": "stratified-nonflagged-audit",
+      "existing_5m": [
+        {
+          "move": "h7h5",
+          "job": "797bb0bf534926bb62e78b913fa29018901d6262904de7a2d6d321a7841ae21d",
+          "success_sha256": "63168a50151ad8ad8bc4c55ccbb52169a1a8db76c7880727b2667f8c1936d926",
+          "artifact": {
+            "bytes": 29486,
+            "key": "msh161-primary-v1-batch-09/jobs/797bb0bf534926bb62e78b913fa29018901d6262904de7a2d6d321a7841ae21d/attempts/cbf03bca83b3449688b1e4cb68edecee/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/797bb0bf534926bb62e78b913fa29018901d6262904de7a2d6d321a7841ae21d/attempts/cbf03bca83b3449688b1e4cb68edecee/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+            "sha256": "8a4acdbdec1e56779af907acd0b5eb24a1e90216e89b3cd5f6e7da0da7f13ab1"
+          },
+          "expected_score_mover": 0.929,
+          "range": [
+            0.929,
+            0.929
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        },
+        {
+          "move": "c3b3",
+          "job": "ce2e47d90b0bdc310e0adcdbc90b9f90ae1d27d802ce8bec44fe12ac7846d74c",
+          "success_sha256": "46cec709d50f1a2336f7a234cbea9708822636ecbc6b511d8d8ab343c27b9fa9",
+          "artifact": {
+            "bytes": 32872,
+            "key": "msh161-primary-v1-batch-09/jobs/ce2e47d90b0bdc310e0adcdbc90b9f90ae1d27d802ce8bec44fe12ac7846d74c/attempts/491fbe11edb6407aa78fa8d4b95103d3/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/ce2e47d90b0bdc310e0adcdbc90b9f90ae1d27d802ce8bec44fe12ac7846d74c/attempts/491fbe11edb6407aa78fa8d4b95103d3/artifacts/analysis/g000-p065-alternative-attempt0000.json",
+            "sha256": "5eb6d53eba1a3787fda1a66c92949266fd8c1526cc674e0f4a5eaa67832e98d9"
+          },
+          "expected_score_mover": 0.996,
+          "range": [
+            0.9925,
+            0.996
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 67,
+      "played": "f8e8",
+      "alternative": "c3b3",
+      "screening_loss": -0.15049999999999997,
+      "screening_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "f8e8",
+          "job": "a583a0b6bfbee572c20220b4b151db693b907c40675a74c6b1806a7f956e6875",
+          "success_sha256": "6eac7b193a5c6ba008f4c4b98e362f665e8f5a260aa64bbd8d64f28269aaad5a",
+          "artifact": {
+            "bytes": 34822,
+            "key": "msh161-primary-v1-batch-09/jobs/a583a0b6bfbee572c20220b4b151db693b907c40675a74c6b1806a7f956e6875/attempts/be6e7b2460cc4c2ba7e052a0ca531858/artifacts/analysis/g000-p067-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/a583a0b6bfbee572c20220b4b151db693b907c40675a74c6b1806a7f956e6875/attempts/be6e7b2460cc4c2ba7e052a0ca531858/artifacts/analysis/g000-p067-alternative-attempt0000.json",
+            "sha256": "465d077650c2b013a6eb3b2b120e045ffc7f47e7a78c9dea6ca47e21b5e03987"
+          },
+          "expected_score_mover": 0.9635,
+          "range": [
+            0.9635,
+            0.9785
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        },
+        {
+          "move": "c3b3",
+          "job": "90eaabde891370ca5151f956521956f26b09696832a0487df40827c4a357311f",
+          "success_sha256": "67dd8b082330a64f4b0bf5b61d204b2b1789b7e40a192ab49411a9d3bfaba787",
+          "artifact": {
+            "bytes": 34129,
+            "key": "msh161-primary-v1-batch-09/jobs/90eaabde891370ca5151f956521956f26b09696832a0487df40827c4a357311f/attempts/19594e2d8835460897f09889a2dc4497/artifacts/analysis/g000-p067-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/90eaabde891370ca5151f956521956f26b09696832a0487df40827c4a357311f/attempts/19594e2d8835460897f09889a2dc4497/artifacts/analysis/g000-p067-alternative-attempt0000.json",
+            "sha256": "f0c12c53a8a1f1bbaa82cf158985e1e814c32588ca3f71ba62272015b6a2de44"
+          },
+          "expected_score_mover": 0.907,
+          "range": [
+            0.907,
+            0.907
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 69,
+      "played": "c3b3",
+      "alternative": "c3b3",
+      "screening_loss": -0.045499999999999985,
+      "screening_flags": [
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "c3b3",
+          "job": "a55eec3043116cfd84975ef53df228abedb396b819cc2249f8b0f5177ccb2fd2",
+          "success_sha256": "b5ae852a7f9cdb46401f05e2c83bde79de52e068930e864b5d3c75389c10699b",
+          "artifact": {
+            "bytes": 32216,
+            "key": "msh161-primary-v1-batch-09/jobs/a55eec3043116cfd84975ef53df228abedb396b819cc2249f8b0f5177ccb2fd2/attempts/ac633124de9a4c0684aa7c0600bd5f0e/artifacts/analysis/g000-p069-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/a55eec3043116cfd84975ef53df228abedb396b819cc2249f8b0f5177ccb2fd2/attempts/ac633124de9a4c0684aa7c0600bd5f0e/artifacts/analysis/g000-p069-alternative-attempt0000.json",
+            "sha256": "cb3b4aeb953943e644f807fa1b75d373f0063d1d113f19342790482718f63ab8"
+          },
+          "expected_score_mover": 0.9895,
+          "range": [
+            0.9895,
+            0.992
+          ],
+          "stable": true,
+          "conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score",
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "final_same_move_bound_conflicts_with_earlier_expected_score",
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 71,
+      "played": "g7c3",
+      "alternative": "e8f8",
+      "screening_loss": -0.03499999999999992,
+      "screening_flags": [
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "g7c3",
+          "job": "966a849cf9318f92436707d790b34a79fe1ea50832ba664ef6f99db7a0173c03",
+          "success_sha256": "bdd7faca01eff06396612905e01a7cbb4f5c47499d1c40b1c755f7878ea5084b",
+          "artifact": {
+            "bytes": 29671,
+            "key": "msh161-primary-v1-batch-09/jobs/966a849cf9318f92436707d790b34a79fe1ea50832ba664ef6f99db7a0173c03/attempts/30a14be6090a4c1ea2a8f04dfc55f6d8/artifacts/analysis/g000-p071-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/966a849cf9318f92436707d790b34a79fe1ea50832ba664ef6f99db7a0173c03/attempts/30a14be6090a4c1ea2a8f04dfc55f6d8/artifacts/analysis/g000-p071-alternative-attempt0000.json",
+            "sha256": "509e588c732eaef76a3d9c6289183f66b176aa2e8ae8a15643cf4be21089be17"
+          },
+          "expected_score_mover": 0.8115,
+          "range": [
+            0.8115,
+            0.8255
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        },
+        {
+          "move": "e8f8",
+          "job": "012a009e32abbb616eaebf8b8b2c39dce386a2a4afbc18b3083f0193d0134c5d",
+          "success_sha256": "47349dae4883971373db60e387991ab6c25c114a7038b1607b1d60da42a0ab55",
+          "artifact": {
+            "bytes": 29602,
+            "key": "msh161-primary-v1-batch-09/jobs/012a009e32abbb616eaebf8b8b2c39dce386a2a4afbc18b3083f0193d0134c5d/attempts/3d6004cfee9c4ec7a00dd951e14f9b34/artifacts/analysis/g000-p071-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/012a009e32abbb616eaebf8b8b2c39dce386a2a4afbc18b3083f0193d0134c5d/attempts/3d6004cfee9c4ec7a00dd951e14f9b34/artifacts/analysis/g000-p071-alternative-attempt0000.json",
+            "sha256": "a9440d0529d5224d9aa9174e3029c89b977bd483b82535edfe18c790939a57b2"
+          },
+          "expected_score_mover": 0.6535,
+          "range": [
+            0.6535,
+            0.719
+          ],
+          "stable": false,
+          "conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score",
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "final_same_move_bound_conflicts_with_earlier_expected_score",
+            "last_score_update_not_selected_exact_score",
+            "last_two_report_estimates_unstable"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 73,
+      "played": "b3b4",
+      "alternative": "e8f8",
+      "screening_loss": -0.0025000000000000577,
+      "screening_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "b3b4",
+          "job": "6543167590636c2df1196b2070e67459c86794095c74bd2fa7086ea1b0e0ccee",
+          "success_sha256": "96ff96c8219e841de3fdc202c6051a143581eaadc6b4228eeaf69c5925d49128",
+          "artifact": {
+            "bytes": 34932,
+            "key": "msh161-primary-v1-batch-09/jobs/6543167590636c2df1196b2070e67459c86794095c74bd2fa7086ea1b0e0ccee/attempts/c8729e95cc764bedb25ce65704ac21dc/artifacts/analysis/g000-p073-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/6543167590636c2df1196b2070e67459c86794095c74bd2fa7086ea1b0e0ccee/attempts/c8729e95cc764bedb25ce65704ac21dc/artifacts/analysis/g000-p073-alternative-attempt0000.json",
+            "sha256": "e1fbc2dd32da2dd0a3aebc698b88786a515e08bae0297fa69acf568d69b5dba7"
+          },
+          "expected_score_mover": 0.9535,
+          "range": [
+            0.9535,
+            0.9535
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        },
+        {
+          "move": "e8f8",
+          "job": "96b444bb709c5bfc51af77c5df4e76566301187382eaea11256465a57938678f",
+          "success_sha256": "cd9bcecfecb3dcf66f0d31fca6a6345b26d10d6b5353d65ebc49caf715815cab",
+          "artifact": {
+            "bytes": 33677,
+            "key": "msh161-primary-v1-batch-09/jobs/96b444bb709c5bfc51af77c5df4e76566301187382eaea11256465a57938678f/attempts/b306c7b374df41c1b561f384d79ccd2a/artifacts/analysis/g000-p073-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/96b444bb709c5bfc51af77c5df4e76566301187382eaea11256465a57938678f/attempts/b306c7b374df41c1b561f384d79ccd2a/artifacts/analysis/g000-p073-alternative-attempt0000.json",
+            "sha256": "552655f71406179018961d6b7341b69d26f8f9c5e1ff99101327a97060f31e5c"
+          },
+          "expected_score_mover": 0.938,
+          "range": [
+            0.938,
+            0.938
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 75,
+      "played": "c8c6",
+      "alternative": "c8c6",
+      "screening_loss": 0.015000000000000013,
+      "screening_flags": [],
+      "followup_required": false,
+      "existing_selection_reason": null,
+      "existing_5m": [],
+      "new_forced_moves_required": [
+        "c8c6"
+      ]
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 77,
+      "played": "f7f5",
+      "alternative": "c3e1",
+      "screening_loss": 0.05449999999999999,
+      "screening_flags": [
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "f7f5",
+          "job": "f3d368da0bf8035122181cd111792f602e47510530d2f5f9942d15b7168765b8",
+          "success_sha256": "6e7b0552a10006c3777eb7357623fd3eea22c614bb263884a50a3585e19c7c4d",
+          "artifact": {
+            "bytes": 32573,
+            "key": "msh161-primary-v1-batch-09/jobs/f3d368da0bf8035122181cd111792f602e47510530d2f5f9942d15b7168765b8/attempts/9d8f946e35a34bd9aef3c68131cec83d/artifacts/analysis/g000-p077-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/f3d368da0bf8035122181cd111792f602e47510530d2f5f9942d15b7168765b8/attempts/9d8f946e35a34bd9aef3c68131cec83d/artifacts/analysis/g000-p077-alternative-attempt0000.json",
+            "sha256": "c749b64eb84f172eba6c6fe2ed55659478fbbd750a360a947b9816f7af11fdd0"
+          },
+          "expected_score_mover": 0.5065,
+          "range": [
+            0.504,
+            0.5065
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        },
+        {
+          "move": "c3e1",
+          "job": "3adc1d0c27081cab9f4774b82d552044fead13a7f51a347bd1cbb1cd4315e008",
+          "success_sha256": "166479f42cde074f74b277c8335e7e53d23133af77238e58acea785ac05fc763",
+          "artifact": {
+            "bytes": 30321,
+            "key": "msh161-primary-v1-batch-09/jobs/3adc1d0c27081cab9f4774b82d552044fead13a7f51a347bd1cbb1cd4315e008/attempts/b130954253b143ac83775f0ce1d603e4/artifacts/analysis/g000-p077-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/3adc1d0c27081cab9f4774b82d552044fead13a7f51a347bd1cbb1cd4315e008/attempts/b130954253b143ac83775f0ce1d603e4/artifacts/analysis/g000-p077-alternative-attempt0000.json",
+            "sha256": "c4f3da1ed509bddeb1a6ede9b41c8eb61c5bac15f19f53b520cc93e9c5f220ad"
+          },
+          "expected_score_mover": 0.9935,
+          "range": [
+            0.993,
+            0.9935
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 79,
+      "played": "c3f6",
+      "alternative": "b4b8",
+      "screening_loss": 0.019499999999999962,
+      "screening_flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "c3f6",
+          "job": "d3777b9468556d362aabe3303995d70345449b4117fff2c1baad73342aef50c3",
+          "success_sha256": "e814b51a70b5054cdcd75ee16571cff5568e16aebaf21a2beb0dd19414207a13",
+          "artifact": {
+            "bytes": 35151,
+            "key": "msh161-primary-v1-batch-09/jobs/d3777b9468556d362aabe3303995d70345449b4117fff2c1baad73342aef50c3/attempts/cb78035e674e4c949333c23086f54d59/artifacts/analysis/g000-p079-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/d3777b9468556d362aabe3303995d70345449b4117fff2c1baad73342aef50c3/attempts/cb78035e674e4c949333c23086f54d59/artifacts/analysis/g000-p079-alternative-attempt0000.json",
+            "sha256": "0e57933b04d8787ee446fb08a05718f4e0634eb5452a9e9c682a79538f9d2069"
+          },
+          "expected_score_mover": 0.934,
+          "range": [
+            0.934,
+            0.934
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        },
+        {
+          "move": "b4b8",
+          "job": "c9965d3b27ec9adbb92eb0069e7e1d448f44b85eb42128702bf46bc5f9708ba2",
+          "success_sha256": "cddd14e82f0f54f068d3bc811fb7f4473bdae55b1464451e7f6ee9b767aa66c4",
+          "artifact": {
+            "bytes": 36874,
+            "key": "msh161-primary-v1-batch-09/jobs/c9965d3b27ec9adbb92eb0069e7e1d448f44b85eb42128702bf46bc5f9708ba2/attempts/5f96a866cb08446eafc110b3dc7a79b4/artifacts/analysis/g000-p079-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/c9965d3b27ec9adbb92eb0069e7e1d448f44b85eb42128702bf46bc5f9708ba2/attempts/5f96a866cb08446eafc110b3dc7a79b4/artifacts/analysis/g000-p079-alternative-attempt0000.json",
+            "sha256": "0dc6b1648990cf0577c111f0b728b92292abc0a371a466564e874c61c69287d7"
+          },
+          "expected_score_mover": 0.903,
+          "range": [
+            0.903,
+            0.903
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 81,
+      "played": "b4b3",
+      "alternative": "b4b8",
+      "screening_loss": -0.0020000000000000018,
+      "screening_flags": [
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "b4b3",
+          "job": "6ef90c4340d1d282d398016600f3542932a2f006e080a9e31dc3a60243197419",
+          "success_sha256": "53b8d3cc81dafdf8041613bf20996e2a11fb8ac8fbe2ea6a3d5bc203f6f37dc9",
+          "artifact": {
+            "bytes": 32703,
+            "key": "msh161-primary-v1-batch-09/jobs/6ef90c4340d1d282d398016600f3542932a2f006e080a9e31dc3a60243197419/attempts/dfcf678ae58244fbb55d27cceb762e50/artifacts/analysis/g000-p081-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/6ef90c4340d1d282d398016600f3542932a2f006e080a9e31dc3a60243197419/attempts/dfcf678ae58244fbb55d27cceb762e50/artifacts/analysis/g000-p081-alternative-attempt0000.json",
+            "sha256": "c9127008f2347788ffd97becaed705aaa05b38e1b633c3342fc9bc26bb30ecdd"
+          },
+          "expected_score_mover": 0.853,
+          "range": [
+            0.8495,
+            0.853
+          ],
+          "stable": true,
+          "conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score",
+            "last_score_update_not_selected_exact_score"
+          ]
+        },
+        {
+          "move": "b4b8",
+          "job": "c24f5794fb8ca7ed8194d77108e7b1d4c9c416987fe383b01adbb17cb25a5abd",
+          "success_sha256": "880ec2bb0b9fa481ae707d86f0df196b6a9f60c926df92c303bb42f10de461a0",
+          "artifact": {
+            "bytes": 32585,
+            "key": "msh161-primary-v1-batch-09/jobs/c24f5794fb8ca7ed8194d77108e7b1d4c9c416987fe383b01adbb17cb25a5abd/attempts/4eb96b42f2c343649482daecc35eda7f/artifacts/analysis/g000-p081-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/c24f5794fb8ca7ed8194d77108e7b1d4c9c416987fe383b01adbb17cb25a5abd/attempts/4eb96b42f2c343649482daecc35eda7f/artifacts/analysis/g000-p081-alternative-attempt0000.json",
+            "sha256": "a922c3e1ce7c3359a05593728828ab70095d7022bedd4ba53c9343bff7fff750"
+          },
+          "expected_score_mover": 0.855,
+          "range": [
+            0.831,
+            0.855
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 83,
+      "played": "b3b4",
+      "alternative": "b3b8",
+      "screening_loss": -0.08849999999999991,
+      "screening_flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "b3b4",
+          "job": "dd376ba04c17bf2b9ddaf9e7209ed5e81f878b085aa202fb8cb10d97896bb31e",
+          "success_sha256": "328fb9f37312c0755b2eec928089ffc425f05b2c1be14c9c8d03b0a71e3ff111",
+          "artifact": {
+            "bytes": 36227,
+            "key": "msh161-primary-v1-batch-09/jobs/dd376ba04c17bf2b9ddaf9e7209ed5e81f878b085aa202fb8cb10d97896bb31e/attempts/e9bc192ca100410488d94c9ef90a3c20/artifacts/analysis/g000-p083-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/dd376ba04c17bf2b9ddaf9e7209ed5e81f878b085aa202fb8cb10d97896bb31e/attempts/e9bc192ca100410488d94c9ef90a3c20/artifacts/analysis/g000-p083-alternative-attempt0000.json",
+            "sha256": "3edc787f2cd783ccc566a863b323296aadf58d43fdf52e37c98426c7f21bcb89"
+          },
+          "expected_score_mover": 0.926,
+          "range": [
+            0.926,
+            0.926
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": []
+        },
+        {
+          "move": "b3b8",
+          "job": "7d4a1ff5a22531429123935f2ac1cb179da6674d69d3eb153c740efa7a8a9956",
+          "success_sha256": "a9ae1c48e9f1257a4d056d67423d00be71b6f4004d3bdbc6515d554a1045ba12",
+          "artifact": {
+            "bytes": 34769,
+            "key": "msh161-primary-v1-batch-09/jobs/7d4a1ff5a22531429123935f2ac1cb179da6674d69d3eb153c740efa7a8a9956/attempts/a2fc311302d545b38f3b8037e9e9dff3/artifacts/analysis/g000-p083-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/7d4a1ff5a22531429123935f2ac1cb179da6674d69d3eb153c740efa7a8a9956/attempts/a2fc311302d545b38f3b8037e9e9dff3/artifacts/analysis/g000-p083-alternative-attempt0000.json",
+            "sha256": "88032f617a884e2ddf784a5d868a3ea756ae817de2655c576ff73760b060ad76"
+          },
+          "expected_score_mover": 0.883,
+          "range": [
+            0.8685,
+            0.883
+          ],
+          "stable": true,
+          "conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score",
+            "last_score_update_not_selected_exact_score"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame",
+      "ply": 85,
+      "played": "e8d7",
+      "alternative": "e8f7",
+      "screening_loss": 0.29300000000000004,
+      "screening_flags": [
+        "last_score_update_not_selected_exact_score"
+      ],
+      "followup_required": true,
+      "existing_selection_reason": "v1-followup",
+      "existing_5m": [
+        {
+          "move": "e8d7",
+          "job": "25e89c8eb8eae1033264a3105949a83456313906d406976bc89021c62defac46",
+          "success_sha256": "c62ec730c5664503b00e73a5ddf6fcc61f1fc79b118389bc4a4956d6162095e8",
+          "artifact": {
+            "bytes": 31732,
+            "key": "msh161-primary-v1-batch-09/jobs/25e89c8eb8eae1033264a3105949a83456313906d406976bc89021c62defac46/attempts/7fb4236b67754bb0ac910fe18fb21e9c/artifacts/analysis/g000-p085-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/25e89c8eb8eae1033264a3105949a83456313906d406976bc89021c62defac46/attempts/7fb4236b67754bb0ac910fe18fb21e9c/artifacts/analysis/g000-p085-alternative-attempt0000.json",
+            "sha256": "57e5f757284b9864433c1c7b7b5b0f9ed8e9d0eefedfd32be187c19007c14815"
+          },
+          "expected_score_mover": 0.5505,
+          "range": [
+            0.536,
+            0.5505
+          ],
+          "stable": true,
+          "conflicts": [],
+          "flags": [
+            "last_score_update_not_selected_exact_score"
+          ]
+        },
+        {
+          "move": "e8f7",
+          "job": "2188548fa4c6d91471a2d7479314f4e023369306b063475081a70801d631e792",
+          "success_sha256": "0e58e856346105fd9c4e4cbfa4122ce9b66ffdc00907239114d0c67de33b5b81",
+          "artifact": {
+            "bytes": 38285,
+            "key": "msh161-primary-v1-batch-09/jobs/2188548fa4c6d91471a2d7479314f4e023369306b063475081a70801d631e792/attempts/ee2facc22406470894207353d071aaec/artifacts/analysis/g000-p085-alternative-attempt0000.json",
+            "local": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/2188548fa4c6d91471a2d7479314f4e023369306b063475081a70801d631e792/attempts/ee2facc22406470894207353d071aaec/artifacts/analysis/g000-p085-alternative-attempt0000.json",
+            "sha256": "c691b9ac006bf3e26e7b9402faac6fea6d790bc5b84ae108eec3ecf2c099e9c4"
+          },
+          "expected_score_mover": 0.8815,
+          "range": [
+            0.8815,
+            0.912
+          ],
+          "stable": false,
+          "conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score",
+            "last_score_update_not_selected_exact_score",
+            "last_two_report_estimates_unstable"
+          ]
+        }
+      ],
+      "new_forced_moves_required": []
+    }
+  ],
+  "proposed_action": "Version the method amendment before ranking. Expand this exact game/player/phase stratum to all remaining otherwise nonflagged played roots with matched 5M singleton played and frozen initial-alternative queries; deduplicate same-choice moves. Reuse all existing 5M evidence. Carry any consequential or unstable results into reviewed matched 20M coverage. Do not infer a population rate or weaken the trigger because mover E remains high.",
+  "method_sha256": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+  "screening_success_sha256": "55224449e657fd89eea00cef0eb71d96949bd8bc41a1238fb7e1d6cc5f3c54ef",
+  "review_index_sha256": "a7317c19ebdfad7a1e0e37e079d8d3ab6d3c78bfd397167b07a4285346e4a124",
+  "scope": "Offline receipt interpretation and plan inventory only; no new search, retrieval or cloud job",
+  "reviewed_stronger_work_substitution": {
+    "status": "accepted_before_execution",
+    "new_queries_nodes": 20000000,
+    "new_queries": [
+      {
+        "ply": 57,
+        "move": "a1c1"
+      },
+      {
+        "ply": 57,
+        "move": "g7f8"
+      },
+      {
+        "ply": 75,
+        "move": "c8c6"
+      }
+    ],
+    "reason": "The coordinator may use three direct 20M singleton queries in the pending panel instead of a separate 5M stage, with identical full histories, options and engine identity. Reuse all 19 already-tested roots. This completes 21/21 roots at at least 5M without repeated existing queries.",
+    "conditions": [
+      "Record versioned v1.1 overlay; retain frozen v1 unchanged.",
+      "Preserve original 5M trigger and include matched 20M trigger confirmation.",
+      "State mixed budgets explicitly; do not claim uniform 5M sampling or infer a cell error rate.",
+      "Keep all unstable and conflicting results unresolved; no repetition to obtain a label."
+    ],
+    "execution": "Not executed by this reviewer"
+  }
+}

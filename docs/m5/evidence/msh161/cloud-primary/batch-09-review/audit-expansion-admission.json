@@ -1,0 +1,15 @@
+{
+  "status": "admitted_before_launch",
+  "method_version": "main-method-v1.1-audit-expansion-01",
+  "amendment_sha256": "0652e66c5537c4aaad4c6de057119e5229ad81f12150286553cd611168bfc9b9",
+  "independent_review_sha256": "5ee0bee6d5bf21ba8458910530a7f78a0cd01276c932118f19073f79d6743643",
+  "selection_sha256": "5f0dcf3875b3ae8695bb6096923598f16f4257773b3ccfbbd495b871450a4ef0",
+  "executed_plan_pending_sha256": "6f84fa7b5064050ee81933b28520ceffc0d879c87418ea10f9c15d3739ab9051",
+  "new_roots": 2,
+  "new_queries20m": 3,
+  "existing5m_roots_reused": 19,
+  "complete_cell_roots": 21,
+  "mixed_work_budgets": true,
+  "original_method_unchanged": true,
+  "no_query_executed_by_admission": true
+}

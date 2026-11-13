@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 08 closed; original Batch 09 submitted
+## Current state: Batch 09 completed; independent review and audit-expansion gate
 
 **160 games are fully reviewed: 64 wins / 46 draws / 50 losses.** Prepared results
 are 52/43/49; unaided results 12/3/1. `primary-cumulative.json` covers all eight batches.
@@ -35,14 +35,41 @@ old Saturday-central estimate and remains conditional on capacity/scientific wor
 See `batch-08-followup/forecast-update.json`; its pre-closure review count is historical.
 Mac/pilots/transition remain separate.
 
-Original Batch 09 was accepted as `msh161-primary-b09-v1`, QUEUED at submission,
-from reviewed checkpoint `3df2b3f3`. Original runnable, ten tasks and maximum
-eight-worker parallelism passed verification. One exit wrapper (PID 55633) runs
-`wait_retrieve_batch.py 9`. See `batch-09-submission.json`,
-`batch-09-submission-verification.json` and `batch-09-wait-launch.json`.
-Do not duplicate wrapper or submission. On completion reconcile all
-layers, review fresh games with independent gameplay/integrity panels, obtain required
-20M and distinct alternatives, update cumulative, then original Batch 10. Restore
+Original Batch 09 completed under `msh161-primary-b09-v1`. Retrieval verified
+2,017 jobs / 29,905 objects (3,857,462,577 bytes). Coordinator receipt bindings
+passed for submitted/completed UID, frozen file hashes, terminal/retrieval hashes,
+wrapper success, own-group cleanup and accepted notification. Separate receipts
+are bound in `batch-09-review/coordinator-reconciliation.json`.
+There are 180 played games and 160 fully reviewed games; keep that distinction
+until Batch 09 closure. Independent gameplay and execution/native/query audits passed.
+Native results are 11 wins / 5 draws / 4 losses (prepared 10/5/3, unaided 1/0/1):
+four threefold claims and one dead position. Base coverage is 5,718 initial and
+1,997 matched 5M queries. Five uncertain audit controls remain explicit alongside
+one verified stable missed-significant audit trigger. Eight workers ran without
+allocation/scientific failures and all were deleted. Primary estimate is US$26.695395 /
+132.412378 VM-hours; see `batch-09-review/forecast-update.json` for scope/limits.
+
+The audit trigger main-09-00/game0/p65 is h5 versus Rb3 for reference Black/endgame:
+5M conservative margin .0635, played E .929, with no conflicting bound/instability.
+Its favorable value does not waive expansion or establish lost conversion. The exact
+21-root cell has 19 completed matched 5M roots and two previously untested roots.
+Versioned v1.1 overlay is independently admitted in `batch-09-review/`:
+`method-amendment-v1.1.md/json`, `audit-expansion-method-review.md/json`, and
+`audit-expansion-admission.json`. Complete the two missing roots directly at 20M
+with three new singleton searches, reusing all 19 prior roots. Mixed budgets are
+explicit; no uniform cell sample or cell error rate is inferred. Original method,
+scientific inputs and both panel selections remain unchanged. Trigger 20M is retained
+and must not erase the original 5M evidence if its assessment changes.
+
+The combined prepared plan contains 1,006 roots / 1,501 jobs / 1,528 queries,
+including 27 discoveries and the three expansion searches. Plan SHA256:
+`6f84fa7b5064050ee81933b28520ceffc0d879c87418ea10f9c15d3739ab9051`.
+Full decision ledgers and index/inventory are lossless gzip with binding manifests.
+Next launch this plan once via `notify_exit.py`. On completion independently review
+both panels (620 first-half roots incl expansion,386 second-half), explicitly close
+expansion coverage and only distinct new alternative obligations. Preserve earlier/
+linked uncertainty, secondary contexts and terminal claim limits. Close Batch 09,
+update cumulative and launch original Batch 10. No duplicate queries/retrieval. Restore
 archived JSON locally when needed; no duplicate retrieval/searches. Continue all 200
 games without Mac engines, production changes, timers or periodic polling. Stop for
 John after final independent diagnosis and roadmap. Historical transition records

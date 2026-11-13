@@ -1,0 +1,51 @@
+{
+  "completed_games": 180,
+  "fully_reviewed_games_before_batch09_20m": 160,
+  "remaining_games": 20,
+  "pending_batch09_20m": true,
+  "measured_primary_vm_hours": 132.41237822678357,
+  "incurred_estimated_primary_compute_usd": 26.69539474954538,
+  "full200_mean_workload_compute_usd": 30.951792531947866,
+  "remaining20_plus_pending_batch09_20m_compute_usd": 4.2563977824024875,
+  "base_mean_compute_usd": 1.9339607239870835,
+  "panel_plus_followup_mean_compute_usd": 1.161218529207703,
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "timing_scenario_full_processing_hours": [
+    29,
+    48
+  ],
+  "limitations": "Actual VM lifetimes priced at recorded rate; not billing. Mean scaling uses nine base batches and eight completed panels plus followups. Current batch09 panel unmeasured; counts can differ. Existing inclusive ranges and processing ranges retained as conditional scenarios, not statistical intervals or caps. Review pauses, provisioning and ancillary storage/transfer/operations excluded from compute mean; failed policy-transition deployment/Mac/pilots remain separate.",
+  "measured_primary_scientific_jobs": 25046,
+  "measured_primary_reference_queries": 74295,
+  "failed_scientific_attempts": 0,
+  "measured_cloud_stage_elapsed_hours": 23.625324233770375,
+  "mean_base_cloud_hours": 1.9246005240413877,
+  "mean_panel_plus_followup_cloud_hours": 0.7879899396747356,
+  "full200_mean_cloud_stage_elapsed_hours": 27.12590463716123,
+  "remaining20_and_pending_batch09_mean_cloud_stage_elapsed_hours": 3.5005804033908587,
+  "pending_audit_expansion_queries": 3,
+  "audit_expansion_note": "Proposed three-query 5M expansion not executed or counted as incurred. Separate versioned method amendment and scientific review required.",
+  "calendar_estimate": {
+    "as_of_utc": "2026-11-13 13:18:37 UTC",
+    "as_of_paris": "Friday 2026-11-13 14:18 CET",
+    "games_and_batch_analysis": "Friday evening, approximately 19:30\u201322:30 CET under stated assumptions",
+    "final_independently_reviewed_diagnosis": "Friday night\u2013Saturday morning, approximately Friday 21:30\u2013Saturday 02:30 CET centrally, with extended-review morning allowance",
+    "remaining_nonengine_workflow_hours_assumed": [
+      1,
+      2
+    ],
+    "remaining_batch_review_followup_and_expansion_hours_assumed": [
+      0.5,
+      2
+    ],
+    "final_synthesis_and_independent_review_hours_assumed": [
+      2,
+      4
+    ],
+    "basis": "Remaining mean cloud work includes the final base batch and two deeper panels. Add assumed workflow and batch review/expansion/followup time, then final synthesis and independent challenge. The newly verified audit trigger adds a small three-query proposal but its downstream scientific review remains open. These allowances are assumptions, not measured guarantees. Larger panels or significant review findings can extend the window; no coverage is truncated.",
+    "remaining_cloud_stage_hours_mean": 3.5005804033908587
+  }
+}

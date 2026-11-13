@@ -1,0 +1,23 @@
+[
+  {
+    "pair": "main-09-00",
+    "game": 0,
+    "ply": 57,
+    "moves": [
+      "a1c1",
+      "g7f8"
+    ],
+    "reason": "Versioned audit expansion v1.1: complete the uncovered Black/endgame cell at20M instead of new5M work; reuse19 existing higher-work roots, retain all uncertainty. No production or game-condition change.",
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/3008f7beb75860f8547067cf7b703e10c6d1c5ec77fa007f030c36e672e11d51/attempts/019b9dc1375a47a19a29a80256e440b7/artifacts/pair/report.json.gz"
+  },
+  {
+    "pair": "main-09-00",
+    "game": 0,
+    "ply": 75,
+    "moves": [
+      "c8c6"
+    ],
+    "reason": "Versioned audit expansion v1.1: complete the uncovered Black/endgame cell at20M instead of new5M work; reuse19 existing higher-work roots, retain all uncertainty. No production or game-condition change.",
+    "report": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-09/jobs/3008f7beb75860f8547067cf7b703e10c6d1c5ec77fa007f030c36e672e11d51/attempts/019b9dc1375a47a19a29a80256e440b7/artifacts/pair/report.json.gz"
+  }
+]

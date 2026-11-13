@@ -1,0 +1,1516 @@
+{
+  "status": "passed",
+  "scope": "Independent offline full native history/query/PV/selection audit; successful retrieval artifact hashes reused with success receipt hashes and artifact binding checks; native replay receipts reused, no engines launched",
+  "script_sha256": "b52f81c4a386de9da6ef3e20d23c62ecf888f13fafb0db70da6c3d58e9513498",
+  "review_index_sha256": "a7317c19ebdfad7a1e0e37e079d8d3ab6d3c78bfd397167b07a4285346e4a124",
+  "manifest_sha256": "fe47d95119b50471830e830cdff0f8e821420579ee19ef026b5ace98b448998d",
+  "counts": {
+    "prepared_decisions": 288,
+    "played_decisions": 2571,
+    "v1-followup": 1118,
+    "confirmation_decisions": 1310,
+    "same_choice_controls": 623,
+    "missing_alternatives": 0,
+    "stratified-nonflagged-audit": 192,
+    "stable_two_choice_audits": 68,
+    "uncertain_two_choice_audits": 2,
+    "uncertain_same_choice_audits": 3,
+    "uncertain_audit_controls_all": 5
+  },
+  "stages": {
+    "game_pair": {
+      "jobs": 10,
+      "wall_seconds": 12446.996141578002,
+      "cpu_seconds": 12527.137414
+    },
+    "reference_screening": {
+      "jobs": 10,
+      "wall_seconds": 6183.996439504001,
+      "cpu_seconds": 5257.458215000002,
+      "queries": 5718,
+      "query_wall_seconds": 5281.310060988005,
+      "query_cpu_seconds": 5257.170258000007
+    },
+    "confirmation": {
+      "jobs": 1997,
+      "wall_seconds": 13410.197693200957,
+      "cpu_seconds": 10398.255443999984,
+      "queries": 1997,
+      "query_wall_seconds": 10343.890419657992,
+      "query_cpu_seconds": 10335.316765999982
+    }
+  },
+  "flags": {
+    "reference_screening": {
+      "last_score_update_not_selected_exact_score": 1898,
+      "directional_bound_conflict": 349,
+      "stable_report_heuristic": 5411,
+      "no_nonbound_score_aligned_with_bestmove": 5
+    },
+    "confirmation": {
+      "last_score_update_not_selected_exact_score": 897,
+      "directional_bound_conflict": 144,
+      "stable_report_heuristic": 1869
+    }
+  },
+  "outcomes_candidate": {
+    "all": {
+      "wins": 11,
+      "draws": 5,
+      "losses": 4
+    },
+    "main-prepared": {
+      "wins": 10,
+      "draws": 5,
+      "losses": 3
+    },
+    "main-unaided": {
+      "wins": 1,
+      "draws": 0,
+      "losses": 1
+    }
+  },
+  "games": [
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "history_plies": 87
+    },
+    {
+      "pair": "main-09-00",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "draw": "dead_position"
+        }
+      },
+      "history_plies": 124
+    },
+    {
+      "pair": "main-09-01",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "history_plies": 250
+    },
+    {
+      "pair": "main-09-01",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 142
+    },
+    {
+      "pair": "main-09-02",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "history_plies": 125
+    },
+    {
+      "pair": "main-09-02",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 154
+    },
+    {
+      "pair": "main-09-03",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "history_plies": 175
+    },
+    {
+      "pair": "main-09-03",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "history_plies": 149
+    },
+    {
+      "pair": "main-09-04",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "history_plies": 235
+    },
+    {
+      "pair": "main-09-04",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 140
+    },
+    {
+      "pair": "main-09-05",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 100
+    },
+    {
+      "pair": "main-09-05",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 116
+    },
+    {
+      "pair": "main-09-06",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 120
+    },
+    {
+      "pair": "main-09-06",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 148
+    },
+    {
+      "pair": "main-09-07",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "history_plies": 129
+    },
+    {
+      "pair": "main-09-07",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 76
+    },
+    {
+      "pair": "main-09-08",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "history_plies": 77
+    },
+    {
+      "pair": "main-09-08",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 174
+    },
+    {
+      "pair": "main-09-unaided",
+      "game": 0,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 160
+    },
+    {
+      "pair": "main-09-unaided",
+      "game": 1,
+      "conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "history_plies": 178
+    }
+  ],
+  "audit_strata": [
+    {
+      "pair": "main-09-00",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 3,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-00",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 1,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-00",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-00",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 3,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-00",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 1,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-00",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 25,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-00",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 24,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-01",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 13,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-01",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 13,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-01",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 25,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-01",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 31,
+      "selected": 4
+    },
+    {
+      "pair": "main-09-01",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 12,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-01",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 12,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-01",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 33,
+      "selected": 4
+    },
+    {
+      "pair": "main-09-01",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 28,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-02",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 17,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-02",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 20,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-02",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 22,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-02",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 20,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-02",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 23,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-02",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 21,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-02",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 31,
+      "selected": 4
+    },
+    {
+      "pair": "main-09-02",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 28,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-03",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-03",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 1,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-03",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 45,
+      "selected": 5
+    },
+    {
+      "pair": "main-09-03",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 41,
+      "selected": 5
+    },
+    {
+      "pair": "main-09-03",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 3,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-03",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 4,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-03",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 26,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-03",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 27,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-04",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 14,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-04",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 15,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-04",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 29,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-04",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 29,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-04",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 14,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-04",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 13,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-04",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 11,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-04",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 14,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-05",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 8,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-05",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 6,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-05",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 18,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-05",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 17,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-05",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 16,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-05",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 14,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-05",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 24,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-05",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 24,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-06",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 16,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-06",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 17,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-06",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-06",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-06",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 21,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-06",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 21,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-06",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 31,
+      "selected": 4
+    },
+    {
+      "pair": "main-09-06",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 27,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-07",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 32,
+      "selected": 4
+    },
+    {
+      "pair": "main-09-07",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 30,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-07",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 21,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-07",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 22,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-07",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 21,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-07",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 19,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-08",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 4,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-08",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 2,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-08",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 11,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-08",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 11,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-08",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 51,
+      "selected": 6
+    },
+    {
+      "pair": "main-09-08",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 53,
+      "selected": 6
+    },
+    {
+      "pair": "main-09-unaided",
+      "cell": [
+        0,
+        1,
+        "opening"
+      ],
+      "population": 3,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-unaided",
+      "cell": [
+        0,
+        0,
+        "opening"
+      ],
+      "population": 1,
+      "selected": 1
+    },
+    {
+      "pair": "main-09-unaided",
+      "cell": [
+        0,
+        1,
+        "middlegame"
+      ],
+      "population": 21,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-unaided",
+      "cell": [
+        0,
+        0,
+        "middlegame"
+      ],
+      "population": 21,
+      "selected": 3
+    },
+    {
+      "pair": "main-09-unaided",
+      "cell": [
+        0,
+        1,
+        "endgame"
+      ],
+      "population": 39,
+      "selected": 4
+    },
+    {
+      "pair": "main-09-unaided",
+      "cell": [
+        0,
+        0,
+        "endgame"
+      ],
+      "population": 37,
+      "selected": 4
+    },
+    {
+      "pair": "main-09-unaided",
+      "cell": [
+        1,
+        1,
+        "middlegame"
+      ],
+      "population": 11,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-unaided",
+      "cell": [
+        1,
+        0,
+        "middlegame"
+      ],
+      "population": 12,
+      "selected": 2
+    },
+    {
+      "pair": "main-09-unaided",
+      "cell": [
+        1,
+        0,
+        "endgame"
+      ],
+      "population": 37,
+      "selected": 4
+    },
+    {
+      "pair": "main-09-unaided",
+      "cell": [
+        1,
+        1,
+        "endgame"
+      ],
+      "population": 34,
+      "selected": 4
+    }
+  ],
+  "stable_audit_miss_triggers": [
+    {
+      "decision": {
+        "pair": "main-09-00",
+        "game": 0,
+        "ply": 65,
+        "played": "h7h5",
+        "alternative": "c3b3",
+        "phase": "endgame",
+        "reason": "stratified-nonflagged-audit",
+        "initial_flags": [],
+        "initial_raw_loss": 0.02849999999999997
+      },
+      "loss": 0.06699999999999995,
+      "requires_importance_adjudication": true
+    }
+  ],
+  "worker_environments": {
+    "6680878918227676425": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "6680878918227676425",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-b"
+    },
+    "2650713183707942153": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "2650713183707942153",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-b"
+    },
+    "293132491640491270": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "293132491640491270",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-b"
+    },
+    "6633290362760416520": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "6633290362760416520",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-b"
+    },
+    "7652868611888598281": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "7652868611888598281",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-b"
+    },
+    "3647664059062111496": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "3647664059062111496",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-b"
+    },
+    "3148934831767506184": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "3148934831767506184",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-b"
+    },
+    "7374393153637640": {
+      "cpu-platform": "Intel Sapphire Rapids",
+      "id": "7374393153637640",
+      "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+      "zone": "projects/216675633801/zones/us-central1-b"
+    }
+  },
+  "failed_job_attempts": 0,
+  "unresolved_claims": 0,
+  "verified_jobs": 2017,
+  "resource_note": "Parent job CPU/wall includes native replay and helper query setup/cleanup. Query subtotals overlap job totals; never add both. VM lifecycle additionally includes idle/provisioning.",
+  "limitations": [
+    "Finite analysis remains unadjudicated; cloud20M required for consequential decisions",
+    "Recorded cleanup is not a new live process census",
+    "CPU/platform conditions and identities verified; no Mac/cloud pooling"
+  ],
+  "original_conditions_verified": {
+    "build": {
+      "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+      "compiler": "rustc 1.99.1 (58cf8f9c3 2026-10-13); cargo 1.99.1 (5f94df478 2026-08-27); official Stockfish19 Linux universal release (compiler self-report in runtime evidence)",
+      "build_flags": "Native and Oxidation: release, --locked, RUSTFLAGS=-C target-cpu=x86-64, -j2; Stockfish official Linux x86-64 universal release",
+      "architecture": "x86_64",
+      "system": "Linux",
+      "build_image": "rust@sha256:f6c4a35d21dbb3c89d7a8d056c193e94fc09037f2b58dd858b09c39a47dd02d7",
+      "runtime_base": "python@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90",
+      "engines": {
+        "candidate": {
+          "path": "/opt/engines/mshogi",
+          "sha256": "a86bcb2098b5425f98e73998f696bc291d2dc62aaafd1e71850c70d237f23f07",
+          "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+        },
+        "runner": {
+          "path": "/opt/engines/mshogi-match",
+          "sha256": "6b1e7ccbef98108884f91f5327c8307eefbff8c82c545af8afafeb336d77e6d2",
+          "source": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3"
+        },
+        "oxidation060": {
+          "path": "/opt/engines/oxidation",
+          "sha256": "c7fa471425cc780e5e559ee0c9a4ab662e71e538e113fa942fa21af5727e6643",
+          "source": "46a705b80e7191e7c302838eb8b85053b5994d65"
+        },
+        "stockfish19": {
+          "path": "/opt/engines/stockfish",
+          "sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+          "source": "Stockfish sf_19 official release archive sha256:9defc0d4e55d49c65a6d042f3e571a39fcea499ade6dbe741b53b8c65e03611f"
+        }
+      }
+    },
+    "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+    "policy": "auto_claim",
+    "seconds_per_move": 5,
+    "restoration_sha256": "385405fd24ea237f1dd5dcb2ef8b753d1ca2051de5517f1c95b1e8f56474f2e4"
+  },
+  "native_conclusions": {
+    "{'chess': {'draw': {'claimed': 'threefold'}}}": 4,
+    "{'chess': {'draw': 'dead_position'}}": 1,
+    "{'chess': {'checkmate': {'winner': 'black'}}}": 11,
+    "{'chess': {'checkmate': {'winner': 'white'}}}": 4
+  },
+  "retrieval_binding_verified": true,
+  "procedure_source": "#!/usr/bin/env python3\n\"\"\"Offline complete scientific execution audit; no native/engine/network invocation.\"\"\"\nimport collections,gzip,hashlib,json,math,sys,time\nfrom pathlib import Path\nHERE=Path('/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-09-review');REPO=HERE.parents[5];STUDY=HERE.parents[1]\nsys.path[:0]=[str(REPO),str(STUDY)]\nimport chess,analysis,phase_tags,screen_v1\nfrom tools.experiments import core,cli\nread=lambda p:json.loads(Path(p).read_text())\nsha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()\nindex=read(HERE/'review-index.json');manifest=read(HERE.parent/'batch-09-manifest.json');store=core.LocalStore(HERE.parent/'local-cache')\nstages=collections.defaultdict(collections.Counter);flags=collections.defaultdict(collections.Counter);counts=collections.Counter();outcomes=collections.defaultdict(collections.Counter);games_out=[];strata=[];triggers=[];expected_jobs=[];environments={};intervals=collections.defaultdict(list)\ndef norm(x):\n if isinstance(x,dict):return {k:(Path(v).name if k=='path' and isinstance(v,str) else norm(v)) for k,v in x.items() if k not in ['receipt','source_directory']}\n if isinstance(x,list):return [norm(v) for v in x]\n return x\n\ndef checked(item):\n job=item['job'];assert sha(item['success'])==item['success_sha256'];r=read(item['success']);assert r['job']==job\n assert r['status']=='complete' and r['result']['complete'];kind=job['kind'];stages[kind]['jobs']+=1;stages[kind]['wall_seconds']+=r['wall_seconds'];stages[kind]['cpu_seconds']+=r['child_cpu_seconds']\n assert job['source_revision']=='51351c48ea1adf9ac96011aec1440e44ceb741a4'\n assert job['study_freeze_sha256']==sha(STUDY/'main-freeze.json')\n for path,h in job['source_files'].items():\n  if not path.startswith('tools/experiments/'):assert sha(REPO/path)==h\n env=r['environment'];assert env['architecture']=='x86_64';assert env['gcp']['machine-type'].endswith('/c3-standard-4');assert env['batch']['BATCH_TASK_RETRY_ATTEMPT']=='0'\n environments[env['gcp']['id']]=env['gcp'];intervals[env['gcp']['id']].append((r['started_epoch'],r['ended_epoch']))\n for k,a in item['artifacts'].items():assert a['sha256']==r['artifacts'][k]['sha256'] and Path(a['local']).is_file()\n return r\n\ndef queries(item,decisions,forced,nodes,stage):\n arts=item['artifacts'];m=read(arts['analysis/manifest.json']['local']);assert m['nodes']==nodes and m['options']==analysis.OPTIONS\n assert m['engine_sha256']==item['job']['build']['engines']['stockfish19']['sha256'];assert m['planned_decisions']==len(decisions)\n qs=[read(a['local']) for k,a in arts.items() if k.startswith('analysis/g') and '-attempt' in k]\n assert len(qs)==len(decisions)*(1 if forced else 2)\n expected={(d['game'],d['ply']):d for d in decisions};seen=set();ev={}\n for q in qs:\n  d=q['decision'];assert d==expected[(d['game'],d['ply'])];assert q['nodes_requested']==nodes and q['options']==analysis.OPTIONS and q['engine_sha256']==m['engine_sha256']\n  assert q['status']=='complete' and q['exit_code']==0 and q['process_group_settled'] and not q['raw_truncated'];assert 0<q['wall_seconds']<65\n  f=q['forced_move'];assert f==forced if forced else f in [None,d['played']]\n  key=(d['game'],d['ply'],f);assert key not in seen;seen.add(key)\n  board=analysis.board_for(d);score=q['assessment']['score']\n  if score:\n   assert q['pv_independent_legal']\n   for u in score['pv']:board.push_uci(u)\n  else:assert 'no_nonbound_score_aligned_with_bestmove' in q['assessment']['uncertainty']\n  b=analysis.board_for(d);assert chess.Move.from_uci(q['assessment']['bestmove']) in b.legal_moves\n  if f:assert q['assessment']['bestmove']==f\n  commands=[r['line'] for r in q['raw_uci'] if r['direction']=='send'];assert 'ucinewgame' in commands and 'setoption name Clear Hash' in commands\n  assert 'position fen '+d['initial_fen']+(' moves '+' '.join(d['history']) if d['history'] else '') in commands\n  assert [s for s in commands if s.startswith('go ')]==[f'go nodes {nodes}'+(' searchmoves '+f if f else '')]\n  stages[stage]['queries']+=1;stages[stage]['query_wall_seconds']+=q['wall_seconds'];stages[stage]['query_cpu_seconds']+=q['child_cpu_seconds'];flags[stage].update(q['assessment']['uncertainty'])\n  v=screen_v1.describe(q);flags[stage]['directional_bound_conflict']+=bool(v['directional_bound_conflicts']);flags[stage]['stable_report_heuristic']+=v['stable_report_heuristic'];ev[key]=v\n resources=read(arts['analysis/resources.json']['local']);assert resources['failures']==0 and resources['attempts']==len(qs)\n for name,qname in [('wall_seconds','wall_seconds'),('child_cpu_seconds','child_cpu_seconds')]:assert abs(resources[name]-sum(q[qname] for q in qs))<1e-5\n return ev\n\nfor pair,p in index.items():\n game=p['game_pair'];gr=checked(game);spec=game['job']['spec'];assert spec['id']==pair and p['opening']==spec['opening']\n raw=gzip.decompress(Path(game['artifacts']['pair/report.json.gz']['local']).read_bytes());outer=json.loads(raw);r=json.loads(outer['report_json']);receipt=read(game['artifacts']['pair/receipt.json']['local'])\n assert hashlib.sha256(raw).hexdigest()==receipt['report_sha256'];assert hashlib.sha256(outer['report_json'].encode()).hexdigest()==outer['report_sha256']\n assert receipt['complete'] and receipt['healthy'] and receipt['process_group_settled'] and receipt['returncode']==receipt['replay']['returncode']==0\n cfg=r['config'];assert cfg==read(game['artifacts']['pair/config.json']['local']);assert cfg['openings']==[p['opening']] and cfg['paired'] and cfg['claim_policy']=='auto_claim';assert cfg['work']=={'depth':None,'nodes':None,'movetime_ms':5000}\n for n in ['candidate','oxidation060']:\n  i=0 if n=='candidate' else 1;assert r['engine_identities'][i]['executable']['sha256']==game['job']['build']['engines'][n]['sha256']\n ds,gs=analysis.extract_decisions(r);canonical={(d['game'],d['ply']):d for d in ds};assert len(gs)==len(r['games'])==2\n for i,(g,gm) in enumerate(zip(r['games'],gs)):\n  assert g['stop']=='chess_conclusion' and not g['failure'] and not g['diagnostic_failures'] and not g['transcript']['truncated'];assert g['engines_by_color']==([0,1] if i==0 else [1,0])\n  for e in g['engines']:assert e['exit']['success'] and not e['cleanup_failures'] and not e['stderr']['truncated']\n  b=chess.Board(gm['initial_fen'])\n  for u in gm['complete_history']:b.push_uci(u)\n  moves=[e['text'].split()[1] for e in g['transcript']['entries'] if e['direction']=='response' and e['text'].startswith('bestmove ')];assert gm['complete_history']==p['opening']['moves']+moves\n  assert all(e['text']=='go movetime 5000' for e in g['transcript']['entries'] if e['direction']=='command' and e['text'].startswith('go '))\n  games_out.append({'pair':pair,'game':i,'conclusion':g['conclusion'],'history_plies':len(gm['complete_history'])})\n summary=r['summaries'][0];assert summary==receipt['summary'] and summary['unscored']==summary['failures']==0\n for k in ['all',spec['phase']]:outcomes[k].update({'wins':summary['wins'][0],'draws':summary['draws'],'losses':summary['wins'][1]})\n screen=p['reference_screening'];sr=checked(screen);assert screen['job'] in manifest['jobs'];assert game['job'] in manifest['jobs']\n for item in [screen]+p['confirmations']:\n  a=item['artifacts'];rr=read(a['replay.json']['local']);assert rr['returncode']==0 and rr['input_sha256']==game['artifacts']['pair/report.json.gz']['sha256'];assert rr['uncompressed_sha256']==hashlib.sha256(raw).hexdigest();assert a['replay-input.json']['sha256']==hashlib.sha256(raw).hexdigest()\n queries(screen,ds,None,500000,'reference_screening')\n saved=read(screen['artifacts']['screen-v1.json']['local']);regenerated=screen_v1.summarize(Path(screen['artifacts']['analysis/manifest.json']['local']).parent);assert norm(saved)==norm(regenerated)\n phases={g['game']:phase_tags.tag_history(g['initial_fen'],g['complete_history'],next(d['history_origin'] for d in ds if d['game']==g['game'])) for g in gs};assert {str(k):v for k,v in phases.items()}==read(screen['artifacts']['phases.json']['local'])\n selected={};cells=collections.defaultdict(list)\n for row in saved['decisions']:\n  d=row['decision'];counts[d['origin']+'_decisions']+=1\n  if d['origin']!='played':continue\n  phase=phases[d['game']]['positions'][d['ply']]['phase']\n  if row['followup_required']:selected[(d['game'],d['ply'])]=(row,'v1-followup',phase)\n  else:cells[(d['game'],d['engine_index'],phase)].append(row)\n for cell,rows in cells.items():\n  ranked=sorted(rows,key=lambda r:hashlib.sha256(('msh161-main-audit-v1/'+pair+'/'+str(r['decision']['game'])+'/'+str(r['decision']['ply'])).encode()).hexdigest());n=max(1,math.ceil(.1*len(rows)));strata.append({'pair':pair,'cell':cell,'population':len(rows),'selected':n})\n  for row in ranked[:n]:selected[(row['decision']['game'],row['decision']['ply'])]=(row,'stratified-nonflagged-audit',cell[2])\n expected=[]\n for _,(row,reason,phase) in sorted(selected.items()):\n  d=row['decision'];expected.append(dict(pair=pair,game=d['game'],ply=d['ply'],played=d['played'],alternative=row['queries'].get('unrestricted',{}).get('bestmove'),phase=phase,reason=reason,initial_flags=row['flags'],initial_raw_loss=row['raw_expected_score_loss']))\n assert expected==read(screen['artifacts']['confirmation-plan.json']['local']);derived=cli.derived_confirmations(screen['job'],sr,store);assert sorted(j['id'] for j in derived)==sorted(v['job']['id'] for v in p['confirmations']);expected_jobs.extend(derived)\n evidence={}\n for item in p['confirmations']:\n  checked(item);j=item['job'];assert j in derived;d=canonical[(j['game'],j['ply'])];evidence.update(queries(item,[d],j['move'],5000000,'confirmation'))\n for q in expected:\n  counts[q['reason']]+=1;counts['confirmation_decisions']+=1;counts['same_choice_controls']+=q['played']==q['alternative'];counts['missing_alternatives']+=not q['alternative']\n  if q['reason']=='stratified-nonflagged-audit' and q['played']!=q['alternative']:\n   vs=[evidence[(q['game'],q['ply'],m)] for m in [q['played'],q['alternative']]];stable=all(v['stable_report_heuristic'] and not v['directional_bound_conflicts'] and not(set(v['flags'])-{'last_score_update_not_selected_exact_score'}) for v in vs);counts['stable_two_choice_audits']+=stable;counts['uncertain_two_choice_audits']+=not stable\n   if stable and vs[1]['expected_score_mover']-vs[0]['expected_score_mover']>=.05:triggers.append({'decision':q,'loss':vs[1]['expected_score_mover']-vs[0]['expected_score_mover'],'requires_importance_adjudication':True})\nfor v in intervals.values():\n v.sort();assert all(a[1]<=b[0]+.001 for a,b in zip(v,v[1:]))\nalljobs=manifest['jobs']+expected_jobs;assert len(alljobs)==2017 and len(expected_jobs)==1997\nassert len(list((HERE.parent/'local-cache'/manifest['experiment']).glob('jobs/*/success.json')))==len(alljobs)\nreceipts=list((HERE.parent/'local-cache'/manifest['experiment']).glob('jobs/*/attempts/*/receipt.json'));assert len(receipts)==len(alljobs) and all(read(p)['status']=='complete' for p in receipts)\nassert not list((HERE.parent/'local-cache'/manifest['experiment']).glob('jobs/*/claim.json'))\nresult={'status':'passed','scope':'Independent offline full native history/query/PV/selection audit; successful retrieval artifact hashes reused with success receipt hashes and artifact binding checks; native replay receipts reused, no engines launched','script_sha256':sha(__file__),'review_index_sha256':sha(HERE/'review-index.json'),'manifest_sha256':sha(HERE.parent/'batch-09-manifest.json'),'counts':dict(counts),'stages':dict(stages),'flags':dict(flags),'outcomes_candidate':dict(outcomes),'games':games_out,'audit_strata':strata,'stable_audit_miss_triggers':triggers,'worker_environments':environments,'failed_job_attempts':0,'unresolved_claims':0,'verified_jobs':len(alljobs),'resource_note':'Parent job CPU/wall includes native replay and helper query setup/cleanup. Query subtotals overlap job totals; never add both. VM lifecycle additionally includes idle/provisioning.','limitations':['Finite analysis remains unadjudicated; cloud20M required for consequential decisions','Recorded cleanup is not a new live process census','CPU/platform conditions and identities verified; no Mac/cloud pooling']}\n(HERE/'integrity-review.json').write_text(json.dumps(result,indent=2)+'\\n');print(json.dumps({k:result[k] for k in ['status','counts','stages','flags','outcomes_candidate','stable_audit_miss_triggers']},indent=2))\n",
+  "verification_source_revision": "f3046547c8fa8cf76c52f414e5f9264bf8c5f7c0",
+  "uncertain_two_choice_audits": [
+    {
+      "selection": {
+        "alternative": "a4c3",
+        "game": 1,
+        "initial_flags": [],
+        "initial_raw_loss": 0.0,
+        "pair": "main-09-07",
+        "phase": "middlegame",
+        "played": "e1h4",
+        "ply": 50,
+        "reason": "stratified-nonflagged-audit"
+      },
+      "evidence": [
+        {
+          "move": "e1h4",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "last_score_update_not_selected_exact_score"
+          ],
+          "expected_score_mover": 0.0
+        },
+        {
+          "move": "a4c3",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [],
+          "flags": [],
+          "expected_score_mover": 0.0
+        }
+      ]
+    },
+    {
+      "selection": {
+        "alternative": "c7g7",
+        "game": 0,
+        "initial_flags": [],
+        "initial_raw_loss": 0.017000000000000015,
+        "pair": "main-09-08",
+        "phase": "middlegame",
+        "played": "c7c8",
+        "ply": 63,
+        "reason": "stratified-nonflagged-audit"
+      },
+      "evidence": [
+        {
+          "move": "c7c8",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [],
+          "flags": [],
+          "expected_score_mover": 0.5795
+        },
+        {
+          "move": "c7g7",
+          "stable_report_heuristic": false,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score",
+            "last_score_update_not_selected_exact_score",
+            "last_two_report_estimates_unstable"
+          ],
+          "expected_score_mover": 0.6975
+        }
+      ]
+    }
+  ],
+  "uncertain_audit_controls_all": [
+    {
+      "selection": {
+        "alternative": "e8f7",
+        "game": 1,
+        "initial_flags": [],
+        "initial_raw_loss": 0.0,
+        "pair": "main-09-01",
+        "phase": "endgame",
+        "played": "e8f7",
+        "ply": 126,
+        "reason": "stratified-nonflagged-audit"
+      },
+      "evidence": [
+        {
+          "move": "e8f7",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "last_score_update_not_selected_exact_score"
+          ],
+          "expected_score_mover": 0.0
+        }
+      ]
+    },
+    {
+      "selection": {
+        "alternative": "e8d7",
+        "game": 1,
+        "initial_flags": [],
+        "initial_raw_loss": 0.0,
+        "pair": "main-09-02",
+        "phase": "endgame",
+        "played": "e8d7",
+        "ply": 119,
+        "reason": "stratified-nonflagged-audit"
+      },
+      "evidence": [
+        {
+          "move": "e8d7",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "last_score_update_not_selected_exact_score"
+          ],
+          "expected_score_mover": 1.0
+        }
+      ]
+    },
+    {
+      "selection": {
+        "alternative": "a4c3",
+        "game": 1,
+        "initial_flags": [],
+        "initial_raw_loss": 0.0,
+        "pair": "main-09-07",
+        "phase": "middlegame",
+        "played": "e1h4",
+        "ply": 50,
+        "reason": "stratified-nonflagged-audit"
+      },
+      "evidence": [
+        {
+          "move": "e1h4",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "last_score_update_not_selected_exact_score"
+          ],
+          "expected_score_mover": 0.0
+        },
+        {
+          "move": "a4c3",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [],
+          "flags": [],
+          "expected_score_mover": 0.0
+        }
+      ]
+    },
+    {
+      "selection": {
+        "alternative": "c7g7",
+        "game": 0,
+        "initial_flags": [],
+        "initial_raw_loss": 0.017000000000000015,
+        "pair": "main-09-08",
+        "phase": "middlegame",
+        "played": "c7c8",
+        "ply": 63,
+        "reason": "stratified-nonflagged-audit"
+      },
+      "evidence": [
+        {
+          "move": "c7c8",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [],
+          "flags": [],
+          "expected_score_mover": 0.5795
+        },
+        {
+          "move": "c7g7",
+          "stable_report_heuristic": false,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_expected_score",
+            "last_score_update_not_selected_exact_score",
+            "last_two_report_estimates_unstable"
+          ],
+          "expected_score_mover": 0.6975
+        }
+      ]
+    },
+    {
+      "selection": {
+        "alternative": "f7f4",
+        "game": 0,
+        "initial_flags": [],
+        "initial_raw_loss": 0.0,
+        "pair": "main-09-unaided",
+        "phase": "endgame",
+        "played": "f7f4",
+        "ply": 69,
+        "reason": "stratified-nonflagged-audit"
+      },
+      "evidence": [
+        {
+          "move": "f7f4",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "last_score_update_not_selected_exact_score"
+          ],
+          "expected_score_mover": 0.0
+        }
+      ]
+    }
+  ],
+  "uncertain_audit_controls_total": 5,
+  "uncertain_same_choice_audit_controls": [
+    {
+      "selection": {
+        "alternative": "e8f7",
+        "game": 1,
+        "initial_flags": [],
+        "initial_raw_loss": 0.0,
+        "pair": "main-09-01",
+        "phase": "endgame",
+        "played": "e8f7",
+        "ply": 126,
+        "reason": "stratified-nonflagged-audit"
+      },
+      "evidence": [
+        {
+          "move": "e8f7",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "last_score_update_not_selected_exact_score"
+          ],
+          "expected_score_mover": 0.0
+        }
+      ]
+    },
+    {
+      "selection": {
+        "alternative": "e8d7",
+        "game": 1,
+        "initial_flags": [],
+        "initial_raw_loss": 0.0,
+        "pair": "main-09-02",
+        "phase": "endgame",
+        "played": "e8d7",
+        "ply": 119,
+        "reason": "stratified-nonflagged-audit"
+      },
+      "evidence": [
+        {
+          "move": "e8d7",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "last_score_update_not_selected_exact_score"
+          ],
+          "expected_score_mover": 1.0
+        }
+      ]
+    },
+    {
+      "selection": {
+        "alternative": "f7f4",
+        "game": 0,
+        "initial_flags": [],
+        "initial_raw_loss": 0.0,
+        "pair": "main-09-unaided",
+        "phase": "endgame",
+        "played": "f7f4",
+        "ply": 69,
+        "reason": "stratified-nonflagged-audit"
+      },
+      "evidence": [
+        {
+          "move": "f7f4",
+          "stable_report_heuristic": true,
+          "directional_bound_conflicts": [
+            "final_same_move_bound_conflicts_with_earlier_cp"
+          ],
+          "flags": [
+            "final_same_move_bound_conflicts_with_earlier_cp",
+            "last_score_update_not_selected_exact_score"
+          ],
+          "expected_score_mover": 0.0
+        }
+      ]
+    }
+  ],
+  "audit_expansion_proposal": "audit-expansion-proposal.json",
+  "scientific_closure_gate": "Verified stable missed-error trigger requires recorded method expansion and review; base execution remains passed."
+}

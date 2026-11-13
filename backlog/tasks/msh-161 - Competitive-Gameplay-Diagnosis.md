@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T15:12:00Z'
+updated_date: '2026-11-13T15:13:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -221,4 +221,6 @@ Batch 09 execution and independent gameplay reviews passed: 11 wins, 5 draws, 4 
 Batch 09 combined required 20M and admitted audit-expansion workflow launched via notify_exit.py PID 66971, job msh161-primary-b09-20m-v1, reviewed checkpoint 90c85161. Plan SHA256 6f84fa7b5064050ee81933b28520ceffc0d879c87418ea10f9c15d3739ab9051. Launch receipt in batch-09-adjudication; cloud acceptance separate after provenance preflight. Callback explicitly requires review of 620 first-half roots including expansion and 386 second-half roots, closure of the 21-root mixed-budget cell and preservation of original 5M trigger before final Batch 10. One success/failure callback; no timer or duplicate processes.
 
 Batch 09 combined 20M execution and independent deep review passed: 1,501 jobs / 1,528 queries / 1,006 roots. Eight workers, no allocation/scientific failures, all deleted. Admitted audit minimum coverage closed for all 21 roots: 19 original matched 5M preserved plus two added 20M roots/three searches and any other selected 20M evidence. Trigger p65 retains original 5M and supports .176 serious margin at20M; p57 subthreshold, p75 same-choice. Mixed budgets and Bf8 prose erratum explicit; exact UCI/histories unchanged. Twenty-two new alternatives across21 unique roots remain: four discoveries,18 linked replies, with21 unique played queries reused through22 references. Pre-followup ledgers archived; coordinator verified exact source/history/legal/no-duplicate bindings. Primary estimate US$28.647200; full mean US$31.83. Recomputed ETA supports Friday20:00–22:00 batch completion and Friday-night–Saturday-morning final diagnosis, conditional. Launch one callback workflow, close new comparisons and Batch 09 before final Batch 10; no final priorities.
+
+Twenty-two-query Batch 09 followup launched via notify_exit.py PID 88088, job msh161-primary-b09-followup-v1, reviewed checkpoint 150fb9e4. Plan SHA256 8273e3963c2a333875103aa02a8edea3cb0fbed01a46b6e4201b232d41099358. Launch receipt in batch-09-followup; cloud acceptance remains separate. Callback explicitly preserves admitted audit-cell closure, original 5M/20M trigger, mixed budgets, Bf8 notation erratum and 21 unique played results reused through 22 references. Review only new comparisons, write closure overlays/cumulative audit record, then final Batch 10. No timer or duplicate process.
 <!-- SECTION:NOTES:END -->

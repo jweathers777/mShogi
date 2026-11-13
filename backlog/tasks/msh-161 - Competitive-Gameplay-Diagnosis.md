@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T11:26:00Z'
+updated_date: '2026-11-13T13:24:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -215,4 +215,6 @@ Sixteen-query Batch 08 followup launched via notify_exit.py PID 53987, job msh16
 Batch 08 closed after independent sixteen-alternative review and execution audit. Three opponent comparison roots gain support, six new comparisons remain unresolved; f4/f3 is subthreshold. Exact original ledgers/final overlays, terminal limits, secondary contexts and successes preserved. Primary cumulative now 160 fully reviewed games: 64 wins, 46 draws, 50 losses (prepared 52/43/49; unaided 12/3/1). Thirty-nine automatic claims and seven dead positions remain distinct. See batch-08-review/closure.md and closure-summary.json. Totals: 66,580 queries, 23,029 jobs, 122.676461 VM-hours, US$24.732556 estimated compute. All stages used eight workers with no allocation/scientific failures; earlier failures separate. Original Batch 09 offline provenance passed. Forty games remain. Recomputed forecast supports Friday evening batch completion / Friday night–Saturday morning final diagnosis with explicit assumptions, superseding old Saturday central. Proceed under original conditions with exit notification; no final priorities or production engineering.
 
 Original Batch 09 accepted as msh161-primary-b09-v1 (QUEUED at submission), UID msh161-primary-b09-5b4e424a-abd3-4a290, reviewed checkpoint 3df2b3f3. Original manifest/image/runnable and ten tasks with maximum eight-worker parallelism verified. One notify_exit.py wrapper PID 55633 runs the existing event-driven wait/retrieve chain; local receipts report running and waiting for terminal. See Batch 09 launch/submission receipts. Current coverage is 160 fully reviewed games; remaining 40 continue under original conditions. No duplicate processes or searches.
+
+Batch 09 execution and independent gameplay reviews passed: 11 wins, 5 draws, 4 losses; eight workers, no allocation/scientific failures, all deleted. One stable missed-significant audit trigger requires versioned expansion: main-09-00 game0 ply65 Black/endgame h5 vs Rb3, conservative5M margin .0635, favorable played E .929. Independently admitted v1.1 overlay completes the21-root cell by reusing19 existing5M roots and adding two previously untested roots directly at20M, three new queries. Mixed budgets explicit; no cell rate or uniform-sample claim. Original method and panel selections unchanged; trigger20M retained without erasing5M. Exact amendment/review/selection hashes and plan bound in audit-expansion-admission.json. Combined deep plan: 1,006 roots / 1,501 jobs / 1,528 queries including27 discoveries. Full ledgers/index archived. Launch one exit-notified workflow; independently close expansion and deep review before final Batch 10. Scientific cumulative remains160 reviewed/180 played; no final priorities or production engineering.
 <!-- SECTION:NOTES:END -->

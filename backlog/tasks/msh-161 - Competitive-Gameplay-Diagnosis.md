@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T00:00:00Z'
+updated_date: '2026-11-13T00:01:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -167,4 +167,6 @@ Batch 05 independent gameplay/integrity reviews passed: 8 wins, 6 draws, 6 losse
 Batch 05 required 20M workflow launched via notify_exit.py PID 57997, job msh161-primary-b05-20m-v1, from reviewed checkpoint 9415ca89. Plan SHA256 2660bb0e79542c0dc5f71af41a63bc52cbfe995fd2450649c4e867d6ed84cf1f. See batch-05-adjudication/launch.json; actual cloud acceptance is separate after provenance preflight. One exit callback resumes review on success or failure. Preserve uncertainty and original policy, close distinct alternatives, then update cumulative and launch Batch 06. No timer, duplicate submission or production changes.
 
 Batch 05 deep panel completed and independent review passed: 699 jobs / 714 queries / 453 selected roots. Execution, cleanup and notification reconciled; eight workers, zero allocation/scientific failures. Primary compute estimate now US$14.558523 / 72.212029 VM-hours. Root terminal main-05-03 game0 ply84 is claim-policy-limited, with finite comparison preserved separately. Eleven new alternatives (one discovery, ten linked replies) need singleton 20M, reusing exact played results; coordinator verified all source/history/PV/legal bindings and no duplicates. Pairs 05–08 plus unaided are coverage-complete with an empty followup selection; retain their ledger unchanged. Pre-followup ledgers archived losslessly. See batch-05-followup/plan.json and coordinator-plan-review.json. Launch one callback-driven chain, review new evidence, close Batch 05 and continue original Batch 06. No repeated unstable queries or final priorities.
+
+Eleven-query Batch 05 followup launched through notify_exit.py PID 66552, job msh161-primary-b05-followup-v1, reviewed checkpoint ceb38d23. Plan SHA256 5880cd3f7b0fd71ef482dbda9c7e60b6698a6f53395802f9088dbe641724edc8. Launch receipt in batch-05-followup; acceptance/completion/verification/cleanup/notification remain separate. One automatic callback will resume new-comparison review and Batch 05 closure before original Batch 06. Pairs 05–09 already require no additional queries. No timer or duplicate processes.
 <!-- SECTION:NOTES:END -->

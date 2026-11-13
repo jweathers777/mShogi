@@ -1,0 +1,21 @@
+{
+  "format": "lossless gzip; restore exact original JSON bytes locally if required",
+  "files": [
+    {
+      "original": "gameplay-00-04.json",
+      "archive": "gameplay-00-04.json.gz",
+      "original_sha256": "84a094bfc4fc7f7a8ced7bf3822c6a40be91c5e38c10a88c075f4714f9656996",
+      "archive_sha256": "9f17c8246022f1097cd488fea79d45c3db08643d38398fe5939b3ce100597b56",
+      "original_bytes": 1594241,
+      "archive_bytes": 107855
+    },
+    {
+      "original": "gameplay-05-09.json",
+      "archive": "gameplay-05-09.json.gz",
+      "original_sha256": "bd9f8ac0be8623be08a6750da85e87ef0531ea2d308164297f2a6ced9fcc1b0f",
+      "archive_sha256": "bbd89604af877b6875d844cee916f91bb8ff6552e250384b02c7f13c2967d3dd",
+      "original_bytes": 10653097,
+      "archive_bytes": 684938
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+[
+  {
+    "pair": "main-10-06",
+    "game": 1,
+    "ply": 77,
+    "moves": [
+      "b5a4",
+      "d6c4"
+    ],
+    "reason": "Unrestricted 20M discovery selected a distinct alternative. Require its singleton 20M; reuse existing hash-bound played singleton without rerun.",
+    "reuse_played_jobs": [
+      "cb6a76b4d0944f6f8faaba92640be05142ce2103b20669cef536eb596e554282"
+    ]
+  },
+  {
+    "pair": "main-10-07",
+    "game": 1,
+    "ply": 72,
+    "moves": [
+      "e4e5",
+      "b4b3"
+    ],
+    "reason": "Unrestricted 20M discovery selected a distinct alternative. Require its singleton 20M; reuse existing hash-bound played singleton without rerun.",
+    "reuse_played_jobs": [
+      "5a83365ec80a3f3c01e63dd8b40b6a9191b767aeea5e1ef63598fec61ddd7b0b"
+    ]
+  },
+  {
+    "pair": "main-10-08",
+    "game": 1,
+    "ply": 67,
+    "moves": [
+      "c3d4",
+      "e3g4"
+    ],
+    "reason": "Unrestricted 20M discovery selected a distinct alternative. Require its singleton 20M; reuse existing hash-bound played singleton without rerun.",
+    "reuse_played_jobs": [
+      "6e93d98797f445ca816df6e556c25e8096c268be1e51ce572c638a8a14e7de4a"
+    ]
+  },
+  {
+    "pair": "main-10-unaided",
+    "game": 0,
+    "ply": 19,
+    "moves": [
+      "a5b3",
+      "g4f2"
+    ],
+    "reason": "Unrestricted 20M discovery selected a distinct alternative. Require its singleton 20M; reuse existing hash-bound played singleton without rerun.",
+    "reuse_played_jobs": [
+      "16da476005f2425c046ade134a3a0890d950d914feaa25b1d1a947f8194a85f3"
+    ]
+  }
+]

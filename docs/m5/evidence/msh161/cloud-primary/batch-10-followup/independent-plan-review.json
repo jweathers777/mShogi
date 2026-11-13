@@ -1,0 +1,12 @@
+{
+  "status": "passed_bounded_plan_admission",
+  "plan_sha256": "d987bc87a8a1ef0d4b33344b4fbf858f94b7fba74630b237c89e346b0106f8b7",
+  "coordinator_review_sha256": "311f3780a1b75f1378111153530366ae97bb93fe36fc27b7cfb88fbb0ef846d6",
+  "new_queries": 28,
+  "unique_roots": 28,
+  "reused_entries": 28,
+  "unique_reused_played_artifacts": 28,
+  "bins": 8,
+  "checks": "Exact prior-plan and selection bindings, consumed receipts, reused played artifact hashes and canonical histories, legal new forced moves, no duplicate prior forced alternative, original build/image and exact 20M budget. Coordinator discovery/linked-PV scientific source review reused; not repeated.",
+  "limits": "Plan admission only, no execution. Only 28 new queries count toward future resources; 28 reused played results were already counted."
+}

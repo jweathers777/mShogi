@@ -1,0 +1,66 @@
+{
+  "status": "changes_requested_before_actual_statistics_run",
+  "scope": "Bounded offline source/schema review; only existing fixture self-test executed; no native study statistics, rankings, engines or cloud actions",
+  "bindings": {
+    "native_statistics.py": "9495c4598b960b3f00669ee24b720c11ec1ff84c33e08a5e7cb320acc58e322e",
+    "procedure.md": "ed26135879038ca2c63b903d6b95bc003b61fc2498ba6e06dffc14b5896d2da1",
+    "procedure-review-v2.json": "b6462d6ad0d90c18800b7431d0e866269d3974dbec4bf7e02b0c2c156d417723",
+    "../../analysis.py": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088"
+  },
+  "verification": {
+    "command": "/private/tmp/msh162-controller/bin/python docs/m5/evidence/msh161/cloud-primary/final-analysis/native_statistics.py --self-test",
+    "outcome": "passed",
+    "checks": [
+      "linear quantile",
+      "degenerate score",
+      "fixed unequal family weights",
+      "input order invariance",
+      "score mapping"
+    ],
+    "actual_statistics_run": "not run; closure guard not bypassed"
+  },
+  "passed_review": [
+    "Bootstrap draws whole pair-average scores, preserves family counts, sorts families/pairs, uses one seeded RNG and the approved 50000-replicate/interpolation procedure.",
+    "Prepared and unaided statistics stay separate; no rating or reference-superiority inference.",
+    "Existing extraction helper excludes intended claim moves from accepted played history and validates prepared history internally.",
+    "Native WDL is computed from native conclusion and candidate color; prefix/played counts and cumulative outcomes are reconciled.",
+    "Output uses exclusive create mode and is explicitly marked as needing independent result review."
+  ],
+  "findings": [
+    {
+      "id": "N1",
+      "priority": "P2",
+      "lines": [
+        63,
+        78
+      ],
+      "title": "Bind each report to its frozen pair before assigning family",
+      "issue": "The report is internally decoded and hashed but never compared to specs[pair].opening. Family and opening identity come from the manifest, while history/outcomes come from the report. A valid report relabelled under a different pair can therefore be assigned the wrong family. The second game hashes its own native_report but then uses the first cached report without checking that both entries identify the same artifact. The count of 90 prepared pairs also does not ensure each of 90 frozen opening IDs appears exactly once.",
+      "required_change": "Require identical native-report key/hash for both pair entries; compare report opening ID/FEN/prefix and paired color assignments against the frozen spec; check exact expected pair/game identities and exact one-to-one prepared opening coverage. Derive prepared status from the frozen phase with ID consistency, not suffix alone."
+    },
+    {
+      "id": "N2",
+      "priority": "P2",
+      "lines": [
+        49,
+        52
+      ],
+      "title": "Make closure and provenance guards fail closed under Python optimization",
+      "issue": "All gates and evidence checks use assert. Python -O or PYTHONOPTIMIZE removes them, including the 200-game/reviewed-batch/missing-singleton and approved-procedure gates. The same mode removes all self-test assertions but still returns passed.",
+      "required_change": "Use explicit validation exceptions for these execution/provenance gates and self-test failures, or reject optimized mode before any processing. Add fixture checks that incomplete closure cannot reach report loading/bootstrap/output and optimized execution cannot silently report passed."
+    },
+    {
+      "id": "N3",
+      "priority": "P2",
+      "lines": [
+        39,
+        47
+      ],
+      "title": "Exercise native provenance and nondegenerate clustering with independent fixtures",
+      "issue": "The existing self-test passes but covers only mathematical scalar/degenerate fixtures and input-order invariance. It does not test native result/color mapping, prefix/played separation, intended draw claims, pair/report mismatch or omitted/duplicate source roots. The varying bootstrap fixture only compares the function with itself on reordered input.",
+      "required_change": "Add small synthetic native-schema fixtures with independently stated expected histories/results, a claim with an intended but unplayed move, and negative mismatched/duplicated pair-source cases. Add a nondegenerate family/pair fixture with independently established sample expectations or a fixed injected draw sequence, so game-level resampling or wrong family weighting cannot pass by self-comparison."
+    }
+  ],
+  "additional_note": "Record the imported analysis.py hash among runtime source bindings, since its decoder/extractor affects provenance and histories. Per-family/color, repeated-prefix and all-played-disposition obligations may be handled by other final-analysis artifacts; this script correctly states that its native table alone does not satisfy behavioral/evidence-tier obligations.",
+  "limits": "No production changes or broader scope requested. The statistical algorithm appears consistent; these findings concern robust source binding, guarded execution and meaningful verification. Final numerical and scientific challenge remains required after corrections and closure."
+}

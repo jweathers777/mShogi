@@ -1,0 +1,138 @@
+{
+  "completed_primary_games": 200,
+  "fully_adjudicated_primary_games_at_this_audit": 180,
+  "remaining_games": 0,
+  "no_batch11": true,
+  "pending_batch10_scientific_closure": true,
+  "measured_scientific_jobs": 30861,
+  "measured_reference_queries": 86553,
+  "measured_primary_vm_hours": 164.32128580133124,
+  "estimated_primary_compute_usd": 33.128485787834784,
+  "actual_billed_cost": null,
+  "measured_cloud_submission_to_final_task_hours_sum": 28.1275825797187,
+  "new_distinct_discovery_alternatives_pending": [
+    {
+      "pair": "main-10-00",
+      "game": 0,
+      "ply": 94,
+      "played": "d5e5",
+      "bestmove": "a8a7",
+      "different_move": true,
+      "flags": []
+    },
+    {
+      "pair": "main-10-01",
+      "game": 0,
+      "ply": 35,
+      "played": "g8h8",
+      "bestmove": "a7a5",
+      "different_move": true,
+      "flags": [
+        "last_two_report_estimates_unstable"
+      ]
+    },
+    {
+      "pair": "main-10-01",
+      "game": 0,
+      "ply": 48,
+      "played": "a1b1",
+      "bestmove": "a1c1",
+      "different_move": true,
+      "flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ]
+    },
+    {
+      "pair": "main-10-02",
+      "game": 0,
+      "ply": 18,
+      "played": "g1f3",
+      "bestmove": "f4g3",
+      "different_move": true,
+      "flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ]
+    },
+    {
+      "pair": "main-10-03",
+      "game": 0,
+      "ply": 49,
+      "played": "g6f8",
+      "bestmove": "f1f2",
+      "different_move": true,
+      "flags": [
+        "last_score_update_not_selected_exact_score"
+      ]
+    },
+    {
+      "pair": "main-10-06",
+      "game": 1,
+      "ply": 77,
+      "played": "b5a4",
+      "bestmove": "d6c4",
+      "different_move": true,
+      "flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ]
+    },
+    {
+      "pair": "main-10-07",
+      "game": 1,
+      "ply": 72,
+      "played": "e4e5",
+      "bestmove": "b4b3",
+      "different_move": true,
+      "flags": []
+    },
+    {
+      "pair": "main-10-08",
+      "game": 1,
+      "ply": 67,
+      "played": "c3d4",
+      "bestmove": "e3g4",
+      "different_move": true,
+      "flags": [
+        "last_score_update_not_selected_exact_score"
+      ]
+    },
+    {
+      "pair": "main-10-unaided",
+      "game": 0,
+      "ply": 19,
+      "played": "a5b3",
+      "bestmove": "g4f2",
+      "different_move": true,
+      "flags": [
+        "fewer_than_two_distinct_depth_numeric_reports",
+        "no_aligned_nonbound_numeric_estimate",
+        "no_nonbound_score_aligned_with_bestmove",
+        "pv_not_verified_legal"
+      ]
+    }
+  ],
+  "remaining_compute_scenario_usd": [
+    0.05,
+    0.2
+  ],
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "calendar_estimate": {
+    "as_of_utc": "2026-11-13T19:29:27.648853+00:00",
+    "remaining_batch_review_and_followup_hours_assumed": [
+      0.5,
+      1.5
+    ],
+    "final_synthesis_statistics_and_independent_challenge_hours_assumed": [
+      2,
+      4
+    ],
+    "window": "Friday night to Saturday morning, conditional on review findings; all games and initial deep panels are complete. No stale Saturday central estimate.",
+    "uncertainty": "A new comparison obligation or a substantive final challenge can extend the window; no coverage is truncated."
+  },
+  "limits": "Measured VM lifetimes priced at $0.201608 per hour, not billed cost. Remaining compute is a planning scenario for distinct new alternatives, not a cap. Cloud, review and synthesis time are separate. Mac, pilots and historical transition costs remain separate."
+}

@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: all 200 games complete; final Batch 10 deep plan ready
+## Current state: all 200 games complete; final Batch 10 deep analysis launched
 
 All 200 planned games have completed. **180 are fully reviewed (75W/51D/54L)**;
 `primary-cumulative.json` remains at 180 until final Batch 10 closure. Final batch
@@ -27,7 +27,10 @@ Full ledgers and review index/inventory are lossless gzip with binding manifests
 Terminal controls preserve native outcomes and underlying finite statuses. Selected
 comparisons, secondary contexts and correlated episodes are not independent causes
 or population error rates. Draws alone are not weakness; claim censoring remains.
-Next launch this plan once via `notify_exit.py`. On exit independently review both
+The plan was launched once through `notify_exit.py`, wrapper PID 95547, job
+`msh161-primary-b10-20m-v1`, from reviewed revision `981ec7cf`. Cloud acceptance
+is recorded separately in `submission-result.json`; launch is not proof of acceptance.
+See `batch-10-adjudication/launch.json`. On exit independently review both
 panels and only distinct new alternative obligations, preserving earlier/unselected
 uncertainty. Close Batch 10 and cumulative 200-game coverage before final rankings.
 
@@ -37,7 +40,10 @@ reconciliation, and revision2 records those corrections. Preserve reviewed v1 by
 No quantitative result or ranking has selected the procedure. It elaborates the
 frozen family-stratified whole-pair bootstrap, phase/threshold sensitivity, separate
 correlated unaided starts, behavioral coding/episode limits and independent final
-challenge. Final admission/review record will bind the exact corrected procedure.
+challenge. Independent revision 2 review passed; `final-analysis/procedure-admission.json`
+binds the exact approved procedure. Native statistics implementation and fixture
+checks are prepared for independent review; actual analysis remains guarded until
+cumulative 200-game closure.
 
 Primary resources through final base stage: 29,285 jobs / 84,955 queries /
 154.398601 VM-hours / US$31.127993 estimated compute, not billing. Pending final

@@ -1,0 +1,7 @@
+{
+  "status": "admitted",
+  "procedure_sha256": "ed26135879038ca2c63b903d6b95bc003b61fc2498ba6e06dffc14b5896d2da1",
+  "independent_review_sha256": "b6462d6ad0d90c18800b7431d0e866269d3974dbec4bf7e02b0c2c156d417723",
+  "scope": "Offline final analysis after all required comparisons close; no new games or searches. Implementation, numerical results, behavioral coding and diagnosis require independent challenge.",
+  "preserved_v1_sha256": "b45beaef94009f9c9ced5dacbed79377d64308f00d2aabcc999b60d2cc632f1a"
+}

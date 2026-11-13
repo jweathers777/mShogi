@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T17:34:00Z'
+updated_date: '2026-11-13T17:40:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -229,4 +229,6 @@ Batch 09 closed after independent22-alternative review and execution audit. Twen
 Final original Batch 10 accepted as msh161-primary-b10-v1 (QUEUED at submission), UID msh161-primary-b10-24aaee49-e611-48bc0, reviewed checkpoint 209de466. Original manifest, image, runnable and ten tasks with maximum eight-worker parallelism verified. One notify_exit.py wrapper PID 89910 runs the existing event-driven wait/retrieve chain; local receipts report running and waiting for terminal. See Batch 10 launch/submission receipts. Current coverage is 180 fully reviewed games: 75 wins, 51 draws, 54 losses. Final 20 games proceed under original conditions. Callback requires independent final-batch analysis, distinct alternative obligations, cumulative 200-game closure, then independently challenged diagnosis with category/episode/family/phase and clustered-uncertainty evidence, actual resources and updated roadmap. Preserve the admitted audit amendment and all uncertainty. Stop for John before engineering; no Batch 11 or duplicate searches.
 
 All 200 games are played; 180 remain fully reviewed until final Batch 10 deep closure. Final base review passed: 7 wins, 7 draws, 6 losses; two threefold claims, two fifty-move claims, three dead positions. Coverage 6,414 initial / 2,696 matched 5M queries; seven uncertain audits, no new stable trigger. Eight workers, no allocation/scientific failures, all deleted. Primary estimated compute US$31.127993 / 154.398601 VM-hours. Final deep plan frozen: 1,044 roots / 1,576 jobs / 1,598 queries, 22 discoveries. Exact ledgers/index archived. Final-analysis procedure independently reviewed; deterministic bootstrap ordering/quantiles and full all-played-disposition reconciliation corrected in revision 2, pending exact final admission. Launch one final exit-notified deep workflow, complete only distinct alternatives and full study challenge/diagnosis/roadmap. No Batch 11, final ranking before coverage closure or production engineering.
+
+Final Batch 10 deep workflow launched once through notify_exit.py: wrapper PID 95547, job msh161-primary-b10-20m-v1, reviewed revision 981ec7cf, plan SHA256 877090295b947d97d4f6c9a050ee8ae6aeea3bc1cbf1e037bd98294300374367. Submission acceptance remains a separate receipt. Exact final-analysis procedure v2 passed independent review and is admitted by final-analysis/procedure-admission.json. Native-outcome statistics code and independent fixtures prepared; actual results guarded until cumulative 200-game closure and implementation review. No Batch 11, duplicate work, production changes or timed watcher.
 <!-- SECTION:NOTES:END -->

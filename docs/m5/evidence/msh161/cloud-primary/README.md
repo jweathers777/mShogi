@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 06 completed; independent review in progress
+## Current state: Batch 06 required 20M plan launched
 
 **100 games are fully reviewed: 41 wins / 29 draws / 30 losses.** Prepared results
 are 33/28/29; unaided results 8/1/1. `primary-cumulative.json` covers all five batches.
@@ -53,7 +53,10 @@ passed offline plan preparation. Plan SHA256:
 Full decision ledgers and review index/inventory are losslessly archived with
 binding manifests. Terminal claims are explicit controls; reference continuations
 cannot replace native outcomes. Selections are not confirmations.
-Next launch this plan once through `notify_exit.py`. On completion reconcile all
+The plan is launched through `notify_exit.py`, PID 87065, from reviewed checkpoint
+`060ab2d6`, job `msh161-primary-b06-20m-v1`. See `batch-06-adjudication/launch.json`.
+Actual cloud acceptance is separate in `submission-result.json` after provenance
+preflight. Do not duplicate wrapper, submission or queries. On completion reconcile all
 execution layers, independently review against both narratives and obtain only
 distinct new alternative obligations. Preserve earlier/linked uncertainty and
 secondary tags, close Batch 06, update cumulative, then launch original Batch 07.

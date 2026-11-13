@@ -1,0 +1,24 @@
+{
+  "label": "MSH-161 Batch 08 16 matched followup alternatives",
+  "thread": "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+  "command": [
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/run_adjudication_plan.py",
+    "--directory",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-08-followup",
+    "--job-name",
+    "msh161-primary-b08-followup-v1",
+    "--subscription",
+    "projects/mshogi/subscriptions/mshogi-pilot-completion",
+    "--cache",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache",
+    "--spending-approved"
+  ],
+  "state_artifact": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-08-followup",
+  "wrapper_pid": 53987,
+  "started_epoch": 1794568692.0684118,
+  "status": "running",
+  "queue_attempted": false,
+  "cleanup_scope": "Own child process group only; engines detached by existing helpers require their own receipts/reconciliation; not a descendant-tree cleanup guarantee",
+  "child_pid": 53989
+}

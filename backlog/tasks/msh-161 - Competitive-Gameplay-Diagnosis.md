@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T09:37:00Z'
+updated_date: '2026-11-13T11:17:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -207,4 +207,6 @@ Batch 08 base computation, retrieval and notification succeeded. Coordinator rec
 Batch 08 independent gameplay/integrity reviews passed: 6 wins, 5 draws, 9 losses; four threefold claims and one dead position. Coverage 5,162 initial / 1,977 matched 5M queries; six uncertain audit controls, no stable missed-error trigger. Eight actual workers, no allocation/scientific failures, all deleted. Primary estimate US$22.899238 / 113.582984 VM-hours. Frozen deep plan has 889 roots / 1,308 jobs / 1,347 queries, including 39 discoveries. Larger controls retain long favorable/conversion and defensive episodes, boundaries, linked reversals and successes. Exact ledgers/index archived losslessly. Launch one exit-notified workflow and independently review before original Batch 09. Scientific cumulative remains 140 reviewed / 160 played until closure.
 
 Batch 08 required 20M workflow launched via notify_exit.py PID 39420, job msh161-primary-b08-20m-v1, reviewed checkpoint 5568c1ee. Plan SHA256 cd99e7b260a7b98ea3869d005855a95ceadd943d9764acbb88c15e810b84f0ab. Launch receipt in batch-08-adjudication; cloud acceptance separate after provenance preflight. One success/failure callback resumes scientific review and closure before Batch 09. Preserve claim limits, uncertainty and original conditions; no timer or duplicate processes.
+
+Batch 08 deep execution and independent review passed: 1,308 jobs / 1,347 queries / 889 roots. Eight actual workers, no allocation/scientific failures, all deleted. Primary estimate US$24.683284 / 122.432066 VM-hours; full compute mean US$30.85. Updated forecast replaces obsolete Saturday central: Friday evening games/batch analysis and Friday night–Saturday morning final diagnosis, conditional on measured remaining cloud work plus explicit workflow/review assumptions. Sixteen new alternatives at sixteen roots need singleton 20M: fifteen linked replies and one discovered f4. Exact played results reused; root verified histories, source PV/discovery, legal choices and no duplicate forced moves. Pre-followup ledgers archived; two terminal observations retain underlying same-choice/unresolved statuses separately. See batch-08-followup/plan.json and coordinator-plan-review.json. Launch one exit-notified workflow, review new results, close Batch 08 then original Batch 09. No repeated unstable searches or final priorities.
 <!-- SECTION:NOTES:END -->

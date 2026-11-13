@@ -3,3 +3,6 @@
 
 # External GUI verification Python bytecode.
 **/__pycache__/
+
+# Run logs under docs (evidence stdout/stderr and driver logs).
+docs/**/*.log

@@ -1,0 +1,18 @@
+{
+  "label": "MSH-161 original AutoClaim cloud Batch 07 games, analysis, retrieval and verification",
+  "thread": "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+  "command": [
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/wait_retrieve_batch.py",
+    "7",
+    "--subscription",
+    "projects/mshogi/subscriptions/mshogi-pilot-completion"
+  ],
+  "state_artifact": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-07-wait-retrieve.json",
+  "wrapper_pid": 93083,
+  "started_epoch": 1794541796.015104,
+  "status": "running",
+  "queue_attempted": false,
+  "cleanup_scope": "Own child process group only; engines detached by existing helpers require their own receipts/reconciliation; not a descendant-tree cleanup guarantee",
+  "child_pid": 93088
+}

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T03:49:00Z'
+updated_date: '2026-11-13T03:50:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -185,4 +185,6 @@ Batch 06 20M execution and independent deep review passed: 901 jobs / 917 querie
 Sixteen-query Batch 06 followup launched via notify_exit.py PID 91631, job msh161-primary-b06-followup-v1, reviewed checkpoint a6d8b8cb. Plan SHA256 fbd094b4e7116b2a3f27b969e914f01df4687e40aef507d95069151d9e6d9588. Launch receipt in batch-06-followup; cloud acceptance remains separate. One automatic callback resumes only new-comparison review, closure overlays, cumulative update and original Batch 07. Second-half ledger is already coverage-complete. No timer or duplicate processes.
 
 Batch 06 closed after independent sixteen-alternative review and execution audit. All obligations covered; four new comparisons strengthen existing support, eleven remain unresolved, no new event roots. Exact pre-followup ledgers and separate final overlays preserved. Primary cumulative now 120 fully reviewed games: 47 wins, 37 draws, 36 losses (prepared 38/35/35; unaided 9/2/1). Thirty-two automatic claims and five dead positions remain distinct. Five terminal selected controls retain underlying non-error statuses. See batch-06-review/closure.md and closure-summary.json. Totals: 49,843 queries, 16,703 jobs, 88.430703 VM-hours, US$17.828337 estimated compute. All stages reached eight workers; allocation failures one/eleven/zero retained separately. Original Batch 07 offline provenance passed; proceed with one original-condition exit-notified workflow. Eighty games remain; no final priorities or production engineering.
+
+Original Batch 07 accepted as msh161-primary-b07-v1 (QUEUED at submission), UID msh161-primary-b07-eed9d779-73de-48460, reviewed checkpoint 56fb5f4d. Original manifest/image/runnable and ten tasks with maximum eight-worker parallelism verified. One notify_exit.py wrapper PID 93083 runs existing event-driven wait/retrieve chain; local receipts report running and waiting for terminal. See batch-07 launch/submission receipts. Current coverage is 120 fully reviewed games; remaining 80 continue under original conditions. No duplicate processes or searches.
 <!-- SECTION:NOTES:END -->

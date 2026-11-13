@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T11:18:00Z'
+updated_date: '2026-11-13T11:25:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -211,4 +211,6 @@ Batch 08 required 20M workflow launched via notify_exit.py PID 39420, job msh161
 Batch 08 deep execution and independent review passed: 1,308 jobs / 1,347 queries / 889 roots. Eight actual workers, no allocation/scientific failures, all deleted. Primary estimate US$24.683284 / 122.432066 VM-hours; full compute mean US$30.85. Updated forecast replaces obsolete Saturday central: Friday evening games/batch analysis and Friday night–Saturday morning final diagnosis, conditional on measured remaining cloud work plus explicit workflow/review assumptions. Sixteen new alternatives at sixteen roots need singleton 20M: fifteen linked replies and one discovered f4. Exact played results reused; root verified histories, source PV/discovery, legal choices and no duplicate forced moves. Pre-followup ledgers archived; two terminal observations retain underlying same-choice/unresolved statuses separately. See batch-08-followup/plan.json and coordinator-plan-review.json. Launch one exit-notified workflow, review new results, close Batch 08 then original Batch 09. No repeated unstable searches or final priorities.
 
 Sixteen-query Batch 08 followup launched via notify_exit.py PID 53987, job msh161-primary-b08-followup-v1, reviewed checkpoint 80d3c690. Plan SHA256 64f9a9bfcfcca0dcc80a5f2aacb035e311eca3b2c30cf8c72d4d0dcb58b721f0. Launch receipt in batch-08-followup; cloud acceptance remains separate. One automatic callback resumes only new-comparison review, closure overlays, cumulative update and original Batch 09. All played results reused; no repeated search, timer or duplicate process.
+
+Batch 08 closed after independent sixteen-alternative review and execution audit. Three opponent comparison roots gain support, six new comparisons remain unresolved; f4/f3 is subthreshold. Exact original ledgers/final overlays, terminal limits, secondary contexts and successes preserved. Primary cumulative now 160 fully reviewed games: 64 wins, 46 draws, 50 losses (prepared 52/43/49; unaided 12/3/1). Thirty-nine automatic claims and seven dead positions remain distinct. See batch-08-review/closure.md and closure-summary.json. Totals: 66,580 queries, 23,029 jobs, 122.676461 VM-hours, US$24.732556 estimated compute. All stages used eight workers with no allocation/scientific failures; earlier failures separate. Original Batch 09 offline provenance passed. Forty games remain. Recomputed forecast supports Friday evening batch completion / Friday night–Saturday morning final diagnosis with explicit assumptions, superseding old Saturday central. Proceed under original conditions with exit notification; no final priorities or production engineering.
 <!-- SECTION:NOTES:END -->

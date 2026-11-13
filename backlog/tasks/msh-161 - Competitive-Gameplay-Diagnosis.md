@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T02:31:00Z'
+updated_date: '2026-11-13T03:42:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -179,4 +179,6 @@ Batch 06 base computation, retrieval and notification succeeded. Coordinator rec
 Batch 06 independent gameplay/integrity reviews passed: 6 wins, 8 draws, 6 losses; six threefold claims, one fifty-move claim, one dead position. Coverage: 5,716 initial / 1,965 matched 5M queries; seven uncertain audit controls, no stable missed-error trigger. Eight actual workers, one allocation failure and two related cleanup notices preserved separately from zero scientific failures; all workers deleted. Primary compute estimate US$16.560273 / 82.140953 VM-hours. Frozen deep plan has 570 roots / 901 jobs / 917 queries, including 16 discoveries and explicit terminal-claim controls. See batch-06-adjudication/plan.json; full ledgers/index archived losslessly. Launch one exit-notified workflow and independently review before original Batch 07. Scientific cumulative stays 100 reviewed / 120 played until closure.
 
 Batch 06 required 20M workflow launched via notify_exit.py PID 87065, job msh161-primary-b06-20m-v1, reviewed checkpoint 060ab2d6. Plan SHA256 3b06a71903cadc5a6d9510da441dde5dc776667eb341d07c25f8f5225459d55e. Launch receipt in batch-06-adjudication; cloud acceptance separate after provenance preflight. One success/failure callback resumes scientific review and closure before Batch 07. Preserve terminal claim limits, uncertainty and original conditions; no timer or duplicate processes.
+
+Batch 06 20M execution and independent deep review passed: 901 jobs / 917 queries / 570 roots. Eight actual workers, eleven panel allocation failures and 22 related cleanup notices preserved separately from base one/two and zero scientific failures; all workers deleted. Primary estimate US$17.782402 / 88.202860 VM-hours. Sixteen new alternatives (one discovery, fifteen bounded linked replies) need singleton 20M, with exact reused played evidence. Root verified native histories, source PVs/discovery, legal moves and no duplicate forced queries. Pre-followup ledgers archived. Second-half panel has no new obligations; retain unchanged. Five first-half terminal controls remain claim-policy-limited. See batch-06-followup/plan.json and coordinator-plan-review.json. Launch one exit-notified workflow, review new results and close Batch 06 before original Batch 07; no repeated unstable queries or final priorities.
 <!-- SECTION:NOTES:END -->

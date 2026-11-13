@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T06:00:00Z'
+updated_date: '2026-11-13T07:31:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -193,4 +193,6 @@ Batch 07 base computation, retrieval and notification succeeded. Coordinator rec
 Batch 07 independent gameplay/integrity reviews passed: 11 wins, 4 draws, 5 losses; three threefold claims and one dead position. Coverage 5,226 initial / 2,008 matched 5M queries; five uncertain audit controls, no stable missed-error trigger. Eight actual workers, no allocation/scientific failures, all deleted. Primary estimate US$19.682013 / 97.625160 VM-hours. Frozen deep plan has 633 roots / 968 jobs / 992 queries, including 24 discoveries and terminal claim controls. See batch-07-adjudication/plan.json. Full ledgers/index archived losslessly. Launch one exit-notified workflow and independently review before original Batch 08. Scientific cumulative remains 120 reviewed / 140 played until closure.
 
 Batch 07 required 20M workflow launched via notify_exit.py PID 24232, job msh161-primary-b07-20m-v1, reviewed checkpoint 28be84a5. Plan SHA256 a23964ceaee496364da44ce5cac2c91cf4b5386845521847e834f35b4bc502c8. Launch receipt in batch-07-adjudication; cloud acceptance separate after provenance preflight. One success/failure callback resumes scientific review and closure before Batch 08. Preserve claim limits, uncertainty and original conditions; no timer or duplicate processes.
+
+Batch 07 deep execution and independent review passed: 968 jobs / 992 queries / 633 roots. Eight eventual workers after 38 stockout insertions and 76 related cleanup notices; about 504 seconds to first task. All workers deleted, zero scientific failures. Primary estimate US$20.997044 / 104.147873 VM-hours. Nine new alternatives across eight unique native roots require singleton 20M: three discoveries and six bounded linked replies. Two alternatives at main-07-00 game0 ply71 share one played receipt: nine reference entries mean eight unique reused queries, none rerun. Root verified exact histories, source PV/discovery, legal moves and no duplicate forced alternatives. Preserved pre-followup ledgers and two explicit terminal claim controls. See batch-07-followup/plan.json and coordinator-plan-review.json. Launch one callback-driven workflow, review new results, close Batch 07 then original Batch 08. No repeated unstable searches or final priorities.
 <!-- SECTION:NOTES:END -->

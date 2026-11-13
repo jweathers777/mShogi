@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T03:42:00Z'
+updated_date: '2026-11-13T03:43:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -181,4 +181,6 @@ Batch 06 independent gameplay/integrity reviews passed: 6 wins, 8 draws, 6 losse
 Batch 06 required 20M workflow launched via notify_exit.py PID 87065, job msh161-primary-b06-20m-v1, reviewed checkpoint 060ab2d6. Plan SHA256 3b06a71903cadc5a6d9510da441dde5dc776667eb341d07c25f8f5225459d55e. Launch receipt in batch-06-adjudication; cloud acceptance separate after provenance preflight. One success/failure callback resumes scientific review and closure before Batch 07. Preserve terminal claim limits, uncertainty and original conditions; no timer or duplicate processes.
 
 Batch 06 20M execution and independent deep review passed: 901 jobs / 917 queries / 570 roots. Eight actual workers, eleven panel allocation failures and 22 related cleanup notices preserved separately from base one/two and zero scientific failures; all workers deleted. Primary estimate US$17.782402 / 88.202860 VM-hours. Sixteen new alternatives (one discovery, fifteen bounded linked replies) need singleton 20M, with exact reused played evidence. Root verified native histories, source PVs/discovery, legal moves and no duplicate forced queries. Pre-followup ledgers archived. Second-half panel has no new obligations; retain unchanged. Five first-half terminal controls remain claim-policy-limited. See batch-06-followup/plan.json and coordinator-plan-review.json. Launch one exit-notified workflow, review new results and close Batch 06 before original Batch 07; no repeated unstable queries or final priorities.
+
+Sixteen-query Batch 06 followup launched via notify_exit.py PID 91631, job msh161-primary-b06-followup-v1, reviewed checkpoint a6d8b8cb. Plan SHA256 fbd094b4e7116b2a3f27b969e914f01df4687e40aef507d95069151d9e6d9588. Launch receipt in batch-06-followup; cloud acceptance remains separate. One automatic callback resumes only new-comparison review, closure overlays, cumulative update and original Batch 07. Second-half ledger is already coverage-complete. No timer or duplicate processes.
 <!-- SECTION:NOTES:END -->

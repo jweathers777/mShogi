@@ -19,8 +19,6 @@ import signal
 import statistics
 import subprocess
 import sys
-import tarfile
-import io
 import threading
 import time
 from pathlib import Path
@@ -419,9 +417,11 @@ def build_engine(args):
     if src.exists():
         shutil.rmtree(src)
     src.mkdir(parents=True)
-    archive = subprocess.run(['git', '-C', str(REPO), 'archive', '--format=tar', rev], capture_output=True, check=True).stdout
-    with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
-        tar.extractall(src, filter='data')
+    archive = subprocess.Popen(['git', '-C', str(REPO), 'archive', '--format=tar', rev], stdout=subprocess.PIPE)
+    subprocess.run(['tar', '-x', '-f', '-', '-C', str(src)], stdin=archive.stdout, check=True)
+    archive.stdout.close()
+    if archive.wait() != 0:
+        raise SystemExit('git archive failed')
     env = dict(os.environ, CARGO_TARGET_DIR=str(root / 'build-target'))
     subprocess.run(['cargo', 'build', '--release', '--locked', '-p', 'mshogi-console', '--bin', 'mshogi'],
                    cwd=src, env=env, check=True)

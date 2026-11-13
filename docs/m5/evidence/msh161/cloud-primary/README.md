@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 09 completed; independent review and audit-expansion gate
+## Current state: Batch 09 required 20M plan and admitted audit expansion launched
 
 **160 games are fully reviewed: 64 wins / 46 draws / 50 losses.** Prepared results
 are 52/43/49; unaided results 12/3/1. `primary-cumulative.json` covers all eight batches.
@@ -65,7 +65,10 @@ The combined prepared plan contains 1,006 roots / 1,501 jobs / 1,528 queries,
 including 27 discoveries and the three expansion searches. Plan SHA256:
 `6f84fa7b5064050ee81933b28520ceffc0d879c87418ea10f9c15d3739ab9051`.
 Full decision ledgers and index/inventory are lossless gzip with binding manifests.
-Next launch this plan once via `notify_exit.py`. On completion independently review
+The plan is launched via `notify_exit.py`, PID 66971, from reviewed checkpoint
+`90c85161`, job `msh161-primary-b09-20m-v1`. See `batch-09-adjudication/launch.json`.
+Cloud acceptance remains separate in `submission-result.json` after provenance
+preflight. Do not duplicate wrapper, submission or queries. On completion independently review
 both panels (620 first-half roots incl expansion,386 second-half), explicitly close
 expansion coverage and only distinct new alternative obligations. Preserve earlier/
 linked uncertainty, secondary contexts and terminal claim limits. Close Batch 09,

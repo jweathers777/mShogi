@@ -1,11 +1,11 @@
 ---
 id: MSH-161
 title: Competitive Gameplay Diagnosis
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T20:00:00Z'
+updated_date: '2026-11-13T20:05:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -36,20 +36,20 @@ Deliver independently challenged diagnosis, ranked investigations and updated ro
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Freeze reviewed protocol, provenance, fixed opponent/binaries/conditions and study-specific resource authorization.
-- [ ] #2 Complete approximately 200 diverse paired/unaided games with pilot and batch reviews; document sample changes, failures and actual resources.
-- [ ] #3 Analyze every move of both sides with fixed Stockfish; confirm significant events with controlled alternatives and legal histories, preserving bounds, perspective and uncertainty.
-- [ ] #4 Coordinate MSH-160 opening outcomes, prepared-position quality and consistent phase transitions without duplicate study.
-- [ ] #5 Report affected-game/move frequency, severity, phases/families/results, opportunities/recoveries/conversion and conflicting successes.
-- [ ] #6 Independently review ranked behaviors, potential mechanisms and investigations; update roadmap, integrate evidence and stop before engineering.
+- [x] #1 Freeze reviewed protocol, provenance, fixed opponent/binaries/conditions and study-specific resource authorization.
+- [x] #2 Complete approximately 200 diverse paired/unaided games with pilot and batch reviews; document sample changes, failures and actual resources.
+- [x] #3 Analyze every move of both sides with fixed Stockfish; confirm significant events with controlled alternatives and legal histories, preserving bounds, perspective and uncertainty.
+- [x] #4 Coordinate MSH-160 opening outcomes, prepared-position quality and consistent phase transitions without duplicate study.
+- [x] #5 Report affected-game/move frequency, severity, phases/families/results, opportunities/recoveries/conversion and conflicting successes.
+- [x] #6 Independently review ranked behaviors, potential mechanisms and investigations; update roadmap, integrate evidence and stop before engineering.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -237,4 +237,18 @@ Final Batch 10 deep execution and independent gameplay review passed: 1,044 root
 Final 28-query followup launched through notify_exit.py wrapper PID2426, job msh161-primary-b10-followup-v1, reviewed e58bcf5b; cloud acceptance separate. Corrected native statistics implementation passed independent v2 review, actual study results unrun until comparison closure. Offline behavior coding for closed batches and all-played evidence-tier reconciliation preparation proceed while cloud runs; final diagnosis remains pending. See latest cloud-primary/README.md.
 
 Final primary study and all distinct alternatives closed: 200 games, 82 wins / 58 draws / 60 losses; prepared 67/55/58, unaided 15/3/2 kept separate. Complete 24,939 played-root coverage plus 2,880 supplied-context roots; 6,141 selected deep roots and 589 supported candidate comparisons. Independent native statistics, phase, full coverage, aggregate review and Astra High scientific synthesis/challenge passed with additive corrections. Corrected category counts are overlapping and coder-dependent; no precise defect-rate or causal mechanism claim. Final report and updated roadmap stop for John before engineering. Verification level: targeted Level 2 execution/provenance on frozen Linux cloud workers and macOS controller, plus offline analysis correctness/review; no production changes, product platform/GUI checks not applicable and not claimed. Primary totals: 30,889 jobs / 86,581 queries / 164.657894 VM-hours / US$33.196349 estimated compute, not billing. Existing failures, separate cohorts, v1.1 audit and claim limits retained. Final exact integration-document read is pending; no further engine work.
+
+Final exact-file integration review passed with no substantive issues; accepted report/roadmap/synthesis/aggregate hashes are in final-analysis/final-integration-review.json. Evidence and report integrated at 0bffc165 on codex/rewrite. All six acceptance criteria and four completion items are supported by linked evidence. No further computation or engineering is active; owner review is the next action.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed the authorized primary 200-game study and independently challenged diagnosis. Original AutoClaim and unchanged mShogi/Oxidation/image identities were used throughout; all games, full histories, failures and the abandoned transition remain preserved. Native outcomes are 82 wins / 58 draws / 60 losses; prepared 67/55/58 (conditional paired interval 47.22–57.78%), correlated unaided 15/3/2 separate. All 24,939 played roots plus 2,880 context roots reconcile; 86,581 reference queries and all distinct followups are closed.
+
+Final report: docs/m5/competitive-gameplay-diagnosis.md. Corrected tables, source-bound Astra High synthesis/challenge and exact acceptance hashes are under cloud-primary/final-analysis; completion-verification.json links passed checks. Applied 11 additive behavior corrections, retained unknowns/earlier-linked uncertainty and claim limits, superseded a provisional threshold-schema omission without changing source outcomes. Category counts are descriptive, not precise defect rates or mechanism proof. Updated roadmap recommends continuation/exchange/quiet-defense investigation, then ending coordination and integrated early central choices; no implementation is selected.
+
+Primary measured resources: 30,889 jobs / 86,581 queries / 164.657894 VM-hours / US$33.196349 estimated compute, not billing. Mac/pilot/transition and ancillary/model charges remain separate or unverified. Verification: targeted execution/provenance and offline fixture/schema/native/statistical/legal-line/phase/aggregate/scientific review passed; no production or unperformed platform/GUI tests claimed. Integrated on codex/rewrite at 0bffc165; task closeout follows. Independent final exact-file integration review passed. MSH-160 evidence notes updated without a duplicate study; MSH-153 remains held.
+
+STOP for John before engineering, new campaigns or cross-game work. No next task is activated under this authorization.
+<!-- SECTION:FINAL_SUMMARY:END -->

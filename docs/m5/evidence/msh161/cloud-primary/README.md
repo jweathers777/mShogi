@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 07 deep review complete; nine alternatives ready
+## Current state: Batch 07 nine-alternative followup launched
 
 140 games have completed; **120 are fully reviewed (47W/37D/36L)**.
 `primary-cumulative.json` remains at 120 until Batch 07 closure. Native Batch 07
@@ -36,8 +36,11 @@ Exact histories, source PV/discovery, legal moves and absence of duplicate force
 alternatives passed preparation. Plan SHA256:
 `55ccb486051e6f46fade77fc1b3fb2dd27d18a66df96ab8ba4f38bc7dcd1ee3c`.
 Preserve archived pre-followup ledgers and write separate closure overlays. No
-repeated unstable search or recursive PV investigation is requested. Next launch
-this plan once through `notify_exit.py`; on exit review only the new comparisons,
+repeated unstable search or recursive PV investigation is requested. The plan is
+launched through `notify_exit.py`, PID 33923, job `msh161-primary-b07-followup-v1`,
+from reviewed checkpoint `1fb8cb73`. See `batch-07-followup/launch.json`. Cloud
+acceptance is separate in `submission-result.json`; do not duplicate wrapper,
+submission or queries. On exit review only the new comparisons,
 retain uncertainty, close Batch 07, update cumulative categories/resources and
 launch original Batch 08.
 

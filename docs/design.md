@@ -86,6 +86,8 @@ Specify the boundary between the current position, history needed by rules, and 
 
 Saved-state identity, repetition identity, and search-cache identity are separate concepts. A convenient hash is not a complete semantic specification. In particular, a result that depends on history must not be reused solely because a board key matches.
 
+Owner clarification, 2026-11-13: this rule governs the real game, its saved state and its adjudication. An engine's private analysis can key its transposition table on the board state alone and detect repetition and move-count rules on the search path, as classical engines do. Such analysis can be inexact in rare history-dependent cases. It never decides a real game result; the native rules do.
+
 An undo record restores every affected field and incremental cache. Public saved-game records must not depend on the engine's private undo layout.
 
 ### A-04. Ruleset identity and honest coverage

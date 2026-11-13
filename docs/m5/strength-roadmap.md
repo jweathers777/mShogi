@@ -1,4 +1,30 @@
-# Current checkpoint — competitive diagnosis complete; owner review before engineering
+# Current direction — classical search engineering (owner decision, 2026-11-13)
+
+John reviewed MSH-161 (Competitive Gameplay Diagnosis) and its
+[independent review](evidence/msh161/cloud-primary/independent-review-fable/review.md)
+and selected this direction. It replaces the investigation order in the next section,
+which stays as history.
+
+The main limit is search depth (median 8–9 at five seconds), caused by the search
+infrastructure. Work in this order:
+
+1. MSH-163 (Engine Strength Test Harness): speed benchmark, development blunder
+   suite, and game tests of candidate against predecessor.
+2. MSH-164 (Shared Search Core): game-independent core, fast Chess search position,
+   large board-keyed transposition table kept for the full game.
+3. MSH-165 (Tori Search Core Adoption): prove the shared boundary with a second game.
+4. MSH-166 (Search Selectivity Completion).
+5. MSH-167 (Engine Time Management).
+6. MSH-168 (Classical Endgame and King Evaluation).
+
+Accept engine changes on correctness checks, the blunder suite and game tests, not
+on identical search output or single positions. The native rules stay the authority
+for real games. Weight tuning of handwritten terms by regression on labeled positions
+(Texel tuning) is authorized. Neural-network learned evaluation stays later work. MSH-153 (Classical Compensation Calibration) and MSH-160 (Chess Opening
+Quality Assessment) stay held. Shogi, Xiangqi, Chu and Tenjiku move to the shared
+core in later tasks after MSH-165.
+
+# Earlier checkpoint — competitive diagnosis complete (superseded 2026-11-13)
 
 MSH-161 (Competitive Gameplay Diagnosis) completed 200 primary cloud games and all
 required reference analysis. See the [final diagnosis](competitive-gameplay-diagnosis.md),

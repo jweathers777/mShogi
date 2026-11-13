@@ -88,71 +88,17 @@ Owner-requested opponent strength comparisons, such as MSH-49.2 (Stockfish Basel
 measurement tasks; they do not make an external engine a normal product, rules
 conformance or CI dependency.
 
-For engine-strength development, implement researched conventional techniques in
-coherent increments using correctness/tactical tests, bounded profiling and small
-development matches. Routine local engine-match experiments have a **15-minute
-cumulative compute allowance per task** unless John explicitly authorizes more;
-record aggregate active run time including failures and concurrent runs. Do not
-reset the allowance by relabeling experiments or artificially splitting tasks.
-Do not run multi-hour benchmarks, substantial statistical campaigns or formal
-strength studies without explicit owner approval. Those studies belong at a
-substantially complete conventional engine for a game, or a substantially complete
-new evaluation approach integrated into it, not at individual optimizations or
-small groups of changes. Routine algorithm choices remain the implementer's job.
-Follow the owner-selected sequence in `docs/m5/strength-roadmap.md`.
-
-Owner revision, 2026-11-09: ordinary desktop Chess is time-primary. MSH-139
-(Chess Strength Assessment) is explicitly authorized to discover current strength
-against full-strength independently rated engines under comparable thinking time.
-There is no approved strength target, fixed tournament size or campaign-hour
-allocation. Adapt opponents and fresh paired confirmation to observed scores and
-uncertainty; use established statistics and stop when findings are useful for the
-next development decision. Track actual resource use, bound individual processes
-and artifacts, and escalate genuinely substantial additional resource needs.
-This authorization supersedes the unapproved qualification proposal and the
-routine 15-minute match allowance for this assessment only. Report findings and
-STOP for John's review before selecting a target, further engine improvements or
-Shogi/Xiangqi transfer (assessment-specific stopping point, subsequently satisfied). Completed engineering and historical evidence remain valid;
-learned evaluation stays later. Player-configurable time is separate future work.
-
-Owner continuation, 2026-11-09 after MSH-139 (Chess Strength Assessment):
-continue conventional Chess engineering autonomously, beginning with the
-completed-depth1/295113-visit incident in the Goldfish loss. Establish the work
-and root cause before optimization, correct general defects with independent
-regressions, then pursue substantial search/frontier/native-query/TT and classical
-endgame/evaluation improvements in coherent tasks. No position special cases,
-concealed limits, learned evaluation or arbitrary rating target. Routine match
-allowance remains15minutes cumulatively per task; no substantial tournament after
-each increment. Reassessment belongs after meaningful progress, with fresh
-openings/adaptive references and proportionate approved resource scope. Shogi and
-Xiangqi remain deferred until explicit owner approval. Routine engineering choices
-do not require owner checkpoints.
-
-Owner course-correction after MSH-144 (Chess Progress Assessment), 2026-11-09:
-first diagnose broad conventional Chess effectiveness before automatically taking
-MSH-145 (Pawn Threat and Exchange Judgment). Use representative independent tactical,
-positional and endgame positions, preserved full histories, increasing thinking
-time (for example 1/5/15/30 seconds), controlled search comparisons and profiling.
-Distinguish overhead, useful search depth, frontier/selectivity/ordering/TT behavior,
-evaluation quality and their interactions. Prioritize coherent general improvements
-from findings, not ticket order or isolated historical failures. Later adaptive
-strength reassessment follows a substantial coherent round, not each optimization.
-No learned evaluation or Shogi/Xiangqi transfer without owner approval, and no
-conventional-maturity claim from algorithm presence or speed alone.
-
-Owner refinement after MSH-151 (Chess Coherent-Round Assessment), 2026-11-09:
-prioritize systematic decision-quality diagnosis and coherent corrections. Define
-measurable tactical/endgame/continuation outcomes and stopping criteria for bounded
-investigations. Separate evaluation, horizon, selectivity and execution costs using
-comparable conditions; seeing a continuation in a PV does not prove its consequences
-were correctly searched or valued. Do not automatically repeat small adaptive
-rating studies after MSH-152 (Classical Tactical Forecasting) or later increments.
-When meaningful decision improvements justify strength measurement, recommend a
-controlled earlier/current-version comparison with matched openings, conditions
-and opponents where appropriate, and an appropriate sample for the question.
-Substantial tournaments and formal studies require approval before execution;
-routine bounded development experiments retain the existing resource policy.
-No learned evaluation or Shogi/Xiangqi transfer is authorized.
+For engine-strength development, implement established classical techniques
+directly. Accept an engine change on three checks: move-generation correctness
+(perft and differential tests against the native rules), the development blunder
+suite, and a game test of the new version against the frozen predecessor. A
+change does not have to keep identical search output, node counts or PVs.
+Owner decision, 2026-11-13: predecessor-against-current game tests at a fast
+time control have a standing authorization, with a sequential stopping rule and
+recorded actual compute. This replaces the earlier 15-minute match allowance.
+Process bounds, failure records and reproducible execution stay required. A
+rating study against external engines, or a campaign with substantial cost,
+still needs John's approval. Follow `docs/m5/strength-roadmap.md`.
 
 For macOS GUI verification, reuse the fixed normal/QA/synthetic application slots
 and identities documented in `docs/desktop/packaged-gui-verification.md`, using
@@ -195,100 +141,29 @@ independent review, acceptance criteria or required platform evidence.
 - Before completion, establish that the exact tested revision passed its required
   checks. Reuse unchanged source/scope evidence; never infer unperformed checks.
 
-## Current conventional Chess round
+## Current Chess strength direction
 
-Owner authorization, 2026-11-10 after MSH-155 (Chess Time Scaling): establish
-MSH-156 (Independent Chess Benchmark) from verified public sources before
-substantial engine changes, then carry out MSH-157 (Conventional Decision
-Improvement) autonomously as one coherent round. Use a few hundred diverse
-positions, separate grouped development/held-out collections and frozen
-expectations; the prior eight roots are regression-only. Five seconds is primary,
-one second secondary, fifteen seconds focused. Protect heldout positions from
-implementation decisions and promote/replace any exposed family before reuse.
-Coordinate exact native execution improvements with controlled continuation
-coverage/classical-judgment diagnosis. Preserve one rules/history/outcome authority;
-no wholesale rewrite is presumed. MSH-153 (Classical Compensation Calibration)
-remains held unless broader evidence selects valuation work. Compare substantial
-stages to a frozen predecessor and report improvements, regressions and unresolved
-judgments separately. Ordinary local engineering and related task transitions are
-authorized; escalate major architecture, substantial resources and product choices.
-No learned evaluation, Shogi/Xiangqi transfer or substantial tournament is
-authorized. Eventual strength qualification needs separately approved clock-based
-increment games and suitable independent opponents. Stop the round to reconsider
-its diagnosis if useful benefits do not materialize.
+Owner direction, 2026-11-13, after MSH-161 (Competitive Gameplay Diagnosis) and
+its independent review (`docs/m5/evidence/msh161/cloud-primary/independent-review-fable/review.md`):
 
-Round outcome, 2026-11-10: MSH-156 (Independent Chess Benchmark) and MSH-157
-(Conventional Decision Improvement) completed the authorized coherent round.
-Exact native cost repairs were useful, but the broad decision-improvement gate
-failed: 238/240 primary moves and all 80 held-out moves were unchanged. See
-`docs/m5/chess-decision-round.md` and the revised roadmap. Preserve the frozen
-corpus plus its conservative prior-exposure overlay and do not retune against
-revealed held-out material. MSH-153 (Classical Compensation Calibration) remains
-held; no competitive campaign is justified by this round's evidence. Revisit the
-continuation-quality diagnosis before selecting further implementation work.
-
-Owner correction, 2026-11-10: MSH-158 (Chess Decision Corrections) is the current
-assignment. Improve actual conventional Chess decisions, beginning with development
-roots 0UOyM, 0m5mI and 28pJK plus successes. Trace real interior search admission,
-windows, TT, reductions/frontier and returned values; separate child searches are
-not evidence of interior behavior. Test focused general search/evaluation hypotheses
-without requiring perfect causal proof; retain only supported corrections. Do not
-substitute native/history optimization, infrastructure, new benchmark construction
-or another general assessment. Use the existing 160/80 split, five seconds primary,
-selected fifteen seconds and fast regression checks; seal heldout until candidate
-and procedure freeze, then no retuning. Reuse valid predecessor measurements. New
-active engine computation is capped at 2400 seconds, including failures; no matches.
-Stop after reasonable distinct experiments if none supports improvement, with the
-specific unresolved obstacle. MSH-153 remains held unless valuation is implicated.
-Ordinary implementation/review/integration within this assignment is authorized.
-
-Owner direction after MSH-158 (Chess Decision Corrections), 2026-11-10:
-investigate and improve classical evaluation in MSH-159 (Classical Evaluation
-Decisions). Establish meaningful intermediate-position rankings and consequences,
-not Stockfish centipawn calibration. Evaluation-only experiments are authorized;
-do not change search policy to force preferred moves. Reuse the existing160/80
-benchmark, keep held-out sealed until freeze, retain5s primary/1s checks and selected15s
-diagnostics. New active engine computation is capped at2400seconds; no matches,
-new corpus, learned evaluation, cross-game work or unrelated optimization. Use
-independent diagnosis/correction review and integrate supported changes normally.
-Stop after reasonable distinct trials if unsupported; MSH-153 remains held unless
-a relevant general valuation problem is established. Full owner request is retained
-in docs/m5/evidence/msh159/owner-request.txt.
-
-Owner direction, 2026-11-10: MSH-161 (Competitive Gameplay Diagnosis) is the
-current assignment. Study approximately200 complete games first against one fixed
-suitable stronger reference with equal practical thinking time (initial5s/move),
-diverse master-supported paired openings plus separate unaided starts. Analyze
-every move of both players with fixed Stockfish, confirm consequential events,
-review pilot and completed batches, and rank observed competitive weaknesses
-before hypothesizing mechanisms. Integrate MSH-160 opening questions; no competing
-corpus. The full request in docs/m5/evidence/msh161/owner-request.txt authorizes the
-broad study and necessary analysis beyond routine aggregate compute/match caps;
-retain process bounds, failures, reproducibility and actual resource monitoring.
-Use unattended software for games/reference analysis; agents inspect completed
-batches, not individual moves or repeated unchanged polling. No production changes,
-rating tournament, learned/cross-game work or speculative corrections. Stop for
-John's review after independently reviewed diagnosis and updated roadmap.
-Owner execution refinement,2026-11-11: computation wrappers must queue a message
-on exit(success or failure) with `codex queue --thread THREAD_UUID --message TEXT`
-to resume the owning idle chat. Do not use periodic watchers or guessed wake times.
-Use normal execution escalation for Codex local database access; preserve all
-security settings. Record computation status and notification acceptance separately.
-
-Owner cloud-migration direction,2026-11-11: stop further local MSH-161 batches.
-Preserve the active batch02; if the frozen runner cannot pause at a completed-pair
-boundary, allow that existing batch to finish safely. Do NOT launch local batch03,
-repeat searches or resume local execution from an older exit-notification message.
-Prepare an interim competitive assessment from sufficiently analyzed Mac evidence;
-no final engineering priorities or production corrections. The primary200-game
-study should replay ALL frozen opening pairs on standardized cloud workers after
-the coordinator reviews the separate cloud runner's validation. Mac evidence stays
-exploratory and separate, not pooled as one uniform hardware sample. The coordinator
-owns MSH-161/codex/rewrite and scientific interpretation; the cloud-runner agent owns
-its execution implementation on an isolated worktree/branch. Coordinate ONLY through
-repository records, not inter-chat messages. See the migration request and handoff
-under docs/m5/evidence/msh161/migration; preserve frozen live inputs unchanged.
-
+- The main limit is search depth. Build strength with classical engineering:
+  a fast search-internal position, a large board-keyed transposition table kept
+  for the full game, standard selectivity, time management, then evaluation.
+- A direct rewrite of the search is authorized when it addresses the main cause.
+  Do not replace this work with position-by-position diagnosis, isolated
+  edge-case corrections or new assessment campaigns.
+- Build one game-independent search core that the games share. Each game supplies
+  its fast position, move generation, evaluation and special rules. Prove the
+  boundary with Chess first and a second, different game early. Do not add a
+  separate search implementation per game.
+- The native rules stay the single authority for the real game, its history and
+  its result. Private analysis can use board-keyed approximation (design A-03).
+- Tuning the weights of handwritten evaluation terms by regression on labeled
+  positions (Texel tuning) is authorized as classical engineering. "Learned
+  evaluation" means neural networks that learn evaluation features. That work
+  stays a later, separate subject and needs John's approval. It may later serve
+  games such as Chu and Tenjiku Shogi, which have no strong opponents or theory.
+- Earlier directives for completed Chess rounds are in the Git history of this file.
 
 ## Git and routine autonomy
 
@@ -329,6 +204,8 @@ Before yielding, leave enough information in the task for a new session to conti
 - Treat the old implementation as historical evidence and a source of regression ideas, not as the rules oracle.
 - Preserve all six target games in the design. Chess-first sequencing does not authorize a chess-only product.
 - Build the minimum implementation that satisfies the active contract. Do not prebuild a universal variant DSL, plugin ABI, distributed trainer, or speculative abstraction framework.
+- mShogi is not released. Internal APIs have no backward-compatibility duty; change or remove them when that gives a simpler design. Saved-game formats and native rules keep their recorded requirements.
+- Reuse shared mechanisms across games. Do not implement the same feature again in a different way for each game.
 
 <!-- BACKLOG.MD GUIDELINES START -->
 <!-- backlog.md-instructions-version: 1.55.1 -->

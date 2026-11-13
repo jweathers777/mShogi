@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: all 200 games complete; final 28-query followup ready
+## Current state: all 200 games complete; final 28-query followup launched
 
 All 200 planned games have completed under original AutoClaim, unmodified native
 binaries, Oxidation and worker image. **180 are fully reviewed (75W/51D/54L)**;
@@ -22,8 +22,10 @@ discoveries and 19 exact linked replies. All 28 played 20M results are hash-boun
 and reused; none is rerun. `batch-10-followup/plan.json` SHA256:
 `d987bc87a8a1ef0d4b33344b4fbf858f94b7fba74630b237c89e346b0106f8b7`.
 Coordinator and independent plan reviews passed legal/history/PV/source bindings,
-original binaries/options and duplicate prevention. Launch this plan once with
-`notify_exit.py`. On exit reconcile all execution layers, independently review only
+original binaries/options and duplicate prevention. Launched once with `notify_exit.py`, wrapper PID 2426, job
+`msh161-primary-b10-followup-v1`, reviewed revision `e58bcf5b`. Cloud acceptance
+is separate in `submission-result.json`; do not duplicate. On exit reconcile all
+execution layers, independently review only
 new comparisons, and write closure overlays preserving old alternatives, earlier/
 linked uncertainty and secondary tags. Native claims remain authoritative; draws
 alone are not weakness. Preserve admitted v1.1 audit, mixed-budget limits and Bf8 erratum.
@@ -31,7 +33,9 @@ alone are not weakness. Preserve admitted v1.1 audit, mixed-budget limits and Bf
 Final procedure v2 is independently reviewed and admitted in `final-analysis/`.
 Native statistics implementation review corrections cover frozen pair bindings,
 fail-closed optimized mode and independent native/cluster fixtures; actual results
-remain unrun until final cumulative closure. Behavioral coding preparation uses
+remain unrun until final cumulative closure. Corrected native statistics source
+passed independent revision 2 review, with exact hash in its review receipt.
+Behavioral coding preparation uses
 already closed batches, without premature rankings. Final report needs category
 affected-game/move counts, episodes, severity, phases/families/colors/results,
 prepared-pair clustered uncertainty and family sensitivity, separate correlated

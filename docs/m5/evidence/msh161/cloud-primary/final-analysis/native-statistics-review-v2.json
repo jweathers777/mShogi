@@ -1,0 +1,38 @@
+{
+  "status": "passed_independent_source_review_v2",
+  "implementation_sha256": "4a6772f0177cfa16e957628e1d9b774501f3df5d8885705344838d1db3f30bcd",
+  "procedure_sha256": "ed26135879038ca2c63b903d6b95bc003b61fc2498ba6e06dffc14b5896d2da1",
+  "analysis_sha256": "5be616aeb03c11eb6def2fd44773ec9a2c6ae25d4fb8210b9df15afe4e98e088",
+  "resolved_findings": {
+    "N1": "Exact config ID/opening and paired color binding; same artifact identity for both games; cross-pair reuse rejected; exact prepared opening set and phase checked.",
+    "N2": "Explicit early closure failure plus optimized-interpreter rejection protects remaining invariants and self-tests.",
+    "N3": "Native source/history/outcome fixtures plus injected whole-pair draws with independent expected samples; independent review also captured actual bootstrap sample support."
+  },
+  "verification": {
+    "self_test": {
+      "status": "passed",
+      "checks": [
+        "independent linear-quantile fixture",
+        "degenerate paired score",
+        "fixed unequal family weights",
+        "input-order invariance",
+        "native WDL score mapping",
+        "nondegenerate pair bootstrap extremes",
+        "incomplete closure rejected",
+        "native source/opening negative fixtures",
+        "supplied/played and intended-unplayed claim fixture",
+        "paired color/result fixture"
+      ]
+    },
+    "independent_actual_bootstrap_sample_support": [
+      0,
+      0.5,
+      1
+    ],
+    "incomplete_closure_before_downstream_processing": "passed",
+    "optimized_mode": "rejected with return code 1 as required",
+    "actual_study_statistics": "not run"
+  },
+  "findings": [],
+  "limits": "Source and fixture approval only. Synthetic claim tests validate extraction, not rule legality; native engine receipts remain rules/outcome authority. Whole-study numerical results and scientific interpretation still require independent review after comparison closure. No script/procedure mutation, engines or cloud actions."
+}

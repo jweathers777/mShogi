@@ -1,54 +1,47 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: all 200 games complete; final 28-query followup launched
+## Current state: all 200 games and required searches closed; final diagnosis in progress
 
-All 200 planned games have completed under original AutoClaim, unmodified native
-binaries, Oxidation and worker image. **180 are fully reviewed (75W/51D/54L)**;
-`primary-cumulative.json` stays at 180 until final Batch 10 closure. Final batch
-native results are 7 wins / 7 draws / 6 losses. No Batch 11 or production engineering.
+**All 200 primary games are fully reviewed: 82 wins / 58 draws / 60 losses.**
+Prepared openings: 67/55/58; unaided starts: 15/3/2, kept separate. Original AutoClaim,
+unchanged binaries, Oxidation and worker image remain authoritative. No Batch 11,
+new search, local engine execution or production change is planned.
 
-Final deep execution and independent gameplay review passed. Exact 1,044 roots /
-1,576 jobs / 1,598 queries include 22 discoveries. Eight workers ran at peak eight,
-with zero allocation or scientific failures; all deleted and no matching VM/disk
-remains. Wrapper/child are absent, own process group settled, queue separately
-accepted. Submission, completion, plan verification, cleanup and notification are
-bound in `batch-10-adjudication/runtime-integrity-review.json` and original receipts.
-Pre-followup ledgers are immutable. Combined root dispositions: 131 supported finite,
-296 subthreshold, 465 same-choice, 149 unresolved and three claim-limited. These
-selected correlated judgments are not independent causes or population error rates.
+Final Batch 10 deep and 28-alternative followup passed execution, plan-aware
+verification, independent gameplay review, cloud cleanup, wrapper cleanup and queue
+acceptance separately. All 28 exact played results were reused; all distinct query
+obligations are closed. Original ledgers and additive final overlays are preserved.
+Cumulative coverage is 24,939 played decisions plus 2,880 separate supplied context
+moves; 6,141 selected deep roots include 589 supported candidate comparisons.
+Unresolved, secondary, subthreshold, controls and claim limitations remain distinct.
+Native outcomes are authoritative. Claims censor conversion; draws alone are not weakness.
 
-Both panels require **28 new singleton 20M alternatives at 28 roots**: nine distinct
-discoveries and 19 exact linked replies. All 28 played 20M results are hash-bound
-and reused; none is rerun. `batch-10-followup/plan.json` SHA256:
-`d987bc87a8a1ef0d4b33344b4fbf858f94b7fba74630b237c89e346b0106f8b7`.
-Coordinator and independent plan reviews passed legal/history/PV/source bindings,
-original binaries/options and duplicate prevention. Launched once with `notify_exit.py`, wrapper PID 2426, job
-`msh161-primary-b10-followup-v1`, reviewed revision `e58bcf5b`. Cloud acceptance
-is separate in `submission-result.json`; do not duplicate. On exit reconcile all
-execution layers, independently review only
-new comparisons, and write closure overlays preserving old alternatives, earlier/
-linked uncertainty and secondary tags. Native claims remain authoritative; draws
-alone are not weakness. Preserve admitted v1.1 audit, mixed-budget limits and Bf8 erratum.
+Independent native statistics review passed: prepared score 52.5%, conditional
+whole-pair family-stratified 95% interval 47.22–57.78%. This is neither Elo nor a
+population guarantee or proof that the fixed reference is stronger. Phase and
+complete played-root coverage reviews passed. The admitted v1.1 mixed-budget audit,
+original trigger and Bf8 erratum remain intact.
 
-Final procedure v2 is independently reviewed and admitted in `final-analysis/`.
-Native statistics implementation review corrections cover frozen pair bindings,
-fail-closed optimized mode and independent native/cluster fixtures; actual results
-remain unrun until final cumulative closure. Corrected native statistics source
-passed independent revision 2 review, with exact hash in its review receipt.
-Behavioral coding preparation uses
-already closed batches, without premature rankings. Final report needs category
-affected-game/move counts, episodes, severity, phases/families/colors/results,
-prepared-pair clustered uncertainty and family sensitivity, separate correlated
-unaided starts, unresolved/threshold sensitivity and contrary successes. Distinguish
-observed behavior from possible mechanisms and discriminating investigations.
+Two explicitly configured Astra High agents are preparing fresh scientific synthesis
+and independent challenge. Final category aggregation/corrections, sensitivity,
+representative linked episodes, contrary successes, limitations and roadmap remain
+in progress. Coding counts are overlapping descriptive tags with differing reviewer
+granularity; they are not precise category failure rates. Provisional threshold output
+has a documented early-schema omission; use `final-analysis/audit-threshold-normalization.json`.
+Final synthesis/review drafts are not accepted until integration and final challenge.
 
-Measured primary work through final deep stage: **30,861 jobs / 86,553 queries /
-164.321286 VM-hours / US$33.128486 estimated compute**, not billing. Final followup
-is not yet counted as incurred. Prior failures remain preserved; Mac, pilots and
-abandoned transition are separate. Ancillary-inclusive US$35–90 remains conditional.
-After final comparisons, complete independent numerical/coding/method challenge,
-diagnosis and roadmap, then stop for John before engineering. No duplicate work,
-Mac engines, timers or periodic watcher. Exit notification resumes this chat.
+**For another chat or model, start with [independent-review-handoff.md](independent-review-handoff.md).**
+It maps frozen inputs, raw GCS/local evidence, structured datasets, blind-review order
+and essential scientific limitations. No private chat history is required. Git alone
+contains metadata/derived evidence, not the full ignored raw cache.
+
+Measured final primary resources: **30,889 jobs / 86,581 queries / 164.657894 VM-hours /
+US$33.196349 estimated compute**, not a bill. Ancillary/model/Mac/pilot/abandoned
+transition costs remain separate or unverified; historical capacity failures and actual
+concurrency are retained. No cloud workers remain from the completed final stage.
+
+Complete the independently challenged behavior diagnosis and updated roadmap, then
+stop for John before engineering or cross-game work. No timer or periodic watcher.
 
 ## Historical transition records (superseded)
 

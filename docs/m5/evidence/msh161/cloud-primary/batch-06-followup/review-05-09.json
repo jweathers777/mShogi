@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "scope": "Batch 06 pairs 05\u201308 and unaided closure copy only",
+  "new_queries": 0,
+  "new_comparisons": 0,
+  "scientific_change": false,
+  "source": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-06-adjudication/dispositions20m-05-09.json.gz",
+  "source_sha256": "0ba632f28ce223e025ab924c276baa814b05dd554d6b4363b346cafcf6c899d2",
+  "source_uncompressed_sha256": "271b4a975bfd3693effac2a1c489d18c424954341924339269ad3382fa20f1c2",
+  "closure_file": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-06-adjudication/final-dispositions-05-09.json",
+  "closure_sha256": "8b591c389c5636aa488d7e068ec9c7596a6362b8c51559c8b9d19b192b19f407",
+  "rows": 269,
+  "counts": {
+    "supported_subthreshold": 67,
+    "unresolved": 44,
+    "same_choice_control": 121,
+    "supported_finite": 37
+  },
+  "validation": "All 269 decision objects exactly equal the preserved source; identities, counts and scientific fields unchanged.",
+  "authority": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-06-adjudication/review20m-05-09.md"
+}

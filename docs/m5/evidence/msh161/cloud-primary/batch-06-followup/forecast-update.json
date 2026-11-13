@@ -1,0 +1,36 @@
+{
+  "completed_primary_games": 120,
+  "fully_adjudicated_primary_games_at_this_audit": 100,
+  "pending_batch06_scientific_closure": true,
+  "measured_base_batches": 6,
+  "measured20m_panels": 6,
+  "measured_extra_singleton_queries": 46,
+  "new_distinct_discovery_alternatives_pending": [],
+  "measured_reference_queries": 49843,
+  "measured_scientific_jobs": 16703,
+  "failed_scientific_attempts": 0,
+  "measured_primary_vm_hours": 88.43070270306535,
+  "estimated_primary_compute_usd": 17.8283371105596,
+  "actual_billed_cost": null,
+  "full200_mean_workload_compute_usd": 29.713895184265997,
+  "remaining80_mean_workload_compute_usd": 11.885558073706399,
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "full_processing_hours_conditional_scenario": [
+    29,
+    48
+  ],
+  "measured_cloud_submission_to_final_task_hours_sum": 15.825968410836326,
+  "full200_mean_cloud_stage_elapsed_hours": 26.376614018060543,
+  "remaining80_mean_cloud_stage_elapsed_hours": 10.550645607224217,
+  "scope": "Six base batches, six completed 20M panels and forty-six new followup singleton queries: two Batch 02, seven Batch 03, ten Batch 04, eleven Batch 05 and sixteen Batch 06. Sixteen reused Batch 06 played queries remain counted only in the original panel. Mac, pilots and abandoned transition costs remain separate.",
+  "limits": "Measured VM lifetimes priced at recorded rate, not billing. Mean scaling only; panel sizes, discovered alternatives and availability vary. Inclusive scenarios retain ancillary storage/transfer/operations and recovery assumptions. Cloud-stage timing excludes preflight, retrieval, review pauses and final synthesis.",
+  "calendar_estimate": {
+    "as_of_utc": "2026-11-12 19:56:01 UTC",
+    "central_day_paris": "Saturday 2026-11-14",
+    "conditional_window_paris": "Late Friday 2026-11-13 through Sunday 2026-11-15",
+    "basis": "Retain the prior conditional Saturday 14 November Paris central estimate and late-Friday through Sunday window. Remaining cloud-stage work excludes preflight, retrieval, deeper alternatives, independent reviews and final synthesis; availability and scientific obligations can add time."
+  }
+}

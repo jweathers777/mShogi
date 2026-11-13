@@ -1,0 +1,153 @@
+{
+  "status": "closed",
+  "batch": {
+    "batch": "06",
+    "controller_policy": "auto_claim",
+    "uci_search_policy": "original claim-capable optional choices; recorded legacy auto option",
+    "games_completed": 20,
+    "outcomes": {
+      "wins": 6,
+      "draws": 8,
+      "losses": 6
+    },
+    "prepared_outcomes": {
+      "wins": 5,
+      "draws": 7,
+      "losses": 6
+    },
+    "unaided_outcomes": {
+      "draws": 1,
+      "wins": 1
+    },
+    "played_decisions": 2570,
+    "supplied_context_decisions": 288,
+    "initial_queries": 5716,
+    "matched5m_queries": 1965,
+    "initial_panel_jobs20m": 901,
+    "initial_panel_queries20m": 917,
+    "additional_followup_jobs20m": 16,
+    "additional_followup_queries20m": 16,
+    "queries20m": 933,
+    "discovery_roots": 16,
+    "new_distinct_discovery_alternatives": 1,
+    "new_linked_PV_alternatives": 15,
+    "remaining_missing_singletons": 0,
+    "sources": [
+      {
+        "path": "batch-06-adjudication/final-dispositions-00-04.json",
+        "sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b"
+      },
+      {
+        "path": "batch-06-adjudication/final-dispositions-05-09.json",
+        "sha256": "8b591c389c5636aa488d7e068ec9c7596a6362b8c51559c8b9d19b192b19f407"
+      },
+      {
+        "path": "batch-06-review/integrity-review.json",
+        "sha256": "d330083abb8795a0829c0431daf5cc0ff29e9c42b43fa17dabade0d8e7771481"
+      },
+      {
+        "path": "batch-06-review/review-index.json.gz",
+        "sha256": "d12e1c29a1de5b2eac317e358327fbc75d0d73c80e1a15f9f4f9d23a404363a8"
+      },
+      {
+        "path": "batch-06-adjudication/plan.json",
+        "sha256": "3b06a71903cadc5a6d9510da441dde5dc776667eb341d07c25f8f5225459d55e"
+      },
+      {
+        "path": "batch-06-adjudication/review20m-00-04.md",
+        "sha256": "80ef3242e1a937ca4c0ab0346b073c87258b5436f49a0d449acbc3c951750afa"
+      },
+      {
+        "path": "batch-06-adjudication/review20m-05-09.md",
+        "sha256": "9f007e87ff5fba4fb9b587d70736fed7ae1f41e95b5f4cbcbdc54219ce6558b5"
+      },
+      {
+        "path": "batch-06-followup/plan.json",
+        "sha256": "fbd094b4e7116b2a3f27b969e914f01df4687e40aef507d95069151d9e6d9588"
+      },
+      {
+        "path": "batch-06-followup/review-00-04.json",
+        "sha256": "7cce24c7cba62f9c70cc2d7619e8632ce24de564b4c9ae75e8347069b6d8269b"
+      },
+      {
+        "path": "batch-06-followup/review-05-09.json",
+        "sha256": "17bbd2d9bbd36ac2c753b369849261a66934b8b7ad8f1a4acab743958e031321"
+      },
+      {
+        "path": "batch-06-followup/runtime-integrity-review.json",
+        "sha256": "ff9409784fe489437534c1f72d5e912534ae7d4b4a2cf7de85223038a0d2a5e8"
+      },
+      {
+        "path": "batch-06-followup/forecast-update.json",
+        "sha256": "7d8556b299c050f0c4470326dcd9e20a1df63e13569aa441c7ba94a79333fc61"
+      },
+      {
+        "path": "autoclaim-restoration.json",
+        "sha256": "385405fd24ea237f1dd5dcb2ef8b753d1ca2051de5517f1c95b1e8f56474f2e4"
+      }
+    ],
+    "selected20m_decisions": 570,
+    "selected20m_statuses_both_players": {
+      "supported_subthreshold": 133,
+      "same_choice_control": 202,
+      "unresolved": 125,
+      "supported_finite": 105,
+      "claim_policy_limited": 5
+    },
+    "selected20m_candidate_decisions": 411,
+    "candidate_statuses": {
+      "supported_subthreshold": 107,
+      "same_choice_control": 169,
+      "unresolved": 76,
+      "supported_finite": 54,
+      "claim_policy_limited": 5
+    },
+    "candidate_supported_severity": {
+      "major": 40,
+      "serious": 4,
+      "significant": 10
+    },
+    "candidate_supported_games": 17,
+    "candidate_selected_finite_sensitivity_counts": {
+      "0.04": 56,
+      "0.05": 54,
+      "0.06": 50
+    }
+  },
+  "cumulative_outcomes": {
+    "wins": 47,
+    "draws": 37,
+    "losses": 36
+  },
+  "cumulative_selected_counts": {
+    "same_choice_control": 806,
+    "supported_finite": 695,
+    "unresolved": 584,
+    "supported_subthreshold": 474,
+    "claim_policy_limited": 10
+  },
+  "cumulative_candidate_counts": {
+    "same_choice_control": 624,
+    "supported_finite": 343,
+    "unresolved": 334,
+    "supported_subthreshold": 346,
+    "claim_policy_limited": 10
+  },
+  "cumulative_candidate_severity": {
+    "significant": 57,
+    "major": 246,
+    "serious": 40
+  },
+  "cumulative_sha256": "a02d9af630cb376a811154b27cb955694ff25adf8285e611b1e419e979e68fe4",
+  "previous_cumulative_archive": {
+    "path": "batch-06-review/primary-cumulative-through-batch05.json.gz",
+    "sha256": "5df2d5182b1d3bcb4fb3889b782601e796c35793e7596728a7504f93b8b23a1e",
+    "uncompressed_sha256": "987a9606c519fa0ee3ef35c61e6825259df35e1f81bfc0e90b45da9420883f67"
+  },
+  "secondary_tag_coverage": {
+    "batch06_explicit_rows": 34,
+    "batch06_supported_secondary_comparisons": 1,
+    "prior_batches": "Native contextual secondary limitations remain in original ledgers; absent normalized tag does not mean no secondary events."
+  },
+  "qualitative_update": "Source-linked illustrative observations separately added; see closure.md and batch06_category_update."
+}

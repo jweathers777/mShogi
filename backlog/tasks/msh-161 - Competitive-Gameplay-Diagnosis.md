@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T03:43:00Z'
+updated_date: '2026-11-13T03:49:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -183,4 +183,6 @@ Batch 06 required 20M workflow launched via notify_exit.py PID 87065, job msh161
 Batch 06 20M execution and independent deep review passed: 901 jobs / 917 queries / 570 roots. Eight actual workers, eleven panel allocation failures and 22 related cleanup notices preserved separately from base one/two and zero scientific failures; all workers deleted. Primary estimate US$17.782402 / 88.202860 VM-hours. Sixteen new alternatives (one discovery, fifteen bounded linked replies) need singleton 20M, with exact reused played evidence. Root verified native histories, source PVs/discovery, legal moves and no duplicate forced queries. Pre-followup ledgers archived. Second-half panel has no new obligations; retain unchanged. Five first-half terminal controls remain claim-policy-limited. See batch-06-followup/plan.json and coordinator-plan-review.json. Launch one exit-notified workflow, review new results and close Batch 06 before original Batch 07; no repeated unstable queries or final priorities.
 
 Sixteen-query Batch 06 followup launched via notify_exit.py PID 91631, job msh161-primary-b06-followup-v1, reviewed checkpoint a6d8b8cb. Plan SHA256 fbd094b4e7116b2a3f27b969e914f01df4687e40aef507d95069151d9e6d9588. Launch receipt in batch-06-followup; cloud acceptance remains separate. One automatic callback resumes only new-comparison review, closure overlays, cumulative update and original Batch 07. Second-half ledger is already coverage-complete. No timer or duplicate processes.
+
+Batch 06 closed after independent sixteen-alternative review and execution audit. All obligations covered; four new comparisons strengthen existing support, eleven remain unresolved, no new event roots. Exact pre-followup ledgers and separate final overlays preserved. Primary cumulative now 120 fully reviewed games: 47 wins, 37 draws, 36 losses (prepared 38/35/35; unaided 9/2/1). Thirty-two automatic claims and five dead positions remain distinct. Five terminal selected controls retain underlying non-error statuses. See batch-06-review/closure.md and closure-summary.json. Totals: 49,843 queries, 16,703 jobs, 88.430703 VM-hours, US$17.828337 estimated compute. All stages reached eight workers; allocation failures one/eleven/zero retained separately. Original Batch 07 offline provenance passed; proceed with one original-condition exit-notified workflow. Eighty games remain; no final priorities or production engineering.
 <!-- SECTION:NOTES:END -->

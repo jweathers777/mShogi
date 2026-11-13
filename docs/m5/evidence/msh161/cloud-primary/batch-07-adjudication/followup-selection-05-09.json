@@ -1,0 +1,15 @@
+[
+  {
+    "pair": "main-07-08",
+    "game": 1,
+    "ply": 38,
+    "moves": [
+      "e3c5",
+      "c3c5"
+    ],
+    "reason": "Unrestricted 20M discovery selected a distinct alternative. Require its singleton 20M; reuse existing hash-bound played singleton without rerun.",
+    "reuse_played_jobs": [
+      "2f74840beab436c87ee9af0f51069b3889cdcc3c858038e790369b7a81d168b1"
+    ]
+  }
+]

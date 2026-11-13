@@ -1,0 +1,103 @@
+{
+  "status": "passed",
+  "plan_sha256": "55ccb486051e6f46fade77fc1b3fb2dd27d18a66df96ab8ba4f38bc7dcd1ee3c",
+  "new_queries": 9,
+  "reused_played_queries": 9,
+  "no_duplicate_forced_alternatives": true,
+  "checks": [
+    {
+      "pair": "main-07-00",
+      "game": 0,
+      "ply": 71,
+      "played": "g8f7",
+      "alternative": "g8d8",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "2502036dae79e012ab974813f2c1330d53af58212b1bcfa76d87a2a7e919fa0e"
+    },
+    {
+      "pair": "main-07-00",
+      "game": 0,
+      "ply": 71,
+      "played": "g8f7",
+      "alternative": "a7a6",
+      "source": "distinct unrestricted discovery",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "2502036dae79e012ab974813f2c1330d53af58212b1bcfa76d87a2a7e919fa0e"
+    },
+    {
+      "pair": "main-07-00",
+      "game": 0,
+      "ply": 74,
+      "played": "c2e4",
+      "alternative": "f3d2",
+      "source": "distinct unrestricted discovery",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "c568291914e9c3f0af2e2b5b4d8e573e2f17b6c7d1381d6ee9dfadd37df856eb"
+    },
+    {
+      "pair": "main-07-00",
+      "game": 0,
+      "ply": 77,
+      "played": "d6e6",
+      "alternative": "c4c8",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "8496078bc16b927e1e629e5cdcb468e5d9b1aa661c61e1039a05f3af6708e842"
+    },
+    {
+      "pair": "main-07-01",
+      "game": 0,
+      "ply": 37,
+      "played": "d7b5",
+      "alternative": "a5c6",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "244dc6f4a101431e8c7693406555388c1a935b0f70aedd197838e1d6dc5bf123"
+    },
+    {
+      "pair": "main-07-02",
+      "game": 0,
+      "ply": 25,
+      "played": "e8g8",
+      "alternative": "e8f8",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "062c97fdd43079ad075cdaf3362349caa935422374123461a4ae0d6339c67d66"
+    },
+    {
+      "pair": "main-07-03",
+      "game": 1,
+      "ply": 34,
+      "played": "c2b3",
+      "alternative": "h2h3",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "dc72815339524569cab78ecb03cc4f2b4e86c5424e02e07db29726250d19533e"
+    },
+    {
+      "pair": "main-07-03",
+      "game": 1,
+      "ply": 42,
+      "played": "f5d6",
+      "alternative": "b3c2",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "7d64948f857b218e4a528e1010841799db4dc978923063058ab04775a9be3bd2"
+    },
+    {
+      "pair": "main-07-08",
+      "game": 1,
+      "ply": 38,
+      "played": "e3c5",
+      "alternative": "c3c5",
+      "source": "distinct unrestricted discovery",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "2a5800a62861f96b0389e4028dcb3325c045e06e77115b469888367028cfc11c"
+    }
+  ],
+  "unique_native_roots": 8,
+  "reused_played_reference_entries": 9,
+  "unique_reused_played_queries": 8,
+  "note": "Two alternatives at main-07-00/game0/ply71 share one exact played receipt; nine plan entries do not represent nine distinct played searches. Only nine new forced searches are launched."
+}

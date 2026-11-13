@@ -1,0 +1,21 @@
+{
+  "note": "Exact pre-followup ledgers preserved; write separate final overlays after new comparisons.",
+  "files": [
+    {
+      "original": "dispositions20m-00-04.json",
+      "archive": "dispositions20m-00-04.json.gz",
+      "original_sha256": "8ff334965f921ace856eded5d7a13d8e8eff08e82a47e932b21bb91b749f4b3e",
+      "archive_sha256": "1bcd165c8ce2af32e8f6bdec37d8e327f521eb982a2da67444a9dbb16175d049",
+      "original_bytes": 1416999,
+      "archive_bytes": 133150
+    },
+    {
+      "original": "dispositions20m-05-09.json",
+      "archive": "dispositions20m-05-09.json.gz",
+      "original_sha256": "cebb361ad8f2130e6e9c4c23d9e352e94b322969d0d8ba06b96cd1354bea6ba0",
+      "archive_sha256": "b2a73dc53217fad06cb036da760f69ee144a24dd19b3ad2cab0c1fe3aeec6b96",
+      "original_bytes": 7854368,
+      "archive_bytes": 435701
+    }
+  ]
+}

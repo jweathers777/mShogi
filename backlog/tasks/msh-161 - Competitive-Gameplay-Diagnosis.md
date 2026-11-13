@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T17:40:00Z'
+updated_date: '2026-11-13T19:32:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -231,4 +231,8 @@ Final original Batch 10 accepted as msh161-primary-b10-v1 (QUEUED at submission)
 All 200 games are played; 180 remain fully reviewed until final Batch 10 deep closure. Final base review passed: 7 wins, 7 draws, 6 losses; two threefold claims, two fifty-move claims, three dead positions. Coverage 6,414 initial / 2,696 matched 5M queries; seven uncertain audits, no new stable trigger. Eight workers, no allocation/scientific failures, all deleted. Primary estimated compute US$31.127993 / 154.398601 VM-hours. Final deep plan frozen: 1,044 roots / 1,576 jobs / 1,598 queries, 22 discoveries. Exact ledgers/index archived. Final-analysis procedure independently reviewed; deterministic bootstrap ordering/quantiles and full all-played-disposition reconciliation corrected in revision 2, pending exact final admission. Launch one final exit-notified deep workflow, complete only distinct alternatives and full study challenge/diagnosis/roadmap. No Batch 11, final ranking before coverage closure or production engineering.
 
 Final Batch 10 deep workflow launched once through notify_exit.py: wrapper PID 95547, job msh161-primary-b10-20m-v1, reviewed revision 981ec7cf, plan SHA256 877090295b947d97d4f6c9a050ee8ae6aeea3bc1cbf1e037bd98294300374367. Submission acceptance remains a separate receipt. Exact final-analysis procedure v2 passed independent review and is admitted by final-analysis/procedure-admission.json. Native-outcome statistics code and independent fixtures prepared; actual results guarded until cumulative 200-game closure and implementation review. No Batch 11, duplicate work, production changes or timed watcher.
+
+Final Batch 10 deep execution and independent gameplay review passed: 1,044 roots, 1,576 jobs, 1,598 queries, 22 discoveries. Eight workers, no allocation/scientific failures, all deleted; wrapper/child absent and queue acceptance separate. Cumulative estimated compute US$33.128486 / 164.321286 VM-hours. Final followup plan independently admitted: only 28 new alternatives, 28 exact played20M results reused, no repeats. Plan d987bc87a8a1ef0d4b33344b4fbf858f94b7fba74630b237c89e346b0106f8b7. Launch once with exit notification, close final comparisons/cumulative200, then independently challenged statistics/coding/diagnosis/roadmap and stop John. Native statistics review corrections and closed-batch behavioral coding preparation underway; no premature priorities, Batch11 or production changes.
+
+Final 28-query followup launched through notify_exit.py wrapper PID2426, job msh161-primary-b10-followup-v1, reviewed e58bcf5b; cloud acceptance separate. Corrected native statistics implementation passed independent v2 review, actual study results unrun until comparison closure. Offline behavior coding for closed batches and all-played evidence-tier reconciliation preparation proceed while cloud runs; final diagnosis remains pending. See latest cloud-primary/README.md.
 <!-- SECTION:NOTES:END -->

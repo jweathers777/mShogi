@@ -208,7 +208,7 @@ Before yielding, leave enough information in the task for a new session to conti
 - Reuse shared mechanisms across games. Do not implement the same feature again in a different way for each game.
 
 <!-- BACKLOG.MD GUIDELINES START -->
-<!-- backlog.md-instructions-version: 1.55.1 -->
+<!-- backlog.md-instructions-version: 1.55.3 -->
 <CRITICAL_INSTRUCTION>
 
 ## Backlog.md Workflow

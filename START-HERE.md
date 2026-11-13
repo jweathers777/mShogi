@@ -39,10 +39,10 @@ John may instead name a task or authorize a bounded batch. A fresh session shoul
 
 ## Backlog.md baseline
 
-Validated tool version is `1.55.1`. Installation is a development-tool choice, not a product runtime dependency.
+Validated tool version is `1.55.3`. The baseline moved from 1.55.1 on 2026-11-13 so that it agrees with the current Homebrew release (`brew upgrade backlog-md`). Installation is a development-tool choice, not a product runtime dependency.
 
 ```bash
-npm install -g backlog.md@1.55.1
+npm install -g backlog.md@1.55.3
 backlog --version
 backlog instructions overview
 backlog doctor
@@ -52,7 +52,7 @@ backlog milestone list --plain
 backlog browser
 ```
 
-If using a one-shot invocation, the package name is `backlog.md`, for example `npx backlog.md@1.55.1 --version`. Do not use the unrelated `npx backlog` package.
+If using a one-shot invocation, the package name is `backlog.md`, for example `npx backlog.md@1.55.3 --version`. Do not use the unrelated `npx backlog` package.
 
 The copied package is already initialized. Do not repeat fresh-project location flags against it. If its managed integration needs refreshing, the compatible reinitialization command is:
 

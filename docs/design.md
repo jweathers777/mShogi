@@ -745,9 +745,9 @@ Accepted records reflect actual owner direction. Working defaults are implementa
 ## 9. References and provenance
 
 - Original project: https://github.com/jweathers777/mShogi
-- Current Backlog.md baseline used for this package: https://github.com/MrLesk/Backlog.md/tree/v1.55.1
-- Backlog.md CLI reference: https://github.com/MrLesk/Backlog.md/blob/v1.55.1/CLI-INSTRUCTIONS.md
-- Backlog.md configuration: https://github.com/MrLesk/Backlog.md/blob/v1.55.1/ADVANCED-CONFIG.md
+- Current Backlog.md baseline used for this package: https://github.com/MrLesk/Backlog.md/tree/v1.55.3
+- Backlog.md CLI reference: https://github.com/MrLesk/Backlog.md/blob/v1.55.3/CLI-INSTRUCTIONS.md
+- Backlog.md configuration: https://github.com/MrLesk/Backlog.md/blob/v1.55.3/ADVANCED-CONFIG.md
 - Future rule fixtures must add their own precise primary rule references. This design is not a substitute for the rules of any game.
 
 ### Owner acceptance of Tenjiku visuals and shared identification (2026-11-05)

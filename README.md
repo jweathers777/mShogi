@@ -226,10 +226,10 @@ MSH-72 onward.
 
 ## Backlog commands
 
-The starter was generated and validated with Backlog.md 1.55.1. Use that version for this project. If a different global CLI is installed, invoke the pinned version with `npm exec --yes --package backlog.md@1.55.1 -- backlog <command>`; a global upgrade is optional.
+The starter was generated and validated with Backlog.md 1.55.3. Use that version for this project. If a different global CLI is installed, invoke the pinned version with `npm exec --yes --package backlog.md@1.55.3 -- backlog <command>`; a global upgrade is optional.
 
 ```bash
-npm install -g backlog.md@1.55.1
+npm install -g backlog.md@1.55.3
 backlog --version
 backlog instructions overview
 backlog task list --status Ready --ready --plain

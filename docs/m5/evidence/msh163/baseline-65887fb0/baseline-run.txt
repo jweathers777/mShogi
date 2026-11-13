@@ -1,0 +1,54 @@
+bench bench-chess-v1: nodes 5431097 (deterministic), median 18.31 s, median nps 296656 [294262..298949], engine-time nps 296846
+  startpos                             depth  8    0.644 s     259782 nps
+  cpw-kiwipete                         depth  6    0.847 s     246123 nps
+  cpw-position3                        depth  8    1.127 s     513135 nps
+  cpw-position4                        depth  8    0.740 s     266279 nps
+  cpw-position5                        depth  8    0.738 s     254290 nps
+  cpw-position6                        depth  8    1.442 s     206335 nps
+  msh161-root-english-0c66eb           depth  8    1.238 s     214964 nps
+  msh161-root-french-7b0c65            depth  8    0.598 s     204368 nps
+  msh161-root-italian-82a81b           depth  9    1.146 s     190458 nps
+  msh161-root-kings-e16fe8             depth  8    1.414 s     191239 nps
+  msh161-root-queens-e73f85            depth  8    1.027 s     210688 nps
+  msh161-root-sicilian-e8a19a          depth  7    1.296 s     190966 nps
+  msh161-endgame-main-01-00-g1-p97     depth  8    0.992 s     515226 nps
+  msh161-endgame-main-02-08-g1-p69     depth  9    1.233 s     346809 nps
+  msh161-endgame-main-04-05-g0-p48     depth  8    0.752 s     327376 nps
+  msh161-endgame-main-06-00-g1-p51     depth  8    0.853 s     382959 nps
+  msh161-endgame-main-08-07-g0-p110    depth  7    1.165 s     403401 nps
+  msh161-endgame-main-10-05-g1-p97     depth  9    1.021 s     463341 nps
+blunders chess-blunders-msh161 at 1000 ms: avoided 47/146, matched reference 17, median depth 7.0
+  endgame    avoided 17/47, reference 9
+  middlegame avoided 26/83, reference 8
+  opening    avoided 4/16, reference 0
+[23:46:30] pairs 20 failed 0 penta [0, 3, 12, 5, 0] score 0.525 elo +17.4 [-33.6, +69.1] llr 0.22 (-2.94, 2.94)
+[23:48:00] pairs 40 failed 0 penta [0, 5, 27, 8, 0] score 0.519 elo +13.0 [-18.9, +45.2] llr 0.31 (-2.94, 2.94)
+[23:49:40] pairs 60 failed 0 penta [1, 8, 41, 10, 0] score 0.500 elo -0.0 [-27.4, +27.4] llr -0.58 (-2.94, 2.94)
+[23:51:13] pairs 80 failed 0 penta [2, 8, 56, 14, 0] score 0.506 elo +4.3 [-19.4, +28.2] llr -0.32 (-2.94, 2.94)
+[23:52:31] pairs 100 failed 0 penta [2, 11, 71, 15, 1] score 0.505 elo +3.5 [-17.9, +24.8] llr -0.51 (-2.94, 2.94)
+[23:53:51] pairs 120 failed 0 penta [2, 14, 84, 19, 1] score 0.506 elo +4.3 [-14.9, +23.7] llr -0.49 (-2.94, 2.94)
+[23:55:39] pairs 140 failed 0 penta [3, 16, 98, 22, 1] score 0.504 elo +2.5 [-15.6, +20.6] llr -0.88 (-2.94, 2.94)
+[23:57:11] pairs 160 failed 0 penta [3, 16, 112, 27, 2] score 0.514 elo +9.8 [-7.2, +26.8] llr 0.45 (-2.94, 2.94)
+[23:58:42] pairs 180 failed 0 penta [3, 19, 128, 28, 2] score 0.510 elo +6.8 [-8.8, +22.4] llr -0.18 (-2.94, 2.94)
+[00:00:11] pairs 200 failed 0 penta [5, 22, 139, 31, 3] score 0.506 elo +4.3 [-11.5, +20.2] llr -0.73 (-2.94, 2.94)
+[00:01:44] pairs 220 failed 0 penta [5, 25, 152, 35, 3] score 0.507 elo +4.7 [-10.2, +19.7] llr -0.71 (-2.94, 2.94)
+[00:03:11] pairs 240 failed 0 penta [5, 29, 163, 39, 4] score 0.508 elo +5.8 [-8.7, +20.3] llr -0.47 (-2.94, 2.94)
+[00:04:51] pairs 260 failed 0 penta [5, 29, 182, 40, 4] score 0.509 elo +6.0 [-7.5, +19.5] llr -0.47 (-2.94, 2.94)
+[00:06:06] pairs 280 failed 0 penta [5, 29, 201, 41, 4] score 0.509 elo +6.2 [-6.4, +18.8] llr -0.47 (-2.94, 2.94)
+[00:07:34] pairs 300 failed 0 penta [6, 30, 215, 45, 4] score 0.509 elo +6.4 [-5.8, +18.6] llr -0.43 (-2.94, 2.94)
+[00:09:12] pairs 320 failed 0 penta [6, 30, 230, 50, 4] score 0.512 elo +8.7 [-3.0, +20.4] llr 0.50 (-2.94, 2.94)
+[00:10:46] pairs 340 failed 0 penta [6, 32, 245, 52, 5] score 0.513 elo +9.2 [-2.1, +20.6] llr 0.76 (-2.94, 2.94)
+[00:12:19] pairs 360 failed 0 penta [6, 35, 258, 55, 6] score 0.514 elo +9.7 [-1.5, +20.8] llr 1.00 (-2.94, 2.94)
+[00:13:47] pairs 380 failed 0 penta [6, 42, 268, 58, 6] score 0.511 elo +7.3 [-3.6, +18.3] llr -0.09 (-2.94, 2.94)
+[00:15:16] pairs 400 failed 0 penta [7, 45, 282, 60, 6] score 0.508 elo +5.6 [-5.0, +16.4] llr -0.93 (-2.94, 2.94)
+[00:16:48] pairs 420 failed 0 penta [7, 47, 297, 63, 6] score 0.508 elo +5.8 [-4.6, +16.1] llr -0.92 (-2.94, 2.94)
+[00:18:32] pairs 440 failed 0 penta [7, 49, 312, 66, 6] score 0.509 elo +5.9 [-4.1, +16.0] llr -0.90 (-2.94, 2.94)
+[00:19:46] pairs 460 failed 0 penta [7, 51, 328, 67, 7] score 0.509 elo +6.0 [-3.7, +15.8] llr -0.87 (-2.94, 2.94)
+[00:21:21] pairs 480 failed 0 penta [8, 51, 344, 69, 8] score 0.509 elo +6.5 [-3.1, +16.2] llr -0.61 (-2.94, 2.94)
+[00:22:57] pairs 500 failed 0 penta [8, 55, 357, 72, 8] score 0.508 elo +5.9 [-3.5, +15.3] llr -1.03 (-2.94, 2.94)
+[00:24:28] pairs 520 failed 0 penta [8, 57, 370, 77, 8] score 0.510 elo +6.7 [-2.5, +15.9] llr -0.55 (-2.94, 2.94)
+[00:26:10] pairs 540 failed 0 penta [8, 59, 387, 77, 9] score 0.509 elo +6.4 [-2.6, +15.5] llr -0.75 (-2.94, 2.94)
+[00:27:31] pairs 560 failed 0 penta [8, 63, 402, 78, 9] score 0.508 elo +5.3 [-3.5, +14.1] llr -1.65 (-2.94, 2.94)
+[00:29:02] pairs 580 failed 0 penta [9, 63, 418, 80, 10] score 0.508 elo +5.7 [-3.0, +14.4] llr -1.37 (-2.94, 2.94)
+[00:30:39] pairs 600 failed 0 penta [9, 66, 432, 83, 10] score 0.508 elo +5.5 [-3.0, +14.0] llr -1.58 (-2.94, 2.94)
+match self-test-65887fb0: decision max_pairs at 600 pairs, elo +5.5 [-3.0, +14.0]; all completed +277 -258 =665; wall 2754 s, cpu 21305 s

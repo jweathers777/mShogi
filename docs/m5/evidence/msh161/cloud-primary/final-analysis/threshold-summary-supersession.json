@@ -1,0 +1,32 @@
+{
+  "status": "superseded_known_schema_omission",
+  "superseded_output": {
+    "path": "threshold-summary.json",
+    "sha256": "0f16dc0fd3c0a967adb03a4bd3a12e34f554c1e949e22b1f0bd6141a27e82383"
+  },
+  "superseded_implementation": {
+    "path": "threshold_summary.py",
+    "sha256": "77fbfce62a0dfc4a1f4b8121b2270ec84734c0f39a879f9e83059eb8b10e52e6"
+  },
+  "reason": "Early Batch01\u201302 second-half sources use supported20m/stable_eligible schemas. The provisional utility omitted that schema and undercounted baseline candidate support as 524. It is not used in final reporting.",
+  "replacement": {
+    "path": "audit-threshold-normalization.json",
+    "sha256": "b0b72814825056a44527bf6c8bde388ea47d70137fbc0d73c611b64bc47e731f"
+  },
+  "replacement_implementation": {
+    "path": "audit-threshold-normalization.py",
+    "sha256": "2556bc4d2e98e2018311332a013e8a0cf1924c61d436ffdf7aba825cf8d4a978"
+  },
+  "final_baseline_supported": 589,
+  "literal_sensitivity_supported_004_005_006": [
+    614,
+    589,
+    555
+  ],
+  "uniform_1e9_sensitivity_separate": [
+    615,
+    590,
+    556
+  ],
+  "preservation": "Original failed provisional output and source retained; no engine/query replay or scientific outcome change."
+}

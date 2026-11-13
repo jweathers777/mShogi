@@ -1,0 +1,273 @@
+{
+  "task": "MSH-161 (Competitive Gameplay Diagnosis)",
+  "reviewer": "Independent final scientific challenge; requested configuration gpt-6-astra / high. This records the requested configuration, not an independently observable backend identity.",
+  "base_revision": "935c7f26feec3c4ea85fb6be1604bf973547fdd8",
+  "environment": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "python": "3.11.0"
+  },
+  "scope": "Offline final scientific/method challenge of frozen200-game evidence; no engine/cloud/retrieval/production change",
+  "source_hashes": {
+    "procedure.md": "ed26135879038ca2c63b903d6b95bc003b61fc2498ba6e06dffc14b5896d2da1",
+    "native-results-review.json": "9b6222128d765e49f494ac3c00de05fda283e66d2247526c5f3f6b7c3da17b94",
+    "native-statistics.json": "a5d49729ac05c1515561cfd28b67cb6efec9e66e1c8791b7923a65da0d5eb10e",
+    "phase-result-review.json": "ea4a3f88f9ad6719fa21a28eac2aaf0cc65aa0ec6f8185319e97d2f9e0d8a770",
+    "context-tables.json": "6303f1b36c133bbd3f5fd91d1bb937d2d6e9df77d76cb6e95b3aed07cb02f932",
+    "audit-threshold-normalization.py": "2556bc4d2e98e2018311332a013e8a0cf1924c61d436ffdf7aba825cf8d4a978",
+    "audit-threshold-normalization.json": "b0b72814825056a44527bf6c8bde388ea47d70137fbc0d73c611b64bc47e731f",
+    "audit-behavior-evidence.py": "d5854dcaa018b49c42faba6a4749dcc07856edf210f64bd414574dc454c466fa",
+    "audit-behavior-evidence.json": "817a04bc3043a7fe7f79bf152fb6fdc2c622572eb16e5887e291df8ea2ea411c",
+    "audit-behavior-corrections.json": "666330f8e713a59df20b7d46b8489ffd8a9b0ffbc7bb1e67cb3fbf798c711a85",
+    "behavior-coding-challenge.json": "e5b5e53d4e8e1139cafc2142ab04e0b0eb153940adcaf03f60b562f0675f8683",
+    "audit-synthesis-evidence.json": "862b42647fa6f7e5e3fc19360a94626fbef5acfc533256bb760cec2e2a4be30f"
+  },
+  "findings": [
+    {
+      "id": "SC01",
+      "severity": "required",
+      "issue": "Provisional threshold utility omits valid Batch01\u201302 second-half schemas and reports524 candidate supported roots.",
+      "resolution": "Additive audit-threshold-normalization.py/json handles old forced-move queries, stable_eligible, retained range fields and later schemas. Literal .04/.05/.06 counts614/589/555; .05 exactly matches every source baseline label. Original provisional output stays historical.",
+      "status": "resolved_by_additive_audit"
+    },
+    {
+      "id": "SC02",
+      "severity": "required",
+      "issue": "Threshold sensitivity populations differ across packets and floating-point edges are not uniform.",
+      "resolution": "Keep589 source-supported roots. Show literal counts and explicit1e-9 sensitivity615/590/556 separately. Retain57 nonfinite strict sensitivity straddlers plus one historical boundary record (58 union). Add six omitted08\u201310 roots and preserve prior14 omitted05\u201307 roots.",
+      "status": "resolved_by_explicit_sensitivity_overlay"
+    },
+    {
+      "id": "SC03",
+      "severity": "required",
+      "issue": "Fresh review finds Queen-for-rook-and-bishop error at main-01-02/g0/p32.",
+      "resolution": "Correct to queen for rook and knight in additive overlay; numerical support and tags unchanged.",
+      "status": "resolved_by_additive_correction"
+    },
+    {
+      "id": "SC04",
+      "severity": "required",
+      "issue": "Some08\u201310 tags infer development or pawn defects from move identity.",
+      "resolution": "Apply four exact conservative tag corrections in audit-behavior-corrections.json. Accept six previous overlay rows.",
+      "status": "resolved_for_named_cases"
+    },
+    {
+      "id": "SC05",
+      "severity": "interpretation_limit",
+      "issue": "Category scope differs: unknown82/240,3/151,1/198 by packet; several later tags are broad activity descriptions.",
+      "resolution": "Retain unknowns and report corrected counts as overlapping coder-dependent descriptions. Rank broad reviewed behavior themes by concrete recurrence and breadth only. Do not rank precise defect frequencies or mechanisms from category counts. Exhaustive uniform recoding was not done.",
+      "status": "retained_limit"
+    },
+    {
+      "id": "SC06",
+      "severity": "interpretation_limit",
+      "issue": "Local motifs and no-secondary flags can be mistaken for causal episodes or first mistakes.",
+      "resolution": "The source coding packets certify no complete episode census. The synthesis adds one independently verified bounded favorable segment at main-06-02/g0, using p74/p76 stable played E. Three immediate-promotion roots remain one linked motif, not three conversion failures. Missing historical secondary tags remain unknown. Earlier/unselected uncertainty remains.",
+      "status": "retained_limit"
+    },
+    {
+      "id": "SC07",
+      "severity": "interpretation_limit",
+      "issue": "The study began with a provisionally stronger reference; final data do not establish superiority.",
+      "resolution": "Describe Oxidation0.6.0 as the fixed competitive reference. Prepared52.5% with conditional47.22\u201357.78% interval includes parity. Keep unaided82.5% separate and correlated. No rating, population estimate or general stronger-opponent claim.",
+      "status": "retained_limit"
+    },
+    {
+      "id": "SC08",
+      "severity": "interpretation_limit",
+      "issue": "Stockfish differences, legal PVs and broad behavior labels do not identify a production mechanism.",
+      "resolution": "Separate observed choice, possible cause, discriminating investigation and possible general correction. No search/evaluation/rules defect is certified by this evidence alone. Stop for owner review before engineering.",
+      "status": "retained_limit"
+    },
+    {
+      "id": "SC09",
+      "severity": "provenance",
+      "issue": "Historical through-batch10 archive actually contains prior180-game bytes; final forecast was written before final scientific closure.",
+      "resolution": "Preserve original names and hashes, explain actual contents. Final measured primary resources are30889jobs,86581queries,164.657894VM-hours andUS$33.196349estimated compute. Billed total and ancillary charges remain unknown.",
+      "status": "retained_provenance_note"
+    },
+    {
+      "id": "SC10",
+      "severity": "local_prose_correction",
+      "issue": "Packet main-03-02/g1/p31 says Qh5+; exact legal SAN is Qh5 without check.",
+      "resolution": "Synthesis uses the correct legal SAN and retains original packet unchanged.",
+      "status": "resolved_in_synthesis"
+    }
+  ],
+  "threshold_counts": {
+    "candidate": {
+      "0.04": {
+        "same_choice": 1781,
+        "supported": 614,
+        "unresolved": 635,
+        "below": 968,
+        "straddles": 42,
+        "claim_limited": 20
+      },
+      "0.05": {
+        "same_choice": 1781,
+        "supported": 589,
+        "unresolved": 635,
+        "below": 1007,
+        "straddles": 28,
+        "claim_limited": 20
+      },
+      "0.06": {
+        "same_choice": 1781,
+        "below": 1028,
+        "unresolved": 635,
+        "supported": 555,
+        "straddles": 41,
+        "claim_limited": 20
+      }
+    },
+    "both_players": {
+      "0.04": {
+        "same_choice": 2405,
+        "supported": 1258,
+        "unresolved": 1112,
+        "below": 1277,
+        "straddles": 68,
+        "claim_limited": 21
+      },
+      "0.05": {
+        "same_choice": 2405,
+        "supported": 1205,
+        "unresolved": 1112,
+        "below": 1353,
+        "straddles": 45,
+        "claim_limited": 21
+      },
+      "0.06": {
+        "same_choice": 2405,
+        "supported": 1134,
+        "below": 1406,
+        "unresolved": 1112,
+        "straddles": 63,
+        "claim_limited": 21
+      }
+    }
+  },
+  "tolerance_sensitivity_counts": {
+    "candidate": {
+      "0.04": {
+        "same_choice": 1781,
+        "supported": 615,
+        "unresolved": 635,
+        "below": 968,
+        "straddles": 41,
+        "claim_limited": 20
+      },
+      "0.05": {
+        "same_choice": 1781,
+        "supported": 590,
+        "unresolved": 635,
+        "below": 1005,
+        "straddles": 29,
+        "claim_limited": 20
+      },
+      "0.06": {
+        "same_choice": 1781,
+        "below": 1028,
+        "unresolved": 635,
+        "supported": 556,
+        "straddles": 40,
+        "claim_limited": 20
+      }
+    },
+    "both_players": {
+      "0.04": {
+        "same_choice": 2405,
+        "supported": 1270,
+        "unresolved": 1112,
+        "below": 1277,
+        "straddles": 56,
+        "claim_limited": 21
+      },
+      "0.05": {
+        "same_choice": 2405,
+        "supported": 1206,
+        "unresolved": 1112,
+        "below": 1351,
+        "straddles": 46,
+        "claim_limited": 21
+      },
+      "0.06": {
+        "same_choice": 2405,
+        "supported": 1135,
+        "below": 1406,
+        "unresolved": 1112,
+        "straddles": 62,
+        "claim_limited": 21
+      }
+    }
+  },
+  "corrected_descriptive_category_counts": {
+    "advantage preservation/conversion": {
+      "moves": 3,
+      "games": 1
+    },
+    "coordination/activity": {
+      "moves": 252,
+      "games": 117
+    },
+    "endgame decisions": {
+      "moves": 118,
+      "games": 62
+    },
+    "exchanges": {
+      "moves": 100,
+      "games": 80
+    },
+    "king safety": {
+      "moves": 40,
+      "games": 32
+    },
+    "opening/development": {
+      "moves": 71,
+      "games": 52
+    },
+    "opportunity response": {
+      "moves": 37,
+      "games": 23
+    },
+    "pawn structures/breaks": {
+      "moves": 110,
+      "games": 78
+    },
+    "quiet defense": {
+      "moves": 154,
+      "games": 86
+    },
+    "tactical calculation": {
+      "moves": 127,
+      "games": 83
+    },
+    "unknown": {
+      "moves": 86,
+      "games": 50
+    }
+  },
+  "verification": {
+    "supported_root_set": "589/589exact",
+    "query_hash_history_roots": 1216,
+    "legal_lines": 1216,
+    "legal_plies": 39624,
+    "threshold_fixtures": 10,
+    "commands": [
+      "python3 docs/m5/evidence/msh161/cloud-primary/final-analysis/audit-threshold-normalization.py",
+      "PYTHONPATH=/private/tmp/msh155-python python3 docs/m5/evidence/msh161/cloud-primary/final-analysis/audit-behavior-evidence.py"
+    ],
+    "new_engine_queries": 0
+  },
+  "scientific_synthesis_review": {
+    "status": "pass_with_stated_limits",
+    "markdown_sha256": "21194d69f814352ee7c53c462ede65f659d616aed0addb888e25bfd47ac4bae3",
+    "json_sha256": "bc51ab05a9b04ae307a5516250900d0a27958f4b31b3846452bf402a7ecb2bd3",
+    "raw_segment_queries_independently_checked": 12,
+    "bounded_favorable_segment": "main-06-02/g0; qualifying played turns p74 and p76; finite reversal p78",
+    "native_claim_endpoint": "p80 Ra8 played, followed by Black claim with intended b5c7 unplayed",
+    "substantive_blockers": [],
+    "remaining_reporting_work": "Coordinator binds corrected aggregate tables and preserves the owner review stop."
+  },
+  "acceptance_disposition": "PASS for the reviewed substantive synthesis with documented additive corrections and interpretation limits. No substantive scientific blocker remains. Final aggregate binding is coordinator work. No precise category-rate ranking, exhaustive favorable-episode census, causal mechanism or competitive superiority claim is accepted."
+}

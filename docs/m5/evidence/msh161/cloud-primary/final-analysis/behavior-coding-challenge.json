@@ -1,0 +1,2389 @@
+{
+  "scope": "Consistency challenge of Batches 01\u201304 and independent challenge of Batches 05\u201307; source packets unchanged",
+  "source_sha256": {
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/final-analysis/behavior-coding-01-04.json": "da050c2050afe0ad3ed6d5a4786adc06bd72839bb010437adda3430932264aa7",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/final-analysis/behavior-coding-05-07.json": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/primary-cumulative.json": "b3194050f2674dad04fa117dc6887bc2e7c9662d39aec07a202b4d2948117133"
+  },
+  "checks": {
+    "01-04": {
+      "supported_events": 240,
+      "exact_cumulative_keys": true,
+      "legal_lines_replayed": 518,
+      "query_hashes_verified": true,
+      "recomputed_category_counts": {
+        "advantage preservation/conversion": {
+          "moves": 3,
+          "games": 1
+        },
+        "coordination/activity": {
+          "moves": 54,
+          "games": 25
+        },
+        "endgame decisions": {
+          "moves": 41,
+          "games": 20
+        },
+        "exchanges": {
+          "moves": 20,
+          "games": 18
+        },
+        "king safety": {
+          "moves": 18,
+          "games": 13
+        },
+        "opening/development": {
+          "moves": 20,
+          "games": 10
+        },
+        "opportunity response": {
+          "moves": 30,
+          "games": 16
+        },
+        "pawn structures/breaks": {
+          "moves": 19,
+          "games": 16
+        },
+        "quiet defense": {
+          "moves": 65,
+          "games": 35
+        },
+        "tactical calculation": {
+          "moves": 32,
+          "games": 21
+        },
+        "unknown": {
+          "moves": 82,
+          "games": 46
+        }
+      }
+    },
+    "05-07": {
+      "supported_events": 151,
+      "exact_cumulative_keys": true,
+      "legal_lines_replayed": 302,
+      "query_hashes_verified": true,
+      "recomputed_category_counts": {
+        "coordination/activity": {
+          "moves": 81,
+          "games": 42
+        },
+        "endgame decisions": {
+          "moves": 32,
+          "games": 17
+        },
+        "exchanges": {
+          "moves": 32,
+          "games": 28
+        },
+        "king safety": {
+          "moves": 8,
+          "games": 8
+        },
+        "opening/development": {
+          "moves": 27,
+          "games": 22
+        },
+        "opportunity response": {
+          "moves": 5,
+          "games": 5
+        },
+        "pawn structures/breaks": {
+          "moves": 43,
+          "games": 27
+        },
+        "quiet defense": {
+          "moves": 33,
+          "games": 21
+        },
+        "tactical calculation": {
+          "moves": 50,
+          "games": 32
+        },
+        "unknown": {
+          "moves": 3,
+          "games": 3
+        }
+      }
+    }
+  },
+  "findings": [
+    {
+      "id": "C01",
+      "kind": "cross-packet scope",
+      "roots": [],
+      "finding": "Unknown counts are 82/240 in A and 3/151 in B. A leaves many general activity comparisons unknown; B commonly labels a stronger route as coordination and adds tactical/pawn/endgame tags. This is coder threshold variation, not measured behavioral variation.",
+      "required_correction_or_limit": "Do not compare category rates or interpret unknown disparity as a batch effect. Use a common category evidence rule. Retain unknowns unless exact context supports a category; do not fill A to match B."
+    },
+    {
+      "id": "C02",
+      "kind": "sensitivity population",
+      "roots": [
+        "main-05-01/g1/p49",
+        "main-05-03/g0/p42",
+        "main-06-00/g1/p49",
+        "main-06-04/g0/p52",
+        "main-06-04/g1/p17",
+        "main-07-02/g0/p18",
+        "main-07-02/g0/p24",
+        "main-07-02/g1/p25"
+      ],
+      "finding": "A includes stable straddlers at any .04/.05/.06 threshold. B lists seven unresolved .05 cases, omitting at least these eight source-tagged subthreshold .04 straddlers.",
+      "required_correction_or_limit": "Use one separate sensitivity population across packets. Add these eight source-tagged cases to a harmonized sensitivity overlay; retain supported_subthreshold at .05 and do not add them to supported category counts. Reconcile old schema sensitivities from raw retained ranges rather than assuming identical field names."
+    },
+    {
+      "id": "C03",
+      "kind": "category overreach",
+      "roots": [
+        "main-05-00/g0/p24"
+      ],
+      "finding": "The rationale describes Qb3 queen activity. The board and replay show Qd3 permits ...Rd8 and later exchanges, but the text does not isolate a forced tactical loss or necessary tactical resource.",
+      "required_correction_or_limit": "Retain coordination/activity as a moderate descriptive tag. Remove tactical calculation from the conservative tally unless a specific verified threat or exchange dependency is supplied. A legal PV and a large margin alone do not establish the tactical category."
+    },
+    {
+      "id": "C04",
+      "kind": "category overreach",
+      "roots": [
+        "main-05-03/g0/p20"
+      ],
+      "finding": "h3 attacks the bishop on g4 before Nxc5. This is a concrete tempo and exchange-order contrast, not evidence that pawn structure is the issue.",
+      "required_correction_or_limit": "Remove pawn structures/breaks from the conservative tally. Retain tactical calculation only in its descriptive move-order sense: h3 Be6 Nxc5 Bxc4 Qa4. No mechanism claim follows."
+    },
+    {
+      "id": "C05",
+      "kind": "category refinement",
+      "roots": [
+        "main-05-04/g0/p84"
+      ],
+      "finding": "After h6 the tested line allows ...Nxf5 and ...Nxh4+, whereas Ng3 protects f5 and h5 and supports king activity. The old phrase handles the pawn structure does not state this interaction.",
+      "required_correction_or_limit": "Replace pawn structures/breaks with coordination/activity; retain endgame decisions. Use the concrete knight coverage and opposing captures as rationale. The ending phase alone is not the evidence."
+    },
+    {
+      "id": "C06",
+      "kind": "category refinement",
+      "roots": [
+        "main-07-unaided/g0/p14"
+      ],
+      "finding": "The alternative Ng5 moves an already-developed f3 knight. Be3 develops the c1 bishop; the alternative line instead brings both knights toward g5/b5 and c7.",
+      "required_correction_or_limit": "Retain coordination/activity. Remove opening/development from a conservative defect tally unless the category explicitly includes opening move choice without implying inadequate development. Do not infer delayed development from the phase label."
+    },
+    {
+      "id": "C07",
+      "kind": "opponent attribution",
+      "roots": [
+        "main-05-03/g1/p23"
+      ],
+      "finding": "The rationale says after the reference concession, but its supplied selected anchors omit the immediately preceding reference root p22. The native board verifies ...Bh3 as a legal local resource, not that the previous reference move created it.",
+      "required_correction_or_limit": "Remove after the reference concession unless bound earlier/alternative evidence establishes it. Retain the local resource description. Separate opportunity response meaning a missed available resource from a confirmed opponent-created opportunity."
+    },
+    {
+      "id": "C08",
+      "kind": "category refinement",
+      "roots": [
+        "main-07-08/g0/p80"
+      ],
+      "finding": "Rb7+ gains checking activity before the rook reaches d7 and captures d5. The played h4 line also captures d5, but with different timing and pawn placement. A pawn move by itself does not establish a pawn-structure failure.",
+      "required_correction_or_limit": "Retain endgame decisions and the concrete checking/timing description. Remove pawn structures/breaks from the conservative tally unless the h-pawn placement consequence is shown. The tactical tag is a descriptive forcing sequence, not proven search failure."
+    },
+    {
+      "id": "C09",
+      "kind": "episode and primary limits",
+      "roots": [
+        "main-02-00/g1/p81",
+        "main-02-00/g1/p91",
+        "main-02-00/g1/p113"
+      ],
+      "finding": "A tags three immediate-promotion resources as advantage preservation/conversion and explicitly denies a newly certified favorable episode. B uses primary to mean absence of a secondary tag. Neither establishes a primary loss cause or a complete favorable episode.",
+      "required_correction_or_limit": "Keep promotion-choice support and its three-root motif, but do not count three failed conversion episodes or a certified favorable episode. Rename primary counts nonsecondary-tagged. A missing historical secondary tag must remain unknown, not false."
+    },
+    {
+      "id": "C10",
+      "kind": "consistent opportunity semantics",
+      "roots": [],
+      "finding": "A often uses opportunity response for any concrete missed resource; B uses it sparingly and at least once ties it to a reference concession. These are different category scopes.",
+      "required_correction_or_limit": "Use available concrete resource as a behavioral tag only with exact rationale. Add a separate opponent-created boolean with supported/unknown evidence, never infer it from adjacency. Do not aggregate current opportunity counts as a common rate before this distinction."
+    },
+    {
+      "id": "C11",
+      "kind": "review independence",
+      "roots": [],
+      "finding": "The challenger authored A. This is an independent review of B and a self-consistency review of A, not an independent challenge of both packets.",
+      "required_correction_or_limit": "A still needs a fresh reviewer for the final independent challenge. Both packets also need common-rule sampling before category-based priorities. Existing source numerical support is unaffected."
+    }
+  ],
+  "board_samples": [
+    {
+      "root": "main-05-00/g0/p24",
+      "root_fen": "r1b2rk1/pp3pbp/2nN2p1/q3p3/8/2P3P1/P3PPBP/R1BQ1RK1 w - - 4 13",
+      "categories_before": [
+        "coordination/activity",
+        "tactical calculation"
+      ],
+      "rationale_before": "Queen placement misses the active queen route before the central exchanges. The matched alternative starts Qb3 e4 Nxe4 Rb8 a4 Be6. This is a finite comparison, not a forced continuation.",
+      "legal_lines": {
+        "played": [
+          "Qd3",
+          "Rd8",
+          "Bg5",
+          "Rd7",
+          "Bxc6",
+          "bxc6",
+          "Rad1",
+          "Qxa2",
+          "c4",
+          "h6",
+          "Qe4",
+          "hxg5",
+          "Nxc8",
+          "Rc7",
+          "Nd6",
+          "a5",
+          "Nb5",
+          "Rcc8",
+          "Nd6"
+        ],
+        "alternative": [
+          "Qb3",
+          "e4",
+          "Nxe4",
+          "Rb8",
+          "a4",
+          "Be6",
+          "Qa3",
+          "Ne5",
+          "Bf4",
+          "h6",
+          "h4",
+          "Bc4",
+          "Rfd1",
+          "b5",
+          "Qc5",
+          "Rfc8",
+          "Qd6",
+          "Rb6",
+          "Qe7",
+          "Re6",
+          "axb5",
+          "Qxb5"
+        ]
+      },
+      "source": "batch-05-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-05-00",
+        "game": 0,
+        "ply": 24
+      },
+      "final_source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/47591534f21dc502d9abf1a9541569c6928a258e85bc5c3a1709e9d67395b5b1/attempts/f90850f88c2c422b87cb82dd6a0ae11d/artifacts/analysis/g000-p024-alternative-attempt0000.json",
+          "sha256": "6fdf88cd6fe1c13cf2547c0390851550b311d24a9e917984f160b89112a9ae6e"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/8f4a62b288191af0fd50e472d4e278ef1bb4f6d63b26daec23e55a6e77c206c5/attempts/347a35d2604a440fbb1326bae4f52fa8/artifacts/analysis/g000-p024-alternative-attempt0000.json",
+          "sha256": "95982d2d1871f359c71c022f7597e9cecb82c59ee80bfe7e27982c7e35349ed6"
+        }
+      }
+    },
+    {
+      "root": "main-05-03/g0/p20",
+      "root_fen": "r4rk1/ppq1ppbp/2n2np1/2p5/2P3b1/2NN2P1/PP2PPBP/R1BQ1RK1 w - - 6 11",
+      "categories_before": [
+        "pawn structures/breaks",
+        "tactical calculation"
+      ],
+      "rationale_before": "The pawn challenge to the bishop is preferable before the knight capture. The matched alternative starts h3 Be6 Nxc5 Bxc4 Qa4 b5. This is a finite comparison, not a forced continuation.",
+      "legal_lines": {
+        "played": [
+          "Nxc5",
+          "Qc8",
+          "Bg5",
+          "h6",
+          "Bxf6",
+          "Bxf6",
+          "Nd5",
+          "Bg7",
+          "Rc1",
+          "Rd8",
+          "Nd3",
+          "Bh3",
+          "Bxh3",
+          "Qxh3",
+          "b4",
+          "e6",
+          "N5f4",
+          "Qg4",
+          "b5",
+          "Nb4",
+          "Qd2",
+          "Nxd3",
+          "Nxd3",
+          "Rac8",
+          "c5",
+          "e5",
+          "Qc2",
+          "e4",
+          "Nf4",
+          "Qf5",
+          "Qc4",
+          "h5",
+          "c6",
+          "bxc6",
+          "bxc6",
+          "Bh6",
+          "e3",
+          "Bxf4",
+          "exf4",
+          "Rd6",
+          "c7"
+        ],
+        "alternative": [
+          "h3",
+          "Be6",
+          "Nxc5",
+          "Bxc4",
+          "Qa4",
+          "b5",
+          "Nxb5",
+          "Bxb5",
+          "Qxb5",
+          "Nd4",
+          "Qc4",
+          "Rad8",
+          "b4",
+          "Qe5",
+          "Be3",
+          "Nd5",
+          "Bxd4",
+          "Qxd4",
+          "Bxd5",
+          "Rxd5",
+          "Rac1",
+          "Qxc4",
+          "Rxc4",
+          "Rd2",
+          "a4",
+          "Rxe2",
+          "Rd1",
+          "f5",
+          "Rd7",
+          "Kf7",
+          "Nb7",
+          "Ra8",
+          "Rd8",
+          "Rxd8",
+          "Nxd8+",
+          "Ke8",
+          "Nc6",
+          "a6",
+          "Nb8",
+          "Re6",
+          "Kf1"
+        ]
+      },
+      "source": "batch-05-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-05-03",
+        "game": 0,
+        "ply": 20
+      },
+      "final_source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/5a18493ee8e66b33b5c95fe6851f42b4fbe56fccd78acdad20b00a015ae7490e/attempts/dd7d8105123149d1a01929d11a7e0f4c/artifacts/analysis/g000-p020-alternative-attempt0000.json",
+          "sha256": "5cadc20a8af1287e94d9e8f143d0d895d2f0174db24ad96ac443ebe00af416c8"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/5510c607d3b60e137fd49b0dc585041b696e96c38d9a685aa05bd8221614c0dc/attempts/6412a58d903340cfbf1184bac3bcfe39/artifacts/analysis/g000-p020-alternative-attempt0000.json",
+          "sha256": "f06234a0d7b1beff1cf352f56477975c25408b50a7f3b92dabc47e52705f35cb"
+        }
+      }
+    },
+    {
+      "root": "main-05-04/g0/p84",
+      "root_fen": "8/4b3/3nPp2/1pp1kP1P/2p4P/2P2K2/1B2N3/8 w - - 1 43",
+      "categories_before": [
+        "endgame decisions",
+        "pawn structures/breaks"
+      ],
+      "rationale_before": "Knight regrouping handles the pawn structure before the h-pawn advance. The matched alternative starts Ng3 Bf8 Kg4 Bh6 Ba3 Kd5. This is a finite comparison, not a forced continuation.",
+      "legal_lines": {
+        "played": [
+          "h6",
+          "Nxf5",
+          "Bc1",
+          "Nxh4+",
+          "Kg4",
+          "Ng6",
+          "h7",
+          "Nh8",
+          "Nf4",
+          "b4",
+          "Kf3",
+          "b3",
+          "Ng2",
+          "Kxe6",
+          "Ne3",
+          "f5",
+          "Nxc4",
+          "Kd5",
+          "Nd2",
+          "c4",
+          "Kf4",
+          "Bf6",
+          "Bb2",
+          "Nf7",
+          "Kxf5",
+          "Bh8",
+          "Nf1",
+          "Nd6+",
+          "Kf4",
+          "Bf6",
+          "Nd2",
+          "Be5+",
+          "Kf3",
+          "Nf7",
+          "Kg4",
+          "Bh8",
+          "Kf5",
+          "Nh6+",
+          "Kg5",
+          "Nf7+"
+        ],
+        "alternative": [
+          "Ng3",
+          "Bf8",
+          "Kg4",
+          "Bh6",
+          "Ba3",
+          "Kd5",
+          "Kf3",
+          "Ne8",
+          "Ne4",
+          "Ke5",
+          "e7",
+          "Kxf5",
+          "Bxc5",
+          "Ke6",
+          "Nd6",
+          "Nxd6",
+          "Bxd6",
+          "Kf7",
+          "Ke4",
+          "Bd2",
+          "Bb4",
+          "Bc1",
+          "Kd5",
+          "Bh6",
+          "Kc6",
+          "Ke8",
+          "Kxb5",
+          "f5",
+          "Kxc4",
+          "f4",
+          "Kd3",
+          "f3",
+          "Bc5",
+          "Bg7"
+        ]
+      },
+      "source": "batch-05-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-05-04",
+        "game": 0,
+        "ply": 84
+      },
+      "final_source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/4ca79c86b5200b65175a5da579cc5b904674b758ec737fe6fe38b25980287b53/attempts/4869b3c2d7a64332a14d8048a8635697/artifacts/analysis/g000-p084-alternative-attempt0000.json",
+          "sha256": "9a793ffdb8dcf3ad524c7613d1332a5b98d57b5c26f8c79e0bb9d0a1a3037861"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/a52010724ba43cab5f5e4d2edcc6902623a4669f8b0da98d10354687af8aef3d/attempts/872ae7ed1ba647f8844f74a0d3622f70/artifacts/analysis/g000-p084-alternative-attempt0000.json",
+          "sha256": "724d5d6b0d28c82919ab9f8ab8f6e33acc58aed6ed893866fc70b7864b4b2d4c"
+        }
+      }
+    },
+    {
+      "root": "main-07-unaided/g0/p14",
+      "root_fen": "r1bq1r1k/pppp1ppp/2nb1n2/4p3/2B1P3/P1NP1N2/1PP2PPP/R1BQ1RK1 w - - 3 8",
+      "categories_before": [
+        "opening/development",
+        "coordination/activity"
+      ],
+      "rationale_before": "The knight route creates active squares before the bishop development. The matched alternative starts Ng5 Qe8 Nb5 h6 Nf3 Qe7. This is a finite comparison, not a forced continuation.",
+      "legal_lines": {
+        "played": [
+          "Be3",
+          "Ng4",
+          "Bd2",
+          "Be7",
+          "h3",
+          "Nf6",
+          "Ng5",
+          "Kg8",
+          "f4",
+          "d6",
+          "f5",
+          "Nd4",
+          "Ba2",
+          "h6",
+          "Nf3",
+          "Nxf3+",
+          "Qxf3",
+          "c6",
+          "Nd1",
+          "a5",
+          "Nf2",
+          "b5",
+          "Rae1",
+          "b4",
+          "axb4",
+          "axb4",
+          "Bb3",
+          "d5",
+          "Kh1",
+          "Bb7"
+        ],
+        "alternative": [
+          "Ng5",
+          "Qe8",
+          "Nb5",
+          "h6",
+          "Nf3",
+          "Qe7",
+          "Nh4",
+          "Bc5",
+          "Nxc7",
+          "d5",
+          "Nxd5",
+          "Nxd5",
+          "exd5",
+          "Qxh4",
+          "dxc6",
+          "bxc6",
+          "Qf3",
+          "Bd7",
+          "Bd2",
+          "Bd6",
+          "Qg3",
+          "Qd8",
+          "Rae1",
+          "f6",
+          "b4",
+          "Bf5",
+          "f4",
+          "Qc7",
+          "Bb3"
+        ]
+      },
+      "source": "batch-07-adjudication/final-dispositions-05-09.json",
+      "source_row_key": {
+        "pair": "main-07-unaided",
+        "game": 0,
+        "ply": 14
+      },
+      "final_source_sha256": "6ee855a8552f27478816a98eb79af0f01087c66897375031676b2f6f379a8f7c",
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-07/jobs/f083c85966f0df7e40202775bc94cd7fc6c7cdf08addcc272d68ce00861ba632/attempts/c5c471df2ace4e02970d97e3f0842002/artifacts/analysis/g000-p014-alternative-attempt0000.json",
+          "sha256": "935d05466e004f8a7f60185344276b4c5379b8eb87efb0bc7cae526c289518a1"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-07/jobs/a9baab31bb902cdf3e045250adfe593c135fd08217a1f352898c3ed52b2771ad/attempts/90215d6190e142c78904b39b78b19ed6/artifacts/analysis/g000-p014-alternative-attempt0000.json",
+          "sha256": "85f6f7ddf1a73ee0a9477fa5327ea4d0a56d9e6a889ba10ba5526bfe5c5f370d"
+        }
+      }
+    },
+    {
+      "root": "main-05-03/g1/p23",
+      "root_fen": "r1q2rk1/pp2ppbp/2n1bnp1/2N5/2P2B2/2N3P1/PP2PPBP/R2Q1RK1 b - - 0 12",
+      "categories_before": [
+        "tactical calculation",
+        "opportunity response"
+      ],
+      "rationale_before": "The bishop attack on h3 is a concrete missed resource after the reference concession. The matched alternative starts Bh3 Nd3 Rd8 Rc1 Bxg2 Kxg2. This is a finite comparison, not a forced continuation.",
+      "legal_lines": {
+        "played": [
+          "Bxc4",
+          "Qa4",
+          "g5",
+          "Qxc4",
+          "gxf4",
+          "Qxf4",
+          "Qg4",
+          "Qxg4",
+          "Nxg4",
+          "Rab1",
+          "Rfc8",
+          "Rfd1",
+          "Rab8",
+          "Nd7",
+          "Ra8",
+          "h3",
+          "Nge5",
+          "Nxe5",
+          "Bxe5",
+          "Rd7",
+          "Rab8",
+          "Bxc6",
+          "bxc6",
+          "Nd1",
+          "Rd8",
+          "Rxe7",
+          "Bxb2",
+          "Rxa7",
+          "Bd4",
+          "Rxb8",
+          "Rxb8",
+          "Rd7"
+        ],
+        "alternative": [
+          "Bh3",
+          "Nd3",
+          "Rd8",
+          "Rc1",
+          "Bxg2",
+          "Kxg2",
+          "h6",
+          "f3",
+          "e5",
+          "Bd2",
+          "e4",
+          "fxe4",
+          "Qe6",
+          "Nc5",
+          "Qe5",
+          "Nd5",
+          "Nxe4",
+          "Nd3",
+          "Qe6",
+          "Nc7",
+          "Qc8",
+          "Nxa8",
+          "Qxa8",
+          "Rf4",
+          "Nxd2",
+          "Qxd2",
+          "g5",
+          "Rf5",
+          "Ne5",
+          "Rxe5",
+          "Bxe5",
+          "c5"
+        ]
+      },
+      "source": "batch-05-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-05-03",
+        "game": 1,
+        "ply": 23
+      },
+      "final_source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/391446391632a726452c79f6ec83b8db5aabd7c3c4183da02bdc31f438a3340f/attempts/3df3d9ae897f4e6c905138be26ff9b1c/artifacts/analysis/g001-p023-alternative-attempt0000.json",
+          "sha256": "19956a0d9be8f18f2888e6799f55567c0cb5c487210a6a7629596715e7e05a2a"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/c670e69d9983d4b74f6de05ad8b4d1e19f72a838f30bbe5c32e94bf52c8014df/attempts/cc91aacab7404866953f30db32df0b21/artifacts/analysis/g001-p023-alternative-attempt0000.json",
+          "sha256": "5c0faba45f323b07487015c9be0a5f5a07f2e8aa437985141a7194dee650e20d"
+        }
+      }
+    },
+    {
+      "root": "main-07-08/g0/p80",
+      "root_fen": "8/R7/2rp2p1/Pk3p1p/5P2/4PKP1/7P/8 w - - 0 41",
+      "categories_before": [
+        "endgame decisions",
+        "pawn structures/breaks",
+        "tactical calculation"
+      ],
+      "rationale_before": "Rook checks and capture of the central pawn precede the flank pawn push. The matched alternative starts Rb7+ Kxa5 Rg7 d5 Rd7 Kb6. This is a finite comparison, not a forced continuation.",
+      "legal_lines": {
+        "played": [
+          "h4",
+          "d5",
+          "Rb7+",
+          "Kxa5",
+          "Rd7",
+          "Kb4",
+          "Rxd5",
+          "Kc4",
+          "e4",
+          "Ra6",
+          "Re5",
+          "Ra3+",
+          "Kg2",
+          "fxe4",
+          "Rxe4+",
+          "Kd5",
+          "Re5+",
+          "Kd4",
+          "Re6",
+          "Ra2+",
+          "Kh3",
+          "Ra1",
+          "Rxg6",
+          "Ke3",
+          "Rc6",
+          "Kf3",
+          "Rc3+",
+          "Ke4",
+          "f5",
+          "Kxf5",
+          "Rc6",
+          "Ra5",
+          "Rh6",
+          "Ke4",
+          "Rg6",
+          "Rb5",
+          "Rg7",
+          "Ra5",
+          "Rg5",
+          "Re5",
+          "Rxe5+",
+          "Kxe5",
+          "g4",
+          "hxg4+",
+          "Kxg4",
+          "Kf6",
+          "h5",
+          "Kf7",
+          "h6",
+          "Kg8"
+        ],
+        "alternative": [
+          "Rb7+",
+          "Kxa5",
+          "Rg7",
+          "d5",
+          "Rd7",
+          "Kb6",
+          "Rxd5",
+          "Kc7",
+          "h3",
+          "Rc3",
+          "Re5",
+          "Kd7",
+          "g4",
+          "fxg4+",
+          "hxg4",
+          "h4",
+          "Rg5",
+          "Rc6",
+          "Kg2",
+          "Re6",
+          "Kh3",
+          "Rxe3+",
+          "Kxh4",
+          "Rf3",
+          "Rxg6",
+          "Rxf4",
+          "Kg5",
+          "Re4"
+        ]
+      },
+      "source": "batch-07-adjudication/final-dispositions-05-09.json",
+      "source_row_key": {
+        "pair": "main-07-08",
+        "game": 0,
+        "ply": 80
+      },
+      "final_source_sha256": "6ee855a8552f27478816a98eb79af0f01087c66897375031676b2f6f379a8f7c",
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-07/jobs/ba7e09a1a6ef6cb6a261249fb11b7d9d66d9116628dfa6d9153572008841b9cf/attempts/1e1d58b4d69b4ed9921dc2b052f41638/artifacts/analysis/g000-p080-alternative-attempt0000.json",
+          "sha256": "11c7941dab888b4330f6a53a0442ee5fb31fb4c1bec61e0b78bd2abf3d6ad6d6"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-07/jobs/7a41281984b695f6c220dbb2949eb807c7c2d2af4b22b615d99dced559867e64/attempts/5e317fb273784ca9a22fc358e014337c/artifacts/analysis/g000-p080-alternative-attempt0000.json",
+          "sha256": "42827b77014462aee74754187f48797ef759f606995dce43e278d3d0527c3ba3"
+        }
+      }
+    }
+  ],
+  "verdict": "Numerical event identity and legal-line checks pass. Category totals are provisional pending explicit harmonization; do not rank from current cross-packet rates.",
+  "new_queries": 0,
+  "additive_correction_overlay": {
+    "packet": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/final-analysis/behavior-coding-05-07.json",
+    "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+    "rows": [
+      {
+        "pair": "main-05-00",
+        "game": 0,
+        "ply": 24,
+        "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+        "source": "batch-05-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-05-00",
+          "game": 0,
+          "ply": 24
+        },
+        "source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+        "query_sources": {
+          "played": {
+            "path": "local-cache/msh161-primary-v1-batch-05/jobs/47591534f21dc502d9abf1a9541569c6928a258e85bc5c3a1709e9d67395b5b1/attempts/f90850f88c2c422b87cb82dd6a0ae11d/artifacts/analysis/g000-p024-alternative-attempt0000.json",
+            "sha256": "6fdf88cd6fe1c13cf2547c0390851550b311d24a9e917984f160b89112a9ae6e"
+          },
+          "alternative": {
+            "path": "local-cache/msh161-primary-v1-batch-05/jobs/8f4a62b288191af0fd50e472d4e278ef1bb4f6d63b26daec23e55a6e77c206c5/attempts/347a35d2604a440fbb1326bae4f52fa8/artifacts/analysis/g000-p024-alternative-attempt0000.json",
+            "sha256": "95982d2d1871f359c71c022f7597e9cecb82c59ee80bfe7e27982c7e35349ed6"
+          }
+        },
+        "before_categories": [
+          "coordination/activity",
+          "tactical calculation"
+        ],
+        "after_categories": [
+          "coordination/activity"
+        ],
+        "rationale": "Retain coordination/activity as a moderate descriptive tag. Remove tactical calculation from the conservative tally unless a specific verified threat or exchange dependency is supplied. A legal PV and a large margin alone do not establish the tactical category.",
+        "opponent_created_opportunity": "unknown",
+        "confidence": "moderate descriptive comparison; no causal or mechanistic inference",
+        "finding_id": "C03"
+      },
+      {
+        "pair": "main-05-03",
+        "game": 0,
+        "ply": 20,
+        "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+        "source": "batch-05-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-05-03",
+          "game": 0,
+          "ply": 20
+        },
+        "source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+        "query_sources": {
+          "played": {
+            "path": "local-cache/msh161-primary-v1-batch-05/jobs/5a18493ee8e66b33b5c95fe6851f42b4fbe56fccd78acdad20b00a015ae7490e/attempts/dd7d8105123149d1a01929d11a7e0f4c/artifacts/analysis/g000-p020-alternative-attempt0000.json",
+            "sha256": "5cadc20a8af1287e94d9e8f143d0d895d2f0174db24ad96ac443ebe00af416c8"
+          },
+          "alternative": {
+            "path": "local-cache/msh161-primary-v1-batch-05/jobs/5510c607d3b60e137fd49b0dc585041b696e96c38d9a685aa05bd8221614c0dc/attempts/6412a58d903340cfbf1184bac3bcfe39/artifacts/analysis/g000-p020-alternative-attempt0000.json",
+            "sha256": "f06234a0d7b1beff1cf352f56477975c25408b50a7f3b92dabc47e52705f35cb"
+          }
+        },
+        "before_categories": [
+          "pawn structures/breaks",
+          "tactical calculation"
+        ],
+        "after_categories": [
+          "tactical calculation"
+        ],
+        "rationale": "Remove pawn structures/breaks from the conservative tally. Retain tactical calculation only in its descriptive move-order sense: h3 Be6 Nxc5 Bxc4 Qa4. No mechanism claim follows.",
+        "opponent_created_opportunity": "unknown",
+        "confidence": "moderate descriptive comparison; no causal or mechanistic inference",
+        "finding_id": "C04"
+      },
+      {
+        "pair": "main-05-04",
+        "game": 0,
+        "ply": 84,
+        "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+        "source": "batch-05-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-05-04",
+          "game": 0,
+          "ply": 84
+        },
+        "source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+        "query_sources": {
+          "played": {
+            "path": "local-cache/msh161-primary-v1-batch-05/jobs/4ca79c86b5200b65175a5da579cc5b904674b758ec737fe6fe38b25980287b53/attempts/4869b3c2d7a64332a14d8048a8635697/artifacts/analysis/g000-p084-alternative-attempt0000.json",
+            "sha256": "9a793ffdb8dcf3ad524c7613d1332a5b98d57b5c26f8c79e0bb9d0a1a3037861"
+          },
+          "alternative": {
+            "path": "local-cache/msh161-primary-v1-batch-05/jobs/a52010724ba43cab5f5e4d2edcc6902623a4669f8b0da98d10354687af8aef3d/attempts/872ae7ed1ba647f8844f74a0d3622f70/artifacts/analysis/g000-p084-alternative-attempt0000.json",
+            "sha256": "724d5d6b0d28c82919ab9f8ab8f6e33acc58aed6ed893866fc70b7864b4b2d4c"
+          }
+        },
+        "before_categories": [
+          "endgame decisions",
+          "pawn structures/breaks"
+        ],
+        "after_categories": [
+          "endgame decisions",
+          "coordination/activity"
+        ],
+        "rationale": "Replace pawn structures/breaks with coordination/activity; retain endgame decisions. Use the concrete knight coverage and opposing captures as rationale. The ending phase alone is not the evidence.",
+        "opponent_created_opportunity": "unknown",
+        "confidence": "moderate descriptive comparison; no causal or mechanistic inference",
+        "finding_id": "C05"
+      },
+      {
+        "pair": "main-07-unaided",
+        "game": 0,
+        "ply": 14,
+        "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+        "source": "batch-07-adjudication/final-dispositions-05-09.json",
+        "source_row_key": {
+          "pair": "main-07-unaided",
+          "game": 0,
+          "ply": 14
+        },
+        "source_sha256": "6ee855a8552f27478816a98eb79af0f01087c66897375031676b2f6f379a8f7c",
+        "query_sources": {
+          "played": {
+            "path": "local-cache/msh161-primary-v1-batch-07/jobs/f083c85966f0df7e40202775bc94cd7fc6c7cdf08addcc272d68ce00861ba632/attempts/c5c471df2ace4e02970d97e3f0842002/artifacts/analysis/g000-p014-alternative-attempt0000.json",
+            "sha256": "935d05466e004f8a7f60185344276b4c5379b8eb87efb0bc7cae526c289518a1"
+          },
+          "alternative": {
+            "path": "local-cache/msh161-primary-v1-batch-07/jobs/a9baab31bb902cdf3e045250adfe593c135fd08217a1f352898c3ed52b2771ad/attempts/90215d6190e142c78904b39b78b19ed6/artifacts/analysis/g000-p014-alternative-attempt0000.json",
+            "sha256": "85f6f7ddf1a73ee0a9477fa5327ea4d0a56d9e6a889ba10ba5526bfe5c5f370d"
+          }
+        },
+        "before_categories": [
+          "opening/development",
+          "coordination/activity"
+        ],
+        "after_categories": [
+          "coordination/activity"
+        ],
+        "rationale": "Retain coordination/activity. Remove opening/development from a conservative defect tally unless the category explicitly includes opening move choice without implying inadequate development. Do not infer delayed development from the phase label.",
+        "opponent_created_opportunity": "unknown",
+        "confidence": "moderate descriptive comparison; no causal or mechanistic inference",
+        "finding_id": "C06"
+      },
+      {
+        "pair": "main-05-03",
+        "game": 1,
+        "ply": 23,
+        "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+        "source": "batch-05-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-05-03",
+          "game": 1,
+          "ply": 23
+        },
+        "source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+        "query_sources": {
+          "played": {
+            "path": "local-cache/msh161-primary-v1-batch-05/jobs/391446391632a726452c79f6ec83b8db5aabd7c3c4183da02bdc31f438a3340f/attempts/3df3d9ae897f4e6c905138be26ff9b1c/artifacts/analysis/g001-p023-alternative-attempt0000.json",
+            "sha256": "19956a0d9be8f18f2888e6799f55567c0cb5c487210a6a7629596715e7e05a2a"
+          },
+          "alternative": {
+            "path": "local-cache/msh161-primary-v1-batch-05/jobs/c670e69d9983d4b74f6de05ad8b4d1e19f72a838f30bbe5c32e94bf52c8014df/attempts/cc91aacab7404866953f30db32df0b21/artifacts/analysis/g001-p023-alternative-attempt0000.json",
+            "sha256": "5c0faba45f323b07487015c9be0a5f5a07f2e8aa437985141a7194dee650e20d"
+          }
+        },
+        "before_categories": [
+          "tactical calculation",
+          "opportunity response"
+        ],
+        "after_categories": [
+          "tactical calculation",
+          "opportunity response"
+        ],
+        "rationale": "Remove after the reference concession unless bound earlier/alternative evidence establishes it. Retain the local resource description. Separate opportunity response meaning a missed available resource from a confirmed opponent-created opportunity.",
+        "opponent_created_opportunity": "unknown",
+        "confidence": "moderate descriptive comparison; no causal or mechanistic inference",
+        "finding_id": "C07"
+      },
+      {
+        "pair": "main-07-08",
+        "game": 0,
+        "ply": 80,
+        "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+        "source": "batch-07-adjudication/final-dispositions-05-09.json",
+        "source_row_key": {
+          "pair": "main-07-08",
+          "game": 0,
+          "ply": 80
+        },
+        "source_sha256": "6ee855a8552f27478816a98eb79af0f01087c66897375031676b2f6f379a8f7c",
+        "query_sources": {
+          "played": {
+            "path": "local-cache/msh161-primary-v1-batch-07/jobs/ba7e09a1a6ef6cb6a261249fb11b7d9d66d9116628dfa6d9153572008841b9cf/attempts/1e1d58b4d69b4ed9921dc2b052f41638/artifacts/analysis/g000-p080-alternative-attempt0000.json",
+            "sha256": "11c7941dab888b4330f6a53a0442ee5fb31fb4c1bec61e0b78bd2abf3d6ad6d6"
+          },
+          "alternative": {
+            "path": "local-cache/msh161-primary-v1-batch-07/jobs/7a41281984b695f6c220dbb2949eb807c7c2d2af4b22b615d99dced559867e64/attempts/5e317fb273784ca9a22fc358e014337c/artifacts/analysis/g000-p080-alternative-attempt0000.json",
+            "sha256": "42827b77014462aee74754187f48797ef759f606995dce43e278d3d0527c3ba3"
+          }
+        },
+        "before_categories": [
+          "endgame decisions",
+          "pawn structures/breaks",
+          "tactical calculation"
+        ],
+        "after_categories": [
+          "endgame decisions",
+          "tactical calculation"
+        ],
+        "rationale": "Retain endgame decisions and the concrete checking/timing description. Remove pawn structures/breaks from the conservative tally unless the h-pawn placement consequence is shown. The tactical tag is a descriptive forcing sequence, not proven search failure.",
+        "opponent_created_opportunity": "unknown",
+        "confidence": "moderate descriptive comparison; no causal or mechanistic inference",
+        "finding_id": "C08"
+      }
+    ],
+    "after_category_counts_for_six_corrections_only": {
+      "coordination/activity": {
+        "moves": 82,
+        "games": 42
+      },
+      "endgame decisions": {
+        "moves": 32,
+        "games": 17
+      },
+      "exchanges": {
+        "moves": 32,
+        "games": 28
+      },
+      "king safety": {
+        "moves": 8,
+        "games": 8
+      },
+      "opening/development": {
+        "moves": 26,
+        "games": 21
+      },
+      "opportunity response": {
+        "moves": 5,
+        "games": 5
+      },
+      "pawn structures/breaks": {
+        "moves": 40,
+        "games": 26
+      },
+      "quiet defense": {
+        "moves": 33,
+        "games": 21
+      },
+      "tactical calculation": {
+        "moves": 49,
+        "games": 32
+      },
+      "unknown": {
+        "moves": 3,
+        "games": 3
+      }
+    },
+    "scope_limit": "These six exact corrections do not certify all remaining category assignments under a common rule."
+  },
+  "missing_stable_sensitivity_rows": [
+    {
+      "pair": "main-05-01",
+      "game": 1,
+      "ply": 49,
+      "status": "supported_subthreshold",
+      "played": "d1e1",
+      "alternative": "d1d3",
+      "range": [
+        0.024499999999999966,
+        0.04749999999999999
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-05-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-05-01",
+        "game": 1,
+        "ply": 49
+      },
+      "source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/5757f107c7d7dc557447fa3a89bfeba51cc011ea815bffb3a53629fc7282f1e1/attempts/697675bf331d47fc955293333154c5e2/artifacts/analysis/g001-p049-alternative-attempt0000.json",
+          "sha256": "159b4fabe97d6145f811d1700bad7963650ef986d5e3156ce6775cd2c19c8209"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/31dbf158825ba3200d1a878884cbff4ff126812e286618265edde3aa2e28a7d6/attempts/35b2aba75dc34eb5bd503aaac4c43e2a/artifacts/analysis/g001-p049-alternative-attempt0000.json",
+          "sha256": "62276b16411255a82a2fb2823cd247e7dce647434bb283c22e6d379529413cb9"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-05-03",
+      "game": 0,
+      "ply": 42,
+      "status": "supported_subthreshold",
+      "played": "f1e1",
+      "alternative": "c3a4",
+      "range": [
+        0.03949999999999998,
+        0.045999999999999985
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-05-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-05-03",
+        "game": 0,
+        "ply": 42
+      },
+      "source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/6494e9bf8dc2ed58f6f31ee28ac7bfbb23cc380cdf7ac989b82e366f027d6a0c/attempts/4345084b733144a08a0df4cb4e67c43d/artifacts/analysis/g000-p042-alternative-attempt0000.json",
+          "sha256": "68e0d88da3a95708eda00f9764cc57bac0dafa8501227b0f58ad989ed011b999"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/9ad4a7224323026408ee39bfc7dafbac697de067f1acc5c0cdcae757d9cff131/attempts/308f7667ba944b29b31307ae5b9d270a/artifacts/analysis/g000-p042-alternative-attempt0000.json",
+          "sha256": "8b9193b1d8dd37f7202a8a6ad629f83d9aab004098d59ec5f6bd48edd001c96c"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-05-unaided",
+      "game": 1,
+      "ply": 7,
+      "status": "supported_subthreshold",
+      "played": "d7d6",
+      "alternative": "d7d5",
+      "range": [
+        0.033999999999999975,
+        0.044499999999999984
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-05-adjudication/final-dispositions-05-09.json",
+      "source_row_key": {
+        "pair": "main-05-unaided",
+        "game": 1,
+        "ply": 7
+      },
+      "source_sha256": "9c23f3464811909228afee05f1736cd5c544fde2aabab9a62de71095d38fdeb6",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/3bc0f57ba1393a787e48e87ceda65624aef3135cfccc2e760a147afacdd34992/attempts/98b7f5f411f04e3a92e7d1a83b6ec6de/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+          "sha256": "71ab6bb77fffd5032fbc6c662c2c539d9d7f2c162763a0c1d9b20e706969c7d5"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/16f3eadff90b33d372f14cdb2644d7096d274e6f8ff2c20fde7bb319ad9715b0/attempts/23966dfe2efb4340800923f0cdac8093/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+          "sha256": "31e8fbcf26f40e481b4539b97e24600f5d40f28f2cc9bce9532483b8c5388fbe"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-06-00",
+      "game": 1,
+      "ply": 49,
+      "status": "supported_subthreshold",
+      "played": "f5d4",
+      "alternative": "f5h6",
+      "range": [
+        0.03149999999999997,
+        0.044499999999999984
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-06-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-06-00",
+        "game": 1,
+        "ply": 49
+      },
+      "source_sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/6263873d69a9115dfbdf2ccce1fbaa56430bbbd803fe65632b2b9d8bb6ffebb8/attempts/e691910323fa4e25a4a44411f27848f2/artifacts/analysis/g001-p049-alternative-attempt0000.json",
+          "sha256": "d0c4fb4c1190600f04687a7e2310b7f3678c52783dd8abbed18be8b63d9982d1"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/2e6e8b8c5ffd3697b8bf2deda6d0f9cbd2c2ec5c1a32ea703c04bcdb59dfe96e/attempts/9da20908de364db28ba174605908d4ec/artifacts/analysis/g001-p049-alternative-attempt0000.json",
+          "sha256": "368a5ebdcda70d03c9e82a9b642212c9456c4e5ab8f0f62a46b6ee0961fe3549"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-06-04",
+      "game": 0,
+      "ply": 52,
+      "status": "supported_subthreshold",
+      "played": "e4f3",
+      "alternative": "e4f4",
+      "range": [
+        0.0355,
+        0.042
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-06-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-06-04",
+        "game": 0,
+        "ply": 52
+      },
+      "source_sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/3f241c395c46837eca4bb58aa51bbdae87a562c87ec9c92e4f64410adb809f24/attempts/dad5ccd2e9374de69504abbc2e6b318a/artifacts/analysis/g000-p052-alternative-attempt0000.json",
+          "sha256": "dbe38c8dd8021a6c6ea378798792fad754f5b1119398c3b7dd857c1d9e62e522"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/26b376a6caee4d8ebbf3c82010c34bda1a01a8e34024e152acefabb9b86ca38d/attempts/2cdb77f56b434229b4ab63f47f38546b/artifacts/analysis/g000-p052-alternative-attempt0000.json",
+          "sha256": "29606da48fa75e8c3710d14a9ae175634d57be516d82d956c24edb6ef916a8d5"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-06-04",
+      "game": 1,
+      "ply": 17,
+      "status": "supported_subthreshold",
+      "played": "f7f6",
+      "alternative": "e8g8",
+      "range": [
+        0.033499999999999974,
+        0.04149999999999998
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-06-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-06-04",
+        "game": 1,
+        "ply": 17
+      },
+      "source_sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/da00d5ebe83a48b543b7762fd7e1d53940a89480d6cc6994ddae88f742243eb4/attempts/08721c64b9904d94bd4b4657bbf42de1/artifacts/analysis/g001-p017-alternative-attempt0000.json",
+          "sha256": "959ffbebda98e5d729f9394d6cda9e564dbfb54ac3978661881bc48b55da574d"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/374a625c4e98167d197168f4052e8563c5ef59b8b738c0f6d01e63b7f8c6c360/attempts/2cf4cfc0386040cbad259b710f61c111/artifacts/analysis/g001-p017-alternative-attempt0000.json",
+          "sha256": "e77032c18185a01bc58163e1c9843f1e7a8514b94fda2d5b284063753ec05d94"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-06-05",
+      "game": 1,
+      "ply": 33,
+      "status": "supported_subthreshold",
+      "played": "d8d6",
+      "alternative": "c7e5",
+      "range": [
+        0.044499999999999984,
+        0.0595
+      ],
+      "threshold_sensitivity": {
+        "0.04": "supported",
+        "0.05": "straddles",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-06-adjudication/final-dispositions-05-09.json",
+      "source_row_key": {
+        "pair": "main-06-05",
+        "game": 1,
+        "ply": 33
+      },
+      "source_sha256": "8b591c389c5636aa488d7e068ec9c7596a6362b8c51559c8b9d19b192b19f407",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/5dc0dc80f6d20d679108d06349ba11aee8c8fed964335494e5d1417ca9066d6b/attempts/1547657eb2c7475886403e1c5ec80560/artifacts/analysis/g001-p033-alternative-attempt0000.json",
+          "sha256": "326219029f0e948173dbb5c69d5e2ee59dd4eb52024ece6263a10f025573d2b5"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/511750ae1006876eff6301870b1b6d50e0913f6ee91ff7a3638e40c30a937129/attempts/572ce484c6a547e495aa7b1335a5f610/artifacts/analysis/g001-p033-alternative-attempt0000.json",
+          "sha256": "aa50006c7f8e13b248a98d8e04209f3b165959b22fb7d19e6fede59392d72abf"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-06-06",
+      "game": 1,
+      "ply": 29,
+      "status": "supported_subthreshold",
+      "played": "a7a5",
+      "alternative": "c6d4",
+      "range": [
+        0.04150000000000004,
+        0.063
+      ],
+      "threshold_sensitivity": {
+        "0.04": "supported",
+        "0.05": "straddles",
+        "0.06": "straddles"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-06-adjudication/final-dispositions-05-09.json",
+      "source_row_key": {
+        "pair": "main-06-06",
+        "game": 1,
+        "ply": 29
+      },
+      "source_sha256": "8b591c389c5636aa488d7e068ec9c7596a6362b8c51559c8b9d19b192b19f407",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/af980598b1e7e2edc24ff4f7b884f63a890e2b94ab0e729132d036cdc5b278df/attempts/23304536661742078e97c9d266ffd0f9/artifacts/analysis/g001-p029-alternative-attempt0000.json",
+          "sha256": "77f643b096844d9f6f6b34d67a7abf219a9c8aa41ea4e4a1fc6b62b63ebf4bdf"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/15bd13907c7e33c652428e967069cea6d67c42a5006df6eaff4d231e863cff27/attempts/9da37eba7771494ebce48b0b210ff2b5/artifacts/analysis/g001-p029-alternative-attempt0000.json",
+          "sha256": "2e32f9049ccda50d770b918a3e3c54586e79f135877c567bf7e63c1770a32b9b"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-06-unaided",
+      "game": 1,
+      "ply": 7,
+      "status": "supported_subthreshold",
+      "played": "d7d6",
+      "alternative": "d7d5",
+      "range": [
+        0.033999999999999975,
+        0.044499999999999984
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-06-adjudication/final-dispositions-05-09.json",
+      "source_row_key": {
+        "pair": "main-06-unaided",
+        "game": 1,
+        "ply": 7
+      },
+      "source_sha256": "8b591c389c5636aa488d7e068ec9c7596a6362b8c51559c8b9d19b192b19f407",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/a681f68099338794317a1cc19fb19764fc3ac6fb74bd97e74633f29665479af4/attempts/844ab5282a5948fd9f249de3c11dc0a0/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+          "sha256": "101b61885f82295b9d3d26867cf7d0504b64e0ca4d1d2d2f9028140b6680fbb7"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/3e94e7d15d99f3c179a33647b2c919e64174b5c89f738a027a369e069ad1769f/attempts/776ed47ed4e44ad5bd291d9886461116/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+          "sha256": "f1e76f3eeb6bfc6a34e1a402bc50f836f481c6b8b94c1e6c7c6924a3afcdd2c1"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-07-02",
+      "game": 0,
+      "ply": 18,
+      "status": "supported_subthreshold",
+      "played": "g5h4",
+      "alternative": "g5f4",
+      "range": [
+        0.024499999999999966,
+        0.04349999999999998
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-07-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-07-02",
+        "game": 0,
+        "ply": 18
+      },
+      "source_sha256": "a1e172b99f4c1b6dfa4f476b8e3ef518eac2ff426a3359e2b9515c8e514caa58",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/9689e93864f59f5ca1fab3f3c2925ea7170bff4e7f2842235266e1a83fcc0e8e/attempts/ed18226fa5d241c1bbfb87218eb2894f/artifacts/analysis/g000-p018-alternative-attempt0000.json",
+          "sha256": "cc6302c3ab748301513f6a117c2ac087448c073a0cfc2ee680948000df6bb863"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/ae6a253d0587648e5da7002c64c34fa6671ede41e60a2a6768b529ffc77d7394/attempts/3131c3eb6c724a9fa4c4a7683eedbe20/artifacts/analysis/g000-p018-alternative-attempt0000.json",
+          "sha256": "c82163c61e1d1b159309fe19e552276538ee01df604fa94998badac432a989db"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-07-02",
+      "game": 0,
+      "ply": 24,
+      "status": "supported_subthreshold",
+      "played": "f3f4",
+      "alternative": "e2c3",
+      "range": [
+        0.02799999999999997,
+        0.04199999999999998
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-07-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-07-02",
+        "game": 0,
+        "ply": 24
+      },
+      "source_sha256": "a1e172b99f4c1b6dfa4f476b8e3ef518eac2ff426a3359e2b9515c8e514caa58",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/b313751cb3c6e8e53e6616615a69e0a18bd1451da790cec27732792333bc931c/attempts/2c521fff50214502b901946502e9b87b/artifacts/analysis/g000-p024-alternative-attempt0000.json",
+          "sha256": "76f9954ab321e2109413cfe2d291ac5caba969e9d8f0f00e6f12c56577610470"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/981b6f2829c165e85d395c14f09459f2d047f439ee86150a1d3f472e0afea43c/attempts/5a27089c339f49548f59f678eea90855/artifacts/analysis/g000-p024-alternative-attempt0000.json",
+          "sha256": "7fca2ffbd097dabfad17bff2d8668f9805d98b9d692d162f73d9d008809a5dda"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-07-02",
+      "game": 1,
+      "ply": 25,
+      "status": "supported_subthreshold",
+      "played": "f7f5",
+      "alternative": "d8b6",
+      "range": [
+        0.02850000000000008,
+        0.043500000000000094
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-07-adjudication/final-dispositions-00-04.json",
+      "source_row_key": {
+        "pair": "main-07-02",
+        "game": 1,
+        "ply": 25
+      },
+      "source_sha256": "a1e172b99f4c1b6dfa4f476b8e3ef518eac2ff426a3359e2b9515c8e514caa58",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/ab2b4f274764ad7826c3e8b69c1a1a1d4393ab3a6e654b138833bb5ee0c17c6a/attempts/49245ee959cb4c1da8853adb108cd171/artifacts/analysis/g001-p025-alternative-attempt0000.json",
+          "sha256": "4c8214a1a9aa1a44704a090547d083cf1e10a0d0aa686abdfec1c96d5240fec4"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/f4140b58c1ed445862ba806ad04bac5b51d3314508cde4ca6de77cd8747d3306/attempts/aeac6940ec4b44f9855f00e5bceab511/artifacts/analysis/g001-p025-alternative-attempt0000.json",
+          "sha256": "cc5b8f5ed8e75486b7c27d86cc3bbd021b279f00ec53585f97b3917f5816b74b"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-07-unaided",
+      "game": 0,
+      "ply": 28,
+      "status": "supported_subthreshold",
+      "played": "d1h5",
+      "alternative": "b2b4",
+      "range": [
+        0.02100000000000002,
+        0.040000000000000036
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-07-adjudication/final-dispositions-05-09.json",
+      "source_row_key": {
+        "pair": "main-07-unaided",
+        "game": 0,
+        "ply": 28
+      },
+      "source_sha256": "6ee855a8552f27478816a98eb79af0f01087c66897375031676b2f6f379a8f7c",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/950254880b408f49e374040bd7c45517d4c24025951d3ef03f5817b3f3469569/attempts/b570875db2e34fea886103ff69865ff1/artifacts/analysis/g000-p028-alternative-attempt0000.json",
+          "sha256": "56e53b7402e0c32dc8ac9382087814a3de33e11a3001f54060791e5ede0c0713"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/f3f56b37e75873032c63584a092be0f8a977f6a941e8574a6324ee28d0f3309d/attempts/107870ae36294cd5828059af5bee9f08/artifacts/analysis/g000-p028-alternative-attempt0000.json",
+          "sha256": "fbc3000e80174892b23de52c06d8ad97e52e8e601d1a9fbc7a06427875cb84e6"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    },
+    {
+      "pair": "main-07-unaided",
+      "game": 1,
+      "ply": 7,
+      "status": "supported_subthreshold",
+      "played": "d7d6",
+      "alternative": "d7d5",
+      "range": [
+        0.033999999999999975,
+        0.044499999999999984
+      ],
+      "threshold_sensitivity": {
+        "0.04": "straddles",
+        "0.05": "below",
+        "0.06": "below"
+      },
+      "categories": [
+        "unknown"
+      ],
+      "source": "batch-07-adjudication/final-dispositions-05-09.json",
+      "source_row_key": {
+        "pair": "main-07-unaided",
+        "game": 1,
+        "ply": 7
+      },
+      "source_sha256": "6ee855a8552f27478816a98eb79af0f01087c66897375031676b2f6f379a8f7c",
+      "query_sources": [
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/6a866a47f6e8cc557efa6d323d0a1aa685983459ee1ff85f67a69e7ca7735556/attempts/91819497fa904572a239de2936bf97fb/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+          "sha256": "a09f4a47f6b872a117a40d2a3815b818349f4c4e40a7c8a21344c4cd2ddb33b0"
+        },
+        {
+          "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/f95a1bf1a9b42ca72f4f1722eea139417570b83c6bebe7e1a96a822f6a455b97/attempts/0af216af8ee64468ac8eec085b77a559/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+          "sha256": "3dfe34f4dca9fa80bba599cb746cb432f988e211a73b7e8ae420ce497516928b"
+        }
+      ],
+      "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+    }
+  ],
+  "sensitivity_audit": {
+    "all_nonfinite_candidate_roots_in_05_07_examined": true,
+    "thresholds": [
+      0.04,
+      0.05,
+      0.06
+    ],
+    "numerical_tolerance": 1e-09,
+    "stable_straddlers_recomputed": 20,
+    "missing_from_packet": 14,
+    "existing_list_count": 7,
+    "all_recomputed_rows": [
+      {
+        "pair": "main-05-00",
+        "game": 1,
+        "ply": 21,
+        "status": "unresolved",
+        "played": "d8d7",
+        "alternative": "b8c6",
+        "range": [
+          0.034999999999999976,
+          0.04999999999999999
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "straddles",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-05-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-05-00",
+          "game": 1,
+          "ply": 21
+        },
+        "source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/4f04eb8c68683fbdfb58db0724929a42fd8c93e3f671d07175fd8b5f847c57df/attempts/c17344343b90455d9130a248b737af00/artifacts/analysis/g001-p021-alternative-attempt0000.json",
+            "sha256": "c8a7cce1a34c52a49fa245cf6ce116bf09a0dbcd0e8e9c1cf67fc9bc430c5120"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/e5ac428b16895f8a7b0b5e1b357aa29436ed0d32d0082dd8c9617819b4237d7c/attempts/7ce5943e63394cd2a9c15b46f688aecf/artifacts/analysis/g001-p021-alternative-attempt0000.json",
+            "sha256": "60f5c1b149e851449fd9052fcb8aa05d5d5df7098076e56dc2d123009d8cfb15"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-05-01",
+        "game": 1,
+        "ply": 49,
+        "status": "supported_subthreshold",
+        "played": "d1e1",
+        "alternative": "d1d3",
+        "range": [
+          0.024499999999999966,
+          0.04749999999999999
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-05-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-05-01",
+          "game": 1,
+          "ply": 49
+        },
+        "source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/5757f107c7d7dc557447fa3a89bfeba51cc011ea815bffb3a53629fc7282f1e1/attempts/697675bf331d47fc955293333154c5e2/artifacts/analysis/g001-p049-alternative-attempt0000.json",
+            "sha256": "159b4fabe97d6145f811d1700bad7963650ef986d5e3156ce6775cd2c19c8209"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/31dbf158825ba3200d1a878884cbff4ff126812e286618265edde3aa2e28a7d6/attempts/35b2aba75dc34eb5bd503aaac4c43e2a/artifacts/analysis/g001-p049-alternative-attempt0000.json",
+            "sha256": "62276b16411255a82a2fb2823cd247e7dce647434bb283c22e6d379529413cb9"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-05-03",
+        "game": 0,
+        "ply": 42,
+        "status": "supported_subthreshold",
+        "played": "f1e1",
+        "alternative": "c3a4",
+        "range": [
+          0.03949999999999998,
+          0.045999999999999985
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-05-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-05-03",
+          "game": 0,
+          "ply": 42
+        },
+        "source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/6494e9bf8dc2ed58f6f31ee28ac7bfbb23cc380cdf7ac989b82e366f027d6a0c/attempts/4345084b733144a08a0df4cb4e67c43d/artifacts/analysis/g000-p042-alternative-attempt0000.json",
+            "sha256": "68e0d88da3a95708eda00f9764cc57bac0dafa8501227b0f58ad989ed011b999"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/9ad4a7224323026408ee39bfc7dafbac697de067f1acc5c0cdcae757d9cff131/attempts/308f7667ba944b29b31307ae5b9d270a/artifacts/analysis/g000-p042-alternative-attempt0000.json",
+            "sha256": "8b9193b1d8dd37f7202a8a6ad629f83d9aab004098d59ec5f6bd48edd001c96c"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-05-03",
+        "game": 0,
+        "ply": 66,
+        "status": "unresolved",
+        "played": "a3a4",
+        "alternative": "g3g4",
+        "range": [
+          0.04349999999999993,
+          0.05749999999999994
+        ],
+        "threshold_sensitivity": {
+          "0.04": "supported",
+          "0.05": "straddles",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-05-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-05-03",
+          "game": 0,
+          "ply": 66
+        },
+        "source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/25c7c195d8685816b9c84125230e61a5a33a15c7a5116ad039dbafd711a8441e/attempts/440f3b4df7fb4b6faf52128c96ffb80a/artifacts/analysis/g000-p066-alternative-attempt0000.json",
+            "sha256": "32bea11a64e1f338207f5e902c1cb8a7dd7f91a7b28017dd52153b824038a8b4"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/480d20c36432126bad4661104a739be2e5abefaefecf5d95f78fd00f081fc36a/attempts/8bb4759808ef42d5856d5297e20f2ea6/artifacts/analysis/g000-p066-alternative-attempt0000.json",
+            "sha256": "b4c2cdaadac51e7928ced513e3ba3d94f3b93ea7ec021f9d90ba76146cedef95"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-05-04",
+        "game": 1,
+        "ply": 37,
+        "status": "unresolved",
+        "played": "d7c6",
+        "alternative": "b6a4",
+        "range": [
+          0.04500000000000004,
+          0.0665
+        ],
+        "threshold_sensitivity": {
+          "0.04": "supported",
+          "0.05": "straddles",
+          "0.06": "straddles"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-05-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-05-04",
+          "game": 1,
+          "ply": 37
+        },
+        "source_sha256": "929d3bf1c25596580a733a4eb4a3820ccc510ac6f3639867a6860e633c82cdb9",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/86e72346f0cd0d413912055f62e016b44d028acc1edbeef99f24d7b9a7e33489/attempts/e1fcf790b71c4a2bb953bfaf25701032/artifacts/analysis/g001-p037-alternative-attempt0000.json",
+            "sha256": "c6bfa1c18fe1fdd73bcada047802b1e1900040233444e35dc0d61b176cb92714"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/3f72d0436166433314aa2c12bd5fbad8b23ff91f20756024ccdbfe189d6d7940/attempts/617a201a3b60430cb9a7c777aa687ca0/artifacts/analysis/g001-p037-alternative-attempt0000.json",
+            "sha256": "be29ff56cd23dc84fc1b21d4d38e7a7d4a6214d88e7a4ffe295b69cd92e583a1"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-05-05",
+        "game": 1,
+        "ply": 29,
+        "status": "unresolved",
+        "played": "f8e7",
+        "alternative": "c7c6",
+        "range": [
+          0.04849999999999999,
+          0.0635
+        ],
+        "threshold_sensitivity": {
+          "0.04": "supported",
+          "0.05": "straddles",
+          "0.06": "straddles"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-05-adjudication/final-dispositions-05-09.json",
+        "source_row_key": {
+          "pair": "main-05-05",
+          "game": 1,
+          "ply": 29
+        },
+        "source_sha256": "9c23f3464811909228afee05f1736cd5c544fde2aabab9a62de71095d38fdeb6",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/b082c8fc3a4bd25e73564cf91f92b4cfde65dcba23b12e5b9cbf149495351938/attempts/27feb5e9d8ec4017984d98e42575f480/artifacts/analysis/g001-p029-alternative-attempt0000.json",
+            "sha256": "69142e8bae396ff631e3be138f049fdb1c36d727677e8e491ab3edd9e90f67b5"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/93ba7e4f885348a27d66b6d8cdb5924899ad3e9fe41325b3a5f5a46b5b69b166/attempts/060a358cf5f54217a4cb92142dd7e0a0/artifacts/analysis/g001-p029-alternative-attempt0000.json",
+            "sha256": "217b6355ac4b2e17ecb1d34236ce3b1fa8ad14d00df40ae20703c23cf9ee5bf2"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-05-unaided",
+        "game": 1,
+        "ply": 7,
+        "status": "supported_subthreshold",
+        "played": "d7d6",
+        "alternative": "d7d5",
+        "range": [
+          0.033999999999999975,
+          0.044499999999999984
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-05-adjudication/final-dispositions-05-09.json",
+        "source_row_key": {
+          "pair": "main-05-unaided",
+          "game": 1,
+          "ply": 7
+        },
+        "source_sha256": "9c23f3464811909228afee05f1736cd5c544fde2aabab9a62de71095d38fdeb6",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/3bc0f57ba1393a787e48e87ceda65624aef3135cfccc2e760a147afacdd34992/attempts/98b7f5f411f04e3a92e7d1a83b6ec6de/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+            "sha256": "71ab6bb77fffd5032fbc6c662c2c539d9d7f2c162763a0c1d9b20e706969c7d5"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/16f3eadff90b33d372f14cdb2644d7096d274e6f8ff2c20fde7bb319ad9715b0/attempts/23966dfe2efb4340800923f0cdac8093/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+            "sha256": "31e8fbcf26f40e481b4539b97e24600f5d40f28f2cc9bce9532483b8c5388fbe"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-05-unaided",
+        "game": 1,
+        "ply": 35,
+        "status": "unresolved",
+        "played": "c7c6",
+        "alternative": "f8c8",
+        "range": [
+          0.03400000000000003,
+          0.06300000000000006
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "straddles",
+          "0.06": "straddles"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-05-adjudication/final-dispositions-05-09.json",
+        "source_row_key": {
+          "pair": "main-05-unaided",
+          "game": 1,
+          "ply": 35
+        },
+        "source_sha256": "9c23f3464811909228afee05f1736cd5c544fde2aabab9a62de71095d38fdeb6",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/06efe3d468fecbfa459325fbdc26652fb18e1ffb18ea7f390a208c298b6fd9c9/attempts/32b8619d958a4361a6b6d88fff1b637f/artifacts/analysis/g001-p035-alternative-attempt0000.json",
+            "sha256": "bc354d10c056cf8877babf7b7e563a83a5cf691743d8bad9ace44bbb1615b32c"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-05/jobs/65eb0bca1c748676d7e115da4f4cd0d6f4e7814e4c7020288cd16547c55efa0c/attempts/dab4c57f11b94819aa7fdeecdca2be52/artifacts/analysis/g001-p035-alternative-attempt0000.json",
+            "sha256": "ebce313a49d5b6e643ce38289004f365afe8ff2d070106ddb312ece4e94fd681"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-06-00",
+        "game": 1,
+        "ply": 49,
+        "status": "supported_subthreshold",
+        "played": "f5d4",
+        "alternative": "f5h6",
+        "range": [
+          0.03149999999999997,
+          0.044499999999999984
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-06-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-06-00",
+          "game": 1,
+          "ply": 49
+        },
+        "source_sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/6263873d69a9115dfbdf2ccce1fbaa56430bbbd803fe65632b2b9d8bb6ffebb8/attempts/e691910323fa4e25a4a44411f27848f2/artifacts/analysis/g001-p049-alternative-attempt0000.json",
+            "sha256": "d0c4fb4c1190600f04687a7e2310b7f3678c52783dd8abbed18be8b63d9982d1"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/2e6e8b8c5ffd3697b8bf2deda6d0f9cbd2c2ec5c1a32ea703c04bcdb59dfe96e/attempts/9da20908de364db28ba174605908d4ec/artifacts/analysis/g001-p049-alternative-attempt0000.json",
+            "sha256": "368a5ebdcda70d03c9e82a9b642212c9456c4e5ab8f0f62a46b6ee0961fe3549"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-06-04",
+        "game": 0,
+        "ply": 52,
+        "status": "supported_subthreshold",
+        "played": "e4f3",
+        "alternative": "e4f4",
+        "range": [
+          0.0355,
+          0.042
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-06-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-06-04",
+          "game": 0,
+          "ply": 52
+        },
+        "source_sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/3f241c395c46837eca4bb58aa51bbdae87a562c87ec9c92e4f64410adb809f24/attempts/dad5ccd2e9374de69504abbc2e6b318a/artifacts/analysis/g000-p052-alternative-attempt0000.json",
+            "sha256": "dbe38c8dd8021a6c6ea378798792fad754f5b1119398c3b7dd857c1d9e62e522"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/26b376a6caee4d8ebbf3c82010c34bda1a01a8e34024e152acefabb9b86ca38d/attempts/2cdb77f56b434229b4ab63f47f38546b/artifacts/analysis/g000-p052-alternative-attempt0000.json",
+            "sha256": "29606da48fa75e8c3710d14a9ae175634d57be516d82d956c24edb6ef916a8d5"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-06-04",
+        "game": 1,
+        "ply": 17,
+        "status": "supported_subthreshold",
+        "played": "f7f6",
+        "alternative": "e8g8",
+        "range": [
+          0.033499999999999974,
+          0.04149999999999998
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-06-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-06-04",
+          "game": 1,
+          "ply": 17
+        },
+        "source_sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/da00d5ebe83a48b543b7762fd7e1d53940a89480d6cc6994ddae88f742243eb4/attempts/08721c64b9904d94bd4b4657bbf42de1/artifacts/analysis/g001-p017-alternative-attempt0000.json",
+            "sha256": "959ffbebda98e5d729f9394d6cda9e564dbfb54ac3978661881bc48b55da574d"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/374a625c4e98167d197168f4052e8563c5ef59b8b738c0f6d01e63b7f8c6c360/attempts/2cf4cfc0386040cbad259b710f61c111/artifacts/analysis/g001-p017-alternative-attempt0000.json",
+            "sha256": "e77032c18185a01bc58163e1c9843f1e7a8514b94fda2d5b284063753ec05d94"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-06-05",
+        "game": 1,
+        "ply": 33,
+        "status": "supported_subthreshold",
+        "played": "d8d6",
+        "alternative": "c7e5",
+        "range": [
+          0.044499999999999984,
+          0.0595
+        ],
+        "threshold_sensitivity": {
+          "0.04": "supported",
+          "0.05": "straddles",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-06-adjudication/final-dispositions-05-09.json",
+        "source_row_key": {
+          "pair": "main-06-05",
+          "game": 1,
+          "ply": 33
+        },
+        "source_sha256": "8b591c389c5636aa488d7e068ec9c7596a6362b8c51559c8b9d19b192b19f407",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/5dc0dc80f6d20d679108d06349ba11aee8c8fed964335494e5d1417ca9066d6b/attempts/1547657eb2c7475886403e1c5ec80560/artifacts/analysis/g001-p033-alternative-attempt0000.json",
+            "sha256": "326219029f0e948173dbb5c69d5e2ee59dd4eb52024ece6263a10f025573d2b5"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/511750ae1006876eff6301870b1b6d50e0913f6ee91ff7a3638e40c30a937129/attempts/572ce484c6a547e495aa7b1335a5f610/artifacts/analysis/g001-p033-alternative-attempt0000.json",
+            "sha256": "aa50006c7f8e13b248a98d8e04209f3b165959b22fb7d19e6fede59392d72abf"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-06-06",
+        "game": 1,
+        "ply": 29,
+        "status": "supported_subthreshold",
+        "played": "a7a5",
+        "alternative": "c6d4",
+        "range": [
+          0.04150000000000004,
+          0.063
+        ],
+        "threshold_sensitivity": {
+          "0.04": "supported",
+          "0.05": "straddles",
+          "0.06": "straddles"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-06-adjudication/final-dispositions-05-09.json",
+        "source_row_key": {
+          "pair": "main-06-06",
+          "game": 1,
+          "ply": 29
+        },
+        "source_sha256": "8b591c389c5636aa488d7e068ec9c7596a6362b8c51559c8b9d19b192b19f407",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/af980598b1e7e2edc24ff4f7b884f63a890e2b94ab0e729132d036cdc5b278df/attempts/23304536661742078e97c9d266ffd0f9/artifacts/analysis/g001-p029-alternative-attempt0000.json",
+            "sha256": "77f643b096844d9f6f6b34d67a7abf219a9c8aa41ea4e4a1fc6b62b63ebf4bdf"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/15bd13907c7e33c652428e967069cea6d67c42a5006df6eaff4d231e863cff27/attempts/9da37eba7771494ebce48b0b210ff2b5/artifacts/analysis/g001-p029-alternative-attempt0000.json",
+            "sha256": "2e32f9049ccda50d770b918a3e3c54586e79f135877c567bf7e63c1770a32b9b"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-06-unaided",
+        "game": 1,
+        "ply": 7,
+        "status": "supported_subthreshold",
+        "played": "d7d6",
+        "alternative": "d7d5",
+        "range": [
+          0.033999999999999975,
+          0.044499999999999984
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-06-adjudication/final-dispositions-05-09.json",
+        "source_row_key": {
+          "pair": "main-06-unaided",
+          "game": 1,
+          "ply": 7
+        },
+        "source_sha256": "8b591c389c5636aa488d7e068ec9c7596a6362b8c51559c8b9d19b192b19f407",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/a681f68099338794317a1cc19fb19764fc3ac6fb74bd97e74633f29665479af4/attempts/844ab5282a5948fd9f249de3c11dc0a0/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+            "sha256": "101b61885f82295b9d3d26867cf7d0504b64e0ca4d1d2d2f9028140b6680fbb7"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/3e94e7d15d99f3c179a33647b2c919e64174b5c89f738a027a369e069ad1769f/attempts/776ed47ed4e44ad5bd291d9886461116/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+            "sha256": "f1e76f3eeb6bfc6a34e1a402bc50f836f481c6b8b94c1e6c7c6924a3afcdd2c1"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-07-02",
+        "game": 0,
+        "ply": 18,
+        "status": "supported_subthreshold",
+        "played": "g5h4",
+        "alternative": "g5f4",
+        "range": [
+          0.024499999999999966,
+          0.04349999999999998
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-07-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-07-02",
+          "game": 0,
+          "ply": 18
+        },
+        "source_sha256": "a1e172b99f4c1b6dfa4f476b8e3ef518eac2ff426a3359e2b9515c8e514caa58",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/9689e93864f59f5ca1fab3f3c2925ea7170bff4e7f2842235266e1a83fcc0e8e/attempts/ed18226fa5d241c1bbfb87218eb2894f/artifacts/analysis/g000-p018-alternative-attempt0000.json",
+            "sha256": "cc6302c3ab748301513f6a117c2ac087448c073a0cfc2ee680948000df6bb863"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/ae6a253d0587648e5da7002c64c34fa6671ede41e60a2a6768b529ffc77d7394/attempts/3131c3eb6c724a9fa4c4a7683eedbe20/artifacts/analysis/g000-p018-alternative-attempt0000.json",
+            "sha256": "c82163c61e1d1b159309fe19e552276538ee01df604fa94998badac432a989db"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-07-02",
+        "game": 0,
+        "ply": 24,
+        "status": "supported_subthreshold",
+        "played": "f3f4",
+        "alternative": "e2c3",
+        "range": [
+          0.02799999999999997,
+          0.04199999999999998
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-07-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-07-02",
+          "game": 0,
+          "ply": 24
+        },
+        "source_sha256": "a1e172b99f4c1b6dfa4f476b8e3ef518eac2ff426a3359e2b9515c8e514caa58",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/b313751cb3c6e8e53e6616615a69e0a18bd1451da790cec27732792333bc931c/attempts/2c521fff50214502b901946502e9b87b/artifacts/analysis/g000-p024-alternative-attempt0000.json",
+            "sha256": "76f9954ab321e2109413cfe2d291ac5caba969e9d8f0f00e6f12c56577610470"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/981b6f2829c165e85d395c14f09459f2d047f439ee86150a1d3f472e0afea43c/attempts/5a27089c339f49548f59f678eea90855/artifacts/analysis/g000-p024-alternative-attempt0000.json",
+            "sha256": "7fca2ffbd097dabfad17bff2d8668f9805d98b9d692d162f73d9d008809a5dda"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-07-02",
+        "game": 1,
+        "ply": 25,
+        "status": "supported_subthreshold",
+        "played": "f7f5",
+        "alternative": "d8b6",
+        "range": [
+          0.02850000000000008,
+          0.043500000000000094
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-07-adjudication/final-dispositions-00-04.json",
+        "source_row_key": {
+          "pair": "main-07-02",
+          "game": 1,
+          "ply": 25
+        },
+        "source_sha256": "a1e172b99f4c1b6dfa4f476b8e3ef518eac2ff426a3359e2b9515c8e514caa58",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/ab2b4f274764ad7826c3e8b69c1a1a1d4393ab3a6e654b138833bb5ee0c17c6a/attempts/49245ee959cb4c1da8853adb108cd171/artifacts/analysis/g001-p025-alternative-attempt0000.json",
+            "sha256": "4c8214a1a9aa1a44704a090547d083cf1e10a0d0aa686abdfec1c96d5240fec4"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/f4140b58c1ed445862ba806ad04bac5b51d3314508cde4ca6de77cd8747d3306/attempts/aeac6940ec4b44f9855f00e5bceab511/artifacts/analysis/g001-p025-alternative-attempt0000.json",
+            "sha256": "cc5b8f5ed8e75486b7c27d86cc3bbd021b279f00ec53585f97b3917f5816b74b"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-07-unaided",
+        "game": 0,
+        "ply": 28,
+        "status": "supported_subthreshold",
+        "played": "d1h5",
+        "alternative": "b2b4",
+        "range": [
+          0.02100000000000002,
+          0.040000000000000036
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-07-adjudication/final-dispositions-05-09.json",
+        "source_row_key": {
+          "pair": "main-07-unaided",
+          "game": 0,
+          "ply": 28
+        },
+        "source_sha256": "6ee855a8552f27478816a98eb79af0f01087c66897375031676b2f6f379a8f7c",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/950254880b408f49e374040bd7c45517d4c24025951d3ef03f5817b3f3469569/attempts/b570875db2e34fea886103ff69865ff1/artifacts/analysis/g000-p028-alternative-attempt0000.json",
+            "sha256": "56e53b7402e0c32dc8ac9382087814a3de33e11a3001f54060791e5ede0c0713"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/f3f56b37e75873032c63584a092be0f8a977f6a941e8574a6324ee28d0f3309d/attempts/107870ae36294cd5828059af5bee9f08/artifacts/analysis/g000-p028-alternative-attempt0000.json",
+            "sha256": "fbc3000e80174892b23de52c06d8ad97e52e8e601d1a9fbc7a06427875cb84e6"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-07-unaided",
+        "game": 1,
+        "ply": 7,
+        "status": "supported_subthreshold",
+        "played": "d7d6",
+        "alternative": "d7d5",
+        "range": [
+          0.033999999999999975,
+          0.044499999999999984
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "below",
+          "0.06": "below"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-07-adjudication/final-dispositions-05-09.json",
+        "source_row_key": {
+          "pair": "main-07-unaided",
+          "game": 1,
+          "ply": 7
+        },
+        "source_sha256": "6ee855a8552f27478816a98eb79af0f01087c66897375031676b2f6f379a8f7c",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/6a866a47f6e8cc557efa6d323d0a1aa685983459ee1ff85f67a69e7ca7735556/attempts/91819497fa904572a239de2936bf97fb/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+            "sha256": "a09f4a47f6b872a117a40d2a3815b818349f4c4e40a7c8a21344c4cd2ddb33b0"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/f95a1bf1a9b42ca72f4f1722eea139417570b83c6bebe7e1a96a822f6a455b97/attempts/0af216af8ee64468ac8eec085b77a559/artifacts/analysis/g001-p007-alternative-attempt0000.json",
+            "sha256": "3dfe34f4dca9fa80bba599cb746cb432f988e211a73b7e8ae420ce497516928b"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      },
+      {
+        "pair": "main-07-unaided",
+        "game": 1,
+        "ply": 35,
+        "status": "unresolved",
+        "played": "c7c6",
+        "alternative": "f8c8",
+        "range": [
+          0.03400000000000003,
+          0.06300000000000006
+        ],
+        "threshold_sensitivity": {
+          "0.04": "straddles",
+          "0.05": "straddles",
+          "0.06": "straddles"
+        },
+        "categories": [
+          "unknown"
+        ],
+        "source": "batch-07-adjudication/final-dispositions-05-09.json",
+        "source_row_key": {
+          "pair": "main-07-unaided",
+          "game": 1,
+          "ply": 35
+        },
+        "source_sha256": "6ee855a8552f27478816a98eb79af0f01087c66897375031676b2f6f379a8f7c",
+        "query_sources": [
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/e9e577639527d0ad5644a1f90fe0bb6e8de6bbded91bf09d69c455276e097141/attempts/8bd3fb790b824d59a655358441567a0a/artifacts/analysis/g001-p035-alternative-attempt0000.json",
+            "sha256": "87bb30c33dd55c6e317fec53e4cb798cf3b1cc40031b800d3a9b10e6def13f41"
+          },
+          {
+            "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-07/jobs/a552ee5de0d3379e23f8c515ffbeaa770938480e1123379ab8bd64e98dab7790/attempts/0b5c02f362064a518c5496d34032455b/artifacts/analysis/g001-p035-alternative-attempt0000.json",
+            "sha256": "d3192b03b7021d8fde2960431bbb724432cbbded9a161a9253ffaf4c35e24a0e"
+          }
+        ],
+        "limit": "Sensitivity-only; no supported .05 behavioral event is added."
+      }
+    ],
+    "existing_boundary_case": {
+      "pair": "main-05-05",
+      "game": 1,
+      "ply": 43,
+      "source": "batch-05-adjudication/final-dispositions-05-09.json",
+      "source_sha256": "9c23f3464811909228afee05f1736cd5c544fde2aabab9a62de71095d38fdeb6",
+      "status_retained": "unresolved",
+      "range": [
+        0.04999999999999999,
+        0.058499999999999996
+      ],
+      "issue": "Existing seven-case list includes a floating-point lower edge at exactly .05 on the recorded decimal WDL grid. With the later-ledger 1e-9 tolerance this is not a strict straddler.",
+      "disposition": "Keep this as a separate boundary-convention sensitivity case with original unresolved status; do not promote it or remove its history. The 20 recomputed strict straddlers plus this boundary case yield 21 retained sensitivity records after adding 14 missing rows."
+    },
+    "retained_union_count": 21
+  }
+}

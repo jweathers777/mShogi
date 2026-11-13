@@ -1,0 +1,3509 @@
+{
+  "schema": "msh161-scientific-synthesis-v1",
+  "status": "complete_scientific_synthesis_exact_final_review_binding_required",
+  "requested_configuration": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "high",
+    "limits": "Requested configuration only; no claim about unobservable backend execution."
+  },
+  "scope": "All 200 original AutoClaim primary cloud games; completed cached evidence only. No engine/search/cloud/retrieval or production change.",
+  "source_revision_inspected": "81144eb1",
+  "source_bindings": {
+    "behavior-coding-01-04.json": "da050c2050afe0ad3ed6d5a4786adc06bd72839bb010437adda3430932264aa7",
+    "behavior-coding-05-07.json": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+    "behavior-coding-08-10.json": "7f907cb38613156fcfc37087346dfb9ffd88c1dc3e64840697d60cb002a58a14",
+    "behavior-coding-challenge.json": "e5b5e53d4e8e1139cafc2142ab04e0b0eb153940adcaf03f60b562f0675f8683",
+    "native-statistics.json": "a5d49729ac05c1515561cfd28b67cb6efec9e66e1c8791b7923a65da0d5eb10e",
+    "native-results-review.json": "9b6222128d765e49f494ac3c00de05fda283e66d2247526c5f3f6b7c3da17b94",
+    "phase-result-review.json": "ea4a3f88f9ad6719fa21a28eac2aaf0cc65aa0ec6f8185319e97d2f9e0d8a770",
+    "context-tables.json": "6303f1b36c133bbd3f5fd91d1bb937d2d6e9df77d76cb6e95b3aed07cb02f932",
+    "played-coverage-validation.json": "4b32288faca40a95b6c2a60c6f45dc7adc0c5e5618c83d6a5c548637fd47eb6a",
+    "audit-behavior-evidence.json": "817a04bc3043a7fe7f79bf152fb6fdc2c622572eb16e5887e291df8ea2ea411c",
+    "procedure.md": "ed26135879038ca2c63b903d6b95bc003b61fc2498ba6e06dffc14b5896d2da1",
+    "model-assignment.json": "ba07e96a7f3b0bcac5d19743c7d4177c6ceefe959e93c8d359feec8ac657708d",
+    "behavior-aggregate.json": "b2882df1b306092a553b067c87c611145addc09a84fa0308323b18e379051513",
+    "aggregate_behavior.py": "82a2c8a79c21ab89dee8a0aa6815337860776590444fbe4137371b71782aa3e7",
+    "audit-behavior-corrections.json": "666330f8e713a59df20b7d46b8489ffd8a9b0ffbc7bb1e67cb3fbf798c711a85",
+    "audit-threshold-normalization.json": "b0b72814825056a44527bf6c8bde388ea47d70137fbc0d73c611b64bc47e731f"
+  },
+  "counts": {
+    "games": 200,
+    "prepared": 180,
+    "unaided": 20,
+    "native_results": {
+      "all": {
+        "games": 200,
+        "outcomes": {
+          "wins": 82,
+          "draws": 58,
+          "losses": 60
+        },
+        "score_fraction": 0.555
+      },
+      "prepared": {
+        "games": 180,
+        "outcomes": {
+          "wins": 67,
+          "draws": 55,
+          "losses": 58
+        },
+        "score_fraction": 0.525
+      },
+      "unaided": {
+        "games": 20,
+        "outcomes": {
+          "wins": 15,
+          "draws": 3,
+          "losses": 2
+        },
+        "score_fraction": 0.825
+      }
+    },
+    "played_decisions": 24939,
+    "supplied_context_decisions": 2880,
+    "selected_roots_both_players": 6141,
+    "supported_candidate_comparisons": 589,
+    "supported_candidate_games": 175,
+    "category_counts_status": "All11 additive correction rows applied by bound aggregate. Descriptive overlapping coder-dependent labels; not precise defect-frequency ranking.",
+    "global_conversion_rate": null,
+    "global_conversion_rate_reason": "No complete supported favorable-episode denominator; AutoClaim censors endpoints.",
+    "phase_supported_candidate": {
+      "opening": 105,
+      "middlegame": 366,
+      "endgame": 118
+    },
+    "category_summaries": {
+      "advantage preservation/conversion": {
+        "moves": 3,
+        "games": 1,
+        "severity_moves": {
+          "major": 3
+        },
+        "phase_moves": {
+          "endgame": 3
+        },
+        "color_moves": {
+          "black": 3
+        },
+        "result_moves": {
+          "draws": 3
+        },
+        "family_moves": {
+          "petroff-scotch-four-knights": 3
+        },
+        "prepared_moves": 3,
+        "unaided_moves": 0,
+        "secondary_explicit_moves": 0,
+        "prepared_games": 1,
+        "unaided_games": 0,
+        "prepared_families": 1,
+        "threshold_supported_coded_moves": {
+          "0.04": 3,
+          "0.05": 3,
+          "0.06": 3
+        },
+        "phase_sensitivity": {
+          "material24": {
+            "endgame": 3
+          },
+          "material28": {
+            "endgame": 3
+          },
+          "boundary_minus2": {
+            "endgame": 3
+          },
+          "boundary_plus2": {
+            "endgame": 3
+          }
+        }
+      },
+      "coordination/activity": {
+        "moves": 252,
+        "games": 117,
+        "severity_moves": {
+          "major": 180,
+          "significant": 39,
+          "serious": 33
+        },
+        "phase_moves": {
+          "middlegame": 162,
+          "endgame": 60,
+          "opening": 30
+        },
+        "color_moves": {
+          "white": 121,
+          "black": 131
+        },
+        "result_moves": {
+          "losses": 75,
+          "draws": 78,
+          "wins": 99
+        },
+        "family_moves": {
+          "english": 11,
+          "sicilian-najdorf-dragon-scheveningen-rauzer": 5,
+          "slav-semi-slav": 7,
+          "nimzo-indian": 14,
+          "queens-indian-bogo": 13,
+          "pirc-modern-other-semiopen": 10,
+          "unaided": 29,
+          "petroff-scotch-four-knights": 13,
+          "italian": 14,
+          "reti": 11,
+          "french": 9,
+          "queens-pawn-other": 12,
+          "other-open-games": 8,
+          "catalan": 7,
+          "sicilian-closed-anti": 13,
+          "queens-gambit-declined": 10,
+          "grunfeld": 8,
+          "kings-indian": 2,
+          "other-flank-indian-dutch": 13,
+          "spanish": 14,
+          "sicilian-classical-sveshnikov-taimanov": 11,
+          "caro-kann": 13,
+          "queens-gambit-accepted": 5
+        },
+        "prepared_moves": 223,
+        "unaided_moves": 29,
+        "secondary_explicit_moves": 0,
+        "prepared_games": 102,
+        "unaided_games": 15,
+        "prepared_families": 22,
+        "threshold_supported_coded_moves": {
+          "0.04": 252,
+          "0.05": 252,
+          "0.06": 236
+        },
+        "phase_sensitivity": {
+          "material24": {
+            "middlegame": 172,
+            "endgame": 50,
+            "opening": 30
+          },
+          "material28": {
+            "middlegame": 160,
+            "endgame": 62,
+            "opening": 30
+          },
+          "boundary_minus2": {
+            "middlegame": 167,
+            "endgame": 60,
+            "opening": 25
+          },
+          "boundary_plus2": {
+            "middlegame": 150,
+            "opening": 42,
+            "endgame": 60
+          }
+        }
+      },
+      "endgame decisions": {
+        "moves": 118,
+        "games": 62,
+        "severity_moves": {
+          "major": 110,
+          "serious": 4,
+          "significant": 4
+        },
+        "phase_moves": {
+          "endgame": 103,
+          "middlegame": 13,
+          "opening": 2
+        },
+        "color_moves": {
+          "black": 54,
+          "white": 64
+        },
+        "result_moves": {
+          "losses": 36,
+          "draws": 56,
+          "wins": 26
+        },
+        "family_moves": {
+          "queens-pawn-other": 5,
+          "slav-semi-slav": 10,
+          "queens-indian-bogo": 4,
+          "pirc-modern-other-semiopen": 7,
+          "unaided": 5,
+          "petroff-scotch-four-knights": 6,
+          "italian": 7,
+          "reti": 7,
+          "french": 8,
+          "other-open-games": 4,
+          "sicilian-classical-sveshnikov-taimanov": 6,
+          "catalan": 6,
+          "queens-gambit-declined": 3,
+          "kings-indian": 3,
+          "other-flank-indian-dutch": 3,
+          "sicilian-closed-anti": 5,
+          "spanish": 4,
+          "grunfeld": 3,
+          "english": 4,
+          "caro-kann": 5,
+          "queens-gambit-accepted": 4,
+          "nimzo-indian": 9
+        },
+        "prepared_moves": 113,
+        "unaided_moves": 5,
+        "secondary_explicit_moves": 0,
+        "prepared_games": 59,
+        "unaided_games": 3,
+        "prepared_families": 21,
+        "threshold_supported_coded_moves": {
+          "0.04": 118,
+          "0.05": 118,
+          "0.06": 116
+        },
+        "phase_sensitivity": {
+          "material24": {
+            "endgame": 89,
+            "middlegame": 27,
+            "opening": 2
+          },
+          "material28": {
+            "endgame": 104,
+            "middlegame": 12,
+            "opening": 2
+          },
+          "boundary_minus2": {
+            "endgame": 103,
+            "middlegame": 13,
+            "opening": 2
+          },
+          "boundary_plus2": {
+            "endgame": 103,
+            "middlegame": 13,
+            "opening": 2
+          }
+        }
+      },
+      "exchanges": {
+        "moves": 100,
+        "games": 80,
+        "severity_moves": {
+          "major": 71,
+          "significant": 19,
+          "serious": 10
+        },
+        "phase_moves": {
+          "middlegame": 68,
+          "opening": 21,
+          "endgame": 11
+        },
+        "color_moves": {
+          "white": 51,
+          "black": 49
+        },
+        "result_moves": {
+          "wins": 40,
+          "draws": 31,
+          "losses": 29
+        },
+        "family_moves": {
+          "sicilian-najdorf-dragon-scheveningen-rauzer": 2,
+          "slav-semi-slav": 3,
+          "nimzo-indian": 3,
+          "queens-indian-bogo": 3,
+          "pirc-modern-other-semiopen": 7,
+          "unaided": 15,
+          "petroff-scotch-four-knights": 5,
+          "reti": 6,
+          "queens-gambit-accepted": 3,
+          "other-open-games": 6,
+          "french": 2,
+          "sicilian-closed-anti": 4,
+          "queens-gambit-declined": 6,
+          "grunfeld": 1,
+          "catalan": 2,
+          "other-flank-indian-dutch": 4,
+          "english": 3,
+          "spanish": 4,
+          "queens-pawn-other": 4,
+          "sicilian-classical-sveshnikov-taimanov": 5,
+          "kings-indian": 2,
+          "caro-kann": 6,
+          "italian": 4
+        },
+        "prepared_moves": 85,
+        "unaided_moves": 15,
+        "secondary_explicit_moves": 0,
+        "prepared_games": 68,
+        "unaided_games": 12,
+        "prepared_families": 22,
+        "threshold_supported_coded_moves": {
+          "0.04": 100,
+          "0.05": 100,
+          "0.06": 95
+        },
+        "phase_sensitivity": {
+          "material24": {
+            "middlegame": 69,
+            "opening": 21,
+            "endgame": 10
+          },
+          "material28": {
+            "middlegame": 68,
+            "opening": 21,
+            "endgame": 11
+          },
+          "boundary_minus2": {
+            "middlegame": 69,
+            "opening": 20,
+            "endgame": 11
+          },
+          "boundary_plus2": {
+            "middlegame": 66,
+            "opening": 23,
+            "endgame": 11
+          }
+        }
+      },
+      "king safety": {
+        "moves": 40,
+        "games": 32,
+        "severity_moves": {
+          "major": 35,
+          "significant": 3,
+          "serious": 2
+        },
+        "phase_moves": {
+          "middlegame": 29,
+          "opening": 9,
+          "endgame": 2
+        },
+        "color_moves": {
+          "white": 18,
+          "black": 22
+        },
+        "result_moves": {
+          "losses": 23,
+          "wins": 8,
+          "draws": 9
+        },
+        "family_moves": {
+          "queens-pawn-other": 4,
+          "nimzo-indian": 2,
+          "unaided": 4,
+          "french": 3,
+          "queens-indian-bogo": 2,
+          "sicilian-najdorf-dragon-scheveningen-rauzer": 2,
+          "sicilian-closed-anti": 1,
+          "kings-indian": 3,
+          "queens-gambit-declined": 1,
+          "catalan": 1,
+          "sicilian-classical-sveshnikov-taimanov": 4,
+          "reti": 1,
+          "english": 1,
+          "slav-semi-slav": 1,
+          "italian": 1,
+          "pirc-modern-other-semiopen": 4,
+          "grunfeld": 1,
+          "spanish": 2,
+          "petroff-scotch-four-knights": 1,
+          "caro-kann": 1
+        },
+        "prepared_moves": 36,
+        "unaided_moves": 4,
+        "secondary_explicit_moves": 0,
+        "prepared_games": 30,
+        "unaided_games": 2,
+        "prepared_families": 19,
+        "threshold_supported_coded_moves": {
+          "0.04": 40,
+          "0.05": 40,
+          "0.06": 38
+        },
+        "phase_sensitivity": {
+          "material24": {
+            "middlegame": 30,
+            "opening": 9,
+            "endgame": 1
+          },
+          "material28": {
+            "middlegame": 29,
+            "opening": 9,
+            "endgame": 2
+          },
+          "boundary_minus2": {
+            "middlegame": 30,
+            "opening": 8,
+            "endgame": 2
+          },
+          "boundary_plus2": {
+            "middlegame": 28,
+            "opening": 10,
+            "endgame": 2
+          }
+        }
+      },
+      "opening/development": {
+        "moves": 71,
+        "games": 52,
+        "severity_moves": {
+          "significant": 36,
+          "major": 19,
+          "serious": 16
+        },
+        "phase_moves": {
+          "middlegame": 18,
+          "opening": 53
+        },
+        "color_moves": {
+          "black": 37,
+          "white": 34
+        },
+        "result_moves": {
+          "draws": 19,
+          "wins": 33,
+          "losses": 19
+        },
+        "family_moves": {
+          "sicilian-najdorf-dragon-scheveningen-rauzer": 1,
+          "unaided": 26,
+          "kings-indian": 3,
+          "french": 4,
+          "queens-indian-bogo": 2,
+          "queens-pawn-other": 4,
+          "catalan": 2,
+          "other-flank-indian-dutch": 1,
+          "sicilian-closed-anti": 1,
+          "spanish": 3,
+          "sicilian-classical-sveshnikov-taimanov": 3,
+          "reti": 4,
+          "caro-kann": 5,
+          "queens-gambit-accepted": 1,
+          "grunfeld": 2,
+          "slav-semi-slav": 1,
+          "nimzo-indian": 1,
+          "italian": 2,
+          "pirc-modern-other-semiopen": 2,
+          "petroff-scotch-four-knights": 2,
+          "other-open-games": 1
+        },
+        "prepared_moves": 45,
+        "unaided_moves": 26,
+        "secondary_explicit_moves": 0,
+        "prepared_games": 36,
+        "unaided_games": 16,
+        "prepared_families": 20,
+        "threshold_supported_coded_moves": {
+          "0.04": 71,
+          "0.05": 71,
+          "0.06": 56
+        },
+        "phase_sensitivity": {
+          "material24": {
+            "middlegame": 18,
+            "opening": 53
+          },
+          "material28": {
+            "middlegame": 18,
+            "opening": 53
+          },
+          "boundary_minus2": {
+            "middlegame": 24,
+            "opening": 47
+          },
+          "boundary_plus2": {
+            "opening": 60,
+            "middlegame": 11
+          }
+        }
+      },
+      "opportunity response": {
+        "moves": 37,
+        "games": 23,
+        "severity_moves": {
+          "major": 33,
+          "significant": 3,
+          "serious": 1
+        },
+        "phase_moves": {
+          "endgame": 9,
+          "middlegame": 26,
+          "opening": 2
+        },
+        "color_moves": {
+          "black": 16,
+          "white": 21
+        },
+        "result_moves": {
+          "losses": 6,
+          "draws": 13,
+          "wins": 18
+        },
+        "family_moves": {
+          "queens-pawn-other": 2,
+          "english": 2,
+          "slav-semi-slav": 5,
+          "nimzo-indian": 1,
+          "petroff-scotch-four-knights": 4,
+          "queens-indian-bogo": 6,
+          "kings-indian": 6,
+          "unaided": 5,
+          "sicilian-classical-sveshnikov-taimanov": 1,
+          "other-flank-indian-dutch": 3,
+          "queens-gambit-accepted": 1,
+          "grunfeld": 1
+        },
+        "prepared_moves": 32,
+        "unaided_moves": 5,
+        "secondary_explicit_moves": 0,
+        "prepared_games": 20,
+        "unaided_games": 3,
+        "prepared_families": 11,
+        "threshold_supported_coded_moves": {
+          "0.04": 37,
+          "0.05": 37,
+          "0.06": 36
+        },
+        "phase_sensitivity": {
+          "material24": {
+            "endgame": 7,
+            "middlegame": 28,
+            "opening": 2
+          },
+          "material28": {
+            "endgame": 9,
+            "middlegame": 26,
+            "opening": 2
+          },
+          "boundary_minus2": {
+            "endgame": 9,
+            "middlegame": 26,
+            "opening": 2
+          },
+          "boundary_plus2": {
+            "endgame": 9,
+            "middlegame": 26,
+            "opening": 2
+          }
+        }
+      },
+      "pawn structures/breaks": {
+        "moves": 110,
+        "games": 78,
+        "severity_moves": {
+          "significant": 23,
+          "major": 75,
+          "serious": 12
+        },
+        "phase_moves": {
+          "middlegame": 65,
+          "endgame": 22,
+          "opening": 23
+        },
+        "color_moves": {
+          "black": 56,
+          "white": 54
+        },
+        "result_moves": {
+          "draws": 37,
+          "wins": 39,
+          "losses": 34
+        },
+        "family_moves": {
+          "english": 6,
+          "sicilian-najdorf-dragon-scheveningen-rauzer": 5,
+          "slav-semi-slav": 4,
+          "sicilian-classical-sveshnikov-taimanov": 3,
+          "queens-indian-bogo": 4,
+          "reti": 6,
+          "french": 3,
+          "other-open-games": 5,
+          "kings-indian": 3,
+          "sicilian-closed-anti": 2,
+          "queens-pawn-other": 4,
+          "queens-gambit-declined": 6,
+          "catalan": 3,
+          "other-flank-indian-dutch": 10,
+          "unaided": 13,
+          "spanish": 9,
+          "grunfeld": 3,
+          "caro-kann": 7,
+          "queens-gambit-accepted": 3,
+          "italian": 3,
+          "nimzo-indian": 1,
+          "pirc-modern-other-semiopen": 4,
+          "petroff-scotch-four-knights": 3
+        },
+        "prepared_moves": 97,
+        "unaided_moves": 13,
+        "secondary_explicit_moves": 0,
+        "prepared_games": 70,
+        "unaided_games": 8,
+        "prepared_families": 22,
+        "threshold_supported_coded_moves": {
+          "0.04": 110,
+          "0.05": 110,
+          "0.06": 101
+        },
+        "phase_sensitivity": {
+          "material24": {
+            "middlegame": 71,
+            "endgame": 16,
+            "opening": 23
+          },
+          "material28": {
+            "middlegame": 65,
+            "endgame": 22,
+            "opening": 23
+          },
+          "boundary_minus2": {
+            "middlegame": 71,
+            "endgame": 22,
+            "opening": 17
+          },
+          "boundary_plus2": {
+            "middlegame": 58,
+            "opening": 30,
+            "endgame": 22
+          }
+        }
+      },
+      "planning": {
+        "moves": 0,
+        "games": 0,
+        "severity_moves": {},
+        "phase_moves": {},
+        "color_moves": {},
+        "result_moves": {},
+        "family_moves": {},
+        "prepared_moves": 0,
+        "unaided_moves": 0,
+        "secondary_explicit_moves": 0,
+        "prepared_games": 0,
+        "unaided_games": 0,
+        "prepared_families": 0,
+        "threshold_supported_coded_moves": {
+          "0.04": 0,
+          "0.05": 0,
+          "0.06": 0
+        },
+        "phase_sensitivity": {
+          "material24": {},
+          "material28": {},
+          "boundary_minus2": {},
+          "boundary_plus2": {}
+        }
+      },
+      "quiet defense": {
+        "moves": 154,
+        "games": 86,
+        "severity_moves": {
+          "major": 136,
+          "significant": 9,
+          "serious": 9
+        },
+        "phase_moves": {
+          "middlegame": 103,
+          "endgame": 35,
+          "opening": 16
+        },
+        "color_moves": {
+          "white": 63,
+          "black": 91
+        },
+        "result_moves": {
+          "losses": 92,
+          "draws": 38,
+          "wins": 24
+        },
+        "family_moves": {
+          "queens-pawn-other": 12,
+          "english": 10,
+          "sicilian-najdorf-dragon-scheveningen-rauzer": 6,
+          "nimzo-indian": 4,
+          "slav-semi-slav": 6,
+          "queens-indian-bogo": 8,
+          "petroff-scotch-four-knights": 13,
+          "sicilian-classical-sveshnikov-taimanov": 11,
+          "reti": 5,
+          "kings-indian": 6,
+          "unaided": 7,
+          "french": 8,
+          "other-open-games": 6,
+          "catalan": 9,
+          "sicilian-closed-anti": 7,
+          "queens-gambit-declined": 3,
+          "grunfeld": 2,
+          "other-flank-indian-dutch": 3,
+          "spanish": 7,
+          "queens-gambit-accepted": 1,
+          "italian": 7,
+          "caro-kann": 6,
+          "pirc-modern-other-semiopen": 7
+        },
+        "prepared_moves": 147,
+        "unaided_moves": 7,
+        "secondary_explicit_moves": 0,
+        "prepared_games": 82,
+        "unaided_games": 4,
+        "prepared_families": 22,
+        "threshold_supported_coded_moves": {
+          "0.04": 154,
+          "0.05": 154,
+          "0.06": 152
+        },
+        "phase_sensitivity": {
+          "material24": {
+            "middlegame": 110,
+            "endgame": 28,
+            "opening": 16
+          },
+          "material28": {
+            "middlegame": 102,
+            "endgame": 36,
+            "opening": 16
+          },
+          "boundary_minus2": {
+            "middlegame": 107,
+            "endgame": 35,
+            "opening": 12
+          },
+          "boundary_plus2": {
+            "middlegame": 101,
+            "endgame": 35,
+            "opening": 18
+          }
+        }
+      },
+      "tactical calculation": {
+        "moves": 127,
+        "games": 83,
+        "severity_moves": {
+          "major": 106,
+          "significant": 15,
+          "serious": 6
+        },
+        "phase_moves": {
+          "middlegame": 100,
+          "opening": 14,
+          "endgame": 13
+        },
+        "color_moves": {
+          "white": 66,
+          "black": 61
+        },
+        "result_moves": {
+          "wins": 46,
+          "losses": 44,
+          "draws": 37
+        },
+        "family_moves": {
+          "sicilian-najdorf-dragon-scheveningen-rauzer": 4,
+          "nimzo-indian": 5,
+          "slav-semi-slav": 4,
+          "unaided": 16,
+          "sicilian-classical-sveshnikov-taimanov": 8,
+          "queens-indian-bogo": 8,
+          "reti": 8,
+          "kings-indian": 9,
+          "queens-gambit-accepted": 4,
+          "other-open-games": 2,
+          "sicilian-closed-anti": 2,
+          "petroff-scotch-four-knights": 3,
+          "queens-pawn-other": 8,
+          "queens-gambit-declined": 7,
+          "grunfeld": 2,
+          "catalan": 2,
+          "other-flank-indian-dutch": 11,
+          "spanish": 5,
+          "english": 5,
+          "caro-kann": 4,
+          "italian": 6,
+          "french": 1,
+          "pirc-modern-other-semiopen": 3
+        },
+        "prepared_moves": 111,
+        "unaided_moves": 16,
+        "secondary_explicit_moves": 0,
+        "prepared_games": 70,
+        "unaided_games": 13,
+        "prepared_families": 22,
+        "threshold_supported_coded_moves": {
+          "0.04": 127,
+          "0.05": 127,
+          "0.06": 124
+        },
+        "phase_sensitivity": {
+          "material24": {
+            "middlegame": 105,
+            "opening": 14,
+            "endgame": 8
+          },
+          "material28": {
+            "middlegame": 99,
+            "opening": 14,
+            "endgame": 14
+          },
+          "boundary_minus2": {
+            "middlegame": 103,
+            "opening": 11,
+            "endgame": 13
+          },
+          "boundary_plus2": {
+            "middlegame": 97,
+            "opening": 17,
+            "endgame": 13
+          }
+        }
+      },
+      "unknown": {
+        "moves": 86,
+        "games": 50,
+        "severity_moves": {
+          "significant": 24,
+          "serious": 15,
+          "major": 47
+        },
+        "phase_moves": {
+          "middlegame": 66,
+          "endgame": 3,
+          "opening": 17
+        },
+        "color_moves": {
+          "white": 37,
+          "black": 49
+        },
+        "result_moves": {
+          "losses": 23,
+          "draws": 23,
+          "wins": 40
+        },
+        "family_moves": {
+          "queens-pawn-other": 3,
+          "english": 3,
+          "nimzo-indian": 4,
+          "slav-semi-slav": 4,
+          "queens-indian-bogo": 7,
+          "pirc-modern-other-semiopen": 6,
+          "unaided": 10,
+          "sicilian-classical-sveshnikov-taimanov": 4,
+          "italian": 3,
+          "catalan": 5,
+          "kings-indian": 9,
+          "queens-gambit-accepted": 1,
+          "french": 5,
+          "queens-gambit-declined": 2,
+          "other-open-games": 3,
+          "sicilian-najdorf-dragon-scheveningen-rauzer": 3,
+          "sicilian-closed-anti": 6,
+          "petroff-scotch-four-knights": 6,
+          "other-flank-indian-dutch": 1,
+          "reti": 1
+        },
+        "prepared_moves": 76,
+        "unaided_moves": 10,
+        "secondary_explicit_moves": 4,
+        "prepared_games": 45,
+        "unaided_games": 5,
+        "prepared_families": 19,
+        "threshold_supported_coded_moves": {
+          "0.04": 86,
+          "0.05": 86,
+          "0.06": 81
+        },
+        "phase_sensitivity": {
+          "material24": {
+            "middlegame": 66,
+            "endgame": 3,
+            "opening": 17
+          },
+          "material28": {
+            "middlegame": 66,
+            "endgame": 3,
+            "opening": 17
+          },
+          "boundary_minus2": {
+            "middlegame": 70,
+            "endgame": 3,
+            "opening": 13
+          },
+          "boundary_plus2": {
+            "middlegame": 64,
+            "endgame": 3,
+            "opening": 19
+          }
+        }
+      }
+    },
+    "literal_candidate_threshold_support": {
+      "0.04": 614,
+      "0.05": 589,
+      "0.06": 555
+    },
+    "uniform_1e9_candidate_threshold_support_sensitivity_only": {
+      "0.04": 615,
+      "0.05": 590,
+      "0.06": 556
+    },
+    "threshold_interpretation": "Original589 source-supported coding population unchanged. Literal range calculation and uniform tolerance sensitivity are separate; straddlers/unresolved/claim roots retain limits."
+  },
+  "groups": [
+    {
+      "id": "continuation_and_exchange_order",
+      "investigation_order": 1,
+      "behavior": "Consequential exchange order, mobility, defense and preparation choices",
+      "anchors": [
+        "main-06-08/g0/p44",
+        "main-08-01/g0/p28",
+        "main-10-01/g0/p72",
+        "main-08-03/g1/p69",
+        "main-01-00/g0/p48",
+        "main-03-02/g1/p31",
+        "main-05-00/g0/p24"
+      ],
+      "cause_status": "Not established. Search admission/coverage/value propagation and evaluation of reached positions remain alternatives.",
+      "investigation": "Trace actual interior search and rank reached consequence positions across failures and successes; separate missing continuation from incorrect evaluation.",
+      "possible_correction": "Only a demonstrated general search/value-propagation defect or supported classical threat/coordination correction."
+    },
+    {
+      "id": "endgame_coordination_and_timing",
+      "investigation_order": 2,
+      "behavior": "Timing of pawn advances, promotion, king activity, piece coverage and liquidation",
+      "anchors": [
+        "main-05-01/g1/p85",
+        "main-05-04/g0/p84",
+        "main-05-04/g0/p70",
+        "main-09-01/g0/p132",
+        "main-10-08/g1/p117",
+        "main-02-00/g1/p81",
+        "main-02-00/g1/p91",
+        "main-02-00/g1/p113"
+      ],
+      "cause_status": "Not established. Pawn-race horizon, checking defenses, promotion transitions and positional judgment remain alternatives.",
+      "investigation": "Contrast immediate push/promotion cases with support/king-activation cases using full histories and claim state.",
+      "possible_correction": "General passed-pawn/blockade/king-activity/exchange judgment or focused continuation coverage, conditional on results."
+    },
+    {
+      "id": "opening_central_play",
+      "investigation_order": 3,
+      "behavior": "Central play and deployment after supplied prefixes",
+      "anchors": [
+        "main-10-04/g0/p22"
+      ],
+      "cause_status": "May share the first two groups; no separate opening subsystem defect established.",
+      "investigation": "Reuse prepared and unaided cases with MSH-160 (Chess Opening Quality Assessment); test concrete consequences.",
+      "possible_correction": "General central-tension/development correction only if supported; no book-first or family-blacklist recommendation."
+    }
+  ],
+  "anchors": [
+    {
+      "root_id": "main-01-00/g0/p48",
+      "packet": "behavior-coding-01-04.json",
+      "packet_sha256": "da050c2050afe0ad3ed6d5a4786adc06bd72839bb010437adda3430932264aa7",
+      "pair": "main-01-00",
+      "game": 0,
+      "ply": 48,
+      "family": "queens-pawn-other",
+      "candidate_color": "white",
+      "actual_result": "losses",
+      "native_conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "played_san": "h4",
+      "alternative_san": "Rfd1",
+      "root_fen": "2r4k/pbq1b2p/4pr2/2p2p1Q/P1N1p3/BPP1P1P1/5P1P/R4RK1 w - - 0 25",
+      "margin": 0.571,
+      "severity": "major",
+      "source_categories_immutable": [
+        "king safety",
+        "quiet defense"
+      ],
+      "query_sources": [
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/ef7363a0ab552b8df6c47e2f60fd511a61aaa11ce05b86820cf4aa76be40013f/attempts/dbd1d553ea914789b68da126ac907d9f/artifacts/analysis/g000-p048-alternative-attempt0000.json",
+          "sha256": "9006d70fec24b11880c467c1ed4cebb3cd502be75cf06004645a45a7d9280b05"
+        },
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/ea89d64eb21427f18b608c0262f6331b29efe02a89d4df96b97c891aa6bc4396/attempts/89c909b7a6a245c7b6cf09b40a687bfd/artifacts/analysis/g000-p048-alternative-attempt0000.json",
+          "sha256": "78d3baa19220a2ecdc39169d3a8951ed246e1a8f8b26758a2f098da421ea0405"
+        }
+      ],
+      "native_source": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-01/jobs/d99759ec1a4d7007b3b3bf85939bfb6dc8a8c74a41de1ea921d7a134506ff0a8/attempts/08d66d2331c049838a4f8d37fbfcc17f/artifacts/pair/report.json.gz",
+        "sha256": "d05bbe53e8c28f21e9dabbf7b90784e9838539f6966006e87c44a1a09cd78baf",
+        "conclusion": {
+          "chess": {
+            "checkmate": {
+              "winner": "black"
+            }
+          }
+        }
+      },
+      "legal_lines": [
+        [
+          "h4",
+          "Rg8",
+          "Rab1",
+          "Bc6",
+          "Kg2",
+          "Rg4",
+          "b4",
+          "Rfg6",
+          "Kh1",
+          "Be8",
+          "b5",
+          "Rg8",
+          "Qxg4",
+          "Rxg4",
+          "a5",
+          "Rg8",
+          "b6",
+          "Qb7",
+          "Ne5",
+          "axb6",
+          "Rxb6",
+          "Qc7",
+          "c4",
+          "Bf6",
+          "Bb2",
+          "Bxe5"
+        ],
+        [
+          "Rfd1",
+          "Bd5",
+          "Rab1",
+          "Kg7",
+          "Rd2",
+          "Bxc4",
+          "bxc4",
+          "Rf7",
+          "Rdb2",
+          "Qa5",
+          "Rb8",
+          "Qa6",
+          "R1b5",
+          "Rxb8",
+          "Rxb8",
+          "Rf8",
+          "Rb5",
+          "Qc6",
+          "a5",
+          "h6",
+          "Kh1",
+          "Rf7",
+          "a6",
+          "Bd6",
+          "Kg2",
+          "Rc7",
+          "g4",
+          "Rf7",
+          "Kh1",
+          "Qxa6",
+          "g5",
+          "Qxa3",
+          "gxh6+",
+          "Kf8",
+          "Rb1",
+          "Qa2",
+          "Rf1",
+          "Rh7"
+        ]
+      ],
+      "native_context": [
+        "h4",
+        "Bd5",
+        "Qe2",
+        "Rh6",
+        "Rfd1",
+        "Bxh4",
+        "Bc1",
+        "Bxg3",
+        "Qa2",
+        "Bxc4"
+      ],
+      "final_ledger": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-01-adjudication/adjudicated20m-00-04.json",
+        "sha256": "7842363205e8687621060bd12da2f1d70b51c1f54ce39ca6b30b491f905b1c76"
+      },
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-02-00/g1/p113",
+      "packet": "behavior-coding-01-04.json",
+      "packet_sha256": "da050c2050afe0ad3ed6d5a4786adc06bd72839bb010437adda3430932264aa7",
+      "pair": "main-02-00",
+      "game": 1,
+      "ply": 113,
+      "family": "petroff-scotch-four-knights",
+      "candidate_color": "black",
+      "actual_result": "draws",
+      "native_conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "played_san": "Ra2",
+      "alternative_san": "b1=Q",
+      "root_fen": "1R6/8/7p/K5p1/p2k2P1/b3R2P/1p3P2/r7 b - - 28 57",
+      "margin": 0.5,
+      "severity": "major",
+      "source_categories_immutable": [
+        "endgame decisions",
+        "opportunity response",
+        "advantage preservation/conversion"
+      ],
+      "query_sources": [
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/80b92995d66f7780e1befd82884f8f8f612e24765a211cc22ae701a3cfbf967b/attempts/01b72a9c96b1474085aaf550a2796ca4/artifacts/analysis/g001-p113-alternative-attempt0000.json",
+          "sha256": "706c4ff9dd06f1fc8d832f3ce1635d6057b84a2205d6501df1e08ecf227672d2"
+        },
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/532f86388107f423d11a708bebedc5ca3654dbbd93b19dc6c2a9f8930056b986/attempts/8651db838e6240079e09fdb9acd6d842/artifacts/analysis/g001-p113-alternative-attempt0000.json",
+          "sha256": "58f74cb9f8c58e9e163f95db91d97d23a5dc78c1ca13f9623e76ec3e232cce1a"
+        }
+      ],
+      "native_source": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784/attempts/bf77a810ea874838a94ad2949fb04d65/artifacts/pair/report.json.gz",
+        "sha256": "a67d54901892206a0ede5c8462e427f22b363f8c9c53b8ff671821678ad2b86d",
+        "conclusion": {
+          "chess": {
+            "draw": {
+              "claimed": "threefold"
+            }
+          }
+        }
+      },
+      "legal_lines": [
+        [
+          "Ra2",
+          "Rd8+",
+          "Kc4",
+          "Re4+",
+          "Kc5",
+          "Re5+",
+          "Kc6",
+          "Rb8",
+          "Bc5",
+          "Rc8+",
+          "Kd7",
+          "Rcxc5",
+          "b1=Q",
+          "Rcd5+",
+          "Kc8",
+          "Rc5+"
+        ],
+        [
+          "b1=Q",
+          "Rxb1",
+          "Rxb1",
+          "Rxa3",
+          "Rb8",
+          "Ka6",
+          "Kc5",
+          "h4",
+          "gxh4",
+          "f4",
+          "Kb4",
+          "Ra1",
+          "Rf8",
+          "g5",
+          "a3",
+          "Kb6",
+          "Rxf4",
+          "Rb1+",
+          "Kc3",
+          "gxh6",
+          "Rf6+",
+          "Kb5",
+          "Rf5+",
+          "Kc6",
+          "Rh5",
+          "Rc1+",
+          "Kb2",
+          "Re1",
+          "h3",
+          "Re2+",
+          "Kb1",
+          "Re1+",
+          "Kc2",
+          "Re2+",
+          "Kc1",
+          "Rh2",
+          "Kb1",
+          "h7",
+          "a2"
+        ]
+      ],
+      "native_context": [
+        "Ra2",
+        "Rd8+",
+        "Kc4",
+        "Re4+",
+        "Kb3",
+        "Re3+",
+        "Kc2",
+        "Rc8+",
+        "Kd2",
+        "Rd8+"
+      ],
+      "final_ledger": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-02-adjudication/adjudicated20m-00-04.json",
+        "sha256": "4ed4c164540872217696ff4790266ce95c1349c62f36ef0f52e957243388be12"
+      },
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-02-00/g1/p81",
+      "packet": "behavior-coding-01-04.json",
+      "packet_sha256": "da050c2050afe0ad3ed6d5a4786adc06bd72839bb010437adda3430932264aa7",
+      "pair": "main-02-00",
+      "game": 1,
+      "ply": 81,
+      "family": "petroff-scotch-four-knights",
+      "candidate_color": "black",
+      "actual_result": "draws",
+      "native_conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "played_san": "Ke5",
+      "alternative_san": "b1=Q",
+      "root_fen": "8/1R6/5k1p/K5p1/p5P1/b2R4/1p3P1P/r7 b - - 1 41",
+      "margin": 0.5,
+      "severity": "major",
+      "source_categories_immutable": [
+        "endgame decisions",
+        "opportunity response",
+        "advantage preservation/conversion"
+      ],
+      "query_sources": [
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/2ec65cb1277221584672bae9964708f8142bee11d65ab5a046daf1501b2e2fed/attempts/5eea70e98f2c473695f67102318767be/artifacts/analysis/g001-p081-alternative-attempt0000.json",
+          "sha256": "eadff82aee3a240082dc62f269aec989cf98493e894c6a5c04b31bfee9dfdafd"
+        },
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/ac2ae59cb66344a156cbd9c8bd1dbaa62c81934313ecbfcc0b51d819a12b4b09/attempts/689640babbc040138c55d29175329f94/artifacts/analysis/g001-p081-alternative-attempt0000.json",
+          "sha256": "b788efcd65be5db8f1dec02e3ee229f71f6729bead322024047dc8c0029d9a39"
+        }
+      ],
+      "native_source": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784/attempts/bf77a810ea874838a94ad2949fb04d65/artifacts/pair/report.json.gz",
+        "sha256": "a67d54901892206a0ede5c8462e427f22b363f8c9c53b8ff671821678ad2b86d",
+        "conclusion": {
+          "chess": {
+            "draw": {
+              "claimed": "threefold"
+            }
+          }
+        }
+      },
+      "legal_lines": [
+        [
+          "Ke5",
+          "Rb5+",
+          "Ke4",
+          "Rbd5",
+          "Rf1",
+          "f3+",
+          "Rxf3",
+          "R3d4+",
+          "Ke3",
+          "Rd1",
+          "Bc5",
+          "Rxc5",
+          "a3",
+          "Rc2",
+          "Kf4",
+          "Rc4+",
+          "Ke5",
+          "Rb4",
+          "Rf2",
+          "Re1+",
+          "Kd6",
+          "Rd1+"
+        ],
+        [
+          "b1=Q",
+          "Rxb1",
+          "Rxb1",
+          "Rxa3",
+          "Rb3",
+          "Rxa4",
+          "Ke5",
+          "Rc4",
+          "Rh3",
+          "Kb4",
+          "Rxh2",
+          "Kc3",
+          "Rxf2",
+          "Kd3",
+          "Rf4",
+          "Rc5+",
+          "Kd6",
+          "Rc2",
+          "Rxg4",
+          "Rh2",
+          "Ke5",
+          "Ke2",
+          "Re4+",
+          "Kf3",
+          "Rf4+",
+          "Kg3",
+          "Rf6",
+          "Kh3"
+        ]
+      ],
+      "native_context": [
+        "Ke5",
+        "Re3+",
+        "Kd4",
+        "h3",
+        "Kc4",
+        "Re4+",
+        "Kc3",
+        "Re3+",
+        "Kd4",
+        "Rb8"
+      ],
+      "final_ledger": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-02-adjudication/adjudicated20m-00-04.json",
+        "sha256": "4ed4c164540872217696ff4790266ce95c1349c62f36ef0f52e957243388be12"
+      },
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-02-00/g1/p91",
+      "packet": "behavior-coding-01-04.json",
+      "packet_sha256": "da050c2050afe0ad3ed6d5a4786adc06bd72839bb010437adda3430932264aa7",
+      "pair": "main-02-00",
+      "game": 1,
+      "ply": 91,
+      "family": "petroff-scotch-four-knights",
+      "candidate_color": "black",
+      "actual_result": "draws",
+      "native_conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "played_san": "Kc4",
+      "alternative_san": "b1=Q",
+      "root_fen": "1R6/8/7p/K5p1/p2k2P1/b3R2P/1p3P2/r7 b - - 6 46",
+      "margin": 0.5,
+      "severity": "major",
+      "source_categories_immutable": [
+        "endgame decisions",
+        "opportunity response",
+        "advantage preservation/conversion"
+      ],
+      "query_sources": [
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/add59d0014107b537c15a7a1fa9782b0b6fd0779f96ecff5a6c7c1fc9591d1b6/attempts/b16c9182483742f992db47b5077f47a8/artifacts/analysis/g001-p091-alternative-attempt0000.json",
+          "sha256": "50e5c86ac21f252c166b93d8606f46cfa7eea3d36e28390a1a8bb7de9ffc7f5c"
+        },
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/620e2836b68d83a933e5f45d9fd4d9b8dee0767c7c305ea5637e6df3cd9a99bb/attempts/119afb2523094d729ec543b4d088f522/artifacts/analysis/g001-p091-alternative-attempt0000.json",
+          "sha256": "f06f8cc6f0ccdcfcc522f95ed5b2d463ae0ec17190356e7bd60715ef9307e260"
+        }
+      ],
+      "native_source": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/b3f6611bd0f56a26dd5913402ef00d9d52644caad8151137e535cc0fcac5f784/attempts/bf77a810ea874838a94ad2949fb04d65/artifacts/pair/report.json.gz",
+        "sha256": "a67d54901892206a0ede5c8462e427f22b363f8c9c53b8ff671821678ad2b86d",
+        "conclusion": {
+          "chess": {
+            "draw": {
+              "claimed": "threefold"
+            }
+          }
+        }
+      },
+      "legal_lines": [
+        [
+          "Kc4",
+          "Re4+",
+          "Kc3",
+          "Re3+",
+          "Kd4",
+          "Rd8+",
+          "Kc4",
+          "Rc8+",
+          "Bc5",
+          "Re5",
+          "b1=Q",
+          "Rcxc5+",
+          "Kd3",
+          "Rcd5+",
+          "Kc3",
+          "Rc5+",
+          "Kd2",
+          "Rcd5+",
+          "Kc2",
+          "Rc5+",
+          "Kd2"
+        ],
+        [
+          "b1=Q",
+          "Rxb1",
+          "Rxb1",
+          "Rxa3",
+          "Rb8",
+          "h4",
+          "Kc4",
+          "hxg5",
+          "hxg5",
+          "Ka6",
+          "Kb4",
+          "Ra1",
+          "Rf8",
+          "Rb1+",
+          "Kc4",
+          "Rc1+",
+          "Kb3",
+          "Rb1+",
+          "Kc2",
+          "Re1",
+          "a3",
+          "Re2+",
+          "Kd3",
+          "Ra2"
+        ]
+      ],
+      "native_context": [
+        "Kc4",
+        "Re4+",
+        "Kc3",
+        "Rc8+",
+        "Kd2",
+        "Rd8+",
+        "Kc2",
+        "Re2+",
+        "Kc1",
+        "Re1+"
+      ],
+      "final_ledger": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-02-adjudication/adjudicated20m-00-04.json",
+        "sha256": "4ed4c164540872217696ff4790266ce95c1349c62f36ef0f52e957243388be12"
+      },
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-02-05/g0/p46",
+      "packet": "behavior-coding-01-04.json",
+      "packet_sha256": "da050c2050afe0ad3ed6d5a4786adc06bd72839bb010437adda3430932264aa7",
+      "pair": "main-02-05",
+      "game": 0,
+      "ply": 46,
+      "family": "queens-indian-bogo",
+      "candidate_color": "white",
+      "actual_result": "wins",
+      "native_conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "played_san": "Nf1",
+      "alternative_san": "Bxh7",
+      "root_fen": "1r3r1k/Rbq2ppp/1n1b4/1ppP4/4B3/6P1/1BQNPP1P/R5K1 w - - 6 24",
+      "margin": 0.4925,
+      "severity": "major",
+      "source_categories_immutable": [
+        "tactical calculation",
+        "opportunity response"
+      ],
+      "query_sources": [
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/3a2d7987d64480066db51e7bd71d5e728ee19e766fa2b519e6cfe76624296f45/attempts/c68d3c29e24c493a94f8496b1f3abeed/artifacts/analysis/g000-p046-alternative-attempt0000.json",
+          "sha256": "ed51d9ae7f280b30174488b2b718161da821cf6f2302b249a239eadb536b3f7f"
+        },
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/49821b52e437ca9115d5ab0aec090b28c97690f3a5f47c2ccc2838791895e893/attempts/3efe1f43244741f5aa182312793d75a0/artifacts/analysis/g000-p046-alternative-attempt0000.json",
+          "sha256": "0066307c334b8bb483bc8ef5eb4583823e0444a38275986898d95e93c2d4a9b5"
+        }
+      ],
+      "native_source": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-02/jobs/f99907e274f506073524f4482fedc59a421fae407db25898514d970930c76ca1/attempts/82d9b9ffa11a4222b54620de3bd9dc7b/artifacts/pair/report.json.gz",
+        "sha256": "ee3aa398518f547ec38d0efa6b0be8be1701a71e3dcb254394e3532d1eeab5c9",
+        "conclusion": {
+          "chess": {
+            "checkmate": {
+              "winner": "white"
+            }
+          }
+        }
+      },
+      "legal_lines": [
+        [
+          "Nf1",
+          "f5",
+          "Bxf5",
+          "Nc4",
+          "Bc1",
+          "Be5",
+          "R1a6",
+          "Nd6",
+          "Be6",
+          "b4",
+          "Nd2",
+          "Nb5",
+          "Ne4",
+          "b3",
+          "Qxb3",
+          "Nxa7",
+          "Rxa7",
+          "Bxd5",
+          "Rxc7",
+          "Bxb3",
+          "Rxc5",
+          "Bxe6",
+          "Rxe5",
+          "Bh3",
+          "Ng5",
+          "Rf5",
+          "Rxf5",
+          "Bxf5",
+          "Kg2",
+          "Rb1",
+          "Be3",
+          "Rb2"
+        ],
+        [
+          "Bxh7",
+          "Be5",
+          "Be4",
+          "Na4",
+          "Bxe5",
+          "Qxe5",
+          "Ra3",
+          "Bxd5",
+          "g4",
+          "Rb6",
+          "Bxd5",
+          "Qxd5",
+          "Rh3+",
+          "Rh6",
+          "Rxh6+",
+          "gxh6",
+          "Ra6",
+          "Kg7",
+          "Nf1",
+          "Re8",
+          "Ng3",
+          "Re6",
+          "Nh5+",
+          "Qxh5",
+          "gxh5",
+          "Rxa6",
+          "Qe4",
+          "b4",
+          "Qe5+",
+          "Rf6",
+          "Kf1",
+          "Nc3",
+          "Ke1",
+          "Na4",
+          "h3",
+          "Nc3",
+          "f4",
+          "Nb1",
+          "f5",
+          "c4",
+          "Qc5"
+        ]
+      ],
+      "native_context": [
+        "Nf1",
+        "Na4",
+        "R1xa4",
+        "bxa4",
+        "Ne3",
+        "f6",
+        "Nc4",
+        "Rfd8",
+        "Rxa4",
+        "Qe7"
+      ],
+      "final_ledger": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-02-adjudication/dispositions20m-05-09.json",
+        "sha256": "65646f181c43cd5c48918306b1c9003f9e25347f6653f0e282396ef1dc5d3ceb"
+      },
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-03-02/g1/p31",
+      "packet": "behavior-coding-01-04.json",
+      "packet_sha256": "da050c2050afe0ad3ed6d5a4786adc06bd72839bb010437adda3430932264aa7",
+      "pair": "main-03-02",
+      "game": 1,
+      "ply": 31,
+      "family": "french",
+      "candidate_color": "black",
+      "actual_result": "losses",
+      "native_conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "played_san": "f5",
+      "alternative_san": "f6",
+      "root_fen": "r1bq1k1r/4bp1p/2p1p3/1p2N3/1n1P4/5Q2/PpP2PPP/1K1R1BNR b - - 1 16",
+      "margin": 1.0,
+      "severity": "major",
+      "source_categories_immutable": [
+        "king safety",
+        "pawn structures/breaks"
+      ],
+      "query_sources": [
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/6d09e1e25ba188772b9e8450ec40ad0c349ca7c60ed5837d79765a9b84f4f7d5/attempts/1c1c1baa234f4831b8912ffa52098de9/artifacts/analysis/g001-p031-alternative-attempt0000.json",
+          "sha256": "f12bb36766d131ec44bb4a906955c670bc9652f4583a5a3b533d988fa6c814af"
+        },
+        {
+          "path": "docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/b7ff4cb8c410928d9e5603e892ecff978a98c6291e639b24112bf639e5f80179/attempts/150106226d744b059be8ab07be45d2b7/artifacts/analysis/g001-p031-alternative-attempt0000.json",
+          "sha256": "6283b7d34054c5db1b730203c9ac3e8bfb3e0c064f30485c496a2d73a6d9b498"
+        }
+      ],
+      "native_source": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-03/jobs/aa1396b8befca4439060ddf3f8db6259f97474a5d8cfcb24e73943d799fe4415/attempts/b1f6395aff314503a6aa183901564806/artifacts/pair/report.json.gz",
+        "sha256": "46c0cc010d7d6e8265f89cca655e76c8c18b15e4b8debecd67ebd0cffc7083af",
+        "conclusion": {
+          "chess": {
+            "checkmate": {
+              "winner": "white"
+            }
+          }
+        }
+      },
+      "legal_lines": [
+        [
+          "f5",
+          "Qh5",
+          "Qe8",
+          "Qh6+",
+          "Kg8",
+          "c3",
+          "Nd5",
+          "Rd3",
+          "f4",
+          "Ne2",
+          "Qf8",
+          "Qxf8+",
+          "Bxf8",
+          "g3",
+          "Bd6",
+          "gxf4",
+          "Kf8",
+          "Rg1",
+          "b4",
+          "c4",
+          "Nb6",
+          "c5",
+          "Bxe5",
+          "dxe5",
+          "Nd5",
+          "Rh3"
+        ],
+        [
+          "f6",
+          "Nxc6",
+          "Nxc6",
+          "Bxb5",
+          "Qa5",
+          "a4",
+          "Nb4",
+          "Kxb2",
+          "Nd5",
+          "Ne2",
+          "Ba6",
+          "Ra1",
+          "Bxb5",
+          "axb5",
+          "Qxb5+",
+          "Qb3",
+          "Qxb3+",
+          "Kxb3",
+          "Rb8+",
+          "Kc4",
+          "Rc8+",
+          "Kd3",
+          "Nb4+",
+          "Ke4",
+          "Rxc2",
+          "Rhc1"
+        ]
+      ],
+      "native_context": [
+        "f5",
+        "Bxb5",
+        "Qa5",
+        "a4",
+        "cxb5",
+        "Qh5",
+        "Kg7",
+        "Qf7+",
+        "Kh6",
+        "Qxe7"
+      ],
+      "final_ledger": {
+        "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-03-adjudication/final-dispositions-00-04.json",
+        "sha256": "9321f8cda892b9eb07949f4d7d9dddca0ce67046b76d04f837b7e383e5a1002c"
+      },
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-05-00/g0/p24",
+      "packet": "behavior-coding-05-07.json",
+      "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+      "pair": "main-05-00",
+      "game": 0,
+      "ply": 24,
+      "family": "reti",
+      "candidate_color": "white",
+      "actual_result": "wins",
+      "native_conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "played_san": "Qd3",
+      "alternative_san": "Qb3",
+      "root_fen": "r1b2rk1/pp3pbp/2nN2p1/q3p3/8/2P3P1/P3PPBP/R1BQ1RK1 w - - 4 13",
+      "margin": 0.40049999999999997,
+      "severity": "major",
+      "source_categories_immutable": [
+        "coordination/activity",
+        "tactical calculation"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/47591534f21dc502d9abf1a9541569c6928a258e85bc5c3a1709e9d67395b5b1/attempts/f90850f88c2c422b87cb82dd6a0ae11d/artifacts/analysis/g000-p024-alternative-attempt0000.json",
+          "sha256": "6fdf88cd6fe1c13cf2547c0390851550b311d24a9e917984f160b89112a9ae6e"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/8f4a62b288191af0fd50e472d4e278ef1bb4f6d63b26daec23e55a6e77c206c5/attempts/347a35d2604a440fbb1326bae4f52fa8/artifacts/analysis/g000-p024-alternative-attempt0000.json",
+          "sha256": "95982d2d1871f359c71c022f7597e9cecb82c59ee80bfe7e27982c7e35349ed6"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-05/jobs/412845100754b1bbf6f6094cacb24ec80af0f9feb5414a0a74cc670efe6ff0c0/attempts/7a276421c56a4109837eb5045e9e5db2/artifacts/pair/report.json.gz",
+        "sha256": "a38777c944d05c7d855121d223c3d822f9001e3f72194297a2355c671379b39e"
+      },
+      "legal_lines": {
+        "played": [
+          "Qd3",
+          "Rd8",
+          "Bg5",
+          "Rd7",
+          "Bxc6",
+          "bxc6",
+          "Rad1",
+          "Qxa2",
+          "c4",
+          "h6",
+          "Qe4",
+          "hxg5",
+          "Nxc8",
+          "Rc7",
+          "Nd6",
+          "a5",
+          "Nb5",
+          "Rcc8",
+          "Nd6"
+        ],
+        "alternative": [
+          "Qb3",
+          "e4",
+          "Nxe4",
+          "Rb8",
+          "a4",
+          "Be6",
+          "Qa3",
+          "Ne5",
+          "Bf4",
+          "h6",
+          "h4",
+          "Bc4",
+          "Rfd1",
+          "b5",
+          "Qc5",
+          "Rfc8",
+          "Qd6",
+          "Rb6",
+          "Qe7",
+          "Re6",
+          "axb5",
+          "Qxb5"
+        ]
+      },
+      "native_context": "22:Nd6 23:Nc6 24:Qd3 25:Qc7 26:Rb1 27:Rd8 28:Rd1",
+      "final_ledger": "batch-05-adjudication/final-dispositions-00-04.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-05-01/g1/p85",
+      "packet": "behavior-coding-05-07.json",
+      "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+      "pair": "main-05-01",
+      "game": 1,
+      "ply": 85,
+      "family": "queens-gambit-declined",
+      "candidate_color": "black",
+      "actual_result": "draws",
+      "native_conclusion": {
+        "chess": {
+          "draw": "dead_position"
+        }
+      },
+      "played_san": "g5",
+      "alternative_san": "Ke5",
+      "root_fen": "8/8/6p1/p4k1p/P7/2b1BP2/6K1/8 b - - 4 43",
+      "margin": 0.5,
+      "severity": "major",
+      "source_categories_immutable": [
+        "endgame decisions",
+        "pawn structures/breaks"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/81b1ed373560fcea9b224f0fd723bcf8d894a50c86d1aee62e37ee5ed5466a68/attempts/063a119277ed464ca43c270b1be097fd/artifacts/analysis/g001-p085-alternative-attempt0000.json",
+          "sha256": "c79479d683b39cc429933d3ff97d90e2b11d254639e75aa8d57595a3a8adff56"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/c77d30ae980a7d8d8699f5d1a8b54927d258b21815bd7a2380f4e3cd42075120/attempts/0db17a07e9af4441980ac214cb523732/artifacts/analysis/g001-p085-alternative-attempt0000.json",
+          "sha256": "3d006bc0d384d2f362e7103ac06d83abd6341e82466fa0e5f08ea3bb84bb7a79"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-05/jobs/a0f99e9b8e72bc96ae38210fe072695bbdc477ff74af6ef78e475c91a171c603/attempts/62188c1f1c674410aa3d5e693f6b0478/artifacts/pair/report.json.gz",
+        "sha256": "a54907d107be46fb426fd4ab5fe4b851df83d0851c54c5124057bc8a1f3746e0"
+      },
+      "legal_lines": {
+        "played": [
+          "g5",
+          "Kf2",
+          "h4",
+          "Kg1",
+          "Be5",
+          "Bb6",
+          "Kf4",
+          "Kf2",
+          "h3",
+          "Be3+",
+          "Kf5",
+          "Bb6"
+        ],
+        "alternative": [
+          "Ke5",
+          "Bb6",
+          "Kd5",
+          "f4",
+          "Kc4",
+          "Kf3",
+          "Kb3",
+          "Ke4",
+          "h4",
+          "Kf3",
+          "Kxa4",
+          "Kg4",
+          "Kb5",
+          "Bd8",
+          "a4",
+          "Be7",
+          "Bb4",
+          "Bxh4",
+          "Kc4",
+          "Bf6",
+          "a3",
+          "Kg5",
+          "Bc3",
+          "Bxc3",
+          "Kxc3",
+          "Kxg6",
+          "a2",
+          "Kf7",
+          "a1=Q",
+          "f5",
+          "Kd3",
+          "Kg6",
+          "Ke4",
+          "f6",
+          "Qe5",
+          "f7"
+        ]
+      },
+      "native_context": "83:Bc3 84:Be3 85:g5 86:Kh3 87:Kg6 88:Kg2 89:Be1",
+      "final_ledger": "batch-05-adjudication/final-dispositions-00-04.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-05-04/g0/p70",
+      "packet": "behavior-coding-05-07.json",
+      "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+      "pair": "main-05-04",
+      "game": 0,
+      "ply": 70,
+      "family": "catalan",
+      "candidate_color": "white",
+      "actual_result": "losses",
+      "native_conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "played_san": "Kf3",
+      "alternative_san": "g5",
+      "root_fen": "8/4b2p/4Pp2/1ppk1P1N/2p2KPP/B1P5/8/5n2 w - - 7 36",
+      "margin": 0.5,
+      "severity": "major",
+      "source_categories_immutable": [
+        "endgame decisions",
+        "pawn structures/breaks"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/f8e8f919d76cbbd5b69e444a2f9e93861d7619fd841596f5ded6b9f741faf119/attempts/6b47f129238d49ba9bc889c00b5342d2/artifacts/analysis/g000-p070-alternative-attempt0000.json",
+          "sha256": "c23dca21b49c1f7a920487408eac063b3f33e37da9bbf30631cf023c2455ce00"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/bbebc73fa769d0b59d153bb754c11298672287f3ec4a6eb1832256444d075b34/attempts/07ea81845bc84d39ad1e95b82aa441e1/artifacts/analysis/g000-p070-alternative-attempt0000.json",
+          "sha256": "ddec90e18b96783800527236da3b18a87ba78673b92412240dbdab2ae0139117"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-05/jobs/2a9ff0ceb6223df8f0443a71c7358c40e90cdbfff041ecc5625112173368a495/attempts/78aba04cf7f94fe283a512b725ced1fa/artifacts/pair/report.json.gz",
+        "sha256": "d1756b6d8c26d1823b5c5628de9207917c342e4f52799e471a9e129030a64163"
+      },
+      "legal_lines": {
+        "played": [
+          "Kf3",
+          "Nd2+",
+          "Ke3",
+          "Ne4",
+          "Nf4+",
+          "Ke5",
+          "Bb2",
+          "Bf8",
+          "Kf3",
+          "Nd2+",
+          "Ke3",
+          "Nf1+",
+          "Kf3"
+        ],
+        "alternative": [
+          "g5",
+          "Bd6+",
+          "Kf3",
+          "Ke5",
+          "g6",
+          "hxg6",
+          "fxg6",
+          "Nh2+",
+          "Ke2",
+          "Ng4",
+          "Bc1",
+          "Kxe6",
+          "Ng7+",
+          "Ke5",
+          "Ne8",
+          "Bf8",
+          "g7",
+          "Bxg7",
+          "Nxg7",
+          "b4",
+          "h5",
+          "b3",
+          "Kd1",
+          "f5",
+          "h6",
+          "b2",
+          "Bxb2",
+          "Nxh6",
+          "Ke2",
+          "Nf7",
+          "Ba3",
+          "Kf6"
+        ]
+      },
+      "native_context": "68:Kf4 69:Kd5 70:Kf3 71:Nd2+ 72:Ke3 73:Ne4 74:Nf4+",
+      "final_ledger": "batch-05-adjudication/final-dispositions-00-04.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-05-04/g0/p84",
+      "packet": "behavior-coding-05-07.json",
+      "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+      "pair": "main-05-04",
+      "game": 0,
+      "ply": 84,
+      "family": "catalan",
+      "candidate_color": "white",
+      "actual_result": "losses",
+      "native_conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "played_san": "h6",
+      "alternative_san": "Ng3",
+      "root_fen": "8/4b3/3nPp2/1pp1kP1P/2p4P/2P2K2/1B2N3/8 w - - 1 43",
+      "margin": 0.5,
+      "severity": "major",
+      "source_categories_immutable": [
+        "endgame decisions",
+        "pawn structures/breaks"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/4ca79c86b5200b65175a5da579cc5b904674b758ec737fe6fe38b25980287b53/attempts/4869b3c2d7a64332a14d8048a8635697/artifacts/analysis/g000-p084-alternative-attempt0000.json",
+          "sha256": "9a793ffdb8dcf3ad524c7613d1332a5b98d57b5c26f8c79e0bb9d0a1a3037861"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-05/jobs/a52010724ba43cab5f5e4d2edcc6902623a4669f8b0da98d10354687af8aef3d/attempts/872ae7ed1ba647f8844f74a0d3622f70/artifacts/analysis/g000-p084-alternative-attempt0000.json",
+          "sha256": "724d5d6b0d28c82919ab9f8ab8f6e33acc58aed6ed893866fc70b7864b4b2d4c"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-05/jobs/2a9ff0ceb6223df8f0443a71c7358c40e90cdbfff041ecc5625112173368a495/attempts/78aba04cf7f94fe283a512b725ced1fa/artifacts/pair/report.json.gz",
+        "sha256": "d1756b6d8c26d1823b5c5628de9207917c342e4f52799e471a9e129030a64163"
+      },
+      "legal_lines": {
+        "played": [
+          "h6",
+          "Nxf5",
+          "Bc1",
+          "Nxh4+",
+          "Kg4",
+          "Ng6",
+          "h7",
+          "Nh8",
+          "Nf4",
+          "b4",
+          "Kf3",
+          "b3",
+          "Ng2",
+          "Kxe6",
+          "Ne3",
+          "f5",
+          "Nxc4",
+          "Kd5",
+          "Nd2",
+          "c4",
+          "Kf4",
+          "Bf6",
+          "Bb2",
+          "Nf7",
+          "Kxf5",
+          "Bh8",
+          "Nf1",
+          "Nd6+",
+          "Kf4",
+          "Bf6",
+          "Nd2",
+          "Be5+",
+          "Kf3",
+          "Nf7",
+          "Kg4",
+          "Bh8",
+          "Kf5",
+          "Nh6+",
+          "Kg5",
+          "Nf7+"
+        ],
+        "alternative": [
+          "Ng3",
+          "Bf8",
+          "Kg4",
+          "Bh6",
+          "Ba3",
+          "Kd5",
+          "Kf3",
+          "Ne8",
+          "Ne4",
+          "Ke5",
+          "e7",
+          "Kxf5",
+          "Bxc5",
+          "Ke6",
+          "Nd6",
+          "Nxd6",
+          "Bxd6",
+          "Kf7",
+          "Ke4",
+          "Bd2",
+          "Bb4",
+          "Bc1",
+          "Kd5",
+          "Bh6",
+          "Kc6",
+          "Ke8",
+          "Kxb5",
+          "f5",
+          "Kxc4",
+          "f4",
+          "Kd3",
+          "f3",
+          "Bc5",
+          "Bg7"
+        ]
+      },
+      "native_context": "82:gxh5 83:Nd6 84:h6 85:Nxf5 86:h7 87:Nxh4+ 88:Kg3",
+      "final_ledger": "batch-05-adjudication/final-dispositions-00-04.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-06-02/g0/p78",
+      "packet": "behavior-coding-05-07.json",
+      "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+      "pair": "main-06-02",
+      "game": 0,
+      "ply": 78,
+      "family": "queens-pawn-other",
+      "candidate_color": "white",
+      "actual_result": "draws",
+      "native_conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "played_san": "R8a7",
+      "alternative_san": "Rxc8",
+      "root_fen": "R1b1q3/1pnr4/2r4k/3pPQ2/2pP3N/2P5/5PP1/R5K1 w - - 6 40",
+      "margin": 1.0,
+      "severity": "major",
+      "source_categories_immutable": [
+        "tactical calculation",
+        "exchanges"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-06/jobs/ad87bf54ab3dd8e3bf7a5442f07475e4aa8eb4df86af6e8a244782e23844f41c/attempts/483f494e2976438aab90a2191a05cfab/artifacts/analysis/g000-p078-alternative-attempt0000.json",
+          "sha256": "5db7a9b78883a67f111c7fe688ed7b1ab3475614f4426b78a386833759dac1b8"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-06/jobs/27ba8b1cfab1831df9f6b615e6152ddf7c0d5c78fdb777448c528ebead0a9004/attempts/21ee84449d4246488b30ec87ad7da562/artifacts/analysis/g000-p078-alternative-attempt0000.json",
+          "sha256": "b3192147bdec966170641987e476b70106d289580219c1a1b8148fbc994a3824"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-06/jobs/b8c6e9579aca16e018409a3971dd17d67b885f10fe1ab8bcddbbffb0f8593aff/attempts/0a320151280842c3ae9a66521f71f7cb/artifacts/pair/report.json.gz",
+        "sha256": "ec93bddf70b5d3ce918d58b16e5fb1d9da068fd4f238f7d1bb9bcfee66c24ea0"
+      },
+      "legal_lines": {
+        "played": [
+          "R8a7",
+          "Rf7",
+          "Qb1",
+          "Qd8",
+          "g3",
+          "Kg7",
+          "R7a2",
+          "Qg5",
+          "Qf1",
+          "Kh7",
+          "Qb1+",
+          "Kh8",
+          "Qc1",
+          "Qg7",
+          "Qe3",
+          "Rh6",
+          "Kf1",
+          "Bh3+",
+          "Ke2",
+          "Kh7",
+          "f4",
+          "Ne6",
+          "Rg1",
+          "Bg4+",
+          "Kf1",
+          "Ng5",
+          "Kg2",
+          "Ne4",
+          "Rh1",
+          "Bh5"
+        ],
+        "alternative": [
+          "Rxc8",
+          "Qxc8",
+          "Re1",
+          "Qe8",
+          "Re3",
+          "Rf7",
+          "Qh3",
+          "Kg7",
+          "Rg3+",
+          "Kf8",
+          "Ng6+",
+          "Rxg6",
+          "Rxg6",
+          "Ke7",
+          "Rd6",
+          "Qa8",
+          "Kh2",
+          "Qb8",
+          "Rd7+",
+          "Ke8",
+          "Qh8+",
+          "Kxd7",
+          "Qxb8",
+          "Rxf2",
+          "Qxb7",
+          "Rf7",
+          "Qb1",
+          "Rf2",
+          "Kg1",
+          "Rf4",
+          "Qh7+",
+          "Kc8",
+          "Qh6",
+          "Re4",
+          "g3",
+          "Kb7"
+        ]
+      },
+      "native_context": "76:Ra8 77:Nc7 78:R8a7 79:Nb5 80:Ra8",
+      "final_ledger": "batch-06-adjudication/final-dispositions-00-04.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-06-08/g0/p44",
+      "packet": "behavior-coding-05-07.json",
+      "packet_sha256": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+      "pair": "main-06-08",
+      "game": 0,
+      "ply": 44,
+      "family": "kings-indian",
+      "candidate_color": "white",
+      "actual_result": "losses",
+      "native_conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "played_san": "Qxe2",
+      "alternative_san": "Nxd4",
+      "root_fen": "2q3k1/1p1n1p1p/6p1/2pP3n/2Pb2b1/2N2NP1/4rP1P/B2Q1RK1 w - - 0 23",
+      "margin": 0.5095,
+      "severity": "major",
+      "source_categories_immutable": [
+        "tactical calculation",
+        "exchanges"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-06/jobs/82e72d1a475ff7a4f55058fbca4742d292f9acdc033e3ee0af5ee8bd82ef2182/attempts/82982d5162184d33b7c872d740654bfb/artifacts/analysis/g000-p044-alternative-attempt0000.json",
+          "sha256": "f6dfe7acafa269f85cf0dff7d45f146a4e652bc59563b3f22a52477fcafa4ab4"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-06/jobs/d1c1bc248720da042add05eb8422822087d8b0e7f2db4cfb5fdfb0e94374c62d/attempts/3a40a362182f4eb3b183ed72f4dd854a/artifacts/analysis/g000-p044-alternative-attempt0000.json",
+          "sha256": "3d352d25b1dc85f2c534bb7e574e410d42e0384974becd356cf3da03bc9d3cd1"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-06/jobs/326678f9bb8ed54fa8a5b39ccce1ae766f1833247bbafad7973ea810d3e2bade/attempts/af4238a4346a4902bccfd158b348d580/artifacts/pair/report.json.gz",
+        "sha256": "a2792f34b2663913e9c6e55bcaec8472736be937fef6c1f0a176864f607ff20f"
+      },
+      "legal_lines": {
+        "played": [
+          "Qxe2",
+          "Ne5",
+          "Nxd4",
+          "Bxe2",
+          "Ndxe2",
+          "Nxc4",
+          "Rb1",
+          "Nf6",
+          "h3",
+          "Nd6",
+          "g4",
+          "h5",
+          "Nb5",
+          "Nde8",
+          "d6",
+          "hxg4",
+          "hxg4",
+          "Qxg4+",
+          "Ng3",
+          "Qf4",
+          "Bxf6",
+          "Nxf6",
+          "Rd1",
+          "Ng4",
+          "Rf1",
+          "Qf3",
+          "Nc7",
+          "Qd3",
+          "Re1",
+          "Nf6"
+        ],
+        "alternative": [
+          "Nxd4",
+          "Re4",
+          "Nf3",
+          "Rxc4",
+          "Qd3",
+          "b5",
+          "Qe3",
+          "Bxf3",
+          "Qxf3",
+          "Qa8",
+          "Nxb5",
+          "Qb8",
+          "Nc3",
+          "Nhf6",
+          "Ne2",
+          "Qd6",
+          "Nf4",
+          "Ra4",
+          "Qd1",
+          "Qa6",
+          "d6",
+          "Qc6",
+          "Qe2",
+          "Qxd6",
+          "Rd1",
+          "Qb8"
+        ]
+      },
+      "native_context": "42:Be2 43:Rxe2 44:Qxe2 45:Ne5 46:Nxe5 47:Bxe2 48:Nxe2",
+      "final_ledger": "batch-06-adjudication/final-dispositions-05-09.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-08-01/g0/p28",
+      "packet": "behavior-coding-08-10.json",
+      "packet_sha256": "7f907cb38613156fcfc37087346dfb9ffd88c1dc3e64840697d60cb002a58a14",
+      "pair": "main-08-01",
+      "game": 0,
+      "ply": 28,
+      "family": "spanish",
+      "candidate_color": "white",
+      "actual_result": "losses",
+      "native_conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "played_san": "Qxh7",
+      "alternative_san": "Ng3",
+      "root_fen": "2k1r3/p1p1qp1p/2prbp1Q/2b1p3/Pp2P3/3P1N1P/1PP1NPP1/R4RK1 w - - 0 15",
+      "margin": 0.5835,
+      "severity": "major",
+      "source_categories_immutable": [
+        "tactical calculation",
+        "quiet defense"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-08/jobs/9abf67fef2df9ff32110f5fecb56657a86100908c2037e2ab4e7a9dc8870adca/attempts/582cea406cce4b3da8371f1dcb221852/artifacts/analysis/g000-p028-alternative-attempt0000.json",
+          "sha256": "abcf56f27dfe3700877949a2797fa91c6f90fbea80212b9a1be06807811f34a5"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-08/jobs/d013cf6b6c335449353877241e2b3cfc4a6d7ca9456b68e78d1ee27da42e1313/attempts/d50e56d1713a4954976cef49612a3d71/artifacts/analysis/g000-p028-alternative-attempt0000.json",
+          "sha256": "08e8f1a859948bcd5c7b998fd2b52d40b2220a93f16ab95d86d7d5098fee340d"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-08/jobs/7f4d88cde8f771bafc89c5f8e366ee9e42fdad2ec3884e54b139deaaa143e789/attempts/d0296090189a4262bf40c8bd42928279/artifacts/pair/report.json.gz",
+        "sha256": "d2fa3b05f83df018819e9cada4f138ea85bfc3fbc9e73a09c45e85d82ce00ce6"
+      },
+      "legal_lines": {
+        "played": [
+          "Qxh7",
+          "Rdd8",
+          "d4",
+          "Rh8",
+          "Qg7",
+          "Rdg8",
+          "Qxh8",
+          "Rxh8",
+          "dxc5",
+          "Rg8",
+          "Kh2",
+          "f5",
+          "exf5",
+          "Bxf5",
+          "Rae1",
+          "f6",
+          "c3",
+          "Qxc5",
+          "Rd1",
+          "Qc4",
+          "Ng3",
+          "Bh7"
+        ],
+        "alternative": [
+          "Ng3",
+          "Rg8",
+          "Kh2",
+          "b3",
+          "Qd2",
+          "Rgd8",
+          "Nh4",
+          "R6d7",
+          "Qe2",
+          "Qf8",
+          "Nhf5",
+          "Kb7",
+          "a5",
+          "a6",
+          "Rfc1",
+          "Ba7",
+          "Ra3",
+          "Bc5",
+          "Ra4",
+          "Ba7",
+          "Nh5",
+          "Qc5",
+          "Nfg7",
+          "Qxf2",
+          "Qxf2",
+          "Bxf2",
+          "Nxe6",
+          "fxe6",
+          "Rb4+",
+          "Kc8",
+          "Rxb3",
+          "Rf8"
+        ]
+      },
+      "native_context": "26:a4 27:b4 28:Qxh7 29:Rdd8 30:d4 31:Rh8 32:Qg7",
+      "final_ledger": "batch-08-adjudication/final-dispositions-00-04.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-08-03/g1/p69",
+      "packet": "behavior-coding-08-10.json",
+      "packet_sha256": "7f907cb38613156fcfc37087346dfb9ffd88c1dc3e64840697d60cb002a58a14",
+      "pair": "main-08-03",
+      "game": 1,
+      "ply": 69,
+      "family": "other-flank-indian-dutch",
+      "candidate_color": "black",
+      "actual_result": "losses",
+      "native_conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "played_san": "Qxh3+",
+      "alternative_san": "Rf8",
+      "root_fen": "7r/2pk4/P1p3nr/2R1p2q/P2pP1n1/5N1P/3QR3/6NK b - - 2 35",
+      "margin": 0.5,
+      "severity": "major",
+      "source_categories_immutable": [
+        "tactical calculation",
+        "exchanges",
+        "quiet defense"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-08/jobs/52412afcba0b74448b7a309b3da72d7c362b6ee8a2584554559af23c47b2358c/attempts/a6fc754020fc4439b4044f4abc6aa60e/artifacts/analysis/g001-p069-alternative-attempt0000.json",
+          "sha256": "de386ce6dca938fce8fab5eba418641cfe3cc3efafbde4280c8088b86b177f40"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-08/jobs/5b4fa8baa97f8d31cec89b1a0366b0301326ae54f89fdb28ef94bd7da36800f0/attempts/6500db3e6d2741d4aea3179afee5d53d/artifacts/analysis/g001-p069-alternative-attempt0000.json",
+          "sha256": "2360fd045323fe41246548f4d441637db39388fa36e9c645d6c26daac2d52500"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-08/jobs/704d56d2241e711a5928f423bfbf1aefc44056ba79f43a56d9b28784e9c5c2c7/attempts/4a7abf93af5341d58b5edc53665e52d9/artifacts/pair/report.json.gz",
+        "sha256": "2889bad2cce90b5efef39251c8918be02452bd85db0f4864b156906f0456c0f3"
+      },
+      "legal_lines": {
+        "played": [
+          "Qxh3+",
+          "Nxh3",
+          "Rxh3+",
+          "Rh2",
+          "Nxh2",
+          "Nxh2",
+          "d3",
+          "Rc1",
+          "Nf4",
+          "Qf2",
+          "c5",
+          "a7",
+          "c4",
+          "a5",
+          "R3h5",
+          "a8=Q",
+          "Rxa8",
+          "Rxc4",
+          "Rah8",
+          "Rc1",
+          "Kc8",
+          "Rb1",
+          "R8h6",
+          "Rb2",
+          "Rg5",
+          "Qc5",
+          "Ne2",
+          "Qf8+",
+          "Kd7",
+          "Qf7+",
+          "Kd6",
+          "Qd5+",
+          "Ke7",
+          "Qc5+",
+          "Kd7",
+          "Qb5+",
+          "Ke6"
+        ],
+        "alternative": [
+          "Rf8",
+          "Nxd4",
+          "Nf4",
+          "Rxc6",
+          "Nxe2",
+          "Ne6+",
+          "Nd4",
+          "Nxf8+",
+          "Kxc6",
+          "Qc3+",
+          "Kb6",
+          "Nd7+",
+          "Kxa6",
+          "Qxc7",
+          "Nf2+",
+          "Kh2",
+          "Nf3+",
+          "Nxf3",
+          "Qxh3+",
+          "Kg1",
+          "Qh1+",
+          "Kxf2",
+          "Rh2+",
+          "Ke3",
+          "Re2+",
+          "Kxe2",
+          "Qd1+",
+          "Ke3",
+          "Qd2+",
+          "Nxd2"
+        ]
+      },
+      "native_context": "67:Ng6 68:Qd2 69:Qxh3+ 70:Nxh3 71:Rxh3+ 72:Kg1 73:Rxf3",
+      "final_ledger": "batch-08-adjudication/final-dispositions-00-04.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-09-01/g0/p132",
+      "packet": "behavior-coding-08-10.json",
+      "packet_sha256": "7f907cb38613156fcfc37087346dfb9ffd88c1dc3e64840697d60cb002a58a14",
+      "pair": "main-09-01",
+      "game": 0,
+      "ply": 132,
+      "family": "spanish",
+      "candidate_color": "white",
+      "actual_result": "draws",
+      "native_conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "played_san": "e6",
+      "alternative_san": "Kf4",
+      "root_fen": "1b6/1p6/k7/3NP1r1/P7/4RKP1/8/8 w - - 9 67",
+      "margin": 0.5,
+      "severity": "major",
+      "source_categories_immutable": [
+        "endgame decisions",
+        "pawn structures/breaks"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-09/jobs/87b4d23c1ac9a4655f0b480ae2efd100e65f432abd7bb9494c21a4699f70715e/attempts/eae31f78e18143cb9b58bcb651489e18/artifacts/analysis/g000-p132-alternative-attempt0000.json",
+          "sha256": "90959c78e856716440e12f7311348e61e821378ad8676e705421487621a5d2f1"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-09/jobs/4730ec4a36ea8078f9d6a61e02f8441b9b1fc8fb083fdba0c4b5f56d30dcc889/attempts/cd081b46af5c497fb3d12d72e4494a6c/artifacts/analysis/g000-p132-alternative-attempt0000.json",
+          "sha256": "2fd042b8b5a1f4c86e76c44fa191e4ecc460b970840bd0e0433db305891c2d6f"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-09/jobs/759ee6b4db8d20f30409ee6dacf6bb92b447304c2292282f88e1c712dcc5c554/attempts/7fbe4e48ed224b6e8b586e43f0898ba7/artifacts/pair/report.json.gz",
+        "sha256": "30f9c3c6d5106c8252fc63669832df452308925a22292a7511948f8d3b00b51e"
+      },
+      "legal_lines": {
+        "played": [
+          "e6",
+          "Rxg3+",
+          "Ke4",
+          "Rxe3+",
+          "Nxe3",
+          "Bd6",
+          "Kd3",
+          "b5",
+          "Nf5",
+          "Bf8",
+          "axb5+",
+          "Kxb5",
+          "Ke4",
+          "Kc6",
+          "Ke5",
+          "Bc5",
+          "Kf6",
+          "Kd5",
+          "Ng7",
+          "Bf2",
+          "Kf7",
+          "Bh4",
+          "Nf5",
+          "Bd8",
+          "Ne7+",
+          "Kd6",
+          "Ng6",
+          "Kd5"
+        ],
+        "alternative": [
+          "Kf4",
+          "Rg7",
+          "Kf5",
+          "Bxe5",
+          "Kxe5",
+          "Ka5",
+          "Nc3",
+          "Rg8",
+          "Kf4",
+          "Rf8+",
+          "Kg5",
+          "Rg8+",
+          "Kf5",
+          "Rf8+",
+          "Ke4",
+          "Re8+",
+          "Kd3",
+          "Rd8+",
+          "Kc4",
+          "Rc8+",
+          "Kb3",
+          "Rg8",
+          "Ne2",
+          "Rg4"
+        ]
+      },
+      "native_context": "130:Kf3 131:Rg5 132:e6 133:Rxg3+ 134:Ke4 135:Rxe3+ 136:Nxe3",
+      "final_ledger": "batch-09-adjudication/final-dispositions-00-04.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-10-01/g0/p72",
+      "packet": "behavior-coding-08-10.json",
+      "packet_sha256": "7f907cb38613156fcfc37087346dfb9ffd88c1dc3e64840697d60cb002a58a14",
+      "pair": "main-10-01",
+      "game": 0,
+      "ply": 72,
+      "family": "reti",
+      "candidate_color": "white",
+      "actual_result": "draws",
+      "native_conclusion": {
+        "chess": {
+          "draw": {
+            "claimed": "threefold"
+          }
+        }
+      },
+      "played_san": "Bxf5",
+      "alternative_san": "Nd7",
+      "root_fen": "2r3qk/4bb1p/R1n2r2/p1Np1p2/3P4/P2BPQ2/3B1P2/4K2R w K - 5 37",
+      "margin": 1.0,
+      "severity": "major",
+      "source_categories_immutable": [
+        "tactical calculation",
+        "exchanges"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-10/jobs/dc4d304a3e749895da150f70f454b382af9775ce3a29a1ade4f74476e5e60c0a/attempts/75cbc30700d5405c90ebb347fbde2cf9/artifacts/analysis/g000-p072-alternative-attempt0000.json",
+          "sha256": "e9b9a4b037848b0018962ce59012a3bb32015a9a2ccab535dca61621aefbf901"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-10/jobs/a13c27e7a05bb4c923572669a744314212f515070b29fe9703f6c2f71a081b7a/attempts/0ff0ed4fe7aa48cd9cf6e6e66d1d1fc4/artifacts/analysis/g000-p072-alternative-attempt0000.json",
+          "sha256": "c66f7cc7bdee4979c135e63bff593a95b064db4b8a57f57bf0ef85800bae2dff"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-10/jobs/b17c907f7ad10bee1a29f76d0a9b382f0f8c0cd177a2472b00a30c26cc150f47/attempts/7c9529203da54d62a486d6c9007bdccd/artifacts/pair/report.json.gz",
+        "sha256": "3269e5d0401a16f37e165a67f1df9ab126efe93135244243ad8418b09378a381"
+      },
+      "legal_lines": {
+        "played": [
+          "Bxf5",
+          "Bg6",
+          "Bxc8",
+          "Rxf3",
+          "Rxc6",
+          "Bc2",
+          "Ba6",
+          "Qg2",
+          "Rf1",
+          "Bf5",
+          "Ne6",
+          "Bxe6",
+          "Rxe6",
+          "Bh4",
+          "Kd1",
+          "Rxf2",
+          "Rxf2",
+          "Bxf2",
+          "Be2",
+          "a4",
+          "Re8+",
+          "Kg7",
+          "Re7+",
+          "Kg8",
+          "Re5",
+          "Bh4",
+          "Bb4",
+          "Kg7",
+          "Kd2",
+          "Qf2",
+          "Kd1",
+          "h6",
+          "Re6",
+          "Qg1+",
+          "Kc2",
+          "Qh2",
+          "Kd2",
+          "Qh1",
+          "Kc2",
+          "Qh3",
+          "Re5",
+          "Bf6",
+          "Re8",
+          "Qd7"
+        ],
+        "alternative": [
+          "Nd7",
+          "Rd6",
+          "Kf1",
+          "Rc7",
+          "Nc5",
+          "Bg6",
+          "Qf4",
+          "Rc8",
+          "Bxa5",
+          "Qf7",
+          "Bd2",
+          "Rf6",
+          "Bb5",
+          "Qg7",
+          "a4",
+          "Bd6",
+          "Qh6",
+          "Qxh6",
+          "Rxh6",
+          "f4",
+          "Rh4",
+          "fxe3",
+          "Bxe3",
+          "Be7",
+          "a5",
+          "Be8",
+          "Ba4",
+          "Rg6",
+          "Rh3",
+          "Kg8",
+          "Rh5"
+        ]
+      },
+      "native_context": "70:Qf3 71:Rf6 72:Bxf5 73:Bg6 74:Bxc8 75:Rxf3 76:Rxc6",
+      "final_ledger": "batch-10-adjudication/final-dispositions-00-04.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-10-04/g0/p22",
+      "packet": "behavior-coding-08-10.json",
+      "packet_sha256": "7f907cb38613156fcfc37087346dfb9ffd88c1dc3e64840697d60cb002a58a14",
+      "pair": "main-10-04",
+      "game": 0,
+      "ply": 22,
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "candidate_color": "white",
+      "actual_result": "losses",
+      "native_conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "black"
+          }
+        }
+      },
+      "played_san": "Bh6",
+      "alternative_san": "e5",
+      "root_fen": "r1b2rk1/2q1bppp/p1pppn2/6B1/4PP2/2N3Q1/PPP3PP/2KR1B1R w - - 0 12",
+      "margin": 0.6085,
+      "severity": "major",
+      "source_categories_immutable": [
+        "pawn structures/breaks",
+        "tactical calculation"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-10/jobs/f2fb9d03eb96d7a47ff7f651655206a7950483e9e4279873cdb127b001e401aa/attempts/b60ff4f55a24477bae87ab107349bd52/artifacts/analysis/g000-p022-alternative-attempt0000.json",
+          "sha256": "03777a61c056e6064c22987f08cc694152890c83b5662b300c64f288ed813c50"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-10/jobs/0de24bcbb5fcb0a87907d202c549fef2db7e748c78a06ca98af2a0ffa3b16ef5/attempts/fec495bd40144d679f675d56e1ca0451/artifacts/analysis/g000-p022-alternative-attempt0000.json",
+          "sha256": "1a3400be6796fe3959f98715e681a8fbb0782cf395a4737a7f786306b35fb48c"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-10/jobs/6a1e342ccfcfb8ca4a46375593935535dd712a5ab706970f4713500bb3a2bd08/attempts/97b5577d8b83476db244cd4f1ed0e639/artifacts/pair/report.json.gz",
+        "sha256": "9239024f45ca2d80fd048bbad462a6ebb4d81652fdba988d60da697524a874af"
+      },
+      "legal_lines": {
+        "played": [
+          "Bh6",
+          "Ne8",
+          "Bg5",
+          "f6",
+          "Bh4",
+          "Rb8",
+          "f5",
+          "Qb7",
+          "b3",
+          "exf5",
+          "exf5",
+          "d5",
+          "Qf3",
+          "Nd6",
+          "Bg3",
+          "Qb4",
+          "Nb1",
+          "Re8",
+          "Bd3",
+          "Bf8",
+          "Rhe1",
+          "Bd7",
+          "c3",
+          "Qa5",
+          "Kb2",
+          "Rb7",
+          "Bf4",
+          "Rxe1",
+          "Rxe1",
+          "Nc4+",
+          "Bxc4",
+          "dxc4",
+          "g4",
+          "cxb3",
+          "axb3",
+          "h5",
+          "h3",
+          "Qa4",
+          "Nd2"
+        ],
+        "alternative": [
+          "e5",
+          "Ne8",
+          "Ne4",
+          "f6",
+          "exf6",
+          "Nxf6",
+          "Bxf6",
+          "Rxf6",
+          "Nxf6+",
+          "Bxf6",
+          "c3",
+          "d5",
+          "Bd3",
+          "Rb8",
+          "Rd2",
+          "c5",
+          "Re1",
+          "Bd7",
+          "Ree2",
+          "a5",
+          "a3",
+          "Rf8",
+          "Kb1",
+          "g6",
+          "h4",
+          "Bg7",
+          "h5",
+          "Qxf4",
+          "Qe1",
+          "Qg4",
+          "hxg6",
+          "hxg6",
+          "Rf2",
+          "Re8"
+        ]
+      },
+      "native_context": "20:Nxc6 21:bxc6 22:Bh6 23:Ne8 24:Bd3 25:Kh8 26:Bg5",
+      "final_ledger": "batch-10-adjudication/final-dispositions-00-04.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    },
+    {
+      "root_id": "main-10-08/g1/p117",
+      "packet": "behavior-coding-08-10.json",
+      "packet_sha256": "7f907cb38613156fcfc37087346dfb9ffd88c1dc3e64840697d60cb002a58a14",
+      "pair": "main-10-08",
+      "game": 1,
+      "ply": 117,
+      "family": "pirc-modern-other-semiopen",
+      "candidate_color": "black",
+      "actual_result": "losses",
+      "native_conclusion": {
+        "chess": {
+          "checkmate": {
+            "winner": "white"
+          }
+        }
+      },
+      "played_san": "Ra7",
+      "alternative_san": "Be7",
+      "root_fen": "r7/5Pk1/5bp1/2R4p/7P/p4KP1/B1P5/8 b - - 0 59",
+      "margin": 0.5,
+      "severity": "major",
+      "source_categories_immutable": [
+        "endgame decisions",
+        "exchanges",
+        "quiet defense"
+      ],
+      "query_sources": {
+        "played": {
+          "path": "local-cache/msh161-primary-v1-batch-10/jobs/cfc6df11ef8c46130c2fbc320dadf5fcb33cedd1da1e2b41863b15dddc9737fe/attempts/a69415623a7d41c38161381098c3f078/artifacts/analysis/g001-p117-alternative-attempt0000.json",
+          "sha256": "e2cf575bb5e92a6bffaa3450a74c964380c38eb591dae788cfb3d64a923275a8"
+        },
+        "alternative": {
+          "path": "local-cache/msh161-primary-v1-batch-10/jobs/43d24486a0ba978fd6943dbd8d96bc6315eaf366d46a83ab23dabeff1d18ec3e/attempts/4c210775ced34da98233792a37bc5ae4/artifacts/analysis/g001-p117-alternative-attempt0000.json",
+          "sha256": "2390ebac9a7a838a033a626a1feecaddd60f32d033c40a623affba766f33e557"
+        }
+      },
+      "native_source": {
+        "path": "local-cache/msh161-primary-v1-batch-10/jobs/074f1eb480303892ec203031083ca42f412b386e3a41bd557effb5066feb828f/attempts/28985f9da0424419983c714a6cdce89c/artifacts/pair/report.json.gz",
+        "sha256": "57ad03e46933e0bd16221f4727dd8e75b6c0314cbfc6056897c601f58ea4d84e"
+      },
+      "legal_lines": {
+        "played": [
+          "Ra7",
+          "Rc8",
+          "Be7",
+          "Rg8+",
+          "Kf6",
+          "f8=R+",
+          "Bxf8",
+          "Rxf8+",
+          "Kg7",
+          "Rd8",
+          "Rc7",
+          "Rd2",
+          "Rc8",
+          "c4",
+          "g5",
+          "hxg5",
+          "Kg6",
+          "Rd5",
+          "Rf8+",
+          "Ke2",
+          "Rb8",
+          "Rb5",
+          "Ra8",
+          "Kd3",
+          "Rd8+",
+          "Kc3",
+          "Rd1",
+          "Ra5",
+          "Rg1",
+          "Kd4",
+          "Rd1+",
+          "Kc5",
+          "Kxg5",
+          "Kb6+",
+          "Kg4",
+          "Rxa3",
+          "h4",
+          "gxh4",
+          "Kxh4",
+          "c5"
+        ],
+        "alternative": [
+          "Be7",
+          "Re5",
+          "Bf8",
+          "Re4",
+          "Rc8",
+          "Rc4",
+          "Rxc4",
+          "Bxc4",
+          "Bd6",
+          "Ba2",
+          "Be7",
+          "Bd5",
+          "Bd6"
+        ]
+      },
+      "native_context": "115:Bf6 116:g3 117:Ra7 118:c3 119:Rxf7 120:Bxf7 121:Kxf7",
+      "final_ledger": "batch-10-adjudication/final-dispositions-05-09.json",
+      "limits": "Finite matched comparison; earlier/unselected uncertainty retained; neither forced line nor first loss cause."
+    }
+  ],
+  "bounded_segments": [
+    {
+      "id": "main-06-02/g0/p73-80",
+      "kind": "One bounded favorable segment and linked reference concessions; not exhaustive episode census",
+      "qualifying_candidate_turns": [
+        74,
+        76
+      ],
+      "deterioration_root": 78,
+      "final_native_result": "After candidate p80 Ra8, Black claimed threefold with intended ...Nc7; intended move unplayed.",
+      "source_rows_and_raw_ranges": [
+        {
+          "ply": 73,
+          "candidate": false,
+          "status": "supported_finite",
+          "margin": 0.4955,
+          "source_row": {
+            "path": "docs/m5/evidence/msh161/cloud-primary/batch-06-adjudication/final-dispositions-00-04.json",
+            "sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+            "pair": "main-06-02",
+            "game": 0,
+            "ply": 73
+          },
+          "queries": {
+            "played": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/218bfe0961b4225aff1714e1cbd5cb82dfbb4f6d1125af5a566de95483f311af/attempts/b5269ca177104729a11a6e254f0d1388/artifacts/analysis/g000-p073-alternative-attempt0000.json",
+                "sha256": "0197ddad2d0a607156531e6121daa7af038307b36913d2898e0178b10df9563d"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 43,
+                  "E": 0.0
+                },
+                {
+                  "depth": 42,
+                  "E": 0.0
+                }
+              ],
+              "retained_assessment_uncertainty": [],
+              "source_stability_gate": true
+            },
+            "alternative": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/7842809df67af5cc9af9999ee33c981dbe1e2f54274b2e93ef8e7e4c4ad6ade7/attempts/30007aca9cbb4742aff4b1eba4bdba4c/artifacts/analysis/g000-p073-alternative-attempt0000.json",
+                "sha256": "c669f96ce42c6b811b94c5118109e6de8b1182588fbd4e4b6294a544f7b1daa6"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 29,
+                  "E": 0.4975
+                },
+                {
+                  "depth": 28,
+                  "E": 0.4955
+                }
+              ],
+              "retained_assessment_uncertainty": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "source_stability_gate": true
+            }
+          }
+        },
+        {
+          "ply": 74,
+          "candidate": true,
+          "status": "supported_subthreshold",
+          "margin": 0.0004999999999999449,
+          "source_row": {
+            "path": "docs/m5/evidence/msh161/cloud-primary/batch-06-adjudication/final-dispositions-00-04.json",
+            "sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+            "pair": "main-06-02",
+            "game": 0,
+            "ply": 74
+          },
+          "queries": {
+            "played": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/ef9e4f2739c188ef01e1346d218fa867fd53baac52255010979078be306917ae/attempts/d396910bd9ef41b290084a83b95d201f/artifacts/analysis/g000-p074-alternative-attempt0000.json",
+                "sha256": "320f1b72d1ede5531aafff1a1e2179c3ac28fa31e50377cb97982c1b92bdbc67"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 26,
+                  "E": 0.9995
+                },
+                {
+                  "depth": 25,
+                  "E": 0.999
+                }
+              ],
+              "retained_assessment_uncertainty": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "source_stability_gate": true
+            },
+            "alternative": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/726e64173dc907490a5a41ab9b6ab50d08421e492dd51b78802c3e562c913230/attempts/f42a924480454bdaa7b8840b30395699/artifacts/analysis/g000-p074-alternative-attempt0000.json",
+                "sha256": "b86e3bf0eae9868bb5578168305838c2cedc941b42e84dc31c4c50aa94b38c3d"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 40,
+                  "E": 1.0
+                },
+                {
+                  "depth": 39,
+                  "E": 1.0
+                }
+              ],
+              "retained_assessment_uncertainty": [],
+              "source_stability_gate": true
+            }
+          }
+        },
+        {
+          "ply": 76,
+          "candidate": true,
+          "status": "supported_finite",
+          "margin": 0.22150000000000003,
+          "source_row": {
+            "path": "docs/m5/evidence/msh161/cloud-primary/batch-06-adjudication/final-dispositions-00-04.json",
+            "sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+            "pair": "main-06-02",
+            "game": 0,
+            "ply": 76
+          },
+          "queries": {
+            "played": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/6f6f1eb051322c170378f871154bc6a9264a9f50e591e00729dd3ec3176c27b5/attempts/a84b32338a3640c7bb2ff430b31a4d83/artifacts/analysis/g000-p076-alternative-attempt0000.json",
+                "sha256": "29d49b59a8cc2d2eef689925920c91445c2fc1a03b6b8c3027c92c5789e0a339"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 36,
+                  "E": 0.7785
+                },
+                {
+                  "depth": 35,
+                  "E": 0.7785
+                }
+              ],
+              "retained_assessment_uncertainty": [],
+              "source_stability_gate": true
+            },
+            "alternative": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/879e48453e800517144865d105d2a0189aa2ea2e9173f3643fdeed7e4c478877/attempts/e60d8424c95544cfa8112dee16b5ff05/artifacts/analysis/g000-p076-alternative-attempt0000.json",
+                "sha256": "755f4993de4528e1bcce8ac75ac92c579cce32d5f24a673df0148757e0798c2b"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 34,
+                  "E": 1.0
+                },
+                {
+                  "depth": 33,
+                  "E": 1.0
+                }
+              ],
+              "retained_assessment_uncertainty": [],
+              "source_stability_gate": true
+            }
+          }
+        },
+        {
+          "ply": 77,
+          "candidate": false,
+          "status": "supported_subthreshold",
+          "margin": 0.002,
+          "source_row": {
+            "path": "docs/m5/evidence/msh161/cloud-primary/batch-06-adjudication/final-dispositions-00-04.json",
+            "sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+            "pair": "main-06-02",
+            "game": 0,
+            "ply": 77
+          },
+          "queries": {
+            "played": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/71e97c4ab622a64f2b4dc68412ce0ca4f32ecb6564d149e6f207d445da239926/attempts/4714707429c44876a15a9b4b74f703d3/artifacts/analysis/g000-p077-alternative-attempt0000.json",
+                "sha256": "095d5e5fbc87ee91d10f624b07105a51615e2fd5e52464abb5f1c9921df5069e"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 43,
+                  "E": 0.0
+                },
+                {
+                  "depth": 42,
+                  "E": 0.0
+                }
+              ],
+              "retained_assessment_uncertainty": [],
+              "source_stability_gate": true
+            },
+            "alternative": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/95f05cb309554a5aea26040d9fd7b810903d4c16c58971bd1fda6c72c64508d2/attempts/88594e1ee8db42c6bceecf5a322947ff/artifacts/analysis/g000-p077-alternative-attempt0000.json",
+                "sha256": "346f8becdbf43f22fd0a28797a9de7dd2ad8a127653a59c640bbd89b15e4ef9e"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 30,
+                  "E": 0.002
+                },
+                {
+                  "depth": 29,
+                  "E": 0.0145
+                }
+              ],
+              "retained_assessment_uncertainty": [
+                "last_score_update_not_selected_exact_score"
+              ],
+              "source_stability_gate": true
+            }
+          }
+        },
+        {
+          "ply": 78,
+          "candidate": true,
+          "status": "supported_finite",
+          "margin": 1.0,
+          "source_row": {
+            "path": "docs/m5/evidence/msh161/cloud-primary/batch-06-adjudication/final-dispositions-00-04.json",
+            "sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+            "pair": "main-06-02",
+            "game": 0,
+            "ply": 78
+          },
+          "queries": {
+            "played": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/ad87bf54ab3dd8e3bf7a5442f07475e4aa8eb4df86af6e8a244782e23844f41c/attempts/483f494e2976438aab90a2191a05cfab/artifacts/analysis/g000-p078-alternative-attempt0000.json",
+                "sha256": "5db7a9b78883a67f111c7fe688ed7b1ab3475614f4426b78a386833759dac1b8"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 28,
+                  "E": 0.0
+                },
+                {
+                  "depth": 27,
+                  "E": 0.0
+                }
+              ],
+              "retained_assessment_uncertainty": [],
+              "source_stability_gate": true
+            },
+            "alternative": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/27ba8b1cfab1831df9f6b615e6152ddf7c0d5c78fdb777448c528ebead0a9004/attempts/21ee84449d4246488b30ec87ad7da562/artifacts/analysis/g000-p078-alternative-attempt0000.json",
+                "sha256": "b3192147bdec966170641987e476b70106d289580219c1a1b8148fbc994a3824"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 33,
+                  "E": 1.0
+                },
+                {
+                  "depth": 32,
+                  "E": 1.0
+                }
+              ],
+              "retained_assessment_uncertainty": [],
+              "source_stability_gate": true
+            }
+          }
+        },
+        {
+          "ply": 79,
+          "candidate": false,
+          "status": "supported_finite",
+          "margin": 0.5,
+          "source_row": {
+            "path": "docs/m5/evidence/msh161/cloud-primary/batch-06-adjudication/final-dispositions-00-04.json",
+            "sha256": "549c6eac82b283013bf29ebd148e4fdd2245a5c899b29ebc6e87d31acb42922b",
+            "pair": "main-06-02",
+            "game": 0,
+            "ply": 79
+          },
+          "queries": {
+            "played": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/6927d29f417485d82c77d5cf2a94fb0674e639819383b362a76efd91498f664b/attempts/ab9b42a8822849dda65e16e2fec6e019/artifacts/analysis/g000-p079-alternative-attempt0000.json",
+                "sha256": "69196a150fee9e8bb5bf49080a46eea730ec023408ae47ef2ecbc74c332bf38c"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 53,
+                  "E": 0.5
+                },
+                {
+                  "depth": 52,
+                  "E": 0.5
+                }
+              ],
+              "retained_assessment_uncertainty": [],
+              "source_stability_gate": true
+            },
+            "alternative": {
+              "source": {
+                "path": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache/msh161-primary-v1-batch-06/jobs/d27a9bf9dbccc070e7770423ff6c1fce017cbd48bbf9625b710687fde859e3aa/attempts/b453c5f9d653467ba9ce2133ce0c3d5d/artifacts/analysis/g000-p079-alternative-attempt0000.json",
+                "sha256": "ece7c15c6af3d56848b2124e096cf479e24562aeb785134d90ace087934da0eb"
+              },
+              "last_two_distinct_depth_nonbound_reports": [
+                {
+                  "depth": 30,
+                  "E": 1.0
+                },
+                {
+                  "depth": 29,
+                  "E": 1.0
+                }
+              ],
+              "retained_assessment_uncertainty": [],
+              "source_stability_gate": true
+            }
+          }
+        }
+      ],
+      "interpretation": "Reference p73 opens a finite favorable opportunity; candidate p74 and p76 meet two-turn E>=.75; p78 loses that finite favorable segment; reference p79 concedes a drawing course; candidate p80 and native claim follow. No earlier onset, independent loss-cause count, or no-claim outcome asserted.",
+      "earlier_uncertainty_retained": [
+        17,
+        18,
+        54,
+        56,
+        58,
+        67,
+        68,
+        69,
+        72
+      ]
+    },
+    {
+      "id": "main-02-00/g1/p81-113",
+      "kind": "Repeated immediate-promotion motif",
+      "roots": [
+        81,
+        91,
+        113
+      ],
+      "interpretation": "Three local resources in one correlated motif, not three conversion failures. p91/p113 share board placement but have different history/clock.",
+      "native_result": "threefold claim",
+      "complete_favorable_episode_certified": false
+    },
+    {
+      "id": "main-02-05/g0/p46-62",
+      "kind": "Repeated Bxh7 resource amid reciprocal errors, followed by native win",
+      "supported_candidate_Bxh7_roots": [
+        46,
+        50,
+        52,
+        54,
+        60,
+        62
+      ],
+      "supported_reference_roots": [
+        45,
+        51,
+        53,
+        55,
+        61
+      ],
+      "native_result": "candidate wins; two promotions and Qbc7# at p204",
+      "complete_favorable_episode_certified": false,
+      "limits": "Intervening unresolved roots remain. No six-lost-wins interpretation."
+    }
+  ],
+  "contrary_native_successes": [
+    {
+      "game": "main-01-08/g0",
+      "observation": "Completed bishop-and-knight mate",
+      "native_last_line": [
+        "Kc2",
+        "Ka1",
+        "Kb3",
+        "Kb1",
+        "Na3+",
+        "Ka1",
+        "Bc3#"
+      ]
+    },
+    {
+      "game": "main-09-02/g0",
+      "observation": "Pawn advance, promotion and mate; Bb1 tested alternative stably worse than played Bd3",
+      "native_last_line": [
+        "Kd5",
+        "e8=Q",
+        "Kc4",
+        "Rc7+",
+        "Kb4",
+        "Qb5+",
+        "Ka3",
+        "Qb3#"
+      ]
+    },
+    {
+      "game": "main-02-05/g0",
+      "observation": "Missed local attacking resources coexist with eventual two-promotion mate"
+    },
+    {
+      "game": "main-08-00/g1",
+      "observation": "Actual ...Nxg3 at p45 is supported_subthreshold versus ...Nc3, margin .0005; ...Bxh3 at p55 is same_choice_control. Earlier ...Ra2 at p43 stays unresolved. Native result is loss.",
+      "source": "docs/m5/evidence/msh161/cloud-primary/batch-08-adjudication/final-dispositions-00-04.json",
+      "source_sha256": "8c39235d1a57a4648be446e3723c0ce6f54a22b3894ae62bd5a90b8abea0c58a",
+      "limits": "Local comparison controls, not certification of the full attack or every value."
+    }
+  ],
+  "local_clarifications": [
+    {
+      "root": "main-03-02/g1/p31",
+      "issue": "Packet rationale says Qh5+; retained legal SAN is Qh5 without check.",
+      "disposition": "Use legal SAN; immutable packet unchanged."
+    }
+  ],
+  "recommendation_status": "Investigations proposed for John only; no implementation authorized by this synthesis.",
+  "limits": [
+    "Oxidation stronger-reference suitability not demonstrated by final prepared outcome.",
+    "Prepared confidence interval conditional on purposive observed families; repeated starts excluded.",
+    "Category counts overlap and coder scope differs.",
+    "Unknown and unresolved roots remain; same-choice is not proof of correct value.",
+    "Finite reference PV is not forced; E is not probability against the actual opponent.",
+    "Claims censor post-terminal observation; no counterfactual outcomes.",
+    "Selection and mixed budgets prevent population phase/family/player error rates.",
+    "No exact global conversion rate, independent cause count or mechanism claim."
+  ],
+  "verification": {
+    "mode": "Offline source reading and source-bound extraction",
+    "python_for_metadata": "3.11.0 (main, Dec  2 2022, 11:49:20) [Clang 14.0.0 (clang-1400.0.29.102)]",
+    "native_line_replay": "Controller Python /private/tmp/msh162-controller/bin/python with python-chess1.11.2 replayed complete accepted histories for main-06-02/g0, main-02-00/g1, main-02-05/g0, main-01-08/g0, main-09-02/g0. No engines ran. Also replayed main-08-00/g1 and checked exact final statuses at p43, p45 and p55.",
+    "failures_retained_in_chat": "An initial read expected games at envelope top level; corrected to report_json. System python lacked chess; controller environment used. No source mutation or scientific retry.",
+    "review_status": "Substantive independent scientific challenge accepted main judgments and bounded segment. Final category and threshold binding added; exact final file review retained separately by reviewer."
+  },
+  "quantitative_interpretation": {
+    "category_ranking": "No precise category defect-frequency ranking: overlap and cross-coder scope differences persist.",
+    "broad_family_sensitivity": "Activity, defense, tactical, exchange and endgame observations remain across many prepared games when any one family is omitted. Promotion conversion motif disappears when its single family is removed.",
+    "color_result_scope": "All major broad tags appear in both colors and all native results; root counts by result do not attribute caused losses.",
+    "unresolved_sensitivity": "86 supported roots lack behavior attribution;657 original candidate unresolved dispositions cannot be assigned invented labels or exact category upper bounds."
+  }
+}

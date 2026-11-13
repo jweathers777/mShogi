@@ -1,0 +1,5682 @@
+{
+  "status": "descriptive_native_context_tables",
+  "bindings": {
+    "native-statistics.json": "a5d49729ac05c1515561cfd28b67cb6efec9e66e1c8791b7923a65da0d5eb10e",
+    "primary-cumulative.json": "b3194050f2674dad04fa117dc6887bc2e7c9662d39aec07a202b4d2948117133"
+  },
+  "family_color_outcomes": [
+    {
+      "family": "caro-kann",
+      "candidate_color": "white",
+      "games": 5,
+      "wins": 2,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.6,
+      "prepared": true
+    },
+    {
+      "family": "caro-kann",
+      "candidate_color": "black",
+      "games": 5,
+      "wins": 2,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.6,
+      "prepared": true
+    },
+    {
+      "family": "catalan",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "catalan",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 1,
+      "draws": 0,
+      "losses": 3,
+      "score_fraction": 0.25,
+      "prepared": true
+    },
+    {
+      "family": "english",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "english",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 1,
+      "draws": 1,
+      "losses": 2,
+      "score_fraction": 0.375,
+      "prepared": true
+    },
+    {
+      "family": "french",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "score_fraction": 0.625,
+      "prepared": true
+    },
+    {
+      "family": "french",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "grunfeld",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "grunfeld",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 0,
+      "draws": 1,
+      "losses": 3,
+      "score_fraction": 0.125,
+      "prepared": true
+    },
+    {
+      "family": "italian",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 1,
+      "draws": 3,
+      "losses": 0,
+      "score_fraction": 0.625,
+      "prepared": true
+    },
+    {
+      "family": "italian",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 1,
+      "draws": 1,
+      "losses": 2,
+      "score_fraction": 0.375,
+      "prepared": true
+    },
+    {
+      "family": "kings-indian",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "kings-indian",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "nimzo-indian",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "nimzo-indian",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 3,
+      "draws": 0,
+      "losses": 1,
+      "score_fraction": 0.75,
+      "prepared": true
+    },
+    {
+      "family": "other-flank-indian-dutch",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 4,
+      "draws": 0,
+      "losses": 0,
+      "score_fraction": 1.0,
+      "prepared": true
+    },
+    {
+      "family": "other-flank-indian-dutch",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "other-open-games",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "other-open-games",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 1,
+      "draws": 3,
+      "losses": 0,
+      "score_fraction": 0.625,
+      "prepared": true
+    },
+    {
+      "family": "petroff-scotch-four-knights",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 1,
+      "draws": 0,
+      "losses": 3,
+      "score_fraction": 0.25,
+      "prepared": true
+    },
+    {
+      "family": "petroff-scotch-four-knights",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "pirc-modern-other-semiopen",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "pirc-modern-other-semiopen",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "queens-gambit-accepted",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 2,
+      "draws": 2,
+      "losses": 0,
+      "score_fraction": 0.75,
+      "prepared": true
+    },
+    {
+      "family": "queens-gambit-accepted",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "queens-gambit-declined",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 2,
+      "draws": 2,
+      "losses": 0,
+      "score_fraction": 0.75,
+      "prepared": true
+    },
+    {
+      "family": "queens-gambit-declined",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "queens-indian-bogo",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "queens-indian-bogo",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 3,
+      "draws": 0,
+      "losses": 1,
+      "score_fraction": 0.75,
+      "prepared": true
+    },
+    {
+      "family": "queens-pawn-other",
+      "candidate_color": "white",
+      "games": 5,
+      "wins": 0,
+      "draws": 3,
+      "losses": 2,
+      "score_fraction": 0.3,
+      "prepared": true
+    },
+    {
+      "family": "queens-pawn-other",
+      "candidate_color": "black",
+      "games": 5,
+      "wins": 1,
+      "draws": 2,
+      "losses": 2,
+      "score_fraction": 0.4,
+      "prepared": true
+    },
+    {
+      "family": "reti",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "score_fraction": 0.625,
+      "prepared": true
+    },
+    {
+      "family": "reti",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "score_fraction": 0.625,
+      "prepared": true
+    },
+    {
+      "family": "sicilian-classical-sveshnikov-taimanov",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "sicilian-classical-sveshnikov-taimanov",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 0,
+      "draws": 2,
+      "losses": 2,
+      "score_fraction": 0.25,
+      "prepared": true
+    },
+    {
+      "family": "sicilian-closed-anti",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 4,
+      "draws": 0,
+      "losses": 0,
+      "score_fraction": 1.0,
+      "prepared": true
+    },
+    {
+      "family": "sicilian-closed-anti",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 3,
+      "draws": 0,
+      "losses": 1,
+      "score_fraction": 0.75,
+      "prepared": true
+    },
+    {
+      "family": "sicilian-najdorf-dragon-scheveningen-rauzer",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "score_fraction": 0.625,
+      "prepared": true
+    },
+    {
+      "family": "slav-semi-slav",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 0,
+      "draws": 1,
+      "losses": 3,
+      "score_fraction": 0.125,
+      "prepared": true
+    },
+    {
+      "family": "slav-semi-slav",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "score_fraction": 0.625,
+      "prepared": true
+    },
+    {
+      "family": "spanish",
+      "candidate_color": "white",
+      "games": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "score_fraction": 0.5,
+      "prepared": true
+    },
+    {
+      "family": "spanish",
+      "candidate_color": "black",
+      "games": 4,
+      "wins": 1,
+      "draws": 1,
+      "losses": 2,
+      "score_fraction": 0.375,
+      "prepared": true
+    },
+    {
+      "family": "unaided",
+      "candidate_color": "white",
+      "games": 10,
+      "wins": 5,
+      "draws": 3,
+      "losses": 2,
+      "score_fraction": 0.65,
+      "prepared": false
+    },
+    {
+      "family": "unaided",
+      "candidate_color": "black",
+      "games": 10,
+      "wins": 10,
+      "draws": 0,
+      "losses": 0,
+      "score_fraction": 1.0,
+      "prepared": false
+    }
+  ],
+  "unaided_prefix_tables": [
+    {
+      "candidate_color_group": "all",
+      "prefix_plies": 0,
+      "eligible_games": 20,
+      "unique_prefixes": 1,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 20,
+      "largest_group": 20,
+      "shared_groups": [
+        {
+          "moves": [],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 20
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "all",
+      "prefix_plies": 2,
+      "eligible_games": 20,
+      "unique_prefixes": 2,
+      "repeated_prefix_groups": 2,
+      "games_in_repeated_groups": 20,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [
+            "b1c3",
+            "b8c6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 0
+            }
+          ],
+          "games": 10
+        },
+        {
+          "moves": [
+            "g1f3",
+            "b8c6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 10
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "all",
+      "prefix_plies": 4,
+      "eligible_games": 20,
+      "unique_prefixes": 2,
+      "repeated_prefix_groups": 2,
+      "games_in_repeated_groups": 20,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 0
+            }
+          ],
+          "games": 10
+        },
+        {
+          "moves": [
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 10
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "all",
+      "prefix_plies": 8,
+      "eligible_games": 20,
+      "unique_prefixes": 4,
+      "repeated_prefix_groups": 3,
+      "games_in_repeated_groups": 19,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8c5"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 0
+            }
+          ],
+          "games": 5
+        },
+        {
+          "moves": [
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6",
+            "e2e4",
+            "f8b4",
+            "f1e2",
+            "d7d6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 10
+        },
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8b4"
+          ],
+          "members": [
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            }
+          ],
+          "games": 4
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "all",
+      "prefix_plies": 16,
+      "eligible_games": 20,
+      "unique_prefixes": 6,
+      "repeated_prefix_groups": 4,
+      "games_in_repeated_groups": 18,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8c5",
+            "a2a3",
+            "f6g4",
+            "e1g1",
+            "g4f2",
+            "f1f2",
+            "c5f2",
+            "g1f2",
+            "d7d6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 0
+            }
+          ],
+          "games": 2
+        },
+        {
+          "moves": [
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6",
+            "e2e4",
+            "f8b4",
+            "f1e2",
+            "d7d6",
+            "a2a3",
+            "b4c3",
+            "d2c3",
+            "g8f6",
+            "d1d3",
+            "e8g8",
+            "e1g1",
+            "e6e5"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 10
+        },
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8b4",
+            "c3d5",
+            "b4d6",
+            "d5f6",
+            "d8f6",
+            "d2d3",
+            "c6a5",
+            "c4b3",
+            "a5b3"
+          ],
+          "members": [
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            }
+          ],
+          "games": 4
+        },
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8c5",
+            "a2a3",
+            "e8g8",
+            "d2d3",
+            "c5d6",
+            "e1g1",
+            "g8h8",
+            "c1e3",
+            "f6g4"
+          ],
+          "members": [
+            {
+              "pair": "main-07-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 0
+            }
+          ],
+          "games": 2
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "all",
+      "prefix_plies": 24,
+      "eligible_games": 20,
+      "unique_prefixes": 9,
+      "repeated_prefix_groups": 2,
+      "games_in_repeated_groups": 13,
+      "largest_group": 9,
+      "shared_groups": [
+        {
+          "moves": [
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6",
+            "e2e4",
+            "f8b4",
+            "f1e2",
+            "d7d6",
+            "a2a3",
+            "b4c3",
+            "d2c3",
+            "g8f6",
+            "d1d3",
+            "e8g8",
+            "e1g1",
+            "e6e5",
+            "c1e3",
+            "h7h6",
+            "b2b4",
+            "c8e6",
+            "a1d1",
+            "a7a6",
+            "g1h1",
+            "d8e7"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 9
+        },
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8b4",
+            "c3d5",
+            "b4d6",
+            "d5f6",
+            "d8f6",
+            "d2d3",
+            "c6a5",
+            "c4b3",
+            "a5b3",
+            "a2b3",
+            "e8g8",
+            "e1g1",
+            "b7b6",
+            "c2c3",
+            "c8b7",
+            "b3b4",
+            "f6e6"
+          ],
+          "members": [
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            }
+          ],
+          "games": 4
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "all",
+      "prefix_plies": 32,
+      "eligible_games": 20,
+      "unique_prefixes": 12,
+      "repeated_prefix_groups": 2,
+      "games_in_repeated_groups": 10,
+      "largest_group": 7,
+      "shared_groups": [
+        {
+          "moves": [
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6",
+            "e2e4",
+            "f8b4",
+            "f1e2",
+            "d7d6",
+            "a2a3",
+            "b4c3",
+            "d2c3",
+            "g8f6",
+            "d1d3",
+            "e8g8",
+            "e1g1",
+            "e6e5",
+            "c1e3",
+            "h7h6",
+            "b2b4",
+            "c8e6",
+            "a1d1",
+            "a7a6",
+            "g1h1",
+            "d8e7",
+            "h2h3",
+            "d6d5",
+            "e3c5",
+            "d5e4",
+            "d3e3",
+            "e4f3",
+            "c5e7",
+            "f3e2"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 7
+        },
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8b4",
+            "c3d5",
+            "b4d6",
+            "d5f6",
+            "d8f6",
+            "d2d3",
+            "c6a5",
+            "c4b3",
+            "a5b3",
+            "a2b3",
+            "e8g8",
+            "e1g1",
+            "b7b6",
+            "c2c3",
+            "c8b7",
+            "b3b4",
+            "f6e6",
+            "f3g5",
+            "e6e7",
+            "c1e3",
+            "g8h8",
+            "d1h5",
+            "h7h6",
+            "g5f3",
+            "c7c5"
+          ],
+          "members": [
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            }
+          ],
+          "games": 3
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "white",
+      "prefix_plies": 0,
+      "eligible_games": 10,
+      "unique_prefixes": 1,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 10,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 0
+            }
+          ],
+          "games": 10
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "white",
+      "prefix_plies": 2,
+      "eligible_games": 10,
+      "unique_prefixes": 1,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 10,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [
+            "b1c3",
+            "b8c6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 0
+            }
+          ],
+          "games": 10
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "white",
+      "prefix_plies": 4,
+      "eligible_games": 10,
+      "unique_prefixes": 1,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 10,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 0
+            }
+          ],
+          "games": 10
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "white",
+      "prefix_plies": 8,
+      "eligible_games": 10,
+      "unique_prefixes": 3,
+      "repeated_prefix_groups": 2,
+      "games_in_repeated_groups": 9,
+      "largest_group": 5,
+      "shared_groups": [
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8c5"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 0
+            }
+          ],
+          "games": 5
+        },
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8b4"
+          ],
+          "members": [
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            }
+          ],
+          "games": 4
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "white",
+      "prefix_plies": 16,
+      "eligible_games": 10,
+      "unique_prefixes": 5,
+      "repeated_prefix_groups": 3,
+      "games_in_repeated_groups": 8,
+      "largest_group": 4,
+      "shared_groups": [
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8c5",
+            "a2a3",
+            "f6g4",
+            "e1g1",
+            "g4f2",
+            "f1f2",
+            "c5f2",
+            "g1f2",
+            "d7d6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 0
+            }
+          ],
+          "games": 2
+        },
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8b4",
+            "c3d5",
+            "b4d6",
+            "d5f6",
+            "d8f6",
+            "d2d3",
+            "c6a5",
+            "c4b3",
+            "a5b3"
+          ],
+          "members": [
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            }
+          ],
+          "games": 4
+        },
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8c5",
+            "a2a3",
+            "e8g8",
+            "d2d3",
+            "c5d6",
+            "e1g1",
+            "g8h8",
+            "c1e3",
+            "f6g4"
+          ],
+          "members": [
+            {
+              "pair": "main-07-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 0
+            }
+          ],
+          "games": 2
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "white",
+      "prefix_plies": 24,
+      "eligible_games": 10,
+      "unique_prefixes": 7,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 4,
+      "largest_group": 4,
+      "shared_groups": [
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8b4",
+            "c3d5",
+            "b4d6",
+            "d5f6",
+            "d8f6",
+            "d2d3",
+            "c6a5",
+            "c4b3",
+            "a5b3",
+            "a2b3",
+            "e8g8",
+            "e1g1",
+            "b7b6",
+            "c2c3",
+            "c8b7",
+            "b3b4",
+            "f6e6"
+          ],
+          "members": [
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 0
+            }
+          ],
+          "games": 4
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "white",
+      "prefix_plies": 32,
+      "eligible_games": 10,
+      "unique_prefixes": 8,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 3,
+      "largest_group": 3,
+      "shared_groups": [
+        {
+          "moves": [
+            "b1c3",
+            "b8c6",
+            "g1f3",
+            "g8f6",
+            "e2e4",
+            "e7e5",
+            "f1c4",
+            "f8b4",
+            "c3d5",
+            "b4d6",
+            "d5f6",
+            "d8f6",
+            "d2d3",
+            "c6a5",
+            "c4b3",
+            "a5b3",
+            "a2b3",
+            "e8g8",
+            "e1g1",
+            "b7b6",
+            "c2c3",
+            "c8b7",
+            "b3b4",
+            "f6e6",
+            "f3g5",
+            "e6e7",
+            "c1e3",
+            "g8h8",
+            "d1h5",
+            "h7h6",
+            "g5f3",
+            "c7c5"
+          ],
+          "members": [
+            {
+              "pair": "main-03-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 0
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 0
+            }
+          ],
+          "games": 3
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "black",
+      "prefix_plies": 0,
+      "eligible_games": 10,
+      "unique_prefixes": 1,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 10,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 10
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "black",
+      "prefix_plies": 2,
+      "eligible_games": 10,
+      "unique_prefixes": 1,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 10,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [
+            "g1f3",
+            "b8c6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 10
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "black",
+      "prefix_plies": 4,
+      "eligible_games": 10,
+      "unique_prefixes": 1,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 10,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 10
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "black",
+      "prefix_plies": 8,
+      "eligible_games": 10,
+      "unique_prefixes": 1,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 10,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6",
+            "e2e4",
+            "f8b4",
+            "f1e2",
+            "d7d6"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 10
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "black",
+      "prefix_plies": 16,
+      "eligible_games": 10,
+      "unique_prefixes": 1,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 10,
+      "largest_group": 10,
+      "shared_groups": [
+        {
+          "moves": [
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6",
+            "e2e4",
+            "f8b4",
+            "f1e2",
+            "d7d6",
+            "a2a3",
+            "b4c3",
+            "d2c3",
+            "g8f6",
+            "d1d3",
+            "e8g8",
+            "e1g1",
+            "e6e5"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-06-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 10
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "black",
+      "prefix_plies": 24,
+      "eligible_games": 10,
+      "unique_prefixes": 2,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 9,
+      "largest_group": 9,
+      "shared_groups": [
+        {
+          "moves": [
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6",
+            "e2e4",
+            "f8b4",
+            "f1e2",
+            "d7d6",
+            "a2a3",
+            "b4c3",
+            "d2c3",
+            "g8f6",
+            "d1d3",
+            "e8g8",
+            "e1g1",
+            "e6e5",
+            "c1e3",
+            "h7h6",
+            "b2b4",
+            "c8e6",
+            "a1d1",
+            "a7a6",
+            "g1h1",
+            "d8e7"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-02-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-04-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 9
+        }
+      ]
+    },
+    {
+      "candidate_color_group": "black",
+      "prefix_plies": 32,
+      "eligible_games": 10,
+      "unique_prefixes": 4,
+      "repeated_prefix_groups": 1,
+      "games_in_repeated_groups": 7,
+      "largest_group": 7,
+      "shared_groups": [
+        {
+          "moves": [
+            "g1f3",
+            "b8c6",
+            "b1c3",
+            "e7e6",
+            "e2e4",
+            "f8b4",
+            "f1e2",
+            "d7d6",
+            "a2a3",
+            "b4c3",
+            "d2c3",
+            "g8f6",
+            "d1d3",
+            "e8g8",
+            "e1g1",
+            "e6e5",
+            "c1e3",
+            "h7h6",
+            "b2b4",
+            "c8e6",
+            "a1d1",
+            "a7a6",
+            "g1h1",
+            "d8e7",
+            "h2h3",
+            "d6d5",
+            "e3c5",
+            "d5e4",
+            "d3e3",
+            "e4f3",
+            "c5e7",
+            "f3e2"
+          ],
+          "members": [
+            {
+              "pair": "main-01-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-03-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-05-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-07-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-08-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-09-unaided",
+              "game": 1
+            },
+            {
+              "pair": "main-10-unaided",
+              "game": 1
+            }
+          ],
+          "games": 7
+        }
+      ]
+    }
+  ],
+  "unaided_pairwise_common_prefixes": [
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-01-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-02-unaided",
+        0
+      ],
+      "common_prefix_plies": 17
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-02-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-03-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-03-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-04-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-04-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-02-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-02-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-03-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-03-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-04-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-04-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 46
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-02-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-03-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-03-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-04-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-04-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-03-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-03-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-04-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-04-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-03-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-04-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-04-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 45
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 59
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 31
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-04-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-04-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 46
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 46
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-04-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 13
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 13
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 45
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 31
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 31
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 19
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 46
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-07-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-08-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-08-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-08-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-08-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-08-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-08-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-08-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-08-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-08-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-09-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-09-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-09-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-09-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-09-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 70
+    },
+    {
+      "group": "all",
+      "left": [
+        "main-10-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 0
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-02-unaided",
+        0
+      ],
+      "common_prefix_plies": 17
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-03-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-04-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-01-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-03-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-04-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 9
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-02-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-04-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 45
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 59
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 31
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-03-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-05-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 13
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 13
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-04-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-06-unaided",
+        0
+      ],
+      "common_prefix_plies": 45
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 31
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-05-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-07-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 31
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-06-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-07-unaided",
+        0
+      ],
+      "right": [
+        "main-08-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-07-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 19
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-07-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-08-unaided",
+        0
+      ],
+      "right": [
+        "main-09-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-08-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "white",
+      "left": [
+        "main-09-unaided",
+        0
+      ],
+      "right": [
+        "main-10-unaided",
+        0
+      ],
+      "common_prefix_plies": 7
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-02-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-03-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-04-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 46
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-01-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-03-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-04-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-02-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-04-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 46
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 46
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-03-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-05-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-04-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 24
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-06-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-05-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 36
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-07-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-06-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 22
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-07-unaided",
+        1
+      ],
+      "right": [
+        "main-08-unaided",
+        1
+      ],
+      "common_prefix_plies": 46
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-07-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-07-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-08-unaided",
+        1
+      ],
+      "right": [
+        "main-09-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-08-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 44
+    },
+    {
+      "group": "black",
+      "left": [
+        "main-09-unaided",
+        1
+      ],
+      "right": [
+        "main-10-unaided",
+        1
+      ],
+      "common_prefix_plies": 70
+    }
+  ],
+  "unaided_unique_complete_histories": {
+    "white": 10,
+    "black": 10
+  },
+  "method": "Exact UCI prefixes from accepted native histories, including the common standard start at zero plies. Prefix lengths fixed descriptively at 0/2/4/8/16/24/32; games shorter than a requested length are excluded and eligibility is explicit. Pairwise common-prefix lengths describe all unordered pairs, with within-color subsets shown separately. Groups overlap across lengths; do not sum them.",
+  "limits": "Native descriptive counts only. Ten unique complete histories per color do not establish independent samples. Same standard start, shared prefixes and paired games remain correlated. No bootstrap or population claims for unaided starts; no mechanism or weakness attribution."
+}

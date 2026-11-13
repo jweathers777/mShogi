@@ -4,7 +4,7 @@ title: Chess Opening Quality Assessment
 status: To Do
 assignee: []
 created_date: '2026-11-10T18:28:00Z'
-updated_date: '2026-11-10T20:48:00Z'
+updated_date: '2026-11-13T20:00:00Z'
 labels:
   - handle:chess-opening-quality-assessment
 milestone: m-5
@@ -63,4 +63,6 @@ Before future execution, establish a modest aggregate engine/reference compute a
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner supersession 2026-11-10: opening questions are now integrated into MSH-161 (Competitive Gameplay Diagnosis), whose full request authorizes broad complete-game study and necessary Stockfish analysis. Earlier proposed separate100–150-position sample,1/5/15s matrix and modest aggregate cap are superseded for this assignment. Use separate unaided start games plus prepared-position baseline analysis, master provenance and consistent phase boundaries. Preserve historical description; do not run competing corpus or introduce book. Dependency MSH-159 (Classical Evaluation Decisions) completed; opening deliverable closes with reviewed study evidence.
+
+MSH-161 (Competitive Gameplay Diagnosis) completed the integrated opening questions without a competing corpus: 90 master-supported color pairs across 22 families plus ten separate unaided pairs, independent balance screening, full histories and consistent phase sensitivity. Prepared 67W/55D/58L versus unaided 15W/3D/2L; strong unaided dependence (all candidate-Black starts share 16 plies) prevents broad opening-strength inference. Supported early central/development choices enter the same continuation-quality investigation; no opening book, family blacklist or new campaign is selected. See docs/m5/competitive-gameplay-diagnosis.md and cloud-primary/independent-review-handoff.md. This preserves evidence for the existing task and does not activate its separate proposed study. Stop for John before engineering.
 <!-- SECTION:NOTES:END -->

@@ -1,0 +1,9 @@
+# Phase and played-coverage result review
+
+Pass. Exact source and output hashes are bound in the JSON. All 200 native histories were replayed with the frozen phase helper; nonpawn, nonking material was also counted independently on each board. Every base phase and material-24/material-28/boundary-minus-2/boundary-plus-2 assignment matches. The convention uses positions before moves, complete accepted history and the first of three qualifying fullmove boundaries. Material override is evaluated per position, including promotions. There are no unresolved boundaries in this sample.
+
+All 24,939 played roots are unique and exactly match native histories; 2,880 supplied moves remain separate context. All 6,141 selected roots match cumulative normalization and exact source rows. Base/final row hashes and input hashes pass. The 9,711 screening-only roots remain unresolved, not confirmed non-errors. Only the two admitted direct-20M expansion roots receive the mixed tier; prior cell/trigger evidence remains in its original tiers.
+
+Base supported candidate phases are 105 opening, 366 middlegame and 118 endgame. These are selected, correlated comparisons, not phase-specific population error rates. Material cutoff 24 gives 97 endgame supported roots; cutoff 28 gives 121. Shifting the opening boundary by minus/plus two plies gives 88/126 opening supported roots. Phase sensitivity does not change scientific support or imply a mechanism.
+
+The reviewer authored the coverage utility; its source was independently reviewed by the coordinator. This record reconciles its output and independently reviews the coordinator-authored phase implementation. Native family-by-color outcomes and shared unaided prefixes are saved separately in context-tables.json/md. No native statistic was modified and no engines or cloud work ran.

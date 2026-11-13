@@ -1,19 +1,48 @@
-# Current assignment — complete competitive-game diagnosis
+# Current checkpoint — competitive diagnosis complete; owner review before engineering
 
-MSH-161 (Competitive Gameplay Diagnosis) supersedes the suggested next isolated
-correction below. The owner authorizes approximately200 complete games against
-one fixed suitable reference, equal practical thinking time, and Stockfish
-analysis of both players. Study-specific resources are authorized beyond short
-routine experiment caps; process bounds and actual accounting remain required.
-MSH-160 (Chess Opening Quality Assessment) supplies the integrated opening
-questions, with separate unaided and prepared-opening evidence, not a second
-corpus campaign. See [protocol and status](competitive-gameplay-diagnosis.md).
+MSH-161 (Competitive Gameplay Diagnosis) completed 200 primary cloud games and all
+required reference analysis. See the [final diagnosis](competitive-gameplay-diagnosis.md),
+[source-bound synthesis](evidence/msh161/cloud-primary/final-analysis/scientific-synthesis-astra.md)
+and independent challenge. Results are 82 wins / 58 draws / 60 losses; the 180
+prepared games score 52.5% with a conditional whole-pair family-stratified 95%
+interval of 47.22–57.78%. Correlated unaided starts remain separate. This is not an
+Elo result, proof of reference superiority or a guarantee of rating improvement.
 
-No production search/evaluation/rules changes during this assignment. Identify
-recurring competitive behaviors, uncertainty and conflicting successes before
-ranking general engineering investigations. Stop for owner review before any
-proposed correction. The prior roadmap follows as historical context, not the
-active next-work selection. MSH-153 remains held.
+**Stop for John's review. No engineering or new study is started by this roadmap.**
+Original AutoClaim and unchanged native/opponent/image identities were used in all
+primary batches. Claims censor conversion observations; draws alone are not failures.
+The unsuccessful policy transition remains separate and abandoned.
+
+Recommended practical investigation order, based on reviewed concrete choices:
+
+1. Contrast consequential exchange/capture order, queen restriction, quiet defense
+   and coordination failures with successful controls. Trace actual interior search
+   admission, windows, TT/reductions/frontier and returned values to distinguish an
+   omitted/cut-off continuation from one reached and misvalued. Separate child
+   probes or nominal depth do not establish this distinction.
+2. Contrast pawn/promotion timing with required king, rook, blocker and liquidation
+   support. Preserve histories/claims and test intermediate consequences. The study
+   does not select a blanket pawn bonus, tablebase project or search change.
+3. Integrate early central/development choices into the same continuation diagnosis,
+   coordinated with MSH-160 (Chess Opening Quality Assessment). Reuse this study's
+   master-supported prefixes and unaided evidence; no competing corpus or book-first
+   project follows from these findings.
+
+These are investigation priorities, not measured category defect-rate rankings or
+established mechanisms. Corrected overlapping category counts remain reviewer-
+dependent, with 86 unknown supported roots. Concrete sequences, breadth across
+families/colors/results, secondary/linked uncertainty and contrary successes govern
+interpretation. Three bounded narratives include one independently certified finite
+favorable segment; there is no exhaustive conversion-rate claim.
+
+If John selects the next bounded task, define observable consequences, contrasted
+failure/success controls and stopping criteria before changes. These exposed games
+are development evidence, not fresh held-out material. Retain only general supported
+corrections that improve consequence quality across more than one family and protect
+success controls. A substantial later predecessor/current competitive comparison
+needs separate approval after meaningful coherent progress. No per-change tournament,
+learned evaluation or Shogi/Xiangqi work is authorized. MSH-153 (Classical Compensation
+Calibration) stays held. Historical roadmap below is preserved, not an active queue.
 
 # Conventional Chess: evidence-driven engineering roadmap
 

@@ -1,0 +1,33 @@
+{
+  "status": "pass",
+  "scope": "All three packets; exact numerical support set, query hashes, full-history root identity, all stored SAN lines",
+  "python_chess_version": "1.11.2",
+  "implementation_sha256": "d5854dcaa018b49c42faba6a4749dcc07856edf210f64bd414574dc454c466fa",
+  "source_hashes": {
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/behavior-coding-01-04.json": "da050c2050afe0ad3ed6d5a4786adc06bd72839bb010437adda3430932264aa7",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/behavior-coding-05-07.json": "4225240556f5284632cd128a5582997223ec7e2f00989c47b229438b37c1fc7f",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/behavior-coding-08-10.json": "7f907cb38613156fcfc37087346dfb9ffd88c1dc3e64840697d60cb002a58a14"
+  },
+  "counts": {
+    "01-04": {
+      "supported_roots": 240,
+      "query_hashes_and_history_roots": 518,
+      "legal_line_plies": 16887,
+      "legal_lines": 518
+    },
+    "05-07": {
+      "supported_roots": 151,
+      "query_hashes_and_history_roots": 302,
+      "legal_line_plies": 9748,
+      "legal_lines": 302
+    },
+    "08-10": {
+      "supported_roots": 198,
+      "query_hashes_and_history_roots": 396,
+      "legal_line_plies": 12989,
+      "legal_lines": 396
+    }
+  },
+  "supported_roots": 589,
+  "limits": "Legal replay verifies possible lines; it does not prove a line is forced or a behavioral category is correct. Original native histories remain authoritative."
+}

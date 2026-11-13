@@ -1,0 +1,17 @@
+{
+  "status": "passed_independent_source_review",
+  "reviewer": "coordinator, independent of utility author",
+  "implementation_sha256": "bf646b43ecd5527ccd1550a9d932f00cb206ba7f6ef99e7f56093db86ceabd89",
+  "scope": "Source and fixtures; actual final result reviewed separately.",
+  "checks": [
+    "Native unique pair/game/ply coverage and exact screening decision equality",
+    "Exact native report SHA and frozen spec/opening/color binding through independently reviewed native helper",
+    "Base panel coverage and original statuses/flag JSON paths preserved",
+    "Selected rows link exact source row hashes and final cumulative normalization",
+    "Only two admitted direct20M expansion roots labeled mixed; no uniform cell rate",
+    "Prefixes separate; screening-only explicitly unresolved; subthreshold/control never universal nonerror",
+    "Explicit preclosure guard, optimized mode rejection and exclusive output",
+    "Fixture duplicate and flag-path checks passed"
+  ],
+  "limits": "Existing query receipt audits reused, not repeated. This utility does not normalize threshold support, code behavior or establish causes."
+}

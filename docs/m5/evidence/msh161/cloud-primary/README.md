@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: all 200 games and required searches closed; final diagnosis in progress
+## Current state: all 200 games and required searches closed; diagnosis complete; stop for John before engineering
 
 **All 200 primary games are fully reviewed: 82 wins / 58 draws / 60 losses.**
 Prepared openings: 67/55/58; unaided starts: 15/3/2, kept separate. Original AutoClaim,
@@ -22,13 +22,13 @@ population guarantee or proof that the fixed reference is stronger. Phase and
 complete played-root coverage reviews passed. The admitted v1.1 mixed-budget audit,
 original trigger and Bf8 erratum remain intact.
 
-Two explicitly configured Astra High agents are preparing fresh scientific synthesis
-and independent challenge. Final category aggregation/corrections, sensitivity,
-representative linked episodes, contrary successes, limitations and roadmap remain
-in progress. Coding counts are overlapping descriptive tags with differing reviewer
-granularity; they are not precise category failure rates. Provisional threshold output
-has a documented early-schema omission; use `final-analysis/audit-threshold-normalization.json`.
-Final synthesis/review drafts are not accepted until integration and final challenge.
+Explicitly configured Astra High synthesis and independent challenge passed. The
+corrected aggregate, threshold sensitivity and final report/roadmap exact files passed
+independent review; see `final-analysis/final-integration-review.json` and
+`completion-verification.json`. Final report: `../../../competitive-gameplay-diagnosis.md`.
+Category counts are overlapping descriptive tags with differing reviewer granularity,
+not precise category failure rates. Provisional threshold output is explicitly
+superseded; use `final-analysis/audit-threshold-normalization.json`.
 
 **For another chat or model, start with [independent-review-handoff.md](independent-review-handoff.md).**
 It maps frozen inputs, raw GCS/local evidence, structured datasets, blind-review order
@@ -40,8 +40,8 @@ US$33.196349 estimated compute**, not a bill. Ancillary/model/Mac/pilot/abandone
 transition costs remain separate or unverified; historical capacity failures and actual
 concurrency are retained. No cloud workers remain from the completed final stage.
 
-Complete the independently challenged behavior diagnosis and updated roadmap, then
-stop for John before engineering or cross-game work. No timer or periodic watcher.
+The independently challenged diagnosis and updated roadmap are complete. Stop for
+John before engineering or cross-game work. No follow-on task, timer or watcher is active.
 
 ## Historical transition records (superseded)
 

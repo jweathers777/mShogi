@@ -1,0 +1,54 @@
+{
+  "task": "MSH-161 (Competitive Gameplay Diagnosis)",
+  "status": "pass_final_exact_file_integration_review",
+  "review_scope": "Bounded final read of completed synthesis Markdown/JSON, integrated diagnosis, and active roadmap checkpoint. Existing independent aggregate and scientific evidence reused.",
+  "reviewer_configuration": "Requested gpt-6-astra / high; no independent backend-identity claim.",
+  "base_revision": "935c7f26feec3c4ea85fb6be1604bf973547fdd8",
+  "sha256": {
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/scientific-synthesis-astra.md": "7db98b6d01eab392edc80545e5b2ade4cec3cc24e262641aa7c99e4c04f3135a",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/scientific-synthesis-astra.json": "86be2d8635d94668c70f67974fe04962bf28787a750d11571214b3086f0d2613",
+    "docs/m5/competitive-gameplay-diagnosis.md": "4c387952a832116ed0d6492894bcb7aecdf88f407c49b7ef02e7e4135ce36968",
+    "docs/m5/strength-roadmap.md": "90386baef558ef1d50a87d4727e8ce0114de0b55d81566fc7033cb58c58052d7",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/behavior-aggregate.json": "b2882df1b306092a553b067c87c611145addc09a84fa0308323b18e379051513",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/aggregate-review.json": "9ef37871c63f62f7dedd6e4921f1728054b34354953a0924e5b4d3dc018e39b1",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/audit-threshold-normalization.json": "b0b72814825056a44527bf6c8bde388ea47d70137fbc0d73c611b64bc47e731f",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/audit-behavior-corrections.json": "666330f8e713a59df20b7d46b8489ffd8a9b0ffbc7bb1e67cb3fbf798c711a85"
+  },
+  "checks": [
+    "Final synthesis source bindings all match existing files.",
+    "Corrected category and threshold tables match the independently reviewed aggregate and prior challenge; source baseline remains589.",
+    "Cross-coder scope, overlapping tags, unknowns, selected-root denominators and conditional family/pair uncertainty remain explicit.",
+    "Reference superiority, rating, causal mechanism, exact conversion rate and alternate-policy result are not claimed.",
+    "The independently accepted bounded favorable segment and actual versus intended claim moves retain their limits.",
+    "New contrary-control clarification matches source dispositions at main-08-00/g1/p43,p45,p55.",
+    "Integrated report preserves resource estimates versus billing, separate cohorts, original AutoClaim and no unperformed product/platform claims.",
+    "Active roadmap gives investigation recommendations only, leaves MSH-153 held and explicitly stops for John before engineering. Historical roadmap is labelled inactive."
+  ],
+  "new_control_check": [
+    {
+      "pair": "main-08-00",
+      "game": 1,
+      "ply": 43,
+      "status": "unresolved",
+      "margin": null
+    },
+    {
+      "pair": "main-08-00",
+      "game": 1,
+      "ply": 45,
+      "status": "supported_subthreshold",
+      "margin": 0.0004999999999999449
+    },
+    {
+      "pair": "main-08-00",
+      "game": 1,
+      "ply": 55,
+      "status": "same_choice_control",
+      "margin": 0
+    }
+  ],
+  "substantive_findings": [],
+  "disposition": "Accepted for final delivery with the existing documented interpretation limits. No substantive blocker remains. Stop for John before engineering.",
+  "new_engine_queries": 0,
+  "prior_review_evidence_modified": false
+}

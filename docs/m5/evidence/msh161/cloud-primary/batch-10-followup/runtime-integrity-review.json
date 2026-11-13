@@ -1,0 +1,736 @@
+{
+  "status": "passed",
+  "job_name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b10-followup-v1",
+  "job_uid": "msh161-primary-b10-43517ef8-e90d-4fcf0",
+  "submission_returncode": 0,
+  "submission_state": "QUEUED",
+  "terminal_state": "SUCCEEDED",
+  "scientific_audit": {
+    "status": "passed",
+    "jobs": 28,
+    "queries": 28,
+    "selection_entries": 28,
+    "unique_roots": 28,
+    "decisions": 28,
+    "unique_reused_played_queries": 28,
+    "discoveries": [],
+    "reused_played_queries": [
+      {
+        "artifact": {
+          "bytes": 72883,
+          "key": "msh161-primary-v1-batch-10/jobs/d0f3cbe8486c88542ebc8ab8e0e46ecc4069927063117b5db38851e9bc7b713e/attempts/460e6b2cbdf94e69b72e484482d3d0be/artifacts/analysis/g000-p082-alternative-attempt0000.json",
+          "sha256": "7b5f2ef37f6cdcf882c020f25305c1fb2f035ad4892b20495fd2c1ff7162f2d0"
+        },
+        "game": 0,
+        "job": "d0f3cbe8486c88542ebc8ab8e0e46ecc4069927063117b5db38851e9bc7b713e",
+        "pair": "main-10-00",
+        "played": "a4a5",
+        "ply": 82,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/d0f3cbe8486c88542ebc8ab8e0e46ecc4069927063117b5db38851e9bc7b713e/success.json",
+          "sha256": "df1632575fba391179865ea439228575f87dd9830816e3a9d13dc7e9cd629d88"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 66218,
+          "key": "msh161-primary-v1-batch-10/jobs/d85855b09a8ed631accda3f785dc85b4ce5f4c85292a6effb0784921d6af2e41/attempts/b811330920fe4d55bf629dbf6e57e380/artifacts/analysis/g000-p094-played-attempt0000.json",
+          "sha256": "1efa1885fc5217a2c4b7bdcd30261d097e54835eb6954131d5d393b649e3bc9d"
+        },
+        "game": 0,
+        "job": "d85855b09a8ed631accda3f785dc85b4ce5f4c85292a6effb0784921d6af2e41",
+        "pair": "main-10-00",
+        "played": "d5e5",
+        "ply": 94,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/d85855b09a8ed631accda3f785dc85b4ce5f4c85292a6effb0784921d6af2e41/success.json",
+          "sha256": "a73b83b21896700e06b79b7e43da997bfdb5bc225bbb6731408e9bd522699f05"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 46907,
+          "key": "msh161-primary-v1-batch-10/jobs/254dacedae172d935f826d3ec3ca841f1a8e96903145a706a97ce52735c283fa/attempts/33bb075bccb144708103bb5b7453ebb3/artifacts/analysis/g000-p027-alternative-attempt0000.json",
+          "sha256": "82b638635353685feec9813dde491c0c94ff75d9a0f41e940a167252624a1afb"
+        },
+        "game": 0,
+        "job": "254dacedae172d935f826d3ec3ca841f1a8e96903145a706a97ce52735c283fa",
+        "pair": "main-10-01",
+        "played": "e8g8",
+        "ply": 27,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/254dacedae172d935f826d3ec3ca841f1a8e96903145a706a97ce52735c283fa/success.json",
+          "sha256": "f03f54be88120eea26e72b6991d97679262eb76fc41dc9e5b0fe3793c305a317"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 37947,
+          "key": "msh161-primary-v1-batch-10/jobs/77d702bb0ab0d6018fcd533dc72a7b73c220de972631345d5134ed0445f89d71/attempts/c70e23e585cc4b9784d665701095559d/artifacts/analysis/g000-p033-alternative-attempt0000.json",
+          "sha256": "f549b98178273e6fe4e080150212e27fceb82434425602fd66126b26baaf5026"
+        },
+        "game": 0,
+        "job": "77d702bb0ab0d6018fcd533dc72a7b73c220de972631345d5134ed0445f89d71",
+        "pair": "main-10-01",
+        "played": "g7f6",
+        "ply": 33,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/77d702bb0ab0d6018fcd533dc72a7b73c220de972631345d5134ed0445f89d71/success.json",
+          "sha256": "425f0c96d2199d6983d2ede0d8bfeeff3de6e4568c216ef6a08ca27cece200ae"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 36974,
+          "key": "msh161-primary-v1-batch-10/jobs/21d6f42cd24495ea8b7a5344c1b341cd7576ffc4cfcb7d14161d71ddd63f4f26/attempts/feb8929da2fc44649e285a9490b7c383/artifacts/analysis/g000-p035-played-attempt0000.json",
+          "sha256": "6abfa3fc8f8f2fa3cda9f45b53bf928f2be9dea00abf09714c5179760e7924da"
+        },
+        "game": 0,
+        "job": "21d6f42cd24495ea8b7a5344c1b341cd7576ffc4cfcb7d14161d71ddd63f4f26",
+        "pair": "main-10-01",
+        "played": "g8h8",
+        "ply": 35,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/21d6f42cd24495ea8b7a5344c1b341cd7576ffc4cfcb7d14161d71ddd63f4f26/success.json",
+          "sha256": "927fd9dee9d382bd1d4eaad7eeacd16d59d16ae49ca37d1df750e0b9477c11ed"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 39206,
+          "key": "msh161-primary-v1-batch-10/jobs/17ef71e0cb35a65a3080709cfdcf36aeb33074f419b7d8e0a8afae7c94bab917/attempts/167a627ba7e445d4acf48778eb9f71ae/artifacts/analysis/g000-p048-played-attempt0000.json",
+          "sha256": "1b36e25664a1935f0f7ee13b253b4546623c1f5d22ae54139988dd4c50fd1acc"
+        },
+        "game": 0,
+        "job": "17ef71e0cb35a65a3080709cfdcf36aeb33074f419b7d8e0a8afae7c94bab917",
+        "pair": "main-10-01",
+        "played": "a1b1",
+        "ply": 48,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/17ef71e0cb35a65a3080709cfdcf36aeb33074f419b7d8e0a8afae7c94bab917/success.json",
+          "sha256": "9baf55d21a5917aeaf9d32e51519e8776bd21af4bfeaa04f09ab5f5c22f70a79"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 55367,
+          "key": "msh161-primary-v1-batch-10/jobs/e27feabe2c0026690bf838e3b06faad751cf4e550713b6beac74298c1258f17c/attempts/5d6cdb3358dd44e8b550927f2825caf1/artifacts/analysis/g000-p054-alternative-attempt0000.json",
+          "sha256": "540567d6c948da7ea9c9f5458ebba4d5b38f3f1278658ee4722188b061433928"
+        },
+        "game": 0,
+        "job": "e27feabe2c0026690bf838e3b06faad751cf4e550713b6beac74298c1258f17c",
+        "pair": "main-10-01",
+        "played": "e2d3",
+        "ply": 54,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/e27feabe2c0026690bf838e3b06faad751cf4e550713b6beac74298c1258f17c/success.json",
+          "sha256": "19831c00829f57e5f238760e836f970517d1ab2dd965dd1fd632a035fab19b40"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 41946,
+          "key": "msh161-primary-v1-batch-10/jobs/c40a94d6aa8017f9918585ffa65b649de6fa5aafb63bf865fd341e3f58c7bc09/attempts/693dac47529b4268ba7b74b8ecd16caa/artifacts/analysis/g000-p056-alternative-attempt0000.json",
+          "sha256": "adba853dc3401978a40d2462c93369e561b956f190069b1e9ade3c6d796ac6ea"
+        },
+        "game": 0,
+        "job": "c40a94d6aa8017f9918585ffa65b649de6fa5aafb63bf865fd341e3f58c7bc09",
+        "pair": "main-10-01",
+        "played": "b1b7",
+        "ply": 56,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/c40a94d6aa8017f9918585ffa65b649de6fa5aafb63bf865fd341e3f58c7bc09/success.json",
+          "sha256": "1cc851a66e23aa3b0c7d8f136b509c770ec711b3b4e302fb28adefda44bfa4b2"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 40993,
+          "key": "msh161-primary-v1-batch-10/jobs/0b8ff6224b8b4b4a7a7686ab0da18518fba79465f29a73241bca2696ae663db5/attempts/3628328b6791491e9842983ac3b237a4/artifacts/analysis/g000-p057-alternative-attempt0000.json",
+          "sha256": "2a69678361da2439dc164aa0c339a566eca2a09fbf2d10bee58f98b1c5e77a7f"
+        },
+        "game": 0,
+        "job": "0b8ff6224b8b4b4a7a7686ab0da18518fba79465f29a73241bca2696ae663db5",
+        "pair": "main-10-01",
+        "played": "f6g5",
+        "ply": 57,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/0b8ff6224b8b4b4a7a7686ab0da18518fba79465f29a73241bca2696ae663db5/success.json",
+          "sha256": "8810c0e1c41e8171e21dc080aa10505c448d4db09b679902eb4542228580ac1b"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 38182,
+          "key": "msh161-primary-v1-batch-10/jobs/d2003e80e7c1c9c4b0d3a80bea173d5f4b0d0b963a02f2af711ecc98240d690c/attempts/291f29da372641cea6b6cab6e924650c/artifacts/analysis/g000-p062-alternative-attempt0000.json",
+          "sha256": "2cc0e8ec37fdd4d0a64288b1b7b640339446fbe32789c4b5cceb933674bd5bde"
+        },
+        "game": 0,
+        "job": "d2003e80e7c1c9c4b0d3a80bea173d5f4b0d0b963a02f2af711ecc98240d690c",
+        "pair": "main-10-01",
+        "played": "c7b5",
+        "ply": 62,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/d2003e80e7c1c9c4b0d3a80bea173d5f4b0d0b963a02f2af711ecc98240d690c/success.json",
+          "sha256": "0affde05b3264827c68026e435853f5892fa97432966e33c0a0a8f445445a83f"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 44138,
+          "key": "msh161-primary-v1-batch-10/jobs/dc4d304a3e749895da150f70f454b382af9775ce3a29a1ade4f74476e5e60c0a/attempts/75cbc30700d5405c90ebb347fbde2cf9/artifacts/analysis/g000-p072-alternative-attempt0000.json",
+          "sha256": "e9b9a4b037848b0018962ce59012a3bb32015a9a2ccab535dca61621aefbf901"
+        },
+        "game": 0,
+        "job": "dc4d304a3e749895da150f70f454b382af9775ce3a29a1ade4f74476e5e60c0a",
+        "pair": "main-10-01",
+        "played": "d3f5",
+        "ply": 72,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/dc4d304a3e749895da150f70f454b382af9775ce3a29a1ade4f74476e5e60c0a/success.json",
+          "sha256": "cf423663ead26f21e0cc87e5c0712ca0b82219ed45a9a6d8fe06eab471151514"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 46250,
+          "key": "msh161-primary-v1-batch-10/jobs/7e27140a6a80172489818e139b67750f4d6c7032680cb4c2f1b33ef4f22bcd73/attempts/ff79b495a21c427f90d8860edf0f77c9/artifacts/analysis/g000-p090-alternative-attempt0000.json",
+          "sha256": "412cf0ce1e6a1ccbd601320c5b9b1079c850294ca22c7395e6109ee125ed879a"
+        },
+        "game": 0,
+        "job": "7e27140a6a80172489818e139b67750f4d6c7032680cb4c2f1b33ef4f22bcd73",
+        "pair": "main-10-01",
+        "played": "c8c7",
+        "ply": 90,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/7e27140a6a80172489818e139b67750f4d6c7032680cb4c2f1b33ef4f22bcd73/success.json",
+          "sha256": "b9c7c760e2c5e79daf64a12fe402e693280822c6c57a181bfe38fcd358d2bda9"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 56686,
+          "key": "msh161-primary-v1-batch-10/jobs/d4886be2d4b83d92cd89e2c033c409594205071107b927306912ab09016b1769/attempts/38366a4306af49a590c42b37dcfdc8bf/artifacts/analysis/g001-p018-alternative-attempt0000.json",
+          "sha256": "ad2fceeebc66c5188b8074563247c047270050cf2bd0514a57f3bf5b7b4aaea6"
+        },
+        "game": 1,
+        "job": "d4886be2d4b83d92cd89e2c033c409594205071107b927306912ab09016b1769",
+        "pair": "main-10-01",
+        "played": "c1e3",
+        "ply": 18,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/d4886be2d4b83d92cd89e2c033c409594205071107b927306912ab09016b1769/success.json",
+          "sha256": "ff6d76480e159349a915d0e0388b23c41f10a8eb2df99488200127cec119e734"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 53366,
+          "key": "msh161-primary-v1-batch-10/jobs/351c2166a0e667cee1a3835160c006e18fc361d10c401e1feeaa1c8c8a076540/attempts/aa776bc86d604b99bd558a2028666483/artifacts/analysis/g000-p018-played-attempt0000.json",
+          "sha256": "cd171917469a8af5e086638f2cdeef7ac2691abd1ef18146c983ebafd1534e64"
+        },
+        "game": 0,
+        "job": "351c2166a0e667cee1a3835160c006e18fc361d10c401e1feeaa1c8c8a076540",
+        "pair": "main-10-02",
+        "played": "g1f3",
+        "ply": 18,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/351c2166a0e667cee1a3835160c006e18fc361d10c401e1feeaa1c8c8a076540/success.json",
+          "sha256": "c885198c2aaad26ea05c45039943d384f4d6d70f1d69fd68dd9c9a935eef1f83"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 38112,
+          "key": "msh161-primary-v1-batch-10/jobs/a1874a1ad649d66a350f9cf5dfbd0d8557934ce9e8f2ba2435d4f5489949c33c/attempts/8cc871f1230d45e1893a935536ef5ee3/artifacts/analysis/g000-p048-alternative-attempt0000.json",
+          "sha256": "1a29a91cccc82eedcc38ab14f2bf10936f0aac7085e17661fa9f27a705f63988"
+        },
+        "game": 0,
+        "job": "a1874a1ad649d66a350f9cf5dfbd0d8557934ce9e8f2ba2435d4f5489949c33c",
+        "pair": "main-10-02",
+        "played": "c1b2",
+        "ply": 48,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/a1874a1ad649d66a350f9cf5dfbd0d8557934ce9e8f2ba2435d4f5489949c33c/success.json",
+          "sha256": "f19b1428cd3d05e04d194b80224ff7a5a93f2475d389ba7cb6904d74cc09bf9f"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 50131,
+          "key": "msh161-primary-v1-batch-10/jobs/94ddecf7e7cd31297808422c99bc708c6a08f1394bd7aab2f5e149ce0003a77e/attempts/ca9f32680c2f47a7b6102a3877c1e89e/artifacts/analysis/g000-p049-alternative-attempt0000.json",
+          "sha256": "fb933f32c01a6734de96b7df8746b44451dbf2265637bfd6af31018169270a8f"
+        },
+        "game": 0,
+        "job": "94ddecf7e7cd31297808422c99bc708c6a08f1394bd7aab2f5e149ce0003a77e",
+        "pair": "main-10-02",
+        "played": "g7g6",
+        "ply": 49,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/94ddecf7e7cd31297808422c99bc708c6a08f1394bd7aab2f5e149ce0003a77e/success.json",
+          "sha256": "015e0402fd2db4ae5dbca64570070fde9294b986aafe9427cc1e8abac51eae39"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 42630,
+          "key": "msh161-primary-v1-batch-10/jobs/aa9e9380347274afe379a87585611f8f3426d1ee5250c73a33def5d56d751fc6/attempts/6bac0e4d36be4b3d85a21293852904fa/artifacts/analysis/g000-p059-alternative-attempt0000.json",
+          "sha256": "54f22b1946d553cd52f650b3e638008ea21b647090cf2c458bd603dc974b77ae"
+        },
+        "game": 0,
+        "job": "aa9e9380347274afe379a87585611f8f3426d1ee5250c73a33def5d56d751fc6",
+        "pair": "main-10-02",
+        "played": "c7c5",
+        "ply": 59,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/aa9e9380347274afe379a87585611f8f3426d1ee5250c73a33def5d56d751fc6/success.json",
+          "sha256": "96f950b8c1df813af393be808a366999756469f9697db64595c28b1457738848"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 58891,
+          "key": "msh161-primary-v1-batch-10/jobs/2d5f8940568ab8e222ef2f463e5e34824cb0846e1b638cbe2adf804839a60d75/attempts/524165a7cdac4b20b1813fb1f3ababaa/artifacts/analysis/g000-p049-played-attempt0000.json",
+          "sha256": "4bc18c84ec39f81add2a1d24eba0e18179cfcfc93c9b735c74636a80cd2f0176"
+        },
+        "game": 0,
+        "job": "2d5f8940568ab8e222ef2f463e5e34824cb0846e1b638cbe2adf804839a60d75",
+        "pair": "main-10-03",
+        "played": "g6f8",
+        "ply": 49,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/2d5f8940568ab8e222ef2f463e5e34824cb0846e1b638cbe2adf804839a60d75/success.json",
+          "sha256": "508a66f26393e02e958e868a24f83a0f21c667cc6b56f2992860ae658b39f98d"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 57495,
+          "key": "msh161-primary-v1-batch-10/jobs/633866bd3a4e2df59475d1c5b0891555e559ff5af7fbbcb840da687beac2772f/attempts/c3203c4664b848c3a4de1333011324ec/artifacts/analysis/g001-p027-alternative-attempt0000.json",
+          "sha256": "3d04ff149251a842ef15ad642af4a2abcfe2acba4d396584f9608560bcc69bec"
+        },
+        "game": 1,
+        "job": "633866bd3a4e2df59475d1c5b0891555e559ff5af7fbbcb840da687beac2772f",
+        "pair": "main-10-03",
+        "played": "g8g4",
+        "ply": 27,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/633866bd3a4e2df59475d1c5b0891555e559ff5af7fbbcb840da687beac2772f/success.json",
+          "sha256": "2c9c97f44882932122701f8b54025e369d8876103db740827aff51064ea85f8e"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 47444,
+          "key": "msh161-primary-v1-batch-10/jobs/d71c41529c19464b80a692e410f196caa5e96d205f4261e484aefafad088ea62/attempts/67882c1ed69a4b8bbd275608cb63a641/artifacts/analysis/g001-p057-alternative-attempt0000.json",
+          "sha256": "1beb274ff9830fb9fc29aeffaf6083f2e0cd5b5c6a8e5515064bf74c4dc7fd51"
+        },
+        "game": 1,
+        "job": "d71c41529c19464b80a692e410f196caa5e96d205f4261e484aefafad088ea62",
+        "pair": "main-10-03",
+        "played": "c8b7",
+        "ply": 57,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/d71c41529c19464b80a692e410f196caa5e96d205f4261e484aefafad088ea62/success.json",
+          "sha256": "fd790f6ee0c083f59bdea5c5969b86521059ba0db175ce190529feb1cde2e3ae"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 43050,
+          "key": "msh161-primary-v1-batch-10/jobs/f735c673b39d3120e02367e834fed3cf6982909a22f2e5fdcb4a52f1dbb875dc/attempts/e3ef7386cb6f4b0b862a10e1838f4a9f/artifacts/analysis/g000-p024-alternative-attempt0000.json",
+          "sha256": "a0c6f41ee6c1c670446735ef32612d961068278e80b613e534e6ac01efde1713"
+        },
+        "game": 0,
+        "job": "f735c673b39d3120e02367e834fed3cf6982909a22f2e5fdcb4a52f1dbb875dc",
+        "pair": "main-10-04",
+        "played": "f1d3",
+        "ply": 24,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/f735c673b39d3120e02367e834fed3cf6982909a22f2e5fdcb4a52f1dbb875dc/success.json",
+          "sha256": "cb2cb2757622d0bfbbf6a1c7d4b4ef809703f5696bd84c544512f456c8360f89"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 44735,
+          "key": "msh161-primary-v1-batch-10/jobs/a367bcbb3090acca930770c23461eed90e616df256621b63cf5cbdb92183c34d/attempts/ee71b1049b11441f8c0ee61274339e69/artifacts/analysis/g000-p029-alternative-attempt0000.json",
+          "sha256": "1c93ffeabe2d9a3a3b2b90e419c08216aeec6cfa778a3a9ae31c6f149be35d0a"
+        },
+        "game": 0,
+        "job": "a367bcbb3090acca930770c23461eed90e616df256621b63cf5cbdb92183c34d",
+        "pair": "main-10-04",
+        "played": "a8b8",
+        "ply": 29,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/a367bcbb3090acca930770c23461eed90e616df256621b63cf5cbdb92183c34d/success.json",
+          "sha256": "854c73bca9264de6fc9412f1e7f00f21049d580b0d67fbdc8e00cfee9f729515"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 37847,
+          "key": "msh161-primary-v1-batch-10/jobs/40a156063e2382339799330b5eda4438c079c66bce92648601d2e783bf9e993b/attempts/4d40b23f72394903a174513c39c9049e/artifacts/analysis/g000-p030-alternative-attempt0000.json",
+          "sha256": "9cc9efb6aa25762c3fc0f42e5178debc93fa0219477dea051c841320eb7bb55e"
+        },
+        "game": 0,
+        "job": "40a156063e2382339799330b5eda4438c079c66bce92648601d2e783bf9e993b",
+        "pair": "main-10-04",
+        "played": "a2a3",
+        "ply": 30,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/40a156063e2382339799330b5eda4438c079c66bce92648601d2e783bf9e993b/success.json",
+          "sha256": "fa9721f41fd586092dd09998240eb62e3c1e711696c3e7ced3a27263a5ef8a62"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 32732,
+          "key": "msh161-primary-v1-batch-10/jobs/0e7024eab4a864cbe2f4065a35d503a4b5f9dbeed7011e36c04536d2d54a4142/attempts/3d8f6b92e6b3478cb8475ed2fe2d26d3/artifacts/analysis/g000-p032-alternative-attempt0000.json",
+          "sha256": "24c5eec7c424399d9186a8876830b95cf7afb7df452ec64726713e73b87de56d"
+        },
+        "game": 0,
+        "job": "0e7024eab4a864cbe2f4065a35d503a4b5f9dbeed7011e36c04536d2d54a4142",
+        "pair": "main-10-04",
+        "played": "b2b4",
+        "ply": 32,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/0e7024eab4a864cbe2f4065a35d503a4b5f9dbeed7011e36c04536d2d54a4142/success.json",
+          "sha256": "c997a85e88d138b4ab2975c9802723fe3837412ebb490793e6417b79befa5a14"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 41310,
+          "key": "msh161-primary-v1-batch-10/jobs/cb6a76b4d0944f6f8faaba92640be05142ce2103b20669cef536eb596e554282/attempts/baad52c3d6974c989b0db896ff578d4c/artifacts/analysis/g001-p077-played-attempt0000.json",
+          "sha256": "1a675aff649cdba5c87ec6dbe921abb7e8184aaad531ebf7bb362bd53109b43e"
+        },
+        "game": 1,
+        "job": "cb6a76b4d0944f6f8faaba92640be05142ce2103b20669cef536eb596e554282",
+        "pair": "main-10-06",
+        "played": "b5a4",
+        "ply": 77,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/cb6a76b4d0944f6f8faaba92640be05142ce2103b20669cef536eb596e554282/success.json",
+          "sha256": "4365fb0c1ac9865ca11c99a9c6154f35114fbbe3142bb351def553710895c145"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 50756,
+          "key": "msh161-primary-v1-batch-10/jobs/5a83365ec80a3f3c01e63dd8b40b6a9191b767aeea5e1ef63598fec61ddd7b0b/attempts/441cd881271d49b88422eb530d2c6ee0/artifacts/analysis/g001-p072-played-attempt0000.json",
+          "sha256": "b34c19b45d14b89b4bd167c273ccdf1883a14c29e9eb16981a25f57b9ce7ba4d"
+        },
+        "game": 1,
+        "job": "5a83365ec80a3f3c01e63dd8b40b6a9191b767aeea5e1ef63598fec61ddd7b0b",
+        "pair": "main-10-07",
+        "played": "e4e5",
+        "ply": 72,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/5a83365ec80a3f3c01e63dd8b40b6a9191b767aeea5e1ef63598fec61ddd7b0b/success.json",
+          "sha256": "42c5c1555e3053573153dfcfbb3ce6aaa55f3ba157874e137330ac6d613b9484"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 51553,
+          "key": "msh161-primary-v1-batch-10/jobs/6e93d98797f445ca816df6e556c25e8096c268be1e51ce572c638a8a14e7de4a/attempts/1e82445ef5cc49688a0f164685528d54/artifacts/analysis/g001-p067-played-attempt0000.json",
+          "sha256": "e80062be5bd79020d42ded86059dbaf781507c8b54da566a52120527ca8e7304"
+        },
+        "game": 1,
+        "job": "6e93d98797f445ca816df6e556c25e8096c268be1e51ce572c638a8a14e7de4a",
+        "pair": "main-10-08",
+        "played": "c3d4",
+        "ply": 67,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/6e93d98797f445ca816df6e556c25e8096c268be1e51ce572c638a8a14e7de4a/success.json",
+          "sha256": "798eb0ccc67ef5f5b26817b89ac2aeb14ff0ba0e35721b21273962a93d7bf5a7"
+        }
+      },
+      {
+        "artifact": {
+          "bytes": 34072,
+          "key": "msh161-primary-v1-batch-10/jobs/16da476005f2425c046ade134a3a0890d950d914feaa25b1d1a947f8194a85f3/attempts/8f0de0d00bb442ae90eb691c19618537/artifacts/analysis/g000-p019-played-attempt0000.json",
+          "sha256": "b4baa3fa95c89eea73f97bc2dc7996d1404da55fdc966716eaa85fb99eaabc8b"
+        },
+        "game": 0,
+        "job": "16da476005f2425c046ade134a3a0890d950d914feaa25b1d1a947f8194a85f3",
+        "pair": "main-10-unaided",
+        "played": "a5b3",
+        "ply": 19,
+        "success": {
+          "key": "msh161-primary-v1-batch-10/jobs/16da476005f2425c046ade134a3a0890d950d914feaa25b1d1a947f8194a85f3/success.json",
+          "sha256": "ec94f1bd13882dc1f6e749adfd3b024fb1f7a1abdc16f40c7bc46c4a2e4eb4c5"
+        }
+      }
+    ],
+    "counting": "Only twenty-eight new jobs/queries counted; twenty-eight reused-reference entries identify twenty-eight unique played queries stay in earlier panel totals",
+    "flags": {
+      "last_score_update_not_selected_exact_score": 21,
+      "directional_bound_conflict": 4,
+      "stable_report_heuristic": 21
+    },
+    "resources": {
+      "job_wall_seconds": 699.5072168199999,
+      "job_cpu_seconds": 643.7225829999999,
+      "query_wall_seconds": 643.0941689330002,
+      "query_cpu_seconds": 642.8943059999999,
+      "query_wall_max_seconds": 26.679874616999996
+    },
+    "worker_environments": {
+      "535655155813243677": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "535655155813243677",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "4970439124950113053": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "4970439124950113053",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "5910685088988453662": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "5910685088988453662",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "3391681207901805342": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "3391681207901805342",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "6632729289707674397": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "6632729289707674397",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "7835993136783088413": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "7835993136783088413",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "4793652129243519773": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "4793652129243519773",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "401125205165660958": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "401125205165660958",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      }
+    },
+    "failed_scientific_attempts": 0,
+    "unresolved_claims": 0,
+    "plan_sha256": "d987bc87a8a1ef0d4b33344b4fbf858f94b7fba74630b237c89e346b0106f8b7",
+    "verification_sha256": "cf262cef1e1fc2670ac215567a897b0461bea7e2254ee947792168fc786b63f6",
+    "source_revision": "e58bcf5ba1cda059bf69f2c8f414b4b78e1931f5",
+    "scope": "Independent plan/success/parent/selection/history/budget/options/native replay/legal PV/cleanup audit; reused complete plan-aware artifact verification without duplicate full artifact hashing; no engines or retrieval",
+    "procedure_source": "import json,hashlib,gzip,sys,collections\nfrom pathlib import Path\nP=Path('docs/m5/evidence/msh161/cloud-primary');H=P/'batch-10-followup';C=P/'local-cache';sys.path.insert(0,str(P.parent.resolve()));import analysis,screen_v1,chess\ndata=lambda p:Path(p).read_bytes() if Path(p).exists() else gzip.decompress(Path(str(p)+'.gz').read_bytes())\nread=lambda p:json.loads(data(p));sha=lambda p:hashlib.sha256(data(p)).hexdigest()\nplan=read(H/'plan.json');ver=read(H/'results/verification.json');done=read(H/'results/completion.json');rest=read(P/'autoclaim-restoration.json');idx=read(P/'batch-10-review/review-index.json')\nassert sha(H/'plan.json')==ver['plan_sha256']==done['plan_sha256'];assert sha(H/'results/verification.json')==done['verification_sha256'];assert sha(P/'batch-10-review/review-index.json')==plan['review_index_sha256'];assert sha(C/plan['original_manifest']['key'])==plan['original_manifest']['sha256']\nfor s in plan['selection_files']:assert sha(P/'batch-10-adjudication'/s['file'])==s['sha256']\nfor s in plan['consumed_successes']:assert sha(C/s['key'])==s['sha256']\ncanonical={};parents={}\nfor pair,x in idx.items():\n if pair not in {d['pair'] for d in plan['decisions']}:continue\n item=x['game_pair'];raw=gzip.decompress(Path(item['artifacts']['pair/report.json.gz']['local']).read_bytes());outer=json.loads(raw);rep=json.loads(outer['report_json']);ds,gs=analysis.extract_decisions(rep)\n assert rep['config']['claim_policy']=='auto_claim'\n for d in ds:canonical[pair,d['game'],d['ply']]=d\n parents[item['job']['id']]={'raw_sha256':hashlib.sha256(raw).hexdigest(),'compressed_sha256':item['artifacts']['pair/report.json.gz']['sha256'],'pair':pair,'success_sha256':item['success_sha256']}\nvr={r['job']:r for r in ver['results']};assert len(vr)==len(plan['jobs'])==28\nflags=collections.Counter();counts=collections.Counter();resources=collections.Counter();envs={};query_keys=[];discoveries=[]\nfor job in plan['jobs']:\n jid=job['id'];path=C/job['experiment']/'jobs'/jid/'success.json';assert sha(path)==vr[jid]['success_sha256'];r=read(path);assert r['job']==job and r['status']=='complete' and r['result']['complete'];assert job['build']==rest['original_build'];assert job['environment']['cloud']['image']==rest['original_image'];assert job['source_revision']==rest['original_worker_source'];assert job['nodes']==20000000\n parent=parents[job['inputs']['report']['job']];d=canonical[parent['pair'],job['game'],job['ply']];assert job['adjudication']['decision']==d;assert job['adjudication']['parent_success_sha256']==parent['success_sha256'];assert job['adjudication']['screen_success_sha256']==idx[parent['pair']]['reference_screening']['success_sha256']\n env=r['environment'];assert env['architecture']=='x86_64' and env['gcp']['machine-type'].endswith('/c3-standard-4') and env['batch']['BATCH_TASK_RETRY_ATTEMPT']=='0';envs[env['gcp']['id']]=env['gcp'];resources['job_wall_seconds']+=r['wall_seconds'];resources['job_cpu_seconds']+=r['child_cpu_seconds']\n arts=r['artifacts'];rr=read(C/arts['replay.json']['key']);assert rr['returncode']==0 and rr['input_sha256']==parent['compressed_sha256'] and rr['uncompressed_sha256']==parent['raw_sha256'];assert arts['replay-input.json']['sha256']==parent['raw_sha256']\n m=read(C/arts['analysis/manifest.json']['key']);assert m['nodes']==20000000 and m['planned_decisions']==1 and m['options']==analysis.OPTIONS and m['engine_sha256']==rest['original_build']['engines']['stockfish19']['sha256']\n qs=[read(C/a['key']) for k,a in arts.items() if k.startswith('analysis/g') and '-attempt' in k];assert len(qs)==(1 if job['move'] else 2)\n for q in qs:\n  assert q['decision']==d and q['nodes_requested']==20000000 and q['options']==analysis.OPTIONS and q['engine_sha256']==m['engine_sha256'];assert q['status']=='complete' and q['exit_code']==0 and q['process_group_settled'] and not q['raw_truncated'];forced=q['forced_move'];assert (forced==job['move']) if job['move'] else forced in [None,d['played']]\n  b=analysis.board_for(d);assert chess.Move.from_uci(q['assessment']['bestmove']) in b.legal_moves\n  if forced:assert q['assessment']['bestmove']==forced\n  score=q['assessment']['score']\n  if score:\n   assert q['pv_independent_legal']\n   for u in score['pv']:b.push_uci(u)\n  else:assert 'no_nonbound_score_aligned_with_bestmove' in q['assessment']['uncertainty']\n  cmds=[e['line'] for e in q['raw_uci'] if e['direction']=='send'];assert 'ucinewgame' in cmds and 'setoption name Clear Hash' in cmds;assert 'position fen '+d['initial_fen']+(' moves '+' '.join(d['history']) if d['history'] else '') in cmds;assert [x for x in cmds if x.startswith('go ')]==['go nodes 20000000'+(' searchmoves '+forced if forced else '')]\n  v=screen_v1.describe(q);flags.update(q['assessment']['uncertainty']);flags['directional_bound_conflict']+=bool(v['directional_bound_conflicts']);flags['stable_report_heuristic']+=v['stable_report_heuristic'];resources['query_wall_seconds']+=q['wall_seconds'];resources['query_cpu_seconds']+=q['child_cpu_seconds'];resources['query_wall_max_seconds']=max(resources['query_wall_max_seconds'],q['wall_seconds']);counts['queries']+=1;query_keys.append([parent['pair'],d['game'],d['ply'],forced])\n  if forced is None:discoveries.append({'pair':parent['pair'],'game':d['game'],'ply':d['ply'],'played':d['played'],'bestmove':q['assessment']['bestmove'],'different_move':d['played']!=q['assessment']['bestmove'],'flags':v['flags']})\n res=read(C/arts['analysis/resources.json']['key']);assert res['failures']==0 and res['attempts']==len(qs)\n for k in ['wall_seconds','child_cpu_seconds']:assert abs(res[k]-sum(q[k] for q in qs))<1e-5\n counts['jobs']+=1\nassert counts['queries']==28;assert len(discoveries)==0\nassert len(ver['attempts'])==28 and not ver['failed_attempts'];assert all(a['status']=='complete' for a in ver['attempts']);assert abs(resources['job_wall_seconds']-ver['successful_job_totals']['wall_seconds'])<1e-5\nfor d in plan['decisions']:\n qs=[k for k in query_keys if k[:3]==[d['pair'],d['game'],d['ply']]];assert set(q[-1] for q in qs)=={m for row in plan['decisions'] if (row['pair'],row['game'],row['ply'])==(d['pair'],d['game'],d['ply']) for m in row['moves']} - {d['played']}\nfor j in plan['jobs']:\n folder=C/j['experiment']/'jobs'/j['id'];assert not (folder/'claim.json').exists();assert len(list(folder.glob('attempts/*/receipt.json')))==1\nassert sha(P/'batch-10-adjudication/plan.json')==plan['prior_plan_sha256']\nreused=[]\nfor d in plan['decisions']:\n qd=d['reused_played'];assert sha(C/qd['success']['key'])==qd['success']['sha256'];assert sha(C/qd['artifact']['key'])==qd['artifact']['sha256'];r=read(C/qd['success']['key']);q=read(C/qd['artifact']['key']);assert qd['artifact'] in r['artifacts'].values();assert q['decision']==canonical[d['pair'],d['game'],d['ply']];assert q['forced_move']==d['played'] and q['nodes_requested']==20000000 and q['options']==analysis.OPTIONS;assert q['engine_sha256']==rest['original_build']['engines']['stockfish19']['sha256'];assert q['status']=='complete';assert qd['job'] not in {j['id'] for j in plan['jobs']};reused.append(qd)\nresult={'status':'passed','jobs':28,'queries':28,'selection_entries':len(plan['decisions']),'unique_roots':len({(d['pair'],d['game'],d['ply']) for d in plan['decisions']}),'decisions':len({(d['pair'],d['game'],d['ply']) for d in plan['decisions']}),'unique_reused_played_queries':len({d['artifact']['key'] for d in reused}),'discoveries':discoveries,'reused_played_queries':reused,'counting':'Only twenty-eight new jobs/queries counted; twenty-eight reused-reference entries identify twenty-eight unique played queries stay in earlier panel totals','flags':dict(flags),'resources':dict(resources),'worker_environments':envs,'failed_scientific_attempts':0,'unresolved_claims':0,'plan_sha256':sha(H/'plan.json'),'verification_sha256':sha(H/'results/verification.json'),'source_revision':read(H/'launch.json')['reviewed_revision'],'scope':'Independent plan/success/parent/selection/history/budget/options/native replay/legal PV/cleanup audit; reused complete plan-aware artifact verification without duplicate full artifact hashing; no engines or retrieval','procedure_source':Path(__file__).read_text()}\nPath('/tmp/msh161-b10-followup-audit-result.json').write_text(json.dumps(result,indent=2));print(json.dumps({k:result[k] for k in ['status','jobs','queries','decisions','flags','resources']},indent=2));print('Distinct discovery alternatives:',[d for d in discoveries if d['different_move']])\n"
+  },
+  "task_records": [
+    {
+      "task": "0",
+      "start": "2026-11-13T19:33:26.978947422Z",
+      "end": "2026-11-13T19:35:15.733038849Z",
+      "seconds": 108.7540910243988,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/535655155813243677",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "1",
+      "start": "2026-11-13T19:33:28.738218069Z",
+      "end": "2026-11-13T19:35:25.212817376Z",
+      "seconds": 116.47459888458252,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/6632729289707674397",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "2",
+      "start": "2026-11-13T19:33:26.036535504Z",
+      "end": "2026-11-13T19:35:09.327499300Z",
+      "seconds": 103.29096388816833,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/4793652129243519773",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "3",
+      "start": "2026-11-13T19:33:26.908906411Z",
+      "end": "2026-11-13T19:35:27.712224917Z",
+      "seconds": 120.80331802368164,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/7835993136783088413",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "4",
+      "start": "2026-11-13T19:33:28.138153327Z",
+      "end": "2026-11-13T19:34:58.273161992Z",
+      "seconds": 90.13500785827637,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/5910685088988453662",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "5",
+      "start": "2026-11-13T19:33:29.693944691Z",
+      "end": "2026-11-13T19:34:52.471755266Z",
+      "seconds": 82.77781105041504,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/401125205165660958",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "6",
+      "start": "2026-11-13T19:33:27.143023719Z",
+      "end": "2026-11-13T19:34:39.579202781Z",
+      "seconds": 72.4361789226532,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/4970439124950113053",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "7",
+      "start": "2026-11-13T19:33:26.482751455Z",
+      "end": "2026-11-13T19:34:41.567729714Z",
+      "seconds": 75.0849781036377,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/3391681207901805342",
+      "state": "SUCCEEDED"
+    }
+  ],
+  "task_elapsed_seconds": 121.67568898200989,
+  "submission_to_last_task_seconds": 163.69265508651733,
+  "task_seconds_sum": 769.7569477558136,
+  "concurrency_seconds": {
+    "0": 0.0,
+    "1": 2.9456229209899902,
+    "2": 9.90593409538269,
+    "3": 6.4755799770355225,
+    "4": 11.218414068222046,
+    "5": 6.796535968780518,
+    "6": 11.504091024398804,
+    "7": 2.9442529678344727,
+    "8": 69.88525795936584
+  },
+  "peak_task_concurrency": 8,
+  "vms": [
+    {
+      "id": "7835993136783088413",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b10-43517ef8-e90d-4fcf0-group0-0-qtbs",
+      "deleted": "2026-11-13T19:36:11.306664Z",
+      "start": "2026-11-13T19:33:06.066300Z",
+      "seconds": 185.24036407470703
+    },
+    {
+      "id": "535655155813243677",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b10-43517ef8-e90d-4fcf0-group0-0-z19n",
+      "deleted": "2026-11-13T19:35:50.247816Z",
+      "start": "2026-11-13T19:33:05.577145Z",
+      "seconds": 164.67067098617554
+    },
+    {
+      "id": "6632729289707674397",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b10-43517ef8-e90d-4fcf0-group0-0-gn0z",
+      "deleted": "2026-11-13T19:35:49.798036Z",
+      "start": "2026-11-13T19:33:05.566599Z",
+      "seconds": 164.2314372062683
+    },
+    {
+      "id": "4793652129243519773",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b10-43517ef8-e90d-4fcf0-group0-0-qrbc",
+      "deleted": "2026-11-13T19:35:42.094802Z",
+      "start": "2026-11-13T19:33:05.753372Z",
+      "seconds": 156.34142994880676
+    },
+    {
+      "id": "5910685088988453662",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b10-43517ef8-e90d-4fcf0-group0-0-fb4k",
+      "deleted": "2026-11-13T19:35:40.762070Z",
+      "start": "2026-11-13T19:33:05.552792Z",
+      "seconds": 155.20927786827087
+    },
+    {
+      "id": "401125205165660958",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b10-43517ef8-e90d-4fcf0-group0-0-qppb",
+      "deleted": "2026-11-13T19:35:22.535846Z",
+      "start": "2026-11-13T19:33:05.650165Z",
+      "seconds": 136.88568091392517
+    },
+    {
+      "id": "3391681207901805342",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b10-43517ef8-e90d-4fcf0-group0-0-92x9",
+      "deleted": "2026-11-13T19:35:10.460718Z",
+      "start": "2026-11-13T19:33:05.637748Z",
+      "seconds": 124.82296991348267
+    },
+    {
+      "id": "4970439124950113053",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b10-43517ef8-e90d-4fcf0-group0-0-g2kk",
+      "deleted": "2026-11-13T19:35:10.003566Z",
+      "start": "2026-11-13T19:33:05.615633Z",
+      "seconds": 124.38793301582336
+    }
+  ],
+  "vm_lifecycle_hours": 0.3366082677576277,
+  "recorded_rate_usd_per_hour": 0.201608,
+  "estimated_compute_usd": 0.06786291964607981,
+  "actual_billed_cost": null,
+  "failed_insert_completion_count": 0,
+  "failed_insert_zones": {},
+  "initial20m_batch07_allocation_failures_separate": 38,
+  "base_batch06_allocation_failures_separate": 1,
+  "initial20m_batch06_allocation_failures_separate": 11,
+  "base_batch04_allocation_failures_separate": 53,
+  "initial20m_batch04_allocation_failures_separate": 5,
+  "operational_audit_error_count": 0,
+  "remaining_instances": [],
+  "remaining_disks": [],
+  "notification": {
+    "label": "MSH-161 final Batch 10 28 matched followup alternatives",
+    "thread": "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+    "command": [
+      "/private/tmp/msh162-controller/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/run_adjudication_plan.py",
+      "--directory",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-10-followup",
+      "--job-name",
+      "msh161-primary-b10-followup-v1",
+      "--subscription",
+      "projects/mshogi/subscriptions/mshogi-pilot-completion",
+      "--cache",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache",
+      "--spending-approved"
+    ],
+    "state_artifact": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-10-followup",
+    "wrapper_pid": 2426,
+    "started_epoch": 1794598296.402897,
+    "status": "success",
+    "queue_attempted": true,
+    "cleanup_scope": "Own child process group only; engines detached by existing helpers require their own receipts/reconciliation; not a descendant-tree cleanup guarantee",
+    "child_pid": 2430,
+    "computation_returncode": 0,
+    "residual_group_detected": false,
+    "process_group_settled": true,
+    "finished_epoch": 1794598680.149156,
+    "queue_returncode": 0,
+    "queue_accepted": true
+  },
+  "local_process_snapshot": {
+    "command": "ps -p 88088,88100 -o pid=,ppid=,stat=,command=",
+    "returncode": 1,
+    "stdout": "",
+    "meaning": "Recorded wrapper and child PIDs absent at the same review invocation; not a general descendant census"
+  },
+  "submission_preflight_seconds": 66.0332682132721,
+  "wrapper_start_to_cloud_create_seconds": 67.61667203903198,
+  "whole_submit_wait_retrieve_verify_seconds": 383.7462592124939,
+  "after_last_cloud_task_to_wrapper_finish_seconds": 152.43693208694458,
+  "resources_note": "Child query wall/CPU totals overlap parent job totals; do not add them. VM lifetimes also include idle/provisioning. Post-cloud span combines event/retrieval/verification/publication/shutdown; download-only timing not instrumented.",
+  "scope": "One read-only cloud snapshot plus existing plan-aware verification; no new retrieval, engines, queries or cloud jobs. Local audit first encountered archived review-index path, then read its byte-exact gzip form; no scientific execution failure.",
+  "raw_observations": "runtime-observations.json.gz",
+  "forecast": "forecast-update.json",
+  "raw_observations_expanded_sha256": "29bcb9e2abe7869c277a617d6589568a386cff03c475592b08ffdf51d620e4a9"
+}

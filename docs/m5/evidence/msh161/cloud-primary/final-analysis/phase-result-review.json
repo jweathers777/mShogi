@@ -1,0 +1,103 @@
+{
+  "status": "passed_independent_phase_and_coverage_result_review",
+  "bindings": {
+    "phase_summary.py": "900be70a43ef1964dc46e3ac077e58628d4bf04c9969afd13666da1911c49219",
+    "phase-summary.json.gz": "38efb7fb49a121ad2442c495993d726905ae46c5c9adec0a55a9ad2abe8eb9bd",
+    "played-coverage.json.gz": "83d694c0f0870e86a33e9936e07a5356055d3f4a507233731317ca4684eb05b2",
+    "context-tables.json": "6303f1b36c133bbd3f5fd91d1bb937d2d6e9df77d76cb6e95b3aed07cb02f932",
+    "phase_tags.py": "51f687ff4c4c9fbfa3e39b06720145cc8f2bda84655ff2a99643aa2bc8ab1f7b"
+  },
+  "checks": [
+    "Exact script/helper/cumulative hashes",
+    "All native root identities and context/played partition",
+    "Every base and final source row canonical hash and played identity",
+    "Selected normalized rows exactly match cumulative closure; screening-only rows remain unresolved",
+    "All 200 frozen phase histories recomputed; material independently recounted on boards",
+    "All played-root base phases and four sensitivity variants, supports and aggregate counts reconciled",
+    "Mixed expansion roots are exactly Batch 09 game0 plies57/75"
+  ],
+  "counts": {
+    "all_played": {
+      "opening": 1860,
+      "middlegame": 10287,
+      "endgame": 12792
+    },
+    "candidate_played": {
+      "opening": 930,
+      "middlegame": 5146,
+      "endgame": 6410
+    },
+    "material24_all_played": {
+      "opening": 1860,
+      "middlegame": 11460,
+      "endgame": 11619
+    },
+    "material28_all_played": {
+      "opening": 1860,
+      "middlegame": 9817,
+      "endgame": 13262
+    },
+    "boundary_minus2_all_played": {
+      "opening": 1524,
+      "middlegame": 10623,
+      "endgame": 12792
+    },
+    "boundary_plus2_all_played": {
+      "opening": 2238,
+      "middlegame": 9909,
+      "endgame": 12792
+    },
+    "supported_candidate": {
+      "middlegame": 366,
+      "endgame": 118,
+      "opening": 105
+    },
+    "material24_supported_candidate": {
+      "middlegame": 387,
+      "endgame": 97,
+      "opening": 105
+    },
+    "material28_supported_candidate": {
+      "middlegame": 363,
+      "endgame": 121,
+      "opening": 105
+    },
+    "boundary_minus2_supported_candidate": {
+      "middlegame": 383,
+      "endgame": 118,
+      "opening": 88
+    },
+    "boundary_plus2_supported_candidate": {
+      "middlegame": 345,
+      "endgame": 118,
+      "opening": 126
+    }
+  },
+  "changed_assignments": {
+    "boundary_minus2_all_played": 336,
+    "boundary_plus2_all_played": 378,
+    "material24_all_played": 1173,
+    "boundary_plus2_supported_candidate": 21,
+    "material24_supported_candidate": 21,
+    "material28_all_played": 470,
+    "boundary_minus2_supported_candidate": 17,
+    "material28_supported_candidate": 3
+  },
+  "unresolved_boundaries": 0,
+  "coverage_counts": {
+    "played_roots": 24939,
+    "supplied_context_roots": 2880,
+    "evidence_tiers": {
+      "matched_5M": 9087,
+      "selected_20M": 6139,
+      "screening_500k": 9711,
+      "admitted_mixed_expansion_20M_without_5M": 2
+    },
+    "selected_normalized_rows_available": 6141,
+    "planned20m_roots": 6141
+  },
+  "findings": [],
+  "limits": "Reviewer authored the coverage utility; coordinator reviewed its source independently. This review reconciles its actual output, and independently reviews root-authored phase code/output. Neither artifact codes behavior or proves phase quality. Future-history boundary convention and promotion-driven material changes are preserved.",
+  "review_and_context_derivation_source": "import json,gzip,hashlib,sys,collections,itertools\nfrom pathlib import Path\nH=Path('docs/m5/evidence/msh161/cloud-primary');F=H/'final-analysis';sys.path.insert(0,str(H.parent));import analysis,phase_tags,chess\nsha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()\ndef read(p):\n p=Path(p);raw=p.read_bytes() if p.exists() else gzip.decompress(Path(str(p)+'.gz').read_bytes());return json.loads(gzip.decompress(raw) if p.suffix=='.gz' else raw)\ndef rh(r):return hashlib.sha256(json.dumps(r,sort_keys=True,separators=(',',':')).encode()).hexdigest()\ndef k(r):return r['pair'],r['game'],r['ply']\nv=read(H/'primary-cumulative.json');s=read(F/'native-statistics.json');p=read(F/'phase-summary.json.gz');c=read(F/'played-coverage.json.gz')\nassert p['implementation_sha256']==sha(F/'phase_summary.py') and p['phase_helper_sha256']==sha(H.parent/'phase_tags.py') and p['cumulative_sha256']==sha(H/'primary-cumulative.json')\nassert c['implementation_sha256']==sha(F/'played_coverage.py')\nfor source,binding in c['source_bindings'].items():assert sha(H/source)==binding['sha256'],source\npr={k(r):r for r in p['played_roots']};cr={k(r):r for r in c['played_roots']};cx={k(r):r for r in c['supplied_context_roots']};assert len(pr)==len(cr)==24939 and len(cx)==2880 and len(pr)==len(p['played_roots']) and len(cr)==len(c['played_roots']) and set(pr)==set(cr) and not set(cr)&set(cx)\nselected={k(r):r for r in v['normalized_selected_events']};assert {key for key,r in cr.items() if r['selected20m']}==set(selected)\nassert collections.Counter(r['evidence_tier'] for r in cr.values())==c['counts']['evidence_tiers']\nassert all(r['final_disposition']=='screening_only_unresolved' and not r['confirmed_nonerror'] for r in cr.values() if r['evidence_tier']=='screening_500k')\nassert {key for key,r in cr.items() if r['evidence_tier']=='admitted_mixed_expansion_20M_without_5M'}=={('main-09-00',0,57),('main-09-00',0,75)}\nsourcecache={}\nfor key,r in cr.items():\n for field in ['base_source','final_source']:\n  if field not in r:continue\n  ref=r[field];source=ref['source']\n  if source not in sourcecache:sourcecache[source]={k(x):x for x in read(H/source)['decisions']}\n  exact=sourcecache[source][key];assert rh(exact)==ref['canonical_row_sha256'] and exact['played']==r['played']\n if key in selected:assert r['normalized_selected_row']==selected[key] and r['final_disposition']==selected[key]['status']\nhistories={};nativekeys=set();contextkeys=set();gamephases={(x['pair'],x['game']):x for x in p['games']};recounts=collections.defaultdict(collections.Counter);changed=collections.Counter();rejected=0\nfor pair in sorted({x['pair'] for x in s['games']}):\n a=next(x for x in s['games'] if x['pair']==pair);report=analysis.load_report(H/'local-cache'/a['native_report_key']);ds,gs=analysis.extract_decisions(report)\n for gi,g in enumerate(gs):\n  rec=analysis.decode(report['games'][gi]['match_record_json']);initial=analysis.decode(rec['initial_record_json']);tag=phase_tags.tag_history(g['initial_fen'],g['complete_history'],initial['history_origin']);histories[pair,gi]=g['complete_history'];boundary=tag['opening_boundary_ply'];gp=gamephases[pair,gi];assert gp['opening_boundary_ply']==boundary and gp['unresolved']==tag['opening_boundary_unresolved']\n  # Check helper material directly on an independent board at every decision.\n  b=chess.Board(g['initial_fen']);boards=[]\n  for move in g['complete_history']:\n   boards.append(sum(value*len(b.pieces(piece,color)) for piece,value in [(chess.QUEEN,9),(chess.ROOK,5),(chess.BISHOP,3),(chess.KNIGHT,3)] for color in [True,False]));b.push_uci(move)\n  for d in ds:\n   if d['game']!=gi:continue\n   key=(pair,gi,d['ply']);r=(cx if d['origin']=='prepared' else cr)[key]\n   assert r['played']==d['played'] and r['engine_index']==d['engine_index'] and r['native_event']==d['native_event'] and r['history_sha256']==rh({'initial_fen':d['initial_fen'],'history_origin':d['history_origin'],'history':d['history']})\n   if d['origin']=='prepared':contextkeys.add(key);continue\n   nativekeys.add(key);phase=pr[key];pos=tag['positions'][d['ply']];assert phase['phase']==pos['phase'] and phase['material']==boards[d['ply']] and phase['candidate']==(d['engine_index']==0)\n   expected_support=key in selected and selected[key]['candidate'] and selected[key]['status']=='supported_finite';assert phase['supported_candidate']==expected_support\n   recounts['all_played'][phase['phase']]+=1\n   if phase['candidate']:recounts['candidate_played'][phase['phase']]+=1\n   if expected_support:recounts['supported_candidate'][phase['phase']]+=1\n   for label,cutoff,shift in [('material24',24,0),('material28',28,0),('boundary_minus2',26,-2),('boundary_plus2',26,2)]:\n    expected=('endgame' if boards[d['ply']]<=cutoff else 'middlegame' if boundary is not None and d['ply']>=max(0,boundary+shift) else 'opening' if pos['indicators']['original_minor_identities_known'] else 'opening_or_middlegame_unresolved');assert phase['variants'][label]==expected\n    recounts[label+'_all_played'][expected]+=1\n    if expected_support:recounts[label+'_supported_candidate'][expected]+=1\n    if expected!=phase['phase']:\n     changed[label+'_all_played']+=1\n     if expected_support:changed[label+'_supported_candidate']+=1\nassert nativekeys==set(cr) and contextkeys==set(cx) and dict(changed)==p['changed_assignments'] and {k:dict(x) for k,x in recounts.items()}==p['counts'];assert sum(g['unresolved'] for g in gamephases.values())==p['unresolved_opening_boundaries']==0\n# Native family x candidate color x outcome. Unaided is explicitly separate.\ntable=[]\nfor family in sorted({x['family'] for x in s['games']}):\n for color in ['white','black']:\n  rows=[x for x in s['games'] if x['family']==family and x['candidate_color']==color];counts=collections.Counter(x['result'] for x in rows)\n  table.append({'family':family,'candidate_color':color,'games':len(rows),'wins':counts['wins'],'draws':counts['draws'],'losses':counts['losses'],'score_fraction':(counts['wins']+.5*counts['draws'])/len(rows),'prepared':family!='unaided'})\nassert sum(x['games'] for x in table)==200\nunaided=[x for x in s['games'] if not x['prepared']];prefixrows=[];lcp=[]\nfor group in ['all','white','black']:\n items=[x for x in unaided if group=='all' or x['candidate_color']==group]\n for length in [0,2,4,8,16,24,32]:\n  groups=collections.defaultdict(list)\n  for x in items:\n   h=histories[x['pair'],x['game']]\n   if len(h)>=length:groups[tuple(h[:length])].append({'pair':x['pair'],'game':x['game']})\n  repeated=[{'moves':list(h),'members':members,'games':len(members)} for h,members in groups.items() if len(members)>1]\n  prefixrows.append({'candidate_color_group':group,'prefix_plies':length,'eligible_games':sum(map(len,groups.values())),'unique_prefixes':len(groups),'repeated_prefix_groups':len(repeated),'games_in_repeated_groups':sum(x['games'] for x in repeated),'largest_group':max(map(len,groups.values()),default=0),'shared_groups':repeated})\n for a,b in itertools.combinations(items,2):\n  left=histories[a['pair'],a['game']];right=histories[b['pair'],b['game']];n=0\n  for x,y in zip(left,right):\n   if x!=y:break\n   n+=1\n  lcp.append({'group':group,'left':[a['pair'],a['game']],'right':[b['pair'],b['game']],'common_prefix_plies':n})\ncontext={'status':'descriptive_native_context_tables','bindings':{'native-statistics.json':sha(F/'native-statistics.json'),'primary-cumulative.json':sha(H/'primary-cumulative.json')},'family_color_outcomes':table,'unaided_prefix_tables':prefixrows,'unaided_pairwise_common_prefixes':lcp,'unaided_unique_complete_histories':s['unaided_unique_complete_histories'],'method':'Exact UCI prefixes from accepted native histories, including the common standard start at zero plies. Prefix lengths fixed descriptively at 0/2/4/8/16/24/32; games shorter than a requested length are excluded and eligibility is explicit. Pairwise common-prefix lengths describe all unordered pairs, with within-color subsets shown separately. Groups overlap across lengths; do not sum them.','limits':'Native descriptive counts only. Ten unique complete histories per color do not establish independent samples. Same standard start, shared prefixes and paired games remain correlated. No bootstrap or population claims for unaided starts; no mechanism or weakness attribution.'}\n(F/'context-tables.json').write_text(json.dumps(context,indent=2)+'\\n')\nlines=['# Native context tables','','Prepared families are split by candidate color. W/D/L are actual native outcomes. Unaided starts are descriptive and separate.','','| Family | Candidate color | Games | W | D | L | Score |','|---|---|---:|---:|---:|---:|---:|']\nfor x in table:lines.append(f\"| {x['family']} | {x['candidate_color']} | {x['games']} | {x['wins']} | {x['draws']} | {x['losses']} | {x['score_fraction']:.1%} |\")\nlines+=['','All 20 unaided trajectories are distinct, including ten per candidate color. The table below reports exact shared prefixes; common starts and overlapping prefixes remain dependence, not extra independent evidence.','','| Group | Prefix plies | Eligible games | Unique prefixes | Games in repeated groups | Largest group |','|---|---:|---:|---:|---:|---:|']\nfor x in prefixrows:lines.append(f\"| {x['candidate_color_group']} | {x['prefix_plies']} | {x['eligible_games']} | {x['unique_prefixes']} | {x['games_in_repeated_groups']} | {x['largest_group']} |\")\nlines+=['','Exact shared UCI prefixes and member identities, plus all pairwise common-prefix lengths, are retained in the JSON. Prefix groups overlap across lengths and must not be summed. These tables do not change native statistics or infer weakness, mechanism or population uncertainty.']\n(F/'context-tables.md').write_text('\\n'.join(lines)+'\\n')\nr={'status':'passed_independent_phase_and_coverage_result_review','bindings':{'phase_summary.py':sha(F/'phase_summary.py'),'phase-summary.json.gz':sha(F/'phase-summary.json.gz'),'played-coverage.json.gz':sha(F/'played-coverage.json.gz'),'context-tables.json':sha(F/'context-tables.json'),'phase_tags.py':sha(H.parent/'phase_tags.py')},'checks':['Exact script/helper/cumulative hashes','All native root identities and context/played partition','Every base and final source row canonical hash and played identity','Selected normalized rows exactly match cumulative closure; screening-only rows remain unresolved','All 200 frozen phase histories recomputed; material independently recounted on boards','All played-root base phases and four sensitivity variants, supports and aggregate counts reconciled','Mixed expansion roots are exactly Batch 09 game0 plies57/75'],'counts':p['counts'],'changed_assignments':p['changed_assignments'],'unresolved_boundaries':0,'coverage_counts':c['counts'],'findings':[],'limits':'Reviewer authored the coverage utility; coordinator reviewed its source independently. This review reconciles its actual output, and independently reviews root-authored phase code/output. Neither artifact codes behavior or proves phase quality. Future-history boundary convention and promotion-driven material changes are preserved.'}\n(F/'phase-result-review.json').write_text(json.dumps(r,indent=2)+'\\n');(F/'phase-result-review.md').write_text('''# Phase and played-coverage result review\n\nPass. Exact source and output hashes are bound in the JSON. All 200 native histories were replayed with the frozen phase helper; nonpawn, nonking material was also counted independently on each board. Every base phase and material-24/material-28/boundary-minus-2/boundary-plus-2 assignment matches. The convention uses positions before moves, complete accepted history and the first of three qualifying fullmove boundaries. Material override is evaluated per position, including promotions. There are no unresolved boundaries in this sample.\n\nAll 24,939 played roots are unique and exactly match native histories; 2,880 supplied moves remain separate context. All 6,141 selected roots match cumulative normalization and exact source rows. Base/final row hashes and input hashes pass. The 9,711 screening-only roots remain unresolved, not confirmed non-errors. Only the two admitted direct-20M expansion roots receive the mixed tier; prior cell/trigger evidence remains in its original tiers.\n\nBase supported candidate phases are 105 opening, 366 middlegame and 118 endgame. These are selected, correlated comparisons, not phase-specific population error rates. Material cutoff 24 gives 97 endgame supported roots; cutoff 28 gives 121. Shifting the opening boundary by minus/plus two plies gives 88/126 opening supported roots. Phase sensitivity does not change scientific support or imply a mechanism.\n\nThe reviewer authored the coverage utility; its source was independently reviewed by the coordinator. This record reconciles its output and independently reviews the coordinator-authored phase implementation. Native family-by-color outcomes and shared unaided prefixes are saved separately in context-tables.json/md. No native statistic was modified and no engines or cloud work ran.\n''');print(json.dumps({'status':r['status'],'family_color_rows':len(table),'prefix_rows':len(prefixrows),'max_unaided_shared_prefix':max(x['common_prefix_plies'] for x in lcp)}))\n",
+  "verification_command": "/private/tmp/msh162-controller/bin/python /tmp/msh161-context-and-phase-review.py"
+}

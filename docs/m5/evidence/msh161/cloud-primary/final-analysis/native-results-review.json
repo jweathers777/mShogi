@@ -1,0 +1,91 @@
+{
+  "status": "passed_independent_native_results_and_closure_review",
+  "bindings": {
+    "native-statistics.json": "a5d49729ac05c1515561cfd28b67cb6efec9e66e1c8791b7923a65da0d5eb10e",
+    "native_statistics.py": "4a6772f0177cfa16e957628e1d9b774501f3df5d8885705344838d1db3f30bcd",
+    "primary-cumulative.json": "b3194050f2674dad04fa117dc6887bc2e7c9662d39aec07a202b4d2948117133",
+    "closure-summary.json": "5f52e5ddc24dcb044f705f8eb2522d6f3737b804d8985337627cfff1f12e6476",
+    "procedure.md": "ed26135879038ca2c63b903d6b95bc003b61fc2498ba6e06dffc14b5896d2da1"
+  },
+  "checks": [
+    "All source bindings and approved implementation/procedure match",
+    "Archived prior 180-game bytes preserved and prior selected/native rows unchanged",
+    "Exactly 100 native pairs, 90 unique prepared source IDs, 200 game identities",
+    "Independent native WDL, accepted histories, supplied prefixes and intended-but-unplayed claims",
+    "Independent integer-quarter whole-pair stratified 50000-replicate bootstrap and family sensitivity",
+    "Complete query counts agree with final resource accounting; reused played queries not added again",
+    "Selected normalization remains separate from native outcomes and all-played denominator",
+    "Family and color table counts and score fractions independently regrouped from verified native game rows"
+  ],
+  "results": {
+    "native_outcomes": {
+      "all": {
+        "games": 200,
+        "outcomes": {
+          "wins": 82,
+          "draws": 58,
+          "losses": 60
+        },
+        "score_fraction": 0.555
+      },
+      "prepared": {
+        "games": 180,
+        "outcomes": {
+          "wins": 67,
+          "draws": 55,
+          "losses": 58
+        },
+        "score_fraction": 0.525
+      },
+      "unaided": {
+        "games": 20,
+        "outcomes": {
+          "wins": 15,
+          "draws": 3,
+          "losses": 2
+        },
+        "score_fraction": 0.825
+      }
+    },
+    "prepared_conditional_interval95": [
+      0.4722222222222222,
+      0.5777777777777777
+    ],
+    "family_count": 22,
+    "family_pair_count_range": [
+      4,
+      5
+    ],
+    "leave_one_family_out_range": [
+      0.5145348837209303,
+      0.5352941176470588
+    ],
+    "unique_unaided_complete_histories_by_color": {
+      "white": 10,
+      "black": 10
+    },
+    "native_claims": {
+      "threefold": 43,
+      "fifty_move": 4
+    },
+    "played_decisions": 24939,
+    "supplied_context_decisions": 2880,
+    "selected_roots": 6141,
+    "candidate_supported_selected_roots": 589,
+    "queries": 86581
+  },
+  "nonblocking_notes": [
+    "Archive filename primary-cumulative-through-batch10.json.gz contains verified prior 180-game through-Batch-09 bytes; its name is misleading but contents and hashes are correct.",
+    "No singleton families occur: 22 observed families have four or five pairs. Fixed-family resampling does not measure family-selection uncertainty.",
+    "All 20 unaided complete histories are unique within color, but their common start and repeated prefixes still prevent independence/population claims; repeated-prefix description remains a separate final-report obligation.",
+    "Per-family/color cross-tabulation, phase/threshold sensitivity, behavior coding and final diagnosis remain separate procedure obligations; this native table alone does not satisfy them."
+  ],
+  "interpretation_limits": [
+    "Prepared score 52.5% with conditional interval 47.22\u201357.78% does not establish a stronger reference or rating conversion.",
+    "Overall 55.5% pools descriptive results only; the unaided 82.5% is excluded from the prepared interval.",
+    "589 supported selected candidate roots are correlated selected comparisons, not 589 independent errors or an all-Chess prevalence rate.",
+    "47 accepted native claims remain actual draws, with intended moves unplayed. Draws alone are not weaknesses.",
+    "Original AutoClaim and admitted mixed-budget audit limits remain in force."
+  ],
+  "scope": "Read-only independent offline result review; no modifications to inputs, engines, searches or cloud jobs. Coverage output and behavioral findings need their separate independent reviews."
+}

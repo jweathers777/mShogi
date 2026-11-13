@@ -1,0 +1,131 @@
+{
+  "status": "pass",
+  "scientific_synthesis_sha256": "3044bc0f2e88d8ede47bbc13740d60f68ce9a7aaaaac7d4180753be2c0abc1e4",
+  "markdown_sha256": "3c7342569a922e1bf978735b64001549c90e562edf91be89efc3f55d0be58996",
+  "qualifying_segment": "main-06-02/g0/p74-p78",
+  "queries_checked": [
+    {
+      "ply": 73,
+      "role": "played",
+      "range": [
+        0.0,
+        0.0
+      ],
+      "blocking_flags": [],
+      "source_sha256": "0197ddad2d0a607156531e6121daa7af038307b36913d2898e0178b10df9563d"
+    },
+    {
+      "ply": 73,
+      "role": "alternative",
+      "range": [
+        0.4955,
+        0.4975
+      ],
+      "blocking_flags": [],
+      "source_sha256": "c669f96ce42c6b811b94c5118109e6de8b1182588fbd4e4b6294a544f7b1daa6"
+    },
+    {
+      "ply": 74,
+      "role": "played",
+      "range": [
+        0.999,
+        0.9995
+      ],
+      "blocking_flags": [],
+      "source_sha256": "320f1b72d1ede5531aafff1a1e2179c3ac28fa31e50377cb97982c1b92bdbc67"
+    },
+    {
+      "ply": 74,
+      "role": "alternative",
+      "range": [
+        1.0,
+        1.0
+      ],
+      "blocking_flags": [],
+      "source_sha256": "b86e3bf0eae9868bb5578168305838c2cedc941b42e84dc31c4c50aa94b38c3d"
+    },
+    {
+      "ply": 76,
+      "role": "played",
+      "range": [
+        0.7785,
+        0.7785
+      ],
+      "blocking_flags": [],
+      "source_sha256": "29d49b59a8cc2d2eef689925920c91445c2fc1a03b6b8c3027c92c5789e0a339"
+    },
+    {
+      "ply": 76,
+      "role": "alternative",
+      "range": [
+        1.0,
+        1.0
+      ],
+      "blocking_flags": [],
+      "source_sha256": "755f4993de4528e1bcce8ac75ac92c579cce32d5f24a673df0148757e0798c2b"
+    },
+    {
+      "ply": 77,
+      "role": "played",
+      "range": [
+        0.0,
+        0.0
+      ],
+      "blocking_flags": [],
+      "source_sha256": "095d5e5fbc87ee91d10f624b07105a51615e2fd5e52464abb5f1c9921df5069e"
+    },
+    {
+      "ply": 77,
+      "role": "alternative",
+      "range": [
+        0.002,
+        0.0145
+      ],
+      "blocking_flags": [],
+      "source_sha256": "346f8becdbf43f22fd0a28797a9de7dd2ad8a127653a59c640bbd89b15e4ef9e"
+    },
+    {
+      "ply": 78,
+      "role": "played",
+      "range": [
+        0.0,
+        0.0
+      ],
+      "blocking_flags": [],
+      "source_sha256": "5db7a9b78883a67f111c7fe688ed7b1ab3475614f4426b78a386833759dac1b8"
+    },
+    {
+      "ply": 78,
+      "role": "alternative",
+      "range": [
+        1.0,
+        1.0
+      ],
+      "blocking_flags": [],
+      "source_sha256": "b3192147bdec966170641987e476b70106d289580219c1a1b8148fbc994a3824"
+    },
+    {
+      "ply": 79,
+      "role": "played",
+      "range": [
+        0.5,
+        0.5
+      ],
+      "blocking_flags": [],
+      "source_sha256": "69196a150fee9e8bb5bf49080a46eea730ec023408ae47ef2ecbc74c332bf38c"
+    },
+    {
+      "ply": 79,
+      "role": "alternative",
+      "range": [
+        1.0,
+        1.0
+      ],
+      "blocking_flags": [],
+      "source_sha256": "ece7c15c6af3d56848b2124e096cf479e24562aeb785134d90ace087934da0eb"
+    }
+  ],
+  "native_endpoint_check": "Observed final accepted moves R8a7, ...Nb5, Ra8; Black then claimed threefold with intended b5c7. The intended move was not played.",
+  "scope": "Independent final substantive read plus raw source validation for the newly certified favorable segment. Earlier 1216-line audit covers the behavior packet anchors.",
+  "conclusion": "Accept substantive diagnosis and proposed investigation order as owner-review recommendations. One bounded favorable segment is certified, not an exhaustive episode census. Category aggregate and threshold audit bindings remain coordinator work."
+}

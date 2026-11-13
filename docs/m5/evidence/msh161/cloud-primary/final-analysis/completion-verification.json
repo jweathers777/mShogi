@@ -1,0 +1,68 @@
+{
+  "task": "MSH-161 (Competitive Gameplay Diagnosis)",
+  "status": "passed_final_completion_verification",
+  "recorded_at_utc": "2026-11-13T20:05:04.447801+00:00",
+  "integration_branch": "codex/rewrite",
+  "native_source_revision": "77101fe3d38712361af8dd99b3ca2bcc6b5c17d3",
+  "worker_source_revision": "51351c48ea1adf9ac96011aec1440e44ceb741a4",
+  "analysis_source_identity": "Exact reviewed content hashes below; integration commit recorded in Backlog after commit, not guessed here.",
+  "verification_scope": {
+    "execution": "Targeted Level 2 Linux cloud execution/provenance plus macOS controller process/notification evidence; original frozen artifacts reused.",
+    "analysis": "Offline correctness, exact histories/identities, fixtures, independent statistics/coding/scientific and integration review.",
+    "production_platform_checks": "Not applicable: no production source changes. No new GUI/native-platform compatibility claim. Existing frozen build provenance remains authoritative."
+  },
+  "environment": {
+    "python": "3.11.0 (main, Dec  2 2022, 11:49:20) [Clang 14.0.0 (clang-1400.0.29.102)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit"
+  },
+  "checks": {
+    "native_fixture_self_test": "passed",
+    "optimized_python_guard": "expected rejection independently tested; no output",
+    "played_coverage_fixture_self_test": "passed",
+    "offline_analysis_python_compile": "passed",
+    "native_outcomes_and_queries": "all 200 games and 86,581 queries reconciled; native results 82/58/60",
+    "all_played_coverage": "24,939 unique played roots and 2,880 separate supplied-prefix roots passed",
+    "selected_deep_roots": "6,141 exact roots, no missing distinct singleton obligations",
+    "behavior_aggregate": "589 candidate roots / 175 games; 11 exact additive corrections; all counts independently reproduced",
+    "scientific_review": "Two explicitly requested Astra High roles; synthesis and independent challenge passed with stated limits",
+    "final_exact_file_review": "passed, all acceptance hashes rechecked by coordinator",
+    "relative_links": "three final entry documents checked, no missing targets",
+    "changed_json_artifacts": "36 changed JSON artifacts decoded before this summary; later summary records also decoded",
+    "git_diff_check": "passed"
+  },
+  "review_records": {
+    "native-statistics-review-v2.json": "133c97756bd004faffe6b266c9f7fd96e7e827ed0aa2fde17fce7a6bca54c932",
+    "native-results-review.json": "9b6222128d765e49f494ac3c00de05fda283e66d2247526c5f3f6b7c3da17b94",
+    "played-coverage-source-review.json": "990e7276b7339db323ab0d81ac66b70cee4bddac0ad78a9c5578b427b1ac1da1",
+    "phase-result-review.json": "ea4a3f88f9ad6719fa21a28eac2aaf0cc65aa0ec6f8185319e97d2f9e0d8a770",
+    "aggregate-review.json": "9ef37871c63f62f7dedd6e4921f1728054b34354953a0924e5b4d3dc018e39b1",
+    "scientific-challenge-astra.json": "7251f42ac5d657137eaa6126430e74615533fbae75c57a5fd1d373fb46ae61cc",
+    "final-integration-review.json": "6a603313efc043a8a5443aa76b0d156deb37a5d4d2fcc69fc0adfd5a73d3ac1d",
+    "threshold-summary-supersession.json": "76c495ba7420c6a4310eca03773fdae3142eb823060fd73f76a9933797dc9d32",
+    "model-assignment.json": "ba07e96a7f3b0bcac5d19743c7d4177c6ceefe959e93c8d359feec8ac657708d"
+  },
+  "final_accepted_source_hashes": {
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/scientific-synthesis-astra.md": "7db98b6d01eab392edc80545e5b2ade4cec3cc24e262641aa7c99e4c04f3135a",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/scientific-synthesis-astra.json": "86be2d8635d94668c70f67974fe04962bf28787a750d11571214b3086f0d2613",
+    "docs/m5/competitive-gameplay-diagnosis.md": "4c387952a832116ed0d6492894bcb7aecdf88f407c49b7ef02e7e4135ce36968",
+    "docs/m5/strength-roadmap.md": "90386baef558ef1d50a87d4727e8ce0114de0b55d81566fc7033cb58c58052d7",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/behavior-aggregate.json": "b2882df1b306092a553b067c87c611145addc09a84fa0308323b18e379051513",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/aggregate-review.json": "9ef37871c63f62f7dedd6e4921f1728054b34354953a0924e5b4d3dc018e39b1",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/audit-threshold-normalization.json": "b0b72814825056a44527bf6c8bde388ea47d70137fbc0d73c611b64bc47e731f",
+    "docs/m5/evidence/msh161/cloud-primary/final-analysis/audit-behavior-corrections.json": "666330f8e713a59df20b7d46b8489ffd8a9b0ffbc7bb1e67cb3fbf798c711a85"
+  },
+  "other_final_inputs": {
+    "primary-cumulative.json": "b3194050f2674dad04fa117dc6887bc2e7c9662d39aec07a202b4d2948117133",
+    "batch-10-review/closure-summary.json": "5f52e5ddc24dcb044f705f8eb2522d6f3737b804d8985337627cfff1f12e6476",
+    "batch-10-followup/runtime-integrity-review.json": "80f9311957a15812a7dfda6fe0e3999466f2bd62a76fe70309b2c34826d56f27",
+    "batch-10-followup/forecast-update.json": "af28b8f330936b8db32994363ffaed9064e52c609d5b572b97c459b967f3bb43"
+  },
+  "superseded_provisional_analysis": "threshold-summary.json is retained with explicit supersession receipt; final report uses independent corrected audit.",
+  "limitations": [
+    "Conditional purposive paired-sample interval, correlated unaided stratum.",
+    "Overlapping coder-dependent categories, unknowns and unresolved/secondary contexts retained.",
+    "No exact global conversion rate, mechanism proof, Elo/human strength or reference-superiority claim.",
+    "Cloud compute estimated, actual billing/ancillary/model and separate cohort costs not fully reconciled."
+  ],
+  "owner_stop": "Diagnosis delivered; no new study or engineering until John selects further work."
+}

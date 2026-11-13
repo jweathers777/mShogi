@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): independent evidence handoff
 
-This is a neutral entry point for another chat or model. No private conversation history is required. All 200 primary cloud games and required reference searches are complete. The final interpretation, category normalization and independent challenge are still being assembled; do not mistake draft analysis for an accepted final diagnosis.
+This is a neutral entry point for another chat or model. No private conversation history is required. All 200 primary cloud games and required reference searches are complete. The final interpretation, corrected category tables and independent challenge are complete; exact acceptance hashes are in `final-analysis/final-integration-review.json`. John has not authorized follow-on engineering.
 
 ## Question and conditions
 
@@ -24,7 +24,7 @@ Paths below are relative to this directory unless prefixed `../`.
 - `batch-09-review/method-amendment-v1.1.json`, `audit-expansion-admission.json`, `audit-expansion-notation-erratum.json`: admitted narrow audit expansion. Preserve original 5M trigger and 20M evidence. The 21-root cell has 19 reused 5M roots plus two new 20M roots/three searches; mixed budgets do not yield a uniform cell error rate. Correct SAN is Bf8 for UCI g7f8.
 - `final-analysis/procedure.md` and `procedure-admission.json`: final descriptive statistics/coding/inference procedure, with independent reviews. Use whole opening pairs, family-stratified bootstrap; unaided repeats are separate.
 
-The high-level `../../../competitive-gameplay-diagnosis.md` contains historical preparation text until final integration. Frozen method and actual primary receipts take precedence over old planning/status prose.
+The high-level `../../../competitive-gameplay-diagnosis.md` now contains the integrated final report. Original preparation text is preserved separately as `../../../competitive-gameplay-diagnosis-preparation.md`. Frozen method and actual primary receipts take precedence over old planning/status prose.
 
 ## Raw evidence and how to locate it
 
@@ -61,7 +61,7 @@ For a fresh independent gameplay diagnosis, begin with the protocol, frozen inpu
 
 To audit existing interpretations, additionally read the twenty batch gameplay panels, deep/followup reviews and final overlays; then `final-analysis/behavior-coding-01-04.*`, `behavior-coding-05-07.*`, `behavior-coding-08-10.*` and the additive `behavior-coding-challenge.*` / `audit-*` records. Coding granularity differs across reviewers, with explicit unknowns; category counts overlap and are descriptive, not a precise league table of failure rates. Additive corrections retain source packets. The provisional `threshold-summary.json` has a known early-schema omission; use independently corrected `audit-threshold-normalization.json` instead. Source .05 dispositions and floating-boundary sensitivities are distinct.
 
-The new `scientific-synthesis-astra.*` and `scientific-challenge-astra.*` files, when present, are final-analysis drafts/reviews until final integration. Requested agent models/effort are recorded in `model-assignment.json`. No statement here grants final acceptance to a draft.
+The `scientific-synthesis-astra.*` and `scientific-challenge-astra.*` files are the completed synthesis and independent challenge. Final exact-file acceptance is in `final-integration-review.*`; `completion-verification.json` links checks and hashes. Requested agent models/effort are recorded in `model-assignment.json`. Their interpretation limits remain part of acceptance.
 
 ## Suggested instruction for another chat
 

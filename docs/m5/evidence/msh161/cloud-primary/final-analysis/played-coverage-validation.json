@@ -1,0 +1,28 @@
+{
+  "status": "prepared_and_input_validation_passed_needs_independent_review",
+  "implementation_sha256": "bf646b43ecd5527ccd1550a9d932f00cb206ba7f6ef99e7f56093db86ceabd89",
+  "tests": {
+    "self_test": "passed",
+    "all_ten_batch_input_validation": "passed",
+    "preclosure_final_output": "rejected before output, exit 1, Final comparison closure is incomplete",
+    "forbidden_output_absent": true
+  },
+  "input_coverage_only": {
+    "played_roots": 24939,
+    "supplied_context_roots": 2880,
+    "planned20m_roots": 6141,
+    "closed_normalized_selected_rows_currently_available": 5097,
+    "evidence_tiers": {
+      "matched_5M": 9087,
+      "selected_20M": 6139,
+      "screening_500k": 9711,
+      "admitted_mixed_expansion_20M_without_5M": 2
+    }
+  },
+  "commands": [
+    "/private/tmp/msh162-controller/bin/python docs/m5/evidence/msh161/cloud-primary/final-analysis/played_coverage.py --self-test",
+    "/private/tmp/msh162-controller/bin/python docs/m5/evidence/msh161/cloud-primary/final-analysis/played_coverage.py --validate-inputs",
+    "/private/tmp/msh162-controller/bin/python docs/m5/evidence/msh161/cloud-primary/final-analysis/played_coverage.py --output /tmp/msh161-forbidden-preclosure-coverage.json.gz"
+  ],
+  "limits": "Schema/coverage validation only. No final study output, category/ranking analysis, engines, searches or cloud actions. Final numerical and scientific normalization remains subject to independent review."
+}

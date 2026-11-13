@@ -1,0 +1,87 @@
+{
+  "status": "passed_independent_mechanical_aggregate_review",
+  "bindings": {
+    "aggregate_behavior.py": "82a2c8a79c21ab89dee8a0aa6815337860776590444fbe4137371b71782aa3e7",
+    "behavior-aggregate.json": "b2882df1b306092a553b067c87c611145addc09a84fa0308323b18e379051513",
+    "primary-cumulative.json": "b3194050f2674dad04fa117dc6887bc2e7c9662d39aec07a202b4d2948117133",
+    "audit-threshold-normalization.json": "b0b72814825056a44527bf6c8bde388ea47d70137fbc0d73c611b64bc47e731f",
+    "audit-behavior-corrections.json": "666330f8e713a59df20b7d46b8489ffd8a9b0ffbc7bb1e67cb3fbf798c711a85"
+  },
+  "checks": [
+    "Exact 589 unique supported candidate roots across 175 native games; all native choices and normalized fields match",
+    "All three packet source hashes and 240/151/198 counts match",
+    "All six prior plus five new category correction rows applied in source order with exact before/after tags and retained correction records",
+    "Native family/color/result/prepared joins and frozen phase joins checked for each root",
+    "Independent set-based category and per-family counts, severity/phase/color/result margins, leave-one-family denominators and phase sensitivity tallies",
+    "Threshold sensitivity uses exact completed audit normalization literal-float rows; uniform tolerance and uncoded unresolved cases remain separate",
+    "Unknown 86 reconciles as 82/3/1 by packet; planning is explicit zero"
+  ],
+  "findings": [],
+  "counts": {
+    "events": 589,
+    "games": 175,
+    "correction_rows": 11,
+    "unknown_moves": 86,
+    "unknown_games": 50,
+    "categories": {
+      "advantage preservation/conversion": {
+        "moves": 3,
+        "games": 1
+      },
+      "coordination/activity": {
+        "moves": 252,
+        "games": 117
+      },
+      "endgame decisions": {
+        "moves": 118,
+        "games": 62
+      },
+      "exchanges": {
+        "moves": 100,
+        "games": 80
+      },
+      "king safety": {
+        "moves": 40,
+        "games": 32
+      },
+      "opening/development": {
+        "moves": 71,
+        "games": 52
+      },
+      "opportunity response": {
+        "moves": 37,
+        "games": 23
+      },
+      "pawn structures/breaks": {
+        "moves": 110,
+        "games": 78
+      },
+      "planning": {
+        "moves": 0,
+        "games": 0
+      },
+      "quiet defense": {
+        "moves": 154,
+        "games": 86
+      },
+      "tactical calculation": {
+        "moves": 127,
+        "games": 83
+      },
+      "unknown": {
+        "moves": 86,
+        "games": 50
+      }
+    }
+  },
+  "interpretation_limits": [
+    "This pass verifies mechanical aggregation, not independent recoding of every behavior label.",
+    "Category tags overlap and packet coding granularity differs; category order is not a precise defect-frequency ranking.",
+    "Category threshold counts are sensitivity within the baseline 589 coded rows, not all possible threshold-supported rows. Additional stable straddlers remain in the separate audit, without fabricated category assignment.",
+    "families_by_phase_color_result contains per-family marginal phase/color/result counts, not a three-way cross-tab; individual events retain the full joint fields.",
+    "Unknown does not mean non-error; no absent secondary tag proves primary causation.",
+    "Leave-one-family summaries describe prepared affected-game breadth; unaided trajectories remain separate and correlated."
+  ],
+  "verification_command": "python3 /tmp/msh161-aggregate-review.py",
+  "verification_source": "import json,gzip,hashlib,collections,copy\nfrom pathlib import Path\nH=Path('docs/m5/evidence/msh161/cloud-primary');F=H/'final-analysis'\ndef read(p):\n p=Path(p);return json.loads(gzip.decompress(p.read_bytes()) if p.suffix=='.gz' else p.read_bytes())\ndef sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()\ndef key(r):return r['pair'],r['game'],r['ply']\na=read(F/'behavior-aggregate.json');v=read(H/'primary-cumulative.json');native=read(F/'native-statistics.json');phase=read(F/'phase-summary.json.gz');threshold=read(F/'audit-threshold-normalization.json');fresh=read(F/'audit-behavior-corrections.json');prior=read(F/'behavior-coding-challenge.json')\nassert a['implementation_sha256']==sha(F/'aggregate_behavior.py') and a['cumulative_sha256']==sha(H/'primary-cumulative.json')==threshold['cumulative_sha256']\nfor name,h in a['source_bindings'].items():assert sha(F/name)==h\nassert fresh['accepted_prior_overlay']['sha256']==sha(F/'behavior-coding-challenge.json')\nexpected={key(r):r for r in v['normalized_selected_events'] if r['candidate'] and r['status']=='supported_finite'};actual={key(r):r for r in a['events']};assert len(expected)==len(actual)==len(a['events'])==589 and set(actual)==set(expected);assert len({k[:2] for k in actual})==a['supported_games']==175\ngames={(r['pair'],r['game']):r for r in native['games']};phases={key(r):r for r in phase['played_roots']};thresholds={key(r):r for r in threshold['rows']};assert len(thresholds)==len(threshold['rows'])==6141\npackets={};tags={};counts={};rationales={}\nfor label in ['01-04','05-07','08-10']:\n p=read(F/f'behavior-coding-{label}.json');source=p.get('events',p.get('entries'));rows=[r for r in source if r.get('inclusion',r.get('status'))=='supported_finite'];counts[label]=len(rows)\n for r in rows:\n  k=key(r);assert k not in tags and r['played']==expected[k]['played'] and r['alternative']==expected[k]['alternative'];tags[k]=list(r['categories']);packets[k]=label;rationales[k]=r['rationale']\nassert counts==a['packet_counts']=={'01-04':240,'05-07':151,'08-10':198};assert set(tags)==set(actual)\ncorrections=prior['additive_correction_overlay']['rows']+fresh['new_corrections'];assert len(corrections)==a['correction_rows_applied']==11;applied=collections.defaultdict(list)\nfor r in corrections:\n k=key(r);assert tags[k]==r['before_categories'];tags[k]=list(r['after_categories']);applied[k].append(r)\nfor k,r in actual.items():\n assert len(tags[k])==len(set(tags[k]));assert r['categories']==tags[k] and r['corrections']==applied[k] and r['packet']==packets[k] and r['rationale']==rationales[k]\n for field,value in expected[k].items():assert r[field]==value\n g=games[k[:2]];p=phases[k]\n for target,source in [('family','family'),('prepared','prepared'),('color','candidate_color'),('result','result')]:assert r[target]==g[source]\n assert r['phase']==p['phase'] and r['phase_variants']==p['variants'] and p['candidate'] and p['supported_candidate']\n# Independent set membership and dimension accumulators; no aggregate module call.\ncatsets=collections.defaultdict(set)\nfor k,cs in tags.items():\n for cat in cs:catsets[cat].add(k)\ncatsets['planning'] # Required explicit zero category.\nassert set(catsets)==set(a['category_summaries'])\nfamilyset={g['family'] for g in games.values() if g['prepared']}\ndef tally(keys):\n out={'moves':len(keys),'games':len({k[:2] for k in keys}),'prepared_moves':0,'unaided_moves':0,'secondary_explicit_moves':0};dims={'severity_moves':'severity','phase_moves':'phase','color_moves':'color','result_moves':'result','family_moves':'family'}\n for name,field in dims.items():out[name]={}\n for k in keys:\n  r=actual[k];out['prepared_moves' if r['prepared'] else 'unaided_moves']+=1;out['secondary_explicit_moves']+=int(bool(r.get('secondary')))\n  for name,field in dims.items():out[name][r[field]]=out[name].get(r[field],0)+1\n return out\nfor category,keys in catsets.items():\n s=a['category_summaries'][category];t=tally(keys)\n for field,value in t.items():assert s[field]==value,(category,field)\n prep={k for k in keys if games[k[:2]]['prepared']};un=keys-prep;assert s['prepared_games']==len({k[:2] for k in prep}) and s['unaided_games']==len({k[:2] for k in un});assert s['prepared_families']==len({games[k[:2]]['family'] for k in prep})\n grouped={f:{k for k in keys if games[k[:2]]['family']==f} for f in {games[k[:2]]['family'] for k in keys}}\n assert s['families_by_phase_color_result']=={f:tally(ks) for f,ks in grouped.items()}\n for f in familyset:\n  kept={k for k in prep if games[k[:2]]['family']!=f};remaining={ident for ident,g in games.items() if g['prepared'] and g['family']!=f}\n  assert s['leave_one_family_out'][f]=={'affected_prepared_games':len({k[:2] for k in kept}),'remaining_prepared_games':len(remaining),'remaining_coded_moves':len(kept)}\n for thresholdvalue in ['0.04','0.05','0.06']:assert s['threshold_supported_coded_moves'][thresholdvalue]==len({k for k in keys if thresholds[k]['literal_float'][thresholdvalue]=='supported'})\n for variant in ['material24','material28','boundary_minus2','boundary_plus2']:assert s['phase_sensitivity'][variant]==dict(collections.Counter(phases[k]['variants'][variant] for k in keys))\nassert len(catsets['unknown'])==86 and collections.Counter(packets[k] for k in catsets['unknown'])=={'01-04':82,'05-07':3,'08-10':1}\nassert a['unresolved_sensitivity']['source']=='audit-threshold-normalization.json' and a['unresolved_sensitivity']['literal_supported_counts']==threshold['literal_float'].get('candidate',threshold['literal_float']) and a['unresolved_sensitivity']['uniform_tolerance_separate']\nr={'status':'passed_independent_mechanical_aggregate_review','bindings':{'aggregate_behavior.py':sha(F/'aggregate_behavior.py'),'behavior-aggregate.json':sha(F/'behavior-aggregate.json'),'primary-cumulative.json':sha(H/'primary-cumulative.json'),'audit-threshold-normalization.json':sha(F/'audit-threshold-normalization.json'),'audit-behavior-corrections.json':sha(F/'audit-behavior-corrections.json')},'checks':['Exact 589 unique supported candidate roots across 175 native games; all native choices and normalized fields match','All three packet source hashes and 240/151/198 counts match','All six prior plus five new category correction rows applied in source order with exact before/after tags and retained correction records','Native family/color/result/prepared joins and frozen phase joins checked for each root','Independent set-based category and per-family counts, severity/phase/color/result margins, leave-one-family denominators and phase sensitivity tallies','Threshold sensitivity uses exact completed audit normalization literal-float rows; uniform tolerance and uncoded unresolved cases remain separate','Unknown 86 reconciles as 82/3/1 by packet; planning is explicit zero'],'findings':[],'counts':{'events':589,'games':175,'correction_rows':11,'unknown_moves':86,'unknown_games':a['category_summaries']['unknown']['games'],'categories':{c:{'moves':x['moves'],'games':x['games']} for c,x in a['category_summaries'].items()}},'interpretation_limits':['This pass verifies mechanical aggregation, not independent recoding of every behavior label.','Category tags overlap and packet coding granularity differs; category order is not a precise defect-frequency ranking.','Category threshold counts are sensitivity within the baseline 589 coded rows, not all possible threshold-supported rows. Additional stable straddlers remain in the separate audit, without fabricated category assignment.','families_by_phase_color_result contains per-family marginal phase/color/result counts, not a three-way cross-tab; individual events retain the full joint fields.','Unknown does not mean non-error; no absent secondary tag proves primary causation.','Leave-one-family summaries describe prepared affected-game breadth; unaided trajectories remain separate and correlated.'],'verification_command':'python3 /tmp/msh161-aggregate-review.py','verification_source':Path(__file__).read_text()}\n(F/'aggregate-review.json').write_text(json.dumps(r,indent=2)+'\\n');(F/'aggregate-review.md').write_text('''# Independent mechanical behavior aggregate review\n\nPass. Exact input and output hashes are recorded in the JSON. The aggregate contains all 589 unique supported candidate roots across 175 native games, with no duplicate or missing root. The three source packets contribute 240, 151 and 198 roots. All six prior and five new corrections are applied in source order, with exact before/after categories and retained correction records.\n\nIndependent set-based tallies reproduce every category move/game count, family breakdown, phase/color/result/severity count, leave-one-family denominator, threshold subset and phase-sensitivity count. Every row joins the correct native family, candidate color, result and frozen phase. Threshold counts use the completed audit-threshold-normalization artifact, not provisional ranges. Uniform tolerance and additional unresolved/straddling rows remain separate.\n\nUnknown remains 86 moves in 50 games, split 82/3/1 across the packets. The packet coding granularity caveat is explicit. Planning has an explicit zero coded count. Category tags overlap, so their counts must not be summed as independent errors or read as a precise defect-frequency ranking. Threshold counts within each category apply only to the baseline 589 coded roots; the aggregate does not assign invented categories to additional threshold-supported or unresolved roots.\n\nThe field families_by_phase_color_result reports per-family marginal counts, not a three-way cross-tab; individual events retain the joint fields. This is a mechanical quantitative approval. It does not replace the separate scientific challenge or claim exhaustive common-rule recoding. No inputs were modified and no engines, searches or cloud jobs ran.\n''');print(json.dumps({'status':r['status'],'events':589,'games':175,'corrections':11,'unknown':86}))\n"
+}

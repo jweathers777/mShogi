@@ -1,0 +1,48 @@
+{
+  "completed_primary_games": 120,
+  "fully_adjudicated_primary_games_at_this_audit": 100,
+  "pending_batch06_scientific_closure": true,
+  "measured_base_batches": 6,
+  "measured20m_panels": 6,
+  "measured_extra_singleton_queries": 30,
+  "new_distinct_discovery_alternatives_pending": [
+    {
+      "pair": "main-06-02",
+      "game": 0,
+      "ply": 69,
+      "played": "e7d7",
+      "bestmove": "h7g8",
+      "different_move": true,
+      "flags": [
+        "last_score_update_not_selected_exact_score"
+      ]
+    }
+  ],
+  "measured_reference_queries": 49827,
+  "measured_scientific_jobs": 16687,
+  "failed_scientific_attempts": 0,
+  "measured_primary_vm_hours": 88.20285991046164,
+  "estimated_primary_compute_usd": 17.78240218082835,
+  "actual_billed_cost": null,
+  "full200_mean_workload_compute_usd": 29.63733696804725,
+  "remaining80_mean_workload_compute_usd": 11.8549347872189,
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "full_processing_hours_conditional_scenario": [
+    29,
+    48
+  ],
+  "measured_cloud_submission_to_final_task_hours_sum": 15.799442420535618,
+  "full200_mean_cloud_stage_elapsed_hours": 26.33240403422603,
+  "remaining80_mean_cloud_stage_elapsed_hours": 10.532961613690413,
+  "scope": "Six base batches and six completed 20M panels plus thirty prior followup queries. Pending Batch 06 new alternatives not counted. Mac, pilots and abandoned transition costs remain separate.",
+  "limits": "Measured VM lifetimes priced at recorded rate, not billing. Mean scaling only; panel sizes, discovered alternatives and availability vary. Inclusive scenarios retain ancillary storage/transfer/operations and recovery assumptions. Cloud-stage timing excludes preflight, retrieval, review pauses and final synthesis.",
+  "calendar_estimate": {
+    "as_of_utc": "2026-11-12 19:56:01 UTC",
+    "central_day_paris": "Saturday 2026-11-14",
+    "conditional_window_paris": "Late Friday 2026-11-13 through Sunday 2026-11-15",
+    "basis": "Retain the prior conditional Saturday 14 November Paris central estimate and late-Friday through Sunday window. Remaining cloud-stage work excludes preflight, retrieval, deeper alternatives, independent reviews and final synthesis; availability and scientific obligations can add time."
+  }
+}

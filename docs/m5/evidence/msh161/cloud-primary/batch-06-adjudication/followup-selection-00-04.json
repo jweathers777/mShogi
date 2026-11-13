@@ -1,0 +1,237 @@
+[
+  {
+    "pair": "main-06-00",
+    "game": 0,
+    "ply": 30,
+    "moves": [
+      "f4f5",
+      "g3e2"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-00",
+      "game": 0,
+      "ply": 29
+    }
+  },
+  {
+    "pair": "main-06-00",
+    "game": 0,
+    "ply": 35,
+    "moves": [
+      "e7e6",
+      "d6d7"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-00",
+      "game": 0,
+      "ply": 34
+    }
+  },
+  {
+    "pair": "main-06-00",
+    "game": 0,
+    "ply": 36,
+    "moves": [
+      "f5e6",
+      "g3e2"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-00",
+      "game": 0,
+      "ply": 35
+    }
+  },
+  {
+    "pair": "main-06-00",
+    "game": 0,
+    "ply": 37,
+    "moves": [
+      "f7e6",
+      "b7b6"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-00",
+      "game": 0,
+      "ply": 36
+    }
+  },
+  {
+    "pair": "main-06-00",
+    "game": 0,
+    "ply": 89,
+    "moves": [
+      "b8c7",
+      "e7f6"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-00",
+      "game": 0,
+      "ply": 88
+    }
+  },
+  {
+    "pair": "main-06-01",
+    "game": 1,
+    "ply": 28,
+    "moves": [
+      "a1c1",
+      "f3d2"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-01",
+      "game": 1,
+      "ply": 27
+    }
+  },
+  {
+    "pair": "main-06-01",
+    "game": 1,
+    "ply": 29,
+    "moves": [
+      "b7b6",
+      "d7f5"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-01",
+      "game": 1,
+      "ply": 28
+    }
+  },
+  {
+    "pair": "main-06-01",
+    "game": 1,
+    "ply": 106,
+    "moves": [
+      "b5b3",
+      "b5c5"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-01",
+      "game": 1,
+      "ply": 105
+    }
+  },
+  {
+    "pair": "main-06-01",
+    "game": 1,
+    "ply": 107,
+    "moves": [
+      "e5a1",
+      "c7a7"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-01",
+      "game": 1,
+      "ply": 106
+    }
+  },
+  {
+    "pair": "main-06-01",
+    "game": 1,
+    "ply": 108,
+    "moves": [
+      "d5e6",
+      "b3b8"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-01",
+      "game": 1,
+      "ply": 107
+    }
+  },
+  {
+    "pair": "main-06-02",
+    "game": 0,
+    "ply": 17,
+    "moves": [
+      "e8g8",
+      "d5e4"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-02",
+      "game": 0,
+      "ply": 16
+    }
+  },
+  {
+    "pair": "main-06-02",
+    "game": 0,
+    "ply": 67,
+    "moves": [
+      "c7c6",
+      "e8g8"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-02",
+      "game": 0,
+      "ply": 66
+    }
+  },
+  {
+    "pair": "main-06-02",
+    "game": 0,
+    "ply": 69,
+    "moves": [
+      "e7d7",
+      "h7g8"
+    ],
+    "reason": "Distinct unrestricted 20M alternative requires singleton comparison; reuse played 20M evidence."
+  },
+  {
+    "pair": "main-06-02",
+    "game": 0,
+    "ply": 70,
+    "moves": [
+      "f6f5",
+      "a8b8"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-02",
+      "game": 0,
+      "ply": 69
+    }
+  },
+  {
+    "pair": "main-06-02",
+    "game": 1,
+    "ply": 32,
+    "moves": [
+      "f3e5",
+      "b3e6"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-02",
+      "game": 1,
+      "ply": 31
+    }
+  },
+  {
+    "pair": "main-06-04",
+    "game": 1,
+    "ply": 44,
+    "moves": [
+      "g1h1",
+      "f1e1"
+    ],
+    "reason": "Distinct next-root reply in preceding played 20M PV is needed before the linked consequential claim. Adjacent values alone are not confirmation. Reuse played 20M; no duplicate search.",
+    "supporting_root": {
+      "pair": "main-06-04",
+      "game": 1,
+      "ply": 43
+    }
+  }
+]

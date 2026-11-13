@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "scope": "Batch05 pairs05\u201308 and unaided closure copy only",
+  "new_queries": 0,
+  "new_comparisons": 0,
+  "scientific_change": false,
+  "source": "docs/m5/evidence/msh161/cloud-primary/batch-05-adjudication/dispositions20m-05-09.json.gz",
+  "source_sha256": "e129b226a07527d1ac351e220a39c68de67201afb0442309ffb0df6e688b9a50",
+  "closure_file": "docs/m5/evidence/msh161/cloud-primary/batch-05-adjudication/final-dispositions-05-09.json",
+  "closure_sha256": "9c23f3464811909228afee05f1736cd5c544fde2aabab9a62de71095d38fdeb6",
+  "rows": 234,
+  "counts": {
+    "supported_finite": 44,
+    "unresolved": 35,
+    "same_choice_control": 106,
+    "supported_subthreshold": 49
+  },
+  "validation": "All decision objects exactly equal preserved source; root identities, counts and scientific fields unchanged.",
+  "authority": "batch-05-adjudication/review20m-05-09.md"
+}

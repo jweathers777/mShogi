@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T00:01:00Z'
+updated_date: '2026-11-13T00:09:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -169,4 +169,6 @@ Batch 05 required 20M workflow launched via notify_exit.py PID 57997, job msh161
 Batch 05 deep panel completed and independent review passed: 699 jobs / 714 queries / 453 selected roots. Execution, cleanup and notification reconciled; eight workers, zero allocation/scientific failures. Primary compute estimate now US$14.558523 / 72.212029 VM-hours. Root terminal main-05-03 game0 ply84 is claim-policy-limited, with finite comparison preserved separately. Eleven new alternatives (one discovery, ten linked replies) need singleton 20M, reusing exact played results; coordinator verified all source/history/PV/legal bindings and no duplicates. Pairs 05–08 plus unaided are coverage-complete with an empty followup selection; retain their ledger unchanged. Pre-followup ledgers archived losslessly. See batch-05-followup/plan.json and coordinator-plan-review.json. Launch one callback-driven chain, review new evidence, close Batch 05 and continue original Batch 06. No repeated unstable queries or final priorities.
 
 Eleven-query Batch 05 followup launched through notify_exit.py PID 66552, job msh161-primary-b05-followup-v1, reviewed checkpoint ceb38d23. Plan SHA256 5880cd3f7b0fd71ef482dbda9c7e60b6698a6f53395802f9088dbe641724edc8. Launch receipt in batch-05-followup; acceptance/completion/verification/cleanup/notification remain separate. One automatic callback will resume new-comparison review and Batch 05 closure before original Batch 06. Pairs 05–09 already require no additional queries. No timer or duplicate processes.
+
+Batch 05 closed after independent eleven-alternative review and runtime audit. All obligations covered; five new comparisons remain unresolved. Exact pre-followup ledgers preserved; second-half rows copied unchanged with no repeated review/query. Primary cumulative now 100 fully reviewed games: 41 wins, 29 draws, 30 losses (prepared 33/28/29; unaided 8/1/1). Twenty-five automatic-claim draws and four dead positions remain distinct. See batch-05-review/closure.md and closure-summary.json. Totals: 41,229 queries, 13,801 jobs, 72.403785 VM-hours, US$14.597182 estimated compute; full mean US$29.19. All Batch 05 stages used eight workers with no allocation/scientific failures; earlier failures preserved. Original Batch 06 offline provenance passed. Proceed with one original-condition exit-notified workflow; 100 games remain. No final priorities or production engineering.
 <!-- SECTION:NOTES:END -->

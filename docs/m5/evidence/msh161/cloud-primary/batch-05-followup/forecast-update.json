@@ -1,0 +1,36 @@
+{
+  "completed_primary_games": 100,
+  "fully_adjudicated_primary_games_at_this_audit": 80,
+  "pending_batch05_scientific_closure": true,
+  "measured_base_batches": 5,
+  "measured20m_panels": 5,
+  "measured_extra_singleton_queries": 30,
+  "new_distinct_discovery_alternatives_pending": [],
+  "measured_reference_queries": 41229,
+  "measured_scientific_jobs": 13801,
+  "failed_scientific_attempts": 0,
+  "measured_primary_vm_hours": 72.40378515912427,
+  "estimated_primary_compute_usd": 14.597182318360726,
+  "actual_billed_cost": null,
+  "full200_mean_workload_compute_usd": 29.194364636721453,
+  "remaining100_mean_workload_compute_usd": 14.597182318360726,
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "full_processing_hours_conditional_scenario": [
+    29,
+    48
+  ],
+  "measured_cloud_submission_to_final_task_hours_sum": 12.836734895838632,
+  "full200_mean_cloud_stage_elapsed_hours": 25.673469791677263,
+  "remaining100_mean_cloud_stage_elapsed_hours": 12.836734895838632,
+  "scope": "Five base batches, five completed 20M panels and thirty new followup singleton queries: two Batch 02, seven Batch 03, ten Batch 04 and eleven Batch 05. Eleven reused Batch 05 played queries remain counted only in the original panel. Mac, pilots and abandoned transition costs remain separate.",
+  "limits": "Measured VM lifetimes priced at recorded rate, not billing. Mean scaling only; panel sizes, discovered alternatives and availability vary. Inclusive scenarios retain ancillary storage/transfer/operations and recovery assumptions. Cloud-stage timing excludes preflight, retrieval, review pauses and final synthesis.",
+  "calendar_estimate": {
+    "as_of_utc": "2026-11-12 19:56:01 UTC",
+    "central_day_paris": "Saturday 2026-11-14",
+    "conditional_window_paris": "Late Friday 2026-11-13 through Sunday 2026-11-15",
+    "basis": "Retain the prior conditional Saturday 14 November Paris central estimate and late-Friday through Sunday window. Remaining cloud-stage work excludes preflight, retrieval, deeper alternatives, independent reviews and final synthesis; availability and scientific obligations can add time."
+  }
+}

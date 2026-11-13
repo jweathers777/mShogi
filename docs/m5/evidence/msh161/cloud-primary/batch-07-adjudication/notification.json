@@ -1,0 +1,24 @@
+{
+  "label": "MSH-161 primary cloud Batch 07 consequential 20M analysis and verification",
+  "thread": "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+  "command": [
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/run_adjudication_plan.py",
+    "--directory",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-07-adjudication",
+    "--job-name",
+    "msh161-primary-b07-20m-v1",
+    "--subscription",
+    "projects/mshogi/subscriptions/mshogi-pilot-completion",
+    "--cache",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache",
+    "--spending-approved"
+  ],
+  "state_artifact": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-07-adjudication",
+  "wrapper_pid": 24232,
+  "started_epoch": 1794549641.6176488,
+  "status": "running",
+  "queue_attempted": false,
+  "cleanup_scope": "Own child process group only; engines detached by existing helpers require their own receipts/reconciliation; not a descendant-tree cleanup guarantee",
+  "child_pid": 24234
+}

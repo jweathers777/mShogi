@@ -4,6 +4,7 @@ title: Engine Time Management
 status: To Do
 assignee: []
 created_date: '2026-11-13T21:29:00Z'
+updated_date: '2026-11-13T22:38:00Z'
 labels:
   - handle:engine-time-management
 milestone: m-5
@@ -43,3 +44,9 @@ Handle: Engine Time Management.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Finding from MSH-163 (Engine Strength Test Harness), 2026-11-13, engine 65887fb0 on Apple M1 Pro: under a 5 s + 0.05 s Fischer clock in mshogi-match self-play, about 247 of 320 games ended in flag fall (unresolved native conclusion) near ply 60. Transcripts show the engine spends down to its last ~50 ms (go wtime 50 winc 50 -> searches 50 ms) because the UCI clock reserve is min(remaining/20, 50 ms) and hard = 3 x (remaining/30 + increment). At 1 s + 0.01 s flags fall within ~30 moves. The MSH-163 game test therefore defaults to fixed 200 ms per move; its clock mode (--base/--increment) is ready for this task's AC #1 and #2.
+<!-- SECTION:NOTES:END -->

@@ -1,0 +1,96 @@
+{
+  "completed_primary_games": 180,
+  "fully_adjudicated_primary_games_at_this_audit": 160,
+  "pending_batch09_scientific_closure": true,
+  "measured_base_batches": 9,
+  "measured20m_panels": 9,
+  "measured_extra_singleton_queries": 71,
+  "new_distinct_discovery_alternatives_pending": [
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "ply": 67,
+      "played": "f8e8",
+      "bestmove": "c3b3",
+      "different_move": true,
+      "flags": []
+    },
+    {
+      "pair": "main-09-00",
+      "game": 0,
+      "ply": 71,
+      "played": "g7c3",
+      "bestmove": "g7f6",
+      "different_move": true,
+      "flags": []
+    },
+    {
+      "pair": "main-09-05",
+      "game": 1,
+      "ply": 29,
+      "played": "a7a5",
+      "bestmove": "b6d7",
+      "different_move": true,
+      "flags": [
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ]
+    },
+    {
+      "pair": "main-09-08",
+      "game": 0,
+      "ply": 62,
+      "played": "c2d1",
+      "bestmove": "d2d1",
+      "different_move": true,
+      "flags": [
+        "final_same_move_bound_conflicts_with_earlier_cp",
+        "final_same_move_bound_conflicts_with_earlier_expected_score",
+        "last_score_update_not_selected_exact_score",
+        "last_two_report_estimates_unstable"
+      ]
+    }
+  ],
+  "measured_reference_queries": 75823,
+  "measured_scientific_jobs": 26547,
+  "failed_scientific_attempts": 0,
+  "measured_primary_vm_hours": 142.09356689088878,
+  "estimated_primary_compute_usd": 28.647199833738302,
+  "actual_billed_cost": null,
+  "full200_mean_workload_compute_usd": 31.830222037487005,
+  "remaining20_mean_workload_compute_usd": 3.1830222037487004,
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "full_processing_hours_conditional_scenario": [
+    29,
+    48
+  ],
+  "measured_cloud_submission_to_final_task_hours_sum": 24.853114081554946,
+  "full200_mean_cloud_stage_elapsed_hours": 27.614571201727717,
+  "remaining20_mean_cloud_stage_elapsed_hours": 2.761457120172772,
+  "scope": "Nine base batches and nine completed 20M panels (including three audit-expansion queries) plus seventy-one prior followup queries. Pending Batch 09 new alternatives not counted. Mac, pilots and abandoned transition costs remain separate.",
+  "limits": "Measured VM lifetimes priced at recorded rate, not billing. Mean scaling only; panel sizes, discovered alternatives and availability vary. Inclusive scenarios retain ancillary storage/transfer/operations and recovery assumptions. Cloud-stage timing excludes preflight, retrieval, review pauses and final synthesis.",
+  "calendar_estimate": {
+    "as_of_utc": "2026-11-13 15:09:02 UTC",
+    "as_of_paris": "Friday 2026-11-13 16:09 CET",
+    "games_and_batch_analysis": "Friday evening, approximately 20:00\u201322:00 CET under stated assumptions",
+    "final_independently_reviewed_diagnosis": "Friday night\u2013Saturday morning, approximately Friday 22:00\u2013Saturday 03:00 CET centrally; extended review may use more of Saturday morning",
+    "remaining_cloud_stage_hours_mean": 2.761457120172772,
+    "remaining_nonengine_workflow_hours_assumed": [
+      0.6,
+      1.2
+    ],
+    "remaining_batch_review_and_followup_hours_assumed": [
+      0.5,
+      1.5
+    ],
+    "final_synthesis_and_independent_review_hours_assumed": [
+      2,
+      4
+    ],
+    "basis": "The final base batch and its panel have a mean cloud estimate of 2.76 hours. Add bounded pending Batch 09 followup and assumed workflow/review time to obtain roughly 4\u20136 hours from this snapshot through final batch analysis. Then allow 2\u20134 hours for final synthesis and independent challenge. The three-query expansion has completed and is not pending. Larger recent panels justify retaining uncertainty around the mean. Allowances are assumptions, not service guarantees.",
+    "uncertainty": "New alternatives, regional stockouts or substantive final-review findings can extend these windows; no coverage is truncated to meet an ETA."
+  }
+}

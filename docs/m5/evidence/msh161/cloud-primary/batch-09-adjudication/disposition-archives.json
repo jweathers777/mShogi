@@ -1,0 +1,21 @@
+{
+  "note": "Exact pre-followup ledgers including audit-expansion closure preserved. Write separate final overlays.",
+  "files": [
+    {
+      "original": "dispositions20m-00-04.json",
+      "archive": "dispositions20m-00-04.json.gz",
+      "original_sha256": "bc486d271eb3512c84a6d5113388dbc13d0a0a94cf42e8c7eda8530b8512fda5",
+      "archive_sha256": "332fbdfb944110c704fb20cb9f69bc24ea579fcdbe4fc0c0c1a2469a66572b16",
+      "original_bytes": 3069306,
+      "archive_bytes": 280341
+    },
+    {
+      "original": "dispositions20m-05-09.json",
+      "archive": "dispositions20m-05-09.json.gz",
+      "original_sha256": "137cc6258d49e7197fcfae6e824af52a3f9aed9d28d5d925e35137e3eaa9468b",
+      "archive_sha256": "4fe4056b1d5573c10586368f4f34b1c3965fb40d2136855e61cc68272c0ca542",
+      "original_bytes": 8323675,
+      "archive_bytes": 452380
+    }
+  ]
+}

@@ -1,0 +1,573 @@
+{
+  "status": "passed",
+  "job_name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b09-20m-v1",
+  "job_uid": "msh161-primary-b09-6a324e62-143d-45710",
+  "submission_returncode": 0,
+  "submission_state": "QUEUED",
+  "terminal_state": "SUCCEEDED",
+  "scientific_audit": {
+    "status": "passed",
+    "jobs": 1501,
+    "queries": 1528,
+    "decisions": 1006,
+    "discoveries": [
+      {
+        "pair": "main-09-00",
+        "game": 0,
+        "ply": 67,
+        "played": "f8e8",
+        "bestmove": "c3b3",
+        "different_move": true,
+        "flags": []
+      },
+      {
+        "pair": "main-09-00",
+        "game": 0,
+        "ply": 71,
+        "played": "g7c3",
+        "bestmove": "g7f6",
+        "different_move": true,
+        "flags": []
+      },
+      {
+        "pair": "main-09-02",
+        "game": 0,
+        "ply": 53,
+        "played": "d8c8",
+        "bestmove": "d8c8",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-09-04",
+        "game": 1,
+        "ply": 51,
+        "played": "e8e6",
+        "bestmove": "e8e6",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-09-05",
+        "game": 0,
+        "ply": 35,
+        "played": "c6e5",
+        "bestmove": "c6e5",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-09-05",
+        "game": 1,
+        "ply": 29,
+        "played": "a7a5",
+        "bestmove": "b6d7",
+        "different_move": true,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-09-06",
+        "game": 0,
+        "ply": 33,
+        "played": "d6b4",
+        "bestmove": "d6b4",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-09-06",
+        "game": 0,
+        "ply": 34,
+        "played": "a1a7",
+        "bestmove": "a1a7",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-09-06",
+        "game": 0,
+        "ply": 37,
+        "played": "b4c5",
+        "bestmove": "b4c5",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-09-06",
+        "game": 0,
+        "ply": 45,
+        "played": "f6d7",
+        "bestmove": "f6d7",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-09-06",
+        "game": 0,
+        "ply": 80,
+        "played": "b5a6",
+        "bestmove": "b5a6",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_cp",
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-09-06",
+        "game": 1,
+        "ply": 31,
+        "played": "c6e7",
+        "bestmove": "c6e7",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-09-07",
+        "game": 1,
+        "ply": 24,
+        "played": "h2h3",
+        "bestmove": "h2h3",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-09-07",
+        "game": 1,
+        "ply": 25,
+        "played": "h5f7",
+        "bestmove": "h5f7",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-09-07",
+        "game": 1,
+        "ply": 26,
+        "played": "h3g4",
+        "bestmove": "h3g4",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-09-07",
+        "game": 1,
+        "ply": 29,
+        "played": "b4c5",
+        "bestmove": "b4c5",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-09-08",
+        "game": 0,
+        "ply": 47,
+        "played": "c8c7",
+        "bestmove": "c8c7",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-09-08",
+        "game": 0,
+        "ply": 53,
+        "played": "f5e6",
+        "bestmove": "f5e6",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-09-08",
+        "game": 0,
+        "ply": 62,
+        "played": "c2d1",
+        "bestmove": "d2d1",
+        "different_move": true,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_cp",
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-09-08",
+        "game": 1,
+        "ply": 37,
+        "played": "f6e8",
+        "bestmove": "f6e8",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-09-08",
+        "game": 1,
+        "ply": 38,
+        "played": "g1h1",
+        "bestmove": "g1h1",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-09-08",
+        "game": 1,
+        "ply": 39,
+        "played": "e7h4",
+        "bestmove": "e7h4",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-09-unaided",
+        "game": 0,
+        "ply": 89,
+        "played": "b5b1",
+        "bestmove": "b5b1",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-09-unaided",
+        "game": 1,
+        "ply": 27,
+        "played": "d5e4",
+        "bestmove": "d5e4",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-09-unaided",
+        "game": 1,
+        "ply": 28,
+        "played": "d3e3",
+        "bestmove": "d3e3",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-09-unaided",
+        "game": 1,
+        "ply": 33,
+        "played": "c6e7",
+        "bestmove": "c6e7",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-09-unaided",
+        "game": 1,
+        "ply": 69,
+        "played": "d7c6",
+        "bestmove": "d7c6",
+        "different_move": false,
+        "flags": []
+      }
+    ],
+    "flags": {
+      "last_score_update_not_selected_exact_score": 544,
+      "directional_bound_conflict": 93,
+      "stable_report_heuristic": 1435
+    },
+    "resources": {
+      "job_wall_seconds": 32605.325492275937,
+      "job_cpu_seconds": 30298.069608999976,
+      "query_wall_seconds": 30258.882902992977,
+      "query_cpu_seconds": 30251.452134999967,
+      "query_wall_max_seconds": 27.43020285900002
+    },
+    "worker_environments": {
+      "647097054494633914": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "647097054494633914",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "2820930859431538618": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "2820930859431538618",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "1176054699705151418": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "1176054699705151418",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "4915247665620103098": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "4915247665620103098",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "424134826734038970": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "424134826734038970",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "3428097286416805818": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "3428097286416805818",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "3804577983392034746": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "3804577983392034746",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "6316939482807054266": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "6316939482807054266",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      }
+    },
+    "failed_scientific_attempts": 0,
+    "unresolved_claims": 0,
+    "plan_sha256": "6f84fa7b5064050ee81933b28520ceffc0d879c87418ea10f9c15d3739ab9051",
+    "verification_sha256": "839383835b1fb2799da7c7795bfa525f5dd83eada5c88b66d8cf8039a298b9de",
+    "source_revision": "90c85161aed7ccfff156482a567e7cef1ef569d1",
+    "scope": "Independent plan/success/parent/selection/history/budget/options/native replay/legal PV/cleanup audit; reused complete plan-aware artifact verification without duplicate full artifact hashing; no engines or retrieval",
+    "procedure_source": "import json,hashlib,gzip,sys,collections\nfrom pathlib import Path\nP=Path('docs/m5/evidence/msh161/cloud-primary');H=P/'batch-09-adjudication';C=P/'local-cache';sys.path.insert(0,str(P.parent.resolve()));import analysis,screen_v1,chess\ndata=lambda p:Path(p).read_bytes() if Path(p).exists() else gzip.decompress(Path(str(p)+'.gz').read_bytes())\nread=lambda p:json.loads(data(p));sha=lambda p:hashlib.sha256(data(p)).hexdigest()\nplan=read(H/'plan.json');ver=read(H/'results/verification.json');done=read(H/'results/completion.json');rest=read(P/'autoclaim-restoration.json');idx=read(P/'batch-09-review/review-index.json')\nassert sha(H/'plan.json')==ver['plan_sha256']==done['plan_sha256'];assert sha(H/'results/verification.json')==done['verification_sha256'];assert sha(P/'batch-09-review/review-index.json')==plan['review_index_sha256'];assert sha(C/plan['original_manifest']['key'])==plan['original_manifest']['sha256']\nfor s in plan['selection_files']:assert sha(P/'batch-09-review'/s['file'])==s['sha256']\nfor s in plan['consumed_successes']:assert sha(C/s['key'])==s['sha256']\ncanonical={};parents={}\nfor pair,x in idx.items():\n item=x['game_pair'];raw=gzip.decompress(Path(item['artifacts']['pair/report.json.gz']['local']).read_bytes());outer=json.loads(raw);rep=json.loads(outer['report_json']);ds,gs=analysis.extract_decisions(rep)\n assert rep['config']['claim_policy']=='auto_claim'\n for d in ds:canonical[pair,d['game'],d['ply']]=d\n parents[item['job']['id']]={'raw_sha256':hashlib.sha256(raw).hexdigest(),'compressed_sha256':item['artifacts']['pair/report.json.gz']['sha256'],'pair':pair,'success_sha256':item['success_sha256']}\nvr={r['job']:r for r in ver['results']};assert len(vr)==len(plan['jobs'])==1501\nflags=collections.Counter();counts=collections.Counter();resources=collections.Counter();envs={};query_keys=[];discoveries=[]\nfor job in plan['jobs']:\n jid=job['id'];path=C/job['experiment']/'jobs'/jid/'success.json';assert sha(path)==vr[jid]['success_sha256'];r=read(path);assert r['job']==job and r['status']=='complete' and r['result']['complete'];assert job['build']==rest['original_build'];assert job['environment']['cloud']['image']==rest['original_image'];assert job['source_revision']==rest['original_worker_source'];assert job['nodes']==20000000\n parent=parents[job['inputs']['report']['job']];d=canonical[parent['pair'],job['game'],job['ply']];assert job['adjudication']['decision']==d;assert job['adjudication']['parent_success_sha256']==parent['success_sha256'];assert job['adjudication']['screen_success_sha256']==idx[parent['pair']]['reference_screening']['success_sha256']\n env=r['environment'];assert env['architecture']=='x86_64' and env['gcp']['machine-type'].endswith('/c3-standard-4') and env['batch']['BATCH_TASK_RETRY_ATTEMPT']=='0';envs[env['gcp']['id']]=env['gcp'];resources['job_wall_seconds']+=r['wall_seconds'];resources['job_cpu_seconds']+=r['child_cpu_seconds']\n arts=r['artifacts'];rr=read(C/arts['replay.json']['key']);assert rr['returncode']==0 and rr['input_sha256']==parent['compressed_sha256'] and rr['uncompressed_sha256']==parent['raw_sha256'];assert arts['replay-input.json']['sha256']==parent['raw_sha256']\n m=read(C/arts['analysis/manifest.json']['key']);assert m['nodes']==20000000 and m['planned_decisions']==1 and m['options']==analysis.OPTIONS and m['engine_sha256']==rest['original_build']['engines']['stockfish19']['sha256']\n qs=[read(C/a['key']) for k,a in arts.items() if k.startswith('analysis/g') and '-attempt' in k];assert len(qs)==(1 if job['move'] else 2)\n for q in qs:\n  assert q['decision']==d and q['nodes_requested']==20000000 and q['options']==analysis.OPTIONS and q['engine_sha256']==m['engine_sha256'];assert q['status']=='complete' and q['exit_code']==0 and q['process_group_settled'] and not q['raw_truncated'];forced=q['forced_move'];assert (forced==job['move']) if job['move'] else forced in [None,d['played']]\n  b=analysis.board_for(d);assert chess.Move.from_uci(q['assessment']['bestmove']) in b.legal_moves\n  if forced:assert q['assessment']['bestmove']==forced\n  score=q['assessment']['score']\n  if score:\n   assert q['pv_independent_legal']\n   for u in score['pv']:b.push_uci(u)\n  else:assert 'no_nonbound_score_aligned_with_bestmove' in q['assessment']['uncertainty']\n  cmds=[e['line'] for e in q['raw_uci'] if e['direction']=='send'];assert 'ucinewgame' in cmds and 'setoption name Clear Hash' in cmds;assert 'position fen '+d['initial_fen']+(' moves '+' '.join(d['history']) if d['history'] else '') in cmds;assert [x for x in cmds if x.startswith('go ')]==['go nodes 20000000'+(' searchmoves '+forced if forced else '')]\n  v=screen_v1.describe(q);flags.update(q['assessment']['uncertainty']);flags['directional_bound_conflict']+=bool(v['directional_bound_conflicts']);flags['stable_report_heuristic']+=v['stable_report_heuristic'];resources['query_wall_seconds']+=q['wall_seconds'];resources['query_cpu_seconds']+=q['child_cpu_seconds'];resources['query_wall_max_seconds']=max(resources['query_wall_max_seconds'],q['wall_seconds']);counts['queries']+=1;query_keys.append([parent['pair'],d['game'],d['ply'],forced])\n  if forced is None:discoveries.append({'pair':parent['pair'],'game':d['game'],'ply':d['ply'],'played':d['played'],'bestmove':q['assessment']['bestmove'],'different_move':d['played']!=q['assessment']['bestmove'],'flags':v['flags']})\n res=read(C/arts['analysis/resources.json']['key']);assert res['failures']==0 and res['attempts']==len(qs)\n for k in ['wall_seconds','child_cpu_seconds']:assert abs(res[k]-sum(q[k] for q in qs))<1e-5\n counts['jobs']+=1\nassert counts['queries']==1528;assert len(discoveries)==27\nassert len(ver['attempts'])==1501 and not ver['failed_attempts'];assert all(a['status']=='complete' for a in ver['attempts']);assert abs(resources['job_wall_seconds']-ver['successful_job_totals']['wall_seconds'])<1e-5\nfor d in plan['decisions']:\n qs=[k for k in query_keys if k[:3]==[d['pair'],d['game'],d['ply']]];assert set(q[-1] for q in qs)==set(d['moves'])\nfor j in plan['jobs']:\n folder=C/j['experiment']/'jobs'/j['id'];assert not (folder/'claim.json').exists();assert len(list(folder.glob('attempts/*/receipt.json')))==1\nresult={'status':'passed','jobs':1501,'queries':1528,'decisions':len(plan['decisions']),'discoveries':discoveries,'flags':dict(flags),'resources':dict(resources),'worker_environments':envs,'failed_scientific_attempts':0,'unresolved_claims':0,'plan_sha256':sha(H/'plan.json'),'verification_sha256':sha(H/'results/verification.json'),'source_revision':read(H/'launch.json')['reviewed_revision'],'scope':'Independent plan/success/parent/selection/history/budget/options/native replay/legal PV/cleanup audit; reused complete plan-aware artifact verification without duplicate full artifact hashing; no engines or retrieval','procedure_source':Path(__file__).read_text()}\nPath('/tmp/msh161-b09-20m-audit-result.json').write_text(json.dumps(result,indent=2));print(json.dumps({k:result[k] for k in ['status','jobs','queries','decisions','flags','resources']},indent=2));print('Distinct discovery alternatives:',[d for d in discoveries if d['different_move']])\n"
+  },
+  "task_records": [
+    {
+      "task": "0",
+      "start": "2026-11-13T13:32:28.014068016Z",
+      "end": "2026-11-13T14:44:09.383876302Z",
+      "seconds": 4301.3698081970215,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/2820930859431538618",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "1",
+      "start": "2026-11-13T13:32:26.637037438Z",
+      "end": "2026-11-13T14:45:27.919778379Z",
+      "seconds": 4381.282741069794,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/4915247665620103098",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "2",
+      "start": "2026-11-13T13:32:27.482145133Z",
+      "end": "2026-11-13T14:42:27.374784497Z",
+      "seconds": 4199.892638921738,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/6316939482807054266",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "3",
+      "start": "2026-11-13T13:32:45.135200984Z",
+      "end": "2026-11-13T14:44:31.509612846Z",
+      "seconds": 4306.374412059784,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/424134826734038970",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "4",
+      "start": "2026-11-13T13:32:58.192179959Z",
+      "end": "2026-11-13T14:42:40.927641015Z",
+      "seconds": 4182.735461950302,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/1176054699705151418",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "5",
+      "start": "2026-11-13T13:32:26.852777758Z",
+      "end": "2026-11-13T14:44:17.560634616Z",
+      "seconds": 4310.707856893539,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/3428097286416805818",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "6",
+      "start": "2026-11-13T13:32:26.569271996Z",
+      "end": "2026-11-13T14:44:45.709078559Z",
+      "seconds": 4339.139806985855,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/647097054494633914",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "7",
+      "start": "2026-11-13T13:32:27.051285427Z",
+      "end": "2026-11-13T14:44:46.420443005Z",
+      "seconds": 4339.369158029556,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/3804577983392034746",
+      "state": "SUCCEEDED"
+    }
+  ],
+  "task_elapsed_seconds": 4381.35050702095,
+  "submission_to_last_task_seconds": 4420.04345202446,
+  "task_seconds_sum": 34360.87188410759,
+  "concurrency_seconds": {
+    "0": 0.0,
+    "1": 41.5671010017395,
+    "2": 0.9271049499511719,
+    "3": 14.397974014282227,
+    "4": 14.379838228225708,
+    "5": 8.708680629730225,
+    "6": 105.57736730575562,
+    "7": 26.609835863113403,
+    "8": 4169.1826050281525
+  },
+  "peak_task_concurrency": 8,
+  "vms": [
+    {
+      "id": "4915247665620103098",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b09-6a324e62-143d-45710-group0-0-zsx5",
+      "deleted": "2026-11-13T14:45:49.909913Z",
+      "start": "2026-11-13T13:32:05.270792Z",
+      "seconds": 4424.639121055603
+    },
+    {
+      "id": "3804577983392034746",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b09-6a324e62-143d-45710-group0-0-krzf",
+      "deleted": "2026-11-13T14:45:28.059457Z",
+      "start": "2026-11-13T13:32:05.351854Z",
+      "seconds": 4402.707602977753
+    },
+    {
+      "id": "424134826734038970",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b09-6a324e62-143d-45710-group0-0-kf1q",
+      "deleted": "2026-11-13T14:45:13.691346Z",
+      "start": "2026-11-13T13:32:05.289534Z",
+      "seconds": 4388.40181183815
+    },
+    {
+      "id": "647097054494633914",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b09-6a324e62-143d-45710-group0-0-fwbf",
+      "deleted": "2026-11-13T14:45:13.666256Z",
+      "start": "2026-11-13T13:32:05.349940Z",
+      "seconds": 4388.3163158893585
+    },
+    {
+      "id": "3428097286416805818",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b09-6a324e62-143d-45710-group0-0-v553",
+      "deleted": "2026-11-13T14:44:57.747567Z",
+      "start": "2026-11-13T13:32:05.247856Z",
+      "seconds": 4372.499711036682
+    },
+    {
+      "id": "2820930859431538618",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b09-6a324e62-143d-45710-group0-0-hhmf",
+      "deleted": "2026-11-13T14:44:37.393989Z",
+      "start": "2026-11-13T13:32:05.303916Z",
+      "seconds": 4352.090073108673
+    },
+    {
+      "id": "1176054699705151418",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b09-6a324e62-143d-45710-group0-0-74vz",
+      "deleted": "2026-11-13T14:43:15.387081Z",
+      "start": "2026-11-13T13:32:05.303845Z",
+      "seconds": 4270.08323597908
+    },
+    {
+      "id": "6316939482807054266",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b09-6a324e62-143d-45710-group0-0-x5xg",
+      "deleted": "2026-11-13T14:42:58.801564Z",
+      "start": "2026-11-13T13:32:05.260245Z",
+      "seconds": 4253.541318893433
+    }
+  ],
+  "vm_lifecycle_hours": 9.681188664105203,
+  "recorded_rate_usd_per_hour": 0.201608,
+  "estimated_compute_usd": 1.951805084192922,
+  "actual_billed_cost": null,
+  "failed_insert_completion_count": 0,
+  "failed_insert_zones": {},
+  "base_batch06_allocation_failures_separate": 1,
+  "historical_batch04_allocation_failures_separate": {
+    "base": 53,
+    "initial20m": 5,
+    "followup": 6
+  },
+  "operational_audit_error_count": 0,
+  "remaining_instances": [],
+  "remaining_disks": [],
+  "notification": {
+    "label": "MSH-161 primary cloud Batch 09 consequential 20M analysis and verification",
+    "thread": "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+    "command": [
+      "/private/tmp/msh162-controller/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/run_adjudication_plan.py",
+      "--directory",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-09-adjudication",
+      "--job-name",
+      "msh161-primary-b09-20m-v1",
+      "--subscription",
+      "projects/mshogi/subscriptions/mshogi-pilot-completion",
+      "--cache",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache",
+      "--spending-approved"
+    ],
+    "state_artifact": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-09-adjudication",
+    "wrapper_pid": 66971,
+    "started_epoch": 1794576300.143192,
+    "status": "success",
+    "queue_attempted": true,
+    "cleanup_scope": "Own child process group only; engines detached by existing helpers require their own receipts/reconciliation; not a descendant-tree cleanup guarantee",
+    "child_pid": 66973,
+    "computation_returncode": 0,
+    "residual_group_detected": false,
+    "process_group_settled": true,
+    "finished_epoch": 1794582504.107239,
+    "queue_returncode": 0,
+    "queue_accepted": true
+  },
+  "local_process_snapshot": {
+    "command": "ps -p 66971,66973 -o pid=,ppid=,stat=,command=",
+    "returncode": 1,
+    "stdout": "",
+    "meaning": "Recorded wrapper and child PIDs absent at the same review invocation; not a general descendant census"
+  },
+  "submission_preflight_seconds": 406.0643877983093,
+  "wrapper_start_to_cloud_create_seconds": 407.7331340312958,
+  "whole_submit_wait_retrieve_verify_seconds": 6203.964046955109,
+  "after_last_cloud_task_to_wrapper_finish_seconds": 1376.187460899353,
+  "resources_note": "Child query wall/CPU totals overlap parent job totals; do not add them. VM lifetimes also include idle/provisioning. Post-cloud span combines event/retrieval/verification/publication/shutdown; download-only timing not instrumented.",
+  "scope": "One read-only cloud snapshot plus existing plan-aware verification; no new retrieval, engines, queries or cloud jobs. Local audit first encountered archived review-index path, then read its byte-exact gzip form; no scientific execution failure.",
+  "raw_observations": "runtime-observations.json.gz",
+  "forecast": "forecast-update.json",
+  "raw_observations_expanded_sha256": "da572b8b4a16710d302af97bda6ed1b5a8bbbed46446b747db0b26d85ca5833a",
+  "audit_expansion_execution": "audit-expansion-execution.json"
+}

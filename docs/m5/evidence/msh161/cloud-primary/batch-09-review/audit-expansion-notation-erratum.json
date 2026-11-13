@@ -1,0 +1,15 @@
+{
+  "status": "notation_corrected_in_closure_without_changing_admitted_inputs",
+  "source": "method-amendment-v1.1.md",
+  "source_sha256": "be578340cdd04b5ca24793114510fa32f8979d02dd32c93ce710d0aacdf4735b",
+  "pair": "main-09-00",
+  "game": 0,
+  "ply": 57,
+  "exact_executed_uci": "g7f8",
+  "incorrect_prose_label": "Kf8",
+  "correct_native_history_san": "Bf8",
+  "native_fen": "4r1k1/1B1R1pbp/4p1p1/2B5/5P2/6P1/4P1KP/r7 b - - 0 29",
+  "plan_sha256": "6f84fa7b5064050ee81933b28520ceffc0d879c87418ea10f9c15d3739ab9051",
+  "scientific_or_execution_change": false,
+  "scope": "Historical prose label only. Original admitted UCI, histories, method JSON, query jobs and budget are correct and immutable. Use Bf8 in current closure/report."
+}

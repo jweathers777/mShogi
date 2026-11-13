@@ -1,82 +1,59 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 09 required 20M plan and admitted audit expansion launched
+## Current state: Batch 09 deep/audit review complete; 22 alternatives ready
 
-**160 games are fully reviewed: 64 wins / 46 draws / 50 losses.** Prepared results
-are 52/43/49; unaided results 12/3/1. `primary-cumulative.json` covers all eight batches.
-Thirty-nine draws are automatic claims (37 threefold, two fifty-move); seven are native
-dead positions. Draws alone are not weakness. Claims limit conversion observations
-without proving counterfactual outcomes; preserve preceding decision evidence.
+180 games have completed; **160 are fully reviewed (64W/46D/50L)**.
+`primary-cumulative.json` remains at 160 until Batch 09 closure. Native Batch 09
+results are 11 wins / 5 draws / 4 losses (prepared 10/5/3, unaided 1/0/1).
+Four draws are threefold claims and one is dead position. Original AutoClaim,
+unmodified binaries/image and frozen histories remain authoritative. The policy
+transition remains abandoned. Draws alone are not weakness; preserve preceding
+choices and claim-limited observation without counterfactual outcomes.
 
-Batch 08 closure is in `batch-08-review/closure.md` and `closure-summary.json`.
-The 1,347-query deep plan and sixteen new alternatives passed verification and
-independent review. All played results were reused. Three opponent comparison roots
-gained support, six new comparisons remain unresolved, and f4/f3 is subthreshold.
-Original ledgers, separate overlays, earlier/linked uncertainty, secondary contexts
-and contrary successes are preserved. Two claim-limited observations retain their
-underlying finite statuses (same-choice and unresolved); native claims cannot be
-replaced by reference continuations. Selected comparisons are correlated, not
-independent causes or population frequencies. No final ranking or mechanism.
+The 1,501-job / 1,528-query deep panel completed and passed plan-aware verification.
+Submission, completion, verification, cleanup and accepted notification were separately
+reconciled. Eight workers ran without allocation or scientific failures and all
+were deleted. Original all-move/base evidence remains preserved and not repeated.
 
-Original AutoClaim, unmodified mShogi/Oxidation binaries/image and frozen histories
-remain authoritative (`autoclaim-restoration.json`). Original Batch 09 passed
-`batch-09-offline-preflight.json`. The policy transition remains abandoned, with all
-failed evidence preserved. No production changes or completed-game replays.
+Both independent deep reviews in `batch-09-adjudication` are frozen. Their 1,006 roots
+contain 115 supported finite comparisons, 278 subthreshold, 461 same-choice controls,
+148 unresolved and four claim-policy-limited terminal observations. Underlying finite
+statuses, secondary contexts, earlier/unselected uncertainty and contrary successes
+remain separate. Selected roots are correlated, not independent causes or population
+rates. No final ranking, first/largest mistake or mechanism is claimed.
 
-Execution layers and cleanup were independently reconciled. Every Batch 08 stage
-reached eight workers without allocation/scientific failures, and all workers were
-deleted. Earlier capacity failures remain separate. Primary totals: 23,029 jobs /
-66,580 queries / 122.676461 VM-hours / US$24.732556 estimated compute. Full-study mean
-compute is US$30.92; US$35–90 ancillary-inclusive remains conditional, not billing.
-Forecast updated Friday 13 November 12:23 Paris: about 5.47 remaining cloud hours,
-plus explicit workflow/review assumptions, supports Friday evening batch completion
-and Friday night–Saturday morning final independent diagnosis. This replaces the
-old Saturday-central estimate and remains conditional on capacity/scientific work.
-See `batch-08-followup/forecast-update.json`; its pre-closure review count is historical.
-Mac/pilots/transition remain separate.
+The independently admitted v1.1 audit expansion is closed for minimum 21/21 Black/
+reference-endgame roots in main-09-00/game0: 19 existing matched 5M roots preserved,
+p57/p75 added at 20M via three new searches, plus any other independently selected
+20M evidence in this cell. Mixed budgets are explicit; no uniform sample or cell
+error rate. Original 5M trigger p65 remains preserved; 20M supports serious margin .176.
+p57 is subthreshold .0015 and p75 same-choice. The notation erratum correctly labels
+`g7f8` Bf8; admitted UCI/history/jobs were unchanged. Exact method/admission/review
+and execution bindings are in `batch-09-review/` and
+`batch-09-adjudication/audit-expansion-execution.json`. Do not mutate admitted inputs.
 
-Original Batch 09 completed under `msh161-primary-b09-v1`. Retrieval verified
-2,017 jobs / 29,905 objects (3,857,462,577 bytes). Coordinator receipt bindings
-passed for submitted/completed UID, frozen file hashes, terminal/retrieval hashes,
-wrapper success, own-group cleanup and accepted notification. Separate receipts
-are bound in `batch-09-review/coordinator-reconciliation.json`.
-There are 180 played games and 160 fully reviewed games; keep that distinction
-until Batch 09 closure. Independent gameplay and execution/native/query audits passed.
-Native results are 11 wins / 5 draws / 4 losses (prepared 10/5/3, unaided 1/0/1):
-four threefold claims and one dead position. Base coverage is 5,718 initial and
-1,997 matched 5M queries. Five uncertain audit controls remain explicit alongside
-one verified stable missed-significant audit trigger. Eight workers ran without
-allocation/scientific failures and all were deleted. Primary estimate is US$26.695395 /
-132.412378 VM-hours; see `batch-09-review/forecast-update.json` for scope/limits.
+22 new alternatives across 21 unique roots need singleton 20M: four discoveries and
+18 bounded linked replies. Two alternatives share one exact played result, so the
+22 reused-reference entries identify 21 unique played queries; none is rerun or
+counted as new work. Coordinator review verified exact histories, source PV/discovery,
+legal choices and no duplicate forced moves. Plan SHA256:
+`8273e3963c2a333875103aa02a8edea3cb0fbed01a46b6e4201b232d41099358`.
+Preserve archived pre-followup ledgers and write separate final overlays. No repeated
+unstable search or recursive PV investigation is requested. Next launch one
+`notify_exit.py` workflow; on exit review only the new comparisons, retain uncertainty,
+close Batch 09, update cumulative categories/resources and launch original Batch 10.
+Retain audit expansion and original trigger in the final cumulative record.
 
-The audit trigger main-09-00/game0/p65 is h5 versus Rb3 for reference Black/endgame:
-5M conservative margin .0635, played E .929, with no conflicting bound/instability.
-Its favorable value does not waive expansion or establish lost conversion. The exact
-21-root cell has 19 completed matched 5M roots and two previously untested roots.
-Versioned v1.1 overlay is independently admitted in `batch-09-review/`:
-`method-amendment-v1.1.md/json`, `audit-expansion-method-review.md/json`, and
-`audit-expansion-admission.json`. Complete the two missing roots directly at 20M
-with three new singleton searches, reusing all 19 prior roots. Mixed budgets are
-explicit; no uniform cell sample or cell error rate is inferred. Original method,
-scientific inputs and both panel selections remain unchanged. Trigger 20M is retained
-and must not erase the original 5M evidence if its assessment changes.
-
-The combined prepared plan contains 1,006 roots / 1,501 jobs / 1,528 queries,
-including 27 discoveries and the three expansion searches. Plan SHA256:
-`6f84fa7b5064050ee81933b28520ceffc0d879c87418ea10f9c15d3739ab9051`.
-Full decision ledgers and index/inventory are lossless gzip with binding manifests.
-The plan is launched via `notify_exit.py`, PID 66971, from reviewed checkpoint
-`90c85161`, job `msh161-primary-b09-20m-v1`. See `batch-09-adjudication/launch.json`.
-Cloud acceptance remains separate in `submission-result.json` after provenance
-preflight. Do not duplicate wrapper, submission or queries. On completion independently review
-both panels (620 first-half roots incl expansion,386 second-half), explicitly close
-expansion coverage and only distinct new alternative obligations. Preserve earlier/
-linked uncertainty, secondary contexts and terminal claim limits. Close Batch 09,
-update cumulative and launch original Batch 10. No duplicate queries/retrieval. Restore
-archived JSON locally when needed; no duplicate retrieval/searches. Continue all 200
-games without Mac engines, production changes, timers or periodic polling. Stop for
-John after final independent diagnosis and roadmap. Historical transition records
-below do not govern current execution.
+Primary totals: 26,547 jobs / 75,823 queries / 142.093567 VM-hours / US$28.647200 estimated
+compute. Full-study mean compute is US$31.83; ancillary-inclusive US$35–90 remains
+conditional, not billing. Forecast updated Friday 16:09 Paris: about 2.76 remaining
+cloud hours plus explicit workflow/review assumptions supports Friday 20:00–22:00
+batch completion, final diagnosis centrally Friday 22:00–Saturday 03:00 with an extended
+morning review allowance. Capacity/scientific obligations can extend it. See
+`batch-09-adjudication/forecast-update.json`. Mac/pilots/transition remain separate.
+Continue all 200 games with no duplicate retrieval/searches, Mac engines, production
+changes, timers or periodic watchers. Stop for John after independent final diagnosis
+and roadmap. Historical transition records below do not govern current execution.
 
 ## Historical transition records (superseded)
 
@@ -135,7 +112,7 @@ The primary store is `gs://mshogi-experiments-216675633801/msh161-primary-v1`.
 It is separate from the pilot prefix. It was empty at preflight. All jobs use
 `c3-standard-4`, one task per VM, at most8workers, with the tested Linux binaries
 and unchanged5s/move method. All scientific thresholds, claims and source histories
-remain frozen. Each batch runs games, full500k screening and selected matched5M
+remain frozen. Each batch runs games, full500k screening and selected matched 5M
 queries. Consequential20M work and independent episode review remain separate
 obligations; completion of a pipeline alone does not confirm chess mistakes.
 
@@ -171,7 +148,7 @@ provisional unranked categories, contrary successes and limitations. Both indepe
 gameplay panels and cross-reviews passed. No final first/largest claim or engineering
 priority is inferred. Mac and pilot evidence remains separate.
 
-Base integrity passed2,410jobs/7,948queries:5,558initial500k and2,390matched5M.
+Base integrity passed2,410jobs/7,948queries:5,558initial500k and2,390matched 5M.
 All2,491played and288supplied context decisions remain in full native histories.
 There was no eligible stable missed-error audit crossing. The selected20M panel
 passed527jobs/558queries for298decisions. All31discoveries chose the existing played
@@ -216,7 +193,7 @@ notification are independently recorded in `batch-02-notification.json` and
 `batch-02-wait-retrieve.json`; preserve those receipts. Do not duplicate retrieval.
 
 Retrieval verified2,376jobs,34,751objects /4,441,259,122bytes in443.25seconds.
-Independent audit passed8,612queries (6,256initial500k plus2,356matched5M), all
+Independent audit passed8,612queries (6,256initial500k plus2,356matched 5M), all
 2,840played+288prefix decisions and exactly frozen selection/audit coverage. Native
 result9W/7D/4L, with six threefold and one fifty-move automatic claims. No scientific
 failures or eligible stable missed-error audit trigger; two uncertain audit
@@ -289,7 +266,7 @@ On retrieval/adjudication completion:
    analysis and data measurements; include remaining20M work, ancillary charges,
    retry/startup overhead and review pauses. Give total and remaining ranges,
    assumptions, and distinguish estimated from billed costs. Then review the
-   completed adjudication and update primary categories and resource totals. Continue this cycle through all200games.
+   completed adjudication and update primary categories and resource totals. Continue this cycle through all 200games.
    No final ranking or production correction before full independent diagnosis.
 
 For a user-requested progress view, run `python3 tools/experiments/quick_status.py`.
@@ -305,7 +282,7 @@ The latest owner instruction authorizes the full200-game cloud study and its
 necessary analysis. The earlierUS$30approval applied to pilots only. It is not a
 new primary-study cap or a claim that the primary campaign has already been paid.
 At the recorded pilot rate and measured VM lifecycle time,100pairs extrapolate to
-about117.16VM-hours /US$23.62compute. This estimate excludes later20M work, disks,
+about117.16VM-hours / US$23.62compute. This estimate excludes later20M work, disks,
 storage, reads/egress, logs, registry, taxes and other charges. It is not a bill or
 guarantee. Pilot retrieval volume scales to roughly49.76GB for100pairs; preserve
 raw evidence in GCS and use ignored local caches, not giant generated Git bundles.

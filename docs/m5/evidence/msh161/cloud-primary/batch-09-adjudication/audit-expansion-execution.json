@@ -1,0 +1,87 @@
+{
+  "status": "passed_execution_coverage_scientific_disposition_separate",
+  "method_review_sha256": "5ee0bee6d5bf21ba8458910530a7f78a0cd01276c932118f19073f79d6743643",
+  "amendment_sha256": "0652e66c5537c4aaad4c6de057119e5229ad81f12150286553cd611168bfc9b9",
+  "selection_sha256": "5f0dcf3875b3ae8695bb6096923598f16f4257773b3ccfbbd495b871450a4ef0",
+  "plan_sha256": "6f84fa7b5064050ee81933b28520ceffc0d879c87418ea10f9c15d3739ab9051",
+  "cell_roots": 21,
+  "preserved_existing5m_roots": 19,
+  "new20m_expansion_roots": 2,
+  "new20m_expansion_queries": 3,
+  "trigger_matched20m_queries": 2,
+  "results": [
+    {
+      "ply": 57,
+      "move": "a1c1",
+      "job": "2ae1cd33af135535da35d3a06e66c51e52bf11ae7247816f1da8bdf2be1392a5",
+      "success_sha256": "5bd64c36994295ce66b22c6a1bbd56f8780588446d55453b5eb4ae4ad3c43206",
+      "expected_score_mover": 0.9975,
+      "range": [
+        0.9975,
+        0.9975
+      ],
+      "stable": true,
+      "conflicts": [],
+      "flags": []
+    },
+    {
+      "ply": 57,
+      "move": "g7f8",
+      "job": "c07424976054d36e0e8352bcebeac5faa7e7d7c640332039ef00435763183704",
+      "success_sha256": "e31fa1d12b12bde848dc52de66ec9750b53c3deeb3f045a00f809256e2409afe",
+      "expected_score_mover": 0.999,
+      "range": [
+        0.999,
+        0.999
+      ],
+      "stable": true,
+      "conflicts": [],
+      "flags": []
+    },
+    {
+      "ply": 75,
+      "move": "c8c6",
+      "job": "713594914f1afa124175810e186a396ed7454377632829f3609e4546db512805",
+      "success_sha256": "3af21d3450547607fc4e4d0acd122b8ae5a6105eba56380e9151f5fb66af9c34",
+      "expected_score_mover": 0.6105,
+      "range": [
+        0.6105,
+        0.6105
+      ],
+      "stable": true,
+      "conflicts": [],
+      "flags": []
+    },
+    {
+      "ply": 65,
+      "move": "h7h5",
+      "job": "eb86c775a7b4b3033aab6e667bf60ef872d3691afebbbdad4e0683189fcd087b",
+      "success_sha256": "7347dab57bddee2de3827747b07d10e9a86a700560e8e1d346cec29a566fad6e",
+      "expected_score_mover": 0.8235,
+      "range": [
+        0.8235,
+        0.8235
+      ],
+      "stable": true,
+      "conflicts": [],
+      "flags": []
+    },
+    {
+      "ply": 65,
+      "move": "c3b3",
+      "job": "75ab241060d554056323956ebb1f2b3f70661ab99c337308ec2728f71d700131",
+      "success_sha256": "cd2f410b6b86ccc089e9e721d2d344cf4105047c9d8c73ae98c71df81e1588d3",
+      "expected_score_mover": 0.9995,
+      "range": [
+        0.9995,
+        1.0
+      ],
+      "stable": true,
+      "conflicts": [],
+      "flags": [
+        "last_score_update_not_selected_exact_score"
+      ]
+    }
+  ],
+  "limits": "All 21 cell roots have at least 5M coverage; minimum-budget composition is 19 reused 5M plus two new 20M roots. Additional consequential20M does not erase prior receipts. Mixed budgets are not a uniform5M sample or cell error rate. Preserve original stable5M trigger regardless of20M disposition. No query repeated by this audit."
+}

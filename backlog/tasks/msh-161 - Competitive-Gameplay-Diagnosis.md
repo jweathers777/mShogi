@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T13:25:00Z'
+updated_date: '2026-11-13T15:12:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -219,4 +219,6 @@ Original Batch 09 accepted as msh161-primary-b09-v1 (QUEUED at submission), UID 
 Batch 09 execution and independent gameplay reviews passed: 11 wins, 5 draws, 4 losses; eight workers, no allocation/scientific failures, all deleted. One stable missed-significant audit trigger requires versioned expansion: main-09-00 game0 ply65 Black/endgame h5 vs Rb3, conservative5M margin .0635, favorable played E .929. Independently admitted v1.1 overlay completes the21-root cell by reusing19 existing5M roots and adding two previously untested roots directly at20M, three new queries. Mixed budgets explicit; no cell rate or uniform-sample claim. Original method and panel selections unchanged; trigger20M retained without erasing5M. Exact amendment/review/selection hashes and plan bound in audit-expansion-admission.json. Combined deep plan: 1,006 roots / 1,501 jobs / 1,528 queries including27 discoveries. Full ledgers/index archived. Launch one exit-notified workflow; independently close expansion and deep review before final Batch 10. Scientific cumulative remains160 reviewed/180 played; no final priorities or production engineering.
 
 Batch 09 combined required 20M and admitted audit-expansion workflow launched via notify_exit.py PID 66971, job msh161-primary-b09-20m-v1, reviewed checkpoint 90c85161. Plan SHA256 6f84fa7b5064050ee81933b28520ceffc0d879c87418ea10f9c15d3739ab9051. Launch receipt in batch-09-adjudication; cloud acceptance separate after provenance preflight. Callback explicitly requires review of 620 first-half roots including expansion and 386 second-half roots, closure of the 21-root mixed-budget cell and preservation of original 5M trigger before final Batch 10. One success/failure callback; no timer or duplicate processes.
+
+Batch 09 combined 20M execution and independent deep review passed: 1,501 jobs / 1,528 queries / 1,006 roots. Eight workers, no allocation/scientific failures, all deleted. Admitted audit minimum coverage closed for all 21 roots: 19 original matched 5M preserved plus two added 20M roots/three searches and any other selected 20M evidence. Trigger p65 retains original 5M and supports .176 serious margin at20M; p57 subthreshold, p75 same-choice. Mixed budgets and Bf8 prose erratum explicit; exact UCI/histories unchanged. Twenty-two new alternatives across21 unique roots remain: four discoveries,18 linked replies, with21 unique played queries reused through22 references. Pre-followup ledgers archived; coordinator verified exact source/history/legal/no-duplicate bindings. Primary estimate US$28.647200; full mean US$31.83. Recomputed ETA supports Friday20:00–22:00 batch completion and Friday-night–Saturday-morning final diagnosis, conditional. Launch one callback workflow, close new comparisons and Batch 09 before final Batch 10; no final priorities.
 <!-- SECTION:NOTES:END -->

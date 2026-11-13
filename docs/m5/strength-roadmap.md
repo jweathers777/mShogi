@@ -9,7 +9,8 @@ The main limit is search depth (median 8–9 at five seconds), caused by the sea
 infrastructure. Work in this order:
 
 1. MSH-163 (Engine Strength Test Harness): speed benchmark, development blunder
-   suite, and game tests of candidate against predecessor.
+   suite, and game tests of candidate against predecessor. Done; see the
+   [harness and baseline](strength-harness.md).
 2. MSH-164 (Shared Search Core): game-independent core, fast Chess search position,
    large board-keyed transposition table kept for the full game.
 3. MSH-165 (Tori Search Core Adoption): prove the shared boundary with a second game.

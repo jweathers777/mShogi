@@ -100,7 +100,7 @@ def bench(args):
                 raise SystemExit('fixed depth not reached (time to depth invalid): ' + ', '.join(short))
             nodes = sum(x['nodes'] for x in rows)
             seconds = sum(x['wall_seconds'] for x in rows)
-            engine_seconds = sum(x['engine_ms'] for x in rows) / 1000
+            engine_seconds = sum(x['engine_ms'] or 0 for x in rows) / 1000 or float('nan')
             rounds.append({'positions': rows, 'nodes': nodes, 'seconds': seconds, 'nps': nodes / seconds,
                            'engine_seconds': engine_seconds, 'engine_nps': nodes / engine_seconds})
         ident = engine_identity(args.engine, engine)
@@ -235,15 +235,16 @@ def _moves(record_json):
 
 def game_winner_engine(game):
     """Configuration engine index of the winner, 'draw', or None, from the native conclusion."""
+    # Mirrors MatchConclusion::white_score_twice: Chess(Draw)/Draw score as draws,
+    # Chess(Checkmate)/Win score for the winner, Unresolved is unscored.
     c = game['conclusion']
-    if not isinstance(c, dict) or 'chess' not in c:
+    if not isinstance(c, dict):
         return None
-    chess = c['chess']
-    if 'draw' in chess:
+    if 'draw' in c or ('chess' in c and 'draw' in c['chess']):
         return 'draw'
-    for value in chess.values():
-        if isinstance(value, dict) and value.get('winner') in ('white', 'black'):
-            return game['engines_by_color'][0 if value['winner'] == 'white' else 1]
+    value = c.get('win') or (c.get('chess') or {}).get('checkmate')
+    if isinstance(value, dict) and value.get('winner') in ('white', 'black'):
+        return game['engines_by_color'][0 if value['winner'] == 'white' else 1]
     return None
 
 

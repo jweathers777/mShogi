@@ -201,6 +201,16 @@ class ParsingTests(unittest.TestCase):
                   'engine_identities': [{'executable': {'sha256': 'a'}}, {'executable': {'sha256': 'b'}}]}
         self.assertIsNone(cli.summarize_pair(report, None)['score'])
 
+    def test_all_native_conclusion_shapes(self):
+        cases = [(WHITE_MATES, 0), ({'chess': {'checkmate': {'winner': 'black'}}}, 1), (DRAW, 'draw'),
+                 ({'win': {'winner': 'black', 'trigger': 'flag_fall'}}, 1),
+                 ({'draw': {'trigger': 'flag_fall'}}, 'draw'), ({'draw': {'trigger': None}}, 'draw'),
+                 (UNRESOLVED, None), (None, None)]
+        for conclusion, expected in cases:
+            self.assertEqual(cli.game_winner_engine({'conclusion': conclusion, 'engines_by_color': [0, 1]}), expected)
+        self.assertEqual(cli.game_winner_engine({'conclusion': {'win': {'winner': 'white', 'trigger': 'resignation'}},
+                                                 'engines_by_color': [1, 0]}), 1)
+
     def test_summary_attribution_is_cross_checked(self):
         # Engine 1 plays White in the second game and mates: engine 1 wins, not engine 0.
         report = {'summaries': [{'opening_id': 'o', 'games': 2, 'wins': [2, 0], 'draws': 0, 'unscored': 0,

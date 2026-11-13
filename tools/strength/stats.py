@@ -44,14 +44,29 @@ def mean_variance(counts):
     return mean, var
 
 
-def llr(counts, elo0, elo1):
-    """Generalized SPRT log-likelihood ratio (normal approximation on pair scores).
+def regularized_variance(counts):
+    """Pair-score variance with two symmetric prior pairs (scores .25 and .75).
 
-    LLR = N (s1 - s0) (2 m - s0 - s1) / (2 v), with m and v the sample mean and
-    variance of pair scores. Returns 0 while the variance is not yet defined.
+    Draw-dominated small samples otherwise give a near-zero variance and an
+    early, unjustified decision. The prior does not move the mean and its
+    weight vanishes as pairs accumulate.
     """
     n = sum(counts)
     mean, var = mean_variance(counts)
+    if mean is None:
+        return None
+    return (n * var + (0.25 - mean) ** 2 + (0.75 - mean) ** 2) / (n + 2)
+
+
+def llr(counts, elo0, elo1):
+    """Generalized SPRT log-likelihood ratio (normal approximation on pair scores).
+
+    LLR = N (s1 - s0) (2 m - s0 - s1) / (2 v), with m the sample mean and v the
+    regularized variance of pair scores. Returns 0 with no pairs.
+    """
+    n = sum(counts)
+    mean, _ = mean_variance(counts)
+    var = regularized_variance(counts)
     if n == 0 or var is None or var <= 0.0:
         return 0.0
     s0, s1 = expected_score(elo0), expected_score(elo1)
@@ -69,25 +84,31 @@ class Sprt:
     elo1: float = 15.0
     alpha: float = 0.05
     beta: float = 0.05
+    min_pairs: int = 30
 
     def __post_init__(self):
-        if not (self.elo1 > self.elo0 and 0 < self.alpha < .5 and 0 < self.beta < .5):
-            raise ValueError('SPRT needs elo1 > elo0 and 0 < alpha, beta < 0.5')
+        if not (self.elo1 > self.elo0 and 0 < self.alpha < .5 and 0 < self.beta < .5 and self.min_pairs >= 1):
+            raise ValueError('SPRT needs elo1 > elo0, 0 < alpha, beta < 0.5 and min_pairs >= 1')
 
     def status(self, counts):
         value = llr(counts, self.elo0, self.elo1)
         lower, upper = bounds(self.alpha, self.beta)
-        decision = 'H1' if value >= upper else 'H0' if value <= lower else None
+        decision = None
+        if sum(counts) >= self.min_pairs:
+            decision = 'H1' if value >= upper else 'H0' if value <= lower else None
         return {'llr': value, 'lower': lower, 'upper': upper, 'decision': decision}
 
 
 def estimate(counts, z=1.959964):
     """Elo estimate and approximate 95% interval from pair scores."""
     n = sum(counts)
-    mean, var = mean_variance(counts)
+    mean, _ = mean_variance(counts)
     if not n:
         return {'pairs': 0}
+    var = regularized_variance(counts)
     half = z * math.sqrt(var / n) if n > 1 else math.inf
     lo, hi = max(mean - half, 0.0), min(mean + half, 1.0)
+    finite = lambda x: x if math.isfinite(x) else None  # strict JSON output
     return {'pairs': n, 'score': mean, 'score_low': lo, 'score_high': hi,
-            'elo': elo_from_score(mean), 'elo_low': elo_from_score(lo), 'elo_high': elo_from_score(hi)}
+            'elo': finite(elo_from_score(mean)), 'elo_low': finite(elo_from_score(lo)),
+            'elo_high': finite(elo_from_score(hi))}

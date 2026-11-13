@@ -11,6 +11,10 @@ from tools.strength import cli
 from tools.strength.uci import parse_info, position_command
 
 DATA = Path(__file__).resolve().parents[1] / 'data'
+REPO = Path(__file__).resolve().parents[3]
+WHITE_MATES = {'chess': {'checkmate': {'winner': 'white'}}}
+DRAW = {'chess': {'draw': {'claimed': 'threefold'}}}
+UNRESOLVED = {'unresolved': {'actor': 'white', 'trigger': 'flag_fall'}}
 
 
 class EloTests(unittest.TestCase):
@@ -42,16 +46,30 @@ class PentanomialTests(unittest.TestCase):
                 stats.pentanomial([bad])
 
     def test_llr_hand_computed(self):
-        # Pairs [0, 1, 2, 1, 0]: mean .5, variance (2*.0625)/4 = .03125.
+        # Pairs [0, 1, 2, 1, 0]: mean .5, sum of squared deviations 2 * .0625;
+        # with the two prior pairs at .25/.75: (0.125 + 0.125) / 6.
         counts = [0, 1, 2, 1, 0]
         s0, s1 = 0.5, stats.expected_score(15)
-        expected = 4 * (s1 - s0) * (1.0 - s0 - s1) / (2 * 0.03125)
+        expected = 4 * (s1 - s0) * (1.0 - s0 - s1) / (2 * (0.25 / 6))
         self.assertAlmostEqual(stats.llr(counts, 0, 15), expected, places=12)
         self.assertLess(expected, 0)
 
-    def test_llr_undefined_variance_is_zero(self):
-        self.assertEqual(stats.llr([0, 0, 9, 0, 0], 0, 15), 0.0)
+    def test_llr_empty_is_zero(self):
         self.assertEqual(stats.llr([0, 0, 0, 0, 0], 0, 15), 0.0)
+
+    def test_all_draw_pairs_have_defined_negative_llr(self):
+        self.assertLess(stats.llr([0, 0, 9, 0, 0], 0, 15), 0.0)
+
+    def test_no_decision_on_small_or_draw_dominated_samples(self):
+        sprt = stats.Sprt(0, 15, 0.05, 0.05, min_pairs=30)
+        self.assertIsNone(sprt.status([0, 0, 0, 1, 3])['decision'])   # 4 pairs
+        self.assertIsNone(sprt.status([0, 1, 19, 0, 0])['decision'])  # 20 pairs
+        self.assertIsNone(sprt.status([0, 1, 29, 0, 0])['decision'])  # one non-draw pair in 30
+
+    def test_estimate_is_strict_json(self):
+        e = stats.estimate([0, 0, 0, 0, 5])
+        json.dumps(e, allow_nan=False)
+        self.assertIsNone(e['elo'])
 
     def test_estimate_symmetric_at_even_score(self):
         e = stats.estimate([1, 3, 10, 3, 1])
@@ -138,6 +156,20 @@ class ParsingTests(unittest.TestCase):
         self.assertEqual(position_command('8/8/8/8/8/8/8/K6k w - - 0 1', ['a1a2']),
                          'position fen 8/8/8/8/8/8/8/K6k w - - 0 1 moves a1a2')
 
+    def test_last_info_before_bestmove(self):
+        entries = [{'direction': 'response', 'engine': 0, 'text': 'info depth 1 nodes 10'},
+                   {'direction': 'response', 'engine': 0, 'text': 'info depth 9 nodes 900'},
+                   {'direction': 'response', 'engine': 0, 'text': 'bestmove e2e4'},
+                   {'direction': 'response', 'engine': 1, 'text': 'info depth 4 nodes 40'},
+                   {'direction': 'response', 'engine': 1, 'text': 'bestmove e7e5'}]
+        self.assertEqual(cli.search_reports({'entries': entries}), [[(9, 900)], [(4, 40)]])
+
+    def test_opening_order(self):
+        order = cli.opening_order(90, 163)
+        self.assertEqual(sorted(order), list(range(90)))
+        self.assertEqual(order, cli.opening_order(90, 163))
+        self.assertNotEqual(order, list(range(90)))
+
     def _game(self, white, conclusion):
         initial = {'initial_fen': 'startpos-fen', 'events': [{'ply': 0, 'event': {'kind': 'move', 'action': 'e2e4'}}]}
         record = {'initial_record_json': json.dumps(initial), 'events': [
@@ -147,12 +179,14 @@ class ParsingTests(unittest.TestCase):
                 'conclusion': conclusion, 'failure': None, 'match_record_json': json.dumps(record),
                 'transcript': {'entries': [
                     {'direction': 'response', 'engine': 0, 'text': 'info depth 7 nodes 100 time 5'},
-                    {'direction': 'response', 'engine': 1, 'text': 'info depth 5 nodes 50 time 5'}]}}
+                    {'direction': 'response', 'engine': 0, 'text': 'bestmove e2e4'},
+                    {'direction': 'response', 'engine': 1, 'text': 'info depth 5 nodes 50 time 5'},
+                    {'direction': 'response', 'engine': 1, 'text': 'bestmove e7e5'}]}}
 
     def test_summarize_pair(self):
         report = {'summaries': [{'opening_id': 'o', 'games': 2, 'wins': [1, 0], 'draws': 1, 'unscored': 0,
                                  'failures': 0}],
-                  'games': [self._game(0, 'w'), self._game(1, 'd')],
+                  'games': [self._game(0, WHITE_MATES), self._game(1, DRAW)],
                   'engine_identities': [{'executable': {'sha256': 'a'}}, {'executable': {'sha256': 'b'}}]}
         s = cli.summarize_pair(report, None)
         self.assertEqual(s['score'], 0.75)
@@ -163,9 +197,18 @@ class ParsingTests(unittest.TestCase):
     def test_unscored_pair_has_no_score(self):
         report = {'summaries': [{'opening_id': 'o', 'games': 2, 'wins': [1, 0], 'draws': 0, 'unscored': 1,
                                  'failures': 0}],
-                  'games': [self._game(0, 'w'), self._game(1, 'u')],
+                  'games': [self._game(0, WHITE_MATES), self._game(1, UNRESOLVED)],
                   'engine_identities': [{'executable': {'sha256': 'a'}}, {'executable': {'sha256': 'b'}}]}
         self.assertIsNone(cli.summarize_pair(report, None)['score'])
+
+    def test_summary_attribution_is_cross_checked(self):
+        # Engine 1 plays White in the second game and mates: engine 1 wins, not engine 0.
+        report = {'summaries': [{'opening_id': 'o', 'games': 2, 'wins': [2, 0], 'draws': 0, 'unscored': 0,
+                                 'failures': 0}],
+                  'games': [self._game(0, WHITE_MATES), self._game(1, WHITE_MATES)],
+                  'engine_identities': [{'executable': {'sha256': 'a'}}, {'executable': {'sha256': 'b'}}]}
+        with self.assertRaises(ValueError):
+            cli.summarize_pair(report, None)
 
     def test_match_config_controls(self):
         base = dict(candidate='/a', baseline='/b', candidate_option=[], baseline_option=[('Hash', '64')])
@@ -177,6 +220,34 @@ class ParsingTests(unittest.TestCase):
         cfg = cli.match_config(SimpleNamespace(**base, movetime=200, base=10, increment=0.1), {'id': 'x', 'moves': []}, 'p')
         self.assertEqual(cfg['time_control'], {'increment': {'initial_ns': [10 ** 10, 10 ** 10], 'increment_ns': 10 ** 8}})
         self.assertIsNone(cfg['work']['movetime_ms'])
+
+
+
+@unittest.skipUnless((REPO / 'target/release/mshogi').exists() and (REPO / 'target/release/mshogi-match').exists(),
+                     'release mshogi and mshogi-match binaries are not built')
+class NativeRunnerTests(unittest.TestCase):
+    """One real paired game through mshogi-match: config acceptance and summary cross-check."""
+
+    def test_real_pair(self):
+        import subprocess
+        import tempfile
+        opening = json.loads((DATA / 'openings-msh161.json').read_text())['openings'][0]
+        args = SimpleNamespace(candidate=str(REPO / 'target/release/mshogi'), baseline=str(REPO / 'target/release/mshogi'),
+                               candidate_option=[], baseline_option=[], movetime=20, base=None, increment=0)
+        cfg = cli.match_config(args, opening, 'native-test')
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'config.json'
+            path.write_text(json.dumps(cfg))
+            subprocess.run([str(REPO / 'target/release/mshogi-match'), 'run', str(path), str(Path(tmp) / 'r.json')],
+                           check=True, capture_output=True, timeout=600)
+            report = json.loads((Path(tmp) / 'r.json').read_text())
+        s = cli.summarize_pair(report, cfg)
+        self.assertEqual(len(s['games']), 2)
+        self.assertEqual([g['white'] for g in s['games']], [0, 1])
+        for g in s['games']:
+            self.assertEqual(g['record']['prefix'], opening['moves'])
+            self.assertGreater(len(g['record']['played']), 0)
+            self.assertIsNotNone(g['median_depth'][0])
 
 
 if __name__ == '__main__':

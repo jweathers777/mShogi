@@ -1,0 +1,29 @@
+{
+  "command": [
+    "/usr/bin/caffeinate",
+    "-i",
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/notify_exit.py",
+    "--thread",
+    "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+    "--codex",
+    "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+    "--receipt",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-10-notification.json",
+    "--label",
+    "MSH-161 original AutoClaim cloud Batch 10 games, analysis, retrieval and verification",
+    "--state",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-10-wait-retrieve.json",
+    "--message",
+    "Read cloud-primary/README.md and primary-cumulative.json. This is final Batch 10 of the authorized 200-game study; no Batch 11. Original AutoClaim, unchanged native binaries, Oxidation and worker image remain authoritative. Reconcile computation, verification, cleanup and notification independently. Review completed games with independent gameplay/integrity panels and required 20M checks, complete only distinct new alternative obligations, preserve earlier and linked uncertainty, secondary tags and claim limits. Preserve admitted v1.1 audit closure and original evidence. Close Batch 10 and cumulative 200-game coverage, then deliver independently challenged behavior diagnosis with category affected-game/move counts, episodes, phases/families, prepared-pair clustered uncertainty and unaided stratum kept separate, contrary successes, mechanisms versus discriminating investigations, actual resources and updated roadmap. Stop for John before engineering. No duplicate searches/retrieval, Mac engines, production changes, timer or periodic polling. On failure reconcile preserved state before retry.",
+    "--",
+    "/private/tmp/msh162-controller/bin/python",
+    "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/wait_retrieve_batch.py",
+    "10",
+    "--subscription",
+    "projects/mshogi/subscriptions/mshogi-pilot-completion"
+  ],
+  "epoch": 1794583353.147966,
+  "pid": 89910,
+  "submission_uid": "msh161-primary-b10-24aaee49-e611-48bc0"
+}

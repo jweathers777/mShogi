@@ -1,11 +1,11 @@
 ---
 id: MSH-161
 title: Competitive Gameplay Diagnosis
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T19:32:00Z'
+updated_date: '2026-11-13T20:00:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -235,4 +235,6 @@ Final Batch 10 deep workflow launched once through notify_exit.py: wrapper PID 9
 Final Batch 10 deep execution and independent gameplay review passed: 1,044 roots, 1,576 jobs, 1,598 queries, 22 discoveries. Eight workers, no allocation/scientific failures, all deleted; wrapper/child absent and queue acceptance separate. Cumulative estimated compute US$33.128486 / 164.321286 VM-hours. Final followup plan independently admitted: only 28 new alternatives, 28 exact played20M results reused, no repeats. Plan d987bc87a8a1ef0d4b33344b4fbf858f94b7fba74630b237c89e346b0106f8b7. Launch once with exit notification, close final comparisons/cumulative200, then independently challenged statistics/coding/diagnosis/roadmap and stop John. Native statistics review corrections and closed-batch behavioral coding preparation underway; no premature priorities, Batch11 or production changes.
 
 Final 28-query followup launched through notify_exit.py wrapper PID2426, job msh161-primary-b10-followup-v1, reviewed e58bcf5b; cloud acceptance separate. Corrected native statistics implementation passed independent v2 review, actual study results unrun until comparison closure. Offline behavior coding for closed batches and all-played evidence-tier reconciliation preparation proceed while cloud runs; final diagnosis remains pending. See latest cloud-primary/README.md.
+
+Final primary study and all distinct alternatives closed: 200 games, 82 wins / 58 draws / 60 losses; prepared 67/55/58, unaided 15/3/2 kept separate. Complete 24,939 played-root coverage plus 2,880 supplied-context roots; 6,141 selected deep roots and 589 supported candidate comparisons. Independent native statistics, phase, full coverage, aggregate review and Astra High scientific synthesis/challenge passed with additive corrections. Corrected category counts are overlapping and coder-dependent; no precise defect-rate or causal mechanism claim. Final report and updated roadmap stop for John before engineering. Verification level: targeted Level 2 execution/provenance on frozen Linux cloud workers and macOS controller, plus offline analysis correctness/review; no production changes, product platform/GUI checks not applicable and not claimed. Primary totals: 30,889 jobs / 86,581 queries / 164.657894 VM-hours / US$33.196349 estimated compute, not billing. Existing failures, separate cohorts, v1.1 audit and claim limits retained. Final exact integration-document read is pending; no further engine work.
 <!-- SECTION:NOTES:END -->

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T13:24:00Z'
+updated_date: '2026-11-13T13:25:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -217,4 +217,6 @@ Batch 08 closed after independent sixteen-alternative review and execution audit
 Original Batch 09 accepted as msh161-primary-b09-v1 (QUEUED at submission), UID msh161-primary-b09-5b4e424a-abd3-4a290, reviewed checkpoint 3df2b3f3. Original manifest/image/runnable and ten tasks with maximum eight-worker parallelism verified. One notify_exit.py wrapper PID 55633 runs the existing event-driven wait/retrieve chain; local receipts report running and waiting for terminal. See Batch 09 launch/submission receipts. Current coverage is 160 fully reviewed games; remaining 40 continue under original conditions. No duplicate processes or searches.
 
 Batch 09 execution and independent gameplay reviews passed: 11 wins, 5 draws, 4 losses; eight workers, no allocation/scientific failures, all deleted. One stable missed-significant audit trigger requires versioned expansion: main-09-00 game0 ply65 Black/endgame h5 vs Rb3, conservative5M margin .0635, favorable played E .929. Independently admitted v1.1 overlay completes the21-root cell by reusing19 existing5M roots and adding two previously untested roots directly at20M, three new queries. Mixed budgets explicit; no cell rate or uniform-sample claim. Original method and panel selections unchanged; trigger20M retained without erasing5M. Exact amendment/review/selection hashes and plan bound in audit-expansion-admission.json. Combined deep plan: 1,006 roots / 1,501 jobs / 1,528 queries including27 discoveries. Full ledgers/index archived. Launch one exit-notified workflow; independently close expansion and deep review before final Batch 10. Scientific cumulative remains160 reviewed/180 played; no final priorities or production engineering.
+
+Batch 09 combined required 20M and admitted audit-expansion workflow launched via notify_exit.py PID 66971, job msh161-primary-b09-20m-v1, reviewed checkpoint 90c85161. Plan SHA256 6f84fa7b5064050ee81933b28520ceffc0d879c87418ea10f9c15d3739ab9051. Launch receipt in batch-09-adjudication; cloud acceptance separate after provenance preflight. Callback explicitly requires review of 620 first-half roots including expansion and 386 second-half roots, closure of the 21-root mixed-budget cell and preservation of original 5M trigger before final Batch 10. One success/failure callback; no timer or duplicate processes.
 <!-- SECTION:NOTES:END -->

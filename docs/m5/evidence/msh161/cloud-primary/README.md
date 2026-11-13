@@ -1,62 +1,61 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 09 closed; final original Batch 10 submitted
+## Current state: all 200 games complete; final Batch 10 deep plan ready
 
-**180 games are fully reviewed: 75 wins / 51 draws / 54 losses.** Prepared results
-are 62/48/52; unaided results 13/3/2. `primary-cumulative.json` covers nine batches.
-Forty-three draws are automatic claims (41 threefold, two fifty-move); eight are native
-dead positions. Draws alone are not weakness. Claims limit conversion observations
-without proving counterfactual results; preserve preceding decision evidence.
+All 200 planned games have completed. **180 are fully reviewed (75W/51D/54L)**;
+`primary-cumulative.json` remains at 180 until final Batch 10 closure. Final batch
+native results are 7 wins / 7 draws / 6 losses (prepared 5/7/6, unaided 2/0/0).
+Draws comprise two threefold claims, two fifty-move claims and three dead positions.
+Original AutoClaim, unmodified binaries/image and frozen histories remain authoritative.
+The abandoned policy transition is preserved; no production work or game replay.
+No Batch 11. Game completion does not complete the diagnosis.
 
-Batch 09 closure is in `batch-09-review/closure.md` and `closure-summary.json`.
-The 1,528-query combined deep/audit plan and 22 new alternatives passed verification
-and independent review. Twenty-one unique played results were reused through 22
-references, with only 22 new searches. Ten new comparisons remain unresolved;
-original ledgers, final overlays, earlier uncertainty, secondary contexts and
-contrary successes remain preserved. Four terminal observations retain underlying
-finite statuses; native claims cannot be replaced by reference continuations.
-Selected comparisons are correlated, not independent causes or population rates.
-No final ranking or engineering mechanism is claimed.
+Final base coverage passed: 2,716 jobs / 6,414 initial queries / 2,696 matched 5M
+queries for 2,919 played and 288 supplied decisions. Seven uncertain audit controls
+remain explicit; no new stable missed-important trigger. Both independent gameplay
+panels and the native/query/runtime audit passed. Eight workers ran without allocation
+or scientific failures and all were deleted. Separate receipts and coordinator
+reconciliation bind submission, completion, retrieval, cleanup and notification.
+The admitted v1.1 audit closure, original 5M/20M trigger, mixed-budget caveats and
+Bf8 notation erratum remain in the cumulative record; no silent scope expansion.
 
-Admitted v1.1 audit minimum coverage is closed for 21/21 main-09-00/game0 reference
-Black/endgame roots: 19 preserved matched 5M roots plus p57/p75 at 20M via three new
-searches, and any additional selected 20M evidence retained separately. Original 5M
-p65 trigger margin .0635 and matched 20M serious margin .176 both remain. p57 is
-subthreshold .0015 and p75 same-choice; g7f8 is Bf8 per bound notation erratum.
-Mixed budgets create no uniform cell sample or cell error rate. Exact amendment,
-independent review, admission, execution, erratum and final closure are bound in
-`primary-cumulative.json` under `method_amendments`. Do not mutate admitted records.
+Both panels froze 1,044 roots for 1,576 jobs / 1,598 required 20M queries, including
+22 discoveries. Exact histories, legal choices, original image/binaries and budgets
+passed offline preparation. Plan SHA256:
+`877090295b947d97d4f6c9a050ee8ae6aeea3bc1cbf1e037bd98294300374367`.
+Full ledgers and review index/inventory are lossless gzip with binding manifests.
+Terminal controls preserve native outcomes and underlying finite statuses. Selected
+comparisons, secondary contexts and correlated episodes are not independent causes
+or population error rates. Draws alone are not weakness; claim censoring remains.
+Next launch this plan once via `notify_exit.py`. On exit independently review both
+panels and only distinct new alternative obligations, preserving earlier/unselected
+uncertainty. Close Batch 10 and cumulative 200-game coverage before final rankings.
 
-Original AutoClaim, unmodified binaries/image and frozen histories remain authoritative
-(`autoclaim-restoration.json`). Final Batch 10 passed `batch-10-offline-preflight.json`.
-The abandoned policy-transition evidence remains preserved; no production change
-or completed-game replay. Execution layers and cleanup passed separately, all
-Batch 09 stages reached eight workers with zero allocation/scientific failures and
-all workers were deleted. Earlier failures remain in their original records.
-Primary totals: 26,569 jobs / 75,845 queries / 142.381746 VM-hours / US$28.705299 estimated
-compute. Full mean US$31.89; ancillary-inclusive US$35–90 remains conditional, not billing.
-Forecast Friday 16:18 Paris: about 2.77 remaining cloud hours plus explicit workflow/review
-assumptions supports Friday 20:00–22:00 batch completion, then centrally Friday 22:00–
-Saturday 03:00 final diagnosis with extended morning allowance. See
-`batch-09-followup/forecast-update.json`; its pre-closure review count is historical.
-Mac/pilots/transition remain separate.
+Final reporting procedure is in `final-analysis/procedure.md`; independent review
+requested deterministic bootstrap ordering/quantiles and complete all-played-move
+reconciliation, and revision2 records those corrections. Preserve reviewed v1 bytes.
+No quantitative result or ranking has selected the procedure. It elaborates the
+frozen family-stratified whole-pair bootstrap, phase/threshold sensitivity, separate
+correlated unaided starts, behavioral coding/episode limits and independent final
+challenge. Final admission/review record will bind the exact corrected procedure.
 
-Final original Batch 10 was accepted as `msh161-primary-b10-v1`, QUEUED at submission,
-from reviewed checkpoint `209de466`. Original runnable, ten tasks and maximum
-eight-worker parallelism passed verification. One exit wrapper (PID 89910) runs
-`wait_retrieve_batch.py 10`. See `batch-10-submission.json`,
-`batch-10-submission-verification.json` and `batch-10-wait-launch.json`.
-Do not duplicate wrapper or submission. On completion reconcile all
-layers, review final 20 games with independent gameplay/integrity panels, obtain
-required 20M/distinct alternatives and close Batch 10 plus cumulative 200 coverage.
-Then produce independently challenged diagnosis: observed categories/episodes,
-affected-game/move counts, severity, phases/families/colors/results, prepared-pair
-clustered uncertainty/family sensitivity, separate unaided repeats, earlier unresolved
-sensitivity, opportunities/conversion and contrary successes. Separate observed
-behavior from mechanisms and discriminating investigations. Update roadmap, integrate
-records and STOP for John before engineering. No Batch 11. No duplicate retrieval/
-searches, Mac engines, production changes, timers or periodic polling. Historical
-transition sections below do not govern current execution.
+Primary resources through final base stage: 29,285 jobs / 84,955 queries /
+154.398601 VM-hours / US$31.127993 estimated compute, not billing. Pending final
+panel is not counted as incurred. Historical full estimate US$32.38, conditional
+larger-panel full compute scenario US$32.43–33.93; these are estimates, not caps.
+Ancillary-inclusive US$35–90 remains conditional. At Friday 18:27 Paris, assumed
+1–2 cloud hours plus 1–2 workflow/review hours suggests 21:00–23:00 batch closure;
+further 2–4 synthesis/challenge hours suggests Friday night–Saturday morning final
+diagnosis, centrally 23:00–03:00 with morning allowance. Update from actual final
+plan/results. Mac/pilots/transition costs remain separate.
+
+After final closure deliver independently challenged diagnosis with category affected-
+game/move counts, episodes, severity, phase/family/color/result breadth, paired-cluster
+uncertainty, family/unresolved-case sensitivity, separate unaided repeats, contrary
+successes, observed behavior versus mechanisms/discriminating investigations, actual
+resources and updated roadmap. Stop for John before engineering or cross-game work.
+No duplicate searches/retrieval, Mac engines, timers or periodic watchers. Historical
+transition records below do not govern current execution.
 
 ## Historical transition records (superseded)
 

@@ -1,0 +1,13 @@
+# MSH-161 (Competitive Gameplay Diagnosis): final Batch 10 integrity review
+
+Base execution passed at coordinator source `22637b54d39b97cfe4e99d5619cda2a66549bb0e`. Independent offline checks reused successful retrieval verification, then checked success hashes, artifact bindings, original manifest/build/image identities, full native histories, legal query PVs and exact frozen selection. Native replay receipts bind the reports. No engine, query, replay or retrieval was repeated. The procedure and bindings are in the JSON record. The index remains uncompressed for plan preparation.
+
+All 2,716 scientific jobs completed without a failed attempt or outstanding claim. All 20 games ended normally: candidate 7 wins, 7 draws and 6 losses. Prepared games were 5/7/6; unaided games were 2/0/0. Native conclusions were 13 checkmates, two threefold claims, two fifty-move claims and three dead-position draws. Histories match transcripts; both engines received 5,000 ms per move under the original restored AutoClaim conditions.
+
+Coverage passed for 2,919 played and 288 prefix decisions: 6,414 initial 500k queries and 2,696 matched 5M queries. Prefix moves remain context. The frozen plan selected 1,787 decisions: 1,614 followup and 173 stratified audit decisions, with 878 same-choice controls and no missing initial alternative. Per-game/player/phase sampling and derived jobs passed.
+
+No eligible stable missed-error audit trigger was found in Batch 10. There are 71 stable two-choice audit comparisons. Seven controls remain uncertain from cp bound conflicts: distinct-choice main-10-02 game1 ply120, main-10-05 game1 ply169, main-10-06 game1 ply147 and main-10-07 game1 ply108; same-choice main-10-04 game0 ply69, main-10-05 game0 ply174 and main-10-06 game0 ply39. Same-choice equality does not clear value uncertainty. Exact moves and evidence remain in the JSON record.
+
+Initial queries retain 2,673 selected-report flags, 494 bound conflicts and 24 missing aligned scores. The 5M queries retain 1,225 selected-report flags and 176 bound conflicts. Counts overlap and are not error rates. Consequential 20M and gameplay review remain open; preserve earlier/linked uncertainty and claim limits. Draws alone do not establish weakness.
+
+All 200 planned games have now completed; no Batch 11 is needed or authorized by this audit. Only 180 games are fully reviewed until Batch 10 deeper closure. The previously admitted v1.1 cell expansion, original 5M/20M trigger, mixed-budget limits and Bf8 erratum remain preserved; this batch does not replace that evidence. Full-study statistical/method challenge and synthesis remain later obligations. Level 1 verification reuses Linux replay receipts without a new platform claim.

@@ -1,0 +1,22 @@
+{
+  "status": "passed_independent_procedure_review_v2",
+  "scope": "Bounded exact-file review resolving R1/R2; no engines, queries, statistics, rankings or new scope",
+  "procedure_sha256": "ed26135879038ca2c63b903d6b95bc003b61fc2498ba6e06dffc14b5896d2da1",
+  "preserved_v1_sha256": "b45beaef94009f9c9ced5dacbed79377d64308f00d2aabcc999b60d2cc632f1a",
+  "prior_review_sha256": "667c50b577226a216aef3e96fe71b30e7b95df20df20aab230c9c41ea5710a2c",
+  "original_method_sha256": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+  "admitted_overlay_sha256": "0652e66c5537c4aaad4c6de057119e5229ad81f12150286553cd611168bfc9b9",
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "resolution": "Fixed lexicographic family/pair ordering, one seeded RNG, replicate/family-major randrange draws, exact 50000 replicate count and linear (B-1)*q percentile interpolation. Python/input/implementation hashes and singleton/family-selection limits are explicit."
+    },
+    {
+      "id": "R2",
+      "resolution": "Requires exact unique all-played native-root coverage for both engines, evidence tiers and full-ledger dispositions, with prefixes context-only and selected/coded denominators separate. Screening-only or unselected uncertainty cannot become a confirmed non-error."
+    }
+  ],
+  "remaining_issues": [],
+  "conclusion": "Revision 2 is consistent with the frozen main method and admitted overlay and is suitable for offline final analysis after all required comparisons close. Whole-pair family-stratified conditional inference, correlated unaided starts, phase/threshold sensitivity, uncertain behavioral/episode coding, contrary evidence, final independent challenge and owner stop are preserved.",
+  "limits": "This approval covers the procedure, not its future implementation, numerical results, category coding or rankings. Those still require the prescribed independent final challenge."
+}

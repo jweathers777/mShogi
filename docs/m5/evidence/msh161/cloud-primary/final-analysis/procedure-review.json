@@ -1,0 +1,37 @@
+{
+  "status": "bounded_corrections_required_before_final_analysis_freeze",
+  "scope": "Independent offline procedure review only; no engines, queries, new statistics, rankings or scope",
+  "bindings": {
+    "procedure.md": "b45beaef94009f9c9ced5dacbed79377d64308f00d2aabcc999b60d2cc632f1a",
+    "../../main-method.md": "4aff77f5c0b5fb38dcae50528aa32573929067ab3689db78c7af4085fa0ebc7d",
+    "../batch-09-review/method-amendment-v1.1.json": "0652e66c5537c4aaad4c6de057119e5229ad81f12150286553cd611168bfc9b9"
+  },
+  "consistent_elements": [
+    "Native-only outcomes and exact 90 prepared / 10 unaided color-pair accounting.",
+    "Whole prepared-pair bootstrap within frozen families, fixed family counts, pair-average scores and seed 16120261113 with 50000 replicates.",
+    "Conditional descriptive inference; no random-Chess population, rating or opponent-superiority assertion.",
+    "Unaided starts and correlated trajectories separate; no pooling into prepared interval.",
+    "Phase boundary/material sensitivity is descriptive only; original helper and unresolved boundaries retained.",
+    "Threshold sensitivity keeps stable ranges, bounds, secondary status and unresolved roots distinct.",
+    "Behavioral coding separates observations/context/mechanisms, correlated episodes, contrary successes and uncertain boundaries.",
+    "Final independent normalization/inference/coding/claim/provenance challenge and owner stopping point preserved.",
+    "Admitted mixed-budget overlay remains authoritative; no uniform-cell-rate claim is introduced."
+  ],
+  "findings": [
+    {
+      "id": "R1",
+      "priority": "P2",
+      "topic": "Deterministic bootstrap specification",
+      "issue": "Seed and replicate count do not alone fix exact results: family iteration order, pair order, draw sequence and percentile interpolation are not fixed in the procedure. It asks to document interpolation later, leaving a numerical choice open until result production.",
+      "requested_correction": "Specify before execution: families sorted by stable frozen family ID, pairs sorted by stable pair ID within each family, one Random(16120261113) instance, replicate-major/family-major draws with replacement retaining each family count, and an exact quantile rule such as linear interpolation at index (B-1)*p on sorted bootstrap scores. Record Python version and input hashes. State singleton-family bootstrap variation is zero and conditional intervals do not estimate between-family population uncertainty."
+    },
+    {
+      "id": "R2",
+      "priority": "P2",
+      "topic": "All-played disposition completeness",
+      "issue": "The numerical section reconciles every selected root only. Frozen v1 requires a disposition for every played decision. Selected-root reconciliation alone can omit screening-only or untested roots and make the coded denominator appear more complete than it is.",
+      "requested_correction": "Add an explicit all-played accounting check against native histories, with supplied prefixes context-only. Preserve evidence tier and disposition/uncertainty for screening-only and unselected roots. Reconcile selected final ledgers as a subset and report their coverage denominator separately; do not convert missing deeper evidence into no-error or supported primary causation."
+    }
+  ],
+  "limits": "No methodological change to bootstrap target, thresholds, rules, coverage, engine execution or behavioral categories requested. Existing final deep-analysis work can continue. Resolve these two text/specification points before final quantitative freeze and independent challenge."
+}

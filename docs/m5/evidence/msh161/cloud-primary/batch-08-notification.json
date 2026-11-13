@@ -11,8 +11,14 @@
   "state_artifact": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-08-wait-retrieve.json",
   "wrapper_pid": 35390,
   "started_epoch": 1794555491.084054,
-  "status": "running",
-  "queue_attempted": false,
+  "status": "success",
+  "queue_attempted": true,
   "cleanup_scope": "Own child process group only; engines detached by existing helpers require their own receipts/reconciliation; not a descendant-tree cleanup guarantee",
-  "child_pid": 35394
+  "child_pid": 35394,
+  "computation_returncode": 0,
+  "residual_group_detected": false,
+  "process_group_settled": true,
+  "finished_epoch": 1794562347.203796,
+  "queue_returncode": 0,
+  "queue_accepted": true
 }

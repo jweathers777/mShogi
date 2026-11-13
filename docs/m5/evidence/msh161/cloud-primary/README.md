@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 07 closed; original Batch 08 submitted
+## Current state: Batch 08 completed; independent review in progress
 
 **140 games are fully reviewed: 58 wins / 41 draws / 41 losses.** Prepared results
 are 47/39/40; unaided results 11/2/1. `primary-cumulative.json` covers all seven batches.
@@ -33,14 +33,31 @@ estimates remain conditional, not billing or promises. See
 `batch-07-followup/forecast-update.json`; its pre-closure review count is historical.
 Mac/pilots/transition remain separate.
 
-Original Batch 08 was accepted as `msh161-primary-b08-v1`, QUEUED at submission,
-from reviewed checkpoint `2981e506`. Original runnable, ten tasks and maximum
-eight-worker parallelism passed verification. One exit wrapper (PID 35390) runs
-`wait_retrieve_batch.py 8`. See `batch-08-submission.json`,
-`batch-08-submission-verification.json` and `batch-08-wait-launch.json`.
-Do not duplicate wrapper or submission. On completion reconcile all
-layers, review fresh games with independent gameplay/integrity panels, obtain required
-20M and distinct alternatives, update cumulative, then original Batch 09. Restore
+Original Batch 08 completed under `msh161-primary-b08-v1`. Retrieval verified
+1997 jobs / 29109 objects (3364069394 bytes).
+Coordinator receipt bindings passed for submitted/completed UID, frozen file hashes,
+terminal/retrieval hashes, wrapper success, own-group cleanup and accepted notification.
+See `batch-08-review/coordinator-reconciliation.json` and separate receipts.
+There are 160 played games and 140 fully reviewed games; keep that distinction
+until Batch 08 closure. Independent gameplay and native/query/runtime audits passed.
+Native results are 6 wins / 5 draws / 9 losses (prepared 5/4/9, unaided 1/1/0),
+with four threefold claims and one dead position. All 5,162 initial and 1,977 matched
+5M queries are accounted for. Six uncertain audit controls remain explicit; no stable
+missed-error trigger. Eight workers ran without allocation/scientific failures and
+all were deleted. Primary estimate is US$22.899238 / 113.582984 VM-hours; see
+`batch-08-review/forecast-update.json` for conditional scope and limits.
+
+Both panels froze 889 roots for 1,308 jobs / 1,347 required 20M queries, including
+39 discoveries. The larger control set preserves long favorable/conversion and
+defensive episodes, their boundaries, linked reversals and contrary successes.
+Exact histories, original image/binaries and budgets passed offline preparation.
+Plan SHA256: `cd99e7b260a7b98ea3869d005855a95ceadd943d9764acbb88c15e810b84f0ab`.
+Full ledgers and review index/inventory are losslessly archived with binding manifests.
+Terminal controls preserve native outcomes; selections are not confirmations.
+Next launch this plan once via `notify_exit.py`. On completion reconcile all layers,
+independently review against both narratives and obtain only distinct new alternative
+obligations. Preserve earlier/linked uncertainty and secondary tags, close Batch 08,
+update cumulative, then original Batch 09. No duplicate queries/retrieval. Restore
 archived JSON locally when needed; no duplicate retrieval/searches. Continue all 200
 games without Mac engines, production changes, timers or periodic polling. Stop for
 John after independent final diagnosis and roadmap. Historical transition records

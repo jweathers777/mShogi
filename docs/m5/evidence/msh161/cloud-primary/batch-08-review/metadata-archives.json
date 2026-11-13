@@ -1,0 +1,21 @@
+{
+  "format": "lossless gzip; restore exact original JSON bytes locally if required",
+  "files": [
+    {
+      "original": "review-index.json",
+      "archive": "review-index.json.gz",
+      "original_sha256": "71b20bc4203b7ad9515dd1f5b2f5867f86e223b316906f08a30770e0f2a6eea8",
+      "archive_sha256": "a135d75ce9dc224a81e004f1164507b623ace19f3f34b0a82060283a8556cb2c",
+      "original_bytes": 27427275,
+      "archive_bytes": 1371479
+    },
+    {
+      "original": "remote-inventory.json",
+      "archive": "remote-inventory.json.gz",
+      "original_sha256": "13d0c03c54a30445b6d8f1e739ee9c82ab1197aa040198ae4a41d80f0780c557",
+      "archive_sha256": "f75476084adacfc9c9fcb4ba0250103b8250d3e85b1fc60692805ac543959ccb",
+      "original_bytes": 7558666,
+      "archive_bytes": 636300
+    }
+  ]
+}

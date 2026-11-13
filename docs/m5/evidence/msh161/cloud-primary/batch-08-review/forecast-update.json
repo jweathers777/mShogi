@@ -1,0 +1,36 @@
+{
+  "completed_games": 160,
+  "fully_reviewed_games_before_batch08_20m": 140,
+  "remaining_games": 40,
+  "pending_batch08_20m": true,
+  "measured_primary_vm_hours": 113.58298357155591,
+  "incurred_estimated_primary_compute_usd": 22.899238151894238,
+  "full200_mean_workload_compute_usd": 29.955553117720626,
+  "remaining40_plus_pending_batch08_20m_compute_usd": 7.056314965826388,
+  "base_mean_compute_usd": 1.9303509694897965,
+  "panel_plus_followup_mean_compute_usd": 1.0652043422822666,
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "timing_scenario_full_processing_hours": [
+    29,
+    48
+  ],
+  "limitations": "Actual VM lifetimes priced at recorded rate; not billing. Mean scaling uses eight base batches and seven completed panels plus followups. Current batch08 panel unmeasured; counts can differ. Existing inclusive ranges and processing ranges retained as conditional scenarios, not statistical intervals or caps. Review pauses, provisioning and ancillary storage/transfer/operations excluded from compute mean; failed policy-transition deployment/Mac/pilots remain separate.",
+  "measured_primary_scientific_jobs": 21705,
+  "measured_primary_reference_queries": 65217,
+  "failed_scientific_attempts": 0,
+  "measured_cloud_stage_elapsed_hours": 20.704721939629984,
+  "mean_base_cloud_hours": 1.944847710587912,
+  "mean_panel_plus_followup_cloud_hours": 0.7351343221323836,
+  "full200_mean_cloud_stage_elapsed_hours": 26.799820327202955,
+  "remaining40_and_pending_batch08_mean_cloud_stage_elapsed_hours": 6.095098387572976,
+  "calendar_estimate": {
+    "as_of_utc": "2026-11-12 19:56:01 UTC",
+    "central_day_paris": "Saturday 2026-11-14",
+    "conditional_window_paris": "Late Friday 2026-11-13 through Sunday 2026-11-15",
+    "basis": "Retain the prior conditional Saturday 14 November Paris central estimate and late-Friday through Sunday window. Remaining cloud-stage work excludes preflight, retrieval, deeper alternatives, independent reviews and final synthesis; availability and scientific obligations can add time."
+  },
+  "capacity_note": "Batch 08 used eight workers without a failed insertion. Actual workload and availability vary; guaranteed throughput is not inferred."
+}

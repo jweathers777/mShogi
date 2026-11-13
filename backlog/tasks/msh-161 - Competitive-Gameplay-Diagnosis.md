@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T15:13:00Z'
+updated_date: '2026-11-13T15:22:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -223,4 +223,6 @@ Batch 09 combined required 20M and admitted audit-expansion workflow launched vi
 Batch 09 combined 20M execution and independent deep review passed: 1,501 jobs / 1,528 queries / 1,006 roots. Eight workers, no allocation/scientific failures, all deleted. Admitted audit minimum coverage closed for all 21 roots: 19 original matched 5M preserved plus two added 20M roots/three searches and any other selected 20M evidence. Trigger p65 retains original 5M and supports .176 serious margin at20M; p57 subthreshold, p75 same-choice. Mixed budgets and Bf8 prose erratum explicit; exact UCI/histories unchanged. Twenty-two new alternatives across21 unique roots remain: four discoveries,18 linked replies, with21 unique played queries reused through22 references. Pre-followup ledgers archived; coordinator verified exact source/history/legal/no-duplicate bindings. Primary estimate US$28.647200; full mean US$31.83. Recomputed ETA supports Friday20:00–22:00 batch completion and Friday-night–Saturday-morning final diagnosis, conditional. Launch one callback workflow, close new comparisons and Batch 09 before final Batch 10; no final priorities.
 
 Twenty-two-query Batch 09 followup launched via notify_exit.py PID 88088, job msh161-primary-b09-followup-v1, reviewed checkpoint 150fb9e4. Plan SHA256 8273e3963c2a333875103aa02a8edea3cb0fbed01a46b6e4201b232d41099358. Launch receipt in batch-09-followup; cloud acceptance remains separate. Callback explicitly preserves admitted audit-cell closure, original 5M/20M trigger, mixed budgets, Bf8 notation erratum and 21 unique played results reused through 22 references. Review only new comparisons, write closure overlays/cumulative audit record, then final Batch 10. No timer or duplicate process.
+
+Batch 09 closed after independent22-alternative review and execution audit. Twenty-two new searches reuse21 unique played results; ten new comparisons remain unresolved. Original ledgers/overlays and four terminal underlying statuses preserved. Primary cumulative now180 fully reviewed games:75 wins,51 draws,54 losses (prepared62/48/52; unaided13/3/2). Admitted audit v1.1 closure is bound in cumulative method_amendments:21-root minimum coverage,19 prior5M plus2 new20M roots/three searches; original5M and20M trigger, mixed-budget limits and Bf8 erratum retained. See batch-09-review/closure.md and closure-summary.json. Totals75,845queries/26,569jobs/142.381746VM-hours/US$28.705299 estimated compute. All stages8workers, zero allocation/scientific failures, all deleted. Final Batch10 offline provenance passed;20games remain. Proceed with exit notification, then complete required final analysis, independent diagnosis/roadmap and stop before engineering; no Batch11.
 <!-- SECTION:NOTES:END -->

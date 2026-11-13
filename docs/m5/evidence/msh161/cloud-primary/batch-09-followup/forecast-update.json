@@ -1,0 +1,51 @@
+{
+  "completed_primary_games": 180,
+  "fully_adjudicated_primary_games_at_this_audit": 160,
+  "pending_batch09_scientific_closure": true,
+  "measured_base_batches": 9,
+  "measured20m_panels": 9,
+  "measured_extra_singleton_queries": 93,
+  "new_distinct_discovery_alternatives_pending": [],
+  "measured_reference_queries": 75845,
+  "measured_scientific_jobs": 26569,
+  "failed_scientific_attempts": 0,
+  "measured_primary_vm_hours": 142.381746389601,
+  "estimated_primary_compute_usd": 28.705299126114674,
+  "actual_billed_cost": null,
+  "full200_mean_workload_compute_usd": 31.89477680679408,
+  "remaining20_mean_workload_compute_usd": 3.189477680679408,
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "full_processing_hours_conditional_scenario": [
+    29,
+    48
+  ],
+  "measured_cloud_submission_to_final_task_hours_sum": 24.89317897518476,
+  "full200_mean_cloud_stage_elapsed_hours": 27.65908775020529,
+  "remaining20_mean_cloud_stage_elapsed_hours": 2.765908775020529,
+  "scope": "Nine base batches, nine completed 20M panels (including three audit-expansion queries) and ninety-three new followup singleton queries: prior seventy-one plus twenty-two Batch 09. Twenty-two Batch 09 reuse entries identify twenty-one unique played queries already counted in the original panel. Mac, pilots and abandoned transition costs remain separate.",
+  "limits": "Measured VM lifetimes priced at recorded rate, not billing. Mean scaling only; panel sizes, discovered alternatives and availability vary. Inclusive scenarios retain ancillary storage/transfer/operations and recovery assumptions. Cloud-stage timing excludes preflight, retrieval, review pauses and final synthesis.",
+  "calendar_estimate": {
+    "as_of_utc": "2026-11-13 15:18:37 UTC",
+    "as_of_paris": "Friday 2026-11-13 16:18 CET",
+    "games_and_batch_analysis": "Friday evening, approximately 20:00\u201322:00 CET under stated assumptions",
+    "final_independently_reviewed_diagnosis": "Friday night\u2013Saturday morning, approximately Friday 22:00\u2013Saturday 03:00 CET centrally; extended review may use more of Saturday morning",
+    "remaining_cloud_stage_hours_mean": 2.765908775020529,
+    "remaining_nonengine_workflow_hours_assumed": [
+      0.6,
+      1.2
+    ],
+    "remaining_batch_review_and_followup_hours_assumed": [
+      0.5,
+      1.5
+    ],
+    "final_synthesis_and_independent_review_hours_assumed": [
+      2,
+      4
+    ],
+    "basis": "The final 20 games and their panel have a measured-mean cloud estimate of 2.77 hours. Current Batch 09 followup and audit expansion have completed. Add assumed 0.6\u20131.2 hours for remaining preflight/retrieval/verification and 0.5\u20131.5 hours for batch review and any final-batch followup: roughly 4\u20136 hours through batch completion from this snapshot. Then allow 2\u20134 hours for final synthesis and independent challenge. Larger recent panels and capacity variability require uncertainty; these are assumptions, not guarantees.",
+    "uncertainty": "New alternatives, regional stockouts or substantive final-review findings can extend these windows; no coverage is truncated to meet an ETA."
+  }
+}

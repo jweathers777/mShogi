@@ -1,0 +1,245 @@
+{
+  "status": "closed",
+  "batch": {
+    "batch": "09",
+    "controller_policy": "auto_claim",
+    "uci_search_policy": "original claim-capable optional choices; recorded legacy auto option",
+    "games_completed": 20,
+    "outcomes": {
+      "draws": 5,
+      "wins": 11,
+      "losses": 4
+    },
+    "prepared_outcomes": {
+      "draws": 5,
+      "wins": 10,
+      "losses": 3
+    },
+    "unaided_outcomes": {
+      "losses": 1,
+      "wins": 1
+    },
+    "played_decisions": 2571,
+    "supplied_context_decisions": 288,
+    "initial_queries": 5718,
+    "matched5m_queries": 1997,
+    "initial_panel_jobs20m": 1501,
+    "initial_panel_queries20m": 1528,
+    "additional_followup_jobs20m": 22,
+    "additional_followup_queries20m": 22,
+    "queries20m": 1550,
+    "discovery_roots": 27,
+    "new_distinct_discovery_alternatives": 4,
+    "new_linked_PV_alternatives": 18,
+    "remaining_missing_singletons": 0,
+    "sources": [
+      {
+        "path": "batch-09-adjudication/final-dispositions-00-04.json",
+        "sha256": "9bda86ae626edc2585a6562fc7084eaf1b124cb528aedaf15b22928a703ff36f"
+      },
+      {
+        "path": "batch-09-adjudication/final-dispositions-05-09.json",
+        "sha256": "457aea8605e84596d860fcb505205be506e338e9923a64399805205f11b1f5be"
+      },
+      {
+        "path": "batch-09-review/integrity-review.json",
+        "sha256": "26682b7d37498476efa735da512917715eb7e0d194e7553baa2c491f057b3d57"
+      },
+      {
+        "path": "batch-09-review/review-index.json.gz",
+        "sha256": "b9e09021a6ac911f1920c4b4a095e9ea4fc8479f80c2ea8f4b41765beeb7d38c"
+      },
+      {
+        "path": "batch-09-adjudication/plan.json",
+        "sha256": "6f84fa7b5064050ee81933b28520ceffc0d879c87418ea10f9c15d3739ab9051"
+      },
+      {
+        "path": "batch-09-adjudication/review20m-00-04.md",
+        "sha256": "309a73ec76563d5a21214d25883a7fef5af7121dc492e6297fda722b3e5877a6"
+      },
+      {
+        "path": "batch-09-adjudication/review20m-05-09.md",
+        "sha256": "1a07f23886198ea802ec23c71708d520aa8d92643ebb5bc514365fd36a4617c1"
+      },
+      {
+        "path": "batch-09-followup/plan.json",
+        "sha256": "8273e3963c2a333875103aa02a8edea3cb0fbed01a46b6e4201b232d41099358"
+      },
+      {
+        "path": "batch-09-followup/review-00-04.json",
+        "sha256": "3d724c8a1b1abb5799db2d794570fccc8c6525bb2b89abb612ba5d47013ae388"
+      },
+      {
+        "path": "batch-09-followup/review-05-09.json",
+        "sha256": "0457fef6aa6f8b2cd14309d0386a4ea5e8b4f663c85f8a8cc1ff9be82cf17885"
+      },
+      {
+        "path": "batch-09-followup/runtime-integrity-review.json",
+        "sha256": "016a5b6e459488c3a5012118db1ce8f12135eb60d28c76423b3a11313e129b84"
+      },
+      {
+        "path": "batch-09-followup/forecast-update.json",
+        "sha256": "9e9ec5f9a190ad12af3194fb9a4ce0a50e004fe4ace1ce4ac7d5b1efa49e94fd"
+      },
+      {
+        "path": "autoclaim-restoration.json",
+        "sha256": "385405fd24ea237f1dd5dcb2ef8b753d1ca2051de5517f1c95b1e8f56474f2e4"
+      }
+    ],
+    "selected20m_decisions": 1006,
+    "selected20m_statuses_both_players": {
+      "same_choice_control": 458,
+      "unresolved": 145,
+      "supported_subthreshold": 279,
+      "supported_finite": 120,
+      "claim_policy_limited": 4
+    },
+    "selected20m_candidate_decisions": 732,
+    "candidate_statuses": {
+      "same_choice_control": 357,
+      "unresolved": 87,
+      "supported_subthreshold": 226,
+      "supported_finite": 59,
+      "claim_policy_limited": 3
+    },
+    "candidate_supported_severity": {
+      "major": 39,
+      "significant": 15,
+      "serious": 5
+    },
+    "candidate_supported_games": 20,
+    "candidate_selected_finite_sensitivity_counts": {
+      "0.04": 60,
+      "0.05": 59,
+      "0.06": 50
+    },
+    "followup_unique_native_roots": 21,
+    "unique_reused_played_queries": 21,
+    "reused_reference_entries": 22,
+    "audit_expansion_roots": 2,
+    "audit_expansion_queries20m_in_panel": 3,
+    "method_amendment": "main-method-v1.1-audit-expansion-01"
+  },
+  "cumulative_outcomes": {
+    "wins": 75,
+    "draws": 51,
+    "losses": 54
+  },
+  "cumulative_selected_counts": {
+    "same_choice_control": 1944,
+    "supported_finite": 1068,
+    "unresolved": 1003,
+    "supported_subthreshold": 1064,
+    "claim_policy_limited": 18
+  },
+  "cumulative_candidate_counts": {
+    "same_choice_control": 1434,
+    "supported_finite": 519,
+    "unresolved": 576,
+    "supported_subthreshold": 790,
+    "claim_policy_limited": 17
+  },
+  "cumulative_candidate_severity": {
+    "significant": 96,
+    "major": 366,
+    "serious": 57
+  },
+  "cumulative_sha256": "73e0573fa75d8b13e04935a1562b0c6d9e26768d5d982d215f7dea38f11cd63d",
+  "previous_cumulative_archive": {
+    "path": "batch-09-review/primary-cumulative-through-batch08.json.gz",
+    "sha256": "2c4d000542b51bc40946a9ec9a18124c965afc225aa576599c3b163168c87ca1",
+    "uncompressed_sha256": "b500bbff180807c8fc01c023f6a70318e28552c2bf2c0ba04e5d2101733aec65"
+  },
+  "secondary_tag_coverage": {
+    "batch09_explicit_rows": 69,
+    "batch09_supported_secondary_comparisons": 1,
+    "prior_batches": "Native contextual secondary limitations remain in original ledgers; absent normalized tag does not mean no secondary events."
+  },
+  "method_amendment": {
+    "version": "main-method-v1.1-audit-expansion-01",
+    "status": "closed_independently_reviewed",
+    "batch": "09",
+    "stratum": {
+      "pair": "main-09-00",
+      "game": 0,
+      "engine_index": 1,
+      "mover": "black",
+      "phase": "endgame"
+    },
+    "minimum_cell_roots": 21,
+    "existing_matched5m_roots_preserved": 19,
+    "new_expansion_roots20m": 2,
+    "new_expansion_queries20m": 3,
+    "queries_included_in_initial_panel_not_additional": true,
+    "other_selected20m_in_same_cell_retained": true,
+    "mixed_work_budgets_no_cell_rate": true,
+    "trigger": {
+      "ply": 65,
+      "played": "h7h5",
+      "alternative": "c3b3",
+      "original5m_margin": 0.0635,
+      "matched20m_margin": 0.176,
+      "severity20m": "serious",
+      "favorable_played_context_retained": true
+    },
+    "expanded_roots": [
+      {
+        "ply": 57,
+        "moves": [
+          "a1c1",
+          "g7f8"
+        ],
+        "status": "supported_subthreshold",
+        "margin": 0.0015,
+        "alternative_san": "Bf8"
+      },
+      {
+        "ply": 75,
+        "moves": [
+          "c8c6"
+        ],
+        "status": "same_choice_control"
+      }
+    ],
+    "original_method_unchanged": true,
+    "sources": [
+      {
+        "path": "batch-09-review/method-amendment-v1.1.json",
+        "sha256": "0652e66c5537c4aaad4c6de057119e5229ad81f12150286553cd611168bfc9b9"
+      },
+      {
+        "path": "batch-09-review/method-amendment-v1.1.md",
+        "sha256": "be578340cdd04b5ca24793114510fa32f8979d02dd32c93ce710d0aacdf4735b"
+      },
+      {
+        "path": "batch-09-review/audit-expansion-method-review.json",
+        "sha256": "5ee0bee6d5bf21ba8458910530a7f78a0cd01276c932118f19073f79d6743643"
+      },
+      {
+        "path": "batch-09-review/audit-expansion-admission.json",
+        "sha256": "59dec89f82d3dc19c22e3bd90b83138c5fc72812f5cd062a61d06aaa39c4a4d6"
+      },
+      {
+        "path": "batch-09-review/audit-expansion-proposal.json",
+        "sha256": "25849101b758e5d25bffdf22a607e9e5fdd51472c12bcd2521a8a65da4458c08"
+      },
+      {
+        "path": "batch-09-review/audit-expansion-selection.json",
+        "sha256": "5f0dcf3875b3ae8695bb6096923598f16f4257773b3ccfbbd495b871450a4ef0"
+      },
+      {
+        "path": "batch-09-review/audit-expansion-notation-erratum.json",
+        "sha256": "8f7039403f8c6236c6a848699dbdc1b4cda28f7a65418ce7d2632a3507705494"
+      },
+      {
+        "path": "batch-09-review/audit-expansion-notation-erratum.md",
+        "sha256": "49e6aa70d166c482c2c672347a780adc5d26d0a14ca50e11d2a0a5b7455f77e7"
+      },
+      {
+        "path": "batch-09-adjudication/audit-expansion-execution.json",
+        "sha256": "c27ca06cef47cd63869afa732b35e4ca1140a84638ce4983dc703f3f38fa10b9"
+      }
+    ]
+  },
+  "qualitative_update": "Illustrative category, unique-reuse and audit-amendment records added separately from numerical derivation; see closure.md."
+}

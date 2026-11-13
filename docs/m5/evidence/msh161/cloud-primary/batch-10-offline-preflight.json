@@ -1,0 +1,12 @@
+{
+  "status": "original_conditions_verified_waiting_batch09_closure",
+  "manifest_sha256": "ffc621e5697f74a016cc7854808fa7d586f678128359d5bac0151e31eafc69aa",
+  "image": "us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:ad95d85a8f555acaaef2adafecb92b0277983fb46ce6da83c3c192267dcc43f7",
+  "pairs": 10,
+  "games": 20,
+  "policy": "auto_claim",
+  "build_identical_to_batch09": true,
+  "cloud_environment_identical_to_batch09": true,
+  "original_cohort_hash_matches": true,
+  "no_new_job_or_queries": true
+}

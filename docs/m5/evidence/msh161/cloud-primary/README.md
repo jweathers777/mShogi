@@ -1,62 +1,58 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 09 22-alternative followup launched
+## Current state: Batch 09 closed; final original Batch 10 ready
 
-180 games have completed; **160 are fully reviewed (64W/46D/50L)**.
-`primary-cumulative.json` remains at 160 until Batch 09 closure. Native Batch 09
-results are 11 wins / 5 draws / 4 losses (prepared 10/5/3, unaided 1/0/1).
-Four draws are threefold claims and one is dead position. Original AutoClaim,
-unmodified binaries/image and frozen histories remain authoritative. The policy
-transition remains abandoned. Draws alone are not weakness; preserve preceding
-choices and claim-limited observation without counterfactual outcomes.
+**180 games are fully reviewed: 75 wins / 51 draws / 54 losses.** Prepared results
+are 62/48/52; unaided results 13/3/2. `primary-cumulative.json` covers nine batches.
+Forty-three draws are automatic claims (41 threefold, two fifty-move); eight are native
+dead positions. Draws alone are not weakness. Claims limit conversion observations
+without proving counterfactual results; preserve preceding decision evidence.
 
-The 1,501-job / 1,528-query deep panel completed and passed plan-aware verification.
-Submission, completion, verification, cleanup and accepted notification were separately
-reconciled. Eight workers ran without allocation or scientific failures and all
-were deleted. Original all-move/base evidence remains preserved and not repeated.
+Batch 09 closure is in `batch-09-review/closure.md` and `closure-summary.json`.
+The 1,528-query combined deep/audit plan and 22 new alternatives passed verification
+and independent review. Twenty-one unique played results were reused through 22
+references, with only 22 new searches. Ten new comparisons remain unresolved;
+original ledgers, final overlays, earlier uncertainty, secondary contexts and
+contrary successes remain preserved. Four terminal observations retain underlying
+finite statuses; native claims cannot be replaced by reference continuations.
+Selected comparisons are correlated, not independent causes or population rates.
+No final ranking or engineering mechanism is claimed.
 
-Both independent deep reviews in `batch-09-adjudication` are frozen. Their 1,006 roots
-contain 115 supported finite comparisons, 278 subthreshold, 461 same-choice controls,
-148 unresolved and four claim-policy-limited terminal observations. Underlying finite
-statuses, secondary contexts, earlier/unselected uncertainty and contrary successes
-remain separate. Selected roots are correlated, not independent causes or population
-rates. No final ranking, first/largest mistake or mechanism is claimed.
+Admitted v1.1 audit minimum coverage is closed for 21/21 main-09-00/game0 reference
+Black/endgame roots: 19 preserved matched 5M roots plus p57/p75 at 20M via three new
+searches, and any additional selected 20M evidence retained separately. Original 5M
+p65 trigger margin .0635 and matched 20M serious margin .176 both remain. p57 is
+subthreshold .0015 and p75 same-choice; g7f8 is Bf8 per bound notation erratum.
+Mixed budgets create no uniform cell sample or cell error rate. Exact amendment,
+independent review, admission, execution, erratum and final closure are bound in
+`primary-cumulative.json` under `method_amendments`. Do not mutate admitted records.
 
-The independently admitted v1.1 audit expansion is closed for minimum 21/21 Black/
-reference-endgame roots in main-09-00/game0: 19 existing matched 5M roots preserved,
-p57/p75 added at 20M via three new searches, plus any other independently selected
-20M evidence in this cell. Mixed budgets are explicit; no uniform sample or cell
-error rate. Original 5M trigger p65 remains preserved; 20M supports serious margin .176.
-p57 is subthreshold .0015 and p75 same-choice. The notation erratum correctly labels
-`g7f8` Bf8; admitted UCI/history/jobs were unchanged. Exact method/admission/review
-and execution bindings are in `batch-09-review/` and
-`batch-09-adjudication/audit-expansion-execution.json`. Do not mutate admitted inputs.
+Original AutoClaim, unmodified binaries/image and frozen histories remain authoritative
+(`autoclaim-restoration.json`). Final Batch 10 passed `batch-10-offline-preflight.json`.
+The abandoned policy-transition evidence remains preserved; no production change
+or completed-game replay. Execution layers and cleanup passed separately, all
+Batch 09 stages reached eight workers with zero allocation/scientific failures and
+all workers were deleted. Earlier failures remain in their original records.
+Primary totals: 26,569 jobs / 75,845 queries / 142.381746 VM-hours / US$28.705299 estimated
+compute. Full mean US$31.89; ancillary-inclusive US$35–90 remains conditional, not billing.
+Forecast Friday 16:18 Paris: about 2.77 remaining cloud hours plus explicit workflow/review
+assumptions supports Friday 20:00–22:00 batch completion, then centrally Friday 22:00–
+Saturday 03:00 final diagnosis with extended morning allowance. See
+`batch-09-followup/forecast-update.json`; its pre-closure review count is historical.
+Mac/pilots/transition remain separate.
 
-22 new alternatives across 21 unique roots need singleton 20M: four discoveries and
-18 bounded linked replies. Two alternatives share one exact played result, so the
-22 reused-reference entries identify 21 unique played queries; none is rerun or
-counted as new work. Coordinator review verified exact histories, source PV/discovery,
-legal choices and no duplicate forced moves. Plan SHA256:
-`8273e3963c2a333875103aa02a8edea3cb0fbed01a46b6e4201b232d41099358`.
-Preserve archived pre-followup ledgers and write separate final overlays. No repeated
-unstable search or recursive PV investigation is requested. The plan is launched
-via `notify_exit.py`, PID 88088, job `msh161-primary-b09-followup-v1`, from reviewed
-checkpoint `150fb9e4`. See `batch-09-followup/launch.json`; cloud acceptance is
-separate in `submission-result.json`. Do not duplicate wrapper, submission or queries.
-On exit review only the new comparisons, retain uncertainty,
-close Batch 09, update cumulative categories/resources and launch original Batch 10.
-Retain audit expansion and original trigger in the final cumulative record.
-
-Primary totals: 26,547 jobs / 75,823 queries / 142.093567 VM-hours / US$28.647200 estimated
-compute. Full-study mean compute is US$31.83; ancillary-inclusive US$35–90 remains
-conditional, not billing. Forecast updated Friday 16:09 Paris: about 2.76 remaining
-cloud hours plus explicit workflow/review assumptions supports Friday 20:00–22:00
-batch completion, final diagnosis centrally Friday 22:00–Saturday 03:00 with an extended
-morning review allowance. Capacity/scientific obligations can extend it. See
-`batch-09-adjudication/forecast-update.json`. Mac/pilots/transition remain separate.
-Continue all 200 games with no duplicate retrieval/searches, Mac engines, production
-changes, timers or periodic watchers. Stop for John after independent final diagnosis
-and roadmap. Historical transition records below do not govern current execution.
+Next submit final original Batch 10 and one exit-notified `wait_retrieve_batch.py 10`
+workflow. Save submission/launch receipts separately. On completion reconcile all
+layers, review final 20 games with independent gameplay/integrity panels, obtain
+required 20M/distinct alternatives and close Batch 10 plus cumulative 200 coverage.
+Then produce independently challenged diagnosis: observed categories/episodes,
+affected-game/move counts, severity, phases/families/colors/results, prepared-pair
+clustered uncertainty/family sensitivity, separate unaided repeats, earlier unresolved
+sensitivity, opportunities/conversion and contrary successes. Separate observed
+behavior from mechanisms and discriminating investigations. Update roadmap, integrate
+records and STOP for John before engineering. No Batch 11. No duplicate retrieval/
+searches, Mac engines, production changes, timers or periodic polling. Historical
+transition sections below do not govern current execution.
 
 ## Historical transition records (superseded)
 
@@ -145,7 +141,7 @@ Do not duplicate it or start batch03 before success/admission.
 
 ### Batch01 and historical batch02 execution records
 
-Primary batch01 is reviewed through required20M. Native20-game result:8W/5D/7L.
+Primary batch01 is reviewed through required 20M. Native20-game result:8W/5D/7L.
 `batch-01-closure.md` and `primary-cumulative.json` preserve the full dispositions,
 provisional unranked categories, contrary successes and limitations. Both independent
 gameplay panels and cross-reviews passed. No final first/largest claim or engineering
@@ -153,7 +149,7 @@ priority is inferred. Mac and pilot evidence remains separate.
 
 Base integrity passed2,410jobs/7,948queries:5,558initial500k and2,390matched 5M.
 All2,491played and288supplied context decisions remain in full native histories.
-There was no eligible stable missed-error audit crossing. The selected20M panel
+There was no eligible stable missed-error audit crossing. The selected 20M panel
 passed527jobs/558queries for298decisions. All31discoveries chose the existing played
 move, so both followup-selection files are empty; no further singleton is missing.
 Selected candidate finite comparisons:58of178queried decisions across18games;
@@ -259,7 +255,7 @@ On retrieval/adjudication completion:
 3. Have independent agents review completed games and reference evidence. Preserve
    flags, missed-error audit triggers, full histories, native outcomes, uncertainty,
    successful play and automatic-claim limits. Keep source phases and denominators.
-4. Schedule required matched20M and missing-alternative discovery on the cloud,
+4. Schedule required matched 20M and missing-alternative discovery on the cloud,
    with reviewed immutable query specifications and verified report dependencies.
    Preserve earlier/linked uncertainty. Do not repeat games to obtain analysis or
    overwrite the original manifest/success objects. See any adjudication execution

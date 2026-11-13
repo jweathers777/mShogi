@@ -1,0 +1,21 @@
+{
+  "note": "Exact pre-followup ledgers preserved. Pairs05\u201309 have no additional query obligations; retain unchanged during final integration.",
+  "files": [
+    {
+      "original": "dispositions20m-00-04.json",
+      "archive": "dispositions20m-00-04.json.gz",
+      "original_sha256": "1c1a61b8b7f655531dbb8b78a333401f888595f323797f60efd8483cc4e3adcc",
+      "archive_sha256": "651d4f5732f771cc5a9f4b10d7cb3aa3f329bf61d3085ebbd01b520df327ce35",
+      "original_bytes": 1044647,
+      "archive_bytes": 93826
+    },
+    {
+      "original": "dispositions20m-05-09.json",
+      "archive": "dispositions20m-05-09.json.gz",
+      "original_sha256": "d534f6a05b93fa9f3b990b5bcc3d680eb6c4d348fb358d7a4677f48f6a4490a9",
+      "archive_sha256": "e129b226a07527d1ac351e220a39c68de67201afb0442309ffb0df6e688b9a50",
+      "original_bytes": 4803804,
+      "archive_bytes": 270877
+    }
+  ]
+}

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-12T23:03:00Z'
+updated_date: '2026-11-13T00:00:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -165,4 +165,6 @@ Batch 05 base computation, retrieval and notification succeeded. Coordinator rec
 Batch 05 independent gameplay/integrity reviews passed: 8 wins, 6 draws, 6 losses; 5,196 initial queries and 1,731 matched 5M queries. Four uncertain audit controls retained, no stable missed-error trigger. Eight actual workers, no allocation/scientific failures, all deleted. Primary cumulative estimate US$13.599458 / 67.454951 VM-hours; full compute mean US$29.12. Frozen required 20M plan in batch-05-adjudication has 453 roots / 699 jobs / 714 queries, including 15 discoveries. Exact ledgers and index preserved as gzip archives. Launch one existing exit-notified plan, independently review results and distinct new alternatives, then close Batch 05 before Batch 06. Current scientific cumulative remains 80 reviewed / 100 played.
 
 Batch 05 required 20M workflow launched via notify_exit.py PID 57997, job msh161-primary-b05-20m-v1, from reviewed checkpoint 9415ca89. Plan SHA256 2660bb0e79542c0dc5f71af41a63bc52cbfe995fd2450649c4e867d6ed84cf1f. See batch-05-adjudication/launch.json; actual cloud acceptance is separate after provenance preflight. One exit callback resumes review on success or failure. Preserve uncertainty and original policy, close distinct alternatives, then update cumulative and launch Batch 06. No timer, duplicate submission or production changes.
+
+Batch 05 deep panel completed and independent review passed: 699 jobs / 714 queries / 453 selected roots. Execution, cleanup and notification reconciled; eight workers, zero allocation/scientific failures. Primary compute estimate now US$14.558523 / 72.212029 VM-hours. Root terminal main-05-03 game0 ply84 is claim-policy-limited, with finite comparison preserved separately. Eleven new alternatives (one discovery, ten linked replies) need singleton 20M, reusing exact played results; coordinator verified all source/history/PV/legal bindings and no duplicates. Pairs 05–08 plus unaided are coverage-complete with an empty followup selection; retain their ledger unchanged. Pre-followup ledgers archived losslessly. See batch-05-followup/plan.json and coordinator-plan-review.json. Launch one callback-driven chain, review new evidence, close Batch 05 and continue original Batch 06. No repeated unstable queries or final priorities.
 <!-- SECTION:NOTES:END -->

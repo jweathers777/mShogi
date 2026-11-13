@@ -1,74 +1,57 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 05 required 20M plan launched
+## Current state: Batch 05 deep review complete; eleven followup alternatives ready
 
-**80 games are fully reviewed: 33 wins / 23 draws / 24 losses.** Prepared results
-are 27/22/23; unaided results are 6/1/1. `primary-cumulative.json` includes all four
-batches. Twenty draws were automatic claims (19 threefold, one fifty-move); three
-were native dead positions. Draws alone are not weakness evidence. Automatic
-claims can limit conversion observations; analyze preceding decisions without
-inventing counterfactual results.
+One hundred games have completed; **80 are fully reviewed (33W/23D/24L)**.
+`primary-cumulative.json` remains at 80 until Batch 05 closure. Native Batch 05
+results are 8 wins / 6 draws / 6 losses, prepared 6/6/6 and unaided 2/0/0.
+Five draws are automatic threefold claims; one is a native dead position.
+Original AutoClaim, unmodified mShogi/Oxidation binaries, worker image and frozen
+histories remain authoritative. The policy transition is abandoned; no further
+policy or production changes. Draws alone are not weakness evidence, and automatic
+claims can limit conversion observations.
 
-Batch 04 closure is in `batch-04-review/closure.md` and `closure-summary.json`.
-All 793 initial 20M queries and ten new alternatives passed verification and
-independent review. Existing played queries were reused. Final overlays preserve
-pre-followup ledgers, earlier/linked uncertainty, secondary tags and contrary
-successes. All obligations are covered; unstable comparisons stay unresolved.
-Selected comparisons are correlated, not independent loss causes or population
-error rates. No final ranking or engineering mechanism is claimed.
-
-Original AutoClaim, unmodified mShogi/Oxidation binaries and the original worker
-image remain authoritative (`autoclaim-restoration.json`). Original Batch 05
-passed offline provenance checks in `batch-05-offline-preflight.json`. The attempted
-policy transition is abandoned; retain all its evidence without further policy
-work. No completed game or query is replayed.
-
-Submission, computation, plan verification, cleanup and notification were
-independently reconciled for Batch 04. Actual peak workers were five for base
-execution, eight for the main 20M panel and six for followups. The 53, five and six
-failed VM insertions are preserved separately from zero scientific failures.
-All successful workers were deleted. Runtime records retain other failed-allocation
-cleanup notices and exact identities. Primary totals are 11,340 scientific jobs,
-33,577 reference queries and 58.750612 VM-hours / US$11.844593 estimated compute.
-Full-study mean compute is US$29.61; the US$35–90 inclusive scenario and Saturday
-14 November Paris estimate remain conditional, not billed costs or promises.
-See `batch-04-followup/forecast-update.json`; its pre-closure review count is historical.
-
-Original Batch 05 completed under `msh161-primary-b05-v1`; retrieval verified
-1,751 jobs / 26,191 objects (2,980,337,096 bytes). Coordinator receipt bindings
-passed: exact submitted/completed UID, manifest/helper hashes, terminal/retrieval
-hashes, wrapper success, own process-group cleanup and notification acceptance.
-See `batch-05-review/coordinator-reconciliation.json` and separate receipts.
-Independent gameplay panels and native/query/runtime audits passed.
-There are 100 played games and 80 fully reviewed games; do not merge Batch 05 into
-the scientific cumulative record before required deep review.
-Batch 05 native results are 8 wins / 6 draws / 6 losses (prepared 6/6/6,
-unaided 2/0/0). Five draws were automatic threefold claims; one was a native dead
-position. Every move has frozen coverage: 5,196 initial and 1,731 matched 5M
+Base coverage passed: 1,751 jobs, 5,196 initial 500k queries and 1,731 matched 5M
 queries. Four audit controls remain uncertain; no stable missed-error trigger.
-Actual peak concurrency was eight, no allocation or scientific failures occurred,
-and all workers were deleted. Primary cumulative estimate is US$13.599458 compute
-across 67.454951 VM-hours, with the Batch 05 deeper panel still pending. The updated
-full-study compute mean is US$29.12; see `batch-05-review/forecast-update.json`.
+The 699-job / 714-query 20M panel completed and passed plan-aware verification.
+Submission, completion, verification, cleanup and accepted notification were
+independently reconciled. Both base and deeper stages reached eight workers,
+with no allocation or scientific failures. All successful workers were deleted;
+prior batches' capacity failures remain preserved separately.
 
-Both independent gameplay panels froze 453 selected roots for 699 jobs / 714
-queries, including 15 unrestricted discoveries. Plan SHA256:
-`2660bb0e79542c0dc5f71af41a63bc52cbfe995fd2450649c4e867d6ed84cf1f`. The plan preserves the
-original image, binaries, histories and reference budget. Exact full ledgers,
-review index and inventory are losslessly archived with binding manifests.
-The plan was launched through `notify_exit.py`, PID 57997, from reviewed
-checkpoint `9415ca89`, job `msh161-primary-b05-20m-v1`. See
-`batch-05-adjudication/launch.json`. Cloud acceptance is separate in
-`submission-result.json` after provenance preflight. Do not start another
-wrapper, submission or query. On completion reconcile
-submission, computation, verification, cleanup and notification independently;
-review against both narratives and obtain only distinct new alternative obligations.
-Preserve earlier/linked uncertainty, secondary tags and claim limits, then close
-Batch 05 and launch original Batch 06. No duplicate queries or retrieval.
-Restore archived JSON bytes locally when needed; do not retrieve again.
-Continue all 200 games with no Mac engines, duplicate searches, production changes,
-timers or periodic polling. Stop for John after final independent diagnosis and
-roadmap. Historical transition sections below do not govern execution.
+Both independent deep reviews in `batch-05-adjudication` are complete. Their 453
+selected roots contain 94 supported finite comparisons, 87 subthreshold, 185
+same-choice controls, 86 unresolved and one claim-policy-limited root. The terminal
+main-05-03/game0/p84 comparison retains its finite reference evidence but is excluded
+from event causes: the native game claims a draw instead of following the reference
+continuation. Earlier/unqueried uncertainty, secondary tags and contrary successes
+remain explicit. These are selected, correlated comparisons, not error prevalence
+or independent causes. No first/largest mistake or final mechanism is claimed.
+
+Eleven new alternatives need singleton 20M: one discovered Ba3 and ten bounded
+linked immediate replies, all in pairs 00–04. Existing played results are hash-bound
+and reused. The pairs 05–08/unaided review has no followup obligations; its frozen
+empty selection and completed ledger remain authoritative. Do not redo that review
+or query its unresolved roots. Pre-followup ledgers are preserved as lossless gzip
+with bindings. Write separate closure overlays after the new comparisons.
+`batch-05-followup/plan.json` SHA256 is
+`5880cd3f7b0fd71ef482dbda9c7e60b6698a6f53395802f9088dbe641724edc8`.
+Coordinator review checked exact histories, discovery/PV sources, legal moves and
+absence of duplicate forced queries. No repeated unstable search or recursive PV
+investigation is requested. Next launch this plan once via `notify_exit.py`; on exit
+review only the eleven new comparisons, preserve remaining uncertainty, update
+cumulative categories/resources and launch original Batch 06 after closure.
+
+Primary cumulative resources are 13,790 jobs / 41,218 reference queries /
+72.212029 VM-hours / US$14.558523 estimated compute, not billed cost. Full-study
+compute mean is US$29.12; the US$35–90 inclusive scenario and Saturday 14 November
+Paris central estimate remain conditional. See `batch-05-adjudication/forecast-update.json`.
+Mac, pilot and abandoned transition costs remain separate.
+
+Continue all 200 games with no duplicate retrieval/searches, Mac engines, production
+changes, timers or periodic watchers. Restore archived JSON locally if required.
+Stop for John after independently reviewed final diagnosis and roadmap. Historical
+transition sections below are superseded and do not govern current execution.
 
 ## Historical transition records (superseded)
 

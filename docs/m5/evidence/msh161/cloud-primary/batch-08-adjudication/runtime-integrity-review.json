@@ -1,0 +1,716 @@
+{
+  "status": "passed",
+  "job_name": "projects/mshogi/locations/us-central1/jobs/msh161-primary-b08-20m-v1",
+  "job_uid": "msh161-primary-b08-1afedfaf-6256-4bcc0",
+  "submission_returncode": 0,
+  "submission_state": "QUEUED",
+  "terminal_state": "SUCCEEDED",
+  "scientific_audit": {
+    "status": "passed",
+    "jobs": 1308,
+    "queries": 1347,
+    "decisions": 889,
+    "discoveries": [
+      {
+        "pair": "main-08-00",
+        "game": 1,
+        "ply": 66,
+        "played": "b1d2",
+        "bestmove": "b1d2",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-08-01",
+        "game": 1,
+        "ply": 65,
+        "played": "d8d6",
+        "bestmove": "d8d6",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-08-01",
+        "game": 1,
+        "ply": 72,
+        "played": "g4e2",
+        "bestmove": "g4e2",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-02",
+        "game": 1,
+        "ply": 38,
+        "played": "c2d3",
+        "bestmove": "c2d3",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-05",
+        "game": 0,
+        "ply": 51,
+        "played": "b7b5",
+        "bestmove": "b7b5",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-08-05",
+        "game": 1,
+        "ply": 56,
+        "played": "c3h3",
+        "bestmove": "c3h3",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_cp",
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-05",
+        "game": 1,
+        "ply": 78,
+        "played": "h4g5",
+        "bestmove": "h4g5",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-08-05",
+        "game": 1,
+        "ply": 101,
+        "played": "c4g4",
+        "bestmove": "c4g4",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-05",
+        "game": 1,
+        "ply": 131,
+        "played": "c8b7",
+        "bestmove": "c8b7",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_cp",
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-06",
+        "game": 0,
+        "ply": 50,
+        "played": "b4b5",
+        "bestmove": "b4b5",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_cp",
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-06",
+        "game": 1,
+        "ply": 45,
+        "played": "b7a7",
+        "bestmove": "b7a7",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-08-07",
+        "game": 0,
+        "ply": 26,
+        "played": "d5c6",
+        "bestmove": "d5c6",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-07",
+        "game": 0,
+        "ply": 46,
+        "played": "d5e6",
+        "bestmove": "d5e6",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-08-07",
+        "game": 0,
+        "ply": 47,
+        "played": "e5e4",
+        "bestmove": "e5e4",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-08-07",
+        "game": 0,
+        "ply": 49,
+        "played": "c8f8",
+        "bestmove": "c8f8",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-07",
+        "game": 0,
+        "ply": 54,
+        "played": "g4f5",
+        "bestmove": "g4f5",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_cp",
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-08-07",
+        "game": 0,
+        "ply": 55,
+        "played": "g7g6",
+        "bestmove": "g7g6",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-08-07",
+        "game": 0,
+        "ply": 89,
+        "played": "h6h5",
+        "bestmove": "h6h5",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-08-07",
+        "game": 1,
+        "ply": 18,
+        "played": "d3c2",
+        "bestmove": "d3c2",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-08-07",
+        "game": 1,
+        "ply": 21,
+        "played": "a7a5",
+        "bestmove": "a7a5",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-07",
+        "game": 1,
+        "ply": 23,
+        "played": "g4f3",
+        "bestmove": "g4f3",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-07",
+        "game": 1,
+        "ply": 85,
+        "played": "e7d6",
+        "bestmove": "e7d6",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-08-07",
+        "game": 1,
+        "ply": 86,
+        "played": "e5d5",
+        "bestmove": "e5d5",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-08-08",
+        "game": 0,
+        "ply": 48,
+        "played": "f2f3",
+        "bestmove": "f2f4",
+        "different_move": true,
+        "flags": [
+          "fewer_than_two_distinct_depth_numeric_reports",
+          "final_same_move_bound_conflicts_with_earlier_cp",
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-08",
+        "game": 0,
+        "ply": 50,
+        "played": "g3f2",
+        "bestmove": "g3f2",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-08-08",
+        "game": 0,
+        "ply": 59,
+        "played": "e7d6",
+        "bestmove": "e7d6",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-08",
+        "game": 0,
+        "ply": 69,
+        "played": "c6b6",
+        "bestmove": "c6b6",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-08",
+        "game": 0,
+        "ply": 73,
+        "played": "d6e5",
+        "bestmove": "d6e5",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-08-08",
+        "game": 1,
+        "ply": 24,
+        "played": "b2c3",
+        "bestmove": "b2c3",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-08",
+        "game": 1,
+        "ply": 54,
+        "played": "b3c3",
+        "bestmove": "b3c3",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-08-08",
+        "game": 1,
+        "ply": 55,
+        "played": "h5g4",
+        "bestmove": "h5g4",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-08-08",
+        "game": 1,
+        "ply": 56,
+        "played": "h2g2",
+        "bestmove": "h2g2",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-08-unaided",
+        "game": 0,
+        "ply": 82,
+        "played": "f3d3",
+        "bestmove": "f3d3",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-08-unaided",
+        "game": 1,
+        "ply": 27,
+        "played": "d5e4",
+        "bestmove": "d5e4",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-08-unaided",
+        "game": 1,
+        "ply": 28,
+        "played": "d3e3",
+        "bestmove": "d3e3",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-unaided",
+        "game": 1,
+        "ply": 33,
+        "played": "c6e7",
+        "bestmove": "c6e7",
+        "different_move": false,
+        "flags": []
+      },
+      {
+        "pair": "main-08-unaided",
+        "game": 1,
+        "ply": 50,
+        "played": "d2d8",
+        "bestmove": "d2d8",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_cp",
+          "final_same_move_bound_conflicts_with_earlier_expected_score",
+          "last_score_update_not_selected_exact_score",
+          "last_two_report_estimates_unstable"
+        ]
+      },
+      {
+        "pair": "main-08-unaided",
+        "game": 1,
+        "ply": 60,
+        "played": "e3d3",
+        "bestmove": "e3d3",
+        "different_move": false,
+        "flags": [
+          "last_score_update_not_selected_exact_score"
+        ]
+      },
+      {
+        "pair": "main-08-unaided",
+        "game": 1,
+        "ply": 61,
+        "played": "e6d5",
+        "bestmove": "e6d5",
+        "different_move": false,
+        "flags": [
+          "final_same_move_bound_conflicts_with_earlier_cp",
+          "last_score_update_not_selected_exact_score"
+        ]
+      }
+    ],
+    "flags": {
+      "last_score_update_not_selected_exact_score": 597,
+      "directional_bound_conflict": 89,
+      "stable_report_heuristic": 1237
+    },
+    "resources": {
+      "job_wall_seconds": 29908.925737734,
+      "job_cpu_seconds": 27913.152810999993,
+      "query_wall_seconds": 27884.658924197982,
+      "query_cpu_seconds": 27878.214663,
+      "query_wall_max_seconds": 27.774287145000017
+    },
+    "worker_environments": {
+      "2699431285509285140": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "2699431285509285140",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "247833029187953940": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "247833029187953940",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "6072365048332510484": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "6072365048332510484",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "6050099134711162132": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "6050099134711162132",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "5359845337024128275": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "5359845337024128275",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "6212199528403789076": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "6212199528403789076",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "747976885565875475": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "747976885565875475",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      },
+      "8189726630396781844": {
+        "cpu-platform": "Intel Sapphire Rapids",
+        "id": "8189726630396781844",
+        "machine-type": "projects/216675633801/machineTypes/c3-standard-4",
+        "zone": "projects/216675633801/zones/us-central1-b"
+      }
+    },
+    "failed_scientific_attempts": 0,
+    "unresolved_claims": 0,
+    "plan_sha256": "cd99e7b260a7b98ea3869d005855a95ceadd943d9764acbb88c15e810b84f0ab",
+    "verification_sha256": "9b868f83f98e1ffa54f77c638321003192664038ef96ac332839aaa8c9350eb5",
+    "source_revision": "5568c1ee986e77a40cc8901fa2486a3e83ac6e93",
+    "scope": "Independent plan/success/parent/selection/history/budget/options/native replay/legal PV/cleanup audit; reused complete plan-aware artifact verification without duplicate full artifact hashing; no engines or retrieval",
+    "procedure_source": "import json,hashlib,gzip,sys,collections\nfrom pathlib import Path\nP=Path('docs/m5/evidence/msh161/cloud-primary');H=P/'batch-08-adjudication';C=P/'local-cache';sys.path.insert(0,str(P.parent.resolve()));import analysis,screen_v1,chess\ndata=lambda p:Path(p).read_bytes() if Path(p).exists() else gzip.decompress(Path(str(p)+'.gz').read_bytes())\nread=lambda p:json.loads(data(p));sha=lambda p:hashlib.sha256(data(p)).hexdigest()\nplan=read(H/'plan.json');ver=read(H/'results/verification.json');done=read(H/'results/completion.json');rest=read(P/'autoclaim-restoration.json');idx=read(P/'batch-08-review/review-index.json')\nassert sha(H/'plan.json')==ver['plan_sha256']==done['plan_sha256'];assert sha(H/'results/verification.json')==done['verification_sha256'];assert sha(P/'batch-08-review/review-index.json')==plan['review_index_sha256'];assert sha(C/plan['original_manifest']['key'])==plan['original_manifest']['sha256']\nfor s in plan['selection_files']:assert sha(P/'batch-08-review'/s['file'])==s['sha256']\nfor s in plan['consumed_successes']:assert sha(C/s['key'])==s['sha256']\ncanonical={};parents={}\nfor pair,x in idx.items():\n item=x['game_pair'];raw=gzip.decompress(Path(item['artifacts']['pair/report.json.gz']['local']).read_bytes());outer=json.loads(raw);rep=json.loads(outer['report_json']);ds,gs=analysis.extract_decisions(rep)\n assert rep['config']['claim_policy']=='auto_claim'\n for d in ds:canonical[pair,d['game'],d['ply']]=d\n parents[item['job']['id']]={'raw_sha256':hashlib.sha256(raw).hexdigest(),'compressed_sha256':item['artifacts']['pair/report.json.gz']['sha256'],'pair':pair,'success_sha256':item['success_sha256']}\nvr={r['job']:r for r in ver['results']};assert len(vr)==len(plan['jobs'])==1308\nflags=collections.Counter();counts=collections.Counter();resources=collections.Counter();envs={};query_keys=[];discoveries=[]\nfor job in plan['jobs']:\n jid=job['id'];path=C/job['experiment']/'jobs'/jid/'success.json';assert sha(path)==vr[jid]['success_sha256'];r=read(path);assert r['job']==job and r['status']=='complete' and r['result']['complete'];assert job['build']==rest['original_build'];assert job['environment']['cloud']['image']==rest['original_image'];assert job['source_revision']==rest['original_worker_source'];assert job['nodes']==20000000\n parent=parents[job['inputs']['report']['job']];d=canonical[parent['pair'],job['game'],job['ply']];assert job['adjudication']['decision']==d;assert job['adjudication']['parent_success_sha256']==parent['success_sha256'];assert job['adjudication']['screen_success_sha256']==idx[parent['pair']]['reference_screening']['success_sha256']\n env=r['environment'];assert env['architecture']=='x86_64' and env['gcp']['machine-type'].endswith('/c3-standard-4') and env['batch']['BATCH_TASK_RETRY_ATTEMPT']=='0';envs[env['gcp']['id']]=env['gcp'];resources['job_wall_seconds']+=r['wall_seconds'];resources['job_cpu_seconds']+=r['child_cpu_seconds']\n arts=r['artifacts'];rr=read(C/arts['replay.json']['key']);assert rr['returncode']==0 and rr['input_sha256']==parent['compressed_sha256'] and rr['uncompressed_sha256']==parent['raw_sha256'];assert arts['replay-input.json']['sha256']==parent['raw_sha256']\n m=read(C/arts['analysis/manifest.json']['key']);assert m['nodes']==20000000 and m['planned_decisions']==1 and m['options']==analysis.OPTIONS and m['engine_sha256']==rest['original_build']['engines']['stockfish19']['sha256']\n qs=[read(C/a['key']) for k,a in arts.items() if k.startswith('analysis/g') and '-attempt' in k];assert len(qs)==(1 if job['move'] else 2)\n for q in qs:\n  assert q['decision']==d and q['nodes_requested']==20000000 and q['options']==analysis.OPTIONS and q['engine_sha256']==m['engine_sha256'];assert q['status']=='complete' and q['exit_code']==0 and q['process_group_settled'] and not q['raw_truncated'];forced=q['forced_move'];assert (forced==job['move']) if job['move'] else forced in [None,d['played']]\n  b=analysis.board_for(d);assert chess.Move.from_uci(q['assessment']['bestmove']) in b.legal_moves\n  if forced:assert q['assessment']['bestmove']==forced\n  score=q['assessment']['score']\n  if score:\n   assert q['pv_independent_legal']\n   for u in score['pv']:b.push_uci(u)\n  else:assert 'no_nonbound_score_aligned_with_bestmove' in q['assessment']['uncertainty']\n  cmds=[e['line'] for e in q['raw_uci'] if e['direction']=='send'];assert 'ucinewgame' in cmds and 'setoption name Clear Hash' in cmds;assert 'position fen '+d['initial_fen']+(' moves '+' '.join(d['history']) if d['history'] else '') in cmds;assert [x for x in cmds if x.startswith('go ')]==['go nodes 20000000'+(' searchmoves '+forced if forced else '')]\n  v=screen_v1.describe(q);flags.update(q['assessment']['uncertainty']);flags['directional_bound_conflict']+=bool(v['directional_bound_conflicts']);flags['stable_report_heuristic']+=v['stable_report_heuristic'];resources['query_wall_seconds']+=q['wall_seconds'];resources['query_cpu_seconds']+=q['child_cpu_seconds'];resources['query_wall_max_seconds']=max(resources['query_wall_max_seconds'],q['wall_seconds']);counts['queries']+=1;query_keys.append([parent['pair'],d['game'],d['ply'],forced])\n  if forced is None:discoveries.append({'pair':parent['pair'],'game':d['game'],'ply':d['ply'],'played':d['played'],'bestmove':q['assessment']['bestmove'],'different_move':d['played']!=q['assessment']['bestmove'],'flags':v['flags']})\n res=read(C/arts['analysis/resources.json']['key']);assert res['failures']==0 and res['attempts']==len(qs)\n for k in ['wall_seconds','child_cpu_seconds']:assert abs(res[k]-sum(q[k] for q in qs))<1e-5\n counts['jobs']+=1\nassert counts['queries']==1347;assert len(discoveries)==39\nassert len(ver['attempts'])==1308 and not ver['failed_attempts'];assert all(a['status']=='complete' for a in ver['attempts']);assert abs(resources['job_wall_seconds']-ver['successful_job_totals']['wall_seconds'])<1e-5\nfor d in plan['decisions']:\n qs=[k for k in query_keys if k[:3]==[d['pair'],d['game'],d['ply']]];assert set(q[-1] for q in qs)==set(d['moves'])\nfor j in plan['jobs']:\n folder=C/j['experiment']/'jobs'/j['id'];assert not (folder/'claim.json').exists();assert len(list(folder.glob('attempts/*/receipt.json')))==1\nresult={'status':'passed','jobs':1308,'queries':1347,'decisions':len(plan['decisions']),'discoveries':discoveries,'flags':dict(flags),'resources':dict(resources),'worker_environments':envs,'failed_scientific_attempts':0,'unresolved_claims':0,'plan_sha256':sha(H/'plan.json'),'verification_sha256':sha(H/'results/verification.json'),'source_revision':read(H/'launch.json')['reviewed_revision'],'scope':'Independent plan/success/parent/selection/history/budget/options/native replay/legal PV/cleanup audit; reused complete plan-aware artifact verification without duplicate full artifact hashing; no engines or retrieval','procedure_source':Path(__file__).read_text()}\nPath('/tmp/msh161-b08-20m-audit-result.json').write_text(json.dumps(result,indent=2));print(json.dumps({k:result[k] for k in ['status','jobs','queries','decisions','flags','resources']},indent=2));print('Distinct discovery alternatives:',[d for d in discoveries if d['different_move']])\n"
+  },
+  "task_records": [
+    {
+      "task": "0",
+      "start": "2026-11-13T09:44:48.219737955Z",
+      "end": "2026-11-13T10:50:49.047089112Z",
+      "seconds": 3960.8273520469666,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/247833029187953940",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "1",
+      "start": "2026-11-13T09:44:48.880036097Z",
+      "end": "2026-11-13T10:51:52.342820484Z",
+      "seconds": 4023.4627838134766,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/6072365048332510484",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "2",
+      "start": "2026-11-13T09:44:50.187605515Z",
+      "end": "2026-11-13T10:49:19.058294869Z",
+      "seconds": 3868.8706891536713,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/6050099134711162132",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "3",
+      "start": "2026-11-13T09:44:48.166424159Z",
+      "end": "2026-11-13T10:50:13.607833263Z",
+      "seconds": 3925.4414088726044,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/747976885565875475",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "4",
+      "start": "2026-11-13T09:44:47.561828958Z",
+      "end": "2026-11-13T10:51:01.174802293Z",
+      "seconds": 3973.61297416687,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/5359845337024128275",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "5",
+      "start": "2026-11-13T09:44:47.988973079Z",
+      "end": "2026-11-13T10:50:54.769138947Z",
+      "seconds": 3966.780165195465,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/8189726630396781844",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "6",
+      "start": "2026-11-13T09:44:48.751561736Z",
+      "end": "2026-11-13T10:49:35.087693205Z",
+      "seconds": 3886.3361320495605,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/2699431285509285140",
+      "state": "SUCCEEDED"
+    },
+    {
+      "task": "7",
+      "start": "2026-11-13T09:44:47.866915351Z",
+      "end": "2026-11-13T10:48:45.733166144Z",
+      "seconds": 3837.8662509918213,
+      "assignment": "Task state is updated from ASSIGNED to RUNNING on zones/us-central1-b/instances/6212199528403789076",
+      "state": "SUCCEEDED"
+    }
+  ],
+  "task_elapsed_seconds": 4024.7809920310974,
+  "submission_to_last_task_seconds": 4061.338707923889,
+  "task_seconds_sum": 31443.197756290436,
+  "concurrency_seconds": {
+    "0": 0.0,
+    "1": 51.47310495376587,
+    "2": 6.527721881866455,
+    "3": 5.899500131607056,
+    "4": 35.49256920814514,
+    "5": 39.051963806152344,
+    "6": 16.15787410736084,
+    "7": 34.632696866989136,
+    "8": 3835.5455610752106
+  },
+  "peak_task_concurrency": 8,
+  "vms": [
+    {
+      "id": "6072365048332510484",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b08-1afedfaf-6256-4bcc0-group0-0-hjs4",
+      "deleted": "2026-11-13T10:52:19.989900Z",
+      "start": "2026-11-13T09:44:27.657645Z",
+      "seconds": 4072.332255125046
+    },
+    {
+      "id": "5359845337024128275",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b08-1afedfaf-6256-4bcc0-group0-0-15tl",
+      "deleted": "2026-11-13T10:51:36.580261Z",
+      "start": "2026-11-13T09:44:27.790309Z",
+      "seconds": 4028.7899520397186
+    },
+    {
+      "id": "8189726630396781844",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b08-1afedfaf-6256-4bcc0-group0-0-ppq6",
+      "deleted": "2026-11-13T10:51:22.377449Z",
+      "start": "2026-11-13T09:44:27.580185Z",
+      "seconds": 4014.797264099121
+    },
+    {
+      "id": "247833029187953940",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b08-1afedfaf-6256-4bcc0-group0-0-4t3b",
+      "deleted": "2026-11-13T10:51:21.731262Z",
+      "start": "2026-11-13T09:44:27.566707Z",
+      "seconds": 4014.1645550727844
+    },
+    {
+      "id": "747976885565875475",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b08-1afedfaf-6256-4bcc0-group0-0-b6w5",
+      "deleted": "2026-11-13T10:50:42.578039Z",
+      "start": "2026-11-13T09:44:27.600150Z",
+      "seconds": 3974.9778888225555
+    },
+    {
+      "id": "2699431285509285140",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b08-1afedfaf-6256-4bcc0-group0-0-5f5w",
+      "deleted": "2026-11-13T10:50:17.456547Z",
+      "start": "2026-11-13T09:44:27.591061Z",
+      "seconds": 3949.865485906601
+    },
+    {
+      "id": "6050099134711162132",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b08-1afedfaf-6256-4bcc0-group0-0-xrv6",
+      "deleted": "2026-11-13T10:49:46.800870Z",
+      "start": "2026-11-13T09:44:27.568047Z",
+      "seconds": 3919.23282289505
+    },
+    {
+      "id": "6212199528403789076",
+      "name": "projects/216675633801/zones/us-central1-b/instances/msh161-primary-b08-1afedfaf-6256-4bcc0-group0-0-vx6j",
+      "deleted": "2026-11-13T10:49:10.209657Z",
+      "start": "2026-11-13T09:44:27.673814Z",
+      "seconds": 3882.535842895508
+    }
+  ],
+  "vm_lifecycle_hours": 8.84908224079344,
+  "recorded_rate_usd_per_hour": 0.201608,
+  "estimated_compute_usd": 1.784045772401884,
+  "actual_billed_cost": null,
+  "failed_insert_completion_count": 0,
+  "failed_insert_zones": {},
+  "base_batch06_allocation_failures_separate": 1,
+  "historical_batch04_allocation_failures_separate": {
+    "base": 53,
+    "initial20m": 5,
+    "followup": 6
+  },
+  "operational_audit_error_count": 0,
+  "remaining_instances": [],
+  "remaining_disks": [],
+  "notification": {
+    "label": "MSH-161 primary cloud Batch 08 consequential 20M analysis and verification",
+    "thread": "01a1c734-6d54-75e1-80e5-58074ecdc4dd",
+    "command": [
+      "/private/tmp/msh162-controller/bin/python",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/run_adjudication_plan.py",
+      "--directory",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-08-adjudication",
+      "--job-name",
+      "msh161-primary-b08-20m-v1",
+      "--subscription",
+      "projects/mshogi/subscriptions/mshogi-pilot-completion",
+      "--cache",
+      "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/local-cache",
+      "--spending-approved"
+    ],
+    "state_artifact": "/Users/johnweathers/Development/Personal/mShogi/docs/m5/evidence/msh161/cloud-primary/batch-08-adjudication",
+    "wrapper_pid": 39420,
+    "started_epoch": 1794562644.462419,
+    "status": "success",
+    "queue_attempted": true,
+    "cleanup_scope": "Own child process group only; engines detached by existing helpers require their own receipts/reconciliation; not a descendant-tree cleanup guarantee",
+    "child_pid": 39422,
+    "computation_returncode": 0,
+    "residual_group_detected": false,
+    "process_group_settled": true,
+    "finished_epoch": 1794568483.1421351,
+    "queue_returncode": 0,
+    "queue_accepted": true
+  },
+  "local_process_snapshot": {
+    "command": "ps -p 39420,39422 -o pid=,ppid=,stat=,command=",
+    "returncode": 1,
+    "stdout": "",
+    "meaning": "Recorded wrapper and child PIDs absent at the same review invocation; not a general descendant census"
+  },
+  "submission_preflight_seconds": 404.97363090515137,
+  "wrapper_start_to_cloud_create_seconds": 406.5416929721832,
+  "whole_submit_wait_retrieve_verify_seconds": 5838.6797161102295,
+  "after_last_cloud_task_to_wrapper_finish_seconds": 1370.799315214157,
+  "resources_note": "Child query wall/CPU totals overlap parent job totals; do not add them. VM lifetimes also include idle/provisioning. Post-cloud span combines event/retrieval/verification/publication/shutdown; download-only timing not instrumented.",
+  "scope": "One read-only cloud snapshot plus existing plan-aware verification; no new retrieval, engines, queries or cloud jobs. Local audit first encountered archived review-index path, then read its byte-exact gzip form; no scientific execution failure.",
+  "raw_observations": "runtime-observations.json.gz",
+  "forecast": "forecast-update.json",
+  "raw_observations_expanded_sha256": "23a944165bcb1244e35963b376eb4152b6a6294f05ed8d8f10327aeb7b093bdd"
+}

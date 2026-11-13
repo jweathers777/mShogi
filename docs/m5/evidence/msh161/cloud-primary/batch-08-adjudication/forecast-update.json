@@ -1,0 +1,65 @@
+{
+  "completed_primary_games": 160,
+  "fully_adjudicated_primary_games_at_this_audit": 140,
+  "pending_batch08_scientific_closure": true,
+  "measured_base_batches": 8,
+  "measured20m_panels": 8,
+  "measured_extra_singleton_queries": 55,
+  "new_distinct_discovery_alternatives_pending": [
+    {
+      "pair": "main-08-08",
+      "game": 0,
+      "ply": 48,
+      "played": "f2f3",
+      "bestmove": "f2f4",
+      "different_move": true,
+      "flags": [
+        "fewer_than_two_distinct_depth_numeric_reports",
+        "final_same_move_bound_conflicts_with_earlier_cp",
+        "last_score_update_not_selected_exact_score"
+      ]
+    }
+  ],
+  "measured_reference_queries": 66564,
+  "measured_scientific_jobs": 23013,
+  "failed_scientific_attempts": 0,
+  "measured_primary_vm_hours": 122.43206581234935,
+  "estimated_primary_compute_usd": 24.683283924296124,
+  "actual_billed_cost": null,
+  "full200_mean_workload_compute_usd": 30.854104905370153,
+  "remaining40_mean_workload_compute_usd": 6.170820981074031,
+  "inclusive_full200_conditional_before_tax_usd": [
+    35,
+    90
+  ],
+  "full_processing_hours_conditional_scenario": [
+    29,
+    48
+  ],
+  "measured_cloud_submission_to_final_task_hours_sum": 21.832871580719953,
+  "full200_mean_cloud_stage_elapsed_hours": 27.29108947589994,
+  "remaining40_mean_cloud_stage_elapsed_hours": 5.458217895179988,
+  "scope": "Eight base batches and eight completed 20M panels plus fifty-five prior followup queries. Pending Batch 08 new alternatives not counted. Mac, pilots and abandoned transition costs remain separate.",
+  "limits": "Measured VM lifetimes priced at recorded rate, not billing. Mean scaling only; panel sizes, discovered alternatives and availability vary. Inclusive scenarios retain ancillary storage/transfer/operations and recovery assumptions. Cloud-stage timing excludes preflight, retrieval, review pauses and final synthesis.",
+  "calendar_estimate": {
+    "as_of_utc": "2026-11-13 11:15:20 UTC",
+    "as_of_paris": "Friday 2026-11-13 12:15 CET",
+    "games_and_batch_analysis": "Friday 2026-11-13 evening; planning window about 19:30\u201322:30 CET",
+    "final_independently_reviewed_diagnosis": "Friday night through Saturday morning; central planning window about Friday 21:30 to Saturday 02:30 CET, with morning allowance for extended review",
+    "remaining_cloud_stage_hours_mean": 5.458217895179988,
+    "remaining_nonengine_workflow_hours_assumed": [
+      1,
+      2
+    ],
+    "remaining_batch_review_and_followup_hours_assumed": [
+      0.5,
+      2
+    ],
+    "final_synthesis_and_independent_review_hours_assumed": [
+      2,
+      4
+    ],
+    "basis": "Mean remaining cloud work is 5.46 hours. Add assumed preflight/retrieval/verification and batch review/followups to obtain roughly 7\u201310 hours to complete games and batch analysis from this snapshot. Then allow 2\u20134 hours for final synthesis and independent challenge. These overhead/review allowances are planning assumptions, not measured service guarantees. The larger Batch 08 panel and allocation variability argue against an exact finish promise. This supersedes the old Saturday-central/late-Friday\u2013Sunday estimate, in line with the Nov 13 owner-facing update.",
+    "uncertainty": "More consequential roots, new alternatives, regional stockouts or substantive review findings can extend these windows. No scientific coverage will be truncated to meet an estimate."
+  }
+}

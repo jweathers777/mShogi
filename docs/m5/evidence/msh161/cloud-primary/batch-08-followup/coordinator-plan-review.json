@@ -1,0 +1,169 @@
+{
+  "status": "passed",
+  "plan_sha256": "64f9a9bfcfcca0dcc80a5f2aacb035e311eca3b2c30cf8c72d4d0dcb58b721f0",
+  "new_queries": 16,
+  "reused_played_queries": 16,
+  "no_duplicate_forced_alternatives": true,
+  "checks": [
+    {
+      "pair": "main-08-00",
+      "game": 1,
+      "ply": 20,
+      "played": "c1b1",
+      "alternative": "e3g5",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "05419499e66f0664320002f8fecb37c1ae2bb847f276de2a1566efcf74380472"
+    },
+    {
+      "pair": "main-08-01",
+      "game": 0,
+      "ply": 17,
+      "played": "b7b5",
+      "alternative": "a7a6",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "da9874d4f4b5a98157c793e33268c57c532dd991536229a3c98adb9e050347a3"
+    },
+    {
+      "pair": "main-08-01",
+      "game": 0,
+      "ply": 18,
+      "played": "d1d2",
+      "alternative": "c3e2",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "527bf292ebc760bfa6855d1c780c68e22707ac81765c2c37207cc5d21a242fa0"
+    },
+    {
+      "pair": "main-08-01",
+      "game": 1,
+      "ply": 18,
+      "played": "g1h1",
+      "alternative": "b2b4",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "ffce486c2192681071c18a21cc8c81c5ab8fce0149931539b83236d6da201f43"
+    },
+    {
+      "pair": "main-08-01",
+      "game": 1,
+      "ply": 20,
+      "played": "a1b1",
+      "alternative": "c3e2",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "a07837fc20230a6575686662b8b56571fdfc4add67bf4d6c13f5f9cb563d625a"
+    },
+    {
+      "pair": "main-08-01",
+      "game": 1,
+      "ply": 33,
+      "played": "b4b3",
+      "alternative": "f6d7",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "e4b76af338ada022b760e43faae565a6e989e5444f9e3b7a878a2846d35f5d9f"
+    },
+    {
+      "pair": "main-08-01",
+      "game": 1,
+      "ply": 46,
+      "played": "b4c3",
+      "alternative": "c1c8",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "0b551c635d8a33bd6e3d988c0236b58744cb743661c9589de1f83a7ae0fc9208"
+    },
+    {
+      "pair": "main-08-01",
+      "game": 1,
+      "ply": 73,
+      "played": "e6c5",
+      "alternative": "e6d4",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "bb2be0cbf5c03ab5a75639ef0b4ce6603c305b62b2a033803d3f52babc99eca5"
+    },
+    {
+      "pair": "main-08-02",
+      "game": 0,
+      "ply": 31,
+      "played": "e7g6",
+      "alternative": "c8e8",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "d0dc6dbd7a94298ee7ab73b8e11ae67e8f3ccbc9524f122c84fc21398b7fe13d"
+    },
+    {
+      "pair": "main-08-02",
+      "game": 1,
+      "ply": 40,
+      "played": "h1h3",
+      "alternative": "f2f3",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "99c794607e1d9906ee663c45f3fc46a32aaef1597de73d3323f84be88aba968b"
+    },
+    {
+      "pair": "main-08-02",
+      "game": 1,
+      "ply": 42,
+      "played": "a2a4",
+      "alternative": "a2a3",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "a881791b4e5083e14eb305b4b10a04f20cec1d5f6eb5a915f68bf624d0ddfd25"
+    },
+    {
+      "pair": "main-08-03",
+      "game": 0,
+      "ply": 17,
+      "played": "g7g6",
+      "alternative": "e6g4",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "d2cd3fc393c3c83a2f1346805bc8d759cf2f4028376913bd7dcc5c6f24b97846"
+    },
+    {
+      "pair": "main-08-04",
+      "game": 1,
+      "ply": 47,
+      "played": "f4h5",
+      "alternative": "e8e1",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "80d4f49dc65ab7bc8c3e9cd28ac025f2d53aa83a5259e8fa7053de0a2d5f5a18"
+    },
+    {
+      "pair": "main-08-04",
+      "game": 1,
+      "ply": 50,
+      "played": "c3e4",
+      "alternative": "c3d5",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "748eb3e54b27506062e02214bc15f622b637bb0e851c8b176be41de61aabcc95"
+    },
+    {
+      "pair": "main-08-04",
+      "game": 1,
+      "ply": 58,
+      "played": "a5b5",
+      "alternative": "a5f5",
+      "source": "linked immediate reply in played PV",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "2d70097ec3a2a455b115115c9a26af2c0663df18fef3976ee7eb16cd674e40a4"
+    },
+    {
+      "pair": "main-08-08",
+      "game": 0,
+      "ply": 48,
+      "played": "f2f3",
+      "alternative": "f2f4",
+      "source": "distinct unrestricted discovery",
+      "exact_history_and_legal_move": true,
+      "played_artifact_sha256": "216f0c0866407553302ada6cfb267b9a6c696bd0f7655461436855146a32c908"
+    }
+  ]
+}

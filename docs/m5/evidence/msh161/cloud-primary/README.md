@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 07 closed; original Batch 08 ready
+## Current state: Batch 07 closed; original Batch 08 submitted
 
 **140 games are fully reviewed: 58 wins / 41 draws / 41 losses.** Prepared results
 are 47/39/40; unaided results 11/2/1. `primary-cumulative.json` covers all seven batches.
@@ -33,8 +33,12 @@ estimates remain conditional, not billing or promises. See
 `batch-07-followup/forecast-update.json`; its pre-closure review count is historical.
 Mac/pilots/transition remain separate.
 
-Next submit original Batch 08 and start one exit-notified `wait_retrieve_batch.py 8`
-workflow. Save submission/launch receipts separately. On completion reconcile all
+Original Batch 08 was accepted as `msh161-primary-b08-v1`, QUEUED at submission,
+from reviewed checkpoint `2981e506`. Original runnable, ten tasks and maximum
+eight-worker parallelism passed verification. One exit wrapper (PID 35390) runs
+`wait_retrieve_batch.py 8`. See `batch-08-submission.json`,
+`batch-08-submission-verification.json` and `batch-08-wait-launch.json`.
+Do not duplicate wrapper or submission. On completion reconcile all
 layers, review fresh games with independent gameplay/integrity panels, obtain required
 20M and distinct alternatives, update cumulative, then original Batch 09. Restore
 archived JSON locally when needed; no duplicate retrieval/searches. Continue all 200

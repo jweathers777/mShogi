@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-10T20:47:00Z'
-updated_date: '2026-11-13T11:25:00Z'
+updated_date: '2026-11-13T11:26:00Z'
 labels:
   - handle:competitive-gameplay-diagnosis
 milestone: m-5
@@ -213,4 +213,6 @@ Batch 08 deep execution and independent review passed: 1,308 jobs / 1,347 querie
 Sixteen-query Batch 08 followup launched via notify_exit.py PID 53987, job msh161-primary-b08-followup-v1, reviewed checkpoint 80d3c690. Plan SHA256 64f9a9bfcfcca0dcc80a5f2aacb035e311eca3b2c30cf8c72d4d0dcb58b721f0. Launch receipt in batch-08-followup; cloud acceptance remains separate. One automatic callback resumes only new-comparison review, closure overlays, cumulative update and original Batch 09. All played results reused; no repeated search, timer or duplicate process.
 
 Batch 08 closed after independent sixteen-alternative review and execution audit. Three opponent comparison roots gain support, six new comparisons remain unresolved; f4/f3 is subthreshold. Exact original ledgers/final overlays, terminal limits, secondary contexts and successes preserved. Primary cumulative now 160 fully reviewed games: 64 wins, 46 draws, 50 losses (prepared 52/43/49; unaided 12/3/1). Thirty-nine automatic claims and seven dead positions remain distinct. See batch-08-review/closure.md and closure-summary.json. Totals: 66,580 queries, 23,029 jobs, 122.676461 VM-hours, US$24.732556 estimated compute. All stages used eight workers with no allocation/scientific failures; earlier failures separate. Original Batch 09 offline provenance passed. Forty games remain. Recomputed forecast supports Friday evening batch completion / Friday night–Saturday morning final diagnosis with explicit assumptions, superseding old Saturday central. Proceed under original conditions with exit notification; no final priorities or production engineering.
+
+Original Batch 09 accepted as msh161-primary-b09-v1 (QUEUED at submission), UID msh161-primary-b09-5b4e424a-abd3-4a290, reviewed checkpoint 3df2b3f3. Original manifest/image/runnable and ten tasks with maximum eight-worker parallelism verified. One notify_exit.py wrapper PID 55633 runs the existing event-driven wait/retrieve chain; local receipts report running and waiting for terminal. See Batch 09 launch/submission receipts. Current coverage is 160 fully reviewed games; remaining 40 continue under original conditions. No duplicate processes or searches.
 <!-- SECTION:NOTES:END -->

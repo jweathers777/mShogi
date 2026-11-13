@@ -1,6 +1,6 @@
 # MSH-161 (Competitive Gameplay Diagnosis): primary cloud study
 
-## Current state: Batch 05 closed; original Batch 06 submitted
+## Current state: Batch 06 completed; independent review in progress
 
 **100 games are fully reviewed: 41 wins / 29 draws / 30 losses.** Prepared results
 are 33/28/29; unaided results 8/1/1. `primary-cumulative.json` covers all five batches.
@@ -32,15 +32,34 @@ US$29.19; inclusive US$35–90 and Saturday 14 November Paris central finish rem
 conditional, not billing or promises. See `batch-05-followup/forecast-update.json`;
 its pre-closure review count is historical. Mac/pilots/transition remain separate.
 
-Original Batch 06 was accepted as `msh161-primary-b06-v1`, QUEUED at submission,
-from reviewed checkpoint `d494a81c`. Original runnable, ten tasks and maximum
-eight-worker parallelism passed submission verification. One exit wrapper
-(PID 68667) runs `wait_retrieve_batch.py 6`. See `batch-06-submission.json`,
-`batch-06-submission-verification.json` and `batch-06-wait-launch.json`.
-Do not duplicate submission or wrapper. On completion reconcile
-all layers, review fresh games with independent gameplay/integrity panels, obtain
-required 20M and distinct alternative checks, update cumulative, then continue
-original Batch 07. Restore archived JSON locally if needed; do not retrieve again.
+Original Batch 06 completed under `msh161-primary-b06-v1`. Retrieval verified
+1,985 jobs / 29,519 objects (3,480,053,341 bytes). Coordinator receipt bindings
+passed: submitted/completed UID, frozen file hashes, terminal/retrieval hashes,
+wrapper success, own process-group cleanup and accepted completion notification.
+See `batch-06-review/coordinator-reconciliation.json` and the separate receipts.
+There are 120 played games and 100 fully reviewed games; preserve that distinction
+until Batch 06 scientific closure. Independent gameplay and native/query/runtime
+reviews passed. Native results are 6 wins / 8 draws / 6 losses (prepared 5/7/6,
+unaided 1/1/0): six threefold claims, one fifty-move claim and one dead-position draw.
+All 5,716 initial and 1,965 matched 5M queries are accounted for. Seven uncertain
+audit controls remain explicit; no stable missed-error trigger. Eight workers ran,
+one allocation failure and two failed-allocation cleanup notices were preserved,
+and all workers were deleted. No scientific failure occurred.
+
+Both panels froze 570 roots for 901 jobs / 917 required 20M queries, including 16
+unrestricted discoveries. Exact histories, original image/binaries and budgets
+passed offline plan preparation. Plan SHA256:
+`3b06a71903cadc5a6d9510da441dde5dc776667eb341d07c25f8f5225459d55e`.
+Full decision ledgers and review index/inventory are losslessly archived with
+binding manifests. Terminal claims are explicit controls; reference continuations
+cannot replace native outcomes. Selections are not confirmations.
+Next launch this plan once through `notify_exit.py`. On completion reconcile all
+execution layers, independently review against both narratives and obtain only
+distinct new alternative obligations. Preserve earlier/linked uncertainty and
+secondary tags, close Batch 06, update cumulative, then launch original Batch 07.
+Current primary compute estimate is US$16.560273 / 82.140953 VM-hours; full mean
+US$29.21. See `batch-06-review/forecast-update.json` for conditional scope/limits.
+No duplicate queries/retrieval. Restore archived JSON locally when needed.
 Continue the full 200 games without Mac engines, duplicate searches, production
 changes, timers or periodic polling. Stop for John after independent final diagnosis
 and roadmap. Historical transition sections below do not govern current execution.

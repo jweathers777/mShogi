@@ -7,33 +7,47 @@ use std::{
     time::Duration,
 };
 
-/// Read one bounded versioned JSON line and emit one lossless final response.
+/// Engine state that lasts for the life of one engine process.
 ///
-/// Malformed/oversized envelopes produce an I/O error (there is no trustworthy
-/// context to echo). Valid envelopes with unsupported settings/history return a
-/// typed failure. This one-shot process is externally terminable by its host.
-/// Full mode is rejected *before* any live replay can run reachability work.
-pub fn serve_once(mut input: impl BufRead, mut output: impl Write) -> io::Result<()> {
+/// The desktop keeps one engine process and sends one request for each
+/// search. The state lets a timed Chess search use the transposition table
+/// and move statistics of the earlier moves of the same game.
+#[derive(Default)]
+pub(crate) struct Session {
+    chess: Option<ChessSession>,
+}
+struct ChessSession {
+    coordinator: SearchCoordinator,
+    last: mshogi_core::chess::GameRecord,
+}
+
+/// Read one bounded request line. `Ok(None)` is a clean end of input.
+fn read_request(input: &mut impl BufRead) -> io::Result<Option<ExecutionRequest>> {
     let mut bytes = Vec::new();
     input
         .by_ref()
         .take((MAX_REQUEST_BYTES + 2) as u64)
         .read_until(b'\n', &mut bytes)?;
+    if bytes.is_empty() {
+        return Ok(None);
+    }
     if bytes.last() != Some(&b'\n') || bytes.len() > MAX_REQUEST_BYTES + 1 {
         return Err(io::Error::new(
             io::ErrorKind::InvalidData,
             "missing newline or oversized internal request",
         ));
     }
-    let context: ExecutionRequest = serde_json::from_slice(&bytes).map_err(|error| {
+    serde_json::from_slice(&bytes).map(Some).map_err(|error| {
         let ChessResult::Failure { failure } =
             ChessResult::failure(FailureKind::InvalidRequest, error)
         else {
             unreachable!()
         };
         io::Error::other(failure.message)
-    })?;
-    let bytes = serde_json::to_vec(&context.execute()).map_err(io::Error::other)?;
+    })
+}
+fn write_response(output: &mut impl Write, response: &ExecutionResponse) -> io::Result<()> {
+    let bytes = serde_json::to_vec(response).map_err(io::Error::other)?;
     if bytes.len() > MAX_RESPONSE_BYTES {
         return Err(io::Error::new(
             io::ErrorKind::InvalidData,
@@ -44,7 +58,96 @@ pub fn serve_once(mut input: impl BufRead, mut output: impl Write) -> io::Result
     output.write_all(b"\n")?;
     output.flush()
 }
-fn execute_chess(context: &ExecutionContext) -> ChessResult {
+
+/// Read one bounded versioned JSON line and emit one lossless final response.
+///
+/// Malformed/oversized envelopes produce an I/O error (there is no trustworthy
+/// context to echo). Valid envelopes with unsupported settings/history return a
+/// typed failure. The request runs with a new session.
+/// Full mode is rejected *before* any live replay can run reachability work.
+pub fn serve_once(mut input: impl BufRead, mut output: impl Write) -> io::Result<()> {
+    let Some(request) = read_request(&mut input)? else {
+        return Err(io::Error::new(
+            io::ErrorKind::InvalidData,
+            "missing newline or oversized internal request",
+        ));
+    };
+    write_response(&mut output, &request.execute(&mut Session::default()))
+}
+
+/// Serve request lines until the end of input, one response line for each.
+///
+/// This is the engine process of the desktop. One session lasts for all
+/// requests. A malformed or oversized line is an I/O error and ends the
+/// process, as in [`serve_once`]. Input that ends before the first request is
+/// the same error; input that ends after a response is a normal end. The host
+/// stops a search by stopping the process.
+pub fn serve(mut input: impl BufRead, mut output: impl Write) -> io::Result<()> {
+    let mut session = Session::default();
+    let mut served = false;
+    loop {
+        let Some(request) = read_request(&mut input)? else {
+            return if served {
+                Ok(())
+            } else {
+                Err(io::Error::new(
+                    io::ErrorKind::InvalidData,
+                    "missing newline or oversized internal request",
+                ))
+            };
+        };
+        write_response(&mut output, &request.execute(&mut session))?;
+        served = true;
+    }
+}
+
+/// The coordinator for this request, and whether the session keeps it.
+///
+/// A request with a time budget is not deterministic, so it can use the state
+/// of the earlier moves. It keeps that state only when the last timed game is
+/// an exact prefix of this game; a new, loaded or taken-back game starts
+/// empty. A request without a time budget must give the same result each
+/// time, so it always gets a new coordinator and leaves the session unchanged.
+fn chess_coordinator<'a>(
+    session: &'a mut Session,
+    record: &mshogi_core::chess::GameRecord,
+    timed: bool,
+) -> Result<Coordinator<'a>, std::io::Error> {
+    if !timed {
+        return SearchCoordinator::new().map(Coordinator::Fresh);
+    }
+    match &mut session.chess {
+        Some(chess) => {
+            if record.prefix(chess.last.events().len()).as_ref() != Some(&chess.last) {
+                chess.coordinator.new_game();
+            }
+            chess.last = record.clone();
+        }
+        None => {
+            session.chess = Some(ChessSession {
+                coordinator: SearchCoordinator::new()?,
+                last: record.clone(),
+            });
+        }
+    }
+    Ok(Coordinator::Kept(
+        &session.chess.as_ref().expect("chess session").coordinator,
+    ))
+}
+enum Coordinator<'a> {
+    Fresh(SearchCoordinator),
+    Kept(&'a SearchCoordinator),
+}
+impl std::ops::Deref for Coordinator<'_> {
+    type Target = SearchCoordinator;
+    fn deref(&self) -> &SearchCoordinator {
+        match self {
+            Self::Fresh(coordinator) => coordinator,
+            Self::Kept(coordinator) => coordinator,
+        }
+    }
+}
+fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResult {
     let mshogi_core::native::CanonicalRecord::Chess(record) = &context.game else {
         unreachable!()
     };
@@ -81,7 +184,7 @@ fn execute_chess(context: &ExecutionContext) -> ChessResult {
             ),
         };
     }
-    let coordinator = match SearchCoordinator::new() {
+    let coordinator = match chess_coordinator(session, record, context.limits.time_ms.is_some()) {
         Ok(coordinator) => coordinator,
         Err(error) => return ChessResult::failure(FailureKind::Search, error),
     };
@@ -110,7 +213,7 @@ fn execute_chess(context: &ExecutionContext) -> ChessResult {
     }
 }
 
-pub(crate) fn execute(context: &ExecutionContext) -> ExecutionResult {
+pub(crate) fn execute(context: &ExecutionContext, session: &mut Session) -> ExecutionResult {
     match context.game.game_kind() {
         mshogi_core::native::GameKind::Tenjiku => execute_tenjiku(context),
         mshogi_core::native::GameKind::Chu => execute_chu(context),
@@ -118,7 +221,7 @@ pub(crate) fn execute(context: &ExecutionContext) -> ExecutionResult {
         mshogi_core::native::GameKind::Xiangqi => execute_xiangqi(context),
         mshogi_core::native::GameKind::Shogi => execute_shogi(context),
         mshogi_core::native::GameKind::Chess => ExecutionResult::Chess {
-            result: execute_chess(context),
+            result: execute_chess(context, session),
         },
     }
 }

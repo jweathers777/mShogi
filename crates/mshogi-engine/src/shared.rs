@@ -551,7 +551,7 @@ impl ExecutionRequest {
             ),
         }
     }
-    pub(crate) fn execute(&self) -> ExecutionResponse {
+    pub(crate) fn execute(&self, session: &mut crate::server::Session) -> ExecutionResponse {
         if !self.valid() {
             return self.failure(
                 FailureKind::InvalidRequest,
@@ -562,7 +562,7 @@ impl ExecutionRequest {
             protocol: crate::PROTOCOL_VERSION,
             observation: ExecutionObservation::new(
                 self.context.clone(),
-                crate::server::execute(&self.context),
+                crate::server::execute(&self.context, session),
             ),
         }
     }

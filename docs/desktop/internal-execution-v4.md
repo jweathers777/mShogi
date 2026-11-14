@@ -17,8 +17,11 @@ unchanged functional contracts. See [R1 evidence](../review/execution-migration-
 - `ExecutionResponse`: `{ protocol: 4, observation: ExecutionObservation }`.
 
 One `EngineBridge::submit` and `poll` serve all six games and seven immutable
-profiles. The one-shot
-`mshogi internal-search` child parses this request and emits this response.
+profiles. The
+`mshogi internal-search` child reads one request line for each search and
+writes one response line, until its input ends. The bridge keeps one child
+between searches and stops it on cancellation, replacement, failure, timeout
+or shutdown; see "Engine session" below.
 There is no version negotiation, legacy-shape fallback, Chess transport adapter,
 paired polling API or second rules/search model. Strict typed parsing preserves
 raw canonical payload bytes for their authoritative native parsers; duplicate,
@@ -139,3 +142,29 @@ See the [current document](document-v1.md) and [native application](native-appli
 contracts. R1 introduced no permanent transport adapter. Native Chess
 presentation types remain meaningful domain data, not an alternate engine
 execution interface.
+
+## Engine session
+
+MSH-169 (Engine Session Persistence). The wire types did not change.
+
+- One child serves successive requests. A response is accepted when its line is
+  complete and matches the request; the bridge does not wait for the child to
+  exit.
+- The bridge stops the child on cancellation or replacement of a running
+  request, on each typed failure, on the watchdog and on shutdown. The next
+  request starts a new child. A kept child that ended normally while it was
+  idle is replaced once, and the request runs on the new child. A kept child
+  that ends with a failure status during a request is an `UnexpectedExit`
+  failure with the diagnostic text of that request.
+- Memory: the kept child holds its Chess table (64 MB by default) while it is
+  idle. A request without `time_ms` uses a second table for its duration.
+- Chess: a request with `time_ms` uses the transposition table and move
+  statistics that the child kept, when the game of the last timed request is an
+  exact prefix of the game of this request. A new, loaded or taken-back game
+  starts with empty state. A request without `time_ms` always runs on new
+  state and does not change the kept state, so depth and node limits stay
+  reproducible.
+- The other games keep no state between requests at present. A game that moves
+  to the shared search core adds its state to the same session.
+- `process_generation` is a request identity that increases with each
+  submission. It does not count child processes.

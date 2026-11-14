@@ -168,6 +168,7 @@ fn main() {
             },
         }
     };
+    let crash_on_next = context.request_id == 30;
     println!(
         "{}",
         serde_json::to_string(&ExecutionResponse {
@@ -176,4 +177,12 @@ fn main() {
         })
         .unwrap()
     );
+    if crash_on_next {
+        // A kept engine that reads its next request and then fails.
+        let _ = io::stdout().flush();
+        let mut next = String::new();
+        io::stdin().lock().read_line(&mut next).unwrap();
+        eprintln!("fixture failure during a later request");
+        std::process::exit(23);
+    }
 }

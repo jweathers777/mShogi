@@ -160,7 +160,7 @@ Usage: mshogi [--game chess|shogi|xiangqi|tori|chu|tenjiku] [--profile adams|mul
   shogi          Compatibility alias for --game shogi shell
   uci            Selected Chess UCI or Xiangqi UCI0-9 adapter (rejects shogi)
   usi            Untimed bounded USI shogi adapter (bare usi selects shogi)
-  internal-search  Structured native search; request supplies game, no --game
+  internal-search  Structured native search, one request line per search until end of input; request supplies game, no --game
 
 Use 'mshogi --game {game}{profile_option} shell' and type 'help' for native commands.
 The shell is a diagnostic console, not a UCI engine. Results go to stdout;
@@ -281,7 +281,7 @@ fn main() -> ExitCode {
         }
         "usi" => return usi::run(),
         "internal-search" => {
-            if let Err(error) = mshogi_engine::serve_once(io::stdin().lock(), io::stdout().lock()) {
+            if let Err(error) = mshogi_engine::serve(io::stdin().lock(), io::stdout().lock()) {
                 eprintln!("internal search failed: {error}");
                 return ExitCode::FAILURE;
             }

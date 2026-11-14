@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex-cloud-runner'
 created_date: '2026-11-11T18:35:00Z'
-updated_date: '2026-11-14T18:38:00Z'
+updated_date: '2026-11-14T18:39:00Z'
 labels:
   - handle:parallel-experiment-runner
 dependencies: []
@@ -92,6 +92,8 @@ Final evidence commit7dd13acb: all1841eight-worker jobs verified from27401object
 Coordinator12November: accepted runtime/scientificpilot evidence, mergedisolatedbranch into codex/rewrite atbb5e698e, andreran64integrationtests PASS. Latesthumanrequestauthorizesfull200primarycloudstudy; first20submitted msh161-primary-b01-v1 with8workers usingexacttested51351image/newercontroller. NoMac/pilotpooling. Actualpilotbilledcost remainsunavailable; nofabricatedreconciliation orDone claim. Isolatedworktree hasno activeworker/listener dependency andisretained solelyforremainingpilotbillingreconciliation; integration/evidence nowinprimary. CoordinatorownsMSH161/scientificreview; nointerchatmessaging.
 
 Owner decision, 2026-11-14: final billing is not required for completion. AC4 now explicitly accepts the documented cost estimate. Actual billed charges remain unknown and are not claimed as verified. Integration at bb5e698e and 64 passing integration tests were already recorded by the coordinator. Corrected stale integration checkboxes and summary; all criteria and completion items now satisfied. Final instruction commit f8046d83 is also merged into codex/rewrite. The isolated worktree has no remaining execution or billing purpose and will be archived after this closure is pushed. Other tasks and their evidence are unchanged.
+
+Closure pushed at 004e3263. All isolated branch commits, including f8046d83, are integrated. No live process needs the worktree; only disposable Python caches remain. App-managed archival was attempted, but archive_worktree refused: "The task's primary checkout cannot be removed." The checkout is retained solely because of this app protection; no manual removal or protection bypass was attempted. Task completion is unaffected.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

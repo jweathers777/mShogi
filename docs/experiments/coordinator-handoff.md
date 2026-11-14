@@ -5,7 +5,9 @@ reconciliation as a completion requirement. Actual charges remain unknown;
 the recorded US$2.04140 is an estimate of pilot VM compute, excluding other
 charges. Implementation and evidence were integrated at `bb5e698e`; the
 coordinator recorded 64 passing integration tests. The isolated worktree has
-no remaining purpose and is eligible for archival. This closure supersedes
+no execution purpose. Archival was attempted, but the app refused to remove
+this chat's primary checkout. It is retained because of that protection.
+This closure supersedes
 the pending-billing and worktree-retention statements in the history below.
 
 ## Coordinator update —12November2026

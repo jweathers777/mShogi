@@ -193,7 +193,7 @@
     "branch": "codex/parallel-experiment-runner",
     "target": "codex/rewrite",
     "status": "Integrated into codex/rewrite at bb5e698e; coordinator recorded 64 passing integration tests.",
-    "worktree_purpose": "None remaining; archive after closure commit is pushed.",
+    "worktree_purpose": "Retained because the app archive tool protects this chat primary checkout. No execution dependency or unfinished implementation remains.",
     "target_revision": "bb5e698e"
   },
   "previous_source_checkpoint": {
@@ -375,6 +375,7 @@
     "owner_decision": "Final billing reconciliation is not required. Complete MSH-162.",
     "status": "Done",
     "actual_billing": "Unknown; not presented as verified",
-    "cost_evidence": "Documented VM lifecycle estimate; excludes other charges."
+    "cost_evidence": "Documented VM lifecycle estimate; excludes other charges.",
+    "worktree_archival": "Attempted; app refused: The task's primary checkout cannot be removed."
   }
 }

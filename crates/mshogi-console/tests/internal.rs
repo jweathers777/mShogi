@@ -218,3 +218,100 @@ fn shutdown_terminates_an_active_child_without_waiting_on_the_caller() {
     stop(&bridge);
     assert!(bridge.poll().is_none());
 }
+
+/// Nodes of a timed, depth-limited search of the start position.
+fn timed_nodes(bridge: &EngineBridge, id: u64) -> u64 {
+    let mut context = request(id);
+    context.context.limits = WorkLimits {
+        depth: 8,
+        nodes: 50_000_000,
+        time_ms: Some(60_000),
+    };
+    bridge.submit(context).unwrap();
+    let ExecutionResult::Chess {
+        result: ChessResult::Move { telemetry, .. },
+    } = wait(bridge).observation.result
+    else {
+        panic!("no move")
+    };
+    assert_eq!(telemetry.completed_depth, 8);
+    telemetry.nodes
+}
+#[test]
+fn one_engine_process_keeps_its_state_between_searches_until_cancellation() {
+    let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(60));
+    let cold = timed_nodes(&bridge, 1);
+    // The same process answers again: its table has the earlier search.
+    let warm = timed_nodes(&bridge, 2);
+    assert!(warm * 2 < cold, "cold {cold}, warm {warm}");
+    // A cancelled search stops the process. The next search starts a new one.
+    let mut long = request(3);
+    long.context.limits = WorkLimits {
+        depth: 128,
+        nodes: u64::MAX,
+        time_ms: Some(60_000),
+    };
+    bridge.submit(long).unwrap();
+    thread::sleep(Duration::from_millis(200));
+    bridge.cancel();
+    assert_eq!(timed_nodes(&bridge, 4), cold);
+    // A new request replaces a running search: the process is stopped, the
+    // replaced search publishes nothing, and the new search starts empty.
+    let mut long = request(5);
+    long.context.limits = WorkLimits {
+        depth: 128,
+        nodes: u64::MAX,
+        time_ms: Some(60_000),
+    };
+    bridge.submit(long).unwrap();
+    thread::sleep(Duration::from_millis(200));
+    assert_eq!(timed_nodes(&bridge, 6), cold);
+    assert!(bridge.poll().is_none());
+    stop(&bridge);
+}
+#[test]
+fn a_kept_engine_process_that_ended_is_replaced_without_a_failure() {
+    // The fixture ends after each response, as an engine that stopped while idle.
+    let bridge = bridge(
+        env!("CARGO_BIN_EXE_mshogi-internal-fixture"),
+        Duration::from_secs(15),
+    );
+    for id in [7, 8, 12] {
+        bridge.submit(request(id)).unwrap();
+        let response = wait(&bridge);
+        assert_eq!(response.observation.context.request_id, id);
+        assert!(matches!(
+            response.observation.result,
+            ExecutionResult::Chess {
+                result: ChessResult::Incomplete { .. }
+            }
+        ));
+        // Give the fixture time to end in two of the three cases.
+        thread::sleep(Duration::from_millis(if id == 8 { 0 } else { 100 }));
+    }
+    stop(&bridge);
+}
+#[test]
+fn a_kept_engine_process_that_fails_during_a_request_is_a_typed_failure() {
+    let bridge = bridge(
+        env!("CARGO_BIN_EXE_mshogi-internal-fixture"),
+        Duration::from_secs(15),
+    );
+    // The fixture answers request 30, stays, reads request 31 and then fails.
+    bridge.submit(request(30)).unwrap();
+    assert_eq!(wait(&bridge).observation.context.request_id, 30);
+    bridge.submit(request(31)).unwrap();
+    let ExecutionResult::Failure { failure } = wait(&bridge).observation.result else {
+        panic!("a failed engine process was replaced without a report")
+    };
+    assert_eq!(failure.kind, FailureKind::UnexpectedExit);
+    assert!(
+        failure
+            .message
+            .contains("fixture failure during a later request")
+    );
+    // The next request starts a new process.
+    bridge.submit(request(32)).unwrap();
+    assert_eq!(wait(&bridge).observation.context.request_id, 32);
+    stop(&bridge);
+}

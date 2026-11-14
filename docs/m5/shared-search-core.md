@@ -77,6 +77,10 @@ coordinator's worker thread owns it for the life of the worker.
 - `SearchCoordinator::new_game()` clears it. UCI calls this on `ucinewgame`.
 - `SearchCoordinator::set_table_megabytes(n)` sets the table size. UCI exposes
   it as `setoption name Hash value N` (1 to 4096, default 64).
+- The desktop keeps one engine process (MSH-169 (Engine Session Persistence),
+  `docs/desktop/internal-execution-v4.md`). A timed search continues with the
+  state of the earlier moves of the same game. Cancellation of a running
+  search stops the process, and the next search starts with empty state.
 - A fresh engine gives the same result for the same depth or node limit. A
   warm table changes node counts; that is intended.
 
@@ -114,10 +118,6 @@ Tenjiku Shogi.
 
 ## Present limits
 
-- The desktop and the internal execution protocol start one engine process for
-  each search request. On that path the table starts empty at each move. The
-  UCI path keeps it for the full game. MSH-169 (Engine Session Persistence)
-  owns this.
 - Selectivity is the set that the earlier search had, in standard form.
   MSH-166 (Search Selectivity Completion) adds and tests the missing techniques.
 - Time use is one soft and one hard limit per move. MSH-167 (Engine Time

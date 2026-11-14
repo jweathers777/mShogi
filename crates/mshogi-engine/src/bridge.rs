@@ -1,6 +1,6 @@
 use crate::*;
 use std::{
-    io::{self, Read, Write},
+    io::{self, BufRead, Read, Write},
     path::PathBuf,
     process::{Child, Command, Stdio},
     sync::{
@@ -65,8 +65,10 @@ struct Shared {
 }
 /// One supervisory worker with one replaceable pending request and one result.
 ///
-/// Submit/cancel/poll never launch, perform pipe I/O, wait or join. A fresh child
-/// per search is killed on cancellation/replacement/shutdown. Three bounded pipe
+/// Submit/cancel/poll never launch, perform pipe I/O, wait or join. One child
+/// serves successive searches, so the engine keeps its state between the moves
+/// of a game. The child is killed on cancellation/replacement/failure/shutdown,
+/// and the next search starts a new child. Three bounded pipe
 /// helpers per child keep blocked pipes away from the controller. Cleanup only
 /// joins finished helpers; an OS pipe that fails to close is detached after the
 /// cleanup watchdog. Uncertain reaping/helper shutdown is a typed Cleanup failure
@@ -186,6 +188,9 @@ impl Drop for EngineBridge {
     }
 }
 fn worker(shared: Arc<Shared>, path: PathBuf, options: BridgeOptions) {
+    // The engine process of this bridge. It lasts until a failure, a
+    // cancellation or shutdown, so the engine keeps its state between searches.
+    let mut engine: Option<Process> = None;
     loop {
         let pending = {
             let mut state = shared.state.lock().expect("engine metadata mutex");
@@ -198,7 +203,7 @@ fn worker(shared: Arc<Shared>, path: PathBuf, options: BridgeOptions) {
             state.pending.take().expect("pending engine request")
         };
         // Context serialization/cloning remains off the cancellation metadata lock.
-        let response = run(&path, options, &pending);
+        let response = run(&path, options, &pending, &mut engine);
         let mut state = shared.state.lock().expect("engine metadata mutex");
         if !state.shutdown
             && !pending.cancelled.load(Ordering::Acquire)
@@ -210,13 +215,22 @@ fn worker(shared: Arc<Shared>, path: PathBuf, options: BridgeOptions) {
             state.result = Some(response);
         }
     }
+    if let Some(mut process) = engine
+        && let Err(detail) = process.cleanup(options.cleanup)
+    {
+        eprintln!("Engine cleanup uncertainty at shutdown: {detail}");
+    }
     shared.exited.store(true, Ordering::Release);
 }
 struct Process {
     child: Child,
     pipes: Vec<JoinHandle<()>>,
     stderr: Arc<Mutex<Vec<u8>>>,
+    /// Request lines for the stdin helper. Dropping it closes the child's stdin.
+    requests: Option<mpsc::SyncSender<Vec<u8>>>,
     written: Receiver<io::Result<()>>,
+    /// One message for each output line. A message without a final newline is
+    /// the end of output or an oversized line; the helper stops after it.
     stdout: Receiver<io::Result<Vec<u8>>>,
 }
 enum SpawnError {
@@ -229,7 +243,7 @@ impl From<io::Error> for SpawnError {
     }
 }
 impl Process {
-    fn spawn(path: &PathBuf, bytes: Vec<u8>) -> Result<Self, SpawnError> {
+    fn spawn(path: &PathBuf) -> Result<Self, SpawnError> {
         let path = std::fs::canonicalize(path)?;
         if !std::fs::metadata(&path)?.is_file() {
             return Err(io::Error::new(
@@ -248,7 +262,7 @@ impl Process {
         {
             use std::os::windows::process::CommandExt;
             // The supervised protocol child uses pipes, not an interactive
-            // console. A Windows GUI host must not let each search create a
+            // console. A Windows GUI host must not let the engine create a
             // console window and take foreground focus from the application.
             const CREATE_NO_WINDOW: u32 = 0x0800_0000;
             command.creation_flags(CREATE_NO_WINDOW);
@@ -257,6 +271,7 @@ impl Process {
         let mut input = child.stdin.take().expect("piped stdin");
         let output = child.stdout.take().expect("piped stdout");
         let mut error = child.stderr.take().expect("piped stderr");
+        let (request_send, requests) = mpsc::sync_channel::<Vec<u8>>(1);
         let (write_send, written) = mpsc::sync_channel(1);
         let (out_send, stdout) = mpsc::sync_channel(1);
         let stderr = Arc::new(Mutex::new(Vec::new()));
@@ -264,17 +279,28 @@ impl Process {
         let writer = thread::Builder::new()
             .name("internal-stdin".into())
             .spawn(move || {
-                let _ = write_send.send(input.write_all(&bytes).and_then(|()| input.flush()));
+                while let Ok(bytes) = requests.recv() {
+                    let result = input.write_all(&bytes).and_then(|()| input.flush());
+                    let failed = result.is_err();
+                    if write_send.send(result).is_err() || failed {
+                        break;
+                    }
+                }
             });
         let reader = thread::Builder::new()
             .name("internal-stdout".into())
             .spawn(move || {
-                let mut bytes = Vec::new();
-                let result = output
-                    .take((MAX_RESPONSE_BYTES + 2) as u64)
-                    .read_to_end(&mut bytes)
-                    .map(|_| bytes);
-                let _ = out_send.send(result);
+                let mut output = io::BufReader::new(output);
+                loop {
+                    let mut bytes = Vec::new();
+                    let result = (&mut output)
+                        .take((MAX_RESPONSE_BYTES + 2) as u64)
+                        .read_until(b'\n', &mut bytes);
+                    let last = result.is_err() || bytes.last() != Some(&b'\n');
+                    if out_send.send(result.map(|_| bytes)).is_err() || last {
+                        break;
+                    }
+                }
             });
         let error_reader = thread::Builder::new()
             .name("internal-stderr".into())
@@ -297,6 +323,7 @@ impl Process {
             child,
             pipes: Vec::new(),
             stderr,
+            requests: Some(request_send),
             written,
             stdout,
         };
@@ -319,6 +346,11 @@ impl Process {
     }
     fn cleanup(&mut self, timeout: Duration) -> Result<(), String> {
         let deadline = Instant::now() + timeout;
+        // Close stdin, and drop the receiving ends, so that no pipe helper
+        // stays blocked on a channel that nothing reads.
+        self.requests = None;
+        self.written = mpsc::sync_channel(1).1;
+        self.stdout = mpsc::sync_channel(1).1;
         let _ = self.child.kill();
         let reaped = loop {
             match self.child.try_wait() {
@@ -377,7 +409,24 @@ impl Drop for Process {
         let _ = self.child.try_wait();
     }
 }
-fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> ExecutionResponse {
+/// The result of one request on one engine process.
+enum Exchange {
+    /// A valid response. The process stays for the next request.
+    Response(ExecutionResponse),
+    /// A failure. The process must be stopped.
+    Failure(ExecutionResponse),
+    /// A kept process ended normally (exit status success) without any output
+    /// for this request, or its stdin was already closed. It stopped while it
+    /// was idle; a new process can take the request. A kept process that ends
+    /// with a failure status is a typed failure, not this.
+    Ended,
+}
+fn run(
+    path: &PathBuf,
+    options: BridgeOptions,
+    pending: &Pending,
+    engine: &mut Option<Process>,
+) -> ExecutionResponse {
     let mut bytes = match serde_json::to_vec(&*pending.context) {
         Ok(bytes) => bytes,
         Err(error) => return pending.context.failure(FailureKind::InvalidRequest, error),
@@ -394,99 +443,135 @@ fn run(path: &PathBuf, options: BridgeOptions, pending: &Pending) -> ExecutionRe
             .failure(FailureKind::Io, "request cancelled before launch");
     }
     let deadline = Instant::now() + options.watchdog;
-    let mut process = match Process::spawn(path, bytes) {
-        Ok(process) => process,
-        Err(SpawnError::Start(error)) => return pending.context.failure(FailureKind::Start, error),
-        Err(SpawnError::Cleanup(detail)) => return cleanup_failure(&pending.context, detail),
+    loop {
+        let (mut process, kept) = match engine.take() {
+            Some(process) => (process, true),
+            None => match Process::spawn(path) {
+                Ok(process) => (process, false),
+                Err(SpawnError::Start(error)) => {
+                    return pending.context.failure(FailureKind::Start, error);
+                }
+                Err(SpawnError::Cleanup(detail)) => {
+                    return cleanup_failure(&pending.context, detail);
+                }
+            },
+        };
+        let exchange = exchange(&mut process, kept, &bytes, pending, deadline);
+        if let Exchange::Response(response) = exchange {
+            *engine = Some(process);
+            return response;
+        }
+        let cleanup = process.cleanup(options.cleanup);
+        match (exchange, cleanup) {
+            (_, Err(detail)) => return cleanup_failure(&pending.context, detail),
+            (Exchange::Failure(response), Ok(())) => return response,
+            // Only a kept process can end this way, so this happens at most once.
+            (Exchange::Ended, Ok(())) => {}
+            (Exchange::Response(_), Ok(())) => unreachable!("handled above"),
+        }
+    }
+}
+fn exchange(
+    process: &mut Process,
+    kept: bool,
+    request: &[u8],
+    pending: &Pending,
+    deadline: Instant,
+) -> Exchange {
+    let fail = |kind, message: &dyn std::fmt::Display| {
+        Exchange::Failure(pending.context.failure(kind, message))
     };
-    let mut output = None;
-    let mut exit = None;
-    let result = loop {
+    // Diagnostics belong to this request, not to earlier ones on a kept process.
+    process.stderr.lock().expect("stderr buffer").clear();
+    let sent = process
+        .requests
+        .as_ref()
+        .is_some_and(|requests| requests.try_send(request.to_vec()).is_ok());
+    if !sent {
+        return if kept {
+            Exchange::Ended
+        } else {
+            fail(FailureKind::Io, &"stdin worker unavailable")
+        };
+    }
+    // Output that ended without a complete line; classified after child exit.
+    let mut ended: Option<Vec<u8>> = None;
+    loop {
         if pending.cancelled.load(Ordering::Acquire) {
-            break pending
-                .context
-                .failure(FailureKind::Io, "request cancelled");
+            return fail(FailureKind::Io, &"request cancelled");
         }
         if let Ok(Err(error)) = process.written.try_recv() {
-            break pending.context.failure(FailureKind::Io, error);
+            return if kept {
+                Exchange::Ended
+            } else {
+                fail(FailureKind::Io, &error)
+            };
         }
-        if output.is_none() {
+        if ended.is_none() {
             match process.stdout.try_recv() {
                 Ok(Ok(bytes)) => {
                     if bytes.len() > MAX_RESPONSE_BYTES + 1 {
-                        break pending
-                            .context
-                            .failure(FailureKind::OversizedResponse, "response exceeds byte cap");
+                        return fail(FailureKind::OversizedResponse, &"response exceeds byte cap");
                     }
-                    output = Some(bytes);
+                    if bytes.last() != Some(&b'\n') {
+                        ended = Some(bytes);
+                    } else {
+                        let response: ExecutionResponse = match serde_json::from_slice(&bytes) {
+                            Ok(response) => response,
+                            Err(error) => return fail(FailureKind::MalformedResponse, &error),
+                        };
+                        if !response.matches(&pending.context) {
+                            return fail(
+                                FailureKind::ContextMismatch,
+                                &"engine echoed a different complete context or result family",
+                            );
+                        }
+                        return Exchange::Response(response);
+                    }
                 }
-                Ok(Err(error)) => break pending.context.failure(FailureKind::Io, error),
+                Ok(Err(error)) => return fail(FailureKind::Io, &error),
                 Err(mpsc::TryRecvError::Disconnected) => {
-                    break pending
-                        .context
-                        .failure(FailureKind::Io, "stdout worker disconnected");
+                    return fail(FailureKind::Io, &"stdout worker disconnected");
                 }
                 Err(mpsc::TryRecvError::Empty) => {}
             }
         }
-        if exit.is_none() {
+        if let Some(bytes) = &ended {
             match process.child.try_wait() {
-                Ok(status) => exit = status,
-                Err(error) => break pending.context.failure(FailureKind::Io, error),
-            }
-        }
-        if let Some(status) = exit {
-            if !status.success() {
-                let diagnostic =
-                    String::from_utf8_lossy(&process.stderr.lock().expect("stderr buffer"))
-                        .into_owned();
-                break pending.context.failure(
-                    FailureKind::UnexpectedExit,
-                    format!("{status}: {diagnostic}"),
-                );
-            }
-            if let Some(bytes) = &output {
-                if bytes.is_empty() {
-                    break pending.context.failure(
+                Ok(Some(status)) if !status.success() => {
+                    let diagnostic =
+                        String::from_utf8_lossy(&process.stderr.lock().expect("stderr buffer"))
+                            .into_owned();
+                    return fail(
+                        FailureKind::UnexpectedExit,
+                        &format!("{status}: {diagnostic}"),
+                    );
+                }
+                Ok(Some(_)) if bytes.is_empty() && kept => return Exchange::Ended,
+                Ok(Some(_)) if bytes.is_empty() => {
+                    return fail(
                         FailureKind::MissingResponse,
-                        "engine exited without a response",
+                        &"engine exited without a response",
                     );
                 }
-                if bytes.last() != Some(&b'\n') {
-                    break pending.context.failure(
+                Ok(Some(_)) => {
+                    return fail(
                         FailureKind::MalformedResponse,
-                        "response missing final newline",
+                        &"response missing final newline",
                     );
                 }
-                let response: ExecutionResponse = match serde_json::from_slice(bytes) {
-                    Ok(response) => response,
-                    Err(error) => {
-                        break pending
-                            .context
-                            .failure(FailureKind::MalformedResponse, error);
-                    }
-                };
-                if !response.matches(&pending.context) {
-                    break pending.context.failure(
-                        FailureKind::ContextMismatch,
-                        "engine echoed a different complete context or result family",
-                    );
-                }
-                break response;
+                Ok(None) => {}
+                Err(error) => return fail(FailureKind::Io, &error),
             }
         }
         if Instant::now() >= deadline {
-            break pending.context.failure(
+            return fail(
                 FailureKind::Timeout,
-                "internal engine response/exit watchdog expired",
+                &"internal engine response/exit watchdog expired",
             );
         }
         thread::sleep(Duration::from_millis(2));
-    };
-    if let Err(detail) = process.cleanup(options.cleanup) {
-        return cleanup_failure(&pending.context, detail);
     }
-    result
 }
 
 #[cfg(test)]

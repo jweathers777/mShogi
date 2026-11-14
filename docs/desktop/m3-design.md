@@ -61,7 +61,11 @@ historical-position navigation is implied by a displayed move list.
 The bundled native `mshogi` executable retains `uci` compatibility and gains a
 small versioned JSON-line internal search mode. The host alone locates and
 launches the packaged sibling executable; the webview has no shell permission.
-A fresh supervised process per search is sufficient for this slice. Requests
+One supervised engine process serves successive searches and keeps the
+engine state between the moves of a game; cancellation, replacement, failure
+and shutdown stop it, and the next search starts a new one (MSH-169 (Engine
+Session Persistence), which replaced the first design of a new process for
+each search). Requests
 carry protocol version, unique request identity, monotonic session version,
 engine-process generation, exact canonical `GameRecord` (including initial
 state, known repetition history, claim policy, accepted claims, adjudication

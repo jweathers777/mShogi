@@ -4,7 +4,7 @@ title: Rewrite Main Promotion
 status: Ready
 assignee: []
 created_date: '2026-11-14T12:28:00Z'
-updated_date: '2026-11-14T12:41:00Z'
+updated_date: '2026-11-14T12:50:00Z'
 labels:
   - handle:rewrite-main-promotion
 dependencies:
@@ -38,7 +38,7 @@ Comparison at the recorded tips:
 - Old Save/Load uses custom text despite its .pgn extension (src/Engine/GameRecord.cpp and src/GUI/mShogiFrame.cpp). No old-format import adapter was found. Current .mshogi documents and native JSON records are different; do not imply generic PGN support.
 - Old desktop supports two human players. Rewrite setup assigns one human side against mShogi. Old console has six selectable searches, quiescence controls and script commands; rewrite tools do not preserve those command interfaces. Old Force stops search and plays its result; rewrite cancellation pauses without a move. John accepted these old control differences on 2026-11-14; two-human desktop play is tracked separately in MSH-172 (Two-Human Desktop Play).
 - Rewrite rules, history, inspection, supervised execution, protocols, tests and strength infrastructure are much broader. Six-game M4 acceptance is recorded in docs/m4/final-delivery.md. This does not prove every Rust engine is stronger than the C++ engine. MSH-164 (Shared Search Core) compares against the preceding Rust engine only.
-- README.md, desktop/README.md and some module comments still describe incomplete earlier milestones. Rust CI push filters use codex/** and PR filters use codex/rewrite. Update branch references and public coverage before promotion.
+- README.md, desktop/README.md and some module comments still describe incomplete earlier milestones. Rust CI push filters use codex/** and PR filters use codex/rewrite. Update branch references and public coverage before promotion. During documentation cleanup, remove personal references to the project owner, including third-person references by name. State product requirements, decisions and workflow rules directly without personal attribution. Preserve required copyright/license notices and historical evidence records.
 - MSH-169 (Engine Session Persistence) has an unmerged implementation commit on claude/msh-169-engine-session. MSH-170 (Unused Code Removal) has active dirty work in the primary checkout. codex/parallel-experiment-runner and codex/tenjiku-historical-access each have one unique documentation/research commit. Most other task branches have no unique commits. Recheck tips and ownership at execution.
 
 **Completion**
@@ -53,6 +53,7 @@ Record decisions, branch dispositions, tested/promoted revisions, independent re
 - [ ] #4 A structured Level 3 record identifies the exact candidate source, actual three-platform native/desktop evidence, justified reused evidence and limitations; material findings are resolved and independent final review approves promotion.
 - [ ] #5 main is created and published at the accepted rewrite tip after MSH-169 (Engine Session Persistence) and MSH-170 (Unused Code Removal) are integrated; an annotated tag preserves the old C++ tip, original/prototype histories remain accessible, and no orphan replacement or force-push is used.
 - [ ] #6 Remote tips/default and applicable CI routing are verified; rollback instructions and handoff are complete without an unsupported release or playing-strength claim.
+- [ ] #7 Current project documentation and workflow guidance state requirements and decisions directly, without personal references to the project owner or third-person references by name; required copyright/license notices and historical evidence remain intact.
 <!-- AC:END -->
 
 ## Definition of Done
@@ -67,4 +68,6 @@ Record decisions, branch dispositions, tested/promoted revisions, independent re
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner decision recorded on 2026-11-14: preserve history; tag the old C++ tip; create main from the accepted rewrite and make it the default after MSH-169 (Engine Session Persistence) and MSH-170 (Unused Code Removal) are integrated. Other missing old features are not required. MSH-172 (Two-Human Desktop Play) is a separate Ready feature, not a promotion dependency. This edit records the decision only; no branch/default/tag change or feature implementation was performed.
+
+Documentation requirement added on 2026-11-14: eliminate personal references to the project owner during the promotion documentation cleanup, including third-person references. No personal attribution is needed in current explanatory documentation. This is a requirement for the future cleanup; the cleanup has not run.
 <!-- SECTION:NOTES:END -->

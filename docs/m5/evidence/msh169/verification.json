@@ -5,7 +5,7 @@
   "source": {
     "branch": "claude/msh-169-engine-session",
     "tested_revision": "2274e03a",
-    "note": "Later commits on this task add only this evidence, the measurement wrapper and task records."
+    "note": "Integrated as f7ab97f3 after a rebase on 154431cb; the commits between differ only in Backlog task records, so the source content is the same as 2274e03a. Later commits on this task add only this evidence, the measurement wrapper and task records."
   },
   "environment_local": "Apple M1 Pro, macOS (Darwin 27.0.0), stable Rust from rust-toolchain.toml",
   "checks": [

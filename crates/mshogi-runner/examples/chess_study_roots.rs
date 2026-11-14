@@ -1,6 +1,6 @@
 //! Frozen MSH-49 starting-history sampler; no engine or candidate is evaluated.
 use mshogi_core::{
-    chess::{AdjudicatedGame, ClaimPolicy, Color},
+    chess::{AdjudicatedGame, ClaimPolicy, Color, PieceKind, Position, Square},
     native::CanonicalRecord,
 };
 use mshogi_runner::OpeningConfig;
@@ -16,6 +16,32 @@ const FAMILIES: [&[&str]; 6] = [
     &["g1f3", "d7d5", "g2g3", "g8f6"],
     &["e2e4", "e7e6", "d2d4", "d7d5"],
 ];
+/// White material minus Black material in centipawns (pawn 100, knight 320,
+/// bishop 330, rook 500, queen 900), the filter of the frozen population.
+fn white_material_balance(position: &Position) -> i32 {
+    let mut balance = 0;
+    for rank in 0..8 {
+        for file in 0..8 {
+            let Some(piece) = position.piece_at(Square::new(file, rank).unwrap()) else {
+                continue;
+            };
+            let value = match piece.kind {
+                PieceKind::Pawn => 100,
+                PieceKind::Knight => 320,
+                PieceKind::Bishop => 330,
+                PieceKind::Rook => 500,
+                PieceKind::Queen => 900,
+                PieceKind::King => 0,
+            };
+            balance += if piece.color == Color::White {
+                value
+            } else {
+                -value
+            };
+        }
+    }
+    balance
+}
 struct Random<'a> {
     seed: &'a str,
     label: &'a str,
@@ -106,10 +132,7 @@ fn generate<'a>(
             if moves.len() != FAMILIES[family].len() + extra
                 || game.outcome().is_some()
                 || !game.available_claims().is_empty()
-                || mshogi_search::chess::evaluate(game.position())
-                    .score_for(Color::White)
-                    .abs()
-                    > 100
+                || white_material_balance(game.position()).abs() > 100
                 || excluded.contains(&moves)
             {
                 continue;
@@ -213,12 +236,7 @@ mod tests {
             };
             let game = AdjudicatedGame::replay_record(&record).unwrap();
             assert!(game.outcome().is_none() && game.available_claims().is_empty());
-            assert!(
-                mshogi_search::chess::evaluate(game.position())
-                    .score_for(Color::White)
-                    .abs()
-                    <= 100
-            );
+            assert!(white_material_balance(game.position()).abs() <= 100);
         }
     }
     #[test]

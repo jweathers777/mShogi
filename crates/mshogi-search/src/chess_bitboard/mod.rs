@@ -23,7 +23,8 @@ pub(crate) const KING: usize = 5;
 const EMPTY: u8 = 12;
 const NO_SQUARE: u8 = 64;
 
-/// Material values, the same as `crate::chess::piece_value`.
+/// Material values in centipawns: pawn 100, knight 320, bishop 330, rook 500,
+/// queen 900, king 0.
 pub(crate) const VALUE: [i32; 6] = [100, 320, 330, 500, 900, 0];
 
 const FLAG_NORMAL: u16 = 0;

@@ -146,7 +146,7 @@ MSH-9 adds `Position::legal_actions()`, `Position::in_check()` and `Position::cl
 - `apply` accepts every other listed action, and nothing outside the list;
 - positions that differ only in counters have identical legal sets and classifications, so bare kings at halfmove 4294967295 remain `quiet` rather than becoming a false stalemate, and a check whose every reply would overflow stays `check`, not checkmate.
 
-Approved by John on 2026-10-23 (MSH-9), including the corresponding wording of the candidate contract above.
+Approved by recorded decision on 2026-10-23 (MSH-9), including the corresponding wording of the candidate contract above.
 
 Order is deterministic but unspecified. It is not a search ordering.
 

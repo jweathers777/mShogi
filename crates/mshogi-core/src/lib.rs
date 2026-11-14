@@ -5,12 +5,12 @@
 //! passant, exact undo, geometric attack queries and pseudo-legal candidates.
 //! It also provides the legal-action list, position-level classification and
 //! perft/divide diagnostics. Game owns action/repetition history and versioned
-//! records. Full game/match adjudication remains subsequent
-//! work; this is not a full conformance certificate.
+//! records. The library also implements the selected game/match adjudication profiles.
+//! Exact proof procedures retain their documented resource-uncertainty limits.
 
 /// Target chess position contract specified in `docs/rules/chess-position-v1.md`.
 ///
-/// The current implementation covers state/FEN, transitions, attacks, legal actions, classification and perft, not adjudication.
+/// Position-level identity; game/match history and adjudication use the separate match profile.
 pub const CHESS_POSITION_PROFILE_ID: &str = "mshogi.chess.position.v1";
 
 /// Versioned chess match/history contract. Implemented coverage is in the ledger.
@@ -24,10 +24,10 @@ pub mod shogi;
 /// Native Xiangqi position/action foundation; coverage is explicitly game-owned.
 pub mod xiangqi;
 
-/// Small tagged native-record and command dispatch for actual chess/shogi consumers.
+/// Shared tagged native-record and command dispatch for all six games.
 pub mod native;
 
-/// Native Tori structural/local rules and inspection; full-game consumers remain later.
+/// Native Tori rules, history, inspection and complete-game consumer contracts.
 pub mod tori;
 
 /// Native modern JCSA Chu Shogi rules and complete-action admission.

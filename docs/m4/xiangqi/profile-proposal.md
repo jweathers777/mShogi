@@ -1,9 +1,9 @@
 # Selected Xiangqi rules profile — XIANGQI-P1
 
-**Selected by John on 2026-10-27: `mshogi.xiangqi.wxf2018.v1`.**
+**Selected by recorded decision on 2026-10-27: `mshogi.xiangqi.wxf2018.v1`.**
 Game identity `xiangqi`; immutable governing edition **World Xiangqi Rules2018**,
 published by WXF as an official **bilingual Chinese/English publication**.
-The [owner decision record](owner-decisions.md) supersedes the
+The [project decision record](owner-decisions.md) supersedes the
 [historical unselected proposal](profile-proposal-before-xiangqi-p1.md), including
 its fourth-occurrence warning and language-precedence suggestions. The filename
 is retained so existing task/document references remain valid.
@@ -28,7 +28,7 @@ WXF interpretation where relevant. Selected repairs are recorded individually.
 Unknown questions stay named and block their affected implementation; comparator
 helpers do not settle them. AXF/CXA corpus acquisition is not a blanket gate to
 this selected WXF profile or unaffected board work. Other profiles need separate
-names, source editions and owner decisions.
+names, source editions and project decisions.
 
 ## Repetition, warnings and continued conduct
 
@@ -124,7 +124,7 @@ of exact work proves neither side of the question. Record mode, limits, exact
 target/history/provenance and accepted proof/unknown observations. Bound replay
 and reconstruction too; unsupported restoration is explicit.
 
-**G-NOWIN resolved by John during MSH-94:** use the existential natural-course
+**G-NOWIN resolved by recorded decision during MSH-94:** use the existential natural-course
 board-win question, identifier `mshogi.xiangqi.natural-board-win.exists.v1`.
 A positive witness is a finite admitted ordinary board-action continuation to
 WXF3.1A checkmate or no-legal-action/stalemate loss. It is not a forced-win test.

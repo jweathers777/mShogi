@@ -1,8 +1,7 @@
 # Selected modern Tori Shogi profile
 
 **Identity: `mshogi.tori.modern.v1`, edition MSH81-MODERN-2026-11-01.**
-This is the complete planning contract for future implementation, selected under
-John's 2026-11-01 modern-playing direction. It is not a claim that native Tori
+This is the complete planning contract for future implementation, selected by the recorded 2026-11-01 modern-playing decision. It is not a claim that native Tori
 support already exists. The earlier reserved `mshogi.tori.bunsei11.v1` was never
 adopted and is not an alias. Preserve the [historical checkpoint](archive/2026-10-31/profile.md);
 its acquisition questions no longer gate this profile.
@@ -16,10 +15,10 @@ See [source ledger](sources.md) for exact copies/read limits. Wikipedia is a
 modern candidate description, not an association code. Neither a historical
 edition nor an engine silently governs missing clauses.
 
-John explicitly permits autonomous coherent software conventions for rare edge
+The approved scope permits autonomous coherent software conventions for rare edge
 cases. Clauses marked **S** below exercise that authority; they are not attributed
 to the sources. There is no unresolved category-A ordinary-play choice. Material
-future contradictions must return to the owner rather than change this identity's
+future contradictions must require an explicit decision rather than change this identity's
 meaning. A rule change requires a new profile version and fixture review.
 
 ## T01 — board, sides and initial state
@@ -244,6 +243,6 @@ R1–R6 consumers and minimum required dispatch extensions.
 | P05 / B software boundary | T07/T08 root/counter/strict canonical semantics, no reachability or protocol fiction. TORI-C-* and rejection/replay tests. |
 | P06 / ordinary modern agreement | T02/T03 demotion/owner/handed-kind and nonjumping Eagle. TORI-CAPTURE-* and geometry fixtures. |
 
-No remaining material owner decision or source acquisition blocks this complete
+No remaining material project decision or source acquisition blocks this complete
 planning profile. Implementation, actual native conformance, engine execution,
 archive capacity measurements and packaged integration remain future obligations.

@@ -1,7 +1,7 @@
 # Selected standard shogi profile
 
 Status: **approved profile contract; implementation coverage is tracked separately**.
-Owner John explicitly selected option A, `SHOGI-P1`, on 2026-10-26 against
+The 2026-10-26 decision selected option A, `SHOGI-P1`, against
 integration `6db8500e92129b95e502e7b4d5c4a26072e38652`. Selected immutable identity:
 **`mshogi.shogi.csa36.v1`**. Approval includes initial untimed local play,
 advisory eligibility versus committed declarations, atomic malformed/stale/illegal
@@ -186,7 +186,7 @@ These are approved software boundaries, not additional shogi moves:
 - A malformed/stale request, illegal board choice, invalid imported position or
   eligibility probe is rejected atomically. It does not commit a tournament
   foul or award a win. This follows the accepted A-02 API contract and needs no
-  new owner decision. Nifu/uchifuzume/self-check remain absent from legal moves.
+  new project decision. Nifu/uchifuzume/self-check remain absent from legal moves.
 - An explicitly committed **formal declaration** is a different command from a
   harmless eligibility probe. It has the CSA losing consequence if its rule
   conditions fail. Transport/schema/stale errors are rejected before admitting
@@ -219,7 +219,7 @@ explicitly rather than claim this playable profile simulates every official.
 
 ## Actual owner choice: SHOGI-P1
 
-**Selected: option A**, by the explicit owner approval recorded above. The table
+**Selected: option A**, by the explicit explicit approval recorded above. The table
 preserves the original alternatives for traceability; only A is this contract.
 
 | Option | Meaning and consequence | Evidence |

@@ -1,6 +1,6 @@
 ## Closure — 14 November 2026
 
-MSH-162 (Parallel Experiment Runner) is complete. John removed final billing
+MSH-162 (Parallel Experiment Runner) is complete. The completion decision removed final billing
 reconciliation as a completion requirement. Actual charges remain unknown;
 the recorded US$2.04140 is an estimate of pilot VM compute, excluding other
 charges. Implementation and evidence were integrated at `bb5e698e`; the
@@ -13,7 +13,7 @@ the pending-billing and worktree-retention statements in the history below.
 ## Coordinator update —12November2026
 
 Integrated into `codex/rewrite` at `bb5e698e`. Runtime/scientific admission and
-64integration tests passed. John authorized the fullcloudstudy. All200freshprimary
+64integration tests passed. The approved scope includes the fullcloudstudy. All200freshprimary
 games are frozen in `docs/m5/evidence/msh161/cloud-primary/cohort-freeze.json`;
 first20submitted as `msh161-primary-b01-v1`, maximum8C3workers. Mac/pilot evidence
 stays separate. Actualpilotbilling remains open; the worktree is retained only for
@@ -95,8 +95,8 @@ The changes are:
 
 - Add `tools/experiments/` and `docs/experiments/`.
 - Add the MSH-162 task record and its verification evidence.
-- Preserve the owner language preference added to `AGENTS.md`.
-- Remove the four old `tools/study_status` files, as requested by the owner.
+- Preserve the communication convention added to `AGENTS.md`.
+- Remove the four old `tools/study_status` files, as requested.
 
 No native crate or frozen MSH-161 source/input file differs from the branch base.
 The coordinator can merge the isolated branch or cherry-pick its ordered commits.

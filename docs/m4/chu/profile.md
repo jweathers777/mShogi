@@ -5,7 +5,7 @@
 Ratified modern rules under MSH-82; no native Chu implementation or executed
 Chu conformance is claimed here.
 
-John's 2026-11-02 direction selects faithful modern JCSA play, capture-based
+The recorded 2026-11-02 direction selects faithful modern JCSA play, capture-based
 admission, a narrow immediate royal-threat mate predicate, native enforcement
 before fourth repetition, and the narrow material rule with immediate responses
 and agreed draws. [Decision record](decisions.md) distinguishes that direction

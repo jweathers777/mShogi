@@ -1,6 +1,8 @@
 # Modern Tori Shogi planning contract — MSH-81
 
-Current product continuation: [MSH-42 delivery reconciliation](delivery-review.md) records normal Tori activation at `cb1e162`, owner-approved traditional presentation and final platform acceptance status. The dated checkpoints and former gate descriptions below retain their historical scope.
+Current status: six-game M4 delivery is complete. See the [accepted delivery record](delivery-review.md). Dated planning and handoff checkpoints below retain their original source and scope.
+
+Current product continuation: [MSH-42 delivery reconciliation](delivery-review.md) records normal Tori activation at `cb1e162`, approved traditional presentation and final platform acceptance status. The dated checkpoints and former gate descriptions below retain their historical scope.
 
 ## Current native acceptance — MSH-85
 
@@ -16,7 +18,7 @@ pending counts below are historical checkpoints, preserved rather than rewritten
 
 
 Current profile **`mshogi.tori.modern.v1`**, edition **MSH81-MODERN-2026-11-01**.
-John's modern-playing redirection replaces the earlier historical-first gate.
+The recorded modern-playing redirection replaces the earlier historical-first gate.
 The complete [profile](profile.md) supplies ordinary rules plus explicitly named
 software conventions, not a claim of already implemented Tori support.
 

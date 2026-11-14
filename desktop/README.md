@@ -22,23 +22,24 @@ Windows). The frontend has no shell or filesystem plugin. Vite listens on
 127.0.0.1:1420 during development; production web assets are embedded and do not
 require a web server.
 
-## Playing Chess, Shogi, Xiangqi, Tori Shogi and Chu Shogi
+## Playing all six games
 
-Press **New game**, choose one of the five supported games, then choose your
+Press **New game**, choose one of the six supported games, then choose your
 native side (White/Black, Sente/Gote or Red/Black), or Random. Games are untimed.
 Your side starts at the bottom; **Flip board** remains explicit. The initial
 application opens Chess; the same normal application loads each game's native archive.
 
 Tori Shogi uses the approved traditional kanji, a complete 7×7 board and native
-hands/promotion. Its functional engine defaults to depth2 /2,000 visits, with
-maximum3 /10,000; this is not a competitive-strength claim. Read-only analysis,
+hands/promotion. Its shared-core engine defaults to depth64 /300,000 nodes,
+with a maximum node limit of5,000,000. These are search bounds, not a
+competitive-strength claim. See the current [shared search core](../docs/m5/shared-search-core.md). Read-only analysis,
 cancellation/Retry, exact history, Take back, native outcomes and Save/Load share
 the existing owners. Load stops work until explicit **Resume play**. The desktop
 exposes Take back; one-event Undo remains in the native API and console.
 [MSH-42 acceptance](../docs/m4/tori/delivery-review.md) records actual normal
 macOS/Windows/Linux gameplay, separate QA instrumentation and exact limits.
 
-Chu Shogi uses the owner-approved traditional kanji, King/Prince identities and
+Chu Shogi uses the approved traditional kanji, King/Prince identities and
 complete 12×12 board in the same shell, without board scrolling or zoom. Select
 **Chu Shogi** in the ordinary dropdown and Sente, Gote or Random. Lion routes
 use native highlighted stages: select a second landing, or **Complete action
@@ -53,6 +54,15 @@ a complete save path and never imply a chess result. See the
 [engine contract](../docs/m4/chu/engine-v1.md) and
 [native notation](../docs/m4/chu/notation.md).
 
+Tenjiku Shogi uses a complete 16×16 board, traditional kanji and complete native
+routes and effects. Choose the Adams or Muller rules profile when starting a
+new game; the profile remains bound to its saved history. The same shell provides
+engine play, analysis, stopped Open, history and Take back. See the
+[Tenjiku product coverage](../docs/m4/tenjiku/product-coverage.md) and
+[notation](../docs/m4/tenjiku/notation.md). All six games and both Tenjiku profiles
+passed the [M4 integration milestone](../docs/m4/final-delivery.md). Current
+promotion evidence is recorded separately at its actual source revision.
+
 For chess:
 Click a piece and a highlighted destination. Promotion opens explicit native
 choices. On the focused board, arrows move focus, Enter/Space selects, and
@@ -61,8 +71,11 @@ The window defaults to 1180 × 820 logical content pixels and supports a minimum
 of 760 × 650. The inspector scrolls; Tab/Shift-Tab reveal focused controls.
 The board uses one keyboard stop with arrow navigation between squares.
 
-mShogi replies through the actual bundled engine at depth 2 with a 20,000-node
-cap. The engine panel shows only final native observations, labeled with their
+Chess replies through the bundled engine with a one-second primary time budget;
+depth128 and the exact JSON integer node ceiling are technical guards, not
+ordinary effort limits. The shared bridge keeps an engine process between
+successful searches; timed Chess can retain search state across moves. Cancellation
+and failure retire that process. See [engine sessions](../docs/desktop/internal-execution-v4.md). The engine panel shows only final native observations, labeled with their
 searched version and score perspective. **Cancel search** applies no fallback
 move; **Retry engine turn** explicitly restarts paused work. Native claim
 buttons distinguish current claims from intended moves, which are not played.

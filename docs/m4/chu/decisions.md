@@ -1,18 +1,18 @@
 # Chu profile decisions and faithful interpretation
 
-Owner direction, 2026-11-02; MSH-82. Selected identity
+Project direction, 2026-11-02; MSH-82. Selected identity
 **`mshogi.chu.jcsa2019.v1`**, edition
 **`JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02`**.
 [Complete profile](profile.md), [sources](sources.md), [fixtures](fixtures.json).
 
 The initial unintegrated proposal asked about automatic fourth-cycle forfeiture,
-automatic bare-royal draw and quiet no-action loss. John rejected novel rules
+automatic bare-royal draw and quiet no-action loss. The recorded decision rejected novel rules
 arising merely from software underspecification. **Those proposals are withdrawn
 and are not selected behavior.** No Chu implementation used them. Original
 2026-10-27 research remains intact; its questions are reconciled here rather than
 turned into historical-acquisition requirements.
 
-| Area | Owner direction | Faithful deterministic implementation |
+| Area | Project direction | Faithful deterministic implementation |
 | --- | --- | --- |
 | CHU-P1 | Capture-based movement, no Chess self-check, narrow actual-threat/complete-response mate, no unrestricted forced-mate search | C06 tests finite complete responses and next-turn captures. Prince promotion can escape if no one action captures both royals. Quiet no-action without a sourced ending stays unresolved/unscored, not a new loss/draw. |
 | CHU-P2 | Responsible side varies **before** fourth occurrence through native admission | C07 derives prospective-cycle witnesses at occurrence3, admits still-changeable prefixes and rejects the culprit's last continuing opportunity. No fourth occurrence or forfeit. Both-jitto uses the actual first passer; alternative empty routes cannot evade it. |

@@ -66,7 +66,7 @@ using both texts and WXF context, with predecessor evidence kept separate:
 - **G-CYCLE /94:** classify concrete mixed/overlapping F002 return paths; define
   witness/anchor selection, warning preservation and victim identity versus board
   equality. Third/fourth thresholds are settled. No default result for unresolved
-  overlap; resolve/review or obtain owner decision before affected implementation.
+  overlap; resolve/review or obtain project decision before affected implementation.
 - **R-CLASS /94:** instantiate applicable19/20 and chapter5 families; their source
   definitions remain required. This is not an all-family prerequisite for91/92.
 - **G-NOWIN /94/105:** define3.2A proof quantifier and eligible native win events
@@ -74,11 +74,11 @@ using both texts and WXF context, with predecessor evidence kept separate:
   Older AXF English uses force-a-win language, useful comparison evidence but not
   authority to choose forced-win semantics for WXF. Resignation or clock/foul
   events cannot casually serve as a proof goal, making3.2A vacuous. Bring a
-  material residual interpretation to the owner with concrete sources/fixtures.
+  material residual interpretation for an explicit decision with concrete sources/fixtures.
 
 These are explicit affected-work gates in [coverage](coverage.md), not omitted
 rules or claims of executed conformance. MSH-80 can close its planning scope
-under the supplied owner decisions; MSH-84/103/45 cannot close without actual
+under the supplied project decisions; MSH-84/103/45 cannot close without actual
 required3.2A implementation105. Source research and first board/kernel work
 remain independent of unavailable unrelated alternative corpora.
 
@@ -92,9 +92,9 @@ histories and completed native-boundary review. See
 correction trail for diagrams109/110, protected-Rook geometry and open-prefix
 warning retirement. No reference outcome is a WXF oracle.
 
-John resolved G-NOWIN to existential **natural board-win only** (WXF3.1A
+The recorded decision resolved G-NOWIN to existential **natural board-win only** (WXF3.1A
 checkmate/stalemate), excluding repetition penalties and other non-board awards.
-[Owner decision](owner-decisions.md#g-nowin-resolution-during-msh-94-2026-10-27)
+[Project decision](owner-decisions.md#g-nowin-resolution-during-msh-94-2026-10-27)
 supersedes the research workers' initial proposal to include repetition wins.
 Full game history still governs actual penalties/claims, not a positive natural
 win witness. Sound fast proof/unknown is94; required exact backend105 remains

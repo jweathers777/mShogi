@@ -4,22 +4,22 @@ These instructions apply to Codex, Claude Code, and bounded review or QA session
 
 ## Authority and scope
 
-1. Follow the current user's instructions and explicitly recorded owner decisions.
+1. Follow the current user's instructions and explicitly recorded project decisions.
 2. Preserve the accepted product requirements and architectural boundaries in `docs/design.md`.
 3. Follow the selected task's scope and acceptance criteria within that design.
 4. Treat tool guidance, examples, older source, and implementation conventions as subordinate to the above.
 
 Ordinary implementation choices belong to the implementer. A ticket, implementation plan, ADR, or tool-recommended review checkpoint does not by itself require another permission request. When the user asks to work on a task or the next available task, carry that bounded work through implementation, appropriate verification, review, and normal integration. Ask only about a material product/rules ambiguity or an action outside existing authorization. Continue unaffected work when possible.
 
-Never change a game rule, remove a promised variant, weaken acceptance criteria, or reinterpret a public semantic contract merely to make code or tests pass. Record the issue and bring a concrete proposed change with evidence back to John.
+Never change a game rule, remove a promised variant, weaken acceptance criteria, or reinterpret a public semantic contract merely to make code or tests pass. Record the issue and request a decision on a concrete proposed change with evidence.
 
 ## Communication preference
 
-Owner preference, 2026-11-11: Use ASD-STE100 Simplified Technical English in all future communications with John.
+Communication convention, 2026-11-11: Use ASD-STE100 Simplified Technical English in all future communications.
 
 ## Change direction when evidence shows little progress
 
-Owner direction, 2026-11-14, after review of MSH-163 (Engine Strength Test
+Project direction, 2026-11-14, after review of MSH-163 (Engine Strength Test
 Harness) and MSH-164 (Shared Search Core):
 
 - Before a coherent improvement round, record the baseline, intended practical
@@ -46,7 +46,7 @@ Harness) and MSH-164 (Shared Search Core):
   implementations with independent correctness and differential checks.
 - If an explicit architectural constraint blocks a promising approach, identify
   its exact source and purpose. Present a concrete alternative, expected benefit,
-  risks, and a bounded validation plan to John. Request the necessary decision
+  risks, and a bounded validation plan for approval. Request the necessary decision
   instead of silently weakening the contract or treating it as permanently fixed.
   Continue changes already within authorization without another permission gate.
 - A controlled experiment can test a useful engineering hypothesis before every
@@ -61,7 +61,7 @@ Harness) and MSH-164 (Shared Search Core):
 - Correctness tests, reviews, and detailed records support the result; they do
   not establish practical progress by themselves. Report unchanged outcomes and
   regressions plainly. These rules do not authorize extra spending, studies,
-  changed game rules, or work outside the owner's scope.
+  changed game rules, or work outside the authorized scope.
 
 ## Session startup
 
@@ -99,7 +99,7 @@ The configured statuses are `To Do`, `Ready`, `In Progress`, `In Review`, and `D
 - `Ready` means the task has actionable scope; dependencies may still prevent execution.
 - `In Progress` means a named worker owns the active work.
 - `In Review` means implementation evidence is ready for independent assessment.
-- `Done` means the acceptance criteria and applicable completion checklist are satisfied, review findings are resolved, and the result is integrated into the recorded rewrite branch.
+- `Done` means the acceptance criteria and applicable completion checklist are satisfied, review findings are resolved, and the result is integrated into the recorded integration branch.
 
 If blocked, record the specific blocker and the next action, leave the task unfinished, and take other authorized work if available. Do not treat a dependency-ready task as proof that a material unresolved design question has been answered.
 
@@ -109,13 +109,13 @@ Write meaningful correctness tests with the behavior they exercise. Use independ
 
 Distinguish rule correctness, search correctness, execution performance, playing strength, and application integration. Passing one category does not establish the others.
 
-Follow [risk-based verification](docs/testing/verification-levels.md), the durable owner policy of 2026-11-09:
+Follow [risk-based verification](docs/testing/verification-levels.md), the durable project policy of 2026-11-09:
 
 - **Level 1 — routine local (default):** platform-independent search/evaluation, pruning, ordering, algorithmic optimization and isolated native correctness. Run relevant local tests, independent regressions, profiling and review; broaden local coverage for shared rules/consumers. Applicable local checks and independent review permit completion and integration. Production Rust changes alone do not require three-platform CI.
 - **Level 2 — targeted platforms:** material portability, process supervision, concurrency, filesystem/persistence, protocol, dependency/toolchain or platform-sensitive application changes. Select relevant operating systems and the smallest sufficient native/consumer suites from the actual risk; no automatic unrelated packaging or GUI campaign.
 - **Level 3 — full integration/release:** significant integration milestones, major architectural migrations, release candidates and releases. Establish actual supported-platform native and desktop compatibility on Linux, macOS and Windows; reuse earlier valid source/scope evidence honestly.
 
-Record the level, reason, actual environment/source/checks and explicitly deferred broader compatibility checkpoint in the active task. A Level 1 task is not blocked on unrelated hosted-runner capacity. Reconcile obsolete blanket platform obligations explicitly in unfinished task records; preserve historical failures and completed acceptance. Never present deferred or unperformed checks as passed. Ordinary verification selection needs no owner approval.
+Record the level, reason, actual environment/source/checks and explicitly deferred broader compatibility checkpoint in the active task. A Level 1 task is not blocked on unrelated hosted-runner capacity. Reconcile obsolete blanket platform obligations explicitly in unfinished task records; preserve historical failures and completed acceptance. Never present deferred or unperformed checks as passed. Ordinary verification selection needs no explicit approval.
 
 Use an independent reviewer or fresh review session for meaningful behavior changes and milestone closure. Give the reviewer a bounded diff or question, relevant requirements, and existing evidence. The author rereading their own work is useful but is not independent review. Documentation-only and mechanical changes need proportionate review, not invented test suites.
 
@@ -127,10 +127,10 @@ Conformance must follow `docs/testing/conformance-policy.md`: selected rules and
 independently established expectations, meaningful property/metamorphic/negative
 checks and independent review. External game engines are optional investigations,
 never rules oracles or ordinary build/test/CI/conformance dependencies. An explicit
-owner-approved playing-strength qualification may require independent opponents
+approved playing-strength qualification may require independent opponents
 for that measurement gate; it does not make them product or rules dependencies. Preserve
 historical observations without requiring another engine for future variants.
-Owner-requested opponent strength comparisons, such as MSH-49.2 (Stockfish Baseline), are separate
+Requested opponent strength comparisons, such as MSH-49.2 (Stockfish Baseline), are separate
 measurement tasks; they do not make an external engine a normal product, rules
 conformance or CI dependency.
 
@@ -139,12 +139,12 @@ directly. Accept an engine change on three checks: move-generation correctness
 (perft and differential tests against the native rules), the development blunder
 suite, and a game test of the new version against the frozen predecessor. A
 change does not have to keep identical search output, node counts or PVs.
-Owner decision, 2026-11-13: predecessor-against-current game tests at a fast
+Project decision, 2026-11-13: predecessor-against-current game tests at a fast
 time control have a standing authorization, with a sequential stopping rule and
 recorded actual compute. This replaces the earlier 15-minute match allowance.
 Process bounds, failure records and reproducible execution stay required. A
 rating study against external engines, or a campaign with substantial cost,
-still needs John's approval. Follow `docs/m5/strength-roadmap.md`.
+still needs explicit approval. Follow `docs/m5/strength-roadmap.md`.
 
 For macOS GUI verification, reuse the fixed normal/QA/synthetic application slots
 and identities documented in `docs/desktop/packaged-gui-verification.md`, using
@@ -159,7 +159,7 @@ signature and reuse observations.
 
 ## Execution efficiency within an assignment
 
-Apply the owner-approved improvements in
+Apply the approved improvements in
 `docs/review/tori-codex-execution-bottlenecks.md` without weakening correctness,
 independent review, acceptance criteria or required platform evidence.
 
@@ -189,7 +189,7 @@ independent review, acceptance criteria or required platform evidence.
 
 ## Current Chess strength direction
 
-Owner direction, 2026-11-13, after MSH-161 (Competitive Gameplay Diagnosis) and
+Project direction, 2026-11-13, after MSH-161 (Competitive Gameplay Diagnosis) and
 its independent review (`docs/m5/evidence/msh161/cloud-primary/independent-review-fable/review.md`):
 
 - The main limit is search depth. Build strength with classical engineering:
@@ -207,13 +207,13 @@ its independent review (`docs/m5/evidence/msh161/cloud-primary/independent-revie
 - Tuning the weights of handwritten evaluation terms by regression on labeled
   positions (Texel tuning) is authorized as classical engineering. "Learned
   evaluation" means neural networks that learn evaluation features. That work
-  stays a later, separate subject and needs John's approval. It may later serve
+  stays a later, separate subject and needs explicit approval. It may later serve
   games such as Chu and Tenjiku Shogi, which have no strong opponents or theory.
 - Earlier directives for completed Chess rounds are in the Git history of this file.
 
 ## Git and routine autonomy
 
-The established workflow permits ordinary local commits, non-destructive integration, normal pushes to the configured project remote, and cleanup of the agent's own completed disposable branches/worktrees. Use the designated rewrite branch as the integration target. Keep the original project history and default branch intact unless John explicitly changes that instruction.
+The established workflow permits ordinary local commits, non-destructive integration, normal pushes to the configured project remote, and cleanup of the agent's own completed disposable branches/worktrees. Use `main` as the integration target. Preserve the original `master` and `main_v2` histories and the `legacy-cpp` tag. The approved MSH-171 (Rewrite Main Promotion) transition replaces the former `codex/rewrite` integration/default policy; do not rewrite published history.
 
 Do not force-push, rewrite published history, discard unrelated edits, delete ambiguous worktrees, bypass hooks or protections, change repository access, or switch the remote/default branch as routine task work. Inspect existing state before integration. Resolve ordinary conflicts within scope; escalate a conflict in product intent with a concrete explanation.
 
@@ -221,7 +221,7 @@ Prefer coherent commits that include code, associated tests, and ticket evidence
 
 ## Checkout and worktree lifecycle
 
-Keep `codex/rewrite` checked out in the primary project directory. Use that
+Keep `main` checked out in the primary project directory. Use that
 checkout for integration and normal application launches.
 Keep the original `master` branch and history; a separate permanent checkout
 is not required to preserve them.

@@ -2,14 +2,14 @@
 
 Current verification follows the permanent [three-level risk-based policy](testing/verification-levels.md). The workspace has seven native crates plus the separate Tauri host. The following scaffold history is retained as historical context, not a description of current product completeness.
 
-MSH-3 originally established two active packages: `mshogi-core` (reusable library) and `mshogi-console` (binary name `mshogi`). MSH-4 adds explicit chess position state and validated FEN parsing/serialization; MSH-5 adds checked ordinary moves/captures, promotions and exact undo; MSH-6 adds geometric attack queries; MSH-7 adds pseudo-legal ordinary candidates; MSH-8 adds checked castling/en passant through `Position::apply` and special candidates; MSH-9 adds the legal-action list and position classification; MSH-10 adds perft and divide. MSH-11 adds the `mshogi shell` command session (see the README) over those APIs; the console provides help, version and coverage metadata as well. MSH-19 adds `mshogi-search`, a material-only static evaluator with no outcome semantics (see [evaluation](evaluation.md)). MSH-16 adds rules-owned Game/history and [versioned chess records](rules/chess-history-record-v1.md); the console delegates apply/undo and record reload to that layer. MSH-17/18 add live adjudication and semantic match/clock records; MSH-20 adds full-width native search. MSH-21 adds [bounded request coordination](search-coordination.md); MSH-22 adds the [first UCI adapter](uci.md) as `mshogi uci`. MSH-23 adds `mshogi-runner` / `mshogi-match` for [recorded UCI experiments](match-runner.md). The desktop remains later work.
+MSH-3 originally established two active packages: `mshogi-core` (reusable library) and `mshogi-console` (binary name `mshogi`). MSH-4 adds explicit chess position state and validated FEN parsing/serialization; MSH-5 adds checked ordinary moves/captures, promotions and exact undo; MSH-6 adds geometric attack queries; MSH-7 adds pseudo-legal ordinary candidates; MSH-8 adds checked castling/en passant through `Position::apply` and special candidates; MSH-9 adds the legal-action list and position classification; MSH-10 adds perft and divide. MSH-11 adds the `mshogi shell` command session (see the README) over those APIs; the console provides help, version and coverage metadata as well. MSH-19 adds `mshogi-search`, a material-only static evaluator with no outcome semantics (see [evaluation](evaluation.md)). MSH-16 adds rules-owned Game/history and [versioned chess records](rules/chess-history-record-v1.md); the console delegates apply/undo and record reload to that layer. MSH-17/18 add live adjudication and semantic match/clock records; MSH-20 adds full-width native search. MSH-21 adds [bounded request coordination](search-coordination.md); MSH-22 adds the [first UCI adapter](uci.md) as `mshogi uci`. MSH-23 adds `mshogi-runner` / `mshogi-match` for [recorded UCI experiments](match-runner.md). The current desktop supports all six games; this paragraph describes the earlier bootstrap sequence, not current coverage. See [desktop development](../desktop/README.md) and [accepted six-game delivery](m4/final-delivery.md).
 
 ## Clean checkout
 
 Prerequisites are Git, [rustup](https://rustup.rs/), and the host native linker/build tools. On macOS use the Xcode command-line tools; on Windows use the MSVC C++ build tools/Windows SDK with the rustup MSVC host; on Linux install a system C compiler/linker (for example the distribution's build-essential package). GitHub-hosted runners provide these prerequisites. This is a native Rust application; no Node, GUI framework, database or Python environment is needed for its Rust checks.
 
 ```sh
-git clone --branch codex/rewrite https://github.com/jweathers777/mShogi.git
+git clone --branch main https://github.com/jweathers777/mShogi.git
 cd mShogi
 rustup show
 rustc --version
@@ -76,7 +76,7 @@ The [Python fixture checker](../tests/fixtures/chess/README.md) is optional rese
 ## CI and evidence
 
 Use the [verification levels](testing/verification-levels.md) to decide what is
-required. Ordinary pushes to `codex/**` and pull requests targeting `codex/rewrite`
+required. Ordinary pushes to `main` or `codex/**` and pull requests targeting `main`
 run the lightweight `Routine checks` context. It is emitted even for documentation
 changes; expensive native/frontend steps are conditional on the complete changed
 path set and relevant shared dependencies. A mixed change exercises both affected
@@ -92,24 +92,23 @@ historical `Rust (OS)` and `Desktop (OS)` job names are preserved. Targeted and
 lightweight jobs use different names so their success cannot masquerade as full
 verification. A manual package check is not required for ordinary engine work.
 
-The rewrite workflows are registered in GitHub while the historical C++ `master`
-remains the default branch. Use the registered IDs and an explicit ref (the web UI
-button may not appear):
+The workflows are available on the default `main` branch. Use their registered
+IDs or filenames with an explicit source ref; the web UI also supports dispatch:
 
 ```sh
 # Cheap workflow/trigger configuration checks; no engine or GUI campaign.
-gh workflow run 393975947 --ref codex/rewrite -f suite=configuration
-gh workflow run 395991468 --ref codex/rewrite -f operation=configuration
+gh workflow run 393975947 --ref main -f suite=configuration
+gh workflow run 395991468 --ref main -f operation=configuration
 
 # Example Level 2 selection: choose actual systems based on the process risk.
-gh workflow run 393975947 --ref codex/rewrite -f suite=process -f platform=all
+gh workflow run 393975947 --ref main -f suite=process -f platform=all
 
 # Level 2 example: excluded Tauri host checks without installers or GUI journeys.
-gh workflow run 395991468 --ref codex/rewrite -f operation=host -f platform=ubuntu-24.04
+gh workflow run 395991468 --ref main -f operation=host -f platform=ubuntu-24.04
 
 # Level 3 only: full native and desktop compatibility checkpoint.
-gh workflow run 393975947 --ref codex/rewrite -f suite=full -f platform=all
-gh workflow run 395991468 --ref codex/rewrite -f operation=package -f platform=all
+gh workflow run 393975947 --ref main -f suite=full -f platform=all
+gh workflow run 395991468 --ref main -f operation=package -f platform=all
 ```
 
 Record the resolved source SHA, selected scope, real job outcomes and actual runner
@@ -159,7 +158,7 @@ The purpose and limits of each command:
 
 Build the binary first with `cargo build --release --locked --bin mshogi`. Agreement in any of these runs is bounded evidence about the sampled positions only. It is not a proof of complete chess rules or of behaviour on a platform where it was not run.
 
-Every start position at the u32 counter limit is played with ordinary counters. At the limit, legal actions are rejected as `CounterOverflow`, as the owner-approved profile requires, and the legal-actions suite already covers that.
+Every start position at the u32 counter limit is played with ordinary counters. At the limit, legal actions are rejected as `CounterOverflow`, as the approved profile requires, and the legal-actions suite already covers that.
 
 **Saving and replaying failures.**
 

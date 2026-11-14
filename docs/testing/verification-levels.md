@@ -1,6 +1,6 @@
 # Risk-based verification
 
-Owner direction, 2026-11-09; implemented by MSH-146 (Risk-Based Verification).
+Project direction, 2026-11-09; implemented by MSH-146 (Risk-Based Verification).
 This is the prospective repository standard for all six games. It supersedes
 blanket per-task platform-matrix requirements, not rules, test assertions,
 independent review or supported-platform product requirements. Completed task
@@ -51,7 +51,7 @@ For new acceptance criteria, require risk-appropriate verification rather than a
 matrix by default. Preserve explicit Level 3 product/milestone requirements.
 For an existing unfinished task, reconcile an obsolete blanket obligation in a
 CLI note/plan before closing it; retain failed or unavailable attempts and explain
-which requirement the new owner policy supersedes. Do not silently abandon an
+which requirement the new project policy supersedes. Do not silently abandon an
 active platform campaign. Genuine platform-risk obligations remain unfinished
 until supported or explicitly resolved.
 
@@ -81,8 +81,7 @@ lightweight context for ordinary integration and use explicit checkpoint evidenc
 for full verification. Never bypass or silently alter protections. Inspect current
 protection/ruleset settings before changing workflow names or triggers.
 
-The original C++ `master` remains the default branch. Registered workflow IDs can
-be dispatched against `codex/rewrite` through the supported GitHub API/CLI; the UI
-button may depend on a default-branch workflow file. Do not change default branch
-or original history merely to expose a button. Preserve the requested revision,
-actual job scope and outcome in receipts.
+`main` is the default and integration branch. Workflow files on that branch
+provide the dispatch UI and API/CLI entry points. Dispatch checks against the
+intended source ref and record its exact revision, actual job scope and outcome.
+The original C++ `master` remains available, with its tip also tagged `legacy-cpp`.

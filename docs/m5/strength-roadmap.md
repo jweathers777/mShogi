@@ -1,8 +1,10 @@
-# Current direction — classical search engineering (owner decision, 2026-11-13)
+<a id="current-direction--classical-search-engineering-owner-decision-2026-11-13"></a>
 
-John reviewed MSH-161 (Competitive Gameplay Diagnosis) and its
+# Current direction — classical search engineering (project decision, 2026-11-13)
+
+Review of MSH-161 (Competitive Gameplay Diagnosis) and its
 [independent review](evidence/msh161/cloud-primary/independent-review-fable/review.md)
-and selected this direction. It replaces the investigation order in the next section,
+established this direction. It replaces the investigation order in the next section,
 which stays as history.
 
 The main limit is search depth (median 8–9 at five seconds), caused by the search
@@ -37,7 +39,7 @@ prepared games score 52.5% with a conditional whole-pair family-stratified 95%
 interval of 47.22–57.78%. Correlated unaided starts remain separate. This is not an
 Elo result, proof of reference superiority or a guarantee of rating improvement.
 
-**Stop for John's review. No engineering or new study is started by this roadmap.**
+**Stop for review. No engineering or new study is started by this roadmap.**
 Original AutoClaim and unchanged native/opponent/image identities were used in all
 primary batches. Claims censor conversion observations; draws alone are not failures.
 The unsuccessful policy transition remains separate and abandoned.
@@ -64,7 +66,7 @@ families/colors/results, secondary/linked uncertainty and contrary successes gov
 interpretation. Three bounded narratives include one independently certified finite
 favorable segment; there is no exhaustive conversion-rate claim.
 
-If John selects the next bounded task, define observable consequences, contrasted
+When the next bounded task is selected, define observable consequences, contrasted
 failure/success controls and stopping criteria before changes. These exposed games
 are development evidence, not fresh held-out material. Retain only general supported
 corrections that improve consequence quality across more than one family and protect
@@ -94,7 +96,7 @@ No further workstream or tournament is started by this completion.
 
 The preceding MSH-158 checkpoint follows for historical context.
 
-MSH-158 (Chess Decision Corrections) completes the owner-requested focused round
+MSH-158 (Chess Decision Corrections) completes the requested focused round
 following MSH-157 (Conventional Decision Improvement). See the
 [correction report](chess-decision-corrections.md). The retained general fix preserves
 a detected mating-threat extension across full-window verification: Qc8 replaces
@@ -231,7 +233,7 @@ Record hardware/time-manager/hash differences. Do not combine distinct time cont
 into one rating without a suitable model and evidence. Fixed-movetime diagnostics
 remain useful for causal questions but cannot validate full-game time allocation.
 
-**Gate:** John approves a substantial campaign's question, sample/stopping rule and
+**Gate:** Explicit approval must cover a substantial campaign's question, sample/stopping rule and
 resource/artifact bounds before execution. An inconclusive comparison stays
 inconclusive. No tournament is authorized by this roadmap. Routine development
 matches retain the cumulative 15-minute allowance per task, including failures;

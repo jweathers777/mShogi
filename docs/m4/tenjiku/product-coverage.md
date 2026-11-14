@@ -1,7 +1,7 @@
 # Tenjiku functional product coverage — MSH-44 technical acceptance
 
 This maps the original eight MSH-44 acceptance criteria to the functional visual
-checkpoint and completed owner-authorized normal-product delivery. Technical
+checkpoint and completed authorized normal-product delivery. Technical
 evidence supports all eight criteria and applicable DoD. The single MSH-44
 [execution/evidence record](product-verification.json) holds exact receipts,
 final reconciliation and task disposition; this document is its requirements map.
@@ -12,7 +12,7 @@ The earlier working implementation was integrated on `codex/rewrite` at
 assertion correction, profile-specific engine cases and reviewed native effect
 descriptions shared by console and accessible Moves history. See the genuine
 [macOS gallery](evidence/msh44-macos/gallery.md) and its source/package manifest.
-On 5 November John approved the artwork, retained the 760×650 minimum and
+The 5 November decision approved the artwork, retained the 760×650 minimum and
 authorized normal activation. Normal sixth-game New with both explicit profile
 choices and ordinary profile-preserving Load are now implemented. The current
 continuation includes shared piece-name footer and occupied capture-overlay
@@ -23,7 +23,7 @@ installed normal/QA GUI phases; local normal macOS captures are bound to the fin
 source through byte-identical rebuilt package files. The single product record
 preserves exact receipts, bounded independent reviews and superseded failures.
 
-Both owner-selected whole profiles remain required:
+Both selected whole profiles remain required:
 `mshogi.tenjiku.adams1999-modern.v1` and
 `mshogi.tenjiku.muller-completed.v1`. A game has one immutable profile; fresh New
 may select the other, and Load preserves the saved profile. Neither a live rule
@@ -39,7 +39,7 @@ switch nor reinterpretation of a record is part of this checkpoint.
 | **AC4 — independently usable console and complete notation** | [Notation/console contract](notation.md), core `tenjiku::notation`, `tenjiku_session.rs` and [CLI tests](../../../crates/mshogi-console/tests/tenjiku_cli.rs) cover explicit whole-profile selection, standard/custom roots, complete ordered travel/returns, igui target, original/promoted identity, promotion choice, exact history/undo/outcomes, canonical Save/Load and read-only analysis. Native full-Game perft/divide preserves history/endings. Human shell and structured `internal-search` remain separate. | Labels are a documented mShogi adapter, not a claimed historical standard or a replacement canonical record. Typed refusal never becomes a partial exact diagnostic or an inferred result. |
 | **AC5 — functional native engine, supervised safety and reproducible smoke** | [Engine contract and measurements](engine-v1.md), [search tests](../../../crates/mshogi-search/src/tenjiku/tests.rs), [protocol tests](../../../crates/mshogi-engine/tests/tenjiku_protocol.rs), [routing tests](../../../crates/mshogi-engine/tests/tenjiku_routing.rs) and actual [child/controller journeys](../../../crates/mshogi-console/tests/tenjiku_internal.rs) cover full history/profile, legal complete PV, native terminal scores, zero/partial work, limits, cancellation and stale contexts. [Self-play tests](../../../crates/mshogi-console/tests/tenjiku_selfplay.rs) repeat a bounded four-ply standard-root smoke and an independently solved tactical complete game for both profiles in release. | The standard-root smoke is not a completed standard-root game or strength evidence. Debug functional journeys explicitly use an independent sparse diagram; mandatory release execution uses all 156 initial standard pieces on every CI platform. No test is silently skipped. MSH-53/M5 retains playing-strength ownership. |
 | **AC6 — lossless canonical records and replay** | Native schema1 and the existing desktop envelope preserve whole profile/edition, initial state, rights, complete commands/actions/effects, settings, exact selected history, observations and retired Take back branches. [Document execution tests](../../../crates/mshogi-desktop-session/src/tenjiku_document/execution_tests.rs) require an engine observation immediately followed by its exact Play; analysis records no Play. Genuine contexts/PVs are re-admitted and charged before installation. Existing file and controller tests cover atomic failure, fresh stopped Open and prior-file integrity. | Current-format saveability and ending/Close reserves remain mandatory. Unsupported profiles, foreign contexts, forged PV/score and lossy data reject. Common schema migration stays within MSH-46. |
-| **AC7 — actual desktop play, inspection, analysis, actions, readable presentation and recovery** | Native-backed 16×16 rendering, [owner-approved licensed artwork](desktop-art.md), actual engine/analysis capabilities, normal two-profile selection/Load, complete-choice entry and shared document/history controls are implemented. The footer uses native piece names across all six games; capture outlines paint above occupied pieces. Exact-source Linux/Windows installed campaigns each passed all 47 phases, including both profiles, alongside genuine byte-equivalent normal macOS journeys. | **Technical evidence complete.** All six required jobs passed at eca9f9c. The owner retains 760×650 with the documented small-kanji/route-badge limitation; around 960×1000 is recommended only. Fit is not a claim of comfortable reading of every glyph. |
+| **AC7 — actual desktop play, inspection, analysis, actions, readable presentation and recovery** | Native-backed 16×16 rendering, [approved licensed artwork](desktop-art.md), actual engine/analysis capabilities, normal two-profile selection/Load, complete-choice entry and shared document/history controls are implemented. The footer uses native piece names across all six games; capture outlines paint above occupied pieces. Exact-source Linux/Windows installed campaigns each passed all 47 phases, including both profiles, alongside genuine byte-equivalent normal macOS journeys. | **Technical evidence complete.** All six required jobs passed at eca9f9c. The owner retains 760×650 with the documented small-kanji/route-badge limitation; around 960×1000 is recommended only. Fit is not a claim of comfortable reading of every glyph. |
 | **AC8 — complete coverage and independent review, visible integration findings** | This map links the original scope to the three earlier accepted evidence records and the single current [product verification record](product-verification.json). Bounded independent reviews cover search, engine/context/PV, document admission, console/notation, shared presentation, the packaged harness, explicitly extended native diagrams and observed harness corrections. | **Technical evidence complete.** The exact-source six-job receipts, real platform artifacts and review disposition are retained in the single record. Superseded successes and failures retain their source/scope; shared MSH-88/89 and MSH-46/47 work remains visible. No required behavior is relabeled optional or deferred to strength work. |
 
 Repository links above are paths relative to this document. Detailed commands,
@@ -119,14 +119,14 @@ such as 760×650, 1180×820 and 1728×1013 must not be substituted for the measu
 WebView heights above. Earlier source-derived estimates in `desktop-art.md` remain
 estimates for their recorded scope; the actual measurements govern this checkpoint.
 
-John's [5 November decision](../../design.md#owner-acceptance-of-tenjiku-visuals-and-shared-identification-2026-11-05)
+The recorded [5 November decision](../../design.md#owner-acceptance-of-tenjiku-visuals-and-shared-identification-2026-11-05)
 retains the **760×650 application minimum**. Around **960×1000 is recommended**
 when the display permits; it is not a hard minimum for Tenjiku or the other five
 games. The earlier taller-window comparison is measured in the actual app:
 WebView960×968 gives a598px board/35.595px cells/
 11.390px minimum engraving live, and534px/31.786px/10.171px in History in both
 orientations. See the [live and history comparison](evidence/msh44-macos/gallery.md#proposed-taller-window-actual-live-and-historical-measurements).
-Independent review found the taller size materially clearer. The owner approved
+Independent review found the taller size materially clearer. The recorded approval covers
 the artwork with the documented small-window limitations. No minimum, source name, glyph abbreviation,
 rule or acceptance criterion has been changed to conceal this issue.
 
@@ -134,7 +134,7 @@ Independent route review also retains a secondary visual concern: completed
 route badges use12SVG-unit numerals (about2.85px em at1180,1.99px at760,
 3.81px in the proposed taller History view). Complete coordinates remain in
 the selected-route footer and completed Moves, with functioning targets/focus/
-controls. The owner-approved artwork retains this secondary reading limitation;
+controls. The approved artwork retains this secondary reading limitation;
 friendly native piece-name identification helps without making every small
 graphic readable. The recommended taller window alone does not resolve it.
 
@@ -170,7 +170,7 @@ identity; the [final package comparison](evidence/msh44-final-macos/final-eca9f9
 proves byte equality after rebuilding at eca9f9c. macOS CI package/native checks
 and local actual GUI interaction are separately identified.
 
-Owner artwork approval, normal activation and the original eight criteria and
+Artwork approval, normal activation and the original eight criteria and
 applicable DoD are supported by complete technical evidence in the single product
 record. The next eligible task is MSH-88; broader MSH-46/47/89 integration scopes
 remain as recorded. MSH-53/M5 retains measured playing strength.

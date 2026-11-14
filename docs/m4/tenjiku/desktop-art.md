@@ -7,9 +7,11 @@ its source and date. The 5 November continuation records subsequent owner visual
 approval and normal activation; final product acceptance remains separate from
 asset approval and historical-facsimile agreement.
 
-## Current owner-approved continuation — 5 November 2026
+<a id="current-owner-approved-continuation--5-november-2026"></a>
 
-John approved the overall traditional-kanji artwork and existing shared board
+## Current approved continuation — 5 November 2026
+
+The recorded approval covers the overall traditional-kanji artwork and existing shared board
 presentation. The [recorded decision](../../design.md#owner-acceptance-of-tenjiku-visuals-and-shared-identification-2026-11-05)
 retains the 760×650 application minimum. All 256 Tenjiku cells fit, while dense
 kanji and secondary route badges remain too small for comfortable reading in
@@ -36,11 +38,11 @@ measurements. The genuine local normal macOS package is
 [byte-identical to the final rebuilt package](evidence/msh44-final-macos/final-eca9f9c-package-equivalence.json).
 The single [product record](product-verification.json) carries exact platform,
 artifact, source and acceptance receipts. These results support the retained
-owner-approved presentation, including its documented small-window limitations.
+approved presentation, including its documented small-window limitations.
 
 ## Traditional names and source alignment
 
-The owner-selected default is traditional variant-appropriate kanji, as recorded
+The selected default is traditional variant-appropriate kanji, as recorded
 in `docs/design.md` A-07. The accepted Chu renderer provides twenty-eight of
 Tenjiku's forty-four face spellings; Chu's Go-Between is absent. The shared
 Knight name is 桂馬. The fourteen Tenjiku-specific names are independently
@@ -131,7 +133,7 @@ names use 47-unit vertical engraving. Heavenly Tetrarchs retains all three
 characters 四天王 in source order at 32 units, with baselines 33/63/93. No
 unsupported one-character abbreviation is substituted. Pinned font outlines at
 those baselines have nonoverlapping vertical bounds and remain within the
-96-unit tile body. Actual reading comfort is subject to the owner checkpoint.
+96-unit tile body. Actual reading comfort is subject to visual review.
 
 Selected squares, destinations, pending routes, completed origin/destination,
 stationary capture, burn, promotion and mover destruction keep the existing
@@ -194,7 +196,7 @@ board a 1680-unit viewBox including outside coordinates. Minimum-size density,
 particularly 四天王 and complex names such as 獅鷹 and 鯨鯢, is a material
 reading-comfort risk. Fit and glyph coverage alone do not establish usability.
 Actual captures must make any problem reviewable; changing the minimum size or
-abbreviating source names requires an owner decision.
+abbreviating source names requires an project decision.
 
 Actual macOS verification must use the fixed QA slot and primary-checkout helper
 from [packaged-gui-verification.md](../../desktop/packaged-gui-verification.md),
@@ -239,7 +241,7 @@ passed on the shell's Node 23.11.0; supported Node 24 evidence follows.
 - Two `subset-tenjiku.py` runs using the pinned source and temporary Brotli path, followed by `cmp`: **passed**, byte-identical output with the hash above.
 - Direct fontTools inspection: **passed**. All forty-four component labels match exactly the subset's fifty-two codepoints; every outline is nonempty, CFF family/PostScript identity is renamed, OFL metadata remains, and full 四天王 outline bounds at 32 units are `[8.872,34.376]`, `[37.272,65.624]`, `[67.016,93.960]` vertically within the tile.
 - Existing Shogi/Chu/Tori/Xiangqi WOFF2 files and `OFL.txt`: **unchanged** in Git.
-- Actual native window rendering, minimum-size comfort, all-platform visual verification and owner approval: **not run by this component/asset assignment**. They remain part of the primary MSH-44 checkpoint and verification record.
+- Actual native window rendering, minimum-size comfort, all-platform visual verification and explicit approval: **not run by this component/asset assignment**. They remain part of the primary MSH-44 checkpoint and verification record.
 
 ## Actual application checkpoint supersedes size estimates
 
@@ -274,7 +276,7 @@ choice/refusal, paired profile-specific Fire Demon burns/mover destruction, engi
 reply, read-only analysis, history and file/recovery controls are represented in
 the gallery. Native readable effect descriptions accompany accessible Moves,
 including simultaneous burn batches and promotion/original identity. Canonical
-actions, effects and outcomes still come only from Rust. Owner visual approval
+actions, effects and outcomes still come only from Rust. Visual approval
 and normal selector activation were pending at that checkpoint; the continuation
 above supersedes those status statements and supplies the final platform/product
 technical evidence. This preserves the earlier captures' exact source scope.

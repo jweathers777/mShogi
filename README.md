@@ -1,104 +1,98 @@
-# mShogi rewrite
+# mShogi
 
-This repository baseline describes the rewrite of John Weathers's mShogi. It contains a minimal Rust library/headless-console workspace, the design and Backlog.md queue. The core implements explicit chess state/FEN, geometric attack queries, pseudo-legal candidate generation, and checked moves, captures, promotions, castling and en passant with exact undo. It also exposes the legal-action list and position-level check/checkmate/stalemate classification. Perft and divide diagnostics are available in the library and, with every other M1 diagnostic, through the headless `mshogi --game chess shell` console. The core also owns [game history and canonical records](docs/rules/chess-history-record-v1.md). A separate native search crate provides the [Chess evaluation](docs/evaluation.md) and [Chess search](docs/search.md); [bounded live match adjudication/clocks](docs/rules/chess-match-api.md) are available in native libraries. The separate [UCI engine mode](docs/uci.md) connects the native search to external controllers. An opt-in [exact mating-reachability procedure](docs/rules/chess-completeness.md) extends adjudication beyond the default M2 subset, with explicit resource uncertainty.
+mShogi is a native multi-game engine, console and desktop application. It supports
+Chess, standard Shogi, Xiangqi, Tori Shogi, Chu Shogi and Tenjiku Shogi. Tenjiku has
+two separately identified rules profiles: Adams and Muller. The native rules own
+legal complete actions, history and game results for every client.
 
-The product goal is a reusable library with complete implementations of chess, shogi, tori shogi, chu shogi, tenjiku shogi, and xiangqi; capable mShogi engines; a standalone and interoperable console application; and a polished desktop application for Windows, macOS, and Linux.
+The Tauri desktop provides untimed human-versus-engine play, read-only analysis,
+Save/Open, Take back and history inspection through one shared interface. Large
+boards, drops, promotions and compound routes use the selected game's rules.
+The six-game integration milestone is complete; see the
+[accepted delivery record](docs/m4/final-delivery.md). This is an unreleased
+product. Signing, distribution policy and release qualification remain separate
+work. Functional game support does not establish competitive playing strength.
 
 ## Start here
 
-- Product and architectural contract: [docs/design.md](docs/design.md).
-- M1 chess position profile: [docs/rules/chess-position-v1.md](docs/rules/chess-position-v1.md), [coverage ledger](docs/rules/chess-coverage.md), and [independent fixture corpus](tests/fixtures/chess/README.md).
-- Working instructions for every implementation session: [AGENTS.md](AGENTS.md).
-- M1 closure evidence: [docs/review/m1-closure.md](docs/review/m1-closure.md).
-- M2 integration evidence and limits: [docs/review/m2-closure.md](docs/review/m2-closure.md).
-- Desktop launch/build instructions: [desktop/README.md](desktop/README.md); M3 integration evidence: [docs/review/m3-closure.md](docs/review/m3-closure.md).
-- Historical bootstrap record (M0, completed): [START-HERE.md](START-HERE.md).
-- Build/check commands and dependency policy: [docs/development.md](docs/development.md).
-- Current work and evidence: the native task records under `backlog/`.
-
-Design and product decisions are developed with John in ChatGPT. Codex or Claude Code implements bounded work from this repository. A fresh session must be able to continue without access to an earlier conversation.
-
-## Current objective
-
-The native chess baseline provides rules/history, live match adjudication and clocks, transparent evaluation, the shared-core search, cancellation and UCI. The [match runner](docs/match-runner.md) connects real UCI engines to that rules boundary and preserves replayable experiment evidence. Default M2 dead recognition remains a sound subset; exact opt-in analysis can exceed practical resource limits. No competitive playing-strength claim follows.
-
-The ordinary Tauri desktop application offers Chess, Shogi, Xiangqi, Tori Shogi
-and Chu Shogi through one game chooser and shared shell. It supports untimed
-human/engine play, bounded read-only analysis, complete native Save/Load and
-history inspection. [Launch instructions](desktop/README.md) explain native
-sides, compound-action entry and stopped reopening. Actual packaged GUI evidence
-is distinguished from build/package checks in each game delivery record.
-
-Standard Shogi, Xiangqi and Tori are accepted under their completed game tasks:
-[Shogi](docs/m4/shogi-delivery-review.md),
-[Xiangqi](docs/m4/xiangqi/delivery-review.md),
-[Tori](docs/m4/tori/delivery-review.md). Chu's
-[owner-approved presentation](docs/m4/chu/desktop-visual-checkpoint.md) and
-[functional engine](docs/m4/chu/engine-v1.md) now use the normal fifth-game paths;
-MSH-43 records its remaining acceptance and exact evidence. Tenjiku, shared
-six-game acceptance, competitive playing strength and M4 closure retain their
-separate roadmap requirements. M4 remains open.
-
-## Repository and existing work
-
-The rewrite integration branch is `codex/rewrite`. The original C++ branch `master` and earlier Rust branch `main_v2` retain their history; `BSD-LICENSE` remains at the root.
-
-The aborted Rust prototype is no longer part of the active tree. Its manifest, lockfile, source, variants and original README remain available at [historical revision `fd280dff02fa7ef73809e20b28bdec83fa9c955f`](https://github.com/jweathers777/mShogi/tree/fd280dff02fa7ef73809e20b28bdec83fa9c955f).
+- [Desktop build, launch and play](desktop/README.md).
+- [Native development, CI and platform prerequisites](docs/development.md).
+- [Accepted product and architecture](docs/design.md).
+- [Current search core](docs/m5/shared-search-core.md), [Chess evaluation](docs/evaluation.md)
+  and [strength roadmap](docs/m5/strength-roadmap.md).
+- [Agent workflow](AGENTS.md) and the repository Backlog task records.
+- [Rules conformance policy](docs/testing/conformance-policy.md) and
+  [risk-based verification](docs/testing/verification-levels.md).
 
 ## Build and check
 
-Install [Rust through rustup](https://rustup.rs/) and a native C/C++ linker toolchain (see [platform prerequisites](docs/development.md)). The repository pins stable Rust **1.99.1** with rustfmt and Clippy. From a clean checkout of `codex/rewrite`:
+The native workspace pins stable Rust **1.99.1**. Install Rust and the host linker
+as described in the development guide. From a clean checkout of `main`:
 
 ```sh
 cargo build --workspace --locked
 cargo run --locked --bin mshogi -- --help
 cargo run --locked --bin mshogi -- --version
-cargo run --locked --bin mshogi -- --game chess profile
-printf 'position startpos\nperft 3\n' | cargo run --locked --bin mshogi -- --game chess shell
-
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --locked
 ```
 
-The console reports its version, rules profile and coverage, and `mshogi --game chess shell` runs the chess diagnostics described below; `mshogi uci` provides the documented first engine protocol adapter. The core library exposes [position, action, legal-move, classification and perft APIs](docs/rules/chess-position-v1.md#rust-position-api). Tests exercise real headless subprocess startup, output streams and usage errors. The production core uses pinned Serde/JSON for canonical history records and has no console I/O; tests also use that JSON reader for the independent corpus. Verification follows the [three-level risk-based policy](docs/testing/verification-levels.md): local checks/review for routine native engineering, targeted platforms for actual portability risks, and full native/desktop checkpoints for integration and releases. [CI invocation and scope](docs/development.md#ci-and-evidence) distinguish lightweight automation from explicit full campaigns. Historical per-platform outcomes remain recorded at their actual revisions, including the [M1 closure review](docs/review/m1-closure.md).
+For the desktop, install its platform prerequisites, then:
 
-## UCI engine mode
+```sh
+cd desktop
+npm ci
+npm run desktop:dev
+```
 
-`cargo run --release --locked --bin mshogi -- uci` starts the [bounded UCI adapter](docs/uci.md). It supports handshake/readiness, complete position history, depth/node search limits, basic clock/increment or movetime budgets, and responsive stop/quit. Protocol output uses stdout; diagnostics use stderr. The custom `ClaimPolicy` option defaults to explicit; unattended controllers can select auto so future search nodes follow their recorded claim policy. The controller handles actual draw claims because UCI has no claim command. See the adapter contract for supported controls, fallback behavior and limitations. The [native runner and recorded independent-engine experiments](docs/match-runner.md) exercise this path.
+The desktop builds and supervises the native engine. Python is not a product
+runtime dependency. Required fonts and their notices are bundled.
 
-## Native match experiments
+## Console and engine interfaces
 
-`cargo run --release --locked --bin mshogi-match -- run CONFIG.json REPORT.json` runs paired self-play or external UCI games through the core match API. `mshogi-match replay REPORT.json` validates their canonical games, commands, clocks and results without launching opponents. Configurations retain executable/model identities, options, deterministic work or clock limits and failure evidence. See [match-runner.md](docs/match-runner.md) for actual Stockfish interoperability, setup, bounds and the distinction between record replay and conditional deterministic reruns.
+Select a game explicitly: `mshogi --game chess shell`, or use `shogi`, `xiangqi`,
+`tori`, `chu` or `tenjiku` in place of `chess`. Type `help` for the selected game's
+commands and supported bounds. Each console uses the same native rules as the
+desktop. Canonical records preserve complete actions and known history; board
+notation alone is not a complete saved game.
 
-## Headless chess console
+The [UCI adapter](docs/uci.md) serves Chess. The [USI adapter](docs/m4/usi.md)
+serves standard Shogi. The structured internal-search interface supports native
+engine execution across all six games. The [match runner](docs/match-runner.md)
+and shared experiment runner retain replayable records, executable identities,
+resource bounds and failures. Their available protocol adapters are explicit;
+not every game supports every external protocol.
 
-`mshogi --game chess shell` reads chess commands from standard input, one per line, interactively or from a pipe or file. It starts at the standard position. It is a diagnostic console for people and simple scripts, not a UCI engine or a machine protocol. Every rule comes from the core library.
+Chess and Tori use the game-independent classical search core. The other games
+retain their functional native search paths while shared-core adoption continues.
+The native rules remain authoritative for the real game even where private
+search uses approximate history-dependent analysis. Speed, correctness and playing
+strength are separate measurements.
 
-| Command | Effect and output |
-| --- | --- |
-| `position startpos` / `position fen <FEN>` | Load a position and clear the undo history; prints `fen <canonical FEN>` |
-| `fen` | Print `fen <canonical FEN>` |
-| `show` | Board diagram (White upper case, rank 8 first), then `fen`, `side`, `castling`, `en-passant`, `halfmove`, `fullmove`, `status` and `history` lines |
-| `legal` | `legal <count> <actions...>` in divide order |
-| `move <action>...` | Apply the actions in order, all or none; prints the new `fen` |
-| `history` | Action count, known-history origin, stored claim policy and current repetition count |
-| `record print` | `record <JSON>`: shared typed envelope around native chess action/history record |
-| `record save <path>` | Publish the envelope to a new file; never overwrite |
-| `record load-file <path>` / `record load-json <JSON>` | Strict envelope restore, including undo/history; match observations and Full mode are explicitly refused |
-| `record` / `record load <JSON>` | Compatibility: print/load native chess JSON without an envelope |
-| `undo [n]` | Undo the last `n` applied actions (default 1); prints the new `fen` |
-| `status` | `status quiet`, `check`, `checkmate` or `stalemate`, from the limited M1 position classifier, not game adjudication |
-| `perft <depth>` | `perft <depth> <nodes>` |
-| `divide <depth>` | One `<action> <nodes>` line per legal root action in divide order, then `total <nodes>` |
-| `help` / `quit` | Show the commands / end the session (end of input also ends it) |
+## Repository history and current scope
 
-- **Actions** use lowercase coordinates: `e2e4`, a promotion suffix `q`/`r`/`b`/`n` (`e7e8n`), castling as the king's move (`e1g1`), en passant as the capturing pawn's move.
-- **Input:** Native chess commands use ASCII; record paths/JSON may use UTF-8. Parsing uses space, tab, CR, vertical tab and form feed as separators; LF ends a command. Blank lines and lines starting with `#` after trimming are ignored. Lines are limited to 4096 bytes before LF (including CR); an oversized line is discarded in bounded memory, and processing resumes at the next line. Numeric arguments use one or more ASCII digits, with leading zeros allowed and no sign. Undo counts must be positive and fit `usize`; shell perft/divide depth is capped at 4 (divide still needs at least 1). Deeper diagnostics use the uncapped library API or release example.
-- **Errors:** results go to standard output. A failed command writes `error: line <n>: <reason>` to standard error and changes nothing in the session: malformed FEN, unknown commands or arguments, an illegal or unrepresentable action anywhere in a `move` sequence, undo beyond the history, invalid UTF-8 or non-ASCII input. Echoed tokens escape control characters. Parse and legality failures in move sequences both identify the action index and preserve the whole session.
-- **Exit status:** 0 when every command succeeded, 1 when any failed, 2 for invalid program arguments.
+`main` is the integration and default development branch. The original C++ tip
+is preserved by the annotated `legacy-cpp` tag at `941cd4dc`. The `master` and
+`main_v2` branches retain the original C++ and earlier Rust histories. The former
+`codex/rewrite` line is part of `main` history. No orphan root or history rewrite
+is used. [BSD-LICENSE](BSD-LICENSE) and third-party notices remain applicable.
 
-Example (`mshogi --game chess shell < session.txt`), checked by the console's process tests:
+Mini Shogi, the old custom `.pgn`-named file format and legacy search/Force
+controls are not current requirements. Local two-human desktop play is tracked
+by MSH-172 (Two-Human Desktop Play). The optional frozen legacy Chu opponent and
+runner adapters are tracked separately by MSH-173 through MSH-176; they are not
+product or conformance dependencies.
+
+Use Backlog.md **1.55.3** for task operations. Run `backlog instructions overview`
+and the relevant operation guide before changing task records. Historical reports,
+source-specific measurements and the bootstrap handoff remain available in Git
+and the documentation; their dates and source revisions limit their claims.
+
+## Checked Chess console example
+
+This example exercises atomic rejection and exact undo. The failed castling
+command emits the recorded diagnostic and exits with status 1.
 
 <!-- console-example:input -->
 ```text
@@ -137,110 +131,3 @@ Standard error (exit status 1, because line 4 failed and changed nothing):
 ```text
 error: line 4: e1g1 (action 1 of 1): action rejected: castling right, rook or empty path is missing; no actions applied
 ```
-
-## Tori Shogi
-
-`cargo run --release --locked --bin mshogi -- --game tori shell` now provides
-native Tori play/inspection, complete legal actions and drops, readable notation,
-event undo/history, outcomes, bounded diagnostics/analysis and canonical Save/Load.
-Type `help`. The functional bounded native engine uses the same complete history;
-this is not a playing-strength claim. See [notation and commands](docs/m4/tori/notation.md)
-and the [MSH-42 native checkpoint](docs/m4/tori/native-playable-checkpoint.md).
-The normal desktop now supports Tori Shogi as its fourth playable game. Choose
-**New game → Tori Shogi → Sente/Gote/Random → Start game**. Traditional kanji,
-hands, native promotion, real engine play, bounded analysis, Take back and complete
-Save/Load use the shared application. Loaded games wait for **Resume play**. See
-[complete product acceptance, platform evidence and launch instructions](docs/m4/tori/delivery-review.md).
-
-## Standalone shogi console
-
-`cargo run --locked --release --bin mshogi -- --game shogi shell` explicitly selects the
-untimed native `mshogi.shogi.csa36.v1` game. Type `help` for commands. For example:
-
-```bash
-cargo run --locked --release --bin mshogi -- --game shogi shell <<'EOF'
-position startpos
-move 7g7f 3c3d
-show
-history
-undo 2
-perft 2
-EOF
-```
-
-This prints the native board, hands, side, event history and conclusions;
-initial local perft2 is900. SFEN imports start a new explicitly identified
-known-history segment. For a sparse drop/promotion example:
-
-```text
-position sfen reduced 8k/9/9/4P4/9/9/9/9/K8 b P 17
-legal
-move 5d5c+
-history
-undo
-move P*4e
-```
-
-`eligibility sente` is a harmless query. `declare sente` is a formal command:
-an ineligible declaration loses under the selected profile. `resign gote`
-submits native resignation, even outside Gote's turn. `undo` reverses an event,
-including declarations/resignation that do not advance board ply.
-
-`record save <new-path>` publishes a complete canonical record to a new file;
-it never overwrites an existing file. `record load-file <path>` strictly validates and
-replays the complete record before replacing the current game. Paths may contain
-spaces and UTF-8. Record files have a separate1MiB limit; command lines remain
-4096bytes. SFEN/USI text alone cannot preserve provenance or event history.
-See [shogi console contract and evidence](docs/m4/shogi-console.md) for readable
-notation, diagnostic limits, canonical semantics and exact record examples.
-
-Both games share `position`, `show`, `legal`, `move`, `undo`, `history`, `status`,
-`record print/save/load-file/load-json`, `perft` and `divide` command names.
-Native FEN/SFEN and game-specific commands retain their meanings.
-`mshogi shell` remains the default chess alias; `mshogi shogi` aliases
-`mshogi --game shogi shell`. The chess `uci` adapter and structured
-`internal-search` wire contracts remain separate. Explicit `--game shogi uci`
-rejects; `internal-search` rejects any `--game` because its request supplies
-the authoritative game/profile identity. USI uses `--game shogi usi`; bare
-`mshogi usi` also selects shogi.
-
-Native shogi v3 now supports engine-turn proposals and bounded read-only move
-analysis. The transparent baseline uses board/promoted pieces and both hands,
-with explicit native declarations/outcomes and root-side score observations.
-Defaults are depth2/5,000 nodes; supported finite bounds are depth1–4 and
-0–20,000 nodes. See the [native engine contract and runnable structured example](docs/m4/shogi-engine.md).
-The [untimed shogi USI adapter and experiment host](docs/m4/usi.md) are available:
-
-```sh
-cargo run --locked --release --bin mshogi -- --game shogi usi
-cargo run --locked --release --bin mshogi-match -- shogi-run docs/m4/usi/selfplay.config.json /tmp/mshogi-selfplay-new.json
-cargo run --locked --release --bin mshogi-match -- shogi-replay /tmp/mshogi-selfplay-new.json
-```
-
-USI supports handshake/readiness/options, full supplied history, finite search,
-stop, declarations, gameover and quit. No-result work stays an unscored failure;
-clock controls and pondering are unsupported, and tsume returns notimplemented.
-Recorded pinned YaneuraOu material games and native self-play establish functional
-interoperability on macOS, with no strength claim. Shogi desktop work remains
-MSH-72 onward.
-
-## Backlog commands
-
-The starter was generated and validated with Backlog.md 1.55.3. Use that version for this project. If a different global CLI is installed, invoke the pinned version with `npm exec --yes --package backlog.md@1.55.3 -- backlog <command>`; a global upgrade is optional.
-
-```bash
-npm install -g backlog.md@1.55.3
-backlog --version
-backlog instructions overview
-backlog task list --status Ready --ready --plain
-backlog task view MSH-1 --plain
-backlog browser
-```
-
-`--ready` checks dependencies. Use it together with `--status Ready` when choosing new implementation work. The tool's dependency check does not establish user authorization, correctness, review completion, or compliance with acceptance criteria.
-
-The optional Python fixture checker remains separate research infrastructure; it is not needed to build, test or run the Rust workspace. See [corpus reproduction](tests/fixtures/chess/README.md) for its own evidence and limits.
-
-## Source of truth
-
-The design states requirements and decisions. Backlog.md records work, status, verification, and handoff. Git records changes. There is no parallel GitHub Issues queue or mandatory chronological handoff diary.

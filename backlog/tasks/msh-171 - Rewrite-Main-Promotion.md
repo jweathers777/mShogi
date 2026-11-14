@@ -1,10 +1,11 @@
 ---
 id: MSH-171
 title: Rewrite Main Promotion
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-14T12:28:00Z'
-updated_date: '2026-11-14T12:50:00Z'
+updated_date: '2026-11-14T18:55:00Z'
 labels:
   - handle:rewrite-main-promotion
 dependencies:
@@ -64,10 +65,18 @@ Record decisions, branch dispositions, tested/promoted revisions, independent re
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Record branch/worktree dispositions and preserve unrelated files and historical refs. 2. Update current six-game documentation, remove personal attribution from current guidance, and route workflow/integration instructions to main. 3. Commit a coherent candidate on codex/rewrite; verify with Level 3 full Rust and packaged desktop CI on Linux/macOS/Windows, reusing unchanged historical rules/profile evidence with exact source qualifications. 4. Obtain independent review of final changes and platform evidence; resolve material findings. 5. Tag the C++ tip, create and publish main at the accepted rewrite tip, set the remote default and primary checkout to main, verify routing/history/rollback, and remove safely completed branches/worktrees. Record actual evidence and retained cleanup limits.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Owner decision recorded on 2026-11-14: preserve history; tag the old C++ tip; create main from the accepted rewrite and make it the default after MSH-169 (Engine Session Persistence) and MSH-170 (Unused Code Removal) are integrated. Other missing old features are not required. MSH-172 (Two-Human Desktop Play) is a separate Ready feature, not a promotion dependency. This edit records the decision only; no branch/default/tag change or feature implementation was performed.
 
 Documentation requirement added on 2026-11-14: eliminate personal references to the project owner during the promotion documentation cleanup, including third-person references. No personal attribution is needed in current explanatory documentation. This is a requirement for the future cleanup; the cleanup has not run.
+
+Owner: @codex, primary integration checkout /Users/johnweathers/Development/Personal/mShogi, branch codex/rewrite, start 2a3f132a. Backlog 1.55.3 matches baseline. MSH-169 and MSH-170 are Done and integrated. Level 3: branch promotion is an integration checkpoint following shared search/session changes; full Rust and desktop package jobs required on ubuntu-24.04, macos-15 and windows-2022. Prior M4 rules/packaged scope evidence is historical and will be reused only where unchanged; current execution must pass at the candidate revision. Independent reviewer /root/promotion_review is assigned read-only. Three untracked notification receipts are unrelated and will be preserved.
 <!-- SECTION:NOTES:END -->

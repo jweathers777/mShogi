@@ -1,5 +1,7 @@
 # M4 shogi-first plan and delivery evidence
 
+Current status: six-game M4 delivery is complete. See the [accepted delivery record](final-delivery.md). Dated planning and handoff checkpoints below retain their original source and scope.
+
 Planning prepared 2026-10-26 under **MSH-62**; its reviews remain historical.
 MSH-63–66 selected the profile and delivered native board state/local legality.
 MSH-67 adds rules-owned untimed history, conclusions and strict native records.
@@ -15,7 +17,7 @@ Independent rules research may proceed separately. The source inventory records
 no evidence-based change to that provisional delivery order at present.
 
 Current next-game handoff (MSH-80,2026-10-27): [Xiangqi planning dossier](xiangqi/README.md).
-John has now selected `mshogi.xiangqi.wxf2018.v1` under XIANGQI-P1 as the
+The selected profile is `mshogi.xiangqi.wxf2018.v1` under XIANGQI-P1 as the
 bilingual WXF2018 profile. Current coverage/gates and reviewed native/shared/
 console/engine/desktop work are MSH-91–103 plus required exact-verification105
 under existing MSH-45/76/84. No Xiangqi implementation has begun. Partial [Tori](research/tori.md), [Chu](research/chu.md) and
@@ -35,7 +37,7 @@ under existing MSH-45/76/84. No Xiangqi implementation has begun. Partial [Tori]
 
 ## The material owner choice
 
-**SHOGI-P1 / MSH-63:** John selected option A, `mshogi.shogi.csa36.v1`,
+**SHOGI-P1 / MSH-63:** The recorded decision selected option A, `mshogi.shogi.csa36.v1`,
 on 2026-10-26 against integration `6db8500e92129b95e502e7b4d5c4a26072e38652`.
 The [selected profile](shogi-profile.md) records the exact CSA bundle and approved
 software adaptations. JSA professional and other event conventions remain

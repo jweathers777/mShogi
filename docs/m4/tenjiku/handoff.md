@@ -5,7 +5,7 @@ documented in [native-v1.md](native-v1.md); structured acceptance evidence lives
 `native-verification.json`. The planning checkpoints below retain their original
 traceability; shared and product implementation remain separate.
 Original87/79/44 criteria and complete-delivery ownership remain intact.
-The [5 November normal-product continuation](#msh-44-owner-authorized-normal-product-continuation--5-november-2026)
+The [5 November normal-product continuation](#msh-44-authorized-normal-product-continuation--5-november-2026)
 below is the current handoff; earlier unsupported/activation/approval statements
 retain their historical checkpoint scope.
 
@@ -249,7 +249,7 @@ as a visual concern. Complete native coordinates remain in the partial footer an
 completed Moves, with working targets, focus and Complete/Cancel controls, but
 completed12SVG-unit numerals remain about3.81px em even in the proposed taller
 History view. The taller minimum alone is not proof that every route graphic is
-readable. Owner review and final acceptance must resolve that concern as well.
+readable. Review and final acceptance must resolve that concern as well.
 
 Final independent evidence reconciliation PASS: live GitHub confirmed both final
 workflows and all six jobs/required steps successful at exact2c00e21; ledger
@@ -261,9 +261,11 @@ stopped and prepared for a fresh Adams standard launch; the gallery contains the
 launch command and both-profile selection instructions. Final source CI monitor
 exited successfully; no retry/monitor campaign remains active.
 
-## MSH-44 owner-authorized normal-product continuation — 5 November 2026
+<a id="msh-44-owner-authorized-normal-product-continuation--5-november-2026"></a>
 
-John approved the existing traditional-kanji artwork and shared presentation,
+## MSH-44 authorized normal-product continuation — 5 November 2026
+
+The recorded approval covers the existing traditional-kanji artwork and shared presentation,
 retained the 760×650 application minimum and authorized normal activation plus
 final packaged verification. The board fits that minimum, but not every dense
 kanji or secondary route badge is comfortably readable there. Around 960×1000

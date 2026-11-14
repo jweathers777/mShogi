@@ -25,7 +25,7 @@
 
 # Selected Xiangqi planning dossier — MSH-80
 
-John selected **`mshogi.xiangqi.wxf2018.v1`**, XIANGQI-P1, on2026-10-27.
+The recorded decision selected **`mshogi.xiangqi.wxf2018.v1`**, XIANGQI-P1, on2026-10-27.
 The governing publication is official **bilingual WXF2018**, with individually
 recorded interpretations and no blanket Chinese precedence. This is selected
 planning; native board/history foundations91–94 and shared record/context routing95
@@ -35,7 +35,7 @@ MSH-42–47 and M4 remain open.
 
 - [Native history and canonical contract](history-contract.md) and [evidence](history-evidence.md)
 - [Shared routing contract](shared-routing.md) and [evidence](routing-evidence.md)
-- [Owner decision record](owner-decisions.md) and [selected profile](profile-proposal.md)
+- [Project decision record](owner-decisions.md) and [selected profile](profile-proposal.md)
 - [Current coverage and affected-work gates](coverage.md)
 - [Source reconciliation/editions](sources.md) and [acquisition hashes](source-manifest.json)
 - [Independent fixture expectations](fixtures.md), preserving the44-action set and F002
@@ -60,7 +60,7 @@ Historical unselected proposal and actual prior reviews are preserved:
 [first architecture review](architecture-plan-review.md),
 [first integration/validation](planning-review.md).
 Those records describe the earlier unfinished state at14b9643/f4e564b/a2cf50b;
-the owner decisions above supersede their conflicting recommendations without
+the project decisions above supersede their conflicting recommendations without
 rewriting the historical evidence.
 
 The separately approved future [M5 opening experiment](../../m5/opening-knowledge.md)

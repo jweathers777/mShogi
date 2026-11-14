@@ -7,7 +7,7 @@ Use this guide to configure the project. These steps do **not** start an experim
 - Project number: **216675633801**
 - Date: **2026-11-11**
 - Billing: connected to the project
-- Pilot budget: **US$30 approved by John**
+- Pilot budget: **US$30 approved by recorded decision**
 
 The runner has not created cloud resources. You can stop after each numbered step.
 If a step fails, give Codex the step number and the error message.
@@ -31,7 +31,7 @@ Disk, external IP address, storage, log and network charges are additional.
 See the [official VM price table](https://cloud.google.com/products/compute/pricing/general-purpose?hl=en).
 This price is for VMs. Cloud Build has different prices.
 
-John approved **US$30 for the pilot**. This approval does not include the full 200-game study.
+The recorded approval covers **US$30 for the pilot**. This approval does not include the full 200-game study.
 The pilot sequence is:
 
 1. Run one opening pair and its analysis.

@@ -1,12 +1,12 @@
 # XIANGQI-P1 — owner selection, 2026-10-27
 
-John explicitly selected **`mshogi.xiangqi.wxf2018.v1`** and instructed completion
+The selected profile is **`mshogi.xiangqi.wxf2018.v1`**. The decision required completion
 of MSH-80 planning/refinement, followed by a stop before Xiangqi implementation.
-This record captures the supplied owner decisions; it does not infer approval
+This record captures the supplied project decisions; it does not infer approval
 of the earlier option A as a bundle. The earlier proposal/reviews remain
 historical evidence. The [current profile](profile-proposal.md) is controlling.
 
-| Area | Recorded owner direction and resulting contract |
+| Area | Recorded project direction and resulting contract |
 | --- | --- |
 | Authority | Official WXF2018 Chinese and English are the bilingual governing publication. No blanket Chinese precedence. Compare each discrepancy against both texts, surrounding WXF clauses/examples and relevant predecessor/official interpretation; record the selected repair separately. |
 | Repetition | Classify at occurrence3; record one-sided prohibited responsibility/warning there. Continued prohibited cycle producing occurrence4 loses for that side. At occurrence4 without one-sided responsibility, apply the WXF draw category, including equal prohibited conduct. Preserve detailed check/chase distinctions and priority. |
@@ -28,7 +28,7 @@ recorded by MSH-104; no opening mechanism or model is selected for shipping.
 
 ## G-NOWIN resolution during MSH-94, 2026-10-27
 
-John selected **option 2**, the existential **natural-course board-win** test,
+The recorded decision selected **option 2**, the existential **natural-course board-win** test,
 under the same `mshogi.xiangqi.wxf2018.v1` identity. A side has a witness when
 some finite sequence of admitted ordinary board actions ends with the opponent
 losing under **WXF3.1A**: checkmate or no-legal-action/stalemate loss. This is
@@ -51,7 +51,7 @@ MSH-94 owns the goal/fast sound contract; exact implementation MSH-105 remains
 unstarted until its recorded dependencies MSH-94 and MSH-95 are complete.
 
 The initial research recommendation included repetition-fault awards in the
-existential target. John expressly rejected that recommendation. Preserve it
+existential target. The recorded decision rejected that recommendation. Preserve it
 as research history, not as an accepted interpretation or an executable fixture.
 This decision supersedes the previously open G-NOWIN quantifier/eligible-win
 question; algorithmic feasibility and exact-path delivery are still unproved.

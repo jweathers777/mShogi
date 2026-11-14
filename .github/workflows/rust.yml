@@ -2,9 +2,9 @@ name: Rust workspace
 
 on:
   push:
-    branches: ["codex/**"]
+    branches: ["main", "codex/**"]
   pull_request:
-    branches: ["codex/rewrite"]
+    branches: ["main"]
   workflow_dispatch:
     inputs:
       suite:

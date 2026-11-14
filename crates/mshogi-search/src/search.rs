@@ -78,9 +78,6 @@ pub struct SearchResult {
 pub enum SearchError {
     /// Depth is outside 1..=MAX_DEPTH.
     InvalidDepth(u16),
-    /// Timed conventional search cannot bound an opt-in Full-mode native solver
-    /// inside a transition. Ordinary execution uses the bounded M2 profile.
-    TimedFullUnsupported,
     /// Rules-generated action could not be represented/applied (e.g. counter
     /// overflow). The caller remains unchanged and no partial score is returned.
     Transition(PlayError),

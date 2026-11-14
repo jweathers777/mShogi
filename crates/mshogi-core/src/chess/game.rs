@@ -199,23 +199,6 @@ impl Game {
         self.reversible_repeat
     }
 
-    // Search-only context, excluding the current identity. Complete canonical
-    // history and the public occurrence table remain untouched. A pawn move,
-    // capture or loss of castling rights makes every preceding identity
-    // unreachable: material/pawns/rights cannot be restored by later actions.
-    pub(super) fn reversible_prior_identities(&self) -> Vec<RepetitionIdentity> {
-        let mut prior = Vec::new();
-        let mut after = &self.position;
-        for step in self.steps.iter().rev() {
-            if after.halfmove_clock == 0 || step.before.castling_rights != after.castling_rights {
-                break;
-            }
-            prior.push(step.previous_identity.clone());
-            after = &step.before;
-        }
-        prior
-    }
-
     /// Check one action and atomically update position, history and occurrences.
     /// Failure, including counter overflow, leaves the entire game unchanged.
     pub fn apply(&mut self, action: Action) -> Result<(), ActionError> {

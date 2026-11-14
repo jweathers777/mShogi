@@ -401,18 +401,6 @@ impl StructuralState {
     pub const fn profile(&self) -> Profile {
         self.profile
     }
-    /// Current native turn.
-    pub const fn side_to_move(&self) -> Side {
-        self.side
-    }
-    /// Initial provenance.
-    pub fn root(&self) -> &RootMetadata {
-        &self.root
-    }
-    /// Known accepted board plies since the root.
-    pub const fn accepted_plies(&self) -> u64 {
-        self.accepted_plies
-    }
 }
 /// Checked structural board, with no single-royal or Chess self-check assumption.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -582,10 +570,6 @@ impl Position {
             root,
             accepted_plies: 0,
         })
-    }
-    /// Re-admit saved structural data; never deserialize directly into authority.
-    pub fn from_state(state: StructuralState) -> Result<Self, RootError> {
-        Self::install(state)
     }
     /// Checked semantic restoration/root reconstruction.
     pub fn install(state: StructuralState) -> Result<Self, RootError> {

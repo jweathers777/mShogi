@@ -8,7 +8,6 @@
 pub mod alphabeta;
 pub mod chess;
 pub mod chess_bitboard;
-pub mod chess_candidate;
 pub mod chess_engine;
 pub mod chess_eval;
 mod chess_kpk;

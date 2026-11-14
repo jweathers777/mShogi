@@ -2,8 +2,8 @@
 
 ## Active conventional evaluator
 
-The Chess coordinator's conventional search uses
-`chess_conventional_eval::evaluate`, identity
+The Chess engine on the shared search core uses `chess_eval::evaluate`
+(`chess_eval::decompose` for the per-term breakdown), identity
 `mshogi.chess.conventional-tapered.v1`. `Evaluation` exposes each color's material
 and tapered piece-placement, pawn-structure, mobility/activity, king-safety,
 threat and endgame-conversion contributions. `score_for(Color)` subtracts the
@@ -42,19 +42,12 @@ outcomes and claims take precedence in search. Static estimates remain below the
 proves no draw, a large score proves no win, and positional tests or call timings
 make no playing-strength claim.
 
-## Historical positional candidate
+## Removed positional candidate
 
-The retained `chess_candidate::evaluate` API has identity
-`mshogi.chess.tapered-position.v1`. It combines the material values below with
-original untrained arithmetic placement: knight/bishop development, pawn
-advancement and isolated/doubled/passed pawns, rook files/seventh rank, bishop
-pairs, middle-game king shelter/castling squares and endgame king centrality,
-with a small early queen-development penalty. The middle/endgame blend is capped
-at the initial 6400cp of non-pawn material. This historical reference has no trained
-weights or copied piece-square tables. Its arithmetic, reflection and native
-terminal/claim separation checks remain in the suite; the owner-stopped
-[earlier study](m5/chess-strength.md) is historical evidence, not an active
-playing-strength requirement.
+The earlier `chess_candidate` search and its `mshogi.chess.tapered-position.v1`
+evaluator had no consumer after MSH-164 (Shared Search Core). MSH-170 (Unused Code
+Removal) removed them. The [earlier study](m5/chess-strength.md) stays historical
+evidence.
 
 ## Frozen material baseline
 

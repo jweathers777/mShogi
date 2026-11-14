@@ -1,11 +1,11 @@
 ---
 id: MSH-171
 title: Rewrite Main Promotion
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-14T12:28:00Z'
-updated_date: '2026-11-14T19:48:00Z'
+updated_date: '2026-11-14T19:49:00Z'
 labels:
   - handle:rewrite-main-promotion
 dependencies:
@@ -62,7 +62,7 @@ Record decisions, branch dispositions, tested/promoted revisions, independent re
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -95,6 +95,8 @@ Final technical acceptance approved by /root/promotion_review. Complete3platform
 Promotion performed: main created and published at0607e5036383b44e5e515f64da07ef2a7faae9f1; remote default and remoteHEAD nowmain; primary checkout switched tomain. master941cd4dc and main_v2 localfd280dff/remoteroot90458437 are unchanged; annotated legacy-cpp object408f298b targets941cd4dc. Completed rewrite ref removed after main ancestry check. Total15local and5remote task refs removed; one clean app-owned Tenjiku research checkout remains solely for supported archival after app ownership/protection permits it. Native and Desktop configuration dispatches onmain passed43633778576/43633781677; actualmainpush43633737400 proves routing. No protection/access changes or history rewriting. All7criteria andDoD1–3 now supported. Final evidence publication andDoD4/Done closure follow; concurrent ordinal-only task edits and3notifications remainpreserved.
 
 Final main-push Routine run43633737400 completed success. Both main configuration dispatches were also successful. Final independent promotion-state review approved actual refs/default/tag and preservation. All material findings are resolved. Final evidence publication is the only remaining bookkeeping item before DoD4/Done.
+
+Final reviewed evidence and summary were committed and pushed on main at31fa3b4ddd3cf16bfa0150f05e182dfbdd50284a. All7acceptance criteria and4completion items are supported. Closing bookkeeping changes no compiled/test inputs. Primary branch/main upstream and original historical refs remain intact. No next task starts.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

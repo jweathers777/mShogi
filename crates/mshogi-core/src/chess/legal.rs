@@ -73,37 +73,10 @@ impl Position {
         self.legal_actions_matching(|_| true)
     }
 
-    /// Every legal action ending on `target`, with the same checked native
-    /// resolution, order and counter-independent legality as `legal_actions`.
-    ///
-    /// Query consumers such as exchange estimation need one destination only.
-    /// Filter native candidates before their checked transitions, rather than
-    /// validating every unrelated destination and discarding it afterwards.
-    /// This includes quiet moves, EP and all promotion choices where applicable;
-    /// it is not a geometric attackers list or an unchecked transition path.
-    pub fn legal_actions_to(&self, target: Square) -> Vec<Action> {
-        self.legal_actions_matching(|action| action.to == target)
-    }
-
-    /// Native legal captures (including EP) and every promotion choice. Filter
-    /// the existing candidates before checked resolution. This is a projection
-    /// of the full legal set, never permission to ignore quiet check evasions,
-    /// terminal classification, claims or other history-dependent admission.
-    pub fn captures_and_promotions(&self) -> Vec<Action> {
-        self.legal_actions_matching(|a| {
-            a.promotion.is_some()
-                || self.piece_at(a.to).is_some()
-                || (a.from.file() != a.to.file()
-                    && self
-                        .piece_at(a.from)
-                        .is_some_and(|p| p.kind == PieceKind::Pawn))
-        })
-    }
-
     /// Complete legal captures ending on `target`, including EP and all capture
     /// promotions. Target-centric native attack maps enumerate only possible
     /// capturers, then the same checked resolver/effects enforce king safety.
-    /// Unlike `legal_actions_to`, this intentionally excludes quiet moves.
+    /// Quiet moves are intentionally excluded.
     pub fn legal_captures_to(&self, target: Square) -> Vec<Action> {
         if self
             .piece_at(target)

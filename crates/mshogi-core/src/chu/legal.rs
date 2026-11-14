@@ -317,11 +317,6 @@ impl LocalPosition {
         }
         out.into_iter().collect()
     }
-    /// Source geometric defense, including hidden rays and compound capture
-    /// influence; never a Chess pin/self-check filter or permission to act.
-    pub fn is_defended(&self, side: Side, square: Square) -> bool {
-        is_defended_on(&self.position, side, square)
-    }
     /// Source-geometric defenders, including friendly defended endpoints.
     /// This read-only influence observation never grants action permission.
     pub fn geometric_defenders(&self, side: Side, square: Square) -> Vec<Square> {

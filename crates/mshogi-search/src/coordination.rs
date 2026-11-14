@@ -53,10 +53,6 @@ impl RequestContext {
     pub const fn limits(&self) -> SearchLimits {
         self.limits
     }
-    /// Whether optional draw claims are available throughout this request.
-    pub const fn allow_draw_claims(&self) -> bool {
-        self.allow_draw_claims
-    }
     /// Exact optional soft/hard thinking limits; absent means deterministic work.
     pub const fn time(&self) -> Option<TimeBudget> {
         self.time

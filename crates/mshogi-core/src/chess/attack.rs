@@ -6,7 +6,7 @@
 //! (defended), and no castling or en passant effect is considered.
 
 use super::{
-    Action, Color, Piece, PieceKind, Position, Square,
+    Color, Piece, PieceKind, Position, Square,
     attack_cache::{DIRECTIONS, KINGS, KNIGHTS, PAWNS, RAYS, kind_index, nearest},
 };
 
@@ -16,88 +16,6 @@ impl Position {
             self.attacks.kinds[kind_index(PieceKind::King)] & self.attacks.colors[side.index()];
         debug_assert_eq!(kings.count_ones(), 1);
         Square(kings.trailing_zeros() as u8)
-    }
-    fn queens_in_zone(&self, side: Color) -> u64 {
-        let king = self.king_square(side.opponent());
-        let mut queens =
-            self.attacks.kinds[kind_index(PieceKind::Queen)] & self.attacks.colors[side.index()];
-        let mut near = 0;
-        while queens != 0 {
-            let sq = Square(queens.trailing_zeros() as u8);
-            queens &= queens - 1;
-            if sq
-                .file()
-                .abs_diff(king.file())
-                .max(sq.rank().abs_diff(king.rank()))
-                <= 4
-            {
-                near |= 1 << sq.index();
-            }
-        }
-        near
-    }
-    /// Geometric heuristic gate: a queen is within four king steps of the
-    /// opposing king. This is neither an attack, legal move nor Game outcome.
-    pub fn queen_in_attack_zone(&self, side: Color) -> bool {
-        self.queens_in_zone(side) != 0
-    }
-    /// A counter-independent position-legal supported queen contact mate from
-    /// a queen in the four-step attack zone, if found. Absence proves nothing
-    /// about other mating patterns. Native resolution and replies confirm it;
-    /// Game history/claims and actual counter representability still require
-    /// ordinary Game admission. This deliberately finds only contact patterns.
-    pub fn queen_contact_mate(&self) -> Option<Action> {
-        self.contact_mate_for(self.side_to_move)
-    }
-    /// Whether passing this quiet turn would allow the opponent a supported
-    /// queen contact mate from that attack zone. This query cannot conclude a
-    /// Game; search may use it only to investigate real moves more carefully.
-    pub fn has_queen_contact_mate_threat(&self) -> bool {
-        self.queen_in_attack_zone(self.side_to_move.opponent())
-            && !self.in_check()
-            && self
-                .contact_mate_for(self.side_to_move.opponent())
-                .is_some()
-    }
-    fn contact_mate_for(&self, side: Color) -> Option<Action> {
-        let queens = self.queens_in_zone(side);
-        if queens == 0 {
-            return None;
-        }
-        let king = self.king_square(side.opponent());
-        let mut targets = KINGS[king.index()] & !self.attacks.colors[side.index()];
-        let mut base = self.clone();
-        if side != base.side_to_move {
-            base.en_passant_target = None;
-        }
-        base.side_to_move = side;
-        base.halfmove_clock = 0;
-        base.fullmove_number = 1;
-        while targets != 0 {
-            let target = Square(targets.trailing_zeros() as u8);
-            targets &= targets - 1;
-            let attackers = base.attacker_mask(target, side);
-            let mut origins = attackers & queens;
-            while origins != 0 {
-                let from = Square(origins.trailing_zeros() as u8);
-                origins &= origins - 1;
-                let action = Action {
-                    from,
-                    to: target,
-                    promotion: None,
-                };
-                if let Ok(after) = base.checked_after(action)
-                    // Moving the queen can uncover her supporting slider. The
-                    // pre-move attack map cannot safely reject that support.
-                    && after.attacker_mask(target, side) != 0
-                    && after.in_check()
-                    && !after.has_legal_action()
-                {
-                    return Some(action);
-                }
-            }
-        }
-        None
     }
     /// Geometric squares attacked by the piece on `from`, as an a1-bit0 map.
     ///

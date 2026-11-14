@@ -130,11 +130,3 @@ export interface ExecutionObservation {
   context: ExecutionContext;
   result: ExecutionResult;
 }
-export interface ArchivedObservation {
-  sequence: number;
-  label: string;
-  observation: ExecutionObservation;
-  historical: boolean;
-  analyzed_turn: Color;
-  application_error: string | null;
-}

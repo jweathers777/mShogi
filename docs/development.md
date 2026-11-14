@@ -37,7 +37,7 @@ Chess search/evaluation change, a typical Level 1 set is:
 ```sh
 cargo fmt --all -- --check
 cargo clippy --locked -p mshogi-search --all-targets -- -D warnings
-cargo test --release --locked -p mshogi-search --lib chess_conventional
+cargo test --release --locked -p mshogi-search --lib chess_
 ```
 
 Add the relevant native history/action/property tests if that boundary changed,

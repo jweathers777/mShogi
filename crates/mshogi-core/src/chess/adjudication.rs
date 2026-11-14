@@ -397,10 +397,6 @@ impl AdjudicatedGame {
     pub const fn adjudication_mode(&self) -> AdjudicationMode {
         self.mode
     }
-    /// Cached current full-dead analysis. It is not rerun by outcome/claim reads.
-    pub fn dead_analysis(&self) -> Option<&MateReachability> {
-        self.dead_analysis.as_ref()
-    }
     fn refresh_dead_analysis(&mut self) {
         self.dead_analysis = match self.mode {
             AdjudicationMode::M2 => None,
@@ -449,48 +445,6 @@ impl AdjudicatedGame {
             })
     }
 
-    pub(super) fn search_state(
-        &self,
-        actions: &[Action],
-    ) -> (Classification, Option<ChessOutcome>, Vec<ClaimRequest>) {
-        let classification = self.position().classify_with_actions(actions);
-        let outcome = self.outcome_with_classification(classification);
-        let claims = if outcome.is_none() {
-            self.history.claims_with_actions(actions)
-        } else {
-            Vec::new()
-        };
-        (classification, outcome, claims)
-    }
-
-    pub(super) fn search_needs_claim_actions(&self) -> bool {
-        self.position().halfmove_clock() >= 99 || self.history.has_repeated_identity()
-    }
-
-    pub(super) fn search_outcome(&self, classification: Classification) -> Option<ChessOutcome> {
-        self.outcome_with_classification(classification)
-    }
-
-    pub(super) fn apply_for_search(
-        &mut self,
-        action: Action,
-        prepared: Option<Position>,
-    ) -> Result<Option<MateReachability>, PlayError> {
-        if let Some(after) = prepared {
-            self.history.commit_after(action, after);
-        } else {
-            self.history.apply(action).map_err(PlayError::Action)?;
-        }
-        let previous = self.dead_analysis.take();
-        self.refresh_dead_analysis();
-        Ok(previous)
-    }
-
-    pub(super) fn undo_for_search(&mut self, previous: Option<MateReachability>) -> Option<Action> {
-        let action = self.history.undo()?;
-        self.dead_analysis = previous;
-        Some(action)
-    }
     /// Available optional claims; empty after any conclusion.
     pub fn available_claims(&self) -> Vec<ClaimRequest> {
         if self.outcome().is_some() {

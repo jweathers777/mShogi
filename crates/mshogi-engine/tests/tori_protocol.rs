@@ -36,6 +36,12 @@ fn execute(c: &ExecutionContext) -> ExecutionObservation {
     assert_eq!(&r.observation.context, c);
     r.observation
 }
+fn good_score(observation: &ExecutionObservation) -> i32 {
+    let ExecutionResult::Tori { result } = &observation.result else {
+        panic!()
+    };
+    result.telemetry().score.unwrap()
+}
 fn game(turn: t::Side) -> t::Game {
     t::Game::from_root(
         t::Position::from_diagram(
@@ -218,8 +224,10 @@ fn malformed_telemetry_complete_pv_and_terminal_mismatches_refuse() {
                     result_face: t::Face::Phoenix,
                 }
             }
-            8 => telemetry.score = Some(0),
-            _ => telemetry.principal_variation.push(*action),
+            // A line that the native game refuses after its first action.
+            8 => telemetry.principal_variation = vec![*action, *action],
+            // A line above the largest reported length.
+            _ => telemetry.principal_variation = vec![*action; search::MAX_LINE + 1],
         }
         let ExecutionResult::Tori { result } = &obs.result else {
             panic!()
@@ -237,13 +245,18 @@ fn malformed_telemetry_complete_pv_and_terminal_mismatches_refuse() {
         } else {
             assert!(
                 obs.matches(&c),
-                "leafscore validation belongs to bounded native worker"
+                "replay of the line belongs to the bounded native worker"
             );
         }
     }
     let bytes = serde_json::to_string(&good).unwrap();
-    for replacement in ["\"score\":0,\"score\":1100", "\"score\":null,\"unknown\":0"] {
-        let changed = bytes.replace("\"score\":1100", replacement);
+    let score = format!("\"score\":{}", good_score(&good));
+    assert!(bytes.contains(&score));
+    for replacement in [
+        format!("\"score\":0,{score}"),
+        "\"score\":null,\"unknown\":0".to_string(),
+    ] {
+        let changed = bytes.replace(&score, &replacement);
         assert!(serde_json::from_str::<ExecutionObservation>(&changed).is_err());
     }
     let mut v: Value = serde_json::from_str(&bytes).unwrap();
@@ -302,11 +315,7 @@ fn full_remains_explicit_unscored_unsupported_and_limits_are_bounded() {
     ] {
         let mut c = context(&t::Game::standard());
         c.limits = limits;
-        if limits.depth > 0 {
-            assert!(c.valid_limits(), "legacy failure context remains parseable");
-        } else {
-            assert!(!c.valid_limits());
-        }
+        assert!(!c.valid_limits());
         assert!(matches!(
             execute(&c).result,
             ExecutionResult::Failure {
@@ -408,10 +417,12 @@ fn same_board_full_history_and_forbidden_departure_require_native_worker_validat
 #[test]
 fn historical_unscored_failure_contexts_survive_new_bounded_execution_limits() {
     let mut c = context(&t::Game::standard());
+    // Limits above the bounds of the earlier Tori search, which the generic
+    // transport bounds admitted before Tori search existed.
     c.limits = WorkLimits {
         time_ms: None,
-        depth: search::MAX_DEPTH + 1,
-        nodes: search::MAX_NODES + 1,
+        depth: search::LEGACY_MAX_DEPTH + 1,
+        nodes: search::LEGACY_MAX_NODES + 1,
     };
     assert!(c.valid_limits());
     let failure = ExecutionObservation::new(
@@ -428,15 +439,73 @@ fn historical_unscored_failure_contexts_survive_new_bounded_execution_limits() {
         serde_json::from_str(&serde_json::to_string(&failure).unwrap()).unwrap();
     assert_eq!(failure, restored);
     assert!(restored.matches(&c));
+    // The shared-core search admits these limits and gives a real result.
     let current = execute(&c);
     assert!(current.matches(&c));
     assert!(matches!(
         current.result,
-        ExecutionResult::Failure {
-            failure: EngineFailure {
-                kind: FailureKind::InvalidRequest,
-                ..
-            }
+        ExecutionResult::Tori {
+            result: ToriResult::Choice { .. }
         }
     ));
+}
+
+#[test]
+fn saved_observations_of_the_earlier_full_width_search_stay_valid() {
+    // A depth-1 observation as the earlier search wrote it: the Falcon takes
+    // the Swallow on 7b and promotes. Material after the action, hand counted:
+    // Eagle 1000 + Swallow in hand 100 = 1100 for Sente, 0 for Gote.
+    let g = game(t::Side::Sente);
+    let c = context(&g);
+    let action = t::Action::Move {
+        from: "7c".parse().unwrap(),
+        to: "7b".parse().unwrap(),
+        result_face: t::Face::Eagle,
+    };
+    let telemetry = ToriTelemetry {
+        evaluator_id: search::LEGACY_EVALUATOR_ID.into(),
+        search_id: search::LEGACY_SEARCH_ID.into(),
+        perspective: t::Side::Sente,
+        score: Some(1100),
+        completed_depth: 1,
+        nodes: g.legal_actions().len() as u64 + 1,
+        principal_variation: vec![action],
+        status: StopReason::Complete,
+    };
+    let saved = ExecutionObservation::new(
+        c.clone(),
+        ExecutionResult::Tori {
+            result: ToriResult::Choice {
+                action,
+                telemetry: telemetry.clone(),
+            },
+        },
+    );
+    assert!(saved.matches(&c));
+    let ExecutionResult::Tori { result } = &saved.result else {
+        panic!()
+    };
+    result.validate(&g).unwrap();
+    // The exact score check of the earlier search still applies to it.
+    let forged = ToriResult::Choice {
+        action,
+        telemetry: ToriTelemetry {
+            score: Some(0),
+            ..telemetry.clone()
+        },
+    };
+    assert!(forged.validate(&g).is_err());
+    // The bounds of the earlier search still apply to its observations.
+    let mut deep = c.clone();
+    deep.limits.depth = search::LEGACY_MAX_DEPTH + 1;
+    assert!(!saved.matches(&deep));
+    // An unknown identity pair is refused.
+    let mixed = ToriResult::Choice {
+        action,
+        telemetry: ToriTelemetry {
+            search_id: search::SEARCH_ID.into(),
+            ..telemetry
+        },
+    };
+    assert!(mixed.validate(&g).is_err());
 }

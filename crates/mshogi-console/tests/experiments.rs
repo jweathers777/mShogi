@@ -285,7 +285,8 @@ fn actual_seven_profile_games_replay_export_native_labels_and_reject_corruption(
         .position(|g| g.final_root.record.profile() == RulesProfile::ToriModernV1)
         .unwrap();
     rejected(&report, |r| {
-        r["games"][tori]["steps"][0]["observation"]["result"]["result"]["telemetry"]["score"] =
+        // A choice without a completed iteration is refused.
+        r["games"][tori]["steps"][0]["observation"]["result"]["result"]["telemetry"]["completed_depth"] =
             json!(0)
     });
     let mut leaked = config.clone();

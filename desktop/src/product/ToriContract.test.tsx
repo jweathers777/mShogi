@@ -140,7 +140,7 @@ it("presents completed native analysis with exact perspective and bounded read-o
   expect(screen.getAllByText(`${actual.perspective} perspective · ${actual.status}`).length).toBeGreaterThan(0);
   expect(screen.getAllByText("No move was played.").length).toBeGreaterThan(0);
   expect((screen.getByRole("spinbutton", { name: "Depth" }) as HTMLInputElement).value).toBe(String(native.play_limits.depth));
-  expect((screen.getByRole("spinbutton", { name: "Node limit" }) as HTMLInputElement).max).toBe("10000");
+  expect((screen.getByRole("spinbutton", { name: "Node limit" }) as HTMLInputElement).max).toBe("5000000");
   await userEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
   expect(owner.command).toHaveBeenCalledWith(native, { kind: "analyze", operation: { kind: "moves", depth: native.play_limits.depth, nodes: native.play_limits.nodes } });
   expect(screen.queryByRole("button", { name: /Full/ })).toBeNull();
@@ -154,7 +154,7 @@ it("rejects a zero-node Tori desktop analysis request before issuing native work
   await user.clear(nodes); await user.type(nodes, "0");
   await user.click(screen.getByRole("button", { name: "Start move analysis" }));
   expect(owner.command).not.toHaveBeenCalled();
-  expect(screen.getByRole("alert").textContent).toContain("node budget from 1 to 10,000");
+  expect(screen.getByRole("alert").textContent).toContain("node budget from 1 to 5,000,000");
   await user.clear(nodes); await user.type(nodes, "1");
   await user.click(screen.getByRole("button", { name: "Start move analysis" }));
   expect(owner.command).toHaveBeenCalledExactlyOnceWith(native, { kind: "analyze", operation: { kind: "moves", depth: native.play_limits.depth, nodes: 1 } });

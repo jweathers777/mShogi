@@ -2478,8 +2478,8 @@
   "event_index": 1,
   "board_ply": 1,
   "play_limits": {
-    "depth": 2,
-    "nodes": 2000
+    "depth": 64,
+    "nodes": 300000
   },
   "historical": false,
   "paused": true,
@@ -2526,8 +2526,8 @@
           "result": {
             "kind": "incomplete",
             "telemetry": {
-              "evaluator_id": "mshogi.tori.material.v1",
-              "search_id": "mshogi.tori.full-width.v1",
+              "evaluator_id": "mshogi.tori.material-placement.v1",
+              "search_id": "mshogi.tori.shared-core.v1",
               "perspective": "gote",
               "score": null,
               "completed_depth": 0,

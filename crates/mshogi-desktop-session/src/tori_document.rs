@@ -786,7 +786,7 @@ fn preflight(
                 .telemetry
                 .principal_variation
                 .len();
-            if pv > usize::from(mshogi_engine::TORI_MAX_DEPTH) {
+            if pv > mshogi_engine::TORI_MAX_LINE {
                 return Err(invalid("Tori PV exceeds supported depth"));
             }
             // Charge native context parse, exact prefix encoding, target reconstruction

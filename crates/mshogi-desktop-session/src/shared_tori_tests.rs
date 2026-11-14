@@ -1673,10 +1673,11 @@ fn real_completed_choice_cancel_replace_and_worker_refusal_cannot_mutate_current
     send(&mut c, SessionOperation::Resume {}).unwrap();
     let mut bad = searched(current(&c).pending.clone().unwrap());
     if let ExecutionResult::Tori {
-        result: mshogi_engine::ToriResult::Choice { telemetry, .. },
+        result: mshogi_engine::ToriResult::Choice { action, telemetry },
     } = &mut bad.result
     {
-        telemetry.score = Some(12345);
+        // A line that the native game refuses after its first action.
+        telemetry.principal_variation = vec![*action, *action];
     }
     let before = exact(&c);
     assert!(!submit_observation(&mut c, bad));

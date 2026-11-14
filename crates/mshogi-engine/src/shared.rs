@@ -143,11 +143,17 @@ impl ExecutionContext {
                 && target.label.len() <= 256
         };
         let ordinary_limits_valid = |analysis: bool| match self.game.game_kind() {
-            // Preserve prior accepted unscored Tori failure observations whose
+            // Preserve prior accepted unscored failure observations whose
             // requests used these generic bounds before search was implemented.
-            // Real Tori execution/result admission separately enforces its much
-            // smaller native limits; transport parsing does not advertise work.
-            GameKind::Tori | GameKind::Chu | GameKind::Tenjiku => {
+            // Real execution/result admission separately enforces the native
+            // limits of each game; transport parsing does not advertise work.
+            // Tori searches through the shared core and admits its larger
+            // depth; this bound includes the earlier generic bound.
+            GameKind::Tori => {
+                (1..=crate::TORI_MAX_DEPTH.max(MAX_ANALYSIS_DEPTH)).contains(&self.limits.depth)
+                    && self.limits.nodes <= MAX_ANALYSIS_NODES
+            }
+            GameKind::Chu | GameKind::Tenjiku => {
                 (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
                     && self.limits.nodes <= MAX_ANALYSIS_NODES
             }

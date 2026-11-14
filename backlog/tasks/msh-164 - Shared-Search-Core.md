@@ -1,11 +1,11 @@
 ---
 id: MSH-164
 title: Shared Search Core
-status: In Review
+status: Done
 assignee:
   - '@claude-fable'
 created_date: '2026-11-13T21:28:00Z'
-updated_date: '2026-11-14T10:18:00Z'
+updated_date: '2026-11-14T11:26:00Z'
 labels:
   - handle:shared-search-core
 milestone: m-5
@@ -34,7 +34,7 @@ Handle: Shared Search Core.
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 The Chess search position agrees with the native rules on perft counts for standard test positions and on a randomized differential test of legal moves and resulting positions
-- [ ] #2 The transposition table is keyed on board state, is configurable in megabytes and is kept between moves of one game
+- [x] #2 The transposition table is keyed on board state, is configurable in megabytes and is kept between moves of one game
 - [x] #3 The search core contains no Chess-specific type or rule; Chess reaches it only through the position trait
 - [x] #4 The speed benchmark shows at least 1 million nodes per second and a clearly larger depth at five seconds than the recorded baseline
 - [x] #5 The game test against the frozen predecessor shows the new engine is stronger under the harness stopping rule
@@ -44,10 +44,10 @@ Handle: Shared Search Core.
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -76,4 +76,18 @@ Decisions: (1) The tree scores a repeated position, a halfmove counter of 100 an
 Independent review: Claude Opus 5.5 subagent, read-only, 8 findings. Findings 2, 3, 4, 6, 7 corrected in 6fef75d1. Finding 5 is the existing incomplete-result contract. Finding 8 (large Hash allocation outside the time budget) is a recorded limit. Finding 1: the desktop and internal execution path starts one engine process for each request, so the table is kept between moves on the UCI path only; follow-up MSH-169 (Engine Session Persistence). No re-review of the corrections.
 Acceptance criterion 2 is not checked: its last clause is true on the UCI path and not on the desktop path. Owner decision requested. Definition of Done items 1 and 4 wait for that decision.
 Other follow-up noticed, not done: crates/mshogi-search/src/chess_candidate.rs is an earlier search generation with no consumer. New frozen predecessor for later tasks: target/strength/engines/6fef75d1b672/mshogi (build-engine 6fef75d1).
+
+Owner decision, 2026-11-14: John accepted criterion 2 as met by the UCI path. The desktop path, which starts one engine process per search, is owned by MSH-169 (Engine Session Persistence).
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Replaced the Chess search with a game-independent classical search core (alphabeta module: SearchPosition trait, Searcher, board-keyed transposition table sized in megabytes) and a search-internal Chess bitboard position. The evaluation keeps the earlier arithmetic. The earlier search, its evaluation file and three profile examples are removed. Why: MSH-161 (Competitive Gameplay Diagnosis) showed that search depth was the main limit.
+
+Evidence at 6fef75d1 on an Apple M1 Pro (Level 1, docs/m5/evidence/msh164/verification.json): 1173 workspace tests pass, clippy clean; 1.38 million nodes per second (baseline 0.30); depth at five seconds 14-16 middlegame and 20-24 endgame (baseline 8-9 and 8-13); blunder suite 85 of 146 avoided (baseline 47); game test against frozen 65887fb0 at 200 ms per move: +55 -0 =5, SPRT accepted H1. Linux, Windows and packaged desktop checks were not run; they are deferred to the next Level 2 or Level 3 checkpoint.
+
+Decisions and limits: rule draws are scored in the tree also for consumers that cannot claim; UCI has a Hash option and ucinewgame clears the table. Criterion 2 is accepted by the owner on the UCI path; the desktop starts one engine process per search and loses the table between moves, owned by MSH-169 (Engine Session Persistence). Independent review: eight findings, five corrected in 6fef75d1 (corrections not re-reviewed), one is MSH-169, one is the existing no-move-before-depth-1 contract, one is a recorded allocation limit.
+
+Integrated on codex/rewrite: a01eb633, ec6dcda8, 6fef75d1, 32262ff6. Design: docs/m5/shared-search-core.md. Frozen predecessor for later game tests: 6fef75d1. Follow-up: MSH-165 to MSH-169.
+<!-- SECTION:FINAL_SUMMARY:END -->

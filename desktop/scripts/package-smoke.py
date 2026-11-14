@@ -42,6 +42,8 @@ def read_stdout():
     lines.put(None)
 threading.Thread(target=read_stdout, daemon=True).start()
 observations = []
+# Independent complete legal set for the standard Chess starting position.
+initial_chess_actions = {f'{file}2{file}{rank}' for file in 'abcdefgh' for rank in '34'} | {'b1a3', 'b1c3', 'g1f3', 'g1h3'}
 try:
     child.stdin.write('uci\nisready\nposition startpos\ngo depth 1 nodes 1000\n')
     child.stdin.flush()
@@ -53,7 +55,7 @@ try:
         assert line is not None, 'packaged engine exited before a move'
         observations.append(line)
         if line.startswith('bestmove '):
-            assert line.split()[1] in {f'{file}2{file}{rank}' for file in 'abcdefgh' for rank in '34'} | {'b1a3','b1c3','g1f3','g1h3'}, line
+            assert line.split()[1] in initial_chess_actions, line
             break
     assert 'uciok' in observations and 'readyok' in observations
     child.stdin.write('quit\n')
@@ -94,14 +96,19 @@ assert observation['context'] == context, 'internal response changed exact reque
 assert observation['result']['kind'] == 'chess', observation
 result = observation['result']['result']
 assert result['kind'] == 'move', result
-# Current classical opening fixture is independently specified by the native
-# conventional-search tests (material/placement, not the former material-only tie).
-assert result['action'] == 'b1c3', result
-assert result['telemetry']['completed_depth'] == 1, result
-assert result['telemetry']['nodes'] == 21, result
-assert result['telemetry']['score'] == 61, result
-assert result['telemetry']['principal_variation'][0] == {'kind': 'move', 'action': 'b1c3'}, result
-assert result['telemetry']['status'] == 'complete', result
+# The package contract is a legal complete result within the requested bounds.
+# Search ordering, exact node counts, scores and the selected legal move can
+# change when the search is improved; native correctness suites test that layer.
+def check_chess_choice(value):
+    assert value['kind'] == 'move', value
+    assert value['action'] in initial_chess_actions, value
+    telemetry = value['telemetry']
+    assert telemetry['completed_depth'] == 1, value
+    assert 0 < telemetry['nodes'] <= context['limits']['nodes'], value
+    assert isinstance(telemetry['score'], int), value
+    assert telemetry['principal_variation'][0] == {'kind': 'move', 'action': value['action']}, value
+    assert telemetry['status'] == 'complete', value
+check_chess_choice(result)
 # Purpose-specific queries exercise the actual shipped advanced solver as well.
 target = {'selection_id': 1, 'event_index': 0, 'board_ply': 0, 'session_version': 1,
           'label': 'Package verification: standard start',
@@ -120,8 +127,7 @@ def query(request, game_kind="chess"):
     assert reply['observation']['result']['kind'] == game_kind, reply
     return reply
 analysis_response = query(analysis_request)
-assert analysis_response['observation']['result']['result']['kind'] == 'move', analysis_response
-assert analysis_response['observation']['result']['result']['telemetry']['nodes'] == 21, analysis_response
+check_chess_choice(analysis_response['observation']['result']['result'])
 full_request = copy.deepcopy(request)
 full_request['context'].update(request_id=3, process_generation=3,
     limits={'depth': 1, 'nodes': 0},

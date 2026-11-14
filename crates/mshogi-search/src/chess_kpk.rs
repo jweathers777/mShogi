@@ -12,7 +12,36 @@ const WINS: &[u8; STATES / 8] = include_bytes!("data/chess_kpk.bin");
 /// `None` means the material/rights do not match; it never means a game outcome.
 pub(crate) fn probe(position: &Position) -> Option<bool> {
     let (index, _) = index(position)?;
-    Some(WINS[index / 8] & (1 << (index % 8)) != 0)
+    Some(wins(index))
+}
+
+/// Table bit for a state index from `index` or `index_parts`.
+pub(crate) fn wins(index: usize) -> bool {
+    WINS[index / 8] & (1 << (index % 8)) != 0
+}
+
+/// State index from square indexes (a1 = 0, h8 = 63). `strong_black` names the
+/// pawn's side and `strong_to_move` the turn. The caller has already checked
+/// that the material is king and pawn against king with no castling rights.
+pub(crate) fn index_parts(
+    mut pawn: usize,
+    strong_black: bool,
+    mut strong_king: usize,
+    mut weak_king: usize,
+    strong_to_move: bool,
+) -> usize {
+    if strong_black {
+        pawn ^= 56;
+        strong_king ^= 56;
+        weak_king ^= 56;
+    }
+    if pawn % 8 >= 4 {
+        pawn ^= 7;
+        strong_king ^= 7;
+        weak_king ^= 7;
+    }
+    let pawn_slot = (pawn / 8 - 1) * 4 + pawn % 8;
+    ((pawn_slot * 64 + strong_king) * 64 + weak_king) * 2 + usize::from(!strong_to_move)
 }
 
 /// Normalize pawn side to White, pawn file to a..d, preserving turn identity.
@@ -39,7 +68,7 @@ pub(crate) fn index(position: &Position) -> Option<(usize, Color)> {
             }
         }
     }
-    let (mut pawn, strong) = pawn?;
+    let (pawn, strong) = pawn?;
     // Castling requires a rook in a validated Position, already excluded above;
     // keep this explicit so the bitbase's applicability remains self-contained.
     for side in [Color::White, Color::Black] {
@@ -47,22 +76,14 @@ pub(crate) fn index(position: &Position) -> Option<(usize, Color)> {
             return None;
         }
     }
-    let mut strong_king = kings[usize::from(strong == Color::Black)];
-    let mut weak_king = kings[usize::from(strong == Color::White)];
-    if strong == Color::Black {
-        pawn ^= 56;
-        strong_king ^= 56;
-        weak_king ^= 56;
-    }
-    if pawn % 8 >= 4 {
-        pawn ^= 7;
-        strong_king ^= 7;
-        weak_king ^= 7;
-    }
-    let pawn_slot = (pawn / 8 - 1) * 4 + pawn % 8;
-    let turn = usize::from(position.side_to_move() != strong);
     Some((
-        ((pawn_slot * 64 + strong_king) * 64 + weak_king) * 2 + turn,
+        index_parts(
+            pawn,
+            strong == Color::Black,
+            kings[usize::from(strong == Color::Black)],
+            kings[usize::from(strong == Color::White)],
+            position.side_to_move() == strong,
+        ),
         strong,
     ))
 }

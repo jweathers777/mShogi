@@ -118,6 +118,10 @@ fn handshake_readiness_and_live_stop_keep_stdout_protocol_only() {
         engine.line(),
         "option name ClaimPolicy type combo default explicit var explicit var auto"
     );
+    assert_eq!(
+        engine.line(),
+        "option name Hash type spin default 64 min 1 max 4096"
+    );
     assert_eq!(engine.line(), "uciok");
     engine.send("ucinewgame\nisready\nposition startpos\ngo infinite\nisready\n");
     assert_eq!(engine.line(), "readyok");
@@ -195,62 +199,60 @@ fn position_replays_history_and_invalid_sequence_is_atomic() {
     assert!(engine.finish().contains("move 2:"));
 }
 #[test]
-fn uci_claims_are_unavailable_at_root_and_interior_under_both_legacy_options() {
+fn uci_gives_a_move_where_a_claim_exists_and_scores_rule_draws_as_draws() {
+    // The UCI adapter cannot make a draw claim, so the engine always gives a
+    // move. The search still scores a position that the fifty-move rule or a
+    // repetition decides as a draw, because the opponent or the controller can
+    // claim it. A mate is never hidden by the move counter.
     let mut engine = Engine::new();
     for policy in ["explicit", "auto"] {
         engine.send(&format!("setoption name ClaimPolicy value {policy}\n"));
         engine.send("position fen 7k/8/5KQ1/8/8/8/8/8 w - - 100 1\ngo depth 1\n");
-        assert_eq!(
-            engine.best().0,
-            "g6g7",
-            "unavailable claim must not hide mate"
-        );
+        let (best, info) = engine.best();
+        assert_eq!(best, "g6g7", "the move counter must not hide mate");
+        assert!(info[0].contains("score mate 1"));
         for clock in [98, 99, 100] {
+            // Black is down a rook and no capture or pawn move is possible.
             let fen = format!("7k/8/8/8/8/8/8/KR6 b - - {clock} 1");
             engine.send(&format!("position fen {fen}\ngo depth 2\n"));
             let (best, info) = engine.best();
             legal(&fen, &best);
             assert!(info[0].starts_with("info depth 2 "));
-            assert!(losing_rook_score(&info[0]), "{}", info[0]);
-            assert_eq!(
-                info[0]
-                    .split(" pv ")
-                    .nth(1)
-                    .unwrap()
-                    .split_whitespace()
-                    .next(),
-                Some(best.as_str())
-            );
+            assert_eq!(score(&info[0]), Some(0), "{}", info[0]);
+            assert_eq!(first_pv_move(&info[0]), Some(best.as_str()));
         }
+        // With the counter at zero the same material is lost for Black.
+        engine.send("position fen 7k/8/8/8/8/8/8/KR6 b - - 0 1\ngo depth 2\n");
+        assert!(losing_rook_score(&engine.best().1[0]));
     }
     let stderr = engine.finish();
     assert!(!stderr.contains("fallback"), "{stderr}");
 }
 #[test]
-fn uci_continues_optional_repetitions_but_stops_at_native_fivefold() {
+fn uci_scores_a_repetition_as_a_draw_and_stops_at_native_fivefold() {
     let mut engine = Engine::new();
     let cycle = "g8f6 g1f3 f6g8 f3g1 ";
+    // Black is down a rook. One repeat: the game is not yet a draw.
+    engine.send(&format!(
+        "position fen 6nk/8/8/8/8/8/8/KR4N1 b - - 0 1 moves {cycle}\ngo depth 1\n"
+    ));
+    let (best, info) = engine.best();
+    assert_ne!(best, "0000");
+    assert!(losing_rook_score(&info[0]), "{}", info[0]);
     for repeats in [2, 3, 4] {
         engine.send(&format!(
             "position fen 6nk/8/8/8/8/8/8/KR4N1 b - - 0 1 moves {}\ngo depth 1\n",
             cycle.repeat(repeats)
         ));
         let (best, info) = engine.best();
+        assert_eq!(score(&info[0]), Some(0), "{}", info[0]);
         if repeats == 4 {
+            // Native fivefold: the game is concluded and there is no move.
             assert_eq!(best, "0000");
-            assert!(info[0].contains("score cp 0"));
         } else {
-            assert_ne!(best, "0000");
-            assert!(losing_rook_score(&info[0]), "{}", info[0]);
-            assert_eq!(
-                info[0]
-                    .split(" pv ")
-                    .nth(1)
-                    .unwrap()
-                    .split_whitespace()
-                    .next(),
-                Some(best.as_str())
-            );
+            // A third occurrence can be reached again: Black takes the draw.
+            assert_eq!(best, "g8f6");
+            assert_eq!(first_pv_move(&info[0]), Some(best.as_str()));
         }
     }
     assert!(!engine.finish().contains("fallback"));
@@ -305,7 +307,8 @@ fn infinite_terminal_waits_for_stop_and_new_position_suppresses_stale_output() {
 fn invalid_input_and_unsupported_controls_recover_without_stdout_diagnostics() {
     let mut engine = Engine::new();
     engine.send(
-        "go ponder\ngo depth -1\ngo searchmoves e2e4\ngo winc 100\nsetoption name Hash value 16\n",
+        "go ponder\ngo depth -1\ngo searchmoves e2e4\ngo winc 100\nsetoption name Ponder value true\n\
+         setoption name Hash value 0\nsetoption name Hash value 16\n",
     );
     engine.input.write_all(&[0xff, b'\n']).unwrap();
     engine.send(&format!("{}\nisready\n", "x".repeat(5000)));
@@ -316,6 +319,7 @@ fn invalid_input_and_unsupported_controls_recover_without_stdout_diagnostics() {
     assert!(errors.contains("unsupported go control"));
     assert!(errors.contains("unsigned decimal"));
     assert!(errors.contains("unsupported option"));
+    assert!(errors.contains("Hash must be in 1..=4096"));
     assert!(errors.contains("moving side"));
     assert!(errors.contains("ASCII"));
     assert!(errors.contains("line exceeds"));
@@ -331,11 +335,11 @@ fn quit_terminates_during_unbounded_search_without_waiting_for_join() {
 
 fn assert_representation_failure(go: &str) {
     let mut engine = Engine::new();
-    // White has representable legal root actions, but any Black reply would
-    // overflow the fullmove counter. Do not disguise failed depth-two search
-    // as a successfully selected root move or an alleged zero-node search.
+    // Black has legal root actions, but the native game cannot represent any
+    // of them: each one would overflow the fullmove counter. Do not disguise
+    // that as a selected root move or an alleged zero-node search.
     engine.send(&format!(
-        "position fen 7k/8/8/8/8/8/8/KR6 w - - 0 4294967295\n{go}\n"
+        "position fen 7k/8/8/8/8/8/8/KR6 b - - 0 4294967295\n{go}\n"
     ));
     let deadline = Instant::now() + Duration::from_secs(15);
     loop {
@@ -358,7 +362,7 @@ fn assert_representation_failure(go: &str) {
 }
 
 #[test]
-fn descendant_search_representation_failure_exits_without_fabricated_result() {
+fn root_representation_failure_exits_without_fabricated_result() {
     assert_representation_failure("go depth 2");
 }
 #[test]
@@ -366,7 +370,19 @@ fn infinite_search_failure_exits_immediately_without_waiting_for_stop() {
     assert_representation_failure("go infinite");
 }
 
-// Independent material fixture: Black is down a rook without a valid claim.
+fn score(info: &str) -> Option<i32> {
+    info.split("score cp ")
+        .nth(1)
+        .and_then(|s| s.split_whitespace().next())
+        .and_then(|s| s.parse().ok())
+}
+fn first_pv_move(info: &str) -> Option<&str> {
+    info.split(" pv ")
+        .nth(1)
+        .and_then(|s| s.split_whitespace().next())
+}
+
+// Independent material fixture: Black is down a rook.
 // Positional terms may change centipawns; they must not turn that into a draw.
 fn losing_rook_score(info: &str) -> bool {
     info.split("score cp ")

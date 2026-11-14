@@ -10,7 +10,7 @@ import unittest
 
 PLATFORMS = ("ubuntu-24.04", "macos-15", "windows-2022")
 BUNDLES = dict(zip(PLATFORMS, ("deb", "app", "nsis")))
-SUITES = ("configuration", "search", "process", "persistence", "full")
+SUITES = ("configuration", "search", "process", "persistence", "fixtures", "full")
 
 
 def platforms(value):

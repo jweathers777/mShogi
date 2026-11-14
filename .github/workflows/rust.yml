@@ -11,7 +11,7 @@ on:
         description: Explicit verification scope (full preserves the complete native campaign)
         type: choice
         default: configuration
-        options: [configuration, search, process, persistence, full]
+        options: [configuration, search, process, persistence, fixtures, full]
       platform:
         description: Select only the platforms required by the task's actual risks
         type: choice
@@ -65,7 +65,7 @@ jobs:
   targeted:
     name: Targeted ${{ inputs.suite }} (${{ matrix.os }})
     needs: routine
-    if: github.event_name == 'workflow_dispatch' && contains(fromJSON('["search","process","persistence"]'), inputs.suite)
+    if: github.event_name == 'workflow_dispatch' && contains(fromJSON('["search","process","persistence","fixtures"]'), inputs.suite)
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.routine.outputs.matrix) }}
@@ -97,6 +97,23 @@ jobs:
               cargo test --release --locked -p mshogi-core --test game_record --test shogi_record --test native_envelope --test native_tori_envelope --test native_chu_envelope --test native_tenjiku_envelope --test native_xiangqi_envelope
               cargo test --release --locked -p mshogi-desktop-session
               cargo test --release --locked -p mshogi-console --test desktop_persistence
+              ;;
+            fixtures)
+              cargo run --locked -p mshogi-desktop-session --example write_frontend_fixtures -- desktop/src/__fixtures__
+              cargo run --locked -p mshogi-desktop-session --features desktop-verification --example write_tori_frontend_fixtures -- desktop/src/__fixtures__
+              cargo run --locked -p mshogi-desktop-session --features desktop-verification --example write_chu_frontend_fixtures -- desktop/src/__fixtures__
+              cargo run --release --locked -p mshogi-desktop-session --features desktop-verification --example write_tenjiku_frontend_fixtures -- desktop/src/__fixtures__
+              cargo run --release --locked -p mshogi-desktop-session --example write_tenjiku_gui_fixtures -- desktop/scripts/fixtures
+              git diff --exit-code -- desktop/scripts/fixtures/tenjiku-*
+              git diff --exit-code -- desktop/src/__fixtures__
+              cargo build --workspace --locked
+              cargo run --locked --bin mshogi -- --help
+              cargo run --locked --bin mshogi -- --version
+              cargo run --locked --bin mshogi -- --game chess profile
+              printf 'position startpos\nmove e2e4 e7e5\nshow\nundo 2\nstatus\nperft 3\ndivide 1\n' | cargo run --locked --bin mshogi -- --game chess shell
+              cargo run --locked --bin mshogi -- --game shogi profile
+              printf 'position startpos\nmove 7g7f 3c3d\nshow\nrecord print\nundo 2\nperft 2\n' | cargo run --locked --bin mshogi -- --game shogi shell
+              printf 'usi\nisready\nquit\n' | cargo run --locked --bin mshogi -- --game shogi usi
               ;;
             *) exit 2 ;;
           esac

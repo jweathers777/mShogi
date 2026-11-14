@@ -774,7 +774,7 @@
             "score": 61,
             "completed_depth": 1,
             "selective_depth": 1,
-            "nodes": 21,
+            "nodes": 27,
             "principal_variation": [
               {
                 "kind": "move",
@@ -833,7 +833,7 @@
               "score": 61,
               "completed_depth": 1,
               "selective_depth": 1,
-              "nodes": 21,
+              "nodes": 27,
               "principal_variation": [
                 {
                   "kind": "move",
@@ -860,7 +860,7 @@
       "score": "+0.61 pawns",
       "completed_depth": 1,
       "selective_depth": 1,
-      "nodes": 21,
+      "nodes": 27,
       "variation": [
         "b1c3"
       ],
@@ -931,7 +931,7 @@
           "score": 61,
           "completed_depth": 1,
           "selective_depth": 1,
-          "nodes": 21,
+          "nodes": 27,
           "principal_variation": [
             {
               "kind": "move",

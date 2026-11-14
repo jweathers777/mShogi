@@ -1,11 +1,11 @@
 ---
 id: MSH-171
 title: Rewrite Main Promotion
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-14T12:28:00Z'
-updated_date: '2026-11-14T19:09:00Z'
+updated_date: '2026-11-14T19:24:00Z'
 labels:
   - handle:rewrite-main-promotion
 dependencies:
@@ -49,12 +49,12 @@ Record decisions, branch dispositions, tested/promoted revisions, independent re
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 John has selected the branch/default policy and authorized the remote default change; Mini Shogi, old saved files, two-human desktop play and old search/Force controls each have a recorded acceptance or linked follow-up decision.
-- [ ] #2 Current ownership and outstanding branches with unique commits have recorded dispositions; required reviewed work is integrated and unrelated dirty work is preserved.
-- [ ] #3 User documentation, coverage comments, CI branch filters and workflow instructions match the actual six-game product and approved integration/default branch.
+- [x] #2 Current ownership and outstanding branches with unique commits have recorded dispositions; required reviewed work is integrated and unrelated dirty work is preserved.
+- [x] #3 User documentation, coverage comments, CI branch filters and workflow instructions match the actual six-game product and approved integration/default branch.
 - [ ] #4 A structured Level 3 record identifies the exact candidate source, actual three-platform native/desktop evidence, justified reused evidence and limitations; material findings are resolved and independent final review approves promotion.
 - [ ] #5 main is created and published at the accepted rewrite tip after MSH-169 (Engine Session Persistence) and MSH-170 (Unused Code Removal) are integrated; an annotated tag preserves the old C++ tip, original/prototype histories remain accessible, and no orphan replacement or force-push is used.
 - [ ] #6 Remote tips/default and applicable CI routing are verified; rollback instructions and handoff are complete without an unsupported release or playing-strength claim.
-- [ ] #7 Current project documentation and workflow guidance state requirements and decisions directly, without personal references to the project owner or third-person references by name; required copyright/license notices and historical evidence remain intact.
+- [x] #7 Current project documentation and workflow guidance state requirements and decisions directly, without personal references to the project owner or third-person references by name; required copyright/license notices and historical evidence remain intact.
 <!-- AC:END -->
 
 ## Definition of Done
@@ -69,6 +69,8 @@ Record decisions, branch dispositions, tested/promoted revisions, independent re
 
 <!-- SECTION:PLAN:BEGIN -->
 1. Record branch/worktree dispositions and preserve unrelated files and historical refs. 2. Update current six-game documentation, remove personal attribution from current guidance, and route workflow/integration instructions to main. 3. Commit a coherent candidate on codex/rewrite; verify with Level 3 full Rust and packaged desktop CI on Linux/macOS/Windows, reusing unchanged historical rules/profile evidence with exact source qualifications. 4. Obtain independent review of final changes and platform evidence; resolve material findings. 5. Tag the C++ tip, create and publish main at the accepted rewrite tip, set the remote default and primary checkout to main, verify routing/history/rollback, and remove safely completed branches/worktrees. Record actual evidence and retained cleanup limits.
+
+Verification adjustment after actual Linux full-run failure: refresh only the two generated Chess telemetry snapshots, preserve the strict regeneration diff, and add the smallest existing-workflow targeted fixture/build/console-smoke dispatch on all three systems. Reuse successful format/lint/workspace/release-process/all-feature QA stages from the original full run only after each platform receipt confirms success and native source equality. Rerun current frontend consumers for the refreshed snapshots. Retain original failed/canceled jobs and never label them successful full runs. This preserves the complete Level 3 check set through explicit source/scope-equivalent evidence.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -83,4 +85,8 @@ Owner: @codex, primary integration checkout /Users/johnweathers/Development/Pers
 Candidate cfcf9d9e22eb46b7603e558b1951549f5e421008 published. Level 3 campaigns dispatched: Rust 43629719990 (suite full/platform all), Desktop 43629723352 (operation package/platform all). No passed platform claim yet. Local CI-policy self-tests passed 8/8; formatting and whitespace checks passed. Removed 14 completed local branches after ancestry checks. Managed Tenjiku checkout remains clean: attach_worktree refused ownership by another task; no app artifact identity is exposed to this chat, so no manual deletion or protection bypass. Branch dispositions and preserved unrelated notification hashes are in docs/review/evidence/msh171/branch-audit.json.
 
 Actual local macOS27 arm64 normal package built at candidate compiled inputs and launched through CUA at the fixed org.mshogi.desktop identity. Chess completed two replies (4plies); Tori Gote engine-first play, Save/Open stopped at1ply, explicit Resume, human capture/engine reply to3plies, read-only root inspection/Return, Take back to1ply with2observations retained, Save and native Quit passed. Actual archives and identity/package receipts are retained under docs/review/evidence/msh171. Existing ad-hoc normal-bundle signature limitations are recorded; no signing/notarization or future approval reuse claim. Initial actual package smoke failed obsolete exact21node assertion (actual27); independent review approved contract-based verifier correction f8d8f2d5. Desktop43629723352 canceled, replacement43630147834 package/all pending. Native43629719990 continues with identical compiled/test inputs and command evidence. Four explicit remote branches removed after Done/criteria/ancestry checks; initial broad deletion rejection and the safer verified retry are recorded.
+
+Source and documentation review approved cfcf9d9e, package-verifier correction f8d8f2d5 and later documentation-only cleanup5b9e394d. Current guides remove named and role-based personal attribution; historical reports/evidence/legal notices remain intact, with original heading aliases preserved. AC2/3/7 now have review and audit evidence. Published annotated legacy-cpp tag at941cd4dc; master/main_v2 unchanged. Platform campaigns remain pending, so AC4/5/6 and completion remain unchecked. Single verification index: docs/review/evidence/msh171/verification.json. Next eligible work after this task is MSH-172 (Two-Human Desktop Play), MSH-173 (Frozen Legacy Opponent), or MSH-175 (Opponent Adjudication Policy); none is started.
+
+Native Linux job132553503746 (run43629719990) passed format/lint/workspace/release process and all-feature QA checks, then failed strict regenerated frontend fixture diff. Refreshed shared-chess-analysis-moves telemetry nodes21→27 and mate telemetry selective_depth5→2/nodes48→31; actions, scores, PVs and outcomes are unchanged. Local native generator produced exactly these two changes. Original full-run evidence is retained; acceptance waits for reviewed targeted fixture/build/smoke checks on all three platforms plus refreshed frontend tests. Production code is unchanged. Concurrent Backlog ordinal-only edits in other task files were observed and are preserved outside this task commit.
 <!-- SECTION:NOTES:END -->

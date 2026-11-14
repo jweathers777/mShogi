@@ -83,7 +83,7 @@ path set and relevant shared dependencies. A mixed change exercises both affecte
 areas. This automation does not replace task-specific local regressions/review.
 
 The existing [Rust workflow](../.github/workflows/rust.yml) provides explicit
-manual selection of `suite=configuration|search|process|persistence|full` and
+manual selection of `suite=configuration|search|process|persistence|fixtures|full` and
 `platform=ubuntu-24.04|macos-15|windows-2022|all`. The
 [Desktop workflow](../.github/workflows/desktop.yml) is manual, with
 `operation=configuration|host|package` and the same platform choices. Configuration is
@@ -169,3 +169,8 @@ Every start position at the u32 counter limit is played with ordinary counters. 
 - The Rust test replays every saved case, checking all invariants and expectations, without the original random run.
 
 Licensing: python-chess is GPL-3.0-or-later and runs only as a separate optional research process that talks to mShogi through its console text. It is not linked into, vendored in, or shipped with mShogi, and no Rust dependency was added.
+
+The `fixtures` native suite regenerates and checks the committed desktop snapshots,
+then runs the full workflow's build and console smoke commands. It supports
+fixture-only refreshes with explicitly retained unchanged full-suite evidence;
+it is not a replacement for the full native test suite.

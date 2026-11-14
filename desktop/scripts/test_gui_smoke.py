@@ -1846,5 +1846,85 @@ class TenjikuPackagedEvidenceTests(unittest.TestCase):
             with self.assertRaises(AssertionError):module.capture_ring_pixel_evidence(path,observation)
 
 
+class CurrentEngineVerifierTests(unittest.TestCase):
+    def test_current_public_budgets_reject_the_obsolete_defaults(self):
+        self.assertTrue(module.current_play_limit_matches('chess', 'Thinking time: 1 s per move'))
+        self.assertFalse(module.current_play_limit_matches('chess', 'Play limit: depth 2 · 20000 nodes'))
+        self.assertFalse(module.current_play_limit_matches('chess', 'Thinking time: 2 s per move'))
+        for value in ('300000', '300,000', '300.000', '300\u00a0000'):
+            self.assertTrue(module.current_play_limit_matches('tori', f'Play limit: depth 64 · {value} nodes'))
+        self.assertFalse(module.current_play_limit_matches('tori', 'Play limit: depth 2 · 2000 nodes'))
+        self.assertFalse(module.current_play_limit_matches('tori', 'Play limit: depth 64 · 300001 nodes'))
+
+    def test_startup_fault_is_established_before_any_engine_request(self):
+        # This tests the observer's fault precondition, not a simulated product pass.
+        with tempfile.TemporaryDirectory() as folder:
+            engine = Path(folder) / 'engine'
+            engine.write_bytes(b'frozen test executable identity')
+            journey = object.__new__(module.Journey)
+            journey.args = type('Args', (), {'verification_engine': engine})()
+            journey.start = Mock()
+            journey.square = lambda square: square
+            journey.capture = Mock()
+            journey.record = Mock()
+            journey.quit = Mock()
+            journey.web = Mock()
+            seen = []
+            def click(square):
+                self.assertFalse(engine.exists(), 'a kept process must not precede the startup fault')
+                seen.append(square)
+            journey.web.click.side_effect = click
+            journey.web.text.return_value = 'Engine connection failed'
+            journey.web.has.return_value = False
+            journey.plies = Mock()
+            def retry(label):
+                self.assertEqual(label, 'Retry engine turn')
+                self.assertTrue(engine.exists(), 'the exact executable must be restored before Retry')
+            journey.web.button.side_effect = retry
+            with patch.object(module, 'wait', side_effect=lambda predicate, *args: predicate()):
+                journey.fixture('standard')
+            self.assertEqual(seen, ['e2', 'e4'])
+            self.assertEqual([c.args[0] for c in journey.plies.call_args_list], [1, 2])
+            self.assertEqual(engine.read_bytes(), b'frozen test executable identity')
+            journey.quit.assert_called_once()
+
+    def test_deferred_executable_removal_follows_observed_process_cleanup(self):
+        journey = module.Journey(None, {})
+        journey.phase_report = {}
+        native = Mock()
+        native.alive.return_value = False
+        native.processes.return_value = []
+        native.events = []
+        calls = []
+        native.cleanup.side_effect = lambda: calls.append('process cleanup')
+        path = Mock()
+        path.unlink.side_effect = lambda **kwargs: calls.append('unlink')
+        journey.native = native
+        journey.deferred_file_removals.append(path)
+        with patch.object(module, 'wait', side_effect=lambda predicate, *args: predicate()):
+            journey.cleanup()
+        self.assertEqual(calls, ['process cleanup', 'unlink'])
+        self.assertEqual(journey.deferred_file_removals, [])
+
+    def test_uncertain_process_cleanup_does_not_remove_executable(self):
+        journey = module.Journey(None, {})
+        journey.phase_report = {}
+        native = Mock()
+        native.alive.return_value = False
+        native.processes.return_value = [{'pid': 123, 'path': '/still-running-engine'}]
+        native.events = []
+        path = Mock()
+        journey.native = native
+        journey.deferred_file_removals.append(path)
+        def require_isolation(predicate, *args):
+            if not predicate():
+                raise AssertionError('process remains')
+        with patch.object(module, 'wait', side_effect=require_isolation):
+            with self.assertRaisesRegex(AssertionError, 'process remains'):
+                journey.cleanup()
+        path.unlink.assert_not_called()
+        self.assertEqual(journey.deferred_file_removals, [path])
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

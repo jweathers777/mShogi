@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-14T12:28:00Z'
-updated_date: '2026-11-14T19:24:00Z'
+updated_date: '2026-11-14T19:43:00Z'
 labels:
   - handle:rewrite-main-promotion
 dependencies:
@@ -51,7 +51,7 @@ Record decisions, branch dispositions, tested/promoted revisions, independent re
 - [x] #1 John has selected the branch/default policy and authorized the remote default change; Mini Shogi, old saved files, two-human desktop play and old search/Force controls each have a recorded acceptance or linked follow-up decision.
 - [x] #2 Current ownership and outstanding branches with unique commits have recorded dispositions; required reviewed work is integrated and unrelated dirty work is preserved.
 - [x] #3 User documentation, coverage comments, CI branch filters and workflow instructions match the actual six-game product and approved integration/default branch.
-- [ ] #4 A structured Level 3 record identifies the exact candidate source, actual three-platform native/desktop evidence, justified reused evidence and limitations; material findings are resolved and independent final review approves promotion.
+- [x] #4 A structured Level 3 record identifies the exact candidate source, actual three-platform native/desktop evidence, justified reused evidence and limitations; material findings are resolved and independent final review approves promotion.
 - [ ] #5 main is created and published at the accepted rewrite tip after MSH-169 (Engine Session Persistence) and MSH-170 (Unused Code Removal) are integrated; an annotated tag preserves the old C++ tip, original/prototype histories remain accessible, and no orphan replacement or force-push is used.
 - [ ] #6 Remote tips/default and applicable CI routing are verified; rollback instructions and handoff are complete without an unsupported release or playing-strength claim.
 - [x] #7 Current project documentation and workflow guidance state requirements and decisions directly, without personal references to the project owner or third-person references by name; required copyright/license notices and historical evidence remain intact.
@@ -89,4 +89,6 @@ Actual local macOS27 arm64 normal package built at candidate compiled inputs and
 Source and documentation review approved cfcf9d9e, package-verifier correction f8d8f2d5 and later documentation-only cleanup5b9e394d. Current guides remove named and role-based personal attribution; historical reports/evidence/legal notices remain intact, with original heading aliases preserved. AC2/3/7 now have review and audit evidence. Published annotated legacy-cpp tag at941cd4dc; master/main_v2 unchanged. Platform campaigns remain pending, so AC4/5/6 and completion remain unchecked. Single verification index: docs/review/evidence/msh171/verification.json. Next eligible work after this task is MSH-172 (Two-Human Desktop Play), MSH-173 (Frozen Legacy Opponent), or MSH-175 (Opponent Adjudication Policy); none is started.
 
 Native Linux job132553503746 (run43629719990) passed format/lint/workspace/release process and all-feature QA checks, then failed strict regenerated frontend fixture diff. Refreshed shared-chess-analysis-moves telemetry nodes21→27 and mate telemetry selective_depth5→2/nodes48→31; actions, scores, PVs and outcomes are unchanged. Local native generator produced exactly these two changes. Original full-run evidence is retained; acceptance waits for reviewed targeted fixture/build/smoke checks on all three platforms plus refreshed frontend tests. Production code is unchanged. Concurrent Backlog ordinal-only edits in other task files were observed and are preserved outside this task commit.
+
+Final technical acceptance approved by /root/promotion_review. Complete3platform native coverage is the explicitly reviewed union: original43629719990 passed format/lint/workspace/releaseprocess/allfeatureQA onall3, failed stale2snapshot drift; targeted43631984264 fixture/build/smoke passedall3. FullDesktop43630147834: macOS package passed; Linux46/49 andWindows45/49 GUI phases remainFAILED. Actualcurrentcrossgame7profile journeys, pending/cancellation and recovery/native results independently cover required product contracts. Budget captures match1sChess and64/300000Tori. Original missing-sidecar test incorrectly assumed a new process per search; Windows copied-executable cleanup incorrectly ran before retained-child shutdown. Corrected observer preconditions/cleanup, preserved common persistence tail,133tests pass; actualcorrectedGUIjourneys notrerun. No product defect/uncovered contract found and no furtherfullGUIcampaign required by independentreview. Contract-to-evidence matrix is in verification.json. Publication/default checks remainpending.
 <!-- SECTION:NOTES:END -->

@@ -407,6 +407,16 @@ def play_limit_matches(text, depth, nodes):
                 and int(re.sub(r"[,. \u00a0\u202f]", "", match[2]) or "-1") == nodes)
 
 
+def current_play_limit_matches(game, text):
+    """Current public budgets, independent of obsolete per-search defaults."""
+    if game == 'chess':
+        return text == 'Thinking time: 1 s per move'
+    depth, nodes = {'shogi': (2, 5000), 'xiangqi': (1, 128),
+                    'tori': (64, 300000), 'chu': (1, 512),
+                    'tenjiku': (1, 1024)}[game]
+    return play_limit_matches(text, depth, nodes)
+
+
 def inspection_status_matches(text, native_label):
     """Exact owner-approved visible copy, independent of accessible explanations."""
     return text == f"Inspecting {native_label} · Esc clears"
@@ -807,6 +817,7 @@ class Journey:
         self.phase = None
         self.phase_report = None
         self.native_events = []
+        self.deferred_file_removals = []
         self.shell_layouts = {}
 
     def record(self, operation, observation):
@@ -955,6 +966,9 @@ class Journey:
                         **residual, "scope": "Failure containment only; never native Quit evidence."}
             self.native_events.extend(getattr(self.native, "events", []))
             self.native = None
+        for path in self.deferred_file_removals:
+            path.unlink(missing_ok=True)
+        self.deferred_file_removals.clear()
 
     def plies(self, count, historical=False):
         text = f"{'Selected' if historical else 'Live'} position · {count} {'ply' if count == 1 else 'plies'}"
@@ -1252,8 +1266,7 @@ class Journey:
         assert layout['help'] and layout['help']['height'] > 0 and layout['helpVisible'] and layout['footnoteVisible'], ('live help belongs visibly in the shared footer',layout)
         assert layout['documentState'] == 'unsaved', layout
         assert layout['positionStatus'] == 'Your turnLive position · 0 plies', layout
-        expected_depth, expected_nodes = {'chess': (2, 20000), 'shogi': (2, 5000), 'xiangqi': (1, 128), 'tori': (2, 2000), 'chu': (1, 512),'tenjiku':(1,1024)}[game]
-        assert play_limit_matches(layout['playLimits'], expected_depth, expected_nodes), layout
+        assert current_play_limit_matches(game, layout['playLimits']), layout
         assert layout['documentInHeader'] and layout['flipInHeading'] and layout['supportOutsideSidebar'] and layout['rawDiagnosticsAbsent'], layout
         assert layout['brand'] == '歩' and layout['gameLabel'] == ({'tori':'TORI SHOGI'}.get(game,game.upper())), layout
         self.support_access(game)
@@ -3536,7 +3549,10 @@ class Journey:
                 self.completed_xiangqi_retry()
                 assert not w.has('.outcome-card')
             finally:
-                missing.unlink(missing_ok=True)
+                # A successful retry can keep this process alive. Windows
+                # forbids unlinking its executable until native shutdown (or
+                # explicit failure cleanup) has established process absence.
+                self.deferred_file_removals.append(missing)
         elif name == 'xiangqi-capacity':
             assert len(before['observations']) == 255
             self.xiangqi_analysis(nodes=1)
@@ -3578,28 +3594,29 @@ class Journey:
         self.start(name)
         w = self.web
         if name == "standard":
-            w.click(self.square("e2")); w.click(self.square("e4")); self.plies(2)
-            # The extracted/installed verification package is writable. This
-            # exercises the same actual supervisor without changing /usr/bin
-            # permissions or running the installed Linux GUI as root.
+            # Hide the executable before the first request. After a completed
+            # search the retained engine can legitimately serve another move
+            # even while its executable is temporarily absent from the path.
+            # The writable QA package keeps this genuine startup fault away
+            # from the normal installed application.
             engine = self.args.verification_engine
             held = engine.with_name(engine.name + ".gui-verification-held")
             original = digest(engine)
             assert not held.exists()
             try:
                 engine.rename(held)
-                w.click(self.square("d2")); w.click(self.square("d4"))
+                w.click(self.square("e2")); w.click(self.square("e4"))
                 wait(lambda: "Engine connection failed" in w.text(".shell-notices"), "genuine missing engine failure")
-                self.plies(3)
+                self.plies(1)
                 assert not w.has(".outcome-card")
                 self.capture("engine-failure")
-                self.record("Genuine missing-engine startup failure preserves three plies", w.text(".shell-notices"))
+                self.record("Genuine missing-engine startup failure preserves the accepted human move", w.text(".shell-notices"))
             finally:
                 if held.exists():
                     held.rename(engine)
             assert digest(engine) == original
             w.button("Retry engine turn")
-            self.plies(4)
+            self.plies(2)
             assert not w.has(".outcome-card")
             self.record("Restore identical sidecar and Retry without losing history", {
                 "engine_sha256": digest(engine), "result": w.text('[data-search-purpose="engine_turn"]')})

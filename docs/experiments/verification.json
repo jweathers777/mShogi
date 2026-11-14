@@ -187,13 +187,13 @@
     "additional_recovery_probe_queries": 1,
     "scope": "Separate cloud pilot; not merged with primary study evidence."
   },
-  "blocker": "Implementation and execution review passed. Actual billed-cost reconciliation and coordinator acceptance/integration remain open.",
-  "next_gate": "Coordinator reviews coordinator-handoff.md and admits/integrates as appropriate after its active work. Reconcile actual billing. Full study needs separate coordinator review and spending scope; do not launch automatically.",
+  "blocker": null,
+  "next_gate": "None for MSH-162. Final billing is not a completion requirement under the owner decision of 2026-11-14.",
   "integration": {
     "branch": "codex/parallel-experiment-runner",
     "target": "codex/rewrite",
-    "status": "merged_by_coordinator",
-    "worktree_purpose": "Retained for remaining actualpilotbillingreconciliation; integratedcode andhandoff nowinprimary; no activecloudjob/listener uses thisworktree.",
+    "status": "Integrated into codex/rewrite at bb5e698e; coordinator recorded 64 passing integration tests.",
+    "worktree_purpose": "None remaining; archive after closure commit is pushed.",
     "target_revision": "bb5e698e"
   },
   "previous_source_checkpoint": {
@@ -369,5 +369,12 @@
     "primary": "../m5/evidence/msh161/cloud-primary/cohort-freeze.json",
     "primary_first_job": "msh161-primary-b01-v1",
     "pilot_actual_billing": "still_unavailable_not_fabricated"
+  },
+  "closure": {
+    "date": "2026-11-14",
+    "owner_decision": "Final billing reconciliation is not required. Complete MSH-162.",
+    "status": "Done",
+    "actual_billing": "Unknown; not presented as verified",
+    "cost_evidence": "Documented VM lifecycle estimate; excludes other charges."
   }
 }

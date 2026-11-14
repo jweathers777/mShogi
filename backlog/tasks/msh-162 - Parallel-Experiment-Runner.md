@@ -1,11 +1,11 @@
 ---
 id: MSH-162
 title: Parallel Experiment Runner
-status: In Review
+status: Done
 assignee:
   - '@codex-cloud-runner'
 created_date: '2026-11-11T18:35:00Z'
-updated_date: '2026-11-12T06:37:00Z'
+updated_date: '2026-11-14T18:38:00Z'
 labels:
   - handle:parallel-experiment-runner
 dependencies: []
@@ -26,7 +26,7 @@ Deliver reusable local and GCP Batch execution over native match/replay and froz
 Versioned immutable jobs, bounded workers, dependency scheduling and verified artifacts. Preserve frozen study and coordinator ownership.
 
 ## Completion
-Implementation, cloud pilots and independent review passed; coordinator integrated at bb5e698e and authorized primary execution is now underway in MSH-161. Actual pilot billed-cost reconciliation remains open, so keep this task In Review. See docs/experiments/coordinator-handoff.md and verification.json.
+Implementation, cloud pilots and independent review passed. Integrated into codex/rewrite at bb5e698e, with 64 integration tests passed. John removed final billing reconciliation as a completion requirement on 2026-11-14. Actual charges remain unknown; the recorded cost is an estimate.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -34,16 +34,16 @@ Implementation, cloud pilots and independent review passed; coordinator integrat
 - [x] #1 Game pair, all-move screening and confirmation jobs reuse native and frozen analysis authorities.
 - [x] #2 Parallel local/GCP jobs support dependencies, integrity, retries, immutable success, status/retrieve/cancel and resources.
 - [x] #3 Targeted macOS/Linux tests and independent source/execution review cover replay, failure and restart.
-- [ ] #4 Authorized cloud pilot proves complete pair and analysis, recovery and eight-worker throughput/cost.
+- [x] #4 Authorized cloud pilot proves complete pair and analysis, recovery, eight-worker throughput and a documented cost estimate. Final billing reconciliation is not required, per owner decision of 2026-11-14.
 - [x] #5 Reviewed operating and integration handoff preserves frozen inputs.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -90,14 +90,16 @@ Direct status follow-up delivered at6bac128c: python3 tools/experiments/quick_st
 Final evidence commit7dd13acb: all1841eight-worker jobs verified from27401objects/3.98GB; independent16game replay,5322screening queries and1825confirmations passed. Eight real matching C3workers overlapped; per-task elapsed6159.163s/102.65min, total jobwall8.56h. AggregateBatch duration5180s is inconsistent; task/GCS/audit timestamps used, alert delivered after finaltask. No failed eight-worker attempts/retries/claims; allVM/disksdeleted. Allpilot compute estimateUS$2.04140 before extras, actualbilling unavailable. AC4 remains unchecked only for actual billed-cost reconciliation; execution/recovery/throughput parts passed. Finalcontroller64tests passed on Mac/LinuxARM; frozenLinuxx86image validated on realC3. No native/frozenstudy source changes. In Review for coordinator handoff and actualbilling, not Done because integration explicitly deferred. Retain isolated worktree for these purposes. No fullstudy,16worker expansion or next engineering task launched.
 
 Coordinator12November: accepted runtime/scientificpilot evidence, mergedisolatedbranch into codex/rewrite atbb5e698e, andreran64integrationtests PASS. Latesthumanrequestauthorizesfull200primarycloudstudy; first20submitted msh161-primary-b01-v1 with8workers usingexacttested51351image/newercontroller. NoMac/pilotpooling. Actualpilotbilledcost remainsunavailable; nofabricatedreconciliation orDone claim. Isolatedworktree hasno activeworker/listener dependency andisretained solelyforremainingpilotbillingreconciliation; integration/evidence nowinprimary. CoordinatorownsMSH161/scientificreview; nointerchatmessaging.
+
+Owner decision, 2026-11-14: final billing is not required for completion. AC4 now explicitly accepts the documented cost estimate. Actual billed charges remain unknown and are not claimed as verified. Integration at bb5e698e and 64 passing integration tests were already recorded by the coordinator. Corrected stale integration checkboxes and summary; all criteria and completion items now satisfied. Final instruction commit f8046d83 is also merged into codex/rewrite. The isolated worktree has no remaining execution or billing purpose and will be archived after this closure is pushed. Other tasks and their evidence are unchanged.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Implemented reusable immutable job execution around frozen native pair/replay and Stockfish analysis; local/GCS storage, bounded parallel workers, retry/recovery, cancellation, event-driven completion and a direct quick-status script. Removed obsolete local monitors and supplied novice setup/operating guides.
+Completed the reusable parallel runner: immutable job identities and results, local/GCP execution, dependencies, retry/recovery, resource records, event-driven completion, simple status command and novice operating guide. It reuses the native game/replay authority and frozen analysis.
 
-Reviewed initial-pair, real cloud failure/retry/no-duplicate check and eight-worker execution passed. Eight-worker run:16games,5322screening queries,1825confirmations,1841verified jobs in102.65min. Estimated allpilot VMcomputeUS$2.04140; actualbilling/extras not reconciled. Batch aggregate duration discrepancy retained; task-level timestamps establish elapsed time. AllVM/disks removed; GCS/image evidence retained.
+Verified initial pair, real failure/retry/no-duplicate check, and eight-worker pilot. The eight-worker run completed 16 games, 5,322 screening queries and 1,825 confirmations; all 1,841 jobs passed integrity checks and independent review. Task-level elapsed time was 102.65 minutes. All pilot VMs/disks were removed. Estimated combined pilot VM compute was US$2.04140, excluding other charges. Actual billing remains unknown; John explicitly removed it as a completion requirement on 2026-11-14.
 
-Source6bac128c and evidence7dd13acb on codex/parallel-experiment-runner. No integration into codex/rewrite, no fullstudy. See docs/experiments/coordinator-handoff.md for exact integration scope, image/source compatibility and remaining gates. Leave In Review until actualcost and coordinator integration are resolved.
+Integrated into codex/rewrite at bb5e698e, with 64 integration tests passed. Source 6bac128c and pilot evidence 7dd13acb are preserved. See docs/experiments/coordinator-handoff.md and verification.json. Completed worktree is eligible for archival; no further experiment or engineering work is started by this closure.
 <!-- SECTION:FINAL_SUMMARY:END -->

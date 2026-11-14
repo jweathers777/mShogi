@@ -1,6 +1,6 @@
 # Search request coordination
 
-MSH-21 adds `mshogi_search::coordination::SearchCoordinator`, a native worker around the existing stop-aware full-width search. It owns one worker thread, one replaceable pending request and one completion slot. It emits no progress stream and performs no console/protocol I/O. Search never runs while holding the coordinator's metadata mutex, and it works on private game snapshots.
+MSH-21 adds `mshogi_search::coordination::SearchCoordinator`, a native worker that owns the `ChessEngine` of the [Chess search](search.md). It owns one worker thread, one replaceable pending request and one completion slot. It emits no progress stream and performs no console/protocol I/O. Search never runs while holding the coordinator's metadata mutex, and it works on private game snapshots.
 
 `submit(&game, version, limits)` returns an immutable `RequestContext` with a process-unique opaque `RequestId`, the consumer's revision number, the exact canonical `GameRecord` and deterministic search limits. The record includes initial position, imported-history provenance, claim policy, complete known move history and any exercised claim. Neither board identity nor ply count replaces that context. Versions may repeat: IDs are never reused, including across coordinators; identity exhaustion is an explicit submission error rather than wraparound. Invalid limits leave existing work untouched.
 

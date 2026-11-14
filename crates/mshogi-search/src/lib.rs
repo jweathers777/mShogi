@@ -6,7 +6,6 @@
 //! evaluating a live leaf. Static scores never establish a game outcome.
 
 pub mod alphabeta;
-pub mod chess;
 pub mod chess_bitboard;
 pub mod chess_engine;
 pub mod chess_eval;

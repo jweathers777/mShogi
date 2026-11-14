@@ -1,60 +1,58 @@
 # Chess static evaluation
 
-## Active conventional evaluator
+The Chess engine uses `chess_eval::evaluate` in `crates/mshogi-search`. Its
+identity is `mshogi.chess.conventional-tapered.v1`. It evaluates the
+search-internal bitboard position (`chess_bitboard::ChessPosition`), not the
+native rules position. [Chess search](search.md) describes the engine.
 
-The Chess engine on the shared search core uses `chess_eval::evaluate`
-(`chess_eval::decompose` for the per-term breakdown), identity
-`mshogi.chess.conventional-tapered.v1`. `Evaluation` exposes each color's material
-and tapered piece-placement, pawn-structure, mobility/activity, king-safety,
-threat and endgame-conversion contributions. `score_for(Color)` subtracts the
-opponent's contribution; positive centipawns favor the requested color.
-The [conventional engine checkpoint](m5/chess-conventional.md) records the associated
-engineering evidence. This evaluator has no trained parameters or copied
-piece-square tables, and its coefficients are not measured exchange values.
+## Score
 
-Material retains the values below. Original arithmetic placement rewards central
-minor pieces and development, pawn advancement, appropriate king placement and
-endgame king activity. Pawn terms cover isolated, doubled, connected, backward and
-passed pawns, including a simple king-escort estimate. Activity includes bishop
-pairs, rook files/seventh rank and geometric mobility excluding friendly occupancy
-and enemy pawn attacks. King safety combines pawn shelter/open files with weighted
-opposing attacks into the king ring. Threats estimate attacked undefended or
-higher-valued pieces; a major-material conversion term encourages king proximity
-and driving the opposing king to the edge. Each coefficient is inspectable in the
-implementation.
+`evaluate` gives centipawns from the side to move. `decompose` gives the full
+breakdown as an `Evaluation`: the `Terms` of each color, the phase and a
+specialized ending if one applies. `Evaluation::white_score` gives the score
+from White.
 
-Remaining non-pawn, non-king material controls the middle/endgame blend, capped at
-the initial 6400cp total; raw phase can rise above that after promotion and is
-retained exactly for undo. Material, arithmetic piece placement and raw phase form
-a reversible incremental base in `EvalState`. `push(before, after)` compares native
-position snapshots and updates changed cells; `pop()` restores the saved base.
-Pawn, activity, safety, threat and conversion terms recompute from current native
-geometry. Hand-derived arithmetic, color/rank reflection and rebuild-equivalence
-checks over native opening, castling, en-passant, capture, promotion and undo
-sequences test the decomposition and state restoration.
+## Terms
 
-`Position::attacks_from` supplies geometric attacks, including a slider's first
-occupied blocker. Mobility, defended-piece and pressure features are heuristics:
-they do not filter pinned pieces or count legal actions. The evaluator owns no
-move generator, effect resolution, outcome recognizer or history policy. Native
-outcomes and claims take precedence in search. Static estimates remain below the
-100,000cp conservative bound, far below the 1,000,000 mate-score band. A zero score
-proves no draw, a large score proves no win, and positional tests or call timings
-make no playing-strength claim.
+Each color has these terms. Each term except material has a middle-game and an
+endgame value (`Tapered`).
 
-## Removed positional candidate
+| Term | Content |
+|---|---|
+| Material | Pawn 100, knight 320, bishop 330, rook 500, queen 900, king 0 |
+| Placement | Value of each piece on each square |
+| Pawns | Doubled, isolated, backward, connected and passed pawns, with a race estimate for a passed pawn |
+| Mobility | Attacked squares, bishop pair and rook activity |
+| King safety | Pawn shelter, pawn storms and attack pressure near the king |
+| Threats | Attacked pieces that are not defended or that have a higher value than the attacker |
+| Endgame | A preference for conversion when one side has a large material lead |
 
-The earlier `chess_candidate` search and its `mshogi.chess.tapered-position.v1`
-evaluator had no consumer after MSH-164 (Shared Search Core). MSH-170 (Unused Code
-Removal) removed them. The [earlier study](m5/chess-strength.md) stays historical
-evidence.
+The phase is the remaining non-pawn material, capped at 6400 (`MIDDLE_PHASE`).
+The score of a color is its material plus the blend of the middle-game and
+endgame values by the phase. The position keeps material, placement and phase
+incrementally when it makes and unmakes a move. The other terms use the current
+attacks.
 
-## Frozen material baseline
+## Specialized endings
 
-MSH-19 adds the native `mshogi-search` crate. `chess::evaluate(&Position)` returns White and Black material contributions; `Evaluation::score_for(Color)` subtracts the opponent's contribution. Positive scores favor the requested side. For a side-to-move score, pass `position.side_to_move()` explicitly. Identity: `mshogi.chess.material.v1`.
+Some endings replace the general terms (`EndgameKind`):
 
-Values in centipawns: pawn 100, knight 320, bishop 330, rook 500, queen 900, king 0. These are transparent untrained parameters, not measured exchange values. There are no positional, tempo, mobility or learned components. Contributions and `piece_value` are inspectable, sums fit i32 under validated position bounds, and repeated evaluation is deterministic without mutating the position. Moving side, rights, raw EP, counters and history do not alter material contributions. Color swap plus rank reflection swaps contributions and negates White's score.
+- King and pawn against king: the win/draw bitbase in `chess_kpk.rs`.
+  `examples/generate_chess_kpk.rs` generates its table from the native legal
+  actions.
+- Wrong-colored bishop with a rook pawn.
+- Bishop and knight against a bare king.
+- Two knights against a bare king.
+- Queen against an advanced rook-file or bishop-file pawn.
+- Rook and pawn against rook with a third-rank defence.
 
-This is a **static evaluator**, not game or search adjudication. It accepts mate and stalemate diagrams and returns their material values. A zero score does not conclude a draw, and a large score proves neither mate nor mating possibility. MSH-20 must consume rules-owned game history, outcomes and claim policy before evaluating live leaves, assign terminal/mate scores there and preserve caller state. This deliberate separation keeps MSH-19 independently executable; it does not depend on MSH-16/17 or introduce a second outcome classifier.
+## Limits
 
-Verification: `cargo test -p mshogi-search --locked` checks hand-derived values, both score perspectives, color/rank symmetry, state/counter independence, terminal diagrams receiving raw values and a promotion changing a pawn's contribution to a queen's, plus a public API doctest. No playing-strength claim or timing measurement is made. Search, cancellation, UCI and matches remain separate M2 tasks.
+All coefficients are original, transparent and untrained. They are not
+measured exchange values. A static score never decides a game: the native rules
+and the search handle outcomes and claims first. A score of zero does not prove
+a draw, and a large score does not prove a win.
+
+The tests in `chess_eval/tests.rs` check the term arithmetic, the perspective,
+color reflection symmetry, the specialized endings and the passed-pawn race. They
+establish correctness, not playing strength.

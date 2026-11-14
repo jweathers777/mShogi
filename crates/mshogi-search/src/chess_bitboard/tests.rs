@@ -171,8 +171,23 @@ fn random_walks_agree_with_native_rules() {
                 assert!(fast.is_pseudo_legal(m), "{m:?} {}", native.to_fen());
                 assert_eq!(pseudo.iter().filter(|&&other| other == m).count(), 1);
             }
+            // The check without a change of the position agrees with make.
+            for &m in &pseudo[tactical..] {
+                if fast.kind_at(m.from()).is_some_and(|(_, kind)| kind != PAWN) {
+                    let legal_by_make = fast.make(m);
+                    if legal_by_make {
+                        fast.unmake();
+                    }
+                    assert_eq!(
+                        fast.quiet_piece_move_is_legal(m),
+                        legal_by_make,
+                        "{m:?} {}",
+                        native.to_fen()
+                    );
+                }
+            }
             for _ in 0..300 {
-                let m = Move((rng.next() & 0x7fff) as u16);
+                let m = Move((rng.next() & 0xffff) as u16);
                 assert_eq!(
                     fast.is_pseudo_legal(m),
                     pseudo.contains(&m),
@@ -282,6 +297,11 @@ fn repetition_and_move_count_rules_on_the_search_path() {
     play(&mut p, "e7e8");
     assert_eq!(p.rule_score(), Some(0));
 
+    // At 99 halfmoves the side to move can claim with an intended quiet move.
+    assert!(board("4k3/8/8/8/8/8/8/R3K3 w - - 99 80").draw_claimable());
+    assert!(!board("4k3/8/8/8/8/8/8/R3K3 w - - 98 80").draw_claimable());
+    // The only legal move is a capture: no claim.
+    assert!(!board("k7/P1K5/8/8/8/8/8/8 b - - 99 80").draw_claimable());
     // Hundred halfmoves without progress; mate has precedence.
     assert_eq!(
         board("4k3/8/8/8/8/8/8/R3K3 w - - 100 80").rule_score(),

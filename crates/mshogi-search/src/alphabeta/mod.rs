@@ -576,7 +576,12 @@ impl<P: SearchPosition> Run<'_, P> {
                     Bound::Upper => hit.score <= alpha,
                 }
             {
-                return hit.score;
+                // A table entry can come from a history without the claim.
+                return if claimable {
+                    hit.score.max(0)
+                } else {
+                    hit.score
+                };
             }
         }
         let eval = if in_check {
@@ -653,6 +658,11 @@ impl<P: SearchPosition> Run<'_, P> {
             let gives_check = self.pos.in_check();
             if futile && count > 1 && !tactical && !gives_check {
                 self.pos.unmake();
+                // The pruned move is assumed to reach at most this value, so a
+                // stored upper bound must not be below it.
+                if let Some(eval) = eval {
+                    best = best.max(eval + FUTILITY[depth as usize]);
+                }
                 continue;
             }
             self.s.slots[ply] = slot;
@@ -789,6 +799,7 @@ impl<P: SearchPosition> Run<'_, P> {
         if ply >= MAX_PLY - 1 {
             return if in_check { 0 } else { self.pos.evaluate() };
         }
+        let claimable = self.pos.draw_claimable();
         let hash = self.pos.hash();
         let hit = self.s.table.probe(hash, ply as i32);
         let mut table_move = None;
@@ -800,7 +811,11 @@ impl<P: SearchPosition> Run<'_, P> {
                     Bound::Upper => hit.score <= alpha,
                 }
             {
-                return hit.score;
+                return if claimable {
+                    hit.score.max(0)
+                } else {
+                    hit.score
+                };
             }
             if hit.move_bits != 0 {
                 table_move = self
@@ -818,7 +833,7 @@ impl<P: SearchPosition> Run<'_, P> {
                     .unwrap_or_else(|| self.pos.evaluate()),
             )
         };
-        let mut best = if self.pos.draw_claimable() { 0 } else { -INF };
+        let mut best = if claimable { 0 } else { -INF };
         if let Some(eval) = eval {
             best = best.max(eval);
         }

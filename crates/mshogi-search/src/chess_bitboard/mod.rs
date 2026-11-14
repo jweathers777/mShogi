@@ -619,6 +619,31 @@ impl ChessPosition {
         false
     }
 
+    /// Legality of a pseudo-legal quiet move of a piece that is not a pawn,
+    /// without a change of the position. Such a move captures nothing, so only
+    /// the occupancy changes.
+    fn quiet_piece_move_is_legal(&self, m: Move) -> bool {
+        let us = self.side;
+        let (from, to) = (m.from(), m.to());
+        let Some((_, kind)) = self.kind_at(from) else {
+            return false;
+        };
+        if kind == PAWN {
+            return false;
+        }
+        if m.flag() == FLAG_CASTLE {
+            // Castling moves are generated fully legal.
+            return true;
+        }
+        let enemies = self.occupied[1 - us];
+        if kind == KING {
+            self.attackers_to(to, self.all() ^ bit(from)) & enemies == 0
+        } else {
+            let occupied = self.all() ^ bit(from) | bit(to);
+            self.attackers_to(self.king_square(us), occupied) & enemies == 0
+        }
+    }
+
     fn has_legal_move(&mut self) -> bool {
         let mut moves = Vec::with_capacity(64);
         self.generate(Stage::Tactical, &mut moves);
@@ -851,16 +876,7 @@ impl SearchPosition for ChessPosition {
         }
         let mut moves = Vec::with_capacity(48);
         self.generate(Stage::Quiet, &mut moves);
-        let mut copy = self.clone();
-        moves.into_iter().any(|m| {
-            copy.kind_at(m.from()).is_some_and(|(_, kind)| kind != PAWN) && {
-                let legal = copy.make(m);
-                if legal {
-                    copy.unmake();
-                }
-                legal
-            }
-        })
+        moves.into_iter().any(|m| self.quiet_piece_move_is_legal(m))
     }
 
     fn no_move_score(&self, ply: i32) -> i32 {
@@ -922,6 +938,9 @@ impl SearchPosition for ChessPosition {
 
     fn is_pseudo_legal(&self, m: Move) -> bool {
         let (from, to, flag) = (m.from(), m.to(), m.flag());
+        if flag > FLAG_PROMOTE_QUEEN {
+            return false;
+        }
         let us = self.side;
         let Some((color, kind)) = self.kind_at(from) else {
             return false;

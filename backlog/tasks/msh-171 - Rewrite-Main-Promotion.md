@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-14T12:28:00Z'
-updated_date: '2026-11-14T19:43:00Z'
+updated_date: '2026-11-14T19:48:00Z'
 labels:
   - handle:rewrite-main-promotion
 dependencies:
@@ -52,16 +52,16 @@ Record decisions, branch dispositions, tested/promoted revisions, independent re
 - [x] #2 Current ownership and outstanding branches with unique commits have recorded dispositions; required reviewed work is integrated and unrelated dirty work is preserved.
 - [x] #3 User documentation, coverage comments, CI branch filters and workflow instructions match the actual six-game product and approved integration/default branch.
 - [x] #4 A structured Level 3 record identifies the exact candidate source, actual three-platform native/desktop evidence, justified reused evidence and limitations; material findings are resolved and independent final review approves promotion.
-- [ ] #5 main is created and published at the accepted rewrite tip after MSH-169 (Engine Session Persistence) and MSH-170 (Unused Code Removal) are integrated; an annotated tag preserves the old C++ tip, original/prototype histories remain accessible, and no orphan replacement or force-push is used.
-- [ ] #6 Remote tips/default and applicable CI routing are verified; rollback instructions and handoff are complete without an unsupported release or playing-strength claim.
+- [x] #5 main is created and published at the accepted rewrite tip after MSH-169 (Engine Session Persistence) and MSH-170 (Unused Code Removal) are integrated; an annotated tag preserves the old C++ tip, original/prototype histories remain accessible, and no orphan replacement or force-push is used.
+- [x] #6 Remote tips/default and applicable CI routing are verified; rollback instructions and handoff are complete without an unsupported release or playing-strength claim.
 - [x] #7 Current project documentation and workflow guidance state requirements and decisions directly, without personal references to the project owner or third-person references by name; required copyright/license notices and historical evidence remain intact.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -91,4 +91,20 @@ Source and documentation review approved cfcf9d9e, package-verifier correction f
 Native Linux job132553503746 (run43629719990) passed format/lint/workspace/release process and all-feature QA checks, then failed strict regenerated frontend fixture diff. Refreshed shared-chess-analysis-moves telemetry nodes21→27 and mate telemetry selective_depth5→2/nodes48→31; actions, scores, PVs and outcomes are unchanged. Local native generator produced exactly these two changes. Original full-run evidence is retained; acceptance waits for reviewed targeted fixture/build/smoke checks on all three platforms plus refreshed frontend tests. Production code is unchanged. Concurrent Backlog ordinal-only edits in other task files were observed and are preserved outside this task commit.
 
 Final technical acceptance approved by /root/promotion_review. Complete3platform native coverage is the explicitly reviewed union: original43629719990 passed format/lint/workspace/releaseprocess/allfeatureQA onall3, failed stale2snapshot drift; targeted43631984264 fixture/build/smoke passedall3. FullDesktop43630147834: macOS package passed; Linux46/49 andWindows45/49 GUI phases remainFAILED. Actualcurrentcrossgame7profile journeys, pending/cancellation and recovery/native results independently cover required product contracts. Budget captures match1sChess and64/300000Tori. Original missing-sidecar test incorrectly assumed a new process per search; Windows copied-executable cleanup incorrectly ran before retained-child shutdown. Corrected observer preconditions/cleanup, preserved common persistence tail,133tests pass; actualcorrectedGUIjourneys notrerun. No product defect/uncovered contract found and no furtherfullGUIcampaign required by independentreview. Contract-to-evidence matrix is in verification.json. Publication/default checks remainpending.
+
+Promotion performed: main created and published at0607e5036383b44e5e515f64da07ef2a7faae9f1; remote default and remoteHEAD nowmain; primary checkout switched tomain. master941cd4dc and main_v2 localfd280dff/remoteroot90458437 are unchanged; annotated legacy-cpp object408f298b targets941cd4dc. Completed rewrite ref removed after main ancestry check. Total15local and5remote task refs removed; one clean app-owned Tenjiku research checkout remains solely for supported archival after app ownership/protection permits it. Native and Desktop configuration dispatches onmain passed43633778576/43633781677; actualmainpush43633737400 proves routing. No protection/access changes or history rewriting. All7criteria andDoD1–3 now supported. Final evidence publication andDoD4/Done closure follow; concurrent ordinal-only task edits and3notifications remainpreserved.
+
+Final main-push Routine run43633737400 completed success. Both main configuration dispatches were also successful. Final independent promotion-state review approved actual refs/default/tag and preservation. All material findings are resolved. Final evidence publication is the only remaining bookkeeping item before DoD4/Done.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Promoted the accepted rewrite to main with full history preserved. main was created and published at0607e5036383b44e5e515f64da07ef2a7faae9f1; remote default/HEAD and the primary checkout use main. master and main_v2 are unchanged. Annotated legacy-cpp object408f298b preserves the original C++ tip941cd4dc. No orphan root, force-push, access change or protection bypass was used.
+
+Updated current six-game documentation, search limits, coverage comments, workflow routing and impersonal project guidance. Corrected obsolete package/GUI observer assumptions and regenerated two Chess telemetry snapshots; product behavior and rules are unchanged. Reviewed source/evidence commits include cfcf9d9e, f8d8f2d5, beccf2ce and0607e503.
+
+Level3 verification is recorded in docs/review/evidence/msh171/verification.json and docs/review/main-promotion.md. All3platform native check sets passed through explicit source/command reuse: original full stages plus targeted fixture/build/console tail. Original full runs failed stale snapshot checks and remainfailed. DesktopMac package passed; Linux46/49 andWindows45/49 GUI reports remainfailed because of obsolete budget/process-lifetime observer assumptions. Independent review of current7profile cross-game, pending, recovery, native and actual-budget evidence established no uncovered product contract. Corrected GUI journeys were notrerun. Local frontend570tests and observer133tests passed; actual localMac Chess/Tori gameplay/documents/Quit and independent archive replay passed. Main push43633737400 and configuration dispatches43633778576/43633781677 passed. No release/signing or new strength claim follows.
+
+Removed15completed local and5remote task branches. One clean app-owned Tenjiku research worktree/branch remains solely for supported archival: attachment was refused because another chat owns it and earlier archive was protected. No active work depends on it. Other task ordering edits and3untracked notification receipts are preserved. MSH-172 (Two-Human Desktop Play), MSH-173 (Frozen Legacy Opponent) and MSH-175 (Opponent Adjudication Policy) remain eligible; none started.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -17,6 +17,52 @@ Never change a game rule, remove a promised variant, weaken acceptance criteria,
 
 Owner preference, 2026-11-11: Use ASD-STE100 Simplified Technical English in all future communications with John.
 
+## Change direction when evidence shows little progress
+
+Owner direction, 2026-11-14, after review of MSH-163 (Engine Strength Test
+Harness) and MSH-164 (Shared Search Core):
+
+- Before a coherent improvement round, record the baseline, intended practical
+  benefit, comparison method, resource limit, and decision checkpoint in the task.
+  Select measures that test the objective. For engine strength, combine relevant
+  correctness checks with speed/depth measurements, decision tests, and a bounded
+  predecessor comparison when authorized. Faster execution alone is not stronger
+  play; a changed move alone is not a better move.
+- At the checkpoint, compare the measured benefit with the stated objective.
+  If the benefit is small, absent, or confined to selected cases, reconsider the
+  approach before another round of local fixes. Record a decision to continue,
+  change direction, or stop, with its evidence. Repeating the same approach after
+  repeated weak results requires new evidence, not another explanation of an
+  isolated failure. Test ordinary cases as well as the cases that motivated a fix.
+- Inspect the full path that limits the objective. For search, include board
+  representation, move generation, state updates, cache identity and capacity,
+  cache lifetime, and process lifetime. Ask whether the current design prevents
+  useful progress. Do not treat existing code, internal APIs, exact node counts,
+  or earlier implementation choices as product requirements.
+- Separate public correctness requirements from private implementation choices.
+  Native rules must remain authoritative for actual moves, histories, claims,
+  and outcomes. This does not by itself require the search to use the same data
+  representation or perform the same work at every node. Validate alternative
+  implementations with independent correctness and differential checks.
+- If an explicit architectural constraint blocks a promising approach, identify
+  its exact source and purpose. Present a concrete alternative, expected benefit,
+  risks, and a bounded validation plan to John. Request the necessary decision
+  instead of silently weakening the contract or treating it as permanently fixed.
+  Continue changes already within authorization without another permission gate.
+- A controlled experiment can test a useful engineering hypothesis before every
+  individual mistake has a complete causal explanation. Prefer coherent,
+  conventional improvements with measurable outcomes. Keep a frozen predecessor;
+  retain or reject the change on evidence. Do not substitute more diagnosis,
+  infrastructure, or evidence collection for improvement without a specific need.
+- Compare like cases and include the relevant baseline. When diagnosing gameplay,
+  compare both players under the same definitions and conditions. Check whether
+  an apparent weakness is common at that level, and whether controller behavior
+  or selection affects the comparison. Separate descriptive findings from causes.
+- Correctness tests, reviews, and detailed records support the result; they do
+  not establish practical progress by themselves. Report unchanged outcomes and
+  regressions plainly. These rules do not authorize extra spending, studies,
+  changed game rules, or work outside the owner's scope.
+
 ## Session startup
 
 - Inspect Git status, branch, remotes, worktrees, recent relevant commits, and active ownership before editing. Preserve existing dirty and untracked work.

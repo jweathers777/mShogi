@@ -5,10 +5,17 @@
   "source": {
     "branch": "claude/msh-165-tori-core",
     "tested_revision": "31b2e8fe",
-    "note": "The game-test engine binary (SHA-256 69f45540...) was built from the working tree shortly before 31b2e8fe. The later differences are lint attributes, formatting and test files; the search source is the same."
+    "note": "The game-test engine binary (SHA-256 69f45540...) was built from the working tree shortly before 31b2e8fe. The later differences are lint attributes, formatting and test files; the search source is the same.",
+    "final_revision": "1eef64a6 (rebased on 3fab1e13, which contains MSH-170 (Unused Code Removal))"
   },
   "environment_local": "Apple M1 Pro, macOS (Darwin 27.0.0), stable Rust from rust-toolchain.toml, Node from desktop/.node-version",
   "checks": [
+    {
+      "name": "final checks after review corrections and rebase",
+      "revision": "1eef64a6",
+      "command": "cargo clippy --workspace --all-targets; cargo test --workspace --no-fail-fast; npm test (desktop/)",
+      "result": "passed: no lint warning; 1150 passed, 0 failed, 10 ignored (MSH-170 removed tests of removed code); frontend 570 of 570"
+    },
     {
       "name": "workspace tests",
       "command": "cargo test --workspace --no-fail-fast",
@@ -70,5 +77,47 @@
     "Linux and Windows. Level 1 does not require them.",
     "Packaged desktop application journey with Tori. The desktop session crate tests and the frontend tests passed locally.",
     "A comparison against an external Tori engine. None is known to the project, and none is required."
-  ]
+  ],
+  "independent_review": {
+    "reviewer": "Claude Opus 5.5 subagent with a fresh context, read-only, on 31b2e8fe",
+    "outcome": "No blocking defect. Criterion 1 confirmed: alphabeta/ unchanged and without a game type. Geometry, drop rules, make/unmake, hash and the saved-observation split checked correct.",
+    "findings": [
+      {
+        "id": 1,
+        "text": "No test proved that history keys from the game and across Stop events reach rule_score.",
+        "resolution": "Corrected in 1eef64a6: tests for a third occurrence across the root, a return inside the search, and Stop events between actions."
+      },
+      {
+        "id": 2,
+        "text": "The repetition scan back to the last capture or drop is an approximation in a drop game.",
+        "resolution": "Recorded in the code comment and in docs/m5/shared-search-core.md, also for the Shogi plan."
+      },
+      {
+        "id": 3,
+        "text": "A forged shared-core choice could display a win at its own root.",
+        "resolution": "Corrected: a choice with |score| >= WIN_SCORE is refused; test added."
+      },
+      {
+        "id": 4,
+        "text": "Stale comments and an error text.",
+        "resolution": "Corrected."
+      },
+      {
+        "id": 5,
+        "text": "Capacity charge stays a correct upper bound; documents reach capacity a little sooner.",
+        "resolution": "Accepted as an observation."
+      },
+      {
+        "id": 6,
+        "text": "Changed tests hide no requirement; no document-layer forgery test with the earlier identity.",
+        "resolution": "Accepted; the engine-layer test covers the earlier identity."
+      },
+      {
+        "id": 7,
+        "text": "Swallow drop rules tested for Sente only.",
+        "resolution": "Corrected: Gote test added."
+      }
+    ],
+    "re_review": "The corrections were not reviewed again."
+  }
 }

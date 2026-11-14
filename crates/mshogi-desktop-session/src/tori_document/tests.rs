@@ -1327,10 +1327,11 @@ fn actual_tori_choice_is_atomic_with_native_action_while_analysis_is_read_only()
     assert!(validate_payload(forged, &mut || false).is_err());
     let mut forged = read.payload.clone();
     if let ExecutionResult::Tori {
-        result: mshogi_engine::ToriResult::Choice { telemetry, .. },
+        result: mshogi_engine::ToriResult::Choice { action, telemetry },
     } = &mut forged.observations[0].result
     {
-        telemetry.score = Some(99999);
+        // A line that the native game refuses after its first action.
+        telemetry.principal_variation = vec![*action, *action];
     }
     assert!(validate_payload(forged, &mut || false).is_err());
     assert_eq!(original.record().event_count(), 0);

@@ -10,6 +10,7 @@ pub use mshogi_search::tori::DEFAULT_LIMITS as TORI_DEFAULT_LIMITS;
 /// Maximum supported native Tori search depth.
 pub use mshogi_search::tori::MAX_DEPTH as TORI_MAX_DEPTH;
 /// Maximum supported native Tori visit budget.
+pub use mshogi_search::tori::MAX_LINE as TORI_MAX_LINE;
 pub use mshogi_search::tori::MAX_NODES as TORI_MAX_NODES;
 use serde::{Deserialize, Serialize};
 /// Measured finite native Tori interactive work settings.
@@ -51,22 +52,20 @@ impl ToriTelemetry {
             if n > i64::from(search::WIN_SCORE) {
                 return None;
             }
-            Some(
-                if n >= i64::from(search::WIN_SCORE) - i64::from(search::MAX_DEPTH) {
-                    let d = i64::from(search::WIN_SCORE) - n;
-                    let outcome = if score >= 0 { "Win" } else { "Loss" };
-                    if d == 0 {
-                        format!("{outcome} at the analyzed position")
-                    } else {
-                        format!(
-                            "{outcome} in {d} board {}",
-                            if d == 1 { "action" } else { "actions" }
-                        )
-                    }
+            Some(if n >= i64::from(mshogi_search::alphabeta::MATE_BOUND) {
+                let d = i64::from(search::WIN_SCORE) - n;
+                let outcome = if score >= 0 { "Win" } else { "Loss" };
+                if d == 0 {
+                    format!("{outcome} at the analyzed position")
                 } else {
-                    format!("{:+.2} Swallows", f64::from(score) / 100.0)
-                },
-            )
+                    format!(
+                        "{outcome} in {d} board {}",
+                        if d == 1 { "action" } else { "actions" }
+                    )
+                }
+            } else {
+                format!("{:+.2} Swallows", f64::from(score) / 100.0)
+            })
         })
     }
 }
@@ -130,16 +129,32 @@ impl ToriResult {
     /// Re-admit the complete continuation against authoritative native history.
     /// This validates consistency, not a claim that a heuristic score is optimal.
     /// Runtime identities and submitted limits remain the observation owner's check.
+    /// Search identity of this observation: the shared-core search, or the
+    /// earlier full-width search whose saved observations stay valid.
+    fn identity(&self) -> Option<Identity> {
+        let t = self.telemetry();
+        if t.evaluator_id == search::EVALUATOR_ID && t.search_id == search::SEARCH_ID {
+            Some(Identity::SharedCore)
+        } else if t.evaluator_id == search::LEGACY_EVALUATOR_ID
+            && t.search_id == search::LEGACY_SEARCH_ID
+        {
+            Some(Identity::FullWidth)
+        } else {
+            None
+        }
+    }
+    /// Check the observation against the native game that it analyzed.
     pub fn validate(&self, game: &Game) -> Result<(), String> {
         let t = self.telemetry();
-        if t.evaluator_id != search::EVALUATOR_ID
-            || t.search_id != search::SEARCH_ID
-            || t.perspective != game.position().side_to_move()
-            || t.completed_depth > search::MAX_DEPTH
-            || t.nodes > search::MAX_NODES
+        let Some(identity) = self.identity() else {
+            return Err("Tori telemetry identity, work or score mismatch".into());
+        };
+        if t.perspective != game.position().side_to_move()
+            || t.completed_depth > identity.max_depth()
+            || t.nodes > identity.max_nodes()
             || t.score
                 .is_some_and(|s| !(-search::WIN_SCORE..=search::WIN_SCORE).contains(&s))
-            || t.principal_variation.len() > usize::from(t.completed_depth)
+            || t.principal_variation.len() > identity.max_line(t.completed_depth)
         {
             return Err("Tori telemetry identity, work or score mismatch".into());
         }
@@ -167,7 +182,7 @@ impl ToriResult {
             Self::Choice { action, .. } => {
                 if game.conclusion().is_some()
                     || t.completed_depth == 0
-                    || t.nodes < 2 * u64::from(t.completed_depth)
+                    || t.nodes < identity.least_nodes(t.completed_depth)
                     || t.score.is_none()
                     || t.principal_variation.first() != Some(action)
                 {
@@ -184,6 +199,12 @@ impl ToriResult {
                             command: GameCommand::Play { action: *action },
                         })
                         .map_err(|e| e.to_string())?;
+                }
+                // The shared-core search is selective: its score is not the
+                // static value of the end of the reported line. The native
+                // replay above is its check.
+                if identity == Identity::SharedCore {
+                    return Ok(());
                 }
                 if t.principal_variation.len() != usize::from(t.completed_depth)
                     && branch.conclusion().is_none()
@@ -216,21 +237,17 @@ impl ToriResult {
             return false;
         }
         let t = self.telemetry();
-        if !(search::Limits {
-            depth: context.limits.depth,
-            nodes: context.limits.nodes,
-        })
-        .valid()
-        {
+        let Some(identity) = self.identity() else {
             return false;
-        }
-        if t.evaluator_id != search::EVALUATOR_ID
-            || t.search_id != search::SEARCH_ID
+        };
+        if context.limits.depth == 0
+            || context.limits.depth > identity.max_depth()
+            || context.limits.nodes > identity.max_nodes()
             || t.perspective != record.side_to_move()
             || t.completed_depth > context.limits.depth
             || t.nodes > context.limits.nodes
             || (t.status == StopReason::NodeLimit && t.nodes != context.limits.nodes)
-            || t.principal_variation.len() > usize::from(t.completed_depth)
+            || t.principal_variation.len() > identity.max_line(t.completed_depth)
             || t.score
                 .is_some_and(|s| !(-search::WIN_SCORE..=search::WIN_SCORE).contains(&s))
         {
@@ -243,7 +260,7 @@ impl ToriResult {
             Self::Choice { action, .. } => {
                 record.conclusion().is_none()
                     && t.completed_depth > 0
-                    && t.nodes >= 2 * u64::from(t.completed_depth)
+                    && t.nodes >= identity.least_nodes(t.completed_depth)
                     && t.score.is_some()
                     && t.principal_variation.first() == Some(action)
                     && (t.status != StopReason::Complete
@@ -263,6 +280,44 @@ impl ToriResult {
                     && t.principal_variation.is_empty()
                     && t.status != StopReason::Complete
             }
+        }
+    }
+}
+
+/// The search that made an observation.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum Identity {
+    /// The shared alpha-beta core.
+    SharedCore,
+    /// The earlier full-width search with the material evaluation.
+    FullWidth,
+}
+impl Identity {
+    fn max_depth(self) -> u16 {
+        match self {
+            Self::SharedCore => search::MAX_DEPTH,
+            Self::FullWidth => search::LEGACY_MAX_DEPTH,
+        }
+    }
+    fn max_nodes(self) -> u64 {
+        match self {
+            Self::SharedCore => search::MAX_NODES,
+            Self::FullWidth => search::LEGACY_MAX_NODES,
+        }
+    }
+    /// Largest line for a completed depth. The full-width line never went
+    /// below its depth; the selective line has its own bound.
+    fn max_line(self, completed_depth: u16) -> usize {
+        match self {
+            Self::SharedCore => search::MAX_LINE,
+            Self::FullWidth => usize::from(completed_depth),
+        }
+    }
+    /// Least node count of a search that completed this depth.
+    fn least_nodes(self, completed_depth: u16) -> u64 {
+        match self {
+            Self::SharedCore => u64::from(completed_depth),
+            Self::FullWidth => 2 * u64::from(completed_depth),
         }
     }
 }

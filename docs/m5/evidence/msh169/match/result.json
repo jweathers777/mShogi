@@ -1,0 +1,130 @@
+{
+ "kind": "mshogi-strength-match",
+ "schema": 2,
+ "label": "kept-vs-cleared-table",
+ "candidate": {
+  "path": "/Users/johnweathers/Development/Personal/mShogi/target/strength/engines/6fef75d1b672/mshogi",
+  "sha256": "a3cf06d9e5833a1560d9c101d1ed5be8a5b7eb4f4ecd72a81fa3970679099f45",
+  "build": {
+   "source_revision": "6fef75d1b672cf3883c565dacff9a83b5e8c3e0a",
+   "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+   "profile": "release",
+   "built_utc": "2026-11-14T10:17:55+00:00",
+   "sha256": "a3cf06d9e5833a1560d9c101d1ed5be8a5b7eb4f4ecd72a81fa3970679099f45",
+   "host": "arm64-Darwin"
+  }
+ },
+ "baseline": {
+  "path": "/Users/johnweathers/Development/Personal/mShogi-msh169/docs/m5/evidence/msh169/cold-table-uci.py",
+  "sha256": "bab0400de06f374dda95b996821806d06a06a22e6111b3205411a399cad3af1e"
+ },
+ "runner": {
+  "path": "/Users/johnweathers/Development/Personal/mShogi-msh169/target/release/mshogi-match",
+  "sha256": "d289c4d964aee5126d251765f32723664e4ff5b897d6ffe9649d1eabf72dd13e"
+ },
+ "openings_file": "/Users/johnweathers/Development/Personal/mShogi-msh169/tools/strength/data/openings-msh161.json",
+ "openings_sha256": "f1e555c5e43946eedeba143948f1c3ee458696c8a4ea6d77dff26895cad9379b",
+ "opening_order_seed": 163,
+ "time_control": {
+  "movetime_ms": 200
+ },
+ "sprt": {
+  "elo0": 0.0,
+  "elo1": 15.0,
+  "alpha": 0.05,
+  "beta": 0.05,
+  "min_pairs": 30,
+  "model": "logistic Elo; GSPRT normal approximation on paired-opening scores; variance regularized with two prior pairs at .25 and .75"
+ },
+ "max_pairs": 240,
+ "workers": 8,
+ "environment": {
+  "utc": "2026-11-14T14:35:13+00:00",
+  "host": "macbookpro.home",
+  "system": "Darwin",
+  "release": "27.0.0",
+  "machine": "arm64",
+  "processor": "Apple M1 Pro",
+  "python": "3.11.0",
+  "harness_revision": "2274e03afe4451bae4d84dd9291aa3eadf32adbb",
+  "harness_dirty": false
+ },
+ "started_utc": "2026-11-14T14:32:07+00:00",
+ "ended_utc": "2026-11-14T14:35:13+00:00",
+ "decision": {
+  "result": "H1",
+  "pairs": 32,
+  "failed_pairs": 0,
+  "pentanomial": [
+   0,
+   1,
+   12,
+   14,
+   5
+  ],
+  "sprt": {
+   "llr": 2.949986361689981,
+   "lower": -2.9444389791664403,
+   "upper": 2.9444389791664403,
+   "decision": "H1"
+  },
+  "estimate": {
+   "pairs": 32,
+   "score": 0.6796875,
+   "score_low": 0.6108044115735577,
+   "score_high": 0.7485705884264423,
+   "elo": 130.69415835955323,
+   "elo_low": 78.29370250609482,
+   "elo_high": 189.5266722242842
+  }
+ },
+ "all_completed": {
+  "note": "includes pairs that finished after the decision; the decision is authoritative",
+  "pentanomial": [
+   0,
+   1,
+   12,
+   14,
+   5
+  ],
+  "sprt": {
+   "llr": 2.949986361689981,
+   "lower": -2.9444389791664403,
+   "upper": 2.9444389791664403,
+   "decision": "H1"
+  },
+  "estimate": {
+   "pairs": 32,
+   "score": 0.6796875,
+   "score_low": 0.6108044115735577,
+   "score_high": 0.7485705884264423,
+   "elo": 130.69415835955323,
+   "elo_low": 78.29370250609482,
+   "elo_high": 189.5266722242842
+  },
+  "pairs_after_decision": 0
+ },
+ "games": {
+  "scored_pairs": 32,
+  "scored_games": 64,
+  "candidate_wins": 29,
+  "baseline_wins": 6,
+  "draws": 29,
+  "failed_pairs": 0,
+  "cancelled_pairs": 7
+ },
+ "search": {
+  "candidate_median_depth": 12.0,
+  "baseline_median_depth": 11.0,
+  "candidate_median_nodes": 289280.0,
+  "baseline_median_nodes": 279552.0
+ },
+ "compute": {
+  "wall_seconds": 185.87872583372518,
+  "pair_wall_seconds": 1486.4990861644037,
+  "cpu_seconds": 1227.726919,
+  "cancelled_cpu_seconds": 41.07220499999999,
+  "note": "CPU is rusage of each mshogi-match process and its reaped engines, cancelled pairs included"
+ },
+ "failures": []
+}

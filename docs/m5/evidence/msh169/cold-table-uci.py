@@ -2,8 +2,9 @@
 """UCI wrapper that makes an engine start each search with an empty table.
 
 Measurement tool of MSH-169 (Engine Session Persistence). It sends
-`ucinewgame` before each `go`, which is what the one-shot desktop engine
-process did in effect. Set MSHOGI_ENGINE to the engine binary.
+`ucinewgame` before each `position` command (the engine resets its game on
+`ucinewgame`, so it must come before the position). This is what the one-shot
+desktop engine process did in effect. Set MSHOGI_ENGINE to the engine binary.
 """
 import os
 import subprocess
@@ -27,7 +28,7 @@ def forward_output():
 
 threading.Thread(target=forward_output, daemon=True).start()
 for line in sys.stdin:
-    if line.split()[:1] == ["go"]:
+    if line.split()[:1] == ["position"]:
         engine.stdin.write("ucinewgame\n")
     engine.stdin.write(line)
     engine.stdin.flush()

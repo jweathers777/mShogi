@@ -1,0 +1,67 @@
+{
+  "task": "MSH-169 (Engine Session Persistence)",
+  "verification_level": 2,
+  "level_reason": "The change is in process supervision: lifetime of the engine child, pipes, cancellation and shutdown. Targeted platform checks of the process suites are necessary. No packaged GUI campaign.",
+  "source": {
+    "branch": "claude/msh-169-engine-session",
+    "tested_revision": "2274e03a",
+    "note": "Later commits on this task add only this evidence, the measurement wrapper and task records."
+  },
+  "environment_local": "Apple M1 Pro, macOS (Darwin 27.0.0), stable Rust from rust-toolchain.toml",
+  "checks": [
+    {
+      "name": "workspace tests",
+      "command": "cargo test --workspace --no-fail-fast",
+      "revision": "2274e03a",
+      "environment": "local macOS",
+      "result": "passed: 1180 passed, 0 failed, 11 ignored"
+    },
+    {
+      "name": "linter and format",
+      "command": "cargo fmt --all; cargo clippy --workspace --all-targets",
+      "revision": "2274e03a",
+      "environment": "local macOS",
+      "result": "passed: no warning"
+    },
+    {
+      "name": "engine session through serve",
+      "command": "cargo test -p mshogi-engine --test session",
+      "result": "passed: timed searches of one game share state (a repeated search uses fewer than half the nodes); a different or shorter game starts empty (node count equal to a new process); searches without a time budget give the same node count each time and leave the kept state; malformed and incomplete input is an error"
+    },
+    {
+      "name": "bridge with the real engine and the failure fixture",
+      "command": "cargo test -p mshogi-console --test internal (three times in sequence)",
+      "result": "passed 9 of 9 each time: kept state between searches; cancellation and replacement of a running search stop the child and the next search starts empty; a kept child that ended normally is replaced without a failure; a kept child that fails during a request is UnexpectedExit with the diagnostic of that request; the earlier failure kinds are unchanged"
+    },
+    {
+      "name": "targeted process suite on three platforms",
+      "command": "gh workflow run rust.yml --ref claude/msh-169-engine-session -f suite=process -f platform=all (cargo test --release --locked -p mshogi-engine -p mshogi-runner -p mshogi-console --tests)",
+      "revision": "2274e03a",
+      "run": "https://github.com/jweathers777/mShogi/actions/runs/43592161265",
+      "result": "passed: ubuntu-24.04, macos-15, windows-2022, and the routine checks"
+    },
+    {
+      "name": "gain of the kept table (acceptance criterion 1)",
+      "command": "MSHOGI_ENGINE=target/strength/engines/6fef75d1b672/mshogi python3 -m tools.strength.cli match --candidate <that engine> --baseline docs/m5/evidence/msh169/cold-table-uci.py --max-pairs 240",
+      "result": "SPRT accepted H1 at 32 pairs: +29 -6 =29, Elo +130.7 [+78.3, +189.5] at 200 ms per move; wall 186 s, CPU 1228 s",
+      "file": "match/result.json",
+      "limits": "Self-play of one engine revision (6fef75d1) on the UCI path: kept table against a wrapper that sends ucinewgame before each position. It measures the value of the kept state, which the desktop path now has. It is not a measurement through the desktop bridge and not a rating. A first run failed with zero scored pairs because the wrapper sent ucinewgame after the position; that run was discarded and the wrapper corrected."
+    }
+  ],
+  "independent_review": {
+    "reviewer": "Claude Opus 5.5 subagent with a fresh context, read-only, on the uncommitted diff before 2274e03a",
+    "outcome": "No defect against design A-05. One defect of low to medium severity and observations.",
+    "findings": [
+      {"id": 1, "text": "A kept child that crashed during a request was restarted silently and its diagnostic was lost.", "resolution": "Corrected in 2274e03a: only a normal exit without output is replaced; a failure status is UnexpectedExit. Test added."},
+      {"id": 2, "text": "The stderr buffer held text of earlier requests.", "resolution": "Corrected in 2274e03a: cleared at each request."},
+      {"id": 3, "text": "Memory: idle child keeps 64 MB; an untimed request uses a second table.", "resolution": "Recorded in docs/desktop/internal-execution-v4.md."},
+      {"id": 4, "text": "process_generation no longer counts processes.", "resolution": "Recorded in the same document."},
+      {"id": 5, "text": "Missing tests.", "resolution": "Added: failure of a kept child during a request, replacement of a running search. Not added: a child that writes two lines for one request, the watchdog on a reused child, the prefix rule with a different claim policy."}
+    ],
+    "re_review": "The corrections were not reviewed again by the reviewer."
+  },
+  "not_run": [
+    "Packaged desktop application journey on any platform. The desktop session crate tests passed locally; the next Level 3 checkpoint covers the packaged application.",
+    "Desktop session and Tauri host tests on Linux and Windows (the targeted suite covers engine, runner and console)."
+  ]
+}

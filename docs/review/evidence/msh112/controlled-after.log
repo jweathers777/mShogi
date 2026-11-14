@@ -1,9 +1,0 @@
-   Compiling mshogi-runner v0.1.0 (/Users/johnweathers/Development/Personal/mShogi/crates/mshogi-runner)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.27s
-     Running unittests src/lib.rs (target/debug/deps/mshogi_runner-047c2aa734e876fe)
-
-running 1 test
-test run::tests::controlled_early_write_failure_keeps_nonzero_exit_diagnostics ... ok
-
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.01s
-

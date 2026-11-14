@@ -1,9 +1,0 @@
-test_failure_queues_once (test_notify_exit.NotifyExit.test_failure_queues_once) ... ok
-test_queue_failure_is_visible (test_notify_exit.NotifyExit.test_queue_failure_is_visible) ... ok
-test_signal_queues_failure (test_notify_exit.NotifyExit.test_signal_queues_failure) ... ok
-test_success_queues_once (test_notify_exit.NotifyExit.test_success_queues_once) ... ok
-
-----------------------------------------------------------------------
-Ran 4 tests in 1.208s
-
-OK

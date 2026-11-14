@@ -1,0 +1,734 @@
+{
+ "kind": "mshogi-strength-bench",
+ "schema": 1,
+ "positions_file": "tools/strength/data/bench-chess-v1.json",
+ "positions_sha256": "ea8ee362d647eef0695ab19ed5db23660ba7b426c1a43a5450c288659816a7bf",
+ "set": "bench-chess-v1",
+ "engine": {
+  "path": "target/release/mshogi",
+  "sha256": "a3cf06d9e5833a1560d9c101d1ed5be8a5b7eb4f4ecd72a81fa3970679099f45",
+  "uci_id": [
+   "id name mShogi 0.1.0 mshogi.chess.shared-core.v1 mshogi.chess.conventional-tapered.v1",
+   "id author John Weathers"
+  ]
+ },
+ "environment": {
+  "utc": "2026-11-14T10:13:32+00:00",
+  "host": "macbookpro.home",
+  "system": "Darwin",
+  "release": "27.0.0",
+  "machine": "arm64",
+  "processor": "Apple M1 Pro",
+  "python": "3.11.0",
+  "harness_revision": "6fef75d1b672cf3883c565dacff9a83b5e8c3e0a",
+  "harness_dirty": false
+ },
+ "repeat": 3,
+ "summary": {
+  "bench_nodes": 857606,
+  "deterministic_nodes": true,
+  "median_seconds": 0.6213584993965924,
+  "median_nps": 1380211.2642425105,
+  "min_nps": 1375634.6375576118,
+  "max_nps": 1380395.5649592502,
+  "median_engine_nps": 1394481.300813008,
+  "nps_note": "nps uses driver wall time per search (includes UCI I/O); engine_nps uses the engine-reported time"
+ },
+ "per_position": [
+  {
+   "id": "startpos",
+   "depth": 8,
+   "nodes": 36832,
+   "median_seconds_to_depth": 0.02410633396357298,
+   "median_nps": 1527897.1931466952
+  },
+  {
+   "id": "cpw-kiwipete",
+   "depth": 6,
+   "nodes": 30298,
+   "median_seconds_to_depth": 0.030066290870308876,
+   "median_nps": 1007706.6083971116
+  },
+  {
+   "id": "cpw-position3",
+   "depth": 8,
+   "nodes": 25980,
+   "median_seconds_to_depth": 0.012133500073105097,
+   "median_nps": 2141179.3665033896
+  },
+  {
+   "id": "cpw-position4",
+   "depth": 8,
+   "nodes": 61480,
+   "median_seconds_to_depth": 0.054280916694551706,
+   "median_nps": 1132626.413550803
+  },
+  {
+   "id": "cpw-position5",
+   "depth": 8,
+   "nodes": 23446,
+   "median_seconds_to_depth": 0.01812683418393135,
+   "median_nps": 1293441.5222258645
+  },
+  {
+   "id": "cpw-position6",
+   "depth": 8,
+   "nodes": 52103,
+   "median_seconds_to_depth": 0.048197667114436626,
+   "median_nps": 1081027.4255866134
+  },
+  {
+   "id": "msh161-root-english-0c66eb",
+   "depth": 8,
+   "nodes": 54799,
+   "median_seconds_to_depth": 0.04221699992194772,
+   "median_nps": 1298031.6010449424
+  },
+  {
+   "id": "msh161-root-french-7b0c65",
+   "depth": 8,
+   "nodes": 39707,
+   "median_seconds_to_depth": 0.03018262516707182,
+   "median_nps": 1315558.1988050176
+  },
+  {
+   "id": "msh161-root-italian-82a81b",
+   "depth": 9,
+   "nodes": 51844,
+   "median_seconds_to_depth": 0.044475582893937826,
+   "median_nps": 1165673.3116603293
+  },
+  {
+   "id": "msh161-root-kings-e16fe8",
+   "depth": 8,
+   "nodes": 76134,
+   "median_seconds_to_depth": 0.06336212484166026,
+   "median_nps": 1201569.5526350515
+  },
+  {
+   "id": "msh161-root-queens-e73f85",
+   "depth": 8,
+   "nodes": 52745,
+   "median_seconds_to_depth": 0.04539704183116555,
+   "median_nps": 1161859.845321243
+  },
+  {
+   "id": "msh161-root-sicilian-e8a19a",
+   "depth": 7,
+   "nodes": 48360,
+   "median_seconds_to_depth": 0.039235999807715416,
+   "median_nps": 1232541.549520816
+  },
+  {
+   "id": "msh161-endgame-main-01-00-g1-p97",
+   "depth": 8,
+   "nodes": 16798,
+   "median_seconds_to_depth": 0.009087125305086374,
+   "median_nps": 1848549.39664996
+  },
+  {
+   "id": "msh161-endgame-main-02-08-g1-p69",
+   "depth": 9,
+   "nodes": 39691,
+   "median_seconds_to_depth": 0.026435208972543478,
+   "median_nps": 1501444.5333579336
+  },
+  {
+   "id": "msh161-endgame-main-04-05-g0-p48",
+   "depth": 8,
+   "nodes": 68872,
+   "median_seconds_to_depth": 0.04524920787662268,
+   "median_nps": 1522059.7935722468
+  },
+  {
+   "id": "msh161-endgame-main-06-00-g1-p51",
+   "depth": 8,
+   "nodes": 35889,
+   "median_seconds_to_depth": 0.024120583198964596,
+   "median_nps": 1487899.3473731836
+  },
+  {
+   "id": "msh161-endgame-main-08-07-g0-p110",
+   "depth": 7,
+   "nodes": 113054,
+   "median_seconds_to_depth": 0.045325790997594595,
+   "median_nps": 2494253.2168054096
+  },
+  {
+   "id": "msh161-endgame-main-10-05-g1-p97",
+   "depth": 9,
+   "nodes": 29574,
+   "median_seconds_to_depth": 0.01814475003629923,
+   "median_nps": 1629892.9409794097
+  }
+ ],
+ "rounds": [
+  {
+   "positions": [
+    {
+     "id": "startpos",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 12,
+     "nodes": 36832,
+     "engine_ms": 33,
+     "wall_seconds": 0.03337095770984888,
+     "bestmove": "b1c3"
+    },
+    {
+     "id": "cpw-kiwipete",
+     "depth": 6,
+     "reached_depth": 6,
+     "seldepth": 25,
+     "nodes": 30298,
+     "engine_ms": 30,
+     "wall_seconds": 0.030176708009094,
+     "bestmove": "d5e6"
+    },
+    {
+     "id": "cpw-position3",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 16,
+     "nodes": 25980,
+     "engine_ms": 12,
+     "wall_seconds": 0.012133500073105097,
+     "bestmove": "b4c4"
+    },
+    {
+     "id": "cpw-position4",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 26,
+     "nodes": 61480,
+     "engine_ms": 54,
+     "wall_seconds": 0.05422341590747237,
+     "bestmove": "c4c5"
+    },
+    {
+     "id": "cpw-position5",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 16,
+     "nodes": 23446,
+     "engine_ms": 18,
+     "wall_seconds": 0.01814799988642335,
+     "bestmove": "d7c8q"
+    },
+    {
+     "id": "cpw-position6",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 24,
+     "nodes": 52103,
+     "engine_ms": 48,
+     "wall_seconds": 0.048197667114436626,
+     "bestmove": "c3d5"
+    },
+    {
+     "id": "msh161-root-english-0c66eb",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 18,
+     "nodes": 54799,
+     "engine_ms": 42,
+     "wall_seconds": 0.042174916714429855,
+     "bestmove": "f1d3"
+    },
+    {
+     "id": "msh161-root-french-7b0c65",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 15,
+     "nodes": 39707,
+     "engine_ms": 30,
+     "wall_seconds": 0.030175874941051006,
+     "bestmove": "b2c3"
+    },
+    {
+     "id": "msh161-root-italian-82a81b",
+     "depth": 9,
+     "reached_depth": 9,
+     "seldepth": 21,
+     "nodes": 51844,
+     "engine_ms": 44,
+     "wall_seconds": 0.044475582893937826,
+     "bestmove": "e3c5"
+    },
+    {
+     "id": "msh161-root-kings-e16fe8",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 21,
+     "nodes": 76134,
+     "engine_ms": 63,
+     "wall_seconds": 0.06336212484166026,
+     "bestmove": "e5d3"
+    },
+    {
+     "id": "msh161-root-queens-e73f85",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 17,
+     "nodes": 52745,
+     "engine_ms": 41,
+     "wall_seconds": 0.04142120899632573,
+     "bestmove": "f1d3"
+    },
+    {
+     "id": "msh161-root-sicilian-e8a19a",
+     "depth": 7,
+     "reached_depth": 7,
+     "seldepth": 17,
+     "nodes": 48360,
+     "engine_ms": 39,
+     "wall_seconds": 0.039235999807715416,
+     "bestmove": "e1c1"
+    },
+    {
+     "id": "msh161-endgame-main-01-00-g1-p97",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 14,
+     "nodes": 16798,
+     "engine_ms": 9,
+     "wall_seconds": 0.009100082796067,
+     "bestmove": "d3d7"
+    },
+    {
+     "id": "msh161-endgame-main-02-08-g1-p69",
+     "depth": 9,
+     "reached_depth": 9,
+     "seldepth": 16,
+     "nodes": 39691,
+     "engine_ms": 23,
+     "wall_seconds": 0.02401387458667159,
+     "bestmove": "d6e4"
+    },
+    {
+     "id": "msh161-endgame-main-04-05-g0-p48",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 21,
+     "nodes": 68872,
+     "engine_ms": 43,
+     "wall_seconds": 0.04362783441320062,
+     "bestmove": "c1c5"
+    },
+    {
+     "id": "msh161-endgame-main-06-00-g1-p51",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 13,
+     "nodes": 35889,
+     "engine_ms": 23,
+     "wall_seconds": 0.023933124728500843,
+     "bestmove": "d4e6"
+    },
+    {
+     "id": "msh161-endgame-main-08-07-g0-p110",
+     "depth": 7,
+     "reached_depth": 7,
+     "seldepth": 15,
+     "nodes": 113054,
+     "engine_ms": 45,
+     "wall_seconds": 0.04535604175180197,
+     "bestmove": "c3e5"
+    },
+    {
+     "id": "msh161-endgame-main-10-05-g1-p97",
+     "depth": 9,
+     "reached_depth": 9,
+     "seldepth": 17,
+     "nodes": 29574,
+     "engine_ms": 18,
+     "wall_seconds": 0.018148624803870916,
+     "bestmove": "h7h6"
+    }
+   ],
+   "nodes": 857606,
+   "seconds": 0.6212755399756134,
+   "nps": 1380395.5649592502,
+   "engine_seconds": 0.615,
+   "engine_nps": 1394481.300813008
+  },
+  {
+   "positions": [
+    {
+     "id": "startpos",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 12,
+     "nodes": 36832,
+     "engine_ms": 23,
+     "wall_seconds": 0.024028958287090063,
+     "bestmove": "b1c3"
+    },
+    {
+     "id": "cpw-kiwipete",
+     "depth": 6,
+     "reached_depth": 6,
+     "seldepth": 25,
+     "nodes": 30298,
+     "engine_ms": 30,
+     "wall_seconds": 0.030066290870308876,
+     "bestmove": "d5e6"
+    },
+    {
+     "id": "cpw-position3",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 16,
+     "nodes": 25980,
+     "engine_ms": 12,
+     "wall_seconds": 0.012137542013078928,
+     "bestmove": "b4c4"
+    },
+    {
+     "id": "cpw-position4",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 26,
+     "nodes": 61480,
+     "engine_ms": 54,
+     "wall_seconds": 0.054280916694551706,
+     "bestmove": "c4c5"
+    },
+    {
+     "id": "cpw-position5",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 16,
+     "nodes": 23446,
+     "engine_ms": 18,
+     "wall_seconds": 0.01812683418393135,
+     "bestmove": "d7c8q"
+    },
+    {
+     "id": "cpw-position6",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 24,
+     "nodes": 52103,
+     "engine_ms": 48,
+     "wall_seconds": 0.048322999849915504,
+     "bestmove": "c3d5"
+    },
+    {
+     "id": "msh161-root-english-0c66eb",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 18,
+     "nodes": 54799,
+     "engine_ms": 42,
+     "wall_seconds": 0.04221699992194772,
+     "bestmove": "f1d3"
+    },
+    {
+     "id": "msh161-root-french-7b0c65",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 15,
+     "nodes": 39707,
+     "engine_ms": 30,
+     "wall_seconds": 0.03018262516707182,
+     "bestmove": "b2c3"
+    },
+    {
+     "id": "msh161-root-italian-82a81b",
+     "depth": 9,
+     "reached_depth": 9,
+     "seldepth": 21,
+     "nodes": 51844,
+     "engine_ms": 45,
+     "wall_seconds": 0.045135166961699724,
+     "bestmove": "e3c5"
+    },
+    {
+     "id": "msh161-root-kings-e16fe8",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 21,
+     "nodes": 76134,
+     "engine_ms": 63,
+     "wall_seconds": 0.0633436250500381,
+     "bestmove": "e5d3"
+    },
+    {
+     "id": "msh161-root-queens-e73f85",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 17,
+     "nodes": 52745,
+     "engine_ms": 46,
+     "wall_seconds": 0.04623054200783372,
+     "bestmove": "f1d3"
+    },
+    {
+     "id": "msh161-root-sicilian-e8a19a",
+     "depth": 7,
+     "reached_depth": 7,
+     "seldepth": 17,
+     "nodes": 48360,
+     "engine_ms": 41,
+     "wall_seconds": 0.041548291221261024,
+     "bestmove": "e1c1"
+    },
+    {
+     "id": "msh161-endgame-main-01-00-g1-p97",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 14,
+     "nodes": 16798,
+     "engine_ms": 8,
+     "wall_seconds": 0.008806875441223383,
+     "bestmove": "d3d7"
+    },
+    {
+     "id": "msh161-endgame-main-02-08-g1-p69",
+     "depth": 9,
+     "reached_depth": 9,
+     "seldepth": 16,
+     "nodes": 39691,
+     "engine_ms": 26,
+     "wall_seconds": 0.026435208972543478,
+     "bestmove": "d6e4"
+    },
+    {
+     "id": "msh161-endgame-main-04-05-g0-p48",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 21,
+     "nodes": 68872,
+     "engine_ms": 45,
+     "wall_seconds": 0.04524920787662268,
+     "bestmove": "c1c5"
+    },
+    {
+     "id": "msh161-endgame-main-06-00-g1-p51",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 13,
+     "nodes": 35889,
+     "engine_ms": 24,
+     "wall_seconds": 0.024159791879355907,
+     "bestmove": "d4e6"
+    },
+    {
+     "id": "msh161-endgame-main-08-07-g0-p110",
+     "depth": 7,
+     "reached_depth": 7,
+     "seldepth": 15,
+     "nodes": 113054,
+     "engine_ms": 45,
+     "wall_seconds": 0.045325790997594595,
+     "bestmove": "c3e5"
+    },
+    {
+     "id": "msh161-endgame-main-10-05-g1-p97",
+     "depth": 9,
+     "reached_depth": 9,
+     "seldepth": 17,
+     "nodes": 29574,
+     "engine_ms": 17,
+     "wall_seconds": 0.017828042153269053,
+     "bestmove": "h7h6"
+    }
+   ],
+   "nodes": 857606,
+   "seconds": 0.6234257095493376,
+   "nps": 1375634.6375576118,
+   "engine_seconds": 0.617,
+   "engine_nps": 1389961.1021069693
+  },
+  {
+   "positions": [
+    {
+     "id": "startpos",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 12,
+     "nodes": 36832,
+     "engine_ms": 24,
+     "wall_seconds": 0.02410633396357298,
+     "bestmove": "b1c3"
+    },
+    {
+     "id": "cpw-kiwipete",
+     "depth": 6,
+     "reached_depth": 6,
+     "seldepth": 25,
+     "nodes": 30298,
+     "engine_ms": 29,
+     "wall_seconds": 0.0300290840677917,
+     "bestmove": "d5e6"
+    },
+    {
+     "id": "cpw-position3",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 16,
+     "nodes": 25980,
+     "engine_ms": 11,
+     "wall_seconds": 0.011963916942477226,
+     "bestmove": "b4c4"
+    },
+    {
+     "id": "cpw-position4",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 26,
+     "nodes": 61480,
+     "engine_ms": 54,
+     "wall_seconds": 0.054281665943562984,
+     "bestmove": "c4c5"
+    },
+    {
+     "id": "cpw-position5",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 16,
+     "nodes": 23446,
+     "engine_ms": 18,
+     "wall_seconds": 0.018120958004146814,
+     "bestmove": "d7c8q"
+    },
+    {
+     "id": "cpw-position6",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 24,
+     "nodes": 52103,
+     "engine_ms": 48,
+     "wall_seconds": 0.04815925005823374,
+     "bestmove": "c3d5"
+    },
+    {
+     "id": "msh161-root-english-0c66eb",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 18,
+     "nodes": 54799,
+     "engine_ms": 42,
+     "wall_seconds": 0.04224070766940713,
+     "bestmove": "f1d3"
+    },
+    {
+     "id": "msh161-root-french-7b0c65",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 15,
+     "nodes": 39707,
+     "engine_ms": 30,
+     "wall_seconds": 0.030262708198279142,
+     "bestmove": "b2c3"
+    },
+    {
+     "id": "msh161-root-italian-82a81b",
+     "depth": 9,
+     "reached_depth": 9,
+     "seldepth": 21,
+     "nodes": 51844,
+     "engine_ms": 44,
+     "wall_seconds": 0.04443362494930625,
+     "bestmove": "e3c5"
+    },
+    {
+     "id": "msh161-root-kings-e16fe8",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 21,
+     "nodes": 76134,
+     "engine_ms": 64,
+     "wall_seconds": 0.0643290001899004,
+     "bestmove": "e5d3"
+    },
+    {
+     "id": "msh161-root-queens-e73f85",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 17,
+     "nodes": 52745,
+     "engine_ms": 45,
+     "wall_seconds": 0.04539704183116555,
+     "bestmove": "f1d3"
+    },
+    {
+     "id": "msh161-root-sicilian-e8a19a",
+     "depth": 7,
+     "reached_depth": 7,
+     "seldepth": 17,
+     "nodes": 48360,
+     "engine_ms": 39,
+     "wall_seconds": 0.03921862505376339,
+     "bestmove": "e1c1"
+    },
+    {
+     "id": "msh161-endgame-main-01-00-g1-p97",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 14,
+     "nodes": 16798,
+     "engine_ms": 9,
+     "wall_seconds": 0.009087125305086374,
+     "bestmove": "d3d7"
+    },
+    {
+     "id": "msh161-endgame-main-02-08-g1-p69",
+     "depth": 9,
+     "reached_depth": 9,
+     "seldepth": 16,
+     "nodes": 39691,
+     "engine_ms": 26,
+     "wall_seconds": 0.026969291269779205,
+     "bestmove": "d6e4"
+    },
+    {
+     "id": "msh161-endgame-main-04-05-g0-p48",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 21,
+     "nodes": 68872,
+     "engine_ms": 45,
+     "wall_seconds": 0.045264957938343287,
+     "bestmove": "c1c5"
+    },
+    {
+     "id": "msh161-endgame-main-06-00-g1-p51",
+     "depth": 8,
+     "reached_depth": 8,
+     "seldepth": 13,
+     "nodes": 35889,
+     "engine_ms": 24,
+     "wall_seconds": 0.024120583198964596,
+     "bestmove": "d4e6"
+    },
+    {
+     "id": "msh161-endgame-main-08-07-g0-p110",
+     "depth": 7,
+     "reached_depth": 7,
+     "seldepth": 15,
+     "nodes": 113054,
+     "engine_ms": 45,
+     "wall_seconds": 0.045228874776512384,
+     "bestmove": "c3e5"
+    },
+    {
+     "id": "msh161-endgame-main-10-05-g1-p97",
+     "depth": 9,
+     "reached_depth": 9,
+     "seldepth": 17,
+     "nodes": 29574,
+     "engine_ms": 18,
+     "wall_seconds": 0.01814475003629923,
+     "bestmove": "h7h6"
+    }
+   ],
+   "nodes": 857606,
+   "seconds": 0.6213584993965924,
+   "nps": 1380211.2642425105,
+   "engine_seconds": 0.615,
+   "engine_nps": 1394481.300813008
+  }
+ ]
+}

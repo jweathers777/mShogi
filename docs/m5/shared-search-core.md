@@ -5,6 +5,24 @@ classical search core and a search-internal Chess position. This document
 describes the structure, the boundary with the native rules, and how to add a
 game. Results and evidence are in `evidence/msh164/`.
 
+## Result
+
+Measured on an Apple M1 Pro. The predecessor is the frozen engine 65887fb0.
+Exact revisions, commands and files are in `evidence/msh164/verification.json`.
+
+| Measure | Predecessor | Shared core |
+|---|---|---|
+| Nodes per second (benchmark median) | 0.30 million | 1.38 million |
+| Nodes for the fixed benchmark depths | 5.43 million | 0.86 million |
+| Depth at five seconds, middlegame | 8 to 9 | 14 to 16 |
+| Depth at five seconds, endgame | 8 to 13 | 20 to 24 |
+| Blunder suite at 1000 ms, avoided of 146 | 47 | 85 |
+| Game test at 200 ms per move | — | 55 wins, 0 losses, 5 draws against the predecessor |
+
+The game test is self-play against the predecessor with exposed openings. It
+shows that the new engine is stronger than the old one. It is not a rating and
+says nothing about other opponents.
+
 ## Structure
 
 | Module (`crates/mshogi-search/src`) | Content | Game-specific |
@@ -96,6 +114,10 @@ Tenjiku Shogi.
 
 ## Present limits
 
+- The desktop and the internal execution protocol start one engine process for
+  each search request. On that path the table starts empty at each move. The
+  UCI path keeps it for the full game. MSH-169 (Engine Session Persistence)
+  owns this.
 - Selectivity is the set that the earlier search had, in standard form.
   MSH-166 (Search Selectivity Completion) adds and tests the missing techniques.
 - Time use is one soft and one hard limit per move. MSH-167 (Engine Time

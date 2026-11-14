@@ -13,6 +13,8 @@ infrastructure. Work in this order:
    [harness and baseline](strength-harness.md).
 2. MSH-164 (Shared Search Core): game-independent core, fast Chess search position,
    large board-keyed transposition table kept for the full game.
+   Implemented 2026-11-14, see [shared-search-core.md](shared-search-core.md): depth at
+   five seconds 14–16 in the middlegame (before: 8–9); +55 −0 =5 against the predecessor.
 3. MSH-165 (Tori Search Core Adoption): prove the shared boundary with a second game.
 4. MSH-166 (Search Selectivity Completion).
 5. MSH-167 (Engine Time Management).

@@ -1,0 +1,2392 @@
+{
+ "kind": "mshogi-strength-blunders",
+ "schema": 1,
+ "suite": "chess-blunders-msh161",
+ "metric_note": "avoided means only bestmove != the confirmed blunder; another move may also lose. matched_reference compares with one 20M reference alternative.",
+ "suite_sha256": "fd109669f59beadd57a089d7997093e5da670b46d10a4ce32bf92f77d3927705",
+ "movetime_ms": 1000,
+ "workers": 4,
+ "engine": {
+  "path": "target/release/mshogi",
+  "sha256": "fd8aa59ed2a4f996dfbd3c1854ed4c9b70ff360f66f2132ea7fb1097568d08a2",
+  "uci_id": [
+   "id name mShogi 0.1.0 mshogi.chess.shared-core.v1 mshogi.chess.conventional-tapered.v1",
+   "id author John Weathers"
+  ]
+ },
+ "environment": {
+  "utc": "2026-11-14T09:47:40+00:00",
+  "host": "macbookpro.home",
+  "system": "Darwin",
+  "release": "27.0.0",
+  "machine": "arm64",
+  "processor": "Apple M1 Pro",
+  "python": "3.11.0",
+  "harness_revision": "ec6dcda8ac45b5ed62851ccd396d9ed57da0a088",
+  "harness_dirty": false
+ },
+ "wall_seconds": 37.1751882918179,
+ "summary": {
+  "positions": 146,
+  "avoided": 87,
+  "matched_reference": 38,
+  "repeated_blunder": 59,
+  "by_phase": {
+   "middlegame": {
+    "positions": 83,
+    "avoided": 48,
+    "matched_reference": 19
+   },
+   "endgame": {
+    "positions": 47,
+    "avoided": 27,
+    "matched_reference": 15
+   },
+   "opening": {
+    "positions": 16,
+    "avoided": 12,
+    "matched_reference": 4
+   }
+  },
+  "median_depth": 13.0,
+  "median_nodes": 1400832.0
+ },
+ "results": [
+  {
+   "id": "main-01-00/g0/p48",
+   "phase": "middlegame",
+   "blunder_move": "h2h4",
+   "reference_move": "f1d1",
+   "bestmove": "f1d1",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 11,
+   "nodes": 1282048,
+   "score": {
+    "kind": "cp",
+    "value": 105
+   },
+   "wall_seconds": 1.0042888750322163
+  },
+  {
+   "id": "main-01-00/g1/p97",
+   "phase": "endgame",
+   "blunder_move": "d3d7",
+   "reference_move": "d3g3",
+   "bestmove": "d3d7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 20,
+   "nodes": 2551808,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0056047081016004
+  },
+  {
+   "id": "main-01-00/g1/p101",
+   "phase": "endgame",
+   "blunder_move": "c7d6",
+   "reference_move": "c7b7",
+   "bestmove": "c7b7",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 19,
+   "nodes": 2697216,
+   "score": {
+    "kind": "cp",
+    "value": -42
+   },
+   "wall_seconds": 1.003684916999191
+  },
+  {
+   "id": "main-01-01/g0/p60",
+   "phase": "middlegame",
+   "blunder_move": "e1f1",
+   "reference_move": "d2c3",
+   "bestmove": "e1f1",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 1417216,
+   "score": {
+    "kind": "cp",
+    "value": -210
+   },
+   "wall_seconds": 1.0038168746978045
+  },
+  {
+   "id": "main-01-02/g0/p32",
+   "phase": "middlegame",
+   "blunder_move": "d3c4",
+   "reference_move": "e3c1",
+   "bestmove": "e3c1",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 13,
+   "nodes": 1161216,
+   "score": {
+    "kind": "cp",
+    "value": -9
+   },
+   "wall_seconds": 1.004058999940753
+  },
+  {
+   "id": "main-01-03/g0/p84",
+   "phase": "endgame",
+   "blunder_move": "b3b4",
+   "reference_move": "g1f2",
+   "bestmove": "g1f1",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1468416,
+   "score": {
+    "kind": "cp",
+    "value": 99
+   },
+   "wall_seconds": 1.0021675839088857
+  },
+  {
+   "id": "main-01-04/g1/p29",
+   "phase": "middlegame",
+   "blunder_move": "d8e7",
+   "reference_move": "f6h5",
+   "bestmove": "b7a6",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1249280,
+   "score": {
+    "kind": "cp",
+    "value": -44
+   },
+   "wall_seconds": 1.0040682503022254
+  },
+  {
+   "id": "main-01-04/g1/p63",
+   "phase": "middlegame",
+   "blunder_move": "d2c2",
+   "reference_move": "g8f7",
+   "bestmove": "d2c2",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1445888,
+   "score": {
+    "kind": "cp",
+    "value": -2
+   },
+   "wall_seconds": 1.0020947502925992
+  },
+  {
+   "id": "main-01-06/g0/p76",
+   "phase": "middlegame",
+   "blunder_move": "a5c3",
+   "reference_move": "a5d2",
+   "bestmove": "a5d2",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 12,
+   "nodes": 1413120,
+   "score": {
+    "kind": "cp",
+    "value": -32
+   },
+   "wall_seconds": 1.0022640833631158
+  },
+  {
+   "id": "main-01-06/g1/p51",
+   "phase": "middlegame",
+   "blunder_move": "d5c7",
+   "reference_move": "f8f6",
+   "bestmove": "e7f6",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1427456,
+   "score": {
+    "kind": "cp",
+    "value": -76
+   },
+   "wall_seconds": 1.0044205840677023
+  },
+  {
+   "id": "main-01-07/g1/p33",
+   "phase": "middlegame",
+   "blunder_move": "d7d5",
+   "reference_move": "c7c5",
+   "bestmove": "c7c5",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 15,
+   "nodes": 1306624,
+   "score": {
+    "kind": "cp",
+    "value": -79
+   },
+   "wall_seconds": 1.0053584156557918
+  },
+  {
+   "id": "main-01-07/g1/p41",
+   "phase": "middlegame",
+   "blunder_move": "e7c5",
+   "reference_move": "d5a2",
+   "bestmove": "c7c6",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1300480,
+   "score": {
+    "kind": "cp",
+    "value": -122
+   },
+   "wall_seconds": 1.0014083748683333
+  },
+  {
+   "id": "main-01-07/g1/p107",
+   "phase": "endgame",
+   "blunder_move": "e7d6",
+   "reference_move": "d1e1",
+   "bestmove": "e7d6",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 17,
+   "nodes": 2480128,
+   "score": {
+    "kind": "cp",
+    "value": -182
+   },
+   "wall_seconds": 1.0037783752195537
+  },
+  {
+   "id": "main-01-unaided/g0/p46",
+   "phase": "middlegame",
+   "blunder_move": "d2b4",
+   "reference_move": "d5f7",
+   "bestmove": "d5b3",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 1404928,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0026782499626279
+  },
+  {
+   "id": "main-01-unaided/g0/p50",
+   "phase": "middlegame",
+   "blunder_move": "c4b3",
+   "reference_move": "g1h1",
+   "bestmove": "a2b3",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 1370112,
+   "score": {
+    "kind": "cp",
+    "value": 21
+   },
+   "wall_seconds": 1.0038367500528693
+  },
+  {
+   "id": "main-02-00/g0/p76",
+   "phase": "endgame",
+   "blunder_move": "d7e7",
+   "reference_move": "f6h5",
+   "bestmove": "d7e7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1832960,
+   "score": {
+    "kind": "cp",
+    "value": -24
+   },
+   "wall_seconds": 1.0026527079753578
+  },
+  {
+   "id": "main-02-00/g0/p94",
+   "phase": "endgame",
+   "blunder_move": "f7e7",
+   "reference_move": "f7f6",
+   "bestmove": "f7e7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 2140160,
+   "score": {
+    "kind": "cp",
+    "value": -100
+   },
+   "wall_seconds": 1.0037196250632405
+  },
+  {
+   "id": "main-02-01/g0/p28",
+   "phase": "middlegame",
+   "blunder_move": "d5f4",
+   "reference_move": "c2c3",
+   "bestmove": "f3d2",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1222656,
+   "score": {
+    "kind": "cp",
+    "value": -29
+   },
+   "wall_seconds": 1.0019609169103205
+  },
+  {
+   "id": "main-02-01/g1/p77",
+   "phase": "endgame",
+   "blunder_move": "h7h5",
+   "reference_move": "f7f5",
+   "bestmove": "f7f5",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 17,
+   "nodes": 2236416,
+   "score": {
+    "kind": "cp",
+    "value": -31
+   },
+   "wall_seconds": 1.0037353332154453
+  },
+  {
+   "id": "main-02-07/g0/p20",
+   "phase": "opening",
+   "blunder_move": "f2g1",
+   "reference_move": "e2e3",
+   "bestmove": "f2g1",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1089536,
+   "score": {
+    "kind": "cp",
+    "value": 14
+   },
+   "wall_seconds": 1.0048634158447385
+  },
+  {
+   "id": "main-02-07/g0/p28",
+   "phase": "opening",
+   "blunder_move": "g5e3",
+   "reference_move": "g5f6",
+   "bestmove": "g5f6",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 15,
+   "nodes": 1243136,
+   "score": {
+    "kind": "cp",
+    "value": 21
+   },
+   "wall_seconds": 1.003083957824856
+  },
+  {
+   "id": "main-02-08/g0/p104",
+   "phase": "endgame",
+   "blunder_move": "e3d4",
+   "reference_move": "g4g5",
+   "bestmove": "e4f2",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1736704,
+   "score": {
+    "kind": "cp",
+    "value": 150
+   },
+   "wall_seconds": 1.0029029580764472
+  },
+  {
+   "id": "main-02-08/g1/p17",
+   "phase": "opening",
+   "blunder_move": "c5d4",
+   "reference_move": "b7b5",
+   "bestmove": "c5e7",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1204224,
+   "score": {
+    "kind": "cp",
+    "value": -9
+   },
+   "wall_seconds": 1.0031424998305738
+  },
+  {
+   "id": "main-02-08/g1/p31",
+   "phase": "opening",
+   "blunder_move": "a7a6",
+   "reference_move": "f7f6",
+   "bestmove": "f7f6",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 13,
+   "nodes": 1392640,
+   "score": {
+    "kind": "cp",
+    "value": -61
+   },
+   "wall_seconds": 1.003094291780144
+  },
+  {
+   "id": "main-02-08/g1/p69",
+   "phase": "endgame",
+   "blunder_move": "d6e4",
+   "reference_move": "d6b5",
+   "bestmove": "d6e4",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 16,
+   "nodes": 1699840,
+   "score": {
+    "kind": "cp",
+    "value": 42
+   },
+   "wall_seconds": 1.001765833236277
+  },
+  {
+   "id": "main-02-unaided/g0/p32",
+   "phase": "middlegame",
+   "blunder_move": "g5f4",
+   "reference_move": "g5d2",
+   "bestmove": "g5d2",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 11,
+   "nodes": 1234944,
+   "score": {
+    "kind": "cp",
+    "value": 29
+   },
+   "wall_seconds": 1.0034274999052286
+  },
+  {
+   "id": "main-02-unaided/g0/p36",
+   "phase": "middlegame",
+   "blunder_move": "h5e8",
+   "reference_move": "f4g3",
+   "bestmove": "h5e8",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1531904,
+   "score": {
+    "kind": "cp",
+    "value": 63
+   },
+   "wall_seconds": 1.0033943327143788
+  },
+  {
+   "id": "main-03-01/g0/p28",
+   "phase": "middlegame",
+   "blunder_move": "e5f6",
+   "reference_move": "c3e2",
+   "bestmove": "e5f6",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1181696,
+   "score": {
+    "kind": "cp",
+    "value": 4
+   },
+   "wall_seconds": 1.0017792913131416
+  },
+  {
+   "id": "main-03-01/g0/p30",
+   "phase": "middlegame",
+   "blunder_move": "g2g3",
+   "reference_move": "c3e2",
+   "bestmove": "c3e2",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 12,
+   "nodes": 1189888,
+   "score": {
+    "kind": "cp",
+    "value": -4
+   },
+   "wall_seconds": 1.0042296661995351
+  },
+  {
+   "id": "main-03-01/g0/p64",
+   "phase": "endgame",
+   "blunder_move": "g4g5",
+   "reference_move": "a3a4",
+   "bestmove": "a3a4",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 15,
+   "nodes": 1656832,
+   "score": {
+    "kind": "cp",
+    "value": -113
+   },
+   "wall_seconds": 1.0026129577308893
+  },
+  {
+   "id": "main-03-02/g1/p49",
+   "phase": "middlegame",
+   "blunder_move": "a5c7",
+   "reference_move": "a8a7",
+   "bestmove": "a8a7",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 11,
+   "nodes": 1247232,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0026049581356347
+  },
+  {
+   "id": "main-03-03/g0/p80",
+   "phase": "middlegame",
+   "blunder_move": "h2d2",
+   "reference_move": "g1g2",
+   "bestmove": "g1g2",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 11,
+   "nodes": 1415168,
+   "score": {
+    "kind": "cp",
+    "value": 78
+   },
+   "wall_seconds": 1.0041192090138793
+  },
+  {
+   "id": "main-03-03/g1/p23",
+   "phase": "middlegame",
+   "blunder_move": "a7a6",
+   "reference_move": "d5c4",
+   "bestmove": "d5c4",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 12,
+   "nodes": 1177600,
+   "score": {
+    "kind": "cp",
+    "value": -37
+   },
+   "wall_seconds": 1.0023670000955462
+  },
+  {
+   "id": "main-03-05/g0/p24",
+   "phase": "middlegame",
+   "blunder_move": "c5c6",
+   "reference_move": "h1e1",
+   "bestmove": "f3d4",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1204224,
+   "score": {
+    "kind": "cp",
+    "value": -15
+   },
+   "wall_seconds": 1.0022786250337958
+  },
+  {
+   "id": "main-03-05/g1/p35",
+   "phase": "middlegame",
+   "blunder_move": "a8c8",
+   "reference_move": "f6d7",
+   "bestmove": "f6d7",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 11,
+   "nodes": 1224704,
+   "score": {
+    "kind": "cp",
+    "value": 41
+   },
+   "wall_seconds": 1.002332666888833
+  },
+  {
+   "id": "main-03-05/g1/p39",
+   "phase": "middlegame",
+   "blunder_move": "f7f6",
+   "reference_move": "b6b5",
+   "bestmove": "a5a3",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1255424,
+   "score": {
+    "kind": "cp",
+    "value": 53
+   },
+   "wall_seconds": 1.002278707921505
+  },
+  {
+   "id": "main-03-05/g1/p43",
+   "phase": "middlegame",
+   "blunder_move": "a5a3",
+   "reference_move": "c6e8",
+   "bestmove": "a5a2",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1179648,
+   "score": {
+    "kind": "cp",
+    "value": 73
+   },
+   "wall_seconds": 1.0012756660580635
+  },
+  {
+   "id": "main-03-06/g1/p109",
+   "phase": "endgame",
+   "blunder_move": "e6g5",
+   "reference_move": "e6g7",
+   "bestmove": "h6g6",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 1765376,
+   "score": {
+    "kind": "cp",
+    "value": -2
+   },
+   "wall_seconds": 1.004191332962364
+  },
+  {
+   "id": "main-03-07/g1/p67",
+   "phase": "middlegame",
+   "blunder_move": "a4a5",
+   "reference_move": "c6b5",
+   "bestmove": "c6b5",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 15,
+   "nodes": 1601536,
+   "score": {
+    "kind": "cp",
+    "value": -4
+   },
+   "wall_seconds": 1.0019305418245494
+  },
+  {
+   "id": "main-03-07/g1/p87",
+   "phase": "endgame",
+   "blunder_move": "g8g7",
+   "reference_move": "g6g5",
+   "bestmove": "a2f2",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 2136064,
+   "score": {
+    "kind": "cp",
+    "value": -183
+   },
+   "wall_seconds": 1.0018141251057386
+  },
+  {
+   "id": "main-03-07/g1/p91",
+   "phase": "endgame",
+   "blunder_move": "f2e2",
+   "reference_move": "f2f1",
+   "bestmove": "f2e2",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 2197504,
+   "score": {
+    "kind": "cp",
+    "value": -190
+   },
+   "wall_seconds": 1.0040220827795565
+  },
+  {
+   "id": "main-03-08/g1/p19",
+   "phase": "opening",
+   "blunder_move": "e8g8",
+   "reference_move": "b7b5",
+   "bestmove": "e6e5",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1159168,
+   "score": {
+    "kind": "cp",
+    "value": -15
+   },
+   "wall_seconds": 1.0042383749969304
+  },
+  {
+   "id": "main-03-08/g1/p35",
+   "phase": "middlegame",
+   "blunder_move": "c6a5",
+   "reference_move": "c6d4",
+   "bestmove": "c6a5",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1267712,
+   "score": {
+    "kind": "cp",
+    "value": -48
+   },
+   "wall_seconds": 1.0010522911325097
+  },
+  {
+   "id": "main-04-00/g0/p24",
+   "phase": "middlegame",
+   "blunder_move": "f2f4",
+   "reference_move": "e3g5",
+   "bestmove": "c3d5",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1169408,
+   "score": {
+    "kind": "cp",
+    "value": -10
+   },
+   "wall_seconds": 1.00350375007838
+  },
+  {
+   "id": "main-04-00/g1/p39",
+   "phase": "middlegame",
+   "blunder_move": "d4c6",
+   "reference_move": "c8d8",
+   "bestmove": "d4c6",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1193984,
+   "score": {
+    "kind": "cp",
+    "value": -87
+   },
+   "wall_seconds": 1.0033942498266697
+  },
+  {
+   "id": "main-04-01/g0/p28",
+   "phase": "middlegame",
+   "blunder_move": "f1d1",
+   "reference_move": "e2e3",
+   "bestmove": "a1d1",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1230848,
+   "score": {
+    "kind": "cp",
+    "value": 34
+   },
+   "wall_seconds": 1.0032840832136571
+  },
+  {
+   "id": "main-04-01/g0/p36",
+   "phase": "middlegame",
+   "blunder_move": "h2h4",
+   "reference_move": "g1g2",
+   "bestmove": "h2h4",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1187840,
+   "score": {
+    "kind": "cp",
+    "value": 9
+   },
+   "wall_seconds": 1.0027101249434054
+  },
+  {
+   "id": "main-04-01/g1/p87",
+   "phase": "middlegame",
+   "blunder_move": "d7f5",
+   "reference_move": "d7g4",
+   "bestmove": "h3g4",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1327104,
+   "score": {
+    "kind": "cp",
+    "value": -92
+   },
+   "wall_seconds": 1.0040302090346813
+  },
+  {
+   "id": "main-04-02/g1/p143",
+   "phase": "endgame",
+   "blunder_move": "b2b3",
+   "reference_move": "e5c6",
+   "bestmove": "b2b3",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 16,
+   "nodes": 2418688,
+   "score": {
+    "kind": "cp",
+    "value": -348
+   },
+   "wall_seconds": 1.001577583141625
+  },
+  {
+   "id": "main-04-03/g1/p21",
+   "phase": "opening",
+   "blunder_move": "h8g8",
+   "reference_move": "a5b4",
+   "bestmove": "e8c8",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1126400,
+   "score": {
+    "kind": "cp",
+    "value": -68
+   },
+   "wall_seconds": 1.0019268332980573
+  },
+  {
+   "id": "main-04-03/g1/p47",
+   "phase": "endgame",
+   "blunder_move": "c8d6",
+   "reference_move": "c8b6",
+   "bestmove": "c8d6",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 1499136,
+   "score": {
+    "kind": "cp",
+    "value": -142
+   },
+   "wall_seconds": 1.0048207081854343
+  },
+  {
+   "id": "main-04-03/g1/p53",
+   "phase": "endgame",
+   "blunder_move": "f7f6",
+   "reference_move": "c7a7",
+   "bestmove": "c7c8",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 18,
+   "nodes": 2138112,
+   "score": {
+    "kind": "cp",
+    "value": -91
+   },
+   "wall_seconds": 1.0040099583566189
+  },
+  {
+   "id": "main-04-04/g1/p63",
+   "phase": "middlegame",
+   "blunder_move": "a3d3",
+   "reference_move": "a3a7",
+   "bestmove": "a3a6",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1396736,
+   "score": {
+    "kind": "cp",
+    "value": 17
+   },
+   "wall_seconds": 1.0021588751114905
+  },
+  {
+   "id": "main-04-05/g0/p32",
+   "phase": "middlegame",
+   "blunder_move": "a2a3",
+   "reference_move": "a7f2",
+   "bestmove": "b2b3",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1413120,
+   "score": {
+    "kind": "cp",
+    "value": 13
+   },
+   "wall_seconds": 1.0051469160243869
+  },
+  {
+   "id": "main-04-05/g0/p36",
+   "phase": "middlegame",
+   "blunder_move": "g2g3",
+   "reference_move": "a7f2",
+   "bestmove": "a7f2",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 12,
+   "nodes": 1382400,
+   "score": {
+    "kind": "cp",
+    "value": -15
+   },
+   "wall_seconds": 1.002167500089854
+  },
+  {
+   "id": "main-04-05/g0/p48",
+   "phase": "endgame",
+   "blunder_move": "c1c5",
+   "reference_move": "g1f1",
+   "bestmove": "c1c5",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1769472,
+   "score": {
+    "kind": "cp",
+    "value": -88
+   },
+   "wall_seconds": 1.0022053327411413
+  },
+  {
+   "id": "main-04-06/g1/p77",
+   "phase": "endgame",
+   "blunder_move": "f7f6",
+   "reference_move": "d7c7",
+   "bestmove": "f7f6",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1898496,
+   "score": {
+    "kind": "cp",
+    "value": -26
+   },
+   "wall_seconds": 1.0033739586360753
+  },
+  {
+   "id": "main-04-07/g0/p52",
+   "phase": "middlegame",
+   "blunder_move": "e1b1",
+   "reference_move": "e1e2",
+   "bestmove": "e1e2",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 11,
+   "nodes": 1325056,
+   "score": {
+    "kind": "cp",
+    "value": 78
+   },
+   "wall_seconds": 1.0034626252017915
+  },
+  {
+   "id": "main-04-07/g0/p58",
+   "phase": "middlegame",
+   "blunder_move": "h1g2",
+   "reference_move": "b1c1",
+   "bestmove": "h1g2",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1361920,
+   "score": {
+    "kind": "cp",
+    "value": -28
+   },
+   "wall_seconds": 1.0034779580309987
+  },
+  {
+   "id": "main-04-08/g1/p21",
+   "phase": "middlegame",
+   "blunder_move": "b7b5",
+   "reference_move": "d5c4",
+   "bestmove": "d5h5",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1208320,
+   "score": {
+    "kind": "cp",
+    "value": -18
+   },
+   "wall_seconds": 1.003466207999736
+  },
+  {
+   "id": "main-04-08/g1/p101",
+   "phase": "endgame",
+   "blunder_move": "c5e4",
+   "reference_move": "c5e6",
+   "bestmove": "c5e4",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 23,
+   "nodes": 3409920,
+   "score": {
+    "kind": "cp",
+    "value": -307
+   },
+   "wall_seconds": 1.0014193747192621
+  },
+  {
+   "id": "main-05-01/g0/p30",
+   "phase": "middlegame",
+   "blunder_move": "d3h7",
+   "reference_move": "c2e2",
+   "bestmove": "d3h7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1255424,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.001554457936436
+  },
+  {
+   "id": "main-05-01/g0/p44",
+   "phase": "middlegame",
+   "blunder_move": "g2g4",
+   "reference_move": "e4g3",
+   "bestmove": "h2h3",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 9,
+   "nodes": 1284096,
+   "score": {
+    "kind": "cp",
+    "value": -19
+   },
+   "wall_seconds": 1.0015126247890294
+  },
+  {
+   "id": "main-05-01/g0/p52",
+   "phase": "middlegame",
+   "blunder_move": "g4g5",
+   "reference_move": "b1b2",
+   "bestmove": "b1b2",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 12,
+   "nodes": 1181696,
+   "score": {
+    "kind": "cp",
+    "value": 23
+   },
+   "wall_seconds": 1.0044543328695
+  },
+  {
+   "id": "main-05-01/g0/p66",
+   "phase": "middlegame",
+   "blunder_move": "f3g4",
+   "reference_move": "e4f2",
+   "bestmove": "e4g3",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1202176,
+   "score": {
+    "kind": "cp",
+    "value": 27
+   },
+   "wall_seconds": 1.0019094590097666
+  },
+  {
+   "id": "main-05-02/g0/p28",
+   "phase": "middlegame",
+   "blunder_move": "d1e2",
+   "reference_move": "c1d2",
+   "bestmove": "g5f3",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1267712,
+   "score": {
+    "kind": "cp",
+    "value": -67
+   },
+   "wall_seconds": 1.0042079580016434
+  },
+  {
+   "id": "main-05-02/g1/p25",
+   "phase": "middlegame",
+   "blunder_move": "g7d4",
+   "reference_move": "c6d4",
+   "bestmove": "g7d4",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1273856,
+   "score": {
+    "kind": "cp",
+    "value": 5
+   },
+   "wall_seconds": 1.004116709344089
+  },
+  {
+   "id": "main-05-03/g1/p23",
+   "phase": "middlegame",
+   "blunder_move": "e6c4",
+   "reference_move": "e6h3",
+   "bestmove": "e6h3",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 12,
+   "nodes": 1185792,
+   "score": {
+    "kind": "cp",
+    "value": -93
+   },
+   "wall_seconds": 1.002010041847825
+  },
+  {
+   "id": "main-05-04/g0/p46",
+   "phase": "endgame",
+   "blunder_move": "d4f5",
+   "reference_move": "a3b4",
+   "bestmove": "f2f4",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1505280,
+   "score": {
+    "kind": "cp",
+    "value": 50
+   },
+   "wall_seconds": 1.001943124923855
+  },
+  {
+   "id": "main-05-04/g0/p104",
+   "phase": "endgame",
+   "blunder_move": "f4e3",
+   "reference_move": "f4h6",
+   "bestmove": "f4h6",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 19,
+   "nodes": 2508800,
+   "score": {
+    "kind": "cp",
+    "value": -223
+   },
+   "wall_seconds": 1.0026864157989621
+  },
+  {
+   "id": "main-05-04/g0/p106",
+   "phase": "endgame",
+   "blunder_move": "e3c5",
+   "reference_move": "e3h6",
+   "bestmove": "e3c5",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 22,
+   "nodes": 3178496,
+   "score": {
+    "kind": "cp",
+    "value": -263
+   },
+   "wall_seconds": 1.002741124946624
+  },
+  {
+   "id": "main-05-04/g1/p105",
+   "phase": "middlegame",
+   "blunder_move": "c4c3",
+   "reference_move": "a8f8",
+   "bestmove": "c4c3",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1439744,
+   "score": {
+    "kind": "cp",
+    "value": 145
+   },
+   "wall_seconds": 1.0018251659348607
+  },
+  {
+   "id": "main-05-06/g1/p29",
+   "phase": "opening",
+   "blunder_move": "c5d6",
+   "reference_move": "d4e5",
+   "bestmove": "d4e5",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 11,
+   "nodes": 1275904,
+   "score": {
+    "kind": "cp",
+    "value": -41
+   },
+   "wall_seconds": 1.003488500136882
+  },
+  {
+   "id": "main-05-06/g1/p43",
+   "phase": "endgame",
+   "blunder_move": "f6d5",
+   "reference_move": "e5e2",
+   "bestmove": "e5e2",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 15,
+   "nodes": 1691648,
+   "score": {
+    "kind": "cp",
+    "value": -118
+   },
+   "wall_seconds": 1.003680624999106
+  },
+  {
+   "id": "main-06-00/g0/p84",
+   "phase": "endgame",
+   "blunder_move": "c2d3",
+   "reference_move": "c3e4",
+   "bestmove": "c3e4",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 16,
+   "nodes": 1796096,
+   "score": {
+    "kind": "cp",
+    "value": 181
+   },
+   "wall_seconds": 1.0033774999901652
+  },
+  {
+   "id": "main-06-00/g1/p51",
+   "phase": "endgame",
+   "blunder_move": "d4e2",
+   "reference_move": "d4c6",
+   "bestmove": "d4c6",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 16,
+   "nodes": 1613824,
+   "score": {
+    "kind": "cp",
+    "value": -49
+   },
+   "wall_seconds": 1.0034050000831485
+  },
+  {
+   "id": "main-06-01/g1/p43",
+   "phase": "middlegame",
+   "blunder_move": "b6b5",
+   "reference_move": "f6g4",
+   "bestmove": "b6b5",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1239040,
+   "score": {
+    "kind": "cp",
+    "value": -70
+   },
+   "wall_seconds": 1.0040756659582257
+  },
+  {
+   "id": "main-06-01/g1/p107",
+   "phase": "middlegame",
+   "blunder_move": "e5a1",
+   "reference_move": "c7a7",
+   "bestmove": "g6e7",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1771520,
+   "score": {
+    "kind": "cp",
+    "value": 45
+   },
+   "wall_seconds": 1.0030867918394506
+  },
+  {
+   "id": "main-06-02/g0/p62",
+   "phase": "middlegame",
+   "blunder_move": "b1a1",
+   "reference_move": "f6g6",
+   "bestmove": "b1a1",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1417216,
+   "score": {
+    "kind": "cp",
+    "value": 168
+   },
+   "wall_seconds": 1.003390499856323
+  },
+  {
+   "id": "main-06-03/g1/p41",
+   "phase": "middlegame",
+   "blunder_move": "d8a5",
+   "reference_move": "d8f6",
+   "bestmove": "d8a5",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1251328,
+   "score": {
+    "kind": "cp",
+    "value": -11
+   },
+   "wall_seconds": 1.0041066664271057
+  },
+  {
+   "id": "main-06-04/g0/p56",
+   "phase": "middlegame",
+   "blunder_move": "h2h4",
+   "reference_move": "f2f4",
+   "bestmove": "d3d4",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1232896,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0038170418702066
+  },
+  {
+   "id": "main-06-04/g1/p51",
+   "phase": "middlegame",
+   "blunder_move": "g8h8",
+   "reference_move": "e8d7",
+   "bestmove": "a8d8",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 1216512,
+   "score": {
+    "kind": "cp",
+    "value": 30
+   },
+   "wall_seconds": 1.0040550827980042
+  },
+  {
+   "id": "main-06-04/g1/p53",
+   "phase": "middlegame",
+   "blunder_move": "c6d8",
+   "reference_move": "e6h3",
+   "bestmove": "c6d8",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 1284096,
+   "score": {
+    "kind": "cp",
+    "value": -45
+   },
+   "wall_seconds": 1.0040304162539542
+  },
+  {
+   "id": "main-06-05/g1/p193",
+   "phase": "endgame",
+   "blunder_move": "e6g5",
+   "reference_move": "h4h3",
+   "bestmove": "h4h3",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 22,
+   "nodes": 3321856,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0031381673179567
+  },
+  {
+   "id": "main-06-06/g1/p41",
+   "phase": "middlegame",
+   "blunder_move": "f6f2",
+   "reference_move": "h5g4",
+   "bestmove": "h5g4",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 14,
+   "nodes": 1236992,
+   "score": {
+    "kind": "cp",
+    "value": -8
+   },
+   "wall_seconds": 1.0012508337385952
+  },
+  {
+   "id": "main-06-06/g1/p103",
+   "phase": "endgame",
+   "blunder_move": "g6h5",
+   "reference_move": "g6h6",
+   "bestmove": "g6h5",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1689600,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0046057081781328
+  },
+  {
+   "id": "main-06-06/g1/p105",
+   "phase": "endgame",
+   "blunder_move": "h4g4",
+   "reference_move": "f3f2",
+   "bestmove": "h5h6",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1712128,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0046304166316986
+  },
+  {
+   "id": "main-06-08/g0/p44",
+   "phase": "middlegame",
+   "blunder_move": "d1e2",
+   "reference_move": "f3d4",
+   "bestmove": "d1e2",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 16,
+   "nodes": 1388544,
+   "score": {
+    "kind": "cp",
+    "value": -129
+   },
+   "wall_seconds": 1.0047181253321469
+  },
+  {
+   "id": "main-06-08/g0/p62",
+   "phase": "endgame",
+   "blunder_move": "f1e1",
+   "reference_move": "h2h4",
+   "bestmove": "f2f4",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 1826816,
+   "score": {
+    "kind": "cp",
+    "value": 12
+   },
+   "wall_seconds": 1.002500125207007
+  },
+  {
+   "id": "main-07-01/g0/p82",
+   "phase": "endgame",
+   "blunder_move": "a4a5",
+   "reference_move": "g2f3",
+   "bestmove": "g2f3",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 17,
+   "nodes": 2240512,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0024512498639524
+  },
+  {
+   "id": "main-07-02/g1/p29",
+   "phase": "opening",
+   "blunder_move": "g5g4",
+   "reference_move": "f6e4",
+   "bestmove": "f6e4",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 13,
+   "nodes": 1185792,
+   "score": {
+    "kind": "cp",
+    "value": 12
+   },
+   "wall_seconds": 1.002555875107646
+  },
+  {
+   "id": "main-07-03/g0/p38",
+   "phase": "middlegame",
+   "blunder_move": "c2a4",
+   "reference_move": "g2g3",
+   "bestmove": "d1d3",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1196032,
+   "score": {
+    "kind": "cp",
+    "value": 130
+   },
+   "wall_seconds": 1.0025175833143294
+  },
+  {
+   "id": "main-07-04/g1/p37",
+   "phase": "middlegame",
+   "blunder_move": "d5f4",
+   "reference_move": "b5c4",
+   "bestmove": "d5f4",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1239040,
+   "score": {
+    "kind": "cp",
+    "value": 103
+   },
+   "wall_seconds": 1.0032541248947382
+  },
+  {
+   "id": "main-07-06/g0/p38",
+   "phase": "middlegame",
+   "blunder_move": "e3h6",
+   "reference_move": "g3f1",
+   "bestmove": "e3h6",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 1304576,
+   "score": {
+    "kind": "cp",
+    "value": 98
+   },
+   "wall_seconds": 1.0032725841738284
+  },
+  {
+   "id": "main-07-06/g1/p19",
+   "phase": "opening",
+   "blunder_move": "h6h5",
+   "reference_move": "d8f6",
+   "bestmove": "h6h5",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1239040,
+   "score": {
+    "kind": "cp",
+    "value": -92
+   },
+   "wall_seconds": 1.003328874707222
+  },
+  {
+   "id": "main-07-07/g1/p17",
+   "phase": "opening",
+   "blunder_move": "f7f6",
+   "reference_move": "c6b4",
+   "bestmove": "g8e7",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1214464,
+   "score": {
+    "kind": "cp",
+    "value": -53
+   },
+   "wall_seconds": 1.0032615000382066
+  },
+  {
+   "id": "main-08-00/g1/p51",
+   "phase": "middlegame",
+   "blunder_move": "c8d7",
+   "reference_move": "a2a4",
+   "bestmove": "c8b7",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1302528,
+   "score": {
+    "kind": "cp",
+    "value": 118
+   },
+   "wall_seconds": 1.0033671669661999
+  },
+  {
+   "id": "main-08-01/g0/p28",
+   "phase": "middlegame",
+   "blunder_move": "h6h7",
+   "reference_move": "e2g3",
+   "bestmove": "h6h7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1224704,
+   "score": {
+    "kind": "cp",
+    "value": 86
+   },
+   "wall_seconds": 1.00343875028193
+  },
+  {
+   "id": "main-08-01/g1/p25",
+   "phase": "middlegame",
+   "blunder_move": "c6c5",
+   "reference_move": "b4b3",
+   "bestmove": "c6c5",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1241088,
+   "score": {
+    "kind": "cp",
+    "value": -38
+   },
+   "wall_seconds": 1.0033976663835347
+  },
+  {
+   "id": "main-08-01/g1/p33",
+   "phase": "middlegame",
+   "blunder_move": "b4b3",
+   "reference_move": "h8e8",
+   "bestmove": "b4b3",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1243136,
+   "score": {
+    "kind": "cp",
+    "value": 12
+   },
+   "wall_seconds": 1.0034535001032054
+  },
+  {
+   "id": "main-08-03/g1/p69",
+   "phase": "middlegame",
+   "blunder_move": "h5h3",
+   "reference_move": "h8f8",
+   "bestmove": "g6f4",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1431552,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.004350250121206
+  },
+  {
+   "id": "main-08-03/g1/p73",
+   "phase": "middlegame",
+   "blunder_move": "h3f3",
+   "reference_move": "h3h1",
+   "bestmove": "h3h1",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 12,
+   "nodes": 1511424,
+   "score": {
+    "kind": "cp",
+    "value": -20
+   },
+   "wall_seconds": 1.0014532497152686
+  },
+  {
+   "id": "main-08-04/g0/p50",
+   "phase": "endgame",
+   "blunder_move": "c8e8",
+   "reference_move": "a4c5",
+   "bestmove": "c8c6",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1619968,
+   "score": {
+    "kind": "cp",
+    "value": 149
+   },
+   "wall_seconds": 1.0045362077653408
+  },
+  {
+   "id": "main-08-04/g1/p47",
+   "phase": "middlegame",
+   "blunder_move": "f4h5",
+   "reference_move": "e8e5",
+   "bestmove": "f4h5",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1464320,
+   "score": {
+    "kind": "cp",
+    "value": 22
+   },
+   "wall_seconds": 1.0044527086429298
+  },
+  {
+   "id": "main-08-05/g0/p24",
+   "phase": "opening",
+   "blunder_move": "a2a3",
+   "reference_move": "d4f3",
+   "bestmove": "e1c1",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1243136,
+   "score": {
+    "kind": "cp",
+    "value": -86
+   },
+   "wall_seconds": 1.004815542139113
+  },
+  {
+   "id": "main-08-05/g0/p74",
+   "phase": "middlegame",
+   "blunder_move": "f2f4",
+   "reference_move": "e4a8",
+   "bestmove": "f2f4",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1474560,
+   "score": {
+    "kind": "cp",
+    "value": -42
+   },
+   "wall_seconds": 1.0046758339740336
+  },
+  {
+   "id": "main-08-05/g0/p76",
+   "phase": "middlegame",
+   "blunder_move": "g1g2",
+   "reference_move": "g1h2",
+   "bestmove": "g1g2",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1421312,
+   "score": {
+    "kind": "cp",
+    "value": -40
+   },
+   "wall_seconds": 1.0046922080218792
+  },
+  {
+   "id": "main-08-05/g0/p78",
+   "phase": "middlegame",
+   "blunder_move": "e4e7",
+   "reference_move": "f4f5",
+   "bestmove": "e4e7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1574912,
+   "score": {
+    "kind": "cp",
+    "value": -96
+   },
+   "wall_seconds": 1.0016919998452067
+  },
+  {
+   "id": "main-08-07/g0/p24",
+   "phase": "middlegame",
+   "blunder_move": "e3a7",
+   "reference_move": "a2a4",
+   "bestmove": "e3a7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 1314816,
+   "score": {
+    "kind": "cp",
+    "value": 101
+   },
+   "wall_seconds": 1.0024490002542734
+  },
+  {
+   "id": "main-08-07/g0/p88",
+   "phase": "endgame",
+   "blunder_move": "g7g6",
+   "reference_move": "g2g6",
+   "bestmove": "g7g6",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 1683456,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0024123331531882
+  },
+  {
+   "id": "main-08-07/g0/p110",
+   "phase": "endgame",
+   "blunder_move": "c3e5",
+   "reference_move": "e2d2",
+   "bestmove": "e2d2",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 13,
+   "nodes": 2533376,
+   "score": {
+    "kind": "cp",
+    "value": -36
+   },
+   "wall_seconds": 1.0022769998759031
+  },
+  {
+   "id": "main-08-07/g0/p116",
+   "phase": "endgame",
+   "blunder_move": "h3h4",
+   "reference_move": "d3d2",
+   "bestmove": "d3d2",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 14,
+   "nodes": 2670592,
+   "score": {
+    "kind": "cp",
+    "value": -173
+   },
+   "wall_seconds": 1.0023084576241672
+  },
+  {
+   "id": "main-08-07/g1/p33",
+   "phase": "middlegame",
+   "blunder_move": "b6b4",
+   "reference_move": "h7h6",
+   "bestmove": "b6b4",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1161216,
+   "score": {
+    "kind": "cp",
+    "value": -17
+   },
+   "wall_seconds": 1.0047435406595469
+  },
+  {
+   "id": "main-08-07/g1/p41",
+   "phase": "middlegame",
+   "blunder_move": "b6c7",
+   "reference_move": "b6d8",
+   "bestmove": "b6a6",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1124352,
+   "score": {
+    "kind": "cp",
+    "value": -40
+   },
+   "wall_seconds": 1.00338029069826
+  },
+  {
+   "id": "main-08-07/g1/p69",
+   "phase": "middlegame",
+   "blunder_move": "c5a6",
+   "reference_move": "c5e6",
+   "bestmove": "c5a6",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1374208,
+   "score": {
+    "kind": "cp",
+    "value": -6
+   },
+   "wall_seconds": 1.0046490421518683
+  },
+  {
+   "id": "main-08-07/g1/p87",
+   "phase": "middlegame",
+   "blunder_move": "c7d5",
+   "reference_move": "f6d5",
+   "bestmove": "f6d5",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 13,
+   "nodes": 1671168,
+   "score": {
+    "kind": "cp",
+    "value": -25
+   },
+   "wall_seconds": 1.0022387080825865
+  },
+  {
+   "id": "main-08-08/g0/p44",
+   "phase": "middlegame",
+   "blunder_move": "c3e4",
+   "reference_move": "f1d1",
+   "bestmove": "c3e4",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1216512,
+   "score": {
+    "kind": "cp",
+    "value": 54
+   },
+   "wall_seconds": 1.0021040830761194
+  },
+  {
+   "id": "main-08-08/g0/p60",
+   "phase": "middlegame",
+   "blunder_move": "f3f4",
+   "reference_move": "c3e4",
+   "bestmove": "f3f4",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1239040,
+   "score": {
+    "kind": "cp",
+    "value": 69
+   },
+   "wall_seconds": 1.0034394590184093
+  },
+  {
+   "id": "main-08-08/g1/p63",
+   "phase": "middlegame",
+   "blunder_move": "e2e1",
+   "reference_move": "a5c4",
+   "bestmove": "e2e1",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 1525760,
+   "score": {
+    "kind": "cp",
+    "value": -25
+   },
+   "wall_seconds": 1.0020532091148198
+  },
+  {
+   "id": "main-08-unaided/g0/p100",
+   "phase": "endgame",
+   "blunder_move": "a7h7",
+   "reference_move": "g3f2",
+   "bestmove": "a7h7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 16,
+   "nodes": 2080768,
+   "score": {
+    "kind": "cp",
+    "value": -50
+   },
+   "wall_seconds": 1.0014237090945244
+  },
+  {
+   "id": "main-08-unaided/g1/p49",
+   "phase": "middlegame",
+   "blunder_move": "d5e7",
+   "reference_move": "b5c4",
+   "bestmove": "d5e7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 1443840,
+   "score": {
+    "kind": "cp",
+    "value": 75
+   },
+   "wall_seconds": 1.0041370829567313
+  },
+  {
+   "id": "main-09-01/g0/p24",
+   "phase": "middlegame",
+   "blunder_move": "e2d2",
+   "reference_move": "f3h4",
+   "bestmove": "e2d2",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1191936,
+   "score": {
+    "kind": "cp",
+    "value": -11
+   },
+   "wall_seconds": 1.0041879997588694
+  },
+  {
+   "id": "main-09-03/g0/p32",
+   "phase": "middlegame",
+   "blunder_move": "d1a1",
+   "reference_move": "d2f4",
+   "bestmove": "d1a1",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 1372160,
+   "score": {
+    "kind": "cp",
+    "value": 26
+   },
+   "wall_seconds": 1.001230041962117
+  },
+  {
+   "id": "main-09-03/g1/p113",
+   "phase": "endgame",
+   "blunder_move": "h3h4",
+   "reference_move": "f7e7",
+   "bestmove": "f7e7",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 19,
+   "nodes": 3530752,
+   "score": {
+    "kind": "cp",
+    "value": -152
+   },
+   "wall_seconds": 1.0041222083382308
+  },
+  {
+   "id": "main-09-05/g0/p40",
+   "phase": "middlegame",
+   "blunder_move": "f3f4",
+   "reference_move": "c4c5",
+   "bestmove": "f3f4",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 1411072,
+   "score": {
+    "kind": "cp",
+    "value": -56
+   },
+   "wall_seconds": 1.002795583102852
+  },
+  {
+   "id": "main-09-05/g1/p27",
+   "phase": "middlegame",
+   "blunder_move": "f6d5",
+   "reference_move": "b6d5",
+   "bestmove": "a7a5",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1185792,
+   "score": {
+    "kind": "cp",
+    "value": 53
+   },
+   "wall_seconds": 1.0014013340696692
+  },
+  {
+   "id": "main-09-06/g0/p98",
+   "phase": "middlegame",
+   "blunder_move": "g1h2",
+   "reference_move": "g1h1",
+   "bestmove": "g1h1",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 16,
+   "nodes": 1562624,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0043388339690864
+  },
+  {
+   "id": "main-09-unaided/g0/p94",
+   "phase": "endgame",
+   "blunder_move": "h2h3",
+   "reference_move": "d4c5",
+   "bestmove": "h2h3",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 17,
+   "nodes": 1642496,
+   "score": {
+    "kind": "cp",
+    "value": 101
+   },
+   "wall_seconds": 1.0041724173352122
+  },
+  {
+   "id": "main-10-00/g1/p41",
+   "phase": "middlegame",
+   "blunder_move": "g6f4",
+   "reference_move": "e6f4",
+   "bestmove": "e7f7",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 13,
+   "nodes": 1275904,
+   "score": {
+    "kind": "cp",
+    "value": 24
+   },
+   "wall_seconds": 1.0039865421131253
+  },
+  {
+   "id": "main-10-01/g0/p84",
+   "phase": "opening",
+   "blunder_move": "c5a4",
+   "reference_move": "c5d3",
+   "bestmove": "h1f1",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1384448,
+   "score": {
+    "kind": "cp",
+    "value": 180
+   },
+   "wall_seconds": 1.0044396668672562
+  },
+  {
+   "id": "main-10-01/g0/p90",
+   "phase": "opening",
+   "blunder_move": "c8c7",
+   "reference_move": "c8f8",
+   "bestmove": "c8c7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1495040,
+   "score": {
+    "kind": "cp",
+    "value": 313
+   },
+   "wall_seconds": 1.004403917118907
+  },
+  {
+   "id": "main-10-01/g0/p96",
+   "phase": "opening",
+   "blunder_move": "c8c7",
+   "reference_move": "d7b5",
+   "bestmove": "c8c7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1509376,
+   "score": {
+    "kind": "cp",
+    "value": 106
+   },
+   "wall_seconds": 1.0043813330121338
+  },
+  {
+   "id": "main-10-01/g0/p160",
+   "phase": "endgame",
+   "blunder_move": "d7b7",
+   "reference_move": "e5f6",
+   "bestmove": "d7h7",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 1894400,
+   "score": {
+    "kind": "cp",
+    "value": 51
+   },
+   "wall_seconds": 1.0021609170362353
+  },
+  {
+   "id": "main-10-01/g0/p190",
+   "phase": "endgame",
+   "blunder_move": "d5c6",
+   "reference_move": "e6f8",
+   "bestmove": "e6g5",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 1964032,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0030727498233318
+  },
+  {
+   "id": "main-10-03/g0/p106",
+   "phase": "endgame",
+   "blunder_move": "g6e5",
+   "reference_move": "d3e2",
+   "bestmove": "d3e2",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 16,
+   "nodes": 1785856,
+   "score": {
+    "kind": "cp",
+    "value": -76
+   },
+   "wall_seconds": 1.003204375039786
+  },
+  {
+   "id": "main-10-04/g0/p30",
+   "phase": "middlegame",
+   "blunder_move": "a2a3",
+   "reference_move": "g3h3",
+   "bestmove": "f4f5",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 10,
+   "nodes": 1167360,
+   "score": {
+    "kind": "cp",
+    "value": -11
+   },
+   "wall_seconds": 1.003396791871637
+  },
+  {
+   "id": "main-10-04/g1/p31",
+   "phase": "opening",
+   "blunder_move": "c8g4",
+   "reference_move": "f6h5",
+   "bestmove": "f6g4",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 12,
+   "nodes": 1150976,
+   "score": {
+    "kind": "cp",
+    "value": 11
+   },
+   "wall_seconds": 1.0032204589806497
+  },
+  {
+   "id": "main-10-04/g1/p33",
+   "phase": "opening",
+   "blunder_move": "d6b4",
+   "reference_move": "g4e6",
+   "bestmove": "h6h5",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 11,
+   "nodes": 1161216,
+   "score": {
+    "kind": "cp",
+    "value": -3
+   },
+   "wall_seconds": 1.0034527918323874
+  },
+  {
+   "id": "main-10-05/g1/p83",
+   "phase": "middlegame",
+   "blunder_move": "h7h6",
+   "reference_move": "d7f7",
+   "bestmove": "e8g8",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 1482752,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0033677499741316
+  },
+  {
+   "id": "main-10-05/g1/p97",
+   "phase": "endgame",
+   "blunder_move": "h7h6",
+   "reference_move": "d7d3",
+   "bestmove": "h7h6",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 1835008,
+   "score": {
+    "kind": "cp",
+    "value": 0
+   },
+   "wall_seconds": 1.0033682910725474
+  },
+  {
+   "id": "main-10-05/g1/p107",
+   "phase": "endgame",
+   "blunder_move": "d6b5",
+   "reference_move": "d6f5",
+   "bestmove": "d6b5",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 16,
+   "nodes": 1910784,
+   "score": {
+    "kind": "cp",
+    "value": -82
+   },
+   "wall_seconds": 1.0029245000332594
+  },
+  {
+   "id": "main-10-05/g1/p115",
+   "phase": "endgame",
+   "blunder_move": "a3c4",
+   "reference_move": "a3c2",
+   "bestmove": "a3c4",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 14,
+   "nodes": 1984512,
+   "score": {
+    "kind": "cp",
+    "value": -174
+   },
+   "wall_seconds": 1.0027254587039351
+  },
+  {
+   "id": "main-10-08/g0/p32",
+   "phase": "endgame",
+   "blunder_move": "e5e6",
+   "reference_move": "d3d4",
+   "bestmove": "d3d4",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 15,
+   "nodes": 1566720,
+   "score": {
+    "kind": "cp",
+    "value": -1
+   },
+   "wall_seconds": 1.0029208329506218
+  },
+  {
+   "id": "main-10-08/g0/p78",
+   "phase": "endgame",
+   "blunder_move": "c7e5",
+   "reference_move": "e1c1",
+   "bestmove": "c7b8",
+   "avoided": true,
+   "matched_reference": false,
+   "depth": 17,
+   "nodes": 2099200,
+   "score": {
+    "kind": "cp",
+    "value": -87
+   },
+   "wall_seconds": 1.0028125420212746
+  },
+  {
+   "id": "main-10-08/g1/p117",
+   "phase": "endgame",
+   "blunder_move": "a8a7",
+   "reference_move": "f6e7",
+   "bestmove": "a8a7",
+   "avoided": false,
+   "matched_reference": false,
+   "depth": 15,
+   "nodes": 1841152,
+   "score": {
+    "kind": "cp",
+    "value": -79
+   },
+   "wall_seconds": 1.0033899582922459
+  },
+  {
+   "id": "main-10-08/g1/p123",
+   "phase": "endgame",
+   "blunder_move": "f6e7",
+   "reference_move": "f6c3",
+   "bestmove": "f6c3",
+   "avoided": true,
+   "matched_reference": true,
+   "depth": 22,
+   "nodes": 3311616,
+   "score": {
+    "kind": "cp",
+    "value": -220
+   },
+   "wall_seconds": 1.0033324579708278
+  }
+ ]
+}

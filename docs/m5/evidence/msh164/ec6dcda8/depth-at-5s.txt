@@ -1,0 +1,5 @@
+info depth 15 nodes 6309888 time 5005 seldepth 30 score cp 11 pv g1f3 b8c6 d2d4 d7d5 c2c4 
+info depth 16 nodes 6139904 time 5003 seldepth 32 score cp 118 pv c3d5 f6d5 g5e7 d5f4 e2d1
+info depth 15 nodes 5939200 time 5002 seldepth 32 score cp 35 pv e1c1 c6d4 e3d4 c8e6 h2h4 
+info depth 20 nodes 17864704 time 5001 seldepth 32 score cp 892 pv d4d1 g7f8 d1a1 f8e7 a1a
+info depth 25 nodes 15824896 time 5004 seldepth 41 score cp 142 pv b4f4 h4g3 f4c4 h5h7 a5a

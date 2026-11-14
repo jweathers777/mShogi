@@ -1,0 +1,142 @@
+{
+  "task": "MSH-164 (Shared Search Core)",
+  "verification_level": 1,
+  "level_reason": "Platform-independent search and evaluation code. Local checks and independent review. Three-platform compatibility is deferred to the next integration milestone and is not claimed.",
+  "environment": {
+    "host": "Apple M1 Pro, macOS 27.0 (arm64)",
+    "rustc": "1.99.1",
+    "python": "3.11",
+    "date_utc": "2026-11-14"
+  },
+  "revisions": {
+    "predecessor": "65887fb0 (frozen binary target/strength/engines/65887fb0c653/mshogi, sha256 167cd140...)",
+    "reference_checkpoint": "a01eb633: new engine with the earlier search and evaluation still in the tree",
+    "tested": "6fef75d1: final revision with the review corrections; the acceptance results below are from this revision",
+    "before_review": "ec6dcda8: earlier search removed; its results are kept in ec6dcda8/ (bench 1,365,068 nps, blunders 87 of 146, match +55 -1 =4)"
+  },
+  "checks": [
+    {
+      "name": "workspace tests",
+      "command": "cargo test --workspace --no-fail-fast",
+      "revision": "a01eb633",
+      "result": "passed: 1237 passed, 0 failed, 12 ignored"
+    },
+    {
+      "name": "workspace tests",
+      "command": "cargo test --workspace --no-fail-fast",
+      "revision": "6fef75d1 (working tree before commit, same content)",
+      "result": "passed: 1173 passed, 0 failed, 11 ignored"
+    },
+    {
+      "name": "linter",
+      "command": "cargo clippy --workspace --all-targets",
+      "revision": "6fef75d1",
+      "result": "passed: no warning from project code"
+    },
+    {
+      "name": "evaluation equality with the earlier evaluation",
+      "command": "cargo test -p mshogi-search --lib -- chess_eval",
+      "revision": "a01eb633",
+      "result": "passed: each term, phase, specialized ending and final score equal on more than 8000 positions from random legal games and special endings. The test left the tree with the earlier evaluation in ec6dcda8."
+    },
+    {
+      "name": "perft and native-rules comparison",
+      "command": "cargo test -p mshogi-search --lib -- chess_bitboard",
+      "revision": "6fef75d1",
+      "result": "passed: six published perft positions; random walks over more than 3000 positions compare legal moves, resulting boards, hash, incremental state, check status and pseudo-legality with the native rules; the no-change legality check used by the fifty-move claim agrees with make on each quiet piece move"
+    },
+    {
+      "name": "deep perft",
+      "command": "cargo test --release -p mshogi-search --lib -- --ignored deep_perft",
+      "revision": "a01eb633 working tree before commit",
+      "result": "passed: start position depth 6 (119,060,324) and five other published positions at depth 5 to 7"
+    },
+    {
+      "name": "speed benchmark",
+      "command": "python3 -m tools.strength.cli bench --engine target/release/mshogi",
+      "result": "median 1,380,211 nodes per second (baseline 296,656); total 857,606 nodes for the fixed depths (baseline 5,431,097); median time to depth 0.62 s",
+      "file": "6fef75d1/bench.json",
+      "baseline_file": "../msh163/baseline-65887fb0/bench.json"
+    },
+    {
+      "name": "depth at five seconds",
+      "command": "go movetime 5000 on five positions, new game before each",
+      "result": "depth 16, 15, 14 in three opening or middlegame positions; depth 20 and 24 in two endgames. The earlier engine had a median depth of 8 to 9 at five seconds in the MSH-161 games.",
+      "file": "6fef75d1/depth-at-5s.txt"
+    },
+    {
+      "name": "blunder suite at 1000 ms",
+      "command": "python3 -m tools.strength.cli blunders --engine target/release/mshogi --movetime 1000",
+      "result": "avoided 85 of 146 (baseline 47); matched reference 40 (baseline 17). Endgame 24 of 47, middlegame 49 of 83, opening 12 of 16.",
+      "file": "6fef75d1/blunders-1000ms.json",
+      "note": "Exposed development positions. Avoided means only that the engine did not play the confirmed error."
+    },
+    {
+      "name": "game test against the frozen predecessor",
+      "command": "python3 -m tools.strength.cli match --candidate target/release/mshogi --baseline target/strength/engines/65887fb0c653/mshogi",
+      "result": "SPRT decision H1 at 30 pairs: 55 wins, 0 losses, 5 draws in 60 games at 200 ms per move; Elo estimate +545 with lower bound +385; no failed pair; 143 s wall, 1060 s CPU",
+      "file": "6fef75d1/match/result.json",
+      "note": "Self-play against the predecessor on one machine with exposed openings. It is not a rating and not a result against other engines."
+    }
+  ],
+  "not_run": [
+    "Linux and Windows builds or tests",
+    "Desktop packaged application run",
+    "Games against external engines"
+  ],
+  "independent_review": {
+    "reviewer": "Claude Opus 5.5 subagent, fresh context, read-only, on b5758a28..ec6dcda8",
+    "findings": [
+      {
+        "n": 1,
+        "severity": "medium",
+        "finding": "The engine server and desktop path start a new coordinator and engine for each request, so the table is not kept between moves there.",
+        "disposition": "Not changed in this task: the one-shot engine process is the execution contract of that path. Recorded as MSH-169 (Engine Session Persistence). Acceptance criterion 2 is met on the UCI path only; owner decision requested."
+      },
+      {
+        "n": 2,
+        "severity": "low-medium",
+        "finding": "A table cutoff ignored the claimable-draw lower bound.",
+        "disposition": "Corrected in 6fef75d1."
+      },
+      {
+        "n": 3,
+        "severity": "low",
+        "finding": "Futility-pruned moves did not raise the stored upper bound.",
+        "disposition": "Corrected in 6fef75d1."
+      },
+      {
+        "n": 4,
+        "severity": "low",
+        "finding": "An exact quiescence result replaced a deeper entry of the same search.",
+        "disposition": "Corrected in 6fef75d1 with a test."
+      },
+      {
+        "n": 5,
+        "severity": "low",
+        "finding": "No move is returned when a search stops before depth 1 completes.",
+        "disposition": "No change: this is the existing incomplete-result contract of the engine protocol, and tests assert it. Depth 1 needs about 30 nodes."
+      },
+      {
+        "n": 6,
+        "severity": "performance",
+        "finding": "The fifty-move claim test copied the full position at each node with halfmove 99.",
+        "disposition": "Corrected in 6fef75d1: legality check without a change of the position, compared with make in the random-walk test."
+      },
+      {
+        "n": 7,
+        "severity": "hardening",
+        "finding": "Move flags above 7 were not rejected.",
+        "disposition": "Corrected in 6fef75d1; the random pseudo-legality test now uses all 16-bit encodings."
+      },
+      {
+        "n": 8,
+        "severity": "minor",
+        "finding": "A large Hash value is allocated at the start of the next request, outside the time budget.",
+        "disposition": "Not changed; recorded as a known limit."
+      }
+    ],
+    "re_review": "Not done. The corrections are covered by the tests named above and by the repeated acceptance checks."
+  },
+  "open_owner_decision": "Acceptance criterion 2 says that the table is kept between moves of one game. That is true on the UCI path and not on the desktop one-shot process path (MSH-169)."
+}

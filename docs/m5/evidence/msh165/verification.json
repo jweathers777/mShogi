@@ -1,0 +1,74 @@
+{
+  "task": "MSH-165 (Tori Search Core Adoption)",
+  "verification_level": 1,
+  "level_reason": "Platform-independent search and native correctness, with changed validation of engine observations and frontend limits. No process, persistence-format or platform-sensitive change. Local checks and independent review.",
+  "source": {
+    "branch": "claude/msh-165-tori-core",
+    "tested_revision": "31b2e8fe",
+    "note": "The game-test engine binary (SHA-256 69f45540...) was built from the working tree shortly before 31b2e8fe. The later differences are lint attributes, formatting and test files; the search source is the same."
+  },
+  "environment_local": "Apple M1 Pro, macOS (Darwin 27.0.0), stable Rust from rust-toolchain.toml, Node from desktop/.node-version",
+  "checks": [
+    {
+      "name": "workspace tests",
+      "command": "cargo test --workspace --no-fail-fast",
+      "revision": "working tree before 31b2e8fe, same Rust source",
+      "result": "passed: 1184 passed, 0 failed, 10 ignored"
+    },
+    {
+      "name": "linter and format",
+      "command": "cargo fmt --all; cargo clippy --workspace --all-targets",
+      "result": "passed: no warning from project code"
+    },
+    {
+      "name": "Tori search position against the native rules (acceptance criterion 2)",
+      "command": "cargo test -p mshogi-search --lib tori::position_tests",
+      "result": "passed: 48 seeded random games, more than 2000 positions with more than 200 drops, 200 captures and 40 promotions: legal moves and drops, boards, hands, material, check status, hash and the full 12-bit move encoding agree with the native rules at each position; perft equal to the native perft at depth 1 to 3 from the standard position and depth 1 to 2 from a position with pieces in hand; Swallow drop-mate, file and last-rank rules on constructed positions; the forbidden departures of the native repetition rule are excluded at the root"
+    },
+    {
+      "name": "Tori adapter",
+      "command": "cargo test -p mshogi-search --lib tori::tests",
+      "result": "passed: native conclusions at the root (checkmate, no legal action, repetition forfeit); a choice that the native obligation permits; mate in one and loss in two with exact distance and a natively playable line; limits, stop, equal results for equal requests; 40 plies of self-play with native legality of each action and line"
+    },
+    {
+      "name": "engine protocol and saved observations",
+      "command": "cargo test -p mshogi-engine --test tori_protocol",
+      "result": "passed 7 of 7: new identity observations match and validate; malformed telemetry is refused; a saved observation of the earlier full-width search validates, its forged score is refused, and its earlier bounds apply"
+    },
+    {
+      "name": "frontend",
+      "command": "npm ci; npm run check; npm test (in desktop/)",
+      "result": "passed: type check; 570 of 570 tests in 42 files, with the regenerated Tori fixtures"
+    },
+    {
+      "name": "game test, equal time (acceptance criterion 4)",
+      "command": "tori_match_config NEW OLD SEED 150000 2 2000 CONFIG; mshogi-match experiment-run CONFIG REPORT, seeds 11, 12, 13",
+      "result": "40 wins, 0 losses, 0 draws for the shared core in 40 scored games of 48 scheduled; 8 games not scored (artifact_limit). Median time for one move 89 ms (new, median depth 9) against 92 ms (earlier, depth 2).",
+      "file": "game-test-summaries.json"
+    },
+    {
+      "name": "game test against the largest earlier setting",
+      "command": "tori_match_config NEW OLD SEED 300000 3 10000 CONFIG; mshogi-match experiment-run CONFIG REPORT, seeds 11, 12, 13",
+      "result": "26 wins, 0 losses, 0 draws for the shared core in 26 scored games of 48 scheduled; 22 games not scored (artifact_limit). Median time for one move 175 ms (new, median depth 10) against 674 ms (earlier, median completed depth 2).",
+      "file": "game-test-summaries.json"
+    },
+    {
+      "name": "first trial run",
+      "command": "tori_match_config NEW OLD 1 300000 2 2000",
+      "result": "15 wins, 0 losses in 15 scored games of 16; kept as an observation, not part of the two tests above"
+    }
+  ],
+  "game_test_notes": [
+    "NEW is the release mshogi of this task. OLD is the frozen engine 6fef75d1 (target/strength/engines/6fef75d1b672/mshogi, SHA-256 a3cf06d9...), which has the earlier Tori full-width search.",
+    "Controller: the native Tori game in mshogi-match experiment-run, through the internal engine protocol. Openings: the standard position plus four seeded random legal actions, eight for each seed, each with both colors.",
+    "artifact_limit: the runner stops when the report of a run nears its size limit. It then stops the current game and does not start the later games. This depends on the order and length of the games, not on their results.",
+    "The full reports are about 16 MB each and are not in the repository. The command and the seeds reproduce them: both searches are deterministic at fixed node limits.",
+    "No sequential stopping rule was used: the runner format has fixed schedules. No scored game was lost or drawn.",
+    "Compute: about 20 minutes wall time for all seven runs, three runs in parallel."
+  ],
+  "not_run": [
+    "Linux and Windows. Level 1 does not require them.",
+    "Packaged desktop application journey with Tori. The desktop session crate tests and the frontend tests passed locally.",
+    "A comparison against an external Tori engine. None is known to the project, and none is required."
+  ]
+}

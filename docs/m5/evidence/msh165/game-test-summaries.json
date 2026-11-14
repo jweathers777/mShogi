@@ -1,0 +1,193 @@
+{
+ "a-11": {
+  "setting": "candidate 150000 nodes against baseline depth 2, 2000 nodes",
+  "seed": 11,
+  "summary": [
+   {
+    "profile": "mshogi.tori.modern.v1",
+    "baseline": "baseline",
+    "scheduled_pairs": 8,
+    "complete_played_pairs": 6,
+    "unscored_pairs": 2,
+    "diagnostic_pairs": 0,
+    "pentanomial": [
+     0,
+     0,
+     0,
+     0,
+     6
+    ],
+    "wins_draws_losses": [
+     12,
+     0,
+     0
+    ],
+    "unscored_games": 4,
+    "preconcluded_games": 0,
+    "stops": {
+     "artifact_limit": 4,
+     "native_concluded": 12
+    }
+   }
+  ]
+ },
+ "a-12": {
+  "setting": "candidate 150000 nodes against baseline depth 2, 2000 nodes",
+  "seed": 12,
+  "summary": [
+   {
+    "profile": "mshogi.tori.modern.v1",
+    "baseline": "baseline",
+    "scheduled_pairs": 8,
+    "complete_played_pairs": 8,
+    "unscored_pairs": 0,
+    "diagnostic_pairs": 0,
+    "pentanomial": [
+     0,
+     0,
+     0,
+     0,
+     8
+    ],
+    "wins_draws_losses": [
+     16,
+     0,
+     0
+    ],
+    "unscored_games": 0,
+    "preconcluded_games": 0,
+    "stops": {
+     "native_concluded": 16
+    }
+   }
+  ]
+ },
+ "a-13": {
+  "setting": "candidate 150000 nodes against baseline depth 2, 2000 nodes",
+  "seed": 13,
+  "summary": [
+   {
+    "profile": "mshogi.tori.modern.v1",
+    "baseline": "baseline",
+    "scheduled_pairs": 8,
+    "complete_played_pairs": 6,
+    "unscored_pairs": 2,
+    "diagnostic_pairs": 0,
+    "pentanomial": [
+     0,
+     0,
+     0,
+     0,
+     6
+    ],
+    "wins_draws_losses": [
+     12,
+     0,
+     0
+    ],
+    "unscored_games": 4,
+    "preconcluded_games": 0,
+    "stops": {
+     "artifact_limit": 4,
+     "native_concluded": 12
+    }
+   }
+  ]
+ },
+ "b-11": {
+  "setting": "candidate 300000 nodes against baseline depth 3, 10000 nodes",
+  "seed": 11,
+  "summary": [
+   {
+    "profile": "mshogi.tori.modern.v1",
+    "baseline": "baseline",
+    "scheduled_pairs": 8,
+    "complete_played_pairs": 4,
+    "unscored_pairs": 4,
+    "diagnostic_pairs": 0,
+    "pentanomial": [
+     0,
+     0,
+     0,
+     0,
+     4
+    ],
+    "wins_draws_losses": [
+     8,
+     0,
+     0
+    ],
+    "unscored_games": 8,
+    "preconcluded_games": 0,
+    "stops": {
+     "artifact_limit": 8,
+     "native_concluded": 8
+    }
+   }
+  ]
+ },
+ "b-12": {
+  "setting": "candidate 300000 nodes against baseline depth 3, 10000 nodes",
+  "seed": 12,
+  "summary": [
+   {
+    "profile": "mshogi.tori.modern.v1",
+    "baseline": "baseline",
+    "scheduled_pairs": 8,
+    "complete_played_pairs": 5,
+    "unscored_pairs": 3,
+    "diagnostic_pairs": 0,
+    "pentanomial": [
+     0,
+     0,
+     0,
+     0,
+     5
+    ],
+    "wins_draws_losses": [
+     10,
+     0,
+     0
+    ],
+    "unscored_games": 6,
+    "preconcluded_games": 0,
+    "stops": {
+     "artifact_limit": 6,
+     "native_concluded": 10
+    }
+   }
+  ]
+ },
+ "b-13": {
+  "setting": "candidate 300000 nodes against baseline depth 3, 10000 nodes",
+  "seed": 13,
+  "summary": [
+   {
+    "profile": "mshogi.tori.modern.v1",
+    "baseline": "baseline",
+    "scheduled_pairs": 8,
+    "complete_played_pairs": 4,
+    "unscored_pairs": 4,
+    "diagnostic_pairs": 0,
+    "pentanomial": [
+     0,
+     0,
+     0,
+     0,
+     4
+    ],
+    "wins_draws_losses": [
+     8,
+     0,
+     0
+    ],
+    "unscored_games": 8,
+    "preconcluded_games": 0,
+    "stops": {
+     "artifact_limit": 8,
+     "native_concluded": 8
+    }
+   }
+  ]
+ }
+}

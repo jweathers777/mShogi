@@ -128,8 +128,10 @@ its private full-width minimax. The trait and the core did not change.
   native game and cut where that game refuses an action or concludes.
 - Repetition: the native rule makes the side to move leave a position at its
   third occurrence and gives no draw. The search scores a position that
-  occurs again as level (zero). The forbidden departures of the root come
-  from the native game and are removed from the root move list.
+  occurs again as level (zero). This is an approximation: the scan looks back
+  only to the last capture or drop, and in a drop game a position can also
+  come back through a capture and a drop. The forbidden departures of the root
+  come from the native game and are removed from the root move list.
 - Limits: depth 1 to 64 and at most 5,000,000 nodes. The desktop plays with
   300,000 nodes. A request has no time budget, so each search starts with an
   empty table and equal requests give equal results. The reported line has at
@@ -148,11 +150,14 @@ seed; files and commands in `evidence/msh165/verification.json`):
 |---|---|---|
 | Median completed depth at the desktop setting | 2 | 10 (300,000 nodes) |
 | Median time for one move, equal-time test | 92 ms (depth 2, 2,000 nodes) | 89 ms (150,000 nodes) |
-| Game test, equal time | — | RESULT_A |
-| Game test against the largest earlier setting (depth 3, 10,000 nodes) | — | RESULT_B |
+| Game test, equal time | — | 40 wins, 0 losses, 0 draws; 8 games not scored |
+| Game test against the largest earlier setting (depth 3, 10,000 nodes) | — | 26 wins, 0 losses, 0 draws; 22 games not scored (175 ms against 674 ms for one move) |
 
 The game tests show that the new search is stronger than the earlier one. They
-are not a rating.
+are not a rating. A game is not scored when the report of its run reaches the
+size limit of the experiment runner: the runner then stops the current game
+and does not start the later games of that run. This depends on the order and
+length of the games, not on their results.
 
 ## What Tori showed, and what the other games need
 
@@ -191,7 +196,8 @@ list at ply zero.
   last-rank and drop-mate rules, as Tori has for the Swallow. Optional
   promotion: two moves for one source and target. Repetition: the fourth
   occurrence is a draw, but a loss for a side that gave check each time; the
-  search can score a path repetition as a draw and treat perpetual check as a
+  search can score a path repetition as a draw (an approximation: the
+  capture-and-drop limit of the Tori scan does not hold in a drop game) and treat perpetual check as a
   loss, with the native rules as the authority at the root. Entering-king
   declarations are root commands from the native rules, as Chess claims are.
 - *Xiangqi (90 squares).* A 128-bit square set. No drops and no promotion.

@@ -787,7 +787,7 @@ fn preflight(
                 .principal_variation
                 .len();
             if pv > mshogi_engine::TORI_MAX_LINE {
-                return Err(invalid("Tori PV exceeds supported depth"));
+                return Err(invalid("Tori line exceeds the supported length"));
             }
             // Charge native context parse, exact prefix encoding, target reconstruction
             // and private validation-branch reconstruction conservatively (4 roots

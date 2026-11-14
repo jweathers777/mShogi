@@ -328,9 +328,142 @@ fn the_root_excludes_departures_that_the_native_repetition_rule_forbids() {
     for action in game.legal_actions() {
         assert!(actions.contains(&action));
     }
-    // The position counts the two earlier occurrences from the game.
+    // A new position has no repetition score.
     let mut position = position;
     let m = position.find(step("4g", "3g")).unwrap();
     assert!(position.make(m));
     assert_eq!(position.rule_score(), None);
+    position.unmake();
+    // The root is the third occurrence from the game: the first return to it
+    // inside the search is a repetition, through the history keys of the game.
+    let mut path = Vec::new();
+    for (from, to) in [("4g", "3g"), ("4a", "5a"), ("3g", "4g"), ("5a", "4a")] {
+        let m = position.find(step(from, to)).unwrap();
+        assert!(position.make(m));
+        path.push(m);
+    }
+    assert_eq!(position.rule_score(), Some(0));
+    for _ in &path {
+        position.unmake();
+    }
+    // A position with no earlier history needs a return inside the search.
+    let fresh = Game::from_root(
+        Position::from_diagram(
+            &[
+                ("4g", Side::Sente, Face::Phoenix),
+                ("4a", Side::Gote, Face::Phoenix),
+                ("1g", Side::Sente, Face::Crane),
+                ("7a", Side::Gote, Face::Crane),
+            ]
+            .iter()
+            .map(|(s, side, face)| {
+                (
+                    s.parse().unwrap(),
+                    Piece {
+                        side: *side,
+                        face: *face,
+                    },
+                )
+            })
+            .collect::<Vec<_>>(),
+            [Hand::empty(); 2],
+            Side::Sente,
+            RootMetadata::diagram(0),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    let mut position = ToriPosition::from_game(&fresh);
+    for (index, (from, to)) in [("4g", "5g"), ("4a", "5a"), ("5g", "4g"), ("5a", "4a")]
+        .into_iter()
+        .enumerate()
+    {
+        let m = position.find(step(from, to)).unwrap();
+        assert!(position.make(m));
+        assert_eq!(position.rule_score(), (index == 3).then_some(0));
+    }
+}
+
+#[test]
+fn history_keys_survive_stop_events_between_actions() {
+    // A Stop command adds an event without a board action. The search copy
+    // must see each earlier position one time, as without the Stop events.
+    let step = |from: &str, to: &str| Action::Move {
+        from: from.parse().unwrap(),
+        to: to.parse().unwrap(),
+        result_face: Face::Phoenix,
+    };
+    let cycle = [("4g", "5g"), ("4a", "5a"), ("5g", "4g"), ("5a", "4a")];
+    let build = |stops: bool| {
+        let mut game = diagram(
+            &[
+                ("4g", Side::Sente, Face::Phoenix),
+                ("4a", Side::Gote, Face::Phoenix),
+                ("1g", Side::Sente, Face::Crane),
+                ("7a", Side::Gote, Face::Crane),
+            ],
+            [Hand::empty(); 2],
+            Side::Sente,
+        );
+        // Six actions: the start position occurs two times, and the root is
+        // the second occurrence of the position after 4g-5g and 4a-5a.
+        for (index, &(from, to)) in cycle.iter().cycle().take(6).enumerate() {
+            play(&mut game, step(from, to));
+            if stops && (index == 0 || index == 4) {
+                game.submit(GameRequest {
+                    expected: game.context(),
+                    actor: game.position().side_to_move(),
+                    command: GameCommand::Stop {
+                        reason: mshogi_core::tori::StopReason::Cancelled,
+                    },
+                })
+                .unwrap();
+            }
+        }
+        game
+    };
+    let mut scores = Vec::new();
+    for stops in [false, true] {
+        let game = build(stops);
+        assert_eq!(game.events().len(), if stops { 8 } else { 6 });
+        let mut position = ToriPosition::from_game(&game);
+        let mut seen = Vec::new();
+        for &(from, to) in &cycle[2..] {
+            let m = position.find(step(from, to)).unwrap();
+            assert!(position.make(m));
+            seen.push(position.rule_score());
+        }
+        scores.push(seen);
+    }
+    // The position after 5g-4g occurred one time before: no score. The start
+    // position after 5a-4a occurred two times before the root: its third
+    // occurrence scores as level.
+    assert_eq!(scores[0], vec![None, Some(0)]);
+    assert_eq!(scores[1], scores[0]);
+}
+
+#[test]
+fn gote_swallow_drop_rules_agree_with_the_native_rules() {
+    // The Sente drop-mate position of the test above, turned for Gote.
+    let drop = |to: &str| Action::Drop {
+        face: Face::Swallow,
+        to: to.parse().unwrap(),
+    };
+    let swallow = Hand::from_counts(&[(Face::Swallow, 1)]).unwrap();
+    let boxed = [
+        ("1a", Side::Gote, Face::Phoenix),
+        ("4g", Side::Sente, Face::Phoenix),
+        ("4d", Side::Gote, Face::Pheasant),
+        ("5g", Side::Sente, Face::Swallow),
+        ("3g", Side::Sente, Face::Swallow),
+        ("5f", Side::Sente, Face::Swallow),
+        ("3f", Side::Sente, Face::Swallow),
+    ];
+    let game = diagram(&boxed, [Hand::empty(), swallow], Side::Gote);
+    let mut position = ToriPosition::from_game(&game);
+    compare(&mut position, &game);
+    let m = position.find(drop("4f")).expect("pseudo-legal");
+    assert!(!position.make(m), "Swallow drop mate");
+    assert!(position.find(drop("2g")).is_none(), "last rank for Gote");
+    assert!(position.find(drop("2f")).is_some());
 }

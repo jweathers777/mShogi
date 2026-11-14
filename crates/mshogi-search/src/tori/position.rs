@@ -790,7 +790,10 @@ impl SearchPosition for ToriPosition {
     fn rule_score(&self) -> Option<i32> {
         // Approximation of the Tori repetition rule. The native rule makes the
         // side to move leave a position at its third occurrence; it gives no
-        // draw. The search scores a position that occurs again as level, so a
+        // draw. The scan looks back only to the last capture or drop. In a drop
+        // game a position can also come back through a capture and a drop, so
+        // the search can miss a repetition; the root uses the exact native
+        // forbidden departures. The search scores a position that occurs again as level, so a
         // side with the better position does not go around in a cycle.
         let current = self.keys.len() - 1;
         let limit = usize::from(self.reversible).min(current);

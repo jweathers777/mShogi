@@ -201,7 +201,7 @@ fn malformed_telemetry_complete_pv_and_terminal_mismatches_refuse() {
     let c = context(&g);
     let good = execute(&c);
     assert!(good.matches(&c));
-    for n in 0..10 {
+    for n in 0..11 {
         let mut obs = good.clone();
         let ExecutionResult::Tori {
             result: ToriResult::Choice { action, telemetry },
@@ -226,6 +226,8 @@ fn malformed_telemetry_complete_pv_and_terminal_mismatches_refuse() {
             }
             // A line that the native game refuses after its first action.
             8 => telemetry.principal_variation = vec![*action, *action],
+            // A choice that claims a win at its own root.
+            9 => telemetry.score = Some(search::WIN_SCORE),
             // A line above the largest reported length.
             _ => telemetry.principal_variation = vec![*action; search::MAX_LINE + 1],
         }
@@ -240,7 +242,7 @@ fn malformed_telemetry_complete_pv_and_terminal_mismatches_refuse() {
                 "submitted work limit belongs to contextual shape check"
             );
         }
-        if n != 8 {
+        if n != 8 && n != 9 {
             assert!(!obs.matches(&c), "cheap shape case {n}");
         } else {
             assert!(

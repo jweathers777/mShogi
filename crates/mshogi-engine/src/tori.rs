@@ -9,8 +9,9 @@ use mshogi_search::tori as search;
 pub use mshogi_search::tori::DEFAULT_LIMITS as TORI_DEFAULT_LIMITS;
 /// Maximum supported native Tori search depth.
 pub use mshogi_search::tori::MAX_DEPTH as TORI_MAX_DEPTH;
-/// Maximum supported native Tori visit budget.
+/// Largest reported Tori line, in board actions.
 pub use mshogi_search::tori::MAX_LINE as TORI_MAX_LINE;
+/// Maximum supported native Tori visit budget.
 pub use mshogi_search::tori::MAX_NODES as TORI_MAX_NODES;
 use serde::{Deserialize, Serialize};
 /// Measured finite native Tori interactive work settings.
@@ -32,7 +33,7 @@ pub struct ToriTelemetry {
     /// Hundredths of a Swallow, or native terminal action distance; absent until completed work.
     #[serde(deserialize_with = "required_score")]
     pub score: Option<i32>,
-    /// Last complete full-width iteration.
+    /// Last completed iteration of the search.
     pub completed_depth: u16,
     /// Total admitted visits, including discarded work.
     pub nodes: u64,
@@ -126,9 +127,6 @@ impl ToriResult {
             None => Self::Incomplete { telemetry },
         }
     }
-    /// Re-admit the complete continuation against authoritative native history.
-    /// This validates consistency, not a claim that a heuristic score is optimal.
-    /// Runtime identities and submitted limits remain the observation owner's check.
     /// Search identity of this observation: the shared-core search, or the
     /// earlier full-width search whose saved observations stay valid.
     fn identity(&self) -> Option<Identity> {
@@ -143,7 +141,9 @@ impl ToriResult {
             None
         }
     }
-    /// Check the observation against the native game that it analyzed.
+    /// Re-admit the complete continuation against authoritative native history.
+    /// This validates consistency, not a claim that a heuristic score is optimal.
+    /// Runtime identities and submitted limits remain the observation owner's check.
     pub fn validate(&self, game: &Game) -> Result<(), String> {
         let t = self.telemetry();
         let Some(identity) = self.identity() else {
@@ -203,8 +203,16 @@ impl ToriResult {
                 // The shared-core search is selective: its score is not the
                 // static value of the end of the reported line. The native
                 // replay above is its check.
+                // A choice is never a win at the analyzed position itself.
                 if identity == Identity::SharedCore {
-                    return Ok(());
+                    return if t
+                        .score
+                        .is_some_and(|s| s.unsigned_abs() >= search::WIN_SCORE as u32)
+                    {
+                        Err("Tori choice claims a win or loss at its own root".into())
+                    } else {
+                        Ok(())
+                    };
                 }
                 if t.principal_variation.len() != usize::from(t.completed_depth)
                     && branch.conclusion().is_none()

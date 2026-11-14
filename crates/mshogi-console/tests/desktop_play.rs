@@ -79,7 +79,7 @@ fn real_observations(snapshot: &SharedSnapshot, perspective: Color, searched_ver
     let selective_depth = telemetry
         .selective_depth
         .expect("actual conventional selective depth");
-    assert!(selective_depth <= mshogi_search::chess_conventional::MAX_PLY);
+    assert!(selective_depth <= mshogi_search::search::MAX_DEPTH);
     let board_plies = telemetry
         .principal_variation
         .iter()

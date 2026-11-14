@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@claude-code-msh170'
 created_date: '2026-11-14T11:26:00Z'
-updated_date: '2026-11-14T15:14:00Z'
+updated_date: '2026-11-14T16:12:00Z'
 labels:
   - handle:unused-code-removal
 milestone: m-5
@@ -109,6 +109,11 @@ Verification (Level 1: platform-independent removal of unused code; no portabili
 - desktop/src-tauri cargo build --locked, and with --features desktop-verification: pass.
 - desktop npm run check, npm run build: pass; npm test: 42 files, 570 tests passed (frontend unchanged after that run).
 Independent review (fresh general-purpose reviewer, read-only, diff of this change): no blocking findings; cargo check all targets clean. Low 1: tests/chess_target_queries.rs also held the only direct tests of the retained Position::legal_captures_to -> resolved, the independent-expectation test and an every-square check against legal_actions are kept in tests/chess_capture_queries.rs. Low 2: stale doc comment naming legal_actions_to -> resolved. Note: legal_actions_matching now has one caller -> left unchanged (optional).
+
+Owner decision (John, 2026-11-14): remove the full-width Chess search (MSH-20) and the material evaluator (MSH-19); keep ToriBirdPiece (preserved bird artwork, MSH-42 owner clarification, docs/design.md:137); ToriDocumentWorker and the Full-mode engine observation are handled elsewhere by John, no change here. Docs must not name code that no longer exists.
+Change 96b1a219: removed mshogi_search::chess, the search functions/ChessTree/negamax/unit tests and SEARCH_ID of search.rs (shared types kept), tests/search.rs, tests/evaluation.rs, examples/search_baseline.rs; chess_study_roots example uses an identical local material balance; rewrote docs/search.md and docs/evaluation.md for the current engine; updated docs/rules/chess-coverage.md, docs/search-coordination.md, README.md.
+Verification (Level 1, macOS arm64, Rust 1.99.1) on parent cc52c94e (includes merged MSH-165) plus this change: cargo fmt --check pass; cargo clippy --workspace --all-targets --all-features -D warnings pass; cargo test --locked --workspace pass, 1133 passed, 0 failed, 10 ignored. An earlier run failed one mshogi-engine doctest (E0432 tori::MAX_LINE) because MSH-165 was merged into the checkout during the run; the clean rerun passed.
+Independent review (fresh read-only reviewer): no consumer or equivalence findings; doc findings resolved (UCI creates only M2 games; release fallback move described; search-coordination.md and README.md no longer name the full-width search).
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
@@ -117,4 +122,6 @@ Independent review (fresh general-purpose reviewer, read-only, diff of this chan
 Removed code with no consumer on codex/rewrite (commit cbe685f0, about 3,200 lines): the chess_candidate search; the Chess SearchCursor (search_access) of the removed conventional search with its own test and profile example and the Game helpers only it used; queen contact-mate queries and Position::legal_actions_to / captures_and_promotions, added for that search and used only by their own tests; unused accessors in Chess, Chu and Tenjiku; RequestContext::allow_draw_claims; the never-constructed SearchError::TimedFullUnsupported; the unreferenced frontend ArchivedObservation type. docs/evaluation.md and docs/development.md no longer name removed code. Behavior is unchanged: removed items had no production caller, the compiler confirmed each removal over all targets and features, and the full workspace, Tauri host and frontend checks pass (Level 1, macOS arm64). Independent review had two low findings, both resolved. The candidate list in the notes gives the disposition and evidence for every item, including kept test seams, examples, tools, dependencies and generated fixtures.
 
 Open questions for John (items kept until decided): (1) remove the full-width Chess search and material evaluator (MSH-20/MSH-19; only tests and two examples use them; docs/search.md calls them reference paths)? (2) remove the test-only ToriDocumentWorker path that docs/m4/tori/desktop-document.md describes? (3) remove the dormant ToriBirdPiece artwork? Observation: the MSH-164 Chess engine has no timed Full-mode handling, and docs/evaluation.md still names the removed EvalState.
+
+Follow-up 96b1a219 (owner decision): removed the full-width Chess search and material evaluator with their tests and example, and brought docs/search.md, docs/evaluation.md and related current docs in line with the code. Workspace checks pass; independent review findings resolved.
 <!-- SECTION:FINAL_SUMMARY:END -->

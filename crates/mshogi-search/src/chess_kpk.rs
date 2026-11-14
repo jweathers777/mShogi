@@ -10,6 +10,8 @@ const WINS: &[u8; STATES / 8] = include_bytes!("data/chess_kpk.bin");
 
 /// Return whether the lone pawn's side can win in the board-only KPK model.
 /// `None` means the material/rights do not match; it never means a game outcome.
+// Used by the table generator example and by the tests of this module.
+#[allow(dead_code)]
 pub(crate) fn probe(position: &Position) -> Option<bool> {
     let (index, _) = index(position)?;
     Some(wins(index))
@@ -47,6 +49,8 @@ pub(crate) fn index_parts(
 /// Normalize pawn side to White, pawn file to a..d, preserving turn identity.
 /// Raw EP after the lone pawn's double push is immaterial: no opposing pawn
 /// exists to capture. The native position has already validated that EP state.
+// Used by the table generator example and by the tests of this module.
+#[allow(dead_code)]
 pub(crate) fn index(position: &Position) -> Option<(usize, Color)> {
     let mut kings = [0usize; 2];
     let mut pawn = None;

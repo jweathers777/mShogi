@@ -201,7 +201,7 @@ capability demonstrations must not be read as requiring either technique.
 
 ## MSH-74 normal product surface
 
-The owner-approved implementation direction is recorded in
+The approved implementation direction is recorded in
 [the shogi product design](shogi-desktop-product.md). It introduces actual normal
 Chess/Shogi New Game selection and a distinct shogi board/player/hand layout,
 keeping the MSH-72/73 harness verification-only. Full9x9 visibility is required

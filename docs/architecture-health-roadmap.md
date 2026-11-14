@@ -29,7 +29,7 @@
 > findings against actual six-game delivery; the historical records below retain
 > their original stage-specific wording.
 
-> Owner-approved target and shared-UI plan — 2026-10-30: design A-10/D-18 and
+> Approved target and shared-UI plan — 2026-10-30: design A-10/D-18 and
 > the [bounded implementation records](architecture-migration-plan.md) now supersede
 > earlier pending-target/implementation-task restrictions for planning. MSH-106
 > and MSH-115 remain Done with their historical reports/evidence unchanged.

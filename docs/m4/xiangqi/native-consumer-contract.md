@@ -4,7 +4,7 @@ This is the consumer-readiness boundary of the existing
 `mshogi_core::xiangqi` public module plus the concrete `native` record/command
 adapter. It composes completed MSH-91–95/105 contracts; it introduces no new
 rules profile, universal interface, engine, console or desktop implementation.
-The [selected profile](profile-proposal.md), [owner decisions](owner-decisions.md)
+The [selected profile](profile-proposal.md), [recorded decisions](owner-decisions.md)
 and independently reviewed fixtures remain authoritative. MSH-45/M4 stay open.
 
 ## Entry points and responsibility
@@ -72,7 +72,7 @@ terminal reason; retain the request/observation/report for provenance. It maps
 incomplete exact work to `UnknownExactIncomplete`, not a fast miss or positive
 win claim. No exact verdict is an evaluator score.
 
-The proof graph is the owner-selected **intrinsic** existential natural-board
+The proof graph is the selected **intrinsic** existential natural-board
 question: ordinary local actions to checkmate or no-legal-action/stalemate loss.
 Penalty/claim/voluntary/administrative conclusions are not proof goals or graph
 barriers. This selected domain is why placement+turn is sufficient for the exact

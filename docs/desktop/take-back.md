@@ -1,6 +1,6 @@
 # Desktop Take back
 
-MSH-113 adds the owner-approved **Take back** action to Game Actions for Chess,
+MSH-113 adds the approved **Take back** action to Game Actions for Chess,
 Shogi and Xiangqi. The native session selects a human decision point and restores
 it in one admitted transaction. The frontend neither counts moves nor reconstructs
 rules or history. This is a human-versus-engine action; existing low-level Undo

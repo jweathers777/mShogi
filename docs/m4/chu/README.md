@@ -1,4 +1,4 @@
-> MSH-43 Done — complete fifth-game delivery: the owner explicitly approved the actual
+> MSH-43 Done — complete fifth-game delivery: the recorded approval covers the actual
 > traditional-kanji presentation. Chu is the ordinary fifth game through existing
 > New Game/Load, engine, runtime, document, frontend and native-choice owners.
 > [Current acceptance reconciliation](delivery-review.md) and its
@@ -15,7 +15,7 @@
 # Modern Chu Shogi implementation contract — MSH-82
 
 - [Complete JCSA playing profile](profile.md) and [machine setup/pieces](profile.json)
-- [Owner direction and faithful interpretation](decisions.md)
+- [Project direction and faithful interpretation](decisions.md)
 - [Source reconciliation and provenance](sources.md)
 - [Independent fixtures](fixtures.json) and [coverage/accounting](fixtures.md)
 - [Native86 → shared78 → product43 handoff](handoff.md)

@@ -1,6 +1,6 @@
 # Two selected modern Tenjiku playing profiles
 
-MSH-83,4November2026; selected under the owner's instruction to support choosing
+MSH-83,4November2026; selected under the approved instruction to support choosing
 options1or2. Ratified after independent source/rules/fixture and data/contract review. The two whole
 profiles are selectable **when starting a new game** and immutable thereafter:
 

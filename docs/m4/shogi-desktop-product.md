@@ -1,6 +1,6 @@
 # Shogi desktop product design — MSH-74
 
-Owner product direction, 2026-10-26. This is the normal mShogi application;
+Product direction, 2026-10-26. This is the normal mShogi application;
 MSH-72/73 contract harnesses remain verification-only and are not its visual basis.
 Established native shogi rules/profile, engine, USI, shared session and v2 archive
 remain authoritative. MSH-75 and MSH-41–47/M4 closure are outside this task.

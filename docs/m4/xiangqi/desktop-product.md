@@ -3,7 +3,7 @@
 
 # Xiangqi desktop product — MSH-101
 
-Owner direction,2026-10-28; visual approval and completion continuation,2026-10-29. The selected native profile remains
+Project direction,2026-10-28; visual approval and completion continuation,2026-10-29. The selected native profile remains
 `mshogi.xiangqi.wxf2018.v1`. Existing MSH-74 Chess/Shogi ApplicationShell,
 GameArea, common dark theme and stable controls are the product authority.
 The owner's board/piece direction does not approve an alternative application
@@ -91,7 +91,7 @@ complete-delivery review and106 follows45.
 
 ## Completion refinement — 2026-10-29
 
-The owner-approved shared visible inspection status is exactly
+The approved shared visible inspection status is exactly
 `Inspecting {side} {piece} · Esc clears`, formatted once over the native label in
 `movementInspection.ts` for Chess/Shogi/Xiangqi. Native promotion/hand terminology
 remains native. Read-only explanations stay in accessible announcements; hollow

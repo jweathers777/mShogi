@@ -120,7 +120,7 @@
 
 > Current MSH-42 product continuation: [Tori delivery reconciliation](tori/delivery-review.md) records normal fourth-game activation and the final acceptance status. Earlier planning snapshots below preserve their original scope. M4 and broader shared six-game acceptance remain open.
 
-> **Owner testing-policy correction2026-11-01:** all six games must be independently
+> **Project testing-policy correction2026-11-01:** all six games must be independently
 
 ## Current Tori shared refinement — MSH-77, 2026-11-01
 

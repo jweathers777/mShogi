@@ -1,6 +1,6 @@
 # Engine-independent conformance policy
 
-Owner decision2026-11-01, recorded with MSH-126. Applies to **Chess, Standard
+Project decision2026-11-01, recorded with MSH-126. Applies to **Chess, Standard
 Shogi, Xiangqi, Tori, Chu and Tenjiku**, including ordinary testing, CI, milestone
 acceptance and release. Supersedes earlier mandatory external-comparator wording.
 

@@ -127,7 +127,7 @@ Mac results. Build with the supplied Dockerfile:
 docker build --platform linux/amd64 --build-arg PYTHON_BASE=python:3.13-slim@sha256:VERIFIED_DIGEST -f CONTEXT/tools/experiments/Dockerfile -t REGISTRY/IMAGE:BUILD CONTEXT
 ```
 
-Push only to the owner-approved registry and record the returned image digest.
+Push only to the approved registry and record the returned image digest.
 Then prepare the final manifest with that digest and approved cloud config. The
 image does not embed the final manifest, avoiding a recursive image hash.
 
@@ -177,7 +177,7 @@ are not silently merged into the primary cohort.
 
 ## Exit notification without polling
 
-For an unattended cloud run, pre-create an owner-approved Pub/Sub topic and a
+For an unattended cloud run, pre-create an approved Pub/Sub topic and a
 **dedicated subscription** before submitting; add `notification_topic` (full
 `projects/PROJECT/topics/TOPIC` name) to the frozen cloud config. Grant the job worker
 service account publish access and the local completion consumer subscribe access.

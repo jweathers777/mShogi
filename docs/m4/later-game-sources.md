@@ -6,7 +6,7 @@
 > Native87/shared79/product44 remain implementation work. Dated inventories below
 > retain their original observations, including then-unavailable source fetches.
 
-> **Owner testing-policy correction2026-11-01:** all six games must be independently
+> **Project testing-policy correction2026-11-01:** all six games must be independently
 > verifiable under the [project conformance policy](../testing/conformance-policy.md).
 > External game engines are optional investigations, never ordinary test/CI/
 > conformance/release gates. The former Tori126 comparator-build requirement is

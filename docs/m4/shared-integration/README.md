@@ -177,7 +177,7 @@ MissingResponse/UnexpectedExit distinction, recurrence evidence and rationale
 for not blocking these shared application contracts are preserved in
 [the independent disposition](contract-review-89.md#msh-112-remains-a-separate-unresolved-functional-diagnostic-issue).
 No assertion, timeout, resource budget or acceptance requirement is weakened.
-Dense Tenjiku labels at the owner-approved760×650 minimum, lack of comprehensive
+Dense Tenjiku labels at the approved760×650 minimum, lack of comprehensive
 screen-reader certification, development signing/notarization qualifications and
 untuned functional engines remain explicit limitations. None establishes a new
 M4 blocker or a playing-strength claim. MSH-53 and the other M5 strength owners

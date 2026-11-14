@@ -120,7 +120,7 @@ semantics, settings and historical observations. An application-capacity pause
 retains the complete save path and cannot be reset by reopening the same file.
 Chess-only Full analysis and timed restoration remain unsupported for shogi.
 
-Both games use the same document labels: **Unsaved** before the first save,
+All six games use the same document labels: **Unsaved** before the first save,
 **Unmodified** when identical to the saved/opened file, and **Unsaved changes**
 after modification. Native file-operation and unsaved-change guards remain in
 force. Play details displays the actual native play budget; the common bottom
@@ -128,7 +128,8 @@ status row distinguishes live play, exact historical position, pause and conclus
 
 MSH-74's [product evidence and screenshot review](../docs/m4/evidence/msh74/README.md)
 record the exact revision, actual platform journeys, independent reviews and
-owner authorization. This does not claim completion of the broader M4 delivery gate.
+the recorded approval. This historical game-specific evidence is supplemented
+by the completed [M4 delivery gate](../docs/m4/final-delivery.md).
 
 Build a normal distributable with the platform's supported bundle format:
 
@@ -239,8 +240,8 @@ claiming an actual Dock click.
 
 ## Read-only bounded analysis
 
-Choose **Analyze position** in the inspector. Set depth (1–8) and node budget
-(0–5,000,000), then **Start move analysis**. Analysis pauses play; suggestions,
+Choose **Analyze position** in the inspector. Select the depth and node budget
+within the limits shown for the current game, then **Start move analysis**. Analysis pauses play; suggestions,
 claims and continuations are never committed. **Cancel analysis** leaves play
 paused, replacement retires old work, and **Resume play** explicitly returns the
 single supervised resource to the engine turn or human play. Changing inspector
@@ -260,8 +261,8 @@ off the interaction path. A proof, cooperative witness or unknown work result
 is displayed as analysis only. Cancellation has no fabricated solver counts;
 resource exhaustion and process failure never invent a chess outcome.
 
-The [internal v2 contract](../docs/desktop/internal-engine-v2.md) documents
-purpose-specific acceptance and limits. The [batch evidence](../docs/desktop/second-batch-evidence.md)
+The [current execution contract](../docs/desktop/internal-execution-v4.md) documents
+purpose-specific acceptance, retained engine sessions and limits. The [batch evidence](../docs/desktop/second-batch-evidence.md)
 distinguishes controller, frontend and actual packaged GUI verification.
 
 ## Saving and inspecting games

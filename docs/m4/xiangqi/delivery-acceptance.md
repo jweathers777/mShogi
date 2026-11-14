@@ -30,7 +30,7 @@ This table records MSH-45's disposition without replacing that evidence.
 
 | Original criterion | Accepted game-specific evidence | Disposition |
 | --- | --- | --- |
-| AC1 Complete sourced, versioned profile | MSH-80 owner decisions and selected `mshogi.xiangqi.wxf2018.v1`, edition `WXF-2018+XIANGQI-P1-2026-10-27`; [sources](sources.md), [coverage](coverage.md), MSH-91–94/105 source and independent rule/fixture reviews | Satisfied. Native setup, all pieces/actions/effects, turn/royal safety and automatic/claimable history adjudication are covered; no promotion/drop/declaration is invented. |
+| AC1 Complete sourced, versioned profile | MSH-80 recorded decisions and selected `mshogi.xiangqi.wxf2018.v1`, edition `WXF-2018+XIANGQI-P1-2026-10-27`; [sources](sources.md), [coverage](coverage.md), MSH-91–94/105 source and independent rule/fixture reviews | Satisfied. Native setup, all pieces/actions/effects, turn/royal safety and automatic/claimable history adjudication are covered; no promotion/drop/declaration is invented. |
 | AC2 Authoritative reusable rules/state/history | MSH-92–95/84 native state, complete actions, checked atomic admission, exact reversal, WXF history and replay; MSH-98/76 native session and MSH-113 Take back; [native review](delivery-reviews/native.md) | Satisfied. Position, repetition, proof, canonical history and execution identities remain distinct; consumers do not duplicate legality. |
 | AC3 Independent conformance | MSH-91 admitted comparator provenance and independent board fixtures; MSH-93 complete legal sets, sequences, perft/divide; MSH-94 source-derived conduct/count/precedence histories; MSH-105 independent exact universes and witness replay | Satisfied. Independently expected facts remain separate from comparator observations; no reference history helper becomes rules authority. See [fixtures](fixtures.md) and [local evidence](local-legality-evidence.md). |
 | AC4 Independently usable console | MSH-96 [console contract](console.md), actual subprocess fixtures, complete action/undo/history/status/canonical save/load and explicit bounded exact diagnostics; [consumer review](delivery-reviews/consumers.md) | Satisfied. Human shell and machine UCI/internal output contracts are separate. |
@@ -49,7 +49,7 @@ is claimant-specific; advisory opportunities, formal commands, audits and
 recorded automatic-claim policy are distinct. Imported counters do not create
 unknown earlier repetition history.
 
-G-NOWIN uses the owner-selected existential natural-board-win test: a finite
+G-NOWIN uses the selected existential natural-board-win test: a finite
 ordinary board-action continuation reaching checkmate or stalemate loss.
 It is not forced-win minimax; repetition penalties or voluntary/administrative
 results do not provide a positive witness. MSH-105 supplies the actually

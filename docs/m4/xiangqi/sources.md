@@ -22,7 +22,7 @@ official corrections/adoption notices; establish publisher/copy/edition and
 all relevant diagrams before comparing outcome clauses. Secondary discovery
 leads (cnchess.net, gdchess.com, retailer ISBN9787500958321) are not adopted
 authority. The inability to obtain authoritative full text in this bounded
-public search is retained as an acquisition finding. Under the owner's current
+public search is retained as an acquisition finding. Under the current
 XIANGQI-P1 instruction, complete alternative corpora are not blanket prerequisites
 for unaffected WXF board/state work. Use scoped acquisition for an actual WXF
 ambiguity; future AXF/CXA profiles remain separately named.

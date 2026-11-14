@@ -1,6 +1,8 @@
-# Owner-approved desktop UX after R4
+<a id="owner-approved-desktop-ux-after-r4"></a>
 
-Owner decisions recorded **2026-10-31**, against `codex/rewrite`
+# Approved desktop UX after R4
+
+Project decisions recorded **2026-10-31**, against `codex/rewrite`
 `446c8b3934940b9b27868eb8e0f6d67fc905334f`. This is planning, not delivered
 behavior. MSH-119 stays Done with its evidence and accepted common dark shell.
 The owner's five additional clarifications take precedence over the attached
@@ -160,7 +162,7 @@ both English and Chinese WXF2018 Article7.5: extend ordinal+file to stacks of
 three through five soldiers, and to paired soldier stacks on multiple files
 where front/rear would be ambiguous. Count from the mover’s front within the
 file, then use the mover-relative file number. Red soldiers c5/c6 and g5/g6 give
-c6→d6 `17=6` and g6→f6 `13=4`. This is an **owner-approved source-consistent
+c6→d6 `17=6` and g6→f6 `13=4`. This is an **approved source-consistent
 display extension**, not an assertion that WXF explicitly specifies these rare
 cases. The three-soldier FigureB strings remain `36=5`, `26=5`, `16=5`.
 Neither selected rules profile nor native canonical action/history changes.

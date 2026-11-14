@@ -1,8 +1,9 @@
 # Selected modern Tori Shogi profile
 
 **Identity: `mshogi.tori.modern.v1`, edition MSH81-MODERN-2026-11-01.**
-This is the complete planning contract for future implementation, selected by the recorded 2026-11-01 modern-playing decision. It is not a claim that native Tori
-support already exists. The earlier reserved `mshogi.tori.bunsei11.v1` was never
+This is the complete rules contract selected by the recorded 2026-11-01
+modern-playing decision. Native support and delivered consumers are recorded in
+the [delivery review](delivery-review.md). The earlier reserved `mshogi.tori.bunsei11.v1` was never
 adopted and is not an alias. Preserve the [historical checkpoint](archive/2026-10-31/profile.md);
 its acquisition questions no longer gate this profile.
 

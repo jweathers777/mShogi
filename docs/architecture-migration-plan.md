@@ -8,8 +8,8 @@ records the surviving interaction owner, independent review, actual packaged
 interaction and precise native/package CI results. MSH-123/124/125 are also Done. MSH-121/R6 has now independently accepted the
 integrated current source and actual three-game packaged journeys on all three
 systems; the [final review](review/architecture-acceptance-121.md) preserves exact
-revisions, failures, methods and platform limits. The MSH-121 record identifies
-normal completion/integration in the primary codex/rewrite checkout. The owner-approved [post-R4 UX contract](desktop/post-r4-ux.md)
+revisions, failures, methods and platform limits. The MSH-121 record identifies its historical integration on `codex/rewrite`.
+Current integration uses `main`. The approved [post-R4 UX contract](desktop/post-r4-ux.md)
 adds three bounded product tasks without reopening119 or expanding R5:
 
 | Task | Complete direct prerequisites | Scope |

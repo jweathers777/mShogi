@@ -67,7 +67,7 @@ lowercase `k r b g s n l p` for Gote, and a leading `+` for promotion (`+P`,
 `+r`, `+B`). Two-character right-aligned cells reserve the promotion column
 throughout the game; piece letters, empty dots and file labels remain aligned
 at a three-character stride. Ranks run a–i, files9–1. Hands and native status
-follow the diagram. This owner-selected MSH-110 convention supersedes the
+follow the diagram. This selected MSH-110 convention supersedes the
 MSH-90 owner-colon display; its completed evidence remains historical.
 See [common console presentation](../console-presentation.md) for the current
 three-game policy and future multi-character abbreviation convention.

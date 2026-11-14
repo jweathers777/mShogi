@@ -1,12 +1,12 @@
 # Modern Tenjiku Shogi profile family
 
-MSH-83 ratifies two owner-selected whole profiles. MSH-87 supplies the native
+MSH-83 ratifies two selected whole profiles. MSH-87 supplies the native
 implementation and executable conformance described below. MSH-44 subsequently
 adds the engine, console and desktop consumer delivery; the earlier native
 handoff remains evidence for its own bounded scope.
 
 - [Complete rules and immutable identities](profile.md)
-- [Owner decisions and profile differences](decisions.md)
+- [Project decisions and profile differences](decisions.md)
 - [Source reconciliation and historical qualifications](sources.md)
 - [156-piece setup/44-face data](profile.json)
 - [Independent two-profile corpus](fixtures.json) and[accounting](fixtures.md)

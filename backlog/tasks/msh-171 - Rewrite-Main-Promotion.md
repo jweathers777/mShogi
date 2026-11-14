@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-14T12:28:00Z'
-updated_date: '2026-11-14T18:55:00Z'
+updated_date: '2026-11-14T19:09:00Z'
 labels:
   - handle:rewrite-main-promotion
 dependencies:
@@ -79,4 +79,8 @@ Owner decision recorded on 2026-11-14: preserve history; tag the old C++ tip; cr
 Documentation requirement added on 2026-11-14: eliminate personal references to the project owner during the promotion documentation cleanup, including third-person references. No personal attribution is needed in current explanatory documentation. This is a requirement for the future cleanup; the cleanup has not run.
 
 Owner: @codex, primary integration checkout /Users/johnweathers/Development/Personal/mShogi, branch codex/rewrite, start 2a3f132a. Backlog 1.55.3 matches baseline. MSH-169 and MSH-170 are Done and integrated. Level 3: branch promotion is an integration checkpoint following shared search/session changes; full Rust and desktop package jobs required on ubuntu-24.04, macos-15 and windows-2022. Prior M4 rules/packaged scope evidence is historical and will be reused only where unchanged; current execution must pass at the candidate revision. Independent reviewer /root/promotion_review is assigned read-only. Three untracked notification receipts are unrelated and will be preserved.
+
+Candidate cfcf9d9e22eb46b7603e558b1951549f5e421008 published. Level 3 campaigns dispatched: Rust 43629719990 (suite full/platform all), Desktop 43629723352 (operation package/platform all). No passed platform claim yet. Local CI-policy self-tests passed 8/8; formatting and whitespace checks passed. Removed 14 completed local branches after ancestry checks. Managed Tenjiku checkout remains clean: attach_worktree refused ownership by another task; no app artifact identity is exposed to this chat, so no manual deletion or protection bypass. Branch dispositions and preserved unrelated notification hashes are in docs/review/evidence/msh171/branch-audit.json.
+
+Actual local macOS27 arm64 normal package built at candidate compiled inputs and launched through CUA at the fixed org.mshogi.desktop identity. Chess completed two replies (4plies); Tori Gote engine-first play, Save/Open stopped at1ply, explicit Resume, human capture/engine reply to3plies, read-only root inspection/Return, Take back to1ply with2observations retained, Save and native Quit passed. Actual archives and identity/package receipts are retained under docs/review/evidence/msh171. Existing ad-hoc normal-bundle signature limitations are recorded; no signing/notarization or future approval reuse claim. Initial actual package smoke failed obsolete exact21node assertion (actual27); independent review approved contract-based verifier correction f8d8f2d5. Desktop43629723352 canceled, replacement43630147834 package/all pending. Native43629719990 continues with identical compiled/test inputs and command evidence. Four explicit remote branches removed after Done/criteria/ancestry checks; initial broad deletion rejection and the safer verified retry are recorded.
 <!-- SECTION:NOTES:END -->

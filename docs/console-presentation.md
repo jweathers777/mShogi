@@ -1,6 +1,6 @@
 # Human console board presentation
 
-Owner-selected convention (MSH-110,2026-10-28): the three implemented games
+Selected convention (MSH-110,2026-10-28): the three implemented games
 use the compact Chess-style case distinction for board ownership. These are
 human `show` diagrams, independent of action labels, protocol tokens and
 canonical records. Native game adapters still own piece/side identities,

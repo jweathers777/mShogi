@@ -4,7 +4,7 @@ MSH-43 consumes the accepted `mshogi.chu.jcsa2019.v1` native Game and MSH-78's
 current shared document/runtime contracts. This is a functional baseline, not
 MSH-52/M5 playing-strength evidence. The native profile, edition and record1,
 canonical envelope1, execution protocol4/observation1 and desktop envelope1 stay
-unchanged. Owner visual approval resolved the original activation gate. Chu is
+unchanged. Visual approval resolved the original activation gate. Chu is
 now the ordinary fifth game; [product acceptance](delivery-review.md) records
 current source and actual packaged/platform evidence separately from this engine contract.
 

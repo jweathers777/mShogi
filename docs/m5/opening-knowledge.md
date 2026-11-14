@@ -1,6 +1,6 @@
 # M5 opening-knowledge experiment — MSH-104
 
-Owner-approved future scope,2026-10-27, including the dedicated opening-policy
+Approved future scope,2026-10-27, including the dedicated opening-policy
 clarification. **To Do; no implementation or shipping decision.** MSH-56 closure
 requires completing the experiment; adopting any book or opening model is not
 required. Existing six-game strength commitments and MSH-55's required learned

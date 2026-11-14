@@ -171,7 +171,7 @@ acceptance and complete presentation choices; its development-only harness is
 not product UI evidence. MSH-73's shared v2 archive retains native profile/root/
 event semantics, observations/settings/control history, stopped fresh Open and
 MSH-61's lossless precommit capacity admission. MSH-74 supplies the real normal
-shogi desktop, owner-approved shared shell, hands/kanji/ownership, complete
+shogi desktop, approved shared shell, hands/kanji/ownership, complete
 choices, read-only opponent inspection, analysis/history and recovery.
 
 MSH-75 independently traces **all eight original MSH-41 criteria** through those

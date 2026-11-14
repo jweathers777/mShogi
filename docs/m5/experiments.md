@@ -1,6 +1,6 @@
 # Reproducible native experiments (MSH-48)
 
-Current use follows the [owner-selected strength roadmap](strength-roadmap.md)
+Current use follows the [selected strength roadmap](strength-roadmap.md)
 and AGENTS.md: engineering tests/tactics/profiling and small development matches
 support coherent conventional-engine implementation. Routine local matches have
 a 15-minute cumulative compute allowance per task; substantial/formal studies and

@@ -38,7 +38,13 @@ fn request_and_result_keep_exact_context_without_mutating_caller() {
     assert_eq!(completion.context(), &context);
     assert_eq!(
         completion.result().as_ref().unwrap(),
-        &mshogi_search::chess_conventional::search(&game, limits(1))
+        &mshogi_search::chess_engine::ChessEngine::default()
+            .search(
+                &game,
+                limits(1),
+                mshogi_search::chess_engine::SearchOptions::default(),
+                || false
+            )
             .unwrap()
             .result
     );

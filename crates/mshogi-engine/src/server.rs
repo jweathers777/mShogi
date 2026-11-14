@@ -95,7 +95,7 @@ fn execute_chess(context: &ExecutionContext) -> ChessResult {
         context
             .limits
             .time_ms
-            .map(mshogi_search::chess_conventional::TimeBudget::from_hard_ms),
+            .map(mshogi_search::chess_engine::TimeBudget::from_hard_ms),
     ) {
         return ChessResult::failure(FailureKind::Search, error);
     }

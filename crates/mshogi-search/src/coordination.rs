@@ -1,6 +1,6 @@
 //! One bounded native search worker, request identity and stale-result checking.
 use crate::{
-    chess_conventional::{SearchOptions, TimeBudget, search_with_options},
+    chess_engine::{ChessEngine, SearchOptions, TimeBudget},
     search::{SearchError, SearchLimits, SearchResult},
 };
 use mshogi_core::chess::{AdjudicatedGame, GameRecord};
@@ -137,6 +137,10 @@ struct State {
     active: Option<RequestId>,
     result: Option<SearchCompletion>,
     shutdown: bool,
+    /// The worker forgets earlier analysis before its next request.
+    new_game: bool,
+    /// Table size that the worker applies before its next request.
+    table_megabytes: Option<usize>,
 }
 struct Shared {
     state: Mutex<State>,
@@ -243,6 +247,27 @@ impl SearchCoordinator {
         Ok((*context).clone())
     }
 
+    /// Start a new game: the worker forgets its transposition table and move
+    /// statistics before the next request. The engine keeps them between the
+    /// moves of one game.
+    pub fn new_game(&self) {
+        self.shared
+            .state
+            .lock()
+            .expect("search metadata mutex")
+            .new_game = true;
+    }
+
+    /// Set the transposition table size in megabytes for later requests. A
+    /// change of size makes the table empty.
+    pub fn set_table_megabytes(&self, megabytes: usize) {
+        self.shared
+            .state
+            .lock()
+            .expect("search metadata mutex")
+            .table_megabytes = Some(megabytes);
+    }
+
     /// Request cancellation of the current request without invalidating its
     /// identity. A pending request produces an explicitly stopped completion;
     /// a running request retains only its last fully completed iteration.
@@ -341,8 +366,11 @@ impl Drop for SearchCoordinator {
     }
 }
 fn worker(shared: Arc<Shared>) {
+    // The engine state lasts for the life of the worker, so the transposition
+    // table serves all moves of a game.
+    let mut engine: Option<ChessEngine> = None;
     loop {
-        let pending = {
+        let (pending, new_game, table_megabytes) = {
             let mut state = shared.state.lock().expect("search metadata mutex");
             while state.pending.is_none() && !state.shutdown {
                 state = shared.wake.wait(state).expect("search metadata mutex");
@@ -352,15 +380,29 @@ fn worker(shared: Arc<Shared>) {
             }
             let pending = state.pending.take().expect("pending worker request");
             state.active = Some(pending.context.id);
-            pending
+            (
+                pending,
+                std::mem::take(&mut state.new_game),
+                state.table_megabytes.take(),
+            )
         };
-        let searched = search_with_options(
+        let engine = engine.get_or_insert_with(|| {
+            ChessEngine::new(
+                table_megabytes.unwrap_or(crate::chess_engine::DEFAULT_TABLE_MEGABYTES),
+            )
+        });
+        if let Some(megabytes) = table_megabytes {
+            engine.set_table_megabytes(megabytes);
+        }
+        if new_game {
+            engine.new_game();
+        }
+        let searched = engine.search(
             &pending.game,
             pending.context.limits,
             SearchOptions {
                 time: pending.context.time,
                 allow_draw_claims: pending.context.allow_draw_claims,
-                ..SearchOptions::default()
             },
             || pending.stop.load(Ordering::Acquire),
         );

@@ -140,7 +140,7 @@ impl Telemetry {
     /// their nominal bound; selective observations must state a finite real bound.
     pub fn variation_depth_bound(&self) -> Option<u16> {
         match self.selective_depth {
-            Some(depth) if depth <= mshogi_search::chess_conventional::MAX_PLY => Some(depth),
+            Some(depth) if depth <= mshogi_search::search::MAX_DEPTH => Some(depth),
             Some(_) => None,
             None => Some(self.completed_depth),
         }

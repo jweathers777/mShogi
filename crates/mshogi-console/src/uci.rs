@@ -1,7 +1,7 @@
 //! Bounded UCI adapter; protocol output belongs only to this event loop.
 use mshogi_core::chess::{AdjudicatedGame, ClaimPolicy, Color};
 use mshogi_search::{
-    chess_conventional::TimeBudget,
+    chess_engine::TimeBudget,
     coordination::{RequestContext, SearchCompletion, SearchCoordinator},
     search::{MATE_SCORE, MAX_DEPTH, SearchChoice, SearchDecision, SearchLimits},
 };
@@ -187,13 +187,19 @@ impl Adapter {
                     out,
                     "id name mShogi {} {} {}",
                     env!("CARGO_PKG_VERSION"),
-                    mshogi_search::chess_conventional::SEARCH_ID,
-                    mshogi_search::chess_conventional_eval::EVALUATOR_ID
+                    mshogi_search::chess_engine::SEARCH_ID,
+                    mshogi_search::chess_eval::EVALUATOR_ID
                 )?;
                 writeln!(out, "id author John Weathers")?;
                 writeln!(
                     out,
                     "option name ClaimPolicy type combo default explicit var explicit var auto"
+                )?;
+                writeln!(
+                    out,
+                    "option name Hash type spin default {} min 1 max {}",
+                    mshogi_search::chess_engine::DEFAULT_TABLE_MEGABYTES,
+                    mshogi_search::chess_engine::MAX_TABLE_MEGABYTES
                 )?;
                 writeln!(out, "uciok")?;
                 out.flush()?;
@@ -212,7 +218,10 @@ impl Adapter {
                 }
                 Ok(())
             }
-            "ucinewgame" => self.replace_game(AdjudicatedGame::new(self.policy)),
+            "ucinewgame" => {
+                self.worker.new_game();
+                self.replace_game(AdjudicatedGame::new(self.policy))
+            }
             "position" => {
                 parse_position(args, self.policy).and_then(|game| self.replace_game(game))
             }
@@ -261,12 +270,30 @@ impl Adapter {
         Ok(())
     }
     fn set_option(&mut self, args: &[&str]) -> Result<(), String> {
+        if args.len() == 4
+            && args[0].eq_ignore_ascii_case("name")
+            && args[1].eq_ignore_ascii_case("Hash")
+            && args[2].eq_ignore_ascii_case("value")
+        {
+            let megabytes = number(args[3])?;
+            if !(1..=mshogi_search::chess_engine::MAX_TABLE_MEGABYTES as u64).contains(&megabytes) {
+                return Err(format!(
+                    "Hash must be in 1..={}",
+                    mshogi_search::chess_engine::MAX_TABLE_MEGABYTES
+                ));
+            }
+            self.invalidate()?;
+            self.worker.set_table_megabytes(megabytes as usize);
+            return Ok(());
+        }
         if args.len() != 4
             || !args[0].eq_ignore_ascii_case("name")
             || !args[1].eq_ignore_ascii_case("ClaimPolicy")
             || !args[2].eq_ignore_ascii_case("value")
         {
-            return Err("unsupported option; only ClaimPolicy explicit/auto is available".into());
+            return Err(
+                "unsupported option; only ClaimPolicy explicit/auto and Hash are available".into(),
+            );
         }
         let policy = if args[3].eq_ignore_ascii_case("explicit") {
             ClaimPolicy::ExplicitOnly

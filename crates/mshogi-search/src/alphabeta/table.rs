@@ -161,10 +161,12 @@ impl TranspositionTable {
         }
         let e = &mut self.entries[victim];
         let same = e.key == key && e.meta & 3 != 0;
+        // Keep a much deeper result of this search for the same position. A
+        // quiescence result (depth 0) never replaces a main-search result.
         if same
-            && bound != Bound::Exact
             && e.meta >> 2 == generation
-            && i32::from(e.depth) > depth + 3
+            && (depth == 0 && e.depth > 0
+                || bound != Bound::Exact && i32::from(e.depth) > depth + 3)
         {
             return;
         }
@@ -221,6 +223,9 @@ mod tests {
         assert_eq!((hit.move_bits, hit.score, hit.eval), (77, -40, None));
         // A much shallower bound does not replace a deep entry of this search.
         t.store(h, 0, 5, 10, None, 1, Bound::Lower);
+        assert_eq!(t.probe(h, 0).unwrap().depth, 7);
+        // A quiescence result does not replace a main-search entry of this search.
+        t.store(h, 0, 5, 10, None, 0, Bound::Exact);
         assert_eq!(t.probe(h, 0).unwrap().depth, 7);
         // A different position with the same bucket index and another key coexists.
         let other = h ^ (1 << 40);

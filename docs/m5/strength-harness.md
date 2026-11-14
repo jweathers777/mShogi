@@ -9,6 +9,13 @@ The harness measures the engine. It is not a rules oracle. The native rules
 stay the authority for every game: the game test uses the native
 `mshogi-match run` controller, which replays and scores each game.
 
+## Frozen predecessors
+
+- `65887fb0`: the last engine with the earlier Chess search (baseline of MSH-163).
+- `6fef75d1`: the first engine on the shared search core, MSH-164 (Shared Search
+  Core). Use this revision, or a later accepted one, as the predecessor for the
+  next engine change. The earlier engine is too weak to measure small changes.
+
 ## Commands
 
 Build the release binaries first:

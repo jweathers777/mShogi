@@ -39,6 +39,13 @@ not repeat them.
   the default of 600 pairs, or more. A test that reaches its maximum without a
   decision is "no decision", not a rejection. Record it, then enlarge the test or
   decide on other recorded grounds.
+- **Choose H1 before the test starts.** Set H1 near the expected gain: about
+  10 Elo for evaluation changes, and 15 Elo when a larger gain is expected, for
+  example search changes. A target above the likely gain can leave a useful
+  improvement without a decision within the test bound. In MSH-168 (Classical
+  Endgame and King Evaluation), the revised set was estimated at about +12.5 Elo
+  after 600 pairs and +7 Elo after 1,000 pairs. With H1 = 15, it reached 1,000
+  pairs without a decision. Do not change H1 during a test.
 - **Cost.** The standing authorization covers these tests: fast time control,
   sequential stopping rule, recorded compute. At 50 ms per move with four workers,
   60 pairs take about three minutes, so 600 pairs take about 30 minutes. The

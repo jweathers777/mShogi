@@ -4,7 +4,7 @@ title: Classical Endgame and King Evaluation
 status: To Do
 assignee: []
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T20:35:00Z'
+updated_date: '2026-11-15T20:43:00Z'
 labels:
   - handle:classical-endgame-king-evaluation
 milestone: m-5
@@ -25,7 +25,7 @@ Handle: Classical Endgame and King Evaluation.
 
 **Objective:** A stronger engine through a better evaluation, with endgames and king safety as the expected main sources of gain.
 
-**Approach:** Follow "Game tests in this direction" in `docs/m5/strength-roadmap.md`. First measure the present engine: the blunder suite (its 47 endgame positions separately) and, if useful, games from endgame starting positions. Use that baseline to choose the work. Candidate sources of gain: Texel tuning of the existing weights (authorized 2026-11-13); recognizers and scale factors for drawn or hard-to-win material; passed-pawn, king-distance and pawn-race terms; king-shelter and pawn-storm terms. Texel tuning needs labeled quiet positions with a recorded source, a license that permits the use, and a held-out check. Positions from self-play games of the engine are acceptable. The MSH-161 games and the blunder suite are exposed development material; do not use them as the tuning or held-out set. No neural-network evaluation and no tablebase in this task. The evaluation is Chess-only code; the Tori evaluation is not in scope.
+**Approach:** Follow "Game tests in this direction" in `docs/m5/strength-roadmap.md`. Start the next round with Texel tuning of the existing evaluation weights together with the two terms from the revised set: material draw scaling and endgame king activity. Use labeled quiet positions from engine self-play, with a recorded source, a license that permits the use, a recorded tuning method, and a separate held-out check. The MSH-161 games and the blunder suite are exposed development material; do not use them as the tuning or held-out set. Report the development blunder suite with its 47 endgame positions separately. Then run one sequential game test of the tuned evaluation against a frozen predecessor, with H1 = 10 Elo chosen before the test starts. No neural-network evaluation and no tablebase in this task. The evaluation is Chess-only code; the Tori evaluation is not in scope.
 
 **Completion:** The accepted evaluation is the default and wins the game test against the engine at the start of the task.
 <!-- SECTION:DESCRIPTION:END -->

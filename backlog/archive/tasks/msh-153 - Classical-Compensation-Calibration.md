@@ -4,7 +4,7 @@ title: Classical Compensation Calibration
 status: To Do
 assignee: []
 created_date: '2026-11-09T22:45:00Z'
-updated_date: '2026-11-15T16:29:00Z'
+updated_date: '2026-11-15T16:49:00Z'
 labels:
   - handle:classical-compensation-calibration
 milestone: m-5
@@ -60,4 +60,6 @@ Handle: Classical Compensation Calibration. MSH-152 established consistent score
 MSH-155 (Chess Time Scaling) completed bounded diagnosis and returns for owner review. See docs/m5/chess-time-scaling.md and docs/m5/strength-roadmap.md. Remains held; no substantial implementation authorized.
 
 Status check, 2026-11-15: still held by docs/m5/strength-roadmap.md. Its subject, general evaluation corrections, now overlaps MSH-168 (Classical Endgame and King Evaluation), which includes Texel tuning of the evaluation weights. Recommendation for John: archive this task as superseded, or keep it held until MSH-168 is complete.
+
+Archived 2026-11-15 by John's decision: superseded by MSH-168 (Classical Endgame and King Evaluation), which covers general evaluation corrections, including Texel tuning of the evaluation weights.
 <!-- SECTION:NOTES:END -->

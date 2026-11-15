@@ -61,8 +61,9 @@ not repeat them.
   Tori tests passing. Tori strength is not a requirement of a Chess task; switch a
   technique off for Tori if it is clearly worse there. The native rules stay the authority
 for real games. Weight tuning of handwritten terms by regression on labeled positions
-(Texel tuning) is authorized. Neural-network learned evaluation stays later work. MSH-153 (Classical Compensation Calibration) and MSH-160 (Chess Opening
-Quality Assessment) stay held. Shogi, Xiangqi, Chu and Tenjiku move to the shared
+(Texel tuning) is authorized. Neural-network learned evaluation stays later work. MSH-160 (Chess Opening
+Quality Assessment) stays held. MSH-153 (Classical Compensation Calibration) is archived
+(2026-11-15); MSH-168 covers its subject. Shogi, Xiangqi, Chu and Tenjiku move to the shared
 core in later tasks after MSH-165, in this order: Shogi and Xiangqi first, then Chu and
 Tenjiku (project decision, 2026-11-15).
 

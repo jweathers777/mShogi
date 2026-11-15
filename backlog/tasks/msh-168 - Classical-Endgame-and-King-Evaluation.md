@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T21:55:00Z'
+updated_date: '2026-11-15T21:56:00Z'
 labels:
   - handle:classical-endgame-king-evaluation
 milestone: m-5
@@ -88,6 +88,8 @@ Final independent review passed: /root/evaluation_review checked all597paired re
 Accepted implementation and full evidence integrated into main and pushed as a7357a60 (candidate c3363d3d, audited evidence c77d0253). Exact product/test source remains the tested candidate. MSH-168 remains In Review only for the pending user decision on AC2 wording; no code, game test or further tuning is pending. Existing worktree retained for this record clarification and closure. Next dependency-ready queue item is MSH-173 (Frozen Legacy Opponent); not started.
 
 John approved the exact AC2 clarification on 2026-11-15: each set requires a recorded sequential game-test result, including no decision at a cap, with reasons for exclusions. AC3 still requires the accepted evaluation to win its game test. Applied through the Backlog CLI; AC2 and the remaining completion check are satisfied. MSH-168 is Done. No code or historical test result changed.
+
+Completion record38343d5c is integrated and pushed to main; both checkouts are clean. Cleanup was attempted after integration, but the app archive tool refused: The task\x27s primary checkout cannot be removed. The completed worktree is retained only because it is app-protected, not for ongoing implementation. Required raw corpus and frozen binaries were already preserved and byte-verified in the primary repository target/strength directory.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

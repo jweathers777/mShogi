@@ -20,7 +20,7 @@ export function NativeEnginePanel({ status, limits, children }: {
 }
 
 export function GamePositionStatus({ historical, concluded, paused, humanTurn, thinking, ply, stateLabel }: {
-  historical: boolean; concluded: boolean; paused: boolean; humanTurn: boolean; thinking: boolean; ply: number; stateLabel?: string;
+  historical: boolean; concluded: boolean; paused: boolean; humanTurn: boolean; thinking: boolean; ply: number; stateLabel?: string | undefined;
 }) {
   return <div className="game-footnote" data-position-status>
     <span>{stateLabel ?? (historical ? "History · return to live to play" : concluded ? "Game concluded" : paused ? "Play paused · resume explicitly to continue" : humanTurn ? "Your turn" : thinking ? "mShogi is searching within fixed work limits" : "Engine turn paused")}</span>
@@ -37,10 +37,10 @@ export function LiveGameHeading({ eyebrow, status, player, flip, statusRef }: {
 }
 
 export function PlayerArea({ side, human, toMove, playerKey, className = "", children, participant }: {
-  participant?: string; side: string; human: boolean; toMove: boolean; playerKey?: string; className?: string; children?: ReactNode;
+  participant?: string | undefined; side: string; human: boolean; toMove: boolean; playerKey?: string; className?: string; children?: ReactNode;
 }) {
   return <div className={`shell-player ${className}${toMove ? " to-move" : ""}`} data-player={playerKey}>
-    <div className="shell-player-identity shogi-player-identity"><span className="player-avatar" aria-hidden="true">{human ? "Y" : "m"}</span><div><strong>{participant ?? (human ? "You" : "mShogi")}<span>{side}</span></strong><small>{participant ? "Verification side" : human ? "Human player" : "Your opponent"}</small></div>{toMove && <span className="turn-indicator">To move</span>}</div>
+    <div className="shell-player-identity shogi-player-identity"><span className="player-avatar" aria-hidden="true">{human ? "Y" : "m"}</span><div><strong>{participant ?? (human ? "You" : "mShogi")}<span>{side}</span></strong><small>{participant === "Human" ? "Human player" : participant ? "Verification side" : human ? "Human player" : "Your opponent"}</small></div>{toMove && <span className="turn-indicator">To move</span>}</div>
     {children}
   </div>;
 }

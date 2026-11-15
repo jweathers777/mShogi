@@ -5,8 +5,9 @@ Chess, standard Shogi, Xiangqi, Tori Shogi, Chu Shogi and Tenjiku Shogi. Tenjiku
 two separately identified rules profiles: Adams and Muller. The native rules own
 legal complete actions, history and game results for every client.
 
-The Tauri desktop provides untimed human-versus-engine play, read-only analysis,
-Save/Open, Take back and history inspection through one shared interface. Large
+The Tauri desktop provides untimed human-versus-engine and local two-human play,
+read-only analysis, Save/Open, Take back and history inspection through one shared
+interface. Large
 boards, drops, promotions and compound routes use the selected game's rules.
 The six-game integration milestone is complete; see the
 [accepted delivery record](docs/m4/final-delivery.md). This is an unreleased
@@ -79,9 +80,10 @@ is preserved by the annotated `legacy-cpp` tag at `941cd4dc`. The `master` and
 is used. [BSD-LICENSE](BSD-LICENSE) and third-party notices remain applicable.
 
 Mini Shogi, the old custom `.pgn`-named file format and legacy search/Force
-controls are not current requirements. Local two-human desktop play is tracked
-by MSH-172 (Two-Human Desktop Play). The optional frozen legacy Chu opponent and
-runner adapters are tracked separately by MSH-173 through MSH-176; they are not
+controls are not current requirements. Local two-human desktop play uses the same
+native actions and saved history as human-versus-engine play. See
+[two-human play](docs/desktop/two-human-play.md). The optional frozen legacy Chu
+opponent and runner adapters are tracked separately by MSH-173 through MSH-176; they are not
 product or conformance dependencies.
 
 Use Backlog.md **1.55.3** for task operations. Run `backlog instructions overview`

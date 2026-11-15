@@ -39,10 +39,10 @@ it("accepts actual native fresh New profile epochs and resetting to the first pr
   vi.mocked(invoke).mockResolvedValueOnce(adams).mockResolvedValueOnce(muller).mockResolvedValueOnce(reset);
   const { result } = renderHook(() => useGameSession()); await flush();
   await act(async () => { expect(await result.current.newGame(adams.open_token, "tenjiku", adams.human.id, muller.profile)).toBe(muller); });
-  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: adams.open_token, game: "tenjiku", profile: muller.profile, human: adams.human.id });
+  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: adams.open_token, game: "tenjiku", profile: muller.profile, human: adams.human.id, playMode: "human_engine" });
   expect(result.current.snapshot).toBe(muller);
   await act(async () => { expect(await result.current.newGame(muller.open_token, "tenjiku", muller.human.id, reset.profile)).toBe(reset); });
-  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: muller.open_token, game: "tenjiku", profile: reset.profile, human: muller.human.id });
+  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: muller.open_token, game: "tenjiku", profile: reset.profile, human: muller.human.id, playMode: "human_engine" });
   expect(result.current.snapshot).toBe(reset);
 });
 

@@ -54,7 +54,7 @@ export function ShogiBoard({ snapshot, disabled, onPlay, onInspect, inspectionDi
     choices: snapshot.choices,
     origins: [...snapshot.pieces.map((piece) => ({ key: piece.square, label: tori ? piece.label : pieceName(piece, snapshot.sides), owner: piece.owner, inspectable: true })),
       ...nonzeroHands.map((hand) => ({ key: hand.origin, label: tori ? hand.label : handName(hand, snapshot.sides), owner: hand.owner, inspectable: true }))],
-    humanOwner: snapshot.human.key, disabled: disabled || !snapshot.capabilities.board_action, inspectionDisabled, onInspect, onPlay,
+    humanOwner: snapshot.local_actor.key, disabled: disabled || !snapshot.capabilities.board_action, inspectionDisabled, onInspect, onPlay,
     initialFocus: snapshot.board.initial_focus, boardKeys: squares,
     neighbor: (key, direction) => gridNeighbor(squares, columns, key, direction),
     handGroups: [topSide, orientation.side].map((side) => nonzeroHands.filter((hand) => hand.owner === side.key).map((hand) => hand.origin)),

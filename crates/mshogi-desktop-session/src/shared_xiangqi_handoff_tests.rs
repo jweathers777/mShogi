@@ -55,6 +55,7 @@ fn warning_inspection_archive_reopen_and_resume_preserve_one_native_context() {
     let late = execute(&analyze(&mut c, 128));
     // Analysis remembers its submitted limits; set the desired document defaults last.
     let settings = XiangqiSettings {
+        play_mode: PlayMode::HumanEngine,
         orientation: x::Side::Black,
         analysis_defaults: WorkLimits {
             time_ms: None,

@@ -542,7 +542,11 @@ pub struct SharedSnapshot {
     pub profile: RulesProfile,
     /// Immutable rules/source edition.
     pub edition: &'static str,
-    /// Native side controlled by the human.
+    /// Durable participant ownership.
+    pub play_mode: PlayMode,
+    /// Local actor for ordinary turn-based controls.
+    pub local_actor: PresentedSide,
+    /// Fixed human/orientation anchor.
     pub human: PresentedSide,
     /// Native side to move at the selected event.
     pub turn: PresentedSide,
@@ -945,8 +949,16 @@ impl ShogiSession {
         }
         self.diagnostic=Some("Document reopened with work stopped. Saved observations are historical; Resume explicitly.".into());
     }
+    fn local_actor(&self) -> s::Side {
+        self.settings
+            .play_mode
+            .actor(self.human, self.game.position().side_to_move())
+    }
     fn take_back_target(&self) -> Option<usize> {
         let events = self.game.events();
+        if self.settings.play_mode.is_two_humans() {
+            return events.len().checked_sub(1);
+        }
         if let Some(last) = events.last()
             && last.actor == self.human
             && matches!(
@@ -1075,6 +1087,16 @@ impl DesktopController {
         profile: RulesProfile,
         human: NativeSide,
     ) -> Result<(SharedSnapshot, AdmissionReceipt), String> {
+        self.shared_new_game_with_mode(expected, profile, human, PlayMode::HumanEngine)
+    }
+    /// Create a native document with durable local participant ownership.
+    pub fn shared_new_game_with_mode(
+        &mut self,
+        expected: SharedOpenToken,
+        profile: RulesProfile,
+        human: NativeSide,
+        play_mode: PlayMode,
+    ) -> Result<(SharedSnapshot, AdmissionReceipt), String> {
         let game = profile.game();
         if self.lifecycle.close_requested() {
             return Err(
@@ -1104,6 +1126,7 @@ impl DesktopController {
                     tenjiku::RuntimeSeed::Record {
                         record: Box::new(record),
                         human,
+                        play_mode,
                     },
                     Some(SessionOperation::Resume {}),
                     None,
@@ -1118,6 +1141,7 @@ impl DesktopController {
                     chu::RuntimeSeed::Record {
                         record: Box::new(record),
                         human,
+                        play_mode,
                     },
                     Some(SessionOperation::Resume {}),
                     None,
@@ -1132,6 +1156,7 @@ impl DesktopController {
                     tori::RuntimeSeed::Record {
                         record: Box::new(record),
                         human,
+                        play_mode,
                     },
                     Some(SessionOperation::Resume {}),
                     None,
@@ -1143,7 +1168,9 @@ impl DesktopController {
                 let game =
                     x::Game::standard(x::ClaimPolicy::Explicit).map_err(|e| e.to_string())?;
                 let record = x::GameRecord::from_game(&game).map_err(|e| e.to_string())?;
-                let candidate = xiangqi::archive::XiangqiDraft::replacement(&record, human);
+                let candidate = xiangqi::archive::XiangqiDraft::replacement_with_mode(
+                    &record, human, play_mode,
+                );
                 self.queue_xiangqi_candidate(
                     candidate,
                     Some(SessionOperation::Resume {}),
@@ -1158,6 +1185,7 @@ impl DesktopController {
                     archive::ShogiSeed::Record {
                         record: Box::new(record),
                         human,
+                        play_mode,
                         orient_human: true,
                     },
                     Some(SessionOperation::Resume {}),
@@ -1167,7 +1195,7 @@ impl DesktopController {
             }
             NativeSide::Chess(human) => {
                 let record = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly).record();
-                self.queue_chess_replacement(record, human, false)?
+                self.queue_chess_replacement_with_mode(record, human, false, play_mode)?
             }
         };
         self.last_command_receipt = Some(receipt.clone());
@@ -1178,6 +1206,15 @@ impl DesktopController {
         record: GameRecord,
         human: Color,
         paused: bool,
+    ) -> Result<AdmissionReceipt, String> {
+        self.queue_chess_replacement_with_mode(record, human, paused, PlayMode::HumanEngine)
+    }
+    fn queue_chess_replacement_with_mode(
+        &mut self,
+        record: GameRecord,
+        human: Color,
+        paused: bool,
+        play_mode: PlayMode,
     ) -> Result<AdmissionReceipt, String> {
         let preserve_tori = self.session.tori().is_some()
             || self.session.chu().is_some()
@@ -1196,6 +1233,7 @@ impl DesktopController {
                 record,
                 human,
                 paused,
+                play_mode,
             }),
         )?;
         self.shared.admission = Some((self.session.document_epoch, false));
@@ -1298,6 +1336,7 @@ impl DesktopController {
                         record,
                         human,
                         orient_human: false,
+                        play_mode: PlayMode::HumanEngine,
                     },
                     None,
                     None,
@@ -1551,7 +1590,10 @@ impl DesktopController {
                 && !state.paused
                 && state.viewed.is_none()
                 && state.game.conclusion().is_none()
-                && state.game.position().side_to_move() != state.human
+                && state
+                    .settings
+                    .play_mode
+                    .engine_turn(state.human, state.game.position().side_to_move())
                 && let Err(e) = self.start_shogi(SHOGI_PLAY_LIMITS, false)
             {
                 self.pause_native_failure(e);
@@ -1774,7 +1816,10 @@ impl DesktopController {
             .collect();
         let historical = state.viewed.is_some();
         let ended = state.game.conclusion().is_some();
-        let human_turn = state.game.position().side_to_move() == state.human;
+        let human_turn = state
+            .settings
+            .play_mode
+            .owns(state.human, state.game.position().side_to_move());
         let declaration_advice = [s::Side::Sente, s::Side::Gote]
             .into_iter()
             .map(|actor| {
@@ -1809,6 +1854,16 @@ impl DesktopController {
             game: GameKind::Shogi,
             profile: RulesProfile::ShogiCsa36V1,
             edition: RulesProfile::ShogiCsa36V1.edition(),
+            play_mode: state.settings.play_mode,
+            local_actor: side(
+                RulesProfile::ShogiCsa36V1,
+                NativeSide::Shogi(
+                    state
+                        .settings
+                        .play_mode
+                        .actor(state.human, position.side_to_move()),
+                ),
+            ),
             human: side(
                 mshogi_core::native::RulesProfile::ShogiCsa36V1,
                 NativeSide::Shogi(state.human),
@@ -2020,6 +2075,17 @@ impl DesktopController {
             game: GameKind::Chess,
             profile: RulesProfile::ChessMatchV1,
             edition: RulesProfile::ChessMatchV1.edition(),
+            play_mode: self.session.chess().settings.play_mode,
+            local_actor: side(
+                RulesProfile::ChessMatchV1,
+                NativeSide::Chess(
+                    self.session
+                        .chess()
+                        .settings
+                        .play_mode
+                        .actor(snapshot.human, snapshot.view.turn),
+                ),
+            ),
             human: side(
                 mshogi_core::native::RulesProfile::ChessMatchV1,
                 NativeSide::Chess(snapshot.human),
@@ -2052,12 +2118,25 @@ impl DesktopController {
             hands: vec![],
             choices,
             capabilities: CommandCapabilities {
-                board_action: active && !snapshot.play_paused && snapshot.turn == snapshot.human,
+                board_action: active
+                    && !snapshot.play_paused
+                    && self
+                        .session
+                        .chess()
+                        .settings
+                        .play_mode
+                        .owns(snapshot.human, snapshot.turn),
                 drops: false,
                 promotion: true,
                 take_back: snapshot.can_take_back,
                 undo: false,
-                engine_turn: active && snapshot.turn != snapshot.human,
+                engine_turn: active
+                    && self
+                        .session
+                        .chess()
+                        .settings
+                        .play_mode
+                        .engine_turn(snapshot.human, snapshot.turn),
                 move_analysis: true,
                 chess_full: true,
                 claims: active && !snapshot.claims.is_empty(),
@@ -2294,3 +2373,7 @@ mod tenjiku_tests;
 #[cfg(test)]
 #[path = "six_game_integration_tests.rs"]
 mod six_game_integration_tests;
+
+#[cfg(test)]
+#[path = "two_human_tests.rs"]
+mod two_human_tests;

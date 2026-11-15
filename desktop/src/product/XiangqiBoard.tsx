@@ -33,7 +33,7 @@ export function XiangqiBoard({ snapshot, disabled, onPlay, onInspect, inspection
     contextKey: JSON.stringify([snapshot.game, snapshot.profile, snapshot.edition, snapshot.token, bottom]),
     choices: snapshot.choices,
     origins: snapshot.pieces.map((piece) => ({ key: piece.square, label: piece.label, owner: piece.owner, inspectable: true })),
-    humanOwner: snapshot.human.key, disabled, inspectionDisabled, onInspect, onPlay,
+    humanOwner: snapshot.local_actor.key, disabled, inspectionDisabled, onInspect, onPlay,
     initialFocus: snapshot.board.initial_focus, boardKeys: points,
     neighbor: (key, direction) => gridNeighbor(points, columns, key, direction),
   });

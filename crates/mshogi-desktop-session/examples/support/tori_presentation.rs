@@ -208,6 +208,7 @@ pub fn write_all(dir: &Path) {
         &mut c,
         SessionOperation::ToriPreferences {
             settings: mshogi_desktop_session::tori_document::ToriSettings {
+                play_mode: mshogi_desktop_session::PlayMode::HumanEngine,
                 orientation: t::Side::Gote,
             },
         },
@@ -217,6 +218,7 @@ pub fn write_all(dir: &Path) {
         &mut c,
         SessionOperation::ToriPreferences {
             settings: mshogi_desktop_session::tori_document::ToriSettings {
+                play_mode: mshogi_desktop_session::PlayMode::HumanEngine,
                 orientation: t::Side::Sente,
             },
         },

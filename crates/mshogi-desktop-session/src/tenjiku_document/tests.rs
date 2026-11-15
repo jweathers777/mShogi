@@ -61,6 +61,7 @@ fn both_profiles_preserve_controls_exact_selection_settings_and_native_conclusio
             .with_control(
                 TenjikuControl::Settings {
                     settings: TenjikuSettings {
+                        play_mode: crate::PlayMode::HumanEngine,
                         orientation: c::Side::Gote,
                     },
                 },
@@ -275,6 +276,7 @@ fn cancellation_is_typed_and_preserves_complete_accepted_candidate() {
             d.with_control(
                 TenjikuControl::Settings {
                     settings: TenjikuSettings {
+                        play_mode: crate::PlayMode::HumanEngine,
                         orientation: c::Side::Gote
                     }
                 },
@@ -732,4 +734,29 @@ pub(super) fn measured_real_engine_document(profile: c::Profile) -> ValidatedTen
     }
     assert!(!last.observations().is_empty());
     last
+}
+
+#[test]
+fn two_human_profiles_retain_mode_and_reject_mode_changes() {
+    for profile in c::Profile::ALL {
+        let d = ValidatedTenjikuDocument::new_with_mode(
+            c::GameRecord::from_game(&c::Game::standard(profile)).unwrap(),
+            c::Side::Sente,
+            crate::PlayMode::TwoHumans,
+            &mut || false,
+        )
+        .unwrap();
+        let d = command(&d, c::Side::Sente, c::GameCommand::OfferDraw);
+        let d = command(&d, c::Side::Gote, c::GameCommand::DeclineDraw);
+        let restored = ValidatedTenjikuDocument::decode(d.bytes(), &mut || false).unwrap();
+        assert_eq!(restored.settings().play_mode, crate::PlayMode::TwoHumans);
+        assert_eq!(restored.record(), d.record());
+        assert_eq!(restored.profile(), RulesProfile::from(profile));
+        let mut settings = d.settings().clone();
+        settings.play_mode = crate::PlayMode::HumanEngine;
+        assert!(
+            d.with_control(TenjikuControl::Settings { settings }, &mut || false)
+                .is_err()
+        );
+    }
 }

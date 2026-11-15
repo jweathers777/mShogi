@@ -59,7 +59,7 @@ it("serializes commands and binds new-game and file operations to native precond
   expect(invoke).toHaveBeenCalledTimes(2);
   await act(async () => { command.resolve(standard); await pending; });
   await act(async () => { await result.current.newGame(standard.open_token, "shogi", { game_kind: "shogi", side: "gote" }, "mshogi.shogi.csa36.v1"); });
-  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: standard.open_token, game: "shogi", profile: "mshogi.shogi.csa36.v1", human: { game_kind: "shogi", side: "gote" } });
+  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: standard.open_token, game: "shogi", profile: "mshogi.shogi.csa36.v1", human: { game_kind: "shogi", side: "gote" }, playMode: "human_engine" });
 });
 it("fetches authoritative paused shogi metadata before opening the native quit guard", async () => {
   let close!: () => void;
@@ -177,7 +177,7 @@ it.each([chessJson, standardJson, xiangqiJson])("keeps dirty $game during cancel
     expect(result.current.snapshot).toBe(source); expect(result.current.error).toBe(reason);
   }
   await act(async () => { expect(await result.current.newGame(source.open_token, source.game, source.human.id, playableProfiles[source.game])).toBeNull(); });
-  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: source.open_token, game: source.game, profile: source.profile, human: source.human.id });
+  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: source.open_token, game: source.game, profile: source.profile, human: source.human.id, playMode: "human_engine" });
   expect(result.current.snapshot).toBe(source); expect(result.current.error).toBe("New Game admission failed.");
 });
 it.each([chessJson, standardJson, xiangqiJson])("does not turn delayed clean $game Save into authority over newer dirty work", async fixture => {
@@ -204,4 +204,10 @@ it("uses the same owner for real Tori DTOs and retires old file receipts after e
   let returned: GameSnapshot | null = source;
   await act(async () => { oldSave.resolve(source); returned = await pending; });
   expect(result.current.snapshot).toBe(selected); expect(returned).not.toBe(source);
+});
+it("sends the explicit two-human mode through native new-game admission", async () => {
+  vi.mocked(invoke).mockResolvedValue(standard);
+  const { result } = renderHook(useGameSession); await flush();
+  await act(async () => { await result.current.newGame(standard.open_token, "shogi", standard.human.id, "mshogi.shogi.csa36.v1", "two_humans"); });
+  expect(invoke).toHaveBeenLastCalledWith("game_new", { expected: standard.open_token, game: "shogi", profile: "mshogi.shogi.csa36.v1", human: standard.human.id, playMode: "two_humans" });
 });

@@ -343,6 +343,7 @@ fn saved_actual_engine_and_analysis_observations_are_historical_and_old_work_sta
     let analysis = analyze(&mut c);
     assert_eq!(canonical(&c), live);
     let settings = XiangqiSettings {
+        play_mode: crate::PlayMode::HumanEngine,
         orientation: x::Side::Black,
         analysis_defaults: WorkLimits {
             time_ms: None,
@@ -750,6 +751,7 @@ fn failed_and_interrupted_save_open_preserve_file_dirty_state_and_live_document(
         &mut c,
         SessionOperation::XiangqiPreferences {
             settings: XiangqiSettings {
+                play_mode: crate::PlayMode::HumanEngine,
                 orientation: x::Side::Black,
                 ..XiangqiSettings::default()
             },
@@ -836,6 +838,7 @@ fn product_open_restores_xiangqi_with_fresh_stopped_identity_and_keeps_stale_fai
         &mut xq,
         SessionOperation::XiangqiPreferences {
             settings: XiangqiSettings {
+                play_mode: crate::PlayMode::HumanEngine,
                 orientation: x::Side::Black,
                 ..XiangqiSettings::default()
             },
@@ -1640,4 +1643,64 @@ fn browse_return_reserves_journaled_resume_and_close_without_losing_current_xian
     assert!(error.resource.is_some());
     assert_eq!(encode(&state, 100).unwrap(), before);
     assert_eq!(state.controls.len(), MAX_ARCHIVE_CONTROLS - 2);
+}
+
+#[test]
+fn two_human_xiangqi_uses_both_actors_draw_response_and_complete_command_rewind() {
+    fn apply(state: &mut XiangqiSession, operation: SessionOperation) {
+        let before = (state.game.events().len(), state.board_actions());
+        state.apply_command(operation.clone()).unwrap();
+        state.journal(before, Some(operation), None, None, false);
+    }
+    let game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+    let record = x::GameRecord::from_game(&game).unwrap();
+    let mut state =
+        XiangqiDraft::replacement_with_mode(&record, x::Side::Red, crate::PlayMode::TwoHumans)
+            .materialize()
+            .unwrap();
+    apply(&mut state, SessionOperation::Resume {});
+    for (action, actor) in [("a3a4", x::Side::Red), ("a6a5", x::Side::Black)] {
+        assert_eq!(state.local_actor(), actor);
+        apply(
+            &mut state,
+            SessionOperation::Xiangqi {
+                command: x::GameCommand::Play {
+                    action: action.parse().unwrap(),
+                },
+            },
+        );
+    }
+    assert_eq!(state.board_actions(), 2);
+    assert_eq!(state.draw_offer_actor(), x::Side::Black);
+    apply(
+        &mut state,
+        SessionOperation::Xiangqi {
+            command: x::GameCommand::OfferDraw,
+        },
+    );
+    assert_eq!(state.draw_response_actor(), x::Side::Red);
+    apply(
+        &mut state,
+        SessionOperation::Xiangqi {
+            command: x::GameCommand::AcceptDraw,
+        },
+    );
+    assert!(matches!(
+        state.game.conclusion(),
+        Some(x::Conclusion::Draw {
+            reason: x::DrawReason::Agreement
+        })
+    ));
+    let target = state.take_back_target().unwrap();
+    assert_eq!(state.game.command_event_ranges().last().unwrap().0, target);
+    apply(&mut state, SessionOperation::TakeBack {});
+    assert!(state.game.conclusion().is_none());
+    assert!(state.paused);
+    assert_eq!(state.board_actions(), 2);
+    let before = x::GameRecord::from_game(&state.game).unwrap();
+    let bytes = encode(&state, 1).unwrap();
+    let (restored, _) = decode(&payload(&bytes), &mut || false).unwrap();
+    assert_eq!(restored.settings.play_mode, crate::PlayMode::TwoHumans);
+    assert_eq!(x::GameRecord::from_game(&restored.game).unwrap(), before);
+    assert!(restored.paused);
 }

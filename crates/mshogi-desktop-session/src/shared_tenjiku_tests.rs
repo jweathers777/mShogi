@@ -262,6 +262,7 @@ fn strict_profile_dispatch_fresh_new_other_profile_and_stale_contexts_in_both_di
             game: GameKind::Tenjiku,
             operation: SessionOperation::TenjikuPreferences {
                 settings: TenjikuSettings {
+                    play_mode: PlayMode::HumanEngine,
                     orientation: c::Side::Sente,
                 },
             },
@@ -886,6 +887,7 @@ fn stopped_product_reopen_and_failed_files_preserve_whole_profile_prior_file_and
             &mut ctl,
             SessionOperation::TenjikuPreferences {
                 settings: TenjikuSettings {
+                    play_mode: PlayMode::HumanEngine,
                     orientation: c::Side::Gote,
                 },
             },
@@ -939,6 +941,7 @@ fn cancelled_replacement_receipt_cannot_install_other_profile_or_damage_the_save
         let receipt = ctl
             .queue_tenjiku_candidate(
                 tenjiku::RuntimeSeed::Record {
+                    play_mode: PlayMode::HumanEngine,
                     record: Box::new(c::GameRecord::from_game(&root(other, &[])).unwrap()),
                     human: c::Side::Sente,
                 },

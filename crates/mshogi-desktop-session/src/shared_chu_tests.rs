@@ -266,6 +266,7 @@ fn atomic_file_reopen_history_branch_and_normal_product_gate() {
         &mut ctl,
         SessionOperation::ChuPreferences {
             settings: crate::chu_document::ChuSettings {
+                play_mode: PlayMode::HumanEngine,
                 orientation: c::Side::Gote,
             },
         },
@@ -313,6 +314,7 @@ fn atomic_file_reopen_history_branch_and_normal_product_gate() {
         &mut ctl,
         SessionOperation::ChuPreferences {
             settings: crate::chu_document::ChuSettings {
+                play_mode: PlayMode::HumanEngine,
                 orientation: c::Side::Gote,
             },
         },

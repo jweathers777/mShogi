@@ -27,7 +27,7 @@ it.each([["Shogi", "Sente", "shogi", "sente"], ["Shogi", "Gote", "shogi", "gote"
   fireEvent.change(screen.getByRole("combobox", { name: "Game" }), { target: { value: game } });
   fireEvent.click(screen.getByRole("radio", { name: sideLabel }));
   fireEvent.click(screen.getByRole("button", { name: "Start game" }));
-  expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side }, playableProfiles[game as PlayableGameKind]);
+  expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side }, playableProfiles[game as PlayableGameKind], "human_engine");
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   expect(session.file).not.toHaveBeenCalled();
 });
@@ -123,7 +123,7 @@ it("replaces an uncommitted New Game chooser with the dirty native quit guard", 
 it("offers only implemented games and preserves side radio keyboard navigation", async () => {
   render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
   expect(screen.getByRole("combobox", { name: "Game" }).tagName).toBe("SELECT");
-  expect(screen.getAllByRole("option").map(option => [option.textContent, (option as HTMLOptionElement).value])).toEqual([["Chess", "chess"], ["Shogi", "shogi"], ["Xiangqi", "xiangqi"], ["Tori Shogi", "tori"], ["Chu Shogi", "chu"], ["Tenjiku Shogi", "tenjiku"]]);
+  expect(within(screen.getByRole("combobox", { name: "Game" })).getAllByRole("option").map(option => [option.textContent, (option as HTMLOptionElement).value])).toEqual([["Chess", "chess"], ["Shogi", "shogi"], ["Xiangqi", "xiangqi"], ["Tori Shogi", "tori"], ["Chu Shogi", "chu"], ["Tenjiku Shogi", "tenjiku"]]);
   expect(screen.getAllByRole("radio").map(radio => radio.textContent)).toEqual(["Sente", "Gote", "Random"]);
   const sente = screen.getByRole("radio", { name: "Sente" }); sente.focus(); fireEvent.keyDown(sente, { key: "ArrowRight" });
   const gote = screen.getByRole("radio", { name: "Gote" }); expect(document.activeElement).toBe(gote); expect(gote.getAttribute("aria-checked")).toBe("true");
@@ -163,7 +163,7 @@ it.each(fixtures)("keeps Save enabled in the never-saved $game native Quit guard
 it("keeps the approved Tori game selected when opening New game", () => {
   session.snapshot = toriJson as unknown as GameSnapshot;
   render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
-  expect(screen.getAllByRole("option").map(option => option.textContent)).toEqual(["Chess", "Shogi", "Xiangqi", "Tori Shogi", "Chu Shogi", "Tenjiku Shogi"]);
+  expect(within(screen.getByRole("combobox", { name: "Game" })).getAllByRole("option").map(option => option.textContent)).toEqual(["Chess", "Shogi", "Xiangqi", "Tori Shogi", "Chu Shogi", "Tenjiku Shogi"]);
   expect((screen.getByRole("combobox", { name: "Game" }) as HTMLSelectElement).value).toBe("tori");
 });
 
@@ -174,13 +174,25 @@ it.each([["tori", 0, "sente"], ["tori", 1, "gote"], ["chu", 0, "sente"], ["chu",
     fireEvent.change(screen.getByRole("combobox", { name: "Game" }), { target: { value: game } });
     fireEvent.click(screen.getByRole("radio", { name: "Random" }));
     fireEvent.click(screen.getByRole("button", { name: "Start game" }));
-    await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side }, playableProfiles[game]));
+    await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(standard.open_token, game, { game_kind: game, side }, playableProfiles[game], "human_engine"));
   } finally { entropy.mockRestore(); }
 });
 
 it("keeps approved Chu selected in the normal fifth-game New Game chooser", () => {
   session.snapshot = chuJson as unknown as GameSnapshot;
   render(<ProductApp />);fireEvent.click(screen.getByRole("button", { name: "New game" }));
-  expect(screen.getAllByRole("option").map(n => n.textContent)).toEqual(["Chess", "Shogi", "Xiangqi", "Tori Shogi", "Chu Shogi", "Tenjiku Shogi"]);
+  expect(within(screen.getByRole("combobox", { name: "Game" })).getAllByRole("option").map(n => n.textContent)).toEqual(["Chess", "Shogi", "Xiangqi", "Tori Shogi", "Chu Shogi", "Tenjiku Shogi"]);
   expect((screen.getByRole("combobox", { name: "Game" }) as HTMLSelectElement).value).toBe("chu");
+});
+it.each(fixtures)("starts local two-human $profile with explicit mode and fixed bottom side", async fixture => {
+  session.snapshot = fixture;
+  render(<ProductApp />); fireEvent.click(screen.getByRole("button", { name: "New game" }));
+  fireEvent.change(screen.getByRole("combobox", { name: "Players" }), { target: { value: "two_humans" } });
+  expect(screen.queryByRole("radiogroup", { name: "Your side" })).toBeNull();
+  expect(screen.queryByRole("radio", { name: "Random" })).toBeNull();
+  const bottom = fixture.sides[1]!;
+  fireEvent.click(screen.getByRole("radio", { name: bottom.label }));
+  fireEvent.click(screen.getByRole("button", { name: "Start game" }));
+  expect(session.newGame).toHaveBeenCalledExactlyOnceWith(fixture.open_token, fixture.game, bottom.id, fixture.profile, "two_humans");
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 });

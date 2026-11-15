@@ -38,7 +38,7 @@ it.each([adams, muller])("selects normal sixth-game New with the saved $profile 
   expect(profile.value).toBe(source.profile);
   expect(within(profile).getAllByRole("option").map(option => option.textContent)).toEqual(["Adams 1999 Modern", "Muller Completed"]);
   fireEvent.click(screen.getByRole("button", { name: "Start game" }));
-  await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(source.open_token, "tenjiku", { game_kind: "tenjiku", side: source.human.id.side }, source.profile));
+  await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(source.open_token, "tenjiku", { game_kind: "tenjiku", side: source.human.id.side }, source.profile, "human_engine"));
 });
 
 it.each([adams, muller])("allows a deliberate other-profile fresh game from $profile without live profile mutation", async source => {
@@ -50,7 +50,7 @@ it.each([adams, muller])("allows a deliberate other-profile fresh game from $pro
   fireEvent.click(screen.getByRole("radio", { name: "Gote" }));
   expect(session.snapshot?.profile).toBe(source.profile);
   fireEvent.click(screen.getByRole("button", { name: "Start game" }));
-  await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(source.open_token, "tenjiku", { game_kind: "tenjiku", side: "gote" }, other));
+  await waitFor(() => expect(session.newGame).toHaveBeenCalledExactlyOnceWith(source.open_token, "tenjiku", { game_kind: "tenjiku", side: "gote" }, other, "human_engine"));
 });
 
 it.each([adams, muller])("sends both explicit QA profile New/reset requests from exact $profile replacement authority", source => {

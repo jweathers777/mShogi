@@ -22,6 +22,9 @@ const VALIDATION_BUDGET: std::time::Duration = std::time::Duration::from_secs(15
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct DesktopSettings {
+    /// Persisted ownership of the two native participants.
+    #[serde(default)]
+    pub play_mode: crate::PlayMode,
     /// View orientation, independent of player color.
     pub orientation: Color,
     /// Initial analysis form choices; actual requests retain their own limits.
@@ -30,6 +33,7 @@ pub struct DesktopSettings {
 impl Default for DesktopSettings {
     fn default() -> Self {
         Self {
+            play_mode: crate::PlayMode::default(),
             orientation: Color::White,
             analysis_defaults: AnalysisOperation::Moves {
                 depth: 4,
@@ -191,6 +195,7 @@ pub(super) enum ChessMutation {
     Replace {
         record: GameRecord,
         human: Color,
+        play_mode: crate::PlayMode,
         paused: bool,
     },
     Command {
@@ -439,6 +444,7 @@ fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, O
                     ChessMutation::Replace {
                         record,
                         human,
+                        play_mode,
                         paused,
                     } => {
                         let mut next = DesktopSession::from_record(&record, human)?;
@@ -451,6 +457,7 @@ fn execute(work: Work, mut stopped: impl FnMut() -> bool) -> Result<Completed, O
                         next.document_path = None;
                         next.saved_revision = 0;
                         next.settings.orientation = human;
+                        next.settings.play_mode = play_mode;
                         next.play_paused = paused;
                         candidate = Box::new(next);
                     }
@@ -590,6 +597,16 @@ fn preflight_reserved(
     reserve_controls: usize,
 ) -> Result<MatchRecord, OperationFailure> {
     archive.settings.analysis_defaults.validate()?;
+    if archive.settings.play_mode.is_two_humans()
+        && archive.observations.iter().any(|entry| {
+            matches!(
+                entry.observation.context.purpose,
+                mshogi_engine::ExecutionPurpose::EngineTurn {}
+            )
+        })
+    {
+        return Err("Two-human documents cannot contain engine turns.".into());
+    }
     if ![PLAY_LIMITS, PRIOR_PLAY_LIMITS, PRIOR_TIMED_PLAY_LIMITS].contains(&archive.play_limits) {
         return Err("Unsupported live play limits; no settings were downgraded.".into());
     }
@@ -862,7 +879,8 @@ fn validate_takebacks(
             .replay_with_stop(&mut *stopped)
             .map_err(|e| e.to_string())?;
         lineage.push(admitted.game().record());
-        let restored = super::takeback::restore(&before, archive.human, stopped)?;
+        let restored =
+            super::takeback::restore(&before, archive.human, archive.settings.play_mode, stopped)?;
         previous = Some(restored.record().clone());
     }
     if let Some(prior) = &previous
@@ -1242,7 +1260,10 @@ impl DesktopSession {
             || self.analysis_pending.is_some()
             || (!self.play_paused
                 && self.game.conclusion().is_none()
-                && self.game.game().position().side_to_move() != self.human);
+                && self
+                    .settings
+                    .play_mode
+                    .engine_turn(self.human, self.game.game().position().side_to_move()));
         let reserve_controls = usize::from(reserve_stop);
         if !counts_fit(
             self.initial_record.events().len() + self.game.record().event_count(),

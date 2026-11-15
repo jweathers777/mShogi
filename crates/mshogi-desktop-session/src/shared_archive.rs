@@ -8,6 +8,9 @@ use std::{fs, io::Read};
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ShogiSettings {
+    /// Durable local participant arrangement.
+    #[serde(default)]
+    pub play_mode: PlayMode,
     /// Native side placed at the bottom by a presentation consumer.
     pub orientation: s::Side,
     /// Explicit default bounded ordinary analysis settings.
@@ -16,6 +19,7 @@ pub struct ShogiSettings {
 impl Default for ShogiSettings {
     fn default() -> Self {
         Self {
+            play_mode: PlayMode::HumanEngine,
             orientation: s::Side::Sente,
             analysis_defaults: WorkLimits {
                 time_ms: None,
@@ -124,6 +128,7 @@ pub(crate) enum ShogiSeed {
         record: Box<s::GameRecord>,
         human: s::Side,
         orient_human: bool,
+        play_mode: PlayMode,
     },
 }
 pub(crate) enum NativeWork {
@@ -466,14 +471,14 @@ impl ShogiSession {
         let mut analysis = None;
         match operation {
             SessionOperation::Play{action}=>{
-                if self.paused||self.viewed.is_some()||self.game.position().side_to_move()!=self.human{return Err("Native board action requires the resumed human live turn.".into());}
-                self.game.submit(s::GameRequest{expected:self.game.context(),actor:self.human,command:s::GameCommand::Play(action)}).map_err(|e|format!("Native action rejected: {e:?}"))?;
+                if self.paused||self.viewed.is_some()||self.settings.play_mode.engine_turn(self.human,self.game.position().side_to_move()){return Err("Native board action requires the resumed human live turn.".into());}
+                self.game.submit(s::GameRequest{expected:self.game.context(),actor:self.local_actor(),command:s::GameCommand::Play(action)}).map_err(|e|format!("Native action rejected: {e:?}"))?;
                 self.retire();self.paused=false;self.phase=EnginePhase::Idle;
             }
             SessionOperation::Declare{}|SessionOperation::Resign{}=>{
                 if self.viewed.is_some(){return Err("Return to live before a terminal command.".into());}
                 let command=if matches!(operation,SessionOperation::Declare{}){s::GameCommand::DeclareEnteringKing}else{s::GameCommand::Resign};
-                self.game.submit(s::GameRequest{expected:self.game.context(),actor:self.human,command}).map_err(|e|format!("Native terminal command rejected: {e:?}"))?;
+                self.game.submit(s::GameRequest{expected:self.game.context(),actor:self.local_actor(),command}).map_err(|e|format!("Native terminal command rejected: {e:?}"))?;
                 self.retire();self.paused=true;
             }
             SessionOperation::TakeBack{}=>{
@@ -520,7 +525,7 @@ impl ShogiSession {
                 if self.viewed.is_some()||self.game.conclusion().is_some(){return Err("Resume requires a live unconcluded game.".into());}
                 self.retire();self.paused=false;self.phase=EnginePhase::Idle;
             }
-            SessionOperation::ShogiPreferences{settings}=>{settings.validate()?;self.settings=settings;}
+            SessionOperation::ShogiPreferences{mut settings}=>{settings.validate()?;settings.play_mode=self.settings.play_mode;self.settings=settings;}
             _=>return Err("Unsupported shogi operation: chess Full/claims/chess commands are not shogi capabilities.".into()),
         }
         if !preferences {
@@ -584,7 +589,10 @@ impl ShogiSession {
                 || self.paused
                 || self.viewed.is_some()
                 || self.game.conclusion().is_some()
-                || self.game.position().side_to_move() == self.human
+                || !self
+                    .settings
+                    .play_mode
+                    .engine_turn(self.human, self.game.position().side_to_move())
             {
                 return Err("Corrupt observation: no corresponding native engine turn.".into());
             }
@@ -1141,8 +1149,11 @@ pub(crate) fn execute(
                     record,
                     human,
                     orient_human,
+                    play_mode,
                 } => {
                     let mut state = ShogiSession::restored(&record, human)?;
+                    state.settings.play_mode = play_mode;
+                    state.initial_settings = state.settings.clone();
                     if orient_human {
                         state.settings.orientation = human;
                         state.initial_settings = state.settings.clone();

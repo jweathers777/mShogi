@@ -20,6 +20,7 @@
     "settings": {
       "game_kind": "chess",
       "settings": {
+        "play_mode": "human_engine",
         "orientation": "white",
         "analysis_defaults": {
           "kind": "moves",
@@ -50,6 +51,16 @@
   "game": "chess",
   "profile": "mshogi.chess.match.v1",
   "edition": "FIDE-2023-01-01+mshogi.chess.match.v1",
+  "play_mode": "human_engine",
+  "local_actor": {
+    "id": {
+      "game_kind": "chess",
+      "side": "white"
+    },
+    "key": "mshogi.chess.match.v1:white",
+    "label": "White",
+    "first_mover": true
+  },
   "human": {
     "id": {
       "game_kind": "chess",

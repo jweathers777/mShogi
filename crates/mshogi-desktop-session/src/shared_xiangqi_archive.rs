@@ -7,6 +7,9 @@ use serde_json::value::RawValue;
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct XiangqiSettings {
+    /// Persisted ownership of the two native participants.
+    #[serde(default)]
+    pub play_mode: crate::PlayMode,
     /// Native side at the bottom, independent of human ownership.
     pub orientation: x::Side,
     /// Ordinary sound-fast-only analysis defaults.
@@ -15,6 +18,7 @@ pub struct XiangqiSettings {
 impl Default for XiangqiSettings {
     fn default() -> Self {
         Self {
+            play_mode: crate::PlayMode::default(),
             orientation: x::Side::Red,
             analysis_defaults: PLAY_LIMITS,
         }
@@ -266,7 +270,15 @@ pub(crate) struct XiangqiDraft {
 }
 impl XiangqiDraft {
     pub(crate) fn replacement(record: &x::GameRecord, human: x::Side) -> Self {
+        Self::replacement_with_mode(record, human, crate::PlayMode::default())
+    }
+    pub(crate) fn replacement_with_mode(
+        record: &x::GameRecord,
+        human: x::Side,
+        play_mode: crate::PlayMode,
+    ) -> Self {
         let settings = XiangqiSettings {
+            play_mode,
             orientation: human,
             ..XiangqiSettings::default()
         };
@@ -622,6 +634,38 @@ fn encoded_native_bounds(bytes: &[u8]) -> Result<(), OperationFailure> {
 }
 
 impl XiangqiSession {
+    pub(super) fn local_actor(&self) -> x::Side {
+        self.settings
+            .play_mode
+            .actor(self.human, self.game.position().side_to_move())
+    }
+    pub(super) fn draw_offer_actor(&self) -> x::Side {
+        if self.settings.play_mode.is_two_humans() {
+            self.game.position().side_to_move().opponent()
+        } else {
+            self.human
+        }
+    }
+    pub(super) fn draw_response_actor(&self) -> x::Side {
+        if self.settings.play_mode.is_two_humans() {
+            [x::Side::Red, x::Side::Black]
+                .into_iter()
+                .find(|actor| self.game.can_respond_to_draw(*actor))
+                .unwrap_or_else(|| self.local_actor())
+        } else {
+            self.human
+        }
+    }
+    pub(super) fn take_back_target(&self) -> Option<usize> {
+        if self.settings.play_mode.is_two_humans() {
+            self.game
+                .command_event_ranges()
+                .last()
+                .map(|(start, _)| start)
+        } else {
+            self.game.preceding_playable_decision(self.human)
+        }
+    }
     // Every seeded control is an actual admitted preference with a replayable journal.
     #[cfg(feature = "desktop-verification")]
     pub(crate) fn verification_control_capacity(&mut self) -> Result<(), String> {
@@ -683,13 +727,18 @@ impl XiangqiSession {
                 let command = if let SessionOperation::Xiangqi { command } = operation { command } else { x::GameCommand::Resign };
                 if self.viewed.is_some() { return Err("Historical viewing is read-only. Return to live explicitly.".into()); }
                 if self.paused { return Err("Resume live play before submitting a native command.".into()); }
-                let submission = self.game.submit(x::GameRequest { expected: self.game.context(), actor: self.human, command }).map_err(error)?;
+                let actor = match command {
+                    x::GameCommand::OfferDraw => self.draw_offer_actor(),
+                    x::GameCommand::AcceptDraw | x::GameCommand::DeclineDraw => self.draw_response_actor(),
+                    _ => self.local_actor(),
+                };
+                let submission = self.game.submit(x::GameRequest { expected: self.game.context(), actor, command }).map_err(error)?;
                 self.undo.push(submission.undo); self.retire();
             }
             SessionOperation::TakeBack {} => {
                 self.browse_running=false;
                 if self.viewed.is_some() { return Err("Return to live before Take back.".into()); }
-                let target = self.game.preceding_playable_decision(self.human).ok_or("No earlier playable human decision is available.")?;
+                let target = self.take_back_target().ok_or("No earlier playable human decision is available.")?;
                 let prefix = self.game.committed_prefix(target).map_err(error)?;
                 let record = x::GameRecord::from_game(&prefix).map_err(error)?;
                 (self.game, self.undo) = record.to_game_with_undo().map_err(error)?;
@@ -734,7 +783,7 @@ impl XiangqiSession {
                 self.ensure_observation_capacity()?;
                 self.retire(); self.paused = false; self.phase = EnginePhase::Idle;
             }
-            SessionOperation::XiangqiPreferences { settings } => { valid_limits(settings.analysis_defaults)?; self.settings = settings; }
+            SessionOperation::XiangqiPreferences { mut settings } => { valid_limits(settings.analysis_defaults)?; settings.play_mode = self.settings.play_mode; self.settings = settings; }
             _ => return Err("Unsupported operation for the native Xiangqi session.".into()),
         }
         if !preferences {
@@ -809,7 +858,10 @@ impl XiangqiSession {
                 || self.viewed.is_some()
                 || self.game.conclusion().is_some()
                 || self.game.pending_adjudication().is_some()
-                || self.game.position().side_to_move() == self.human
+                || !self
+                    .settings
+                    .play_mode
+                    .engine_turn(self.human, self.game.position().side_to_move())
                 || response.context.limits != PLAY_LIMITS
             {
                 return Err(
@@ -854,7 +906,7 @@ impl XiangqiSession {
                 result: XiangqiResult::Choice { choice, .. },
             } if !read_only && pv_error.is_none() => {
                 let (actor, command) = native_choice(*choice, self.game.position().side_to_move());
-                if actor == self.human {
+                if !self.settings.play_mode.engine_turn(self.human, actor) {
                     application_error =
                         Some("Engine choice is not an owned live engine turn.".into());
                     phase = EnginePhase::Failed;
@@ -1468,7 +1520,12 @@ pub(crate) fn decode(
     let NativeSide::Xiangqi(human) = raw.human else {
         return Err("Wrong game for saved human side.".into());
     };
-    let mut state = XiangqiDraft::replacement(native(&initial)?, human).materialize()?;
+    let mut state = XiangqiDraft::replacement_with_mode(
+        native(&initial)?,
+        human,
+        raw.initial_settings.play_mode,
+    )
+    .materialize()?;
     state.settings = raw.initial_settings.clone();
     state.initial_settings = raw.initial_settings;
     let mut observations: Vec<PresentedObservation> = Vec::with_capacity(raw.observations.len());

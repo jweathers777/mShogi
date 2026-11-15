@@ -295,6 +295,7 @@
     "settings": {
       "game_kind": "chu",
       "settings": {
+        "play_mode": "human_engine",
         "orientation": "gote"
       }
     }
@@ -320,6 +321,16 @@
   "game": "chu",
   "profile": "mshogi.chu.jcsa2019.v1",
   "edition": "JCSA-2019-09-14+2004-06-06+MSH82-2026-11-02",
+  "play_mode": "human_engine",
+  "local_actor": {
+    "id": {
+      "game_kind": "chu",
+      "side": "gote"
+    },
+    "key": "mshogi.chu.jcsa2019.v1:gote",
+    "label": "Gote",
+    "first_mover": false
+  },
   "human": {
     "id": {
       "game_kind": "chu",

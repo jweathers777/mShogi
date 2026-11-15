@@ -48,6 +48,7 @@
     "settings": {
       "game_kind": "tori",
       "settings": {
+        "play_mode": "human_engine",
         "orientation": "sente"
       }
     }
@@ -88,6 +89,16 @@
   "game": "tori",
   "profile": "mshogi.tori.modern.v1",
   "edition": "MSH81-MODERN-2026-11-01",
+  "play_mode": "human_engine",
+  "local_actor": {
+    "id": {
+      "game_kind": "tori",
+      "side": "sente"
+    },
+    "key": "mshogi.tori.modern.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
   "human": {
     "id": {
       "game_kind": "tori",

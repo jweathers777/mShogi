@@ -87,9 +87,18 @@ impl ChuSession {
             .retire_context()
             .expect("bounded native runtime identity");
     }
+    fn local_actor(&self) -> c::Side {
+        self.document
+            .settings()
+            .play_mode
+            .actor(self.document.human(), self.game.position().side_to_move())
+    }
     fn take_back_target(&self) -> Option<usize> {
         let human = self.document.human();
         let events = self.game.events();
+        if self.document.settings().play_mode.is_two_humans() {
+            return events.len().checked_sub(1);
+        }
         if let Some(last) = events.last()
             && last.actor == human
             && matches!(last.command, c::GameCommand::Resign)
@@ -109,6 +118,12 @@ impl ChuSession {
         persistence::check(stopped)?;
         let control = match operation {
             SessionOperation::Chu { actor, command } => {
+                if self.document.settings().play_mode.is_two_humans()
+                    && self.paused
+                    && matches!(command, c::GameCommand::Play { .. })
+                {
+                    return Err("Resume play before moving.".into());
+                }
                 if self.viewed.is_some() {
                     return Err("Return to live before changing the game.".into());
                 }
@@ -125,13 +140,14 @@ impl ChuSession {
             SessionOperation::Resign {} => {
                 return self.apply(
                     SessionOperation::Chu {
-                        actor: self.document.human(),
+                        actor: self.local_actor(),
                         command: c::GameCommand::Resign,
                     },
                     stopped,
                 );
             }
-            SessionOperation::ChuPreferences { settings } => {
+            SessionOperation::ChuPreferences { mut settings } => {
+                settings.play_mode = self.document.settings().play_mode;
                 Some(ChuControl::Settings { settings })
             }
             SessionOperation::Undo {} | SessionOperation::TakeBack {} => {
@@ -312,6 +328,7 @@ pub(crate) enum RuntimeSeed {
     Record {
         record: Box<c::GameRecord>,
         human: c::Side,
+        play_mode: PlayMode,
     },
 }
 pub(crate) struct RuntimeWork {
@@ -340,8 +357,12 @@ pub(crate) fn execute(
             state.diagnostic = draft.diagnostic;
             state
         }
-        RuntimeSeed::Record { record, human } => Box::new(ChuSession::restore(
-            ValidatedChuDocument::new_with_stop(*record, human, stopped)?,
+        RuntimeSeed::Record {
+            record,
+            human,
+            play_mode,
+        } => Box::new(ChuSession::restore(
+            ValidatedChuDocument::new_with_mode(*record, human, play_mode, stopped)?,
             stopped,
         )?),
     };
@@ -456,6 +477,7 @@ impl DesktopController {
             RuntimeSeed::Record {
                 record: Box::new(record),
                 human,
+                play_mode: PlayMode::HumanEngine,
             },
             None,
             None,
@@ -616,7 +638,11 @@ impl DesktopController {
                 && !state.paused
                 && state.viewed.is_none()
                 && state.game.conclusion().is_none()
-                && state.game.position().side_to_move() != state.document.human();
+                && state
+                    .document
+                    .settings()
+                    .play_mode
+                    .engine_turn(state.document.human(), state.game.position().side_to_move());
             if let Some(limits) = analysis {
                 if let Err(e) = self.start_chu(limits, true) {
                     self.pause_native_failure(e);

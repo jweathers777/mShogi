@@ -47,9 +47,18 @@ impl ToriSession {
             .retire_context()
             .expect("bounded native runtime identity");
     }
+    fn local_actor(&self) -> t::Side {
+        self.document
+            .settings()
+            .play_mode
+            .actor(self.document.human(), self.game.position().side_to_move())
+    }
     fn take_back_target(&self) -> Option<usize> {
         let human = self.document.human();
         let events = self.game.events();
+        if self.document.settings().play_mode.is_two_humans() {
+            return events.len().checked_sub(1);
+        }
         if let Some(last) = events.last()
             && last.actor == human
             && matches!(last.command, t::GameCommand::Resign)
@@ -70,10 +79,21 @@ impl ToriSession {
         persistence::check(stopped)?;
         let control = match operation {
             SessionOperation::Tori { actor, command } => {
+                if self.document.settings().play_mode.is_two_humans()
+                    && self.paused
+                    && matches!(command, t::GameCommand::Play { .. })
+                {
+                    return Err("Resume play before moving.".into());
+                }
                 if self.viewed.is_some() {
                     return Err("Return to live before changing the game.".into());
                 }
-                if actor != self.document.human() {
+                if !self
+                    .document
+                    .settings()
+                    .play_mode
+                    .owns(self.document.human(), actor)
+                {
                     return Err("The actor is not the assigned native human.".into());
                 }
                 // Admission is native Game::submit, not local inspection membership.
@@ -95,13 +115,14 @@ impl ToriSession {
             SessionOperation::Resign {} => {
                 return self.apply(
                     SessionOperation::Tori {
-                        actor: self.document.human(),
+                        actor: self.local_actor(),
                         command: t::GameCommand::Resign,
                     },
                     stopped,
                 );
             }
-            SessionOperation::ToriPreferences { settings } => {
+            SessionOperation::ToriPreferences { mut settings } => {
+                settings.play_mode = self.document.settings().play_mode;
                 Some(ToriControl::Settings { settings })
             }
             SessionOperation::Undo {} | SessionOperation::TakeBack {} => {
@@ -278,6 +299,7 @@ pub(crate) enum RuntimeSeed {
     Record {
         record: Box<t::GameRecord>,
         human: t::Side,
+        play_mode: PlayMode,
     },
 }
 pub(crate) struct RuntimeWork {
@@ -316,8 +338,12 @@ pub(crate) fn execute(
             state.diagnostic = draft.diagnostic;
             state
         }
-        RuntimeSeed::Record { record, human } => Box::new(ToriSession::restore(
-            ValidatedToriDocument::new(*record, human)?,
+        RuntimeSeed::Record {
+            record,
+            human,
+            play_mode,
+        } => Box::new(ToriSession::restore(
+            ValidatedToriDocument::new_with_mode(*record, human, play_mode, stopped)?,
             stopped,
         )?),
     };
@@ -419,6 +445,7 @@ impl DesktopController {
             RuntimeSeed::Record {
                 record: Box::new(record),
                 human,
+                play_mode: PlayMode::HumanEngine,
             },
             None,
             None,
@@ -592,7 +619,11 @@ impl DesktopController {
                 && !state.paused
                 && state.viewed.is_none()
                 && state.game.conclusion().is_none()
-                && state.game.position().side_to_move() != state.document.human();
+                && state
+                    .document
+                    .settings()
+                    .play_mode
+                    .engine_turn(state.document.human(), state.game.position().side_to_move());
             if let Some(limits) = analysis {
                 if let Err(e) = self.start_tori(limits, true) {
                     self.pause_native_failure(e);
@@ -887,6 +918,17 @@ impl DesktopController {
             game: GameKind::Tori,
             profile: RulesProfile::ToriModernV1,
             edition: t::PROFILE_EDITION,
+            play_mode: state.document.settings().play_mode,
+            local_actor: side(
+                RulesProfile::ToriModernV1,
+                NativeSide::Tori(
+                    state
+                        .document
+                        .settings()
+                        .play_mode
+                        .actor(state.document.human(), position.side_to_move()),
+                ),
+            ),
             human: side(
                 mshogi_core::native::RulesProfile::ToriModernV1,
                 NativeSide::Tori(state.document.human()),
@@ -927,13 +969,18 @@ impl DesktopController {
             },
             capabilities: CommandCapabilities {
                 board_action: !historical
+                    && (!state.document.settings().play_mode.is_two_humans() || !state.paused)
                     && !ended
-                    && position.side_to_move() == state.document.human(),
+                    && state
+                        .document
+                        .settings()
+                        .play_mode
+                        .owns(state.document.human(), position.side_to_move()),
                 drops: true,
                 promotion: true,
                 take_back: !historical && state.take_back_target().is_some(),
                 undo: !historical && !state.game.events().is_empty(),
-                engine_turn: true,
+                engine_turn: !state.document.settings().play_mode.is_two_humans(),
                 move_analysis: true,
                 chess_full: false,
                 claims: false,

@@ -242,6 +242,7 @@ fn immutable_journal_retains_rewind_branch_settings_and_exact_observation() {
         .with_control(
             ToriControl::Settings {
                 settings: ToriSettings {
+                    play_mode: crate::PlayMode::HumanEngine,
                     orientation: t::Side::Gote,
                 },
             },
@@ -642,6 +643,7 @@ fn actual_control_limit_consumes_stop_resign_close_reservations_without_resettin
                 &mut c,
                 SessionOperation::ToriPreferences {
                     settings: ToriSettings {
+                        play_mode: crate::PlayMode::HumanEngine,
                         orientation: t::Side::Gote
                     }
                 }
@@ -743,6 +745,7 @@ fn actual_file_worker_first_save_replacement_failure_interruption_and_stale_rece
         .with_control(
             ToriControl::Settings {
                 settings: ToriSettings {
+                    play_mode: crate::PlayMode::HumanEngine,
                     orientation: t::Side::Gote,
                 },
             },
@@ -1434,4 +1437,39 @@ fn real_observations_with_long_history_charge_replay_before_acceptance() {
         start.elapsed().as_millis()
     );
     assert!(candidate.usage().replay_work <= MAX_TORI_DOCUMENT_WORK);
+}
+
+#[test]
+fn two_human_document_retains_mode_and_rejects_mode_changes() {
+    let mut d = ValidatedToriDocument::new_with_mode(
+        t::GameRecord::from_game(&t::Game::standard()).unwrap(),
+        t::Side::Sente,
+        crate::PlayMode::TwoHumans,
+        &mut || false,
+    )
+    .unwrap();
+    for expected_actor in [t::Side::Sente, t::Side::Gote] {
+        let game = d.record().to_game().unwrap();
+        assert_eq!(game.position().side_to_move(), expected_actor);
+        d = d
+            .with_control(
+                ToriControl::Native {
+                    actor: expected_actor,
+                    command: t::GameCommand::Play {
+                        action: game.legal_actions()[0],
+                    },
+                },
+                &mut || false,
+            )
+            .unwrap();
+    }
+    let restored = ValidatedToriDocument::decode(d.bytes(), &mut || false).unwrap();
+    assert_eq!(restored.settings().play_mode, crate::PlayMode::TwoHumans);
+    assert_eq!(restored.record(), d.record());
+    let mut settings = d.settings().clone();
+    settings.play_mode = crate::PlayMode::HumanEngine;
+    assert!(
+        d.with_control(ToriControl::Settings { settings }, &mut || false)
+            .is_err()
+    );
 }

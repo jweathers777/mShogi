@@ -19,6 +19,7 @@
     "settings": {
       "game_kind": "shogi",
       "settings": {
+        "play_mode": "human_engine",
         "orientation": "sente",
         "analysis_defaults": {
           "depth": 1,
@@ -48,6 +49,16 @@
   "game": "shogi",
   "profile": "mshogi.shogi.csa36.v1",
   "edition": "JSA-2025-10-01+CSA-2023-11-27-WCSC36-2026",
+  "play_mode": "human_engine",
+  "local_actor": {
+    "id": {
+      "game_kind": "shogi",
+      "side": "sente"
+    },
+    "key": "mshogi.shogi.csa36.v1:sente",
+    "label": "Sente",
+    "first_mover": true
+  },
   "human": {
     "id": {
       "game_kind": "shogi",

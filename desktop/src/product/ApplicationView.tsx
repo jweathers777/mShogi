@@ -28,11 +28,11 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
   const side = snapshot.sides.find(s => s.id.side === orientation)!;
   function flip() {
     if (snapshot.game === "chess") return command({ kind: "chess_preferences", orientation: orientation === "white" ? "black" : "white", analysis_defaults: snapshot.document.settings.settings.analysis_defaults });
-    if (snapshot.game === "tenjiku") return command({ kind: "tenjiku_preferences", settings: { orientation: orientation === "sente" ? "gote" : "sente" } });
-    if (snapshot.game === "chu") return command({ kind: "chu_preferences", settings: { orientation: orientation === "sente" ? "gote" : "sente" } });
-    if (snapshot.game === "tori") return command({ kind: "tori_preferences", settings: { orientation: orientation === "sente" ? "gote" : "sente" } });
+    if (snapshot.game === "tenjiku") return command({ kind: "tenjiku_preferences", settings: { ...snapshot.document.settings.settings, orientation: orientation === "sente" ? "gote" : "sente" } });
+    if (snapshot.game === "chu") return command({ kind: "chu_preferences", settings: { ...snapshot.document.settings.settings, orientation: orientation === "sente" ? "gote" : "sente" } });
+    if (snapshot.game === "tori") return command({ kind: "tori_preferences", settings: { ...snapshot.document.settings.settings, orientation: orientation === "sente" ? "gote" : "sente" } });
     if (snapshot.game === "shogi") return command({ kind: "shogi_preferences", settings: { ...snapshot.document.settings.settings, orientation: orientation === "sente" ? "gote" : "sente" } });
-    return command({ kind: "xiangqi_preferences", settings: { analysis_defaults: snapshot.document.settings.analysis_defaults, orientation: orientation === "red" ? "black" : "red" } });
+    return command({ kind: "xiangqi_preferences", settings: { play_mode: snapshot.play_mode, analysis_defaults: snapshot.document.settings.analysis_defaults, orientation: orientation === "red" ? "black" : "red" } });
   }
   const defaults = (snapshot.game === "tori" || snapshot.game === "chu" || snapshot.game === "tenjiku") ? snapshot.play_limits : snapshot.game === "xiangqi" ? snapshot.document.settings.analysis_defaults : snapshot.document.settings.settings.analysis_defaults;
   const exactPrefix = snapshot.game !== "xiangqi" || snapshot.xiangqi.canonical_context_scope === "selected_committed";
@@ -46,7 +46,7 @@ export function ApplicationView({ snapshot, session, onNewGame, onOpen, blocked 
       <button className="quiet" onClick={onOpen} disabled={disabled}>Load</button></>}
     heading={<LiveGameHeading eyebrow={snapshot.historical ? "HISTORY · READ ONLY" : snapshot.status.concluded ? "GAME CONCLUDED" : "YOUR GAME"}
       status={snapshot.historical ? "Viewing history" : thinking ? "mShogi is thinking" : (snapshot.game === "chess" ? gameStatus({ conclusion: snapshot.chess.selected_conclusion, turn: snapshot.turn.id.side, in_check: snapshot.chess.in_check }) : snapshot.status.label)}
-      player={<>You play {snapshot.human.label} against mShogi{snapshot.game === "tenjiku" && <> · <span data-rules-profile={snapshot.profile}>{tenjikuProfiles.find(profile => profile.id === snapshot.profile)!.label}</span></>}</>}
+      player={<>{snapshot.play_mode === "two_humans" ? "Two humans · local play" : <>You play {snapshot.human.label} against mShogi</>}{snapshot.game === "tenjiku" && <> · <span data-rules-profile={snapshot.profile}>{tenjikuProfiles.find(profile => profile.id === snapshot.profile)!.label}</span></>}</>}
       flip={<button className="quiet flip-button" disabled={disabled} aria-label={`Flip board; currently ${side.label} at bottom`} onClick={() => { void flip(); }}>↕ <span>Flip board</span></button>} />}
     positionNotice={snapshot.historical && <HistoricalNotice action={<button disabled={disabled} onClick={() => { void command({ kind: "return_live" }); }}>Return to live</button>}>
       <p>Your live game is unchanged.</p></HistoricalNotice>}

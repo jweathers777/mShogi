@@ -12,12 +12,12 @@ export function GameFrame({ snapshot, bottom, board, help, upperContent, lowerCo
 }) {
   const upper = snapshot.sides.find(side => side.key !== bottom.key)!;
   const player = (side: Side, content: ReactNode) => <PlayerArea side={side.label}
-    human={side.key === snapshot.human.key} playerKey={side.id.side}
+    human={snapshot.play_mode === "two_humans" || side.key === snapshot.human.key} participant={snapshot.play_mode === "two_humans" ? "Human" : undefined} playerKey={side.id.side}
     className={(snapshot.game === "shogi" || snapshot.game === "tori") ? "shogi-player" : ""}
     toMove={!snapshot.status.concluded && side.key === snapshot.turn.key}>{content}</PlayerArea>;
   return <GameArea className={className} upperPlayer={player(upper, upperContent)}
     lowerPlayer={player(bottom, lowerContent)} board={board} {...(onFocusCapture ? { onFocusCapture } : {})} {...(onBlurCapture ? { onBlurCapture } : {})}
     footer={<>{help}<GamePositionStatus historical={snapshot.historical} concluded={snapshot.status.concluded}
-      paused={snapshot.paused} humanTurn={snapshot.human.key === snapshot.turn.key}
+      paused={snapshot.paused} humanTurn={snapshot.local_actor.key === snapshot.turn.key} stateLabel={snapshot.play_mode === "two_humans" && !snapshot.historical && !snapshot.status.concluded && !snapshot.paused ? `${snapshot.turn.label} to move` : undefined}
       thinking={snapshot.capabilities.engine_turn && snapshot.phase === "thinking" && snapshot.execution_purpose === "engine_turn"} ply={snapshot.board_ply} /></>} />;
 }

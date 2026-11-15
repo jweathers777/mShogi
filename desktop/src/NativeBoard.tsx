@@ -9,6 +9,7 @@ export interface NativeBoardSnapshot {
   game: "chess" | "shogi" | "xiangqi" | "tori" | "chu" | "tenjiku";
   profile: string;
   human?: { key: string };
+  local_actor?: { key: string };
   board: { files: string[]; ranks: string[]; label: string; initial_focus: string;
     intersections?: { points: string[]; river_between_ranks: [number, number]; palaces: { side: { key: string; label: string }; points: string[]; diagonals: string[][] }[] } | null };
   orientations: { side: { key: string; label: string }; files: string[]; ranks: string[] }[];
@@ -31,6 +32,7 @@ export function NativeBoard({ snapshot, bottomSide, onPlay, completedAction, onI
   coordinateFrame?: boolean;
 }) {
   if (snapshot.board.intersections) return <p role="alert">This game requires its native intersection renderer.</p>;
+  const actor = snapshot.local_actor ?? snapshot.human;
   const orientation = snapshot.orientations.find((o) => o.side.key === bottomSide);
   if (!orientation) return <p role="alert">Unsupported native orientation.</p>;
   return <Board completedAction={completedAction ?? null} pieces={snapshot.pieces} choices={snapshot.choices} hands={snapshot.game === "tori" ? snapshot.hands.filter(h => h.count > 0) : snapshot.hands}
@@ -39,7 +41,7 @@ export function NativeBoard({ snapshot, bottomSide, onPlay, completedAction, onI
     nativeFirstOwner={snapshot.sides.find((side) => side.first_mover)!.key}
     orientation="white" version={snapshot.token.selection}
     profile={`${snapshot.profile}:${snapshot.token.document}:${snapshot.token.version}`}
-    {...(snapshot.human ? { humanOwner: snapshot.human.key } : {})} onInspect={onInspect} inspectionDisabled={inspectionDisabled ?? disabled ?? !snapshot.capabilities.board_action} inspectionContextKey={JSON.stringify(snapshot.token)}
+    {...(actor ? { humanOwner: actor.key } : {})} onInspect={onInspect} inspectionDisabled={inspectionDisabled ?? disabled ?? !snapshot.capabilities.board_action} inspectionContextKey={JSON.stringify(snapshot.token)}
     {...(coordinateFrame !== undefined ? { coordinateFrame } : {})}
     {...(helpTarget !== undefined ? { helpTarget } : {})} {...(renderNativePiece ? { renderNativePiece } : {})}
     disabled={Boolean(disabled) || !snapshot.capabilities.board_action} onPlay={onPlay} />;

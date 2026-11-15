@@ -322,6 +322,17 @@ impl DesktopController {
             game: GameKind::Chu,
             profile: RulesProfile::ChuJcsa2019V1,
             edition: c::PROFILE_EDITION,
+            play_mode: state.document.settings().play_mode,
+            local_actor: side(
+                RulesProfile::ChuJcsa2019V1,
+                NativeSide::Chu(
+                    state
+                        .document
+                        .settings()
+                        .play_mode
+                        .actor(state.document.human(), position.side_to_move()),
+                ),
+            ),
             human: side(
                 mshogi_core::native::RulesProfile::ChuJcsa2019V1,
                 NativeSide::Chu(state.document.human()),
@@ -377,13 +388,18 @@ impl DesktopController {
             choices: state.choices.clone(),
             capabilities: CommandCapabilities {
                 board_action: !historical
+                    && (!state.document.settings().play_mode.is_two_humans() || !state.paused)
                     && !ended
-                    && position.side_to_move() == state.document.human(),
+                    && state
+                        .document
+                        .settings()
+                        .play_mode
+                        .owns(state.document.human(), position.side_to_move()),
                 drops: false,
                 promotion: true,
                 take_back: !historical && state.take_back_target().is_some(),
                 undo: !historical && !state.game.events().is_empty(),
-                engine_turn: true,
+                engine_turn: !state.document.settings().play_mode.is_two_humans(),
                 move_analysis: true,
                 chess_full: false,
                 claims: false,

@@ -54,7 +54,7 @@ it("sends the opaque native action through the Xiangqi command wrapper, never ge
 it("flips using native Xiangqi preferences while preserving existing document and play controls", () => {
   const { session, props } = app();
   fireEvent.click(screen.getByRole("button", { name: "Flip board; currently Red at bottom" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "xiangqi_preferences", settings: { orientation: "black", analysis_defaults: { depth: 1, nodes: 128 } } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "xiangqi_preferences", settings: { play_mode: "human_engine", orientation: "black", analysis_defaults: { depth: 1, nodes: 128 } } });
   fireEvent.click(screen.getByRole("button", { name: "New game" })); expect(props.onNewGame).toHaveBeenCalledOnce();
   fireEvent.click(screen.getByRole("button", { name: "Save" })); expect(session.file).toHaveBeenLastCalledWith(standard, "save");
   fireEvent.click(screen.getByRole("button", { name: "Load" })); expect(props.onOpen).toHaveBeenCalledOnce();

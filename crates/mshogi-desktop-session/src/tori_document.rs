@@ -31,6 +31,9 @@ struct Reserve {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ToriSettings {
+    /// Persisted ownership of the two native participants.
+    #[serde(default)]
+    pub play_mode: crate::PlayMode,
     /// Native side placed at the bottom.
     pub orientation: t::Side,
 }
@@ -177,7 +180,18 @@ impl fmt::Debug for ValidatedToriDocument {
 impl ValidatedToriDocument {
     /// Construct a stopped document from an actual native initial record.
     pub fn new(record: t::GameRecord, human: t::Side) -> Result<Self, ToriDocumentError> {
-        let settings = ToriSettings { orientation: human };
+        Self::new_with_mode(record, human, crate::PlayMode::default(), &mut || false)
+    }
+    pub(crate) fn new_with_mode(
+        record: t::GameRecord,
+        human: t::Side,
+        play_mode: crate::PlayMode,
+        stopped: &mut impl FnMut() -> bool,
+    ) -> Result<Self, ToriDocumentError> {
+        let settings = ToriSettings {
+            orientation: human,
+            play_mode,
+        };
         let record = CanonicalRecord::tori(record);
         validate_payload(
             Payload {
@@ -192,7 +206,7 @@ impl ValidatedToriDocument {
                 retired: vec![],
                 retired_execution_floor: 1,
             },
-            &mut || false,
+            stopped,
         )
     }
     /// Strict decode and native replay on a caller's bounded/cancellable worker.
@@ -282,7 +296,14 @@ impl ValidatedToriDocument {
                 })
                 .map_err(native_error)?;
             }
-            ToriControl::Settings { settings } => payload.settings = settings.clone(),
+            ToriControl::Settings { settings } => {
+                if settings.play_mode != payload.settings.play_mode {
+                    return Err(invalid(
+                        "participant mode can only be selected for a new game",
+                    ));
+                }
+                payload.settings = settings.clone();
+            }
             ToriControl::Rewind { event_index, .. } => {
                 if *event_index >= game.events().len() {
                     return Err(invalid("rewind must retire at least one event"));
@@ -891,7 +912,12 @@ fn validate_semantics(
                 })
                 .map_err(native_error)?;
             }
-            ToriControl::Settings { settings: s } => settings = s.clone(),
+            ToriControl::Settings { settings: s } => {
+                if s.play_mode != settings.play_mode {
+                    return Err(invalid("participant mode changed within a document"));
+                }
+                settings = s.clone();
+            }
             ToriControl::Rewind { event_index, .. } => {
                 if *event_index >= game.events().len() {
                     return Err(invalid("invalid rewind prefix"));
@@ -921,6 +947,11 @@ fn validate_semantics(
                     .observations
                     .get(*index)
                     .ok_or_else(|| invalid("missing observation"))?;
+                if settings.play_mode.is_two_humans()
+                    && matches!(o.context.purpose, ExecutionPurpose::EngineTurn {})
+                {
+                    return Err(invalid("two-human documents cannot contain engine turns"));
+                }
                 if !o.matches(&o.context)
                     || !matches!(
                         o.result,

@@ -1,9 +1,11 @@
 ---
 id: MSH-172
 title: Two-Human Desktop Play
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - codex
 created_date: '2026-11-14T12:40:00Z'
+updated_date: '2026-11-15T14:46:00Z'
 labels:
   - handle:two-human-desktop-play
 dependencies: []
@@ -22,7 +24,7 @@ ordinal: 176000
 Handle: Two-Human Desktop Play.
 
 **Problem**
-The old C++ desktop allows two human players on one computer. The rewrite requires one human side against mShogi. John requested this feature on 2026-11-14 after the branch comparison in MSH-171 (Rewrite Main Promotion).
+The old C++ desktop allows two human players on one computer. At task creation, the rewrite required one human side against mShogi. The branch comparison in MSH-171 (Rewrite Main Promotion) identified local two-human play as a missing feature.
 
 **Objective**
 Allow two people to play locally in the normal desktop application for all six supported games and both Tenjiku profiles. This is a separate feature and does not block MSH-171 (Rewrite Main Promotion).
@@ -50,3 +52,23 @@ The normal desktop supports both local human turns, preserves the selected play 
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Add a shared, durable participant mode and native actor/engine ownership policy. Preserve the existing human-engine mode.
+2. Extend New game and shared controls for both local players, explicit draw responses and side-labelled resignation. Use one-action Take back in two-human games.
+3. Verify all seven profiles, history and saved-mode round trips, stale execution retirement, frontend controls and the standalone Tauri host. Run targeted normal desktop journeys and independent review.
+4. Record evidence, update user documentation and integrate on main.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner: Codex. Integration checkout/branch: /Users/johnweathers/Development/Personal/mShogi, main. Start: a0770114. Independent architecture review: /root/two_human_review. Verification Level 2: participant persistence, native command transport and stale execution are affected; rules, search algorithms and packaging are unchanged. Use targeted native/frontend/host checks and normal macOS desktop journeys. A full release/platform campaign remains a later integration checkpoint.
+
+Implemented durable human_engine/two_humans ownership for all seven native profiles. New game, actor-qualified complete actions, participant labels, draw responses, side-named resignation, one-command Take back, saved mode/history and explicit analysis use the existing shared runtime. Existing documents default to human_engine. Display preferences cannot switch mode.
+Independent source review: /root/two_human_final_review. Resolved two findings: Tauri requires the camelCase playMode wire argument; paused local Tori/Chu/Tenjiku boards disable action input. Final follow-up review approved local analysis panel and native complete-action tests.
+Actual normal macOS desktop: both humans completed two moves in Chess, Shogi, Xiangqi, Tori, Chu, Adams Tenjiku and Muller Tenjiku. Chess Save/Open preserved two-human mode and two plies, reopened stopped; Take back removed only the last action, then required Resume. Resign Black identified Black; native M2 correctly returned unscored unresolved without a mating witness. Existing human-engine Chess produced a real b8c6 reply. Requested Muller Tenjiku analysis completed at event2 without moving the game. Fixed normal bundle identity reused; no approval/security stores changed.
+Final verification record is being completed. Full Linux/Windows package or GUI campaigns were not run for this Level2 scope.
+<!-- SECTION:NOTES:END -->

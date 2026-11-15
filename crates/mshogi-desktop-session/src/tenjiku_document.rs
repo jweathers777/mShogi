@@ -20,6 +20,9 @@ pub const MAX_TENJIKU_DOCUMENT_WORK: u64 = 160_000_000;
 #[serde(deny_unknown_fields)]
 /// Supported Tenjiku document orientation; bounded execution limits are explicit per request.
 pub struct TenjikuSettings {
+    /// Persisted ownership of the two native participants.
+    #[serde(default)]
+    pub play_mode: crate::PlayMode,
     /// Native side displayed at the bottom.
     pub orientation: c::Side,
 }
@@ -306,8 +309,19 @@ impl ValidatedTenjikuDocument {
         human: c::Side,
         stopped: &mut impl FnMut() -> bool,
     ) -> Result<Self, TenjikuDocumentError> {
+        Self::new_with_mode(record, human, crate::PlayMode::default(), stopped)
+    }
+    pub(crate) fn new_with_mode(
+        record: c::GameRecord,
+        human: c::Side,
+        play_mode: crate::PlayMode,
+        stopped: &mut impl FnMut() -> bool,
+    ) -> Result<Self, TenjikuDocumentError> {
         check(stopped)?;
-        let settings = TenjikuSettings { orientation: human };
+        let settings = TenjikuSettings {
+            orientation: human,
+            play_mode,
+        };
         let record = CanonicalRecord::tenjiku(record);
         validate(
             Payload {
@@ -538,7 +552,14 @@ impl ValidatedTenjikuDocument {
                 )
                 .map_err(native_error)?;
             }
-            TenjikuControl::Settings { settings } => p.settings = settings.clone(),
+            TenjikuControl::Settings { settings } => {
+                if settings.play_mode != p.settings.play_mode {
+                    return Err(invalid(
+                        "participant mode can only be selected for a new game",
+                    ));
+                }
+                p.settings = settings.clone();
+            }
             TenjikuControl::Rewind { event_index, .. } => {
                 if *event_index >= game.events().len() {
                     return Err(invalid("rewind must retire an event"));
@@ -783,7 +804,12 @@ fn validate(
                     game.replay_work().saturating_sub(before),
                 )?;
             }
-            TenjikuControl::Settings { settings: next } => settings = next.clone(),
+            TenjikuControl::Settings { settings: next } => {
+                if next.play_mode != settings.play_mode {
+                    return Err(invalid("participant mode changed within a document"));
+                }
+                settings = next.clone();
+            }
             TenjikuControl::Rewind { event_index, .. } => {
                 if *event_index >= game.events().len() {
                     return Err(invalid("invalid rewind prefix"));
@@ -815,6 +841,11 @@ fn validate(
                     .observations
                     .get(obs)
                     .ok_or_else(|| invalid("missing observation"))?;
+                if settings.play_mode.is_two_humans()
+                    && matches!(o.context.purpose, ExecutionPurpose::EngineTurn {})
+                {
+                    return Err(invalid("two-human documents cannot contain engine turns"));
+                }
                 if !o.matches(&o.context)
                     || !matches!(
                         o.result,

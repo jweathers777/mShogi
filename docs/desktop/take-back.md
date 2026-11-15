@@ -3,8 +3,10 @@
 MSH-113 adds the approved **Take back** action to Game Actions for Chess,
 Shogi and Xiangqi. The native session selects a human decision point and restores
 it in one admitted transaction. The frontend neither counts moves nor reconstructs
-rules or history. This is a human-versus-engine action; existing low-level Undo
-contracts retain their separate meanings.
+rules or history. The following decision-point policy applies to human-versus-engine play. In
+[two-human play](two-human-play.md), Take back restores the position before the
+last complete native command, including a terminal command. Existing low-level
+Undo contracts retain their separate meanings.
 
 After a completed human move and engine reply, both are taken back. With a reply
 pending, that execution is retired and the human move is taken back. For a human

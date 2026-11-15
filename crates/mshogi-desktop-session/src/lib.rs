@@ -3,6 +3,8 @@
 mod synthetic;
 #[cfg(feature = "desktop-verification")]
 pub use synthetic::*;
+mod participants;
+pub use participants::PlayMode;
 mod shared;
 pub use shared::*;
 mod moves;
@@ -795,6 +797,7 @@ impl DesktopSession {
             } => {
                 analysis_defaults.validate()?;
                 self.settings = DesktopSettings {
+                    play_mode: self.settings.play_mode,
                     orientation,
                     analysis_defaults,
                 };
@@ -845,7 +848,7 @@ impl DesktopSession {
             }
             ChessMutationCommand::Play { action, .. } => {
                 self.human_turn()?;
-                self.apply_match(self.human, MatchCommand::Move(action), at_ns)?;
+                self.apply_match(self.local_actor(), MatchCommand::Move(action), at_ns)?;
                 self.pending = None;
                 self.engine.status = EnginePhase::Idle;
                 self.engine.message = None;
@@ -853,7 +856,7 @@ impl DesktopSession {
             }
             ChessMutationCommand::Claim { claim, .. } => {
                 self.human_turn()?;
-                if claim.actor != self.human {
+                if claim.actor != self.local_actor() {
                     return Err("The claim must belong to the player to move.".into());
                 }
                 self.apply_match(
@@ -877,7 +880,11 @@ impl DesktopSession {
                 if self.game.conclusion().is_some() {
                     return Err("This game has concluded. Start a new game to play again.".into());
                 }
-                self.apply_match(self.human, MatchCommand::Resign { witness: None }, at_ns)?;
+                self.apply_match(
+                    self.local_actor(),
+                    MatchCommand::Resign { witness: None },
+                    at_ns,
+                )?;
                 self.retire_analysis();
                 self.play_paused = false;
                 self.pending = None;
@@ -902,7 +909,10 @@ impl DesktopSession {
             ChessMutationCommand::Retry { .. } => {
                 if self.play_paused
                     || self.game.conclusion().is_some()
-                    || self.game.game().position().side_to_move() == self.human
+                    || !self
+                        .settings
+                        .play_mode
+                        .engine_turn(self.human, self.game.game().position().side_to_move())
                     || self.pending.is_some()
                     || !matches!(
                         self.engine.status,
@@ -923,6 +933,11 @@ impl DesktopSession {
         }
         Ok(())
     }
+    fn local_actor(&self) -> Color {
+        self.settings
+            .play_mode
+            .actor(self.human, self.game.game().position().side_to_move())
+    }
     fn human_turn(&self) -> Result<(), String> {
         if self.play_paused || self.viewed.is_some() {
             return Err(
@@ -933,7 +948,11 @@ impl DesktopSession {
         if self.game.conclusion().is_some() {
             return Err("This game has concluded. Start a new game to play again.".into());
         }
-        if self.game.game().position().side_to_move() != self.human {
+        if self
+            .settings
+            .play_mode
+            .engine_turn(self.human, self.game.game().position().side_to_move())
+        {
             return Err("It is mShogi's turn.".into());
         }
         Ok(())
@@ -966,7 +985,10 @@ impl DesktopSession {
             || self.pending.is_some()
             || self.engine.status != EnginePhase::Idle
             || self.game.conclusion().is_some()
-            || self.game.game().position().side_to_move() == self.human
+            || !self
+                .settings
+                .play_mode
+                .engine_turn(self.human, self.game.game().position().side_to_move())
         {
             return None;
         }
@@ -1050,7 +1072,10 @@ impl DesktopSession {
             || response.context.session_version != self.version
             || response.context.game != CanonicalRecord::chess(self.game.game().record())
             || self.game.conclusion().is_some()
-            || self.game.game().position().side_to_move() == self.human
+            || !self
+                .settings
+                .play_mode
+                .engine_turn(self.human, self.game.game().position().side_to_move())
         {
             return false;
         }
@@ -1073,7 +1098,7 @@ impl DesktopSession {
                 self.apply_match(self.human.opponent(), MatchCommand::Move(action), at_ns)
             }
             ChessResult::Claim { claim, .. } => {
-                if claim.actor != self.human.opponent() {
+                if claim.actor != self.local_actor().opponent() {
                     Err("Engine returned a claim for the wrong player.".into())
                 } else {
                     self.apply_match(

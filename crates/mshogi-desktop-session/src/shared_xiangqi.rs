@@ -71,6 +71,10 @@ pub struct XiangqiPresentation {
 /// Native terminal-command eligibility, independent of board-action turn ownership.
 #[derive(Clone, Debug, Serialize)]
 pub struct XiangqiTerminalActions {
+    /// Native actor eligible to offer a draw.
+    pub offer_actor: PresentedSide,
+    /// Native actor for a pending draw response.
+    pub response_actor: PresentedSide,
     /// Offer a draw after the human's own move under the native profile.
     pub offer_draw: bool,
     /// Accept the opponent's outstanding offer.
@@ -443,7 +447,11 @@ impl DesktopController {
                     command: x::GameCommand::Play { action },
                 } = &op
                 {
-                    if state.game.position().side_to_move() != state.human {
+                    if state
+                        .settings
+                        .play_mode
+                        .engine_turn(state.human, state.game.position().side_to_move())
+                    {
                         return Err("Native board action requires its actor turn.".into());
                     }
                     state
@@ -454,11 +462,7 @@ impl DesktopController {
                 }
             }
             SessionOperation::TakeBack {}
-                if state.viewed.is_some()
-                    || state
-                        .game
-                        .preceding_playable_decision(state.human)
-                        .is_none() =>
+                if state.viewed.is_some() || state.take_back_target().is_none() =>
             {
                 return Err("No live playable human decision is available for Take back.".into());
             }
@@ -520,7 +524,10 @@ impl DesktopController {
             && state.viewed.is_none()
             && state.game.conclusion().is_none()
             && state.game.pending_adjudication().is_none()
-            && state.game.position().side_to_move() != state.human
+            && state
+                .settings
+                .play_mode
+                .engine_turn(state.human, state.game.position().side_to_move())
             && let Err(e) = self.start_xiangqi(PLAY_LIMITS, false)
         {
             self.pause_native_failure(e);
@@ -624,13 +631,23 @@ impl DesktopController {
             moves: self.present_moves(history.event_count),
             xiangqi: Some(XiangqiPresentation {
                 terminal_actions: XiangqiTerminalActions {
-                    offer_draw: active && !state.paused && state.game.can_offer_draw(state.human),
+                    offer_actor: side(
+                        RulesProfile::XiangqiWxf2018V1,
+                        NativeSide::Xiangqi(state.draw_offer_actor()),
+                    ),
+                    response_actor: side(
+                        RulesProfile::XiangqiWxf2018V1,
+                        NativeSide::Xiangqi(state.draw_response_actor()),
+                    ),
+                    offer_draw: active
+                        && !state.paused
+                        && state.game.can_offer_draw(state.draw_offer_actor()),
                     accept_draw: active
                         && !state.paused
-                        && state.game.can_respond_to_draw(state.human),
+                        && state.game.can_respond_to_draw(state.draw_response_actor()),
                     decline_draw: active
                         && !state.paused
-                        && state.game.can_respond_to_draw(state.human),
+                        && state.game.can_respond_to_draw(state.draw_response_actor()),
                 },
                 canonical_context_scope: if historical && state.viewed_game.is_none() {
                     "live_with_immutable_selection"
@@ -662,6 +679,16 @@ impl DesktopController {
             game: GameKind::Xiangqi,
             profile: RulesProfile::XiangqiWxf2018V1,
             edition: RulesProfile::XiangqiWxf2018V1.edition(),
+            play_mode: state.settings.play_mode,
+            local_actor: side(
+                RulesProfile::XiangqiWxf2018V1,
+                NativeSide::Xiangqi(
+                    state
+                        .settings
+                        .play_mode
+                        .actor(state.human, position.side_to_move()),
+                ),
+            ),
             human: side(
                 mshogi_core::native::RulesProfile::XiangqiWxf2018V1,
                 NativeSide::Xiangqi(state.human),
@@ -751,23 +778,28 @@ impl DesktopController {
                 vec![]
             },
             capabilities: CommandCapabilities {
-                board_action: active && !state.paused && position.side_to_move() == state.human,
+                board_action: active
+                    && !state.paused
+                    && state
+                        .settings
+                        .play_mode
+                        .owns(state.human, position.side_to_move()),
                 drops: false,
                 promotion: false,
-                take_back: !historical
-                    && state
-                        .game
-                        .preceding_playable_decision(state.human)
-                        .is_some(),
+                take_back: !historical && state.take_back_target().is_some(),
                 undo: !historical && !state.undo.is_empty(),
-                engine_turn: active && position.side_to_move() != state.human,
+                engine_turn: active
+                    && state
+                        .settings
+                        .play_mode
+                        .engine_turn(state.human, position.side_to_move()),
                 move_analysis: !historical || state.viewed_game.is_some(),
                 chess_full: false,
                 claims: active
                     && !state.paused
                     && count_advice
                         .iter()
-                        .any(|e| e.claimant == state.human && e.eligible),
+                        .any(|e| e.claimant == state.local_actor() && e.eligible),
                 declaration: false,
                 resign: active && !state.paused,
                 hands: false,

@@ -405,3 +405,26 @@ fn retained_native_event_boundary_reserves_stop_and_resign_without_discarding_ob
     let reopened = ValidatedChuDocument::decode(d.bytes(), &mut || false).unwrap();
     assert_eq!(reopened.observations().len(), 254);
 }
+
+#[test]
+fn two_human_document_retains_mode_and_rejects_mode_changes_and_engine_turns() {
+    let d = ValidatedChuDocument::new_with_mode(
+        c::GameRecord::from_game(&c::Game::standard()).unwrap(),
+        c::Side::Sente,
+        crate::PlayMode::TwoHumans,
+        &mut || false,
+    )
+    .unwrap();
+    let d = command(&d, c::Side::Sente, c::GameCommand::OfferDraw);
+    let d = command(&d, c::Side::Gote, c::GameCommand::DeclineDraw);
+    let restored = ValidatedChuDocument::decode(d.bytes(), &mut || false).unwrap();
+    assert_eq!(restored.settings().play_mode, crate::PlayMode::TwoHumans);
+    assert_eq!(restored.record(), d.record());
+    let mut settings = d.settings().clone();
+    settings.play_mode = crate::PlayMode::HumanEngine;
+    assert!(
+        d.with_control(ChuControl::Settings { settings }, &mut || false)
+            .is_err()
+    );
+    assert!(d.with_observation(failure(&d, 1), &mut || false).is_err());
+}

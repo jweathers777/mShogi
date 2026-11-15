@@ -67,6 +67,7 @@ fn all_native_faces_handed_hands_forced_choices_and_orientation_are_explicit() {
         &mut c,
         SessionOperation::ToriPreferences {
             settings: crate::tori_document::ToriSettings {
+                play_mode: PlayMode::HumanEngine,
                 orientation: t::Side::Gote,
             },
         },

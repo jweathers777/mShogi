@@ -642,6 +642,7 @@ fn seven_reject_fixtures_actual_open_preserves_live_document_and_execution() {
         &mut c,
         SessionOperation::ToriPreferences {
             settings: crate::tori_document::ToriSettings {
+                play_mode: PlayMode::HumanEngine,
                 orientation: t::Side::Gote,
             },
         },
@@ -779,6 +780,7 @@ fn capacity_256_to257_and_reserved_close_save_reopen_do_not_reset_usage() {
         &mut c,
         SessionOperation::ToriPreferences {
             settings: crate::tori_document::ToriSettings {
+                play_mode: PlayMode::HumanEngine,
                 orientation: t::Side::Gote,
             },
         },
@@ -863,6 +865,7 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
         &mut c,
         SessionOperation::ToriPreferences {
             settings: crate::tori_document::ToriSettings {
+                play_mode: PlayMode::HumanEngine,
                 orientation: t::Side::Gote,
             },
         },
@@ -889,6 +892,7 @@ fn stale_and_cancelled_open_and_save_receipts_never_replace_or_clean_newer_conte
         &mut c,
         SessionOperation::ToriPreferences {
             settings: crate::tori_document::ToriSettings {
+                play_mode: PlayMode::HumanEngine,
                 orientation: t::Side::Sente,
             },
         },
@@ -1309,6 +1313,7 @@ fn typed_identity_refusal_and_interrupted_save_keep_complete_accepted_document_d
             &mut c,
             SessionOperation::ToriPreferences {
                 settings: crate::tori_document::ToriSettings {
+                    play_mode: PlayMode::HumanEngine,
                     orientation: t::Side::Gote
                 }
             }
@@ -1483,12 +1488,14 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
     let receipt = c
         .queue_shogi_seed(
             archive::ShogiSeed::Record {
+                play_mode: PlayMode::HumanEngine,
                 record: Box::new(s::GameRecord::from_game(&s::Game::new())),
                 human: s::Side::Sente,
                 orient_human: false,
             },
             Some(SessionOperation::ShogiPreferences {
                 settings: ShogiSettings {
+                    play_mode: PlayMode::HumanEngine,
                     orientation: s::Side::Gote,
                     analysis_defaults: WorkLimits {
                         time_ms: None,
@@ -1514,6 +1521,7 @@ fn rejected_outgoing_replacements_preserve_tori_document_and_accepted_execution(
             draft,
             Some(SessionOperation::XiangqiPreferences {
                 settings: XiangqiSettings {
+                    play_mode: PlayMode::HumanEngine,
                     orientation: mshogi_core::xiangqi::Side::Black,
                     analysis_defaults: WorkLimits {
                         time_ms: None,

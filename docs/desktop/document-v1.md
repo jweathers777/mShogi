@@ -8,7 +8,10 @@ there is no compatibility reader, fallback, converter or dual writer.
 
 ## Envelope and native payloads
 
-Every field is required. Unknown/duplicate fields reject. `game_kind`,
+Envelope fields are required. Unknown/duplicate fields reject. Native desktop
+settings include `play_mode` (`human_engine` or `two_humans`); its absence in an
+existing document means `human_engine`. The selected mode survives Save/Open
+and cannot change through display preferences. `game_kind`,
 `rules_profile`, `profile_edition` and `native_schema_version` must agree:
 
 | Game | Selected profile | Live native schema |

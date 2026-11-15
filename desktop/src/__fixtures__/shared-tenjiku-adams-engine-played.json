@@ -5502,6 +5502,7 @@
     "settings": {
       "game_kind": "tenjiku",
       "settings": {
+        "play_mode": "human_engine",
         "orientation": "gote"
       }
     }
@@ -5527,6 +5528,16 @@
   "game": "tenjiku",
   "profile": "mshogi.tenjiku.adams1999-modern.v1",
   "edition": "ADAMS1999-MODERN+MSH83-2026-11-04",
+  "play_mode": "human_engine",
+  "local_actor": {
+    "id": {
+      "game_kind": "tenjiku",
+      "side": "gote"
+    },
+    "key": "mshogi.tenjiku.adams1999-modern.v1:gote",
+    "label": "Gote",
+    "first_mover": false
+  },
   "human": {
     "id": {
       "game_kind": "tenjiku",

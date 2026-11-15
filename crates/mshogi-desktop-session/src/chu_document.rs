@@ -15,6 +15,9 @@ pub const MAX_CHU_DOCUMENT_WORK: u64 = 12_000_000;
 #[serde(deny_unknown_fields)]
 /// Supported Chu document orientation; bounded execution limits are explicit per request.
 pub struct ChuSettings {
+    /// Persisted ownership of the two native participants.
+    #[serde(default)]
+    pub play_mode: crate::PlayMode,
     /// Native side displayed at the bottom.
     pub orientation: c::Side,
 }
@@ -262,8 +265,19 @@ impl ValidatedChuDocument {
         human: c::Side,
         stopped: &mut impl FnMut() -> bool,
     ) -> Result<Self, ChuDocumentError> {
+        Self::new_with_mode(record, human, crate::PlayMode::default(), stopped)
+    }
+    pub(crate) fn new_with_mode(
+        record: c::GameRecord,
+        human: c::Side,
+        play_mode: crate::PlayMode,
+        stopped: &mut impl FnMut() -> bool,
+    ) -> Result<Self, ChuDocumentError> {
         check(stopped)?;
-        let settings = ChuSettings { orientation: human };
+        let settings = ChuSettings {
+            orientation: human,
+            play_mode,
+        };
         let record = CanonicalRecord::chu(record);
         validate(
             Payload {
@@ -457,7 +471,14 @@ impl ValidatedChuDocument {
                 })
                 .map_err(native_error)?;
             }
-            ChuControl::Settings { settings } => p.settings = settings.clone(),
+            ChuControl::Settings { settings } => {
+                if settings.play_mode != p.settings.play_mode {
+                    return Err(invalid(
+                        "participant mode can only be selected for a new game",
+                    ));
+                }
+                p.settings = settings.clone();
+            }
             ChuControl::Rewind { event_index, .. } => {
                 if *event_index >= game.events().len() {
                     return Err(invalid("rewind must retire an event"));
@@ -670,7 +691,12 @@ fn validate(
                     game.replay_work().saturating_sub(before),
                 )?;
             }
-            ChuControl::Settings { settings: next } => settings = next.clone(),
+            ChuControl::Settings { settings: next } => {
+                if next.play_mode != settings.play_mode {
+                    return Err(invalid("participant mode changed within a document"));
+                }
+                settings = next.clone();
+            }
             ChuControl::Rewind { event_index, .. } => {
                 if *event_index >= game.events().len() {
                     return Err(invalid("invalid rewind prefix"));
@@ -700,6 +726,11 @@ fn validate(
                     .observations
                     .get(obs)
                     .ok_or_else(|| invalid("missing observation"))?;
+                if settings.play_mode.is_two_humans()
+                    && matches!(o.context.purpose, ExecutionPurpose::EngineTurn {})
+                {
+                    return Err(invalid("two-human documents cannot contain engine turns"));
+                }
                 if !o.matches(&o.context)
                     || !matches!(
                         o.result,

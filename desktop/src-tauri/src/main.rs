@@ -375,6 +375,7 @@ async fn game_new(
     game: mshogi_desktop_session::GameKind,
     human: mshogi_desktop_session::NativeSide,
     profile: mshogi_desktop_session::RulesProfile,
+    play_mode: mshogi_desktop_session::PlayMode,
     expected: mshogi_desktop_session::SharedOpenToken,
 ) -> Result<mshogi_desktop_session::SharedSnapshot, String> {
     ensure_product_mode(&app)?;
@@ -387,7 +388,8 @@ async fn game_new(
         &shutdown,
         |controller| {
             let reservation = controller.lifecycle().reserve_command()?;
-            let (initial, receipt) = controller.shared_new_game(expected, profile, human)?;
+            let (initial, receipt) =
+                controller.shared_new_game_with_mode(expected, profile, human, play_mode)?;
             Ok::<_, String>((initial, receipt, reservation))
         },
     )??;

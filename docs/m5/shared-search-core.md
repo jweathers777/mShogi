@@ -230,8 +230,13 @@ of these games moves, not in a copy for each game.
 
 ## Present limits
 
-- Selectivity is the set that the earlier search had, in standard form.
-  MSH-166 (Search Selectivity Completion) adds and tests the missing techniques.
+- MSH-166 (Search Selectivity Completion) adds reverse futility, razoring,
+  late-move pruning, internal iterative reduction, singular extensions and an
+  improving modifier to the shared core for Chess and Tori. The combined set
+  passed its sequential predecessor test (+40 -3 =17) and improved the development
+  blunder result from 86 to 98 of 146. See [evidence](evidence/msh166/combined/README.md).
+  Static pruning remains a private approximation; native roots and real outcomes
+  retain their authority. Low-material LMR remains enabled.
 - MSH-167 (Engine Time Management) adds shared clock allocation and adaptive
   soft targets, with a hard response budget. Chess UCI uses it; fixed move-time
   diagnostics and desktop defaults retain their policy. See the

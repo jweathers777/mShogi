@@ -19,9 +19,10 @@ infrastructure. Work in this order:
    five seconds 14–16 in the middlegame (before: 8–9); +55 −0 =5 against the predecessor.
 3. MSH-165 (Tori Search Core Adoption): prove the shared boundary with a second game.
    Done 2026-11-14: Tori uses the core unchanged; see shared-search-core.md.
-4. MSH-166 (Search Selectivity Completion). A first round (2026-11-15) tested each
-   technique alone with tests too small to decide; it is not a rejection. The task
-   continues with the combined set.
+4. MSH-166 (Search Selectivity Completion). The combined set reached H1 after
+   30 pairs against task-start main (+40 -3 =17), with blunders avoided improving
+   from 86 to 98 of 146. See [combined evidence](evidence/msh166/combined/README.md).
+   The earlier individual tests were too small to decide; they were not rejections.
 5. MSH-167 (Engine Time Management). Done 2026-11-15.
 6. MSH-168 (Classical Endgame and King Evaluation).
 

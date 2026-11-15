@@ -1,11 +1,11 @@
 ---
 id: MSH-166
 title: Search Selectivity Completion
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T17:00:00Z'
+updated_date: '2026-11-15T17:08:00Z'
 labels:
   - handle:search-selectivity-completion
 milestone: m-5
@@ -33,18 +33,18 @@ Handle: Search Selectivity Completion.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The combined set has a game-test result with a sequential decision against the engine at the start of the task, and each technique left out has a recorded reason
-- [ ] #2 The accepted set is stronger than the engine at the start of the task in that game test
-- [ ] #3 The blunder suite result of the accepted set is not worse than at the start of the task
-- [ ] #4 Accepted techniques are in the shared core, not in Chess-only code, unless a recorded reason shows they are Chess-specific, and the Tori tests pass
+- [x] #1 The combined set has a game-test result with a sequential decision against the engine at the start of the task, and each technique left out has a recorded reason
+- [x] #2 The accepted set is stronger than the engine at the start of the task in that game test
+- [x] #3 The blunder suite result of the accepted set is not worse than at the start of the task
+- [x] #4 Accepted techniques are in the shared core, not in Chess-only code, unless a recorded reason shows they are Chess-specific, and the Tori tests pass
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -69,4 +69,14 @@ Ticket revision, 2026-11-15 (requested by John): the approach changed from one t
 2026-11-15 combined-set round: owner Codex /root, sole builder in the primary main checkout /Users/johnweathers/Development/Personal/mShogi. No active task owner at startup; unrelated tenjiku-historical-access worktree is untouched. Frozen predecessor is task-start main d185fc63; build-engine started before production edits. Backlog 1.55.3 matches the project baseline. Verification Level 1: shared platform-independent search changes; local Chess/Tori correctness, blunder comparison, speed/depth measurements, predecessor games and independent review. Broader platform and packaged GUI checks remain deferred to the integration/release checkpoint.
 
 Combined candidate checkpoint: baseline blunders 86/146 avoided, 40 reference matches, median depth 13; combined candidate 98/146 avoided, 48 matches, median depth 14 at 1000 ms with four workers. Fixed-depth benchmark 857606 nodes/0.60 s baseline versus 406067 nodes/0.34 s candidate (three repeats). Timed measurements overlapped local checks, so small timing differences are not precision claims. Search library: 74 passed, 1 ignored. Independent code review by /root/selectivity_review found missing static-eval restoration after same-ply null verification; fixed before candidate measurements. Old twofold warm-node assertion replaced by direct table retention/clear test and native legal completed response checks. No technique removed. Decision: proceed to the predeclared combined-set game test. Evidence and parameters: docs/m5/evidence/msh166/combined/README.md.
+
+Combined-set decision: retain all six techniques. Frozen candidate d58f0740300a7e201a8b0e3493595eb977748958, binary sha256 76c97dd56ec30a19bcd1004307e7e8ffef3de91e97ac931468fa528cefd8097a. Sequential test H1 at 30 pairs, LLR4.831>2.944; +40 -3 =17, zero failed pairs, three cancelled. Median depth10 versus9. Actual match wall90.014s/CPU318.641s, including cancelled CPU7.749s. Maximum1200 pairs was available; sequential decision stopped the test. Improved blunders and fixed-depth cost support retaining the coherent set; this is fast self-play on exposed openings, not an external rating. Independent code review approved corrections; final evidence review and consumer test completion pending. One source-bound record: docs/m5/evidence/msh166/combined/verification.json.
+
+Final consumer checks passed; exact commands, source hashes, logs and independent review are in docs/m5/evidence/msh166/combined/verification.json. All criteria supported. No remaining review finding. Production integrated on main at d58f0740; completion commit adds the test-only console assertion correction, evidence and documentation. No task worktree was created; the unrelated historical-access worktree is untouched. Next eligible priority task is MSH-168 (Classical Endgame and King Evaluation).
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed the combined classical selectivity set in the shared Chess/Tori core: reverse futility, razoring, late-move pruning, internal iterative reduction, singular extensions and improving. Retained low-material LMR; removed legal-move probes from approximate pruning. Why: improve useful search depth and playing strength. Frozen predecessor: task-start main d185fc63. Accepted production: d58f0740 on main. Sequential game test at50ms reached H1 after30pairs (+40 -3 =17), zero failed pairs,90.014s wall/318.641s CPU. Blunders avoided improved86 to98 of146; fixed-depth benchmark0.60s to0.34s. All six techniques retained. Level1 local perft/differential, search, Tori, coordinator and engine/console checks passed, with independent code and evidence review approved. Exact source, commands, counts, logs and limitations: docs/m5/evidence/msh166/combined/verification.json and README.md. This is exposed fast predecessor self-play, not an external rating. Linux, Windows and packaged GUI checks are deferred to the next Level3 checkpoint. No blocker remains. Next: MSH-168 (Classical Endgame and King Evaluation).
+<!-- SECTION:FINAL_SUMMARY:END -->

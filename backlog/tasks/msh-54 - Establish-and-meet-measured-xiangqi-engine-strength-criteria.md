@@ -21,7 +21,7 @@ documentation:
   - docs/design.md
   - docs/m5/strength-roadmap.md
   - docs/m5/chess-search-costs.md
-ordinal: 54000
+ordinal: 179000
 ---
 
 ## Description

@@ -14,7 +14,7 @@ dependencies:
 documentation:
   - docs/m5/chess-tactical-forecasting.md
 priority: high
-ordinal: 158000
+ordinal: 85000
 ---
 
 ## Description

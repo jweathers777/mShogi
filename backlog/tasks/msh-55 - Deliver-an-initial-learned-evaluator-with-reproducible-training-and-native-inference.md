@@ -21,7 +21,7 @@ dependencies:
 documentation:
   - docs/design.md
   - docs/m5/strength-roadmap.md
-ordinal: 55000
+ordinal: 180000
 ---
 
 ## Description

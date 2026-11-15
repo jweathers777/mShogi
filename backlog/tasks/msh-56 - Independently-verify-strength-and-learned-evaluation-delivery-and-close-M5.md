@@ -22,7 +22,7 @@ documentation:
   - docs/design.md
   - docs/m5/opening-knowledge.md
   - docs/m5/strength-roadmap.md
-ordinal: 56000
+ordinal: 181000
 ---
 
 ## Description

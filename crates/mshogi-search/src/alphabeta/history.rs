@@ -148,10 +148,7 @@ mod tests {
     fn large_and_extreme_slot_counts_have_fixed_storage() {
         for slots in [2896, 2897, 8352, 22528, usize::MAX] {
             let mut table = ContinuationHistory::new(slots);
-            let expected = slots
-                .checked_mul(slots)
-                .unwrap_or(usize::MAX)
-                .min(CONTINUATION_ENTRIES);
+            let expected = slots.saturating_mul(slots).min(CONTINUATION_ENTRIES);
             assert_eq!(table.entries.len(), expected);
             assert_eq!(
                 History::new(slots).entries.len(),

@@ -5,11 +5,14 @@
 //! mobility, king safety, threats, conversion and a few specialized endings.
 //! Material, placement and phase are kept incrementally by the position. The
 //! other terms use the current attack geometry. All coefficients are original,
-//! transparent, untrained heuristics. A score never establishes a game result.
+//! transparent classical terms. Their bounded weights can be fitted offline.
+//! A score never establishes a game result.
 use crate::chess_bitboard::{BISHOP, ChessPosition, KING, KNIGHT, PAWN, QUEEN, ROOK, VALUE};
 
+pub mod weights;
+
 /// Identity of this evaluator.
-pub const EVALUATOR_ID: &str = "mshogi.chess.conventional-tapered.v1";
+pub const EVALUATOR_ID: &str = "mshogi.chess.classical-texel.v2";
 /// Initial total non-pawn material; the blend is capped at this phase.
 pub const MIDDLE_PHASE: i32 = 6_400;
 const MAX_ENDGAME_KING_DANGER: i32 = 128;
@@ -89,6 +92,8 @@ pub struct Evaluation {
     pub black: Terms,
     /// Blend in 0..=6400.
     pub middle_phase: i32,
+    /// Endgame scale by score-leading color, in 0..=64.
+    pub endgame_scale: [i32; 2],
     /// Specialized ending: kind, strong side (0 White, 1 Black) and its score.
     pub specialized: Option<(EndgameKind, usize, i32)>,
 }
@@ -104,8 +109,20 @@ impl Evaluation {
                 }
             }
             None => {
-                self.white.contribution(self.middle_phase)
-                    - self.black.contribution(self.middle_phase)
+                if self.endgame_scale == [64, 64] {
+                    return self.white.contribution(self.middle_phase)
+                        - self.black.contribution(self.middle_phase);
+                }
+                let middle =
+                    self.white.contribution(MIDDLE_PHASE) - self.black.contribution(MIDDLE_PHASE);
+                let end = self.white.contribution(0) - self.black.contribution(0);
+                let strong = usize::from(end < 0);
+                ((i64::from(middle) * i64::from(self.middle_phase)
+                    + i64::from(end)
+                        * i64::from(MIDDLE_PHASE - self.middle_phase)
+                        * i64::from(self.endgame_scale[strong])
+                        / 64)
+                    / i64::from(MIDDLE_PHASE)) as i32
             }
         }
     }
@@ -267,6 +284,10 @@ pub fn evaluate(p: &ChessPosition) -> i32 {
 
 /// Evaluate with the full decomposition.
 pub fn decompose(p: &ChessPosition) -> Evaluation {
+    weights::Prepared::new(p).decompose(&weights::DEFAULT)
+}
+
+fn raw_decompose(p: &ChessPosition) -> Evaluation {
     let f = Features::new(p);
     let all = p.all();
     let mut terms = [Terms::default(); 2];
@@ -491,6 +512,7 @@ pub fn decompose(p: &ChessPosition) -> Evaluation {
         white: terms[0],
         black: terms[1],
         middle_phase: phase,
+        endgame_scale: [64, 64],
         specialized: specialized(p, &f, &terms, phase),
     }
 }

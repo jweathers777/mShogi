@@ -174,7 +174,7 @@ fn deterministic_depth_and_node_limits_return_legal_bestmoves() {
         "PVS counts root/leaves plus any re-search"
     );
     assert!(info[0].contains("seldepth 1"));
-    assert!(info[0].contains("score cp 61"));
+    assert!(info[0].contains("score cp 52"));
     assert!(engine.finish().contains("no completed iteration"));
 }
 #[test]

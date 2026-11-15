@@ -1,10 +1,11 @@
 ---
 id: MSH-168
 title: Classical Endgame and King Evaluation
-status: To Do
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T20:43:00Z'
+updated_date: '2026-11-15T21:41:00Z'
 labels:
   - handle:classical-endgame-king-evaluation
 milestone: m-5
@@ -34,15 +35,15 @@ Handle: Classical Endgame and King Evaluation.
 <!-- AC:BEGIN -->
 - [x] #1 A baseline of the engine at the start of the task is recorded before evaluation changes: the blunder suite with its endgame positions reported separately
 - [ ] #2 Each evaluation change set has a game-test result with a sequential decision, and each change left out has a recorded reason
-- [ ] #3 The accepted evaluation is stronger than the engine at the start of the task in a game test
-- [ ] #4 The blunder suite result is not worse than at the start of the task, with the endgame positions reported separately
-- [ ] #5 Weight tuning, if used, records its position source, license, method and held-out check, and the tuned weights are confirmed by a game test
+- [x] #3 The accepted evaluation is stronger than the engine at the start of the task in a game test
+- [x] #4 The blunder suite result is not worse than at the start of the task, with the endgame positions reported separately
+- [x] #5 Weight tuning, if used, records its position source, license, method and held-out check, and the tuned weights are confirmed by a game test
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
@@ -50,7 +51,7 @@ Handle: Classical Endgame and King Evaluation.
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-1. Freeze main8ddfc1a0 before evaluation changes; record baseline bench and1000ms four-worker blunders, including47 endgames. 2. Use the baseline (100/146 avoided,31/47 endgames;50 reference matches) and code inspection to implement one coherent classical evaluation set: material/pawn-count and opposite-bishop draw scaling, endgame king distance to pawns, and coordinated queen-led king danger. Preserve specialized endings, native authority, current search and Tori evaluation. No Texel tuning, training set or new tablebase. 3. Add independent positive/negative material and king-geometry fixtures, color symmetry, and run Chess perft/differential/search plus affected consumer checks. Measure candidate bench/blunders without per-position tuning. 4. Freeze the candidate and run the existing paired sequential game test against8ddfc1a0 at50ms/move,4workers,seed168,H0=0/H1=15,alpha=beta=.05,min30,max1200pairs,75minute wall cap. Record actual compute and failures. At the decision/bound assess strength, overall/endgame blunders and cost; no small-screen rejection and no repeated local fixes without a new evidence-based decision. 5. Independent review and normal main integration only when all criteria pass. Level1 local verification; broader platform/GUI deferred to next Level3 checkpoint.
+Next round: 1. Keep codex/msh-168-classical-evaluation in the existing chat worktree; freeze main f530662d (product source identical to task-start8ddfc1a0) before changes. Reuse recorded baseline100/146, endgame31/47. 2. Generate fresh native-authoritative self-play from seeded random legal openings, no exposed MSH161 positions: initially600 games,4096nodes/move, four workers,512ply/game and60s/game bounds,20minute generation cap. Keep only native concluded games and quiet positions, split by game before fitting, deduplicate board identities across splits. Record source/binary hashes, seed, outcome coverage, license and actual compute. 3. Jointly fit a bounded set of existing evaluation weights plus material draw scaling and endgame king activity using Texel squared sigmoid loss, fixed pawn anchor and exact Rust evaluation path. Preserve native rules, SEE values, phase, specialized ending guards. Fit training only; use a separate validation partition for stopping and inspect held-out once after freezing weights.10minute fitting cap; do not fit exposed blunders. 4. Run independent correctness/geometry/color tests, perft/differential, affected consumer checks, benchmark and blunders; record overall/endgame/opening results. Freeze one tuned candidate. 5. One sequential game test against frozen predecessor: H0=0,H1=10 chosen now, alpha=beta=.05,min30,max1200pairs,50ms/move,four workers,70minute cap. Stop at decision or cap; a cap is no decision. Record compute including discarded earlier rounds; no automatic additional candidates. 6. Independent review and retain only on accepted strength and non-worse blunders. Level1 local checks; Linux/Windows/GUI deferred to next Level3 checkpoint.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -73,4 +74,14 @@ Checkpoint2: unchanged revised endgame set9c67c98d reached600pairs with NO DECIS
 Final bounded checkpoint: revised set reached 1000 pairs with no decision (+535 -496 =969, estimate +6.78 Elo, 95% interval -3.96 to +17.52, LLR -0.360; zero failed pairs). This is not rejection, but does not satisfy strength acceptance. Stop this round; restore evaluator and tests exactly to task-start 8ddfc1a00c03. Both trial commits and receipts remain available. Total match wall 5624.520s (93.74min), CPU 21800.876s including cancellation; the continued comparison includes the first600 once. Evidence: docs/m5/evidence/msh168/README.md and verification.json. AC1 established; no accepted candidate, so task remains unfinished. Next action: reconsider the approach and record a new bounded plan; authorized Texel tuning is a possible direction after establishing a licensed quiet-position corpus and held-out set. No additional trial is started by this handoff. Branch correction: work and evidence preserved on codex/msh-168-classical-evaluation in /Users/johnweathers/.codex/worktrees/msh-168-evaluation/mShogi. Primary main restored to published 8ddfc1a0 before normal reviewed integration. AGENTS.md now explicitly requires feature branches and ownership-based temporary worktrees.
 
 Independent final review by /root/evaluation_review passed: all1000 receipts, unchanged600 prefix, color pairing, source/binary identities, every sequential prefix and cumulative compute verified. Final evaluator and test bytes match predecessor Git objects; git diff 8ddfc1a0 -- crates tools Cargo.toml Cargo.lock is empty. Formatting and whitespace checks pass. Integrate only policy and evidence; task remains To Do for a revised approach. Feature history retains candidate939498e4 and revised9c67c98d; preservation checkpoint e9cfc0cf and policy c061718e. Integration target main. No claim of stronger play or completed acceptance.
+
+Next-round ownership: Codex /root on existing codex/msh-168-classical-evaluation, /Users/johnweathers/.codex/worktrees/msh-168-evaluation/mShogi. User expressly directed reuse of this branch and Texel tuning of existing weights jointly with material draw scaling and endgame king activity. Initial generation and fitting bounds are20+10minutes; one match cap70minutes. Prior round remains separate evidence (93.74min match wall), not reused as training data. Self-play generation is newly produced project data with provenance and project BSD terms; no external games or exposed blunder positions enter fitting.
+
+Corpus coverage checkpoint before any fitting or held-out loss inspection: first600 games all reached native outcomes,3979 quiet samples,39.00s wall/147.52s CPU. Expand once to6000 games total within the same20minute generation bound to give32 jointly fitted parameters broader material coverage. No outcome-based game selection. Keep the initial600 and all generation receipts; no further automatic expansion.
+
+Texel candidate checkpoint:6000 fresh games,5999 native finishes,1unfinished excluded; independent replay728034plies and39270 raw quiet samples passed. Split30902train/3809validation/4052heldout positions, no game/family/board overlap.32 bounded grouped classical weights fit with fixedK=.95; validation selected second completed coarse sweep, patience stopped fitting. Heldout inspected once after freeze: MSE .0561861 to .0529987; all material-phase slices lower. Development blunders112/146 vs100, endgames38/47 vs31, middlegame60/83 vs54, opening14/16 vs15. Bench466994nodes/.4109s vs406067/.3290s: slower fixed-depth work.79 search tests pass,1ignored;29 consumers pass;clippy and formatting pass. Two code review defects (intermediate overflow and weighted bareking centrality cancellation) fixed before fitting. No fit adjustment after heldout/blunders. Proceed with the single predeclared H1=10 game test; evidence docs/m5/evidence/msh168/texel.
+
+Single tuned-candidate game test complete: c3363d3d reached H1 at597pairs under predeclaredH0=0/H1=10,alpha=beta=.05,50ms/four workers/seed168. +424 -340 =430,zero failures,three cancelled. LLR2.96753 crossed2.94444; estimate+24.48Elo (95% interval+8.58 to+40.49). Match wall2022.210s/CPU7839.704s including19.460 cancelledCPU. Retain tuned default: overall blunders112/146 vs100 and endgames38/47 vs31. Earlier first set remainsH0 at742; revised untuned set remainsNO DECISION at1000, not rejection. Total all-round match wall7646.730s (127.45min),CPU29640.580s; generation/fitting separate. Final receipt audit pending. Production source and tests unchanged from testedc3363d3d. Durable raw corpus and frozen binaries byte-verified in primary target/strength/texel; manifests and receipts in docs/m5/evidence/msh168/texel.
+
+Final independent review passed: /root/evaluation_review checked all597paired receipts,1194color-mapped outcomes, first eligible H1 crossing at597, frozen hashes and compute. Cancellation count/CPU are aggregate-only harness records; this limit is disclosed. Accepted tuned evaluator is ready for normal main integration. AC2 literal each-set decision wording conflicts with permitted capped no-decision outcomes and the user-directed next round; clarification requested before checkingAC2 or markingDone. Earlier revised set will not be calledH0. No additional match is needed for the accepted candidate.
 <!-- SECTION:NOTES:END -->

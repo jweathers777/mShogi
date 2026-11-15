@@ -77,6 +77,11 @@ Quality Assessment) stays held. MSH-153 (Classical Compensation Calibration) is 
 (2026-11-15); MSH-168 covers its subject. Shogi, Xiangqi, Chu and Tenjiku move to the shared
 core in later tasks after MSH-165, in this order: Shogi and Xiangqi first, then Chu and
 Tenjiku (project decision, 2026-11-15).
+The tasks are MSH-180 (Shogi Search Core Adoption), MSH-181 (Xiangqi Search Core
+Adoption), MSH-178 (Search Core History Scaling, needed before Chu), MSH-182 (Chu
+Search Core Adoption) and MSH-183 (Tenjiku Search Core Adoption). MSH-179 (Clock
+and Session for All Games) gives the games on the core a time budget and kept
+engine state. MSH-50 to MSH-54 keep the strength criteria of each game.
 
 # Earlier checkpoint — competitive diagnosis complete (superseded 2026-11-13)
 

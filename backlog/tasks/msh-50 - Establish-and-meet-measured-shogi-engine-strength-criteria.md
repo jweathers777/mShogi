@@ -4,7 +4,7 @@ title: Establish and meet measured shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-15T16:47:00Z'
+updated_date: '2026-11-15T22:31:00Z'
 labels:
   - handle:conventional-shogi
 milestone: m-5
@@ -17,6 +17,7 @@ dependencies:
   - MSH-137
   - MSH-138
   - MSH-139
+  - MSH-180
 documentation:
   - docs/design.md
   - docs/m5/strength-roadmap.md
@@ -77,4 +78,6 @@ Owner revision2026-11-09: MSH-139 (Chess Strength Assessment) is discovery, not 
 Status check, 2026-11-15: the 2026-11-09 note above asks for John's choice of the transfer direction after MSH-139 (Chess Strength Assessment). That direction was chosen on 2026-11-13: one shared search core, with Tori as the second game (done in MSH-165). When this game starts is still John's decision; this task stays To Do until then.
 
 Decision, 2026-11-15: John set the order of games: Shogi and Xiangqi move to the shared core first, then Chu Shogi and Tenjiku Shogi. When this task starts is still John's selection.
+
+Status check, 2026-11-15: the move of this game to the shared search core is now the separate task MSH-180. This task keeps the strength criteria, opponent pool and measurement, and depends on MSH-180.
 <!-- SECTION:NOTES:END -->

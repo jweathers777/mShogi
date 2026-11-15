@@ -4,7 +4,7 @@ title: Establish and meet measured tenjiku shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-15T16:47:00Z'
+updated_date: '2026-11-15T22:31:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -13,6 +13,7 @@ dependencies:
   - MSH-109
   - MSH-50
   - MSH-54
+  - MSH-183
 documentation:
   - docs/design.md
   - docs/m5/strength-roadmap.md
@@ -52,4 +53,6 @@ Project direction 2026-11-13 (AGENTS.md, "Current Chess strength direction"): Te
 Status check, 2026-11-15: this task depends on MSH-50 (Shogi) and MSH-54 (Xiangqi) because of the 2026-11-08 order of games. That order is no longer the recorded direction (see the description). The dependencies stay until John decides the order.
 
 Decision, 2026-11-15: John confirmed the order Shogi and Xiangqi first. The dependencies on MSH-50 (Shogi) and MSH-54 (Xiangqi) stay as recorded.
+
+Status check, 2026-11-15: the move of this game to the shared search core is now the separate task MSH-183. This task keeps the strength criteria, opponent pool and measurement, and depends on MSH-183.
 <!-- SECTION:NOTES:END -->

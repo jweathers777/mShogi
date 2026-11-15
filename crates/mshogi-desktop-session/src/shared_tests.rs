@@ -65,8 +65,8 @@ fn incomplete(context: ExecutionContext) -> ExecutionObservation {
         result: ExecutionResult::Shogi {
             result: ShogiResult::Incomplete {
                 telemetry: mshogi_engine::ShogiTelemetry {
-                    evaluator_id: "mshogi.shogi.material.v1".into(),
-                    search_id: "mshogi.shogi.full-width.v1".into(),
+                    evaluator_id: "mshogi.shogi.material-placement.v1".into(),
+                    search_id: "mshogi.shogi.shared-core.v1".into(),
                     perspective: match &context.game {
                         CanonicalRecord::Shogi(r) => r.side_to_move(),
                         _ => unreachable!(),

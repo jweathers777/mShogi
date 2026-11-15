@@ -24,7 +24,10 @@ infrastructure. Work in this order:
    from 86 to 98 of 146. See [combined evidence](evidence/msh166/combined/README.md).
    The earlier individual tests were too small to decide; they were not rejections.
 5. MSH-167 (Engine Time Management). Done 2026-11-15.
-6. MSH-168 (Classical Endgame and King Evaluation).
+6. MSH-168 (Classical Endgame and King Evaluation). The jointly tuned classical
+   evaluation reached H1 (H1=10) after 597 pairs against task-start main
+   (+424 -340 =430). Blunders avoided rose from 100 to 112 of 146, including
+   31 to 38 of 47 endgames. See [Texel evidence](evidence/msh168/texel/README.md).
 
 Accept engine changes on correctness checks, the blunder suite and game tests, not
 on identical search output or single positions.

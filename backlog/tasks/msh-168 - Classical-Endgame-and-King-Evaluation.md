@@ -1,11 +1,11 @@
 ---
 id: MSH-168
 title: Classical Endgame and King Evaluation
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T21:03:00Z'
+updated_date: '2026-11-15T21:41:00Z'
 labels:
   - handle:classical-endgame-king-evaluation
 milestone: m-5
@@ -35,15 +35,15 @@ Handle: Classical Endgame and King Evaluation.
 <!-- AC:BEGIN -->
 - [x] #1 A baseline of the engine at the start of the task is recorded before evaluation changes: the blunder suite with its endgame positions reported separately
 - [ ] #2 Each evaluation change set has a game-test result with a sequential decision, and each change left out has a recorded reason
-- [ ] #3 The accepted evaluation is stronger than the engine at the start of the task in a game test
-- [ ] #4 The blunder suite result is not worse than at the start of the task, with the endgame positions reported separately
-- [ ] #5 Weight tuning, if used, records its position source, license, method and held-out check, and the tuned weights are confirmed by a game test
+- [x] #3 The accepted evaluation is stronger than the engine at the start of the task in a game test
+- [x] #4 The blunder suite result is not worse than at the start of the task, with the endgame positions reported separately
+- [x] #5 Weight tuning, if used, records its position source, license, method and held-out check, and the tuned weights are confirmed by a game test
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
@@ -80,4 +80,8 @@ Next-round ownership: Codex /root on existing codex/msh-168-classical-evaluation
 Corpus coverage checkpoint before any fitting or held-out loss inspection: first600 games all reached native outcomes,3979 quiet samples,39.00s wall/147.52s CPU. Expand once to6000 games total within the same20minute generation bound to give32 jointly fitted parameters broader material coverage. No outcome-based game selection. Keep the initial600 and all generation receipts; no further automatic expansion.
 
 Texel candidate checkpoint:6000 fresh games,5999 native finishes,1unfinished excluded; independent replay728034plies and39270 raw quiet samples passed. Split30902train/3809validation/4052heldout positions, no game/family/board overlap.32 bounded grouped classical weights fit with fixedK=.95; validation selected second completed coarse sweep, patience stopped fitting. Heldout inspected once after freeze: MSE .0561861 to .0529987; all material-phase slices lower. Development blunders112/146 vs100, endgames38/47 vs31, middlegame60/83 vs54, opening14/16 vs15. Bench466994nodes/.4109s vs406067/.3290s: slower fixed-depth work.79 search tests pass,1ignored;29 consumers pass;clippy and formatting pass. Two code review defects (intermediate overflow and weighted bareking centrality cancellation) fixed before fitting. No fit adjustment after heldout/blunders. Proceed with the single predeclared H1=10 game test; evidence docs/m5/evidence/msh168/texel.
+
+Single tuned-candidate game test complete: c3363d3d reached H1 at597pairs under predeclaredH0=0/H1=10,alpha=beta=.05,50ms/four workers/seed168. +424 -340 =430,zero failures,three cancelled. LLR2.96753 crossed2.94444; estimate+24.48Elo (95% interval+8.58 to+40.49). Match wall2022.210s/CPU7839.704s including19.460 cancelledCPU. Retain tuned default: overall blunders112/146 vs100 and endgames38/47 vs31. Earlier first set remainsH0 at742; revised untuned set remainsNO DECISION at1000, not rejection. Total all-round match wall7646.730s (127.45min),CPU29640.580s; generation/fitting separate. Final receipt audit pending. Production source and tests unchanged from testedc3363d3d. Durable raw corpus and frozen binaries byte-verified in primary target/strength/texel; manifests and receipts in docs/m5/evidence/msh168/texel.
+
+Final independent review passed: /root/evaluation_review checked all597paired receipts,1194color-mapped outcomes, first eligible H1 crossing at597, frozen hashes and compute. Cancellation count/CPU are aggregate-only harness records; this limit is disclosed. Accepted tuned evaluator is ready for normal main integration. AC2 literal each-set decision wording conflicts with permitted capped no-decision outcomes and the user-directed next round; clarification requested before checkingAC2 or markingDone. Earlier revised set will not be calledH0. No additional match is needed for the accepted candidate.
 <!-- SECTION:NOTES:END -->

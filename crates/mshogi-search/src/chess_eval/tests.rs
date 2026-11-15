@@ -335,24 +335,3 @@ fn endgame_king_activity_follows_the_pawns() {
     // Without pawns the earlier bare-king conversion preference stays intact.
     assert_eq!(eval("7k/8/8/8/3K4/8/8/8 w - - 0 1").white.endgame.end, 0);
 }
-
-#[test]
-fn coordinated_major_attack_increases_king_danger() {
-    let queen = eval("k7/8/8/8/8/6q1/5PPP/6K1 w - - 0 1");
-    let supported = eval("k6r/8/8/8/8/6q1/5PPP/6K1 w - - 0 1");
-    // Shield30 + castled20. The queen attacks f2/g2/h2: pressure15,
-    // one attacker, no supported contact check, so danger45 gives5.
-    assert_eq!(queen.white.king_safety.middle, 5);
-    // The rook adds h2: pressure18, two attackers, supported Qh2+ adds12.
-    // Danger84 plus its quadratic27 gives50-84-27=-61.
-    assert_eq!(supported.white.king_safety.middle, -61);
-    // With Bg3 instead: pressure9 and supported Bh2+12 give danger48.
-    // There is no queen, so no quadratic term:50-48=2.
-    let no_queen = eval("k6r/8/8/8/8/6b1/5PPP/6K1 w - - 0 1");
-    assert_eq!(no_queen.white.king_safety.middle, 2);
-    // The new term has no endgame effect; the existing bounded endgame pressure
-    // remains responsible for king danger with little material.
-    assert!(supported.white.king_safety.end >= -MAX_ENDGAME_KING_DANGER);
-    let mirrored = eval(&reflect("k6r/8/8/8/8/6q1/5PPP/6K1 w - - 0 1"));
-    assert_eq!(supported.white.king_safety, mirrored.black.king_safety);
-}

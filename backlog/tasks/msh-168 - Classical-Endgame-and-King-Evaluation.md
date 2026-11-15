@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T18:47:00Z'
+updated_date: '2026-11-15T19:30:00Z'
 labels:
   - handle:classical-endgame-king-evaluation
 milestone: m-5
@@ -64,4 +64,8 @@ Owner Codex /root, sole builder in primary main checkout /Users/johnweathers/Dev
 Baseline complete before evaluation changes: frozen8ddfc1a00c03, bench406067nodes/0.329s median; blunders100/146 avoided (endgame31/47,middlegame54/83,opening15/16),50 reference matches. This supersedes earlier engine observations for acceptance. Existing code already has passed-pawn runway, king escort, storms and specialized KPK/fortress endings. This round adds missing general draw scaling and king-activity/attack calibration as one coherent set; it does not repeat earlier isolated pawn-race tuning. Classical technique reference: Stockfish11 material.cpp and evaluate.cpp (pawnless material, opposite bishops and low-pawn scaling, king proximity and nonlinear king danger); implementation and heuristic constants fit the existing centipawn evaluator. No weight fitting or new tablebase is used.
 
 Candidate checkpoint before games:104/146 blunders avoided versus100, including32/47 endgames versus31;53 reference matches versus50. Fixed-depth benchmark508702nodes/0.416s versus406067/0.329s: slower fixed-depth work, not a speed gain. No weight tuning used. Independent initial review found no blocking boundary/symmetry defect; added asymmetric-scale and material guard tests, preserved full scale for pawnless queen-vs-rook. Initial test failures: raw arithmetic expectations needed the independently calculated king-distance contribution; one new queen-vs-rook FEN illegally checked the nonmoving king and was corrected by moving that king. No production rule changed. Decision: freeze the coherent set and proceed to the predeclared sequential game test.
+
+Checkpoint1: combined candidate939498e4 reached H0 at742pairs (+368 -370 =746), estimate-0.5 Elo, zero failed pairs. The better blunders did not establish stronger play. Authoritative results/compute: docs/m5/evidence/msh168/match/result.json. Decision: change direction by removing the added quadratic king-danger term, leaving the coherent material-scaling/king-activity endgame set. Independent reviewer identified that existing danger already scales with attacker count; the extra square may duplicate that reward and applies with a remote queen. This is a testable design hypothesis, not attribution from H0. No single-position tuning. One revised-set test: same frozen task-start predecessor,50ms,4workers,seed168,H0=0/H1=15,alpha=beta=.05,min30,max600pairs,40minute wall cap. Combined match wall will stay below about81minutes if this cap is used. Record all compute, including first failed-strength set. Stop and reconsider after this second checkpoint rather than repeat local removals without new evidence.
+
+Revised endgame-set checkpoint:106/146 avoided versus100 baseline, endgames34/47 versus31, middlegame59/83 versus54, opening13/16 versus15; reference matches50 versus50. Overall and endgame improve, opening slice regresses and is disclosed. Bench506248nodes/0.427s versus406067/0.329s; no speed gain.76 search tests pass,1ignored. Independent reviewer verified first742 paired receipts and first H0 threshold, confirmed exact king-safety restoration and no new code finding. Proceed with the single predeclared revised-set game test.
 <!-- SECTION:NOTES:END -->

@@ -455,16 +455,11 @@ pub fn decompose(p: &ChessPosition) -> Evaluation {
                         checks += count * check_weight;
                     }
                 }
-                let danger = pressure * (2 + attackers.min(4)) + checks;
-                // Several attackers with a queen can overload a shelter. The
-                // quadratic part is bounded; a lone piece gets no such bonus.
-                let coordinated = if attackers >= 2 && p.pieces[other][QUEEN] != 0 {
-                    (danger * danger / 256).min(500)
-                } else {
-                    0
-                };
                 terms[i].king_safety.add(
-                    shelter + 20 * i32::from(castled) - danger - coordinated - f.pawn_storm(man),
+                    shelter + 20 * i32::from(castled)
+                        - pressure * (2 + attackers.min(4))
+                        - checks
+                        - f.pawn_storm(man),
                     if major_participates {
                         -(pressure + checks / 2 + 24 * major_contact_checks.min(2))
                             .min(MAX_ENDGAME_KING_DANGER)

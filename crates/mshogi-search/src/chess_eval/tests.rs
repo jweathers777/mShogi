@@ -13,7 +13,7 @@ fn board(fen: &str) -> ChessPosition {
     ChessPosition::from_position(&Position::from_fen(fen).unwrap())
 }
 fn eval(fen: &str) -> Evaluation {
-    decompose(&board(fen))
+    raw_decompose(&board(fen))
 }
 /// Swap colors and flip the board. Only for positions without castling rights
 /// and without an en passant square.
@@ -58,8 +58,8 @@ fn term_arithmetic_and_perspective() {
     assert_eq!(e.middle_phase, 0);
     assert_eq!(e.white.placement, tapered(-76, 84));
     assert_eq!(e.white_score(), 84);
-    assert_eq!(evaluate(&board(fen)), 84);
-    assert_eq!(evaluate(&board(&fen.replace(" w ", " b "))), -84);
+    let current = evaluate(&board(fen));
+    assert_eq!(evaluate(&board(&fen.replace(" w ", " b "))), -current);
     // a2 pawn: 100 material, 0 placement, -8 isolated + 10 passed + 20 escort.
     let e = eval("7k/8/8/8/8/8/P7/K7 w - - 0 1");
     assert_eq!(e.white.material, 100);
@@ -255,7 +255,7 @@ fn evaluation_is_symmetric_under_color_reflection() {
             if native.en_passant_target().is_none() {
                 let fen = native.to_fen();
                 let e = decompose(&fast);
-                let mirrored = eval(&reflect(&fen));
+                let mirrored = decompose(&board(&reflect(&fen)));
                 assert_eq!(e.white, mirrored.black, "{fen}");
                 assert_eq!(e.black, mirrored.white, "{fen}");
                 assert_eq!(e.white_score(), -mirrored.white_score(), "{fen}");
@@ -281,4 +281,111 @@ fn evaluation_is_symmetric_under_color_reflection() {
         }
     }
     assert!(checked > 3_000, "{checked}");
+}
+
+#[test]
+fn bounded_weights_have_independent_integer_arithmetic() {
+    use weights::{INITIAL, Prepared};
+    // Bare kings: d4 centrality6, h8 centrality0. Phase0, full scale.
+    let p = Prepared::new(&board("7k/8/8/8/3K4/8/8/8 w - - 0 1"));
+    let mut w = INITIAL;
+    w.0[15] = 150;
+    assert_eq!(p.score(&w), 126); // 14*6*150/100.
+    // Both kings are far from pawns: a2 is one step from Ka1, six from Kh8.
+    // KPK specialization is unchanged even when tunable weights change.
+    let p = Prepared::new(&board("7k/8/8/8/8/8/P7/K7 w - - 0 1"));
+    let baseline = raw_decompose(&board("7k/8/8/8/8/8/P7/K7 w - - 0 1")).white_score();
+    w.0[25] = 24;
+    assert_eq!(p.score(&w), baseline);
+    // Pure pawn endings keep full scale. Distance difference is six minus one.
+    let p = Prepared::new(&board("7k/8/8/8/8/8/PP6/K7 w - - 0 1"));
+    let mut a = INITIAL;
+    a.0[25] = 0;
+    let mut b = a;
+    b.0[25] = 8;
+    assert_eq!(p.score(&b) - p.score(&a), 40);
+}
+
+#[test]
+fn material_scaling_guards_and_tunable_coefficients() {
+    use weights::{INITIAL, Prepared};
+    for fen in [
+        "6k1/8/8/8/8/8/8/KQ6 w - - 0 1",
+        "6k1/7r/8/8/8/8/8/KQ6 w - - 0 1",
+        "7k/7p/8/8/8/8/PP6/K7 w - - 0 1",
+    ] {
+        let e = Prepared::new(&board(fen)).decompose(&INITIAL);
+        assert_eq!(e.endgame_scale[0], 64, "{fen}");
+    }
+    let fen = "7k/5b2/7p/8/8/8/PP6/K1B5 w - - 0 1";
+    let p = Prepared::new(&board(fen));
+    let mut w = INITIAL;
+    w.0[28] = 40;
+    assert_eq!(p.decompose(&w).endgame_scale, [40, 40]);
+    assert_eq!(Prepared::new(&board(&reflect(fen))).score(&w), -p.score(&w));
+    // A bishop against a rook is small pawnless material, not a bare king.
+    let p = Prepared::new(&board("7k/7r/8/8/8/8/8/KB6 w - - 0 1"));
+    let mut w = INITIAL;
+    w.0[26] = 12;
+    assert_eq!(p.decompose(&w).endgame_scale, [12, 12]);
+}
+
+#[test]
+fn cached_and_live_weighted_scores_agree() {
+    use weights::{DEFAULT, INITIAL, LOWER, Prepared, UPPER, Weights};
+    let mut native =
+        Position::from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1").unwrap();
+    let mut rng = TestRng(168);
+    for _ in 0..150 {
+        let p = ChessPosition::from_position(&native);
+        let prepared = Prepared::new(&p);
+        assert_eq!(prepared.score(&DEFAULT), decompose(&p).white_score());
+        for w in [INITIAL, Weights(LOWER), Weights(UPPER)] {
+            let e = prepared.decompose(&w);
+            assert!(e.endgame_scale.iter().all(|v| (0..=64).contains(v)));
+            assert!(e.white_score().abs() < 30_000);
+        }
+        let legal = native.legal_actions();
+        if legal.is_empty() {
+            break;
+        }
+        native
+            .apply(legal[(rng.next() % legal.len() as u64) as usize])
+            .unwrap();
+    }
+}
+
+#[test]
+fn scaled_tuned_score_uses_wide_intermediates() {
+    use weights::{Prepared, UPPER, Weights};
+    let p = Prepared::new(&board("8/PPPPPPPP/8/8/8/Q4n2/RRBB4/K6k w - - 0 1"));
+    let mut w = Weights(UPPER);
+    w.0[26] = 8;
+    // Eight advanced pawns plus queen, two rooks and two bishops against a
+    // knight must remain a large positive score, not a wrapped negative score.
+    assert!(p.score(&w) > 1000);
+    let e = p.decompose(&w);
+    let middle = i64::from(e.white.contribution(MIDDLE_PHASE) - e.black.contribution(MIDDLE_PHASE));
+    let end = i64::from(e.white.contribution(0) - e.black.contribution(0));
+    let expected = (middle * i64::from(e.middle_phase)
+        + end * i64::from(MIDDLE_PHASE - e.middle_phase) * i64::from(e.endgame_scale[0]) / 64)
+        / i64::from(MIDDLE_PHASE);
+    assert_eq!(i64::from(p.score(&w)), expected);
+}
+
+#[test]
+fn tuned_conversion_cancels_weighted_king_centrality() {
+    use weights::{INITIAL, Prepared};
+    let fen = "7k/8/8/8/3K4/8/8/Q7 w - - 0 1";
+    let p = Prepared::new(&board(fen));
+    let mut a = INITIAL;
+    a.0[15] = 25;
+    let mut b = a;
+    b.0[15] = 200;
+    // Against a bare king the explicit conversion approach replaces king
+    // centrality, so its endgame weight cannot add an opposing preference.
+    assert_eq!(
+        p.decompose(&a).white.contribution(0),
+        p.decompose(&b).white.contribution(0)
+    );
 }

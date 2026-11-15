@@ -35,9 +35,11 @@ says nothing about other opponents.
 | `coordination.rs` | One worker thread that owns the `ChessEngine` between requests | Chess |
 | `tori/position.rs` | Tori Shogi search position: 49-bit bitboards, hands, drops, compulsory promotion, the Swallow drop rules, repetition on the path | Tori |
 | `tori.rs` | Adapter between a native Tori `Game` and the core; material and placement evaluation | Tori |
+| `shogi/position.rs` | Shogi position, hands, drops, promotion, history and classical evaluation | Shogi |
+| `shogi.rs` | Native Shogi root/declaration and continuation adapter | Shogi |
 
 The core contains no type of a specific game. `alphabeta/tests.rs` runs it on a
-subtraction game, and Chess and Tori Shogi use it through the same trait.
+subtraction game, and Chess, Tori Shogi and Shogi use it through the same trait.
 
 ## Authority of the native rules
 
@@ -209,7 +211,8 @@ Verification and the predecessor comparison are recorded in
 ## What Tori showed, and what the other games need
 
 Findings from the second game, recorded for the later tasks of Shogi, Xiangqi,
-Chu Shogi and Tenjiku Shogi. Nothing here is built yet.
+Chu Shogi and Tenjiku Shogi. These are the findings at the Tori checkpoint;
+the Shogi implementation above records the later decisions.
 
 **The trait was sufficient.** Drops are ordinary moves of the quiet stage.
 A loss without a legal move is `no_move_score`. A game without draw claims

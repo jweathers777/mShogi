@@ -686,3 +686,11 @@ fn specialized(
 
 #[cfg(test)]
 mod tests;
+
+// Frozen pre-optimization preparation is a test oracle, not a runtime evaluator.
+#[cfg(test)]
+#[path = "chess_eval/equivalence_tests.rs"]
+mod equivalence_tests;
+#[cfg(test)]
+#[path = "chess_eval/reference_weights.rs"]
+mod reference_weights;

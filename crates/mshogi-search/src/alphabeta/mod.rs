@@ -94,6 +94,36 @@ pub trait SearchPosition {
     fn is_pseudo_legal(&self, m: Self::Move) -> bool;
 }
 
+/// Shared selectivity policy.
+#[derive(Clone, Copy, Debug)]
+pub struct Selectivity {
+    /// Enable reverse futility after game-specific validation.
+    pub reverse_futility: bool,
+    /// Enable razoring after game-specific validation.
+    pub razoring: bool,
+    /// Enable late move pruning after game-specific validation.
+    pub late_move_pruning: bool,
+    /// Enable internal reduction after game-specific validation.
+    pub internal_reduction: bool,
+    /// Enable singular extension after game-specific validation.
+    pub singular_extension: bool,
+    /// Enable improving after game-specific validation.
+    pub improving: bool,
+}
+
+impl Default for Selectivity {
+    fn default() -> Self {
+        Self {
+            reverse_futility: true,
+            razoring: true,
+            late_move_pruning: true,
+            internal_reduction: true,
+            singular_extension: true,
+            improving: true,
+        }
+    }
+}
+
 /// Work limits of one search.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Limits {
@@ -175,6 +205,9 @@ pub struct Searcher<P: SearchPosition> {
     pv: Vec<Vec<P::Move>>,
     slots: Vec<usize>,
     reductions: Vec<[i32; 64]>,
+    selectivity: Selectivity,
+    static_evals: Vec<Option<i32>>,
+    excluded: Vec<Option<P::Move>>,
 }
 
 impl<P: SearchPosition> Searcher<P> {
@@ -204,7 +237,15 @@ impl<P: SearchPosition> Searcher<P> {
                 .collect(),
             slots: vec![NO_SLOT; MAX_PLY + 2],
             reductions,
+            selectivity: Selectivity::default(),
+            static_evals: vec![None; MAX_PLY + 2],
+            excluded: vec![None; MAX_PLY + 2],
         }
+    }
+    /// Set the game-specific policy before the first search.
+    pub fn with_selectivity(mut self, policy: Selectivity) -> Self {
+        self.selectivity = policy;
+        self
     }
     /// Table size in megabytes.
     pub fn table_megabytes(&self) -> usize {
@@ -236,6 +277,8 @@ impl<P: SearchPosition> Searcher<P> {
         stop: &mut dyn FnMut() -> bool,
     ) -> Outcome<P::Move> {
         self.table.new_search();
+        self.static_evals.fill(None);
+        self.excluded.fill(None);
         self.killers.fill([None; 2]);
         for h in &mut self.history {
             *h /= 2;
@@ -407,6 +450,15 @@ impl<P: SearchPosition> Run<'_, P> {
         true
     }
 
+    fn legal_probe(&mut self, m: P::Move) -> bool {
+        if self.pos.make(m) {
+            self.pos.unmake();
+            true
+        } else {
+            false
+        }
+    }
+
     fn quiet_score(&self, ply: usize, slot: usize) -> i32 {
         let mut score = self.s.history[slot];
         if ply > 0 && self.s.slots[ply - 1] != NO_SLOT {
@@ -553,6 +605,7 @@ impl<P: SearchPosition> Run<'_, P> {
         pv: bool,
         allow_null: bool,
     ) -> i32 {
+        self.s.static_evals[ply] = None;
         let in_check = self.pos.in_check();
         if in_check {
             depth = depth.max(0) + 1;
@@ -587,7 +640,12 @@ impl<P: SearchPosition> Run<'_, P> {
             alpha = alpha.max(0);
         }
         let hash = self.pos.hash();
-        let hit = self.s.table.probe(hash, ply as i32);
+        let excluded = self.s.excluded[ply];
+        let hit = if excluded.is_none() {
+            self.s.table.probe(hash, ply as i32)
+        } else {
+            None
+        };
         let mut table_move = None;
         if let Some(hit) = hit {
             if hit.move_bits != 0 {
@@ -617,9 +675,77 @@ impl<P: SearchPosition> Run<'_, P> {
                     .unwrap_or_else(|| self.pos.evaluate()),
             )
         };
+        let policy = self.s.selectivity;
+        self.s.static_evals[ply] = if excluded.is_none() { eval } else { None };
+        let improving = policy.improving
+            && ply >= 2
+            && eval
+                .zip(self.s.static_evals[ply - 2])
+                .is_some_and(|(now, before)| now > before);
+        if !root
+            && !pv
+            && excluded.is_none()
+            && !in_check
+            && !claimable
+            && beta.abs() < MATE_BOUND
+            && alpha.abs() < MATE_BOUND
+        {
+            let e = eval.expect("not in check");
+            if policy.reverse_futility
+                && depth <= 6
+                && e.abs() < MATE_BOUND
+                && e - 90 * depth + if improving { 45 } else { 0 } >= beta
+                && self.pos.null_move_safe()
+            {
+                return e;
+            }
+            if policy.razoring && depth <= 2 && e.abs() < MATE_BOUND && e + 250 * depth < alpha {
+                let score = self.quiesce(ply, alpha - 1, alpha, false);
+                if self.abort || score < alpha {
+                    return score;
+                }
+                self.s.pv[ply].clear();
+            }
+        }
+        if policy.internal_reduction
+            && !root
+            && excluded.is_none()
+            && !in_check
+            && depth >= 4
+            && table_move.is_none()
+        {
+            depth -= 1;
+        }
+        let mut singular = None;
+        if policy.singular_extension
+            && !root
+            && excluded.is_none()
+            && depth >= 7
+            && !in_check
+            && allow_null
+            && let (Some(m), Some(h)) = (table_move, hit)
+            && h.depth >= depth - 3
+            && h.bound != Bound::Upper
+            && h.score.abs() < MATE_BOUND
+            && self.legal_probe(m)
+        {
+            let threshold = h.score - 2 * depth;
+            self.s.excluded[ply] = Some(m);
+            let score = self.search((depth - 1) / 2, ply, threshold - 1, threshold, false, false);
+            self.s.excluded[ply] = None;
+            self.s.static_evals[ply] = eval;
+            self.s.pv[ply].clear();
+            if self.abort {
+                return 0;
+            }
+            if score < threshold {
+                singular = Some(m);
+            }
+        }
         if let Some(eval) = eval
             && !pv
             && allow_null
+            && excluded.is_none()
             && depth >= 3
             && eval >= beta
             && beta.abs() < MATE_BOUND
@@ -628,6 +754,7 @@ impl<P: SearchPosition> Run<'_, P> {
             let reduction = 3 + depth / 4 + ((eval - beta) / 200).min(3);
             self.pos.make_null();
             self.s.slots[ply] = NO_SLOT;
+            self.s.static_evals[ply] = None;
             let score = -self.search(
                 depth - 1 - reduction,
                 ply + 1,
@@ -637,6 +764,7 @@ impl<P: SearchPosition> Run<'_, P> {
                 false,
             );
             self.pos.unmake_null();
+            self.s.static_evals[ply] = Some(eval);
             if self.abort {
                 return 0;
             }
@@ -647,6 +775,7 @@ impl<P: SearchPosition> Run<'_, P> {
                 }
                 let verified =
                     self.search(depth - 1 - reduction, ply, beta - 1, beta, false, false);
+                self.s.static_evals[ply] = Some(eval);
                 if self.abort {
                     return 0;
                 }
@@ -674,6 +803,9 @@ impl<P: SearchPosition> Run<'_, P> {
         let mut count = 0usize;
         self.s.buffers[ply].tried.clear();
         while let Some(m) = self.next_move(ply, &mut pick) {
+            if Some(m) == excluded {
+                continue;
+            }
             let tactical = self.pos.is_tactical(m);
             let slot = self.pos.history_slot(m);
             if !self.pos.make(m) {
@@ -681,6 +813,20 @@ impl<P: SearchPosition> Run<'_, P> {
             }
             count += 1;
             let gives_check = self.pos.in_check();
+            if policy.late_move_pruning
+                && !root
+                && !pv
+                && excluded.is_none()
+                && depth <= 4
+                && !in_check
+                && !tactical
+                && !gives_check
+                && best > -MATE_BOUND
+                && count > (3 + depth * depth * if improving { 2 } else { 1 }) as usize
+            {
+                self.pos.unmake();
+                continue;
+            }
             if futile && count > 1 && !tactical && !gives_check {
                 self.pos.unmake();
                 // The pruned move is assumed to reach at most this value, so a
@@ -691,7 +837,7 @@ impl<P: SearchPosition> Run<'_, P> {
                 continue;
             }
             self.s.slots[ply] = slot;
-            let new_depth = depth - 1;
+            let new_depth = depth - 1 + i32::from(singular == Some(m));
             let mut score;
             if count == 1 {
                 score = -self.search(new_depth, ply + 1, -beta, -alpha, pv, true);
@@ -705,6 +851,7 @@ impl<P: SearchPosition> Run<'_, P> {
                 {
                     reduction = self.s.reductions[depth.min(63) as usize][count.min(63)];
                     reduction -= i32::from(pv);
+                    reduction -= i32::from(improving);
                     reduction -= i32::from(self.s.killers[ply].contains(&Some(m)));
                     reduction -= (self.quiet_score(ply, slot) / 8_192).clamp(-2, 2);
                     reduction = reduction.clamp(0, (new_depth - 1).max(0));
@@ -753,6 +900,9 @@ impl<P: SearchPosition> Run<'_, P> {
                     }
                 }
             }
+        }
+        if excluded.is_some() {
+            return if count == 0 { alpha } else { best };
         }
         if root {
             self.root_count = count;

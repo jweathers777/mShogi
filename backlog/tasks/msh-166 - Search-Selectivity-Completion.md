@@ -1,10 +1,11 @@
 ---
 id: MSH-166
 title: Search Selectivity Completion
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T16:29:00Z'
+updated_date: '2026-11-15T17:00:00Z'
 labels:
   - handle:search-selectivity-completion
 milestone: m-5
@@ -49,7 +50,7 @@ Handle: Search Selectivity Completion.
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-Replaced 2026-11-15: the approach changed to the combined set first. The next worker writes the current plan here.
+1. Freeze task-start main d185fc631d80 with build-engine; record identity and measure baseline bench and 1000 ms blunder suite. 2. Add the combined reverse futility, razoring, late-move pruning, internal iterative reduction, singular extension and improving modifier to the shared core, using the earlier reviewed prototype as the starting point. Remove its per-node legal-move probes and retain existing low-material LMR. Inspect and test same-ply verification, cancellation, TT and root boundaries. 3. Run Level 1 perft/differential, shared-core, Chess and Tori tests and affected engine/console consumers. Compare fixed-depth speed and blunders. 4. Freeze the candidate and run a single sequential predecessor test at 50 ms/move, four workers, H0=0/H1=15, alpha=beta=.05, up to 1200 pairs (at least the prescribed 600), with native process/ply bounds and actual compute recorded. Initial game-test wall cap is 75 minutes. Confirm depth coverage from baseline and match data; include singular extensions initially. 5. At the sequential decision or resource bound, compare strength, blunders and cost. Do not remove components or run new trials without a recorded evidence-based reason. A capped undecided test stays no decision. Obtain independent review, resolve findings, and integrate only an accepted set; otherwise preserve a clear unfinished task and evidence. Broader platform/package checks deferred to the next integration milestone.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -64,4 +65,8 @@ Bounded round complete on main; no active builder remains. Seven independent 60-
 Independent final review approved by /root/two_human_final_review: all seven patch/binary bindings, paired game scores and colours, sequential decisions, final ablation direction, and compute totals checked; restored production source confirmed identical to task start. No open review findings. This resolves the preceding pending-review note. The committed result is evidence and a resumable unfinished task, not a strength improvement.
 
 Ticket revision, 2026-11-15 (requested by John): the approach changed from one technique at a time to the combined set first, with removals only for a recorded reason. The first round is kept as evidence. Its 60-pair tests could not decide, so its "reject" entries are not rejections, and the earlier checks of the first and third criteria no longer apply. The earlier final summary describes the first round only. General game-test rules are now in docs/m5/strength-roadmap.md.
+
+2026-11-15 combined-set round: owner Codex /root, sole builder in the primary main checkout /Users/johnweathers/Development/Personal/mShogi. No active task owner at startup; unrelated tenjiku-historical-access worktree is untouched. Frozen predecessor is task-start main d185fc63; build-engine started before production edits. Backlog 1.55.3 matches the project baseline. Verification Level 1: shared platform-independent search changes; local Chess/Tori correctness, blunder comparison, speed/depth measurements, predecessor games and independent review. Broader platform and packaged GUI checks remain deferred to the integration/release checkpoint.
+
+Combined candidate checkpoint: baseline blunders 86/146 avoided, 40 reference matches, median depth 13; combined candidate 98/146 avoided, 48 matches, median depth 14 at 1000 ms with four workers. Fixed-depth benchmark 857606 nodes/0.60 s baseline versus 406067 nodes/0.34 s candidate (three repeats). Timed measurements overlapped local checks, so small timing differences are not precision claims. Search library: 74 passed, 1 ignored. Independent code review by /root/selectivity_review found missing static-eval restoration after same-ply null verification; fixed before candidate measurements. Old twofold warm-node assertion replaced by direct table retention/clear test and native legal completed response checks. No technique removed. Decision: proceed to the predeclared combined-set game test. Evidence and parameters: docs/m5/evidence/msh166/combined/README.md.
 <!-- SECTION:NOTES:END -->

@@ -1,10 +1,11 @@
 ---
 id: MSH-168
 title: Classical Endgame and King Evaluation
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T16:29:00Z'
+updated_date: '2026-11-15T18:47:00Z'
 labels:
   - handle:classical-endgame-king-evaluation
 milestone: m-5
@@ -47,8 +48,20 @@ Handle: Classical Endgame and King Evaluation.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Freeze main8ddfc1a0 before evaluation changes; record baseline bench and1000ms four-worker blunders, including47 endgames. 2. Use the baseline (100/146 avoided,31/47 endgames;50 reference matches) and code inspection to implement one coherent classical evaluation set: material/pawn-count and opposite-bishop draw scaling, endgame king distance to pawns, and coordinated queen-led king danger. Preserve specialized endings, native authority, current search and Tori evaluation. No Texel tuning, training set or new tablebase. 3. Add independent positive/negative material and king-geometry fixtures, color symmetry, and run Chess perft/differential/search plus affected consumer checks. Measure candidate bench/blunders without per-position tuning. 4. Freeze the candidate and run the existing paired sequential game test against8ddfc1a0 at50ms/move,4workers,seed168,H0=0/H1=15,alpha=beta=.05,min30,max1200pairs,75minute wall cap. Record actual compute and failures. At the decision/bound assess strength, overall/endgame blunders and cost; no small-screen rejection and no repeated local fixes without a new evidence-based decision. 5. Independent review and normal main integration only when all criteria pass. Level1 local verification; broader platform/GUI deferred to next Level3 checkpoint.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Ticket revision, 2026-11-15 (requested by John): the problem statement now keeps only the MSH-161 difference that separates mShogi from its opponent (endgame give-backs). The criterion on level-endgame scores far from zero was removed, because the opponent had almost the same figure. A fresh baseline comes first, because the MSH-161 games predate MSH-164. Group-by-group game tests were replaced by coherent change sets, as in docs/m5/strength-roadmap.md. The tuning data rules (license, held-out set, no exposed material) are now explicit.
+
+Owner Codex /root, sole builder in primary main checkout /Users/johnweathers/Development/Personal/mShogi. Startup main 8ddfc1a0 is clean and matches origin/main; no active task owner. Backlog1.55.3 matches baseline. Frozen predecessor build started before evaluation changes. Verification Level1: Chess-only classical evaluation, unchanged native rules/shared search/Tori evaluation. Local perft/differential, evaluation regressions, affected consumer tests, baseline and candidate blunders including47 endgames, bench, sequential predecessor games and independent review. Linux/Windows/packaged GUI checks deferred to the next Level3 checkpoint.
+
+Baseline complete before evaluation changes: frozen8ddfc1a00c03, bench406067nodes/0.329s median; blunders100/146 avoided (endgame31/47,middlegame54/83,opening15/16),50 reference matches. This supersedes earlier engine observations for acceptance. Existing code already has passed-pawn runway, king escort, storms and specialized KPK/fortress endings. This round adds missing general draw scaling and king-activity/attack calibration as one coherent set; it does not repeat earlier isolated pawn-race tuning. Classical technique reference: Stockfish11 material.cpp and evaluate.cpp (pawnless material, opposite bishops and low-pawn scaling, king proximity and nonlinear king danger); implementation and heuristic constants fit the existing centipawn evaluator. No weight fitting or new tablebase is used.
+
+Candidate checkpoint before games:104/146 blunders avoided versus100, including32/47 endgames versus31;53 reference matches versus50. Fixed-depth benchmark508702nodes/0.416s versus406067/0.329s: slower fixed-depth work, not a speed gain. No weight tuning used. Independent initial review found no blocking boundary/symmetry defect; added asymmetric-scale and material guard tests, preserved full scale for pawnless queen-vs-rook. Initial test failures: raw arithmetic expectations needed the independently calculated king-distance contribution; one new queen-vs-rook FEN illegally checked the nonmoving king and was corrected by moving that king. No production rule changed. Decision: freeze the coherent set and proceed to the predeclared sequential game test.
 <!-- SECTION:NOTES:END -->

@@ -4,6 +4,7 @@ title: Adapt validated Chess learned evaluation to the other five engines
 status: To Do
 assignee: []
 created_date: '2026-11-08T13:07:00Z'
+updated_date: '2026-11-15T16:29:00Z'
 labels: []
 dependencies:
   - MSH-55
@@ -17,7 +18,7 @@ ordinal: 137000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Owner direction2026-11-08 sequences learned evaluation after established conventional engines: prove the complete new approach in Chess first (MSH-55), then extend the research to Shogi, Xiangqi, Tori, Chu and both accepted Tenjiku profiles. This follow-on preserves that requested scope without silently making all-game learned delivery a new MSH-56 closure dependency. Milestone placement/game increments are refined from the actual Chess result; no shared neural architecture, compute budget or improvement result is predetermined. Routine correctness/tactical tests and bounded profiling accompany coherent increments. Aggregate routine local engine-match work is limited to15minutes per task unless John explicitly authorizes more; no per-technique substantial statistical studies or multi-hour benchmarks. Formal studies require owner approval at a substantially complete conventional-engine or new-evaluation milestone. Routine algorithm and implementation choices are autonomous. See AGENTS.md and docs/m5/strength-roadmap.md.
+Owner direction2026-11-08 sequences learned evaluation after established conventional engines: prove the complete new approach in Chess first (MSH-55), then extend the research to Shogi, Xiangqi, Tori, Chu and both accepted Tenjiku profiles. This follow-on preserves that requested scope without silently making all-game learned delivery a new MSH-56 closure dependency. Milestone placement/game increments are refined from the actual Chess result; no shared neural architecture, compute budget or improvement result is predetermined. Routine correctness/tactical tests and bounded profiling accompany coherent increments. Game tests follow "Game tests in this direction" in docs/m5/strength-roadmap.md; the earlier 15-minute match allowance no longer applies (revised 2026-11-15). Formal studies require owner approval at a substantially complete conventional-engine or new-evaluation milestone. Routine algorithm and implementation choices are autonomous. See AGENTS.md and docs/m5/strength-roadmap.md.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -32,5 +33,5 @@ Owner direction2026-11-08 sequences learned evaluation after established convent
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [ ] #2 Applicable independent review is recorded and material findings are resolved.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->

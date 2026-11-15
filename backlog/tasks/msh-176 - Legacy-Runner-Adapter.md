@@ -4,7 +4,7 @@ title: Compare the legacy and present Chu engines
 status: Ready
 assignee: []
 created_date: '2026-11-14T14:14:00Z'
-updated_date: '2026-11-15T16:27:00Z'
+updated_date: '2026-11-15T16:29:00Z'
 labels:
   - handle:legacy-runner-adapter
 milestone: m-5
@@ -47,7 +47,7 @@ Handle: Legacy Runner Adapter.
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [ ] #2 Applicable independent review is recorded and material findings are resolved.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Notes

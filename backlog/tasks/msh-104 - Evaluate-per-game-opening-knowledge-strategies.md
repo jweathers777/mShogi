@@ -4,7 +4,7 @@ title: Evaluate per-game opening-knowledge strategies
 status: To Do
 assignee: []
 created_date: '2026-10-27T16:10:00Z'
-updated_date: '2026-11-08T13:08:00Z'
+updated_date: '2026-11-15T16:29:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -29,7 +29,7 @@ ordinal: 182000
 <!-- SECTION:DESCRIPTION:BEGIN -->
 Owner-approved future M5 experiment,2026-10-27. Early-game search may benefit from reusable knowledge, but a book or model must earn its generation/training/inference/maintenance cost. This scope compares per-game strategies; it requires evidence, not adoption or shipping. A dedicated opening-policy model is a first-class experimental arm, separate from MSH-55 learned evaluation and optional MSH-59 full policy/value search. No implementation, Python runtime dependency, training pipeline, architecture, fixed budget or strength target is approved by task creation. Refine game-specific prerequisites against actual functional baselines before starting each arm; native complete actions/history remain authoritative.
 
-Owner sequence2026-11-08 places this substantial opening-knowledge research after conventional engines and the initial Chess learned-evaluation result. MSH-55 is a sequencing prerequisite, not a shared-model or runtime dependency; the distinct compact opening-policy arm, all-game coverage, sparse-corpus investigations and valid evidence-supported non-adoption remain intact. Routine correctness/tactical tests and bounded profiling accompany coherent increments. Aggregate routine local engine-match work is limited to15minutes per task unless John explicitly authorizes more; no per-technique substantial statistical studies or multi-hour benchmarks. Formal studies require owner approval at a substantially complete conventional-engine or new-evaluation milestone. Routine algorithm and implementation choices are autonomous. See AGENTS.md and docs/m5/strength-roadmap.md.
+Owner sequence2026-11-08 places this substantial opening-knowledge research after conventional engines and the initial Chess learned-evaluation result. MSH-55 is a sequencing prerequisite, not a shared-model or runtime dependency; the distinct compact opening-policy arm, all-game coverage, sparse-corpus investigations and valid evidence-supported non-adoption remain intact. Routine correctness/tactical tests and bounded profiling accompany coherent increments. Game tests follow "Game tests in this direction" in docs/m5/strength-roadmap.md; the earlier 15-minute match allowance no longer applies (revised 2026-11-15). Formal studies require owner approval at a substantially complete conventional-engine or new-evaluation milestone. Routine algorithm and implementation choices are autonomous. See AGENTS.md and docs/m5/strength-roadmap.md.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -48,5 +48,5 @@ Owner sequence2026-11-08 places this substantial opening-knowledge research afte
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [ ] #2 Applicable independent review is recorded and material findings are resolved.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->

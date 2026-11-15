@@ -4,7 +4,7 @@ title: Chess Opening Quality Assessment
 status: To Do
 assignee: []
 created_date: '2026-11-10T18:28:00Z'
-updated_date: '2026-11-13T20:00:00Z'
+updated_date: '2026-11-15T16:29:00Z'
 labels:
   - handle:chess-opening-quality-assessment
 milestone: m-5
@@ -56,7 +56,7 @@ Before future execution, establish a modest aggregate engine/reference compute a
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [ ] #2 Applicable independent review is recorded and material findings are resolved.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Notes
@@ -65,4 +65,6 @@ Before future execution, establish a modest aggregate engine/reference compute a
 Owner supersession 2026-11-10: opening questions are now integrated into MSH-161 (Competitive Gameplay Diagnosis), whose full request authorizes broad complete-game study and necessary Stockfish analysis. Earlier proposed separate100–150-position sample,1/5/15s matrix and modest aggregate cap are superseded for this assignment. Use separate unaided start games plus prepared-position baseline analysis, master provenance and consistent phase boundaries. Preserve historical description; do not run competing corpus or introduce book. Dependency MSH-159 (Classical Evaluation Decisions) completed; opening deliverable closes with reviewed study evidence.
 
 MSH-161 (Competitive Gameplay Diagnosis) completed the integrated opening questions without a competing corpus: 90 master-supported color pairs across 22 families plus ten separate unaided pairs, independent balance screening, full histories and consistent phase sensitivity. Prepared 67W/55D/58L versus unaided 15W/3D/2L; strong unaided dependence (all candidate-Black starts share 16 plies) prevents broad opening-strength inference. Supported early central/development choices enter the same continuation-quality investigation; no opening book, family blacklist or new campaign is selected. See docs/m5/competitive-gameplay-diagnosis.md and cloud-primary/independent-review-handoff.md. This preserves evidence for the existing task and does not activate its separate proposed study. Stop for John before engineering.
+
+Status check, 2026-11-15: still held by docs/m5/strength-roadmap.md. MSH-161 (Competitive Gameplay Diagnosis) is complete, so acceptance criterion 1 (coordinate within the MSH-161 study) refers to finished work and must be restated when John activates this task. The game-test rules in docs/m5/strength-roadmap.md apply to any engine games it runs.
 <!-- SECTION:NOTES:END -->

@@ -4,6 +4,7 @@ title: Player Thinking Time
 status: To Do
 assignee: []
 created_date: '2026-11-09T11:26:00Z'
+updated_date: '2026-11-15T16:29:00Z'
 labels:
   - handle:player-thinking-time
 milestone: m-5
@@ -31,5 +32,11 @@ Handle: Player Thinking Time. Owner consolidation2026-11-09 wants the player eve
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [ ] #2 Applicable independent review is recorded and material findings are resolved.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Status check, 2026-11-15: MSH-167 (Engine Time Management) added clock-based time allocation to the shared core and the Chess engine; the desktop default stayed fixed time per move. This task can build the player choice on that mechanism. Tori and the other games still use node limits only.
+<!-- SECTION:NOTES:END -->

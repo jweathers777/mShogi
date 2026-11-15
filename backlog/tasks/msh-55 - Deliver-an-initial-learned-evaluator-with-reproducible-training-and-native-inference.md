@@ -6,7 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-08T18:49:00Z'
+updated_date: '2026-11-15T16:29:00Z'
 labels: []
 milestone: m-5
 dependencies:
@@ -29,7 +29,7 @@ ordinal: 180000
 <!-- SECTION:DESCRIPTION:BEGIN -->
 Owner sequence2026-11-08 selects Chess first for the initial learned evaluator, after conventional development across all six games. Research NNUE-style efficiently updated evaluation as a candidate against the mature conventional Chess engine; select features/model/native representation from real requirements rather than prescribing one architecture for every game. Preserve the required reproducible Python/PyTorch training, export, Rust inference, actual product integration and independently demonstrated strength improvement. MSH-135 tracks subsequent other-game adaptation; it is separate from this initial M5 deliverable.
 
-Routine correctness/tactical tests and bounded profiling accompany coherent increments. Aggregate routine local engine-match work is limited to15minutes per task unless John explicitly authorizes more; no per-technique substantial statistical studies or multi-hour benchmarks. Formal studies require owner approval at a substantially complete conventional-engine or new-evaluation milestone. Routine algorithm and implementation choices are autonomous. See AGENTS.md and docs/m5/strength-roadmap.md.
+Routine correctness/tactical tests and bounded profiling accompany coherent increments. Game tests follow "Game tests in this direction" in docs/m5/strength-roadmap.md; the earlier 15-minute match allowance no longer applies (revised 2026-11-15). Formal studies require owner approval at a substantially complete conventional-engine or new-evaluation milestone. Routine algorithm and implementation choices are autonomous. See AGENTS.md and docs/m5/strength-roadmap.md.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -45,7 +45,7 @@ Routine correctness/tactical tests and bounded profiling accompany coherent incr
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [ ] #2 Applicable independent review is recorded and material findings are resolved.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Notes

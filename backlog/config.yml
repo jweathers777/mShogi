@@ -6,7 +6,7 @@ definition_of_done:
   - "Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed."
   - "Applicable independent review is recorded and material findings are resolved."
   - "Relevant documentation and follow-up tasks are current."
-  - "The result is integrated into the recorded rewrite branch with a durable completion or handoff summary."
+  - "The result is integrated into the recorded integration branch with a durable completion or handoff summary."
 date_format: yyyy-mm-dd
 max_column_width: 20
 auto_open_browser: false

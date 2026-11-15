@@ -52,7 +52,7 @@ impl From<ShogiChoice> for search::Choice {
 pub struct ShogiTelemetry {
     /// Fixed native evaluator configuration identity.
     pub evaluator_id: String,
-    /// Fixed native full-width search configuration identity.
+    /// Search configuration identity, including historical observations.
     pub search_id: String,
     /// Native root side, independent of final command actor or terminal winner.
     pub perspective: Side,
@@ -60,7 +60,7 @@ pub struct ShogiTelemetry {
     /// any completed work. Terminal distance includes declaration command edges.
     #[serde(deserialize_with = "required_score")]
     pub score: Option<i32>,
-    /// Last complete board-depth iteration; declarations are examined at leaves.
+    /// Last complete nominal depth; declarations remain explicit choices.
     pub completed_depth: u16,
     /// All admitted visits, including discarded partial iterations.
     pub nodes: u64,

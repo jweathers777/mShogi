@@ -1,11 +1,11 @@
 ---
 id: MSH-168
 title: Classical Endgame and King Evaluation
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T21:42:00Z'
+updated_date: '2026-11-15T21:55:00Z'
 labels:
   - handle:classical-endgame-king-evaluation
 milestone: m-5
@@ -34,7 +34,7 @@ Handle: Classical Endgame and King Evaluation.
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 A baseline of the engine at the start of the task is recorded before evaluation changes: the blunder suite with its endgame positions reported separately
-- [ ] #2 Each evaluation change set has a game-test result with a sequential decision, and each change left out has a recorded reason
+- [x] #2 Each evaluation change set has a recorded sequential game-test result, including “no decision” at a cap, and each change left out has a recorded reason
 - [x] #3 The accepted evaluation is stronger than the engine at the start of the task in a game test
 - [x] #4 The blunder suite result is not worse than at the start of the task, with the endgame positions reported separately
 - [x] #5 Weight tuning, if used, records its position source, license, method and held-out check, and the tuned weights are confirmed by a game test
@@ -42,7 +42,7 @@ Handle: Classical Endgame and King Evaluation.
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
 - [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
@@ -86,10 +86,16 @@ Single tuned-candidate game test complete: c3363d3d reached H1 at597pairs under 
 Final independent review passed: /root/evaluation_review checked all597paired receipts,1194color-mapped outcomes, first eligible H1 crossing at597, frozen hashes and compute. Cancellation count/CPU are aggregate-only harness records; this limit is disclosed. Accepted tuned evaluator is ready for normal main integration. AC2 literal each-set decision wording conflicts with permitted capped no-decision outcomes and the user-directed next round; clarification requested before checkingAC2 or markingDone. Earlier revised set will not be calledH0. No additional match is needed for the accepted candidate.
 
 Accepted implementation and full evidence integrated into main and pushed as a7357a60 (candidate c3363d3d, audited evidence c77d0253). Exact product/test source remains the tested candidate. MSH-168 remains In Review only for the pending user decision on AC2 wording; no code, game test or further tuning is pending. Existing worktree retained for this record clarification and closure. Next dependency-ready queue item is MSH-173 (Frozen Legacy Opponent); not started.
+
+John approved the exact AC2 clarification on 2026-11-15: each set requires a recorded sequential game-test result, including no decision at a cap, with reasons for exclusions. AC3 still requires the accepted evaluation to win its game test. Applied through the Backlog CLI; AC2 and the remaining completion check are satisfied. MSH-168 is Done. No code or historical test result changed.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Joint Texel tuning of32 bounded classical weights, including material draw scaling and endgame king activity, is the accepted default. Fresh6000-game self-play corpus uses native outcomes, source/license records and separate train/validation/heldout partitions; independent native replay and split audit passed. Heldout MSE .0561861 to .0529987. Single H1=10 game test passed at597pairs (+424 -340 =430), estimated+24.48Elo at50ms. Development blunders100 to112/146; endgames31 to38/47; openings15 to14/16.79 search tests pass,1ignored;29 consumers pass;clippy/format/tuner/data checks and independent reviews pass. Fixed-depth benchmark is slower (.329s to .411s), with more nodes and added evaluator work. Linux/Windows/GUI deferred to nextLevel3. Main integration a7357a60 is pushed; candidate c3363d3d and evidence c77d0253. Task remains In Review pending explicit AC2 clarification: earlier revised trial is still no decision, never H0. No further match or tuning planned. Corpus preserved in primary target/strength/texel; receipts docs/m5/evidence/msh168/texel. Next eligible MSH-173 (Frozen Legacy Opponent), not started.
+Joint Texel tuning of 32 bounded classical weights, including material draw scaling and endgame king activity, is the accepted default. A fresh 6,000-game self-play corpus has native outcome labels, recorded provenance and permitted use, and separate training, validation and held-out partitions. Independent native replay and split audits passed. Held-out MSE improved from 0.0561861 to 0.0529987.
+
+The single H1=10 game test reached H1 after 597 pairs (+424 -340 =430), estimated +24.48 Elo at 50ms. Blunders avoided improved from 100 to 112/146; endgames from 31 to 38/47. The opening slice declined from 15 to 14/16. Verification: 79 search tests passed, one ignored; 29 consumer tests passed; tuner/data checks, Clippy, formatting and independent reviews passed. Fixed-depth execution is slower (0.329s to 0.411s), from more nodes and added evaluation work. Linux, Windows and GUI execution remain deferred to the next Level 3 checkpoint.
+
+Integrated and pushed to main as a7357a60; tested candidate c3363d3d, audited evidence c77d0253. John approved the AC2 clarification on 2026-11-15. Earlier results remain H0 for the first set and no decision for the revised untuned set; the accepted tuned set passed H1. All acceptance criteria and completion checks are satisfied. Evidence: docs/m5/evidence/msh168/texel. Raw corpus and frozen binaries are preserved in the primary checkout under target/strength/texel. Next eligible task: MSH-173 (Frozen Legacy Opponent), not started.
 <!-- SECTION:FINAL_SUMMARY:END -->

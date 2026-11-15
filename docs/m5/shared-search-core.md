@@ -215,11 +215,17 @@ list at ply zero.
   optional promotion with its history condition belong to the position.
   Repetition is forbidden for the side that repeats, as in Tori. The
   continuation history change above is necessary.
-- *Tenjiku Shogi (256 squares).* As Chu Shogi, with range-jumping pieces and
-  the Fire Demon burn, which removes several pieces in one move: make and
-  unmake need a variable-length capture record, and the evaluation of a move's
-  gain must include burned pieces. Two rule profiles exist; the position takes
-  the profile from the native game.
+- *Tenjiku Shogi (256 squares).* As Chu Shogi, with the Fire Demon burn, which
+  removes several pieces in one move: make and unmake need a variable-length
+  capture record, and the evaluation of a move's gain must include burned
+  pieces. The four jumping generals (Great General rank 3, Vice General rank 2,
+  Rook and Bishop General rank 1; royals rank 4) jump along their lines over
+  any number of lower-ranked pieces of either side. Only a piece of equal or
+  higher rank stops them, and after a jump they cannot capture a royal piece.
+  Move generation, attack detection and exchange estimates therefore need
+  occupancy by rank; attack maps change only when a ranked piece moves. Two
+  rule profiles exist, and they differ in what a general can capture after a
+  jump; the position takes the profile from the native game.
 
 **The same work for each adapter.** The engine protocol of each game checks a
 saved observation against its search identity (`mshogi-engine/src/<game>.rs`).

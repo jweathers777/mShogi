@@ -64,14 +64,12 @@ fn term_arithmetic_and_perspective() {
     let e = eval("7k/8/8/8/8/8/P7/K7 w - - 0 1");
     assert_eq!(e.white.material, 100);
     assert_eq!(e.white.pawns.end, 22);
-    // Kings are one and seven steps from the pawn: activity adds 48.
-    assert_eq!(difference(&e), 170);
+    assert_eq!(difference(&e), 122);
     // a6 pawn: 40 placement, -8 isolated + 122 passed + 4 escort + 64 runway.
     let e = eval("7k/8/P7/8/8/8/8/K7 w - - 0 1");
     assert_eq!(e.white.placement.end, 40);
     assert_eq!(e.white.pawns.end, 182);
-    // Kings are five and seven steps from the pawn: activity adds 16.
-    assert_eq!(difference(&e), 338);
+    assert_eq!(difference(&e), 322);
     // Ra1 attacks 14 squares; the one that its own king occupies does not count.
     let e = eval("7k/8/8/8/8/8/8/R6K w - - 0 1");
     assert_eq!(e.white.mobility, tapered(13 * 2 + 16, 13 * 4 + 12));
@@ -283,55 +281,4 @@ fn evaluation_is_symmetric_under_color_reflection() {
         }
     }
     assert!(checked > 3_000, "{checked}");
-}
-
-#[test]
-fn draw_scaling_distinguishes_material_and_preserves_conversion() {
-    // Rook against bishop without a pawn is usually drawn, unlike rook v king.
-    let drawish = eval("7k/8/8/8/8/8/5b2/R5K1 w - - 0 1");
-    let winning = eval("7k/8/8/8/8/8/8/R5K1 w - - 0 1");
-    assert!(drawish.endgame_scale[0] < winning.endgame_scale[0]);
-    assert!(drawish.white_score().abs() < 100);
-    assert!(winning.white_score() > 400);
-    let queen_rook = eval("6k1/8/8/8/8/8/5r2/Q5K1 w - - 0 1");
-    assert_eq!(queen_rook.endgame_scale[0], 64);
-    let pawn = eval("7k/8/8/8/8/8/P4b2/R5K1 w - - 0 1");
-    assert!(pawn.endgame_scale[0] > drawish.endgame_scale[0]);
-    assert_ne!(pawn.endgame_scale[0], pawn.endgame_scale[1]);
-    let reflected_pawn = eval(&reflect("7k/8/8/8/8/8/P4b2/R5K1 w - - 0 1"));
-    assert_eq!(pawn.white_score(), -reflected_pawn.white_score());
-    // Opposite-colored bishops make pawn conversion harder. Same-color bishops
-    // and a rook on each side must not get the pure opposite-bishop scale.
-    let opposite = eval("6bk/6pp/8/8/8/8/PPP5/2B3K1 w - - 0 1");
-    let same = eval("5b1k/6pp/8/8/8/8/PPP5/2B3K1 w - - 0 1");
-    let rooks = eval("r5bk/6pp/8/8/8/8/PPP5/R1B3K1 w - - 0 1");
-    assert!(opposite.endgame_scale[0] < same.endgame_scale[0]);
-    assert!(opposite.endgame_scale[0] < rooks.endgame_scale[0]);
-    // A winning bishop-and-knight specialized score bypasses general scaling.
-    let bn = eval("7k/8/8/8/3K4/8/3B4/4N3 w - - 0 1");
-    assert!(bn.white_score() > 650);
-    for fen in [
-        "7k/8/8/8/8/8/5b2/R5K1 w - - 0 1",
-        "6bk/6pp/8/8/8/8/PPP5/2B3K1 w - - 0 1",
-    ] {
-        let original = eval(fen);
-        let mirrored = eval(&reflect(fen));
-        assert_eq!(original.white_score(), -mirrored.white_score());
-        assert_eq!(
-            original.endgame_scale,
-            [mirrored.endgame_scale[1], mirrored.endgame_scale[0]]
-        );
-    }
-}
-
-#[test]
-fn endgame_king_activity_follows_the_pawns() {
-    // a3 and h3 have equal centrality. The a3 king is one step from a4;
-    // h3 is seven steps away. This isolates activity from piece placement.
-    let near = eval("7k/8/8/8/P7/K7/8/8 w - - 0 1");
-    let far = eval("7k/8/8/8/P7/7K/8/8 w - - 0 1");
-    assert_eq!(near.white.placement, far.white.placement);
-    assert_eq!(near.white.endgame.end - far.white.endgame.end, 48);
-    // Without pawns the earlier bare-king conversion preference stays intact.
-    assert_eq!(eval("7k/8/8/8/3K4/8/8/8 w - - 0 1").white.endgame.end, 0);
 }

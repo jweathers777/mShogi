@@ -89,8 +89,6 @@ pub struct Evaluation {
     pub black: Terms,
     /// Blend in 0..=6400.
     pub middle_phase: i32,
-    /// Endgame scale by score-leading color, in 0..=64; private draw likelihood.
-    pub endgame_scale: [i32; 2],
     /// Specialized ending: kind, strong side (0 White, 1 Black) and its score.
     pub specialized: Option<(EndgameKind, usize, i32)>,
 }
@@ -106,17 +104,8 @@ impl Evaluation {
                 }
             }
             None => {
-                if self.endgame_scale == [64, 64] {
-                    return self.white.contribution(self.middle_phase)
-                        - self.black.contribution(self.middle_phase);
-                }
-                let middle =
-                    self.white.contribution(MIDDLE_PHASE) - self.black.contribution(MIDDLE_PHASE);
-                let end = self.white.contribution(0) - self.black.contribution(0);
-                let strong = usize::from(end < 0);
-                (middle * self.middle_phase
-                    + end * (MIDDLE_PHASE - self.middle_phase) * self.endgame_scale[strong] / 64)
-                    / MIDDLE_PHASE
+                self.white.contribution(self.middle_phase)
+                    - self.black.contribution(self.middle_phase)
             }
         }
     }
@@ -497,67 +486,13 @@ pub fn decompose(p: &ChessPosition) -> Evaluation {
             };
         }
     }
-    // In endings, an active king must reach the pawns, not just the center.
-    // Use the nearest pawn to avoid multiplying the term by the pawn count.
-    for (i, term) in terms.iter_mut().enumerate() {
-        if let Some(nearest) = f
-            .men()
-            .iter()
-            .filter(|m| m.kind == PAWN)
-            .map(|m| distance(f.kings[i], m.sq))
-            .min()
-        {
-            term.endgame.end -= 8 * nearest;
-        }
-    }
     let phase = p.phase.min(MIDDLE_PHASE);
     Evaluation {
         white: terms[0],
         black: terms[1],
         middle_phase: phase,
-        endgame_scale: material_scales(p, &f),
         specialized: specialized(p, &f, &terms, phase),
     }
-}
-
-/// Draw likelihood, not a native outcome. Keep known specialized endings
-/// separate. A pawnless side with only a small material edge is often unable
-/// to convert it; opposite bishops also reduce pawn advantages.
-fn material_scales(p: &ChessPosition, f: &Features) -> [i32; 2] {
-    let pawns = [
-        p.pieces[0][PAWN].count_ones() as i32,
-        p.pieces[1][PAWN].count_ones() as i32,
-    ];
-    let npm = [
-        p.material[0] - 100 * pawns[0],
-        p.material[1] - 100 * pawns[1],
-    ];
-    let opposite = f.bishops == [1, 1] && {
-        let a = p.pieces[0][BISHOP].trailing_zeros() as usize;
-        let b = p.pieces[1][BISHOP].trailing_zeros() as usize;
-        (a / 8 + a % 8) % 2 != (b / 8 + b % 8) % 2
-    };
-    std::array::from_fn(|i| {
-        // Do not attenuate a bare-king conversion or a pure pawn ending here.
-        if npm[1 - i] == 0 || npm[i] == 0 {
-            return 64;
-        }
-        if pawns[i] == 0 {
-            return if npm[i] - npm[1 - i] > VALUE[BISHOP] {
-                // For example queen versus rook: do not discount a known
-                // winning material class merely because it has no pawns.
-                64
-            } else if npm[i] <= VALUE[ROOK] {
-                8
-            } else {
-                16
-            };
-        }
-        if opposite && npm == [VALUE[BISHOP]; 2] {
-            return 24;
-        }
-        (36 + if opposite { 2 } else { 7 } * pawns[i]).min(64)
-    })
 }
 
 /// Discount of the clear-runway premium of an advanced passed pawn. King

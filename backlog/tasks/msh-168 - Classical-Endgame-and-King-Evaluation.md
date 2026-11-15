@@ -1,11 +1,10 @@
 ---
 id: MSH-168
 title: Classical Endgame and King Evaluation
-status: In Progress
-assignee:
-  - '@codex'
+status: To Do
+assignee: []
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T20:05:00Z'
+updated_date: '2026-11-15T20:35:00Z'
 labels:
   - handle:classical-endgame-king-evaluation
 milestone: m-5
@@ -33,7 +32,7 @@ Handle: Classical Endgame and King Evaluation.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A baseline of the engine at the start of the task is recorded before evaluation changes: the blunder suite with its endgame positions reported separately
+- [x] #1 A baseline of the engine at the start of the task is recorded before evaluation changes: the blunder suite with its endgame positions reported separately
 - [ ] #2 Each evaluation change set has a game-test result with a sequential decision, and each change left out has a recorded reason
 - [ ] #3 The accepted evaluation is stronger than the engine at the start of the task in a game test
 - [ ] #4 The blunder suite result is not worse than at the start of the task, with the endgame positions reported separately
@@ -70,4 +69,8 @@ Checkpoint1: combined candidate939498e4 reached H0 at742pairs (+368 -370 =746), 
 Revised endgame-set checkpoint:106/146 avoided versus100 baseline, endgames34/47 versus31, middlegame59/83 versus54, opening13/16 versus15; reference matches50 versus50. Overall and endgame improve, opening slice regresses and is disclosed. Bench506248nodes/0.427s versus406067/0.329s; no speed gain.76 search tests pass,1ignored. Independent reviewer verified first742 paired receipts and first H0 threshold, confirmed exact king-safety restoration and no new code finding. Proceed with the single predeclared revised-set game test.
 
 Checkpoint2: unchanged revised endgame set9c67c98d reached600pairs with NO DECISION, not rejection: +331 -288 =581, estimate+12.5 (95% interval-1.6 to+26.5), LLR1.45; no failed pairs. Improved overall/endgame blunders and a positive game estimate justify extending this exact comparison rather than another local change. Independent reviewer approved conditional continuation with unchanged binaries/hypotheses/seed/all accumulated scores. Decision: extend to1000 total pairs,25minute additional wall cap, preserving600 result and recording prior/new compute separately. Total match wall remains below about100minutes (first40.15min + revised32.49min + extension25min); no several-hour campaign. Stop and reconsider at that cap if still undecided.
+
+Final bounded checkpoint: revised set reached 1000 pairs with no decision (+535 -496 =969, estimate +6.78 Elo, 95% interval -3.96 to +17.52, LLR -0.360; zero failed pairs). This is not rejection, but does not satisfy strength acceptance. Stop this round; restore evaluator and tests exactly to task-start 8ddfc1a00c03. Both trial commits and receipts remain available. Total match wall 5624.520s (93.74min), CPU 21800.876s including cancellation; the continued comparison includes the first600 once. Evidence: docs/m5/evidence/msh168/README.md and verification.json. AC1 established; no accepted candidate, so task remains unfinished. Next action: reconsider the approach and record a new bounded plan; authorized Texel tuning is a possible direction after establishing a licensed quiet-position corpus and held-out set. No additional trial is started by this handoff. Branch correction: work and evidence preserved on codex/msh-168-classical-evaluation in /Users/johnweathers/.codex/worktrees/msh-168-evaluation/mShogi. Primary main restored to published 8ddfc1a0 before normal reviewed integration. AGENTS.md now explicitly requires feature branches and ownership-based temporary worktrees.
+
+Independent final review by /root/evaluation_review passed: all1000 receipts, unchanged600 prefix, color pairing, source/binary identities, every sequential prefix and cumulative compute verified. Final evaluator and test bytes match predecessor Git objects; git diff 8ddfc1a0 -- crates tools Cargo.toml Cargo.lock is empty. Formatting and whitespace checks pass. Integrate only policy and evidence; task remains To Do for a revised approach. Feature history retains candidate939498e4 and revised9c67c98d; preservation checkpoint e9cfc0cf and policy c061718e. Integration target main. No claim of stronger play or completed acceptance.
 <!-- SECTION:NOTES:END -->

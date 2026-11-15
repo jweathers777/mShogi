@@ -1,11 +1,11 @@
 ---
 id: MSH-177
 title: Chess Evaluation Cost
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:04:00Z'
-updated_date: '2026-11-15T22:10:00Z'
+updated_date: '2026-11-15T22:19:00Z'
 labels:
   - handle:chess-evaluation-cost
 milestone: m-5
@@ -30,17 +30,17 @@ Handle: Chess Evaluation Cost.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Every evaluation term and final score match the frozen accepted evaluator on many random legal-game positions for both colors, with independent review.
-- [ ] #2 Every measured fixed-depth benchmark run totals exactly 466994 nodes; weights and search behavior are unchanged.
-- [ ] #3 Repeated idle-machine baseline/candidate throughput, environment and source identities are recorded; stop if gain is below 3 percent.
-- [ ] #4 Relevant local correctness and consumer checks pass; retain only an equivalent optimization or restore the baseline and record the small/no-gain result.
+- [x] #1 Every evaluation term and final score match the frozen accepted evaluator on many random legal-game positions for both colors, with independent review.
+- [x] #2 Every measured fixed-depth benchmark run totals exactly 466994 nodes; weights and search behavior are unchanged.
+- [x] #3 Repeated idle-machine baseline/candidate throughput, environment and source identities are recorded; stop if gain is below 3 percent.
+- [x] #4 Relevant local correctness and consumer checks pass; retain only an equivalent optimization or restore the baseline and record the small/no-gain result.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -56,4 +56,8 @@ Handle: Chess Evaluation Cost.
 Owner Codex /root, branch codex/chess-evaluation-cost in existing chat checkout /Users/johnweathers/.codex/worktrees/msh-168-evaluation/mShogi. Main28b12c56 clean at start; other historical worktree left untouched. Backlog1.55.3 matches baseline. This is one measured optimization round;3percent operationalizes the user stop threshold of a few percent.
 
 Implemented one coherent cost reduction: incrementally retain raw placement totals by kind, preserving the old aggregate totals and per-kind rounding; replace nearest-pawn scans with exact precomputed distance rings. Frozen reference retains original piece/pawn scans and rebuilds from native positions. Full library81passed/1ignored; final three equivalence tests passed including20000native positions, undos, reflections and explicit rejected pinned moves.29consumer tests passed. Clippy initially rejected duplicate dead_code allowances; redundant outer allowance removed and final Clippy passed. Independent production review found no correctness defect; added96byte position/cache-update cost remains for benchmark decision. Raw evaluator, all weights and weighted arithmetic byte-identical to baseline; only preparation/cache paths changed.
+
+One bounded candidate0311495b preserved every term/score in20000 native legal positions and undo/reflection/special-move checks. All120 measured benchmark rounds (60perbinary) and6warmups were exactly466994nodes. Twenty alternatingAB/BA blocks with no concurrent builds/tests/games: median paired gain1.7199percent engineNPS,1.8964percent driverNPS, below preset3percent threshold. Engine median1.1253M to1.1474M; driver1.1083M to1.1305M. Maximum sampled competing process CPU19.6percent (ordinary desktop); snapshots are not continuous profiling. Two load-interrupted attempts are preserved and excluded, not selected for speed. Decision: restore baseline product/tests exactly to28b12c56 and stop; no more optimization or game test. Candidate/test oracle remain in Git0311495b; evidence docs/m5/evidence/msh177. Restoration diff against28b12c56 for crates/tools is empty; final evidence audit pending.
+
+Final independent evidence audit passed: all40run receipts/120measured rounds plus6warmups, frozen identities, AB/BA order/timestamps,466994nodes and both paired gains recomputed. Highest sampled other-process CPU19.6percent; known interrupted attempts excluded entirely. Baseline restoration approved. No further optimization or game test. Source comparison git diff28b12c56 -- crates tools is empty. Ready to integrate the measured stop result and close this bounded task.
 <!-- SECTION:NOTES:END -->

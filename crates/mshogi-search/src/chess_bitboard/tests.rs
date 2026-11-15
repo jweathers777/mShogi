@@ -124,7 +124,6 @@ fn same_board(fast: &ChessPosition, native: &Position) {
     assert_eq!(fast.hash, fast.computed_hash());
     assert_eq!(fast.material, rebuilt.material);
     assert_eq!(fast.placement, rebuilt.placement);
-    assert_eq!(fast.placement_by_kind, rebuilt.placement_by_kind);
     assert_eq!(fast.phase, rebuilt.phase);
     assert_eq!(fast.pieces, rebuilt.pieces);
     assert_eq!(fast.occupied, rebuilt.occupied);

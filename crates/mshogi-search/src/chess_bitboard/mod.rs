@@ -172,9 +172,6 @@ pub struct ChessPosition {
     checkers: u64,
     pub(crate) material: [i32; 2],
     pub(crate) placement: [(i32, i32); 2],
-    // Keep raw sums per kind: weighting each square before summing would change
-    // integer rounding when two pieces of the same kind contribute.
-    pub(crate) placement_by_kind: [[(i32, i32); 6]; 2],
     pub(crate) phase: i32,
     stack: Vec<Undo>,
     /// Hashes of all earlier positions: the game before the root, then the path.
@@ -227,7 +224,6 @@ impl ChessPosition {
             checkers: 0,
             material: [0; 2],
             placement: [(0, 0); 2],
-            placement_by_kind: [[(0, 0); 6]; 2],
             phase: 0,
             stack: Vec::with_capacity(256),
             keys: Vec::with_capacity(512),
@@ -369,8 +365,6 @@ impl ChessPosition {
         let (middle, end) = PLACEMENT[color][kind][sq];
         self.placement[color].0 += middle;
         self.placement[color].1 += end;
-        self.placement_by_kind[color][kind].0 += middle;
-        self.placement_by_kind[color][kind].1 += end;
         if kind != PAWN && kind != KING {
             self.phase += VALUE[kind];
         }
@@ -384,8 +378,6 @@ impl ChessPosition {
         let (middle, end) = PLACEMENT[color][kind][sq];
         self.placement[color].0 -= middle;
         self.placement[color].1 -= end;
-        self.placement_by_kind[color][kind].0 -= middle;
-        self.placement_by_kind[color][kind].1 -= end;
         if kind != PAWN && kind != KING {
             self.phase -= VALUE[kind];
         }

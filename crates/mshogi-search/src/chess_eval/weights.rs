@@ -1,26 +1,7 @@
 //! Bounded classical weights and the exact cached score path used by Texel fitting.
 //! Material values here affect evaluation only, not rules, SEE or phase.
 use super::*;
-// Exact Chebyshev-distance rings around each king square. The first occupied
-// ring gives the nearest pawn without scanning every pawn for each king.
-const PAWN_DISTANCE_RINGS: [[u64; 7]; 64] = {
-    let mut rings = [[0u64; 7]; 64];
-    let mut king = 0usize;
-    while king < 64 {
-        let mut square = 0usize;
-        while square < 64 {
-            let files = (king % 8).abs_diff(square % 8);
-            let ranks = (king / 8).abs_diff(square / 8);
-            let d = if files > ranks { files } else { ranks };
-            if d != 0 {
-                rings[king][d - 1] |= 1u64 << square;
-            }
-            square += 1;
-        }
-        king += 1;
-    }
-    rings
-};
+use crate::chess_bitboard::PLACEMENT;
 
 /// Number of jointly fitted coefficients.
 pub const COUNT: usize = 32;
@@ -99,19 +80,29 @@ impl Prepared {
         let raw = raw_decompose(p);
         let counts =
             std::array::from_fn(|c| std::array::from_fn(|k| p.pieces[c][k].count_ones() as i32));
-        let placement = p
-            .placement_by_kind
-            .map(|kinds| kinds.map(|(middle, end)| Tapered { middle, end }));
+        let mut placement = [[Tapered::default(); 6]; 2];
+        for c in 0..2 {
+            for k in 0..6 {
+                let mut bits = p.pieces[c][k];
+                while bits != 0 {
+                    let sq = bits.trailing_zeros() as usize;
+                    bits &= bits - 1;
+                    let (mg, eg) = PLACEMENT[c][k][sq];
+                    placement[c][k].add(mg, eg);
+                }
+            }
+        }
         let pawns = p.pieces[0][PAWN] | p.pieces[1][PAWN];
         let nearest = std::array::from_fn(|c| {
-            if pawns == 0 {
-                return 0;
-            }
             let king = p.pieces[c][KING].trailing_zeros() as usize;
-            PAWN_DISTANCE_RINGS[king]
-                .iter()
-                .position(|ring| ring & pawns != 0)
-                .map_or(0, |d| d as i32 + 1)
+            let mut bits = pawns;
+            let mut best = 7;
+            while bits != 0 {
+                let sq = bits.trailing_zeros() as usize;
+                bits &= bits - 1;
+                best = best.min(distance(king, sq));
+            }
+            if pawns == 0 { 0 } else { best }
         });
         let npm = [
             p.material[0] - 100 * counts[0][PAWN],

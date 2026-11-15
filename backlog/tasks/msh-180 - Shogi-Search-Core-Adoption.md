@@ -1,11 +1,11 @@
 ---
 id: MSH-180
 title: Shogi Search Core Adoption
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-15T23:02:00Z'
+updated_date: '2026-11-15T23:03:00Z'
 labels:
   - handle:shogi-search-core-adoption
 milestone: m-5
@@ -42,7 +42,7 @@ Handle: Shogi Search Core Adoption.
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -68,3 +68,15 @@ Final source bf329f3d. Verification record: docs/m5/evidence/msh180/verification
 
 Independent final review ACCEPT, no remaining findings: docs/m5/evidence/msh180/review.md. Reviewer verified source/scope reuse, exactly13 additional unchanged desktop-verification tests, final union1167/10, all32 compressed report hashes and64 native wins. First and last pairs replayed independently. Integration into main remains the final completion step.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Replaced the private full-width Shogi search with a fast Shogi position on the shared alpha-beta core, without changing the core trait or native game rules. Native root outcomes/declarations, move admission and reported-line replay remain authoritative. Shared identity handling preserves earlier Shogi and Tori observations. USI, experiment runner and desktop limits now support the shared search.
+
+Evidence: docs/m5/evidence/msh180/verification.json and review.md. Native perft, randomized legal-action/state/hash checks, nine position tests, eight search integration tests and consumer checks support all criteria. Final local Rust coverage1167 passed/10 explicitly ignored; corrected broad-run failures and focused reruns remain recorded. Clippy, formatting, Node24 frontend11 tests/TypeScript, Python32 tests and standalone Tauri host check passed. Independent review ACCEPT, no remaining findings.
+
+Frozen d2391b21 beat b5d14b3b64 wins/0 draws/0 losses in32 paired openings. Sequential H1 decision;118s wall; no excluded or unfinished games. Ordinary equal-root calibration reached median depth7 in31ms versus depth2 in37ms. Retain the change. This is predecessor improvement, not an external rating.
+
+Integrated into main by d0134bb2. Implementation d2391b21; final test/comment source bf329f3d; evidence27323c20. Product sources match the tested source. Linux/Windows/packaged GUI checks remain deferred to the next integration/release checkpoint. MSH-179 (Clock and Session for All Games) and MSH-50 (Conventional Shogi) remain separate follow-ups; next priority-ready task is MSH-181 (Xiangqi Search Core Adoption). No task worktree was created; primary checkout returns to main.
+<!-- SECTION:FINAL_SUMMARY:END -->

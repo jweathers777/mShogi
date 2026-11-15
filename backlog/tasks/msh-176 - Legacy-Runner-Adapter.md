@@ -1,15 +1,15 @@
 ---
 id: MSH-176
-title: Legacy Runner Adapter
+title: Compare the legacy and present Chu engines
 status: Ready
 assignee: []
 created_date: '2026-11-14T14:14:00Z'
+updated_date: '2026-11-15T16:27:00Z'
 labels:
   - handle:legacy-runner-adapter
 milestone: m-5
 dependencies:
-  - MSH-174
-  - MSH-175
+  - MSH-173
 references:
   - crates/mshogi-runner/src/experiments/mod.rs
   - crates/mshogi-runner/src/experiments/run.rs
@@ -25,27 +25,21 @@ ordinal: 180000
 <!-- SECTION:DESCRIPTION:BEGIN -->
 Handle: Legacy Runner Adapter.
 
-**Problem**
-The shared six-game experiment runner already owns native Chu state, paired schedules and replayable evidence, but its participants expect the rewrite internal-search interface. The old C++ engine cannot participate directly. The Chess-specific UCI strength harness is not a Chu runner.
+**Problem:** It is not known how the present Chu engine compares with the original C++ engine. The present engine is still the first full-width search, limited to depth 2 and 2,000 nodes with material-only evaluation; the legacy engine will probably win now. Chu moves to the shared search core in later work, so the comparison is most useful as a baseline that can be repeated then.
 
-**Objective**
-Connect the frozen legacy Chu opponent to the existing shared runner for bounded, reproducible comparisons against the current Chu engine.
+**Objective:** A measured result of the present Chu engine against the legacy engine of MSH-173 (Frozen Legacy Opponent), with commands that repeat it later.
 
-**Approach**
-Reuse shared scheduling, native authority, supervision and reporting. Translate complete moves through the legacy interface and apply the shared opponent adjudication policy. Preserve distinct native and legacy states and detect disagreements. Record original binary and wrapper/adapter identities, settings and actual compute. Compare equal elapsed-time conditions where supported; do not present equal depth/node budgets across different engines as equal computing work. Unsupported time controls require explicit refusal or a clearly labeled alternative. No GUI integration, legacy-engine product dependency, old-rule emulation in the core or new strength target is required.
+**Approach:** Connect the legacy opponent to the existing experiment runner (`mshogi-match experiment-run`), with the native Chu rules as the authority for every move and result. When the legacy engine proposes an illegal move, rejects a legal one, claims a different result or fails, the game is not scored, and its cause is recorded; it is never a win or a loss. Play both colors. The present engine has only depth and node limits, so measure its time per move at its largest setting and give the legacy engine about the same time; record both. If one engine wins nearly all games, a small sample is enough; if the result is close, follow "Game tests in this direction" in `docs/m5/strength-roadmap.md`. Note the runner limits (at most 16 openings and 128 games for each configuration, and a report size limit); several seeded configurations can be combined.
 
-**Completion**
-A bounded smoke schedule runs both side assignments against the real current and wrapped legacy engines, retains complete native records and failure evidence, and replays without either binary. This prepares MSH-52 (Chu Engine Strength). A substantial campaign or rating claim remains separate work with explicit authorization; smoke evidence alone establishes neither engine superiority nor speed superiority.
+**Completion:** The result is recorded with its uncertainty and unscored games, and the commands repeat it after Chu moves to the shared core.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Runner configuration can select the wrapped legacy Chu participant and current native Chu participant, with exact source/binary/wrapper identities, search settings, profile and effective resource bounds recorded.
-- [ ] #2 Complete native history and complete legacy choices are translated without loss of Lion routes or promotion; every accepted move passes the native authority and observed legacy rejection/state disagreement follows the shared policy.
-- [ ] #3 The existing shared schedule runs a finite real-engine Chu smoke in both side assignments; work caps, per-search watchdogs, whole-run limits, stderr/stdout bounds and process cleanup are effective.
-- [ ] #4 Canonical reports replay the accepted history and validate outcomes/dispositions without the opponent binaries. Native results, experimental forfeits, capped games, mismatches and process failures stay separate in summaries.
-- [ ] #5 Focused adapter tests cover ordinary play, promotion, double capture/return, disagreement and execution failure; shared/existing protocol paths receive relevant regressions and independent review at the exact tested revision.
-- [ ] #6 Documentation provides reproducible build/run/replay commands, fair-comparison conditions, actual compute and known limits; no speed/strength superiority or formal rating is inferred from the smoke test.
+- [ ] #1 The runner plays the legacy engine against the present Chu engine with both colors; the native rules decide every move and result, and each disagreement or failure is an unscored game with its cause
+- [ ] #2 The settings make the time per move comparable, and the measured median time per move of both engines is recorded
+- [ ] #3 The result records wins, draws and losses, unscored games by cause, an interval and actual compute, and states only what the sample supports
+- [ ] #4 Recorded commands repeat the comparison, and the reports replay without either engine binary
 <!-- AC:END -->
 
 ## Definition of Done
@@ -55,3 +49,9 @@ A bounded smoke schedule runs both side assignments against the real current and
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Ticket revision, 2026-11-15 (requested by John): this task now delivers the comparison itself, not only a smoke test. It absorbs the needed part of MSH-175 (Opponent Adjudication Policy): disagreements and failures are unscored with their cause. It depends on MSH-173 only. MSH-174 and MSH-175 are archived.
+<!-- SECTION:NOTES:END -->

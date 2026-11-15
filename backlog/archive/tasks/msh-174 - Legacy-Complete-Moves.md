@@ -4,6 +4,7 @@ title: Legacy Complete Moves
 status: Ready
 assignee: []
 created_date: '2026-11-14T14:14:00Z'
+updated_date: '2026-11-15T16:27:00Z'
 labels:
   - handle:legacy-complete-moves
 milestone: m-5
@@ -51,3 +52,9 @@ The wrapped opponent can start Chu, consume complete action history and return c
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Archived 2026-11-15 (requested by John): merged into MSH-173 (Frozen Legacy Opponent) and MSH-176 (Legacy Runner Adapter), which now build the legacy Chu opponent and run the comparison. A general opponent adjudication policy is not needed for this comparison.
+<!-- SECTION:NOTES:END -->

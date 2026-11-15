@@ -1,9 +1,10 @@
 ---
 id: MSH-173
-title: Frozen Legacy Opponent
+title: Build the legacy Chu opponent and measure its rule agreement
 status: Ready
 assignee: []
 created_date: '2026-11-14T14:14:00Z'
+updated_date: '2026-11-15T16:27:00Z'
 labels:
   - handle:frozen-legacy-opponent
 milestone: m-5
@@ -24,26 +25,21 @@ ordinal: 177000
 <!-- SECTION:DESCRIPTION:BEGIN -->
 Handle: Frozen Legacy Opponent.
 
-**Problem**
-The original C++ Chu engine is a useful potential baseline, but the current harness cannot identify and reproduce a build of it. Its speed and strength relative to the rewrite are unmeasured.
+**Problem:** John wants to see how the present Chu engine compares with the original C++ engine at revision `941cd4dc37e6e6210d4f993c96a553753e228b19` (alpha-beta, principal-variation search, iterative deepening, a hash table, quiescence). The runner cannot run that engine. Its printed notation omits the intermediate square of a Lion move (`Move::mVisited`), so text output cannot identify a move. It probably plays rules that differ from the selected JCSA 2019 profile: `ChuShogi.cpp` treats a repetition as a draw, and no Lion-trading rule was found in its source.
 
-**Objective**
-Provide a reproducible, headless frozen opponent from original revision 941cd4dc37e6e6210d4f993c96a553753e228b19, without changing its search, evaluation or rules to improve compatibility or strength.
+**Objective:** A reproducible headless legacy opponent that gives and accepts complete moves, and a measured answer on how often it disagrees with the native rules.
 
-**Approach**
-Keep historical source and modern product code separate. Record any minimum compiler/build portability changes as an explicit patch over the frozen source. Build only what the console/engine needs; GUI support is not a prerequisite. Retain licenses and source/build provenance. This supplies MSH-52 (Chu Engine Strength); it does not authorize a rating study, substantial compute campaign or product dependency on the legacy engine.
+**Approach:** Build from the pinned revision. Keep each compatibility change in a separate patch, and do not change its search, evaluation or rules. Add a small machine interface that reads the move data (origin, ordered landings, promotion), not the printed notation, accepts a move history, and searches by time (the engine has `SetSearchTime`) or depth. Shape the interface for the adapter of MSH-176 (Legacy Runner Adapter); speaking the existing internal execution protocol is one option. Then let the engine play itself for a few games with each move checked by the native Chu rules, and count the disagreements by type. If disagreements would stop a large part of the games, stop and record that for a decision; do not change either rule set. This is a local experiment tool (Level 1), not a product, CI or conformance dependency. Keep build output outside Git.
 
-**Completion**
-A documented build and bounded smoke run identify the original source, patch, compiler, platform, binary hash and selected search settings. Large binaries and build output stay outside Git. Record risk-based verification and independent review appropriate to build/process changes.
+**Completion:** The opponent builds reproducibly, its interface preserves complete moves, and the rule-agreement result is recorded with a continue or stop decision.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A documented clean build produces a headless Chu opponent from the pinned original revision, with required dependencies and exact build commands recorded.
-- [ ] #2 The source revision, explicit compatibility patch, compiler/options, platform, executable hash and chosen legacy search settings are retained; search, evaluation and rules are unchanged and the build is reproducible without a private local checkout.
-- [ ] #3 A bounded smoke run starts Chu, accepts a legal ordinary move, produces an actual search move and terminates with stdout/stderr, exit status and process cleanup evidence.
-- [ ] #4 Legacy artifacts are optional experiment inputs, not product, ordinary CI or conformance dependencies; original history and required notices are preserved.
-- [ ] #5 Actual successful and failed build/run checks and limits are recorded at the tested revision, with proportionate independent review; untested platforms and playing strength are not claimed.
+- [ ] #1 A reproducible build from the pinned revision records the compatibility patch, compiler, platform and binary hash; search, evaluation and rules are unchanged; build output is outside Git
+- [ ] #2 The interface gives and accepts complete Chu moves, including the intermediate square of Lion moves and promotion, with tests that use independent expected positions for routes with equal endpoints
+- [ ] #3 A self-play probe with native checking records games, moves and disagreements by type, and a continue or stop decision
+- [ ] #4 The legacy engine is not a product, CI or conformance dependency, and its license and notices are preserved
 <!-- AC:END -->
 
 ## Definition of Done
@@ -53,3 +49,9 @@ A documented build and bounded smoke run identify the original source, patch, co
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Ticket revision, 2026-11-15 (requested by John): MSH-173, MSH-174 (Legacy Complete Moves), MSH-175 (Opponent Adjudication Policy) and MSH-176 (Legacy Runner Adapter) became two tasks. This task now holds the build, the complete-move interface (former MSH-174) and a rule-agreement probe, which is the main feasibility risk. MSH-176 holds the comparison. MSH-174 and MSH-175 are archived.
+<!-- SECTION:NOTES:END -->

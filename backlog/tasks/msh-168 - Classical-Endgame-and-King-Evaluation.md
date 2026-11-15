@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T21:41:00Z'
+updated_date: '2026-11-15T21:42:00Z'
 labels:
   - handle:classical-endgame-king-evaluation
 milestone: m-5
@@ -44,8 +44,8 @@ Handle: Classical Endgame and King Evaluation.
 <!-- DOD:BEGIN -->
 - [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -84,4 +84,12 @@ Texel candidate checkpoint:6000 fresh games,5999 native finishes,1unfinished exc
 Single tuned-candidate game test complete: c3363d3d reached H1 at597pairs under predeclaredH0=0/H1=10,alpha=beta=.05,50ms/four workers/seed168. +424 -340 =430,zero failures,three cancelled. LLR2.96753 crossed2.94444; estimate+24.48Elo (95% interval+8.58 to+40.49). Match wall2022.210s/CPU7839.704s including19.460 cancelledCPU. Retain tuned default: overall blunders112/146 vs100 and endgames38/47 vs31. Earlier first set remainsH0 at742; revised untuned set remainsNO DECISION at1000, not rejection. Total all-round match wall7646.730s (127.45min),CPU29640.580s; generation/fitting separate. Final receipt audit pending. Production source and tests unchanged from testedc3363d3d. Durable raw corpus and frozen binaries byte-verified in primary target/strength/texel; manifests and receipts in docs/m5/evidence/msh168/texel.
 
 Final independent review passed: /root/evaluation_review checked all597paired receipts,1194color-mapped outcomes, first eligible H1 crossing at597, frozen hashes and compute. Cancellation count/CPU are aggregate-only harness records; this limit is disclosed. Accepted tuned evaluator is ready for normal main integration. AC2 literal each-set decision wording conflicts with permitted capped no-decision outcomes and the user-directed next round; clarification requested before checkingAC2 or markingDone. Earlier revised set will not be calledH0. No additional match is needed for the accepted candidate.
+
+Accepted implementation and full evidence integrated into main and pushed as a7357a60 (candidate c3363d3d, audited evidence c77d0253). Exact product/test source remains the tested candidate. MSH-168 remains In Review only for the pending user decision on AC2 wording; no code, game test or further tuning is pending. Existing worktree retained for this record clarification and closure. Next dependency-ready queue item is MSH-173 (Frozen Legacy Opponent); not started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Joint Texel tuning of32 bounded classical weights, including material draw scaling and endgame king activity, is the accepted default. Fresh6000-game self-play corpus uses native outcomes, source/license records and separate train/validation/heldout partitions; independent native replay and split audit passed. Heldout MSE .0561861 to .0529987. Single H1=10 game test passed at597pairs (+424 -340 =430), estimated+24.48Elo at50ms. Development blunders100 to112/146; endgames31 to38/47; openings15 to14/16.79 search tests pass,1ignored;29 consumers pass;clippy/format/tuner/data checks and independent reviews pass. Fixed-depth benchmark is slower (.329s to .411s), with more nodes and added evaluator work. Linux/Windows/GUI deferred to nextLevel3. Main integration a7357a60 is pushed; candidate c3363d3d and evidence c77d0253. Task remains In Review pending explicit AC2 clarification: earlier revised trial is still no decision, never H0. No further match or tuning planned. Corpus preserved in primary target/strength/texel; receipts docs/m5/evidence/msh168/texel. Next eligible MSH-173 (Frozen Legacy Opponent), not started.
+<!-- SECTION:FINAL_SUMMARY:END -->

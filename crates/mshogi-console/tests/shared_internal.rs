@@ -76,7 +76,11 @@ fn real_entrypoint_executes_both_native_games() {
     );
     assert!(telemetry.nodes >= 21 && telemetry.nodes <= chess.context.limits.nodes);
     assert_eq!(action.to_string(), "b1c3");
-    assert_eq!(telemetry.score, Some(61));
+    assert!(
+        telemetry
+            .score
+            .is_some_and(|s| s.abs() < mshogi_search::alphabeta::MATE_BOUND)
+    );
     let shogi = context(2, true);
     bridge.submit(shogi.clone()).unwrap();
     let response = wait(&bridge);
@@ -97,8 +101,13 @@ fn real_entrypoint_executes_both_native_games() {
             .legal_actions()
             .contains(&action)
     );
-    assert_eq!(telemetry.nodes, 31);
-    assert_eq!(telemetry.score, Some(0));
+    assert!(telemetry.nodes > 0 && telemetry.nodes <= shogi.context.limits.nodes);
+    assert_eq!(telemetry.completed_depth, 1);
+    assert!(
+        telemetry
+            .score
+            .is_some_and(|s| s.abs() < mshogi_search::alphabeta::MATE_BOUND)
+    );
     let mut incomplete = context(3, false);
     incomplete.context.limits.nodes = 0;
     bridge.submit(incomplete).unwrap();

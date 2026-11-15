@@ -184,8 +184,8 @@ fn precise_limits_and_incomplete_work_do_not_invent_scores_or_moves() {
     for (nodes, depth, completed, status) in [
         (0, 1, 0, StopReason::NodeLimit),
         (1, 1, 0, StopReason::NodeLimit),
-        (31, 1, 1, StopReason::Complete),
-        (32, 2, 1, StopReason::NodeLimit),
+        (5000, 1, 1, StopReason::Complete),
+        (200, 64, 1, StopReason::NodeLimit),
     ] {
         let mut c = request(&Game::new());
         c.limits = WorkLimits {
@@ -207,13 +207,20 @@ fn precise_limits_and_incomplete_work_do_not_invent_scores_or_moves() {
             }
             ShogiResult::Choice { telemetry, .. } => {
                 assert!(completed > 0);
-                assert_eq!(telemetry.score, Some(0));
+                assert!(telemetry.score.is_some());
                 telemetry
             }
             _ => panic!(),
         };
-        assert_eq!(t.completed_depth, completed);
-        assert_eq!(t.nodes, nodes);
+        if depth == 64 {
+            assert!(t.completed_depth >= completed && t.completed_depth < depth);
+        } else {
+            assert_eq!(t.completed_depth, completed);
+        }
+        assert!(t.nodes <= nodes);
+        if status == StopReason::NodeLimit {
+            assert_eq!(t.nodes, nodes);
+        }
         assert_eq!(t.status, status);
     }
     for limits in [
@@ -303,20 +310,29 @@ fn strict_result_parsing_and_native_observation_acceptance() {
     let c = request(&Game::new());
     let response = run(c.clone());
     let text = serde_json::to_string(&response).unwrap();
-    for (a, b) in [
-        ("\"nodes\":31", "\"nodes\":31,\"nodes\":31"),
-        (
-            "\"action\":\"1g1f\"",
-            "\"action\":\"1g1f\",\"action\":\"1g1f\"",
-        ),
-        (
+    let value = serde_json::to_value(&response).unwrap();
+    let nodes = value.pointer("/result/result/telemetry/nodes").unwrap();
+    let action = value.pointer("/result/result/choice/action").unwrap();
+    for field in [
+        format!("\"nodes\":{nodes}"),
+        format!("\"action\":{action}"),
+        "\"perspective\":\"sente\"".into(),
+    ] {
+        assert!(text.contains(&field));
+        let duplicate = format!("{field},{field}");
+        assert!(
+            serde_json::from_str::<ExecutionObservation>(&text.replacen(&field, &duplicate, 1))
+                .is_err()
+        );
+    }
+    assert!(
+        serde_json::from_str::<ExecutionObservation>(&text.replacen(
             "\"perspective\":\"sente\"",
             "\"perspective\":\"sente\",\"unknown\":true",
-        ),
-    ] {
-        assert!(text.contains(a));
-        assert!(serde_json::from_str::<ExecutionObservation>(&text.replacen(a, b, 1)).is_err());
-    }
+            1
+        ))
+        .is_err()
+    );
     let value = serde_json::to_value(&response).unwrap();
     for (path, v) in [
         ("/result/result/telemetry/perspective", json!("gote")),

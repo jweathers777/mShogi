@@ -75,7 +75,7 @@ fn real_chess_shogi_chess_execution_uses_one_supervisor_and_fresh_ids() {
     );
     command(&mut c, SessionOperation::Resume {});
     let played = wait(&mut c, |s| s.event_index == 1);
-    assert_eq!(played.events[0].label, "Sente: 1g1f");
+    assert_initial_native_move(&played);
     assert_eq!(played.turn.label, "Gote");
     assert!(played.observations[0].observation.context.request_id > old.request_id);
     let before = played.context;
@@ -152,7 +152,7 @@ fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_path
     let first = wait(&mut c, |view| view.event_index == 1);
     assert_eq!(first.human.id, NativeSide::Shogi(s::Side::Gote));
     assert_eq!(first.turn.id, NativeSide::Shogi(s::Side::Gote));
-    assert_eq!(first.events[0].label, "Sente: 1g1f");
+    assert_initial_native_move(&first);
     assert_eq!(first.search_observations[0].purpose, "engine_turn");
     assert_eq!(first.search_observations[0].event_index, 0);
     match first.document.settings {
@@ -217,4 +217,26 @@ fn product_new_gote_real_engine_play_analysis_archive_and_resume_use_native_path
     assert!(resumed.capabilities.board_action);
     std::fs::remove_file(path).unwrap();
     c.begin_shutdown();
+}
+
+fn assert_initial_native_move(snapshot: &SharedSnapshot) {
+    let action: s::Action = snapshot.events[0]
+        .label
+        .strip_prefix("Sente: ")
+        .unwrap()
+        .parse()
+        .unwrap();
+    assert!(s::Position::initial().legal_actions().contains(&action));
+    let observation = &snapshot.observations[0].observation;
+    let mshogi_engine::ExecutionResult::Shogi {
+        result:
+            mshogi_engine::ShogiResult::Choice {
+                choice: mshogi_engine::ShogiChoice::Move { action: chosen },
+                ..
+            },
+    } = &observation.result
+    else {
+        panic!("expected searched native action")
+    };
+    assert_eq!(*chosen, action);
 }

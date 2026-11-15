@@ -34,13 +34,14 @@ it("allows clearing and typing numeric work limits without inserting a leading z
   const nodes = screen.getByRole("spinbutton", { name: "Node limit" }) as HTMLInputElement;
   fireEvent.change(depth, { target: { value: "" } });
   expect(depth.value).toBe("");
-  fireEvent.change(depth, { target: { value: "4" } });
+  fireEvent.change(depth, { target: { value: "64" } });
   fireEvent.change(nodes, { target: { value: "" } });
   expect(nodes.value).toBe("");
-  fireEvent.change(nodes, { target: { value: "20000" } });
-  expect(depth.value).toBe("4"); expect(nodes.value).toBe("20000");
+  fireEvent.change(nodes, { target: { value: "5000000" } });
+  expect(depth.max).toBe("64"); expect(nodes.max).toBe("5000000");
+  expect(depth.value).toBe("64"); expect(nodes.value).toBe("5000000");
   fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
-  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { kind: "moves", depth: 4, nodes: 20000 } });
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(standard, { kind: "analyze", operation: { kind: "moves", depth: 64, nodes: 5000000 } });
 });
 it("routes bounded analysis through the read-only operation and cancellation path", () => {
   const { session, props, rerender } = app();

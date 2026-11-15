@@ -65,8 +65,8 @@ fn incomplete(context: ExecutionContext) -> ExecutionObservation {
         result: ExecutionResult::Shogi {
             result: ShogiResult::Incomplete {
                 telemetry: mshogi_engine::ShogiTelemetry {
-                    evaluator_id: "mshogi.shogi.material.v1".into(),
-                    search_id: "mshogi.shogi.full-width.v1".into(),
+                    evaluator_id: "mshogi.shogi.material-placement.v1".into(),
+                    search_id: "mshogi.shogi.shared-core.v1".into(),
                     perspective: match &context.game {
                         CanonicalRecord::Shogi(r) => r.side_to_move(),
                         _ => unreachable!(),
@@ -161,8 +161,8 @@ fn presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events
         initial.play_limits,
         WorkLimits {
             time_ms: None,
-            depth: 2,
-            nodes: 5000
+            depth: 64,
+            nodes: 300_000
         }
     );
     assert_eq!(initial.board_ply, 0);
@@ -177,7 +177,7 @@ fn presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events
     assert_eq!(ended.board_ply, 0);
     assert_eq!(
         serde_json::to_value(&ended).unwrap()["play_limits"]["nodes"],
-        5000
+        300_000
     );
     let prefix = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
     assert!(prefix.historical);

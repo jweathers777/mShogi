@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T19:30:00Z'
+updated_date: '2026-11-15T20:05:00Z'
 labels:
   - handle:classical-endgame-king-evaluation
 milestone: m-5
@@ -68,4 +68,6 @@ Candidate checkpoint before games:104/146 blunders avoided versus100, including3
 Checkpoint1: combined candidate939498e4 reached H0 at742pairs (+368 -370 =746), estimate-0.5 Elo, zero failed pairs. The better blunders did not establish stronger play. Authoritative results/compute: docs/m5/evidence/msh168/match/result.json. Decision: change direction by removing the added quadratic king-danger term, leaving the coherent material-scaling/king-activity endgame set. Independent reviewer identified that existing danger already scales with attacker count; the extra square may duplicate that reward and applies with a remote queen. This is a testable design hypothesis, not attribution from H0. No single-position tuning. One revised-set test: same frozen task-start predecessor,50ms,4workers,seed168,H0=0/H1=15,alpha=beta=.05,min30,max600pairs,40minute wall cap. Combined match wall will stay below about81minutes if this cap is used. Record all compute, including first failed-strength set. Stop and reconsider after this second checkpoint rather than repeat local removals without new evidence.
 
 Revised endgame-set checkpoint:106/146 avoided versus100 baseline, endgames34/47 versus31, middlegame59/83 versus54, opening13/16 versus15; reference matches50 versus50. Overall and endgame improve, opening slice regresses and is disclosed. Bench506248nodes/0.427s versus406067/0.329s; no speed gain.76 search tests pass,1ignored. Independent reviewer verified first742 paired receipts and first H0 threshold, confirmed exact king-safety restoration and no new code finding. Proceed with the single predeclared revised-set game test.
+
+Checkpoint2: unchanged revised endgame set9c67c98d reached600pairs with NO DECISION, not rejection: +331 -288 =581, estimate+12.5 (95% interval-1.6 to+26.5), LLR1.45; no failed pairs. Improved overall/endgame blunders and a positive game estimate justify extending this exact comparison rather than another local change. Independent reviewer approved conditional continuation with unchanged binaries/hypotheses/seed/all accumulated scores. Decision: extend to1000 total pairs,25minute additional wall cap, preserving600 result and recording prior/new compute separately. Total match wall remains below about100minutes (first40.15min + revised32.49min + extension25min); no several-hour campaign. Stop and reconsider at that cap if still undecided.
 <!-- SECTION:NOTES:END -->

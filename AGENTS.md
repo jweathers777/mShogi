@@ -65,7 +65,7 @@ Harness) and MSH-164 (Shared Search Core):
 
 ## Session startup
 
-- Inspect Git status, branch, remotes, worktrees, recent relevant commits, and active ownership before editing. Preserve existing dirty and untracked work.
+- Inspect Git status, branch, remotes, worktrees, recent relevant commits, and active ownership before editing. Preserve existing dirty and untracked work. Apply the branch and checkout rules below before making changes; a clean checkout can still belong to an active worker.
 - Read `docs/design.md`, the selected task, its dependencies, and the relevant implementation. Read only additional material needed for the work.
 - Run `backlog instructions overview` and the relevant creation, execution, or finalization guide when using that operation.
 - Check the installed Backlog.md version against the recorded project baseline. Resolve a compatibility difference before mutating records with an incompatible version.
@@ -221,13 +221,32 @@ Prefer coherent commits that include code, associated tests, and ticket evidence
 
 ## Checkout and worktree lifecycle
 
-Keep `main` checked out in the primary project directory. Use that
-checkout for integration and normal application launches.
-Keep the original `master` branch and history; a separate permanent checkout
-is not required to preserve them.
+For every new work item, create a new feature branch before making changes.
+Use the `codex/` prefix for agent branches. Implement and verify the work on that
+branch, then merge the reviewed result into `main`. Never implement product code
+or tests directly on `main`.
 
-Create a temporary worktree when a bounded task needs isolation or parallel
-work. After the task is verified, independently reviewed where applicable,
+The only exception is a small documentation change or a similar small non-code
+change: it may be made directly on `main` when that checkout is free of other
+active work. This exception does not cover code, tests, dependencies, build or
+runtime configuration, or a larger implementation task that also changes docs.
+
+Choose the checkout by its actual ownership:
+
+- If the primary project directory is free of other active work, create and
+  check out the new feature branch there. A separate worktree is not required.
+- If the primary project directory is on a branch being used by the user or
+  another agent, leave that branch and checkout untouched. Create a temporary
+  worktree with a new feature branch for this task. Do not switch their branch,
+  reuse it, or move their edits to make room for your work.
+- Check ownership even when Git reports a clean working tree. If ownership is
+  unclear, treat the checkout as occupied until ownership is established.
+
+`main` is the integration branch; it does not have to remain checked out in the
+primary directory during feature work. Preserve the original `master` branch
+and history; a separate permanent checkout is not required to preserve them.
+
+After the task is verified, independently reviewed where applicable,
 integrated and pushed, remove its worktree before finishing. First confirm
 that its commits are integrated, preserve any uncommitted or needed untracked
 or ignored files, and check that no running task or process still needs it.

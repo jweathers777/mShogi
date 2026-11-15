@@ -1,11 +1,11 @@
 ---
 id: MSH-177
 title: Chess Evaluation Cost
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:04:00Z'
-updated_date: '2026-11-15T22:19:00Z'
+updated_date: '2026-11-15T22:21:00Z'
 labels:
   - handle:chess-evaluation-cost
 milestone: m-5
@@ -41,7 +41,7 @@ Handle: Chess Evaluation Cost.
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -60,4 +60,16 @@ Implemented one coherent cost reduction: incrementally retain raw placement tota
 One bounded candidate0311495b preserved every term/score in20000 native legal positions and undo/reflection/special-move checks. All120 measured benchmark rounds (60perbinary) and6warmups were exactly466994nodes. Twenty alternatingAB/BA blocks with no concurrent builds/tests/games: median paired gain1.7199percent engineNPS,1.8964percent driverNPS, below preset3percent threshold. Engine median1.1253M to1.1474M; driver1.1083M to1.1305M. Maximum sampled competing process CPU19.6percent (ordinary desktop); snapshots are not continuous profiling. Two load-interrupted attempts are preserved and excluded, not selected for speed. Decision: restore baseline product/tests exactly to28b12c56 and stop; no more optimization or game test. Candidate/test oracle remain in Git0311495b; evidence docs/m5/evidence/msh177. Restoration diff against28b12c56 for crates/tools is empty; final evidence audit pending.
 
 Final independent evidence audit passed: all40run receipts/120measured rounds plus6warmups, frozen identities, AB/BA order/timestamps,466994nodes and both paired gains recomputed. Highest sampled other-process CPU19.6percent; known interrupted attempts excluded entirely. Baseline restoration approved. No further optimization or game test. Source comparison git diff28b12c56 -- crates tools is empty. Ready to integrate the measured stop result and close this bounded task.
+
+Experiment and baseline restoration integrated into main and pushed as20161845. Prototype0311495b and full receipts remain in Git; frozen candidate binary/identity copied and byte-verified in primary target/strength/engines/0311495bd2f4. No product or test difference remains against28b12c56. Cleanup attempted after integration; app archive tool refused because this is the task primary checkout. Worktree retained only due to app protection, not ongoing work. Next eligible task MSH-173 (Frozen Legacy Opponent), not started.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Completed the user-requested bounded cost experiment and stopped below the 3 percent threshold. Candidate0311495b replaced repeated piece/pawn scans with an incremental per-kind placement cache and distance masks. Every White/Black evaluation term and final score matched the frozen reference across20000 native legal-game positions, undo sequences, reflections and special/rejected moves. All120 measured rounds and6warmups stayed exactly466994nodes.
+
+Twenty alternating baseline/candidate blocks gave median paired gains of1.72percent engine-reported NPS and1.90percent driver-wall NPS. Engine medians:1.1253M to1.1474M. No builds/tests/games ran concurrently; sampled other-process CPU peaked at19.6percent. Interrupted system-load attempts are preserved and excluded. Independent code and measurement audits passed; local library/equivalence/consumer tests,Clippy and formatting passed.
+
+The gain does not justify the extra cache/update cost. All production and test changes were restored exactly to28b12c56; no further optimization or game test was run. Main integration20161845 is pushed. Prototype and evidence remain recoverable: docs/m5/evidence/msh177. Level1 local verification; broader platforms/GUI deferred to nextLevel3. Worktree cleanup is app-blocked because this checkout is protected. Next eligible MSH-173 (Frozen Legacy Opponent), not started.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -1,7 +1,7 @@
 ---
 id: MSH-181
 title: Xiangqi Search Core Adoption
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:31:00Z'
@@ -42,7 +42,7 @@ Handle: Xiangqi Search Core Adoption.
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -66,3 +66,17 @@ Retain checkpoint: frozen22a55759 candidate won64, drew0 and lost0 against637c0a
 
 Final independent review accepted with no blocking findings: docs/m5/evidence/msh181/review.md. The reviewer checked the final test corrections, combined test coverage, all 32 game report hashes and 64 native outcomes, and replayed the first and last pairs. Final Clippy, formatting, frontend and standalone host checks passed. Level 1 evidence is complete; Linux, Windows and packaged GUI execution remain deferred to the next integration/release checkpoint. Integration into main is next.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Xiangqi now uses the shared search core with a fast position and classical evaluation. The private search was removed. Native rules remain authoritative for real moves, claims, histories and outcomes. Legacy saved observations stay valid. Search approximations and consumer limits are documented.
+
+All five acceptance criteria have evidence in docs/m5/evidence/msh181/README.md and verification.json. Final combined Rust coverage is 1,176 passed and 10 ignored; the original two fixture failures and successful corrected reruns remain recorded. Frontend, Python harness, formatting, Clippy and standalone desktop host checks passed. Independent review accepted with no blocking findings in review.md.
+
+The frozen candidate won all 64 games in 32 color pairs against its predecessor. The sequential test accepted H1. Same-root calibration and actual resource use are retained. This supports the change against this predecessor; it does not establish an external rating.
+
+Integrated into main by merge 81bbfe17de3c657a11534937fca28eeaae793d74. Production source: 22a55759875163ff342fddf6e6ea1e5a4f921608. Final test source: a8b2be4d96f32cb4308a6b93ad0918f4d3477205. Evidence commit: 5ccfb496. Integrated product and test files match the verified source.
+
+Level 1 completion on macOS arm64. Linux, Windows and packaged GUI checks remain deferred to the next integration/release checkpoint. MSH-179 (Clock and Session for All Games) and MSH-54 (Conventional Xiangqi) retain their separate scope. Next recommended eligible task: MSH-178 (Search Core History Scaling), before Chu adoption.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -18,12 +18,48 @@ infrastructure. Work in this order:
    Implemented 2026-11-14, see [shared-search-core.md](shared-search-core.md): depth at
    five seconds 14–16 in the middlegame (before: 8–9); +55 −0 =5 against the predecessor.
 3. MSH-165 (Tori Search Core Adoption): prove the shared boundary with a second game.
-4. MSH-166 (Search Selectivity Completion).
-5. MSH-167 (Engine Time Management).
+   Done 2026-11-14: Tori uses the core unchanged; see shared-search-core.md.
+4. MSH-166 (Search Selectivity Completion). A first round (2026-11-15) tested each
+   technique alone with tests too small to decide; it is not a rejection. The task
+   continues with the combined set.
+5. MSH-167 (Engine Time Management). Done 2026-11-15.
 6. MSH-168 (Classical Endgame and King Evaluation).
 
 Accept engine changes on correctness checks, the blunder suite and game tests, not
-on identical search output or single positions. The native rules stay the authority
+on identical search output or single positions.
+
+## Game tests in this direction
+
+These rules apply to each engine-strength task above. Tasks refer to them and do
+not repeat them.
+
+- **A game test must be able to decide.** Use the sequential test of the harness
+  (`strength-harness.md`) with a maximum that a gain of the expected size can reach:
+  the default of 600 pairs, or more. A test that reaches its maximum without a
+  decision is "no decision", not a rejection. Record it, then enlarge the test or
+  decide on other recorded grounds.
+- **Cost.** The standing authorization covers these tests: fast time control,
+  sequential stopping rule, recorded compute. At 50 ms per move with four workers,
+  60 pairs take about three minutes, so 600 pairs take about 30 minutes. The
+  earlier cumulative 15-minute match allowance, which the historical sections of
+  this file still mention, no longer applies. A campaign of several hours, or a
+  rating study against external engines, still needs approval.
+- **Time control.** Choose a time control at which the change can act. A
+  technique that starts at a depth of 7 needs a search that reaches that depth
+  often.
+- **Coherent sets first.** Test a set of standard techniques or terms together
+  against the frozen predecessor. Test the removal of one part only when the set
+  result is weak, or when there is a specific reason to doubt that part. Single
+  standard techniques give small gains; each test of one alone is long.
+- **Predecessor.** Freeze `main` at the start of the task
+  (`python3 -m tools.strength.cli build-engine`). Later tasks use the last
+  accepted engine.
+- **Approximations.** Pruning and evaluation inside the tree may be approximate
+  (design A-03). Do not add work at each node to make a pruned score exact; the
+  native rules decide the real game.
+- **Other games.** Tori Shogi uses the shared core. A core change must keep the
+  Tori tests passing. Tori strength is not a requirement of a Chess task; switch a
+  technique off for Tori if it is clearly worse there. The native rules stay the authority
 for real games. Weight tuning of handwritten terms by regression on labeled positions
 (Texel tuning) is authorized. Neural-network learned evaluation stays later work. MSH-153 (Classical Compensation Calibration) and MSH-160 (Chess Opening
 Quality Assessment) stay held. Shogi, Xiangqi, Chu and Tenjiku move to the shared

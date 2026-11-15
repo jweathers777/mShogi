@@ -1,10 +1,10 @@
 ---
 id: MSH-166
 title: Search Selectivity Completion
-status: To Do
+status: Ready
 assignee: []
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T15:27:00Z'
+updated_date: '2026-11-15T16:04:00Z'
 labels:
   - handle:search-selectivity-completion
 milestone: m-5
@@ -21,21 +21,21 @@ ordinal: 170000
 <!-- SECTION:DESCRIPTION:BEGIN -->
 Handle: Search Selectivity Completion.
 
-**Problem:** The Chess search has null-move pruning, late-move reductions, futility, exchange pruning and check extension. Reverse futility pruning, razoring, late-move pruning, internal iterative reduction, singular extensions and an improving condition are absent. Inspection for this task found that low-material late-move reductions are already enabled after MSH-164 (Shared Search Core); their policy needs an ablation result, not a duplicate implementation.
+**Problem:** The shared core lacks reverse futility pruning, razoring, late-move pruning, internal iterative reduction, singular extensions and an improving condition. A first round (`docs/m5/evidence/msh166/`, `fb6ac806`) tested each technique alone with tests of at most 60 pairs. The 95% intervals were about ±45 Elo, so no test could decide; this is not a rejection. Five of the six additions had positive estimates, and four reduced the time to a fixed depth.
 
-**Objective:** Complete the standard classical selectivity in the shared core and keep only what game tests support.
+**Objective:** Complete the standard classical selectivity in the shared core, and make the engine stronger.
 
-**Approach:** Add one technique at a time. Accept each one only on the game test against the predecessor. Put the techniques in the shared core with switches per game where a game needs them. Do not tune on single positions.
+**Approach:** Follow "Game tests in this direction" in `docs/m5/strength-roadmap.md`. Add the techniques together, with standard parameters from established engines. "Improving" is a modifier of the other techniques, not a technique alone. Singular extensions may wait for a later task if the chosen time control rarely reaches their depth. Test the set in one decisive game test against frozen `main`. Remove a part only for a recorded reason: a weak set result, a cost, or clear harm in Tori. The first-round patches are a usable start. Their `has_legal_move()` calls in the pruning paths add per-node cost to protect an approximation; remove them. Low-material late-move reductions stay as they are. Do not tune on single positions.
 
-**Completion:** Each listed technique has a recorded accept or reject decision from a game test, and the accepted set is the default.
+**Completion:** The accepted set is the default, it wins the game test, and the blunder suite is not worse.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [x] #1 Each technique in the description has a recorded game-test result and an accept or reject decision
-- [ ] #2 The accepted set together is stronger than the engine at the start of the task in a game test
-- [x] #3 The blunder suite result is not worse than at the start of the task
-- [ ] #4 Accepted techniques are in the shared core, not in Chess-only code, unless a recorded reason shows they are Chess-specific
+- [ ] #1 The combined set has a game-test result with a sequential decision against the engine at the start of the task, and each technique left out has a recorded reason
+- [ ] #2 The accepted set is stronger than the engine at the start of the task in that game test
+- [ ] #3 The blunder suite result of the accepted set is not worse than at the start of the task
+- [ ] #4 Accepted techniques are in the shared core, not in Chess-only code, unless a recorded reason shows they are Chess-specific, and the Tori tests pass
 <!-- AC:END -->
 
 ## Definition of Done
@@ -49,10 +49,7 @@ Handle: Search Selectivity Completion.
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-1. Freeze main09a32b8a engine and record baseline benchmark/blunder suite; inspect actual shared core.
-2. Test one classical technique at a time: reverse futility, razoring, late-move pruning, internal iterative reduction, singular extension and improving. Existing shared LMR already covers low material; test that policy by ablation.
-3. For each candidate run native correctness and paired predecessor games at50ms/move,4workers,min30/max60pairs, SPRT0/15 Elo alpha=beta=.05. Keep only supported improvements; reject inconclusive screens without tuning repeated weak results.
-4. Test accepted combination against frozen task start, require no worse development blunders, independent review and relevant native consumer checks. Integrate only evidence-supported defaults; if strength gate is unmet record unfinished criteria honestly.
+Replaced 2026-11-15: the approach changed to the combined set first. The next worker writes the current plan here.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -65,10 +62,6 @@ Screening clarification: run each optional technique independently against the f
 Bounded round complete on main; no active builder remains. Seven independent 60-pair screens (840 scored games, no failed pairs) all reached max_pairs without a sequential decision. Reject all six additions as unproven; existing low-material LMR ablation is also inconclusive. Production search files are restored exactly to 09a32b8aeff3c30fff8f5ca47e16920b24feb1c4, so the baseline blunder result remains unchanged (86/146 avoided, 40 reference matches at 1000 ms). Match compute: 1270.4 s wall and 4862.2 s CPU including 66.7 s cancelled work; builds and checks are additional. Evidence: docs/m5/evidence/msh166/README.md and verification.json, exact candidate patches and compressed games. AC2 remains unmet: no supported strength improvement. Next action is a decision on a larger predeclared trial or a different coherent approach; the README proposes but does not run a held-out IIR trial. Do not treat its highest point estimate as proven strength. Prototype local tests passed 70 with one ignored; final production has no code changes. Independent final evidence review pending. Integration target is main; the old rewrite-target wording in the checklist predates MSH-171 (Rewrite Main Promotion).
 
 Independent final review approved by /root/two_human_final_review: all seven patch/binary bindings, paired game scores and colours, sequential decisions, final ablation direction, and compute totals checked; restored production source confirmed identical to task start. No open review findings. This resolves the preceding pending-review note. The committed result is evidence and a resumable unfinished task, not a strength improvement.
+
+Ticket revision, 2026-11-15 (requested by John): the approach changed from one technique at a time to the combined set first, with removals only for a recorded reason. The first round is kept as evidence. Its 60-pair tests could not decide, so its "reject" entries are not rejections, and the earlier checks of the first and third criteria no longer apply. The earlier final summary describes the first round only. General game-test rules are now in docs/m5/strength-roadmap.md.
 <!-- SECTION:NOTES:END -->
-
-## Final Summary
-
-<!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Bounded round on main: tested six additions separately and the existing low-material LMR policy by ablation. All seven results were inconclusive at 60 pairs; no addition was retained. Production source is unchanged from 09a32b8aeff3c30fff8f5ca47e16920b24feb1c4. Evidence and reproduction are in docs/m5/evidence/msh166/README.md and verification.json. Prototype tests passed 70 with one ignored; independent evidence review approved with no open findings. AC1 and unchanged-source AC3 are supported; AC2 remains unmet. Task is To Do and unassigned. Next action: decide on the proposed larger held-out trial or another coherent approach; no further campaign is running.
-<!-- SECTION:FINAL_SUMMARY:END -->

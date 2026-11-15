@@ -1704,3 +1704,53 @@ fn two_human_xiangqi_uses_both_actors_draw_response_and_complete_command_rewind(
     assert_eq!(x::GameRecord::from_game(&restored.game).unwrap(), before);
     assert!(restored.paused);
 }
+
+#[test]
+fn previous_play_limits_reopen_and_current_analysis_bounds_roundtrip() {
+    let mut c = controller();
+    let game = x::Game::standard(x::ClaimPolicy::Explicit).unwrap();
+    replace(&mut c, &game, x::Side::Red);
+    analyze(&mut c); // One-node incomplete observation has the same legacy semantics.
+    let encoded = encode(state(&c), state(&c).execution_floor).unwrap();
+    let mut old: Value = serde_json::from_str(&payload(&encoded)).unwrap();
+    old["play_limits"] = serde_json::to_value(mshogi_engine::XIANGQI_LEGACY_PLAY_LIMITS).unwrap();
+    let old = old
+        .to_string()
+        .replace(
+            "mshogi.xiangqi.shared-core.v1",
+            "mshogi.xiangqi.full-width.v1",
+        )
+        .replace(
+            "mshogi.xiangqi.material-placement.v1",
+            "mshogi.xiangqi.material-advance.v1",
+        );
+    let (restored, _) = decode(&old, &mut || false).unwrap();
+    assert_eq!(restored.observations.len(), 1);
+    assert_eq!(restored.game.position(), game.position());
+    send(
+        &mut c,
+        SessionOperation::Analyze {
+            operation: AnalysisOperation::Moves {
+                depth: 64,
+                nodes: 5_000_000,
+            },
+        },
+    )
+    .unwrap();
+    send(&mut c, SessionOperation::Cancel {}).unwrap();
+    let encoded = encode(state(&c), state(&c).execution_floor).unwrap();
+    let (restored, _) = decode(&payload(&encoded), &mut || false).unwrap();
+    assert_eq!(restored.settings.analysis_defaults.depth, 64);
+    assert_eq!(restored.settings.analysis_defaults.nodes, 5_000_000);
+    for (depth, nodes) in [(65, 1), (1, 5_000_001)] {
+        assert!(
+            send(
+                &mut c,
+                SessionOperation::Analyze {
+                    operation: AnalysisOperation::Moves { depth, nodes },
+                }
+            )
+            .is_err()
+        );
+    }
+}

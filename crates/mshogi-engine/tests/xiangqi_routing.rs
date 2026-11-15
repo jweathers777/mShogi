@@ -181,13 +181,13 @@ fn ordinary_limits_and_zero_work_remain_distinct_from_native_conclusions() {
         },
         WorkLimits {
             time_ms: None,
-            depth: 4,
+            depth: 65,
             nodes: 128,
         },
         WorkLimits {
             time_ms: None,
             depth: 1,
-            nodes: 513,
+            nodes: 5_000_001,
         },
     ] {
         context.limits = limits;

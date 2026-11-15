@@ -37,9 +37,11 @@ says nothing about other opponents.
 | `tori.rs` | Adapter between a native Tori `Game` and the core; material and placement evaluation | Tori |
 | `shogi/position.rs` | Shogi position, hands, drops, promotion, history and classical evaluation | Shogi |
 | `shogi.rs` | Native Shogi root/declaration and continuation adapter | Shogi |
+| `xiangqi/position.rs` | Xiangqi board, movement, private history and classical evaluation | Xiangqi |
+| `xiangqi.rs` | Native Xiangqi outcome, count-claim, exact-proof and continuation adapter | Xiangqi |
 
 The core contains no type of a specific game. `alphabeta/tests.rs` runs it on a
-subtraction game, and Chess, Tori Shogi and Shogi use it through the same trait.
+subtraction game, and Chess, Tori Shogi, Shogi and Xiangqi use it through the same trait.
 
 ## Authority of the native rules
 
@@ -208,11 +210,56 @@ arithmetic, but no private full-width search remains.
 Verification and the predecessor comparison are recorded in
 [evidence/msh180/README.md](evidence/msh180/README.md).
 
+## Xiangqi on the core
+
+MSH-181 (Xiangqi Search Core Adoption) removes Xiangqi's private full-width
+search. The core and trait are unchanged. A 90-square array and u128 piece
+sets support blocked Horse legs, Elephant eyes and river restrictions, palace
+moves, Cannon screens, Soldier river movement and facing Generals. Hash,
+material and placement are updated in place. Existing independently specified
+board fixtures and perft, randomized native comparisons and history tests
+verify the boundary.
+
+Native authority stays at the root and the application boundary. A concluded
+root reports its conclusion. A root with pending adjudication stays unscored.
+The original root assessment and exact-proof request/evidence APIs remain
+intact; an existential exact witness is not a forced-win score. A valid count
+claim is chosen after a completed search if the move score is no better than
+zero. The adapter never claims for the nonmoving player. The selected action
+must be locally legal and must pass native submission in a private copy. The
+reported line is replayed natively and ends at conclusion, pending adjudication
+or a refused action. Native resource failures on the chosen action remain errors.
+
+Private approximations are explicit:
+
+- The table uses board and turn, without conduct history or count-claim state.
+- A search-path repetition is scored at its second occurrence; earlier game
+  history needs three occurrences. A continuous checker loses; other cycles,
+  including chase cycles, score as a draw. This does not replace the selected
+  native WXF warning, chase, exchange or fourth-occurrence rules.
+- Captures and null moves bound the repetition scan. Non-board native events
+  are not turns. Full native board history initializes the private position.
+- No-legal-action loss, including unchecked stalemate, is tested before draw
+  approximations. Bare Generals draw. Other exact no-win graph proofs are not
+  run inside the tree. Count claims are native root options only.
+- The exchange test is a one-step estimate. Evaluation uses material, Soldier
+  advancement and centralization/development placement with a tempo bonus.
+  It is not a rules adjudication or a learned evaluator.
+
+Depth is 1–64 and nodes are bounded at 5,000,000. Default UCI 0–9 and desktop
+play use depth 64 and 300,000 nodes. The reported line has at most eight actions.
+A request starts with an empty table; MSH-179 (Clock and Session for All Games)
+remains separate. Saved full-width observations retain their old identities,
+limits and checks through the shared identity helper. Current identities are
+`mshogi.xiangqi.shared-core.v1` and `mshogi.xiangqi.material-placement.v1`.
+
+See [verification and predecessor evidence](evidence/msh181/README.md).
+
 ## What Tori showed, and what the other games need
 
 Findings from the second game, recorded for the later tasks of Shogi, Xiangqi,
 Chu Shogi and Tenjiku Shogi. These are the findings at the Tori checkpoint;
-the Shogi implementation above records the later decisions.
+the Shogi and Xiangqi implementations above record the later decisions.
 
 **The trait was sufficient.** Drops are ordinary moves of the quiet stage.
 A loss without a legal move is `no_move_score`. A game without draw claims

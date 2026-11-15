@@ -1,25 +1,42 @@
-//! Transparent Xiangqi evaluation and bounded native-history search, without a score cache.
+//! Xiangqi adapter for the shared alpha-beta core; native rules own actual play.
+pub mod position;
+#[cfg(test)]
+mod position_tests;
+use crate::alphabeta::{self, SearchPosition, Searcher};
 use mshogi_core::xiangqi::{
     Action, Conclusion, ExactAnalysis, ExactFailure, ExactLimits, ExactObservation, ExactStop,
-    ExactVerdict, Game, GameCommand, GameError, GameRecord, GameRequest, GameUndo, NoWinAssessment,
+    ExactVerdict, Game, GameCommand, GameError, GameRecord, GameRequest, NoWinAssessment,
     PendingAdjudication, PieceKind, Position, RecordError, Side,
 };
+use position::XiangqiPosition;
 use std::{error::Error, fmt};
 
 /// Untrained material and soldier advancement, independent of WXF adjudication.
-pub const EVALUATOR_ID: &str = "mshogi.xiangqi.material-advance.v1";
-/// Stable native-choice order, full-width iterative minimax, no transpositions.
-pub const SEARCH_ID: &str = "mshogi.xiangqi.full-width.v1";
+pub const EVALUATOR_ID: &str = "mshogi.xiangqi.material-placement.v1";
+/// Historical evaluation identity.
+pub const LEGACY_EVALUATOR_ID: &str = "mshogi.xiangqi.material-advance.v1";
+/// Shared alpha-beta search identity.
+pub const SEARCH_ID: &str = "mshogi.xiangqi.shared-core.v1";
+/// Historical full-width identity.
+pub const LEGACY_SEARCH_ID: &str = "mshogi.xiangqi.full-width.v1";
+/// Historical maximum depth.
+pub const LEGACY_MAX_DEPTH: u16 = 3;
+/// Historical maximum visits.
+pub const LEGACY_MAX_NODES: u64 = 512;
+/// Historical terminal score.
+pub const LEGACY_WIN_SCORE: i32 = 1_000_000;
+/// Maximum reported native continuation length.
+pub const MAX_LINE: usize = 8;
 /// Native terminal win minus command-edge distance; not necessarily checkmate.
 pub const WIN_SCORE: i32 = 1_000_000;
-/// Conservative recursion and total-visit ceilings for this unoptimized native baseline.
-pub const MAX_DEPTH: u16 = 3;
+/// Largest nominal search depth.
+pub const MAX_DEPTH: u16 = 64;
 /// Includes iterative revisits and discarded partial work, not just scored leaves.
-pub const MAX_NODES: u64 = 512;
-/// Conservative initial functional-play setting; measurements are recorded in engine.md.
+pub const MAX_NODES: u64 = 5_000_000;
+/// Default bounded interactive work.
 pub const DEFAULT_LIMITS: Limits = Limits {
-    depth: 1,
-    nodes: 128,
+    depth: MAX_DEPTH,
+    nodes: 300_000,
 };
 /// Hundredths of an unadvanced soldier. A General is valued only by native outcomes.
 pub const fn piece_value(kind: PieceKind) -> i32 {
@@ -74,7 +91,7 @@ pub fn evaluate(position: &Position) -> Evaluation {
 /// Mandatory finite deterministic work. Zero visits is explicitly supported.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Limits {
-    /// Maximum full-width board depth,1..=MAX_DEPTH.
+    /// Maximum nominal depth,1..=MAX_DEPTH.
     pub depth: u16,
     /// Total admitted visits including iterative/partial work.
     pub nodes: u64,
@@ -283,178 +300,114 @@ fn run(
         result.status = Status::NodeLimit;
         return Ok(result);
     }
-    let record = GameRecord::from_game(game).map_err(SearchError::Record)?;
-    let mut tree = record.to_game().map_err(SearchError::Record)?;
-    let mut work = Work {
-        nodes: 0,
-        limit: limits.nodes,
-        stop,
-    };
-    for depth in 1..=limits.depth {
-        let value = minimax(&mut tree, depth, 0, result.perspective, &mut work);
-        // Semantic history exactness, not retired execution-token equality.
-        if GameRecord::from_game(&tree).map_err(SearchError::Record)? != record {
-            return Err(SearchError::Restore);
-        }
-        match value {
-            Ok(value) => {
-                result.decision = value
-                    .pv
-                    .first()
-                    .copied()
-                    .map(Decision::Choose)
-                    .or_else(|| game.conclusion().map(Decision::Finished));
-                result.score = Some(value.score);
-                result.completed_depth = depth;
-                result.principal_variation = value.pv;
-                if matches!(result.decision, Some(Decision::Finished(_))) {
-                    break;
-                }
-            }
-            Err(Halt::Limit(status)) => {
-                result.status = status;
-                break;
-            }
-            Err(Halt::Unresolved(pending)) => {
-                result.decision = None;
-                result.score = None;
-                result.completed_depth = 0;
-                result.principal_variation.clear();
-                result.status = Status::Unresolved;
-                result.unresolved = Some(Unresolved::Native(pending));
-                break;
-            }
-            Err(Halt::Error(error)) => return Err(error),
-        }
+    if let Some(conclusion) = game.conclusion() {
+        result.decision = Some(Decision::Finished(conclusion));
+        result.score = Some(terminal_score(conclusion, result.perspective, 0));
+        result.completed_depth = 1;
+        result.nodes = 1;
+        return Ok(result);
     }
-    result.nodes = work.nodes;
+    if let Some(pending) = game.pending_adjudication() {
+        result.status = Status::Unresolved;
+        result.unresolved = Some(Unresolved::Native(pending.clone()));
+        result.nodes = 1;
+        return Ok(result);
+    }
+    if matches!(game.no_win_assessment(), NoWinAssessment::Failure) {
+        return Err(SearchError::Invariant);
+    }
+    let legal = game
+        .position()
+        .legal_actions()
+        .map_err(|_| SearchError::Invariant)?;
+    if legal.is_empty() {
+        return Err(SearchError::Invariant);
+    }
+    let root = result.perspective;
+    let claim = game.natural_count_eligibility(root).eligible;
+    let mut position = XiangqiPosition::from_game(game);
+    let mut searcher = Searcher::<XiangqiPosition>::new(16);
+    let outcome = searcher.search(
+        &mut position,
+        alphabeta::Limits {
+            depth: limits.depth,
+            nodes: Some(limits.nodes),
+            soft: None,
+            hard: None,
+            clock: false,
+        },
+        stop,
+    );
+    result.nodes = outcome.nodes;
+    result.completed_depth = outcome.depth;
+    result.status = match outcome.status {
+        alphabeta::Status::Complete => Status::Complete,
+        alphabeta::Status::NodeLimit => Status::NodeLimit,
+        alphabeta::Status::Stopped => Status::Stopped,
+    };
+    let Some(best) = outcome.best else {
+        result.completed_depth = 0;
+        return Ok(result);
+    };
+    let record = GameRecord::from_game(game).map_err(SearchError::Record)?;
+    let mut native = record.to_game().map_err(SearchError::Record)?;
+    // A valid root claim is an option, not an automatic draw. A completed
+    // search must prefer it when the move score is no better than zero.
+    if claim && outcome.score.is_some_and(|score| score <= 0) {
+        let choice = Choice::Claim { actor: root };
+        native
+            .submit(GameRequest {
+                expected: native.context(),
+                actor: root,
+                command: choice.command(),
+            })
+            .map_err(SearchError::Transition)?;
+        if !matches!(native.conclusion(), Some(Conclusion::Draw { .. })) {
+            return Err(SearchError::Invariant);
+        }
+        result.decision = Some(Decision::Choose(choice));
+        result.principal_variation.push(choice);
+        result.score = Some(0);
+        return Ok(result);
+    }
+    let action = position.action(best);
+    if !legal.contains(&action) {
+        return Err(SearchError::Invariant);
+    }
+    for &m in outcome.pv.iter().take(MAX_LINE) {
+        if native.conclusion().is_some() || native.pending_adjudication().is_some() {
+            break;
+        }
+        let action = position.action(m);
+        let request = GameRequest {
+            expected: native.context(),
+            actor: native.position().side_to_move(),
+            command: GameCommand::Play { action },
+        };
+        match native.submit(request) {
+            Ok(_) => {}
+            Err(error) if result.principal_variation.is_empty() => {
+                return Err(SearchError::Transition(error));
+            }
+            Err(_) => break,
+        }
+        if !position.make(m) {
+            return Err(SearchError::Invariant);
+        }
+        result.principal_variation.push(Choice::Move(action));
+    }
+    if result.principal_variation.first() != Some(&Choice::Move(action)) {
+        return Err(SearchError::Invariant);
+    }
+    result.decision = Some(Decision::Choose(Choice::Move(action)));
+    result.score = outcome.score;
     Ok(result)
 }
-struct Value {
-    score: i32,
-    pv: Vec<Choice>,
-}
-enum Halt {
-    Limit(Status),
-    Unresolved(PendingAdjudication),
-    Error(SearchError),
-}
-struct Work<'a> {
-    nodes: u64,
-    limit: u64,
-    stop: &'a mut dyn FnMut() -> bool,
-}
-impl Work<'_> {
-    fn check(&mut self) -> Result<(), Halt> {
-        if (self.stop)() {
-            return Err(Halt::Limit(Status::Stopped));
-        }
-        if self.nodes >= self.limit {
-            return Err(Halt::Limit(Status::NodeLimit));
-        }
-        Ok(())
-    }
-    fn visit(&mut self) -> Result<(), Halt> {
-        self.check()?;
-        self.nodes += 1;
-        Ok(())
-    }
-}
-fn terminal_score(conclusion: Conclusion, root: Side, distance: u16) -> i32 {
+/// Native terminal score from the captured root side.
+pub fn terminal_score(conclusion: Conclusion, root: Side, distance: u16) -> i32 {
     match conclusion {
         Conclusion::Draw { .. } => 0,
         Conclusion::Win { winner, .. } if winner == root => WIN_SCORE - i32::from(distance),
         Conclusion::Win { .. } => -WIN_SCORE + i32::from(distance),
     }
-}
-fn descend(
-    game: &mut Game,
-    choice: Choice,
-    depth: u16,
-    distance: u16,
-    root: Side,
-    work: &mut Work<'_>,
-) -> Result<Value, Halt> {
-    work.check()?;
-    let actor = match choice {
-        Choice::Move(_) => game.position().side_to_move(),
-        Choice::Claim { actor } => actor,
-    };
-    let undo: GameUndo = game
-        .submit(GameRequest {
-            expected: game.context(),
-            actor,
-            command: choice.command(),
-        })
-        .map_err(|e| Halt::Error(SearchError::Transition(e)))?
-        .undo;
-    let child = minimax(game, depth, distance + 1, root, work);
-    game.undo(undo)
-        .map_err(|_| Halt::Error(SearchError::Restore))?;
-    let mut child = child?;
-    child.pv.insert(0, choice);
-    Ok(child)
-}
-fn minimax(
-    game: &mut Game,
-    depth: u16,
-    distance: u16,
-    root: Side,
-    work: &mut Work<'_>,
-) -> Result<Value, Halt> {
-    work.visit()?;
-    if let Some(conclusion) = game.conclusion() {
-        return Ok(Value {
-            score: terminal_score(conclusion, root, distance),
-            pv: vec![],
-        });
-    }
-    if let Some(pending) = game.pending_adjudication() {
-        return Err(Halt::Unresolved(pending.clone()));
-    }
-    if matches!(game.no_win_assessment(), NoWinAssessment::Failure) {
-        return Err(Halt::Error(SearchError::Invariant));
-    }
-    // A valid optional claim is a zero-valued alternative, not an automatic draw.
-    // Non-turn claims remain native-admissible at the host boundary; ordinary
-    // turn search chooses only for its mover, never decides for the opponent.
-    let turn = game.position().side_to_move();
-    let claim = game
-        .natural_count_eligibility(turn)
-        .eligible
-        .then_some(Choice::Claim { actor: turn });
-    let mut best = match claim {
-        Some(choice) => Some(descend(game, choice, 0, distance, root, work)?),
-        None => None,
-    };
-    if depth == 0 {
-        let score = evaluate(game.position()).score_for(root);
-        if best.as_ref().is_none_or(|b| {
-            if turn == root {
-                score > b.score
-            } else {
-                score < b.score
-            }
-        }) {
-            best = Some(Value { score, pv: vec![] });
-        }
-        return Ok(best.expect("leaf value"));
-    }
-    for action in game
-        .position()
-        .legal_actions()
-        .map_err(|_| Halt::Error(SearchError::Invariant))?
-    {
-        let child = descend(game, Choice::Move(action), depth - 1, distance, root, work)?;
-        if best.as_ref().is_none_or(|b| {
-            if turn == root {
-                child.score > b.score
-            } else {
-                child.score < b.score
-            }
-        }) {
-            best = Some(child);
-        }
-    }
-    best.ok_or(Halt::Error(SearchError::Invariant))
 }

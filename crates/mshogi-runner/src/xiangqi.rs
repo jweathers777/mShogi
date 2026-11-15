@@ -134,11 +134,13 @@ impl Config {
         }
         for w in self.work {
             if w.movetime_ms.is_some()
-                || w.depth.is_none_or(|d| !(1..=3).contains(&d))
-                || w.nodes.is_none_or(|n| n > 512)
+                || w.depth
+                    .is_none_or(|d| !(1..=mshogi_search::xiangqi::MAX_DEPTH).contains(&d))
+                || w.nodes
+                    .is_none_or(|n| n > mshogi_search::xiangqi::MAX_NODES)
             {
                 return Err(RunnerError(
-                    "finite depth1..3/nodes0..512 required; timed work unsupported".into(),
+                    "finite supported Xiangqi depth/nodes required; timed work unsupported".into(),
                 ));
             }
         }

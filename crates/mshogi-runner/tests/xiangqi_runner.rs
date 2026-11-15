@@ -214,7 +214,7 @@ fn unsupported_policy_dialects_limits_and_live_nonboard_history_reject_losslessl
         match kind {
             0 => c.claim_policy = x::ClaimPolicy::Explicit,
             1 => c.dialect = "fairy_generic_uci1_10".into(),
-            2 => c.work[0].nodes = Some(513),
+            2 => c.work[0].nodes = Some(mshogi_search::xiangqi::MAX_NODES + 1),
             3 => c.work[1].movetime_ms = Some(1),
             _ => c.time_control = "timed".into(),
         };

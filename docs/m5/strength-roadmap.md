@@ -63,7 +63,8 @@ not repeat them.
 for real games. Weight tuning of handwritten terms by regression on labeled positions
 (Texel tuning) is authorized. Neural-network learned evaluation stays later work. MSH-153 (Classical Compensation Calibration) and MSH-160 (Chess Opening
 Quality Assessment) stay held. Shogi, Xiangqi, Chu and Tenjiku move to the shared
-core in later tasks after MSH-165.
+core in later tasks after MSH-165, in this order: Shogi and Xiangqi first, then Chu and
+Tenjiku (project decision, 2026-11-15).
 
 # Earlier checkpoint — competitive diagnosis complete (superseded 2026-11-13)
 

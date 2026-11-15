@@ -1505,6 +1505,9 @@ fn consumed_invalid_pv_is_retained_unscored_without_applying_even_its_first_move
         else {
             panic!("actual scored result expected")
         };
+        // Keep the legal first action, then inject an illegal opponent action
+        // inside the supported line length so native replay is the tested guard.
+        telemetry.principal_variation.truncate(1);
         telemetry.principal_variation.push(XiangqiChoice::Move {
             action: "a0a9".parse().unwrap(),
         });

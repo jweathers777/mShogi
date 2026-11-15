@@ -1,7 +1,7 @@
 ---
 id: MSH-167
 title: Engine Time Management
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-13T21:29:00Z'
@@ -43,7 +43,7 @@ Handle: Engine Time Management.
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded rewrite branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -76,3 +76,9 @@ Candidate2 measured safety:16 completed games/2058 responses,zero hard-response 
 
 Final valid comparison: H1 at30pairs (LLR4.054507>2.944439),44wins5losses11draws,0failed3cancelled. Candidate3489responses0hard-budget overruns. Equal5s+50ms allowance vs frozen fixed50ms, not equal consumed compute: median unused clock1.05567s candidate vs4.97804s predecessor; total observed response time406.38341s vs175.58754s across60games. Independent final audit accepts integration within this comparison scope. Lower83vs86 development count remains disclosed. All4match runs including failed/cancelled work total614.23833s wall/1898.77314s CPU; builds,tests,bench and suites additional. Evidence docs/m5/evidence/msh167/verification.json and review.md. Per-game adapters outsideChess keep existing node limits; shared timing is reusable but this task does not change their controls.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Implemented shared adaptive clock allocation: stable/forced choices stop early; changed choices and falling scores can use more time within the hard budget. Clock requests account for setup and delivery; fixed-time policy and desktop defaults remain unchanged. Integrated and pushed to main in 20ed7fbb56008d7f07cb8cb833a795326781fab4. Level 1 native correctness, perft/differential, console/coordinator tests, clippy and 28 harness tests passed; independent review accepted. Candidate 2 recorded zero hard-budget overruns in its 16-game safety set and both comparisons. The valid equal-clock test accepted H1 at 30 pairs: 44 wins, 5 losses, 11 draws against fixed 50 ms under 5 s + 50 ms clocks. This is equal allowance, not equal consumed compute or a general rating. The fixed 100 ms comparison failed on three predecessor flag falls and is not pooled. Development blunders were 83/146 avoided versus 86/146 baseline; this lower result is retained. Evidence: docs/m5/evidence/msh167/README.md, verification.json and review.md. Linux/Windows and packaged GUI checks were not run; broader compatibility remains at the next Level 3 checkpoint. MSH-140 (Player Thinking Time) remains separate; other-game adapter clock adoption is not delivered here. No blocker or disposable worktree remains. Next dependency-ready task: MSH-173 (Frozen Legacy Opponent).
+<!-- SECTION:FINAL_SUMMARY:END -->

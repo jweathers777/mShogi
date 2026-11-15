@@ -232,11 +232,14 @@ of these games moves, not in a copy for each game.
 
 - Selectivity is the set that the earlier search had, in standard form.
   MSH-166 (Search Selectivity Completion) adds and tests the missing techniques.
-- Time use is one soft and one hard limit per move. MSH-167 (Engine Time
-  Management) owns time allocation.
+- MSH-167 (Engine Time Management) adds shared clock allocation and adaptive
+  soft targets, with a hard response budget. Chess UCI uses it; fixed move-time
+  diagnostics and desktop defaults retain their policy. See the
+  [bounded comparison](evidence/msh167/README.md).
 - The evaluation has the same arithmetic as before. MSH-168 (Classical Endgame
   and King Evaluation) owns its improvement.
 - Only Chess has a time budget and state that lasts between moves. Tori and
-  the other games search with fixed node limits. MSH-167 (Engine Time
-  Management) is the place to give the other games a time budget.
+  the other games search with fixed node limits. The shared time policy is
+  available for their later adapter adoption; this round does not change those
+  application controls or promise clock support in those adapters.
 - The search is single-threaded.

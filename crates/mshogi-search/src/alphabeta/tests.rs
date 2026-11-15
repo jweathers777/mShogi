@@ -89,6 +89,7 @@ fn limits(depth: u16) -> Limits {
         nodes: None,
         soft: None,
         hard: None,
+        clock: false,
     }
 }
 
@@ -164,4 +165,51 @@ fn limits_stop_the_search_and_restore_the_position() {
     assert_eq!(outcome.status, Status::Stopped);
     assert_eq!((position.left, position.path.len()), (90, 0));
     assert_eq!(position.nulls, 0);
+}
+
+#[test]
+fn managed_forced_move_stops_after_one_iteration_and_restores() {
+    let mut searcher = Searcher::<Counters>::new(1);
+    let mut position = Counters {
+        left: 1,
+        path: Vec::new(),
+        nulls: 0,
+    };
+    let mut budget = limits(20);
+    budget.clock = true;
+    budget.soft = Some(Duration::from_secs(1));
+    budget.hard = Some(Duration::from_secs(3));
+    let outcome = searcher.search(&mut position, budget, &mut || false);
+    assert_eq!(outcome.best, Some(1));
+    // At depth one this game reaches its zero static leaf evaluation.
+    // The forced exit must preserve that completed result, not invent a mate.
+    assert_eq!(outcome.score, Some(0));
+    assert_eq!(outcome.depth, 1);
+    assert_eq!(position.left, 1);
+    assert!(position.path.is_empty());
+    budget.clock = false;
+    budget.soft = budget.hard;
+    let fixed = searcher.search(&mut position, budget, &mut || false);
+    assert_eq!(fixed.depth, 20);
+    assert_eq!(fixed.best, Some(1));
+    assert_eq!(fixed.score, Some(MATE_SCORE - 1));
+}
+
+#[test]
+fn managed_two_moves_do_not_use_forced_exit() {
+    let mut searcher = Searcher::<Counters>::new(1);
+    let mut position = Counters {
+        left: 2,
+        path: Vec::new(),
+        nulls: 0,
+    };
+    let mut budget = limits(4);
+    budget.clock = true;
+    budget.soft = Some(Duration::from_secs(1));
+    budget.hard = Some(Duration::from_secs(3));
+    let outcome = searcher.search(&mut position, budget, &mut || false);
+    assert_eq!(outcome.depth, 4);
+    assert_eq!(outcome.best, Some(2));
+    assert_eq!(position.left, 2);
+    assert!(position.path.is_empty());
 }

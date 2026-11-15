@@ -196,6 +196,17 @@ def blunders(args):
 
 # ---------------------------------------------------------------- match
 
+def match_time_control(args):
+    """Record clock allowance and any fixed baseline allocation separately."""
+    if args.base is None:
+        return {'movetime_ms': args.movetime}
+    control = {'base_seconds': args.base, 'increment_seconds': args.increment}
+    baseline_movetime = getattr(args, 'baseline_movetime', None)
+    if baseline_movetime is not None:
+        control['baseline_movetime_ms'] = baseline_movetime
+    return control
+
+
 def match_config(args, opening, label):
     def engine(path, options, name):
         return {'path': str(Path(path).resolve()), 'args': ['uci'],
@@ -209,7 +220,7 @@ def match_config(args, opening, label):
         time_control = {'increment': {'initial_ns': [base_ns, base_ns], 'increment_ns': inc_ns}}
         work = {'depth': None, 'nodes': None, 'movetime_ms': None}
         response_ms = int((args.base + args.increment) * 1000) + 10000
-    return {'schema_version': 1, 'id': label,
+    config = {'schema_version': 1, 'id': label,
             'engines': [engine(args.candidate, args.candidate_option, 'candidate'),
                         engine(args.baseline, args.baseline_option, 'baseline')],
             'openings': [{'id': opening['id'], 'fen': opening.get('fen'), 'moves': opening['moves']}],
@@ -219,6 +230,12 @@ def match_config(args, opening, label):
                           'write_ms': 2000, 'cleanup_ms': 2000},
             'io': {'line_bytes': 8192, 'queued_lines': 64, 'transcript_bytes': 1048576,
                    'stderr_bytes': 16384, 'command_bytes': 4096}}
+    baseline_movetime = getattr(args, 'baseline_movetime', None)
+    if baseline_movetime is not None:
+        if args.base is None or baseline_movetime <= 0:
+            raise ValueError('baseline movetime requires --base and a positive millisecond value')
+        config['engine_work'] = [dict(work), dict(work, movetime_ms=baseline_movetime)]
+    return config
 
 
 def _moves(record_json):
@@ -453,8 +470,7 @@ class Match:
             'candidate': idents[0], 'baseline': idents[1], 'runner': engine_identity(self.args.runner),
             'openings_file': self.args.openings, 'openings_sha256': file_sha256(self.args.openings),
             'opening_order_seed': self.args.seed,
-            'time_control': ({'movetime_ms': self.args.movetime} if self.args.base is None else
-                             {'base_seconds': self.args.base, 'increment_seconds': self.args.increment}),
+            'time_control': match_time_control(self.args),
             'sprt': {'elo0': self.args.elo0, 'elo1': self.args.elo1, 'alpha': self.args.alpha, 'beta': self.args.beta,
                      'min_pairs': self.sprt.min_pairs,
                      'model': 'logistic Elo; GSPRT normal approximation on paired-opening scores; '
@@ -568,6 +584,8 @@ def main(argv=None):
     m.add_argument('--openings', default=str(DATA / 'openings-msh161.json'))
     m.add_argument('--movetime', type=int, default=200, help='fixed milliseconds per move (default control)')
     m.add_argument('--base', type=float, help='clock mode: initial seconds per side (replaces --movetime)')
+    m.add_argument('--baseline-movetime', type=int,
+                   help='clock mode only: fixed milliseconds per baseline move under the same game clock')
     m.add_argument('--increment', type=float, default=0.0, help='clock mode: Fischer increment seconds')
     m.add_argument('--elo0', type=float, default=0.0)
     m.add_argument('--elo1', type=float, default=15.0)
@@ -590,6 +608,9 @@ def main(argv=None):
     e.set_defaults(func=build_engine)
 
     args = ap.parse_args(argv)
+    if args.command == 'match' and args.baseline_movetime is not None:
+        if args.base is None or args.baseline_movetime <= 0:
+            ap.error('--baseline-movetime requires --base and a positive millisecond value')
     args.func(args)
 
 

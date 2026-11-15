@@ -1,10 +1,13 @@
 """MSH-163 harness tests: statistics properties, data files and report parsing."""
 import json
+import io
 import math
 import random
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from contextlib import redirect_stderr
+from unittest.mock import patch
 
 from tools.strength import stats
 from tools.strength import cli
@@ -230,6 +233,34 @@ class ParsingTests(unittest.TestCase):
         cfg = cli.match_config(SimpleNamespace(**base, movetime=200, base=10, increment=0.1), {'id': 'x', 'moves': []}, 'p')
         self.assertEqual(cfg['time_control'], {'increment': {'initial_ns': [10 ** 10, 10 ** 10], 'increment_ns': 10 ** 8}})
         self.assertIsNone(cfg['work']['movetime_ms'])
+
+    def test_fixed_baseline_has_same_clock_and_separate_work(self):
+        args = SimpleNamespace(candidate='/a', baseline='/b', candidate_option=[], baseline_option=[],
+                               movetime=200, base=5, increment=.05, baseline_movetime=100)
+        cfg = cli.match_config(args, {'id': 'x', 'moves': []}, 'p')
+        self.assertEqual(cfg['time_control'], {
+            'increment': {'initial_ns': [5_000_000_000, 5_000_000_000], 'increment_ns': 50_000_000}})
+        self.assertTrue(cfg['paired'])
+        self.assertEqual(cfg['engine_work'], [
+            {'depth': None, 'nodes': None, 'movetime_ms': None},
+            {'depth': None, 'nodes': None, 'movetime_ms': 100}])
+        self.assertIsNone(cfg['work']['movetime_ms'])
+        self.assertEqual(cli.match_time_control(args), {
+            'base_seconds': 5, 'increment_seconds': .05, 'baseline_movetime_ms': 100})
+
+    def test_baseline_movetime_cli_validation(self):
+        required = ['match', '--candidate', '/a', '--baseline', '/b', '--out', '/unused']
+        for invalid in [['--baseline-movetime', '100'],
+                        ['--base', '5', '--baseline-movetime', '0'],
+                        ['--base', '5', '--baseline-movetime', '-1']]:
+            with self.subTest(args=invalid), patch.object(cli, 'match') as run:
+                with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as caught:
+                    cli.main(required + invalid)
+                self.assertEqual(caught.exception.code, 2)
+                run.assert_not_called()
+        with patch.object(cli, 'match') as run:
+            cli.main(required + ['--base', '5', '--baseline-movetime', '100'])
+            self.assertEqual(run.call_args.args[0].baseline_movetime, 100)
 
 
 

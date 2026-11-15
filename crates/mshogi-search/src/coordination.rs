@@ -12,6 +12,7 @@ use std::{
         atomic::{AtomicBool, AtomicU64, Ordering},
     },
     thread,
+    time::Instant,
 };
 
 static NEXT_ID: AtomicU64 = AtomicU64::new(1);
@@ -118,6 +119,7 @@ impl fmt::Display for StaleResult {
 impl Error for StaleResult {}
 
 struct Pending {
+    started: Instant,
     context: Arc<RequestContext>,
     game: AdjudicatedGame,
     stop: Arc<AtomicBool>,
@@ -201,6 +203,7 @@ impl SearchCoordinator {
         time: Option<TimeBudget>,
         allow_draw_claims: bool,
     ) -> Result<RequestContext, SubmitError> {
+        let started = Instant::now();
         if !(1..=crate::search::MAX_DEPTH).contains(&limits.depth) {
             return Err(SubmitError::Search(SearchError::InvalidDepth(limits.depth)));
         }
@@ -220,6 +223,7 @@ impl SearchCoordinator {
             allow_draw_claims,
         });
         let pending = Pending {
+            started,
             context: context.clone(),
             game: game.clone(),
             stop: Arc::new(AtomicBool::new(false)),
@@ -397,7 +401,10 @@ fn worker(shared: Arc<Shared>) {
             &pending.game,
             pending.context.limits,
             SearchOptions {
-                time: pending.context.time,
+                time: pending
+                    .context
+                    .time
+                    .map(|t| t.after_elapsed(pending.started.elapsed())),
                 allow_draw_claims: pending.context.allow_draw_claims,
             },
             || pending.stop.load(Ordering::Acquire),
@@ -434,6 +441,7 @@ mod tests {
         let coordinator = SearchCoordinator::new().unwrap();
         let game = AdjudicatedGame::new(ClaimPolicy::ExplicitOnly);
         let budget = TimeBudget {
+            clock: false,
             soft: Duration::ZERO,
             hard: Duration::ZERO,
         };
@@ -464,6 +472,7 @@ mod tests {
         );
         let mut forged = completion.clone();
         Arc::make_mut(&mut forged.context).time = Some(TimeBudget {
+            clock: false,
             soft: Duration::ZERO,
             hard: Duration::from_millis(1),
         });
@@ -477,6 +486,7 @@ mod tests {
                 1,
                 limits,
                 Some(TimeBudget {
+                    clock: false,
                     soft: Duration::from_millis(2),
                     hard: Duration::from_millis(1),
                 })

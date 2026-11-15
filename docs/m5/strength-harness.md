@@ -89,7 +89,10 @@ python3 -m tools.strength.cli match --candidate NEW --baseline FROZEN --label NA
   default: performance cores on Apple silicon). Both engines get
   `ClaimPolicy auto`; the controller uses `auto_claim`.
 - Time control: default fixed 200 ms per move (`--movetime`). Clock mode is
-  `--base SECONDS --increment SECONDS`. See the limitation below.
+  `--base SECONDS --increment SECONDS`. Add `--baseline-movetime MS` to give
+  only the baseline a fixed per-move request under those same clocks. This
+  compares equal clock allowance, not equal actual consumption. Reports retain
+  both the clocks and that fixed request. See the historical limitation below.
 - Stopping rule: generalized SPRT on pair scores, logistic Elo hypotheses
   H0 = `--elo0` (default 0) and H1 = `--elo1` (default 15), alpha = beta = 0.05.
   The pair-score variance includes two prior pairs at .25 and .75, so a few
@@ -142,14 +145,17 @@ The harness revisions were 2cdae107 (bench) and c2595a18 (blunders and match).
 The only change between them is the conclusion cross-check for clock mode, which
 does not affect these results.
 
-## Known limitation: clock games
+## Historical limitation: clock games
 
 With the 65887fb0 engine, a 5 s + 0.05 s Fischer clock gives flag falls in about
 three of four games, near ply 60. The engine uses its reserve down to about 50 ms
 (`go wtime 50 winc 50` searches 50 ms). The native controller records these as
 unresolved, so they are not scored. For this reason the game test uses fixed time
-per move by default. MSH-167 (Engine Time Management) owns the fix; the clock
-mode is ready for its game tests.
+per move by default. MSH-167 (Engine Time Management) corrects clock allocation
+and accounts for setup/delivery. Its [recorded test](evidence/msh167/README.md)
+compares the managed policy with fixed50ms under equal5s+50ms clocks. A fixed100ms
+control still spends down its balance and caused three unscored flag falls; that
+failed comparison is preserved and not pooled with the valid result.
 
 ## Verification
 

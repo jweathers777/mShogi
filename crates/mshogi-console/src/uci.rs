@@ -242,7 +242,7 @@ impl Adapter {
                         &self.game,
                         self.version,
                         go.limits,
-                        go.time,
+                        go.time.map(|t| t.with_response_margin()),
                         false,
                     )
                     .map_err(|e| e.to_string())?;
@@ -510,19 +510,7 @@ fn parse_go(args: &[&str], side: Color) -> Result<Go, String> {
     }
     let own = usize::from(side == Color::Black);
     let thinking = movetime.map(TimeBudget::from_hard_ms).or_else(|| {
-        time[own].map(|remaining| {
-            let spendable = remaining.saturating_sub((remaining / 20).min(50));
-            let soft = (remaining / moves_to_go)
-                .saturating_add(increment[own])
-                .min(spendable);
-            // A normal iteration may use the nominal allocation; an unstable
-            // root can use additional time, always below the safe clock reserve.
-            let hard = soft.saturating_mul(3).min(spendable);
-            TimeBudget {
-                soft: Duration::from_millis(soft),
-                hard: Duration::from_millis(hard),
-            }
-        })
+        time[own].map(|remaining| TimeBudget::from_clock_ms(remaining, increment[own], moves_to_go))
     });
     let millis = thinking.map(|time| time.hard.as_millis() as u64);
     let clock_controls = seen
@@ -574,15 +562,15 @@ mod tests {
             Color::Black,
         )
         .unwrap();
-        assert_eq!(go.time.unwrap().soft, Duration::from_millis(450));
-        assert_eq!(go.budget, Some(Duration::from_millis(760)));
+        assert_eq!(go.time.unwrap().soft, Duration::from_millis(413));
+        assert_eq!(go.budget, Some(Duration::from_millis(750)));
         let go = parse_go(
             &["wtime", "10000", "winc", "100", "movestogo", "10"],
             Color::White,
         )
         .unwrap();
-        assert_eq!(go.time.unwrap().soft, Duration::from_millis(1100));
-        assert_eq!(go.budget, Some(Duration::from_millis(3300)));
+        assert_eq!(go.time.unwrap().soft, Duration::from_millis(1070));
+        assert_eq!(go.budget, Some(Duration::from_millis(3210)));
         let go = parse_go(&["wtime", "0"], Color::White).unwrap();
         assert_eq!(go.budget, Some(Duration::ZERO));
         assert_eq!(go.limits.nodes, Some(0));

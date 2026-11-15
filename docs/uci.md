@@ -38,12 +38,20 @@ A search stopped before its first completed iteration also returns the first leg
 
 For clock allocation, choose the moving side's remaining time `R` and increment
 `I` (missing increment means zero). With positive `movestogo G`, or default
-`G=30`, reserve `min(R/20,50ms)` and set the nominal soft allocation to
-`min(R/G + I, spendable)`. The hard allocation is
-`min(3*soft, spendable)`, using integer milliseconds and saturating arithmetic.
-The native engine can stop at an iteration boundary after its soft allocation;
-the hard bound interrupts further node/ordering work. `movetime` overrides clock
-allocation with the requested hard interval and a conservative70% soft interval.
+`G=30`, reserve `min(R/2,50ms)`. Let `S` be the time left after that reserve.
+The nominal soft allocation is `min(S/G + I - I/4, S)` and the hard allocation is
+`min(3*soft, S)`, using integer milliseconds and saturating arithmetic. A future
+increment never raises the hard budget above currently available time.
+
+The shared core reduces its iteration target to 60% after three stable best-move
+transitions. A changed best move or an ordinary score fall of at least 30 units
+raises the target to 150%, always capped by the hard limit. A single legal move
+can stop after one complete iteration if there is no draw-claim alternative.
+Clock requests charge queue and native setup time and leave up to 10ms (at most
+half the budget) for response delivery. Their search polls every128 nodes.
+`movetime` overrides clock allocation and retains the fixed-time policy: it does
+not use these adaptive targets or clock-specific deductions. Desktop defaults
+are unchanged. See [MSH-167 evidence](m5/evidence/msh167/README.md).
 If own-side time is missing, a clock-only request is rejected; an explicit
 depth/node limit (or infinite) remains independently meaningful. Zero time
 imposes zero search nodes. Depth/node/time combinations stop at their earliest

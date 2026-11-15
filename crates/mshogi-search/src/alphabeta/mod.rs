@@ -10,6 +10,7 @@
 //! for real results, claims and histories; the caller checks the chosen move
 //! against them.
 pub mod table;
+pub mod timing;
 
 use std::time::{Duration, Instant};
 use table::{Bound, TranspositionTable};
@@ -104,6 +105,8 @@ pub struct Limits {
     pub soft: Option<Duration>,
     /// Stop the search at this time.
     pub hard: Option<Duration>,
+    /// Adapt allocation and use frequent deadline checks for a game clock.
+    pub clock: bool,
 }
 
 /// Why a search ended.
@@ -248,6 +251,7 @@ impl<P: SearchPosition> Searcher<P> {
             abort: false,
             status: Status::Complete,
             root_move: None,
+            root_count: 0,
         };
         run.iterate()
     }
@@ -266,6 +270,7 @@ struct Run<'a, P: SearchPosition> {
     /// Best root move of the current window, with its score, once one root
     /// move has raised alpha.
     root_move: Option<(P::Move, i32)>,
+    root_count: usize,
 }
 
 impl<P: SearchPosition> Run<'_, P> {
@@ -290,6 +295,8 @@ impl<P: SearchPosition> Run<'_, P> {
             };
             return outcome;
         }
+        let adaptive = self.limits.clock && self.limits.hard.is_some();
+        let mut stable = 0u32;
         for depth in 1..=i32::from(self.limits.depth.max(1)).min(MAX_PLY as i32 - 1) {
             let previous = outcome.score.unwrap_or(0);
             let mut delta = 30;
@@ -333,6 +340,25 @@ impl<P: SearchPosition> Run<'_, P> {
                 }
                 break;
             }
+            let same_move = outcome.best == self.s.pv[0].first().copied();
+            stable = if same_move {
+                stable.saturating_add(1)
+            } else {
+                0
+            };
+            let target = self.limits.soft.map(|soft| {
+                if adaptive {
+                    timing::iteration_target(
+                        soft,
+                        self.limits.hard.unwrap(),
+                        stable,
+                        previous,
+                        score,
+                    )
+                } else {
+                    soft
+                }
+            });
             outcome.score = Some(score);
             outcome.depth = depth as u16;
             outcome.pv.clear();
@@ -341,10 +367,8 @@ impl<P: SearchPosition> Run<'_, P> {
             if outcome.best.is_none() {
                 break;
             }
-            if self
-                .limits
-                .soft
-                .is_some_and(|soft| self.start.elapsed() >= soft)
+            if (adaptive && depth == 1 && self.root_count == 1 && !self.pos.draw_claimable())
+                || target.is_some_and(|soft| self.start.elapsed() >= soft)
             {
                 self.status = Status::Stopped;
                 break;
@@ -368,7 +392,8 @@ impl<P: SearchPosition> Run<'_, P> {
         if ply > self.seldepth {
             self.seldepth = ply;
         }
-        if self.nodes & 2047 == 0
+        let poll_mask = if self.limits.clock { 127 } else { 2047 };
+        if self.nodes & poll_mask == 0
             && ((self.stop)()
                 || self
                     .limits
@@ -728,6 +753,9 @@ impl<P: SearchPosition> Run<'_, P> {
                     }
                 }
             }
+        }
+        if root {
+            self.root_count = count;
         }
         if count == 0 {
             return self.pos.no_move_score(ply as i32);

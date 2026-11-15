@@ -197,6 +197,7 @@ pub fn search_with_stop(
             nodes: Some(limits.nodes),
             soft: None,
             hard: None,
+            clock: false,
         },
         &mut stop,
     );

@@ -14,7 +14,7 @@ use crate::{
     },
 };
 use mshogi_core::chess::{AdjudicatedGame, ChessOutcome, ClaimPolicy};
-use std::time::Duration;
+use std::time::Instant;
 
 /// Search identity for experiment records.
 pub const SEARCH_ID: &str = "mshogi.chess.shared-core.v1";
@@ -25,23 +25,7 @@ pub const MAX_TABLE_MEGABYTES: usize = 4_096;
 
 const _: () = assert!(MATE_SCORE == alphabeta::MATE_SCORE);
 
-/// Soft iteration boundary and hard stop time for one move.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct TimeBudget {
-    /// Do not start a new iteration after this time.
-    pub soft: Duration,
-    /// Stop the search at this time.
-    pub hard: Duration,
-}
-impl TimeBudget {
-    /// Fixed time for one move.
-    pub fn from_hard_ms(ms: u64) -> Self {
-        Self {
-            soft: Duration::from_millis(ms),
-            hard: Duration::from_millis(ms),
-        }
-    }
-}
+pub use crate::alphabeta::timing::TimeBudget;
 
 /// Settings of one search request.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -116,6 +100,7 @@ impl ChessEngine {
         options: SearchOptions,
         mut stop: impl FnMut() -> bool,
     ) -> Result<EngineResult, SearchError> {
+        let started = Instant::now();
         if !(1..=MAX_DEPTH).contains(&limits.depth) {
             return Err(SearchError::InvalidDepth(limits.depth));
         }
@@ -178,13 +163,15 @@ impl ChessEngine {
             }
         }
         let mut position = ChessPosition::from_game(game);
+        let time = options.time.map(|t| t.after_elapsed(started.elapsed()));
         let outcome = self.searcher.search(
             &mut position,
             Limits {
                 depth: limits.depth,
                 nodes: limits.nodes,
-                soft: options.time.map(|t| t.soft),
-                hard: options.time.map(|t| t.hard),
+                soft: time.map(|t| t.soft),
+                hard: time.map(|t| t.hard),
+                clock: time.is_some_and(|t| t.clock),
             },
             &mut stop,
         );

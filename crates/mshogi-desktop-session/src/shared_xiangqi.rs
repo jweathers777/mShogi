@@ -382,7 +382,7 @@ impl DesktopController {
             limits,
         };
         if !request.valid_limits() {
-            return Err("Unsupported Xiangqi operation or work limits; maximum depth3 and512 visits, ordinary sound_fast_only analysis only.".into());
+            return Err("Unsupported Xiangqi operation or work limits; maximum depth 64 and 5,000,000 nodes, ordinary sound_fast_only analysis only.".into());
         }
         let encoded =
             serde_json::to_vec(&execution_request(request.clone())).map_err(|e| e.to_string())?;
@@ -419,8 +419,12 @@ impl DesktopController {
                 if state.viewed.is_some() && state.viewed_game.is_none() {
                     return Err("This immutable event is inside an atomic native command. Analysis requires a committed command boundary; view and movement inspection remain available.".into());
                 }
-                if !(1..=3).contains(depth) || !(1..=512).contains(nodes) {
-                    return Err("Xiangqi analysis requires depth1–3 and1–512 visits.".into());
+                if !(1..=mshogi_engine::XIANGQI_MAX_DEPTH).contains(depth)
+                    || !(1..=mshogi_engine::XIANGQI_MAX_NODES).contains(nodes)
+                {
+                    return Err(
+                        "Xiangqi analysis requires depth 1–64 and 1–5,000,000 nodes.".into(),
+                    );
                 }
                 if let Err(failure) = state.ensure_observation_capacity() {
                     let diagnostic = failure.diagnostic.clone();
@@ -893,19 +897,9 @@ fn display_observation(
         board_ply,
         perspective,
         engine: "mShogi",
-        score: t.filter(|_| o.application_error.is_none()).and_then(|t| {
-            t.score.map(|s| {
-                if s.abs() >= 999_996 {
-                    format!(
-                        "{} in {} native command edges",
-                        if s >= 0 { "Win" } else { "Loss" },
-                        1_000_000 - s.abs()
-                    )
-                } else {
-                    format!("{:+.2} soldiers", f64::from(s) / 100.0)
-                }
-            })
-        }),
+        score: t
+            .filter(|_| o.application_error.is_none())
+            .and_then(|t| t.score_label()),
         completed_depth: t.map(|t| t.completed_depth),
         nodes: t.map(|t| t.nodes),
         variation: t.map_or_else(Vec::new, |t| {

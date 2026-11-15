@@ -298,6 +298,10 @@ fn valid_work(profile: RulesProfile, work: WorkLimits) -> bool {
         return false;
     }
     let (depth, nodes) = match profile.game() {
+        mshogi_core::native::GameKind::Xiangqi => (
+            mshogi_search::xiangqi::MAX_DEPTH,
+            mshogi_search::xiangqi::MAX_NODES,
+        ),
         mshogi_core::native::GameKind::Shogi => (
             mshogi_search::shogi::MAX_DEPTH,
             mshogi_search::shogi::MAX_NODES,

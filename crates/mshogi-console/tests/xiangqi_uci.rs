@@ -99,12 +99,12 @@ fn real_handshake_explicit_selection_and_measured_limits() {
     assert!(
         lines
             .iter()
-            .any(|s| s == "option name Depth type spin default 1 min 1 max 3")
+            .any(|s| s == "option name Depth type spin default 64 min 1 max 64")
     );
     assert!(
         lines
             .iter()
-            .any(|s| s == "option name Nodes type spin default 128 min 0 max 512")
+            .any(|s| s == "option name Nodes type spin default 300000 min 0 max 5000000")
     );
     assert!(
         lines
@@ -242,7 +242,7 @@ fn zero_work_and_actual_terminal_never_invent_a_bestmove_or_score() {
 fn unsupported_controls_options_and_oversized_input_are_explicit_and_drained() {
     let mut e = engine();
     e.send("setoption name RulesProfile value other");
-    e.send("setoption name Nodes value 513");
+    e.send("setoption name Nodes value 5000001");
     e.send("go movetime 1");
     e.send("go depth 1 depth 2");
     e.send(&"x".repeat(4097));
@@ -252,7 +252,7 @@ fn unsupported_controls_options_and_oversized_input_are_explicit_and_drained() {
     assert_eq!(code, 0);
     for expected in [
         "immutable",
-        "depth1..3/nodes0..512",
+        "depth1..64/nodes0..5000000",
         "unsupported go control",
         "duplicate go control",
         "line exceeds 4096",

@@ -2,9 +2,13 @@
 import unittest
 
 from tools.strength.shogi_match import summarize
+from tools.strength import native_match
 
 
 class ShogiPairScoring(unittest.TestCase):
+    def test_shogi_entry_point_uses_shared_native_scorer(self):
+        self.assertIs(summarize, native_match.summarize)
+
     def report(self, first, second):
         return {'games': [
             {'pairing': {'swapped': False}, 'score_first_twice': first,
@@ -32,6 +36,13 @@ class ShogiPairScoring(unittest.TestCase):
         report['games'].pop()
         with self.assertRaises(ValueError):
             summarize(report)
+
+    def test_pending_xiangqi_adjudication_stays_unscored(self):
+        report = self.report(None, None)
+        report['games'][0]['stop'] = 'native_pending_adjudication'
+        result = native_match.summarize(report)
+        self.assertIsNone(result['pair_score'])
+        self.assertEqual(result['stops'][0], 'native_pending_adjudication')
 
 
 if __name__ == '__main__':

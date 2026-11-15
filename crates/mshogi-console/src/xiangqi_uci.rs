@@ -142,13 +142,13 @@ impl Adapter {
                 writeln!(out, "id author John Weathers")?;
                 writeln!(
                     out,
-                    "option name Depth type spin default 1 min 1 max {}",
-                    search::MAX_DEPTH
+                    "option name Depth type spin default {} min 1 max {}",
+                    search::DEFAULT_LIMITS.depth, search::MAX_DEPTH
                 )?;
                 writeln!(
                     out,
-                    "option name Nodes type spin default 128 min 0 max {}",
-                    search::MAX_NODES
+                    "option name Nodes type spin default {} min 0 max {}",
+                    search::DEFAULT_LIMITS.nodes, search::MAX_NODES
                 )?;
                 writeln!(
                     out,
@@ -239,7 +239,11 @@ impl Adapter {
             _ => return Err("unsupported option/value; rules profile is immutable".into()),
         }
         if !limits.valid() {
-            return Err("limits outside depth1..3/nodes0..512".into());
+            return Err(format!(
+                "limits outside depth1..{}/nodes0..{}",
+                search::MAX_DEPTH,
+                search::MAX_NODES
+            ));
         }
         self.retire()?;
         self.limits = limits;
@@ -354,7 +358,11 @@ fn parse_go(args: &[&str], mut limits: Limits) -> Result<(Limits, bool), String>
         }
     }
     if !limits.valid() {
-        return Err("limits outside depth1..3/nodes0..512".into());
+        return Err(format!(
+            "limits outside depth1..{}/nodes0..{}",
+            search::MAX_DEPTH,
+            search::MAX_NODES
+        ));
     }
     Ok((limits, hold))
 }

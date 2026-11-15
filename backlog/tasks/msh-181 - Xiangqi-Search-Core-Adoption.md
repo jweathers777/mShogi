@@ -1,10 +1,11 @@
 ---
 id: MSH-181
 title: Xiangqi Search Core Adoption
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-15T22:31:00Z'
+updated_date: '2026-11-15T23:23:00Z'
 labels:
   - handle:xiangqi-search-core-adoption
 milestone: m-5
@@ -29,17 +30,39 @@ Handle: Xiangqi Search Core Adoption.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Xiangqi searches through the shared core with no game-specific branch inside the core
-- [ ] #2 The Xiangqi search position agrees with the native rules on perft counts and on a randomized differential test of legal actions, resulting positions and hashes
-- [ ] #3 The private Xiangqi search is removed, the engine, console, runner and desktop paths of Xiangqi still work, and saved observations of the earlier search identity stay valid
-- [ ] #4 Xiangqi with the shared core is stronger than its present engine in a game test with a sequential decision
-- [ ] #5 Approximations of the native rules inside the search, and any change to the trait or core, are recorded in docs/m5/shared-search-core.md
+- [x] #1 Xiangqi searches through the shared core with no game-specific branch inside the core
+- [x] #2 The Xiangqi search position agrees with the native rules on perft counts and on a randomized differential test of legal actions, resulting positions and hashes
+- [x] #3 The private Xiangqi search is removed, the engine, console, runner and desktop paths of Xiangqi still work, and saved observations of the earlier search identity stay valid
+- [x] #4 Xiangqi with the shared core is stronger than its present engine in a game test with a sequential decision
+- [x] #5 Approximations of the native rules inside the search, and any change to the trait or core, are recorded in docs/m5/shared-search-core.md
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Freeze main at637c0a74 as predecessor. Build a fast Xiangqi position and verify native perft, randomized actions/results/hashes, blocked pieces, Cannon screens and facing Generals.
+2. Replace private minimax with the shared core. Preserve native root conclusions, pending adjudication, exact-proof APIs, count claims and reported-line admission. Reuse the shared observation identity helper; update all engine, UCI0-9, runner and desktop consumers.
+3. Level1: focused correctness and tactical decisions, then relevant workspace regression checks, frontend and standalone desktop host compilation. Linux/Windows/packaged GUI checks remain deferred to integration/release.
+4. Calibrate same-root time/depth against predecessor. Fix a paired sequential game-test protocol before play, H0=0/H1=15 alpha=beta.05 min30/max600 pairs with native outcomes. Initial local game-test resource bound30minutes wall; no cloud or external opponents. At checkpoint retain only measured practical progress; change direction if absent.
+5. Independent review, evidence, main integration, normal push and branch cleanup.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner Codex, chat01a1e160-c3a4-7e02-912f-c64d50b95f4d; primary checkout branch codex/xiangqi-search-core. Clean main637c0a74, no active worker in checkout. Backlog1.55.3 matches baseline. MSH-179 (Clock and Session for All Games) remains Ready; retain finite node interface. Current design, execution/finalization instructions and shared-core guide read earlier in this same conversation; MSH-180 (Shogi Search Core Adoption) supplies accepted adapter/helper/harness patterns.
+
+Pre-game checkpoint: six fast-position tests and13 search integration tests pass, including independent board fixtures/perft, over2,000 differential positions, both-color perpetual check, stalemate, bare General and losing-side native count claim. Current consumer checks pass after correcting obsolete old maximum-node fixture. Calibration on8 identical ordinary roots: candidate6,000 nodes/depth64 median36.17ms/depth5.5 versus frozen637c0a74 default1/128 median45.77ms/depth1. Candidate12k and20k cost52.46ms and57.53ms, so choose6k. Four tactical roots at6k cost9.13ms versus7.40ms; their high nominal depth is terminal-tree repetition, not strength evidence. Protocol fixed before full games: H0=0/H1=15 alpha=beta.05, min30/max600 color pairs, four workers, seeded openings1..600, native AutoValidClaims and native outcomes only,180s per pair and1800s campaign. Stop on incomplete pair with no exclusion; no external opponent or cloud spending. Retain/change decision follows game evidence, not speed alone.
+
+Retain checkpoint: frozen22a55759 candidate won64, drew0 and lost0 against637c0a74 over32 color pairs. H1 accepted (LLR18.3723 above2.9444);138.9784s wall. Native outcomes58checkmates/6stalemates, no unfinished or excluded games. Candidate median60.924ms/depth6 versus predecessor60.962ms/depth1 on different game positions; same-root calibration remains timing control. Product code is unchanged after candidatefreeze; final sourcea8b2be4d fixes only two obsolete test fixtures. Broad run1174pass2fail10ignored; affected libraries rerun with same feature: desktop330pass andrunner31pass,7ignored. Final union1176pass10ignored. Evidence docs/m5/evidence/msh181/verification.json and game-test/. Final independent evidence review and integration pending.
+
+Final independent review accepted with no blocking findings: docs/m5/evidence/msh181/review.md. The reviewer checked the final test corrections, combined test coverage, all 32 game report hashes and 64 native outcomes, and replayed the first and last pairs. Final Clippy, formatting, frontend and standalone host checks passed. Level 1 evidence is complete; Linux, Windows and packaged GUI execution remain deferred to the next integration/release checkpoint. Integration into main is next.
+<!-- SECTION:NOTES:END -->

@@ -235,8 +235,8 @@ fn native_identity_intersection_palaces_river_and_capability_scope() {
         initial.play_limits,
         WorkLimits {
             time_ms: None,
-            depth: 1,
-            nodes: 128
+            depth: 64,
+            nodes: 300_000
         }
     );
     assert!(initial.paused);
@@ -646,7 +646,7 @@ fn incomplete_failure_retry_and_limits_are_not_chess_outcomes() {
     assert_eq!(failed.phase, EnginePhase::Failed);
     assert!(!failed.status.concluded);
     assert_eq!(failed.status.score_half_points, None);
-    for limits in [(0, 128), (4, 128), (1, 0), (1, 513)] {
+    for limits in [(0, 128), (65, 128), (1, 0), (1, 5_000_001)] {
         let token = c.shared_token();
         assert!(
             send(

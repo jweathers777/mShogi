@@ -25,12 +25,13 @@ impl Default for XiangqiSettings {
     }
 }
 fn valid_limits(limits: WorkLimits) -> Result<(), String> {
-    if !(1..=3).contains(&limits.depth)
-        || !(1..=512).contains(&limits.nodes)
+    if !(1..=mshogi_engine::XIANGQI_MAX_DEPTH).contains(&limits.depth)
+        || !(1..=mshogi_engine::XIANGQI_MAX_NODES).contains(&limits.nodes)
         || limits.time_ms.is_some()
     {
         return Err(
-            "Xiangqi analysis requires depth1–3 and1–512 visits; no downgrade was applied.".into(),
+            "Xiangqi analysis requires depth 1–64 and 1–5,000,000 nodes; no downgrade was applied."
+                .into(),
         );
     }
     Ok(())
@@ -862,7 +863,8 @@ impl XiangqiSession {
                     .settings
                     .play_mode
                     .engine_turn(self.human, self.game.position().side_to_move())
-                || response.context.limits != PLAY_LIMITS
+                || (response.context.limits != PLAY_LIMITS
+                    && response.context.limits != mshogi_engine::XIANGQI_LEGACY_PLAY_LIMITS)
             {
                 return Err(
                     "Corrupt observation: no matching live native engine turn/limits.".into(),
@@ -1348,7 +1350,9 @@ pub(crate) fn decode(
     stopped: &mut impl FnMut() -> bool,
 ) -> Result<(XiangqiSession, u64), OperationFailure> {
     let raw: RawArchive = serde_json::from_str(payload).map_err(error)?;
-    if raw.play_limits != PLAY_LIMITS {
+    if raw.play_limits != PLAY_LIMITS
+        && raw.play_limits != mshogi_engine::XIANGQI_LEGACY_PLAY_LIMITS
+    {
         return Err("Unsupported Xiangqi saved play limits; no downgrade was applied.".into());
     }
     if raw.observation_schema_version != OBSERVATION_SCHEMA_VERSION {

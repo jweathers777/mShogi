@@ -236,8 +236,14 @@ pub(super) fn bounded(error: impl ToString) -> String {
 }
 
 fn valid_limits(limits: WorkLimits) -> Result<(), String> {
-    if !(1..=4).contains(&limits.depth) || limits.nodes > 20_000 || limits.time_ms.is_some() {
-        Err("Unsupported shogi operation/limits: ordinary depth1–4 and at most20,000 nodes; untimed play only.".into())
+    if !(1..=mshogi_engine::SHOGI_MAX_DEPTH).contains(&limits.depth)
+        || limits.nodes > mshogi_engine::SHOGI_MAX_NODES
+        || limits.time_ms.is_some()
+    {
+        Err(
+            "Unsupported Shogi limits: depth 1–64 and at most 5,000,000 nodes; untimed play only."
+                .into(),
+        )
     } else {
         Ok(())
     }
@@ -618,12 +624,13 @@ impl ShogiSession {
                         .into(),
                 );
             }
-        } else if response.context.limits
-            != (WorkLimits {
-                time_ms: None,
-                depth: 2,
-                nodes: 5000,
-            })
+        } else if response.context.limits != mshogi_engine::SHOGI_PLAY_LIMITS
+            && response.context.limits
+                != (WorkLimits {
+                    time_ms: None,
+                    depth: 2,
+                    nodes: 5000,
+                })
         {
             return Err(
                 "Unsupported saved shogi engine-turn limits; no downgrade was applied.".into(),

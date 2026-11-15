@@ -141,12 +141,14 @@ impl Adapter {
                 writeln!(out, "id author John Weathers")?;
                 writeln!(
                     out,
-                    "option name Depth type spin default 2 min 1 max {}",
+                    "option name Depth type spin default {} min 1 max {}",
+                    search::DEFAULT_LIMITS.depth,
                     search::MAX_DEPTH
                 )?;
                 writeln!(
                     out,
-                    "option name Nodes type spin default 5000 min 0 max {}",
+                    "option name Nodes type spin default {} min 0 max {}",
+                    search::DEFAULT_LIMITS.nodes,
                     search::MAX_NODES
                 )?;
                 writeln!(
@@ -247,7 +249,11 @@ impl Adapter {
             _ => return Err("unsupported option/value; rules profile is immutable".into()),
         }
         if !limits.valid() {
-            return Err("limits outside depth1..4/nodes0..20000".into());
+            return Err(format!(
+                "limits outside depth1..{}/nodes0..{}",
+                search::MAX_DEPTH,
+                search::MAX_NODES
+            ));
         }
         self.retire()?;
         self.limits = limits;
@@ -361,7 +367,11 @@ fn parse_go(args: &[&str], mut limits: Limits) -> Result<(Limits, bool), String>
         }
     }
     if !limits.valid() {
-        return Err("limits outside depth1..4/nodes0..20000".into());
+        return Err(format!(
+            "limits outside depth1..{}/nodes0..{}",
+            search::MAX_DEPTH,
+            search::MAX_NODES
+        ));
     }
     Ok((limits, hold))
 }
@@ -414,7 +424,7 @@ fn report(result: &SearchResult, elapsed: Duration, out: &mut impl Write) -> io:
         elapsed.as_millis()
     );
     if let Some(score) = result.score
-        && score.abs() < search::WIN_SCORE - i32::from(search::MAX_DEPTH) - 1
+        && score.abs() < mshogi_search::alphabeta::MATE_BOUND
     {
         line.push_str(&format!(" score cp {score}"));
     }

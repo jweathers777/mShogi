@@ -1,25 +1,41 @@
-//! Transparent shogi material and bounded full-width search; no board-only cache.
+//! Shogi adapter for the game-independent alpha-beta core.
+pub mod position;
+#[cfg(test)]
+mod position_tests;
+use crate::alphabeta::{self, SearchPosition, Searcher, Status};
 use crate::search::SearchStatus;
 use mshogi_core::shogi::{
-    Action, Conclusion, Game, GameCommand, GameError, GameRequest, GameUndo, PieceKind, Position,
-    Side,
+    Action, Conclusion, Game, GameCommand, GameError, GameRequest, PieceKind, Position, Side,
 };
+use position::ShogiPosition;
 use std::{error::Error, fmt};
 
-/// Untrained material identity, distinct from declaration qualification points.
-pub const EVALUATOR_ID: &str = "mshogi.shogi.material.v1";
-/// Deterministic full-width, native-history minimax identity.
-pub const SEARCH_ID: &str = "mshogi.shogi.full-width.v1";
+/// Classical material and placement evaluation identity.
+pub const EVALUATOR_ID: &str = "mshogi.shogi.material-placement.v1";
+/// Saved full-width evaluator identity.
+pub const LEGACY_EVALUATOR_ID: &str = "mshogi.shogi.material.v1";
+/// Shared alpha-beta search identity.
+pub const SEARCH_ID: &str = "mshogi.shogi.shared-core.v1";
+/// Saved full-width search identity.
+pub const LEGACY_SEARCH_ID: &str = "mshogi.shogi.full-width.v1";
+/// Earlier supported depth.
+pub const LEGACY_MAX_DEPTH: u16 = 4;
+/// Earlier supported node count.
+pub const LEGACY_MAX_NODES: u64 = 20_000;
+/// Earlier terminal score.
+pub const LEGACY_WIN_SCORE: i32 = 1_000_000;
+/// Maximum reported native continuation length.
+pub const MAX_LINE: usize = 8;
 /// Native terminal win, minus command-edge distance (not necessarily checkmate).
-pub const WIN_SCORE: i32 = 1_000_000;
-/// Conservative recursive depth for this unoptimized bounded baseline.
-pub const MAX_DEPTH: u16 = 4;
+pub const WIN_SCORE: i32 = alphabeta::MATE_SCORE;
+/// Maximum nominal depth.
+pub const MAX_DEPTH: u16 = 64;
 /// Maximum total admitted visits, including iterative revisits and discarded work.
-pub const MAX_NODES: u64 = 20_000;
-/// Measured interactive baseline; drop-heavy requests may finish only depth one.
+pub const MAX_NODES: u64 = 5_000_000;
+/// Interactive node budget; the node limit normally ends a request.
 pub const DEFAULT_LIMITS: Limits = Limits {
-    depth: 2,
-    nodes: 5_000,
+    depth: MAX_DEPTH,
+    nodes: 300_000,
 };
 
 /// Hundredths of an unpromoted pawn; kings are scored by rules-owned outcomes.
@@ -91,7 +107,7 @@ pub fn evaluate(position: &Position) -> Evaluation {
 /// Mandatory deterministic limits. Zero nodes visits nothing and publishes no choice.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Limits {
-    /// Maximum completed full-width board depth, 1..=MAX_DEPTH.
+    /// Maximum nominal depth, 1..=MAX_DEPTH.
     pub depth: u16,
     /// Total node budget, 0..=MAX_NODES; no unbounded native shogi entry point.
     pub nodes: u64,
@@ -137,11 +153,11 @@ pub struct SearchResult {
     pub decision: Option<Decision>,
     /// Root-side score; terminal distance counts board/declaration command edges.
     pub score: Option<i32>,
-    /// Native side used for every minimax/static/terminal observation.
+    /// Native root side used for each score.
     pub perspective: Side,
-    /// Completed board-depth iteration (declarations are examined even at leaves).
+    /// Completed nominal depth; declarations are checked at the root.
     pub completed_depth: u16,
-    /// Admitted node visits, including terminal/declaration nodes and partial work.
+    /// Admitted visits, including quiescence and partial work.
     pub nodes: u64,
     /// Completed continuation, possibly ending in a declaration.
     pub principal_variation: Vec<Choice>,
@@ -170,8 +186,7 @@ impl Error for SearchError {}
 pub fn search(game: &Game, limits: Limits) -> Result<SearchResult, SearchError> {
     search_with_stop(game, limits, || false)
 }
-/// Use private native history. Stop is polled at node boundaries and before
-/// transitions; each individual native rules query remains bounded. A partial
+/// Search a private position with cooperative stop polling. A partial
 /// iteration contributes work only, preserving the last complete iteration.
 pub fn search_with_stop(
     game: &Game,
@@ -182,12 +197,6 @@ pub fn search_with_stop(
         return Err(SearchError::InvalidLimits);
     }
     let root_side = game.position().side_to_move();
-    let mut tree = NativeTree(game.clone());
-    let mut work = Work {
-        nodes: 0,
-        limit: limits.nodes,
-        stop: &mut stop,
-    };
     let mut result = SearchResult {
         decision: None,
         score: None,
@@ -197,124 +206,112 @@ pub fn search_with_stop(
         principal_variation: vec![],
         status: SearchStatus::Complete,
     };
-    for depth in 1..=limits.depth {
-        let value = minimax(&mut tree, depth, 0, root_side, &mut work);
-        if tree.0 != *game {
-            return Err(SearchError::Restore);
+    if stop() {
+        result.status = SearchStatus::Stopped;
+        return Ok(result);
+    }
+    if limits.nodes == 0 {
+        result.status = SearchStatus::NodeLimit;
+        return Ok(result);
+    }
+    if let Some(conclusion) = game.conclusion() {
+        result.decision = Some(Decision::Finished(conclusion));
+        result.score = Some(terminal_score(conclusion, root_side, 0));
+        result.completed_depth = 1;
+        result.nodes = 1;
+        return Ok(result);
+    }
+    if game.declaration_eligibility(root_side).eligible() {
+        result.nodes = 1;
+        if stop() {
+            result.status = SearchStatus::Stopped;
+            return Ok(result);
         }
-        match value {
-            Ok(value) => {
-                result.decision = value
-                    .pv
-                    .first()
-                    .copied()
-                    .map(Decision::Choose)
-                    .or_else(|| game.conclusion().map(Decision::Finished));
-                result.score = Some(value.score);
-                result.completed_depth = depth;
-                result.principal_variation = value.pv;
-                if matches!(
-                    result.decision,
-                    Some(Decision::Finished(_) | Decision::Choose(Choice::Declare { .. }))
-                ) {
-                    break;
-                }
-            }
-            Err(Halt::Limit(status)) => {
-                result.status = status;
-                break;
-            }
-            Err(Halt::Error(error)) => return Err(error),
+        if limits.nodes < 2 {
+            result.status = SearchStatus::NodeLimit;
+            return Ok(result);
         }
-    }
-    result.nodes = work.nodes;
-    Ok(result)
-}
-// Small private seam for independently specified trees, same-turn terminal
-// choices and injected descendant errors; not a public universal rules API.
-trait Tree {
-    type Undo;
-    fn turn(&self) -> Side;
-    fn conclusion(&self) -> Option<Conclusion>;
-    fn declaration(&self) -> Option<Choice>;
-    fn evaluate(&self, side: Side) -> i32;
-    fn actions(&self) -> Vec<Choice>;
-    fn push(&mut self, choice: Choice) -> Result<Self::Undo, SearchError>;
-    fn pop(&mut self, undo: Self::Undo) -> Result<(), SearchError>;
-}
-struct NativeTree(Game);
-impl Tree for NativeTree {
-    type Undo = GameUndo;
-    fn turn(&self) -> Side {
-        self.0.position().side_to_move()
-    }
-    fn conclusion(&self) -> Option<Conclusion> {
-        self.0.conclusion()
-    }
-    fn declaration(&self) -> Option<Choice> {
-        self.0
-            .declaration_eligibility(self.turn())
-            .eligible()
-            .then_some(Choice::Declare { actor: self.turn() })
-    }
-    fn evaluate(&self, side: Side) -> i32 {
-        evaluate(self.0.position()).score_for(side)
-    }
-    fn actions(&self) -> Vec<Choice> {
-        self.0
-            .position()
-            .legal_actions()
-            .into_iter()
-            .map(Choice::Move)
-            .collect()
-    }
-    fn push(&mut self, choice: Choice) -> Result<Self::Undo, SearchError> {
-        let actor = match choice {
-            Choice::Move(_) => self.turn(),
-            Choice::Declare { actor } => actor,
-        };
-        self.0
+        let choice = Choice::Declare { actor: root_side };
+        let mut native = game.clone();
+        native
             .submit(GameRequest {
-                expected: self.0.context(),
-                actor,
+                expected: native.context(),
+                actor: root_side,
                 command: choice.command(),
             })
-            .map_err(SearchError::Transition)
+            .map_err(SearchError::Transition)?;
+        let conclusion = native.conclusion().ok_or(SearchError::Invariant)?;
+        result.decision = Some(Decision::Choose(choice));
+        result.score = Some(terminal_score(conclusion, root_side, 1));
+        result.completed_depth = 1;
+        result.nodes = 2;
+        result.principal_variation.push(choice);
+        return Ok(result);
     }
-    fn pop(&mut self, undo: Self::Undo) -> Result<(), SearchError> {
-        self.0.undo(undo).map_err(|_| SearchError::Restore)
+    let legal = game.position().legal_actions();
+    if legal.is_empty() {
+        return Err(SearchError::Invariant);
     }
-}
-struct Value {
-    score: i32,
-    pv: Vec<Choice>,
-}
-enum Halt {
-    Limit(SearchStatus),
-    Error(SearchError),
-}
-struct Work<'a> {
-    nodes: u64,
-    limit: u64,
-    stop: &'a mut dyn FnMut() -> bool,
-}
-impl Work<'_> {
-    fn check(&mut self) -> Result<(), Halt> {
-        if (self.stop)() {
-            return Err(Halt::Limit(SearchStatus::Stopped));
+    let mut position = ShogiPosition::from_game(game);
+    let mut searcher = Searcher::<ShogiPosition>::new(16);
+    let outcome = searcher.search(
+        &mut position,
+        alphabeta::Limits {
+            depth: limits.depth,
+            nodes: Some(limits.nodes),
+            soft: None,
+            hard: None,
+            clock: false,
+        },
+        &mut stop,
+    );
+    result.nodes = outcome.nodes;
+    result.completed_depth = outcome.depth;
+    result.status = match outcome.status {
+        Status::Complete => SearchStatus::Complete,
+        Status::NodeLimit => SearchStatus::NodeLimit,
+        Status::Stopped => SearchStatus::Stopped,
+    };
+    let Some(best) = outcome.best else {
+        result.completed_depth = 0;
+        return Ok(result);
+    };
+    let action = position.action(best);
+    if !legal.contains(&action) {
+        return Err(SearchError::Invariant);
+    }
+    let mut native = game.clone();
+    for &m in outcome.pv.iter().take(MAX_LINE) {
+        if native.conclusion().is_some() {
+            break;
         }
-        if self.nodes >= self.limit {
-            return Err(Halt::Limit(SearchStatus::NodeLimit));
+        let action = position.action(m);
+        let request = GameRequest {
+            expected: native.context(),
+            actor: native.position().side_to_move(),
+            command: GameCommand::Play(action),
+        };
+        match native.submit(request) {
+            Ok(_) => {}
+            Err(error) if result.principal_variation.is_empty() => {
+                return Err(SearchError::Transition(error));
+            }
+            Err(_) => break,
         }
-        Ok(())
+        if !position.make(m) {
+            return Err(SearchError::Invariant);
+        }
+        result.principal_variation.push(Choice::Move(action));
     }
-    fn visit(&mut self) -> Result<(), Halt> {
-        self.check()?;
-        self.nodes += 1;
-        Ok(())
+    if result.principal_variation.first() != Some(&Choice::Move(action)) {
+        return Err(SearchError::Invariant);
     }
+    result.decision = Some(Decision::Choose(Choice::Move(action)));
+    result.score = outcome.score;
+    Ok(result)
 }
-fn terminal_score(conclusion: Conclusion, side: Side, distance: u16) -> i32 {
+/// Native terminal score from the named root side.
+pub fn terminal_score(conclusion: Conclusion, side: Side, distance: u16) -> i32 {
     match conclusion {
         Conclusion::Draw(_) => 0,
         Conclusion::Win { winner, .. } => {
@@ -324,181 +321,5 @@ fn terminal_score(conclusion: Conclusion, side: Side, distance: u16) -> i32 {
                 -WIN_SCORE + i32::from(distance)
             }
         }
-    }
-}
-fn descend<T: Tree>(
-    tree: &mut T,
-    choice: Choice,
-    depth: u16,
-    distance: u16,
-    root: Side,
-    work: &mut Work<'_>,
-) -> Result<Value, Halt> {
-    work.check()?;
-    let undo = tree.push(choice).map_err(Halt::Error)?;
-    let child = minimax(tree, depth, distance + 1, root, work);
-    tree.pop(undo).map_err(Halt::Error)?;
-    let mut child = child?;
-    child.pv.insert(0, choice);
-    Ok(child)
-}
-fn minimax<T: Tree>(
-    tree: &mut T,
-    depth: u16,
-    distance: u16,
-    root: Side,
-    work: &mut Work<'_>,
-) -> Result<Value, Halt> {
-    work.visit()?;
-    if let Some(conclusion) = tree.conclusion() {
-        return Ok(Value {
-            score: terminal_score(conclusion, root, distance),
-            pv: vec![],
-        });
-    }
-    // Native submission establishes the terminal result; advisory eligibility
-    // alone is never emitted as an already concluded game. Same-turn declaration
-    // backup uses stable root perspective, with no alternating-turn negation.
-    if let Some(declaration) = tree.declaration() {
-        return descend(tree, declaration, 0, distance, root, work);
-    }
-    if depth == 0 {
-        return Ok(Value {
-            score: tree.evaluate(root),
-            pv: vec![],
-        });
-    }
-    let maximize = tree.turn() == root;
-    let mut best: Option<Value> = None;
-    for choice in tree.actions() {
-        let child = descend(tree, choice, depth - 1, distance, root, work)?;
-        if best.as_ref().is_none_or(|best| {
-            if maximize {
-                child.score > best.score
-            } else {
-                child.score < best.score
-            }
-        }) {
-            best = Some(child);
-        }
-    }
-    best.ok_or(Halt::Error(SearchError::Invariant))
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use mshogi_core::shogi::{MutualCheckDiagnostic, Square};
-    // Explicit finite graph, not a synthetic game profile. Root A has min(7,3),
-    // B has min(5,9); choose B/5 at depth2. At depth1 choose A/8.
-    struct Small {
-        at: usize,
-        fail: bool,
-    }
-    fn action(n: usize) -> Choice {
-        Choice::Move(Action::Move {
-            from: Square::new(n as u8, 1).unwrap(),
-            to: Square::new(n as u8, 2).unwrap(),
-            promote: false,
-        })
-    }
-    impl Tree for Small {
-        type Undo = usize;
-        fn turn(&self) -> Side {
-            if self.at == 1 || self.at == 2 {
-                Side::Gote
-            } else {
-                Side::Sente
-            }
-        }
-        fn conclusion(&self) -> Option<Conclusion> {
-            None
-        }
-        fn declaration(&self) -> Option<Choice> {
-            None
-        }
-        fn evaluate(&self, side: Side) -> i32 {
-            let value = [0, 8, 2, 7, 3, 5, 9][self.at];
-            if side == Side::Sente { value } else { -value }
-        }
-        fn actions(&self) -> Vec<Choice> {
-            match self.at {
-                0 => vec![action(1), action(2)],
-                1 => vec![action(3), action(4)],
-                2 => vec![action(5), action(6)],
-                _ => vec![],
-            }
-        }
-        fn push(&mut self, choice: Choice) -> Result<usize, SearchError> {
-            let Choice::Move(Action::Move { from, .. }) = choice else {
-                unreachable!()
-            };
-            let next = usize::from(from.file());
-            if self.fail && next == 5 {
-                // Deliberately injected diagnostic, NOT a legal mutual-check
-                // position. Native tests separately exercise private corruption.
-                let game = Game::new();
-                return Err(SearchError::Transition(GameError::MutualCheckInvariant(
-                    Box::new(MutualCheckDiagnostic {
-                        candidate_context: game.context(),
-                        candidate_sfen: game.position().to_sfen(),
-                        occurrences: vec![0, 4, 8, 12],
-                        interval_checks: vec![(Side::Sente, true), (Side::Gote, true)],
-                    }),
-                )));
-            }
-            let before = self.at;
-            self.at = next;
-            Ok(before)
-        }
-        fn pop(&mut self, undo: usize) -> Result<(), SearchError> {
-            self.at = undo;
-            Ok(())
-        }
-    }
-    #[test]
-    fn independently_solvable_tree_checks_stable_root_minimax_and_full_width() {
-        let mut tree = Small { at: 0, fail: false };
-        let mut stop = || false;
-        let mut work = Work {
-            nodes: 0,
-            limit: MAX_NODES,
-            stop: &mut stop,
-        };
-        let one = minimax(&mut tree, 1, 0, Side::Sente, &mut work).unwrap_or_else(|_| panic!());
-        assert_eq!((one.score, one.pv), (8, vec![action(1)]));
-        assert_eq!(work.nodes, 3);
-        assert_eq!(tree.at, 0);
-        work.nodes = 0;
-        let two = minimax(&mut tree, 2, 0, Side::Sente, &mut work).unwrap_or_else(|_| panic!());
-        assert_eq!((two.score, two.pv), (5, vec![action(2), action(5)]));
-        assert_eq!(work.nodes, 7);
-        assert_eq!(tree.at, 0);
-    }
-    #[test]
-    fn limited_and_failed_descendants_unwind_and_retain_native_diagnostic() {
-        let mut tree = Small { at: 0, fail: false };
-        let mut stop = || false;
-        let mut work = Work {
-            nodes: 0,
-            limit: 4,
-            stop: &mut stop,
-        };
-        assert!(matches!(
-            minimax(&mut tree, 2, 0, Side::Sente, &mut work),
-            Err(Halt::Limit(SearchStatus::NodeLimit))
-        ));
-        assert_eq!(tree.at, 0);
-        tree.fail = true;
-        work.nodes = 0;
-        work.limit = MAX_NODES;
-        let Err(Halt::Error(SearchError::Transition(GameError::MutualCheckInvariant(diagnostic)))) =
-            minimax(&mut tree, 2, 0, Side::Sente, &mut work)
-        else {
-            panic!("expected unscored injected diagnostic")
-        };
-        assert_eq!(tree.at, 0);
-        assert_eq!(diagnostic.occurrences, vec![0, 4, 8, 12]);
-        assert_eq!(diagnostic.candidate_context, Game::new().context());
     }
 }

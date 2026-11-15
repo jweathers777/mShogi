@@ -819,3 +819,36 @@ fn durable_observations_have_a_semantic_schema_without_transport_framing() {
     framed["observations"][0]["observation"]["protocol"] = mshogi_engine::PROTOCOL_VERSION.into();
     assert!(decode_shogi(&framed.to_string(), &mut || false).is_err());
 }
+
+#[test]
+fn shared_core_shogi_analysis_limits_are_admitted_and_bounded() {
+    let mut c = controller();
+    replace(&mut c, &s::Game::new(), s::Side::Sente);
+    let accepted = send(
+        &mut c,
+        SessionOperation::Analyze {
+            operation: AnalysisOperation::Moves {
+                depth: 64,
+                nodes: 5_000_000,
+            },
+        },
+    )
+    .unwrap();
+    let NativeDesktopSettings::Shogi { settings } = accepted.document.settings else {
+        panic!()
+    };
+    assert_eq!(settings.analysis_defaults.depth, 64);
+    assert_eq!(settings.analysis_defaults.nodes, 5_000_000);
+    send(&mut c, SessionOperation::Cancel {}).unwrap();
+    for (depth, nodes) in [(65, 1), (1, 5_000_001)] {
+        assert!(
+            send(
+                &mut c,
+                SessionOperation::Analyze {
+                    operation: AnalysisOperation::Moves { depth, nodes },
+                }
+            )
+            .is_err()
+        );
+    }
+}

@@ -159,6 +159,53 @@ size limit of the experiment runner: the runner then stops the current game
 and does not start the later games of that run. This depends on the order and
 length of the games, not on their results.
 
+## Shogi on the core
+
+MSH-180 (Shogi Search Core Adoption) replaces the private full-width Shogi
+search. The core and its trait do not change. The private position uses an
+81-square array with u128 piece sets, precomputed step attacks, ray attacks,
+incremental material and board/hand hash, and reversible in-place updates.
+All promotion choices and legal drops are generated, including Pawn-file,
+dead-rank and Pawn-drop-mate restrictions. Perft and randomized differential
+tests compare legal actions, resulting boards/hands, hashes and restoration
+against the native rules.
+
+The adapter checks native root outcomes and entering-king declarations, admits
+only a native legal chosen action, and replays the reported line through a
+private native game. A refused or concluded continuation ends the reported
+line. Native rules remain the authority for actual play and saved history.
+
+Private analysis uses these approximations:
+
+- The table is keyed by board, hands and turn, without history or move count.
+- A repeated position on the search path scores as a draw, or a loss for a
+  side that checked on every move in the cycle. Pre-root history requires four
+  occurrences. The scan crosses captures and drops; a null move sets a barrier.
+- At 320 completed actions, the position is drawn unless it has no legal move,
+  which takes priority. Null moves do not advance this count.
+- Entering-king declarations are checked only at the root, not inside the tree.
+- Ordinary quiescence includes captures and promotions. Quiet checking moves
+  and drops enter through the main search and its check extension. In check,
+  quiescence searches all evasions.
+- The exchange test is a one-step estimate. Evaluation combines unchanged
+  material values with Pawn advance, adjacent king cover, hand flexibility
+  and tempo. It is a classical heuristic, not a native outcome.
+
+Limits are depth 1–64 and at most 5,000,000 nodes. Desktop play and default USI
+use depth 64 and 300,000 nodes; a reported line has at most eight actions.
+Each request starts with an empty table and history statistics. MSH-179
+(Clock and Session for All Games) remains the separate time/session task.
+
+The new identities are `mshogi.shogi.shared-core.v1` and
+`mshogi.shogi.material-placement.v1`. A shared observation helper classifies
+both Shogi and Tori identities. Earlier saved observations retain their
+identity-specific bounds and checks; selective lines can extend beyond nominal
+depth. The earlier Shogi material function remains available for historical
+arithmetic, but no private full-width search remains.
+
+Verification and the predecessor comparison are recorded in
+[evidence/msh180/README.md](evidence/msh180/README.md).
+
 ## What Tori showed, and what the other games need
 
 Findings from the second game, recorded for the later tasks of Shogi, Xiangqi,

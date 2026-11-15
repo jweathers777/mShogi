@@ -29,11 +29,7 @@ pub use xiangqi::{
 };
 
 // The displayed play budget and submitted work use the same native value.
-const SHOGI_PLAY_LIMITS: WorkLimits = WorkLimits {
-    time_ms: None,
-    depth: 2,
-    nodes: 5000,
-};
+const SHOGI_PLAY_LIMITS: WorkLimits = mshogi_engine::SHOGI_PLAY_LIMITS;
 
 /// Exact UI precondition; neither board ply nor semantic undo restores this token.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]

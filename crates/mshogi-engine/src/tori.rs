@@ -1,4 +1,5 @@
 //! Actual native Tori results. No declaration, chess mate or exact-proof adaptation.
+use crate::observation_identity::{Identity, Profile, SearchKind};
 use crate::{ExecutionContext, ExecutionPurpose, StopReason};
 use mshogi_core::{
     native::CanonicalRecord,
@@ -131,15 +132,26 @@ impl ToriResult {
     /// earlier full-width search whose saved observations stay valid.
     fn identity(&self) -> Option<Identity> {
         let t = self.telemetry();
-        if t.evaluator_id == search::EVALUATOR_ID && t.search_id == search::SEARCH_ID {
-            Some(Identity::SharedCore)
-        } else if t.evaluator_id == search::LEGACY_EVALUATOR_ID
-            && t.search_id == search::LEGACY_SEARCH_ID
-        {
-            Some(Identity::FullWidth)
-        } else {
-            None
-        }
+        Identity::classify(
+            &t.evaluator_id,
+            &t.search_id,
+            Profile {
+                evaluator: search::EVALUATOR_ID,
+                search: search::SEARCH_ID,
+                max_depth: search::MAX_DEPTH,
+                max_nodes: search::MAX_NODES,
+                win_score: search::WIN_SCORE,
+                line_bound: search::MAX_LINE,
+            },
+            Profile {
+                evaluator: search::LEGACY_EVALUATOR_ID,
+                search: search::LEGACY_SEARCH_ID,
+                max_depth: search::LEGACY_MAX_DEPTH,
+                max_nodes: search::LEGACY_MAX_NODES,
+                win_score: search::WIN_SCORE,
+                line_bound: 0,
+            },
+        )
     }
     /// Re-admit the complete continuation against authoritative native history.
     /// This validates consistency, not a claim that a heuristic score is optimal.
@@ -204,7 +216,7 @@ impl ToriResult {
                 // static value of the end of the reported line. The native
                 // replay above is its check.
                 // A choice is never a win at the analyzed position itself.
-                if identity == Identity::SharedCore {
+                if identity.kind == SearchKind::SharedCore {
                     return if t
                         .score
                         .is_some_and(|s| s.unsigned_abs() >= search::WIN_SCORE as u32)
@@ -288,44 +300,6 @@ impl ToriResult {
                     && t.principal_variation.is_empty()
                     && t.status != StopReason::Complete
             }
-        }
-    }
-}
-
-/// The search that made an observation.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum Identity {
-    /// The shared alpha-beta core.
-    SharedCore,
-    /// The earlier full-width search with the material evaluation.
-    FullWidth,
-}
-impl Identity {
-    fn max_depth(self) -> u16 {
-        match self {
-            Self::SharedCore => search::MAX_DEPTH,
-            Self::FullWidth => search::LEGACY_MAX_DEPTH,
-        }
-    }
-    fn max_nodes(self) -> u64 {
-        match self {
-            Self::SharedCore => search::MAX_NODES,
-            Self::FullWidth => search::LEGACY_MAX_NODES,
-        }
-    }
-    /// Largest line for a completed depth. The full-width line never went
-    /// below its depth; the selective line has its own bound.
-    fn max_line(self, completed_depth: u16) -> usize {
-        match self {
-            Self::SharedCore => search::MAX_LINE,
-            Self::FullWidth => usize::from(completed_depth),
-        }
-    }
-    /// Least node count of a search that completed this depth.
-    fn least_nodes(self, completed_depth: u16) -> u64 {
-        match self {
-            Self::SharedCore => u64::from(completed_depth),
-            Self::FullWidth => 2 * u64::from(completed_depth),
         }
     }
 }

@@ -116,11 +116,12 @@ impl Config {
         }
         for w in self.work {
             if w.movetime_ms.is_some()
-                || w.depth.is_none_or(|d| !(1..=4).contains(&d))
-                || w.nodes.is_none_or(|n| n > 20_000)
+                || w.depth
+                    .is_none_or(|d| !(1..=mshogi_search::shogi::MAX_DEPTH).contains(&d))
+                || w.nodes.is_none_or(|n| n > mshogi_search::shogi::MAX_NODES)
             {
                 return Err(RunnerError(
-                    "finite depth1..4/nodes0..20000 required; timed work unsupported".into(),
+                    "finite supported Shogi depth/nodes required; timed work unsupported".into(),
                 ));
             }
         }

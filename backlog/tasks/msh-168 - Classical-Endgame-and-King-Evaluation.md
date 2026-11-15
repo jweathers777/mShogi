@@ -1,10 +1,10 @@
 ---
 id: MSH-168
 title: Classical Endgame and King Evaluation
-status: Ready
+status: To Do
 assignee: []
 created_date: '2026-11-13T21:29:00Z'
-updated_date: '2026-11-15T16:29:00Z'
+updated_date: '2026-11-15T20:35:00Z'
 labels:
   - handle:classical-endgame-king-evaluation
 milestone: m-5
@@ -32,7 +32,7 @@ Handle: Classical Endgame and King Evaluation.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A baseline of the engine at the start of the task is recorded before evaluation changes: the blunder suite with its endgame positions reported separately
+- [x] #1 A baseline of the engine at the start of the task is recorded before evaluation changes: the blunder suite with its endgame positions reported separately
 - [ ] #2 Each evaluation change set has a game-test result with a sequential decision, and each change left out has a recorded reason
 - [ ] #3 The accepted evaluation is stronger than the engine at the start of the task in a game test
 - [ ] #4 The blunder suite result is not worse than at the start of the task, with the endgame positions reported separately
@@ -47,8 +47,30 @@ Handle: Classical Endgame and King Evaluation.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Freeze main8ddfc1a0 before evaluation changes; record baseline bench and1000ms four-worker blunders, including47 endgames. 2. Use the baseline (100/146 avoided,31/47 endgames;50 reference matches) and code inspection to implement one coherent classical evaluation set: material/pawn-count and opposite-bishop draw scaling, endgame king distance to pawns, and coordinated queen-led king danger. Preserve specialized endings, native authority, current search and Tori evaluation. No Texel tuning, training set or new tablebase. 3. Add independent positive/negative material and king-geometry fixtures, color symmetry, and run Chess perft/differential/search plus affected consumer checks. Measure candidate bench/blunders without per-position tuning. 4. Freeze the candidate and run the existing paired sequential game test against8ddfc1a0 at50ms/move,4workers,seed168,H0=0/H1=15,alpha=beta=.05,min30,max1200pairs,75minute wall cap. Record actual compute and failures. At the decision/bound assess strength, overall/endgame blunders and cost; no small-screen rejection and no repeated local fixes without a new evidence-based decision. 5. Independent review and normal main integration only when all criteria pass. Level1 local verification; broader platform/GUI deferred to next Level3 checkpoint.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Ticket revision, 2026-11-15 (requested by John): the problem statement now keeps only the MSH-161 difference that separates mShogi from its opponent (endgame give-backs). The criterion on level-endgame scores far from zero was removed, because the opponent had almost the same figure. A fresh baseline comes first, because the MSH-161 games predate MSH-164. Group-by-group game tests were replaced by coherent change sets, as in docs/m5/strength-roadmap.md. The tuning data rules (license, held-out set, no exposed material) are now explicit.
+
+Owner Codex /root, sole builder in primary main checkout /Users/johnweathers/Development/Personal/mShogi. Startup main 8ddfc1a0 is clean and matches origin/main; no active task owner. Backlog1.55.3 matches baseline. Frozen predecessor build started before evaluation changes. Verification Level1: Chess-only classical evaluation, unchanged native rules/shared search/Tori evaluation. Local perft/differential, evaluation regressions, affected consumer tests, baseline and candidate blunders including47 endgames, bench, sequential predecessor games and independent review. Linux/Windows/packaged GUI checks deferred to the next Level3 checkpoint.
+
+Baseline complete before evaluation changes: frozen8ddfc1a00c03, bench406067nodes/0.329s median; blunders100/146 avoided (endgame31/47,middlegame54/83,opening15/16),50 reference matches. This supersedes earlier engine observations for acceptance. Existing code already has passed-pawn runway, king escort, storms and specialized KPK/fortress endings. This round adds missing general draw scaling and king-activity/attack calibration as one coherent set; it does not repeat earlier isolated pawn-race tuning. Classical technique reference: Stockfish11 material.cpp and evaluate.cpp (pawnless material, opposite bishops and low-pawn scaling, king proximity and nonlinear king danger); implementation and heuristic constants fit the existing centipawn evaluator. No weight fitting or new tablebase is used.
+
+Candidate checkpoint before games:104/146 blunders avoided versus100, including32/47 endgames versus31;53 reference matches versus50. Fixed-depth benchmark508702nodes/0.416s versus406067/0.329s: slower fixed-depth work, not a speed gain. No weight tuning used. Independent initial review found no blocking boundary/symmetry defect; added asymmetric-scale and material guard tests, preserved full scale for pawnless queen-vs-rook. Initial test failures: raw arithmetic expectations needed the independently calculated king-distance contribution; one new queen-vs-rook FEN illegally checked the nonmoving king and was corrected by moving that king. No production rule changed. Decision: freeze the coherent set and proceed to the predeclared sequential game test.
+
+Checkpoint1: combined candidate939498e4 reached H0 at742pairs (+368 -370 =746), estimate-0.5 Elo, zero failed pairs. The better blunders did not establish stronger play. Authoritative results/compute: docs/m5/evidence/msh168/match/result.json. Decision: change direction by removing the added quadratic king-danger term, leaving the coherent material-scaling/king-activity endgame set. Independent reviewer identified that existing danger already scales with attacker count; the extra square may duplicate that reward and applies with a remote queen. This is a testable design hypothesis, not attribution from H0. No single-position tuning. One revised-set test: same frozen task-start predecessor,50ms,4workers,seed168,H0=0/H1=15,alpha=beta=.05,min30,max600pairs,40minute wall cap. Combined match wall will stay below about81minutes if this cap is used. Record all compute, including first failed-strength set. Stop and reconsider after this second checkpoint rather than repeat local removals without new evidence.
+
+Revised endgame-set checkpoint:106/146 avoided versus100 baseline, endgames34/47 versus31, middlegame59/83 versus54, opening13/16 versus15; reference matches50 versus50. Overall and endgame improve, opening slice regresses and is disclosed. Bench506248nodes/0.427s versus406067/0.329s; no speed gain.76 search tests pass,1ignored. Independent reviewer verified first742 paired receipts and first H0 threshold, confirmed exact king-safety restoration and no new code finding. Proceed with the single predeclared revised-set game test.
+
+Checkpoint2: unchanged revised endgame set9c67c98d reached600pairs with NO DECISION, not rejection: +331 -288 =581, estimate+12.5 (95% interval-1.6 to+26.5), LLR1.45; no failed pairs. Improved overall/endgame blunders and a positive game estimate justify extending this exact comparison rather than another local change. Independent reviewer approved conditional continuation with unchanged binaries/hypotheses/seed/all accumulated scores. Decision: extend to1000 total pairs,25minute additional wall cap, preserving600 result and recording prior/new compute separately. Total match wall remains below about100minutes (first40.15min + revised32.49min + extension25min); no several-hour campaign. Stop and reconsider at that cap if still undecided.
+
+Final bounded checkpoint: revised set reached 1000 pairs with no decision (+535 -496 =969, estimate +6.78 Elo, 95% interval -3.96 to +17.52, LLR -0.360; zero failed pairs). This is not rejection, but does not satisfy strength acceptance. Stop this round; restore evaluator and tests exactly to task-start 8ddfc1a00c03. Both trial commits and receipts remain available. Total match wall 5624.520s (93.74min), CPU 21800.876s including cancellation; the continued comparison includes the first600 once. Evidence: docs/m5/evidence/msh168/README.md and verification.json. AC1 established; no accepted candidate, so task remains unfinished. Next action: reconsider the approach and record a new bounded plan; authorized Texel tuning is a possible direction after establishing a licensed quiet-position corpus and held-out set. No additional trial is started by this handoff. Branch correction: work and evidence preserved on codex/msh-168-classical-evaluation in /Users/johnweathers/.codex/worktrees/msh-168-evaluation/mShogi. Primary main restored to published 8ddfc1a0 before normal reviewed integration. AGENTS.md now explicitly requires feature branches and ownership-based temporary worktrees.
+
+Independent final review by /root/evaluation_review passed: all1000 receipts, unchanged600 prefix, color pairing, source/binary identities, every sequential prefix and cumulative compute verified. Final evaluator and test bytes match predecessor Git objects; git diff 8ddfc1a0 -- crates tools Cargo.toml Cargo.lock is empty. Formatting and whitespace checks pass. Integrate only policy and evidence; task remains To Do for a revised approach. Feature history retains candidate939498e4 and revised9c67c98d; preservation checkpoint e9cfc0cf and policy c061718e. Integration target main. No claim of stronger play or completed acceptance.
 <!-- SECTION:NOTES:END -->

@@ -1,9 +1,11 @@
 ---
 id: MSH-178
 title: Search Core History Scaling
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-15T22:31:00Z'
+updated_date: '2026-11-15T23:40:00Z'
 labels:
   - handle:search-history-scaling
 milestone: m-5
@@ -40,3 +42,20 @@ Handle: Search Core History Scaling.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Freeze main 61f8f0c1 as the predecessor. Keep exact dense history behavior for all four current adapters. Bound continuation storage at 32 MiB and basic history at 256 KiB; use a shared hashed index only above those bounds. This removes the large-game quadratic allocation without game-specific core branches.
+2. Verify allocation bounds, overflow safety, clear/decay and collision updates, plus exact dense behavior. Record expected memory for all six games. Run Chess, Tori, Shogi and Xiangqi correctness and shared consumer regressions, development blunder checks and a bounded predecessor game comparison.
+3. Practical benefit: Chu and Tenjiku ordering history fits a fixed 32.25 MiB ceiling instead of hundreds of MiB or GiB. Compare actual allocated entries and ordinary-case speed/decisions; preserve current-game behavior. Record the game protocol before play, with sequential stopping and actual compute. Initial comparison cap is 600 pairs at fast time control, four workers; reassess at the checkpoint if evidence shows regression or no decision.
+4. Level 1: portable private search storage only. Local macOS arm64 checks and independent review; Linux, Windows and packaged GUI checks deferred to the next integration/release checkpoint. Integrate reviewed source into main, push, and remove the completed branch.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner: Codex, chat 01a1e160-c3a4-7e02-912f-c64d50b95f4d. Primary checkout was clean main 61f8f0c1, just released by this chat after MSH-181 (Xiangqi Search Core Adoption). New branch: codex/search-history-scaling. Other existing worktrees remain untouched. Backlog 1.55.3 matches the project baseline. No task dependencies. Native rules, saved history and search policy remain unchanged.
+
+Pre-game protocol: frozen predecessor 61f8f0c1; H0 = -10 Elo and H1 = 0 Elo, alpha = beta = 0.05, minimum 30 and maximum 600 color pairs, 50 ms per move, four workers, seed 178, existing 90 development roots, native automatic claims and full reports. Stop at 1,800 seconds wall with an explicit no-decision result if needed. H1 excludes a loss of 10 Elo under the harness model; it does not prove exact equality. Combine this result with exact dense indexing and fixed-depth decision equivalence for the recorded not-weaker acceptance alternative. The independent reviewer accepted the design before implementation. Baseline benchmark: 466,994 nodes; development blunder suite: 113 of 146 avoided, 59 reference matches.
+<!-- SECTION:NOTES:END -->

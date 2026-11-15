@@ -90,6 +90,44 @@ coordinator's worker thread owns it for the life of the worker.
 - A fresh engine gives the same result for the same depth or node limit. A
   warm table changes node counts; that is intended.
 
+## Bounded ordering history
+
+MSH-178 (Search Core History Scaling) caps the basic history at 65,536 `i32`
+entries (256 KiB) and continuation history at 8,388,608 `i32` entries (32 MiB).
+Their combined payload is at most **32.25 MiB**, independent of board size and
+piece count. Vector descriptors and indexing metadata add a fixed amount.
+This bound excludes the separately configured transposition table and move/PV
+buffers. Killers, previous-move slots, static evaluations and excluded moves
+have `MAX_PLY + 2` entries; they do not grow with the square of the slot count.
+
+Tables that fit retain their complete dense index and the same update arithmetic.
+This includes all four current adapters. Above the cap, continuation history
+mixes the previous and current slots separately into a fixed table. Basic history
+uses the low 16 bits above its cap. Collisions share ordering statistics; they
+cannot admit moves or decide native outcomes. Bonus, penalty, clear and basic
+history decay remain unchanged. Continuation history is still kept between
+searches and cleared at a new game. Sizing uses checked multiplication, so even
+an extreme slot count cannot cause a quadratic allocation or integer overflow.
+The trait requires a nonzero slot count and in-range move slots.
+
+Expected payload, using side × movement face × destination square:
+
+| Game | Slots | Basic bytes | Continuation bytes | Total bytes |
+| --- | ---: | ---: | ---: | ---: |
+| Chess | 768 | 3,072 | 2,359,296 | 2,362,368 |
+| Tori Shogi | 882 | 3,528 | 3,111,696 | 3,115,224 |
+| Shogi | 2,268 | 9,072 | 20,575,296 | 20,584,368 |
+| Xiangqi | 1,260 | 5,040 | 6,350,400 | 6,355,440 |
+| Chu Shogi (expected) | 8,352 | 33,408 | 33,554,432 | 33,587,840 |
+| Tenjiku Shogi (expected) | 22,528 | 90,112 | 33,554,432 | 33,644,544 |
+
+Chu and Tenjiku use the current native 29 and 44 movement faces for these
+estimates. Their future adapters may choose different slots; the cap still
+applies. Dense continuation payload at these slot counts would be 279,023,616
+and 2,030,043,136 bytes respectively. Earlier rough estimates below used a
+different piece-count assumption. The cap needs no game-specific core branch
+or new trait method. See [verification](evidence/msh178/README.md).
+
 ## Acceptance of engine changes
 
 Use the harness of MSH-163 (Engine Strength Test Harness), see
@@ -273,8 +311,8 @@ list at ply zero.
   entries of four bytes. With slots of side, piece type and target square this
   is 2 MB for Chess and 3 MB for Tori, about 20 MB for Shogi and 6 MB for
   Xiangqi, but about 430 MB for Chu Shogi and more than 2 GB for Tenjiku
-  Shogi. Before Chu Shogi, give the continuation table its own smaller index
-  (a method of the trait) or a fixed-size hashed table.
+  Shogi. MSH-178 (Search Core History Scaling) resolves this limit with the capped
+  dense/hashed table documented above; these are the earlier rough estimates.
 - *Score scale.* The margins of the core (futility 150, 300 and 450,
   aspiration 30, quiescence 200) assume that the smallest piece is worth about
   100. Each game must use that scale, or the margins must come from the trait.
@@ -311,7 +349,7 @@ list at ply zero.
   so `null_move_safe` and the null move need care. The Lion capture rules and
   optional promotion with its history condition belong to the position.
   Repetition is forbidden for the side that repeats, as in Tori. The
-  continuation history change above is necessary.
+  bounded continuation history described above is now available.
 - *Tenjiku Shogi (256 squares).* As Chu Shogi, with the Fire Demon burn, which
   removes several pieces in one move: make and unmake need a variable-length
   capture record, and the evaluation of a move's gain must include burned

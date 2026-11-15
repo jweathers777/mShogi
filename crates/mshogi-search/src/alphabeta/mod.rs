@@ -9,9 +9,11 @@
 //! The search is private analysis. The game's native rules stay the authority
 //! for real results, claims and histories; the caller checks the chosen move
 //! against them.
+mod history;
 pub mod table;
 pub mod timing;
 
+use history::{ContinuationHistory, History};
 use std::time::{Duration, Instant};
 use table::{Bound, TranspositionTable};
 
@@ -42,7 +44,8 @@ pub enum Stage {
 pub trait SearchPosition {
     /// Compact move. `Default` is only a filler value and is never played.
     type Move: Copy + Eq + std::fmt::Debug;
-    /// Number of history slots; `history_slot` returns a value below this.
+    /// Nonzero number of history slots; `history_slot` returns a value below this.
+    /// Ordering storage is capped by the core; large slot spaces can alias.
     const HISTORY_SLOTS: usize;
 
     /// Hash of the board state: equal for positions that have the same pieces,
@@ -198,8 +201,8 @@ fn gravity(slot: &mut i32, bonus: i32) {
 /// transposition table and the ordering heuristics.
 pub struct Searcher<P: SearchPosition> {
     table: TranspositionTable,
-    history: Vec<i32>,
-    continuation: Vec<i32>,
+    history: History,
+    continuation: ContinuationHistory,
     killers: Vec<[Option<P::Move>; 2]>,
     buffers: Vec<Buffers<P::Move>>,
     pv: Vec<Vec<P::Move>>,
@@ -221,8 +224,8 @@ impl<P: SearchPosition> Searcher<P> {
         }
         Self {
             table: TranspositionTable::new(megabytes, MATE_BOUND),
-            history: vec![0; P::HISTORY_SLOTS],
-            continuation: vec![0; P::HISTORY_SLOTS * P::HISTORY_SLOTS],
+            history: History::new(P::HISTORY_SLOTS),
+            continuation: ContinuationHistory::new(P::HISTORY_SLOTS),
             killers: vec![[None; 2]; MAX_PLY + 2],
             buffers: (0..MAX_PLY + 2)
                 .map(|_| Buffers {
@@ -258,8 +261,8 @@ impl<P: SearchPosition> Searcher<P> {
     /// Forget all results: use at the start of a new game.
     pub fn clear(&mut self) {
         self.table.clear();
-        self.history.fill(0);
-        self.continuation.fill(0);
+        self.history.clear();
+        self.continuation.clear();
         self.killers.fill([None; 2]);
     }
     /// Permille of sampled table entries written by the last search.
@@ -280,9 +283,7 @@ impl<P: SearchPosition> Searcher<P> {
         self.static_evals.fill(None);
         self.excluded.fill(None);
         self.killers.fill([None; 2]);
-        for h in &mut self.history {
-            *h /= 2;
-        }
+        self.history.decay();
         let mut run = Run {
             s: self,
             pos: position,
@@ -462,7 +463,7 @@ impl<P: SearchPosition> Run<'_, P> {
     fn quiet_score(&self, ply: usize, slot: usize) -> i32 {
         let mut score = self.s.history[slot];
         if ply > 0 && self.s.slots[ply - 1] != NO_SLOT {
-            score += self.s.continuation[self.s.slots[ply - 1] * P::HISTORY_SLOTS + slot];
+            score += self.s.continuation[(self.s.slots[ply - 1], slot)];
         }
         score
     }
@@ -550,7 +551,7 @@ impl<P: SearchPosition> Run<'_, P> {
                         let slot = self.pos.history_slot(m);
                         let mut score = self.s.history[slot];
                         if previous != NO_SLOT {
-                            score += self.s.continuation[previous * P::HISTORY_SLOTS + slot];
+                            score += self.s.continuation[(previous, slot)];
                         }
                         buffers.scores.push(score);
                     }
@@ -943,10 +944,7 @@ impl<P: SearchPosition> Run<'_, P> {
         };
         gravity(&mut self.s.history[slot], bonus);
         if previous != NO_SLOT {
-            gravity(
-                &mut self.s.continuation[previous * P::HISTORY_SLOTS + slot],
-                bonus,
-            );
+            gravity(&mut self.s.continuation[(previous, slot)], bonus);
         }
         // Quiet moves tried before the cutoff move did not cut off.
         let tried = std::mem::take(&mut self.s.buffers[ply].tried);
@@ -956,10 +954,7 @@ impl<P: SearchPosition> Run<'_, P> {
             }
             gravity(&mut self.s.history[other_slot], -bonus);
             if previous != NO_SLOT {
-                gravity(
-                    &mut self.s.continuation[previous * P::HISTORY_SLOTS + other_slot],
-                    -bonus,
-                );
+                gravity(&mut self.s.continuation[(previous, other_slot)], -bonus);
             }
         }
         self.s.buffers[ply].tried = tried;

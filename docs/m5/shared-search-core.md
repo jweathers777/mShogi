@@ -296,8 +296,9 @@ See [verification and predecessor evidence](evidence/msh181/README.md).
 ## Chu Shogi on the core
 
 MSH-182 (Chu Search Core Adoption) replaces Chu's private full-width loop.
-The shared core and trait do not change. A 144-square byte array and three-word
-occupancy sets support complete single- and double-landing moves. A compact
+The shared trait adds `generate_search`, which defaults to complete `generate`.
+The core uses this hook at its two staged generation points. A 144-square byte
+array and three-word occupancy sets support complete single- and double-landing moves. A compact
 32-bit move retains both landings and optional promotion. In-place updates keep
 material, placement, original identity, promotion, royal sets, Lion protection
 and hash; a small undo record restores up to two captured pieces.
@@ -349,6 +350,22 @@ Private analysis remains separate from native adjudication:
   the native root still returns an unscored error, not a draw.
 - Classical evaluation uses unchanged material values plus placement and tempo.
   Capture ordering accounts for both victims. It is not a native outcome.
+- The exchange filter uses a bounded local material-recapture model. It counts
+  both victims and promotion gain, and follows each capturing piece to its
+  actual final square, including Lion return routes. Complete local admission
+  enforces Lion rights. Each side may stop the exchange. This is not a full
+  tactical proof: future checks are outside the exchange model, so a checking
+  sacrifice can be undervalued. Actual royal loss, narrow material endings and
+  unresolved work limits retain the move. The core bypasses the exchange filter
+  when the current node is threatened. Equal recapture successors require equal board,
+  turn, Lion rights and next target, not merely an equal hash. The filter changes
+  private selective search only; full legal generation and native admission stay
+  unchanged.
+- Search generation keeps one admitted complete route for each equal successor
+  within a stage. Equality includes all piece identities and promotions, turn
+  and active Lion rights. Native root restrictions apply before this reduction.
+  Full `generate`, legal actions and perft retain every route. This avoids
+  repeated analysis of equivalent Lion routes without changing native actions.
 
 Nominal depth is 1–64, with at most 5,000,000 nodes. Default play uses depth 64
 and 300,000 nodes. A reported line contains at most eight complete actions.

@@ -199,6 +199,11 @@ struct Board {
     counted: [u8; 2],
     unqualified: [u8; 2],
 }
+struct ExchangeWork {
+    projections: usize,
+    routes: usize,
+    geometry: usize,
+}
 impl Board {
     fn empty(turn: usize) -> Self {
         Self {
@@ -257,6 +262,104 @@ impl Board {
             return Some(stronger);
         }
         None
+    }
+    fn exchange_gain(&self, m: Move) -> i32 {
+        let (captures, n) = self.captures(m);
+        let c = self.cells[m.from()];
+        captures[..n]
+            .iter()
+            .map(|&(_, c)| meta(c).value)
+            .sum::<i32>()
+            + if m.promotes() {
+                meta(c + 1).value - meta(c).value
+            } else {
+                0
+            }
+    }
+
+    // Actual royal captures and all possible C08 material terminals are outside
+    // this material model. This constant-cost overestimate avoids terminal move
+    // generation inside the bounded exchange calculation.
+    fn exchange_uncertain(&self) -> bool {
+        self.royals.iter().any(|r| r.count() == 0)
+            || u16::from(self.counted[0]) + u16::from(self.counted[1]) <= 3
+    }
+
+    // Exact threshold minimax within the local material-exchange model. None
+    // means unresolved, never proof that the initial capture should be pruned.
+    fn exchange_greater(
+        &self,
+        target: usize,
+        limit: i32,
+        depth: u8,
+        work: &mut ExchangeWork,
+    ) -> Option<bool> {
+        if self.exchange_uncertain() {
+            return None;
+        }
+        if limit < 0 {
+            return Some(true);
+        } // decline for zero material gain
+        if depth == 8 {
+            return None;
+        }
+        let mut pieces = self.occupied[self.side];
+        let mut moves = Vec::new();
+        while let Some(from) = pieces.pop() {
+            if work.geometry == 0 {
+                return None;
+            }
+            work.geometry -= 1;
+            if !self.direct_reaches(self.cells[from], from, target) {
+                continue;
+            }
+            // A single piece has at most 416 routes on this fixed board. Reserve
+            // that bound before generation, so a limit cannot hide extra work.
+            // At most 144 distinct direct squares + 8*8 compound routes,
+            // each with at most two promotion choices: (144 + 64)*2.
+            if work.routes < 416 {
+                return None;
+            }
+            work.routes -= 416;
+            let start = moves.len();
+            self.generate_from(from, Stage::Tactical, &mut moves);
+            debug_assert!(moves.len() - start <= 416);
+            work.routes += 416 - (moves.len() - start);
+            let generated = moves.split_off(start);
+            moves.extend(generated.into_iter().filter(|&m| {
+                let (victims, n) = self.captures(m);
+                victims[..n].iter().any(|&(at, _)| at == target)
+            }));
+        }
+        moves.sort_unstable_by_key(|&m| (meta(self.cells[m.from()]).value, -self.exchange_gain(m)));
+        let mut seen: Vec<(Board, usize)> = Vec::new();
+        let mut unknown = false;
+        for m in moves {
+            if work.projections == 0 {
+                return None;
+            }
+            work.projections -= 1;
+            let mut after = *self;
+            if after.make(m).is_none() {
+                continue;
+            }
+            if seen.iter().any(|(b, t)| {
+                *t == m.to()
+                    && b.cells == after.cells
+                    && b.side == after.side
+                    && b.protection == after.protection
+            }) {
+                continue;
+            }
+            seen.push((after, m.to()));
+            match after.exchange_greater(m.to(), self.exchange_gain(m) - limit - 1, depth + 1, work)
+            {
+                Some(false) => return Some(true),
+                Some(true) => {}
+                None => unknown = true,
+            }
+        }
+        if unknown { None } else { Some(false) }
     }
     fn placement(c: u8, at: usize) -> i32 {
         let p = meta(c).piece;
@@ -834,6 +937,28 @@ impl SearchPosition for ChuPosition {
             self.board.generate(stage, moves);
         }
     }
+    fn generate_search(&self, stage: Stage, moves: &mut Vec<Move>) {
+        let mut routes = Vec::new();
+        // Native root restrictions are applied before choosing representatives.
+        self.generate(stage, &mut routes);
+        let mut seen: Vec<Board> = Vec::new();
+        for m in routes {
+            let mut after = self.board;
+            if after.make(m).is_none() {
+                continue;
+            }
+            if seen.iter().any(|b| {
+                b.hash == after.hash
+                    && b.cells == after.cells
+                    && b.side == after.side
+                    && b.protection == after.protection
+            }) {
+                continue;
+            }
+            seen.push(after);
+            moves.push(m);
+        }
+    }
     fn make(&mut self, m: Move) -> bool {
         if self.ply() == 0 && self.root_allowed.as_ref().is_some_and(|a| !a.contains(&m)) {
             return false;
@@ -925,20 +1050,30 @@ impl SearchPosition for ChuPosition {
         self.tactical_gain(m) * 16 - meta(self.board.cells[m.from()]).value / 16
     }
     fn tactical_gain(&self, m: Move) -> i32 {
-        let (captures, n) = self.board.captures(m);
-        let c = self.board.cells[m.from()];
-        captures[..n]
-            .iter()
-            .map(|&(_, c)| meta(c).value)
-            .sum::<i32>()
-            + if m.promotes() {
-                meta(c + 1).value - meta(c).value
-            } else {
-                0
-            }
+        self.board.exchange_gain(m)
     }
-    fn exchange_at_least(&self, _m: Move, _threshold: i32) -> bool {
-        true
+    /// Bounded material-exchange approximation, not a tactical proof. Each side
+    /// may stop or recapture the last mover with a complete admitted action.
+    /// Compound victims, promotion and the actual final square are included.
+    /// Actual royal captures, material terminals and exhausted limits retain
+    /// moves. Future checks and off-target replies are not searched, so this
+    /// heuristic can undervalue a checking sacrifice; it is not a forced-loss proof.
+    fn exchange_at_least(&self, m: Move, threshold: i32) -> bool {
+        let mut after = self.board;
+        if after.make(m).is_none() {
+            return false;
+        }
+        let mut work = ExchangeWork {
+            projections: 63,
+            routes: 512,
+            geometry: 4096,
+        };
+        after.exchange_greater(
+            m.to(),
+            self.board.exchange_gain(m) - threshold,
+            0,
+            &mut work,
+        ) != Some(true)
     }
     fn history_slot(&self, m: Move) -> usize {
         (usize::from(self.board.cells[m.from()]) - 1) * N + m.to()
@@ -953,5 +1088,36 @@ impl SearchPosition for ChuPosition {
     fn is_pseudo_legal(&self, m: Move) -> bool {
         self.board.pseudo(m)
             && !(self.ply() == 0 && self.root_allowed.as_ref().is_some_and(|a| !a.contains(&m)))
+    }
+}
+
+#[cfg(test)]
+mod exchange_budget_tests {
+    use super::*;
+    #[test]
+    fn unresolved_exchange_budgets_do_not_prove_a_loss() {
+        let mut board = Board::empty(0);
+        for (at, owner, name) in [
+            (143, 0, "K"),
+            (0, 1, "K"),
+            (65, 0, "R"),
+            (66, 1, "P"),
+            (100, 1, "P"),
+        ] {
+            board.put(piece_code(Piece::from_code(side(owner), name).unwrap()), at);
+        }
+        for (projections, routes, geometry, depth) in [
+            (0, 512, 4096, 0),
+            (64, 0, 4096, 0),
+            (64, 512, 0, 0),
+            (64, 512, 4096, 8),
+        ] {
+            let mut work = ExchangeWork {
+                projections,
+                routes,
+                geometry,
+            };
+            assert_eq!(board.exchange_greater(66, 0, depth, &mut work), None);
+        }
     }
 }

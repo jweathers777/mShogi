@@ -553,6 +553,11 @@ fn narrow_material_fixtures_and_prince_recapture_keep_native_timing() {
             vec![f["given"]["action"].clone()]
         };
         for command in commands {
+            let m = p.find(&action(&command)).unwrap();
+            assert!(
+                p.exchange_at_least(m, 0),
+                "material terminal/equalizer must remain: {id}"
+            );
             probe(&mut p, &mut native, &action(&command), true, id);
             if id == "CHU-MATERIAL-RECAPTURE" {
                 assert_eq!(
@@ -615,10 +620,12 @@ fn distance_one_royal_capture_proof_preserves_lion_rights_for_both_sides() {
             assert_eq!(p.rule_score(), Some(MATE_SCORE - 1));
         }
         let forbidden = Action::single(transform(6, 8), transform(8, 8));
+        assert!(!p.exchange_at_least(p.find(&forbidden).unwrap(), 0));
         assert!(!p.make(p.find(&forbidden).unwrap()));
         assert_eq!((p.hash(), p.evaluate(), p.protection()), before);
         compare(&mut p, &native);
         let win = Action::single(transform(6, 8), transform(6, 1));
+        assert!(p.exchange_at_least(p.find(&win).unwrap(), 100_000));
         assert!(p.make(p.find(&win).unwrap()));
         assert_eq!(p.rule_score(), Some(-MATE_SCORE + 1));
         p.unmake();
@@ -653,6 +660,14 @@ fn capture_shortcut_requires_one_complete_action_for_both_royals() {
         ChuPosition::from_local(&compound).rule_score(),
         Some(MATE_SCORE - 1)
     );
+    let compound_search = ChuPosition::from_local(&compound);
+    let win = Action {
+        from: Square::new(6, 6).unwrap(),
+        route: vec![Square::new(6, 5).unwrap(), Square::new(5, 5).unwrap()],
+        promote: false,
+    };
+    assert!(compound.legal_actions().contains(&win));
+    assert!(compound_search.exchange_at_least(compound_search.find(&win).unwrap(), 100_000));
     let separate = make(&[
         (1, 12, Side::Sente, "K"),
         (3, 6, Side::Sente, "R"),
@@ -739,4 +754,280 @@ fn exposed_seed12_root_completes_an_iteration_with_the_same_100k_budget() {
     };
     assert!(game.legal_actions().contains(&choice));
     assert!(game.context().same_semantics(&before));
+}
+
+#[test]
+fn bounded_exchange_keeps_free_and_recovered_captures_but_rejects_defended_loss() {
+    for owner in [Side::Sente, Side::Gote] {
+        let other = if owner == Side::Sente {
+            Side::Gote
+        } else {
+            Side::Sente
+        };
+        let at = |f, r| Square::new(f, r).unwrap();
+        let build = |defender: bool, recovery: bool, lion: bool| {
+            let mut pieces = vec![
+                (at(1, 12), Piece::from_code(owner, "K").unwrap()),
+                (at(12, 1), Piece::from_code(other, "K").unwrap()),
+                (
+                    at(6, 7),
+                    Piece::from_code(owner, if lion { "Ln" } else { "R" }).unwrap(),
+                ),
+                (at(6, 6), Piece::from_code(other, "P").unwrap()),
+                (at(10, 10), Piece::from_code(owner, "P").unwrap()),
+            ];
+            if defender {
+                pieces.push((at(3, 6), Piece::from_code(other, "R").unwrap()));
+            }
+            if recovery {
+                pieces.push((at(7, 7), Piece::from_code(owner, "B").unwrap()));
+            }
+            LocalPosition::admit(
+                Position::from_diagram(&pieces, owner, RootMetadata::diagram(0)).unwrap(),
+            )
+        };
+        for (defender, recovery, expected) in [
+            (false, false, true),
+            (true, false, false),
+            (true, true, true),
+        ] {
+            let native = build(defender, recovery, false);
+            let mut p = ChuPosition::from_local(&native);
+            let a = Action {
+                from: at(6, 7),
+                route: vec![at(6, 6)],
+                promote: false,
+            };
+            assert!(native.legal_actions().contains(&a));
+            let m = p.find(&a).unwrap();
+            let before = (p.hash(), p.evaluate(), actions(&mut p));
+            assert_eq!(
+                p.exchange_at_least(m, 0),
+                expected,
+                "{owner:?} defender={defender} recovery={recovery}"
+            );
+            if !defender {
+                let gain = p.tactical_gain(m);
+                assert!(p.exchange_at_least(m, gain));
+                assert!(!p.exchange_at_least(m, gain + 1));
+            }
+            assert_eq!(before, (p.hash(), p.evaluate(), actions(&mut p)));
+            compare_state(&p, &native);
+        }
+        // The Lion returns to its source. A rook attacking the victim's square
+        // cannot recapture the Lion there after this admitted igui action.
+        let native = build(true, false, true);
+        let p = ChuPosition::from_local(&native);
+        let a = Action {
+            from: at(6, 7),
+            route: vec![at(6, 6), at(6, 7)],
+            promote: false,
+        };
+        assert!(native.legal_actions().contains(&a));
+        let m = p.find(&a).unwrap();
+        assert!(p.exchange_at_least(m, p.tactical_gain(m)));
+    }
+}
+
+#[test]
+fn exchange_counts_promotion_and_both_compound_victims() {
+    let at = |f, r| Square::new(f, r).unwrap();
+    for (mover, source, victims, route, promote) in [
+        ("P", at(6, 5), vec![at(6, 4)], vec![at(6, 4)], true),
+        (
+            "Ln",
+            at(6, 7),
+            vec![at(6, 6), at(7, 6)],
+            vec![at(6, 6), at(7, 6)],
+            false,
+        ),
+    ] {
+        let mut pieces = vec![
+            (at(1, 12), Piece::from_code(Side::Sente, "K").unwrap()),
+            (at(12, 1), Piece::from_code(Side::Gote, "K").unwrap()),
+            (at(10, 10), Piece::from_code(Side::Sente, "P").unwrap()),
+            (at(10, 2), Piece::from_code(Side::Gote, "P").unwrap()),
+            (source, Piece::from_code(Side::Sente, mover).unwrap()),
+        ];
+        pieces.extend(
+            victims
+                .iter()
+                .map(|&s| (s, Piece::from_code(Side::Gote, "P").unwrap())),
+        );
+        let native = LocalPosition::admit(
+            Position::from_diagram(&pieces, Side::Sente, RootMetadata::diagram(0)).unwrap(),
+        );
+        let p = ChuPosition::from_local(&native);
+        let a = Action {
+            from: source,
+            route,
+            promote,
+        };
+        assert!(native.legal_actions().contains(&a));
+        let mut after = native.clone();
+        after.apply(&a).unwrap();
+        let balance = |n: &LocalPosition| {
+            n.position()
+                .pieces()
+                .map(|(_, piece)| {
+                    super::piece_value(piece.face())
+                        * if piece.side == Side::Sente { 1 } else { -1 }
+                })
+                .sum::<i32>()
+        };
+        let gain = balance(&after) - balance(&native);
+        let m = p.find(&a).unwrap();
+        assert_eq!(p.tactical_gain(m), gain);
+        assert!(p.exchange_at_least(m, gain));
+        assert!(!p.exchange_at_least(m, gain + 1));
+        compare_state(&p, &native);
+    }
+}
+
+#[test]
+fn search_routes_preserve_exact_successors_and_native_root_restrictions() {
+    fn check(native: &LocalPosition, restricted: Option<&[Action]>) -> usize {
+        let mut p = ChuPosition::from_local(native);
+        if let Some(allowed) = restricted {
+            p.restrict_root(allowed);
+        }
+        let before = (p.hash(), p.evaluate(), p.protection());
+        let mut reduced = 0;
+        for stage in [Stage::Tactical, Stage::Quiet] {
+            let mut full = Vec::new();
+            p.generate(stage, &mut full);
+            let mut selected = Vec::new();
+            p.generate_search(stage, &mut selected);
+            let mut again = Vec::new();
+            p.generate_search(stage, &mut again);
+            assert_eq!(selected, again, "stable first representative");
+            let effect = |a: &Action| {
+                let mut next = native.clone();
+                next.apply(a).unwrap();
+                // Native full state is the independent equality oracle.
+                format!(
+                    "{:?}|{:?}|{:?}",
+                    next.position().side_to_move(),
+                    Square::all()
+                        .map(|s| next.position().piece(s))
+                        .collect::<Vec<_>>(),
+                    next.protection()
+                )
+            };
+            let admitted = native.legal_actions();
+            let full_effects: BTreeSet<_> = full
+                .iter()
+                .map(|&m| p.to_native(m))
+                .filter(|a| admitted.contains(a))
+                .map(|a| effect(&a))
+                .collect();
+            let chosen_effects: BTreeSet<_> = selected
+                .iter()
+                .map(|&m| {
+                    let a = p.to_native(m);
+                    assert!(admitted.contains(&a));
+                    if let Some(allowed) = restricted {
+                        assert!(allowed.contains(&a));
+                    }
+                    effect(&a)
+                })
+                .collect();
+            assert_eq!(
+                chosen_effects.len(),
+                selected.len(),
+                "no duplicate successor"
+            );
+            assert_eq!(full_effects, chosen_effects);
+            reduced += full.len().saturating_sub(selected.len());
+        }
+        assert_eq!(before, (p.hash(), p.evaluate(), p.protection()));
+        compare_state(&p, native);
+        reduced
+    }
+    let mut reduced = 0;
+    for f in fixtures() {
+        if f["given"]["root"].is_object() && !f["id"].as_str().unwrap().starts_with("CHU-MATERIAL")
+        {
+            let native = root(&f["given"]["root"]);
+            reduced += check(&native, None);
+            let allowed: Vec<_> = native
+                .legal_actions()
+                .into_iter()
+                .rev()
+                .step_by(2)
+                .collect();
+            reduced += check(&native, Some(&allowed));
+        }
+    }
+    let fs = fixtures();
+    let window = fs.iter().find(|f| f["id"] == "CHU-LION-C2-3").unwrap();
+    let mut active = root(&window["given"]["root"]);
+    active
+        .apply(&action(&window["given"]["commands"][0]))
+        .unwrap();
+    assert!(!active.protection().squares.is_empty());
+    reduced += check(&active, None);
+    let mut native = LocalPosition::standard();
+    let mut seed = 0x1825eeu64;
+    for _ in 0..80 {
+        reduced += check(&native, None);
+        let legal = native.legal_actions();
+        if legal.is_empty() {
+            break;
+        }
+        seed ^= seed << 13;
+        seed ^= seed >> 7;
+        seed ^= seed << 17;
+        native.apply(&legal[seed as usize % legal.len()]).unwrap();
+    }
+    assert!(
+        reduced > 100,
+        "compound/pass equivalents exercised: {reduced}"
+    );
+}
+
+#[test]
+fn exchange_recapturing_lion_can_return_away_from_the_original_target() {
+    let at = |f, r| Square::new(f, r).unwrap();
+    let entries = [
+        (1, 12, Side::Sente, "K"),
+        (12, 1, Side::Gote, "K"),
+        (6, 7, Side::Sente, "R"),
+        (7, 6, Side::Sente, "R"),
+        (6, 6, Side::Gote, "P"),
+        (5, 5, Side::Gote, "Ln"),
+    ];
+    let mut native = LocalPosition::admit(
+        Position::from_diagram(
+            &entries
+                .iter()
+                .map(|&(f, r, s, c)| (at(f, r), Piece::from_code(s, c).unwrap()))
+                .collect::<Vec<_>>(),
+            Side::Sente,
+            RootMetadata::diagram(0),
+        )
+        .unwrap(),
+    );
+    let p = ChuPosition::from_local(&native);
+    let initial = Action::single(at(6, 7), at(6, 6));
+    assert!(!p.exchange_at_least(p.find(&initial).unwrap(), 0));
+    native.apply(&initial).unwrap();
+    let recapture = Action {
+        from: at(5, 5),
+        route: vec![at(6, 6), at(5, 5)],
+        promote: false,
+    };
+    assert!(native.legal_actions().contains(&recapture));
+    native.apply(&recapture).unwrap();
+    assert!(native.position().piece(at(6, 6)).is_none());
+    assert_eq!(
+        native.position().piece(at(5, 5)).unwrap().face(),
+        mshogi_core::chu::Face::Lion
+    );
+    assert!(
+        !native
+            .legal_actions()
+            .iter()
+            .any(|a| a.route.contains(&at(5, 5)))
+    );
 }

@@ -55,6 +55,12 @@ pub trait SearchPosition {
     fn in_check(&self) -> bool;
     /// Append the pseudo-legal moves of one stage.
     fn generate(&self, stage: Stage, moves: &mut Vec<Self::Move>);
+    /// Append moves for private search. A game may keep one admitted route per
+    /// equivalent successor while `generate` retains the complete move set.
+    /// The default preserves the full generation order and contents.
+    fn generate_search(&self, stage: Stage, moves: &mut Vec<Self::Move>) {
+        self.generate(stage, moves);
+    }
     /// Play a move. Returns false and leaves the position unchanged if the move
     /// is not legal.
     fn make(&mut self, m: Self::Move) -> bool;
@@ -482,7 +488,8 @@ impl<P: SearchPosition> Run<'_, P> {
                     buffers.moves.clear();
                     buffers.scores.clear();
                     buffers.bad.clear();
-                    self.pos.generate(Stage::Tactical, &mut buffers.moves);
+                    self.pos
+                        .generate_search(Stage::Tactical, &mut buffers.moves);
                     for &m in &buffers.moves {
                         buffers.scores.push(self.pos.tactical_order(m));
                     }
@@ -546,7 +553,7 @@ impl<P: SearchPosition> Run<'_, P> {
                     let buffers = &mut self.s.buffers[ply];
                     buffers.moves.clear();
                     buffers.scores.clear();
-                    self.pos.generate(Stage::Quiet, &mut buffers.moves);
+                    self.pos.generate_search(Stage::Quiet, &mut buffers.moves);
                     for &m in &buffers.moves {
                         let slot = self.pos.history_slot(m);
                         let mut score = self.s.history[slot];

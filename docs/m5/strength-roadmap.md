@@ -37,6 +37,9 @@ on identical search output or single positions.
 These rules apply to each engine-strength task above. Tasks refer to them and do
 not repeat them.
 
+- **Identical search needs no game test.** A change that keeps the search
+  exactly identical—equal node counts and best moves at fixed depth—needs no
+  game test. Record the fixed-depth comparison as evidence.
 - **A game test must be able to decide.** Use the sequential test of the harness
   (`strength-harness.md`) with a maximum that a gain of the expected size can reach:
   the default of 600 pairs, or more. A test that reaches its maximum without a

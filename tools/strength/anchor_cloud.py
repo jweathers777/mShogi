@@ -28,21 +28,21 @@ def save(path, value):
         stream.write('\n')
 
 
-def cloud(args):
+def cloud(args, timeout=60):
     result = subprocess.run(['gcloud', *args, '--project=mshogi', '--format=json', '--quiet'],
-                            check=True, capture_output=True, text=True, timeout=60)
+                            check=True, capture_output=True, text=True, timeout=timeout)
     return json.loads(result.stdout) if result.stdout.strip() else {}
 
 
-def jobs_named(job, region):
-    jobs = cloud(['batch', 'jobs', 'list', '--location='+region,
-                  '--filter=name:'+job])
+def jobs_named(job, region, timeout=None):
+    args = ['batch', 'jobs', 'list', '--location='+region, '--filter=name:'+job]
+    jobs = cloud(args) if timeout is None else cloud(args, timeout=timeout)
     if not isinstance(jobs, list):
         raise ValueError('Expected a job list')
     return [row for row in jobs if row.get('name', '').rsplit('/', 1)[-1] == job]
 
 
-def cleanup(job, region, owner, out, submission_confirmed):
+def cleanup(job, region, owner, out, submission_confirmed, campaign_deadline=None):
     """Delete only this intent's labelled job, then verify jobs, VMs and disks.
 
     Label definitions: https://docs.cloud.google.com/batch/docs/organize-resources-using-labels
@@ -57,18 +57,29 @@ def cleanup(job, region, owner, out, submission_confirmed):
                 raise RuntimeError('Job ownership differs; refusing deletion')
             receipt['owned_job'] = jobs[0]
             receipt['deletion'] = cloud(['batch', 'jobs', 'delete', job, '--location='+region])
-        for attempt in range(7):
-            jobs = jobs_named(job, region)
-            vms = cloud(['compute', 'instances', 'list', '--filter=labels.batch-job-id='+job])
-            disks = cloud(['compute', 'disks', 'list', '--filter=labels.batch-job-id='+job])
+        allowance = 180 if campaign_deadline is None else min(180, max(0, campaign_deadline-time.time()))
+        poll_deadline = time.monotonic() + allowance
+        receipt['poll_allowance_seconds'] = allowance
+        receipt['polls'] = 0
+        def remaining_timeout():
+            remaining = poll_deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError('Cleanup verification window expired')
+            return min(60, remaining)
+        while True:
+            jobs = jobs_named(job, region, timeout=remaining_timeout())
+            vms = cloud(['compute', 'instances', 'list', '--filter=labels.batch-job-id='+job],
+                        timeout=remaining_timeout())
+            disks = cloud(['compute', 'disks', 'list', '--filter=labels.batch-job-id='+job],
+                          timeout=remaining_timeout())
+            receipt['polls'] += 1
             if not isinstance(vms, list) or not isinstance(disks, list):
                 raise ValueError('Expected VM and disk lists')
             receipt.update(remaining_jobs=jobs, remaining_vms=vms, remaining_disks=disks)
             if not jobs and not vms and not disks:
                 receipt['verified_absent'] = bool(submission_confirmed or receipt.get('owned_job'))
                 break
-            if attempt < 6:
-                time.sleep(5)
+            time.sleep(min(5, remaining_timeout()))
         if not receipt['verified_absent']:
             raise RuntimeError('Cloud cleanup absent or submission status is not established')
     except BaseException as exc:
@@ -177,7 +188,8 @@ def run(args):
                     # Delete before storage retrieval; storage latency must never
                     # extend billable match work or bypass resource cleanup.
                     try:
-                        cleanup(args.job, config['region'], owner, out, submission_confirmed)
+                        cleanup(args.job, config['region'], owner, out, submission_confirmed,
+                                campaign_deadline=deadline)
                     except BaseException as exc:
                         cleanup_error = repr(exc)
                     cleanup_end = time.time()

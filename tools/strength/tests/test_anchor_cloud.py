@@ -40,7 +40,7 @@ class CloudControllerTests(unittest.TestCase):
                     raise TimeoutError('uncertain submit')
                 return {'name': 'jobs/msh185-test-job'}
             return []
-        def cleanup(*arguments):
+        def cleanup(*arguments, **kwargs):
             events.append(['cleanup'])
             if cleanup_failure:
                 raise RuntimeError('cannot confirm cleanup')
@@ -143,6 +143,40 @@ class CloudControllerTests(unittest.TestCase):
                  patch.object(controller, 'cloud', return_value=[]), self.assertRaises(RuntimeError):
                 controller.cleanup('msh185-test', 'us-central1', 'mine', out, False)
             self.assertFalse(json.loads((out/'cleanup.json').read_text())['verified_absent'])
+
+    def test_cleanup_waits_beyond_seven_polls_for_job_metadata(self):
+        with tempfile.TemporaryDirectory() as directory:
+            now = [0.0]
+            owned = {'labels': {'msh185-owner': 'mine'}}
+            def sleep(seconds):
+                now[0] += seconds
+            with patch.object(controller, 'jobs_named', side_effect=[[owned]] + [[owned]]*9 + [[]]), \
+                 patch.object(controller, 'cloud', return_value=[]), \
+                 patch.object(controller.time, 'monotonic', side_effect=lambda: now[0]), \
+                 patch.object(controller.time, 'sleep', side_effect=sleep):
+                controller.cleanup('msh185-test', 'us-central1', 'mine', Path(directory), True)
+            result = json.loads((Path(directory)/'cleanup.json').read_text())
+            self.assertTrue(result['verified_absent'])
+            self.assertEqual(result['polls'], 10)
+            self.assertEqual(now[0], 45)
+
+    def test_cleanup_poll_window_stops_at_campaign_deadline(self):
+        with tempfile.TemporaryDirectory() as directory:
+            now = [0.0]
+            owned = {'labels': {'msh185-owner': 'mine'}}
+            def sleep(seconds):
+                now[0] += seconds
+            with patch.object(controller, 'jobs_named', return_value=[owned]), \
+                 patch.object(controller, 'cloud', return_value=[]) as cloud, \
+                 patch.object(controller.time, 'monotonic', side_effect=lambda: now[0]), \
+                 patch.object(controller.time, 'time', side_effect=lambda: 1000+now[0]), \
+                 patch.object(controller.time, 'sleep', side_effect=sleep), self.assertRaises(TimeoutError):
+                controller.cleanup('msh185-test', 'us-central1', 'mine', Path(directory), True,
+                                   campaign_deadline=1012)
+            result = json.loads((Path(directory)/'cleanup.json').read_text())
+            self.assertFalse(result['verified_absent'])
+            self.assertEqual(now[0], 12)
+            self.assertEqual(result['poll_allowance_seconds'], 12)
 
 
 if __name__ == '__main__':

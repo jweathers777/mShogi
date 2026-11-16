@@ -143,11 +143,23 @@ def analyze(logs, job_uid, workers, hourly_rate, cleanup_verified):
                     'Do not add task/engine CPU time to these overlapping VM intervals.'}
 
 
-def collect(run, output, audit_logs=None):
+def collect(run, output, audit_logs=None, cleanup_receipt=None):
     run, output = Path(run), Path(output)
     output.mkdir(parents=True, exist_ok=False)
     submission = json.loads((run/'submission.json').read_text())
-    cleanup = json.loads((run/'cleanup.json').read_text())
+    original_cleanup_raw = (run/'cleanup.json').read_bytes()
+    original_cleanup = json.loads(original_cleanup_raw)
+    cleanup_raw = Path(cleanup_receipt).read_bytes() if cleanup_receipt else original_cleanup_raw
+    cleanup = json.loads(cleanup_raw)
+    if cleanup_receipt:
+        if cleanup.get('job_uid') != submission['uid'] or cleanup.get('job_name') != submission['name']:
+            raise ValueError('Reconciliation receipt must bind exact submission job_name and job_uid')
+        if cleanup.get('original_cleanup_sha256') != sha(original_cleanup_raw):
+            raise ValueError('Reconciliation receipt must bind original_cleanup_sha256')
+        if cleanup.get('at_epoch', 0) < original_cleanup.get('at_epoch', 0):
+            raise ValueError('Reconciliation must be later than original cleanup')
+        if any(cleanup.get(field) != [] for field in ('remaining_jobs', 'remaining_vms', 'remaining_disks')):
+            raise ValueError('Reconciliation must explicitly show no jobs, VMs or disks')
     resources = json.loads((run/'resources.json').read_text())
     if not cleanup.get('verified_absent'):
         raise ValueError('Wait for verified controller cleanup before resource collection')
@@ -189,6 +201,11 @@ def collect(run, output, audit_logs=None):
                 raise ValueError('Conflicting environment for one VM')
     result = analyze(logs, uid, list(workers.values()), resources['rate_usd_vm_hour'], True)
     result.update(job_name=submission['name'], job_uid=uid, audit_sha256=sha(raw),
+                  original_cleanup_sha256=sha(original_cleanup_raw),
+                  original_cleanup_verified_absent=original_cleanup.get('verified_absent'),
+                  effective_cleanup_sha256=sha(cleanup_raw),
+                  cleanup_reconciliation_path=str(cleanup_receipt) if cleanup_receipt else None,
+                  cleanup_note='Explicit later reconciliation; original failure preserved' if cleanup_receipt else 'Original controller receipt',
                   task_receipt_hashes=receipt_hashes,
                   task_environments=environments,
                   requested_allocation=submission.get('allocationPolicy'),
@@ -207,8 +224,9 @@ def main():
     parser.add_argument('--run', required=True)
     parser.add_argument('--out', required=True)
     parser.add_argument('--audit-logs')
+    parser.add_argument('--cleanup-receipt', help='Later exact-job reconciliation; original receipts stay unchanged')
     args = parser.parse_args()
-    result = collect(args.run, args.out, args.audit_logs)
+    result = collect(args.run, args.out, args.audit_logs, args.cleanup_receipt)
     print(json.dumps({k: result[k] for k in ('complete', 'vm_lifecycle_hours', 'estimated_compute_usd',
                                           'failed_insert_completion_count', 'issues')}))
     if not result['complete']:

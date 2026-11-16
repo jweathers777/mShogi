@@ -1,8 +1,11 @@
 """Offline audit operation fixtures with independently known durations."""
 import copy
+import json
+from pathlib import Path
+import tempfile
 import unittest
 
-from tools.strength.anchor_resources import analyze
+from tools.strength.anchor_resources import analyze, collect, sha
 
 
 UID = 'msh185-test-unique'
@@ -90,6 +93,33 @@ class ResourceTests(unittest.TestCase):
         result = analyze(lifecycle() + [missing], UID, [worker()], .2, True)
         self.assertTrue(result['complete'])
         self.assertEqual(result['notices'][0]['kind'], 'delete_already_absent')
+
+    def test_later_reconciliation_preserves_original_failure_and_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            name = 'projects/mshogi/locations/us-central1/jobs/msh185-test'
+            original = json.dumps({'verified_absent': False, 'at_epoch': 1794830520}).encode()
+            (root/'cleanup.json').write_bytes(original)
+            (root/'submission.json').write_text(json.dumps({'name': name, 'uid': UID,
+                                                          'createTime': '2026-11-16T12:00:00Z'}))
+            (root/'resources.json').write_text(json.dumps({'rate_usd_vm_hour': .2,
+                                                         'conservative_compute_usd_upper_bound': None}))
+            reconciliation = {'job_name': name, 'job_uid': UID,
+                              'original_cleanup_sha256': sha(original), 'at_epoch': 1794830580,
+                              'verified_absent': True, 'remaining_jobs': [], 'remaining_vms': [],
+                              'remaining_disks': []}
+            (root/'reconciliation.json').write_text(json.dumps(reconciliation))
+            (root/'audit.json').write_text(json.dumps(lifecycle()))
+            result = collect(root, root/'result', root/'audit.json', root/'reconciliation.json')
+            self.assertTrue(result['complete'])
+            self.assertFalse(result['original_cleanup_verified_absent'])
+            self.assertEqual(result['original_cleanup_sha256'], sha(original))
+            self.assertEqual((root/'cleanup.json').read_bytes(), original)
+            self.assertIsNone(result['controller_conservative_compute_usd_upper_bound'])
+            reconciliation['job_uid'] = 'another-job'
+            (root/'bad-reconciliation.json').write_text(json.dumps(reconciliation))
+            with self.assertRaises(ValueError):
+                collect(root, root/'bad-result', root/'audit.json', root/'bad-reconciliation.json')
 
 
 if __name__ == '__main__':

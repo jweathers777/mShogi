@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-16T21:39:00Z'
+updated_date: '2026-11-16T21:51:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -88,4 +88,6 @@ Pre-play checkpoint: method.md, opponent-candidates.md and frozen openings under
 First cloud bracket submitted as msh185-b01-v1 (UID msh185-b01-v1-9b664eb9-6f5a-4d1e-923d0) at 2026-11-16T21:29:58Z. Campaign clock and caps in docs/m5/evidence/msh185/campaign.json; deadline is fixed at start+21600s. Source checkpoint20d3471e; image digest6f050b230db16669df5df3aba93e94d5cad60ad8e35dfb49c7e1ffc7fddf73f1. Eight single-game tasks, Stash20.0.1, first four frozen opening pairs. Active local controller session13382 owns completion, retrieval and cleanup; output target/msh185/runs/b01, log target/msh185/batches/b01-controller.log. Durable raw store gs://mshogi-experiments-216675633801/msh185/b01. Do not duplicate submission. Startup status SCHEDULED, eight pending tasks, observed boot image batch-cos-stable-official-20261110-00-p01; no result yet.
 
 b01 completed/reviewed:5W3D0L, all8native replays and73artifact hashes pass;5checkmates,2threefold draws,1dead-position draw; no flags/failures. All8C3 workers on IntelSapphireRapids/us-central1-a;0.4938234094VM-hours, estimatedUSD0.09955875, zero allocation failures. Job/VM/disk absence verified. Provisional joint2742.66, broad2384.43–3191.01 interval. Next nearest admitted built anchor Stash21=2713; b02 four fresh pairs submitted under same campaign clock and pool image8290f64d7051548c5e86f62929c8f00e1504ceb77836c474832756224016b627. Active controller session77601;target/msh185/runs/b02. Full opponent build evidence saved; Raven0.80 excluded before use for demonstrated upstream out-of-bounds write, no gameplay patch.
+
+b02:4W4D0L againstStash21=2713; all16cumulative games replayed, joint2834.42 with wide2564.39–3140.01 interval. Native longest game413searched plies/359.2s ended checkmate. Controller returned cleanup failure only because job record deletion outlasted short polling window; VMs/disks already absent. Later exact-job cleanup proof verifies allabsent; original failure preserved, no rerun. Actual b02 .5898206584VMh/USD.1189125633, cumulativeUSD.2184713133. Reviewed controller-only180s bounded cleanup/reconciliation patch passed33tests. b03 now running Weiss0.10=2846 (nearest admitted anchor), fresh pairs8–11, session27657, same original deadline and pool image; target/msh185/runs/b03. See b02/closure.md.
 <!-- SECTION:NOTES:END -->

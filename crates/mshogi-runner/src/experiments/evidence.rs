@@ -63,6 +63,9 @@ impl Report {
     /// Derive paired counts only after authoritative evidence replay.
     pub fn summaries(&self) -> Result<Vec<Summary>, RunnerError> {
         self.validate()?;
+        Ok(self.summaries_validated())
+    }
+    fn summaries_validated(&self) -> Vec<Summary> {
         let mut groups: BTreeMap<(String, String), Summary> = BTreeMap::new();
         for pair in self.games.as_chunks::<2>().0 {
             let a = &pair[0];
@@ -113,13 +116,16 @@ impl Report {
                 s.pentanomial[usize::from(scores[0] + scores[1])] += 1;
             }
         }
-        Ok(groups.into_values().collect())
+        groups.into_values().collect()
     }
     /// Replayable native JSONL, with explicit missing labels for unsuccessful games.
     /// Every descendant of an opening inherits its split/lineage group.
     pub fn data_jsonl(&self) -> Result<String, RunnerError> {
         self.validate()?;
-        let report_sha256 = digest(&self.to_json()?);
+        self.data_jsonl_validated()
+    }
+    fn data_jsonl_validated(&self) -> Result<String, RunnerError> {
+        let report_sha256 = digest(&self.encode()?);
         let mut output = String::new();
         for (game_index, g) in self.games.iter().enumerate() {
             let opening = &self.config.openings[g.pairing.opening];
@@ -148,6 +154,17 @@ impl Report {
             }
         }
         Ok(output)
+    }
+}
+impl ValidatedReport {
+    /// Derive counts from unchanged, already replay-checked evidence.
+    pub fn summaries(&self) -> Result<Vec<Summary>, RunnerError> {
+        Ok(self.as_report().summaries_validated())
+    }
+    /// Project native before/after states without repeated report validation.
+    /// The native replay needed to construct those states remains required.
+    pub fn data_jsonl(&self) -> Result<String, RunnerError> {
+        self.as_report().data_jsonl_validated()
     }
 }
 /// Existing actual external runner families; no new opponent wire protocol.

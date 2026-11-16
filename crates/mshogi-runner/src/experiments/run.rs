@@ -6,14 +6,14 @@ use std::{
 };
 
 /// Run actual bounded protocol4 subprocesses over native full-history owners.
-pub fn run(config: &Config) -> Result<Report, RunnerError> {
+pub fn run(config: &Config) -> Result<ValidatedReport, RunnerError> {
     run_with_stop(config, &mut || false)
 }
 /// Cooperative experiment cancellation; never a scored native game result.
 pub fn run_with_stop(
     config: &Config,
     stopped: &mut impl FnMut() -> bool,
-) -> Result<Report, RunnerError> {
+) -> Result<ValidatedReport, RunnerError> {
     config.validate()?;
     let identities: Vec<_> = config
         .players
@@ -207,9 +207,5 @@ pub fn run_with_stop(
         game.score_first_twice = state.score_first_twice();
         report.games.push(game);
     }
-    report.validate()?;
-    if serde_json::to_vec(&report).map_err(err)?.len() > MAX_BYTES {
-        return Err(err("aggregate evidence encoding exceeds32MiB"));
-    }
-    Ok(report)
+    report.into_validated()
 }

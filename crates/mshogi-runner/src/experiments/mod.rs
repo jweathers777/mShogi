@@ -512,6 +512,44 @@ pub struct Report {
     /// Entire scheduled sample, including unattempted budget stops.
     pub games: Vec<Game>,
 }
+/// An owned report whose complete evidence has passed native validation.
+///
+/// Read access cannot change the report. To edit it, consume it with
+/// [`Self::into_report`]; the resulting report must be validated again.
+///
+/// ```compile_fail
+/// use mshogi_runner::experiments::ValidatedReport;
+/// fn change_score(mut report: ValidatedReport) {
+///     report.games[0].score_first_twice = Some(2);
+/// }
+/// ```
+#[derive(Clone, Debug)]
+pub struct ValidatedReport(Report);
+impl ValidatedReport {
+    /// Strict external parsing and complete native validation, once.
+    pub fn from_json(text: &str) -> Result<Self, RunnerError> {
+        Report::from_json(text).map(Self)
+    }
+    /// Immutable access to the evidence that was validated.
+    pub fn as_report(&self) -> &Report {
+        &self.0
+    }
+    /// Discard validated status and return editable evidence.
+    pub fn into_report(self) -> Report {
+        self.0
+    }
+    /// Encode this unchanged report without repeating native replay.
+    pub fn to_json(&self) -> Result<String, RunnerError> {
+        self.0.encode()
+    }
+}
+impl std::ops::Deref for ValidatedReport {
+    type Target = Report;
+    fn deref(&self) -> &Report {
+        self.as_report()
+    }
+}
+
 impl Report {
     /// Bound, strict parsing followed by authoritative consistency replay.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
@@ -522,9 +560,17 @@ impl Report {
         report.validate()?;
         Ok(report)
     }
+    /// Consume editable evidence after one complete native validation.
+    pub fn into_validated(self) -> Result<ValidatedReport, RunnerError> {
+        self.validate()?;
+        Ok(ValidatedReport(self))
+    }
     /// Encode after checking native replay and complete evidence bounds.
     pub fn to_json(&self) -> Result<String, RunnerError> {
         self.validate()?;
+        self.encode()
+    }
+    fn encode(&self) -> Result<String, RunnerError> {
         let s = serde_json::to_string(self).map_err(err)?;
         if s.len() > MAX_BYTES {
             return Err(err("report encoding exceeds32MiB"));

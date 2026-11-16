@@ -32,11 +32,11 @@ fn execute() -> Result<(), String> {
             println!("{}",serde_json::to_string(&r.summaries().map_err(|e|e.to_string())?).map_err(|e|e.to_string())?);Ok(())
         }
         [_, command, input] if command == "experiment-replay" => {
-            let r=mshogi_runner::experiments::Report::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;
+            let r=mshogi_runner::experiments::ValidatedReport::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;
             println!("replayed {} native experiment games",r.games.len());Ok(())
         }
         [_, command, input, output] if command == "experiment-data" => {
-            let r=mshogi_runner::experiments::Report::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;
+            let r=mshogi_runner::experiments::ValidatedReport::from_json(&read(input,mshogi_runner::experiments::MAX_BYTES as u64)?).map_err(|e|e.to_string())?;
             write_new(output,&r.data_jsonl().map_err(|e|e.to_string())?)
         }
         [_, command, protocol, input, output] if command == "experiment-external" => {

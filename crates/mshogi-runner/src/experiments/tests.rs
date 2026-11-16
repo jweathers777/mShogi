@@ -109,20 +109,39 @@ fn cancellation_has_full_schedule_no_scores_or_generated_training_labels() {
         && s.complete_played_pairs == 0
         && s.pentanomial == [0; 5]));
     let encoded = r.to_json().unwrap();
-    Report::from_json(&encoded).unwrap();
-    let mut wrong = r.clone();
+    let checked = Report::from_json(&encoded).unwrap();
+    assert_eq!(checked.to_json().unwrap(), encoded);
+    assert_eq!(
+        serde_json::to_value(r.summaries().unwrap()).unwrap(),
+        serde_json::to_value(checked.summaries().unwrap()).unwrap()
+    );
+    assert_eq!(r.data_jsonl().unwrap(), checked.data_jsonl().unwrap());
+    let imported = ValidatedReport::from_json(&encoded).unwrap();
+    assert_eq!(imported.to_json().unwrap(), encoded);
+    let mut editable = imported.into_report();
+    editable.games[0].score_first_twice = Some(1);
+    assert!(editable.to_json().is_err());
+    assert!(editable.summaries().is_err());
+    assert!(editable.data_jsonl().is_err());
+    let forged = serde_json::to_string(&editable).unwrap();
+    assert!(ValidatedReport::from_json(&forged).is_err());
+    assert!(editable.into_validated().is_err());
+    // Editing an owned copy cannot change the evidence covered by the wrapper.
+    assert_eq!(r.to_json().unwrap(), encoded);
+    assert!(ValidatedReport::from_json("{\"schema\":1,\"schema\":1}").is_err());
+    let mut wrong = r.as_report().clone();
     wrong.games[0].score_first_twice = Some(1);
     assert!(wrong.validate().is_err());
-    let mut wrong = r.clone();
+    let mut wrong = r.as_report().clone();
     wrong.games[0].pairing.swapped = true;
     assert!(wrong.validate().is_err());
-    let mut wrong = r.clone();
+    let mut wrong = r.as_report().clone();
     wrong.config.seed += 1;
     assert!(wrong.validate().is_err());
-    let mut wrong = r.clone();
+    let mut wrong = r.as_report().clone();
     wrong.identities[0].model_identity = Some("imaginary-model".into());
     assert!(wrong.validate().is_err());
-    let mut wrong = r.clone();
+    let mut wrong = r.as_report().clone();
     wrong.games.pop();
     assert!(wrong.validate().is_err());
 }

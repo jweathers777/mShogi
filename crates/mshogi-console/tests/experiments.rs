@@ -169,6 +169,7 @@ fn rejected(report: &Report, change: impl FnOnce(&mut Value)) {
     let mut value = serde_json::to_value(report).unwrap();
     change(&mut value);
     assert!(Report::from_json(&value.to_string()).is_err());
+    assert!(mshogi_runner::experiments::ValidatedReport::from_json(&value.to_string()).is_err());
 }
 
 #[test]
@@ -212,6 +213,11 @@ fn actual_seven_profile_games_replay_export_native_labels_and_reject_corruption(
     let encoded = report.to_json().unwrap();
     let replayed = Report::from_json(&encoded).unwrap();
     assert_eq!(replayed.to_json().unwrap(), encoded);
+    assert_eq!(report.data_jsonl().unwrap(), replayed.data_jsonl().unwrap());
+    assert_eq!(
+        serde_json::to_value(report.summaries().unwrap()).unwrap(),
+        serde_json::to_value(replayed.summaries().unwrap()).unwrap()
+    );
     let summaries = replayed.summaries().unwrap();
     assert_eq!(summaries.len(), 7);
     for summary in &summaries {

@@ -115,9 +115,22 @@ OS-process audit; missing acknowledgement is recorded. Bridge cleanup errors
 remain actual execution diagnostics. Wall time is a cooperative soft whole-run
 budget; synchronous native validation, serialization and bounded cleanup can
 extend elapsed time. Parsing/replay is byte/count bounded, not hard real time.
-This conservative offline implementation replays histories repeatedly and starts
-fresh children per search. Its timing measures launch/transport/search/receipt,
-not pure search speed. MSH-109 reviews costs before substantial optimization.
+Request timings include transport, search and receipt, plus launch when a child
+must start. They are not pure search speed. The shared bridge can keep a child
+between requests; this report change does not alter its lifetime or cleanup.
+
+MSH-184 (Native Report Replay Cost) removes repeated whole-report validation from
+export and summary after a successful check. `run` and `run_with_stop` return an
+owned immutable `ValidatedReport`. Its JSON export and summary methods reuse
+that validation. `ValidatedReport::from_json` still performs strict bounded
+parsing and complete native validation. There is no deserializer or mutable
+access for the validated type. `into_report` discards its validated status;
+ordinary mutable `Report` methods always validate again. No validation flag is
+stored in a file, and no hash substitutes for native admission.
+
+JSONL projection still replays native transitions to construct before/after
+states. It reuses the validated report for its source digest and does not repeat
+whole-report validation. See [measurements and review](evidence/msh184/README.md).
 
 JSONL rows bind the exact source-report SHA/config identity, participant/executable,
 opening/pair/split/lineage, before/after complete native roots, actual request and

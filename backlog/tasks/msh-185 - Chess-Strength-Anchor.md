@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-16T21:51:00Z'
+updated_date: '2026-11-16T22:29:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -90,4 +90,8 @@ First cloud bracket submitted as msh185-b01-v1 (UID msh185-b01-v1-9b664eb9-6f5a-
 b01 completed/reviewed:5W3D0L, all8native replays and73artifact hashes pass;5checkmates,2threefold draws,1dead-position draw; no flags/failures. All8C3 workers on IntelSapphireRapids/us-central1-a;0.4938234094VM-hours, estimatedUSD0.09955875, zero allocation failures. Job/VM/disk absence verified. Provisional joint2742.66, broad2384.43–3191.01 interval. Next nearest admitted built anchor Stash21=2713; b02 four fresh pairs submitted under same campaign clock and pool image8290f64d7051548c5e86f62929c8f00e1504ceb77836c474832756224016b627. Active controller session77601;target/msh185/runs/b02. Full opponent build evidence saved; Raven0.80 excluded before use for demonstrated upstream out-of-bounds write, no gameplay patch.
 
 b02:4W4D0L againstStash21=2713; all16cumulative games replayed, joint2834.42 with wide2564.39–3140.01 interval. Native longest game413searched plies/359.2s ended checkmate. Controller returned cleanup failure only because job record deletion outlasted short polling window; VMs/disks already absent. Later exact-job cleanup proof verifies allabsent; original failure preserved, no rerun. Actual b02 .5898206584VMh/USD.1189125633, cumulativeUSD.2184713133. Reviewed controller-only180s bounded cleanup/reconciliation patch passed33tests. b03 now running Weiss0.10=2846 (nearest admitted anchor), fresh pairs8–11, session27657, same original deadline and pool image; target/msh185/runs/b03. See b02/closure.md.
+
+Current handoff: b03 finished 3W/1D/4L; b04 finished 0W/1D/7L, both against Weiss0.10 (2846). All 32 games pass native replay; b03/b04 cleanup and lifecycle records pass, with no allocation failures. Cumulative estimated compute is USD0.4410465867. Joint estimate2741.95; interval2555.31–2919.15 remains wide. Both Stash and Weiss results are retained; provisional family disagreement is visible. Fifth bracket msh185-b05-v1 is running against nearest admitted Stash21.0 (2713), fresh pairs16–19. Controller session89859 owns cleanup; target/msh185/runs/b05, raw gs://mshogi-experiments-216675633801/msh185/b05. Same campaign deadline, same pool image and worker/native/statistics sources. Do not repeat prior rounds. b03 compact evidence and independent b02-b03 review are saved; b04 compact packaging remains.
+
+Bracketing ended after seven rounds and about56minutes, before another round would exceed the one-hour phase bound. All56games are retained and native-replay valid; no game failures, flags, caps or missing scores. Joint2728.68 with2592.57–2860.37 interval; the +/-100 guide was not reached. All prior jobs/VMs/disks are absent. Actual cumulative computeUSD0.7382314755; zero allocation failures. Main selection is Stash21.0(2713), Weiss0.9(2649), MrBob0.8.0(2638), all within91points, from the deployed admitted pool. First main batch msh185-b08-v1 is active:24fresh pairs/48games, eight workers, pairs28–51, controller session3806, target/msh185/runs/b08 and gs://mshogi-experiments-216675633801/msh185/b08. Same frozen source, image, clocks and original campaign deadline. Decision and forecast in main-selection.json; no precision claim yet.
 <!-- SECTION:NOTES:END -->

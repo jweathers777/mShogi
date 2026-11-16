@@ -4,6 +4,7 @@ title: Chess Strength Anchor
 status: Ready
 assignee: []
 created_date: '2026-11-16T20:50:00Z'
+updated_date: '2026-11-16T21:02:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -34,30 +35,33 @@ One anchored estimate of present Chess strength against independent rated engine
 ## Owner approval (John, 2026-11-16)
 This rating study against external engines is approved within these bounds:
 - Time control 60 s + 0.6 s Fischer increment for both engines. mShogi uses its own time manager (MSH-167); no fixed move time.
-- About three independent opponent engine families, about 300-400 scored games in total including scouts.
-- Hard compute cap: 6 hours of wall time for all match work, including scouts, failures and reruns. Stop at the cap and report what is complete.
+- About three independent opponent engine families in the main phase, about 300-400 scored games in total including bracketing games.
+- Hard compute cap: 6 hours of wall time for all match work, including bracketing, failures and reruns. Stop at the cap and report what is complete.
 Any larger sample, longer time control or different opponent class needs a new approval.
 
 ## Approach
 - Freeze current main with `python3 -m tools.strength.cli build-engine` and record the revision and binary hash.
-- Opponents: full-strength engines from one dated CCRL list snapshot. Prefer the CCRL Blitz list because it is nearest to this time control; record its URL and date and do not mix lists or 4-CPU rows. Use engines from different authors/families, official sources, native ARM64 builds, 1 thread, equal hash (for example 64 MB), ponder off, own book off. Do not weaken opponents.
-- Selection: expect the engine to be clearly stronger than 1900 now. Run a short scout (about 4 pairs per candidate) against candidates that span roughly 2200-2900, then choose three opponents where mShogi scores about 25-75%. Count scout games in the budget; report them separately from the main sample.
+- Opponent pool: full-strength engines from one dated CCRL list snapshot. Prefer the CCRL Blitz list because it is nearest to this time control; record its URL and date and do not mix lists or 4-CPU rows. Use official sources, native ARM64 builds, 1 thread, equal hash (for example 64 MB), ponder off, own book off. Do not weaken opponents. Prepare a short list of candidates from several authors/families at about 100-150 point steps from roughly 2000 to 3000 before play starts.
+- Rating model: fit one Bradley-Terry (logistic Elo) model to all scored games, with opponent ratings fixed at their CCRL values, using pairs as the unit or a pentanomial/draw-aware variance (BayesElo or Ordo style is acceptable). Every scored game, including bracketing games, enters this fit. Record the prior and the fit method before play.
+- Phase 1, bracketing (sequential noisy bisection): start with a wide prior (about 2000-3000; MSH-139 gives about 1900 for the older engine, and later self-play gains point higher). Play 4 pairs against a candidate near the middle of the prior (about 2500). Refit, then play the next 4 pairs against the candidate nearest the current estimate. Repeat until the estimate is within about +/-100 (normally 3-4 rounds) or about one hour of wall time is used. One game near 50% gives about three times the information of one at 90%, so stop bracketing early.
+- Phase 2, main sample: choose about three engines from different families within about +/-150 of the estimate. Rotate between them in batches; refit after each batch. Replace an opponent if its running score leaves about 25-75%. Stop when the 95% interval of the combined estimate is about +/-30-40, or at the 6-hour cap. Beyond about 300 games, systematic error (CCRL anchor uncertainty, hardware and time-control difference from the list, family style effects) exceeds the statistical error, so more games help little.
 - Openings: the CC0 Stockfish 8moves_v3 book, as in MSH-139, one fresh opening per pair with colors reversed. The pair is the statistical unit.
 - At most 4 games in parallel on the M1 Pro Mac. Record OS, load and hardware.
-- Reuse the existing native external UCI runner and replay path that MSH-139 used (`docs/m5/chess-strength-assessment.md`, `docs/m5/evidence/msh139/`) and the strength harness clock mode where it fits. A minimal extension is acceptable; do not build a new framework.
+- Reuse the existing native external UCI runner and replay path that MSH-139 used (`docs/m5/chess-strength-assessment.md`, `docs/m5/evidence/msh139/`) and the strength harness clock mode where it fits. A minimal extension for the sequential opponent choice is acceptable; do not build a new framework.
 - Native rules decide every result. No evaluation adjudication. Process failures, time losses caused by the harness and technical caps stay unscored and are reported.
-- Estimate: per-opponent score and conditional index with 95% intervals, and one combined estimate. If per-opponent estimates disagree by more than 150 points, report the disagreement and do not hide it in a pooled number.
+- Report the combined estimate and also a per-opponent estimate for each main-phase family. If per-family estimates disagree by more than 150 points, report the disagreement and do not hide it in the combined number.
 
 ## Completion
-The report states the estimate with its uncertainty and conditions, compares it with MSH-139 and MSH-161, and updates docs/m5/strength-roadmap.md. An independent review checks the method and report. Verification level: measurement only, no production change.
+The report states the estimate with its uncertainty and conditions, the bracketing path (each round's opponent, result and refit), compares the result with MSH-139 and MSH-161, and updates docs/m5/strength-roadmap.md. An independent review checks the method and report. Verification level: measurement only, no production change.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 The frozen mShogi revision, binary hash, opponent engines (exact versions, sources, build hashes, options), CCRL snapshot URL and date, openings, time control, hardware and actual compute are recorded.
 - [ ] #2 Games run at 60 s + 0.6 s for both engines within the approved 6-hour wall-time cap; every scored result is a native conclusion that passes native replay, and failures or unscored games are reported, not hidden.
-- [ ] #3 The report gives per-opponent scores, a conditional CCRL-referenced index with a 95% interval, an agreement check between opponents, and a comparison with MSH-139 and MSH-161; it states that the index is not an official CCRL or human rating.
-- [ ] #4 docs/m5/strength-roadmap.md records the result as the closing Chess checkpoint, and an independent review accepts the method and the report.
+- [ ] #3 The rating model, prior and stopping rule are recorded before play; opponents are chosen by the sequential bracketing and main-phase rules, and the report shows each bracketing round and every opponent change.
+- [ ] #4 The report gives one combined estimate from a joint fit of all scored games with a 95% interval, per-family estimates with an agreement check, and a comparison with MSH-139 and MSH-161; it states that the index is not an official CCRL or human rating.
+- [ ] #5 docs/m5/strength-roadmap.md records the result as the closing Chess checkpoint, and an independent review accepts the method and the report.
 <!-- AC:END -->
 
 ## Definition of Done

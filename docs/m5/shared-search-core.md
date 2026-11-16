@@ -112,7 +112,7 @@ searches and cleared at a new game. Sizing uses checked multiplication, so even
 an extreme slot count cannot cause a quadratic allocation or integer overflow.
 The trait requires a nonzero slot count and in-range move slots.
 
-Payload for current adapters, with an estimate for Tenjiku:
+Payload for current adapters:
 
 | Game | Slots | Basic bytes | Continuation bytes | Total bytes |
 | --- | ---: | ---: | ---: | ---: |
@@ -121,13 +121,13 @@ Payload for current adapters, with an estimate for Tenjiku:
 | Shogi | 2,268 | 9,072 | 20,575,296 | 20,584,368 |
 | Xiangqi | 1,260 | 5,040 | 6,350,400 | 6,355,440 |
 | Chu Shogi | 12,096 | 48,384 | 33,554,432 | 33,602,816 |
-| Tenjiku Shogi (expected) | 22,528 | 90,112 | 33,554,432 | 33,644,544 |
+| Tenjiku Shogi | 22,528 | 90,112 | 33,554,432 | 33,644,544 |
 
 Chu uses side × 42 original-identity/promotion states × 144 destinations,
 so original identity remains distinct even when movement faces agree. The
 MSH-178 estimate used 29 movement faces; the cap accommodates the implemented
-index without a core change. Tenjiku still uses the prospective 44-face count;
-its future adapter may choose a different index. The cap needs no game-specific
+index without a core change. Tenjiku uses side × 44 movement faces × 256
+destinations. The cap needs no game-specific
 core branch or new trait method. See [history verification](evidence/msh178/README.md).
 
 ## Acceptance of engine changes
@@ -529,7 +529,8 @@ list at ply zero.
   any number of lower-ranked pieces of either side. Only a piece of equal or
   higher rank stops them, and after a jump they cannot capture a royal piece.
   Move generation, attack detection and exchange estimates therefore need
-  occupancy by rank; attack maps change only when a ranked piece moves. Two
+  occupancy by rank. Lower-ranked occupancy still affects quiet paths and
+  whether a capture is before or after a jump. Two
   rule profiles exist, and they differ in what a general can capture after a
   jump; the position takes the profile from the native game.
 

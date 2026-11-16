@@ -1,3 +1,21 @@
+# Next direction — Chess anchor, then Shogi (project decision, 2026-11-16)
+
+The Chess classical round (steps 1–6 below) is complete. Its gains were measured
+only against frozen predecessors. Work continues in this order:
+
+1. MSH-185 (Chess Strength Anchor): one approved rating measurement against about
+   three independent CCRL-rated engines at 60 s + 0.6 s, with a 6-hour wall-time cap.
+   It estimates present strength and closes the Chess round. It sets no target and
+   does not block Shogi work.
+2. MSH-186 (Shogi Strength Harness): Shogi benchmark, tactical suite, openings,
+   clock-mode game test, Texel data and a proposed external opponent pool for
+   John's approval.
+3. MSH-187 (Shogi Strength Round): speed, selectivity, time and tuned evaluation
+   for Shogi, accepted on the same checks as Chess.
+
+MSH-50 (Conventional Shogi) keeps the Shogi strength criteria and the final
+measurement. MSH-173 and MSH-176 (legacy Chu comparison) are deferred.
+
 <a id="current-direction--classical-search-engineering-owner-decision-2026-11-13"></a>
 
 # Current direction — classical search engineering (project decision, 2026-11-13)

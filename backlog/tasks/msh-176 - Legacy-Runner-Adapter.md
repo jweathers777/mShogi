@@ -4,7 +4,7 @@ title: Compare the legacy and present Chu engines
 status: Ready
 assignee: []
 created_date: '2026-11-14T14:14:00Z'
-updated_date: '2026-11-15T16:29:00Z'
+updated_date: '2026-11-16T20:51:00Z'
 labels:
   - handle:legacy-runner-adapter
 milestone: m-5
@@ -15,7 +15,7 @@ references:
   - crates/mshogi-runner/src/experiments/run.rs
   - docs/m4/chu/engine-v1.md
   - docs/m5/strength-roadmap.md
-priority: medium
+priority: low
 type: task
 ordinal: 180000
 ---
@@ -54,4 +54,6 @@ Handle: Legacy Runner Adapter.
 
 <!-- SECTION:NOTES:BEGIN -->
 Ticket revision, 2026-11-15 (requested by John): this task now delivers the comparison itself, not only a smoke test. It absorbs the needed part of MSH-175 (Opponent Adjudication Policy): disagreements and failures are unscored with their cause. It depends on MSH-173 only. MSH-174 and MSH-175 are archived.
+
+Owner direction, 2026-11-16: deferred. John prefers MSH-185 (Chess Strength Anchor), then MSH-186 (Shogi Strength Harness) and MSH-187 (Shogi Strength Round). Do not select this task before those unless John asks.
 <!-- SECTION:NOTES:END -->

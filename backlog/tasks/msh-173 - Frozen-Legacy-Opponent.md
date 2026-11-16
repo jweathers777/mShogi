@@ -4,7 +4,7 @@ title: Build the legacy Chu opponent and measure its rule agreement
 status: Ready
 assignee: []
 created_date: '2026-11-14T14:14:00Z'
-updated_date: '2026-11-15T16:29:00Z'
+updated_date: '2026-11-16T20:51:00Z'
 labels:
   - handle:frozen-legacy-opponent
 milestone: m-5
@@ -15,7 +15,7 @@ references:
   - >-
     backlog/tasks/msh-52 -
     Establish-and-meet-measured-chu-shogi-engine-strength-criteria.md
-priority: medium
+priority: low
 type: task
 ordinal: 177000
 ---
@@ -54,4 +54,6 @@ Handle: Frozen Legacy Opponent.
 
 <!-- SECTION:NOTES:BEGIN -->
 Ticket revision, 2026-11-15 (requested by John): MSH-173, MSH-174 (Legacy Complete Moves), MSH-175 (Opponent Adjudication Policy) and MSH-176 (Legacy Runner Adapter) became two tasks. This task now holds the build, the complete-move interface (former MSH-174) and a rule-agreement probe, which is the main feasibility risk. MSH-176 holds the comparison. MSH-174 and MSH-175 are archived.
+
+Owner direction, 2026-11-16: deferred. John prefers MSH-185 (Chess Strength Anchor), then MSH-186 (Shogi Strength Harness) and MSH-187 (Shogi Strength Round). Do not select this task before those unless John asks.
 <!-- SECTION:NOTES:END -->

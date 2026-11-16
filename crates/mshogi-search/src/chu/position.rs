@@ -916,6 +916,9 @@ impl ChuPosition {
 }
 impl SearchPosition for ChuPosition {
     type Move = Move;
+    // Chu threat replies can branch widely; bound private quiescence separately
+    // from principal search depth while retaining complete evasions before it.
+    const QUIESCENCE_PLIES: usize = 8;
     const HISTORY_SLOTS: usize = 2 * STATES * N;
     fn hash(&self) -> u64 {
         self.board.hash

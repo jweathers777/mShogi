@@ -1031,3 +1031,97 @@ fn exchange_recapturing_lion_can_return_away_from_the_original_target() {
             .any(|a| a.route.contains(&at(5, 5)))
     );
 }
+
+#[test]
+fn exposed_seed20_midgame_completes_with_bounded_quiescence() {
+    // Exact root and six accepted actions from round4/match100k/failed-request.json.
+    // The frozen predecessor reached depth0 at100k on this second engine turn.
+    // This exposed regression proves resource completion, not playing strength.
+    let entries = [
+        (6, 2, Side::Gote, "K"),
+        (7, 3, Side::Gote, "G"),
+        (5, 3, Side::Gote, "Si"),
+        (11, 5, Side::Sente, "Ph"),
+        (10, 5, Side::Gote, "VM"),
+        (6, 5, Side::Gote, "Ln"),
+        (3, 5, Side::Gote, "SM"),
+        (8, 6, Side::Gote, "P"),
+        (5, 6, Side::Gote, "P"),
+        (2, 6, Side::Sente, "Ki"),
+        (11, 7, Side::Gote, "Ki"),
+        (8, 7, Side::Sente, "P"),
+        (5, 7, Side::Sente, "P"),
+        (10, 8, Side::Sente, "SM"),
+        (7, 8, Side::Sente, "Ln"),
+        (3, 8, Side::Sente, "VM"),
+        (2, 8, Side::Gote, "Ph"),
+        (8, 10, Side::Sente, "Si"),
+        (6, 10, Side::Sente, "G"),
+        (7, 11, Side::Sente, "K"),
+    ];
+    let sq = |f, r| Square::new(f, r).unwrap();
+    let position = Position::from_diagram(
+        &entries
+            .iter()
+            .map(|&(f, r, s, c)| (sq(f, r), Piece::from_code(s, c).unwrap()))
+            .collect::<Vec<_>>(),
+        Side::Sente,
+        RootMetadata::diagram(0),
+    )
+    .unwrap();
+    let mut game = Game::from_root(position).unwrap();
+    for (from, to, promote) in [
+        ((8, 10), (9, 11), false),
+        ((10, 5), (10, 1), false),
+        ((6, 10), (6, 11), false),
+        ((10, 1), (9, 1), false),
+        ((2, 6), (2, 4), true),
+        ((11, 7), (11, 9), true),
+    ] {
+        game.submit(GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: GameCommand::Play {
+                action: Action {
+                    from: sq(from.0, from.1),
+                    route: vec![sq(to.0, to.1)],
+                    promote,
+                },
+            },
+        })
+        .unwrap();
+    }
+    assert_eq!(game.events().len(), 6);
+    assert_eq!(game.legal_actions().len(), 190);
+    let before = mshogi_core::chu::GameRecord::from_game(&game).unwrap();
+    let mut private = ChuPosition::from_game(&game);
+    assert!(!private.in_check());
+    let mut threatened = 0;
+    for a in game.legal_actions() {
+        assert!(private.make(private.find(&a).unwrap()));
+        threatened += usize::from(private.in_check());
+        private.unmake();
+    }
+    assert_eq!(
+        threatened, 9,
+        "quiet threat responses occur below this unchecked root"
+    );
+    let result = super::search(
+        &game,
+        super::Limits {
+            depth: 64,
+            nodes: 100_000,
+        },
+    )
+    .unwrap();
+    assert!(result.completed_depth >= 1, "{result:?}");
+    assert!(result.nodes <= 100_000);
+    let Some(super::Decision::Choose(choice)) = result.decision else {
+        panic!("no completed choice")
+    };
+    assert!(game.legal_actions().contains(&choice));
+    assert_eq!(
+        mshogi_core::chu::GameRecord::from_game(&game).unwrap(),
+        before
+    );
+}

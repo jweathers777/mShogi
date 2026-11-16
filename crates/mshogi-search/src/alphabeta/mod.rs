@@ -47,6 +47,10 @@ pub trait SearchPosition {
     /// Nonzero number of history slots; `history_slot` returns a value below this.
     /// Ordering storage is capped by the core; large slot spaces can alias.
     const HISTORY_SLOTS: usize;
+    /// Tactical horizon counted from each quiescence entry. The default leaves
+    /// only the existing absolute-ply bound. At a finite horizon, a threatened
+    /// leaf has the same uncertain zero estimate as the absolute-ply horizon.
+    const QUIESCENCE_PLIES: usize = MAX_PLY;
 
     /// Hash of the board state: equal for positions that have the same pieces,
     /// side to move and move rights, independent of the path.
@@ -619,7 +623,7 @@ impl<P: SearchPosition> Run<'_, P> {
             depth = depth.max(0) + 1;
         }
         if depth <= 0 {
-            return self.quiesce(ply, alpha, beta, pv);
+            return self.quiesce(ply, 0, alpha, beta, pv);
         }
         if !self.visit(ply) {
             return 0;
@@ -708,7 +712,7 @@ impl<P: SearchPosition> Run<'_, P> {
                 return e;
             }
             if policy.razoring && depth <= 2 && e.abs() < MATE_BOUND && e + 250 * depth < alpha {
-                let score = self.quiesce(ply, alpha - 1, alpha, false);
+                let score = self.quiesce(ply, 0, alpha - 1, alpha, false);
                 if self.abort || score < alpha {
                     return score;
                 }
@@ -967,7 +971,7 @@ impl<P: SearchPosition> Run<'_, P> {
         self.s.buffers[ply].tried = tried;
     }
 
-    fn quiesce(&mut self, ply: usize, mut alpha: i32, beta: i32, pv: bool) -> i32 {
+    fn quiesce(&mut self, ply: usize, qdepth: usize, mut alpha: i32, beta: i32, pv: bool) -> i32 {
         if !self.visit(ply) {
             return 0;
         }
@@ -976,15 +980,23 @@ impl<P: SearchPosition> Run<'_, P> {
             return score;
         }
         let in_check = self.pos.in_check();
-        if ply >= MAX_PLY - 1 {
+        if ply >= MAX_PLY - 1 || qdepth >= P::QUIESCENCE_PLIES {
             return if in_check { 0 } else { self.pos.evaluate() };
         }
+        // Negative depths distinguish remaining bounded tactical work. A
+        // near-horizon entry cannot stand in for a fresh quiescence search.
+        let table_depth = if P::QUIESCENCE_PLIES < MAX_PLY {
+            -(qdepth as i32)
+        } else {
+            0
+        };
         let claimable = self.pos.draw_claimable();
         let hash = self.pos.hash();
         let hit = self.s.table.probe(hash, ply as i32);
         let mut table_move = None;
         if let Some(hit) = hit {
             if !pv
+                && hit.depth >= table_depth
                 && match hit.bound {
                     Bound::Exact => true,
                     Bound::Lower => hit.score >= beta,
@@ -1044,7 +1056,7 @@ impl<P: SearchPosition> Run<'_, P> {
             }
             count += 1;
             self.s.slots[ply] = NO_SLOT;
-            let score = -self.quiesce(ply + 1, -beta, -alpha, pv);
+            let score = -self.quiesce(ply + 1, qdepth + 1, -beta, -alpha, pv);
             self.pos.unmake();
             if self.abort {
                 return 0;
@@ -1082,7 +1094,7 @@ impl<P: SearchPosition> Run<'_, P> {
             best_move.map_or(0, P::encode),
             best,
             eval,
-            0,
+            table_depth,
             bound,
         );
         best

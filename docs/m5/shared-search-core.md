@@ -361,6 +361,18 @@ Private analysis remains separate from native adjudication:
   turn, Lion rights and next target, not merely an equal hash. The filter changes
   private selective search only; full legal generation and native admission stay
   unchanged.
+- Chu limits quiescence to eight additional plies, counted from each tactical
+  search entry. The shared trait's default retains the existing absolute-ply
+  limit for other games. Royal/material terminals and the one-action royal
+  capture proof run before this horizon. Threatened nodes search all quiet
+  evasions and do not stand pat before the horizon. At the horizon, a threatened
+  position receives an uncertain zero estimate; other positions use static
+  evaluation. This follows the existing absolute-ply horizon convention and
+  never declares a native draw. Long tactical chains can be missed.
+- Bounded quiescence stores negative elapsed tactical depth in the table.
+  A near-horizon result cannot replace a fresh tactical query: score cutoffs
+  require sufficient stored depth. Quiescence entries do not replace a current
+  main-search entry. Other games retain zero-depth quiescence entries.
 - Search generation keeps one admitted complete route for each equal successor
   within a stage. Equality includes all piece identities and promotions, turn
   and active Lion rights. Native root restrictions apply before this reduction.

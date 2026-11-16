@@ -333,6 +333,11 @@ Private analysis remains separate from native adjudication:
 - Actual last-royal loss is terminal. The full native finite immediate-mate
   procedure is not called at each private node. Native conclusions retain
   priority at the application boundary.
+- A locally admitted complete action that can capture every opposing royal
+  scores a win one action ahead. This cuts known losing replies without removing
+  any legal move. The reported selective line can stop before that capture;
+  an actual win still requires native submission. Two separate royal attacks
+  do not qualify for this shortcut.
 - The private C08 material award counts only the narrow three-piece case,
   excluding dead unpromoted Pawn/Lance from that count while retaining their
   occupancy. The bare side can make an immediate royal-capture or equalizing

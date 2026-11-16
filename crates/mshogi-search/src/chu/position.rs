@@ -884,6 +884,15 @@ impl SearchPosition for ChuPosition {
                 -MATE_SCORE + ply
             });
         }
+        // Capture-based games permit a move that leaves every royal exposed.
+        // Prove the next complete capture now instead of expanding all quiet
+        // replies in quiescence. This changes no local legal-action set. The
+        // core skips rule_score at its root and still selects an actual move.
+        let mut victim_view = self.board;
+        victim_view.side ^= 1;
+        if victim_view.threatened() {
+            return Some(MATE_SCORE - ply - 1);
+        }
         let current = self.keys.len() - 1;
         let mut previous = 0;
         for back in (2..=self.reversible.min(current)).step_by(2) {

@@ -508,7 +508,26 @@ fn narrow_material_fixtures_and_prince_recapture_keep_native_timing() {
                     -MATE_SCORE
                 }
             });
-            assert_eq!(p.rule_score(), expected, "{id}");
+            if expected.is_some() {
+                assert_eq!(p.rule_score(), expected, "{id}");
+            } else {
+                // Independently prove any distance-one win by a complete
+                // native action, not separate attacks on the royal squares.
+                let victim = native.position().side_to_move().opponent();
+                let capture_all = native.legal_actions().iter().any(|a| {
+                    let mut after = native.clone();
+                    after.apply(a).unwrap();
+                    !after
+                        .position()
+                        .pieces()
+                        .any(|(_, piece)| piece.side == victim && piece.is_royal())
+                });
+                assert_eq!(
+                    p.rule_score(),
+                    capture_all.then_some(MATE_SCORE - 1),
+                    "{id}"
+                );
+            }
         }
     }
     for id in [
@@ -519,7 +538,15 @@ fn narrow_material_fixtures_and_prince_recapture_keep_native_timing() {
         let f = fs.iter().find(|f| f["id"] == id).unwrap();
         let mut native = root(&f["given"]["root"]);
         let mut p = ChuPosition::from_local(&native);
-        assert_eq!(p.rule_score(), None, "{id} root");
+        assert_eq!(
+            p.rule_score(),
+            if id == "CHU-MATERIAL-COUNTERWIN" {
+                Some(MATE_SCORE - 1)
+            } else {
+                None
+            },
+            "{id} root"
+        );
         let commands = if let Some(commands) = f["given"]["commands"].as_array() {
             commands.clone()
         } else {
@@ -542,4 +569,174 @@ fn narrow_material_fixtures_and_prince_recapture_keep_native_timing() {
             assert_eq!(p.rule_score(), Some(MATE_SCORE - 1));
         }
     }
+}
+
+#[test]
+fn distance_one_royal_capture_proof_preserves_lion_rights_for_both_sides() {
+    use mshogi_core::chu::LionProtection;
+    for rotated in [false, true] {
+        let transform = |f: u8, r: u8| {
+            Square::new(
+                if rotated { 13 - f } else { f },
+                if rotated { 13 - r } else { r },
+            )
+            .unwrap()
+        };
+        let owner = |s: Side| if rotated { s.opponent() } else { s };
+        let entries = [
+            (1, 12, Side::Sente, "K"),
+            (6, 8, Side::Sente, "R"),
+            (6, 1, Side::Gote, "K"),
+            (8, 8, Side::Gote, "Ln"),
+            (8, 9, Side::Gote, "G"),
+        ];
+        let position = Position::from_diagram(
+            &entries
+                .iter()
+                .map(|&(f, r, s, c)| (transform(f, r), Piece::from_code(owner(s), c).unwrap()))
+                .collect::<Vec<_>>(),
+            owner(Side::Sente),
+            RootMetadata::diagram(0),
+        )
+        .unwrap();
+        let native = LocalPosition::from_parts(
+            position,
+            LionProtection {
+                owner: Some(owner(Side::Gote)),
+                squares: vec![transform(8, 8)],
+            },
+        )
+        .unwrap();
+        let mut p = ChuPosition::from_local(&native);
+        let before = (p.hash(), p.evaluate(), p.protection());
+        // The rook may capture the royal on its file, but not the protected
+        // Lion on its rank. The proof cannot consume the Lion window.
+        for _ in 0..3 {
+            assert_eq!(p.rule_score(), Some(MATE_SCORE - 1));
+        }
+        let forbidden = Action::single(transform(6, 8), transform(8, 8));
+        assert!(!p.make(p.find(&forbidden).unwrap()));
+        assert_eq!((p.hash(), p.evaluate(), p.protection()), before);
+        compare(&mut p, &native);
+        let win = Action::single(transform(6, 8), transform(6, 1));
+        assert!(p.make(p.find(&win).unwrap()));
+        assert_eq!(p.rule_score(), Some(-MATE_SCORE + 1));
+        p.unmake();
+        assert_eq!((p.hash(), p.evaluate(), p.protection()), before);
+    }
+}
+
+#[test]
+fn capture_shortcut_requires_one_complete_action_for_both_royals() {
+    let make = |entries: &[(u8, u8, Side, &str)]| {
+        LocalPosition::admit(
+            Position::from_diagram(
+                &entries
+                    .iter()
+                    .map(|&(f, r, s, c)| {
+                        (Square::new(f, r).unwrap(), Piece::from_code(s, c).unwrap())
+                    })
+                    .collect::<Vec<_>>(),
+                Side::Sente,
+                RootMetadata::diagram(0),
+            )
+            .unwrap(),
+        )
+    };
+    let compound = make(&[
+        (1, 12, Side::Sente, "K"),
+        (6, 6, Side::Sente, "Ln"),
+        (6, 5, Side::Gote, "K"),
+        (5, 5, Side::Gote, "DE+"),
+    ]);
+    assert_eq!(
+        ChuPosition::from_local(&compound).rule_score(),
+        Some(MATE_SCORE - 1)
+    );
+    let separate = make(&[
+        (1, 12, Side::Sente, "K"),
+        (3, 6, Side::Sente, "R"),
+        (9, 6, Side::Sente, "R"),
+        (3, 1, Side::Gote, "K"),
+        (9, 1, Side::Gote, "DE+"),
+    ]);
+    assert_eq!(ChuPosition::from_local(&separate).rule_score(), None);
+}
+
+#[test]
+fn exposed_seed12_root_completes_an_iteration_with_the_same_100k_budget() {
+    // Frozen failed game-test pair0012, first game, first request. Preserve
+    // the four seeded actions; the original candidate used100,000 nodes and
+    // reported depth0. This is an exposed regression, not strength evidence.
+    let entries = [
+        (7, 3, Side::Gote, "G"),
+        (6, 2, Side::Gote, "K"),
+        (5, 3, Side::Gote, "Si"),
+        (11, 5, Side::Sente, "Ph"),
+        (10, 5, Side::Gote, "VM"),
+        (6, 5, Side::Gote, "Ln"),
+        (3, 5, Side::Gote, "SM"),
+        (8, 6, Side::Gote, "P"),
+        (5, 6, Side::Gote, "P"),
+        (2, 6, Side::Sente, "Ki"),
+        (11, 7, Side::Gote, "Ki"),
+        (8, 7, Side::Sente, "P"),
+        (5, 7, Side::Sente, "P"),
+        (10, 8, Side::Sente, "SM"),
+        (7, 8, Side::Sente, "Ln"),
+        (3, 8, Side::Sente, "VM"),
+        (2, 8, Side::Gote, "Ph"),
+        (8, 10, Side::Sente, "Si"),
+        (7, 11, Side::Sente, "K"),
+        (6, 10, Side::Sente, "G"),
+    ];
+    let sq = |f, r| Square::new(f, r).unwrap();
+    let position = Position::from_diagram(
+        &entries
+            .iter()
+            .map(|&(f, r, s, c)| (sq(f, r), Piece::from_code(s, c).unwrap()))
+            .collect::<Vec<_>>(),
+        Side::Sente,
+        RootMetadata::diagram(0),
+    )
+    .unwrap();
+    let mut game = Game::from_root(position).unwrap();
+    for (from, to) in [
+        ((8, 10), (9, 11)),
+        ((7, 3), (7, 2)),
+        ((6, 10), (6, 11)),
+        ((7, 2), (7, 1)),
+    ] {
+        game.submit(GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: GameCommand::Play {
+                action: Action::single(sq(from.0, from.1), sq(to.0, to.1)),
+            },
+        })
+        .unwrap();
+    }
+    let before = game.context();
+    let start = std::time::Instant::now();
+    let result = super::search(
+        &game,
+        super::Limits {
+            depth: 64,
+            nodes: 100_000,
+        },
+    )
+    .unwrap();
+    eprintln!(
+        "Chu exposed seed12: depth={}, nodes={}, elapsed_us={}",
+        result.completed_depth,
+        result.nodes,
+        start.elapsed().as_micros()
+    );
+    assert!(result.completed_depth >= 1, "{result:?}");
+    assert!(result.nodes <= 100_000);
+    let Some(super::Decision::Choose(choice)) = result.decision else {
+        panic!("no completed choice");
+    };
+    assert!(game.legal_actions().contains(&choice));
+    assert!(game.context().same_semantics(&before));
 }

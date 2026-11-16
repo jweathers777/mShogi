@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-16T22:29:00Z'
+updated_date: '2026-11-16T22:40:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -94,4 +94,8 @@ b02:4W4D0L againstStash21=2713; all16cumulative games replayed, joint2834.42 wit
 Current handoff: b03 finished 3W/1D/4L; b04 finished 0W/1D/7L, both against Weiss0.10 (2846). All 32 games pass native replay; b03/b04 cleanup and lifecycle records pass, with no allocation failures. Cumulative estimated compute is USD0.4410465867. Joint estimate2741.95; interval2555.31–2919.15 remains wide. Both Stash and Weiss results are retained; provisional family disagreement is visible. Fifth bracket msh185-b05-v1 is running against nearest admitted Stash21.0 (2713), fresh pairs16–19. Controller session89859 owns cleanup; target/msh185/runs/b05, raw gs://mshogi-experiments-216675633801/msh185/b05. Same campaign deadline, same pool image and worker/native/statistics sources. Do not repeat prior rounds. b03 compact evidence and independent b02-b03 review are saved; b04 compact packaging remains.
 
 Bracketing ended after seven rounds and about56minutes, before another round would exceed the one-hour phase bound. All56games are retained and native-replay valid; no game failures, flags, caps or missing scores. Joint2728.68 with2592.57–2860.37 interval; the +/-100 guide was not reached. All prior jobs/VMs/disks are absent. Actual cumulative computeUSD0.7382314755; zero allocation failures. Main selection is Stash21.0(2713), Weiss0.9(2649), MrBob0.8.0(2638), all within91points, from the deployed admitted pool. First main batch msh185-b08-v1 is active:24fresh pairs/48games, eight workers, pairs28–51, controller session3806, target/msh185/runs/b08 and gs://mshogi-experiments-216675633801/msh185/b08. Same frozen source, image, clocks and original campaign deadline. Decision and forecast in main-selection.json; no precision claim yet.
+
+First main batch b08 stopped on eight MrBob0.8.0 SIGSEGV failures during bestmove; these are unscored. Ten valid games (7W1D2L) are retained;30scheduled games never started. All66cumulative scored games pass native replay, joint2736.92 [2658.99,2814.85]. All b08 cloud resources are verified absent; actual b08 .8363486983VMh/USD.1686145884, cumulativeUSD.9068460638. Independent failure review is in progress. Replace failed MrBob with prebuilt full-strength Supernova2.3=2644 from the frozen source pool, within93points, without patching rated source. New image adds this binary only; same candidate/runner/worker, original campaign deadline. No games rerun or valid results discarded.
+
+Correction from independent native-score review: b08 valid tally is6W1D3L (not7W1D2L in the prior note); fitted results were already computed from correct native scores. Eight MrBob failures are explained by its FEN handler retaining a fixed1024entry move-history stack across full-history commands; source is unchanged and release is withdrawn. Supernova2.3 replacement clears history on each position command; independent source/options review accepted admission. b09 is active with24fresh pairs52–75, Stash21/Weiss0.9/Supernova2.3, new image72b4a8072b2d3b1db36b21183f2f51476108d408256f531b141dcfa8d37959ee; controller session66282, target/msh185/runs/b09. Original deadline/caps continue.
 <!-- SECTION:NOTES:END -->

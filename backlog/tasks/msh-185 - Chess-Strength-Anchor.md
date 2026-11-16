@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-16T22:59:00Z'
+updated_date: '2026-11-16T23:22:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -102,4 +102,6 @@ Correction from independent native-score review: b08 valid tally is6W1D3L (not7W
 b09 stopped on a measurement-classification defect: Supernova2.3 reached eight native conclusions but its normal quit handler sleeps1s; frozen runner waits100ms then intentionally kills/reaps. No native failure, diagnostic failure or cleanup failure occurred. Independent method review accepts a narrow exact-binary normal-postconclusion-termination correction without changing candidate, runner, clocks or game rules. Original receipts remain immutable; derived reclassification must bind report/receipt hashes and satisfy all replay, terminal-quit and process-settlement checks. Eight results5W1D2L are pending corrected-audit review;10other validgames5W3D2L retained,30assignmentsnotstarted. All b09 resources absent;1.0191979103VMh/USD.2054784523, totalUSD1.1123245161. No new cloudjob active while correction/tests/review complete.
 
 Shutdown classification correction independently accepted;96strengthtests pass. All8Supernova native results5W1D2L admitted uniformly, with original rejectedreceipts and originalfit preserved plus hashbound deriveddecisions. Cumulative84validgames/42pairs, joint2746.40 [2678.89,2813.90]; eightMrBobcrashes remain unscored,60assignments neverstarted. No game reruns. b10 is active,24freshpairs76–99, same3families; session79501,target/msh185/runs/b10. Corrected worker image60163e4fb2f8f88a28320614b7c8106a3de9c37c5ba3cff5f20d00f64eb3e0cb; candidate/native runner/opponents unchanged. Original campaigncaps continue.
+
+b10completed48/48valid with correctedworker; no new process failures, flags, caps or missing results. All132cumulative games native-replay valid; joint2742.23 [2690.41,2794.05], familyspread10.44. Maincoverage12Stash/14Weiss/12Supernovapairs, so precision/coverage stop not met. Actualb10 2.4770080343VMh/USD.4993846358; cumulativeUSD1.6117091519, all b10resourcesabsent. b11active with24freshpairs100–123, unchanged3families/image/engine, session11365,target/msh185/runs/b11. Expectedanother20–25min; campaign stillwellwithin6h/USD15. Include b09 explicit shutdownreclassification file in every laterfit.
 <!-- SECTION:NOTES:END -->

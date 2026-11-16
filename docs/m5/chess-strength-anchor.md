@@ -1,6 +1,6 @@
 # MSH-185 (Chess Strength Anchor)
 
-**Draft checkpoint: bracketing complete; main results pending.** This report does not claim a final rating or task completion. It records the fixed method and the first 56 games. The first main batch, b08, stopped after a Mr Bob 0.8.0 process failure. Its scored results and failed attempts are under review; all cloud resources from that batch are absent.
+**Draft checkpoint: results through b09; b10 active; final results pending.** This report does not claim a final rating or task completion. The corrected b09 fit contains 84 scored games. Eight Mr Bob crashes remain unscored; 60 assigned games across b08 and b09 never started. The reviewed Supernova shutdown classification retains eight completed native games. All b01–b09 cloud resources are absent.
 
 The study estimates current Chess strength against independent rated engines after the classical search and evaluation work. It has no strength target. It does not qualify the engine for release or block Shogi work. The result will be a conditional CCRL-referenced index, **not an official CCRL rating or a human rating**.
 
@@ -9,12 +9,12 @@ The study estimates current Chess strength against independent rated engines aft
 | Required result | Status |
 | --- | --- |
 | Combined estimate and approximate 95% interval | Pending main results and final fit |
-| Total scored games, complete pairs and singletons | Pending; bracket has 56 games in 28 complete pairs |
+| Total scored games, complete pairs and singletons | Pending; through b09 there are 84 games in 42 complete pairs |
 | Final W/D/L and per-release scores | Pending |
 | Main-family estimates and spread | Pending; report any spread greater than 150 points |
 | Prior sensitivity and stopping decision | Pending final fit |
 | Final wall time, VM-hours and estimated compute | Pending |
-| Final job, VM and disk cleanup | Pending; all seven bracket batches are cleared |
+| Final job, VM and disk cleanup | Pending; completed batches b01–b09 are cleared |
 | Independent final report review | Pending |
 
 Do not use the bracket estimate below as the final study result.
@@ -35,7 +35,7 @@ Candidate and native runner source: `f433ea13ef0c6682d7c84388142dc9c8238e4e16`, 
 | Tablebases | No external tablebase files |
 | Execution | Google Cloud Batch; at most eight workers; one game at a time on each VM |
 | Machine | c3-standard-4 for every game |
-| Region and observed zone | us-central1; bracket workers in us-central1-a |
+| Region and observed zone | us-central1; bracket workers in us-central1-a and us-central1-b (b07) |
 | Observed CPU | Intel Sapphire Rapids; Xeon Platinum 8481C at 2.70 GHz |
 | Observed OS | Linux 6.6.159+, x86-64, glibc 2.41 |
 | Boot image | batch-cos-stable-official-20261110-00-p01 |
@@ -54,7 +54,8 @@ All anchors come from the [CCRL Blitz complete list computed November 14, 2026](
 | Stash 21.0 | 2713 | Bracket and selected main family | [Stash](https://github.com/mhouppin/stash-bot) |
 | Weiss 0.10 | 2846 | Bracket | [Weiss](https://github.com/TerjeKir/weiss) |
 | Weiss 0.9 | 2649 | Selected main family | [Weiss](https://github.com/TerjeKir/weiss) |
-| Mr Bob 0.8.0 | 2638 | Selected main family | [Mr Bob](https://github.com/bobsquared/Mr_Bob_Chess) |
+| Mr Bob 0.8.0 | 2638 | Initial main selection; technical crashes, no scored games | [Mr Bob](https://github.com/bobsquared/Mr_Bob_Chess) |
+| Supernova 2.3 | 2644 | Replacement main family from b09 | [Supernova](https://github.com/MichaeltheCoder7/Supernova) |
 
 The [candidate record](evidence/msh185/opponent-candidates.md) lists the wider pool and exact release commits. Multiple releases of one engine remain one family. Rated engines are not weakened or patched. Build-only compiler compatibility adjustments are recorded. Raven 0.80 was excluded before play for a verified upstream out-of-bounds write; it was not assigned a game loss.
 
@@ -90,19 +91,27 @@ Bracketing stopped after **56.48 minutes** because another round was expected to
 
 The first main batch selects Stash 21.0, Weiss 0.9 and Mr Bob 0.8.0. Their anchors are 15.68, 79.68 and 90.68 points from the bracket estimate. They are the three closest **admitted/deployed families**, not the closest engines in the entire CCRL list or prepared reserve roster. b08 schedules 24 fresh pairs, eight per family, with opponents rotated across eight workers. See [main-selection.json](evidence/msh185/main-selection.json).
 
-## Main results and changes — pending
+## Main results through b09 — final pending
 
-The first main batch stopped at Mr Bob 0.8.0 with a SIGSEGV while the runner waited for `bestmove`. This is a technical failure, not a scored loss. Retain completed valid games and all failure records. The controller is reviewing the exact counts. The selected replacement is the prebuilt Supernova 2.3 reserve, anchor 2644; its admission and image digest must be recorded before further play. No engine patch or failed-game rerun is part of this replacement.
+b08 completed ten valid games before eight Mr Bob 0.8.0 SIGSEGV failures stopped the workers. Thirty assigned games never started. The crashes are technical failures, not scored losses. Source review found that repeated FEN-plus-history commands accumulated history in a fixed-size array. No rating is inferred for Mr Bob from this batch.
 
-The unchanged Supernova 2.3 binary is recorded in [build-pool-v2.json](evidence/msh185/build-pool-v2.json), source `ffd139d1f3e56d39af41cb7cca78a5212bc96a88`. The replacement image digest is `sha256:72b4a8072b2d3b1db36b21183f2f51476108d408256f531b141dcfa8d37959ee`. Its saved handshake confirms Hash 64 MB and Ponder false. Source review confirms both UCI clocks and increments, one search thread, and a fresh history index for each position command (`Main.c:301,322,330`). This avoids the accumulated-history defect found in Mr Bob 0.8.0. It does not prove that every search path is free of defects; no extra search was run for this review.
+The prebuilt Supernova 2.3 reserve replaced Mr Bob, with anchor 2644. Its binary and source are in [build-pool-v2.json](evidence/msh185/build-pool-v2.json); [replacement review](evidence/msh185/replacement-review.md) verifies clocks, increments, Hash 64 MB and history reset. Its admission image was `sha256:72b4a8072b2d3b1db36b21183f2f51476108d408256f531b141dcfa8d37959ee`.
 
-| Main family | Final releases used | Main pairs | All-study W/D/L | Family estimate and interval |
-| --- | --- | --- | --- | --- |
-| Stash | Pending; starts with 21.0 | Pending | Pending | Pending |
-| Weiss | Pending; starts with 0.9 | Pending | Pending | Pending |
-| Mr Bob | Pending; starts with 0.8.0 | Pending | Pending | Pending |
+b09 completed ten ordinary accepted games and eight Supernova games with native conclusions and successful replay. Thirty further assignments never started. The original worker rejected the eight Supernova games because their exit status was SIGKILL. The engine waits one second after `quit`, while the frozen runner allows only 100 milliseconds before bounded process termination. Independent [shutdown classification review](evidence/msh185/shutdown-classification-review.md) accepted a narrow correction for this exact binary and runner: valid native conclusion and replay, successful terminal quit write, signal 9, no runner/diagnostic/cleanup failure, no outer timeout, and a settled process group. All eight games meet the checks: five wins, one draw and two losses. No failed game was replayed as new measurement. Attribution uses the complete evidence and verified cleanup path; the report has no direct signal-origin field.
 
-**Pending:** insert each later batch result, release replacement and reason; include all original games. Report the final family spread and state explicitly whether it exceeds 150 points. Add final prior sensitivity and any scored singleton or excluded result with its reason.
+Original reports, rejected receipts and the original fit remain unchanged. The [explicit review mapping](evidence/msh185/b09-shutdown-reclassifications.json) binds each derived classification to its original hashes. The [corrected fit](evidence/msh185/b09-corrected-fit.json) contains **84 games in 42 complete pairs, 36 wins, 22 draws and 26 losses**, with no scored singletons. The interim estimate is **2746.40**, approximate interval **2678.89–2813.90**, half-width **67.51**. This is not the final result or a precision stop.
+
+| Current main family | Releases with scored results | Main pairs through b09 | All-study W/D/L | Interim family estimate and interval |
+| --- | --- | ---: | --- | --- |
+| Stash | 20.0.1, 21.0 | 4 | 20/17/11 | 2747.20; 2603.50–2891.46 |
+| Weiss | 0.10, 0.9 | 6 | 11/4/13 | 2731.12; 2534.15–2914.12 |
+| Supernova | 2.3 | 4 | 5/1/2 | 2762.85; 2326.19–3199.52 |
+
+Family spread is 31.73 points, below 150, but the family intervals are still wide. Prior standard deviations 250, 500 and 1000 give interim combined estimates 2741.94, 2746.40 and 2747.54. Coverage and precision requirements remain unmet.
+
+Before b10, measurement instrumentation changed to implement the reviewed classification. The [new image record](evidence/msh185/shutdown-image.json) pins digest `sha256:60163e4fb2f8f88a28320614b7c8106a3de9c37c5ba3cff5f20d00f64eb3e0cb`. Candidate, native runner, all opponent binaries, clocks, opening method and rating method remain unchanged. Worker instrumentation is not byte-identical across this transition. All 96 strength-tool tests passed; the independent review also checked 27 focused worker/collector tests and independently reproduced the corrected 84-game fit.
+
+b10 is active. **Pending:** final batch results, release replacements, total scores, family spread, prior sensitivity and stopping reason. Across b08–b09, distinguish the eight attempted crash games from the 60 never-started assignments; neither group contributes a score.
 
 After each main batch, refit all results and inspect release scores. Replace an opponent when its running score leaves about 25–75%. The precision stop requires half-width no more than 40 points, at least 30 pairs overall, and at least 20 main pairs in each main family. The study aims for about 300–400 games and cannot exceed 400 scored games. Resource limits can stop it earlier; incomplete precision or coverage must be reported plainly.
 

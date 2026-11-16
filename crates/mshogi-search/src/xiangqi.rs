@@ -209,17 +209,39 @@ impl Error for SearchError {}
 pub fn search(game: &Game, limits: Limits) -> Result<SearchResult, SearchError> {
     search_with_stop(game, limits, || false)
 }
+/// Persistent search state for one Xiangqi game.
+pub type Engine = Searcher<XiangqiPosition>;
+/// Start with an empty table and move statistics.
+pub fn new_engine() -> Engine {
+    Searcher::new(16)
+}
 /// Recorded sound_fast_only policy. Fast Unknown is retained as uncertainty,
 /// not a claim of winnability. No implicit exact graph at any node.
+/// Each call starts with empty state.
 pub fn search_with_stop(
     game: &Game,
     limits: Limits,
+    stop: impl FnMut() -> bool,
+) -> Result<SearchResult, SearchError> {
+    search_with_state(game, limits, None, &mut new_engine(), stop)
+}
+/// Search with caller-owned state and an optional total adapter time budget.
+/// Use a fresh engine for reproducible fixed-limit requests.
+pub fn search_with_state(
+    game: &Game,
+    limits: Limits,
+    time: Option<alphabeta::timing::TimeBudget>,
+    engine: &mut Engine,
     mut stop: impl FnMut() -> bool,
 ) -> Result<SearchResult, SearchError> {
+    let timing = alphabeta::timing::RequestTime::new(time);
+    let mut stop = || stop() || timing.expired();
     run(
         game,
         limits,
         AssessmentEvidence::Fast(game.no_win_assessment()),
+        engine,
+        &timing,
         &mut stop,
     )
 }
@@ -264,7 +286,14 @@ pub fn search_requiring_root_exact(
             result.decision = Some(Decision::ExactNoWin);
             Ok(result)
         }
-        ExactVerdict::NaturalWin { .. } => run(game, limits, result.assessment, &mut stop),
+        ExactVerdict::NaturalWin { .. } => run(
+            game,
+            limits,
+            result.assessment,
+            &mut new_engine(),
+            &alphabeta::timing::RequestTime::new(None),
+            &mut stop,
+        ),
     }
 }
 fn empty(game: &Game, assessment: AssessmentEvidence) -> SearchResult {
@@ -284,6 +313,8 @@ fn run(
     game: &Game,
     limits: Limits,
     evidence: AssessmentEvidence,
+    engine: &mut Engine,
+    timing: &alphabeta::timing::RequestTime,
     stop: &mut dyn FnMut() -> bool,
 ) -> Result<SearchResult, SearchError> {
     if !limits.valid() {
@@ -326,16 +357,9 @@ fn run(
     let root = result.perspective;
     let claim = game.natural_count_eligibility(root).eligible;
     let mut position = XiangqiPosition::from_game(game);
-    let mut searcher = Searcher::<XiangqiPosition>::new(16);
-    let outcome = searcher.search(
+    let outcome = engine.search(
         &mut position,
-        alphabeta::Limits {
-            depth: limits.depth,
-            nodes: Some(limits.nodes),
-            soft: None,
-            hard: None,
-            clock: false,
-        },
+        timing.limits(limits.depth, Some(limits.nodes)),
         stop,
     );
     result.nodes = outcome.nodes;
@@ -375,6 +399,9 @@ fn run(
         return Err(SearchError::Invariant);
     }
     for &m in outcome.pv.iter().take(MAX_LINE) {
+        if !result.principal_variation.is_empty() && timing.expired() {
+            break;
+        }
         if native.conclusion().is_some() || native.pending_adjudication().is_some() {
             break;
         }

@@ -150,12 +150,35 @@ impl Error for SearchError {}
 pub fn search(game: &Game, limits: Limits) -> Result<SearchResult, SearchError> {
     search_with_stop(game, limits, || false)
 }
+/// Persistent search state for one Tori game. Native history stays outside it.
+pub type Engine = Searcher<ToriPosition>;
+
+/// Start with an empty transposition table and move statistics.
+pub fn new_engine() -> Engine {
+    Searcher::new(TABLE_MEGABYTES)
+}
+
 /// Search with a cooperative stop. The stop callback must be cheap.
+/// Each call starts with empty state.
 pub fn search_with_stop(
     game: &Game,
     limits: Limits,
+    stop: impl FnMut() -> bool,
+) -> Result<SearchResult, SearchError> {
+    search_with_state(game, limits, None, &mut new_engine(), stop)
+}
+
+/// Search with caller-owned state and an optional total adapter time budget.
+/// Use a fresh engine for reproducible fixed-limit requests.
+pub fn search_with_state(
+    game: &Game,
+    limits: Limits,
+    time: Option<alphabeta::timing::TimeBudget>,
+    engine: &mut Engine,
     mut stop: impl FnMut() -> bool,
 ) -> Result<SearchResult, SearchError> {
+    let timing = alphabeta::timing::RequestTime::new(time);
+    let mut stop = || stop() || timing.expired();
     if !limits.valid() {
         return Err(SearchError::InvalidLimits);
     }
@@ -189,16 +212,9 @@ pub fn search_with_stop(
         return Err(SearchError::Invariant);
     }
     let mut position = ToriPosition::from_game(game);
-    let mut searcher = Searcher::<ToriPosition>::new(TABLE_MEGABYTES);
-    let outcome = searcher.search(
+    let outcome = engine.search(
         &mut position,
-        alphabeta::Limits {
-            depth: limits.depth,
-            nodes: Some(limits.nodes),
-            soft: None,
-            hard: None,
-            clock: false,
-        },
+        timing.limits(limits.depth, Some(limits.nodes)),
         &mut stop,
     );
     r.nodes = outcome.nodes;
@@ -239,6 +255,9 @@ pub fn search_with_stop(
         .map_err(SearchError::Record)?;
     let mut accepted = 0;
     for &action in &line {
+        if accepted > 0 && timing.expired() {
+            break;
+        }
         if native.conclusion().is_some() {
             break;
         }

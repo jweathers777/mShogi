@@ -36,7 +36,7 @@ pub const MAX_RESPONSE_BYTES: usize = 2 * 1024 * 1024;
 /// Maximum retained stderr bytes per child.
 pub const MAX_STDERR_BYTES: usize = 4096;
 
-/// Explicit finite work limits; an optional Chess time budget is nondeterministic.
+/// Explicit finite work limits; an optional time budget is nondeterministic.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct WorkLimits {
@@ -45,7 +45,7 @@ pub struct WorkLimits {
     pub depth: u16,
     /// Maximum attempted node visits, including discarded iterations.
     pub nodes: u64,
-    /// Optional Chess-only per-request hard thinking budget, in milliseconds.
+    /// Optional per-request hard thinking budget, in milliseconds.
     /// Omission preserves the exact historical deterministic wire encoding.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_ms: Option<u64>,

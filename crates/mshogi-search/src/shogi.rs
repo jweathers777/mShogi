@@ -186,13 +186,36 @@ impl Error for SearchError {}
 pub fn search(game: &Game, limits: Limits) -> Result<SearchResult, SearchError> {
     search_with_stop(game, limits, || false)
 }
+/// Persistent search state for one Shogi game. Native history stays outside it.
+pub type Engine = Searcher<ShogiPosition>;
+
+/// Start with an empty transposition table and move statistics.
+pub fn new_engine() -> Engine {
+    Searcher::new(16)
+}
+
 /// Search a private position with cooperative stop polling. A partial
 /// iteration contributes work only, preserving the last complete iteration.
+/// Each call starts with empty state.
 pub fn search_with_stop(
     game: &Game,
     limits: Limits,
+    stop: impl FnMut() -> bool,
+) -> Result<SearchResult, SearchError> {
+    search_with_state(game, limits, None, &mut new_engine(), stop)
+}
+
+/// Search with caller-owned state and an optional total adapter time budget.
+/// Use a fresh engine for reproducible fixed-limit requests.
+pub fn search_with_state(
+    game: &Game,
+    limits: Limits,
+    time: Option<alphabeta::timing::TimeBudget>,
+    engine: &mut Engine,
     mut stop: impl FnMut() -> bool,
 ) -> Result<SearchResult, SearchError> {
+    let timing = alphabeta::timing::RequestTime::new(time);
+    let mut stop = || stop() || timing.expired();
     if !limits.valid() {
         return Err(SearchError::InvalidLimits);
     }
@@ -253,16 +276,9 @@ pub fn search_with_stop(
         return Err(SearchError::Invariant);
     }
     let mut position = ShogiPosition::from_game(game);
-    let mut searcher = Searcher::<ShogiPosition>::new(16);
-    let outcome = searcher.search(
+    let outcome = engine.search(
         &mut position,
-        alphabeta::Limits {
-            depth: limits.depth,
-            nodes: Some(limits.nodes),
-            soft: None,
-            hard: None,
-            clock: false,
-        },
+        timing.limits(limits.depth, Some(limits.nodes)),
         &mut stop,
     );
     result.nodes = outcome.nodes;
@@ -282,6 +298,9 @@ pub fn search_with_stop(
     }
     let mut native = game.clone();
     for &m in outcome.pv.iter().take(MAX_LINE) {
+        if !result.principal_variation.is_empty() && timing.expired() {
+            break;
+        }
         if native.conclusion().is_some() {
             break;
         }

@@ -1,5 +1,5 @@
 //! Shared clock allocation and iteration timing. No game rules live here.
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 /// Soft iteration target and hard search cutoff for one move.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -55,6 +55,58 @@ impl TimeBudget {
     }
 }
 
+/// One adapter request deadline, including native setup and result validation.
+/// Untimed requests do not read the clock after construction.
+pub struct RequestTime {
+    started: Instant,
+    budget: Option<TimeBudget>,
+}
+impl RequestTime {
+    /// Start accounting before native reconstruction or other request setup.
+    pub fn new(budget: Option<TimeBudget>) -> Self {
+        Self {
+            started: Instant::now(),
+            budget,
+        }
+    }
+    /// Whether the total request budget has expired.
+    pub fn expired(&self) -> bool {
+        self.budget
+            .is_some_and(|time| self.started.elapsed() >= time.hard)
+    }
+    /// Remaining budget, charging setup for both fixed move and clock requests.
+    /// This differs from `TimeBudget::after_elapsed`, whose historical fixed
+    /// Chess move-time semantics start timing at the private search.
+    pub fn remaining(&self) -> Option<TimeBudget> {
+        self.budget.map(|time| {
+            let elapsed = self.started.elapsed();
+            TimeBudget {
+                soft: time.soft.saturating_sub(elapsed),
+                hard: time.hard.saturating_sub(elapsed),
+                clock: time.clock,
+            }
+        })
+    }
+    /// Shared core limits, with a small reserve for native result validation.
+    pub fn limits(&self, depth: u16, nodes: Option<u64>) -> super::Limits {
+        let time = self.remaining().map(|time| {
+            let reserve = (time.hard / 10).min(Duration::from_millis(50));
+            TimeBudget {
+                soft: time.soft.saturating_sub(reserve),
+                hard: time.hard.saturating_sub(reserve),
+                clock: time.clock,
+            }
+        });
+        super::Limits {
+            depth,
+            nodes,
+            soft: time.map(|t| t.soft),
+            hard: time.map(|t| t.hard),
+            clock: time.is_some_and(|t| t.clock),
+        }
+    }
+}
+
 /// Stable choices need less time; a changed choice or falling score needs more.
 /// Scores close to a win/loss are not treated as ordinary evaluation changes.
 pub(super) fn iteration_target(
@@ -80,6 +132,39 @@ pub(super) fn iteration_target(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn request_deadline_charges_setup_and_reserves_native_validation_time() {
+        for clock in [false, true] {
+            let mut request = RequestTime::new(Some(TimeBudget {
+                soft: Duration::from_millis(80),
+                hard: Duration::from_millis(100),
+                clock,
+            }));
+            request.started -= Duration::from_millis(20);
+            let remaining = request.remaining().unwrap();
+            assert!(remaining.hard <= Duration::from_millis(80));
+            assert!(remaining.soft <= Duration::from_millis(60));
+            assert_eq!(remaining.clock, clock);
+            let limits = request.limits(4, Some(100));
+            assert!(limits.hard.unwrap() < remaining.hard);
+            assert!(limits.soft.unwrap() <= limits.hard.unwrap());
+            assert_eq!(limits.depth, 4);
+            assert_eq!(limits.nodes, Some(100));
+            request.started -= Duration::from_secs(1);
+            assert!(request.expired());
+            assert_eq!(request.remaining().unwrap().hard, Duration::ZERO);
+            assert_eq!(request.limits(4, None).hard, Some(Duration::ZERO));
+        }
+        let request = RequestTime::new(None);
+        assert!(!request.expired());
+        assert!(request.remaining().is_none());
+        let limits = request.limits(3, Some(15));
+        assert_eq!(
+            (limits.soft, limits.hard, limits.clock),
+            (None, None, false)
+        );
+    }
+
     #[test]
     fn allocation_never_borrows_future_increment() {
         for remaining in [0, 1, 10, 50, 100, 800, 10_000, u64::MAX] {

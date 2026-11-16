@@ -281,8 +281,8 @@ impl<P: SearchPosition> Searcher<P> {
     }
 
     /// Search `position` and return the best move found. The position is
-    /// restored before return. `stop` is polled about each 2,000 nodes and
-    /// must be cheap.
+    /// restored before return. `stop` is polled every 128 timed nodes or
+    /// 2,048 untimed nodes, and between iterations. It must be cheap.
     pub fn search(
         &mut self,
         position: &mut P,
@@ -446,7 +446,11 @@ impl<P: SearchPosition> Run<'_, P> {
         if ply > self.seldepth {
             self.seldepth = ply;
         }
-        let poll_mask = if self.limits.clock { 127 } else { 2047 };
+        let poll_mask = if self.limits.hard.is_some() {
+            127
+        } else {
+            2047
+        };
         if self.nodes & poll_mask == 0
             && ((self.stop)()
                 || self

@@ -108,8 +108,7 @@ impl ExecutionContext {
     pub fn valid_limits(&self) -> bool {
         if self.limits.time_ms.is_some_and(|ms| ms > 60_000)
             || (self.limits.time_ms.is_some()
-                && (self.game.game_kind() != GameKind::Chess
-                    || matches!(self.purpose, ExecutionPurpose::ChessFullReachability { .. })))
+                && matches!(self.purpose, ExecutionPurpose::ChessFullReachability { .. }))
         {
             return false;
         }

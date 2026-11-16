@@ -57,6 +57,7 @@ struct State {
     last_id: u64,
     last_generation: u64,
     shutdown: bool,
+    retire_engine: bool,
 }
 struct Shared {
     state: Mutex<State>,
@@ -139,6 +140,7 @@ impl EngineBridge {
         if let Some(cancel) = &state.cancel {
             cancel.store(true, Ordering::Release);
         }
+        state.retire_engine = true;
         let retired = (
             state.current.take(),
             state.cancel.take(),
@@ -192,18 +194,39 @@ fn worker(shared: Arc<Shared>, path: PathBuf, options: BridgeOptions) {
     // cancellation or shutdown, so the engine keeps its state between searches.
     let mut engine: Option<Process> = None;
     loop {
-        let pending = {
+        let (pending, retire_engine) = {
             let mut state = shared.state.lock().expect("engine metadata mutex");
-            while state.pending.is_none() && !state.shutdown {
+            while state.pending.is_none() && !state.retire_engine && !state.shutdown {
                 state = shared.wake.wait(state).expect("engine metadata mutex");
             }
             if state.shutdown {
                 break;
             }
-            state.pending.take().expect("pending engine request")
+            (
+                state.pending.take(),
+                std::mem::take(&mut state.retire_engine),
+            )
+        };
+        // An explicit cancellation also discards an idle child. This marker
+        // survives a following submission, so equal loaded histories start cold.
+        let cleanup_error = if retire_engine {
+            engine
+                .take()
+                .and_then(|mut process| process.cleanup(options.cleanup).err())
+        } else {
+            None
+        };
+        let Some(pending) = pending else {
+            if let Some(detail) = cleanup_error {
+                eprintln!("Engine cleanup uncertainty after cancellation: {detail}");
+            }
+            continue;
         };
         // Context serialization/cloning remains off the cancellation metadata lock.
-        let response = run(&path, options, &pending, &mut engine);
+        let response = match cleanup_error {
+            Some(detail) => cleanup_failure(&pending.context, detail),
+            None => run(&path, options, &pending, &mut engine),
+        };
         let mut state = shared.state.lock().expect("engine metadata mutex");
         if !state.shutdown
             && !pending.cancelled.load(Ordering::Acquire)

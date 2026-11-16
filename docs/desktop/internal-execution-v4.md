@@ -31,14 +31,19 @@ an explicit unscored InvalidRequest response; an old flat shape is malformed.
 
 MSH-49.1 adds optional Chess fields within this same family. `WorkLimits` keeps
 mandatory `depth` and `nodes`, with optional `time_ms` (0–60,000 milliseconds)
-for ordinary Chess engine turns or move analysis. The exact time limit is part
-of context equality, request replacement and durable observations. Other games
-and Chess Full refuse this field. Omission serializes exactly as before, so
+for ordinary engine turns or move analysis in all six games. The exact time
+limit is part of context equality, request replacement and durable observations.
+Chess Full refuses this field. Omission serializes exactly as before, so
 existing deterministic requests and observation digests retain their encoding.
 An older strict child may reject the new timed field; the host does not retry
 with downgraded limits or a different protocol. Bundled host/child are built
 together. The process watchdog is separate and must accommodate the requested
-thinking interval plus transport and cleanup; it is never a chess clock result.
+thinking interval plus transport and cleanup; it is never a game clock result.
+Chess preserves its existing fixed search-time semantics. The other adapters
+charge native setup against the submitted budget and reserve up to 50 ms for
+native result validation. All use the shared soft/hard search limits. Clock
+callers must retain transport and scheduling reserve; cooperative search and
+atomic native validation are not a hard real-time wall-clock guarantee.
 
 `CanonicalRecord` explicitly carries game, immutable profile/edition, native
 schema and native root/provenance/complete known history. This does not flatten
@@ -145,7 +150,8 @@ execution interface.
 
 ## Engine session
 
-MSH-169 (Engine Session Persistence). The wire types did not change.
+MSH-169 (Engine Session Persistence) and MSH-179 (Clock and Session for All Games).
+The wire types did not change.
 
 - One child serves successive requests. A response is accepted when its line is
   complete and matches the request; the bridge does not wait for the child to
@@ -156,15 +162,19 @@ MSH-169 (Engine Session Persistence). The wire types did not change.
   idle is replaced once, and the request runs on the new child. A kept child
   that ends with a failure status during a request is an `UnexpectedExit`
   failure with the diagnostic text of that request.
-- Memory: the kept child holds its Chess table (64 MB by default) while it is
-  idle. A request without `time_ms` uses a second table for its duration.
-- Chess: a request with `time_ms` uses the transposition table and move
+- Memory: the child retains state for one game kind at a time: Chess uses a
+  64 MB table by default; the other adapters use 16 MiB tables plus shared
+  move statistics. A request without `time_ms` uses fresh state for its duration.
+- Each game: a request with `time_ms` uses the transposition table and move
   statistics that the child kept, when the game of the last timed request is an
   exact prefix of the game of this request. A new, loaded or taken-back game
-  starts with empty state. A request without `time_ms` always runs on new
+  starts with empty state. Explicit host cancellation retires an idle child as
+  well as active work, so an equal loaded history also starts empty. A request
+  without `time_ms` always runs on new
   state and does not change the kept state, so depth and node limits stay
   reproducible.
-- The other games keep no state between requests at present. A game that moves
-  to the shared search core adds its state to the same session.
+- All six games use the same session retention rule. Native history prefix
+  comparison includes the initial state and immutable profile. A timed switch
+  of game kind drops the previous game state. Desktop defaults are unchanged.
 - `process_generation` is a request identity that increases with each
   submission. It does not count child processes.

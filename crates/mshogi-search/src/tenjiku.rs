@@ -156,13 +156,36 @@ impl Error for SearchError {}
 pub fn search(game: &Game, limits: Limits) -> Result<SearchResult, SearchError> {
     search_with_stop(game, limits, || false)
 }
+/// Persistent search state for one Tenjiku game. Native history stays outside it.
+pub type Engine = Searcher<TenjikuPosition>;
+
+/// Start with an empty transposition table and move statistics.
+pub fn new_engine() -> Engine {
+    Searcher::new(16)
+}
+
 /// Cooperative stop through the shared core. Native root queries and replay
 /// are bounded native operations; hosts may terminate the child.
+/// Each call starts with empty state.
 pub fn search_with_stop(
     game: &Game,
     limits: Limits,
+    stop: impl FnMut() -> bool,
+) -> Result<SearchResult, SearchError> {
+    search_with_state(game, limits, None, &mut new_engine(), stop)
+}
+
+/// Search with caller-owned state and an optional total adapter time budget.
+/// Use a fresh engine for reproducible fixed-limit requests.
+pub fn search_with_state(
+    game: &Game,
+    limits: Limits,
+    time: Option<alphabeta::timing::TimeBudget>,
+    engine: &mut Engine,
     mut stop: impl FnMut() -> bool,
 ) -> Result<SearchResult, SearchError> {
+    let timing = alphabeta::timing::RequestTime::new(time);
+    let mut stop = || stop() || timing.expired();
     if !limits.valid() {
         return Err(SearchError::InvalidLimits);
     }
@@ -204,16 +227,9 @@ pub fn search_with_stop(
     }
     let mut position = TenjikuPosition::from_game(game);
     position.restrict_root(&legal);
-    let mut searcher = Searcher::<TenjikuPosition>::new(16);
-    let outcome = searcher.search(
+    let outcome = engine.search(
         &mut position,
-        alphabeta::Limits {
-            depth: limits.depth,
-            nodes: Some(limits.nodes),
-            soft: None,
-            hard: None,
-            clock: false,
-        },
+        timing.limits(limits.depth, Some(limits.nodes)),
         &mut stop,
     );
     r.nodes = outcome.nodes;
@@ -243,6 +259,9 @@ pub fn search_with_stop(
         };
     let mut first_conclusion = None;
     for &m in outcome.pv.iter().take(MAX_LINE) {
+        if !r.principal_variation.is_empty() && timing.expired() {
+            break;
+        }
         if native.conclusion().is_some() {
             break;
         }

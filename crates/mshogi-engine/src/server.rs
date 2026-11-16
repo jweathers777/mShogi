@@ -1,6 +1,10 @@
 use crate::*;
 use mshogi_core::chess::{AdjudicatedGame, AdjudicationMode};
-use mshogi_search::{coordination::SearchCoordinator, search::SearchLimits};
+use mshogi_search::{
+    alphabeta::timing::{RequestTime, TimeBudget},
+    coordination::SearchCoordinator,
+    search::SearchLimits,
+};
 use std::{
     io::{self, BufRead, Read, Write},
     thread,
@@ -10,15 +14,83 @@ use std::{
 /// Engine state that lasts for the life of one engine process.
 ///
 /// The desktop keeps one engine process and sends one request for each
-/// search. The state lets a timed Chess search use the transposition table
+/// search. The state lets a timed search use the transposition table
 /// and move statistics of the earlier moves of the same game.
 #[derive(Default)]
 pub(crate) struct Session {
-    chess: Option<ChessSession>,
+    kind: Option<mshogi_core::native::GameKind>,
+    chess: Slot<SearchCoordinator>,
+    shogi: Slot<mshogi_search::shogi::Engine>,
+    xiangqi: Slot<mshogi_search::xiangqi::Engine>,
+    tori: Slot<mshogi_search::tori::Engine>,
+    chu: Slot<mshogi_search::chu::Engine>,
+    tenjiku: Slot<mshogi_search::tenjiku::Engine>,
 }
-struct ChessSession {
-    coordinator: SearchCoordinator,
-    last: mshogi_core::chess::GameRecord,
+/// One lifecycle rule for every game. Fixed-limit requests do not touch this slot.
+struct Slot<T> {
+    kept: Option<(mshogi_core::native::CanonicalRecord, T)>,
+}
+impl<T> Default for Slot<T> {
+    fn default() -> Self {
+        Self { kept: None }
+    }
+}
+trait Reset {
+    fn reset(&mut self);
+}
+impl Reset for SearchCoordinator {
+    fn reset(&mut self) {
+        self.new_game();
+    }
+}
+impl<P: mshogi_search::alphabeta::SearchPosition> Reset for mshogi_search::alphabeta::Searcher<P> {
+    fn reset(&mut self) {
+        self.clear();
+    }
+}
+impl<T: Reset> Slot<T> {
+    fn acquire<E>(
+        &mut self,
+        context: &ExecutionContext,
+        prefix: impl FnOnce(usize) -> Option<mshogi_core::native::CanonicalRecord>,
+        create: impl FnOnce() -> Result<T, E>,
+    ) -> Result<EngineState<'_, T>, E> {
+        if context.limits.time_ms.is_none() {
+            return create().map(EngineState::Fresh);
+        }
+        if let Some((last, state)) = &mut self.kept {
+            if prefix(last.event_count()).as_ref() != Some(last) {
+                state.reset();
+            }
+            *last = context.game.clone();
+        } else {
+            self.kept = Some((context.game.clone(), create()?));
+        }
+        Ok(EngineState::Kept(
+            &mut self.kept.as_mut().expect("kept engine").1,
+        ))
+    }
+}
+enum EngineState<'a, T> {
+    Fresh(T),
+    Kept(&'a mut T),
+}
+impl<T> std::ops::Deref for EngineState<'_, T> {
+    type Target = T;
+    fn deref(&self) -> &T {
+        match self {
+            Self::Fresh(state) => state,
+            Self::Kept(state) => state,
+        }
+    }
+}
+impl<T> std::ops::DerefMut for EngineState<'_, T> {
+    fn deref_mut(&mut self) -> &mut T {
+        match self {
+            Self::Fresh(state) => state,
+            Self::Kept(state) => state,
+        }
+    }
 }
 
 /// Read one bounded request line. `Ok(None)` is a clean end of input.
@@ -101,52 +173,6 @@ pub fn serve(mut input: impl BufRead, mut output: impl Write) -> io::Result<()> 
     }
 }
 
-/// The coordinator for this request, and whether the session keeps it.
-///
-/// A request with a time budget is not deterministic, so it can use the state
-/// of the earlier moves. It keeps that state only when the last timed game is
-/// an exact prefix of this game; a new, loaded or taken-back game starts
-/// empty. A request without a time budget must give the same result each
-/// time, so it always gets a new coordinator and leaves the session unchanged.
-fn chess_coordinator<'a>(
-    session: &'a mut Session,
-    record: &mshogi_core::chess::GameRecord,
-    timed: bool,
-) -> Result<Coordinator<'a>, std::io::Error> {
-    if !timed {
-        return SearchCoordinator::new().map(Coordinator::Fresh);
-    }
-    match &mut session.chess {
-        Some(chess) => {
-            if record.prefix(chess.last.events().len()).as_ref() != Some(&chess.last) {
-                chess.coordinator.new_game();
-            }
-            chess.last = record.clone();
-        }
-        None => {
-            session.chess = Some(ChessSession {
-                coordinator: SearchCoordinator::new()?,
-                last: record.clone(),
-            });
-        }
-    }
-    Ok(Coordinator::Kept(
-        &session.chess.as_ref().expect("chess session").coordinator,
-    ))
-}
-enum Coordinator<'a> {
-    Fresh(SearchCoordinator),
-    Kept(&'a SearchCoordinator),
-}
-impl std::ops::Deref for Coordinator<'_> {
-    type Target = SearchCoordinator;
-    fn deref(&self) -> &SearchCoordinator {
-        match self {
-            Self::Fresh(coordinator) => coordinator,
-            Self::Kept(coordinator) => coordinator,
-        }
-    }
-}
 fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResult {
     let mshogi_core::native::CanonicalRecord::Chess(record) = &context.game else {
         unreachable!()
@@ -184,7 +210,15 @@ fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResu
             ),
         };
     }
-    let coordinator = match chess_coordinator(session, record, context.limits.time_ms.is_some()) {
+    let coordinator = match session.chess.acquire(
+        context,
+        |n| {
+            record
+                .prefix(n)
+                .map(mshogi_core::native::CanonicalRecord::chess)
+        },
+        SearchCoordinator::new,
+    ) {
         Ok(coordinator) => coordinator,
         Err(error) => return ChessResult::failure(FailureKind::Search, error),
     };
@@ -214,19 +248,29 @@ fn execute_chess(context: &ExecutionContext, session: &mut Session) -> ChessResu
 }
 
 pub(crate) fn execute(context: &ExecutionContext, session: &mut Session) -> ExecutionResult {
+    let time = RequestTime::new(context.limits.time_ms.map(TimeBudget::from_hard_ms));
+    // Only one game's tables are retained. Untimed probes leave the timed session alone.
+    if context.limits.time_ms.is_some() && session.kind != Some(context.game.game_kind()) {
+        *session = Session::default();
+        session.kind = Some(context.game.game_kind());
+    }
     match context.game.game_kind() {
-        mshogi_core::native::GameKind::Tenjiku => execute_tenjiku(context),
-        mshogi_core::native::GameKind::Chu => execute_chu(context),
-        mshogi_core::native::GameKind::Tori => execute_tori(context),
-        mshogi_core::native::GameKind::Xiangqi => execute_xiangqi(context),
-        mshogi_core::native::GameKind::Shogi => execute_shogi(context),
+        mshogi_core::native::GameKind::Tenjiku => execute_tenjiku(context, session, &time),
+        mshogi_core::native::GameKind::Chu => execute_chu(context, session, &time),
+        mshogi_core::native::GameKind::Tori => execute_tori(context, session, &time),
+        mshogi_core::native::GameKind::Xiangqi => execute_xiangqi(context, session, &time),
+        mshogi_core::native::GameKind::Shogi => execute_shogi(context, session, &time),
         mshogi_core::native::GameKind::Chess => ExecutionResult::Chess {
             result: execute_chess(context, session),
         },
     }
 }
 
-fn execute_shogi(context: &ExecutionContext) -> ExecutionResult {
+fn execute_shogi(
+    context: &ExecutionContext,
+    session: &mut Session,
+    time: &RequestTime,
+) -> ExecutionResult {
     if matches!(
         context.purpose,
         ExecutionPurpose::ChessFullReachability { .. }
@@ -253,12 +297,28 @@ fn execute_shogi(context: &ExecutionContext) -> ExecutionResult {
             "shogi analysis target disagrees with exact native history and side",
         );
     }
-    match mshogi_search::shogi::search(
+    let mut engine = session
+        .shogi
+        .acquire(
+            context,
+            |n| {
+                record
+                    .prefix(n)
+                    .ok()
+                    .map(mshogi_core::native::CanonicalRecord::shogi)
+            },
+            || Ok::<_, std::convert::Infallible>(mshogi_search::shogi::new_engine()),
+        )
+        .expect("infallible engine allocation");
+    match mshogi_search::shogi::search_with_state(
         &game,
         mshogi_search::shogi::Limits {
             depth: context.limits.depth,
             nodes: context.limits.nodes,
         },
+        time.remaining(),
+        &mut engine,
+        || false,
     ) {
         Ok(result) => ExecutionResult::Shogi {
             result: ShogiResult::searched(result),
@@ -267,7 +327,11 @@ fn execute_shogi(context: &ExecutionContext) -> ExecutionResult {
     }
 }
 
-fn execute_xiangqi(context: &ExecutionContext) -> ExecutionResult {
+fn execute_xiangqi(
+    context: &ExecutionContext,
+    session: &mut Session,
+    time: &RequestTime,
+) -> ExecutionResult {
     if matches!(
         context.purpose,
         ExecutionPurpose::ChessFullReachability { .. }
@@ -284,12 +348,28 @@ fn execute_xiangqi(context: &ExecutionContext) -> ExecutionResult {
         Ok(game) => game,
         Err(error) => return ExecutionResult::failure(FailureKind::InvalidRequest, error),
     };
-    match mshogi_search::xiangqi::search(
+    let mut engine = session
+        .xiangqi
+        .acquire(
+            context,
+            |n| {
+                game.committed_prefix(n)
+                    .ok()
+                    .and_then(|g| mshogi_core::xiangqi::GameRecord::from_game(&g).ok())
+                    .map(mshogi_core::native::CanonicalRecord::xiangqi)
+            },
+            || Ok::<_, std::convert::Infallible>(mshogi_search::xiangqi::new_engine()),
+        )
+        .expect("infallible engine allocation");
+    match mshogi_search::xiangqi::search_with_state(
         &game,
         mshogi_search::xiangqi::Limits {
             depth: context.limits.depth,
             nodes: context.limits.nodes,
         },
+        time.remaining(),
+        &mut engine,
+        || false,
     ) {
         Ok(result) => match XiangqiResult::searched(result) {
             Ok(result) => ExecutionResult::Xiangqi { result },
@@ -299,7 +379,11 @@ fn execute_xiangqi(context: &ExecutionContext) -> ExecutionResult {
     }
 }
 
-fn execute_tori(context: &ExecutionContext) -> ExecutionResult {
+fn execute_tori(
+    context: &ExecutionContext,
+    session: &mut Session,
+    time: &RequestTime,
+) -> ExecutionResult {
     if !matches!(
         context.purpose,
         ExecutionPurpose::EngineTurn {} | ExecutionPurpose::MoveAnalysis { .. }
@@ -327,12 +411,27 @@ fn execute_tori(context: &ExecutionContext) -> ExecutionResult {
         Ok(game) => game,
         Err(e) => return ExecutionResult::failure(FailureKind::InvalidRequest, e),
     };
-    match mshogi_search::tori::search(
+    let mut engine = session
+        .tori
+        .acquire(
+            context,
+            |n| {
+                game.record_prefix(n)
+                    .ok()
+                    .map(mshogi_core::native::CanonicalRecord::tori)
+            },
+            || Ok::<_, std::convert::Infallible>(mshogi_search::tori::new_engine()),
+        )
+        .expect("infallible engine allocation");
+    match mshogi_search::tori::search_with_state(
         &game,
         mshogi_search::tori::Limits {
             depth: context.limits.depth,
             nodes: context.limits.nodes,
         },
+        time.remaining(),
+        &mut engine,
+        || false,
     ) {
         Ok(result) => ExecutionResult::Tori {
             result: ToriResult::searched(result),
@@ -341,7 +440,11 @@ fn execute_tori(context: &ExecutionContext) -> ExecutionResult {
     }
 }
 
-fn execute_chu(context: &ExecutionContext) -> ExecutionResult {
+fn execute_chu(
+    context: &ExecutionContext,
+    session: &mut Session,
+    time: &RequestTime,
+) -> ExecutionResult {
     if !matches!(
         context.purpose,
         ExecutionPurpose::EngineTurn {} | ExecutionPurpose::MoveAnalysis { .. }
@@ -369,12 +472,27 @@ fn execute_chu(context: &ExecutionContext) -> ExecutionResult {
         Ok(game) => game,
         Err(e) => return ExecutionResult::failure(FailureKind::InvalidRequest, e),
     };
-    match mshogi_search::chu::search(
+    let mut engine = session
+        .chu
+        .acquire(
+            context,
+            |n| {
+                game.record_prefix(n)
+                    .ok()
+                    .map(mshogi_core::native::CanonicalRecord::chu)
+            },
+            || Ok::<_, std::convert::Infallible>(mshogi_search::chu::new_engine()),
+        )
+        .expect("infallible engine allocation");
+    match mshogi_search::chu::search_with_state(
         &game,
         mshogi_search::chu::Limits {
             depth: context.limits.depth,
             nodes: context.limits.nodes,
         },
+        time.remaining(),
+        &mut engine,
+        || false,
     ) {
         Ok(result) => ExecutionResult::Chu {
             result: ChuResult::searched(result),
@@ -383,7 +501,11 @@ fn execute_chu(context: &ExecutionContext) -> ExecutionResult {
     }
 }
 
-fn execute_tenjiku(context: &ExecutionContext) -> ExecutionResult {
+fn execute_tenjiku(
+    context: &ExecutionContext,
+    session: &mut Session,
+    time: &RequestTime,
+) -> ExecutionResult {
     if !matches!(
         context.purpose,
         ExecutionPurpose::EngineTurn {} | ExecutionPurpose::MoveAnalysis { .. }
@@ -411,12 +533,27 @@ fn execute_tenjiku(context: &ExecutionContext) -> ExecutionResult {
         Ok(game) => game,
         Err(e) => return ExecutionResult::failure(FailureKind::InvalidRequest, e),
     };
-    match mshogi_search::tenjiku::search(
+    let mut engine = session
+        .tenjiku
+        .acquire(
+            context,
+            |n| {
+                game.record_prefix(n)
+                    .ok()
+                    .map(mshogi_core::native::CanonicalRecord::tenjiku)
+            },
+            || Ok::<_, std::convert::Infallible>(mshogi_search::tenjiku::new_engine()),
+        )
+        .expect("infallible engine allocation");
+    match mshogi_search::tenjiku::search_with_state(
         &game,
         mshogi_search::tenjiku::Limits {
             depth: context.limits.depth,
             nodes: context.limits.nodes,
         },
+        time.remaining(),
+        &mut engine,
+        || false,
     ) {
         Ok(result) => ExecutionResult::Tenjiku {
             result: TenjikuResult::searched(result),

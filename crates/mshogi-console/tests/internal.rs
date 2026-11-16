@@ -319,3 +319,20 @@ fn a_kept_engine_process_that_fails_during_a_request_is_a_typed_failure() {
     assert_eq!(wait(&bridge).observation.context.request_id, 32);
     stop(&bridge);
 }
+
+#[test]
+fn cancelling_an_idle_engine_clears_state_before_immediate_or_delayed_resubmit() {
+    let bridge = bridge(env!("CARGO_BIN_EXE_mshogi"), Duration::from_secs(60));
+    let cold = timed_nodes(&bridge, 1);
+    assert_ne!(timed_nodes(&bridge, 2), cold);
+    // A document replacement can occur while no search is active. Immediate
+    // resubmission must not race with retirement and reuse the old game state.
+    bridge.cancel();
+    assert!(bridge.poll().is_none());
+    assert_eq!(timed_nodes(&bridge, 3), cold);
+    assert_ne!(timed_nodes(&bridge, 4), cold);
+    bridge.cancel();
+    thread::sleep(Duration::from_millis(30));
+    assert_eq!(timed_nodes(&bridge, 5), cold);
+    stop(&bridge);
+}

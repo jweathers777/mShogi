@@ -87,10 +87,19 @@ coordinator's worker thread owns it for the life of the worker.
   it as `setoption name Hash value N` (1 to 4096, default 64).
 - The desktop keeps one engine process (MSH-169 (Engine Session Persistence),
   `docs/desktop/internal-execution-v4.md`). A timed search continues with the
-  state of the earlier moves of the same game. Cancellation of a running
-  search stops the process, and the next search starts with empty state.
+  state of the earlier moves of the same game. Explicit cancellation stops
+  active or idle processes, and the next search starts with empty state.
 - A fresh engine gives the same result for the same depth or node limit. A
   warm table changes node counts; that is intended.
+
+MSH-179 (Clock and Session for All Games) extends this policy to all six games
+and both Tenjiku profiles. Each adapter exposes caller-owned search state; one
+server slot mechanism retains it only for timed, exact history continuations.
+Fixed-limit requests use fresh state and leave the retained state unchanged.
+The core owns clock allocation and iteration timing. Non-Chess adapters use
+shared `RequestTime` accounting for setup and native result work. Chess keeps
+its earlier fixed search-time semantics. See the [protocol contract](../desktop/internal-execution-v4.md)
+and [verification](evidence/msh179/README.md). Desktop defaults do not change.
 
 ## Bounded ordering history
 
@@ -237,8 +246,8 @@ Private analysis uses these approximations:
 
 Limits are depth 1–64 and at most 5,000,000 nodes. Desktop play and default USI
 use depth 64 and 300,000 nodes; a reported line has at most eight actions.
-Each request starts with an empty table and history statistics. MSH-179
-(Clock and Session for All Games) remains the separate time/session task.
+Fixed-limit requests start with empty tables and statistics. Timed internal
+requests use the shared session policy above.
 
 The new identities are `mshogi.shogi.shared-core.v1` and
 `mshogi.shogi.material-placement.v1`. A shared observation helper classifies
@@ -288,8 +297,8 @@ Private approximations are explicit:
 
 Depth is 1–64 and nodes are bounded at 5,000,000. Default UCI 0–9 and desktop
 play use depth 64 and 300,000 nodes. The reported line has at most eight actions.
-A request starts with an empty table; MSH-179 (Clock and Session for All Games)
-remains separate. Saved full-width observations retain their old identities,
+Fixed-limit requests start with empty tables; timed requests use the shared
+session policy above. Saved full-width observations retain their old identities,
 limits and checks through the shared identity helper. Current identities are
 `mshogi.xiangqi.shared-core.v1` and `mshogi.xiangqi.material-placement.v1`.
 
@@ -383,8 +392,8 @@ Private analysis remains separate from native adjudication:
 
 Nominal depth is 1–64, with at most 5,000,000 nodes. Default play uses depth 64
 and 300,000 nodes. A reported line contains at most eight complete actions.
-Each request starts a fresh searcher with a 16 MiB transposition table and the
-bounded history tables. MSH-179 (Clock and Session for All Games) remains separate.
+Fixed-limit requests start a fresh searcher with a 16 MiB transposition table
+and bounded history tables. Timed requests use the shared session policy above.
 Current identities are `mshogi.chu.shared-core.v1` and
 `mshogi.chu.material-placement.v1`.
 
@@ -458,10 +467,9 @@ Private analysis has these limits:
 Nominal depth is 1–64, with at most 5,000,000 nodes and eight reported actions.
 Default play uses depth 64 and 50,000 nodes, selected from fixed-root cost
 and completion measurements in both profiles.
-Each request creates a fresh 16 MiB transposition table. The 22,528 history
+Fixed-limit requests create a fresh 16 MiB transposition table. The 22,528 history
 slots use 90,112 bytes of basic history and the capped 32 MiB continuation
-table. Clock and session reuse remain in MSH-179 (Clock and Session for All
-Games). Current identities are `mshogi.tenjiku.shared-core.v1` and
+table. Timed requests use the shared session policy above. Current identities are `mshogi.tenjiku.shared-core.v1` and
 `mshogi.tenjiku.material-placement.v1`.
 
 ## What Tori showed, and what the other games need
@@ -556,8 +564,7 @@ of these games moves, not in a copy for each game.
   [bounded comparison](evidence/msh167/README.md).
 - The evaluation has the same arithmetic as before. MSH-168 (Classical Endgame
   and King Evaluation) owns its improvement.
-- Only Chess has a time budget and state that lasts between moves. Tori and
-  the other games search with fixed node limits. The shared time policy is
-  available for their later adapter adoption; this round does not change those
-  application controls or promise clock support in those adapters.
+- All six games support time budgets and retained state through the internal
+  protocol. Desktop choices remain in MSH-140 (Player Thinking Time); existing
+  defaults retain their fixed node limits outside Chess.
 - The search is single-threaded.

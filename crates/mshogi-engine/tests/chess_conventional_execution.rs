@@ -65,7 +65,7 @@ fn omitted_extensions_preserve_historical_wire_and_observation_encoding() {
     assert_eq!(serde_json::to_string(&telemetry).unwrap(), old);
 }
 #[test]
-fn thinking_time_is_exact_request_identity_and_only_chess_ordinary_work_accepts_it() {
+fn thinking_time_is_exact_request_identity_and_only_ordinary_work_accepts_it() {
     let original = context();
     let mut timed = original.clone();
     timed.limits.time_ms = Some(1_000);
@@ -89,7 +89,9 @@ fn thinking_time_is_exact_request_identity_and_only_chess_ordinary_work_accepts_
     timed.game = CanonicalRecord::shogi(mshogi_core::shogi::GameRecord::from_game(
         &mshogi_core::shogi::Game::new(),
     ));
-    assert!(!timed.valid_limits());
+    timed.limits = SHOGI_PLAY_LIMITS;
+    timed.limits.time_ms = Some(1);
+    assert!(timed.valid_limits());
     timed = original;
     timed.purpose = ExecutionPurpose::ChessFullReachability {
         target: ExecutionTarget {

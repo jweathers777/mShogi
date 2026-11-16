@@ -1,9 +1,11 @@
 ---
 id: MSH-179
 title: Clock and Session for All Games
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-15T22:31:00Z'
+updated_date: '2026-11-16T19:31:00Z'
 labels:
   - handle:all-games-time-state
 milestone: m-5
@@ -42,3 +44,22 @@ Handle: Clock and Session for All Games.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Baseline: main 36de154a; Chess alone retains timed search state. Inspect all adapters and protocol consumers. Use one shared state/timing mechanism, native root admission and history identity; fixed-limit calls remain fresh. Owner: Codex, primary checkout, codex/all-games-time-state.
+2. Add shared timed/persistent search support for all six games and protocol admission. Preserve desktop defaults and earlier saved observations. Reset state on non-continuation histories and game/profile changes.
+3. Verify fixed-depth nodes and best moves against the frozen baseline; run native/search and protocol/session regressions, bounded timed native games and reset tests. Initial timing experiment bound: 10 minutes actual local runtime; compare elapsed requests against budgets and correct overruns before expansion. No strength claim; identical fixed searches need no predecessor game test under the roadmap exception.
+4. Level 2: protocol and process-session changes. Run focused native engine/session/console checks locally on macOS and select Linux/Windows process checks based on final diff. Full packaged GUI compatibility is deferred to the next integration/release checkpoint. Obtain independent review, resolve findings, integrate into main and push.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Early independent review found that explicit cancel after a completed request left the idle child alive. This could retain tables after loading an equal history. Added a separate retirement flag consumed by the supervisor before reuse; ordinary next-move submission does not set it. This makes process lifetime an actual cross-platform risk: required Level 2 scope is the targeted process suite on macOS, Linux and Windows, plus local search/session/persistence checks. Full packaged GUI remains deferred.
+
+Initial local checks: all seven frozen standard-root depth-2 results match predecessor nodes, best moves and scores; generic timed state/reset tests pass. Existing Chess fixed-move timing deliberately counts private search time, not complete request wall time (its regression requires elapsed >= submitted time). Preserve that contract. Clock evidence must record the actual game-clock allowance, submitted search budget, explicit transport reserve and full request elapsed separately; no hard-real-time guarantee is claimed for atomic native replay/validation.
+
+Checkpoint: seven frozen depth-2 standard-root node/best/score records are exactly unchanged. All 28 native clock-play turns passed with shared clock allocation and measured caller reserves (300 ms cold, 50 ms warm); initial fixed-search-time experiment is retained and shows Chess setup overhead, not a game-clock compliance result. Continue to final Level 2 checks and review; no predecessor strength match is required under the identical fixed-search exception.
+<!-- SECTION:NOTES:END -->

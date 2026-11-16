@@ -943,8 +943,8 @@ impl Board {
         // orthogonal Queen ray. The direct one-landing test is insufficient.
         if matches!(special, Special::DiagonalDouble)
             && distance(from, target) <= 2
-            && (from % 16).abs_diff(target % 16) % 2 == 0
-            && (from / 16).abs_diff(target / 16) % 2 == 0
+            && (from % 16).abs_diff(target % 16).is_multiple_of(2)
+            && (from / 16).abs_diff(target / 16).is_multiple_of(2)
         {
             return true;
         }

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-16T14:48:00Z'
+updated_date: '2026-11-16T14:56:00Z'
 labels:
   - handle:tenjiku-search-core-adoption
 milestone: m-5
@@ -69,4 +69,6 @@ Initial correctness checkpoint: nine adapter tests pass, preserving native zero/
 Measured checkpoint: fast generation is 6.0x native on standard roots and 1.9x on active area/burn roots in both profiles. Reconstruction of 913 accepted known events averages 93–97 microseconds. Independent review found and fixed a Muller Free Eagle blocked-ray threat/SEE prefilter omission, with an exact native regression. Consumer checks pass engine11, session28 (5ignored), consoleCLI8, frontend17/typecheck and standalonehost1/check. Console internal tests preserve a standard-board Timeout under the provisional300000-node default and existing15s deadline (2passed/4failed). Do not relax that deadline. Calibrate the coherent source at10000nodes first, single worker, both profiles and both predecessor settings; bounded600seconds initial calibration, all failures retained. No game-strength conclusion yet.
 
 Current decision: use depth64/10000nodes for interactive default after both standard roots, eight ordinary Adams roots, both eight-root reduced sets and Adams tactical controls complete. Standard candidate4/3depth at1.10/0.77seconds. Old default1/1024 fails reduced seed8 with depth0; retain it. Old maximum2/2000 completes both reduced sets and is the proposed game comparator. Reduced median request cost54ms candidate versus1.9seconds predecessor; both nominal depth1 there. These are completion/performance observations, not strength. Fixed quiet prefix at seed6 permits an immediate conclusion; retain it and disclose this corpus limit. Independent source review has no unresolved blocker; runtime console rerun and both profile game gates remain open.
+
+Source checkpointf4e1b7c2: full workspace1218passed/1failed/13ignored. The sole failure is an obsolete runner depth3 rejection; change it to65 for the new64 limit and rerun affected runner checks. All Tenjiku console6/selfplay2 journeys pass unchanged15s deadlines. Clippy requests two equivalent is_multiple_of expressions; apply and rerun. Calibration82pairs/251.71summed stage seconds: candidate10k admits all actions; oldmaximum admits all40fixed roots; olddefault seed8 fails bothprofiles. An exposed native-only tactical proof on existing seed1000002 checks all42replies perprofile: new8f-4b+ forces actual royal capture in3; old8f-9e+ permitsR10d-10c and none of606native replies wins immediately. This is post-calibration decision evidence, not a blind strength score. Game settings and1320s separate pilot cap plus1800s reduced campaign cap are recorded before play in corpus-protocol.md.
 <!-- SECTION:NOTES:END -->

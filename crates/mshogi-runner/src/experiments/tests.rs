@@ -43,7 +43,7 @@ fn strict_effective_limits_and_bounded_aggregate_work() {
         assert!(Config::from_json(&value.to_string()).is_err(), "{field}");
     }
     let mut bad = c.clone();
-    bad.players[0].limits[6].work.depth = 3;
+    bad.players[0].limits[6].work.depth = 65;
     assert!(bad.validate().is_err());
     let mut bad = c.clone();
     bad.players[0].limits[2].work.nodes = mshogi_search::xiangqi::MAX_NODES + 1;

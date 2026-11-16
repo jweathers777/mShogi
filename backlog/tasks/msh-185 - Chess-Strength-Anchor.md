@@ -1,10 +1,11 @@
 ---
 id: MSH-185
 title: Chess Strength Anchor
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-16T21:11:00Z'
+updated_date: '2026-11-16T21:29:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -70,3 +71,17 @@ The report states the estimate with its uncertainty and conditions, the bracketi
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Inspect the native clock runner and existing GCP execution path; freeze main f433ea13 and a dated single-CPU CCRL candidate list. 2. Record the joint rating model, pair-aware uncertainty, prior, stopping rules, opening allocation and resource accounting before play; obtain independent method review. 3. Build pinned Linux engines and minimal measurement glue, verify offline and cloud smoke checks. 4. Run sequential eight-game bracketing rounds, then rotated main batches on at most eight c3-standard-4 workers, enforcing six hours and USD15 across all match work. 5. Validate native replay, joint and family estimates, failure/resource records and cleanup; review the report, update roadmap, integrate and push.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner: Codex chat 01a1e634-7fc9-72c2-b4b4-07022a7df3ec. Branch codex/chess-strength-anchor in the primary checkout. Startup: clean main f433ea13, no active Backlog owners, other relevant app chats idle or not loaded. Backlog 1.55.3 matches baseline. Measurement only; no production engine change. Linux cloud execution plus focused local harness checks and independent method/report review; broader platform checks are not applicable.
+
+Pre-play checkpoint: method.md, opponent-candidates.md and frozen openings under docs/m5/evidence/msh185. Independent method, statistics, worker and batch reviews completed; identified native command-size and uniform-score precision defects were corrected before play. Actual Linux config/replay probe passed with nonexistent engine paths (zero games). First three opponents and candidate passed non-search UCI/Hash64 handshakes. Initial anchor Stash20.0.1=2511 selected before play for normal increment support; MrBob0.7=2505 ignores increment in its original time policy. GCP storage prefix empty, no VMs, C3 quota32 unused; existing Pub/Sub verified. Local Docker used only to build Linux binaries/images and run offline/non-search checks. Cloud match clock has not started.
+<!-- SECTION:NOTES:END -->

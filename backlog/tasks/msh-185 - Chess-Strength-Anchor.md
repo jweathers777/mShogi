@@ -4,7 +4,7 @@ title: Chess Strength Anchor
 status: Ready
 assignee: []
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-16T21:02:00Z'
+updated_date: '2026-11-16T21:05:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -13,10 +13,8 @@ references:
   - https://www.computerchess.org/
   - https://github.com/official-stockfish/books
 documentation:
-  - docs/m5/strength-roadmap.md
-  - docs/m5/chess-strength-assessment.md
-  - docs/m5/chess-strength-assessment-report.md
-  - docs/m5/strength-harness.md
+  - docs/experiments/parallel-runner.md
+  - docs/experiments/gcp-novice-setup.md
 priority: high
 ordinal: 192000
 ---
@@ -36,7 +34,8 @@ One anchored estimate of present Chess strength against independent rated engine
 This rating study against external engines is approved within these bounds:
 - Time control 60 s + 0.6 s Fischer increment for both engines. mShogi uses its own time manager (MSH-167); no fixed move time.
 - About three independent opponent engine families in the main phase, about 300-400 scored games in total including bracketing games.
-- Hard compute cap: 6 hours of wall time for all match work, including bracketing, failures and reruns. Stop at the cap and report what is complete.
+- Run in the cloud (John, 2026-11-16), not on the local Mac.
+- Hard caps: 6 hours of wall time for all match work and US$15 of estimated cloud compute, including bracketing, failures, reruns and smoke tests. Stop at the first cap reached and report what is complete.
 Any larger sample, longer time control or different opponent class needs a new approval.
 
 ## Approach
@@ -46,7 +45,7 @@ Any larger sample, longer time control or different opponent class needs a new a
 - Phase 1, bracketing (sequential noisy bisection): start with a wide prior (about 2000-3000; MSH-139 gives about 1900 for the older engine, and later self-play gains point higher). Play 4 pairs against a candidate near the middle of the prior (about 2500). Refit, then play the next 4 pairs against the candidate nearest the current estimate. Repeat until the estimate is within about +/-100 (normally 3-4 rounds) or about one hour of wall time is used. One game near 50% gives about three times the information of one at 90%, so stop bracketing early.
 - Phase 2, main sample: choose about three engines from different families within about +/-150 of the estimate. Rotate between them in batches; refit after each batch. Replace an opponent if its running score leaves about 25-75%. Stop when the 95% interval of the combined estimate is about +/-30-40, or at the 6-hour cap. Beyond about 300 games, systematic error (CCRL anchor uncertainty, hardware and time-control difference from the list, family style effects) exceeds the statistical error, so more games help little.
 - Openings: the CC0 Stockfish 8moves_v3 book, as in MSH-139, one fresh opening per pair with colors reversed. The pair is the statistical unit.
-- At most 4 games in parallel on the M1 Pro Mac. Record OS, load and hardware.
+- Cloud execution: reuse the existing Google Cloud Batch path of MSH-161 (Competitive Gameplay Diagnosis) (`tools/experiments/gcp.py`, docs/experiments/parallel-runner.md, docs/experiments/gcp-novice-setup.md, docs/m5/evidence/msh161/cloud-primary/README.md); do not build new cloud infrastructure. Use one machine type for all games and both phases; record machine type, CPU model, region, OS and image. Use dedicated vCPUs with one engine thread per game, at most one game per two vCPUs (each game runs two engines), so that games do not compete for CPU. Build mShogi and all opponents for the VM architecture from recorded sources and verify their hashes on the VM. Bracketing is sequential: run each bracketing round as a small batch and refit before the next. The main phase may use many games in parallel. Record VM-hours and estimated cost per batch, confirm that all VMs and jobs are deleted at the end, and keep games, logs and results in the repository evidence or a recorded storage location.
 - Reuse the existing native external UCI runner and replay path that MSH-139 used (`docs/m5/chess-strength-assessment.md`, `docs/m5/evidence/msh139/`) and the strength harness clock mode where it fits. A minimal extension for the sequential opponent choice is acceptable; do not build a new framework.
 - Native rules decide every result. No evaluation adjudication. Process failures, time losses caused by the harness and technical caps stay unscored and are reported.
 - Report the combined estimate and also a per-opponent estimate for each main-phase family. If per-family estimates disagree by more than 150 points, report the disagreement and do not hide it in the combined number.
@@ -57,8 +56,8 @@ The report states the estimate with its uncertainty and conditions, the bracketi
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The frozen mShogi revision, binary hash, opponent engines (exact versions, sources, build hashes, options), CCRL snapshot URL and date, openings, time control, hardware and actual compute are recorded.
-- [ ] #2 Games run at 60 s + 0.6 s for both engines within the approved 6-hour wall-time cap; every scored result is a native conclusion that passes native replay, and failures or unscored games are reported, not hidden.
+- [ ] #1 The frozen mShogi revision, binary hash, opponent engines (exact versions, sources, build hashes, options), CCRL snapshot URL and date, openings, time control, cloud machine type, CPU model and region, and actual compute (wall time, VM-hours, estimated cost) are recorded.
+- [ ] #2 Games run in the cloud at 60 s + 0.6 s for both engines on one machine type, within the approved 6-hour wall-time and US$15 caps; every scored result is a native conclusion that passes native replay, failures or unscored games are reported, and cleanup of all cloud resources is verified.
 - [ ] #3 The rating model, prior and stopping rule are recorded before play; opponents are chosen by the sequential bracketing and main-phase rules, and the report shows each bracketing round and every opponent change.
 - [ ] #4 The report gives one combined estimate from a joint fit of all scored games with a 95% interval, per-family estimates with an agreement check, and a comparison with MSH-139 and MSH-161; it states that the index is not an official CCRL or human rating.
 - [ ] #5 docs/m5/strength-roadmap.md records the result as the closing Chess checkpoint, and an independent review accepts the method and the report.

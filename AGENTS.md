@@ -63,6 +63,18 @@ Harness) and MSH-164 (Shared Search Core):
   regressions plainly. These rules do not authorize extra spending, studies,
   changed game rules, or work outside the authorized scope.
 
+## Long tests run in the cloud
+
+Project direction, 2026-11-16: run long measurement work (game tests, rating
+studies, large suites; roughly more than one hour of local wall time) in the
+cloud by default, to get results sooner. Reuse the existing Google Cloud Batch
+path (`tools/experiments/gcp.py`, `docs/experiments/parallel-runner.md`); do not
+build new cloud infrastructure per task. Use one machine type per comparison,
+record machine type, CPU, VM-hours and estimated cost, and verify cleanup. This
+changes where tests run, not what they need: approval and spending rules for
+each kind of test stay as written above and in `docs/m5/strength-roadmap.md`.
+Short focused checks during implementation may stay local.
+
 ## Session startup
 
 - Inspect Git status, branch, remotes, worktrees, recent relevant commits, and active ownership before editing. Preserve existing dirty and untracked work. Apply the branch and checkout rules below before making changes; a clean checkout can still belong to an active worker.

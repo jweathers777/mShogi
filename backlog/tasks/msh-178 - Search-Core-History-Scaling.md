@@ -1,11 +1,11 @@
 ---
 id: MSH-178
 title: Search Core History Scaling
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-16T00:20:00Z'
+updated_date: '2026-11-16T00:21:00Z'
 labels:
   - handle:search-history-scaling
 milestone: m-5
@@ -40,7 +40,7 @@ Handle: Search Core History Scaling.
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -67,3 +67,17 @@ Game checkpoint: the original 1,800-second wall bound stopped the comparison aft
 
 Final independent review accepted with no blocking findings: docs/m5/evidence/msh178/review.md. The reviewer independently verified all 1,142 archive member hashes/sizes/source bytes, all 571 pair scores and engine hashes, complete 575-index accounting, CPU including four cancellations, 54 fixed-depth equivalences, and native replay of the first and last completed pairs. Retain on the recorded engineering not-weaker grounds; the SPRT remains no decision and its interval does not exclude a 10-Elo loss. AC3 uses its recorded not-weaker alternative, not a claim of statistical non-inferiority. All local checks and review support Level 1 completion. Integration into main is next.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+The shared core now caps basic history at 256 KiB and continuation history at 32 MiB: at most 32.25 MiB of payload, plus fixed metadata. Larger slot spaces use bounded indexing; all four current adapters keep exact dense indices and update arithmetic. Chu and Tenjiku expected memory is recorded in docs/m5/shared-search-core.md. Native rules and search policy are unchanged.
+
+All acceptance criteria have evidence in docs/m5/evidence/msh178/README.md and verification.json. Workspace verification passed 1,181 tests, with 10 explicitly ignored; search, history bounds/collisions, Clippy and formatting passed. Independent review accepted with no blocking findings and audited all report hashes, scores, compute accounting and representative native replays.
+
+The original 30-minute Chess comparison completed 571 color pairs: 300 wins, 291 losses, 551 draws, zero failed pairs and four recorded cancellations. The SPRT reached NO DECISION; no statistical non-inferiority or gain is claimed. AC3 uses its recorded not-weaker alternative on independently reviewed engineering grounds: exact unchanged dense behavior, 54 identical fixed-depth searches, clean speed/blunder parity, and no contrary game signal. The demonstrated benefit is the memory bound. No protocol extension was needed for this storage-only change.
+
+Integrated into main by merge de2572c28a665f53d02178090649f16a9b972334. Frozen production: 5742d8f480fb9eca253fd591532601a724ca4829. Final test source: f121672d8421eacaa8a974b314f73c2b86d2cda1. Evidence: 1a9f58ea. Integrated product and test files match the verified source.
+
+Level 1 on macOS arm64. Linux, Windows and packaged GUI execution remain deferred to the next significant integration/release checkpoint. The future hashed ordering quality belongs to MSH-182 (Chu Search Core Adoption) and MSH-183 (Tenjiku Search Core Adoption). Next recommended eligible task: MSH-182 (Chu Search Core Adoption). MSH-179 (Clock and Session for All Games) remains separate.
+<!-- SECTION:FINAL_SUMMARY:END -->

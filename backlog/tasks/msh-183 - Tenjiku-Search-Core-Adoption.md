@@ -1,11 +1,11 @@
 ---
 id: MSH-183
 title: Tenjiku Search Core Adoption
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-16T18:22:00Z'
+updated_date: '2026-11-16T18:23:00Z'
 labels:
   - handle:tenjiku-search-core-adoption
 milestone: m-5
@@ -44,7 +44,7 @@ Handle: Tenjiku Search Core Adoption.
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -101,4 +101,16 @@ PAUSED at user request on2026-11-16 before laptop shutdown/disconnection. All ga
 Resumed at the user request on 2026-11-16 from clean checkpoint c956c08f. The same chat still owns codex/tenjiku-search-core in the primary checkout. Backlog 1.55.3 matches the project baseline. Main and origin/main remain 4fe70d24 after fetch; production code, tests, frontend and harness are identical to tested source f822b955. No new game or test run is needed. Finishing evidence curation and independent review before integration.
 
 Final independent review accepts integration with no unresolved blocker. All 64 reduced pairs were independently audited; each profile has 59 wins, no draws and 5 losses, LLR 6.28334 above 2.94444. All 26 selected native replay receipts match archived report hashes and pass. The 66 final pairs, including standard pilots, contain 132 native-concluded games and zero unfinished games. Final-round wall time is 1072.84 seconds. Evidence curation is complete; no completed tests or games were rerun after the pause. All acceptance criteria are supported. Integration into main and the final completion record remain.
+
+Integration complete: main fast-forwarded to dd99f1aa. Product source matches tested f822b955 exactly. All acceptance and completion items are supported. Final evidence review passed after the pause; no tests or games were repeated. Normal push and removal of this completed feature branch follow.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Tenjiku now uses the shared search core for both Adams and Muller profiles. A fast 256-square position handles ranked jumps, complete routes, promotion rights and Demon effects. Native rules retain actual-game authority, and legacy saved observations remain valid. The final default is depth 64 / 50,000 nodes with a four-ply tactical horizon; failed earlier settings and their evidence are retained.
+
+Both profile sequential tests accepted H1 after 32 complete color pairs each: 59 wins, no draws and 5 losses against the frozen predecessor at depth 2 / 2,000 nodes. All four separate standard games were candidate wins. The claim is conditional on the fixed exposed corpus and work settings, not an external rating. All 26 selected native replays passed. Final local checks passed: 129 search, 11 engine, 28 session, 16 console and 1 host tests, plus Clippy and formatting; unchanged scope reuses the recorded broad and frontend evidence. Independent review found no unresolved blocker.
+
+Integrated into main at dd99f1aa044f1718a6bf05a68c0d188f3d75ae02; tested product source f822b955 is unchanged. Evidence: docs/m5/evidence/msh183/README.md and verification.json. Level 1 on macOS arm64; Linux, Windows and packaged GUI remain at the next integration/release checkpoint. Follow-ups: MSH-184 (Native Report Replay Cost) and MSH-179 (Clock and Session for All Games).
+<!-- SECTION:FINAL_SUMMARY:END -->

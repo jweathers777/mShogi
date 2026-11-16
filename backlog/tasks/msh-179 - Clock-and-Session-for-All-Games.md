@@ -1,11 +1,11 @@
 ---
 id: MSH-179
 title: Clock and Session for All Games
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-16T19:31:00Z'
+updated_date: '2026-11-16T19:47:00Z'
 labels:
   - handle:all-games-time-state
 milestone: m-5
@@ -30,18 +30,18 @@ Handle: Clock and Session for All Games.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Every game on the shared core accepts a time budget through the internal protocol, and the engine never exceeds the hard limit in a recorded set of games under a clock
-- [ ] #2 Engine state lasts between the moves of one game for every game on the core, and a new, loaded or taken-back game starts empty, as for Chess
-- [ ] #3 Requests with fixed depth or node limits stay reproducible, and saved documents with earlier observations still open
-- [ ] #4 The mechanism is shared: no per-game copy of time allocation or session handling, and Chess behavior and tests are unchanged
-- [ ] #5 Level 2 checks on the selected platforms, and independent review, are recorded
+- [x] #1 Every game on the shared core accepts a time budget through the internal protocol, and the engine never exceeds the hard limit in a recorded set of games under a clock
+- [x] #2 Engine state lasts between the moves of one game for every game on the core, and a new, loaded or taken-back game starts empty, as for Chess
+- [x] #3 Requests with fixed depth or node limits stay reproducible, and saved documents with earlier observations still open
+- [x] #4 The mechanism is shared: no per-game copy of time allocation or session handling, and Chess behavior and tests are unchanged
+- [x] #5 Level 2 checks on the selected platforms, and independent review, are recorded
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -62,4 +62,10 @@ Early independent review found that explicit cancel after a completed request le
 Initial local checks: all seven frozen standard-root depth-2 results match predecessor nodes, best moves and scores; generic timed state/reset tests pass. Existing Chess fixed-move timing deliberately counts private search time, not complete request wall time (its regression requires elapsed >= submitted time). Preserve that contract. Clock evidence must record the actual game-clock allowance, submitted search budget, explicit transport reserve and full request elapsed separately; no hard-real-time guarantee is claimed for atomic native replay/validation.
 
 Checkpoint: seven frozen depth-2 standard-root node/best/score records are exactly unchanged. All 28 native clock-play turns passed with shared clock allocation and measured caller reserves (300 ms cold, 50 ms warm); initial fixed-search-time experiment is retained and shows Chess setup overhead, not a game-clock compliance result. Continue to final Level 2 checks and review; no predecessor strength match is required under the identical fixed-search exception.
+
+Product source 88d052034f59d641413ac5a48f9585fd883b590a is committed and pushed on codex/all-games-time-state. Independent source/evidence review accepts the change; idle-cancel finding is resolved and actual subprocess regression passes. Evidence is in docs/m5/evidence/msh179/. Final local serial process regression and targeted process CI on macOS/Linux/Windows (run 43940509964) are running; these are not yet recorded as passed. Workspace clippy and formatting pass. No integration or Done claim until required results complete.
+
+Final local source 88d05203: process suite 329 passed/4 ignored; desktop-session suite 321 passed/5 ignored; standalone Tauri host check passed (existing tao dependency warnings). Source diff under crates/desktop/tools remains empty since tested commit. Routine push CI 43940472152 passed format, clippy, search and frontend checks. Targeted Linux process job passed; hosted macOS and Windows remain pending. Acceptance 1–4 supported; criterion 5 and integration remain open.
+
+All required checks passed on product source 88d05203. Targeted process run 43940509964 completed successfully on macos-15, ubuntu-24.04 and windows-2022. Final verification.json records job identities/times and local checks. Independent review accepts source and evidence; final result addendum records the completed gates. No production changes since tested source. Ready for normal integration into main.
 <!-- SECTION:NOTES:END -->

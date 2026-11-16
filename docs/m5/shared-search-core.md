@@ -186,8 +186,9 @@ its private full-width minimax. The trait and the core did not change.
   come back through a capture and a drop. The forbidden departures of the root
   come from the native game and are removed from the root move list.
 - Limits: depth 1 to 64 and at most 5,000,000 nodes. The desktop plays with
-  300,000 nodes. A request has no time budget, so each search starts with an
-  empty table and equal requests give equal results. The reported line has at
+  300,000 nodes. Requests without a time budget start with an empty table
+  and equal requests give equal results. Timed requests use the shared session
+  policy above. The reported line has at
   most eight actions, because a saved document keeps and replays each line.
 - Observations: the new search has the identities `mshogi.tori.shared-core.v1`
   and `mshogi.tori.material-placement.v1`. Its score is not the static value

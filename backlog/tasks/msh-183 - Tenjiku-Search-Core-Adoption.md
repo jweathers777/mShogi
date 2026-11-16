@@ -1,11 +1,11 @@
 ---
 id: MSH-183
 title: Tenjiku Search Core Adoption
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-16T16:02:00Z'
+updated_date: '2026-11-16T18:22:00Z'
 labels:
   - handle:tenjiku-search-core-adoption
 milestone: m-5
@@ -32,18 +32,18 @@ Handle: Tenjiku Search Core Adoption.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Tenjiku searches through the shared core with no game-specific branch inside the core
-- [ ] #2 The Tenjiku search position agrees with the native rules on perft counts and on a randomized differential test of legal actions, resulting positions and hashes, with constructed positions that exercise general jumps and post-jump captures in both profiles
-- [ ] #3 The private Tenjiku search is removed, the engine, console, runner and desktop paths of Tenjiku still work, and saved observations of the earlier search identity stay valid
-- [ ] #4 Tenjiku with the shared core is stronger than its present engine in a game test with a sequential decision
-- [ ] #5 Approximations of the native rules inside the search, and any change to the trait or core, are recorded in docs/m5/shared-search-core.md
+- [x] #1 Tenjiku searches through the shared core with no game-specific branch inside the core
+- [x] #2 The Tenjiku search position agrees with the native rules on perft counts and on a randomized differential test of legal actions, resulting positions and hashes, with constructed positions that exercise general jumps and post-jump captures in both profiles
+- [x] #3 The private Tenjiku search is removed, the engine, console, runner and desktop paths of Tenjiku still work, and saved observations of the earlier search identity stay valid
+- [x] #4 Tenjiku with the shared core is stronger than its present engine in a game test with a sequential decision
+- [x] #5 Approximations of the native rules inside the search, and any change to the trait or core, are recorded in docs/m5/shared-search-core.md
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -97,4 +97,8 @@ Final Adams reducedSPRT accepted H1 after32completepairs:59wins/0draws/5losses, 
 Both final profile gates PASS: Muller also acceptsH1 after32completepairs,59wins/0draws/5losses,no failures,269.74seconds. Candidate/old medianrequest0.269/1.808seconds anddepth5/1. Adams245.52s plusMuller269.74s gives515.26seconds reducedcampaignwall, within1800cap. All4standardgames and128reducedgames conclude natively; no finalround exclusions/unscoredgames. Bounded native replay and final independent audit now run before main integration.
 
 PAUSED at user request on2026-11-16 before laptop shutdown/disconnection. All games and native replays have finished; worker agents interrupted, no further work authorized until resume. Final sourcef822b955/q4/50000 passes local checks and both SPRTs: each32pairs,59wins/0draws/5losses; all4standardpilotgames also candidatewins. Native replay26selectedpairs passed in23.71seconds; raw audit covers66pairs/132nativegames, independent audit recomputes bothLLRs6.28334 above2.94444. Evidence is underdocs/m5/evidence/msh183/round3. Remaining: finish aggregate compute/README curation, reviewer final replay-receipt acceptance, reconcile verification/summary, check supported acceptance criteria, integrate into main, push and remove ownfeaturebranch. Main/originmain lastconfirmed4fe70d24; featurecodex/tenjiku-search-core owns primarycheckout. MSH-184 (Native Report Replay Cost) created as separate Ready follow-up depending on183. No merge or push performed for183. Resume from this local checkpoint; do not rerun completed games or broad checks without a new reason.
+
+Resumed at the user request on 2026-11-16 from clean checkpoint c956c08f. The same chat still owns codex/tenjiku-search-core in the primary checkout. Backlog 1.55.3 matches the project baseline. Main and origin/main remain 4fe70d24 after fetch; production code, tests, frontend and harness are identical to tested source f822b955. No new game or test run is needed. Finishing evidence curation and independent review before integration.
+
+Final independent review accepts integration with no unresolved blocker. All 64 reduced pairs were independently audited; each profile has 59 wins, no draws and 5 losses, LLR 6.28334 above 2.94444. All 26 selected native replay receipts match archived report hashes and pass. The 66 final pairs, including standard pilots, contain 132 native-concluded games and zero unfinished games. Final-round wall time is 1072.84 seconds. Evidence curation is complete; no completed tests or games were rerun after the pause. All acceptance criteria are supported. Integration into main and the final completion record remain.
 <!-- SECTION:NOTES:END -->

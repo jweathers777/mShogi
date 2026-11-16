@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-16T21:29:00Z'
+updated_date: '2026-11-16T21:39:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -84,4 +84,8 @@ The report states the estimate with its uncertainty and conditions, the bracketi
 Owner: Codex chat 01a1e634-7fc9-72c2-b4b4-07022a7df3ec. Branch codex/chess-strength-anchor in the primary checkout. Startup: clean main f433ea13, no active Backlog owners, other relevant app chats idle or not loaded. Backlog 1.55.3 matches baseline. Measurement only; no production engine change. Linux cloud execution plus focused local harness checks and independent method/report review; broader platform checks are not applicable.
 
 Pre-play checkpoint: method.md, opponent-candidates.md and frozen openings under docs/m5/evidence/msh185. Independent method, statistics, worker and batch reviews completed; identified native command-size and uniform-score precision defects were corrected before play. Actual Linux config/replay probe passed with nonexistent engine paths (zero games). First three opponents and candidate passed non-search UCI/Hash64 handshakes. Initial anchor Stash20.0.1=2511 selected before play for normal increment support; MrBob0.7=2505 ignores increment in its original time policy. GCP storage prefix empty, no VMs, C3 quota32 unused; existing Pub/Sub verified. Local Docker used only to build Linux binaries/images and run offline/non-search checks. Cloud match clock has not started.
+
+First cloud bracket submitted as msh185-b01-v1 (UID msh185-b01-v1-9b664eb9-6f5a-4d1e-923d0) at 2026-11-16T21:29:58Z. Campaign clock and caps in docs/m5/evidence/msh185/campaign.json; deadline is fixed at start+21600s. Source checkpoint20d3471e; image digest6f050b230db16669df5df3aba93e94d5cad60ad8e35dfb49c7e1ffc7fddf73f1. Eight single-game tasks, Stash20.0.1, first four frozen opening pairs. Active local controller session13382 owns completion, retrieval and cleanup; output target/msh185/runs/b01, log target/msh185/batches/b01-controller.log. Durable raw store gs://mshogi-experiments-216675633801/msh185/b01. Do not duplicate submission. Startup status SCHEDULED, eight pending tasks, observed boot image batch-cos-stable-official-20261110-00-p01; no result yet.
+
+b01 completed/reviewed:5W3D0L, all8native replays and73artifact hashes pass;5checkmates,2threefold draws,1dead-position draw; no flags/failures. All8C3 workers on IntelSapphireRapids/us-central1-a;0.4938234094VM-hours, estimatedUSD0.09955875, zero allocation failures. Job/VM/disk absence verified. Provisional joint2742.66, broad2384.43–3191.01 interval. Next nearest admitted built anchor Stash21=2713; b02 four fresh pairs submitted under same campaign clock and pool image8290f64d7051548c5e86f62929c8f00e1504ceb77836c474832756224016b627. Active controller session77601;target/msh185/runs/b02. Full opponent build evidence saved; Raven0.80 excluded before use for demonstrated upstream out-of-bounds write, no gameplay patch.
 <!-- SECTION:NOTES:END -->

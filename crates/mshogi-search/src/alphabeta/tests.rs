@@ -433,14 +433,14 @@ fn table_entries_survive_search_requests_until_new_game() {
 
 /// A hand-solved tactical chain: a threatened side has one quiet escape to a
 /// terminal loss for its opponent. A separate quiet leaf has static value 37.
-struct HorizonGame {
+struct HorizonGame<const Q: usize> {
     state: u32,
     path: Vec<u32>,
 }
-impl SearchPosition for HorizonGame {
+impl<const Q: usize> SearchPosition for HorizonGame<Q> {
     type Move = u32;
     const HISTORY_SLOTS: usize = 2;
-    const QUIESCENCE_PLIES: usize = 8;
+    const QUIESCENCE_PLIES: usize = Q;
     fn hash(&self) -> u64 {
         (0x1820_0000 + u64::from(self.state)) << 32 | 17
     }
@@ -510,7 +510,11 @@ impl SearchPosition for HorizonGame {
         self.state == 0 && m == 1
     }
 }
-fn horizon_probe(s: &mut Searcher<HorizonGame>, pos: &mut HorizonGame, qdepth: usize) -> i32 {
+fn horizon_probe<const Q: usize>(
+    s: &mut Searcher<HorizonGame<Q>>,
+    pos: &mut HorizonGame<Q>,
+    qdepth: usize,
+) -> i32 {
     let mut stop = || false;
     let mut run = Run {
         s,
@@ -528,39 +532,50 @@ fn horizon_probe(s: &mut Searcher<HorizonGame>, pos: &mut HorizonGame, qdepth: u
     // Absolute ply is deliberately different: the tactical horizon is relative.
     run.quiesce(13, qdepth, -1000, 1000, false)
 }
-#[test]
-fn bounded_quiescence_keeps_quiet_evasions_and_checks_terminal_before_horizon() {
-    let mut s = Searcher::<HorizonGame>::new(1);
+fn check_horizon<const Q: usize>() {
+    let mut s = Searcher::<HorizonGame<Q>>::new(1);
     let mut p = HorizonGame {
         state: 0,
         path: vec![],
     };
-    assert_eq!(horizon_probe(&mut s, &mut p, 7), 73);
+    assert_eq!(horizon_probe(&mut s, &mut p, Q - 1), 73);
     assert_eq!(p.state, 0);
     assert!(p.path.is_empty());
     // At the stated horizon, threat uncertainty is zero, not stand-pat 37.
-    assert_eq!(horizon_probe(&mut s, &mut p, 8), 0);
+    assert_eq!(horizon_probe(&mut s, &mut p, Q), 0);
     p.state = 1;
-    assert_eq!(horizon_probe(&mut s, &mut p, 8), -73);
+    assert_eq!(horizon_probe(&mut s, &mut p, Q), -73);
     p.state = 2;
-    assert_eq!(horizon_probe(&mut s, &mut p, 8), 37);
+    assert_eq!(horizon_probe(&mut s, &mut p, Q), 37);
 }
 #[test]
-fn bounded_quiescence_rejects_shallow_cache_for_fresh_tactical_work() {
-    let mut s = Searcher::<HorizonGame>::new(1);
+fn bounded_quiescence_keeps_quiet_evasions_and_checks_terminal_before_horizon() {
+    check_horizon::<4>();
+    check_horizon::<8>();
+}
+fn check_horizon_cache<const Q: usize>() {
+    let mut s = Searcher::<HorizonGame<Q>>::new(1);
     let mut p = HorizonGame {
         state: 2,
         path: vec![],
     };
     let hash = p.hash();
-    s.table.store(hash, 13, 0, 999, Some(37), -7, Bound::Exact);
+    let shallow = -((Q - 1) as i32);
+    s.table
+        .store(hash, 13, 0, 999, Some(37), shallow, Bound::Exact);
     assert_eq!(horizon_probe(&mut s, &mut p, 0), 37);
     assert_eq!(s.table.probe(hash, 13).unwrap().depth, 0);
     s.table.store(hash, 13, 0, 888, Some(37), 0, Bound::Exact);
-    assert_eq!(horizon_probe(&mut s, &mut p, 7), 888);
+    assert_eq!(horizon_probe(&mut s, &mut p, Q - 1), 888);
     s.table.clear();
-    s.table.store(hash, 13, 0, 777, Some(37), -7, Bound::Exact);
-    assert_eq!(horizon_probe(&mut s, &mut p, 7), 777);
+    s.table
+        .store(hash, 13, 0, 777, Some(37), shallow, Bound::Exact);
+    assert_eq!(horizon_probe(&mut s, &mut p, Q - 1), 777);
     assert_eq!(p.state, 2);
     assert!(p.path.is_empty());
+}
+#[test]
+fn bounded_quiescence_rejects_shallow_cache_for_fresh_tactical_work() {
+    check_horizon_cache::<4>();
+    check_horizon_cache::<8>();
 }

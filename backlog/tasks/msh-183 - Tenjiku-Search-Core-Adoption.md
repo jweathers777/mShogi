@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-16T15:15:00Z'
+updated_date: '2026-11-16T15:34:00Z'
 labels:
   - handle:tenjiku-search-core-adoption
 milestone: m-5
@@ -79,4 +79,8 @@ Game checkpoint FAILED at practical completion. Both standard color pairs stop o
 Bounded diagnosis supports a budget correction, not a core change: first iterations for all five refused roots complete at11266–44540nodes (0.16–0.98seconds); qsearch dominates, with selective depth9. The hypothesized repeated-threat extension path is not the measured cause here. Full100k turns on failures plusbothinitialroots complete at leastdepth1 with observed maximum7.71seconds. Keep q8 and core policy unchanged. Confirm frozenunmodified adapter agreement within the120second diagnostic runtime cap, then use explicit100k for a new independent pilot checkpoint. Do not yet change productdefault or claim restored gameplay completion.
 
 Frozen unmodified f3f4ee2c confirms all7diagnostic roots at100k: exact node/depth/best agreement with passive instrumented copy, all choices completed, maximum7.516seconds. Actual measured search/probe runtime92.220seconds (plus0.013s rejected wire command); total preparation-to-receipt elapsed318.646seconds including compilation/analysis/messages. Thus the120second runtime cap was met, but an end-to-end120second interpretation was not; record both, no false wall-cap claim. No production source changed. Round2 runs only both standard pilots at explicit100k, then stops at a checkpoint before reduced tests; protocol in round2/.
+
+Round2 Adams still fails candidate firstiteration at100k (step11,3.036seconds,depth0); othercolor reaches native conclusion after92steps, but the pair is unaccepted after outer645second timeout. Complete report was written; source shows repeated final report validation including post-write summary validation. No score counted. ExistingMuller pilot remains bounded; no furthergames. Decision: budget-only correction has failed twice, so change direction. Test one coherent private policy change: Tenjiku q horizon8→4, preserving full threatened responses beforehorizon, native rules and the sharedcore. Compare allknownfailures plusordinary/reduced/tacticalcontrols atfixedlimits; retain/reject on completion/cost/decisions before freshgamegates. Do not weaken no-completed-iteration semantics or exclude positions. Repeatedreportvalidation is a separate observedconsumercost, not explanation for the candidate refusal.
+
+Q4 controlled matrix completed54requests with choices and maximum4.587seconds: all6knownfailed firstiterations now221/1031/7876/149/894/1905nodes; bothinitialcontrols91/99. Full50k matrix covers sixfailedroots, sixteenordinary, sixteenreduced and eighttactical controls. Native response validation and final receipt pending. Decision: retain q4 for the next candidate and set interactive default50k (ample measured firstiteration margin, lower cost than q8/100k). Independent hand-solved core horizon/cache regressions now exercise both4 and8. Run focused search/consumer/host checks, then fresh source-frozen pilot and profile game gates; no acceptance yet.
 <!-- SECTION:NOTES:END -->

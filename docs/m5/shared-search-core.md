@@ -442,17 +442,21 @@ Private analysis has these limits:
   It retains uncertain royal/material endings and exhausted work. Each query
   allows eight recapture levels, 63 projections, 2,048 generated routes and
   4,096 geometry probes. The core bypasses this filter at threatened nodes.
-- Quiescence uses Chu's eight-ply bound and signed tactical table depth.
+- Quiescence uses a four-ply bound and the shared signed tactical table depth.
   Before the horizon it searches quiet evasions when threatened. At the
   horizon a threatened position receives an uncertain zero estimate; other
   positions use static evaluation. This does not establish a native result.
+  Longer exchanges, repeated threats and delayed burn effects can be missed.
+  The initial eight-ply setting exhausted even 100,000 nodes before completing
+  an iteration on an ordinary game position. The shorter bound controls that
+  cost; its playing effect is assessed separately through predecessor games.
 - Search generation retains one route for each exactly equal successor in
   each stage. Equality includes every cell's original identity and rights;
   turn and profile are fixed within a stage. Native root admission precedes
   this reduction. Full legal generation and perft retain all complete routes.
 
 Nominal depth is 1–64, with at most 5,000,000 nodes and eight reported actions.
-Default play uses depth 64 and 10,000 nodes, selected from fixed-root cost
+Default play uses depth 64 and 50,000 nodes, selected from fixed-root cost
 and completion measurements in both profiles.
 Each request creates a fresh 16 MiB transposition table. The 22,528 history
 slots use 90,112 bytes of basic history and the capped 32 MiB continuation

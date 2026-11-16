@@ -35,7 +35,7 @@ pub const MAX_LINE: usize = 8;
 /// Default bounded interactive work.
 pub const DEFAULT_LIMITS: Limits = Limits {
     depth: MAX_DEPTH,
-    nodes: 10_000,
+    nodes: 50_000,
 };
 /// Untrained hundredths-of-a-Pawn material values. Royals receive a finite
 /// survival value; only native terminal adjudication establishes a result.

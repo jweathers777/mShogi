@@ -1098,7 +1098,7 @@ mod tests {
             assert_eq!(opened.game, GameKind::Tenjiku);
             assert_eq!(opened.profile, profile);
             assert_eq!(opened.play_limits.depth, 64);
-            assert_eq!(opened.play_limits.nodes, 10_000);
+            assert_eq!(opened.play_limits.nodes, 50_000);
             assert!(opened.paused);
             assert!(opened.capabilities.engine_turn && opened.capabilities.move_analysis);
             assert!(opened.observations.is_empty());

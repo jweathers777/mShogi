@@ -1314,7 +1314,7 @@ impl TenjikuPosition {
 }
 impl SearchPosition for TenjikuPosition {
     type Move = Move;
-    const QUIESCENCE_PLIES: usize = 8;
+    const QUIESCENCE_PLIES: usize = 4;
     const HISTORY_SLOTS: usize = 2 * 44 * N;
     fn hash(&self) -> u64 {
         self.board.hash

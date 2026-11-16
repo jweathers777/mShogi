@@ -53,7 +53,7 @@ fn played(case: &str, game: &t::Game) -> (t::Game, t::Action, TenjikuTelemetry) 
         WorkLimits {
             time_ms: None,
             depth: 64,
-            nodes: 10_000
+            nodes: 50_000
         }
     );
     let begin = Instant::now();

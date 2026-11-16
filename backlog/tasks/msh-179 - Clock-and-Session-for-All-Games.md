@@ -1,11 +1,11 @@
 ---
 id: MSH-179
 title: Clock and Session for All Games
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-16T19:47:00Z'
+updated_date: '2026-11-16T19:48:00Z'
 labels:
   - handle:all-games-time-state
 milestone: m-5
@@ -42,7 +42,7 @@ Handle: Clock and Session for All Games.
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -68,4 +68,16 @@ Product source 88d052034f59d641413ac5a48f9585fd883b590a is committed and pushed 
 Final local source 88d05203: process suite 329 passed/4 ignored; desktop-session suite 321 passed/5 ignored; standalone Tauri host check passed (existing tao dependency warnings). Source diff under crates/desktop/tools remains empty since tested commit. Routine push CI 43940472152 passed format, clippy, search and frontend checks. Targeted Linux process job passed; hosted macOS and Windows remain pending. Acceptance 1–4 supported; criterion 5 and integration remain open.
 
 All required checks passed on product source 88d05203. Targeted process run 43940509964 completed successfully on macos-15, ubuntu-24.04 and windows-2022. Final verification.json records job identities/times and local checks. Independent review accepts source and evidence; final result addendum records the completed gates. No production changes since tested source. Ready for normal integration into main.
+
+Integrated reviewed commits88d05203 and3c86ec04 into main. No separate task worktree was created; the primary checkout was used. The completion record is documentation-only. Final push and cleanup follow.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+All six games and both Tenjiku profiles now accept time_ms and retain tables and move statistics through one shared session rule. Exact timed history continuations keep state. Different histories or profiles clear it. Fixed-limit requests remain fresh. Explicit cancellation also retires idle children, so an equal-history reload starts empty. Desktop defaults and native rules are unchanged.
+
+Seven frozen depth-2 node, best-move and score comparisons are identical. All 28 native-admitted clock turns met their recorded game-clock allowances with explicit startup and delivery reserves. The initial failed Chess wall-time assumption is preserved; its fixed search-time semantics remain unchanged. The roadmap identical-search exception applies; no strength claim or predecessor match was made. Search: 166 passed, 4 ignored. Final local process: 329 passed, 4 ignored. Desktop session: 321 passed, 5 ignored. Formatting, workspace clippy, standalone host and routine native/frontend CI passed. Targeted process run 43940509964 passed on macOS, Linux and Windows. Independent review accepted the final source and evidence after the idle-cancel correction.
+
+Integrated into main at 3c86ec04; tested product source 88d052034f59d641413ac5a48f9585fd883b590a is unchanged. See docs/m5/evidence/msh179/README.md and verification.json. Cooperative timing does not guarantee wall time under arbitrary scheduling or histories. Full packaged GUI verification remains deferred to the next integration or release checkpoint. MSH-140 (Player Thinking Time) owns player controls. Next ready task: MSH-184 (Native Report Replay Cost).
+<!-- SECTION:FINAL_SUMMARY:END -->

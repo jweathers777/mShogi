@@ -1,11 +1,11 @@
 ---
 id: MSH-182
 title: Chu Search Core Adoption
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-16T10:23:00Z'
+updated_date: '2026-11-16T10:24:00Z'
 labels:
   - handle:chu-search-core-adoption
 milestone: m-5
@@ -45,7 +45,7 @@ Handle: Chu Search Core Adoption.
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -134,10 +134,16 @@ Frozen83b2bcef gates: exactfailedmidgame smoke passed native admission, candidat
 Final sequential gate PASSED on83b2bcef:32completecolorpairs/64candidatewins, zero draws/losses/unfinished games; SPRT H1 accepted under fixedH0=0/H1=15, alpha/beta0.05, min30/max600, fourworkers. Wall333.47seconds; candidate/old medians151/547ms and depth6/1, request totals48.27/738.80seconds. All prior failures retained separately. Strength claim is conditional on the fixed balanced reduced corpus, not an external rating or standard-start qualification. Standardpilot separatelypassedtwo nativewins. Final evidence archive/native replay/independent audit nowrunning before integration; no further search changes.
 
 Final independent audit accepted: all32report hashes/configs/engineidentities/pairedscores checked;64native conclusions (61royalcapture,3mate), no cleanup failure or unfinished game. Exact archive membership/contents verified. Native replay ofpairs11,20,32 andstandardpilot0 passed (8games). Source remains identical to tested83b2bcef. AllAC are supported; integration into main remains the final DoD step.
+
+Integrated reviewed feature into main at f44c0f4ce421d92b5a5a876e7c37b9ed9d051b0e. Exact product-source comparison with tested83b2bcef is empty. All acceptance criteria and completion items are supported; normal push and own-branch cleanup follow.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Chu now uses the shared search core through a fast144-square position with complete compound routes, native root/chosen-action/PV admission and legacy observation compatibility. Classical material/placement, bounded exact local exchange assessment, equivalent-successor search routes and an eight-ply quiescence horizon address measured first-iteration cost. Generic generation/horizon hooks preserve other-game fixed-depth behavior. Native rules remain authoritative. Final tested source83b2bcefa9e4425026602e88222be766e3645dfa passes118search and362consumer/library tests, lint, formatting and independent review; unchanged scope reuses the1201-test fullworkspace run. All600roots and retainedmidgame pass. Fresh32pair test acceptedH1 with64wins/no unfinished games; standardpilot separatelywonbothgames. Strength is conditional on fixed reduced starts; ordinary requests remain slower than predecessor. All earlier failed gates and protocol adjustment are retained in docs/m5/evidence/msh182. Level1macOS; Linux/Windows/packagedGUI deferred to integration/release checkpoint. Integrationpendingmain. Follow-ups: MSH-179 (Clock and Session for All Games), MSH-183 (Tenjiku Search Core Adoption). Roadmap identical-search exception already pushed as e6e2d51f.
+Chu now uses the shared search core with a fast 144-square position, complete compound routes, native action validation and saved legacy observation support. Bounded exchange evaluation, equal-successor route reduction and an eight-ply quiescence horizon address measured search cost. Generic core hooks preserve the other games: all 64 fixed-depth comparisons have identical nodes and best moves.
+
+Final source 83b2bcefa9e4425026602e88222be766e3645dfa passed 118 search tests and 362 consumer/library tests, lint, formatting and independent review. Unchanged scope reuses the 1,201-test workspace run. All 600 roots and the retained failed midgame passed. The fresh sequential test accepted H1 after 32 complete pairs and 64 wins, with no unfinished games. The separate standard pilot won both games. This strength result applies to the fixed reduced-position corpus; ordinary-root requests remain slower than the predecessor. All failed trials, limits and compute records remain in docs/m5/evidence/msh182.
+
+Integrated into main at f44c0f4ce421d92b5a5a876e7c37b9ed9d051b0e. Product source matches the tested candidate exactly. Level 1 checks ran on macOS arm64; Linux, Windows and packaged GUI checks remain at the next significant integration/release checkpoint. Follow-ups: MSH-179 (Clock and Session for All Games) and MSH-183 (Tenjiku Search Core Adoption). The requested roadmap exception was pushed as e6e2d51f.
 <!-- SECTION:FINAL_SUMMARY:END -->

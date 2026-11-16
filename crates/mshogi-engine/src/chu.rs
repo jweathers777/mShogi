@@ -1,4 +1,5 @@
 //! Actual native Chu results. No declaration, chess mate or exact-proof adaptation.
+use crate::observation_identity::{Identity, Profile, SearchKind};
 use crate::{ExecutionContext, ExecutionPurpose, StopReason};
 use mshogi_core::{
     chu::{Action, Conclusion, Game, GameCommand, GameRecord, GameRequest, Side},
@@ -31,7 +32,7 @@ pub struct ChuTelemetry {
     /// Hundredths of a Pawn, or native terminal action distance; absent until completed work.
     #[serde(deserialize_with = "required_score")]
     pub score: Option<i32>,
-    /// Last complete full-width iteration.
+    /// Last complete nominal iteration.
     pub completed_depth: u16,
     /// Total admitted visits, including discarded work.
     pub nodes: u64,
@@ -44,29 +45,55 @@ fn required_score<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Option<i32>,
     Option::<i32>::deserialize(d)
 }
 impl ChuTelemetry {
+    fn identity(&self) -> Option<Identity> {
+        Identity::classify(
+            &self.evaluator_id,
+            &self.search_id,
+            Profile {
+                evaluator: search::EVALUATOR_ID,
+                search: search::SEARCH_ID,
+                max_depth: search::MAX_DEPTH,
+                max_nodes: search::MAX_NODES,
+                win_score: search::WIN_SCORE,
+                line_bound: search::MAX_LINE,
+            },
+            Profile {
+                evaluator: search::LEGACY_EVALUATOR_ID,
+                search: search::LEGACY_SEARCH_ID,
+                max_depth: search::LEGACY_MAX_DEPTH,
+                max_nodes: search::LEGACY_MAX_NODES,
+                win_score: search::LEGACY_WIN_SCORE,
+                line_bound: 0,
+            },
+        )
+    }
     /// Native win/loss distance is not necessarily checkmate; heuristic units are Pawns.
     pub fn score_label(&self) -> Option<String> {
+        let identity = self.identity()?;
+        let win_score = identity.profile.win_score;
+        let win_bound = match identity.kind {
+            SearchKind::SharedCore => mshogi_search::alphabeta::MATE_BOUND,
+            SearchKind::FullWidth => win_score - i32::from(identity.max_depth()),
+        };
         self.score.and_then(|score| {
             let n = i64::from(score).abs();
-            if n > i64::from(search::WIN_SCORE) {
+            if n > i64::from(win_score) {
                 return None;
             }
-            Some(
-                if n >= i64::from(search::WIN_SCORE) - i64::from(search::MAX_DEPTH) {
-                    let d = i64::from(search::WIN_SCORE) - n;
-                    let outcome = if score >= 0 { "Win" } else { "Loss" };
-                    if d == 0 {
-                        format!("{outcome} at the analyzed position")
-                    } else {
-                        format!(
-                            "{outcome} in {d} board {}",
-                            if d == 1 { "action" } else { "actions" }
-                        )
-                    }
+            Some(if n >= i64::from(win_bound) {
+                let d = i64::from(win_score) - n;
+                let outcome = if score >= 0 { "Win" } else { "Loss" };
+                if d == 0 {
+                    format!("{outcome} at the analyzed position")
                 } else {
-                    format!("{:+.2} Pawns", f64::from(score) / 100.0)
-                },
-            )
+                    format!(
+                        "{outcome} in {d} board {}",
+                        if d == 1 { "action" } else { "actions" }
+                    )
+                }
+            } else {
+                format!("{:+.2} Pawns", f64::from(score) / 100.0)
+            })
         })
     }
 }
@@ -146,14 +173,15 @@ impl ChuResult {
         }
         let mut work = 0u64;
         let t = self.telemetry();
-        if t.evaluator_id != search::EVALUATOR_ID
-            || t.search_id != search::SEARCH_ID
-            || t.perspective != game.position().side_to_move()
-            || t.completed_depth > search::MAX_DEPTH
-            || t.nodes > search::MAX_NODES
+        let Some(identity) = t.identity() else {
+            return Err("Chu telemetry identity, work or score mismatch".into());
+        };
+        if t.perspective != game.position().side_to_move()
+            || t.completed_depth > identity.max_depth()
+            || t.nodes > identity.max_nodes()
             || t.score
                 .is_some_and(|s| !(-search::WIN_SCORE..=search::WIN_SCORE).contains(&s))
-            || t.principal_variation.len() > usize::from(t.completed_depth)
+            || t.principal_variation.len() > identity.max_line(t.completed_depth)
         {
             return Err("Chu telemetry identity, work or score mismatch".into());
         }
@@ -181,7 +209,7 @@ impl ChuResult {
             Self::Choice { action, .. } => {
                 if game.conclusion().is_some()
                     || t.completed_depth == 0
-                    || t.nodes < 2 * u64::from(t.completed_depth)
+                    || t.nodes < identity.least_nodes(t.completed_depth)
                     || t.score.is_none()
                     || t.principal_variation.first() != Some(action)
                 {
@@ -214,6 +242,18 @@ impl ChuResult {
                 if stop() {
                     return Err("Chu observation validation stopped".into());
                 }
+                // Selective search scores are not the static value at the end
+                // of a bounded reported line. Native replay above remains mandatory.
+                if identity.kind == SearchKind::SharedCore {
+                    return if t
+                        .score
+                        .is_some_and(|s| s.unsigned_abs() >= search::WIN_SCORE as u32)
+                    {
+                        Err("Chu choice cannot be a win at the analyzed root".into())
+                    } else {
+                        Ok(work)
+                    };
+                }
                 if t.principal_variation.len() != usize::from(t.completed_depth)
                     && branch.conclusion().is_none()
                 {
@@ -245,21 +285,20 @@ impl ChuResult {
             return false;
         }
         let t = self.telemetry();
-        if !(search::Limits {
-            depth: context.limits.depth,
-            nodes: context.limits.nodes,
-        })
-        .valid()
+        let Some(identity) = t.identity() else {
+            return false;
+        };
+        if context.limits.depth == 0
+            || context.limits.depth > identity.max_depth()
+            || context.limits.nodes > identity.max_nodes()
         {
             return false;
         }
-        if t.evaluator_id != search::EVALUATOR_ID
-            || t.search_id != search::SEARCH_ID
-            || t.perspective != record.side_to_move()
+        if t.perspective != record.side_to_move()
             || t.completed_depth > context.limits.depth
             || t.nodes > context.limits.nodes
             || (t.status == StopReason::NodeLimit && t.nodes != context.limits.nodes)
-            || t.principal_variation.len() > usize::from(t.completed_depth)
+            || t.principal_variation.len() > identity.max_line(t.completed_depth)
             || t.score
                 .is_some_and(|s| !(-search::WIN_SCORE..=search::WIN_SCORE).contains(&s))
         {
@@ -272,10 +311,11 @@ impl ChuResult {
             Self::Choice { action, .. } => {
                 record.conclusion().is_none()
                     && t.completed_depth > 0
-                    && t.nodes >= 2 * u64::from(t.completed_depth)
+                    && t.nodes >= identity.least_nodes(t.completed_depth)
                     && t.score.is_some()
                     && t.principal_variation.first() == Some(action)
-                    && (t.status != StopReason::Complete
+                    && (identity.kind == SearchKind::SharedCore
+                        || t.status != StopReason::Complete
                         || t.completed_depth == context.limits.depth)
             }
             Self::Finished { conclusion, .. } => {
@@ -293,5 +333,64 @@ impl ChuResult {
                     && t.status != StopReason::Complete
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod identity_tests {
+    use super::*;
+    #[test]
+    fn historical_identity_bounds_and_selective_distance_labels_are_distinct() {
+        let game = Game::standard();
+        let mut context = ExecutionContext {
+            purpose: ExecutionPurpose::EngineTurn {},
+            request_id: 1,
+            session_version: 1,
+            process_generation: 1,
+            game: CanonicalRecord::chu(GameRecord::from_game(&game).unwrap()),
+            limits: crate::WorkLimits {
+                time_ms: None,
+                depth: 1,
+                nodes: 512,
+            },
+        };
+        let mut telemetry = ChuTelemetry {
+            evaluator_id: search::LEGACY_EVALUATOR_ID.into(),
+            search_id: search::LEGACY_SEARCH_ID.into(),
+            perspective: Side::Sente,
+            score: None,
+            completed_depth: 0,
+            nodes: 0,
+            principal_variation: vec![],
+            status: StopReason::Stopped,
+        };
+        let old = ChuResult::Incomplete {
+            telemetry: telemetry.clone(),
+        };
+        assert!(old.matches(&context));
+        old.validate(&game).unwrap();
+        context.limits = CHU_PLAY_LIMITS;
+        assert!(!old.matches(&context));
+        telemetry.evaluator_id = search::EVALUATOR_ID.into();
+        assert!(
+            !ChuResult::Incomplete {
+                telemetry: telemetry.clone()
+            }
+            .matches(&context)
+        );
+        telemetry.search_id = search::SEARCH_ID.into();
+        assert!(
+            ChuResult::Incomplete {
+                telemetry: telemetry.clone()
+            }
+            .matches(&context)
+        );
+        telemetry.score = Some(search::WIN_SCORE - 20);
+        assert_eq!(
+            telemetry.score_label().as_deref(),
+            Some("Win in 20 board actions")
+        );
+        telemetry.score = Some(i32::MIN);
+        assert_eq!(telemetry.score_label(), None);
     }
 }

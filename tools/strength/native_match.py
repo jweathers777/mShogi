@@ -116,7 +116,7 @@ def summary(args, rows, start, failure=None):
 
 def main(default_game="shogi"):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--game', choices=['shogi', 'xiangqi'], default=default_game)
+    parser.add_argument('--game', choices=['shogi', 'xiangqi', 'chu'], default=default_game)
     parser.add_argument('--candidate', required=True)
     parser.add_argument('--baseline', required=True)
     parser.add_argument('--candidate-nodes', type=int, required=True)
@@ -137,7 +137,7 @@ def main(default_game="shogi"):
     parser.add_argument('--beta', type=float, default=.05)
     parser.add_argument('--calibrate', action='store_true')
     args = parser.parse_args()
-    defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500)}
+    defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'chu': (1, 512, 500)}
     depth, nodes, args.max_steps = defaults[args.game]
     if args.baseline_depth is None:
         args.baseline_depth = depth

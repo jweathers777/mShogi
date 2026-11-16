@@ -14,7 +14,7 @@ const incomplete = incompleteJson as unknown as ChuSnapshot;
 afterEach(cleanup);
 function analysis(snapshot = complete) {
   const command = vi.fn();
-  const props = { snapshot, defaults: snapshot.play_limits, disabled: false, command, maxDepth: 2, maxNodes: 2000, minNodes: 1 };
+  const props = { snapshot, defaults: snapshot.play_limits, disabled: false, command, maxDepth: 64, maxNodes: 5000000, minNodes: 1 };
   const view = render(<NativeAnalysis {...props} />);
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
   return { ...view, props, command };
@@ -55,19 +55,19 @@ it("offers conservative default limits, admits bounded analysis only and does no
   const depth = screen.getByRole("spinbutton", { name: "Depth" }) as HTMLInputElement;
   const nodes = screen.getByRole("spinbutton", { name: "Node limit" }) as HTMLInputElement;
   expect(depth.value).toBe("1");expect(nodes.value).toBe("512");
-  expect([depth.min, depth.max, depth.step]).toEqual(["1", "2", "1"]);
-  expect([nodes.min, nodes.max, nodes.step]).toEqual(["1", "2000", "1"]);
-  fireEvent.change(depth, { target: { value: "2" } });fireEvent.change(nodes, { target: { value: "2000" } });
+  expect([depth.min, depth.max, depth.step]).toEqual(["1", "64", "1"]);
+  expect([nodes.min, nodes.max, nodes.step]).toEqual(["1", "5000000", "1"]);
+  fireEvent.change(depth, { target: { value: "64" } });fireEvent.change(nodes, { target: { value: "5000000" } });
   fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
-  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "analyze", operation: { kind: "moves", depth: 2, nodes: 2000 } });
+  expect(command).toHaveBeenCalledExactlyOnceWith({ kind: "analyze", operation: { kind: "moves", depth: 64, nodes: 5000000 } });
 });
-it.each([[3, 512], [1, 2001], [1, 0], [1, 1.5]])("rejects unsupported depth/node limits %s/%s without sending execution", (depth, nodes) => {
+it.each([[65, 512], [1, 5000001], [1, 0], [1, 1.5]])("rejects unsupported depth/node limits %s/%s without sending execution", (depth, nodes) => {
   const { command } = analysis();
   fireEvent.change(screen.getByRole("spinbutton", { name: "Depth" }), { target: { value: String(depth) } });
   fireEvent.change(screen.getByRole("spinbutton", { name: "Node limit" }), { target: { value: String(nodes) } });
   fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
-  expect(screen.getByRole("alert").textContent).toContain("depth from 1 to 2");
-  expect(screen.getByRole("alert").textContent).toContain("1 to 2,000");expect(command).not.toHaveBeenCalled();
+  expect(screen.getByRole("alert").textContent).toContain("depth from 1 to 64");
+  expect(screen.getByRole("alert").textContent).toContain("1 to 5,000,000");expect(command).not.toHaveBeenCalled();
 });
 it("replaces and cancels analysis with distinct read-only operations and no synthetic progress", () => {
   // Status-only pending-work construction, with no invented successful telemetry.

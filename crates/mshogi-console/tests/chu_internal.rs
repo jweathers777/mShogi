@@ -119,7 +119,9 @@ fn actual_child_executes_complete_chu_choices_for_full_known_history_and_purpose
             panic!("{result:?}")
         };
         assert!(g.legal_actions().contains(action));
-        assert_eq!(telemetry.completed_depth, 1);
+        assert!(
+            telemetry.completed_depth > 0 && telemetry.completed_depth <= req.context.limits.depth
+        );
         assert_eq!(telemetry.perspective, g.position().side_to_move());
         assert!(telemetry.score.is_some());
         assert_eq!(g.snapshot().board_ply, 0);
@@ -180,7 +182,11 @@ fn actual_controller_readonly_analysis_save_reopen_and_stale_identity_retirement
     };
     assert_eq!(observed.context, native);
     assert!(observed.search_observations[0].score.is_some());
-    assert_eq!(observed.search_observations[0].completed_depth, Some(1));
+    assert!(
+        observed.search_observations[0]
+            .completed_depth
+            .is_some_and(|depth| depth > 0 && depth <= submitted.limits.depth)
+    );
     assert_eq!(observed.observations[0].observation.context, submitted);
     assert_eq!(observed.phase, mshogi_desktop_session::EnginePhase::Paused);
     assert!(!observed.observations[0].historical);

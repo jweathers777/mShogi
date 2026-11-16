@@ -1,11 +1,11 @@
 ---
 id: MSH-182
 title: Chu Search Core Adoption
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-16T10:09:00Z'
+updated_date: '2026-11-16T10:23:00Z'
 labels:
   - handle:chu-search-core-adoption
 milestone: m-5
@@ -33,18 +33,18 @@ Handle: Chu Search Core Adoption.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Chu searches through the shared core with no game-specific branch inside the core
-- [ ] #2 The Chu search position agrees with the native rules on perft counts and on a randomized differential test of legal actions, resulting positions and hashes
-- [ ] #3 The private Chu search is removed, the engine, console, runner and desktop paths of Chu still work, and saved observations of the earlier search identity stay valid
-- [ ] #4 Chu with the shared core is stronger than its present engine in a game test with a sequential decision
-- [ ] #5 Approximations of the native rules inside the search, and any change to the trait or core, are recorded in docs/m5/shared-search-core.md
+- [x] #1 Chu searches through the shared core with no game-specific branch inside the core
+- [x] #2 The Chu search position agrees with the native rules on perft counts and on a randomized differential test of legal actions, resulting positions and hashes
+- [x] #3 The private Chu search is removed, the engine, console, runner and desktop paths of Chu still work, and saved observations of the earlier search identity stay valid
+- [x] #4 Chu with the shared core is stronger than its present engine in a game test with a sequential decision
+- [x] #5 Approximations of the native rules inside the search, and any change to the trait or core, are recorded in docs/m5/shared-search-core.md
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -126,4 +126,18 @@ Finite-q8 diagnostic with corrected signed-depth cache passes all34cases:29earli
 Productionq8 checkpoint: all118search-library tests pass (2ignored), all362selectedconsumer/library tests pass (5ignored), including long Chu desktop progression. Independent reviewer passed four targeted tests and found64other-game fixed-depth outputs byte-identical to originalbaseline. Final source/doc review accepted; formatting passes; all-target Clippy running. Four new q8/cache/midgame tests give1205passing coverage with prior1201fullworkspace scope reused honestly; no claim of a second fullworkspace1205 command. Freeze after lint, then execute prepared exactfailedmidgame smoke,600roots, timings,pilot,and freshgamegate. No timed work overlaps tests.
 
 Final q8 all-target Clippy passed. Source is frozen for the next candidate commit and unchanged-budget gate; only evidence/protocol records may change during measured play.
+
+Finalq8 candidate frozen as83b2bcefa9e4425026602e88222be766e3645dfa. Required local checks and independent review pass. Timed round5 sequence now builds exactcandidate, verifies retainedfailedmidgame and600roots, measures controls, runs standardpilot and freshsequentialtest with unchanged100kvs2/2000 and reviewed60secondwatchdog. No source mutations or concurrent test workload during measurement.
+
+Frozen83b2bcef gates: exactfailedmidgame smoke passed native admission, candidate depth1/100k in381ms and predecessor depth1 in2.73s. All600root gate passed (1200admittedactions) in162.93seconds; candidate/old medians161/354ms depth6/1. Equal100k comparison against63 shows no material added cost: ordinary4 medians648/654ms depth8/8, compact4 medians157/154ms depth5.5/5.5. Versusoriginalold ordinary8 remains slower648/345ms depth8/1; tactical81/140ms depth19/2. Standardpilot running before freshsequential gate. No claim that speed/depth alone is strength.
+
+Final sequential gate PASSED on83b2bcef:32completecolorpairs/64candidatewins, zero draws/losses/unfinished games; SPRT H1 accepted under fixedH0=0/H1=15, alpha/beta0.05, min30/max600, fourworkers. Wall333.47seconds; candidate/old medians151/547ms and depth6/1, request totals48.27/738.80seconds. All prior failures retained separately. Strength claim is conditional on the fixed balanced reduced corpus, not an external rating or standard-start qualification. Standardpilot separatelypassedtwo nativewins. Final evidence archive/native replay/independent audit nowrunning before integration; no further search changes.
+
+Final independent audit accepted: all32report hashes/configs/engineidentities/pairedscores checked;64native conclusions (61royalcapture,3mate), no cleanup failure or unfinished game. Exact archive membership/contents verified. Native replay ofpairs11,20,32 andstandardpilot0 passed (8games). Source remains identical to tested83b2bcef. AllAC are supported; integration into main remains the final DoD step.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Chu now uses the shared search core through a fast144-square position with complete compound routes, native root/chosen-action/PV admission and legacy observation compatibility. Classical material/placement, bounded exact local exchange assessment, equivalent-successor search routes and an eight-ply quiescence horizon address measured first-iteration cost. Generic generation/horizon hooks preserve other-game fixed-depth behavior. Native rules remain authoritative. Final tested source83b2bcefa9e4425026602e88222be766e3645dfa passes118search and362consumer/library tests, lint, formatting and independent review; unchanged scope reuses the1201-test fullworkspace run. All600roots and retainedmidgame pass. Fresh32pair test acceptedH1 with64wins/no unfinished games; standardpilot separatelywonbothgames. Strength is conditional on fixed reduced starts; ordinary requests remain slower than predecessor. All earlier failed gates and protocol adjustment are retained in docs/m5/evidence/msh182. Level1macOS; Linux/Windows/packagedGUI deferred to integration/release checkpoint. Integrationpendingmain. Follow-ups: MSH-179 (Clock and Session for All Games), MSH-183 (Tenjiku Search Core Adoption). Roadmap identical-search exception already pushed as e6e2d51f.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-16T23:22:00Z'
+updated_date: '2026-11-16T23:47:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -104,4 +104,6 @@ b09 stopped on a measurement-classification defect: Supernova2.3 reached eight n
 Shutdown classification correction independently accepted;96strengthtests pass. All8Supernova native results5W1D2L admitted uniformly, with original rejectedreceipts and originalfit preserved plus hashbound deriveddecisions. Cumulative84validgames/42pairs, joint2746.40 [2678.89,2813.90]; eightMrBobcrashes remain unscored,60assignments neverstarted. No game reruns. b10 is active,24freshpairs76–99, same3families; session79501,target/msh185/runs/b10. Corrected worker image60163e4fb2f8f88a28320614b7c8106a3de9c37c5ba3cff5f20d00f64eb3e0cb; candidate/native runner/opponents unchanged. Original campaigncaps continue.
 
 b10completed48/48valid with correctedworker; no new process failures, flags, caps or missing results. All132cumulative games native-replay valid; joint2742.23 [2690.41,2794.05], familyspread10.44. Maincoverage12Stash/14Weiss/12Supernovapairs, so precision/coverage stop not met. Actualb10 2.4770080343VMh/USD.4993846358; cumulativeUSD1.6117091519, all b10resourcesabsent. b11active with24freshpairs100–123, unchanged3families/image/engine, session11365,target/msh185/runs/b11. Expectedanother20–25min; campaign stillwellwithin6h/USD15. Include b09 explicit shutdownreclassification file in every laterfit.
+
+b11 completed48/48valid, no new failures. Cumulative180validgames/90pairs, joint2752.62 [2711.45,2793.79], familyspread26.48. Maincoverage20Stash/22Weiss/20Supernovapairs meetsminimum; halfwidth41.17 remains above fixed40, so nextnormal24pairbatch required. Actualb11 2.6367224205VMh/USD.5315843337; cumulativeUSD2.1432934857, allresourcesabsent. b12 active on freshpairs124–147, unchangedthreefamilies and image, session40931,target/msh185/runs/b12. Original campaigndeadline continues; no reruns or extra study.
 <!-- SECTION:NOTES:END -->

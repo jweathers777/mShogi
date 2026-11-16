@@ -1,11 +1,11 @@
 ---
 id: MSH-184
 title: Native Report Replay Cost
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-16T15:38:00Z'
-updated_date: '2026-11-16T20:12:00Z'
+updated_date: '2026-11-16T20:13:00Z'
 labels:
   - handle:native-report-replay-cost
 milestone: m-5
@@ -43,7 +43,7 @@ Handle: Native Report Replay Cost.
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -67,4 +67,18 @@ Candidate checkpoint: long export plus summary fell from 34.124008 s to 0.033189
 Implementation and measurements are ready for final review. Runner release suite: 84 passed, 2 ignored, including the immutable API compile-fail test. Console native experiment suite: 3 passed, covering all seven profiles, corruption rejection through both external constructors, output equality, incomplete outcomes and cancellation. Formatting and diff checks passed; workspace all-target clippy is running. Independent source review found no material defect. Level 1 remains appropriate: native process supervision and file writes are unchanged; standalone desktop host does not consume the runner API.
 
 Final independent review accepted product source 97a718f8cde28703c064f3fcfcedb22b1ac4b241. The reviewer independently checked source/binary/input hashes, all four output and summary equalities, timing arithmetic and successful test/lint logs. No material findings. Corrected a prose timing rounding error: baseline round receipt is 68.154573 s (68.155 s rounded), not 68.153 s. All required Level 1 checks passed; no broader platform or GUI checks are represented as run. Ready for normal main integration; production diff from the tested source is empty.
+
+Reviewed source 97a718f8 and evidence 21d30000 are integrated into main. The completion update is documentation-only; product source remains unchanged.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Native experiment execution now returns an owned immutable ValidatedReport after full native replay. JSON export and summaries reuse that validation. External JSON and edited mutable Reports still receive full checks; JSONL keeps the replay needed for native before/after states. Output formats, scores, rules, refusals, process cleanup and file-write behavior are unchanged.
+
+On the retained 10.32 MB Tenjiku report, export plus summary fell from 34.124 s to 0.033 s; all measured stages fell from 67.442 s to 33.687 s. Three smaller reports support the same mechanism. All four encoded outputs and complete summaries match exactly. Timings are single sequential observations; the historical 645 s failure remains failed, and no long games or strength campaign were rerun. Native parsing and validation remain expensive. Decision: retain this bounded change and stop the round.
+
+Level 1 verification passed on macOS arm64: runner 84 passed/2 ignored; actual console experiment tests 3 passed across seven profiles; all-target consumer check, workspace clippy, formatting and immutable API compile-fail check passed. Independent review verified source, receipt hashes, equality, timing arithmetic and logs with no material findings. Broader platform and packaged GUI checks remain deferred to the next integration/release checkpoint.
+
+Integrated into main at 21d30000; tested product source is 97a718f8cde28703c064f3fcfcedb22b1ac4b241. Evidence and review: docs/m5/evidence/msh184/README.md and verification.json. The primary checkout was used; no extra worktree was created. Next ready task: MSH-173 (Frozen Legacy Opponent).
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-16T15:38:00Z'
-updated_date: '2026-11-16T20:08:00Z'
+updated_date: '2026-11-16T20:12:00Z'
 labels:
   - handle:native-report-replay-cost
 milestone: m-5
@@ -33,16 +33,16 @@ Handle: Native Report Replay Cost.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Measure separate execution, validation, export and summary costs on the retained long Tenjiku report and ordinary reports; record baseline, bounds and a decision checkpoint.
-- [ ] #2 Reduce repeated native replay in report export and summary generation without weakening external report validation or changing scores, native rules, refusals or cleanup.
-- [ ] #3 Relevant runner regressions, malformed-report rejection and independent review pass; record measured benefit and actual verification scope.
+- [x] #1 Measure separate execution, validation, export and summary costs on the retained long Tenjiku report and ordinary reports; record baseline, bounds and a decision checkpoint.
+- [x] #2 Reduce repeated native replay in report export and summary generation without weakening external report validation or changing scores, native rules, refusals or cleanup.
+- [x] #3 Relevant runner regressions, malformed-report rejection and independent review pass; record measured benefit and actual verification scope.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -65,4 +65,6 @@ Long baseline completed within bound: 10.32 MB, 103 steps, 2 games; raw parse 16
 Candidate checkpoint: long export plus summary fell from 34.124008 s to 0.033189 s (99.90%); complete measured parse/validation/export/summary stages fell from 67.441934 s to 33.687309 s (50.05%). Full native validation remains about 17 s and strict native parsing about 16 s. Chu post-validation outputs fell from 0.175871 s to 0.000645 s; Shogi from 0.001923 s to 0.000060 s. All four input/output/summary hashes and complete summaries match. Candidate round took 34.142 s within 600 s. Decision: retain the minimal immutable boundary; do not expand into native parser/replay optimization. These are descriptive single-run stage timings, not a strength claim or proof the old 645 s full game campaign would now finish.
 
 Implementation and measurements are ready for final review. Runner release suite: 84 passed, 2 ignored, including the immutable API compile-fail test. Console native experiment suite: 3 passed, covering all seven profiles, corruption rejection through both external constructors, output equality, incomplete outcomes and cancellation. Formatting and diff checks passed; workspace all-target clippy is running. Independent source review found no material defect. Level 1 remains appropriate: native process supervision and file writes are unchanged; standalone desktop host does not consume the runner API.
+
+Final independent review accepted product source 97a718f8cde28703c064f3fcfcedb22b1ac4b241. The reviewer independently checked source/binary/input hashes, all four output and summary equalities, timing arithmetic and successful test/lint logs. No material findings. Corrected a prose timing rounding error: baseline round receipt is 68.154573 s (68.155 s rounded), not 68.153 s. All required Level 1 checks passed; no broader platform or GUI checks are represented as run. Ready for normal main integration; production diff from the tested source is empty.
 <!-- SECTION:NOTES:END -->

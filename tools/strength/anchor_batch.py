@@ -44,7 +44,7 @@ def prepare(args):
     write(args.output, manifest)
 
 
-def collect(run, clock_reviews=None):
+def collect(run, clock_reviews=None, shutdown_reviews=None):
     run = Path(run)
     manifest = json.loads((run/'manifest.json').read_text())
     build = manifest['build']
@@ -56,14 +56,27 @@ def collect(run, clock_reviews=None):
             failures.append({'game_id': spec['id'], 'reason': 'missing receipt'})
             continue
         receipt = json.loads(path.read_text())
-        if not receipt['complete']:
+        correction = (shutdown_reviews or {}).get(spec['id'])
+        if not receipt['complete'] and correction is None:
             failures.append({'game_id': spec['id'], 'reason': 'unscored', 'receipt': receipt})
             continue
+        if correction is not None:
+            if (receipt['complete'] or correction.get('decision') != 'normal-post-conclusion-shutdown'
+                    or correction.get('original_receipt_sha256') != digest(path.read_bytes())
+                    or correction.get('report_sha256') != receipt.get('report_sha256')
+                    or not correction.get('review')
+                    or receipt.get('returncode') != 0
+                    or receipt.get('process_group_settled') is not True
+                    or receipt.get('residual_process_group') is not False
+                    or receipt.get('outer_timeout', False)):
+                raise ValueError('Invalid shutdown reclassification evidence')
         raw = gzip.decompress((folder/'report.json.gz').read_bytes())
         if digest(raw) != receipt['report_sha256'] or receipt['replay']['returncode'] != 0:
             raise ValueError('Report hash/replay mismatch')
         observed = audit(json.loads(raw), config(build, spec), build, spec)
-        if not observed['complete'] or observed['score'] != receipt['score']:
+        if correction is not None and not observed.get('normal_shutdown_kills'):
+            raise ValueError('Shutdown reclassification lacks verified normal termination')
+        if not observed['complete'] or (correction is None and observed['score'] != receipt['score']):
             raise ValueError('Receipt disagrees with native report')
         if observed['clock_review_required']:
             decision = (clock_reviews or {}).get(spec['id'])
@@ -76,14 +89,18 @@ def collect(run, clock_reviews=None):
         games.append({'game_id': spec['id'], 'pair_id': spec['pair_id'], 'opponent_id': spec['opponent'],
                       'family': opponent['family'], 'anchor': opponent['rating'], 'score': observed['score'],
                       'phase': manifest['phase'], 'report_sha256': digest(raw)})
+        if correction is not None:
+            games[-1]['shutdown_reclassification'] = correction
     return games, failures
 
 
 def summarize(args):
     reviews = json.loads(Path(args.clock_reviews).read_text()) if args.clock_reviews else {}
+    shutdown_path = getattr(args, 'shutdown_reviews', None)
+    shutdown_reviews = json.loads(Path(shutdown_path).read_text()) if shutdown_path else {}
     games, failures = [], []
     for run in args.runs:
-        g, f = collect(run, reviews); games.extend(g); failures.extend(f)
+        g, f = collect(run, reviews, shutdown_reviews); games.extend(g); failures.extend(f)
     result = {'games': games, 'failures': failures, **anchor_stats.summarize(games)}
     result['opponents'] = {}
     for name in sorted({g['opponent_id'] for g in games}):
@@ -104,7 +121,7 @@ def main():
     a.add_argument('--first-pair',type=int,required=True);a.add_argument('--pairs',type=int,required=True)
     a.add_argument('--compute-before',type=float,required=True);a.set_defaults(func=prepare)
     a=sub.add_parser('summarize');a.add_argument('runs',nargs='+');a.add_argument('--output',required=True)
-    a.add_argument('--clock-reviews');a.set_defaults(func=summarize)
+    a.add_argument('--clock-reviews');a.add_argument('--shutdown-reviews');a.set_defaults(func=summarize)
     args=p.parse_args();args.func(args)
 
 if __name__=='__main__':main()

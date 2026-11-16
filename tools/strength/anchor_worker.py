@@ -85,6 +85,69 @@ def validate_manifest(manifest):
     require(total <= 400, 'batch exceeds campaign game cap')
 
 
+
+# Reviewed MSH-185 classification correction: this Linux release deliberately
+# sleeps for one second after quit; this frozen runner gives 100 ms grace.
+# An expected kill after a native conclusion is not a gameplay/cleanup failure.
+SUPERNOVA_SHUTDOWN = {
+    'source': 'ffd139d1f3e56d39af41cb7cca78a5212bc96a88',
+    'sha256': 'ac63e008196b2c61755184e5d2c9701559137957e5086b188ceec978aeff2c5e',
+    'runner_source': 'f433ea13ef0c6682d7c84388142dc9c8238e4e16',
+    'runner_sha256': '0807bb820f5f43889c2368c453e4cfaf03aa09dade1180182f43366ba6a14c2d',
+}
+
+
+def normal_shutdown_kill(game, cfg, build, observation):
+    """Return narrow reviewed provenance, or None; never infer a game result."""
+    index = observation.get('engine')
+    if index not in (0, 1) or len(game['engines']) != 2:
+        return None
+    known = SUPERNOVA_SHUTDOWN
+    runner = build['engines']['runner']
+    matches = [e for e in build['engines'].values() if e['path'] == cfg['engines'][index]['path']]
+    if (len(matches) != 1 or matches[0]['source'] != known['source'] or
+            matches[0]['sha256'] != known['sha256'] or
+            build['source'] != known['runner_source'] or
+            runner['source'] != known['runner_source'] or runner['sha256'] != known['runner_sha256']):
+        return None
+    status = observation['exit'] or {}
+    if status.get('signal') != 9 or status.get('code') is not None or status.get('success') is not False:
+        return None
+    if (game['stop'] != 'chess_conclusion' or not game['conclusion'] or
+            game['failure'] or game['diagnostic_failures'] or game['transcript']['truncated']):
+        return None
+    for other in game['engines']:
+        if other['identity_truncated'] or other['cleanup_failures'] or other['stderr']['truncated']:
+            return None
+        if other is not observation and not (other['exit'] and other['exit']['success']):
+            return None
+    entries = game['transcript']['entries']
+    if any(e.get('truncated', False) for e in entries):
+        return None
+    try:
+        record = json.loads(game['match_record_json'])
+        terminal = record['events'][-1]
+        if (terminal['reply']['conclusion'] != game['conclusion'] or
+                terminal['reply'].get('rejection') is not None):
+            return None
+        version = terminal['reply']['version']
+        bestmoves = [e for e in entries if e['direction'] == 'response' and e['text'].startswith('bestmove ')]
+        if not bestmoves:
+            return None
+        last_move_ns = max(e['at_ns'] for e in bestmoves)
+        quits = [e for e in entries if e['engine'] == index and e['direction'] == 'command'
+                 and e['text'] == 'quit' and e['phase'] == 'cleanup' and e['write_completed'] is True
+                 and e['game_version'] == version and e['at_ns'] >= terminal['request']['at_ns']
+                 and e['at_ns'] > last_move_ns]
+        if len(quits) != 1:
+            return None
+    except (KeyError, IndexError, TypeError, ValueError):
+        return None
+    return {'engine': index, 'source': known['source'], 'sha256': known['sha256'],
+            'signal': 9, 'terminal_version': version, 'quit_at_ns': quits[0]['at_ns'],
+            'reason': 'reviewed Supernova 2.3 Linux quit sleep exceeds frozen runner grace'}
+
+
 def audit(outer, cfg, build, spec):
     require(outer['protocol'] == 'uci' and outer['schema'] == 1, 'wrong native envelope')
     require(digest(outer['report_json'].encode()) == outer['report_sha256'], 'report hash differs')
@@ -101,9 +164,16 @@ def audit(outer, cfg, build, spec):
     require(game['pairing'] == 0 and game['engines_by_color'] == [0, 1], 'wrong game colors')
     healthy = not (game['failure'] or game['diagnostic_failures'] or game['transcript']['truncated'])
     healthy = healthy and len(game['engines']) == 2
+    shutdown_kills = []
     for engine in game['engines']:
         healthy = healthy and not (engine['identity_truncated'] or engine['cleanup_failures'] or engine['stderr']['truncated'])
-        healthy = healthy and bool(engine['exit'] and engine['exit']['success'])
+        success = bool(engine['exit'] and engine['exit']['success'])
+        if not success:
+            admitted = normal_shutdown_kill(game, cfg, build, engine)
+            if admitted is not None:
+                shutdown_kills.append(admitted)
+                success = True
+        healthy = healthy and success
     searches = []
     for entry in game['transcript']['entries']:
         if entry['direction'] == 'command' and entry['text'].startswith('go'):
@@ -123,7 +193,8 @@ def audit(outer, cfg, build, spec):
     return {'healthy': bool(healthy), 'complete': bool(concluded and healthy), 'score': score,
             'clock_review_required': 'flag_fall' in json.dumps(game['conclusion']),
             'summary': summary, 'stop': game['stop'], 'conclusion': game['conclusion'],
-            'search_requests': len(searches), 'native_environment': observed}
+            'search_requests': len(searches), 'native_environment': observed,
+            'normal_shutdown_kills': shutdown_kills}
 
 
 def limits():

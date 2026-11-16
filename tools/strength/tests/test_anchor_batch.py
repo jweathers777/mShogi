@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 from tools.experiments.core import digest, encode
 from tools.strength import anchor_batch as batch
@@ -82,6 +83,38 @@ class PrepareTests(unittest.TestCase):
 
 
 class CollectTests(unittest.TestCase):
+    def test_shutdown_correction_requires_bound_receipt_and_settled_process(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _, _, receipt = make_run(root, complete=False)
+            receipt.update(score=None, returncode=0, process_group_settled=True,
+                           residual_process_group=False)
+            path = root/'raw/games/g1/receipt.json'
+            write(path, receipt)
+            correction = {'decision': 'normal-post-conclusion-shutdown',
+                          'original_receipt_sha256': digest(path.read_bytes()),
+                          'report_sha256': receipt['report_sha256'], 'review': 'independent-review.md'}
+            observed = {'complete': True, 'score': 1, 'clock_review_required': False,
+                        'normal_shutdown_kills': [1]}
+            with patch.object(batch, 'audit', return_value=observed):
+                games, failures = batch.collect(root, shutdown_reviews={'g1': correction})
+                self.assertEqual(games[0]['score'], 1)
+                self.assertEqual(failures, [])
+                self.assertEqual(json.loads(path.read_text())['score'], None)
+                for key, value in [('returncode', 1), ('process_group_settled', False),
+                                   ('residual_process_group', True), ('outer_timeout', True)]:
+                    changed = dict(receipt, **{key: value})
+                    write(path, changed)
+                    bound = dict(correction, original_receipt_sha256=digest(path.read_bytes()))
+                    with self.assertRaisesRegex(ValueError, 'Invalid shutdown'):
+                        batch.collect(root, shutdown_reviews={'g1': bound})
+                write(path, receipt)
+                with self.assertRaisesRegex(ValueError, 'Invalid shutdown'):
+                    batch.collect(root, shutdown_reviews={'g1': dict(correction, report_sha256='0'*64)})
+            with patch.object(batch, 'audit', return_value=dict(observed, normal_shutdown_kills=[])):
+                with self.assertRaisesRegex(ValueError, 'lacks verified'):
+                    batch.collect(root, shutdown_reviews={'g1': correction})
+
     def test_scored_singleton_kept_when_partner_failed(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

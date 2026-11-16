@@ -181,5 +181,102 @@ class AuditTests(unittest.TestCase):
             worker.put_new(Store(), 'games/g1/launch.json', b'{}')
 
 
+class NormalShutdownClassificationTests(unittest.TestCase):
+    def fixture(self, swapped=False, score=1):
+        build, spec = inputs(swapped)
+        known = worker.SUPERNOVA_SHUTDOWN
+        build['source'] = known['runner_source']
+        build['engines']['runner'].update(source=known['runner_source'], sha256=known['runner_sha256'])
+        build['engines']['opponent'].update(source=known['source'], sha256=known['sha256'])
+        candidate = int(swapped)
+        wins = [0, 0]
+        if score != .5:
+            wins[candidate if score == 1 else 1-candidate] = 1
+        outer = envelope(build, spec, wins=wins, draws=int(score == .5))
+        report = json.loads(outer['report_json'])
+        game = report['games'][0]
+        game['conclusion'] = {'chess': {'draw': 'dead_position'}} if score == .5 else {
+            'chess': {'checkmate': {'winner': 'white' if wins[0] else 'black'}}}
+        for index, observation in enumerate(game['engines']):
+            observation['engine'] = index
+        supernova = 1-candidate
+        game['engines'][supernova]['exit'] = {'success': False, 'code': None, 'signal': 9}
+        game['match_record_json'] = json.dumps({'events': [{'request': {'at_ns': 100},
+            'reply': {'version': 7, 'conclusion': game['conclusion'], 'rejection': None}}]})
+        game['transcript']['entries'][0]['engine'] = 0
+        game['transcript']['entries'] += [
+            {'engine': 0, 'direction': 'response', 'text': 'bestmove a1a2', 'at_ns': 100},
+            {'engine': supernova, 'direction': 'command', 'text': 'quit', 'phase': 'cleanup',
+             'write_completed': True, 'game_version': 7, 'at_ns': 110}]
+        return build, spec, outer, report
+
+    def audit_fixture(self, build, spec, outer, report):
+        outer['report_json'] = json.dumps(report)
+        outer['report_sha256'] = digest(outer['report_json'].encode())
+        return worker.audit(outer, worker.config(build, spec), build, spec)
+
+    def test_known_postconclusion_kill_preserves_all_scores_both_colors(self):
+        for swapped in (False, True):
+            for score in (0, .5, 1):
+                args = self.fixture(swapped, score)
+                result = self.audit_fixture(*args)
+                self.assertTrue(result['complete'])
+                self.assertEqual(result['score'], score)
+                self.assertEqual(len(result['normal_shutdown_kills']), 1)
+                self.assertEqual(result['normal_shutdown_kills'][0]['engine'], 1-int(swapped))
+
+    def test_unknown_source_or_runner_not_admitted(self):
+        for change in ('engine_source', 'engine_hash', 'runner_source', 'runner_hash'):
+            build, spec, outer, report = self.fixture()
+            if change == 'engine_source':
+                build['engines']['opponent']['source'] = 'unknown'
+                report['config'] = worker.config(build, spec)
+            elif change == 'engine_hash':
+                build['engines']['opponent']['sha256'] = 'f'*64
+                report['engine_identities'][1]['executable']['sha256'] = 'f'*64
+            elif change == 'runner_source':
+                build['engines']['runner']['source'] = 'unknown'
+            else:
+                build['engines']['runner']['sha256'] = 'f'*64
+            result = self.audit_fixture(build, spec, outer, report)
+            self.assertFalse(result['complete'], change)
+            self.assertIsNone(result['score'])
+
+    def test_signal_or_actual_failures_not_admitted(self):
+        for change in ('segv', 'exit_code', 'other_exit', 'game_failure', 'diagnostic',
+                       'cleanup_failure', 'truncation', 'no_conclusion'):
+            build, spec, outer, report = self.fixture()
+            game = report['games'][0]
+            if change == 'segv': game['engines'][1]['exit']['signal'] = 11
+            elif change == 'exit_code': game['engines'][1]['exit']['code'] = 1
+            elif change == 'other_exit': game['engines'][0]['exit']['success'] = False
+            elif change == 'game_failure': game['failure'] = {'kind': 'unexpected_exit'}
+            elif change == 'diagnostic': game['diagnostic_failures'] = [{'kind': 'invalid_response'}]
+            elif change == 'cleanup_failure': game['engines'][1]['cleanup_failures'] = ['not reaped']
+            elif change == 'truncation': game['transcript']['truncated'] = True
+            elif change == 'no_conclusion': game['conclusion'] = None
+            result = self.audit_fixture(build, spec, outer, report)
+            self.assertFalse(result['complete'], change)
+            self.assertIsNone(result['score'])
+
+    def test_quit_must_be_written_after_terminal_move_at_terminal_version(self):
+        for change in ('wrong_engine', 'not_written', 'before_move', 'before_version',
+                       'wrong_phase', 'missing', 'duplicate', 'record_conclusion'):
+            build, spec, outer, report = self.fixture()
+            game = report['games'][0]
+            quit = game['transcript']['entries'][-1]
+            if change == 'wrong_engine': quit['engine'] = 0
+            elif change == 'not_written': quit['write_completed'] = False
+            elif change == 'before_move': quit['at_ns'] = 99
+            elif change == 'before_version': quit['game_version'] = 6
+            elif change == 'wrong_phase': quit['phase'] = 'bestmove'
+            elif change == 'missing': game['transcript']['entries'].pop()
+            elif change == 'duplicate': game['transcript']['entries'].append(dict(quit))
+            elif change == 'record_conclusion': game['match_record_json'] = '{}'
+            result = self.audit_fixture(build, spec, outer, report)
+            self.assertFalse(result['complete'], change)
+            self.assertIsNone(result['score'])
+
+
 if __name__ == '__main__':
     unittest.main()

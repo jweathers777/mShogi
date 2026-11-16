@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-16T22:40:00Z'
+updated_date: '2026-11-16T22:59:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -98,4 +98,8 @@ Bracketing ended after seven rounds and about56minutes, before another round wou
 First main batch b08 stopped on eight MrBob0.8.0 SIGSEGV failures during bestmove; these are unscored. Ten valid games (7W1D2L) are retained;30scheduled games never started. All66cumulative scored games pass native replay, joint2736.92 [2658.99,2814.85]. All b08 cloud resources are verified absent; actual b08 .8363486983VMh/USD.1686145884, cumulativeUSD.9068460638. Independent failure review is in progress. Replace failed MrBob with prebuilt full-strength Supernova2.3=2644 from the frozen source pool, within93points, without patching rated source. New image adds this binary only; same candidate/runner/worker, original campaign deadline. No games rerun or valid results discarded.
 
 Correction from independent native-score review: b08 valid tally is6W1D3L (not7W1D2L in the prior note); fitted results were already computed from correct native scores. Eight MrBob failures are explained by its FEN handler retaining a fixed1024entry move-history stack across full-history commands; source is unchanged and release is withdrawn. Supernova2.3 replacement clears history on each position command; independent source/options review accepted admission. b09 is active with24fresh pairs52–75, Stash21/Weiss0.9/Supernova2.3, new image72b4a8072b2d3b1db36b21183f2f51476108d408256f531b141dcfa8d37959ee; controller session66282, target/msh185/runs/b09. Original deadline/caps continue.
+
+b09 stopped on a measurement-classification defect: Supernova2.3 reached eight native conclusions but its normal quit handler sleeps1s; frozen runner waits100ms then intentionally kills/reaps. No native failure, diagnostic failure or cleanup failure occurred. Independent method review accepts a narrow exact-binary normal-postconclusion-termination correction without changing candidate, runner, clocks or game rules. Original receipts remain immutable; derived reclassification must bind report/receipt hashes and satisfy all replay, terminal-quit and process-settlement checks. Eight results5W1D2L are pending corrected-audit review;10other validgames5W3D2L retained,30assignmentsnotstarted. All b09 resources absent;1.0191979103VMh/USD.2054784523, totalUSD1.1123245161. No new cloudjob active while correction/tests/review complete.
+
+Shutdown classification correction independently accepted;96strengthtests pass. All8Supernova native results5W1D2L admitted uniformly, with original rejectedreceipts and originalfit preserved plus hashbound deriveddecisions. Cumulative84validgames/42pairs, joint2746.40 [2678.89,2813.90]; eightMrBobcrashes remain unscored,60assignments neverstarted. No game reruns. b10 is active,24freshpairs76–99, same3families; session79501,target/msh185/runs/b10. Corrected worker image60163e4fb2f8f88a28320614b7c8106a3de9c37c5ba3cff5f20d00f64eb3e0cb; candidate/native runner/opponents unchanged. Original campaigncaps continue.
 <!-- SECTION:NOTES:END -->

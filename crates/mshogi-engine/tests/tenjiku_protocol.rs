@@ -51,7 +51,7 @@ fn run(ctx: ExecutionContext) -> ExecutionObservation {
     )
     .unwrap();
     let response: ExecutionResponse = serde_json::from_slice(&bytes).unwrap();
-    assert!(response.matches(&request));
+    assert_eq!(response.matches(&request), request.context.valid_limits());
     response.observation
 }
 #[test]
@@ -112,7 +112,7 @@ fn actual_royal_capture_score_and_native_pv_validation_for_both_profiles() {
                 unreachable!()
             };
             match field {
-                0 => telemetry.score = Some(123),
+                0 => telemetry.score = Some(mshogi_search::tenjiku::WIN_SCORE),
                 1 => telemetry.perspective = t::Side::Gote,
                 2 => telemetry.evaluator_id.push_str("forged"),
                 3 => telemetry.principal_variation[0].route.clear(),
@@ -160,8 +160,11 @@ fn no_completed_iteration_publishes_no_fallback_and_limits_are_enforced() {
         );
         result.validate(&g).unwrap();
         ctx.limits.depth = TENJIKU_MAX_DEPTH + 1;
+        assert!(!ctx.valid_limits());
+        let refused = run(ctx.clone());
+        assert!(!refused.matches(&ctx));
         assert!(
-            matches!(run(ctx).result,ExecutionResult::Failure{failure} if failure.kind==FailureKind::InvalidRequest)
+            matches!(refused.result,ExecutionResult::Failure{failure} if failure.kind==FailureKind::InvalidRequest)
         );
     }
 }

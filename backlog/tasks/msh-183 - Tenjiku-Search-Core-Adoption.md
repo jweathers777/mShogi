@@ -1,10 +1,11 @@
 ---
 id: MSH-183
 title: Tenjiku Search Core Adoption
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-15T22:31:00Z'
-updated_date: '2026-11-15T22:41:00Z'
+updated_date: '2026-11-16T14:48:00Z'
 labels:
   - handle:tenjiku-search-core-adoption
 milestone: m-5
@@ -45,3 +46,27 @@ Handle: Tenjiku Search Core Adoption.
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Freeze main 4fe70d24 as predecessor. Inspect both native Tenjiku profiles and the full search/consumer path. Build a compact 256-square position with rank occupancy, complete routes, promotion-refusal rights and reversible direct/burn/suicide effects. Reuse the shared core and the bounded Chu mechanisms; measure generation and state-update cost against native local operations.
+2. Replace the private full-width loop. Preserve exact native root conclusions, repetition admission, selected actions and replayable lines. Keep both immutable profiles and legacy saved observations through the shared identity helper. Inspect engine, console, runner, desktop and standalone host consumers before broad checks.
+3. Level 1 on macOS arm64: independent profile fixtures, hand/native perft, randomized action/result/right/hash/undo comparisons, general rank/post-jump cases in both profiles, burn/suicide/promotion/compound tactics and cancellation. Run affected consumers, broader search regressions and independent review. Linux, Windows and packaged GUI execution stay at the next significant integration/release checkpoint.
+4. Calibrate ordinary, tactical and balanced reduced roots against the frozen predecessor. Freeze a two-profile corpus before games. Record comparable finite work settings, H0=0/H1=15, alpha/beta0.05, minimum30/maximum600 color pairs and actual compute before each profile game gate; initial combined campaign wall bound1800seconds with four total workers. Keep standard pilots separate, preserve every failure and stop on unscored pairs. Compare practical completion, speed/depth, decisions and predecessor strength; reconsider the approach if weak.
+5. Record all private approximations and evidence. Integrate the independently reviewed, verified result into main, push and remove the completed branch.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner: Codex, chat01a1e160-c3a4-7e02-912f-c64d50b95f4d, branchcodex/tenjiku-search-core in the primary checkout released by this chat after MSH-182 (Chu Search Core Adoption). Main4fe70d24 was clean, no In Progress tasks, dependencies178/182 Done; other worktrees remain untouched. Backlog1.55.3 matches baseline. MSH-179 (Clock and Session for All Games) is still Ready and separate. Baseline Tenjiku is material-only, defaultdepth1/1024nodes and maximum2/2000. Native full-width transitions dominate cost; earlier standard maximum was about7.5seconds. Both Adams and Muller profiles must keep complete rules and native histories. Initial work is one primary integration owner with isolated position, consumer and harness assignments; independent review follows.
+
+Concrete position design: packed256-cell board preserving original IDs/base/promotion/refusal rights, four-word occupancy by owner/rank/royal/Demon, complete compact moves with up to3landings or stationaryigui, and reversible changed-square records for direct captures/burn/suicide/promotion. Share the small square-set mechanism with Chu; keep core q8/history/TT mechanisms. Both profiles require their own Demon phase and general post-jump admission. Private bare/repetition logic must follow Tenjiku meanings, never Chu material/protected-Lion rules. Root and selected/PV actions remain native. Corpus proposal fixed before games: eight balanced mirrored18–24piece families cover all36originals with identical placements/IDs/rights across profiles; four quiet rear setup moves, bothprofiles all600seeds. Separate ordinary/tactical controls and standardpilot perprofile. Independent profile SPRTs initially share1800seconds (900each), four total workers. All settings require calibration and completion checks before games. No ratings or external engines.
+
+Initial correctness checkpoint: nine adapter tests pass, preserving native zero/partial/stop, no-action, counter refusal, both-royal compound capture and profile-specific dying Demon behavior. Four private-position tests pass:176 independent movement sets (44faces*2sides*2profiles), concrete profile fixture commands, handperft3/9 plus native counts and >300random full-action/state/right/hash/undo comparisons. Additional effects/history tests and cost measurements are still pending. Sixteen Chu fixed-depth searches match nodes,bestmoves,scores byte-for-byte before/after shared SquareSet extraction; the roadmap identical-search exception applies. Corpus checks pass4tests:600prefixes perprofile,570distinctstates perprofile, all36originals and no immediate base-family terminal action; duplicates retained. Python harness36tests and oldconfigwriter compatibility pass. Frontend Tenjiku17tests/typecheck pass. No games or timing calibration yet.
+
+Measured checkpoint: fast generation is 6.0x native on standard roots and 1.9x on active area/burn roots in both profiles. Reconstruction of 913 accepted known events averages 93–97 microseconds. Independent review found and fixed a Muller Free Eagle blocked-ray threat/SEE prefilter omission, with an exact native regression. Consumer checks pass engine11, session28 (5ignored), consoleCLI8, frontend17/typecheck and standalonehost1/check. Console internal tests preserve a standard-board Timeout under the provisional300000-node default and existing15s deadline (2passed/4failed). Do not relax that deadline. Calibrate the coherent source at10000nodes first, single worker, both profiles and both predecessor settings; bounded600seconds initial calibration, all failures retained. No game-strength conclusion yet.
+
+Current decision: use depth64/10000nodes for interactive default after both standard roots, eight ordinary Adams roots, both eight-root reduced sets and Adams tactical controls complete. Standard candidate4/3depth at1.10/0.77seconds. Old default1/1024 fails reduced seed8 with depth0; retain it. Old maximum2/2000 completes both reduced sets and is the proposed game comparator. Reduced median request cost54ms candidate versus1.9seconds predecessor; both nominal depth1 there. These are completion/performance observations, not strength. Fixed quiet prefix at seed6 permits an immediate conclusion; retain it and disclose this corpus limit. Independent source review has no unresolved blocker; runtime console rerun and both profile game gates remain open.
+<!-- SECTION:NOTES:END -->

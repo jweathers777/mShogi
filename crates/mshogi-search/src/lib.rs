@@ -1,9 +1,9 @@
 //! Native search components, independent of UI, console I/O and Python.
 //!
-//! The shared alpha-beta core (`alphabeta`) with the Chess engine on it, and the
-//! earlier bounded per-game searches of the other games.
-//! Search must consult rules-owned game adjudication and claim policy before
-//! evaluating a live leaf. Static scores never establish a game outcome.
+//! All six games use the shared alpha-beta core with private search positions.
+//! Adapters retain native authority for actual roots, actions, histories and
+//! results. Private analysis can use documented approximations; static scores
+//! never establish a real game outcome.
 
 pub mod alphabeta;
 pub mod chess_bitboard;
@@ -12,6 +12,7 @@ pub mod chess_eval;
 mod chess_kpk;
 pub mod chu;
 pub mod shogi;
+mod square_set;
 pub mod tenjiku;
 pub mod tori;
 pub mod xiangqi;

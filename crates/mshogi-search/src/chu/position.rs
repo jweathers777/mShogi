@@ -39,32 +39,7 @@ fn piece_code(p: Piece) -> u8 {
         + Base::ALL.iter().position(|&b| b == p.base).unwrap() * 2
         + usize::from(p.promoted)) as u8
 }
-#[derive(Clone, Copy, Default, Debug, Eq, PartialEq)]
-struct Set([u64; 3]);
-impl Set {
-    fn add(&mut self, at: usize) {
-        self.0[at / 64] |= 1 << (at % 64);
-    }
-    fn remove(&mut self, at: usize) {
-        self.0[at / 64] &= !(1 << (at % 64));
-    }
-    fn contains(self, at: usize) -> bool {
-        self.0[at / 64] & (1 << (at % 64)) != 0
-    }
-    fn count(self) -> u32 {
-        self.0.iter().map(|n| n.count_ones()).sum()
-    }
-    fn pop(&mut self) -> Option<usize> {
-        for (i, word) in self.0.iter_mut().enumerate() {
-            if *word != 0 {
-                let bit = word.trailing_zeros() as usize;
-                *word &= *word - 1;
-                return Some(i * 64 + bit);
-            }
-        }
-        None
-    }
-}
+type Set = crate::square_set::SquareSet<3>;
 #[derive(Clone, Copy)]
 struct Meta {
     piece: Piece,

@@ -292,7 +292,7 @@ fn real_completed_engine_action_requires_observation_then_exact_action_and_analy
                         result: mshogi_engine::TenjikuResult::Choice { telemetry, .. },
                     } = &mut payload.observations[0].result
                     {
-                        telemetry.score = Some(123)
+                        telemetry.score = Some(i32::MAX)
                     }
                 }
             }
@@ -317,5 +317,107 @@ fn real_completed_engine_action_requires_observation_then_exact_action_and_analy
         assert_eq!(d.controls().len(), 1);
         assert_eq!(decoded(&d).record(), baseline.record());
         assert_eq!(baseline.record().event_count(), 0);
+    }
+}
+
+#[test]
+fn saved_full_width_burn_observation_retains_exact_score_and_both_profiles() {
+    for profile in c::Profile::ALL {
+        let sq = |f, r| c::Square::new(f, r).unwrap();
+        let pieces = [
+            (16, 16, c::Side::Sente, c::Base::K),
+            (8, 11, c::Side::Sente, c::Base::FiD),
+            (8, 7, c::Side::Gote, c::Base::K),
+            (1, 2, c::Side::Gote, c::Base::P),
+        ]
+        .into_iter()
+        .enumerate()
+        .map(|(id, (f, r, side, base))| {
+            (
+                sq(f, r),
+                c::Piece::new(id as u16, side, base, false).unwrap(),
+            )
+        })
+        .collect::<Vec<_>>();
+        let game = c::Game::from_root(
+            c::Position::from_diagram(
+                profile,
+                &pieces,
+                c::Side::Sente,
+                c::RootMetadata::diagram(0),
+            )
+            .unwrap(),
+        )
+        .unwrap();
+        let d =
+            ValidatedTenjikuDocument::new(c::GameRecord::from_game(&game).unwrap(), c::Side::Sente)
+                .unwrap();
+        // Historical full-width depth one: one complete area route burns the
+        // last enemy royal. This is independent of the new search result.
+        let action = c::Action {
+            kind: c::ActionKind::Travel,
+            from: sq(8, 11),
+            route: vec![sq(8, 10), sq(8, 9), sq(8, 8)],
+            promote: false,
+            target: None,
+        };
+        let mut branch = d.record().to_game().unwrap();
+        branch
+            .submit(c::GameRequest {
+                expected: branch.context(),
+                actor: c::Side::Sente,
+                command: c::GameCommand::Play {
+                    action: action.clone(),
+                },
+            })
+            .unwrap();
+        assert_eq!(
+            branch.conclusion(),
+            Some(c::Conclusion::RoyalCapture {
+                winner: c::Side::Sente
+            })
+        );
+        assert!(branch.events()[0].effects.as_ref().unwrap().phases.iter().any(|p|
+            matches!(p, c::EffectPhase::Burn { victims } if victims.iter().any(|v| v.square == sq(8, 7) && v.piece.base == c::Base::K))
+        ));
+        let mut ctx = context(d.record(), 1);
+        ctx.limits = WorkLimits {
+            time_ms: None,
+            depth: 1,
+            nodes: 1024,
+        };
+        let observation = ExecutionObservation {
+            schema_version: mshogi_engine::OBSERVATION_SCHEMA_VERSION,
+            context: ctx,
+            result: ExecutionResult::Tenjiku {
+                result: mshogi_engine::TenjikuResult::Choice {
+                    action: action.clone(),
+                    telemetry: mshogi_engine::TenjikuTelemetry {
+                        evaluator_id: "mshogi.tenjiku.material.v1".into(),
+                        search_id: "mshogi.tenjiku.full-width.v1".into(),
+                        perspective: c::Side::Sente,
+                        score: Some(999_999),
+                        completed_depth: 1,
+                        nodes: 2,
+                        principal_variation: vec![action],
+                        status: mshogi_engine::StopReason::Complete,
+                    },
+                },
+            },
+        };
+        let mut forged = observation.clone();
+        let ExecutionResult::Tenjiku {
+            result: mshogi_engine::TenjikuResult::Choice { telemetry, .. },
+        } = &mut forged.result
+        else {
+            panic!()
+        };
+        telemetry.score = Some(123);
+        assert!(d.with_observation(forged, &mut || false).is_err());
+        let saved = d.with_observation(observation, &mut || false).unwrap();
+        let reopened = decoded(&saved);
+        assert_eq!(reopened.record(), saved.record());
+        assert_eq!(reopened.observations(), saved.observations());
+        assert_eq!(reopened.record().profile(), profile);
     }
 }

@@ -52,8 +52,8 @@ fn played(case: &str, game: &t::Game) -> (t::Game, t::Action, TenjikuTelemetry) 
         request.context.limits,
         WorkLimits {
             time_ms: None,
-            depth: 1,
-            nodes: 1024
+            depth: 64,
+            nodes: 10_000
         }
     );
     let begin = Instant::now();
@@ -76,13 +76,17 @@ fn played(case: &str, game: &t::Game) -> (t::Game, t::Action, TenjikuTelemetry) 
     };
     result.validate(game).unwrap();
     let TenjikuResult::Choice { action, telemetry } = result else {
-        panic!("{case}: complete depth1 result required")
+        panic!("{case}: complete result required")
     };
-    assert_eq!(telemetry.completed_depth, 1);
-    assert_eq!(telemetry.status, StopReason::Complete);
+    assert!(telemetry.completed_depth >= 1);
+    assert!(matches!(
+        telemetry.status,
+        StopReason::Complete | StopReason::NodeLimit
+    ));
     assert_eq!(telemetry.perspective, t::Side::Sente);
-    assert!(telemetry.nodes > 1 && telemetry.nodes <= 1024);
-    assert_eq!(telemetry.principal_variation, vec![action.clone()]);
+    assert!(telemetry.nodes > 1 && telemetry.nodes <= TENJIKU_PLAY_LIMITS.nodes);
+    assert_eq!(telemetry.principal_variation.first(), Some(&action));
+    assert!(telemetry.principal_variation.len() <= mshogi_search::tenjiku::MAX_LINE);
     assert!(telemetry.score.is_some());
     let mut branch = before.to_game().unwrap();
     branch
@@ -125,9 +129,11 @@ fn win(branch: &t::Game, telemetry: &TenjikuTelemetry) {
     assert_eq!(telemetry.score, Some(mshogi_search::tenjiku::WIN_SCORE - 1));
     assert!(branch.royals(t::Side::Gote).is_empty());
 }
-fn heuristic(branch: &t::Game, telemetry: &TenjikuTelemetry) {
+fn nonterminal_choice(branch: &t::Game, telemetry: &TenjikuTelemetry) {
     assert_eq!(branch.conclusion(), None);
-    assert!(telemetry.score.unwrap().abs() < mshogi_search::tenjiku::WIN_SCORE - 2);
+    // A deeper selective search can prove a later win. This fixture requires
+    // only that the first action is not an immediate native conclusion.
+    assert!(telemetry.score.unwrap().abs() < mshogi_search::tenjiku::WIN_SCORE);
 }
 #[test]
 fn free_eagle_orthogonal_jump_and_diagonal_two_leg_win_remain_distinct() {
@@ -197,7 +203,7 @@ fn tetrarch_vertical_skipped_ray_wins_only_under_muller() {
                 );
             }
             t::Profile::AdamsModern => {
-                heuristic(&branch, &telemetry);
+                nonterminal_choice(&branch, &telemetry);
                 assert_ne!(action.to(), Some(sq(8, 5)));
                 assert_eq!(
                     branch.position().piece(sq(8, 5)),
@@ -225,7 +231,7 @@ fn jumped_higher_general_victim_is_selected_only_under_muller() {
             ],
         );
         let (branch, action, telemetry) = played("ranked_victim", &game);
-        heuristic(&branch, &telemetry);
+        nonterminal_choice(&branch, &telemetry);
         assert_eq!(
             branch.position().piece(sq(7, 7)),
             game.position().piece(sq(7, 7))
@@ -286,7 +292,7 @@ fn dying_demon_burns_last_royal_before_death_only_under_adams() {
                 assert!(burn < death);
             }
             t::Profile::MullerCompleted => {
-                heuristic(&branch, &telemetry);
+                nonterminal_choice(&branch, &telemetry);
                 assert_eq!(
                     branch.position().piece(sq(8, 7)),
                     game.position().piece(sq(8, 7))

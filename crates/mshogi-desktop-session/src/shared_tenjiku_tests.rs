@@ -1412,3 +1412,52 @@ fn real_stationary_capture_analysis_preserves_target_in_presented_pv() {
         assert!(!snapshot.status.concluded);
     }
 }
+
+#[test]
+fn shared_core_analysis_bounds_preserve_both_profile_states_and_reject_excess() {
+    for profile in c::Profile::ALL {
+        let mut ctl = controller();
+        let game = root(profile, &[]);
+        send(
+            &mut ctl,
+            SessionOperation::Replace {
+                record: CanonicalRecord::tenjiku(c::GameRecord::from_game(&game).unwrap()),
+                human: NativeSide::Tenjiku(c::Side::Sente),
+            },
+        )
+        .unwrap();
+        let before = record(&ctl);
+        let snapshot = send(
+            &mut ctl,
+            SessionOperation::Analyze {
+                operation: AnalysisOperation::Moves {
+                    depth: 64,
+                    nodes: 5_000_000,
+                },
+            },
+        )
+        .unwrap();
+        assert_eq!(snapshot.execution_purpose, Some("move_analysis"));
+        assert_eq!(snapshot.play_limits, mshogi_engine::TENJIKU_PLAY_LIMITS);
+        assert_eq!(record(&ctl), before);
+        send(&mut ctl, SessionOperation::Cancel {}).unwrap();
+        for (depth, nodes) in [(65, 1), (1, 5_000_001), (1, 0)] {
+            let token = ctl.shared_token();
+            assert!(
+                send(
+                    &mut ctl,
+                    SessionOperation::Analyze {
+                        operation: AnalysisOperation::Moves { depth, nodes },
+                    }
+                )
+                .is_err()
+            );
+            let after = ctl.shared_token();
+            assert_eq!(
+                (after.document, after.version, after.selection),
+                (token.document, token.version, token.selection)
+            );
+            assert_eq!(record(&ctl), before);
+        }
+    }
+}

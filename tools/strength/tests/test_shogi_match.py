@@ -1,5 +1,8 @@
 """The match wrapper must preserve native scoring and incomplete pairs."""
 import unittest
+import contextlib
+import io
+from unittest import mock
 
 from tools.strength.shogi_match import summarize
 from tools.strength import native_match
@@ -8,6 +11,15 @@ from tools.strength import native_match
 class ShogiPairScoring(unittest.TestCase):
     def test_shogi_entry_point_uses_shared_native_scorer(self):
         self.assertIs(summarize, native_match.summarize)
+
+    def test_tenjiku_requires_an_explicit_immutable_profile(self):
+        common = ['native_match', '--candidate', 'unused', '--baseline', 'unused',
+                  '--candidate-nodes', '1000', '--out', 'unused']
+        for extra in [['--game', 'tenjiku'], ['--game', 'chu', '--profile', 'adams']]:
+            with self.subTest(extra=extra), mock.patch('sys.argv', common + extra):
+                with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as raised:
+                    native_match.main()
+                self.assertEqual(raised.exception.code, 2)
 
     def report(self, first, second):
         return {'games': [

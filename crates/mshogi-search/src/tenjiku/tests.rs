@@ -1,4 +1,5 @@
 use super::*;
+use crate::alphabeta::SearchPosition;
 use mshogi_core::tenjiku::{Base, GameStatus, Piece, Profile, RootMetadata, Square};
 fn sq(f: u8, r: u8) -> Square {
     Square::new(f, r).unwrap()
@@ -213,10 +214,10 @@ fn same_board_history_repetition_is_not_a_search_cache_key() {
     }
 }
 #[test]
-fn sourced_no_action_root_and_cutoff_are_unscored() {
+fn sourced_no_action_root_is_unscored() {
     // MSH-83 TEN-NO-ACTIONS-CONCRETE: independently deduced before native implementation.
     for profile in Profile::ALL {
-        let mut g = diagram(
+        let g = diagram(
             profile,
             &[
                 (1, 1, Side::Sente, Base::K, false),
@@ -240,16 +241,6 @@ fn sourced_no_action_root_and_cutoff_are_unscored() {
             ),
             Err(SearchError::NoBoardActions)
         );
-        let mut stop = || false;
-        let mut work = Work {
-            nodes: 0,
-            limit: 512,
-            stop: &mut stop,
-        };
-        assert!(matches!(
-            minimax(&mut g, 0, 0, Side::Sente, &mut work),
-            Err(Halt::Error(SearchError::NoBoardActions))
-        ));
     }
 }
 #[test]
@@ -386,22 +377,39 @@ fn dying_demon_leaf_uses_selected_profile_and_native_effect_order() {
             route: vec![sq(8, 10), sq(8, 9), sq(8, 8)],
             ..Action::single(sq(8, 11), sq(8, 8))
         };
-        let undo = Tree::push(&mut g, a, &mut || false).unwrap();
-        let mut stop = || false;
-        let mut work = Work {
-            nodes: 0,
-            limit: 512,
-            stop: &mut stop,
-        };
-        let value = minimax(&mut g, 0, 1, Side::Sente, &mut work).unwrap_or_else(|_| panic!());
+        let mut fast = position::TenjikuPosition::from_game(&g);
+        let hash = fast.hash();
+        let m = fast.find(&a).unwrap();
+        assert!(fast.make(m));
+        let mut undo = g
+            .submit(GameRequest {
+                expected: g.context(),
+                actor: Side::Sente,
+                command: GameCommand::Play { action: a },
+            })
+            .unwrap();
+        for at in Square::all() {
+            assert_eq!(fast.piece(at), g.position().piece(at));
+        }
         match profile {
-            Profile::AdamsModern => assert_eq!(value.score, WIN_SCORE - 1),
+            Profile::AdamsModern => {
+                assert_eq!(
+                    g.conclusion(),
+                    Some(Conclusion::RoyalCapture {
+                        winner: Side::Sente
+                    })
+                );
+                assert_eq!(fast.rule_score(), Some(-WIN_SCORE + 1));
+            }
             Profile::MullerCompleted => {
                 assert_eq!(g.conclusion(), None);
-                assert_eq!(value.score, -2500)
+                assert_eq!(evaluate(g.position()).score_for(Side::Sente), -2500);
+                assert!(g.position().piece(sq(8, 7)).unwrap().is_royal());
             }
         }
-        Tree::pop(&mut g, undo).unwrap();
+        fast.unmake();
+        assert_eq!(fast.hash(), hash);
+        g.undo(&mut undo).unwrap();
         assert_eq!(GameRecord::from_game(&g).unwrap(), before);
         assert!(g.search_identity().same_semantics(&ctx));
     }
@@ -438,86 +446,4 @@ fn counter_resource_refusal_is_unscored_and_preserves_the_input_owner() {
         assert_eq!(g.context(), ctx);
         assert_eq!(g.conclusion(), None);
     }
-}
-#[test]
-fn independently_solved_minimax_tree_and_interrupted_branch_restore_exactly() {
-    // Hand-solved: root A(static8)->{7,3}; B(static2)->{5,9}.
-    // Depth1 chooses A/8; depth2 maximizes min(7,3)=3 vs min(5,9)=5, choosing B/5.
-    fn a(n: u8) -> Action {
-        Action::single(sq(n, 8), sq(n, 7))
-    }
-    struct Small {
-        at: usize,
-        fail: bool,
-    }
-    impl Tree for Small {
-        type Undo = usize;
-        fn turn(&self) -> Side {
-            if [1, 2].contains(&self.at) {
-                Side::Gote
-            } else {
-                Side::Sente
-            }
-        }
-        fn conclusion(&self) -> Option<Conclusion> {
-            None
-        }
-        fn evaluate(&self, root: Side) -> i32 {
-            let s = [0, 8, 2, 7, 3, 5, 9][self.at];
-            if root == Side::Sente { s } else { -s }
-        }
-        fn actions(&self, _: &mut dyn FnMut() -> bool) -> Result<Vec<Action>, SearchError> {
-            Ok(match self.at {
-                0 => vec![a(1), a(2)],
-                1 => vec![a(3), a(4)],
-                2 => vec![a(5), a(6)],
-                // Horizon leaves remain live; this explicit edge is never traversed at tested depth.
-                n => vec![a(n as u8)],
-            })
-        }
-        fn push(&mut self, a: Action, _: &mut dyn FnMut() -> bool) -> Result<usize, SearchError> {
-            let next = usize::from(a.from.file());
-            if self.fail && next == 5 {
-                return Err(SearchError::Transition(GameError::Stopped));
-            }
-            let before = self.at;
-            self.at = next;
-            Ok(before)
-        }
-        fn pop(&mut self, u: usize) -> Result<(), SearchError> {
-            self.at = u;
-            Ok(())
-        }
-    }
-    let mut tree = Small { at: 0, fail: false };
-    let mut stop = || false;
-    let mut work = Work {
-        nodes: 0,
-        limit: 100,
-        stop: &mut stop,
-    };
-    let v = minimax(&mut tree, 1, 0, Side::Sente, &mut work).unwrap_or_else(|_| panic!());
-    assert_eq!((v.score, v.pv), (8, vec![a(1)]));
-    assert_eq!(work.nodes, 3);
-    assert_eq!(tree.at, 0);
-    work.nodes = 0;
-    let v = minimax(&mut tree, 2, 0, Side::Sente, &mut work).unwrap_or_else(|_| panic!());
-    assert_eq!((v.score, v.pv), (5, vec![a(2), a(5)]));
-    assert_eq!(work.nodes, 7);
-    assert_eq!(tree.at, 0);
-    work.nodes = 0;
-    tree.fail = true;
-    assert!(matches!(
-        minimax(&mut tree, 2, 0, Side::Sente, &mut work),
-        Err(Halt::Limit(SearchStatus::Stopped))
-    ));
-    assert_eq!(tree.at, 0);
-    work.nodes = 0;
-    tree.fail = false;
-    work.limit = 5;
-    assert!(matches!(
-        minimax(&mut tree, 2, 0, Side::Sente, &mut work),
-        Err(Halt::Limit(SearchStatus::NodeLimit))
-    ));
-    assert_eq!(tree.at, 0);
 }

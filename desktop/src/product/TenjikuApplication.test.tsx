@@ -106,7 +106,7 @@ it.each([adamsUnsupported, mullerUnsupported])("shows actual $profile incomplete
   expect(source.status.concluded).toBe(false);
   expect(source.status.score_half_points).toBeNull();
   const { container } = render(<><NativeRecovery snapshot={source} error="" disabled={false} command={command} />
-    <NativeAnalysis snapshot={source} defaults={source.play_limits} disabled={false} command={command} maxDepth={2} minNodes={1} maxNodes={2000} /></>);
+    <NativeAnalysis snapshot={source} defaults={source.play_limits} disabled={false} command={command} maxDepth={64} minNodes={1} maxNodes={5000000} /></>);
   expect(screen.getByText("Search incomplete")).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Retry engine turn" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
@@ -126,4 +126,31 @@ it.each([adamsEnded, mullerEnded])("retains the native $profile winner after a c
   expect(screen.getByRole("region", { name: "Game outcome" }).textContent).toContain(source.status.label);
   expect(screen.queryByText(/No game result or score is assigned/)).toBeNull();
   expect(screen.queryByText("Work stopped")).toBeNull();
+});
+
+
+it.each([adams, muller])("admits shared-core analysis bounds through the normal $profile application", source => {
+  session.snapshot = source;
+  render(<ProductApp />);
+  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  const depth = screen.getByRole("spinbutton", { name: "Depth" }) as HTMLInputElement;
+  const nodes = screen.getByRole("spinbutton", { name: "Node limit" }) as HTMLInputElement;
+  expect([depth.min, depth.max]).toEqual(["1", "64"]);
+  expect([nodes.min, nodes.max]).toEqual(["1", "5000000"]);
+  fireEvent.change(depth, { target: { value: "64" } });
+  fireEvent.change(nodes, { target: { value: "5000000" } });
+  fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
+  expect(session.command).toHaveBeenCalledExactlyOnceWith(source, { kind: "analyze", operation: { kind: "moves", depth: 64, nodes: 5000000 } });
+});
+
+it.each([adams, muller])("refuses work above the shared-core bounds without changing $profile", source => {
+  session.snapshot = source;
+  render(<ProductApp />);
+  fireEvent.click(screen.getByRole("button", { name: "Analyze position" }));
+  fireEvent.change(screen.getByRole("spinbutton", { name: "Depth" }), { target: { value: "65" } });
+  fireEvent.change(screen.getByRole("spinbutton", { name: "Node limit" }), { target: { value: "5000001" } });
+  fireEvent.click(screen.getByRole("button", { name: "Start move analysis" }));
+  expect(screen.getByRole("alert").textContent).toContain("depth from 1 to 64");
+  expect(session.command).not.toHaveBeenCalled();
+  expect(session.snapshot?.profile).toBe(source.profile);
 });

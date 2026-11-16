@@ -39,9 +39,11 @@ says nothing about other opponents.
 | `shogi.rs` | Native Shogi root/declaration and continuation adapter | Shogi |
 | `xiangqi/position.rs` | Xiangqi board, movement, private history and classical evaluation | Xiangqi |
 | `xiangqi.rs` | Native Xiangqi outcome, count-claim, exact-proof and continuation adapter | Xiangqi |
+| `chu/position.rs`, `chu.rs` | Chu board, compound moves, Lion rights and native adapter | Chu Shogi |
+| `tenjiku/position.rs`, `tenjiku.rs` | Tenjiku board, ranked jumps, Demon effects, both profiles and native adapter | Tenjiku Shogi |
 
 The core contains no type of a specific game. `alphabeta/tests.rs` runs it on a
-subtraction game, and Chess, Tori Shogi, Shogi and Xiangqi use it through the same trait.
+subtraction game, and all six target games use it through the same trait.
 
 ## Authority of the native rules
 
@@ -385,6 +387,78 @@ Each request starts a fresh searcher with a 16 MiB transposition table and the
 bounded history tables. MSH-179 (Clock and Session for All Games) remains separate.
 Current identities are `mshogi.chu.shared-core.v1` and
 `mshogi.chu.material-placement.v1`.
+
+## Tenjiku Shogi on the core
+
+MSH-183 (Tenjiku Search Core Adoption) replaces the private full-width loop
+with the same shared searcher. No Tenjiku branch is added to the core. Chu
+and Tenjiku share a small fixed-word square-set implementation. Tenjiku uses
+four words for 256 squares, with cached owner, rank, royal and Fire Demon sets.
+The board retains original identities, base pieces, promotion and refusal
+rights. A 32-bit move retains up to three landings or a stationary igui action.
+An undo record has a count and space for twelve changed squares: the source,
+three landings and eight burn neighbours. It restores captures, mover death,
+promotion rights, material, placement and both hashes.
+
+Both native profiles supply the immutable rules identity. Private geometry
+implements all 44 faces, including ranked jumps, profile-specific post-jump
+victims, area routes, compound captures and Heavenly Tetrarch igui. Complete
+effects apply direct captures, Demon hazards and burns, mover death, then
+surviving promotion. Adams burns before a moving Demon dies; Muller suppresses
+that burn. A newly promoted Demon does not burn on its promotion action.
+Tests compare full actions and states with native rules in both profiles.
+
+The adapter obtains exact native root conclusions and legal actions, including
+repetition admission. It checks the selected action and replays the reported
+line through native submission. A refused first action is an error; a later
+refusal clips the line. A native first-action conclusion replaces the private
+score. Legacy observations retain their old identity, limits and exact score
+validation through the shared observation helper.
+
+Private analysis has these limits:
+
+- The search hash includes profile, turn, original identities, promotion and
+  refusal rights, but omits full history and counters. The repetition hash
+  omits physical piece IDs and refusal rights, but retains original kind and
+  promotion, as native board repetition does. Known board actions are replayed
+  once to seed that history. A private
+  repeated board scores zero; it does not declare a draw. Native Tenjiku
+  forbids the first known recurrence, not Chu's same-sequence must-vary rule.
+- Complete loss of both royal sets scores zero. A one-action win shortcut
+  requires a complete local action that removes every enemy royal while an
+  own royal survives. Separate attacks on two royals do not suffice.
+- The bare-royal calculation uses Tenjiku's local pending reply: capture all
+  enemy royals or equalize to two bare royals. It does not use Chu's narrow
+  material award or dead-piece exclusion. These private replies do not apply
+  full native history admission. Native root and replay remain authoritative.
+- No Chess self-check filter or Chu protected-Lion rule is added. Null-move
+  pruning is disabled. An internal position with no move scores zero; a live
+  native root without board actions remains an unscored error.
+- Material values are unchanged. Placement and tempo supplement them. Move
+  gain includes all direct and burn victims, promotion and mover suicide.
+  The exchange filter follows complete local recaptures of the last mover,
+  including off-target Demon burns. It permits either side to stop. This is
+  a material heuristic, not proof against future checks or other sacrifices.
+  It retains uncertain royal/material endings and exhausted work. Each query
+  allows eight recapture levels, 63 projections, 2,048 generated routes and
+  4,096 geometry probes. The core bypasses this filter at threatened nodes.
+- Quiescence uses Chu's eight-ply bound and signed tactical table depth.
+  Before the horizon it searches quiet evasions when threatened. At the
+  horizon a threatened position receives an uncertain zero estimate; other
+  positions use static evaluation. This does not establish a native result.
+- Search generation retains one route for each exactly equal successor in
+  each stage. Equality includes every cell's original identity and rights;
+  turn and profile are fixed within a stage. Native root admission precedes
+  this reduction. Full legal generation and perft retain all complete routes.
+
+Nominal depth is 1–64, with at most 5,000,000 nodes and eight reported actions.
+Default play uses depth 64 and 10,000 nodes, selected from fixed-root cost
+and completion measurements in both profiles.
+Each request creates a fresh 16 MiB transposition table. The 22,528 history
+slots use 90,112 bytes of basic history and the capped 32 MiB continuation
+table. Clock and session reuse remain in MSH-179 (Clock and Session for All
+Games). Current identities are `mshogi.tenjiku.shared-core.v1` and
+`mshogi.tenjiku.material-placement.v1`.
 
 ## What Tori showed, and what the other games need
 

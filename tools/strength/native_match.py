@@ -63,6 +63,10 @@ def run_pair(args, seed, out):
     command = [args.config_writer, args.candidate, args.baseline, str(seed),
                str(args.candidate_nodes), str(args.baseline_depth), str(args.baseline_nodes),
                '1' if args.calibrate else str(args.max_steps), str(args.pair_wall_ms), str(config)]
+    if args.game == 'tenjiku':
+        command.append(args.profile)
+    if args.watchdog_ms is not None:
+        command.extend(['--watchdog-ms', str(args.watchdog_ms)])
     with open(out / f'pair-{seed:04d}.config.log', 'x') as log:
         subprocess.run(command, check=True, stdout=log, stderr=subprocess.STDOUT, timeout=15)
     command = [args.runner, 'experiment-run', str(config), str(report_path)]
@@ -116,7 +120,8 @@ def summary(args, rows, start, failure=None):
 
 def main(default_game="shogi"):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--game', choices=['shogi', 'xiangqi', 'chu'], default=default_game)
+    parser.add_argument('--game', choices=['shogi', 'xiangqi', 'chu', 'tenjiku'], default=default_game)
+    parser.add_argument('--profile', choices=['adams', 'muller'])
     parser.add_argument('--candidate', required=True)
     parser.add_argument('--baseline', required=True)
     parser.add_argument('--candidate-nodes', type=int, required=True)
@@ -124,6 +129,7 @@ def main(default_game="shogi"):
     parser.add_argument('--baseline-nodes', type=int)
     parser.add_argument('--runner', default='target/release/mshogi-match')
     parser.add_argument('--config-writer')
+    parser.add_argument('--watchdog-ms', type=int, help='symmetric engine watchdog; writer default is 30000')
     parser.add_argument('--out', required=True)
     parser.add_argument('--workers', type=int, default=4)
     parser.add_argument('--max-pairs', type=int, default=600)
@@ -137,7 +143,9 @@ def main(default_game="shogi"):
     parser.add_argument('--beta', type=float, default=.05)
     parser.add_argument('--calibrate', action='store_true')
     args = parser.parse_args()
-    defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'chu': (1, 512, 500)}
+    if (args.game == 'tenjiku') != (args.profile is not None):
+        parser.error('--profile adams|muller is required only for --game tenjiku')
+    defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'chu': (1, 512, 500), 'tenjiku': (1, 1024, 500)}
     depth, nodes, args.max_steps = defaults[args.game]
     if args.baseline_depth is None:
         args.baseline_depth = depth
@@ -148,6 +156,8 @@ def main(default_game="shogi"):
     if not (1 <= args.workers <= 8 and 1 <= args.max_pairs <= 10000
             and 0 < args.wall_seconds <= 3600 and 0 < args.pair_wall_ms <= 600000):
         parser.error('invalid finite campaign bounds')
+    if args.watchdog_ms is not None and not 1 <= args.watchdog_ms <= 60000:
+        parser.error('watchdog must be within 1..60000 ms')
     stats.Sprt(args.elo0, args.elo1, args.alpha, args.beta, args.min_pairs)
     out = Path(args.out).resolve()
     out.mkdir(parents=True, exist_ok=False)

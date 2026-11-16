@@ -153,7 +153,11 @@ impl ExecutionContext {
                 (1..=crate::TORI_MAX_DEPTH.max(MAX_ANALYSIS_DEPTH)).contains(&self.limits.depth)
                     && self.limits.nodes <= MAX_ANALYSIS_NODES
             }
-            GameKind::Chu | GameKind::Tenjiku => {
+            GameKind::Chu => {
+                (1..=crate::CHU_MAX_DEPTH.max(MAX_ANALYSIS_DEPTH)).contains(&self.limits.depth)
+                    && self.limits.nodes <= crate::CHU_MAX_NODES.max(MAX_ANALYSIS_NODES)
+            }
+            GameKind::Tenjiku => {
                 (1..=MAX_ANALYSIS_DEPTH).contains(&self.limits.depth)
                     && self.limits.nodes <= MAX_ANALYSIS_NODES
             }

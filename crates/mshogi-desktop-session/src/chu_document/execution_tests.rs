@@ -195,7 +195,7 @@ fn forged_actual_observation_score_pv_limits_context_and_journal_are_rejected_at
                 else {
                     panic!()
                 };
-                telemetry.score = Some(123);
+                telemetry.score = Some(1_000_001);
             }
             1 => {
                 let ExecutionResult::Chu {
@@ -357,4 +357,70 @@ fn real_engine_standard_progression_measures_targets_pv_and_retired_branch_capac
         "CHU_ENGINE_DOCUMENT_TAKE_BACK {}",
         serde_json::to_string(d.usage()).unwrap()
     );
+}
+
+#[test]
+fn saved_full_width_compound_observation_keeps_exact_score_checks() {
+    let d = tactical();
+    // Construct the historical observation from its native complete route,
+    // independently of the new engine's choice, score or selective PV.
+    let action = c::Action {
+        from: "6f".parse().unwrap(),
+        route: vec!["6e".parse().unwrap(), "5e".parse().unwrap()],
+        promote: false,
+    };
+    let mut branch = d.record().to_game().unwrap();
+    branch
+        .submit(c::GameRequest {
+            expected: branch.context(),
+            actor: c::Side::Sente,
+            command: c::GameCommand::Play {
+                action: action.clone(),
+            },
+        })
+        .unwrap();
+    assert_eq!(
+        branch.conclusion(),
+        Some(c::Conclusion::Material {
+            winner: c::Side::Sente
+        })
+    );
+    let mut ctx = context(d.record(), 1);
+    ctx.limits = WorkLimits {
+        time_ms: None,
+        depth: 1,
+        nodes: 512,
+    };
+    let observation = ExecutionObservation {
+        schema_version: mshogi_engine::OBSERVATION_SCHEMA_VERSION,
+        context: ctx,
+        result: ExecutionResult::Chu {
+            result: ChuResult::Choice {
+                action: action.clone(),
+                telemetry: mshogi_engine::ChuTelemetry {
+                    evaluator_id: "mshogi.chu.material.v1".into(),
+                    search_id: "mshogi.chu.full-width.v1".into(),
+                    perspective: c::Side::Sente,
+                    score: Some(999_999),
+                    completed_depth: 1,
+                    nodes: 2,
+                    principal_variation: vec![action],
+                    status: mshogi_engine::StopReason::Complete,
+                },
+            },
+        },
+    };
+    let mut forged = observation.clone();
+    let ExecutionResult::Chu {
+        result: ChuResult::Choice { telemetry, .. },
+    } = &mut forged.result
+    else {
+        panic!()
+    };
+    telemetry.score = Some(123);
+    assert!(d.with_observation(forged, &mut || false).is_err());
+    let saved = d.with_observation(observation, &mut || false).unwrap();
+    let reopened = decode(&saved);
+    assert_eq!(reopened.record(), saved.record());
+    assert_eq!(reopened.observations(), saved.observations());
 }

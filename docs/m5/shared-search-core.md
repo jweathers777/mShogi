@@ -101,7 +101,7 @@ buffers. Killers, previous-move slots, static evaluations and excluded moves
 have `MAX_PLY + 2` entries; they do not grow with the square of the slot count.
 
 Tables that fit retain their complete dense index and the same update arithmetic.
-This includes all four current adapters. Above the cap, continuation history
+This includes Chess, Tori, Shogi and Xiangqi. Chu uses the capped table. Above the cap, continuation history
 mixes the previous and current slots separately into a fixed table. Basic history
 uses the low 16 bits above its cap. Collisions share ordering statistics; they
 cannot admit moves or decide native outcomes. Bonus, penalty, clear and basic
@@ -110,7 +110,7 @@ searches and cleared at a new game. Sizing uses checked multiplication, so even
 an extreme slot count cannot cause a quadratic allocation or integer overflow.
 The trait requires a nonzero slot count and in-range move slots.
 
-Expected payload, using side × movement face × destination square:
+Payload for current adapters, with an estimate for Tenjiku:
 
 | Game | Slots | Basic bytes | Continuation bytes | Total bytes |
 | --- | ---: | ---: | ---: | ---: |
@@ -118,15 +118,15 @@ Expected payload, using side × movement face × destination square:
 | Tori Shogi | 882 | 3,528 | 3,111,696 | 3,115,224 |
 | Shogi | 2,268 | 9,072 | 20,575,296 | 20,584,368 |
 | Xiangqi | 1,260 | 5,040 | 6,350,400 | 6,355,440 |
-| Chu Shogi (expected) | 8,352 | 33,408 | 33,554,432 | 33,587,840 |
+| Chu Shogi | 12,096 | 48,384 | 33,554,432 | 33,602,816 |
 | Tenjiku Shogi (expected) | 22,528 | 90,112 | 33,554,432 | 33,644,544 |
 
-Chu and Tenjiku use the current native 29 and 44 movement faces for these
-estimates. Their future adapters may choose different slots; the cap still
-applies. Dense continuation payload at these slot counts would be 279,023,616
-and 2,030,043,136 bytes respectively. Earlier rough estimates below used a
-different piece-count assumption. The cap needs no game-specific core branch
-or new trait method. See [verification](evidence/msh178/README.md).
+Chu uses side × 42 original-identity/promotion states × 144 destinations,
+so original identity remains distinct even when movement faces agree. The
+MSH-178 estimate used 29 movement faces; the cap accommodates the implemented
+index without a core change. Tenjiku still uses the prospective 44-face count;
+its future adapter may choose a different index. The cap needs no game-specific
+core branch or new trait method. See [history verification](evidence/msh178/README.md).
 
 ## Acceptance of engine changes
 
@@ -292,6 +292,99 @@ limits and checks through the shared identity helper. Current identities are
 `mshogi.xiangqi.shared-core.v1` and `mshogi.xiangqi.material-placement.v1`.
 
 See [verification and predecessor evidence](evidence/msh181/README.md).
+
+## Chu Shogi on the core
+
+MSH-182 (Chu Search Core Adoption) replaces Chu's private full-width loop.
+The shared trait adds `generate_search`, which defaults to complete `generate`.
+The core uses this hook at its two staged generation points. A 144-square byte
+array and three-word occupancy sets support complete single- and double-landing moves. A compact
+32-bit move retains both landings and optional promotion. In-place updates keep
+material, placement, original identity, promotion, royal sets, Lion protection
+and hash; a small undo record restores up to two captured pieces.
+
+The position implements native movement geometry and complete-action rules:
+Lion jumps, double captures, igui and quiet returns; Soaring Eagle and Horned
+Falcon special routes; optional promotion opportunities; defended-distance Lion
+capture, qualifying intermediate victims, and next-turn Lion protection.
+Public native movement descriptors supply geometry facts. The private position
+performs its own route generation and state updates. Native fixtures, perft and
+randomized action/result/hash/undo comparisons verify that boundary.
+
+The adapter supplies the native legal root list, including must-vary restrictions.
+Native conclusions are reported exactly; a live root without board actions stays
+unscored. A selected action must pass native submission. The reported line is
+replayed natively and stops at a conclusion or refusal; a refusal of its first
+action is an error. A native one-action conclusion replaces a private score.
+Saved full-width observations retain old identity, limits and exact score checks
+through the shared identity helper.
+
+Private analysis remains separate from native adjudication:
+
+- The hash includes original identity, promotion, turn and active Lion rights,
+  but not the complete known history or counters.
+- Path repetition at the second occurrence scores zero; pre-root repetition
+  requires a third occurrence. Captures and promotion bound the scan. This is
+  not the native same-sequence must-vary algorithm, and never declares a real
+  draw. Native root admission and PV replay enforce that algorithm.
+- Real compound passes remain legal complete moves. Null-move pruning is
+  disabled. No Chess self-check filter is added.
+- A threat means one admitted complete action can capture all surviving royals.
+  Separate attacks on King and Prince do not become a one-action loss.
+- Actual last-royal loss is terminal. The full native finite immediate-mate
+  procedure is not called at each private node. Native conclusions retain
+  priority at the application boundary.
+- A locally admitted complete action that can capture every opposing royal
+  scores a win one action ahead. This cuts known losing replies without removing
+  any legal move. The reported selective line can stop before that capture;
+  an actual win still requires native submission. Two separate royal attacks
+  do not qualify for this shortcut.
+- The private C08 material award counts only the narrow three-piece case,
+  excluding dead unpromoted Pawn/Lance from that count while retaining their
+  occupancy. The bare side can make an immediate royal-capture or equalizing
+  reply. These reply probes use local admission, without full native must-vary
+  obligations, and do not run native immediate-mate precedence. Native root
+  conclusions and line replay remain authoritative. No general bare-royal draw
+  or material-exhaustion draw is added.
+- An internal position with no move scores zero as a private approximation;
+  the native root still returns an unscored error, not a draw.
+- Classical evaluation uses unchanged material values plus placement and tempo.
+  Capture ordering accounts for both victims. It is not a native outcome.
+- The exchange filter uses a bounded local material-recapture model. It counts
+  both victims and promotion gain, and follows each capturing piece to its
+  actual final square, including Lion return routes. Complete local admission
+  enforces Lion rights. Each side may stop the exchange. This is not a full
+  tactical proof: future checks are outside the exchange model, so a checking
+  sacrifice can be undervalued. Actual royal loss, narrow material endings and
+  unresolved work limits retain the move. The core bypasses the exchange filter
+  when the current node is threatened. Equal recapture successors require equal board,
+  turn, Lion rights and next target, not merely an equal hash. The filter changes
+  private selective search only; full legal generation and native admission stay
+  unchanged.
+- Chu limits quiescence to eight additional plies, counted from each tactical
+  search entry. The shared trait's default retains the existing absolute-ply
+  limit for other games. Royal/material terminals and the one-action royal
+  capture proof run before this horizon. Threatened nodes search all quiet
+  evasions and do not stand pat before the horizon. At the horizon, a threatened
+  position receives an uncertain zero estimate; other positions use static
+  evaluation. This follows the existing absolute-ply horizon convention and
+  never declares a native draw. Long tactical chains can be missed.
+- Bounded quiescence stores negative elapsed tactical depth in the table.
+  A near-horizon result cannot replace a fresh tactical query: score cutoffs
+  require sufficient stored depth. Quiescence entries do not replace a current
+  main-search entry. Other games retain zero-depth quiescence entries.
+- Search generation keeps one admitted complete route for each equal successor
+  within a stage. Equality includes all piece identities and promotions, turn
+  and active Lion rights. Native root restrictions apply before this reduction.
+  Full `generate`, legal actions and perft retain every route. This avoids
+  repeated analysis of equivalent Lion routes without changing native actions.
+
+Nominal depth is 1–64, with at most 5,000,000 nodes. Default play uses depth 64
+and 300,000 nodes. A reported line contains at most eight complete actions.
+Each request starts a fresh searcher with a 16 MiB transposition table and the
+bounded history tables. MSH-179 (Clock and Session for All Games) remains separate.
+Current identities are `mshogi.chu.shared-core.v1` and
+`mshogi.chu.material-placement.v1`.
 
 ## What Tori showed, and what the other games need
 

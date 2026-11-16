@@ -44,6 +44,14 @@ class ShogiPairScoring(unittest.TestCase):
         self.assertIsNone(result['pair_score'])
         self.assertEqual(result['stops'][0], 'native_pending_adjudication')
 
+    def test_chu_capacity_stop_does_not_become_a_draw(self):
+        report = self.report(2, None)
+        report['games'][1]['stop'] = 'native_stop:ResourceLimit'
+        result = native_match.summarize(report)
+        self.assertIsNone(result['pair_score'])
+        self.assertEqual(result['scores_twice'], [2, None])
+        self.assertEqual(result['stops'][1], 'native_stop:ResourceLimit')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -25,7 +25,8 @@ pub struct Hit {
     pub score: i32,
     /// Static evaluation of the position, when the entry has one.
     pub eval: Option<i32>,
-    /// Remaining depth of the stored search. Quiescence entries have depth 0.
+    /// Remaining search depth. Bounded quiescence stores negative elapsed q-depth;
+    /// unbounded quiescence stores zero.
     pub depth: i32,
     /// Bound kind of the score.
     pub bound: Bound,
@@ -162,10 +163,10 @@ impl TranspositionTable {
         let e = &mut self.entries[victim];
         let same = e.key == key && e.meta & 3 != 0;
         // Keep a much deeper result of this search for the same position. A
-        // quiescence result (depth 0) never replaces a main-search result.
+        // quiescence result (depth <= 0) never replaces a main-search result.
         if same
             && e.meta >> 2 == generation
-            && (depth == 0 && e.depth > 0
+            && (depth <= 0 && e.depth > 0
                 || bound != Bound::Exact && i32::from(e.depth) > depth + 3)
         {
             return;
@@ -182,7 +183,7 @@ impl TranspositionTable {
             eval: eval.map_or(NO_EVAL, |v| {
                 v.clamp(i32::from(i16::MIN) + 1, i32::from(i16::MAX)) as i16
             }),
-            depth: depth.clamp(0, 127) as i8,
+            depth: depth.clamp(-127, 127) as i8,
             meta: (generation << 2)
                 | match bound {
                     Bound::Exact => 1,
@@ -234,6 +235,19 @@ mod tests {
         assert_eq!(t.probe(h, 0).unwrap().move_bits, 77);
         t.clear();
         assert_eq!(t.probe(h, 0), None);
+    }
+
+    #[test]
+    fn negative_quiescence_depth_preserves_mates_and_main_entries() {
+        let mut t = TranspositionTable::new(1, 900_000);
+        let h = 0x1234_5678_9abc_def0;
+        t.store(h, 3, 77, 999_990, Some(25), -7, Bound::Exact);
+        let hit = t.probe(h, 5).unwrap();
+        assert_eq!((hit.depth, hit.score, hit.move_bits), (-7, 999_988, 77));
+        t.store(h, 0, 9, -999_990, None, 4, Bound::Exact);
+        t.store(h, 0, 5, 10, None, -1, Bound::Exact);
+        let hit = t.probe(h, 2).unwrap();
+        assert_eq!((hit.depth, hit.score, hit.move_bits), (4, -999_988, 9));
     }
 
     #[test]

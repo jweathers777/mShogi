@@ -102,7 +102,7 @@ fn zero_and_partial_work_never_supply_a_fallback() {
         },
         || {
             checks += 1;
-            checks > 5
+            checks > 1
         },
     )
     .unwrap();
@@ -344,7 +344,7 @@ fn native_counter_resource_failure_never_becomes_legal_choice_or_outcome() {
             &g,
             Limits {
                 depth: 1,
-                nodes: 512
+                nodes: 20_000
             }
         ),
         Err(SearchError::Transition(GameError::Capacity(_)))
@@ -353,79 +353,39 @@ fn native_counter_resource_failure_never_becomes_legal_choice_or_outcome() {
     assert_eq!(g.conclusion(), None);
 }
 #[test]
-fn independently_solved_tree_checks_minimax_iterative_work_and_exact_reversal() {
-    // Hand-solved graph: root A->{8,2}, B->{7,3,5,9} encoded below as
-    // A's children7/3, B's children5/9. Depth1 prefers8(A), depth2 prefers5(B).
-    fn a(n: u8) -> Action {
-        Action {
-            from: mshogi_core::chu::Square::new(n, 6).unwrap(),
-            route: vec![mshogi_core::chu::Square::new(n, 5).unwrap()],
-            promote: false,
-        }
-    }
-    struct Small {
-        at: usize,
-        fail: bool,
-    }
-    impl Tree for Small {
-        type Undo = usize;
-        fn turn(&self) -> Side {
-            if [1, 2].contains(&self.at) {
-                Side::Gote
-            } else {
-                Side::Sente
-            }
-        }
-        fn conclusion(&self) -> Option<Conclusion> {
-            None
-        }
-        fn evaluate(&self, root: Side) -> i32 {
-            let n = [0, 8, 2, 7, 3, 5, 9][self.at];
-            if root == Side::Sente { n } else { -n }
-        }
-        fn actions(&self) -> Vec<Action> {
-            match self.at {
-                0 => vec![a(1), a(2)],
-                1 => vec![a(3), a(4)],
-                2 => vec![a(5), a(6)],
-                _ => vec![],
-            }
-        }
-        fn push(&mut self, action: Action) -> Result<usize, SearchError> {
-            let next = usize::from(action.from.file());
-            if self.fail && next == 5 {
-                return Err(SearchError::NoBoardActions);
-            }
-            let before = self.at;
-            self.at = next;
-            Ok(before)
-        }
-        fn pop(&mut self, undo: usize) -> Result<(), SearchError> {
-            self.at = undo;
-            Ok(())
-        }
-    }
-    let mut tree = Small { at: 0, fail: false };
-    let mut stop = || false;
-    let mut work = Work {
-        nodes: 0,
-        limit: 100,
-        stop: &mut stop,
+fn independently_specified_no_action_root_stays_unscored() {
+    let game = fixture_game("CHU-NOACTION");
+    let before = GameRecord::from_game(&game).unwrap();
+    assert_eq!(game.conclusion(), None);
+    assert!(game.legal_actions().is_empty());
+    assert_eq!(
+        search(&game, DEFAULT_LIMITS),
+        Err(SearchError::NoBoardActions)
+    );
+    assert_eq!(GameRecord::from_game(&game).unwrap(), before);
+}
+#[test]
+fn search_uses_prince_promotion_to_escape_the_native_mate_fixture() {
+    let mut game = fixture_game("CHU-MATE-PRINCE-RESPONSE");
+    let result = search(
+        &game,
+        Limits {
+            depth: 2,
+            nodes: 20_000,
+        },
+    )
+    .unwrap();
+    let Some(Decision::Choose(action)) = result.decision else {
+        panic!("{result:?}")
     };
-    let r = minimax(&mut tree, 1, 0, Side::Sente, &mut work).unwrap_or_else(|_| panic!());
-    assert_eq!((r.score, r.pv), (8, vec![a(1)]));
-    assert_eq!(work.nodes, 3);
-    assert_eq!(tree.at, 0);
-    work.nodes = 0;
-    let r = minimax(&mut tree, 2, 0, Side::Sente, &mut work).unwrap_or_else(|_| panic!());
-    assert_eq!((r.score, r.pv), (5, vec![a(2), a(5)]));
-    assert_eq!(work.nodes, 7);
-    assert_eq!(tree.at, 0);
-    work.nodes = 0;
-    tree.fail = true;
-    assert!(matches!(
-        minimax(&mut tree, 2, 0, Side::Sente, &mut work),
-        Err(Halt::Error(SearchError::NoBoardActions))
-    ));
-    assert_eq!(tree.at, 0);
+    game.submit(GameRequest {
+        expected: game.context(),
+        actor: game.position().side_to_move(),
+        command: GameCommand::Play { action },
+    })
+    .unwrap();
+    // The hand-established fixture has no ordinary one-royal escape. Creating
+    // a Prince survives even though both royals are individually threatened.
+    assert_eq!(game.royal_squares(Side::Sente).len(), 2);
+    assert_eq!(game.conclusion(), None);
 }

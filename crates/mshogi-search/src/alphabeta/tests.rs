@@ -430,3 +430,137 @@ fn table_entries_survive_search_requests_until_new_game() {
     searcher.clear();
     assert!(searcher.table.probe(hash, 0).is_none());
 }
+
+/// A hand-solved tactical chain: a threatened side has one quiet escape to a
+/// terminal loss for its opponent. A separate quiet leaf has static value 37.
+struct HorizonGame {
+    state: u32,
+    path: Vec<u32>,
+}
+impl SearchPosition for HorizonGame {
+    type Move = u32;
+    const HISTORY_SLOTS: usize = 2;
+    const QUIESCENCE_PLIES: usize = 8;
+    fn hash(&self) -> u64 {
+        (0x1820_0000 + u64::from(self.state)) << 32 | 17
+    }
+    fn in_check(&self) -> bool {
+        self.state == 0
+    }
+    fn generate(&self, stage: Stage, moves: &mut Vec<u32>) {
+        if self.state == 0 && stage == Stage::Quiet {
+            moves.push(1);
+        }
+    }
+    fn make(&mut self, m: u32) -> bool {
+        if self.state != 0 || m != 1 {
+            return false;
+        }
+        self.path.push(self.state);
+        self.state = 1;
+        true
+    }
+    fn unmake(&mut self) {
+        self.state = self.path.pop().unwrap();
+    }
+    fn make_null(&mut self) {
+        panic!("null disabled");
+    }
+    fn unmake_null(&mut self) {
+        panic!("null disabled");
+    }
+    fn null_move_safe(&self) -> bool {
+        false
+    }
+    fn rule_score(&self) -> Option<i32> {
+        (self.state == 1).then_some(-73)
+    }
+    fn draw_claimable(&self) -> bool {
+        false
+    }
+    fn no_move_score(&self, _: i32) -> i32 {
+        -999
+    }
+    fn evaluate(&self) -> i32 {
+        assert!(!self.in_check());
+        37
+    }
+    fn is_tactical(&self, _: u32) -> bool {
+        false
+    }
+    fn tactical_order(&self, _: u32) -> i32 {
+        0
+    }
+    fn tactical_gain(&self, _: u32) -> i32 {
+        0
+    }
+    fn exchange_at_least(&self, _: u32, _: i32) -> bool {
+        panic!("quiet escape needs no exchange test");
+    }
+    fn history_slot(&self, _: u32) -> usize {
+        1
+    }
+    fn encode(m: u32) -> u32 {
+        m
+    }
+    fn decode(&self, bits: u32) -> Option<u32> {
+        self.is_pseudo_legal(bits).then_some(bits)
+    }
+    fn is_pseudo_legal(&self, m: u32) -> bool {
+        self.state == 0 && m == 1
+    }
+}
+fn horizon_probe(s: &mut Searcher<HorizonGame>, pos: &mut HorizonGame, qdepth: usize) -> i32 {
+    let mut stop = || false;
+    let mut run = Run {
+        s,
+        pos,
+        stop: &mut stop,
+        start: Instant::now(),
+        limits: limits(1),
+        nodes: 0,
+        seldepth: 0,
+        abort: false,
+        status: Status::Complete,
+        root_move: None,
+        root_count: 0,
+    };
+    // Absolute ply is deliberately different: the tactical horizon is relative.
+    run.quiesce(13, qdepth, -1000, 1000, false)
+}
+#[test]
+fn bounded_quiescence_keeps_quiet_evasions_and_checks_terminal_before_horizon() {
+    let mut s = Searcher::<HorizonGame>::new(1);
+    let mut p = HorizonGame {
+        state: 0,
+        path: vec![],
+    };
+    assert_eq!(horizon_probe(&mut s, &mut p, 7), 73);
+    assert_eq!(p.state, 0);
+    assert!(p.path.is_empty());
+    // At the stated horizon, threat uncertainty is zero, not stand-pat 37.
+    assert_eq!(horizon_probe(&mut s, &mut p, 8), 0);
+    p.state = 1;
+    assert_eq!(horizon_probe(&mut s, &mut p, 8), -73);
+    p.state = 2;
+    assert_eq!(horizon_probe(&mut s, &mut p, 8), 37);
+}
+#[test]
+fn bounded_quiescence_rejects_shallow_cache_for_fresh_tactical_work() {
+    let mut s = Searcher::<HorizonGame>::new(1);
+    let mut p = HorizonGame {
+        state: 2,
+        path: vec![],
+    };
+    let hash = p.hash();
+    s.table.store(hash, 13, 0, 999, Some(37), -7, Bound::Exact);
+    assert_eq!(horizon_probe(&mut s, &mut p, 0), 37);
+    assert_eq!(s.table.probe(hash, 13).unwrap().depth, 0);
+    s.table.store(hash, 13, 0, 888, Some(37), 0, Bound::Exact);
+    assert_eq!(horizon_probe(&mut s, &mut p, 7), 888);
+    s.table.clear();
+    s.table.store(hash, 13, 0, 777, Some(37), -7, Bound::Exact);
+    assert_eq!(horizon_probe(&mut s, &mut p, 7), 777);
+    assert_eq!(p.state, 2);
+    assert!(p.path.is_empty());
+}

@@ -1219,7 +1219,7 @@ mod tests {
         assert_eq!(opened.execution_purpose, None);
         assert_eq!(
             (opened.play_limits.depth, opened.play_limits.nodes),
-            (1, 512)
+            (64, 300_000)
         );
         assert!(opened.open_token.document > before.document);
         let mut normal = DesktopController::new(PathBuf::from("unused-test-engine")).unwrap();

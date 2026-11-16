@@ -106,7 +106,21 @@ fn compound_result_native_replay_work_and_atomic_validation() {
         panic!()
     };
     telemetry.score = Some(123);
+    // A selective score is not the static score at the end of its reported line.
+    assert!(forged.validate(&g).is_ok());
+    let ChuResult::Choice { telemetry, .. } = &mut forged else {
+        panic!()
+    };
+    telemetry.evaluator_id = mshogi_search::chu::LEGACY_EVALUATOR_ID.into();
+    telemetry.search_id = mshogi_search::chu::LEGACY_SEARCH_ID.into();
+    telemetry.completed_depth = 1;
+    telemetry.nodes = 2;
     assert!(forged.validate(&g).is_err());
+    let ChuResult::Choice { telemetry, .. } = &mut forged else {
+        panic!()
+    };
+    telemetry.score = Some(mshogi_search::chu::LEGACY_WIN_SCORE - 1);
+    assert!(forged.validate(&g).is_ok());
     let mut forged = result.clone();
     let ChuResult::Choice { telemetry, .. } = &mut forged else {
         panic!()
@@ -219,8 +233,8 @@ fn historical_unsupported_failures_survive_and_current_limits_stay_finite() {
     let mut c = context(&game());
     c.limits = WorkLimits {
         time_ms: None,
-        depth: CHU_MAX_DEPTH + 1,
-        nodes: CHU_MAX_NODES + 1,
+        depth: 3,
+        nodes: 2001,
     };
     assert!(c.valid_limits());
     let old = ExecutionObservation::new(
@@ -236,8 +250,13 @@ fn historical_unsupported_failures_survive_and_current_limits_stay_finite() {
     let round: ExecutionObservation =
         serde_json::from_str(&serde_json::to_string(&old).unwrap()).unwrap();
     assert_eq!(old, round);
+    // This formerly unsupported request is now within the shared-core bounds.
+    // A different request beyond the current bounds is still refused.
+    c.limits.depth = CHU_MAX_DEPTH + 1;
+    c.limits.nodes = CHU_MAX_NODES + 1;
+    assert!(!c.valid_limits());
     let now = execute(&c);
-    assert!(now.matches(&c));
+    assert!(!now.matches(&c));
     assert!(matches!(
         now.result,
         ExecutionResult::Failure {

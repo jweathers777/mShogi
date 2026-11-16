@@ -635,3 +635,46 @@ fn ambiguous_native_counter_capacity_keeps_all_ending_and_close_paths_saveable()
         .unwrap();
     ValidatedChuDocument::decode(d.with_reserved_close(1).unwrap().bytes(), &mut || false).unwrap();
 }
+
+#[test]
+fn shared_core_analysis_bounds_preserve_native_state_and_reject_excess() {
+    let mut ctl = controller();
+    ctl.shared.manual_engine = true;
+    let g = c::Game::standard();
+    replace(&mut ctl, &g, c::Side::Sente);
+    let before = native(&ctl);
+    let snapshot = send(
+        &mut ctl,
+        SessionOperation::Analyze {
+            operation: AnalysisOperation::Moves {
+                depth: 64,
+                nodes: 5_000_000,
+            },
+        },
+    )
+    .unwrap();
+    assert_eq!(snapshot.execution_purpose, Some("move_analysis"));
+    assert_eq!(snapshot.play_limits, mshogi_engine::CHU_PLAY_LIMITS);
+    assert_eq!(native(&ctl), before);
+    send(&mut ctl, SessionOperation::Cancel {}).unwrap();
+    for (depth, nodes) in [(65, 1), (1, 5_000_001), (1, 0)] {
+        let token = ctl.shared_token();
+        assert!(
+            send(
+                &mut ctl,
+                SessionOperation::Analyze {
+                    operation: AnalysisOperation::Moves { depth, nodes },
+                }
+            )
+            .is_err()
+        );
+        // Admission receipts can retire a presentation revision on refusal.
+        // The document, semantic version and selected history stay unchanged.
+        let after = ctl.shared_token();
+        assert_eq!(
+            (after.document, after.version, after.selection),
+            (token.document, token.version, token.selection)
+        );
+        assert_eq!(native(&ctl), before);
+    }
+}

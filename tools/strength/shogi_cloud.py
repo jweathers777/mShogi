@@ -28,6 +28,34 @@ PREDECESSOR = '1d19a544cc3e1ca3e92a0e8f53268758967329bf'
 RATE = .201608
 MAX_PAIRS = 600
 PAIR_MS = 180000
+REVISED_SOURCE = 'ef1c94a3536aeac2feaa85f1722968c9bf864c0c'
+WORKER_FILES = ('tools/strength/shogi_cloud.py', 'tools/strength/anchor_cloud.py', 'tools/strength/native_match.py',
+                'tools/strength/anchor_worker.py', 'tools/strength/stats.py',
+                'tools/strength/cli.py', 'tools/strength/uci.py',
+                'tools/strength/__init__.py', 'tools/experiments/__init__.py',
+                'tools/experiments/gcp.py', 'tools/experiments/core.py')
+
+
+def bundle(m):
+    """Only the two reviewed clock/bound bundles; no free-form tuning."""
+    protocol = m.get('protocol', {})
+    increment = protocol.get('increment_ms')
+    require(protocol == {'base_ms': 5000, 'increment_ms': increment, 'elo0': 0, 'elo1': 15,
+                         'alpha': .05, 'beta': .05, 'min_pairs': 30, 'max_pairs': MAX_PAIRS}
+            and increment in (200, 500), 'fixed reviewed comparison protocol required')
+    if increment == 200:
+        require(m.get('experiment') != 'msh187-round3', 'round3 requires the500ms bundle')
+        return {'pair_ms': 180000, 'task_seconds': 900, 'workers': 8, 'pairs': 3, 'reserve': 330}
+    require(m.get('experiment') == 'msh187-round3', '500ms protocol requires separate round3')
+    return {'pair_ms': 420000, 'task_seconds': 1320, 'workers': 5, 'pairs': 2, 'reserve': 570}
+
+
+def verify_worker_files(m):
+    if m['protocol']['increment_ms'] == 500:
+        root = Path(__file__).resolve().parents[2]
+        for name, expected in m['build']['worker_files'].items():
+            require(file_hash(root/name) == expected, 'worker file identity differs: ' + name)
+
 
 
 def seeds(manifest):
@@ -41,17 +69,15 @@ def validate_manifest(m):
         require(type(m.get(field)) in (int, float) and math.isfinite(m[field]), 'finite ' + field)
     require(m['deadline_epoch'] == m['campaign_started_epoch'] + POLICY.seconds, 'fixed campaign deadline required')
     require(0 <= m['estimated_compute_before_usd'] < POLICY.compute_usd, 'compute cap reached')
-    require(m.get('protocol') == {'base_ms': 5000, 'increment_ms': 200, 'elo0': 0, 'elo1': 15,
-                                 'alpha': .05, 'beta': .05, 'min_pairs': 30, 'max_pairs': MAX_PAIRS},
-            'fixed reviewed comparison protocol required')
+    bounds = bundle(m)
     bins = m.get('bins')
-    require(isinstance(bins, list) and 1 <= len(bins) <= 8, 'one to eight bins')
-    require(all(isinstance(b, list) and 1 <= len(b) <= 3 for b in bins), 'one to three pairs per VM')
+    require(isinstance(bins, list) and 1 <= len(bins) <= bounds['workers'], 'worker count exceeds bundle')
+    require(all(isinstance(b, list) and 1 <= len(b) <= bounds['pairs'] for b in bins), 'pairs per VM exceed bundle')
     flat = [n for b in bins for n in b]
     require(all(type(n) is int and 1 <= n <= MAX_PAIRS for n in flat), 'invalid pair number')
     require(len(flat) == len(set(flat)) and seeds(m) == list(range(min(flat), max(flat)+1)),
             'unique contiguous pair numbers required')
-    require(m.get('task_seconds') == 900, 'fixed 900-second task bound required')
+    require(m.get('task_seconds') == bounds['task_seconds'], 'task bound differs from clock bundle')
     build = m['build']
     require(re.fullmatch('[a-f0-9]{40}', build['source']) is not None, 'frozen harness revision required')
     require(set(build['engines']) == {'candidate', 'baseline', 'runner', 'config_writer'}, 'four named native binaries required')
@@ -62,6 +88,17 @@ def validate_manifest(m):
     require(build['engines']['baseline']['source'] == PREDECESSOR, 'wrong task-start predecessor')
     require(all(build['engines'][k]['source'] == build['source'] for k in ('runner', 'config_writer')),
             'runner/writer must match frozen harness source')
+    if m['protocol']['increment_ms'] == 500:
+        require(build['source'] == REVISED_SOURCE and build['engines']['candidate']['source'] == REVISED_SOURCE,
+                '500ms comparison requires frozen revised native source')
+        require(re.fullmatch('[a-f0-9]{40}', build.get('worker_source', '')) is not None and
+                build['worker_source'] != build['source'],
+                'separate frozen worker source required')
+        require(set(build.get('worker_files', {})) == set(WORKER_FILES) and
+                all(re.fullmatch('[a-f0-9]{64}', h) for h in build['worker_files'].values()),
+                'exact worker file digests required')
+        require(re.fullmatch(r'us-central1-docker.pkg.dev/mshogi/mshogi-experiments/[^@]+@sha256:[a-f0-9]{64}',
+                             build.get('runtime_image', '')) is not None, 'frozen worker image required')
     opening_bytes = encode(m['openings'])
     require(digest(opening_bytes) == m['openings_sha256'], 'opening catalog hash differs')
     rows = m['openings']['openings']
@@ -86,8 +123,8 @@ def report_bytes(data):
 
 def audit_report(report, config, manifest, seed):
     require(report['config'] == config and config['seed'] == seed, 'wrong effective pair config')
-    require(config['clock'] == {'base_ms': 5000, 'increment_ms': 200} and
-            config['max_steps'] == 320 and config['wall_budget_ms'] == PAIR_MS, 'wrong clock/pair bound')
+    require(config['clock'] == {'base_ms': 5000, 'increment_ms': manifest['protocol']['increment_ms']} and
+            config['max_steps'] == 320 and config['wall_budget_ms'] == bundle(manifest)['pair_ms'], 'wrong clock/pair bound')
     require(config['rounds'] == 1 and len(config['openings']) == 1 and len(config['players']) == 2,
             'expected one native opening pair')
     index = (seed-1) % 6
@@ -127,7 +164,8 @@ def pair_args(m, opening_path):
     return SimpleNamespace(config_writer=e['config_writer']['path'], candidate=e['candidate']['path'],
         baseline=e['baseline']['path'], runner=e['runner']['path'], candidate_nodes=5000000,
         baseline_depth=64, baseline_nodes=5000000, calibrate=False, max_steps=320,
-        pair_wall_ms=PAIR_MS, game='shogi', watchdog_ms=60000, base=5, increment=.2,
+        pair_wall_ms=bundle(m)['pair_ms'], game='shogi', watchdog_ms=60000, base=5,
+        increment=m['protocol']['increment_ms']/1000,
         openings=str(opening_path), opening_count=6)
 
 
@@ -164,7 +202,7 @@ def execute_pair(m, seed, directory, task_index=None):
 def worker(manifest_uri, store_uri):
     bucket, key = gcp.parse_uri(manifest_uri)
     raw = gcp.GCSStore('gs://'+bucket).get(key)
-    m = decode(raw); validate_manifest(m)
+    m = decode(raw); validate_manifest(m); verify_worker_files(m)
     store = gcp.GCSStore(store_uri)
     index = int(os.environ['BATCH_TASK_INDEX'])
     require(0 <= index < len(m['bins']), 'invalid task index')
@@ -181,7 +219,7 @@ def worker(manifest_uri, store_uri):
         with tempfile.TemporaryDirectory(prefix='msh187-') as directory:
             for seed in m['bins'][index]:
                 require(not store.exists('abort.json'), 'another worker failed; no new pair')
-                require(time.time()+330 < end, 'insufficient time for a bounded pair and upload')
+                require(time.time()+bundle(m)['reserve'] < end, 'insufficient time for a bounded pair and upload')
                 pair_prefix = f'pairs/{seed:04d}'
                 put_new(store, pair_prefix+'/launch.json', encode(claim | {'seed': seed}))
                 dest = Path(directory)/f'{seed:04d}'
@@ -215,6 +253,8 @@ def summarize_runs(paths, replay_runner=None):
         expected_hash = digest(encode(m))
         intent = decode((root/'intent.json').read_bytes())
         require(intent['manifest_sha256'] == expected_hash, 'resource intent belongs to another manifest')
+        if m['protocol']['increment_ms'] == 500:
+            require(intent['image'] == m['build']['runtime_image'], 'collected worker image differs')
         cleanup = decode((root/'cleanup.json').read_bytes())
         require(cleanup.get('verified_absent') is True, 'cleanup not verified')
         resources = decode((root/'resources.json').read_bytes())
@@ -305,9 +345,94 @@ def summarize_runs(paths, replay_runner=None):
             'failures': failure, 'conservative_compute_usd_upper_bound': upper, 'rows': rows}
 
 
+PRIOR_ROUNDS_HOURS = 2.222044512960646
+PRIOR_ROUNDS_COST = .4479819501689699
+
+
+def round3_budget(paths, audit_paths, now, deadline, replay_runner=None, pairs_per_bin=2):
+    """Derive a five-VM bound only from verified original receipts and audits.
+
+    Original eight-VM receipts and prior-round charges are never rewritten.
+    This bound is not actual VM consumption. No cloud query is performed.
+    """
+    require(pairs_per_bin in (1, 2), 'one or two pairs per new bin required')
+    require(len(paths) == len(audit_paths) and len(set(map(str, paths))) == len(paths),
+            'one distinct resource audit per prior batch required')
+    previous = summarize_runs(paths, replay_runner)
+    require(not previous['failures'] and previous['sprt']['decision'] is None, 'round3 already stopped')
+    derived = []; intervals = []; campaign = None
+    for directory, audit_path in zip(paths, audit_paths):
+        root = Path(directory); audit_path = Path(audit_path)
+        m = decode((root/'manifest.json').read_bytes()); validate_manifest(m)
+        require(m['protocol']['increment_ms'] == 500 and len(m['bins']) <= 5, 'not a five-VM round3 batch')
+        if campaign is None: campaign = identity(m)
+        require(identity(m) == campaign and m['deadline_epoch'] == deadline, 'mixed round3 campaign')
+        resources = decode((root/'resources.json').read_bytes())
+        cleanup = decode((root/'cleanup.json').read_bytes())
+        submission = decode((root/'submission.json').read_bytes())
+        audit = decode(audit_path.read_bytes())
+        require(audit['complete'] is True and audit['issues'] == [] and
+                audit['failed_insert_completion_count'] == 0 and audit['failed_insertions'] == [] and
+                audit['vm_ids_without_worker_environment'] == [], 'resource audit incomplete or allocations uncertain')
+        require(audit['controller_resources_sha256'] == file_hash(root/'resources.json') and
+                audit['original_cleanup_sha256'] == file_hash(root/'cleanup.json') and
+                audit['effective_cleanup_sha256'] == file_hash(root/'cleanup.json') and
+                audit['original_cleanup_verified_absent'] is True and cleanup['verified_absent'] is True and
+                audit['cleanup_reconciliation_path'] is None, 'resource/cleanup provenance differs')
+        require(audit['audit_sha256'] == file_hash(audit_path.parent/'audit-logs.json'), 'raw resource audit hash differs')
+        require(audit['job_name'] == submission['name'] and audit['job_uid'] == submission['uid'], 'audit job differs')
+        require(audit['container_images'] == [m['build']['runtime_image']], 'resource image differs')
+        vm_ids = [v['id'] for v in audit['vms']]
+        require(len(vm_ids) == len(set(vm_ids)) == len(m['bins']) <= 5 and
+                set(vm_ids) == {w['id'] for w in audit['workers']} and
+                audit['successful_vm_count'] == audit['observed_worker_count'] == len(vm_ids),
+                'extra, missing or repeated VM allocation')
+        expected_receipts = {f'raw/tasks/{i}/receipt.json': file_hash(root/f'raw/tasks/{i}/receipt.json')
+                             for i in range(len(m['bins']))}
+        require(audit['task_receipt_hashes'] == expected_receipts, 'resource task receipt provenance differs')
+        task_vm_ids = []
+        for i in range(len(m['bins'])):
+            receipt = decode((root/f'raw/tasks/{i}/receipt.json').read_bytes())
+            require(audit['task_environments'][str(i)] == receipt['environment'] and
+                    receipt['environment']['batch']['BATCH_TASK_RETRY_ATTEMPT'] == '0',
+                    'resource environment differs or retried task')
+            task_vm_ids.append(receipt['environment']['gcp']['id'])
+        require(len(task_vm_ids) == len(set(task_vm_ids)) and set(task_vm_ids) == set(vm_ids),
+                'audited VM IDs differ from assigned task VMs')
+        start, end = resources['started_epoch'], resources['allocation_end_epoch']
+        require(math.isfinite(start) and math.isfinite(end) and start <= end <= now <= deadline,
+                'invalid allocation interval')
+        intervals.append((start, end))
+        hours = 5 * (end-start) / 3600
+        derived.append({'manifest_sha256': file_hash(root/'manifest.json'),
+                        'original_resources_sha256': file_hash(root/'resources.json'),
+                        'audit_receipt_sha256': file_hash(audit_path), 'start': start, 'end': end,
+                        'workers_bound': 5, 'vm_hours_upper_bound': hours,
+                        'compute_usd_upper_bound': hours*RATE})
+    ordered = sorted(intervals)
+    require(all(a[1] <= b[0] for a,b in zip(ordered, ordered[1:])), 'overlapping batch allocation intervals')
+    require(math.isfinite(now) and math.isfinite(deadline) and
+            (3360 if not paths else 360+570*pairs_per_bin) <= deadline-now <= 3600,
+            'invalid remaining campaign interval')
+    hours = PRIOR_ROUNDS_HOURS + sum(r['vm_hours_upper_bound'] for r in derived) + 5*(deadline-now)/3600
+    cost = PRIOR_ROUNDS_COST + (hours-PRIOR_ROUNDS_HOURS)*RATE
+    require(hours <= 8 and cost <= 2, 'aggregate original compute limit exceeded')
+    return {'checked_epoch': now, 'deadline_epoch': deadline, 'prior_rounds_vm_hours': PRIOR_ROUNDS_HOURS,
+            'prior_rounds_compute_usd': PRIOR_ROUNDS_COST, 'derived_batches': derived,
+            'remaining_worst_vm_hours': 5*(deadline-now)/3600,
+            'aggregate_vm_hours_envelope': hours, 'aggregate_compute_usd_envelope': cost,
+            'note': 'Derived five-VM upper envelopes; original eight-VM receipts preserved, not actual VM use'}, previous
+
+
 def submit(args):
     m = decode(Path(args.manifest).read_bytes()); validate_manifest(m)
-    previous = summarize_runs(args.previous, args.replay_runner)
+    if m['protocol']['increment_ms'] == 500:
+        require(args.image == m['build']['runtime_image'], 'submitted image differs from frozen worker')
+    gate = None
+    if m['protocol']['increment_ms'] == 500:
+        gate, previous = round3_budget(args.previous, args.resource_audits, time.time(), m['deadline_epoch'], args.replay_runner, max(map(len, m['bins'])))
+    else:
+        previous = summarize_runs(args.previous, args.replay_runner)
     require(not previous['failures'] and previous['sprt']['decision'] is None, 'campaign already stopped')
     require(seeds(m)[0] == previous['pairs_attempted']+1, 'next batch skips/repeats pair numbers')
     require(m['estimated_compute_before_usd'] == previous['conservative_compute_usd_upper_bound'], 'wrong prior cost')
@@ -327,7 +452,18 @@ def submit(args):
     require(args.image.startswith('us-central1-docker.pkg.dev/mshogi/mshogi-experiments/'), 'wrong existing registry')
     for root in args.previous:
         require(decode((Path(root)/'intent.json').read_bytes())['image'] == args.image, 'image changed')
-    anchor_cloud.run(args, policy=POLICY, manifest_validator=validate_manifest)
+    if gate is not None:
+        admission = time.time()
+        remaining = m['deadline_epoch'] - admission
+        required = 3360 if not args.previous else 360 + 570*max(map(len, m['bins']))
+        require(remaining >= required, 'replay or validation consumed the batch admission margin')
+        gate.update(admission_epoch=admission, admission_remaining_seconds=remaining,
+                    required_remaining_seconds=required)
+    try:
+        anchor_cloud.run(args, policy=POLICY, manifest_validator=validate_manifest)
+    finally:
+        if gate is not None and Path(args.out).is_dir():
+            anchor_cloud.save(Path(args.out)/'aggregate-budget-gate.json', gate)
 
 
 def main():
@@ -338,6 +474,7 @@ def main():
     for name in ('manifest','config','image','job','out'): s.add_argument('--'+name,required=True)
     s.add_argument('--subscription',default='projects/mshogi/subscriptions/mshogi-pilot-completion')
     s.add_argument('--previous', nargs='*', default=[])
+    s.add_argument('--resource-audits', nargs='*', default=[], help='one completed VM audit for each round3 prior batch')
     s.add_argument('--replay-runner', default='target/release/mshogi-match')
     a = sub.add_parser('summarize'); a.add_argument('runs', nargs='+'); a.add_argument('--out',required=True)
     a.add_argument('--replay-runner', default='target/release/mshogi-match')

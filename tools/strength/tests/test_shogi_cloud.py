@@ -149,8 +149,8 @@ if __name__=='__main__':unittest.main()
 
 def native_report(m, seed):
     e=m['build']['engines'];index=(seed-1)%6;opening=m['openings']['openings'][index]
-    cfg={'seed':seed,'clock':{'base_ms':5000,'increment_ms':200},'max_steps':320,
-         'wall_budget_ms':180000,'rounds':1,
+    cfg={'seed':seed,'clock':{'base_ms':5000,'increment_ms':m['protocol']['increment_ms']},'max_steps':320,
+         'wall_budget_ms':cloud.bundle(m)['pair_ms'],'rounds':1,
          'players':[{'executable':e[name]['path'],'limits':[{'profile':'mshogi.shogi.csa36.v1',
                        'work':{'depth':64,'nodes':5000000}}]} for name in ('candidate','baseline')],
          'openings':[{'id':opening['id'],'provenance':f"Frozen catalog SHA256 {m['openings_sha256']}; index {index}; source",
@@ -167,12 +167,12 @@ def native_report(m, seed):
 
 class EvidenceTests(unittest.TestCase):
     """Native subprocess is mocked; these test provenance, not game rules."""
-    def create_batch(self, root):
+    def create_batch(self, root, m=None):
         import gzip
-        m=manifest()
+        m=manifest() if m is None else m
         (root/'manifest.json').write_bytes(encode(m))
         start=m['campaign_started_epoch'];end=start+100
-        (root/'intent.json').write_bytes(encode({'started_epoch':start,'manifest_sha256':digest(encode(m))}))
+        (root/'intent.json').write_bytes(encode({'started_epoch':start,'manifest_sha256':digest(encode(m)), 'image':m['build'].get('runtime_image','legacy')}))
         (root/'cleanup.json').write_bytes(encode({'verified_absent':True,'at_epoch':end}))
         (root/'resources.json').write_bytes(encode({'started_epoch':start,'allocation_end_epoch':end,
             'ended_epoch':end,'cleanup_error':None,'rate_usd_vm_hour':cloud.RATE,
@@ -255,3 +255,177 @@ class EvidenceTests(unittest.TestCase):
                 changed=json.loads(p.read_text());changed[field]=value;p.write_bytes(encode(changed))
                 with patch.object(cloud.subprocess,'run'),self.assertRaises(ValueError):
                     cloud.summarize_runs([root],'runner')
+
+
+def round3_manifest():
+    m=manifest(); m['experiment']='msh187-round3';m['protocol']['increment_ms']=500;m['task_seconds']=1320
+    m['build']['source']=cloud.REVISED_SOURCE
+    for key in ('candidate','runner','config_writer'):m['build']['engines'][key]['source']=cloud.REVISED_SOURCE
+    m['build'].update(worker_source='c'*40,worker_files={f:'d'*64 for f in cloud.WORKER_FILES},
+                     runtime_image='us-central1-docker.pkg.dev/mshogi/mshogi-experiments/worker@sha256:'+'e'*64)
+    return m
+
+
+class Round3Tests(unittest.TestCase):
+    def test_exact_new_bundle_and_crossed_bounds(self):
+        m=round3_manifest();cloud.validate_manifest(m)
+        args=cloud.pair_args(m,Path('/openings'))
+        self.assertEqual((args.base,args.increment,args.pair_wall_ms),(5,.5,420000))
+        self.assertEqual(cloud.bundle(m)['reserve'],570)
+        for field,value in [('task_seconds',900),('bins',[[i] for i in range(1,7)]),
+                            ('bins',[[1,2,3]]),('experiment','msh187-round2')]:
+            bad=copy.deepcopy(m);bad[field]=value
+            with self.assertRaises(ValueError):cloud.validate_manifest(bad)
+        for inc in (200,300,600):
+            bad=copy.deepcopy(m);bad['protocol']['increment_ms']=inc
+            with self.assertRaises(ValueError):cloud.validate_manifest(bad)
+        for key in ('worker_source','worker_files','runtime_image'):
+            bad=copy.deepcopy(m);del bad['build'][key]
+            with self.assertRaises(ValueError):cloud.validate_manifest(bad)
+
+    def test_worker_file_digest_verified(self):
+        with patch.object(cloud,'file_hash',return_value='0'*64),self.assertRaises(ValueError):
+            cloud.verify_worker_files(round3_manifest())
+
+    def test_report_clock_and_pair_bound_cannot_cross(self):
+        m=round3_manifest();r=native_report(m,1)
+        self.assertEqual(cloud.audit_report(r,r['config'],m,1)['pair_score'],.5)
+        for field,value in [('clock',{'base_ms':5000,'increment_ms':200}),('wall_budget_ms',180000)]:
+            bad=copy.deepcopy(r);bad['config'][field]=value
+            with self.assertRaises(ValueError):cloud.audit_report(bad,bad['config'],m,1)
+
+    def test_new_complete_batch_collector(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);EvidenceTests().create_batch(root,round3_manifest())
+            with patch.object(cloud.subprocess,'run'):
+                result=cloud.summarize_runs([root],'runner')
+            self.assertEqual(result['failures'],[]);self.assertEqual(result['scored_pairs'],2)
+
+    def test_worker_start_reserve_is_strict(self):
+        for remaining,launch in [(570,False),(571,True)]:
+            m=round3_manifest();m['deadline_epoch']=1000+remaining+300;m['campaign_started_epoch']=m['deadline_epoch']-3600
+            source=Mock();source.get.return_value=encode(m)
+            store=Mock();store.put.return_value=True;store.exists.return_value=False
+            with patch.object(cloud.gcp,'GCSStore',side_effect=[source,store]), \
+                 patch.object(cloud,'verify_worker_files'),patch.object(cloud.time,'time',return_value=1000), \
+                 patch.dict(cloud.os.environ,{'BATCH_TASK_INDEX':'0','BATCH_TASK_RETRY_ATTEMPT':'0'}), \
+                 patch.object(cloud,'cloud_environment',return_value={'gcp':{'cpu-platform':'Intel Sapphire Rapids'}}), \
+                 patch.object(cloud,'execute_pair',side_effect=RuntimeError('test stop')) as run,self.assertRaises((ValueError,RuntimeError)):
+                cloud.worker('gs://test-bucket/m','gs://test-bucket/r')
+            self.assertEqual(run.called,launch)
+
+    def make_audit(self,root,m):
+        EvidenceTests().create_batch(root,m)
+        (root/'submission.json').write_bytes(encode({'name':'job','uid':'uid'}))
+        receipts={};envs={}
+        for i in range(len(m['bins'])):
+            name=f'raw/tasks/{i}/receipt.json';r=json.loads((root/name).read_text())
+            r['environment']['batch']={'BATCH_TASK_RETRY_ATTEMPT':'0'}
+            (root/name).write_bytes(encode(r));receipts[name]=digest(encode(r));envs[str(i)]=r['environment']
+        audit={'complete':True,'issues':[],'failed_insert_completion_count':0,'failed_insertions':[],
+               'vm_ids_without_worker_environment':[], 'controller_resources_sha256':cloud.file_hash(root/'resources.json'),
+               'original_cleanup_sha256':cloud.file_hash(root/'cleanup.json'),
+               'effective_cleanup_sha256':cloud.file_hash(root/'cleanup.json'),
+               'original_cleanup_verified_absent':True,'cleanup_reconciliation_path':None,
+               'audit_sha256':digest(b'[]'),'job_name':'job','job_uid':'uid',
+               'container_images':[m['build']['runtime_image']],
+               'vms':[{'id':str(i)} for i in range(len(m['bins']))],
+               'workers':[{'id':str(i)} for i in range(len(m['bins']))],
+               'successful_vm_count':len(m['bins']),'observed_worker_count':len(m['bins']),
+               'task_receipt_hashes':receipts,'task_environments':envs}
+        (root/'audit-logs.json').write_bytes(b'[]');(root/'audit.json').write_bytes(encode(audit))
+        return audit
+
+    def test_derived_budget_preserves_eight_vm_receipt_and_rejects_audit_faults(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);m=round3_manifest();audit=self.make_audit(root,m)
+            original=(root/'resources.json').read_bytes();now=m['campaign_started_epoch']+200
+            with patch.object(cloud.subprocess,'run'):
+                gate,_=cloud.round3_budget([root],[root/'audit.json'],now,m['deadline_epoch'],'runner')
+            self.assertAlmostEqual(gate['derived_batches'][0]['vm_hours_upper_bound'],5*100/3600)
+            self.assertEqual((root/'resources.json').read_bytes(),original)
+            for key,value in [('complete',False),('issues',['unknown']),('failed_insert_completion_count',1),
+                              ('job_uid','other'),('controller_resources_sha256','f'*64),
+                              ('vms',[{'id':str(i)} for i in range(6)]),('task_receipt_hashes',{})]:
+                bad=copy.deepcopy(audit);bad[key]=value;(root/'audit.json').write_bytes(encode(bad))
+                with patch.object(cloud.subprocess,'run'),self.assertRaises(ValueError):
+                    cloud.round3_budget([root],[root/'audit.json'],now,m['deadline_epoch'],'runner')
+
+    def test_resource_worker_ids_must_match_task_vm_ids(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);m=round3_manifest();audit=self.make_audit(root,m)
+            audit['vms']=[{'id':'x'},{'id':'y'}];audit['workers']=audit['vms']
+            (root/'audit.json').write_bytes(encode(audit))
+            with patch.object(cloud.subprocess,'run'),self.assertRaises(ValueError):
+                cloud.round3_budget([root],[root/'audit.json'],m['campaign_started_epoch']+200,m['deadline_epoch'],'runner')
+
+    def test_collector_rejects_other_actual_worker_image(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);EvidenceTests().create_batch(root,round3_manifest())
+            intent=json.loads((root/'intent.json').read_text());intent['image']='other'
+            (root/'intent.json').write_bytes(encode(intent))
+            with patch.object(cloud.subprocess,'run'),self.assertRaises(ValueError):
+                cloud.summarize_runs([root],'runner')
+
+    def test_budget_rejects_stale_first_launch_and_duplicate_batches(self):
+        with self.assertRaises(ValueError):cloud.round3_budget([],[],1000,4359)
+        gate,_=cloud.round3_budget([],[],1000,4360)
+        self.assertLess(gate['aggregate_vm_hours_envelope'],8)
+        with self.assertRaises(ValueError):cloud.round3_budget(['same','same'],['a','b'],1000,4600)
+
+    def test_submit_new_bundle_calls_aggregate_gate_before_controller(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);m=round3_manifest();(root/'manifest.json').write_bytes(encode(m))
+            args=SimpleNamespace(manifest=str(root/'manifest.json'),image=m['build']['runtime_image'],
+                                 previous=[],resource_audits=[],replay_runner='runner')
+            with patch.object(cloud,'round3_budget',side_effect=ValueError('no budget')) as gate, \
+                 patch.object(anchor_cloud,'run') as controller,self.assertRaises(ValueError):
+                cloud.submit(args)
+            gate.assert_called_once();controller.assert_not_called()
+
+    def test_later_gate_reserves_two_pairs_cleanup_and_startup(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);m=round3_manifest();self.make_audit(root,m)
+            with patch.object(cloud.subprocess,'run'):
+                gate,_=cloud.round3_budget([root],[root/'audit.json'],m['deadline_epoch']-1500,m['deadline_epoch'],'runner')
+            self.assertLess(gate['aggregate_vm_hours_envelope'],8)
+            with patch.object(cloud.subprocess,'run'),self.assertRaises(ValueError):
+                cloud.round3_budget([root],[root/'audit.json'],m['deadline_epoch']-1499,m['deadline_epoch'],'runner')
+
+    def test_later_single_pair_gate_boundary(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);m=round3_manifest();self.make_audit(root,m)
+            with patch.object(cloud.subprocess,'run'):
+                cloud.round3_budget([root],[root/'audit.json'],m['deadline_epoch']-930,m['deadline_epoch'],'runner',1)
+            with patch.object(cloud.subprocess,'run'),self.assertRaises(ValueError):
+                cloud.round3_budget([root],[root/'audit.json'],m['deadline_epoch']-929,m['deadline_epoch'],'runner',1)
+
+    def test_historical_replay_delay_rechecks_admission_before_cloud(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);old=root/'old';old.mkdir();m=round3_manifest();self.make_audit(old,m)
+            fresh=copy.deepcopy(m);fresh['bins']=[[3,4]]
+            fresh['estimated_compute_before_usd']=8*100/3600*cloud.RATE
+            (root/'manifest.json').write_bytes(encode(fresh))
+            config={'max_run_seconds':1320,'vm_hourly_usd':cloud.RATE,
+                    'store_uri':'gs://mshogi-experiments-216675633801/msh187/msh187-round3/batches/0003',
+                    'service_account':'mshogi-batch-worker@mshogi.iam.gserviceaccount.com',
+                    'notification_topic':'projects/mshogi/topics/mshogi-batch-events',
+                    'network':'projects/mshogi/global/networks/mshogi-batch',
+                    'subnetwork':'projects/mshogi/regions/us-central1/subnetworks/mshogi-batch-us-central1'}
+            (root/'config.json').write_bytes(encode(config))
+            args=SimpleNamespace(manifest=str(root/'manifest.json'),config=str(root/'config.json'),
+                image=m['build']['runtime_image'],previous=[old],resource_audits=[old/'audit.json'],
+                replay_runner='runner',subscription='projects/mshogi/subscriptions/mshogi-pilot-completion',
+                out=str(root/'out'))
+            clock=[m['deadline_epoch']-1500]
+            def replay_delay(*args,**kwargs):
+                clock[0]=m['deadline_epoch']-1499
+                return Mock()
+            with patch.object(cloud.time,'time',side_effect=lambda:clock[0]), \
+                 patch.object(cloud.subprocess,'run',side_effect=replay_delay) as replay, \
+                 patch.object(cloud.gcp,'validate_config',side_effect=lambda c:c), \
+                 patch.object(anchor_cloud,'run') as controller, \
+                 self.assertRaisesRegex(ValueError,'consumed the batch admission margin'):
+                cloud.submit(args)
+            self.assertEqual(replay.call_count,2)
+            controller.assert_not_called()

@@ -58,7 +58,19 @@ The revised set keeps faster attack lookup and incremental maintenance of unchan
 
 The prefix diagnosis measured 50.096 and 19.834 ms for the old prefix lookup at 311 and 159 events on the local Mac. This is separate from initial parsing and native reconstruction. It explains a real source of overhead in both players; it does not alone explain the separate expensive first-iteration search.
 
-A revised comparison requires frozen source, focused correctness and fixed-work checks, and independent review. It will use a separate result set. The original overall deadline remains 07:54:35 UTC on 2026-11-17, with aggregate limits of 8 VM-hours and US$2 estimated compute. Round 1 already consumes a conservative 1.4993481530 VM-hours and US$0.3022805824 of those limits. No new comparison has yet passed acceptance.
+The revised source is frozen at `ef1c94a3536aeac2feaa85f1722968c9bf864c0c`. All 21 fixed-work roots match the predecessor exactly for moves, scores, principal variations, depths and nodes. Focused position tests and independent review pass. The failed first campaign is separate.
+
+At 1000 ms over three repeats, median opening depths rise from 14/16/11/11/10 to 15/17/12/12/11. Hand-heavy roots remain at 7 and 10, and the rook ending remains at 16. The mate-cap composition remains at 64 and is not ordinary depth evidence. Fixed-depth work remains exactly 1,594,093 nodes; median time falls from 1.8376 to 1.3613 seconds (25.9% less). Aggregate timed throughput rises about 29.2%, although minor-pieces-in-hand throughput falls about 2.9%. Both candidates match all 12 exposed tactical cases. These measurements establish practical execution and depth gains, not game strength. Receipts are in [revised evidence](evidence/msh187/revised/verification.json).
+
+An initial plan to fit this comparison into the original wall window was refused by its time-fit gate. The next resource checkpoint explicitly sets a new 60-minute window for this coherent set under the standing predecessor-test authorization, with at most six VMs. The aggregate 8-VM-hour and US$2 limits still include round 1. Each batch checks prior conservative receipts and reserves the remaining six-VM envelope. No old game is pooled or replaced. See the [revised plan](evidence/msh187/cloud-round2-plan.md), which also preserves the refused original-window proposal.
+
+## Revised pilot: predecessor timing failures
+
+The separate six-pair revised pilot stopped after three frozen-predecessor requests returned no completed iteration. Four pairs completed (candidate 5 wins, 0 draws, 3 losses); the other two pairs remain incomplete. The three failed games had 311, 285 and 308 known events, 114/115 ms request budgets, and zero/128/zero searched nodes. All failures belong to player 1, the frozen predecessor. They are not wins for the candidate. No strength acceptance is established.
+
+All six VMs, the job and disks were removed. Measured VM lifecycle use was 0.2813104396 hours, with estimated compute US$0.0567144351. Both campaigns together used 1.3443796003 observed VM-hours and estimated US$0.2710376825. The conservative receipts charge 2.2220445130 VM-hours and US$0.4479819502 in aggregate. See [round 2 evidence](evidence/msh187/cloud-round2/README.md).
+
+Decision: stop qualification at 5 s + 0.2 s. The new evidence concerns full-request timing in the predecessor, so it does not justify another candidate-only search change. Compare both engines on identical saved histories at original and safer budgets before choosing a separate control with sufficient pair and worker bounds. Preserve the native incomplete-result contract and every failed game.
 
 ## First-set verification and review
 

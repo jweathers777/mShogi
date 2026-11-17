@@ -147,7 +147,7 @@ impl Report {
                 let row = serde_json::json!({"schema":SCHEMA,"source_report_sha256":report_sha256,"config_sha256":self.config_sha256,"game":game_index,"step":step_index,"pair":g.pairing.pair,"opening":opening.id,"group":opening.group,"native_lineage":lineage_key(&opening.root)?,"split":opening.split,"participant":self.config.players[step.player].id,"executable":self.identities[step.player],"before":before,"clock":step.clock,"request":step.request,"observation":step.observation,"applied":step.applied,"failure":step.failure,"after":after,"game_stop":g.stop,"native_outcome":g.native_outcome,"score_first_twice":g.score_first_twice,"terminal_value_available":g.score_first_twice.is_some(),"usable_action_target":step.applied});
                 let line = serde_json::to_string(&row).map_err(err)?;
                 if output.len() + line.len() + 1 > MAX_BYTES {
-                    return Err(err("data export exceeds32MiB; no output committed"));
+                    return Err(err("data export exceeds128MiB; no output committed"));
                 }
                 output.push_str(&line);
                 output.push('\n');
@@ -197,7 +197,7 @@ impl ExternalReport {
     /// Strict bounded shared wrapper; the nested adapter retains its own decoder.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         if text.len() > MAX_BYTES {
-            return Err(err("external wrapper exceeds32MiB"));
+            return Err(err("external wrapper exceeds128MiB"));
         }
         let report: Self = serde_json::from_str(text).map_err(err)?;
         report.validate()?;
@@ -208,7 +208,7 @@ impl ExternalReport {
         self.validate()?;
         let text = serde_json::to_string(self).map_err(err)?;
         if text.len() > MAX_BYTES {
-            return Err(err("external wrapper exceeds32MiB"));
+            return Err(err("external wrapper exceeds128MiB"));
         }
         Ok(text)
     }

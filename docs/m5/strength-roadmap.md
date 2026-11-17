@@ -342,3 +342,5 @@ families stay isolated until candidate freeze; exposed families are promoted and
 replaced before later validation claims. MSH-157 (Conventional Decision Improvement)
 records the failed broad-decision gate and the revised diagnosis above; the useful
 exact cost repair is not presented as a strength improvement.
+
+MSH-186 (Shogi Strength Harness): see the [Shogi tools, baseline and limits](shogi-strength-harness.md) and [external opponent proposal](shogi-opponent-proposal.md).

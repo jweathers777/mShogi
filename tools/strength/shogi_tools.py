@@ -79,8 +79,9 @@ def bench(args):
               'helper':engine_identity(args.helper), 'environment':environment(),
               'summary':{'bench_nodes':nodes, 'median_seconds':statistics.median(seconds),
                          'median_nps':statistics.median(n/t for n,t in zip(nodes,seconds)),
-                         'deterministic_nodes':all(len({r['positions'][i]['nodes'] for r in rounds})==1
-                                                   for i in range(len(positions)))},
+                         'deterministic_nodes':(all(len({r['positions'][i]['nodes'] for r in rounds})==1
+                                                    for i in range(len(positions)))
+                                                if len(rounds) > 1 else None)},
               'timing':rounds[0]['timing'], 'per_position':positions, 'rounds':rounds}
     if args.out:
         write_new(args.out, result)

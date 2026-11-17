@@ -13,7 +13,11 @@ use sha2::{Digest, Sha256};
 use std::{collections::BTreeSet, path::Path};
 
 /// Aggregate config/report/data resource bound, independent of product budgets.
-pub const MAX_BYTES: usize = 32 * 1024 * 1024;
+// A complete two-color Shogi pair carries full histories in every request and
+// observation. Measured history growth projects about 60 MiB encoded and up to
+// 100 MiB charged for two 320-ply games. Keep finite headroom for that contract;
+// the runner still reserves 8 MiB per transition and retains all schedule caps.
+pub const MAX_BYTES: usize = 128 * 1024 * 1024;
 /// Versioned schedule and evidence family.
 pub const SCHEMA: u32 = 1;
 /// Deterministic SHA256 counter/rejection scheduling, not an engine search seed.
@@ -636,7 +640,7 @@ impl Report {
     /// Bound, strict parsing followed by authoritative consistency replay.
     pub fn from_json(text: &str) -> Result<Self, RunnerError> {
         if text.len() > MAX_BYTES {
-            return Err(err("experiment report exceeds32MiB"));
+            return Err(err("experiment report exceeds128MiB"));
         }
         let report: Self = serde_json::from_str(text).map_err(err)?;
         report.validate()?;
@@ -655,7 +659,7 @@ impl Report {
     fn encode(&self) -> Result<String, RunnerError> {
         let s = serde_json::to_string(self).map_err(err)?;
         if s.len() > MAX_BYTES {
-            return Err(err("report encoding exceeds32MiB"));
+            return Err(err("report encoding exceeds128MiB"));
         }
         Ok(s)
     }
@@ -663,7 +667,7 @@ impl Report {
     pub fn validate(&self) -> Result<(), RunnerError> {
         self.config.validate()?;
         if serde_json::to_vec(self).map_err(err)?.len() > MAX_BYTES {
-            return Err(err("typed report exceeds32MiB"));
+            return Err(err("typed report exceeds128MiB"));
         }
         if self.schema != SCHEMA
             || self.schedule_algorithm != SCHEDULE

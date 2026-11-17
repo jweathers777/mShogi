@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:51:00Z'
-updated_date: '2026-11-17T02:01:00Z'
+updated_date: '2026-11-17T02:11:00Z'
 labels:
   - handle:shogi-strength-harness
 milestone: m-5
@@ -78,4 +78,8 @@ Owner: Codex chat 01a1e634-7fc9-72c2-b4b4-07022a7df3ec. Primary checkout was cle
 Implementation checkpoint: timed USI is not supported, so timed probes and game clocks use the existing shared native protocol. The shared experiment controller needs optional Fischer ledger/allocation fields; native rule and search code stay unchanged. Baseline freeze d75ecdb8. Planned local measurement: nine fixed-depth roots (three repeats), twelve development tactics at1000ms and a small clock-mode self-comparison of unchanged search against frozen main, at5s+0.05s, four workers, maximum32pairs/900s. The objective is to prove useful measurement paths and record a baseline, not claim a strength gain. Retain failures and all launched pairs; use existing SPRT, no forced significance verdict. Export native-result labels from these same games, with no added data-generation campaign. Expected total local measurement well below one hour; stop/reassess if bounds or technical failures prevent that. No external rating games or cloud spending is authorized by this task.
 
 Coherent implementation checkpoint: shared native experiment Fischer clocks and replay ledgers, fixed legal opening catalog, native probe/proof/export helper, shared strength CLI Shogi bench/tactics/validation/export, and game-aware Texel partitioning. Clock code independently accepted after healthy multi-turn and watchdog tests. Native data validation passed after independently refuted unprotected-piece answer corrections. Bench depths frozen from recorded d75ecdb8 calibration. Current checks:102Python tests pass; runner library plus two examples pass (counts in target/msh186/native-tests.log). Outer timeout process-group test needed unsandboxed process inspection; actual test passed. Next: commit source checkpoint, rebuild native instrumentation, then run final baselines and32pair bounded same-frozen-engine clock self-comparison; no strength-improvement claim.
+
+Final frozen-engine probes at clean tooling e80f00a8 passed: native data9/12/6; fixed-depth three repeats1594093nodes each, median1.758934875s; short tactics12/12 across6geometries; ordinary opening timed depths14,16,11,11,10. Synthetic mate root depth64 is not ordinary depth; single timed repeat proves no determinism. Runner clippy all-targets warnings denied and workspace all-targets check pass. Bounded clock self-comparison started in target/msh186/clock-selftest, session21870, same frozen engine both sides,5+.05,4workers,max32pairs/900s; no external games or gain claim.
+
+Clock checkpoint: first batch stopped after4pairs/45.383s as required:4native conclusions,3incomplete:Stopped at27-29ms request budgets before depth1,1artifact_limit at16MiB shared report cap. All8reports replay and cleanup is empty; only1completepair enters SPRT, no decision. Preserve run unchanged. Decision: increase bounded report capacity for full320ply histories and rerun one6pair catalog demonstration at5+.2s,4workers,max900s (same frozen engine). This is an execution check, not a significance campaign; no search/rules changes. Reviewer checks actual ledger and cap correction.
 <!-- SECTION:NOTES:END -->

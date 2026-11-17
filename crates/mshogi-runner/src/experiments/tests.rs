@@ -591,3 +591,22 @@ fn clock_control_refuses_watchdog_below_possible_allocation() {
     c.watchdog_ms = 60_000;
     c.validate().unwrap();
 }
+
+#[test]
+fn native_report_decoder_accepts_evidence_above_old_32_mib_limit() {
+    let mut c = config();
+    c.openings.truncate(1);
+    c.players.truncate(2);
+    let report = run_with_stop(&c, &mut || true).unwrap();
+    let mut text = report.to_json().unwrap();
+    // Legal insignificant whitespace exercises the actual decoder boundary
+    // without manufacturing thousands of moves or altering native history.
+    text.extend(std::iter::repeat_n(' ', 33 * 1024 * 1024 - text.len()));
+    let decoded = ValidatedReport::from_json(&text).unwrap();
+    assert_eq!(decoded.config_sha256, report.config_sha256);
+    assert_eq!(decoded.games.len(), 2);
+    // Raising the evidence ceiling must not admit fabricated native results.
+    let mut bad = decoded.into_report();
+    bad.games[0].score_first_twice = Some(2);
+    assert!(bad.validate().is_err());
+}

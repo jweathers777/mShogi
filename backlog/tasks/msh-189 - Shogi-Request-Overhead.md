@@ -1,10 +1,11 @@
 ---
 id: MSH-189
 title: Shogi Request Overhead
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-17T16:41:00Z'
-updated_date: '2026-11-17T16:47:00Z'
+updated_date: '2026-11-17T18:17:00Z'
 labels:
   - handle:shogi-request-overhead
 milestone: m-5
@@ -56,8 +57,20 @@ Verification Level 2 (process and session lifetime, protocol). Independent revie
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Freeze task-start main52e078e6 and measure full-request admission at about50/150/300 events plus minimum-time failure roots. Inspect native record, transport, response and retained-search paths. 2. Add one shared incremental native-session and transport mechanism: validated full root/reset, exact prior-session identity, native admission of new actions, atomic mismatch handling and cold reset; Shogi is first consumer. Remove redundant full-history work from the steady timed path, including response transport. 3. Add a shared timed legal-choice guarantee with honest observations before the first complete iteration; keep fixed-work and cancellation semantics, saved formats and native terminal results. 4. Verify reset/mismatch/illegal suffix/newgame/import/takeback and process restart, low-time/in-check/failure-history cases, native perft/differential/tactics and affected desktop/USI/runner. Level2: actual macOS and Linux process/protocol checks; select Windows targeted checks after source risk review. 5. Compare admission timing with baseline, require300-event cost<=10% and near-flat50-to300; independently review source/evidence, update shared-core documentation, integrate main and push.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Shared mechanism (John, 2026-11-17): MSH-187 connected only Shogi to the generic engine session slot with a Shogi-specific prefix check (crates/mshogi-engine/src/server.rs, shogi.rs: record.has_prefix). Build incremental session state at that shared session layer, game-independent, so Chess, Tori, Xiangqi, Chu and Tenjiku can use it without new code paths. Shogi is the first user.
+
+Owner Codex chat01a1e634-7fc9-72c2-b4b4-07022a7df3ec, branchcodex/shogi-request-overhead in primary checkout. Clean main52e078e6, no active Backlog owner, app inventory only this chat active on repo; other worktrees untouched. Backlog1.55.3 matches baseline. Baseline predecessor52e078e6 (native equivalent to completed MSH-187 source). Intended benefit is>=90% less300-event admission overhead with near-constant per-new-action cost and a legal timed result at minimum budget. Before/after use identical native accepted histories and idle release builds on this Mac, focused local measurement <=10min per checkpoint; no cloud games or substantial spending launched by this plan. This task explicitly authorizes timed legal fallback where prior MSH-187 preserved no-fallback behavior; no evaluation/selectivity changes. A failed resource/latency objective requires direction review, not weaker criteria.
+
+Implementation checkpoint: generic native Session<R> with Shogi strict event suffix and compact atomic rollback; generic transport SessionServer<A>, exact acknowledged endpoint, child-owned native game, and bridge compact response reattachment. First request stays ordinary protocol4; only exact advertised capability enables suffixes, so frozen older engines remain full-request peers. Full/current saved observations and fixed-work encodings remain unchanged. Shared timed fallback is unscored depth0 with native root-order move and real work/status; explicit cancellation suppresses it. Native concluded roots/declarations remain authoritative. Independent reviews found and resolved initial old-peer capability gap; initial external-tagged reset fix preserves strict canonical RawValue decoding. Core386tests pass/2ignored; preliminary affectedconsumer678pass/9ignored. After negotiation change, all engine94pass/2ignored and affected actual console22pass; strict6-packageClippy and standaloneTauri check pass. Search suite, idle before/after timings, actuallegacy peer probe and platform evidence remain pending. Preliminary baseline complete non-search cost50/150/300events5.819/28.331/75.719ms; strengthened exact-success marker will rerun baseline before acceptance. No strength/rating claim or cloudgame campaign.
+
+Verification selection after source review: Level2 protocol/session lifecycle requires targeted process suites on hosted ubuntu-24.04 and windows-2022, plus actual local macOS checks. Existing .github/workflows/rust.yml process suite is sufficient; no full packaging or GUI campaign is needed. Final local search171pass5ignored; all final engine94pass2ignored; affected console22pass. Hosted runs will use frozen feature source and one completion monitor. Source is stable for idle corrected baseline/candidate timing; no more local CPU work until profiling finishes.
 <!-- SECTION:NOTES:END -->

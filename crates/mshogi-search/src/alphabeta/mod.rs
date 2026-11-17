@@ -166,7 +166,7 @@ pub enum Status {
 /// Result of one search.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Outcome<M> {
-    /// Best move. None if no iteration gave a move.
+    /// Best move, or an explicitly enabled native legal timed fallback.
     pub best: Option<M>,
     /// Score of the best move from the side to move.
     pub score: Option<i32>,
@@ -176,7 +176,7 @@ pub struct Outcome<M> {
     pub selective_depth: u16,
     /// Node visits, including quiescence.
     pub nodes: u64,
-    /// Principal variation that starts with `best`.
+    /// Continuation that starts with `best`; one unsearched move for fallback.
     pub pv: Vec<M>,
     /// End condition.
     pub status: Status,
@@ -308,6 +308,41 @@ impl<P: SearchPosition> Searcher<P> {
             root_count: 0,
         };
         run.iterate()
+    }
+
+    /// Search with a caller-admitted legal root move available for timed play.
+    ///
+    /// Only a timed, interrupted search without a completed iteration can use
+    /// `fallback`. The caller supplies it in native root order and must retain
+    /// native authority over legality and terminal results. No extra iteration
+    /// runs after the deadline: fallback has no score, depth zero, the actual
+    /// node count and stop status, and a one-move (unsearched) continuation.
+    /// Explicit cancellation suppresses fallback. Untimed behavior is unchanged.
+    pub fn search_with_timed_fallback(
+        &mut self,
+        position: &mut P,
+        limits: Limits,
+        stop: &mut dyn FnMut() -> bool,
+        fallback: P::Move,
+    ) -> Outcome<P::Move> {
+        let mut cancelled = false;
+        let mut outcome = self.search(position, limits, &mut || {
+            let requested = stop();
+            cancelled |= requested;
+            requested
+        });
+        if limits.hard.is_some()
+            && outcome.best.is_none()
+            && outcome.depth == 0
+            && outcome.status != Status::Complete
+            && !cancelled
+            && !stop()
+        {
+            outcome.best = Some(fallback);
+            outcome.score = None;
+            outcome.pv = vec![fallback];
+        }
+        outcome
     }
 }
 

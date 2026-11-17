@@ -28,11 +28,15 @@ pub(crate) struct Session {
 }
 /// One lifecycle rule for every game. Fixed-limit requests do not touch this slot.
 pub(crate) struct Slot<T> {
-    kept: Option<(mshogi_core::native::CanonicalRecord, T)>,
+    kept: Option<T>,
+    record: Option<mshogi_core::native::CanonicalRecord>,
 }
 impl<T> Default for Slot<T> {
     fn default() -> Self {
-        Self { kept: None }
+        Self {
+            kept: None,
+            record: None,
+        }
     }
 }
 pub(crate) trait Reset {
@@ -86,17 +90,32 @@ impl<T: Reset> Slot<T> {
         if !timed {
             return create().map(EngineState::Fresh);
         }
-        if let Some((last, state)) = &mut self.kept {
-            if !is_prefix(last) {
+        let reset = self.record.as_ref().is_none_or(|last| !is_prefix(last));
+        self.record = Some(record.clone());
+        self.acquire_state(reset, create)
+    }
+    /// Acquire an engine after the shared native session admitted its suffix.
+    pub(crate) fn acquire_incremental<E>(
+        &mut self,
+        reset: bool,
+        create: impl FnOnce() -> Result<T, E>,
+    ) -> Result<EngineState<'_, T>, E> {
+        self.record = None;
+        self.acquire_state(reset, create)
+    }
+    fn acquire_state<E>(
+        &mut self,
+        reset: bool,
+        create: impl FnOnce() -> Result<T, E>,
+    ) -> Result<EngineState<'_, T>, E> {
+        if let Some(state) = &mut self.kept {
+            if reset {
                 state.reset();
             }
-            *last = record.clone();
         } else {
-            self.kept = Some((record.clone(), create()?));
+            self.kept = Some(create()?);
         }
-        Ok(EngineState::Kept(
-            &mut self.kept.as_mut().expect("kept engine").1,
-        ))
+        Ok(EngineState::Kept(self.kept.as_mut().expect("kept engine")))
     }
 }
 pub(crate) enum EngineState<'a, T> {
@@ -122,7 +141,7 @@ impl<T> std::ops::DerefMut for EngineState<'_, T> {
 }
 
 /// Read one bounded request line. `Ok(None)` is a clean end of input.
-fn read_request(input: &mut impl BufRead) -> io::Result<Option<ExecutionRequest>> {
+fn read_request(input: &mut impl BufRead) -> io::Result<Option<Vec<u8>>> {
     let mut bytes = Vec::new();
     input
         .by_ref()
@@ -137,16 +156,9 @@ fn read_request(input: &mut impl BufRead) -> io::Result<Option<ExecutionRequest>
             "missing newline or oversized internal request",
         ));
     }
-    serde_json::from_slice(&bytes).map(Some).map_err(|error| {
-        let ChessResult::Failure { failure } =
-            ChessResult::failure(FailureKind::InvalidRequest, error)
-        else {
-            unreachable!()
-        };
-        io::Error::other(failure.message)
-    })
+    Ok(Some(bytes))
 }
-fn write_response(output: &mut impl Write, response: &ExecutionResponse) -> io::Result<()> {
+fn write_response(output: &mut impl Write, response: &impl serde::Serialize) -> io::Result<()> {
     let bytes = serde_json::to_vec(response).map_err(io::Error::other)?;
     if bytes.len() > MAX_RESPONSE_BYTES {
         return Err(io::Error::new(
@@ -172,7 +184,12 @@ pub fn serve_once(mut input: impl BufRead, mut output: impl Write) -> io::Result
             "missing newline or oversized internal request",
         ));
     };
-    write_response(&mut output, &request.execute(&mut Session::default()))
+    dispatch_request(
+        &request,
+        &mut Session::default(),
+        &mut crate::incremental::Server::default(),
+        &mut output,
+    )
 }
 
 /// Serve request lines until the end of input, one response line for each.
@@ -184,6 +201,7 @@ pub fn serve_once(mut input: impl BufRead, mut output: impl Write) -> io::Result
 /// stops a search by stopping the process.
 pub fn serve(mut input: impl BufRead, mut output: impl Write) -> io::Result<()> {
     let mut session = Session::default();
+    let mut native = crate::incremental::Server::default();
     let mut served = false;
     loop {
         let Some(request) = read_request(&mut input)? else {
@@ -196,8 +214,74 @@ pub fn serve(mut input: impl BufRead, mut output: impl Write) -> io::Result<()> 
                 ))
             };
         };
-        write_response(&mut output, &request.execute(&mut session))?;
+        dispatch_request(&request, &mut session, &mut native, &mut output)?;
         served = true;
+    }
+}
+
+fn dispatch_request(
+    bytes: &[u8],
+    session: &mut Session,
+    native: &mut crate::incremental::Server,
+    output: &mut impl Write,
+) -> io::Result<()> {
+    if let Ok(request) = serde_json::from_slice::<crate::incremental::Request>(bytes) {
+        let response = native.execute(request, |game, reset, limits, time| {
+            execute_incremental_shogi(session, game, reset, limits, time, None)
+        });
+        return write_response(output, &response);
+    }
+    let request: ExecutionRequest = serde_json::from_slice(bytes).map_err(io::Error::other)?;
+    if crate::incremental::Client::supports(&request) {
+        let response = native.begin(&request, |game, reset, limits, time| {
+            execute_incremental_shogi(
+                session,
+                game,
+                reset,
+                limits,
+                time,
+                Some(&request.context.game),
+            )
+        });
+        return write_response(output, &response);
+    }
+    if request.context.limits.time_ms.is_some() {
+        *native = crate::incremental::Server::default();
+    }
+    write_response(output, &request.execute(session))
+}
+fn execute_incremental_shogi(
+    session: &mut Session,
+    game: &mshogi_core::shogi::Game,
+    reset: bool,
+    limits: WorkLimits,
+    time: &RequestTime,
+    record: Option<&mshogi_core::native::CanonicalRecord>,
+) -> ExecutionResult {
+    if session.kind != Some(mshogi_core::native::GameKind::Shogi) {
+        *session = Session::default();
+        session.kind = Some(mshogi_core::native::GameKind::Shogi);
+    }
+    let create = || Ok::<_, std::convert::Infallible>(mshogi_search::shogi::new_engine());
+    let mut engine = match record {
+        Some(record) => session.shogi.acquire_relation(record, true,
+            |last| matches!((record, last), (mshogi_core::native::CanonicalRecord::Shogi(current), mshogi_core::native::CanonicalRecord::Shogi(old)) if current.has_prefix(old)), create),
+        None => session.shogi.acquire_incremental(reset, create),
+    }.expect("infallible engine allocation");
+    match mshogi_search::shogi::search_with_state(
+        game,
+        mshogi_search::shogi::Limits {
+            depth: limits.depth,
+            nodes: limits.nodes,
+        },
+        time.remaining(),
+        &mut engine,
+        || false,
+    ) {
+        Ok(found) => ExecutionResult::Shogi {
+            result: ShogiResult::searched(found),
+        },
+        Err(error) => ExecutionResult::failure(FailureKind::Search, error),
     }
 }
 

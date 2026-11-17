@@ -1,6 +1,133 @@
 //! Expected arithmetic/choices established independently before product search.
 use mshogi_core::shogi::*;
+use mshogi_search::alphabeta::timing::TimeBudget;
 use mshogi_search::{search::SearchStatus, shogi::*};
+
+fn timed_choice(game: &Game, ms: u64, nodes: u64) -> SearchResult {
+    search_with_state(
+        game,
+        Limits {
+            depth: MAX_DEPTH,
+            nodes,
+        },
+        Some(TimeBudget::from_hard_ms(ms)),
+        &mut new_engine(),
+        || false,
+    )
+    .unwrap()
+}
+
+fn assert_native_move(game: &Game, result: &SearchResult) {
+    let Some(Decision::Choose(Choice::Move(action))) = result.decision else {
+        panic!("expected native legal move: {result:?}")
+    };
+    assert!(game.position().legal_actions().contains(&action));
+    let mut native = game.clone();
+    native
+        .submit(GameRequest {
+            expected: native.context(),
+            actor: native.position().side_to_move(),
+            command: GameCommand::Play(action),
+        })
+        .unwrap();
+    if result.completed_depth == 0 {
+        assert_eq!(result.score, None);
+        assert_eq!(result.principal_variation, vec![Choice::Move(action)]);
+        assert_ne!(result.status, SearchStatus::Complete);
+    }
+}
+
+#[test]
+fn timed_minimum_and_expired_budget_return_native_moves_including_in_check() {
+    for (native, checked) in [
+        (Game::new(), false),
+        (game("4k4/9/4R4/9/9/9/9/9/K8 w - 1"), true),
+    ] {
+        assert_eq!(
+            native
+                .position()
+                .is_in_check(native.position().side_to_move()),
+            checked
+        );
+        assert!(native.conclusion().is_none());
+        let before = native.clone();
+        for ms in [0, 1] {
+            for nodes in [0, 1, MAX_NODES] {
+                let result = timed_choice(&native, ms, nodes);
+                assert_native_move(&native, &result);
+                assert!(result.nodes <= nodes);
+                if ms == 0 || nodes == 0 {
+                    assert_eq!(result.completed_depth, 0);
+                    assert_eq!(result.nodes, 0);
+                    assert_eq!(
+                        choice(&result),
+                        Choice::Move(native.position().legal_actions()[0])
+                    );
+                }
+            }
+        }
+        assert_eq!(native, before);
+    }
+}
+
+#[test]
+fn msh187_failed_311_event_history_has_a_native_choice_with_one_millisecond() {
+    let mut native = Game::new();
+    for action in include_str!("fixtures/msh187-round2-failed-0002.usi")
+        .lines()
+        .filter(|l| !l.starts_with('#'))
+        .flat_map(str::split_whitespace)
+    {
+        submit(&mut native, action);
+    }
+    assert_eq!(native.events().len(), 311);
+    assert!(native.conclusion().is_none());
+    let before = native.clone();
+    for ms in [0, 1] {
+        assert_native_move(&native, &timed_choice(&native, ms, MAX_NODES));
+    }
+    assert_eq!(native, before);
+}
+
+#[test]
+fn timed_fallback_respects_external_cancel_and_native_terminal_declaration() {
+    let live = Game::new();
+    for stop_at in [1, 2] {
+        let mut polls = 0;
+        let result = search_with_state(
+            &live,
+            Limits {
+                depth: MAX_DEPTH,
+                nodes: 0,
+            },
+            Some(TimeBudget::from_hard_ms(0)),
+            &mut new_engine(),
+            || {
+                polls += 1;
+                polls >= stop_at
+            },
+        )
+        .unwrap();
+        assert!(result.decision.is_none());
+        assert!(result.score.is_none());
+    }
+    let terminal = game("k6rr/9/9/9/9/9/9/9/8K b - 322");
+    let result = timed_choice(&terminal, 0, 0);
+    assert_eq!(
+        result.decision,
+        terminal.conclusion().map(Decision::Finished)
+    );
+    assert_eq!((result.completed_depth, result.nodes), (0, 0));
+    assert_eq!(result.score, Some(-WIN_SCORE));
+    assert_eq!(result.status, SearchStatus::Complete);
+    let declaring = game("K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1");
+    assert!(declaring.declaration_eligibility(Side::Sente).eligible());
+    assert_native_move(&declaring, &timed_choice(&declaring, 0, 0));
+    let result = timed_choice(&declaring, 0, 2);
+    assert_eq!(choice(&result), Choice::Declare { actor: Side::Sente });
+    assert_eq!((result.completed_depth, result.nodes), (1, 2));
+    assert_eq!(result.score, Some(WIN_SCORE - 1));
+}
 fn game(sfen: &str) -> Game {
     Game::from_root(
         GameRoot::import(

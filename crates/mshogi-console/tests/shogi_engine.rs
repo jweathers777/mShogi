@@ -261,3 +261,60 @@ fn actual_cross_game_cancel_replacement_and_historical_selection_retire_old_work
     ));
     stop(&bridge);
 }
+
+#[test]
+fn timed_incremental_child_survives_continuations_takeback_and_process_retirement() {
+    let bridge = bridge();
+    let mut game = Game::new();
+    let initial = game.clone();
+    let mut id = 1;
+    for _ in 0..5 {
+        let mut c = request(&game, id);
+        c.context.limits = WorkLimits {
+            depth: search::MAX_DEPTH,
+            nodes: 0,
+            time_ms: Some(1),
+        };
+        bridge.submit(c.clone()).unwrap();
+        let response = wait(&bridge);
+        assert!(response.matches(&c), "{response:?}");
+        let ExecutionResult::Shogi {
+            result:
+                ShogiResult::Choice {
+                    choice: ShogiChoice::Move { action },
+                    telemetry,
+                },
+        } = response.observation.result
+        else {
+            panic!("timed live request must choose")
+        };
+        assert_eq!(telemetry.completed_depth, 0);
+        assert_eq!(telemetry.score, None);
+        game.submit(GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: GameCommand::Play(action),
+        })
+        .unwrap();
+        id += 1;
+    }
+    // Same child, unrelated/taken-back history: full validation resets its game.
+    game = initial;
+    let mut c = request(&game, id);
+    id += 1;
+    c.context.limits = WorkLimits {
+        depth: 1,
+        nodes: 1,
+        time_ms: Some(1),
+    };
+    bridge.submit(c.clone()).unwrap();
+    assert!(wait(&bridge).matches(&c));
+    // A cancelled idle process loses both its search table and native endpoint.
+    bridge.cancel();
+    let mut next = c.clone();
+    next.context.request_id = id;
+    next.context.process_generation = id;
+    bridge.submit(next.clone()).unwrap();
+    assert!(wait(&bridge).matches(&next));
+    stop(&bridge);
+}

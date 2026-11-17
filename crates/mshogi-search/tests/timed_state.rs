@@ -4,6 +4,9 @@ use mshogi_search::alphabeta::timing::TimeBudget;
 
 macro_rules! state_case {
     ($test:ident, $adapter:ident, $game:expr) => {
+        state_case!($test, $adapter, $game, false);
+    };
+    ($test:ident, $adapter:ident, $game:expr, $fallback:expr) => {
         #[test]
         fn $test() {
             use mshogi_search::$adapter as adapter;
@@ -23,7 +26,8 @@ macro_rules! state_case {
             .unwrap();
             assert_eq!(stopped.nodes, 0);
             assert_eq!(stopped.completed_depth, 0);
-            assert!(stopped.decision.is_none());
+            assert_eq!(stopped.decision.is_some(), $fallback);
+            assert!(stopped.score.is_none());
             let fresh = adapter::search(&game, limits).unwrap();
             let timed = adapter::search_with_state(
                 &game,
@@ -66,7 +70,12 @@ state_case!(
     tori,
     mshogi_core::tori::Game::standard()
 );
-state_case!(shogi_state_and_time, shogi, mshogi_core::shogi::Game::new());
+state_case!(
+    shogi_state_and_time,
+    shogi,
+    mshogi_core::shogi::Game::new(),
+    true
+);
 state_case!(
     xiangqi_state_and_time,
     xiangqi,

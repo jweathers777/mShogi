@@ -218,10 +218,19 @@ impl ShogiResult {
         }
         match self {
             Self::Choice { choice, .. } => {
+                let timed_fallback = context.limits.time_ms.is_some()
+                    && telemetry.evaluator_id == search::EVALUATOR_ID
+                    && telemetry.search_id == search::SEARCH_ID
+                    && telemetry.completed_depth == 0
+                    && telemetry.score.is_none()
+                    && telemetry.status != StopReason::Complete
+                    && telemetry.principal_variation.len() == 1
+                    && matches!(choice, ShogiChoice::Move { .. });
                 record.conclusion().is_none()
-                    && telemetry.completed_depth > 0
-                    && telemetry.nodes > 0
-                    && telemetry.score.is_some()
+                    && (timed_fallback
+                        || (telemetry.completed_depth > 0
+                            && telemetry.nodes > 0
+                            && telemetry.score.is_some()))
                     && telemetry.principal_variation.first() == Some(choice)
                     && match choice {
                         ShogiChoice::Declare { actor } => {
@@ -237,8 +246,13 @@ impl ShogiResult {
             }
             Self::Finished { conclusion, .. } => {
                 record.conclusion() == Some(*conclusion)
-                    && telemetry.completed_depth == 1
-                    && telemetry.nodes == 1
+                    && ((telemetry.completed_depth == 1 && telemetry.nodes == 1)
+                        || (context.limits.time_ms.is_some()
+                            && context.limits.nodes == 0
+                            && telemetry.evaluator_id == search::EVALUATOR_ID
+                            && telemetry.search_id == search::SEARCH_ID
+                            && telemetry.completed_depth == 0
+                            && telemetry.nodes == 0))
                     && telemetry.status == StopReason::Complete
                     && telemetry.score
                         == Some(match conclusion {
@@ -395,6 +409,93 @@ mod identity_tests {
         );
         telemetry.evaluator_id = search::EVALUATOR_ID.into();
         assert_eq!(telemetry.score_label(), None);
+    }
+
+    #[test]
+    fn timed_zero_depth_choice_matches_without_inventing_score_or_work() {
+        let mut c = context();
+        c.limits.time_ms = Some(1);
+        c.limits.nodes = 0;
+        let result = ShogiResult::searched(
+            search::search_with_state(
+                &Game::new(),
+                search::Limits { depth: 2, nodes: 0 },
+                Some(mshogi_search::alphabeta::timing::TimeBudget::from_hard_ms(
+                    0,
+                )),
+                &mut search::new_engine(),
+                || false,
+            )
+            .unwrap(),
+        );
+        assert!(result.matches(&c));
+        let observation = crate::ExecutionObservation::new(
+            c.clone(),
+            crate::ExecutionResult::Shogi {
+                result: result.clone(),
+            },
+        );
+        let saved = serde_json::to_vec(&observation).unwrap();
+        let restored: crate::ExecutionObservation = serde_json::from_slice(&saved).unwrap();
+        assert!(restored.matches(&c));
+        c.limits.time_ms = None;
+        assert!(!result.matches(&c));
+        c.limits.time_ms = Some(1);
+        let ShogiResult::Choice { choice, telemetry } = result else {
+            panic!()
+        };
+        assert_eq!(telemetry.score_label(), None);
+        assert_eq!(telemetry.completed_depth, 0);
+        for mutation in 0..5 {
+            let mut bad = telemetry.clone();
+            match mutation {
+                0 => bad.score = Some(0),
+                1 => bad.status = StopReason::Complete,
+                2 => bad.principal_variation.push(choice),
+                3 => bad.nodes = 1,
+                _ => {
+                    bad.evaluator_id = search::LEGACY_EVALUATOR_ID.into();
+                    bad.search_id = search::LEGACY_SEARCH_ID.into();
+                }
+            }
+            assert!(
+                !ShogiResult::Choice {
+                    choice,
+                    telemetry: bad
+                }
+                .matches(&c)
+            );
+        }
+    }
+
+    #[test]
+    fn timed_zero_node_terminal_observes_native_result_without_search() {
+        let mut game = Game::new();
+        game.submit(mshogi_core::shogi::GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: mshogi_core::shogi::GameCommand::Resign,
+        })
+        .unwrap();
+        let mut c = context();
+        c.game = CanonicalRecord::shogi(GameRecord::from_game(&game));
+        c.limits.nodes = 0;
+        c.limits.time_ms = Some(1);
+        let result = ShogiResult::searched(
+            search::search_with_state(
+                &game,
+                search::Limits { depth: 2, nodes: 0 },
+                Some(mshogi_search::alphabeta::timing::TimeBudget::from_hard_ms(
+                    0,
+                )),
+                &mut search::new_engine(),
+                || false,
+            )
+            .unwrap(),
+        );
+        assert!(result.matches(&c));
+        c.limits.time_ms = None;
+        assert!(!result.matches(&c));
     }
 }
 

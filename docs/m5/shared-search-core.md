@@ -259,6 +259,36 @@ Shogi records avoids replay solely to establish cache-prefix identity; native
 request admission still validates the history. Earlier saved play
 observations remain readable.
 
+MSH-189 (Shogi Request Overhead) adds an incremental native session below the
+search slot. `native::incremental::Session<R>` owns a rules-authoritative game;
+the record adapter reconstructs a full reset and admits a typed event suffix
+atomically. `incremental::SessionServer<A>` owns the shared transport lifecycle.
+The adapter supplies native types, supported limits and target checks. Shogi is
+the first adapter; other games use these same lifecycle implementations.
+
+Each child first receives an ordinary full request. A full response can advertise
+an exact prepared endpoint. Only then does the bridge send compact suffixes,
+bound to the acknowledged request, generation, host version and event count.
+Older engines without the capability continue to receive full requests. A count
+alone is never history identity. The host checks the complete validated prefix;
+the child applies each new command through native rules and checks every derived
+event and final result. Invalid suffixes roll back. A wrong base requires a full
+reset. Takeback, imported or incompatible roots reset; process retirement drops
+both the native endpoint and search state. Fixed-work probes leave timed state
+alone. Compact responses echo the exact metadata and endpoint; only after those
+checks does the bridge attach its original immutable context. Saved observations
+and native record formats remain unchanged.
+
+Timed Shogi requests also keep one native legal root-order move available through
+the shared `search_with_timed_fallback` entry point. If time or the node safety
+limit stops the first iteration, the result has a legal choice, depth zero, no
+score, actual visited nodes and a one-move unsearched continuation. This includes
+zero-node timed requests. Explicit cancellation suppresses fallback. Already
+concluded roots return the native result; declaration choices remain distinct.
+Mandatory native root checks can exceed a minimum time budget. Fixed-work search
+keeps its prior incomplete-result semantics. No evaluation or selectivity policy
+changes are part of this task.
+
 The new identities are `mshogi.shogi.shared-core.v1` and
 `mshogi.shogi.material-placement.v1`. A shared observation helper classifies
 both Shogi and Tori identities. Earlier saved observations retain their

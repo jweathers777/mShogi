@@ -577,8 +577,7 @@ impl ExecutionRequest {
     }
 }
 /// Versioned wire result; persistence retains only its semantic observation.
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct ExecutionResponse {
     /// Current transport identity.
     pub protocol: u32,

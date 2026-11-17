@@ -29,6 +29,35 @@ fn compare(p: &mut ShogiPosition, native: &Position) {
     assert_eq!(p.hash(), p.hash_from_scratch());
     assert_eq!(p.hash(), ShogiPosition::from_position(native).hash());
     assert_eq!(p.in_check(), native.is_in_check(native.side_to_move()));
+    // King-square safety feature against native attack detection.
+    let mut attacked = 0;
+    p.features(&mut |index, value| {
+        if index == super::eval::KING_ADJACENT_ATTACKED {
+            attacked += value;
+        }
+    });
+    let mut expected = 0;
+    for (sign, side) in [
+        (1, native.side_to_move()),
+        (-1, native.side_to_move().opponent()),
+    ] {
+        let king = Square::all()
+            .find(|&sq| {
+                native
+                    .piece(sq)
+                    .is_some_and(|q| q.side == side && q.kind == PieceKind::King)
+            })
+            .unwrap();
+        for sq in Square::all() {
+            let near = sq != king
+                && (sq.index() / 9).abs_diff(king.index() / 9) <= 1
+                && (sq.index() % 9).abs_diff(king.index() % 9) <= 1;
+            if near && native.is_square_attacked(sq, side.opponent()) {
+                expected += sign;
+            }
+        }
+    }
+    assert_eq!(attacked, expected, "{}", native.to_sfen());
     // The incremental search evaluation equals the full feature sum.
     if !p.in_check() {
         assert_eq!(p.evaluate(), super::eval::score(p, &super::eval::DEFAULT));

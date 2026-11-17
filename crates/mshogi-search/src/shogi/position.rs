@@ -180,6 +180,8 @@ struct Tables {
     files: [u128; 9],
     /// Squares within two king steps of a square, excluding it.
     near: [u128; SQUARES],
+    /// Squares within three king steps of a square.
+    near3: [u128; SQUARES],
     piece: [[[u64; SQUARES]; FACES]; 2],
     hand: [[[u64; 19]; HAND_FACES]; 2],
     side: u64,
@@ -192,6 +194,7 @@ static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
         rays: [[0; 8]; SQUARES],
         files: [0; 9],
         near: [0; SQUARES],
+        near3: [0; SQUARES],
         piece: [[[0; SQUARES]; FACES]; 2],
         hand: [[[0; 19]; HAND_FACES]; 2],
         side: 0,
@@ -222,6 +225,9 @@ static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
             let columns = (square % 9).abs_diff(other % 9);
             if other != square && rows <= 2 && columns <= 2 {
                 t.near[square] |= 1 << other;
+            }
+            if rows <= 3 && columns <= 3 {
+                t.near3[square] |= 1 << other;
             }
         }
     }
@@ -899,15 +905,27 @@ impl ShogiPosition {
         if own != 0 {
             sink(KING_ADJACENT_OWN, own);
         }
-        let mut attacked = 0;
-        let mut squares = around;
-        while squares != 0 {
-            let square = squares.trailing_zeros() as usize;
-            squares &= squares - 1;
-            if attackers(square, enemy, occupied, &self.pieces) != 0 {
-                attacked += 1;
+        // Enemy attacks on the squares next to the king: leapers reach at
+        // most two ranks, so only pieces within three squares matter.
+        let mut map = 0u128;
+        let reach = TABLES.near3[king];
+        for face in 0..FACES {
+            let mut set = self.pieces[enemy][face]
+                & if matches!(face, 1 | 2 | 6 | 8 | 9) {
+                    ALL
+                } else {
+                    reach
+                };
+            while set != 0 {
+                let from = set.trailing_zeros() as usize;
+                set &= set - 1;
+                map |= TABLES.leaps[enemy][face][from];
+                if !RAYS[face].is_empty() {
+                    map |= self.ray_targets(enemy, face, from);
+                }
             }
         }
+        let attacked = (around & map).count_ones() as i32;
         if attacked != 0 {
             sink(KING_ADJACENT_ATTACKED, attacked);
         }

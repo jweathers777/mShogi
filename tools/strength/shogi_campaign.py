@@ -31,7 +31,7 @@ from tools.strength.anchor_worker import cloud_environment, put_new, require
 
 PREFIX = 'msh190'
 # Campaign window and compute cap of one comparison (all batches together).
-POLICY = anchor_cloud.CampaignPolicy(PREFIX, 4 * 3600, 6, 'tools.strength.shogi_campaign', ('worker',))
+POLICY = anchor_cloud.CampaignPolicy(PREFIX, 2 * 3600, 4, 'tools.strength.shogi_campaign', ('worker',))
 RATE = .201608
 STORE = 'gs://mshogi-experiments-216675633801/msh190/'
 MAX_STEPS = 320

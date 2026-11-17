@@ -243,6 +243,35 @@ impl GameRecord {
         Ok(game)
     }
 
+    /// Whether an already validated record is an exact prefix of this record.
+    /// This compares cache identity only; it does not admit input or reconstruct
+    /// a native game. Root provenance, policies, every event and the prefix's
+    /// terminal result must agree. Use `prefix` when reconstruction is needed.
+    pub fn has_prefix(&self, earlier: &Self) -> bool {
+        let current = &self.wire;
+        let previous = &earlier.wire;
+        let count = previous.events.len();
+        if count > current.events.len()
+            || current.format != previous.format
+            || current.schema_version != previous.schema_version
+            || current.profile_id != previous.profile_id
+            || current.profile_edition != previous.profile_edition
+            || current.mode != previous.mode
+            || current.policies != previous.policies
+            || current.root != previous.root
+            || current.events[..count] != previous.events
+        {
+            return false;
+        }
+        let (conclusion, score) = if count == 0 {
+            (&current.root.conclusion, current.root.score_half_points)
+        } else {
+            let event = &current.events[count - 1];
+            (&event.conclusion, event.score_half_points)
+        };
+        conclusion == &previous.conclusion && score == previous.score_half_points
+    }
+
     /// Rebuild an event prefix; a same-board terminal command remains a distinct prefix.
     pub fn prefix(&self, event_count: usize) -> Result<Self, RecordError> {
         let game = self.to_game()?;
@@ -604,3 +633,114 @@ impl From<&GameEvent> for WireEvent {
 // counts, and optional fixed-shaped declaration/conclusion: <2048 bytes. The
 // fixed envelope/root is <8192 bytes. Thus 8192 + 321*2048 = 665600 < 1 MiB.
 // These deliberately loose limits include all supported encoded alternatives.
+
+#[cfg(test)]
+mod prefix_identity_tests {
+    use super::*;
+    fn play(game: &mut Game, action: &str) {
+        game.submit(GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: GameCommand::Play(action.parse().unwrap()),
+        })
+        .unwrap();
+    }
+    #[test]
+    fn exact_relation_agrees_with_native_reconstructed_prefixes() {
+        let mut game = Game::new();
+        let mut state = 173_u64;
+        for _ in 0..24 {
+            if game.conclusion().is_some() {
+                break;
+            }
+            let actions = game.position().legal_actions();
+            state ^= state << 13;
+            state ^= state >> 7;
+            state ^= state << 17;
+            let action = actions[state as usize % actions.len()];
+            game.submit(GameRequest {
+                expected: game.context(),
+                actor: game.position().side_to_move(),
+                command: GameCommand::Play(action),
+            })
+            .unwrap();
+        }
+        let records: Vec<_> = (0..=game.events().len())
+            .map(|n| GameRecord::from_game(&game.prefix(n).unwrap()))
+            .collect();
+        for (i, current) in records.iter().enumerate() {
+            for (j, earlier) in records.iter().enumerate() {
+                assert_eq!(current.has_prefix(earlier), j <= i);
+                assert_eq!(
+                    current.has_prefix(earlier),
+                    current.prefix(j).is_ok_and(|r| &r == earlier)
+                );
+            }
+        }
+    }
+    #[test]
+    fn identity_rejects_same_board_different_histories_and_root_provenance() {
+        let mut a = Game::new();
+        let mut b = Game::new();
+        for m in ["7g7f", "3c3d", "2g2f", "8c8d"] {
+            play(&mut a, m);
+        }
+        for m in ["2g2f", "8c8d", "7g7f", "3c3d"] {
+            play(&mut b, m);
+        }
+        assert_eq!(a.position(), b.position());
+        let a = GameRecord::from_game(&a);
+        let b = GameRecord::from_game(&b);
+        assert!(!a.has_prefix(&b));
+        assert!(!b.has_prefix(&a));
+        let imported = Game::from_root(
+            GameRoot::import(
+                Position::initial(),
+                RootCategory::FullMaterialDiagram,
+                CounterSource::Supplied,
+            )
+            .unwrap(),
+        );
+        let imported = GameRecord::from_game(&imported);
+        let standard = GameRecord::from_game(&Game::new());
+        assert!(!standard.has_prefix(&imported));
+        assert!(!imported.has_prefix(&standard));
+    }
+    #[test]
+    fn terminal_command_and_empty_root_remain_distinct() {
+        let mut game = Game::new();
+        let empty = GameRecord::from_game(&game);
+        assert!(empty.has_prefix(&empty));
+        game.submit(GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: GameCommand::Resign,
+        })
+        .unwrap();
+        let terminal = GameRecord::from_game(&game);
+        assert_eq!(game.position(), Game::new().position());
+        assert!(terminal.has_prefix(&empty));
+        assert!(terminal.has_prefix(&terminal));
+        assert!(!empty.has_prefix(&terminal));
+        let mut other = Game::new();
+        other
+            .submit(GameRequest {
+                expected: other.context(),
+                actor: super::super::Side::Gote,
+                command: GameCommand::Resign,
+            })
+            .unwrap();
+        assert!(!terminal.has_prefix(&GameRecord::from_game(&other)));
+        let root = Game::from_root(
+            GameRoot::import(
+                Position::from_sfen("8k/9/9/9/9/9/9/9/K8 b - 321").unwrap(),
+                RootCategory::ReducedMaterialDiagram,
+                CounterSource::Supplied,
+            )
+            .unwrap(),
+        );
+        let root = GameRecord::from_game(&root);
+        assert!(root.has_prefix(&root));
+        assert!(!root.has_prefix(&empty));
+    }
+}

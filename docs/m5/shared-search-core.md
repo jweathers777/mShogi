@@ -238,17 +238,26 @@ Private analysis uses these approximations:
 - At 320 completed actions, the position is drawn unless it has no legal move,
   which takes priority. Null moves do not advance this count.
 - Entering-king declarations are checked only at the root, not inside the tree.
-- Ordinary quiescence includes captures and promotions. Quiet checking moves
-  and drops enter through the main search and its check extension. In check,
-  quiescence searches all evasions.
+- Quiescence includes captures and promotions; in check it searches all evasions.
+  The first MSH-187 (Shogi Strength Round) candidate added quiet checks and a
+  full exchange estimate. That set failed its game-test checkpoint and was
+  rejected. The revised candidate restores the earlier tactical search policy.
 - The exchange test is a one-step estimate. Evaluation combines unchanged
   material values with Pawn advance, adjacent king cover, hand flexibility
-  and tempo. It is a classical heuristic, not a native outcome.
+  and tempo. Pawn advance and hand flexibility are incremental; no weights
+  were tuned. Precomputed ray masks and reverse attack lookup replace
+  repeated ray walks.
 
-Limits are depth 1–64 and at most 5,000,000 nodes. Desktop play and default USI
-use depth 64 and 300,000 nodes; a reported line has at most eight actions.
-Fixed-limit requests start with empty tables and statistics. Timed internal
-requests use the shared session policy above.
+Limits are depth 1–64 and at most 5,000,000 nodes. Desktop play and bare USI
+`go` use 1,000 ms with those depth/node safety ceilings; a reported line has at
+most eight actions. Explicit fixed-limit requests start with empty tables and
+statistics. Timed internal and USI requests use the shared session policy above.
+USI accepts bounded `movetime`; full game clocks, ponder and tsume remain
+unsupported. New game resets the retained state, and incompatible history
+prefixes reset it through the shared slot policy. Exact comparison of validated
+Shogi records avoids replay solely to establish cache-prefix identity; native
+request admission still validates the history. Earlier saved play
+observations remain readable.
 
 The new identities are `mshogi.shogi.shared-core.v1` and
 `mshogi.shogi.material-placement.v1`. A shared observation helper classifies
@@ -258,7 +267,9 @@ depth. The earlier Shogi material function remains available for historical
 arithmetic, but no private full-width search remains.
 
 Verification and the predecessor comparison are recorded in
-[evidence/msh180/README.md](evidence/msh180/README.md).
+[evidence/msh180/README.md](evidence/msh180/README.md). The later search round's
+before/after probes, game-test decision and limits are in
+[Shogi strength round](shogi-strength-round.md).
 
 ## Xiangqi on the core
 
@@ -498,8 +509,9 @@ list at ply zero.
   100. Each game must use that scale, or the margins must come from the trait.
 - *Checks in quiescence.* Quiescence searches the tactical stage only. In
   the drop games a quiet drop can give check or mate. Tori relies on the check
-  extension of the main search. Shogi will probably need a third stage for
-  checking moves at the first quiescence ply.
+  extension of the main search. The first Shogi checking-stage experiment in
+  MSH-187 (Shogi Strength Round) increased first-iteration work enough to leave
+  a request incomplete. It was rejected; future work must measure that cost.
 - *Exchange test.* Tori uses a one-step estimate in `exchange_at_least`. A
   full exchange evaluation needs a list of attackers of a square for each game.
 - *Root restrictions.* If a second game needs a root filter from its native

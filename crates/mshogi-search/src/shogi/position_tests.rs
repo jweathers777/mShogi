@@ -279,3 +279,102 @@ fn repetition_cycle_crosses_captures_and_drops() {
     assert_eq!(p.hash(), initial_hash);
     assert_eq!(p.rule_score(), None);
 }
+
+#[test]
+fn incremental_placement_matches_native_recalculation() {
+    let mut native = Position::initial();
+    let mut fast = ShogiPosition::from_position(&native);
+    let mut rng = 0x187_6a09_e667_f3bc;
+    for _ in 0..240 {
+        let mut totals = [0i32; 2];
+        for (i, side) in [Side::Sente, Side::Gote].into_iter().enumerate() {
+            let mut king = None;
+            for sq in Square::all() {
+                if native
+                    .piece(sq)
+                    .is_some_and(|p| p.side == side && p.kind == PieceKind::King)
+                {
+                    king = Some(sq.index());
+                }
+            }
+            for sq in Square::all() {
+                if let Some(piece) = native.piece(sq).filter(|p| p.side == side) {
+                    totals[i] += super::piece_value(piece.kind, piece.promoted);
+                    if piece.kind == PieceKind::Pawn && !piece.promoted {
+                        totals[i] += 4 * if i == 0 {
+                            8 - sq.index() / 9
+                        } else {
+                            sq.index() / 9
+                        } as i32;
+                    }
+                    let k = king.unwrap();
+                    if sq.index() != k
+                        && (sq.index() / 9).abs_diff(k / 9) <= 1
+                        && (sq.index() % 9).abs_diff(k % 9) <= 1
+                    {
+                        totals[i] += 8;
+                    }
+                }
+            }
+            for kind in PieceKind::HAND_KINDS {
+                totals[i] += i32::from(native.hand(side).count(kind))
+                    * (super::piece_value(kind, false) + 10);
+            }
+        }
+        let side = usize::from(native.side_to_move() == Side::Gote);
+        assert_eq!(fast.evaluate(), totals[side] - totals[side ^ 1] + 10);
+        let actions = native.legal_actions();
+        if actions.is_empty() {
+            break;
+        }
+        let action = actions[next(&mut rng) as usize % actions.len()];
+        let m = fast.find(action).unwrap();
+        assert!(fast.make(m));
+        native.apply(action).unwrap();
+    }
+}
+
+/// Fixed work profile, deliberately ignored during ordinary tests. The same
+/// test body is run against frozen and candidate positions; no search or games.
+#[test]
+#[ignore]
+fn profile_position_hot_path() {
+    let catalog: serde_json::Value = serde_json::from_str(include_str!(
+        "../../../../tools/strength/data/shogi-bench-v1.json"
+    ))
+    .unwrap();
+    let mut roots = Vec::new();
+    for item in catalog["positions"].as_array().unwrap() {
+        let mut native = item["sfen"]
+            .as_str()
+            .map(|s| Position::from_sfen(s).unwrap())
+            .unwrap_or_else(Position::initial);
+        for action in item["moves"].as_array().unwrap() {
+            native
+                .apply(action.as_str().unwrap().parse().unwrap())
+                .unwrap();
+        }
+        roots.push(ShogiPosition::from_position(&native));
+    }
+    // Warm only immutable tables, then keep the work count fixed.
+    std::hint::black_box(roots[0].legal_moves());
+    let started = std::time::Instant::now();
+    let mut moves = 0u64;
+    let mut checksum = 0i64;
+    for _ in 0..2000 {
+        for p in &mut roots {
+            for m in p.legal_moves() {
+                assert!(p.make(m));
+                checksum += i64::from(std::hint::black_box(p.evaluate()));
+                std::hint::black_box(p.hash());
+                p.unmake();
+                moves += 1;
+            }
+        }
+    }
+    println!(
+        "position_profile roots={} iterations=2000 moves={moves} checksum={checksum} seconds={:.6}",
+        roots.len(),
+        started.elapsed().as_secs_f64()
+    );
+}

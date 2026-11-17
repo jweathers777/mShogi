@@ -356,3 +356,37 @@ fn after_7g7f() -> mshogi_core::shogi::Position {
     p.apply("7g7f".parse().unwrap()).unwrap();
     p
 }
+
+#[test]
+fn bounded_movetime_and_fixed_options_keep_native_moves_and_reproducible_probes() {
+    let mut e = engine();
+    e.send("position startpos");
+    e.send("go movetime 250");
+    assert_native_best(
+        &e.until("bestmove"),
+        &mshogi_core::shogi::Position::initial(),
+    );
+    e.send("setoption name Depth value 1");
+    e.send("setoption name Nodes value 5000");
+    e.send("go");
+    let first = e.until("bestmove");
+    assert_native_best(&first, &mshogi_core::shogi::Position::initial());
+    e.send("go");
+    let second = e.until("bestmove");
+    assert_eq!(first.last(), second.last());
+    let work = |lines: &[String]| {
+        let words: Vec<_> = lines
+            .iter()
+            .find(|s| s.starts_with("info depth "))
+            .unwrap()
+            .split_whitespace()
+            .collect();
+        (
+            words[2].parse::<u64>().unwrap(),
+            words[4].parse::<u64>().unwrap(),
+        )
+    };
+    assert_eq!(work(&first), work(&second));
+    assert_eq!(work(&first).0, 1);
+    assert_eq!(e.finish(true).0, 0);
+}

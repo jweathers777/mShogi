@@ -27,7 +27,7 @@ pub(crate) struct Session {
     tenjiku: Slot<mshogi_search::tenjiku::Engine>,
 }
 /// One lifecycle rule for every game. Fixed-limit requests do not touch this slot.
-struct Slot<T> {
+pub(crate) struct Slot<T> {
     kept: Option<(mshogi_core::native::CanonicalRecord, T)>,
 }
 impl<T> Default for Slot<T> {
@@ -35,7 +35,7 @@ impl<T> Default for Slot<T> {
         Self { kept: None }
     }
 }
-trait Reset {
+pub(crate) trait Reset {
     fn reset(&mut self);
 }
 impl Reset for SearchCoordinator {
@@ -55,23 +55,51 @@ impl<T: Reset> Slot<T> {
         prefix: impl FnOnce(usize) -> Option<mshogi_core::native::CanonicalRecord>,
         create: impl FnOnce() -> Result<T, E>,
     ) -> Result<EngineState<'_, T>, E> {
-        if context.limits.time_ms.is_none() {
+        self.acquire_record(
+            &context.game,
+            context.limits.time_ms.is_some(),
+            prefix,
+            create,
+        )
+    }
+    pub(crate) fn acquire_record<E>(
+        &mut self,
+        record: &mshogi_core::native::CanonicalRecord,
+        timed: bool,
+        prefix: impl FnOnce(usize) -> Option<mshogi_core::native::CanonicalRecord>,
+        create: impl FnOnce() -> Result<T, E>,
+    ) -> Result<EngineState<'_, T>, E> {
+        self.acquire_relation(
+            record,
+            timed,
+            |last| prefix(last.event_count()).as_ref() == Some(last),
+            create,
+        )
+    }
+    pub(crate) fn acquire_relation<E>(
+        &mut self,
+        record: &mshogi_core::native::CanonicalRecord,
+        timed: bool,
+        is_prefix: impl FnOnce(&mshogi_core::native::CanonicalRecord) -> bool,
+        create: impl FnOnce() -> Result<T, E>,
+    ) -> Result<EngineState<'_, T>, E> {
+        if !timed {
             return create().map(EngineState::Fresh);
         }
         if let Some((last, state)) = &mut self.kept {
-            if prefix(last.event_count()).as_ref() != Some(last) {
+            if !is_prefix(last) {
                 state.reset();
             }
-            *last = context.game.clone();
+            *last = record.clone();
         } else {
-            self.kept = Some((context.game.clone(), create()?));
+            self.kept = Some((record.clone(), create()?));
         }
         Ok(EngineState::Kept(
             &mut self.kept.as_mut().expect("kept engine").1,
         ))
     }
 }
-enum EngineState<'a, T> {
+pub(crate) enum EngineState<'a, T> {
     Fresh(T),
     Kept(&'a mut T),
 }
@@ -299,14 +327,10 @@ fn execute_shogi(
     }
     let mut engine = session
         .shogi
-        .acquire(
-            context,
-            |n| {
-                record
-                    .prefix(n)
-                    .ok()
-                    .map(mshogi_core::native::CanonicalRecord::shogi)
-            },
+        .acquire_relation(
+            &context.game,
+            context.limits.time_ms.is_some(),
+            |last| matches!(last, mshogi_core::native::CanonicalRecord::Shogi(previous) if record.has_prefix(previous)),
             || Ok::<_, std::convert::Infallible>(mshogi_search::shogi::new_engine()),
         )
         .expect("infallible engine allocation");
@@ -559,5 +583,72 @@ fn execute_tenjiku(
             result: TenjikuResult::searched(result),
         },
         Err(e) => ExecutionResult::failure(FailureKind::Search, e),
+    }
+}
+
+#[cfg(test)]
+mod prefix_slot_tests {
+    use super::*;
+    #[derive(Debug)]
+    struct Marker {
+        value: u32,
+        resets: u32,
+    }
+    impl Reset for Marker {
+        fn reset(&mut self) {
+            self.value = 0;
+            self.resets += 1;
+        }
+    }
+    fn acquire<'a>(
+        slot: &'a mut Slot<Marker>,
+        game: &mshogi_core::shogi::Game,
+        timed: bool,
+    ) -> EngineState<'a, Marker> {
+        let record = mshogi_core::shogi::GameRecord::from_game(game);
+        slot.acquire_relation(&mshogi_core::native::CanonicalRecord::shogi(record.clone()), timed,
+            |last| matches!(last, mshogi_core::native::CanonicalRecord::Shogi(previous) if record.has_prefix(previous)),
+            || Ok::<_, std::convert::Infallible>(Marker { value: 7, resets: 0 })).unwrap()
+    }
+    #[test]
+    fn exact_shogi_relation_retains_only_timed_native_descendants() {
+        use mshogi_core::shogi::*;
+        let mut slot = Slot::default();
+        let initial = Game::new();
+        acquire(&mut slot, &initial, true).value = 42;
+        let mut next = initial.clone();
+        next.submit(GameRequest {
+            expected: next.context(),
+            actor: next.position().side_to_move(),
+            command: GameCommand::Play("7g7f".parse().unwrap()),
+        })
+        .unwrap();
+        assert_eq!(acquire(&mut slot, &next, true).value, 42);
+        acquire(&mut slot, &initial, false).value = 99;
+        assert_eq!(
+            acquire(&mut slot, &next, true).value,
+            42,
+            "fixed work leaves timed state alone"
+        );
+        let reset = acquire(&mut slot, &initial, true);
+        assert_eq!(
+            (reset.value, reset.resets),
+            (0, 1),
+            "takeback clears retained state"
+        );
+        let imported = Game::from_root(
+            GameRoot::import(
+                Position::initial(),
+                RootCategory::FullMaterialDiagram,
+                CounterSource::Supplied,
+            )
+            .unwrap(),
+        );
+        let reset = acquire(&mut slot, &imported, true);
+        assert_eq!(
+            (reset.value, reset.resets),
+            (0, 2),
+            "root provenance cannot share state"
+        );
     }
 }

@@ -852,3 +852,25 @@ fn shared_core_shogi_analysis_limits_are_admitted_and_bounded() {
         );
     }
 }
+
+#[test]
+fn prior_shogi_fixed_play_observation_reopens_with_new_time_default() {
+    let mut c = controller();
+    replace(&mut c, &s::Game::new(), s::Side::Gote);
+    send(&mut c, SessionOperation::Resume {}).unwrap();
+    let mut context = c.session.shogi().unwrap().pending.clone().unwrap();
+    context.limits = WorkLimits {
+        time_ms: None,
+        depth: 64,
+        nodes: 300_000,
+    };
+    c.session.shogi_mut().unwrap().pending = Some(context.clone());
+    assert!(c.accept_observation(run(context)));
+    let payload = archive(c.session.shogi().unwrap(), c.runtime_floor());
+    let decoded = decode_shogi(&serde_json::to_string(&payload).unwrap(), &mut || false).unwrap();
+    assert_eq!(
+        decoded.0.game.position(),
+        c.session.shogi().unwrap().game.position()
+    );
+    assert_eq!(mshogi_engine::SHOGI_PLAY_LIMITS.time_ms, Some(1_000));
+}

@@ -19,8 +19,14 @@ The next work is Shogi:
 2. MSH-186 (Shogi Strength Harness): Shogi benchmark, tactical suite, openings,
    clock-mode game test, Texel data and a proposed external opponent pool for
    John's approval.
-3. MSH-187 (Shogi Strength Round): speed, selectivity, time and tuned evaluation
-   for Shogi, accepted on the same checks as Chess.
+3. MSH-187 (Shogi Strength Round): one coherent speed, exact history matching
+   and timed-play set. Correctness, depth and sequential predecessor checks
+   passed: 50 wins, 1 draw and 9 losses at 5 s + 0.5 s. The experimental
+   quiet-check and full-exchange changes were rejected. See the
+   [source, measurements and game evidence](shogi-strength-round.md).
+4. MSH-188 (Shogi Evaluation Round): the next bounded classical evaluation set,
+   with an independent corpus split and measured predecessor comparison. This
+   work has not started.
 
 MSH-50 (Conventional Shogi) keeps the Shogi strength criteria and the final
 measurement. MSH-173 and MSH-176 (legacy Chu comparison) are deferred.

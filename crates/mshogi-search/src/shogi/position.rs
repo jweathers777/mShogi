@@ -122,11 +122,61 @@ fn in_zone(side: usize, square: usize) -> bool {
     }
 }
 
+// North, west, east, south, then the four diagonals. Indices are monotone
+// along each ray, so the nearest blocker is one bit scan.
+const DIRECTIONS: [(i8, i8); 8] = [
+    (0, 1),
+    (-1, 0),
+    (1, 0),
+    (0, -1),
+    (-1, 1),
+    (1, 1),
+    (-1, -1),
+    (1, -1),
+];
+const DECREASING: [bool; 8] = [true, true, false, false, true, true, false, false];
+
+fn ray(square: usize, direction: usize, occupied: u128) -> u128 {
+    let mask = TABLES.rays[square][direction];
+    let blockers = mask & occupied;
+    if blockers == 0 {
+        return mask;
+    }
+    let nearest = if DECREASING[direction] {
+        127 - blockers.leading_zeros() as usize
+    } else {
+        blockers.trailing_zeros() as usize
+    };
+    mask & !TABLES.rays[nearest][direction]
+}
+
+/// All attackers of a square under the supplied exchange occupancy.
+fn attackers(target: usize, by: usize, occupied: u128, pieces: &[[u128; FACES]; 2]) -> u128 {
+    let mut result = 0;
+    for (face, &sources) in pieces[by].iter().enumerate() {
+        result |= TABLES.leapers_to[by][face][target] & sources;
+    }
+    let rooks = pieces[by][1] | pieces[by][8];
+    let bishops = pieces[by][2] | pieces[by][9];
+    for direction in 0..8 {
+        let mut sliders = if direction < 4 { rooks } else { bishops };
+        if direction == if by == 0 { 3 } else { 0 } {
+            sliders |= pieces[by][6];
+        }
+        // Skip the bit scan if no compatible slider is on this ray.
+        if sliders & TABLES.rays[target][direction] != 0 {
+            result |= ray(target, direction, occupied) & sliders;
+        }
+    }
+    result
+}
+
 struct Tables {
     /// Leap targets of [side][face][square].
     leaps: [[[u128; SQUARES]; FACES]; 2],
     /// Squares from which a piece of [side][face] leaps to [square].
     leapers_to: [[[u128; SQUARES]; FACES]; 2],
+    rays: [[u128; 8]; SQUARES],
     files: [u128; 9],
     piece: [[[u64; SQUARES]; FACES]; 2],
     hand: [[[u64; 19]; HAND_FACES]; 2],
@@ -137,6 +187,7 @@ static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
     let mut t = Box::new(Tables {
         leaps: [[[0; SQUARES]; FACES]; 2],
         leapers_to: [[[0; SQUARES]; FACES]; 2],
+        rays: [[0; 8]; SQUARES],
         files: [0; 9],
         piece: [[[0; SQUARES]; FACES]; 2],
         hand: [[[0; 19]; HAND_FACES]; 2],
@@ -155,6 +206,13 @@ static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
         }
     }
     for square in 0..SQUARES {
+        for (direction, &(right, forward)) in DIRECTIONS.iter().enumerate() {
+            let mut at = square;
+            while let Some(next) = offset(at, 0, right, forward) {
+                t.rays[square][direction] |= 1 << next;
+                at = next;
+            }
+        }
         t.files[square % 9] |= 1 << square;
     }
     // Fixed-seed SplitMix64: the keys are the same in each process.
@@ -234,6 +292,8 @@ pub struct ShogiPosition {
     hash: u64,
     /// Board and hand material of each side.
     material: [i32; 2],
+    /// Pawn advancement and hand-count placement, maintained with material.
+    placement_base: [i32; 2],
     /// True if the side to move is in check.
     check: bool,
     /// Plies since the latest null move, or all known plies.
@@ -267,6 +327,7 @@ impl ShogiPosition {
             side: side_index(position.side_to_move()),
             hash: 0,
             material: [0; 2],
+            placement_base: [0; 2],
             check: false,
             reversible: 0,
             completed: position.completed_actions(),
@@ -441,6 +502,7 @@ impl ShogiPosition {
         self.occupied[side] |= 1 << square;
         self.hash ^= TABLES.piece[side][face][square];
         self.material[side] += VALUE[face];
+        self.placement_base[side] += pawn_placement(side, face, square);
     }
     fn take(&mut self, side: usize, face: usize, square: usize) {
         self.board[square] = 0;
@@ -448,18 +510,21 @@ impl ShogiPosition {
         self.occupied[side] &= !(1 << square);
         self.hash ^= TABLES.piece[side][face][square];
         self.material[side] -= VALUE[face];
+        self.placement_base[side] -= pawn_placement(side, face, square);
     }
     fn add_hand(&mut self, side: usize, index: usize) {
         let count = usize::from(self.hands[side][index]);
         self.hash ^= TABLES.hand[side][index][count] ^ TABLES.hand[side][index][count + 1];
         self.hands[side][index] += 1;
         self.material[side] += VALUE[HAND_FACE[index]];
+        self.placement_base[side] += 10;
     }
     fn remove_hand(&mut self, side: usize, index: usize) {
         let count = usize::from(self.hands[side][index]);
         self.hash ^= TABLES.hand[side][index][count] ^ TABLES.hand[side][index][count - 1];
         self.hands[side][index] -= 1;
         self.material[side] -= VALUE[HAND_FACE[index]];
+        self.placement_base[side] -= 10;
     }
     fn moved_face(&self, face: usize, m: Move) -> usize {
         if m.promotes() {
@@ -483,42 +548,22 @@ impl ShogiPosition {
     }
     /// Ray targets of a piece: empty squares and the first occupied square.
     fn ray_targets(&self, side: usize, face: usize, from: usize) -> u128 {
-        let all = self.occupied[0] | self.occupied[1];
-        let mut targets = 0u128;
-        for &(right, forward, max) in RAYS[face] {
-            let mut at = from;
-            for _ in 0..max {
-                let Some(next) = offset(at, side, right, forward) else {
-                    break;
-                };
-                targets |= 1 << next;
-                if all & (1 << next) != 0 {
-                    break;
-                }
-                at = next;
-            }
+        let occupied = self.occupied[0] | self.occupied[1];
+        match face {
+            1 | 8 => (0..4).fold(0, |mask, d| mask | ray(from, d, occupied)),
+            2 | 9 => (4..8).fold(0, |mask, d| mask | ray(from, d, occupied)),
+            6 => ray(from, if side == 0 { 0 } else { 3 }, occupied),
+            _ => 0,
         }
-        targets
     }
     /// True if a piece of `by` attacks the square.
     fn attacked(&self, target: usize, by: usize) -> bool {
-        let t = &TABLES;
-        for face in 0..FACES {
-            if t.leapers_to[by][face][target] & self.pieces[by][face] != 0 {
-                return true;
-            }
-        }
-        for face in [1, 2, 6, 8, 9] {
-            let mut sliders = self.pieces[by][face];
-            while sliders != 0 {
-                let from = sliders.trailing_zeros() as usize;
-                sliders &= sliders - 1;
-                if self.ray_targets(by, face, from) & (1 << target) != 0 {
-                    return true;
-                }
-            }
-        }
-        false
+        attackers(
+            target,
+            by,
+            self.occupied[0] | self.occupied[1],
+            &self.pieces,
+        ) != 0
     }
     #[allow(clippy::needless_range_loop)]
     fn generate_all(&self, stage: Stage, moves: &mut Vec<Move>) {
@@ -645,21 +690,21 @@ impl ShogiPosition {
     }
     /// Static evaluation terms other than material, for one side.
     fn placement(&self, side: usize) -> i32 {
-        let mut score = 0;
-        // Pawns gain value as they advance; they promote in the zone.
-        let mut pawns = self.pieces[side][PAWN];
-        while pawns != 0 {
-            let square = pawns.trailing_zeros() as usize;
-            pawns &= pawns - 1;
-            let row = square / 9;
-            score += 4 * if side == 0 { 8 - row } else { row } as i32;
-        }
-        // Own pieces next to the King protect it.
         let king = self.king(side);
-        score += 8 * (TABLES.leaps[0][KING][king] & self.occupied[side]).count_ones() as i32;
-        // A piece in hand can go to any empty square.
-        let in_hand: i32 = self.hands[side].iter().map(|&n| i32::from(n)).sum();
-        score + 10 * in_hand
+        self.placement_base[side]
+            + 8 * (TABLES.leaps[0][KING][king] & self.occupied[side]).count_ones() as i32
+    }
+}
+
+fn pawn_placement(side: usize, face: usize, square: usize) -> i32 {
+    if face == PAWN {
+        4 * if side == 0 {
+            8 - square / 9
+        } else {
+            square / 9
+        } as i32
+    } else {
+        0
     }
 }
 
@@ -670,7 +715,6 @@ fn square(index: usize) -> Square {
 impl SearchPosition for ShogiPosition {
     type Move = Move;
     const HISTORY_SLOTS: usize = 2 * FACES * SQUARES;
-
     fn hash(&self) -> u64 {
         self.hash
     }

@@ -164,7 +164,7 @@ def collect(run, output, audit_logs=None, cleanup_receipt=None):
     if not cleanup.get('verified_absent'):
         raise ValueError('Wait for verified controller cleanup before resource collection')
     uid = submission['uid']
-    if not re.fullmatch(r'msh185-[a-z0-9-]+', uid):
+    if not re.fullmatch(r'msh(?:185|187)-[a-z0-9-]+', uid):
         raise ValueError('Unexpected study job UID')
     start = epoch(submission['createTime']) - 300
     end = cleanup['at_epoch'] + 300

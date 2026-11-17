@@ -1,4 +1,4 @@
-//! Bounded untimed USI. Search observations never become fallback actions.
+//! Bounded USI with time-primary default play and explicit fixed work. Search observations never become fallback actions.
 use mshogi_core::shogi::*;
 use mshogi_search::shogi::{self as search, Choice, Decision, Limits, SearchResult};
 use std::{
@@ -19,6 +19,8 @@ struct Context {
     version: u64,
     game: GameContext,
     limits: Limits,
+    time_ms: Option<u64>,
+    game_generation: u64,
 }
 struct Job {
     context: Context,
@@ -46,6 +48,8 @@ impl Worker {
         let handle = thread::Builder::new()
             .name("mshogi-usi-search".into())
             .spawn(move || {
+                let mut session = mshogi_engine::ShogiSearchSession::default();
+                let mut generation = 0;
                 loop {
                     let job = {
                         let (lock, wake) = &*work;
@@ -58,10 +62,20 @@ impl Worker {
                         }
                         box_.pending.take().unwrap()
                     };
-                    let result = search::search_with_stop(&job.game, job.context.limits, || {
-                        job.stop.load(Ordering::Acquire)
-                    })
-                    .map_err(|e| e.to_string());
+                    if generation != job.context.game_generation {
+                        session = mshogi_engine::ShogiSearchSession::default();
+                        generation = job.context.game_generation;
+                    }
+                    let result = session
+                        .search(
+                            &job.game,
+                            job.context.limits,
+                            job.context
+                                .time_ms
+                                .map(mshogi_search::alphabeta::timing::TimeBudget::from_hard_ms),
+                            || job.stop.load(Ordering::Acquire),
+                        )
+                        .map_err(|e| e.to_string());
                     let mut box_ = work.0.lock().unwrap();
                     if box_.shutdown {
                         break;
@@ -114,6 +128,8 @@ struct Adapter {
     version: u64,
     next_id: u64,
     limits: Limits,
+    fixed_options: bool,
+    game_generation: u64,
     running: Option<Running>,
     worker: Worker,
     ended: bool,
@@ -174,6 +190,10 @@ impl Adapter {
             }
             "usinewgame" if args.is_empty() => self.retire().map(|()| {
                 self.game = Game::new();
+                self.game_generation = self
+                    .game_generation
+                    .checked_add(1)
+                    .expect("game generation exhausted");
                 self.ended = false;
             }),
             "position" => self
@@ -197,7 +217,7 @@ impl Adapter {
                 if self.ended {
                     return Err("gameover retired this game; send position or usinewgame".into());
                 }
-                let (limits, hold) = parse_go(args, self.limits)?;
+                let (limits, hold, time_ms) = parse_go(args, self.limits, self.fixed_options)?;
                 self.next_id = self
                     .next_id
                     .checked_add(1)
@@ -207,6 +227,8 @@ impl Adapter {
                     version: self.version,
                     game: self.game.context(),
                     limits,
+                    time_ms,
+                    game_generation: self.game_generation,
                 };
                 let stop = Arc::new(AtomicBool::new(false));
                 self.worker.submit(Job {
@@ -223,10 +245,7 @@ impl Adapter {
                 });
                 Ok(())
             }),
-            _ => Err(
-                "unsupported command/parameters; untimed USI only (no clocks, pondering or tsume)"
-                    .into(),
-            ),
+            _ => Err("unsupported command/parameters; no game clocks, pondering or tsume".into()),
         };
         if let Err(e) = result {
             eprintln!("usi: {}", crate::record_io::diagnostic(&e));
@@ -257,6 +276,9 @@ impl Adapter {
         }
         self.retire()?;
         self.limits = limits;
+        if matches!(*name, "Depth" | "Nodes") {
+            self.fixed_options = true;
+        }
         Ok(())
     }
     fn update(&mut self, out: &mut impl Write) -> io::Result<()> {
@@ -266,6 +288,8 @@ impl Adapter {
             && completion.context.version == self.version
             && completion.context.game == self.game.context()
             && completion.context.limits == r.context.limits
+            && completion.context.time_ms == r.context.time_ms
+            && completion.context.game_generation == r.context.game_generation
         {
             let result = completion.result.map_err(io::Error::other)?;
             report(&result, r.started.elapsed(), out)?;
@@ -337,7 +361,13 @@ fn number(text: &str) -> Result<u64, String> {
     }
     text.parse().map_err(|_| "number exceeds u64".into())
 }
-fn parse_go(args: &[&str], mut limits: Limits) -> Result<(Limits, bool), String> {
+fn parse_go(
+    args: &[&str],
+    mut limits: Limits,
+    fixed_options: bool,
+) -> Result<(Limits, bool, Option<u64>), String> {
+    let mut fixed = fixed_options;
+    let mut time_ms = None;
     let mut hold = false;
     let mut seen = Vec::new();
     let mut i = 0;
@@ -350,7 +380,16 @@ fn parse_go(args: &[&str], mut limits: Limits) -> Result<(Limits, bool), String>
         seen.push(key);
         match key {
             "infinite" => hold = true,
+            "movetime" => {
+                let value = number(args.get(i).ok_or("missing movetime value")?)?;
+                i += 1;
+                if !(1..=60_000).contains(&value) {
+                    return Err("movetime outside1..60000ms".into());
+                }
+                time_ms = Some(value);
+            }
             "depth" | "nodes" => {
+                fixed = true;
                 let value = number(args.get(i).ok_or("missing go value")?)?;
                 i += 1;
                 if key == "depth" {
@@ -373,7 +412,17 @@ fn parse_go(args: &[&str], mut limits: Limits) -> Result<(Limits, bool), String>
             search::MAX_NODES
         ));
     }
-    Ok((limits, hold))
+    if time_ms.is_some() && (fixed || hold) {
+        return Err("movetime cannot combine with fixed work, fixed options or infinite".into());
+    }
+    if !fixed && !hold {
+        limits = Limits {
+            depth: search::MAX_DEPTH,
+            nodes: search::MAX_NODES,
+        };
+        time_ms = Some(time_ms.unwrap_or(1_000));
+    }
+    Ok((limits, hold, time_ms))
 }
 fn parse_position(args: &[&str]) -> Result<Game, String> {
     let (mut game, rest) = match args {
@@ -462,6 +511,8 @@ pub fn run() -> ExitCode {
         version: 0,
         next_id: 0,
         limits: search::DEFAULT_LIMITS,
+        fixed_options: false,
+        game_generation: 0,
         running: None,
         worker,
         ended: false,
@@ -526,5 +577,63 @@ pub fn run() -> ExitCode {
             eprintln!("usi: {message}");
             ExitCode::FAILURE
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn default_time_and_explicit_fixed_work_are_distinct() {
+        let (limits, hold, time) = parse_go(&[], search::DEFAULT_LIMITS, false).unwrap();
+        assert_eq!(time, Some(1_000));
+        assert!(!hold);
+        assert_eq!(
+            limits,
+            Limits {
+                depth: 64,
+                nodes: 5_000_000
+            }
+        );
+        let (limits, _, time) = parse_go(
+            &["depth", "3", "nodes", "20000"],
+            search::DEFAULT_LIMITS,
+            false,
+        )
+        .unwrap();
+        assert_eq!(
+            limits,
+            Limits {
+                depth: 3,
+                nodes: 20_000
+            }
+        );
+        assert_eq!(time, None);
+        assert_eq!(parse_go(&[], search::DEFAULT_LIMITS, true).unwrap().2, None);
+        assert_eq!(
+            parse_go(&["infinite"], search::DEFAULT_LIMITS, false)
+                .unwrap()
+                .2,
+            None
+        );
+        assert_eq!(
+            parse_go(&["movetime", "125"], search::DEFAULT_LIMITS, false)
+                .unwrap()
+                .2,
+            Some(125)
+        );
+    }
+    #[test]
+    fn incompatible_or_unbounded_time_controls_are_refused() {
+        for args in [
+            vec!["movetime", "0"],
+            vec!["movetime", "60001"],
+            vec!["movetime", "100", "depth", "2"],
+            vec!["movetime", "100", "infinite"],
+            vec!["movetime", "100", "movetime", "200"],
+        ] {
+            assert!(parse_go(&args, search::DEFAULT_LIMITS, false).is_err());
+        }
+        assert!(parse_go(&["movetime", "100"], search::DEFAULT_LIMITS, true).is_err());
     }
 }

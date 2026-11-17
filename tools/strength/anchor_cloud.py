@@ -14,12 +14,29 @@ import subprocess
 import threading
 import time
 import uuid
+from dataclasses import dataclass
 from pathlib import Path
 
 from tools.experiments import gcp
 from tools.experiments.core import encode, digest
 from tools.strength.anchor_worker import validate_manifest
 
+
+@dataclass(frozen=True)
+class CampaignPolicy:
+    """Reviewed fixed policy; callers cannot set it from a cloud manifest."""
+    prefix: str = 'msh185'
+    seconds: int = 21600
+    compute_usd: float = 15
+    worker_module: str = 'tools.strength.anchor_worker'
+    worker_arguments: tuple = ()
+
+    @property
+    def owner_label(self):
+        return self.prefix + '-owner'
+
+
+ANCHOR_POLICY = CampaignPolicy()
 
 def save(path, value):
     path = Path(path)
@@ -42,7 +59,7 @@ def jobs_named(job, region, timeout=None):
     return [row for row in jobs if row.get('name', '').rsplit('/', 1)[-1] == job]
 
 
-def cleanup(job, region, owner, out, submission_confirmed, campaign_deadline=None):
+def cleanup(job, region, owner, out, submission_confirmed, campaign_deadline=None, owner_label="msh185-owner"):
     """Delete only this intent's labelled job, then verify jobs, VMs and disks.
 
     Label definitions: https://docs.cloud.google.com/batch/docs/organize-resources-using-labels
@@ -53,7 +70,7 @@ def cleanup(job, region, owner, out, submission_confirmed, campaign_deadline=Non
     try:
         jobs = jobs_named(job, region)
         if jobs:
-            if len(jobs) != 1 or jobs[0].get('labels', {}).get('msh185-owner') != owner:
+            if len(jobs) != 1 or jobs[0].get('labels', {}).get(owner_label) != owner:
                 raise RuntimeError('Job ownership differs; refusing deletion')
             receipt['owned_job'] = jobs[0]
             receipt['deletion'] = cloud(['batch', 'jobs', 'delete', job, '--location='+region])
@@ -90,11 +107,11 @@ def cleanup(job, region, owner, out, submission_confirmed, campaign_deadline=Non
         save(out/'cleanup.json', receipt)
 
 
-def run(args):
+def run(args, *, policy=ANCHOR_POLICY, manifest_validator=None):
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=False)
     manifest = json.loads(Path(args.manifest).read_text())
-    validate_manifest(manifest)
+    (manifest_validator or validate_manifest)(manifest)
     config = gcp.validate_config(json.loads(Path(args.config).read_text()))
     if config['project'] != 'mshogi' or config['machine_type'] != 'c3-standard-4' or config['parallelism'] != 8:
         raise ValueError('MSH-185 requires the approved project, machine and eight-worker limit')
@@ -102,21 +119,21 @@ def run(args):
         raise ValueError('No retries; at most eight nonempty worker bins')
     if any(not rows for rows in manifest['bins']):
         raise ValueError('Empty worker bin')
-    if not re.fullmatch(r'msh185-[a-z0-9-]{1,55}', args.job):
-        raise ValueError('Use a new msh185- job ID')
+    if not re.fullmatch(re.escape(policy.prefix) + r'-[a-z0-9-]{1,55}', args.job):
+        raise ValueError('Use a new ' + policy.prefix + '- job ID')
     if config['region'] != 'us-central1' or not config.get('notification_topic'):
         raise ValueError('Approved region and existing notification topic required')
     gcp._pubsub_name(args.subscription, config['project'], 'subscriptions')
     start = time.time()
     deadline = manifest['deadline_epoch']
-    if not start < deadline <= start + 21600:
+    if not start < deadline <= start + policy.seconds:
         raise ValueError('Invalid campaign deadline')
     if deadline - start <= 300:
         raise ValueError('Campaign deadline leaves no time beyond cleanup reserve')
-    if deadline != manifest['campaign_started_epoch'] + 21600:
+    if deadline != manifest['campaign_started_epoch'] + policy.seconds:
         raise ValueError('Deadline must retain the original campaign start')
     before = manifest['estimated_compute_before_usd']
-    if type(before) not in (int, float) or not math.isfinite(before) or not 0 <= before < 15:
+    if type(before) not in (int, float) or not math.isfinite(before) or not 0 <= before < policy.compute_usd:
         raise ValueError('Compute cap reached')
     if manifest['campaign_started_epoch'] > start:
         raise ValueError('Campaign start is in the future')
@@ -124,7 +141,7 @@ def run(args):
         raise ValueError('Recorded VM hourly rate required')
     # At most eight VMs for the entire remaining campaign: a conservative reserve.
     reserve = 8 * (deadline - start) / 3600 * config['vm_hourly_usd']
-    if manifest['estimated_compute_before_usd'] + reserve > 15:
+    if manifest['estimated_compute_before_usd'] + reserve > policy.compute_usd:
         raise ValueError('Remaining maximum allocation would exceed compute cap')
     if jobs_named(args.job, config['region']):
         raise ValueError('Job already exists; reconcile instead of rerunning')
@@ -136,10 +153,10 @@ def run(args):
     uri = config['store_uri'].rstrip('/') + '/' + key
     spec = gcp.batch_config(uri, args.image, config, len(manifest['bins']))
     owner = uuid.uuid4().hex
-    spec['labels']['msh185-owner'] = owner
-    spec['allocationPolicy']['labels'] = {'msh185-owner': owner}
+    spec['labels'][policy.owner_label] = owner
+    spec['allocationPolicy']['labels'] = {policy.owner_label: owner}
     spec['taskGroups'][0]['taskSpec']['runnables'][0]['container']['commands'] = [
-        '-m', 'tools.strength.anchor_worker', '--manifest', uri, '--store', config['store_uri']]
+        '-m', policy.worker_module, *policy.worker_arguments, '--manifest', uri, '--store', config['store_uri']]
     # VM runtime bound supplements the absolute worker deadline and local watchdog.
     spec['taskGroups'][0]['taskSpec']['maxRunDuration'] = str(min(config['max_run_seconds'], int(deadline-start))) + 's'
     save(out / 'batch-request.json', spec)
@@ -189,7 +206,7 @@ def run(args):
                     # extend billable match work or bypass resource cleanup.
                     try:
                         cleanup(args.job, config['region'], owner, out, submission_confirmed,
-                                campaign_deadline=deadline)
+                                campaign_deadline=deadline, owner_label=policy.owner_label)
                     except BaseException as exc:
                         cleanup_error = repr(exc)
                     cleanup_end = time.time()

@@ -4,7 +4,7 @@ title: Establish and meet measured shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-16T20:51:00Z'
+updated_date: '2026-11-17T08:59:00Z'
 labels:
   - handle:conventional-shogi
 milestone: m-5
@@ -84,4 +84,6 @@ Decision, 2026-11-15: John set the order of games: Shogi and Xiangqi move to the
 Status check, 2026-11-15: the move of this game to the shared search core is now the separate task MSH-180. This task keeps the strength criteria, opponent pool and measurement, and depends on MSH-180.
 
 Owner direction, 2026-11-16: after MSH-185 (Chess Strength Anchor), Shogi strength work starts with MSH-186 (Shogi Strength Harness), then MSH-187 (Shogi Strength Round). MSH-186 proposes the external opponent pool; John approves the pool, targets and baseline protocol (AC 1-2) before any external rating games. MSH-187 supports AC 5. This task keeps the strength criteria and the final measurement.
+
+MSH-187 (Shogi Strength Round) isolates a coherent speed/history/time set; see docs/m5/shogi-strength-round.md for final-source evidence and comparison status. MSH-188 (Shogi Evaluation Round) records the next classical evaluation set and depends on MSH-187. This does not complete conventional-engine maturity or approve an external rating campaign.
 <!-- SECTION:NOTES:END -->

@@ -24,9 +24,18 @@ The next work is Shogi:
    passed: 50 wins, 1 draw and 9 losses at 5 s + 0.5 s. The experimental
    quiet-check and full-exchange changes were rejected. See the
    [source, measurements and game evidence](shogi-strength-round.md).
-4. MSH-188 (Shogi Evaluation Round): the next bounded classical evaluation set,
-   with an independent corpus split and measured predecessor comparison. This
-   work has not started.
+   Most of the game gain comes from removing per-request history replay at
+   short budgets; on fresh roots the speed work gives about one ply. The
+   rejected candidate had an unbounded check stage; that is an implementation
+   defect, not a rejection of the technique (decision, 2026-11-17).
+4. MSH-189 (Shogi Request Overhead): per-move cost that does not grow with game
+   length, and a timed search that always returns a legal move.
+5. MSH-190 (Shogi Selectivity Round): at least 100 openings, a tactical suite
+   of at least 200 positions, a control with late-game depth of at least 8, then
+   a bounded quiescence check stage, full SEE, Shogi-scaled margins and drop
+   ordering, each with a recorded outcome.
+6. MSH-188 (Shogi Evaluation Round): Texel-tuned Shogi terms on a self-play
+   corpus of at least about 500,000 positions with a game-level held-out split.
 
 MSH-50 (Conventional Shogi) keeps the Shogi strength criteria and the final
 measurement. MSH-173 and MSH-176 (legacy Chu comparison) are deferred.

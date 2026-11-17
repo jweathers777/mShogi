@@ -231,7 +231,11 @@ impl crate::texel::TexelModel for ChessTexel {
         UPPER.to_vec()
     }
     fn key(position: &str) -> String {
-        position.split_whitespace().take(4).collect::<Vec<_>>().join(" ")
+        position
+            .split_whitespace()
+            .take(4)
+            .collect::<Vec<_>>()
+            .join(" ")
     }
     fn prepare(position: &str) -> Result<Option<Prepared>, String> {
         let native =

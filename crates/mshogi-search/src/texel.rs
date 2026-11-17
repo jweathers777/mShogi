@@ -16,6 +16,8 @@ pub trait TexelModel {
     const KIND: &'static str;
     /// Corpus field that holds the position text (for example `fen`).
     const POSITION_FIELD: &'static str;
+    /// K calibration range; 36 evenly spaced values are tried.
+    const K_RANGE: (f64, f64) = (0.25, 2.0);
     /// Coordinate descent step sizes, largest first.
     const STEPS: &'static [i32];
     /// Parameter names in stable order.

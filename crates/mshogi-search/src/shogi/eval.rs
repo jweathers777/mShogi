@@ -39,66 +39,168 @@ pub const TEMPO: usize = 132;
 
 /// Weight names in stable order.
 pub const NAMES: [&str; COUNT] = [
-    "board_rook", "board_bishop", "board_gold", "board_silver", "board_knight", "board_lance",
-    "board_pawn", "board_dragon", "board_horse", "board_promoted_silver", "board_promoted_knight",
-    "board_promoted_lance", "board_tokin", "hand_rook", "hand_bishop", "hand_gold", "hand_silver",
-    "hand_knight", "hand_lance", "hand_pawn", "hand_first_rook", "hand_first_bishop",
-    "hand_first_gold", "hand_first_silver", "hand_first_knight", "hand_first_lance",
-    "hand_first_pawn", "pst_pawn_rank0", "pst_pawn_rank1", "pst_pawn_rank2", "pst_pawn_rank3",
-    "pst_pawn_rank4", "pst_pawn_rank5", "pst_pawn_rank6", "pst_pawn_rank7", "pst_pawn_rank8",
-    "pst_lance_rank0", "pst_lance_rank1", "pst_lance_rank2", "pst_lance_rank3", "pst_lance_rank4",
-    "pst_lance_rank5", "pst_lance_rank6", "pst_lance_rank7", "pst_lance_rank8",
-    "pst_knight_rank0", "pst_knight_rank1", "pst_knight_rank2", "pst_knight_rank3",
-    "pst_knight_rank4", "pst_knight_rank5", "pst_knight_rank6", "pst_knight_rank7",
-    "pst_knight_rank8", "pst_silver_rank0", "pst_silver_rank1", "pst_silver_rank2",
-    "pst_silver_rank3", "pst_silver_rank4", "pst_silver_rank5", "pst_silver_rank6",
-    "pst_silver_rank7", "pst_silver_rank8", "pst_goldlike_rank0", "pst_goldlike_rank1",
-    "pst_goldlike_rank2", "pst_goldlike_rank3", "pst_goldlike_rank4", "pst_goldlike_rank5",
-    "pst_goldlike_rank6", "pst_goldlike_rank7", "pst_goldlike_rank8", "pst_bishop_rank0",
-    "pst_bishop_rank1", "pst_bishop_rank2", "pst_bishop_rank3", "pst_bishop_rank4",
-    "pst_bishop_rank5", "pst_bishop_rank6", "pst_bishop_rank7", "pst_bishop_rank8",
-    "pst_rook_rank0", "pst_rook_rank1", "pst_rook_rank2", "pst_rook_rank3", "pst_rook_rank4",
-    "pst_rook_rank5", "pst_rook_rank6", "pst_rook_rank7", "pst_rook_rank8", "pst_horse_rank0",
-    "pst_horse_rank1", "pst_horse_rank2", "pst_horse_rank3", "pst_horse_rank4", "pst_horse_rank5",
-    "pst_horse_rank6", "pst_horse_rank7", "pst_horse_rank8", "pst_dragon_rank0",
-    "pst_dragon_rank1", "pst_dragon_rank2", "pst_dragon_rank3", "pst_dragon_rank4",
-    "pst_dragon_rank5", "pst_dragon_rank6", "pst_dragon_rank7", "pst_dragon_rank8", "king_rank0",
-    "king_rank1", "king_rank2", "king_rank3", "king_rank4", "king_rank5", "king_rank6",
-    "king_rank7", "king_rank8", "king_file_distance0", "king_file_distance1",
-    "king_file_distance2", "king_file_distance3", "king_file_distance4", "mobility_lance",
-    "mobility_bishop", "mobility_rook", "mobility_horse", "mobility_dragon", "king_adjacent_own",
-    "king_adjacent_attacked", "king_near_enemy", "king_near_defenders", "king_drop_threat",
+    "board_rook",
+    "board_bishop",
+    "board_gold",
+    "board_silver",
+    "board_knight",
+    "board_lance",
+    "board_pawn",
+    "board_dragon",
+    "board_horse",
+    "board_promoted_silver",
+    "board_promoted_knight",
+    "board_promoted_lance",
+    "board_tokin",
+    "hand_rook",
+    "hand_bishop",
+    "hand_gold",
+    "hand_silver",
+    "hand_knight",
+    "hand_lance",
+    "hand_pawn",
+    "hand_first_rook",
+    "hand_first_bishop",
+    "hand_first_gold",
+    "hand_first_silver",
+    "hand_first_knight",
+    "hand_first_lance",
+    "hand_first_pawn",
+    "pst_pawn_rank0",
+    "pst_pawn_rank1",
+    "pst_pawn_rank2",
+    "pst_pawn_rank3",
+    "pst_pawn_rank4",
+    "pst_pawn_rank5",
+    "pst_pawn_rank6",
+    "pst_pawn_rank7",
+    "pst_pawn_rank8",
+    "pst_lance_rank0",
+    "pst_lance_rank1",
+    "pst_lance_rank2",
+    "pst_lance_rank3",
+    "pst_lance_rank4",
+    "pst_lance_rank5",
+    "pst_lance_rank6",
+    "pst_lance_rank7",
+    "pst_lance_rank8",
+    "pst_knight_rank0",
+    "pst_knight_rank1",
+    "pst_knight_rank2",
+    "pst_knight_rank3",
+    "pst_knight_rank4",
+    "pst_knight_rank5",
+    "pst_knight_rank6",
+    "pst_knight_rank7",
+    "pst_knight_rank8",
+    "pst_silver_rank0",
+    "pst_silver_rank1",
+    "pst_silver_rank2",
+    "pst_silver_rank3",
+    "pst_silver_rank4",
+    "pst_silver_rank5",
+    "pst_silver_rank6",
+    "pst_silver_rank7",
+    "pst_silver_rank8",
+    "pst_goldlike_rank0",
+    "pst_goldlike_rank1",
+    "pst_goldlike_rank2",
+    "pst_goldlike_rank3",
+    "pst_goldlike_rank4",
+    "pst_goldlike_rank5",
+    "pst_goldlike_rank6",
+    "pst_goldlike_rank7",
+    "pst_goldlike_rank8",
+    "pst_bishop_rank0",
+    "pst_bishop_rank1",
+    "pst_bishop_rank2",
+    "pst_bishop_rank3",
+    "pst_bishop_rank4",
+    "pst_bishop_rank5",
+    "pst_bishop_rank6",
+    "pst_bishop_rank7",
+    "pst_bishop_rank8",
+    "pst_rook_rank0",
+    "pst_rook_rank1",
+    "pst_rook_rank2",
+    "pst_rook_rank3",
+    "pst_rook_rank4",
+    "pst_rook_rank5",
+    "pst_rook_rank6",
+    "pst_rook_rank7",
+    "pst_rook_rank8",
+    "pst_horse_rank0",
+    "pst_horse_rank1",
+    "pst_horse_rank2",
+    "pst_horse_rank3",
+    "pst_horse_rank4",
+    "pst_horse_rank5",
+    "pst_horse_rank6",
+    "pst_horse_rank7",
+    "pst_horse_rank8",
+    "pst_dragon_rank0",
+    "pst_dragon_rank1",
+    "pst_dragon_rank2",
+    "pst_dragon_rank3",
+    "pst_dragon_rank4",
+    "pst_dragon_rank5",
+    "pst_dragon_rank6",
+    "pst_dragon_rank7",
+    "pst_dragon_rank8",
+    "king_rank0",
+    "king_rank1",
+    "king_rank2",
+    "king_rank3",
+    "king_rank4",
+    "king_rank5",
+    "king_rank6",
+    "king_rank7",
+    "king_rank8",
+    "king_file_distance0",
+    "king_file_distance1",
+    "king_file_distance2",
+    "king_file_distance3",
+    "king_file_distance4",
+    "mobility_lance",
+    "mobility_bishop",
+    "mobility_rook",
+    "mobility_horse",
+    "mobility_dragon",
+    "king_adjacent_own",
+    "king_adjacent_attacked",
+    "king_near_enemy",
+    "king_near_defenders",
+    "king_drop_threat",
     "tempo",
 ];
 /// Untuned weights: exactly the earlier evaluation.
 pub const INITIAL: [i32; COUNT] = [
-    800, 700, 500, 400, 300, 300, 100, 1000, 900, 500, 500, 500, 500, 810, 710, 510, 410, 310,
-    310, 110, 0, 0, 0, 0, 0, 0, 0, 0, 4, 8, 12, 16, 20, 24, 28, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 10,
+    800, 700, 500, 400, 300, 300, 100, 1000, 900, 500, 500, 500, 500, 810, 710, 510, 410, 310, 310,
+    110, 0, 0, 0, 0, 0, 0, 0, 0, 4, 8, 12, 16, 20, 24, 28, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 10,
 ];
 /// Inclusive lower bounds.
 pub const LOWER: [i32; COUNT] = [
     400, 350, 250, 200, 150, 150, 50, 500, 450, 250, 250, 250, 250, 405, 355, 255, 205, 155, 155,
     55, -200, -200, -200, -200, -200, -200, -200, -150, -150, -150, -150, -150, -150, -150, -150,
-    -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
-    -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
-    -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
-    -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
-    -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -200, -200,
-    -200, -200, -200, -200, -200, -200, -200, -200, -200, -200, -200, -200, -10, -10, -10, -10,
-    -10, -20, -80, -80, -20, -40, 0,
+    -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+    -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+    -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+    -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150, -150,
+    -150, -150, -150, -150, -150, -150, -150, -150, -150, -200, -200, -200, -200, -200, -200, -200,
+    -200, -200, -200, -200, -200, -200, -200, -10, -10, -10, -10, -10, -20, -80, -80, -20, -40, 0,
 ];
 /// Inclusive upper bounds.
 pub const UPPER: [i32; COUNT] = [
-    1280, 1120, 800, 640, 480, 480, 160, 1600, 1440, 800, 800, 800, 800, 1458, 1278, 918, 738,
-    558, 558, 198, 300, 300, 300, 300, 300, 300, 300, 150, 150, 150, 150, 150, 150, 150, 150, 150,
+    1280, 1120, 800, 640, 480, 480, 160, 1600, 1440, 800, 800, 800, 800, 1458, 1278, 918, 738, 558,
+    558, 198, 300, 300, 300, 300, 300, 300, 300, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150,
     150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150,
     150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150,
     150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150,
-    150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 200, 200, 200, 200,
-    200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 30, 30, 30, 30, 30, 60, 20, 20, 80, 10, 80,
+    150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 200, 200, 200, 200, 200,
+    200, 200, 200, 200, 200, 200, 200, 200, 200, 30, 30, 30, 30, 30, 60, 20, 20, 80, 10, 80,
 ];
 /// Compiled weights used by the search.
 pub const DEFAULT: [i32; COUNT] = INITIAL;
@@ -134,6 +236,8 @@ impl crate::texel::TexelModel for ShogiTexel {
     const KIND: &'static str = "shogi";
     const POSITION_FIELD: &'static str = "sfen";
     const STEPS: &'static [i32] = &[32, 16, 8, 4, 2, 1];
+    // Shogi material swings are larger than Chess outcomes per point.
+    const K_RANGE: (f64, f64) = (0.01, 0.71);
     fn names() -> &'static [&'static str] {
         &NAMES
     }
@@ -148,7 +252,11 @@ impl crate::texel::TexelModel for ShogiTexel {
     }
     fn key(position: &str) -> String {
         // Board, side and hands; the fourth SFEN field is only the move counter.
-        position.split_whitespace().take(3).collect::<Vec<_>>().join(" ")
+        position
+            .split_whitespace()
+            .take(3)
+            .collect::<Vec<_>>()
+            .join(" ")
     }
     fn prepare(position: &str) -> Result<Option<Prepared>, String> {
         let native =
@@ -157,7 +265,11 @@ impl crate::texel::TexelModel for ShogiTexel {
         if !quiet(&p) {
             return Ok(None);
         }
-        let sign = if p.side_to_move() == mshogi_core::shogi::Side::Sente { 1 } else { -1 };
+        let sign = if p.side_to_move() == mshogi_core::shogi::Side::Sente {
+            1
+        } else {
+            -1
+        };
         let mut dense = [0i32; COUNT];
         p.features(&mut |index, value| dense[index] += value);
         let features = dense
@@ -168,9 +280,15 @@ impl crate::texel::TexelModel for ShogiTexel {
             .collect();
         let hand_pieces = mshogi_core::shogi::PieceKind::HAND_KINDS
             .iter()
-            .map(|&k| native.hand(mshogi_core::shogi::Side::Sente).count(k) + native.hand(mshogi_core::shogi::Side::Gote).count(k))
+            .map(|&k| {
+                native.hand(mshogi_core::shogi::Side::Sente).count(k)
+                    + native.hand(mshogi_core::shogi::Side::Gote).count(k)
+            })
             .sum();
-        Ok(Some(Prepared { features, hand_pieces }))
+        Ok(Some(Prepared {
+            features,
+            hand_pieces,
+        }))
     }
     fn score(prepared: &Prepared, weights: &[i32]) -> i32 {
         prepared

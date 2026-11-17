@@ -13,8 +13,8 @@ fn main() -> Result<()> {
 
 #[cfg(test)]
 mod tests {
-    use mshogi_search::chess_eval::weights::{ChessTexel, INITIAL};
     use crate::texel::{penalty, probability};
+    use mshogi_search::chess_eval::weights::{ChessTexel, INITIAL};
     fn squared_error(score: i32, result: f64, k: f64) -> f64 {
         (probability(score, k) - result).powi(2)
     }
@@ -32,8 +32,8 @@ mod tests {
 
 #[cfg(test)]
 mod input_tests {
-    use mshogi_search::chess_eval::weights::{ChessTexel, INITIAL, NAMES, UPPER};
     use crate::texel::{frozen, load};
+    use mshogi_search::chess_eval::weights::{ChessTexel, INITIAL, NAMES, UPPER};
     use serde_json::json;
     use std::sync::atomic::{AtomicUsize, Ordering};
     static NEXT: AtomicUsize = AtomicUsize::new(0);

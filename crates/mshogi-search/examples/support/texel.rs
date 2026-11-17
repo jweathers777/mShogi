@@ -4,13 +4,13 @@
 //! "result", "split", "game_id"}`; `fit` reads only training and validation
 //! rows and `check` reads only held-out rows.
 #![allow(dead_code)]
+pub use mshogi_search::texel::{TexelModel, probability};
 use serde_json::{Value, json};
 use std::collections::HashSet;
 use std::fs::{File, OpenOptions};
 use std::io::{BufRead, BufReader, Write};
 use std::path::Path;
 use std::time::{Duration, Instant};
-pub use mshogi_search::texel::{TexelModel, probability};
 
 /// Boxed error of the tool.
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -67,7 +67,9 @@ pub fn load<M: TexelModel>(path: &str, expected: &str) -> Result<Dataset<M::Prep
             .and_then(Value::as_f64)
             .ok_or_else(|| error("missing numeric result"))?;
         if ![0.0, 0.5, 1.0].contains(&result) {
-            return Err(error("result must be the first player's native outcome: 0, 0.5 or 1").into());
+            return Err(
+                error("result must be the first player's native outcome: 0, 0.5 or 1").into(),
+            );
         }
         let game = row
             .get("game_id")
@@ -78,7 +80,8 @@ pub fn load<M: TexelModel>(path: &str, expected: &str) -> Result<Dataset<M::Prep
         if !data.positions.insert(M::key(text)) {
             return Err(error("duplicate board/side/rights position").into());
         }
-        let Some(position) = M::prepare(text).map_err(|e| error(&format!("invalid position: {e}")))?
+        let Some(position) =
+            M::prepare(text).map_err(|e| error(&format!("invalid position: {e}")))?
         else {
             data.skipped += 1;
             continue;
@@ -94,7 +97,9 @@ pub fn load<M: TexelModel>(path: &str, expected: &str) -> Result<Dataset<M::Prep
 
 /// Mean squared error of the logistic prediction, computed in parallel.
 pub fn mse<M: TexelModel>(data: &Dataset<M::Prepared>, weights: &[i32], k: f64) -> f64 {
-    let threads = std::thread::available_parallelism().map_or(1, |n| n.get()).min(16);
+    let threads = std::thread::available_parallelism()
+        .map_or(1, |n| n.get())
+        .min(16);
     let chunk = data.samples.len().div_ceil(threads).max(1);
     let total: f64 = std::thread::scope(|scope| {
         let handles: Vec<_> = data
@@ -177,7 +182,9 @@ pub fn fit<M: TexelModel>(args: &[String], max_seconds: u64) -> Result<()> {
     }
     let train = load::<M>(&args[0], "train")?;
     let validation = load::<M>(&args[1], "validation")?;
-    if !train.games.is_disjoint(&validation.games) || !train.positions.is_disjoint(&validation.positions) {
+    if !train.games.is_disjoint(&validation.games)
+        || !train.positions.is_disjoint(&validation.positions)
+    {
         return Err("training and validation overlap by game or position".into());
     }
     let start = Instant::now();
@@ -187,11 +194,12 @@ pub fn fit<M: TexelModel>(args: &[String], max_seconds: u64) -> Result<()> {
     let mut k = 1.0;
     let mut calibration_loss = f64::INFINITY;
     let mut calibration = Vec::new();
-    for tick in 5..=40 {
+    let (k_low, k_high) = M::K_RANGE;
+    for tick in 0..=35 {
         if start.elapsed() >= limit {
             return Err("time limit reached during K calibration".into());
         }
-        let trial_k = f64::from(tick) / 20.0;
+        let trial_k = k_low + (k_high - k_low) * f64::from(tick) / 35.0;
         let loss = mse::<M>(&train, &initial, trial_k);
         calibration.push(json!({"k": trial_k, "training_mse": loss}));
         if loss < calibration_loss {
@@ -289,12 +297,16 @@ pub fn fit<M: TexelModel>(args: &[String], max_seconds: u64) -> Result<()> {
 /// Read a frozen fit for this model, checking names, bounds and K.
 pub fn frozen<M: TexelModel>(path: &str) -> Result<(Vec<i32>, f64)> {
     let value: Value = serde_json::from_reader(File::open(path)?)?;
-    if value.get("kind").and_then(Value::as_str) != Some(format!("mshogi-{}-texel-fit", M::KIND).as_str())
+    if value.get("kind").and_then(Value::as_str)
+        != Some(format!("mshogi-{}-texel-fit", M::KIND).as_str())
         || value.get("names") != Some(&json!(M::names()))
     {
         return Err("weight file kind or parameter names do not match".into());
     }
-    let values = value.get("weights").and_then(Value::as_array).ok_or("missing weights")?;
+    let values = value
+        .get("weights")
+        .and_then(Value::as_array)
+        .ok_or("missing weights")?;
     let (lower, upper) = (M::lower(), M::upper());
     if values.len() != lower.len() {
         return Err("wrong parameter count".into());
@@ -308,7 +320,7 @@ pub fn frozen<M: TexelModel>(path: &str) -> Result<(Vec<i32>, f64)> {
         weights.push(number);
     }
     let k = value.get("k").and_then(Value::as_f64).ok_or("missing K")?;
-    if !k.is_finite() || !(0.25..=2.0).contains(&k) {
+    if !k.is_finite() || !(M::K_RANGE.0..=M::K_RANGE.1).contains(&k) {
         return Err("K outside calibration range".into());
     }
     Ok((weights, k))
@@ -348,7 +360,10 @@ pub fn stats<M: TexelModel>(args: &[String]) -> Result<()> {
         for line in BufReader::new(File::open(path)?).lines() {
             let row: Value = serde_json::from_str(&line?)?;
             rows += 1;
-            let text = row.get(M::POSITION_FIELD).and_then(Value::as_str).ok_or("missing position")?;
+            let text = row
+                .get(M::POSITION_FIELD)
+                .and_then(Value::as_str)
+                .ok_or("missing position")?;
             if !keys.insert(M::key(text)) {
                 duplicates += 1;
                 continue;
@@ -357,11 +372,23 @@ pub fn stats<M: TexelModel>(args: &[String]) -> Result<()> {
                 continue;
             }
             kept += 1;
-            let result = row.get("result").and_then(Value::as_f64).ok_or("missing result")?;
+            let result = row
+                .get("result")
+                .and_then(Value::as_f64)
+                .ok_or("missing result")?;
             labels[(result * 2.0).round() as usize] += 1;
-            games.insert(row.get("game_id").map(|g| g.to_string()).unwrap_or_default());
+            games.insert(
+                row.get("game_id")
+                    .map(|g| g.to_string())
+                    .unwrap_or_default(),
+            );
             *splits
-                .entry(row.get("split").and_then(Value::as_str).unwrap_or("none").to_string())
+                .entry(
+                    row.get("split")
+                        .and_then(Value::as_str)
+                        .unwrap_or("none")
+                        .to_string(),
+                )
                 .or_insert(0usize) += 1;
         }
         out.push(json!({"path": path, "rows": rows, "duplicate_rows": duplicates, "retained": kept,

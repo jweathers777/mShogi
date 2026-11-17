@@ -951,7 +951,11 @@ fn square_features(side: usize, face: usize, square: usize) -> [(usize, i32); 2]
     // Rank-table group of a face: Pawn, Lance, Knight, Silver, Gold-like,
     // Bishop, Rook, Horse, Dragon.
     const GROUP: [usize; FACES] = [0, 6, 5, 4, 3, 2, 1, 0, 8, 7, 4, 4, 4, 4];
-    let advanced = if side == 0 { 8 - square / 9 } else { square / 9 };
+    let advanced = if side == 0 {
+        8 - square / 9
+    } else {
+        square / 9
+    };
     if face == KING {
         [
             (KING_RANK + advanced, 1),
@@ -970,7 +974,12 @@ fn square_weight(side: usize, face: usize, square: usize) -> i32 {
 /// Change of the hand terms when a hand count rises from `count`.
 fn hand_weight(index: usize, count: usize) -> i32 {
     use super::eval::*;
-    DEFAULT[HAND + index] + if count == 0 { DEFAULT[HAND_FIRST + index] } else { 0 }
+    DEFAULT[HAND + index]
+        + if count == 0 {
+            DEFAULT[HAND_FIRST + index]
+        } else {
+            0
+        }
 }
 
 fn square(index: usize) -> Square {

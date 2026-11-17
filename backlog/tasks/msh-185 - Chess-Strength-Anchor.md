@@ -1,11 +1,11 @@
 ---
 id: MSH-185
 title: Chess Strength Anchor
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-16T23:47:00Z'
+updated_date: '2026-11-17T00:13:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -106,4 +106,6 @@ Shutdown classification correction independently accepted;96strengthtests pass. 
 b10completed48/48valid with correctedworker; no new process failures, flags, caps or missing results. All132cumulative games native-replay valid; joint2742.23 [2690.41,2794.05], familyspread10.44. Maincoverage12Stash/14Weiss/12Supernovapairs, so precision/coverage stop not met. Actualb10 2.4770080343VMh/USD.4993846358; cumulativeUSD1.6117091519, all b10resourcesabsent. b11active with24freshpairs100–123, unchanged3families/image/engine, session11365,target/msh185/runs/b11. Expectedanother20–25min; campaign stillwellwithin6h/USD15. Include b09 explicit shutdownreclassification file in every laterfit.
 
 b11 completed48/48valid, no new failures. Cumulative180validgames/90pairs, joint2752.62 [2711.45,2793.79], familyspread26.48. Maincoverage20Stash/22Weiss/20Supernovapairs meetsminimum; halfwidth41.17 remains above fixed40, so nextnormal24pairbatch required. Actualb11 2.6367224205VMh/USD.5315843337; cumulativeUSD2.1432934857, allresourcesabsent. b12 active on freshpairs124–147, unchangedthreefamilies and image, session40931,target/msh185/runs/b12. Original campaigndeadline continues; no reruns or extra study.
+
+Match work stopped after b12:228scoredgames/114completepairs,98W76D54L. Final joint2750.5107 [2714.8730,2786.1484], halfwidth35.6377<=40; maincoverage28Stash/30Weiss/28Supernova pairs. Familyspread35.8284<150. No further games. All236launched attempts retained:228valid,8MrBobcrashes;60additional assignments neverstarted; no reruns/singletons. All12batches independently audited, native replay and hashes pass. Final resource totals13.1838928959VMh, estimatedUSD2.657978279,9571.9593seconds through finalbatchcleanup, within originalcaps. Final live check confirms allstudyjobs/VMs/disks absent. See final-summary.json, b12-fit.json and final-cleanup.json. Report/roadmap prepared; independent finalreview and integration remain.
 <!-- SECTION:NOTES:END -->

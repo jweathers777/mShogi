@@ -1,7 +1,7 @@
 ---
 id: MSH-190
 title: Shogi Selectivity Round
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-17T16:42:00Z'
@@ -67,7 +67,7 @@ Every item in steps 2 and 3a has a recorded outcome: retained with evidence, or 
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -120,6 +120,8 @@ Confirmation game test of the final source (protocol frozen as before, separate 
 - Re-review of a9188ebe and docs: no material findings; nits applied in bdedb406.
 - Checks at a9188ebe: workspace clippy -D warnings pass; release tests search/engine/console/desktop-session/runner 857 passed, 14 ignored; native Shogi 19; Python strength tools 138.
 - Residual risks (recorded, not blocking): fixed node limits of 2-7 give the root mate search the first node(s); Shogi quiescence table entries do not distinguish the check-stage ply (consistency only); SPRT evaluated after whole batches (group-sequential, as frozen); openings are generated trunk+plan combinations under the MSH-186 CC0 precedent, not quoted game records.
+
+Integrated into main by merge e0f490d5 (feature branch codex/msh-190-shogi-selectivity, head 80ffb426); pushed to origin/main.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

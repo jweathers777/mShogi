@@ -4,7 +4,7 @@ title: Establish and meet measured shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-17T16:42:00Z'
+updated_date: '2026-11-17T17:34:00Z'
 labels:
   - handle:conventional-shogi
 milestone: m-5
@@ -23,6 +23,7 @@ dependencies:
   - MSH-188
   - MSH-189
   - MSH-190
+  - MSH-191
 documentation:
   - docs/design.md
   - docs/m5/strength-roadmap.md
@@ -91,4 +92,6 @@ Owner direction, 2026-11-16: after MSH-185 (Chess Strength Anchor), Shogi streng
 MSH-187 (Shogi Strength Round) isolates a coherent speed/history/time set; see docs/m5/shogi-strength-round.md for final-source evidence and comparison status. MSH-188 (Shogi Evaluation Round) records the next classical evaluation set and depends on MSH-187. This does not complete conventional-engine maturity or approve an external rating campaign.
 
 Owner direction, 2026-11-17: after MSH-187 (Shogi Strength Round), the Shogi order is MSH-189 (Shogi Request Overhead), MSH-190 (Shogi Selectivity Round), then MSH-188 (Shogi Evaluation Round).
+
+Owner direction, 2026-11-17: MSH-191 (Shogi Strength Anchor) follows MSH-188 and gives the first floodgate-referenced Shogi strength estimate. Strength targets for this task stay John's decision after that result.
 <!-- SECTION:NOTES:END -->

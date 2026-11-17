@@ -37,6 +37,9 @@ The next work is Shogi:
    recorded outcome.
 6. MSH-188 (Shogi Evaluation Round): Texel-tuned Shogi terms on a self-play
    corpus of at least about 500,000 positions with a game-level held-out split.
+7. MSH-191 (Shogi Strength Anchor): one approximate floodgate-referenced
+   strength estimate against rated reference engines, run like MSH-185 in the
+   cloud (6 hours, US$15 caps). No games on public servers.
 
 MSH-50 (Conventional Shogi) keeps the Shogi strength criteria and the final
 measurement. MSH-173 and MSH-176 (legacy Chu comparison) are deferred.

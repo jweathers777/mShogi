@@ -423,10 +423,10 @@ impl ShogiSearchSession {
         let record = mshogi_core::shogi::GameRecord::from_game(game);
         let mut engine = self
             .slot
-            .acquire_record(
+            .acquire_relation(
                 &CanonicalRecord::shogi(record.clone()),
                 time.is_some(),
-                |n| record.prefix(n).ok().map(CanonicalRecord::shogi),
+                |last| matches!(last, CanonicalRecord::Shogi(previous) if record.has_prefix(previous)),
                 || Ok::<_, std::convert::Infallible>(search::new_engine()),
             )
             .expect("infallible engine allocation");

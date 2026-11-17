@@ -238,18 +238,15 @@ Private analysis uses these approximations:
 - At 320 completed actions, the position is drawn unless it has no legal move,
   which takes priority. Null moves do not advance this count.
 - Entering-king declarations are checked only at the root, not inside the tree.
-- Ordinary quiescence includes captures and promotions. MSH-187 (Shogi
-  Strength Round) adds quiet checking moves and drops at the first quiescence
-  ply through an opt-in shared-core hook. Later quiet checking stages are not
-  renewed. In check, quiescence still searches all evasions. Quiet checks bypass
-  material-only SEE/delta filters; capture-only table entries cannot cut off a
-  fresh checking stage. Other games keep the prior default policy.
-- The exchange test follows a least-attacker swap sequence with board plus
-  demoted-hand capture values, promotion, x-rays and king/pin safety. It remains
-  a private static approximation. Evaluation combines unchanged material
-  values with Pawn advance, adjacent king cover, hand flexibility and tempo.
-  Pawn advance and hand flexibility are now incremental; no weights were tuned.
-  Precomputed ray masks and reverse attack lookup replace repeated ray walks.
+- Quiescence includes captures and promotions; in check it searches all evasions.
+  The first MSH-187 (Shogi Strength Round) candidate added quiet checks and a
+  full exchange estimate. That set failed its game-test checkpoint and was
+  rejected. The revised candidate restores the earlier tactical search policy.
+- The exchange test is a one-step estimate. Evaluation combines unchanged
+  material values with Pawn advance, adjacent king cover, hand flexibility
+  and tempo. Pawn advance and hand flexibility are incremental; no weights
+  were tuned. Precomputed ray masks and reverse attack lookup replace
+  repeated ray walks.
 
 Limits are depth 1–64 and at most 5,000,000 nodes. Desktop play and bare USI
 `go` use 1,000 ms with those depth/node safety ceilings; a reported line has at
@@ -257,7 +254,9 @@ most eight actions. Explicit fixed-limit requests start with empty tables and
 statistics. Timed internal and USI requests use the shared session policy above.
 USI accepts bounded `movetime`; full game clocks, ponder and tsume remain
 unsupported. New game resets the retained state, and incompatible history
-prefixes reset it through the shared slot policy. Earlier saved play
+prefixes reset it through the shared slot policy. Exact comparison of validated
+Shogi records avoids replay solely to establish cache-prefix identity; native
+request admission still validates the history. Earlier saved play
 observations remain readable.
 
 The new identities are `mshogi.shogi.shared-core.v1` and
@@ -510,8 +509,9 @@ list at ply zero.
   100. Each game must use that scale, or the margins must come from the trait.
 - *Checks in quiescence.* Quiescence searches the tactical stage only. In
   the drop games a quiet drop can give check or mate. Tori relies on the check
-  extension of the main search. Shogi will probably need a third stage for
-  checking moves at the first quiescence ply.
+  extension of the main search. The first Shogi checking-stage experiment in
+  MSH-187 (Shogi Strength Round) increased first-iteration work enough to leave
+  a request incomplete. It was rejected; future work must measure that cost.
 - *Exchange test.* Tori uses a one-step estimate in `exchange_at_least`. A
   full exchange evaluation needs a list of attackers of a square for each game.
 - *Root restrictions.* If a second game needs a root filter from its native

@@ -2,7 +2,9 @@
 
 MSH-187 (Shogi Strength Round) tests a coherent classical search change against task-start main `1d19a544cc3e1ca3e92a0e8f53268758967329bf`. Native rules remain the authority for moves, declarations, history and results. No neural evaluator or external rating study is part of this work.
 
-## Change and intended benefit
+## First set: changes and intended benefit
+
+This section describes the rejected first candidate, preserved at `e902c31d`. The revised set below removes its quiet-check and full-exchange changes.
 
 The private Shogi position now uses precomputed ray masks and reverse attack lookup, plus incremental maintenance of the existing Pawn-advance and hand-flexibility terms. This removes repeated ray walks and evaluation scans without changing those weights. A swap-based exchange estimate counts the captured board piece and its unpromoted value transferred to hand, promotion, exposed rays and king safety. This is still a private static approximation.
 
@@ -14,7 +16,7 @@ The table remains 16 MiB per player, keyed by board, hands and side, with shared
 
 This round does not tune evaluation weights. The MSH-186 demonstration contains too few independent opening families and no validation/held-out partition. Tuning requires a separately bounded data and evaluation set; the 488 exposed demonstration positions are not held-out evidence.
 
-## Before-and-after local probes
+## First-set before-and-after local probes
 
 Frozen candidate product source: `e902c31d9445`. Cloud tooling source `ed92e6d28df59bc45836f108f24a3c8d9ff47e4e` has identical native source. Actual local host: Apple M1 Pro, arm64 macOS, Rust 1.99.1 release. Each timed root is a fresh native engine request at 1000 ms, with three repeats. Request times include startup and transport.
 
@@ -48,7 +50,19 @@ The two batches used 1.0630691606 VM-hours by measured VM lifecycle envelopes, w
 
 Decision: stop this candidate comparison and inspect the full request path before another coherent round. Long histories reduce the time left for search in both players; the candidate also has more expensive first-iteration tactical work. Their separate contributions require measurement. Do not add time, invent a fallback move, or score an unfinished game to satisfy the acceptance criterion. No changed source or conditions will be pooled with this campaign.
 
-## Verification and review
+## Revised set: speed, exact history identity and time
+
+The bounded local ablation rejected the new quiet-check stage and full exchange ordering. On the shorter failed root, the predecessor completes depth 4 with a preloaded native game. The first candidate completes no iteration. Removing quiet checks reaches depth 1; an eight-ply tactical horizon still completes no iteration; removing quiet checks and restoring the predecessor exchange ordering reaches depth 4. On nine ordinary and hand-heavy roots, the speed-only variant has no lower nominal depth than the predecessor at these short budgets. These are development measurements, not a new strength result.
+
+The revised set keeps faster attack lookup and incremental maintenance of unchanged evaluation terms. It restores the predecessor search policy and removes the unused experimental shared-core interface. It also replaces repeated native replay for retained-cache prefix matching with exact structural comparison of validated records. Root provenance, policies, every leading event and the prefix endpoint result must agree. Native request admission remains authoritative. Timed desktop/USI defaults remain in scope.
+
+The prefix diagnosis measured 50.096 and 19.834 ms for the old prefix lookup at 311 and 159 events on the local Mac. This is separate from initial parsing and native reconstruction. It explains a real source of overhead in both players; it does not alone explain the separate expensive first-iteration search.
+
+A revised comparison requires frozen source, focused correctness and fixed-work checks, and independent review. It will use a separate result set. The original overall deadline remains 07:54:35 UTC on 2026-11-17, with aggregate limits of 8 VM-hours and US$2 estimated compute. Round 1 already consumes a conservative 1.4993481530 VM-hours and US$0.3022805824 of those limits. No new comparison has yet passed acceptance.
+
+## First-set verification and review
+
+The following checks apply to the frozen first candidate. They do not establish acceptance of the revised source.
 
 Local release checks passed 843 tests with 14 explicitly ignored. The standalone Tauri host compiles. All six games' search tests pass, including Shogi perft, randomized native action/state/hash comparisons, incremental evaluation restoration, hand-counted exchanges and quiet-check equivalence. All 18 fixed-depth Chess benchmark outputs are identical, including moves, scores, principal variations, nodes and depths. Actual release USI default play, continued history, new game and fixed probes passed with clean shutdown.
 
@@ -56,4 +70,4 @@ The frozen Linux build uses Rust 1.99.1, locked dependencies and portable `-C ta
 
 Verification is Level 1 for private search and targeted Level 2 for desktop/USI process lifetime and persistence. Actual macOS consumer checks and Linux worker checks do not establish Windows or packaged-GUI compatibility; those remain for the applicable integration checkpoint.
 
-Independent records cover the [core](evidence/msh187/core-review.md), [position and time integration](evidence/msh187/integration-position-review.md), and [cloud controller](evidence/msh187/cloud-review.md). Practical retention remains conditional on the predecessor comparison. The [structured verification record](evidence/msh187/verification.json) links actual commands and receipts. Local probe receipts disclose pending cloud-tool/document changes as `harness_dirty:true`; the probe and measured native source were unchanged.
+Independent records cover the [core](evidence/msh187/core-review.md), [position and time integration](evidence/msh187/integration-position-review.md), and [cloud controller](evidence/msh187/cloud-review.md). The first candidate was rejected after the failed predecessor comparison. The [structured verification record](evidence/msh187/verification.json) links actual commands and receipts. Local probe receipts disclose pending cloud-tool/document changes as `harness_dirty:true`; the probe and measured native source were unchanged.

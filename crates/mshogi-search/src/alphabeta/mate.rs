@@ -29,41 +29,73 @@ struct Entry {
     len: u32,
 }
 
-/// Fixed-size proof table, replace-always.
+/// Fixed-size proof table in buckets of four entries. A solved entry
+/// (proven or disproven) is replaced only by its own key or when the whole
+/// bucket is solved, so a proof tree is not lost to unrelated work.
 pub struct MateTable {
     entries: Vec<Entry>,
     mask: usize,
 }
 
+const BUCKET: usize = 4;
+
 impl MateTable {
-    /// Table with `2^bits` entries.
+    /// Table with `2^bits` entries (at least one bucket).
     pub fn new(bits: u32) -> Self {
+        let size = (1usize << bits).max(BUCKET);
         Self {
-            entries: vec![Entry::default(); 1 << bits],
-            mask: (1 << bits) - 1,
+            entries: vec![Entry::default(); size],
+            mask: size / BUCKET - 1,
         }
     }
     /// Forget all entries.
     pub fn clear(&mut self) {
         self.entries.fill(Entry::default());
     }
-    fn get(&self, key: u64) -> (u32, u32) {
-        let e = self.entries[key as usize & self.mask];
-        if e.key == key && key != 0 {
-            (e.pn, e.dn)
-        } else {
-            (1, 1)
+    fn bucket(&self, key: u64) -> std::ops::Range<usize> {
+        let first = (key as usize & self.mask) * BUCKET;
+        first..first + BUCKET
+    }
+    fn find(&self, key: u64) -> Option<Entry> {
+        if key == 0 {
+            return None;
         }
+        self.entries[self.bucket(key)]
+            .iter()
+            .copied()
+            .find(|e| e.key == key)
+    }
+    fn get(&self, key: u64) -> (u32, u32) {
+        self.find(key).map_or((1, 1), |e| (e.pn, e.dn))
     }
     /// Proof length of a proven entry, if stored.
     fn len(&self, key: u64) -> Option<u32> {
-        let e = self.entries[key as usize & self.mask];
-        (e.key == key && key != 0 && e.pn == 0).then_some(e.len)
+        self.find(key).filter(|e| e.pn == 0).map(|e| e.len)
     }
     fn put(&mut self, key: u64, pn: u32, dn: u32, len: u32) {
-        if key != 0 {
-            self.entries[key as usize & self.mask] = Entry { key, pn, dn, len };
+        if key == 0 {
+            return;
         }
+        let range = self.bucket(key);
+        let bucket = &mut self.entries[range];
+        let solved = |e: &Entry| e.key != 0 && (e.pn == 0 || e.dn == 0);
+        let slot = bucket
+            .iter()
+            .position(|e| e.key == key)
+            .or_else(|| bucket.iter().position(|e| e.key == 0))
+            .or_else(|| {
+                // The unsolved entry with the least work invested.
+                (0..BUCKET)
+                    .filter(|&i| !solved(&bucket[i]))
+                    .min_by_key(|&i| bucket[i].pn.saturating_add(bucket[i].dn))
+            });
+        let slot = match slot {
+            Some(slot) => slot,
+            // Every entry is solved: an unsolved result does not evict one.
+            None if pn != 0 && dn != 0 => return,
+            None => 0,
+        };
+        bucket[slot] = Entry { key, pn, dn, len };
     }
 }
 

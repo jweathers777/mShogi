@@ -430,11 +430,14 @@ impl<P: SearchPosition> Run<'_, P> {
             };
             return outcome;
         }
-        if P::MATE_SEARCH
-            && let Some(mate) = self.root_mate()
-        {
-            return mate;
-        }
+        // A proven mate is kept; the iterative deepening still runs and is
+        // preferred when it finds a mate that is no longer (df-pn proofs are
+        // not shortest).
+        let proven = if P::MATE_SEARCH {
+            self.root_mate()
+        } else {
+            None
+        };
         let adaptive = self.limits.clock && self.limits.hard.is_some();
         let mut stable = 0u32;
         for depth in 1..=i32::from(self.limits.depth.max(1)).min(MAX_PLY as i32 - 1) {
@@ -517,11 +520,21 @@ impl<P: SearchPosition> Run<'_, P> {
         outcome.status = self.status;
         outcome.nodes = self.nodes;
         outcome.selective_depth = self.seldepth as u16;
+        if let Some(mut mate) = proven
+            && outcome
+                .score
+                .is_none_or(|score| score < mate.score.unwrap_or(MATE_SCORE))
+        {
+            mate.nodes = self.nodes;
+            mate.selective_depth = mate.selective_depth.max(outcome.selective_depth);
+            mate.depth = mate.depth.max(outcome.depth);
+            return mate;
+        }
         outcome
     }
 
     /// Bounded mate search by continuous checks before the iterative
-    /// deepening. A proven mate ends the search: it is complete at any depth.
+    /// deepening. A proven mate is a complete result of depth one at least.
     fn root_mate(&mut self) -> Option<Outcome<P::Move>> {
         let nodes = self
             .limits
@@ -545,7 +558,7 @@ impl<P: SearchPosition> Run<'_, P> {
         Some(Outcome {
             best: line.first().copied(),
             score: Some(MATE_SCORE - line.len() as i32),
-            depth: self.limits.depth.clamp(1, MAX_PLY as u16 - 1),
+            depth: 1,
             selective_depth: line.len() as u16,
             nodes: self.nodes,
             pv: line,

@@ -19,12 +19,42 @@ use std::{fs, io::Write};
 mod shogi_mate_proof;
 use shogi_mate_proof::{MAX_PROOF_PLIES, Prover};
 
+/// `verify ROWS.json OUT.json NODE_CAP`: for each {"sfen","move"} row, prove
+/// whether the move (a check) forces mate within 11 plies in total.
+fn verify(args: &[String]) {
+    let rows: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(&args[2]).unwrap()).unwrap();
+    let cap: u64 = args[4].parse().unwrap();
+    let mut out = vec![];
+    for row in rows.as_array().unwrap() {
+        let position = Position::from_sfen(row["sfen"].as_str().unwrap()).unwrap();
+        let action = row["move"].as_str().unwrap().parse().unwrap();
+        let mut next = position.clone();
+        let proven = if next.apply(action).is_err() {
+            Some(false)
+        } else if !next.is_in_check(next.side_to_move()) {
+            None
+        } else {
+            Prover::new(cap)
+                .defender_mated(&next, MAX_PROOF_PLIES - 1)
+                .ok()
+        };
+        out.push(
+            json!({"sfen": row["sfen"], "move": row["move"], "forces_mate_within_11": proven}),
+        );
+    }
+    fs::write(&args[3], serde_json::to_string_pretty(&out).unwrap()).unwrap();
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
+    if args.get(1).map(String::as_str) == Some("verify") {
+        return verify(&args);
+    }
     assert_eq!(
         args.get(1).map(String::as_str),
         Some("mine"),
-        "usage: shogi_tsume mine REPORT OUT LAST_EVENTS NODE_CAP"
+        "usage: shogi_tsume mine REPORT OUT LAST_EVENTS NODE_CAP | verify ROWS OUT NODE_CAP"
     );
     let text = fs::read_to_string(&args[2]).unwrap();
     let last: usize = args[4].parse().unwrap();

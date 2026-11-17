@@ -1,11 +1,11 @@
 ---
 id: MSH-187
 title: Shogi Strength Round
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:51:00Z'
-updated_date: '2026-11-17T09:02:00Z'
+updated_date: '2026-11-17T09:04:00Z'
 labels:
   - handle:shogi-strength-round
 milestone: m-5
@@ -61,7 +61,7 @@ Each retained set passes Shogi perft and differential tests against the native r
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -113,5 +113,11 @@ Independent final campaign review accepted at docs/m5/evidence/msh187/round3/REA
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Retained faster equivalent Shogi position operations, exact validated history-prefix cache matching and one-second desktop/default USI play. Final source ef1 preserves predecessor search policy and evaluation weights. Ordinary1000ms opening depths improve14/16/11/11/10 to15/17/12/12/11; identical fixed work takes25.9% less time, while one hand-heavy throughput case regresses2.9%. Tactics12/12 unchanged. Correctness/consumer checks:840 passed14 ignored, focused native19 and22 test runs, strict Clippy and standaloneTauri passed;21 fixed-work roots identical. Final5+.5 cloud comparison accepted H1:50W1D9L,30pairs,LLR3.5712; all60 native replays and independent review passed. Earlier quiet-check/full-SEE set rejected and both failed5+.2 campaigns preserved separately. All campaign compute3.12228VMh/~$0.62948 estimated; all jobs/VMs/disks removed. Report: docs/m5/shogi-strength-round.md; canonical source verification: revised/verification.json; final game review: round3/README.md. MSH-188 (Shogi Evaluation Round) is the next scoped task, not started. No external rating, tuned evaluation, Windows runtime or packaged GUI result claimed. Integration into main pending; real commit references will be appended after merge.
+Completed and integrated into main at merge11187e8d4b46611695279d50ba17418fb9d7df4c, reviewed evidence commit7e580fb4. Final native source is ef1c94a3536aeac2feaa85f1722968c9bf864c0c; native source at integration is byte-identical. Worker tools are separately frozen200a3910.
+
+Retained faster equivalent Shogi position operations, exact validated history-prefix cache matching and one-second desktop/default USI play. The shared search policy and evaluation weights match the predecessor. Ordinary1000ms opening depths improve14/16/11/11/10 to15/17/12/12/11; identical fixed work takes25.9% less time. Minor-hand throughput regresses2.9%; tactics stay12/12.
+
+Evidence:840 consumer tests passed14 ignored, focused native19 and22 test runs, strict Clippy and standaloneTauri passed;21 fixed-work roots identical. The separate5+.5 cloud comparison accepted H1:50W1D9L,30pairs,LLR3.5712; all60 native replays and independent source/game/resource reviews passed. No unresolved findings. Earlier quiet-check/full-SEE changes rejected; both failed5+.2 campaigns preserved separately. Actual all-campaign use3.12228VMh/~$0.62948 estimated compute; all jobs/VMs/disks removed.
+
+Report: docs/m5/shogi-strength-round.md. Canonical source verification: docs/m5/evidence/msh187/revised/verification.json. Final independent game review: docs/m5/evidence/msh187/round3/README.md. Level1 search and targetedLevel2 time/session verified on macOS and Linux; Windows runtime and packaged GUI remain deferred. No external rating or tuned evaluation claimed. MSH-188 (Shogi Evaluation Round) is the next eligible scoped task, not started.
 <!-- SECTION:FINAL_SUMMARY:END -->

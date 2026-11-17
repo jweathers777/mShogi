@@ -1,0 +1,130 @@
+{
+  "name": "shogi-bench-v1",
+  "license": "CC0-1.0",
+  "depth_rule": "Frozen before final baseline on 2026-11-17 after task-start d75ecdb8 calibration on arm64-Darwin. Preliminary depths4/5 were dominated by startup; selected per-root depths6\u201312 give useful bounded work. Full cold request times include process startup; not equal work or strength evidence.",
+  "positions": [
+    {
+      "id": "startpos",
+      "sfen": null,
+      "moves": [],
+      "depth": 12,
+      "phase": "opening",
+      "source": "Standard initial position; profile source."
+    },
+    {
+      "id": "double-static",
+      "sfen": null,
+      "moves": [
+        "7g7f",
+        "8c8d",
+        "6g6f",
+        "3c3d",
+        "7i6h",
+        "7a6b",
+        "6h7g",
+        "6c6d",
+        "5g5f",
+        "5c5d",
+        "6i5h",
+        "6a5b"
+      ],
+      "depth": 12,
+      "phase": "opening",
+      "source": "Original USI transcription/selection of conventional opening structures; JT Shogi Guide08 (style definitions), https://www.jti.co.jp/culture/shogi/guide/08/index.html; no copied professional game or commentary."
+    },
+    {
+      "id": "fourth-file",
+      "sfen": null,
+      "moves": [
+        "7g7f",
+        "3c3d",
+        "6g6f",
+        "8c8d",
+        "2h6h",
+        "8d8e",
+        "8h7g",
+        "7a6b",
+        "5i4h",
+        "5a4b",
+        "4h3h",
+        "4b3b"
+      ],
+      "depth": 9,
+      "phase": "opening",
+      "source": "Original USI transcription/selection of conventional opening structures; JT Shogi Guide08 (style definitions), https://www.jti.co.jp/culture/shogi/guide/08/index.html; no copied professional game or commentary."
+    },
+    {
+      "id": "third-file",
+      "sfen": null,
+      "moves": [
+        "7g7f",
+        "3c3d",
+        "6g6f",
+        "8c8d",
+        "2h7h",
+        "8d8e",
+        "8h7g",
+        "7a6b",
+        "5i4h",
+        "5a4b",
+        "4h3h",
+        "4b3b"
+      ],
+      "depth": 9,
+      "phase": "opening",
+      "source": "Original USI transcription/selection of conventional opening structures; JT Shogi Guide08 (style definitions), https://www.jti.co.jp/culture/shogi/guide/08/index.html; no copied professional game or commentary."
+    },
+    {
+      "id": "central-rook",
+      "sfen": null,
+      "moves": [
+        "5g5f",
+        "8c8d",
+        "2h5h",
+        "3c3d",
+        "7g7f",
+        "7a6b",
+        "5i4h",
+        "5a4b",
+        "4h3h",
+        "4b3b"
+      ],
+      "depth": 9,
+      "phase": "opening",
+      "source": "Original USI transcription/selection of conventional opening structures; JT Shogi Guide08 (style definitions), https://www.jti.co.jp/culture/shogi/guide/08/index.html; no copied professional game or commentary."
+    },
+    {
+      "id": "active-rooks-hands",
+      "sfen": "8k/9/5sg2/5r3/2P1R1p2/3S5/2G6/9/K8 b BSNbsn 1",
+      "moves": [],
+      "depth": 6,
+      "phase": "middlegame",
+      "source": "Original MSH-186 benchmark composition; no asserted best move."
+    },
+    {
+      "id": "promoted-pieces",
+      "sfen": "8k/6g2/5+B1p1/9/3+R5/2G2+p3/1P7/9/K8 b SPn 1",
+      "moves": [],
+      "depth": 12,
+      "phase": "middlegame",
+      "source": "Original MSH-186 benchmark composition; no asserted best move."
+    },
+    {
+      "id": "rook-ending",
+      "sfen": "9/7k1/6p2/5r3/4R4/9/2P6/1K7/9 b - 1",
+      "moves": [],
+      "depth": 12,
+      "phase": "endgame",
+      "source": "Original MSH-186 benchmark composition; no asserted best move."
+    },
+    {
+      "id": "minor-hands-ending",
+      "sfen": "9/7k1/9/5s3/4P4/3G5/9/1K7/9 b SNgl 1",
+      "moves": [],
+      "depth": 7,
+      "phase": "hands",
+      "source": "Original MSH-186 benchmark composition; no asserted best move."
+    }
+  ],
+  "status": "v1 roots and depths frozen; native root validation passed; final file-hash validation and baseline pending"
+}

@@ -2,54 +2,76 @@
 use mshogi_core::native::{CanonicalRecord, RulesProfile};
 use mshogi_engine::WorkLimits;
 use mshogi_runner::experiments::{
-    Config, Opening, Player, ProfileLimits, SCHEMA, Split, fresh_root,
+    Config, FischerClock, Opening, Player, ProfileLimits, SCHEMA, Split, fresh_root,
 };
 
+#[allow(dead_code)]
 pub struct Args {
     values: Vec<String>,
     pub seed: u64,
     watchdog_ms: u64,
+    pub openings: Option<String>,
+    pub opening_index: usize,
+    clock: Option<FischerClock>,
 }
 impl Args {
     #[allow(dead_code)]
     pub fn read() -> Self {
-        let (values, watchdog_ms) = Self::values();
-        Self::from_values(values, watchdog_ms)
+        Self::parse(false).0
     }
     #[allow(dead_code)]
     pub fn read_with_profile() -> (Self, String) {
-        let (mut values, watchdog_ms) = Self::values();
-        assert_eq!(
-            values.len(),
-            11,
-            "expected native config arguments followed by profile"
-        );
-        let profile = values.pop().unwrap();
-        (Self::from_values(values, watchdog_ms), profile)
+        let (args, profile) = Self::parse(true);
+        (args, profile.unwrap())
     }
-    fn values() -> (Vec<String>, u64) {
+    fn parse(profile: bool) -> (Self, Option<String>) {
         let mut values: Vec<String> = std::env::args().collect();
-        let watchdog_ms = if values.len() >= 3 && values[values.len() - 2] == "--watchdog-ms" {
-            let value: u64 = values.pop().unwrap().parse().unwrap();
-            values.pop();
-            assert!((1..=60_000).contains(&value), "invalid engine watchdog");
-            value
-        } else {
-            30_000
-        };
-        (values, watchdog_ms)
-    }
-    fn from_values(values: Vec<String>, watchdog_ms: u64) -> Self {
+        let mut watchdog_ms = None;
+        let mut openings = None;
+        let mut opening_index = 0;
+        let mut base = None;
+        let mut increment = None;
+        let positional = if profile { 11 } else { 10 };
+        while values.len() > positional {
+            let flag = values.remove(positional);
+            let value = values.remove(positional);
+            match flag.as_str() {
+                "--watchdog-ms" => watchdog_ms = Some(value.parse().unwrap()),
+                "--openings" => openings = Some(value),
+                "--opening-index" => opening_index = value.parse().unwrap(),
+                "--clock-base-ms" => base = Some(value.parse().unwrap()),
+                "--clock-increment-ms" => increment = Some(value.parse().unwrap()),
+                _ => panic!("unknown flag {flag}"),
+            }
+        }
+        let watchdog_ms = watchdog_ms.unwrap_or(if base.is_some() { 60_000 } else { 30_000 });
+        assert!((1..=60_000).contains(&watchdog_ms));
         assert_eq!(
             values.len(),
-            10,
-            "usage: CANDIDATE BASELINE SEED CANDIDATE_NODES BASELINE_DEPTH BASELINE_NODES MAX_STEPS WALL_MS OUT"
+            positional,
+            "expected native config positional arguments"
         );
-        Self {
-            seed: values[3].parse().unwrap(),
-            values,
-            watchdog_ms,
-        }
+        let profile = if profile { values.pop() } else { None };
+        assert_eq!(
+            base.is_some(),
+            increment.is_some(),
+            "both clock flags required"
+        );
+        let clock = base.map(|base_ms| FischerClock {
+            base_ms,
+            increment_ms: increment.unwrap(),
+        });
+        (
+            Self {
+                seed: values[3].parse().unwrap(),
+                values,
+                watchdog_ms,
+                openings,
+                opening_index,
+                clock,
+            },
+            profile,
+        )
     }
     pub fn write(
         &self,
@@ -83,7 +105,12 @@ impl Args {
             schema: SCHEMA,
             id: format!("{}-{id}", task.to_lowercase().replace('-', "")),
             protocol: format!(
-                "Paired predecessor comparison. Native {game} controls outcomes. Seeded project-generated openings, no external corpus. Fixed work limits calibrated on equal roots; not a rating."
+                "Paired predecessor comparison. Native {game} controls outcomes. Opening provenance is recorded below. Mode: {}. Not a rating.",
+                if self.clock.is_some() {
+                    "Fischer wall clock with finite search safety caps"
+                } else {
+                    "fixed work"
+                }
             ),
             seed: self.seed,
             rounds: 1,
@@ -91,6 +118,7 @@ impl Args {
             wall_budget_ms: self.values[8].parse().unwrap(),
             watchdog_ms: self.watchdog_ms,
             cleanup_ms: 1_000,
+            clock: self.clock,
             players: vec![
                 player(
                     "candidate",

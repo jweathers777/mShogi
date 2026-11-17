@@ -89,6 +89,7 @@ fn main() {
         wall_budget_ms: 600_000,
         watchdog_ms: 30_000,
         cleanup_ms: 1_000,
+        clock: None,
         players: vec![
             player("candidate", candidate, 64, candidate_nodes.parse().unwrap()),
             player(

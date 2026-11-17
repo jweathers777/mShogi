@@ -80,6 +80,8 @@ pub fn run_with_stop(
             .map(|p| EngineBridge::with_options(p.executable.clone().into(), bridge_options))
             .collect::<Result<_, _>>()
             .map_err(err)?;
+        let mut remaining = vec![config.clock.map_or(0, |c| c.base_ms); config.players.len()];
+        let mut moved = vec![false; config.players.len()];
         loop {
             if let Some(reason) = state.stop_reason() {
                 game.stop = reason;
@@ -117,7 +119,12 @@ pub fn run_with_stop(
                     session_version: id,
                     process_generation: id,
                     game: before.record.clone(),
-                    limits: config.players[player].work(before.record.profile())?,
+                    limits: clock_work(
+                        config.players[player].work(before.record.profile())?,
+                        config.clock,
+                        remaining[player],
+                        !moved[player],
+                    ),
                 },
             };
             let began = Instant::now();
@@ -132,6 +139,12 @@ pub fn run_with_stop(
                     failure = Some("wall_budget".to_owned());
                     break None;
                 }
+                if config.clock.is_some()
+                    && began.elapsed() >= Duration::from_millis(remaining[player])
+                {
+                    failure = Some("clock_limit".to_owned());
+                    break None;
+                }
                 if let Some(response) = bridges[player].poll() {
                     break Some(response.observation);
                 }
@@ -143,7 +156,10 @@ pub fn run_with_stop(
             }
             let mut candidate = native::NativeState::from_root(&before).map_err(err)?;
             let decision = if let Some(o) = &observation {
-                if !o.matches(&request.context) {
+                if config.clock.is_some() && elapsed_ns.div_ceil(1_000_000) >= remaining[player] {
+                    failure = Some("clock_limit".into());
+                    native::Admission::Failed("clock_limit".into())
+                } else if !o.matches(&request.context) {
                     failure = Some("observation:context".into());
                     native::Admission::Failed("observation:context".into())
                 } else if !within_limits(o) {
@@ -161,7 +177,20 @@ pub fn run_with_stop(
             } else {
                 native::Admission::Failed(failure.clone().unwrap())
             };
+            let clock = config.clock.map(|c| {
+                clock_receipt(
+                    c,
+                    remaining[player],
+                    elapsed_ns,
+                    matches!(decision, native::Admission::Applied),
+                )
+            });
+            if let Some(r) = &clock {
+                remaining[player] = r.after_ms;
+            }
+            moved[player] = true;
             let step = Step {
+                clock,
                 player,
                 elapsed_ns,
                 request: request.context,

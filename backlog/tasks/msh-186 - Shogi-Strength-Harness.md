@@ -1,9 +1,11 @@
 ---
 id: MSH-186
 title: Shogi Strength Harness
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-16T20:51:00Z'
+updated_date: '2026-11-17T02:01:00Z'
 labels:
   - handle:shogi-strength-harness
 milestone: m-5
@@ -61,3 +63,19 @@ Tools, data, baseline numbers and the opponent proposal are documented in docs/m
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Freeze task-start main d75ecdb8 and inspect the existing shared protocol client, native match runner and data-generation path. Record bounded baseline methods before measurements. 2. Add Shogi bench and tactical commands by extending shared CLI/protocol mechanisms; obtain independently justified tactical answers and sourced, licensed opening lines, with native validation. 3. Extend the existing native predecessor runner for Fischer clocks and fixed opening records, retaining paired colors, native replay, failure records and the existing sequential test. 4. Add a bounded reproducible Shogi labeled-position procedure that uses native records and outcomes. 5. Record current-main benchmark, timed-depth and tactical baselines plus a short clock-game/data-generation demonstration. Use cloud execution if the planned local measurement exceeds one hour; no external rating games. 6. Prepare an independently sourced USI opponent proposal with compatibility limits, protocol and budget for John; independently review tools/data, resolve findings, document, integrate into main and push.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner: Codex chat 01a1e634-7fc9-72c2-b4b4-07022a7df3ec. Primary checkout was clean main d75ecdb8, with no active Backlog owners; this chat completed the prior task here. New branch codex/shogi-strength-harness. Other worktrees remain untouched. Backlog 1.55.3 matches project baseline. Scope: shared Shogi measurement tools, licensed development data, baseline and an external-opponent proposal; no external rating games or production rule/search change. Verification level 1 as scoped; actual environment and evidence will be recorded.
+
+Implementation checkpoint: timed USI is not supported, so timed probes and game clocks use the existing shared native protocol. The shared experiment controller needs optional Fischer ledger/allocation fields; native rule and search code stay unchanged. Baseline freeze d75ecdb8. Planned local measurement: nine fixed-depth roots (three repeats), twelve development tactics at1000ms and a small clock-mode self-comparison of unchanged search against frozen main, at5s+0.05s, four workers, maximum32pairs/900s. The objective is to prove useful measurement paths and record a baseline, not claim a strength gain. Retain failures and all launched pairs; use existing SPRT, no forced significance verdict. Export native-result labels from these same games, with no added data-generation campaign. Expected total local measurement well below one hour; stop/reassess if bounds or technical failures prevent that. No external rating games or cloud spending is authorized by this task.
+
+Coherent implementation checkpoint: shared native experiment Fischer clocks and replay ledgers, fixed legal opening catalog, native probe/proof/export helper, shared strength CLI Shogi bench/tactics/validation/export, and game-aware Texel partitioning. Clock code independently accepted after healthy multi-turn and watchdog tests. Native data validation passed after independently refuted unprotected-piece answer corrections. Bench depths frozen from recorded d75ecdb8 calibration. Current checks:102Python tests pass; runner library plus two examples pass (counts in target/msh186/native-tests.log). Outer timeout process-group test needed unsandboxed process inspection; actual test passed. Next: commit source checkpoint, rebuild native instrumentation, then run final baselines and32pair bounded same-frozen-engine clock self-comparison; no strength-improvement claim.
+<!-- SECTION:NOTES:END -->

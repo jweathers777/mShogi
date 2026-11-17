@@ -15,6 +15,29 @@ mod native_match_config;
 
 fn main() {
     let args = native_match_config::Args::read();
+    if let Some(path) = &args.openings {
+        let text = std::fs::read_to_string(path).unwrap();
+        let catalog: serde_json::Value = serde_json::from_str(&text).unwrap();
+        let rows = catalog["openings"].as_array().expect("opening catalog");
+        let row = rows
+            .get(args.opening_index)
+            .expect("opening index within catalog");
+        let game = opening_game(row);
+        args.write(
+            "MSH-186",
+            "Shogi",
+            RulesProfile::ShogiCsa36V1,
+            CanonicalRecord::shogi(GameRecord::from_game(&game)),
+            row["id"].as_str().unwrap().into(),
+            format!(
+                "Frozen catalog SHA256 {}; index {}; source/rights: {}",
+                mshogi_runner::experiments::digest(&text),
+                args.opening_index,
+                catalog["provenance"]
+            ),
+        );
+        return;
+    }
     let seed = args.seed;
     const TACTICAL: [&str; 4] = [
         "8k/9/9/4p4/4R4/9/9/9/K8 b - 1",
@@ -72,4 +95,57 @@ fn main() {
             format!("standard Shogi plus {plies} seeded native legal actions; xorshift64")
         },
     );
+}
+
+fn opening_game(row: &serde_json::Value) -> Game {
+    let mut game = if let Some(sfen) = row["sfen"].as_str() {
+        let position = Position::from_sfen(sfen).unwrap();
+        let root = GameRoot::import(
+            position.clone(),
+            RootCategory::FullMaterialDiagram,
+            CounterSource::Supplied,
+        )
+        .or_else(|_| {
+            GameRoot::import(
+                position,
+                RootCategory::ReducedMaterialDiagram,
+                CounterSource::Supplied,
+            )
+        })
+        .unwrap();
+        Game::from_root(root)
+    } else {
+        Game::new()
+    };
+    for token in row["moves"].as_array().expect("explicit opening moves") {
+        let action = token.as_str().unwrap().parse().unwrap();
+        game.submit(GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: GameCommand::Play(action),
+        })
+        .unwrap();
+    }
+    assert!(game.conclusion().is_none(), "opening already concluded");
+    game
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn catalog_moves_preserve_native_history_and_sfen() {
+        let game = opening_game(&serde_json::json!({"moves":["7g7f"]}));
+        let expected = "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 2";
+        assert_eq!(game.position().to_sfen(), expected);
+        assert_eq!(GameRecord::from_game(&game).event_count(), 1);
+        let imported = opening_game(&serde_json::json!({"sfen":expected,"moves":[]}));
+        assert_eq!(imported.position().to_sfen(), expected);
+        assert_eq!(GameRecord::from_game(&imported).event_count(), 0);
+    }
+    #[test]
+    #[should_panic]
+    fn illegal_catalog_move_is_rejected() {
+        opening_game(&serde_json::json!({"moves":["7g7e"]}));
+    }
 }

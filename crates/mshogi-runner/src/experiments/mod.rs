@@ -50,7 +50,7 @@ pub fn template(executable: &str) -> Result<Config, RunnerError> {
             })
         })
         .collect::<Result<_, RunnerError>>()?;
-    let config=Config{schema:SCHEMA,id:"native-diagnostic-template".into(),protocol:"Finite standard-root diagnostic only; unequal-work baseline ablation, not competitive strength. Supply hardware/build/rights/target-distribution protocol before inference.".into(),seed:48,rounds:1,max_steps:2,wall_budget_ms:120_000,watchdog_ms:15_000,cleanup_ms:250,players,openings};
+    let config=Config{schema:SCHEMA,id:"native-diagnostic-template".into(),protocol:"Finite standard-root diagnostic only; unequal-work baseline ablation, not competitive strength. Supply hardware/build/rights/target-distribution protocol before inference.".into(),seed:48,rounds:1,max_steps:2,wall_budget_ms:120_000,watchdog_ms:15_000,cleanup_ms:250,clock:None,players,openings};
     config.validate()?;
     Ok(config)
 }
@@ -125,10 +125,66 @@ pub struct Config {
     pub watchdog_ms: u64,
     /// Existing bounded bridge cleanup observation interval.
     pub cleanup_ms: u64,
+    /// Optional wall-clock control; absent keeps deterministic fixed-work mode.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub clock: Option<FischerClock>,
     /// Candidate and one or more actual baselines.
     pub players: Vec<Player>,
     /// Explicit finite distribution: uniform catalog, seeded permutation per cycle.
     pub openings: Vec<Opening>,
+}
+/// Caller clock accounting. Exhaustion is an unscored experiment stop.
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FischerClock {
+    /// Initial time for each participant.
+    pub base_ms: u64,
+    /// Added only after an accepted native command.
+    pub increment_ms: u64,
+}
+/// Replayable clock receipt, charged for transport and process overhead too.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ClockReceipt {
+    /// Time before the submitted request.
+    pub before_ms: u64,
+    /// Ceiling of actual request elapsed time.
+    pub charged_ms: u64,
+    /// Time after charge and any accepted-command increment.
+    pub after_ms: u64,
+}
+fn clock_work(
+    mut work: WorkLimits,
+    clock: Option<FischerClock>,
+    remaining: u64,
+    first: bool,
+) -> WorkLimits {
+    if let Some(clock) = clock {
+        let allocation = mshogi_search::alphabeta::timing::TimeBudget::from_clock_ms(
+            remaining,
+            clock.increment_ms,
+            30,
+        );
+        let hard = (allocation.hard.as_millis() as u64).min(60_000);
+        let reserve = (if first { 300 } else { 50 }).min(hard / 2);
+        work.time_ms = Some(hard.saturating_sub(reserve));
+    }
+    work
+}
+fn clock_receipt(
+    clock: FischerClock,
+    before_ms: u64,
+    elapsed_ns: u64,
+    applied: bool,
+) -> ClockReceipt {
+    let charged_ms = elapsed_ns.div_ceil(1_000_000);
+    ClockReceipt {
+        before_ms,
+        charged_ms,
+        after_ms: before_ms
+            .saturating_sub(charged_ms)
+            .saturating_add(if applied { clock.increment_ms } else { 0 }),
+    }
 }
 fn bounded(s: &str) -> bool {
     !s.is_empty() && s.len() <= 2048
@@ -152,6 +208,29 @@ impl Config {
     }
     /// Validate resource limits and concrete native profiles before launching.
     pub fn validate(&self) -> Result<(), RunnerError> {
+        if self
+            .clock
+            .is_some_and(|c| c.base_ms == 0 || c.base_ms > 600_000 || c.increment_ms > 60_000)
+        {
+            return Err(err("invalid finite Fischer clock"));
+        }
+        if let Some(clock) = self.clock {
+            // Upper bound even if every command earns an increment without time charge.
+            let remaining = clock
+                .base_ms
+                .saturating_add(clock.increment_ms.saturating_mul(u64::from(self.max_steps)));
+            let hard = mshogi_search::alphabeta::timing::TimeBudget::from_clock_ms(
+                remaining,
+                clock.increment_ms,
+                30,
+            )
+            .hard
+            .as_millis()
+            .min(60_000) as u64;
+            if self.watchdog_ms < hard {
+                return Err(err("engine watchdog is below possible clock allocation"));
+            }
+        }
         if self.schema != SCHEMA
             || !bounded(&self.id)
             || !bounded(&self.protocol)
@@ -360,6 +439,9 @@ pub struct Pairing {
 pub struct Step {
     /// Config participant index.
     pub player: usize,
+    /// Optional wall-clock ledger, independently reconstructed on replay.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub clock: Option<ClockReceipt>,
     /// Actual request/launch/search/receipt duration, not pure search time.
     pub elapsed_ns: u64,
     /// Exact actual submitted request, even if cancelled before a response.
@@ -613,6 +695,9 @@ impl Report {
                 native::NativeState::from_root(&self.config.openings[expected.opening].root)
                     .map_err(err)?;
             let mut last_stop = None;
+            let mut remaining =
+                vec![self.config.clock.map_or(0, |c| c.base_ms); self.config.players.len()];
+            let mut moved = vec![false; self.config.players.len()];
             for step in &game.steps {
                 if state.stop_reason().is_some() {
                     return Err(err("observation after native stop"));
@@ -626,7 +711,13 @@ impl Report {
                 let c = &step.request;
                 if step.player != player
                     || c.game != state.root().map_err(err)?.record
-                    || c.limits != self.config.players[player].work(c.game.profile())?
+                    || c.limits
+                        != clock_work(
+                            self.config.players[player].work(c.game.profile())?,
+                            self.config.clock,
+                            remaining[player],
+                            !moved[player],
+                        )
                     || c.request_id <= last_id
                     || c.session_version != c.request_id
                     || c.process_generation != c.request_id
@@ -634,13 +725,29 @@ impl Report {
                 {
                     return Err(err("stale/wrong participant, history, purpose or limits"));
                 }
+                let receipt = self.config.clock.map(|clock| {
+                    clock_receipt(clock, remaining[player], step.elapsed_ns, step.applied)
+                });
+                if step.clock != receipt {
+                    return Err(err("clock ledger mismatch"));
+                }
+                let exhausted = receipt
+                    .as_ref()
+                    .is_some_and(|r| r.charged_ms >= r.before_ms);
+                if let Some(r) = receipt {
+                    remaining[player] = r.after_ms;
+                }
+                moved[player] = true;
                 last_id = c.request_id;
                 let Some(observation) = &step.observation else {
                     let reason = step
                         .failure
                         .as_deref()
                         .ok_or_else(|| err("missing response without recorded interruption"))?;
-                    if !["cancelled", "wall_budget"].contains(&reason) || step.applied {
+                    if !["cancelled", "wall_budget", "clock_limit"].contains(&reason)
+                        || step.applied
+                        || (reason == "clock_limit" && !exhausted)
+                    {
                         return Err(err("invalid interrupted request"));
                     }
                     last_stop = Some(native::Admission::Failed(reason.into()));
@@ -658,7 +765,9 @@ impl Report {
                 {
                     return Err(err("observation exceeds existing response capacity"));
                 }
-                let refusal = if !observation.matches(c) {
+                let refusal = if exhausted {
+                    Some("clock_limit")
+                } else if !observation.matches(c) {
                     Some("observation:context")
                 } else if !within_limits(observation) {
                     Some("observation:limits")
@@ -736,7 +845,11 @@ fn stop_for(a: native::Admission) -> Option<String> {
         native::Admission::Applied => None,
         native::Admission::Finished => Some("native_concluded".into()),
         native::Admission::Incomplete(s) => Some(format!("incomplete:{s}")),
-        native::Admission::Failed(s) if s == "cancelled" || s == "wall_budget" => Some(s),
+        native::Admission::Failed(s)
+            if s == "cancelled" || s == "wall_budget" || s == "clock_limit" =>
+        {
+            Some(s)
+        }
         native::Admission::Failed(s) => Some(format!("failure:{s}")),
     }
 }

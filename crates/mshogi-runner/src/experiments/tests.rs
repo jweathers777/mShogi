@@ -263,6 +263,7 @@ fn observation_decoder_keeps_duplicates_and_wire_size_visible() {
         },
     };
     let step = Step {
+        clock: None,
         player: 0,
         elapsed_ns: 0,
         request: context.clone(),
@@ -397,4 +398,196 @@ fn terminal_claim_allowance_does_not_admit_extra_board_depth() {
         .is_err()
     );
     assert_eq!(state.root().unwrap(), root);
+}
+
+#[test]
+fn fischer_allocation_charge_and_replay_refuse_tampering() {
+    let clock = FischerClock {
+        base_ms: 10_000,
+        increment_ms: 100,
+    };
+    let work = WorkLimits {
+        depth: 4,
+        nodes: 512,
+        time_ms: None,
+    };
+    // (9950 / 30 + 75) * 3 = 1218; first-request transport reserve = 300.
+    assert_eq!(
+        clock_work(work, Some(clock), 10_000, true).time_ms,
+        Some(918)
+    );
+    assert_eq!(
+        clock_work(work, Some(clock), 10_000, false).time_ms,
+        Some(1168)
+    );
+    assert_eq!(
+        clock_receipt(clock, 10_000, 1_000_001, true).after_ms,
+        10_098
+    );
+    assert_eq!(
+        clock_receipt(clock, 10_000, 1_000_001, false).after_ms,
+        9_998
+    );
+    let mut c = config();
+    c.openings.truncate(1);
+    c.players.truncate(2);
+    c.clock = Some(clock);
+    let mut report = run_with_stop(&c, &mut || true).unwrap().as_report().clone();
+    let player = 0;
+    let request = ExecutionContext {
+        purpose: ExecutionPurpose::EngineTurn {},
+        request_id: 1,
+        session_version: 1,
+        process_generation: 1,
+        game: c.openings[0].root.record.clone(),
+        limits: clock_work(
+            c.players[player]
+                .work(c.openings[0].root.record.profile())
+                .unwrap(),
+            Some(clock),
+            10_000,
+            true,
+        ),
+    };
+    report.games[0].steps.push(Step {
+        player,
+        elapsed_ns: 1_000_001,
+        request,
+        clock: Some(clock_receipt(clock, 10_000, 1_000_001, false)),
+        observation: None,
+        failure: Some("cancelled".into()),
+        applied: false,
+    });
+    report.validate().unwrap();
+    let mut bad = report.clone();
+    bad.games[0].steps[0].clock.as_mut().unwrap().after_ms += 1;
+    assert!(bad.validate().is_err());
+    let mut bad = report.clone();
+    bad.games[0].steps[0].request.limits.time_ms = Some(999);
+    assert!(bad.validate().is_err());
+    let mut bad = report.clone();
+    bad.games[0].steps[0].elapsed_ns += 1_000_000;
+    assert!(bad.validate().is_err());
+    let step = &mut report.games[0].steps[0];
+    step.elapsed_ns = 10_000_000_000;
+    step.clock = Some(clock_receipt(clock, 10_000, step.elapsed_ns, false));
+    step.failure = Some("clock_limit".into());
+    report.games[0].stop = "clock_limit".into();
+    report.validate().unwrap();
+    assert_eq!(report.games[0].score_first_twice, None);
+    let step = &mut report.games[0].steps[0];
+    step.observation = Some(ExecutionObservation::new(
+        step.request.clone(),
+        chess_move_result(&["e2e4"]),
+    ));
+    report.validate().unwrap();
+    report.games[0].steps[0].applied = true;
+    assert!(report.validate().is_err());
+}
+
+#[test]
+fn successful_shogi_clock_steps_replay_both_players_and_colors() {
+    use mshogi_engine::{ExecutionResult, ShogiChoice, ShogiResult, ShogiTelemetry, StopReason};
+    let mut c = config();
+    c.openings
+        .retain(|o| o.root.record.profile() == RulesProfile::ShogiCsa36V1);
+    c.players.truncate(2);
+    c.max_steps = 4;
+    c.clock = Some(FischerClock {
+        base_ms: 10_000,
+        increment_ms: 100,
+    });
+    let mut report = run_with_stop(&c, &mut || true).unwrap().into_report();
+    let mut request_id = 0;
+    for game in &mut report.games {
+        let mut state = native::NativeState::from_root(&c.openings[0].root).unwrap();
+        for (i, token) in ["7g7f", "3c3d", "2g2f", "8c8d"].iter().enumerate() {
+            let first = i % 2 == 0;
+            let player = usize::from(first == game.pairing.swapped);
+            // Both engines spend 25.000001 ms on their first turn, then 50 ms.
+            // Ceil charging and increment give 10074 then 10124 ms each.
+            let (before_ms, elapsed_ns, after_ms) = if i < 2 {
+                (10_000, 25_000_001, 10_074)
+            } else {
+                (10_074, 50_000_000, 10_124)
+            };
+            let limits = clock_work(
+                c.players[player].work(RulesProfile::ShogiCsa36V1).unwrap(),
+                c.clock,
+                before_ms,
+                i < 2,
+            );
+            request_id += 1;
+            let context = ExecutionContext {
+                purpose: ExecutionPurpose::EngineTurn {},
+                request_id,
+                session_version: request_id,
+                process_generation: request_id,
+                game: state.root().unwrap().record,
+                limits,
+            };
+            let choice = ShogiChoice::Move {
+                action: token.parse().unwrap(),
+            };
+            let result = ExecutionResult::Shogi {
+                result: ShogiResult::Choice {
+                    choice,
+                    telemetry: ShogiTelemetry {
+                        evaluator_id: mshogi_search::shogi::EVALUATOR_ID.into(),
+                        search_id: mshogi_search::shogi::SEARCH_ID.into(),
+                        perspective: if first {
+                            mshogi_core::shogi::Side::Sente
+                        } else {
+                            mshogi_core::shogi::Side::Gote
+                        },
+                        score: Some(0),
+                        completed_depth: 1,
+                        nodes: 1,
+                        principal_variation: vec![choice],
+                        status: StopReason::Complete,
+                    },
+                },
+            };
+            assert!(matches!(
+                admit_bounded(&mut state, &result, limits).unwrap(),
+                native::Admission::Applied
+            ));
+            game.steps.push(Step {
+                player,
+                elapsed_ns,
+                clock: Some(ClockReceipt {
+                    before_ms,
+                    charged_ms: elapsed_ns.div_ceil(1_000_000),
+                    after_ms,
+                }),
+                request: context.clone(),
+                observation: Some(ExecutionObservation::new(context, result)),
+                failure: None,
+                applied: true,
+            });
+        }
+        game.final_root = state.root().unwrap();
+        game.stop = "step_limit".into();
+    }
+    report.validate().unwrap();
+    assert!(report.games.iter().all(|g| g.score_first_twice.is_none()));
+    let mut bad = report.clone();
+    bad.games[1].steps[2].clock.as_mut().unwrap().before_ms = 10_000;
+    assert!(bad.validate().is_err());
+    let mut bad = report;
+    bad.games[0].steps[0].clock.as_mut().unwrap().after_ms -= 100;
+    assert!(bad.validate().is_err());
+}
+
+#[test]
+fn clock_control_refuses_watchdog_below_possible_allocation() {
+    let mut c = config();
+    c.clock = Some(FischerClock {
+        base_ms: 600_000,
+        increment_ms: 60_000,
+    });
+    c.watchdog_ms = 30_000;
+    assert!(c.validate().unwrap_err().to_string().contains("watchdog"));
+    c.watchdog_ms = 60_000;
+    c.validate().unwrap();
 }

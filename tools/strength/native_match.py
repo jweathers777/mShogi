@@ -40,6 +40,8 @@ def summarize(report):
     scores = []
     turns = [[], []]
     for game in games:
+        if game.get('cleanup'):
+            raise ValueError('native engine cleanup failed; retained report is unscored')
         score = game['score_first_twice']
         scores.append(None if score is None else (2 - score if game['pairing']['swapped'] else score))
         for step in game['steps']:
@@ -63,6 +65,12 @@ def run_pair(args, seed, out):
     command = [args.config_writer, args.candidate, args.baseline, str(seed),
                str(args.candidate_nodes), str(args.baseline_depth), str(args.baseline_nodes),
                '1' if args.calibrate else str(args.max_steps), str(args.pair_wall_ms), str(config)]
+    if getattr(args, 'base', None) is not None:
+        command.extend(['--clock-base-ms', str(round(args.base * 1000)),
+                        '--clock-increment-ms', str(round(args.increment * 1000))])
+    if getattr(args, 'openings', None):
+        command.extend(['--openings', args.openings, '--opening-index',
+                        str((seed - 1) % args.opening_count)])
     if args.game == 'tenjiku':
         command.append(args.profile)
     if args.watchdog_ms is not None:
@@ -86,6 +94,9 @@ def run_pair(args, seed, out):
             raise
     if code != 0:
         raise RuntimeError(f'pair {seed}: runner exit {code}; see retained log')
+    with open(out / f'pair-{seed:04d}.replay.log', 'x') as log:
+        subprocess.run([args.runner, 'experiment-replay', str(report_path)], check=True,
+                       stdout=log, stderr=subprocess.STDOUT, timeout=60)
     raw = report_path.read_bytes()
     result = summarize(json.loads(raw))
     result.update({'seed': seed, 'wall_seconds': time.monotonic() - start,
@@ -124,12 +135,15 @@ def main(default_game="shogi"):
     parser.add_argument('--profile', choices=['adams', 'muller'])
     parser.add_argument('--candidate', required=True)
     parser.add_argument('--baseline', required=True)
-    parser.add_argument('--candidate-nodes', type=int, required=True)
+    parser.add_argument('--candidate-nodes', type=int)
+    parser.add_argument('--base', type=float, help='Fischer initial time in seconds (Shogi)')
+    parser.add_argument('--increment', type=float, default=0, help='Fischer increment in seconds')
+    parser.add_argument('--openings', help='fixed Shogi opening JSON catalog')
     parser.add_argument('--baseline-depth', type=int)
     parser.add_argument('--baseline-nodes', type=int)
     parser.add_argument('--runner', default='target/release/mshogi-match')
     parser.add_argument('--config-writer')
-    parser.add_argument('--watchdog-ms', type=int, help='symmetric engine watchdog; writer default is 30000')
+    parser.add_argument('--watchdog-ms', type=int, help='symmetric engine watchdog; writer default is 60000 for clocks, 30000 for fixed work')
     parser.add_argument('--out', required=True)
     parser.add_argument('--workers', type=int, default=4)
     parser.add_argument('--max-pairs', type=int, default=600)
@@ -147,6 +161,19 @@ def main(default_game="shogi"):
         parser.error('--profile adams|muller is required only for --game tenjiku')
     defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'chu': (1, 512, 500), 'tenjiku': (1, 1024, 500)}
     depth, nodes, args.max_steps = defaults[args.game]
+    if args.base is not None:
+        if args.game != 'shogi' or not (0.001 <= args.base <= 600 and 0 <= args.increment <= 60):
+            parser.error('clock mode requires Shogi, base 0.001..600 and increment 0..60 seconds')
+        if args.candidate_nodes is not None or args.baseline_nodes is not None or args.baseline_depth is not None:
+            parser.error('clock mode uses symmetric native safety caps; do not supply fixed work')
+        args.candidate_nodes = args.baseline_nodes = 5_000_000
+        args.baseline_depth = 64
+    elif args.candidate_nodes is None or args.increment != 0:
+        parser.error('fixed-work mode requires --candidate-nodes; increment requires --base')
+    if args.openings and args.game != 'shogi':
+        parser.error('--openings currently requires Shogi')
+    if args.first_seed < 0:
+        parser.error('--first-seed must be nonnegative')
     if args.baseline_depth is None:
         args.baseline_depth = depth
     if args.baseline_nodes is None:
@@ -161,12 +188,25 @@ def main(default_game="shogi"):
     stats.Sprt(args.elo0, args.elo1, args.alpha, args.beta, args.min_pairs)
     out = Path(args.out).resolve()
     out.mkdir(parents=True, exist_ok=False)
+    if args.openings:
+        raw = Path(args.openings).read_bytes()
+        catalog = json.loads(raw)
+        openings = catalog.get('openings')
+        if not isinstance(openings, list) or not openings or len({r['id'] for r in openings}) != len(openings):
+            parser.error('opening catalog must have nonempty unique records')
+        args.opening_count = len(openings)
+        args.openings_sha256 = hashlib.sha256(raw).hexdigest()
+        frozen = out / 'openings.json'
+        with frozen.open('xb') as stream:
+            stream.write(raw)
+        args.openings = str(frozen)
     write_new(out / 'manifest.json', {'kind': f'{args.game}-paired-predecessor', 'schema': 1,
               'settings': vars(args), 'environment': environment(),
               'candidate': engine_identity(args.candidate), 'baseline': engine_identity(args.baseline),
               'runner': engine_identity(args.runner), 'config_writer': engine_identity(args.config_writer),
               'timing': 'native runner request/launch/search/receipt, including process overhead',
-              'sampling': 'one fresh seeded opening per pair, fixed before play; no discarded unfinished pairs',
+              'sampling': ('fixed catalog index (seed-1) modulo count; both colors; source frozen before play'
+                           if args.openings else 'one seeded opening per pair; no discarded unfinished pairs'),
               'stopping': 'check SPRT in seed order after each worker batch; all launched pairs retained'})
     start = time.monotonic()
     rows = []

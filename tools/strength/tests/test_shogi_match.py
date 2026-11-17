@@ -2,6 +2,11 @@
 import unittest
 import contextlib
 import io
+import json
+import tempfile
+import subprocess
+from pathlib import Path
+from types import SimpleNamespace
 from unittest import mock
 
 from tools.strength.shogi_match import summarize
@@ -63,6 +68,53 @@ class ShogiPairScoring(unittest.TestCase):
         self.assertIsNone(result['pair_score'])
         self.assertEqual(result['scores_twice'], [2, None])
         self.assertEqual(result['stops'][1], 'native_stop:ResourceLimit')
+
+
+class NativeClockDispatch(unittest.TestCase):
+    def test_pair_replays_before_scoring_and_selects_fixed_opening(self):
+        report = ShogiPairScoring().report(2, 0)
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory)
+            args = SimpleNamespace(config_writer='writer', candidate='new', baseline='old',
+                candidate_nodes=5_000_000, baseline_depth=64, baseline_nodes=5_000_000,
+                calibrate=False, max_steps=320, pair_wall_ms=1000, game='shogi',
+                watchdog_ms=None, runner='runner', base=10, increment=.1,
+                openings='frozen.json', opening_count=4)
+            (out / 'pair-0006.report.json').write_text(json.dumps(report))
+            child = mock.Mock()
+            child.wait.return_value = 0
+            with mock.patch.object(native_match.subprocess, 'Popen', return_value=child), \
+                 mock.patch.object(native_match.subprocess, 'run') as run:
+                result = native_match.run_pair(args, 6, out)
+            command = run.call_args_list[0].args[0]
+            self.assertEqual(command[-8:], ['--clock-base-ms', '10000', '--clock-increment-ms', '100',
+                                           '--openings', 'frozen.json', '--opening-index', '1'])
+            self.assertEqual(run.call_args_list[1].args[0][1], 'experiment-replay')
+            self.assertEqual(result['pair_score'], 1)
+            self.assertTrue((out / result['report']).exists())
+
+    def test_replay_failure_keeps_raw_report_and_prevents_score(self):
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory)
+            raw = out / 'pair-0001.report.json'
+            raw.write_text('{}')
+            args = SimpleNamespace(config_writer='writer', candidate='new', baseline='old',
+                candidate_nodes=100, baseline_depth=1, baseline_nodes=100, calibrate=False,
+                max_steps=320, pair_wall_ms=1000, game='shogi', watchdog_ms=None, runner='runner')
+            child = mock.Mock()
+            child.wait.return_value = 0
+            with mock.patch.object(native_match.subprocess, 'Popen', return_value=child), \
+                 mock.patch.object(native_match.subprocess, 'run', side_effect=[None, subprocess.CalledProcessError(1, 'replay')]), \
+                 self.assertRaises(subprocess.CalledProcessError):
+                native_match.run_pair(args, 1, out)
+            self.assertTrue(raw.exists())
+            self.assertFalse((out / 'pair-0001.summary.json').exists())
+
+    def test_cleanup_failure_cannot_enter_statistics(self):
+        report = ShogiPairScoring().report(2, 0)
+        report['games'][0]['cleanup'] = ['unacknowledged']
+        with self.assertRaises(ValueError):
+            native_match.summarize(report)
 
 
 if __name__ == '__main__':

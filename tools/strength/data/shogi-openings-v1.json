@@ -1,0 +1,132 @@
+{
+  "name": "shogi-openings-v1",
+  "license": "CC0-1.0",
+  "balance": "paired engine colors and varied traditional styles; no certified equal-evaluation claim",
+  "openings": [
+    {
+      "id": "double-static",
+      "sfen": null,
+      "moves": [
+        "7g7f",
+        "8c8d",
+        "6g6f",
+        "3c3d",
+        "7i6h",
+        "7a6b",
+        "6h7g",
+        "6c6d",
+        "5g5f",
+        "5c5d",
+        "6i5h",
+        "6a5b"
+      ],
+      "source": "Original USI transcription/selection of conventional opening structures; JT Shogi Guide08 (style definitions), https://www.jti.co.jp/culture/shogi/guide/08/index.html; no copied professional game or commentary.",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "fourth-file",
+      "sfen": null,
+      "moves": [
+        "7g7f",
+        "3c3d",
+        "6g6f",
+        "8c8d",
+        "2h6h",
+        "8d8e",
+        "8h7g",
+        "7a6b",
+        "5i4h",
+        "5a4b",
+        "4h3h",
+        "4b3b"
+      ],
+      "source": "Original USI transcription/selection of conventional opening structures; JT Shogi Guide08 (style definitions), https://www.jti.co.jp/culture/shogi/guide/08/index.html; no copied professional game or commentary.",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "third-file",
+      "sfen": null,
+      "moves": [
+        "7g7f",
+        "3c3d",
+        "6g6f",
+        "8c8d",
+        "2h7h",
+        "8d8e",
+        "8h7g",
+        "7a6b",
+        "5i4h",
+        "5a4b",
+        "4h3h",
+        "4b3b"
+      ],
+      "source": "Original USI transcription/selection of conventional opening structures; JT Shogi Guide08 (style definitions), https://www.jti.co.jp/culture/shogi/guide/08/index.html; no copied professional game or commentary.",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "central-rook",
+      "sfen": null,
+      "moves": [
+        "5g5f",
+        "8c8d",
+        "2h5h",
+        "3c3d",
+        "7g7f",
+        "7a6b",
+        "5i4h",
+        "5a4b",
+        "4h3h",
+        "4b3b"
+      ],
+      "source": "Original USI transcription/selection of conventional opening structures; JT Shogi Guide08 (style definitions), https://www.jti.co.jp/culture/shogi/guide/08/index.html; no copied professional game or commentary.",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "bishop-exchange",
+      "sfen": null,
+      "moves": [
+        "7g7f",
+        "3c3d",
+        "2g2f",
+        "8c8d",
+        "8h2b+",
+        "3a2b",
+        "7i7h",
+        "7a6b",
+        "2f2e",
+        "2b3c",
+        "3i3h",
+        "8d8e"
+      ],
+      "source": "Original USI transcription/selection of conventional opening structures; JT Shogi Guide08 (style definitions), https://www.jti.co.jp/culture/shogi/guide/08/index.html; no copied professional game or commentary.",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "rook-pawn-exchange",
+      "sfen": null,
+      "moves": [
+        "2g2f",
+        "8c8d",
+        "2f2e",
+        "8d8e",
+        "6i7h",
+        "4a3b",
+        "2e2d",
+        "2c2d",
+        "2h2d",
+        "8e8f",
+        "8g8f",
+        "8b8f"
+      ],
+      "source": "Original USI transcription/selection of conventional opening structures; JT Shogi Guide08 (style definitions), https://www.jti.co.jp/culture/shogi/guide/08/index.html; no copied professional game or commentary.",
+      "license": "CC0-1.0"
+    }
+  ],
+  "provenance": {
+    "author": "MSH-186 delegated data author, 2026-11-17",
+    "license": "CC0-1.0",
+    "source": "Original USI transcription and selection of conventional structures; JT Shogi Japan Series guide08 provides style definitions: https://www.jti.co.jp/culture/shogi/guide/08/index.html",
+    "selection": "Six short initial-position prefixes, varied static/ranging rook and exchange structures. Every root must be paired with engine colors reversed. No certified equal-evaluation or professional-game claim. No source commentary or diagrams copied."
+  },
+  "status": "v1 records frozen; all roots and prefixes passed native validation; tactical bounded answer sets matched where applicable; final file-hash validation pending"
+}

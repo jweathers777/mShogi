@@ -216,7 +216,7 @@ fn probe(spec: &Value, engine: &str, time_ms: u64) -> Value {
     }
     json!({"positions":out,"timing":"full native request including cold process startup; fresh process/cache per position"})
 }
-fn export(report_text: &str) -> String {
+fn export(report_text: &str, every: usize) -> String {
     let report =
         mshogi_runner::experiments::ValidatedReport::from_json(report_text).expect("native replay");
     let hash = mshogi_runner::experiments::digest(report_text);
@@ -241,7 +241,7 @@ fn export(report_text: &str) -> String {
                 final_record.conclusion().unwrap().score_half_points()[0],
                 score
             );
-            for event in (initial.event_count()..final_record.event_count()).step_by(4) {
+            for event in (initial.event_count()..final_record.event_count()).step_by(every) {
                 let before = final_record.prefix(event).unwrap().to_game().unwrap();
                 if before.conclusion().is_none() {
                     samples.push(json!({"sfen":before.position().to_sfen(),"sente_outcome":f64::from(score)/2.0,"event":event}));
@@ -270,7 +270,10 @@ fn main() {
             args[5].parse().unwrap(),
         ))
         .unwrap(),
-        "export" => export(&input),
+        "export" => export(
+            &input,
+            args.get(4).map_or(4, |n| n.parse().unwrap()),
+        ),
         _ => panic!(
             "usage: shogi_strength validate|export INPUT OUTPUT | probe INPUT OUTPUT ENGINE TIME_MS(0=depth)"
         ),

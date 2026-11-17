@@ -629,6 +629,7 @@ def main(argv=None):
     x.add_argument('--helper', default=shogi_tools.HELPER)
     x.add_argument('--reports', required=True)
     x.add_argument('--out', required=True)
+    x.add_argument('--every', type=int, default=4, help='sample one before-position every N native events (1..16)')
     x.set_defaults(func=shogi_tools.export)
 
     e = sub.add_parser('build-engine', help='build a frozen mshogi engine from a Git revision into target/strength')

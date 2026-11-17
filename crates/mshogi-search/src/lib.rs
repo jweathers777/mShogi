@@ -12,6 +12,7 @@ pub mod chess_eval;
 mod chess_kpk;
 pub mod chu;
 pub mod shogi;
+pub mod texel;
 mod square_set;
 pub mod tenjiku;
 pub mod tori;

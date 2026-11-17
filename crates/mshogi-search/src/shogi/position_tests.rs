@@ -29,6 +29,10 @@ fn compare(p: &mut ShogiPosition, native: &Position) {
     assert_eq!(p.hash(), p.hash_from_scratch());
     assert_eq!(p.hash(), ShogiPosition::from_position(native).hash());
     assert_eq!(p.in_check(), native.is_in_check(native.side_to_move()));
+    // The incremental search evaluation equals the full feature sum.
+    if !p.in_check() {
+        assert_eq!(p.evaluate(), super::eval::score(p, &super::eval::DEFAULT));
+    }
     let legal = p.legal_moves();
     assert_eq!(
         sorted(legal.iter().map(|&m| p.action(m))),
@@ -362,7 +366,11 @@ fn incremental_placement_matches_native_recalculation() {
             }
         }
         let side = usize::from(native.side_to_move() == Side::Gote);
-        assert_eq!(fast.evaluate(), totals[side] - totals[side ^ 1] + 10);
+        // INITIAL weights reproduce the earlier evaluation exactly.
+        assert_eq!(
+            super::eval::score(&fast, &super::eval::INITIAL),
+            totals[side] - totals[side ^ 1] + 10
+        );
         let actions = native.legal_actions();
         if actions.is_empty() {
             break;

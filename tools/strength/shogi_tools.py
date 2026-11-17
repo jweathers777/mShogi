@@ -14,12 +14,16 @@ from .uci import file_sha256
 HELPER = 'target/release/examples/shogi_strength'
 
 
-def native(mode, path, helper=HELPER, engine=None, time_ms=0, timeout=900):
+def native(mode, path, helper=HELPER, engine=None, time_ms=0, timeout=900, every=None):
     with tempfile.TemporaryDirectory(prefix='mshogi-strength-') as temp:
         output = Path(temp)/'result.json'
         command = [str(Path(helper).resolve()), mode, str(Path(path).resolve()), str(output)]
         if mode == 'probe':
             command += [str(Path(engine).resolve()), str(time_ms)]
+        if mode == 'export' and every is not None:
+            if not 1 <= every <= 16:
+                raise ValueError('every must be 1..16')
+            command.append(str(every))
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                    text=True, start_new_session=True)
         failure = None
@@ -143,7 +147,7 @@ def export(args):
         raw=gzip.decompress(path.read_bytes())
         with tempfile.TemporaryDirectory(prefix='mshogi-texel-') as temp:
             report=Path(temp)/'report.json';report.write_bytes(raw)
-            data=native('export',report,args.helper)
+            data=native('export',report,args.helper,every=getattr(args,'every',4))
         target=out/f'games-{i:04}.jsonl';target.write_text(data)
         inputs[str(path)]={'sha256':file_sha256(path),'output_sha256':file_sha256(target)}
         games.extend(json.loads(line) for line in data.splitlines())
@@ -151,7 +155,7 @@ def export(args):
               'helper':engine_identity(args.helper),'inputs':inputs,'games':len(games),
               'labeled_games':sum(g['sente_outcome'] is not None for g in games),
               'positions':sum(len(g['samples']) for g in games),
-              'conditions':'Native replay before export; one before-position every four accepted events; native sente result labels only; incomplete games have no samples.',
+              'conditions':f'Native replay before export; one before-position every {getattr(args,"every",4)} accepted events; native sente result labels only; incomplete games have no samples.','every':getattr(args,'every',4),
               'rights':'Project-generated native self-play, BSD-LICENSE; retain opening source notices',
               'training_status':'generation demonstration, not a fitted evaluator or a strength claim'}
     write_new(out/'export-manifest.json',manifest)

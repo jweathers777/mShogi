@@ -238,17 +238,27 @@ Private analysis uses these approximations:
 - At 320 completed actions, the position is drawn unless it has no legal move,
   which takes priority. Null moves do not advance this count.
 - Entering-king declarations are checked only at the root, not inside the tree.
-- Ordinary quiescence includes captures and promotions. Quiet checking moves
-  and drops enter through the main search and its check extension. In check,
-  quiescence searches all evasions.
-- The exchange test is a one-step estimate. Evaluation combines unchanged
-  material values with Pawn advance, adjacent king cover, hand flexibility
-  and tempo. It is a classical heuristic, not a native outcome.
+- Ordinary quiescence includes captures and promotions. MSH-187 (Shogi
+  Strength Round) adds quiet checking moves and drops at the first quiescence
+  ply through an opt-in shared-core hook. Later quiet checking stages are not
+  renewed. In check, quiescence still searches all evasions. Quiet checks bypass
+  material-only SEE/delta filters; capture-only table entries cannot cut off a
+  fresh checking stage. Other games keep the prior default policy.
+- The exchange test follows a least-attacker swap sequence with board plus
+  demoted-hand capture values, promotion, x-rays and king/pin safety. It remains
+  a private static approximation. Evaluation combines unchanged material
+  values with Pawn advance, adjacent king cover, hand flexibility and tempo.
+  Pawn advance and hand flexibility are now incremental; no weights were tuned.
+  Precomputed ray masks and reverse attack lookup replace repeated ray walks.
 
-Limits are depth 1–64 and at most 5,000,000 nodes. Desktop play and default USI
-use depth 64 and 300,000 nodes; a reported line has at most eight actions.
-Fixed-limit requests start with empty tables and statistics. Timed internal
-requests use the shared session policy above.
+Limits are depth 1–64 and at most 5,000,000 nodes. Desktop play and bare USI
+`go` use 1,000 ms with those depth/node safety ceilings; a reported line has at
+most eight actions. Explicit fixed-limit requests start with empty tables and
+statistics. Timed internal and USI requests use the shared session policy above.
+USI accepts bounded `movetime`; full game clocks, ponder and tsume remain
+unsupported. New game resets the retained state, and incompatible history
+prefixes reset it through the shared slot policy. Earlier saved play
+observations remain readable.
 
 The new identities are `mshogi.shogi.shared-core.v1` and
 `mshogi.shogi.material-placement.v1`. A shared observation helper classifies
@@ -258,7 +268,9 @@ depth. The earlier Shogi material function remains available for historical
 arithmetic, but no private full-width search remains.
 
 Verification and the predecessor comparison are recorded in
-[evidence/msh180/README.md](evidence/msh180/README.md).
+[evidence/msh180/README.md](evidence/msh180/README.md). The later search round's
+before/after probes, game-test decision and limits are in
+[Shogi strength round](shogi-strength-round.md).
 
 ## Xiangqi on the core
 

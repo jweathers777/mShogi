@@ -1,11 +1,11 @@
 ---
 id: MSH-189
 title: Shogi Request Overhead
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-17T16:41:00Z'
-updated_date: '2026-11-17T18:30:00Z'
+updated_date: '2026-11-17T18:31:00Z'
 labels:
   - handle:shogi-request-overhead
 milestone: m-5
@@ -56,7 +56,7 @@ Verification Level 2 (process and session lifetime, protocol). Independent revie
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -84,7 +84,13 @@ Final independent session/source/method review accepted productionb45ab4d4; fall
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Implemented shared native Session<R> and transport SessionServer<A>, with Shogi as first adapter. Continuing timed requests send only native-validated new events; exact endpoint checks, atomic rollback, full reset for changed histories and process retirement preserve native authority. Initial fullrequest/capability acknowledgement keeps frozen older engines compatible. Timed Shogi requests retain a legal root-order choice when no iteration completes, with depth0/no score/actual work; cancellation and fixed-work behavior remain distinct. Saved formats and evaluation/selectivity are unchanged.
+Completed and integrated into main at 99dd8d6005f47d32a23144894b070671b77de92a. Tested production source b45ab4d4 is unchanged at integration; evidence commit dd6154eb contains the final report and receipts.
 
-Measured300-event complete non-search overhead76.217->0.793ms (1.04%baseline); actualbridge78.753->2.654ms (3.37%). Fifty-to300-event growth0.567ms in-memory and0.034ms bridge is explicitly small absolute growth, not mathematicalconstant time. Coldresets stillpayfullvalidation. Corrected exact-marker measurements and old/currentpeerprobes passed. Native386tests, search171, engine94 and affectedconsole22 passed, plus broaderconsumer checkpoint678; counts overlap and ignoredchecks are explicit. StrictClippy and standaloneTauri passed. Independent source/fallback/method reviews accepted. Targetedprocess checks passed on Linux and Windows at frozenb45; actual macOS checks passed. PackagedGUI/release deferred; no playingstrength or externalrating claim. Report docs/m5/shogi-request-overhead.md and canonicalverification docs/m5/evidence/msh189/verification.json. Mainintegration pending; append realmerge reference afterintegration. MSH-190 (Shogi Selectivity Round) is next, notstarted.
+The child now retains a native game and admits only new validated events through shared Session<R> and SessionServer<A> mechanisms. Exact endpoint checks, atomic rollback, full resets and process retirement preserve native authority. Capability acknowledgement keeps older engines compatible. Timed Shogi requests retain a legal root-order choice when no iteration completes, with depth zero, no score and actual work. Fixed-work behavior, saved formats, evaluation and selectivity remain unchanged.
+
+At 300 events, complete non-search overhead fell from 76.217 to 0.793 ms (1.04% of baseline); actual bridge time fell from 78.753 to 2.654 ms (3.37%). Growth from 50 to 300 events was 0.567 ms in memory and 0.034 ms through the bridge. These are small absolute increases, not a constant-time guarantee. Cold resets still require full validation. Corrected measurements and actual old/current engine probes passed.
+
+Native core: 386 tests passed; search: 171; engine: 94; affected console: 22. The broader consumer checkpoint passed 678. Counts overlap; ignored checks and commands are recorded. Strict Clippy, standalone Tauri, independent reviews and targeted Linux/Windows process suites passed. Actual macOS checks passed. Packaged GUI and release verification remain deferred. No playing-strength or external-rating claim is made.
+
+Report: docs/m5/shogi-request-overhead.md. Canonical evidence: docs/m5/evidence/msh189/verification.json. All acceptance criteria and completion items have evidence. Next eligible task: MSH-190 (Shogi Selectivity Round), not started.
 <!-- SECTION:FINAL_SUMMARY:END -->

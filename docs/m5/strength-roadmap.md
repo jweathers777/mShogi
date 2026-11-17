@@ -33,7 +33,8 @@ The next work is Shogi:
 5. MSH-190 (Shogi Selectivity Round): at least 100 openings, a tactical suite
    of at least 200 positions, a control with late-game depth of at least 8, then
    a bounded quiescence check stage, full SEE, Shogi-scaled margins and drop
-   ordering, each with a recorded outcome.
+   ordering, and a shared-core mate search (df-pn) for Shogi tsume, each with a
+   recorded outcome.
 6. MSH-188 (Shogi Evaluation Round): Texel-tuned Shogi terms on a self-play
    corpus of at least about 500,000 positions with a game-level held-out split.
 

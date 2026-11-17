@@ -4,7 +4,7 @@ title: Shogi Selectivity Round
 status: Ready
 assignee: []
 created_date: '2026-11-17T16:42:00Z'
-updated_date: '2026-11-17T16:47:00Z'
+updated_date: '2026-11-17T16:52:00Z'
 labels:
   - handle:shogi-selectivity-round
 milestone: m-5
@@ -44,19 +44,21 @@ Stronger Shogi search through standard selectivity, measured under conditions th
    - Margins (futility, razoring, aspiration, quiescence delta) scaled to Shogi piece values.
    - Move ordering for drops and promotions (for example drops near the enemy king, checking drops, promotion first).
 3. Before tests, record baseline, intended benefit, comparison method, resource cap and checkpoint (AGENTS.md). Freeze the predecessor at task start.
+3a. Dedicated mate search (John, 2026-11-17). Strong Shogi engines use a separate search that only looks for forced mates by continuous checks (tsume), usually proof-number search (df-pn), because long mating attacks with drops decide many games and alpha-beta finds them late. Build it in the shared core as a game-independent mate search over checking moves and evasions that the game supplies, so Tori, Chu and Tenjiku can use it later. Use it at least at the root with a bounded node or time share, and decide from measurement whether short mate checks inside the main search help. It must respect the Pawn-drop-mate rule and perpetual-check repetition (a repeated checking cycle is not a mate), and handle repeated positions correctly. A found mate is private analysis; the native rules still admit the move and decide the result. Test on tsume problems with known solutions (the tactical suite above) and measure solve rate and time; then include it in the set game test or test it as its own set.
 4. If the set does not reach H1, ablate parts and retest, with a game-test result for each removed part. A failure to finish an iteration is a defect to fix (bound the stage), not evidence against the technique.
 
 ## Completion
-Every item in step 2 has a recorded outcome: retained with evidence, or rejected with a game-test or measured tactical result. A timing failure alone does not count as a rejection. Verification Level 1. Independent review.
+Every item in steps 2 and 3a has a recorded outcome: retained with evidence, or rejected with a game-test or measured tactical result. A timing failure alone does not count as a rejection. Verification Level 1. Independent review.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 An opening set of at least 100 distinct licensed openings and a tactical suite of at least 200 positions (with a held-out part, and a meaningful failure share for the task-start engine at 1 s) exist with recorded sources, and the game-test control reaches median late-game depth of at least 8.
 - [ ] #2 Each of the four selectivity items (bounded quiescence check stage, full SEE, Shogi-scaled margins, drop and promotion ordering) has a recorded outcome: retained with evidence, or rejected with a game-test or tactical-suite result; no item is rejected only for a timing failure.
-- [ ] #3 Retained changes pass Shogi perft and differential checks against the native rules, every timed request still returns a legal move, and other games' search tests pass.
-- [ ] #4 Retained changes improve the tactical suite and win a sequential game test against the frozen task-start predecessor under the new opening set and control.
-- [ ] #5 Results, compute, failed attempts and independent review are recorded, and docs/m5/shared-search-core.md is current.
+- [ ] #3 A shared-core mate search (for example df-pn) over game-supplied checks and evasions exists, respects the Pawn-drop-mate rule and perpetual-check repetition, and its tsume solve rate and time are measured against problems with known solutions; its use in play has a recorded outcome with game-test evidence.
+- [ ] #4 Retained changes pass Shogi perft and differential checks against the native rules, every timed request still returns a legal move, and other games' search tests pass.
+- [ ] #5 Retained changes improve the tactical suite and win a sequential game test against the frozen task-start predecessor under the new opening set and control.
+- [ ] #6 Results, compute, failed attempts and independent review are recorded, and docs/m5/shared-search-core.md is current.
 <!-- AC:END -->
 
 ## Definition of Done

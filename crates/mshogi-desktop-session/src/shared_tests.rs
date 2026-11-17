@@ -160,9 +160,9 @@ fn presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events
     assert_eq!(
         initial.play_limits,
         WorkLimits {
-            time_ms: None,
+            time_ms: Some(1_000),
             depth: 64,
-            nodes: 300_000
+            nodes: 5_000_000
         }
     );
     assert_eq!(initial.board_ply, 0);
@@ -177,7 +177,7 @@ fn presented_budget_matches_submitted_play_and_board_ply_ignores_terminal_events
     assert_eq!(ended.board_ply, 0);
     assert_eq!(
         serde_json::to_value(&ended).unwrap()["play_limits"]["nodes"],
-        300_000
+        5_000_000
     );
     let prefix = send(&mut c, SessionOperation::Inspect { event_index: 0 }).unwrap();
     assert!(prefix.historical);

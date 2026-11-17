@@ -279,3 +279,201 @@ fn repetition_cycle_crosses_captures_and_drops() {
     assert_eq!(p.hash(), initial_hash);
     assert_eq!(p.rule_score(), None);
 }
+
+#[test]
+fn incremental_placement_matches_native_recalculation() {
+    let mut native = Position::initial();
+    let mut fast = ShogiPosition::from_position(&native);
+    let mut rng = 0x187_6a09_e667_f3bc;
+    for _ in 0..240 {
+        let mut totals = [0i32; 2];
+        for (i, side) in [Side::Sente, Side::Gote].into_iter().enumerate() {
+            let mut king = None;
+            for sq in Square::all() {
+                if native
+                    .piece(sq)
+                    .is_some_and(|p| p.side == side && p.kind == PieceKind::King)
+                {
+                    king = Some(sq.index());
+                }
+            }
+            for sq in Square::all() {
+                if let Some(piece) = native.piece(sq).filter(|p| p.side == side) {
+                    totals[i] += super::piece_value(piece.kind, piece.promoted);
+                    if piece.kind == PieceKind::Pawn && !piece.promoted {
+                        totals[i] += 4 * if i == 0 {
+                            8 - sq.index() / 9
+                        } else {
+                            sq.index() / 9
+                        } as i32;
+                    }
+                    let k = king.unwrap();
+                    if sq.index() != k
+                        && (sq.index() / 9).abs_diff(k / 9) <= 1
+                        && (sq.index() % 9).abs_diff(k % 9) <= 1
+                    {
+                        totals[i] += 8;
+                    }
+                }
+            }
+            for kind in PieceKind::HAND_KINDS {
+                totals[i] += i32::from(native.hand(side).count(kind))
+                    * (super::piece_value(kind, false) + 10);
+            }
+        }
+        let side = usize::from(native.side_to_move() == Side::Gote);
+        assert_eq!(fast.evaluate(), totals[side] - totals[side ^ 1] + 10);
+        let actions = native.legal_actions();
+        if actions.is_empty() {
+            break;
+        }
+        let action = actions[next(&mut rng) as usize % actions.len()];
+        let m = fast.find(action).unwrap();
+        assert!(fast.make(m));
+        native.apply(action).unwrap();
+    }
+}
+
+#[test]
+fn swap_exchange_counts_hand_promotion_xrays_and_pins() {
+    // Independently counted material transfers, in pawn hundredths. Rook
+    // capture transfers 800 board +800 hand; Gold capture transfers500+500.
+    for (sfen, action, expected) in [
+        ("8k/9/9/4p4/4R4/9/9/9/K8 b - 1", "5e5d", 200),
+        ("8k/9/9/4+p4/4R4/9/9/9/K8 b - 1", "5e5d", 600),
+        ("8k/9/5g3/4p4/4R4/9/9/9/K8 b - 1", "5e5d", -1400),
+        // The rear rook is exposed when the front rook leaves5e.
+        ("8k/9/5g3/4p4/4R4/9/9/9/K3R4 b - 1", "5e5d", -400),
+        // Gold4c is pinned to King4a by Rook4i: it cannot recapture5d.
+        ("5k3/9/5g3/4p4/4R4/9/9/9/K4R3 b - 1", "5e5d", 200),
+        // Promotion adds400; the captured silver adds400 board +400 hand.
+        ("8k/4s4/4P4/9/9/9/9/9/K8 b - 1", "5c5b+", 1200),
+        // Gote's recapturing Pawn promotes:1000 - (1600+400) = -1000.
+        ("8k/9/9/9/9/4p4/4g4/4R4/K8 b - 1", "5h5g", -1000),
+        // An adjacent king cannot recapture a target guarded by Gold5e.
+        ("9/9/4k4/3Rp4/4G4/9/9/9/K8 b - 1", "6d5d", 200),
+    ] {
+        let native = Position::from_sfen(sfen).unwrap();
+        let p = ShogiPosition::from_position(&native);
+        let action: Action = action.parse().unwrap();
+        // This table is for legal exchanges, not pseudo-legal self checks.
+        assert!(native.legal_actions().contains(&action), "{sfen} {action}");
+        let m = p.find(action).unwrap();
+        assert!(
+            p.exchange_at_least(m, expected),
+            "{sfen} {action}: lower bound{expected}"
+        );
+        assert!(
+            !p.exchange_at_least(m, expected + 1),
+            "{sfen} {action}: upper bound{expected}"
+        );
+    }
+}
+
+#[test]
+fn quiet_checks_match_native_for_both_sides_and_discoveries() {
+    let mut positions = vec![Position::initial()];
+    for sfen in [
+        "4k4/9/9/9/9/9/9/9/K8 b RBGSLNP 1",
+        "8k/9/9/9/9/9/9/9/4K4 w rbgslnp 1",
+        "4k4/9/4G4/4R4/9/9/9/9/K8 b - 1",
+        "4k4/9/4G4/9/4L4/9/9/9/K8 b - 1",
+        "8k/9/9/9/4l4/9/4g4/9/4K4 w - 1",
+    ] {
+        positions.push(Position::from_sfen(sfen).unwrap());
+    }
+    let mut rng = 187;
+    let mut native = Position::initial();
+    for _ in 0..160 {
+        positions.push(native.clone());
+        let actions = native.legal_actions();
+        if actions.is_empty() {
+            break;
+        }
+        native
+            .apply(actions[next(&mut rng) as usize % actions.len()])
+            .unwrap();
+    }
+    let mut checked = 0;
+    for native in positions {
+        let mut p = ShogiPosition::from_position(&native);
+        let expected = native
+            .legal_actions()
+            .into_iter()
+            .filter(|&action| {
+                let m = p.find(action).unwrap();
+                if p.is_tactical(m) {
+                    return false;
+                }
+                let mut after = native.clone();
+                after.apply(action).unwrap();
+                after.is_in_check(after.side_to_move())
+            })
+            .collect::<Vec<_>>();
+        let mut generated = Vec::new();
+        p.generate_quiescence_checks(&mut generated);
+        for &m in &generated {
+            assert!(!p.is_tactical(m));
+        }
+        generated.retain(|&m| {
+            let ok = p.make(m);
+            if ok {
+                p.unmake();
+            }
+            ok
+        });
+        checked += generated.len();
+        assert_eq!(
+            sorted(generated.iter().map(|&m| p.action(m))),
+            sorted(expected),
+            "{}",
+            native.to_sfen()
+        );
+    }
+    assert!(checked > 20);
+}
+
+/// Fixed work profile, deliberately ignored during ordinary tests. The same
+/// test body is run against frozen and candidate positions; no search or games.
+#[test]
+#[ignore]
+fn profile_position_hot_path() {
+    let catalog: serde_json::Value = serde_json::from_str(include_str!(
+        "../../../../tools/strength/data/shogi-bench-v1.json"
+    ))
+    .unwrap();
+    let mut roots = Vec::new();
+    for item in catalog["positions"].as_array().unwrap() {
+        let mut native = item["sfen"]
+            .as_str()
+            .map(|s| Position::from_sfen(s).unwrap())
+            .unwrap_or_else(Position::initial);
+        for action in item["moves"].as_array().unwrap() {
+            native
+                .apply(action.as_str().unwrap().parse().unwrap())
+                .unwrap();
+        }
+        roots.push(ShogiPosition::from_position(&native));
+    }
+    // Warm only immutable tables, then keep the work count fixed.
+    std::hint::black_box(roots[0].legal_moves());
+    let started = std::time::Instant::now();
+    let mut moves = 0u64;
+    let mut checksum = 0i64;
+    for _ in 0..2000 {
+        for p in &mut roots {
+            for m in p.legal_moves() {
+                assert!(p.make(m));
+                checksum += i64::from(std::hint::black_box(p.evaluate()));
+                std::hint::black_box(p.hash());
+                p.unmake();
+                moves += 1;
+            }
+        }
+    }
+    println!(
+        "position_profile roots={} iterations=2000 moves={moves} checksum={checksum} seconds={:.6}",
+        roots.len(),
+        started.elapsed().as_secs_f64()
+    );
+}

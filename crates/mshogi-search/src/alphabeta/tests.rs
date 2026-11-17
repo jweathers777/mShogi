@@ -433,19 +433,25 @@ fn table_entries_survive_search_requests_until_new_game() {
 
 /// A hand-solved tactical chain: a threatened side has one quiet escape to a
 /// terminal loss for its opponent. A separate quiet leaf has static value 37.
-struct HorizonGame<const Q: usize> {
+struct HorizonGame<const Q: usize, const CHECKS: bool = false> {
     state: u32,
     path: Vec<u32>,
 }
-impl<const Q: usize> SearchPosition for HorizonGame<Q> {
+impl<const Q: usize, const CHECKS: bool> SearchPosition for HorizonGame<Q, CHECKS> {
     type Move = u32;
     const HISTORY_SLOTS: usize = 2;
     const QUIESCENCE_PLIES: usize = Q;
+    const QUIESCENCE_CHECKS: bool = CHECKS;
+    fn generate_quiescence_checks(&self, moves: &mut Vec<u32>) {
+        if self.state == 3 {
+            moves.push(4);
+        }
+    }
     fn hash(&self) -> u64 {
         (0x1820_0000 + u64::from(self.state)) << 32 | 17
     }
     fn in_check(&self) -> bool {
-        self.state == 0
+        self.state == 0 || self.state == 4
     }
     fn generate(&self, stage: Stage, moves: &mut Vec<u32>) {
         if self.state == 0 && stage == Stage::Quiet {
@@ -453,11 +459,11 @@ impl<const Q: usize> SearchPosition for HorizonGame<Q> {
         }
     }
     fn make(&mut self, m: u32) -> bool {
-        if self.state != 0 || m != 1 {
+        if !self.is_pseudo_legal(m) {
             return false;
         }
         self.path.push(self.state);
-        self.state = 1;
+        self.state = m;
         true
     }
     fn unmake(&mut self) {
@@ -507,12 +513,12 @@ impl<const Q: usize> SearchPosition for HorizonGame<Q> {
         self.is_pseudo_legal(bits).then_some(bits)
     }
     fn is_pseudo_legal(&self, m: u32) -> bool {
-        self.state == 0 && m == 1
+        (self.state == 0 && m == 1) || (self.state == 3 && m == 4)
     }
 }
-fn horizon_probe<const Q: usize>(
-    s: &mut Searcher<HorizonGame<Q>>,
-    pos: &mut HorizonGame<Q>,
+fn horizon_probe<const Q: usize, const CHECKS: bool>(
+    s: &mut Searcher<HorizonGame<Q, CHECKS>>,
+    pos: &mut HorizonGame<Q, CHECKS>,
     qdepth: usize,
 ) -> i32 {
     let mut stop = || false;
@@ -578,4 +584,54 @@ fn check_horizon_cache<const Q: usize>() {
 fn bounded_quiescence_rejects_shallow_cache_for_fresh_tactical_work() {
     check_horizon_cache::<4>();
     check_horizon_cache::<8>();
+}
+
+#[test]
+fn first_quiescence_check_finds_quiet_mate_and_distinguishes_cache_depth() {
+    let mut s = Searcher::<HorizonGame<MAX_PLY, true>>::new(1);
+    let mut p = HorizonGame {
+        state: 3,
+        path: vec![],
+    };
+    // Later quiescence has only captures: static 37, cached at depth -1.
+    assert_eq!(horizon_probe(&mut s, &mut p, 1), 37);
+    assert_eq!(s.table.probe(p.hash(), 13).unwrap().depth, -1);
+    // Fresh entry must search the quiet checking move, which mates at once.
+    assert_eq!(horizon_probe(&mut s, &mut p, 0), 999);
+    assert_eq!(p.state, 3);
+    assert!(p.path.is_empty());
+    let mut ordinary = Searcher::<HorizonGame<MAX_PLY>>::new(1);
+    let mut disabled = HorizonGame {
+        state: 3,
+        path: vec![],
+    };
+    assert_eq!(horizon_probe(&mut ordinary, &mut disabled, 0), 37);
+}
+
+#[test]
+fn quiet_quiescence_checks_are_not_material_delta_pruned() {
+    let mut s = Searcher::<HorizonGame<MAX_PLY, true>>::new(1);
+    let mut p = HorizonGame {
+        state: 3,
+        path: vec![],
+    };
+    let mut stop = || false;
+    let mut run = Run {
+        s: &mut s,
+        pos: &mut p,
+        stop: &mut stop,
+        start: Instant::now(),
+        limits: limits(1),
+        nodes: 0,
+        seldepth: 0,
+        abort: false,
+        status: Status::Complete,
+        root_move: None,
+        root_count: 0,
+    };
+    // Stand-pat plus a capture margin is237, below alpha500; a checking move
+    // with no material gain still must find the hand-solved immediate mate.
+    assert_eq!(run.quiesce(13, 0, 500, 1000, false), 999);
+    assert_eq!(p.state, 3);
+    assert!(p.path.is_empty());
 }

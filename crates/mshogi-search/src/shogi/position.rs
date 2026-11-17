@@ -122,11 +122,61 @@ fn in_zone(side: usize, square: usize) -> bool {
     }
 }
 
+// North, west, east, south, then the four diagonals. Indices are monotone
+// along each ray, so the nearest blocker is one bit scan.
+const DIRECTIONS: [(i8, i8); 8] = [
+    (0, 1),
+    (-1, 0),
+    (1, 0),
+    (0, -1),
+    (-1, 1),
+    (1, 1),
+    (-1, -1),
+    (1, -1),
+];
+const DECREASING: [bool; 8] = [true, true, false, false, true, true, false, false];
+
+fn ray(square: usize, direction: usize, occupied: u128) -> u128 {
+    let mask = TABLES.rays[square][direction];
+    let blockers = mask & occupied;
+    if blockers == 0 {
+        return mask;
+    }
+    let nearest = if DECREASING[direction] {
+        127 - blockers.leading_zeros() as usize
+    } else {
+        blockers.trailing_zeros() as usize
+    };
+    mask & !TABLES.rays[nearest][direction]
+}
+
+/// All attackers of a square under the supplied exchange occupancy.
+fn attackers(target: usize, by: usize, occupied: u128, pieces: &[[u128; FACES]; 2]) -> u128 {
+    let mut result = 0;
+    for (face, &sources) in pieces[by].iter().enumerate() {
+        result |= TABLES.leapers_to[by][face][target] & sources;
+    }
+    let rooks = pieces[by][1] | pieces[by][8];
+    let bishops = pieces[by][2] | pieces[by][9];
+    for direction in 0..8 {
+        let mut sliders = if direction < 4 { rooks } else { bishops };
+        if direction == if by == 0 { 3 } else { 0 } {
+            sliders |= pieces[by][6];
+        }
+        // Skip the bit scan if no compatible slider is on this ray.
+        if sliders & TABLES.rays[target][direction] != 0 {
+            result |= ray(target, direction, occupied) & sliders;
+        }
+    }
+    result
+}
+
 struct Tables {
     /// Leap targets of [side][face][square].
     leaps: [[[u128; SQUARES]; FACES]; 2],
     /// Squares from which a piece of [side][face] leaps to [square].
     leapers_to: [[[u128; SQUARES]; FACES]; 2],
+    rays: [[u128; 8]; SQUARES],
     files: [u128; 9],
     piece: [[[u64; SQUARES]; FACES]; 2],
     hand: [[[u64; 19]; HAND_FACES]; 2],
@@ -137,6 +187,7 @@ static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
     let mut t = Box::new(Tables {
         leaps: [[[0; SQUARES]; FACES]; 2],
         leapers_to: [[[0; SQUARES]; FACES]; 2],
+        rays: [[0; 8]; SQUARES],
         files: [0; 9],
         piece: [[[0; SQUARES]; FACES]; 2],
         hand: [[[0; 19]; HAND_FACES]; 2],
@@ -155,6 +206,13 @@ static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
         }
     }
     for square in 0..SQUARES {
+        for (direction, &(right, forward)) in DIRECTIONS.iter().enumerate() {
+            let mut at = square;
+            while let Some(next) = offset(at, 0, right, forward) {
+                t.rays[square][direction] |= 1 << next;
+                at = next;
+            }
+        }
         t.files[square % 9] |= 1 << square;
     }
     // Fixed-seed SplitMix64: the keys are the same in each process.
@@ -234,6 +292,8 @@ pub struct ShogiPosition {
     hash: u64,
     /// Board and hand material of each side.
     material: [i32; 2],
+    /// Pawn advancement and hand-count placement, maintained with material.
+    placement_base: [i32; 2],
     /// True if the side to move is in check.
     check: bool,
     /// Plies since the latest null move, or all known plies.
@@ -267,6 +327,7 @@ impl ShogiPosition {
             side: side_index(position.side_to_move()),
             hash: 0,
             material: [0; 2],
+            placement_base: [0; 2],
             check: false,
             reversible: 0,
             completed: position.completed_actions(),
@@ -441,6 +502,7 @@ impl ShogiPosition {
         self.occupied[side] |= 1 << square;
         self.hash ^= TABLES.piece[side][face][square];
         self.material[side] += VALUE[face];
+        self.placement_base[side] += pawn_placement(side, face, square);
     }
     fn take(&mut self, side: usize, face: usize, square: usize) {
         self.board[square] = 0;
@@ -448,18 +510,21 @@ impl ShogiPosition {
         self.occupied[side] &= !(1 << square);
         self.hash ^= TABLES.piece[side][face][square];
         self.material[side] -= VALUE[face];
+        self.placement_base[side] -= pawn_placement(side, face, square);
     }
     fn add_hand(&mut self, side: usize, index: usize) {
         let count = usize::from(self.hands[side][index]);
         self.hash ^= TABLES.hand[side][index][count] ^ TABLES.hand[side][index][count + 1];
         self.hands[side][index] += 1;
         self.material[side] += VALUE[HAND_FACE[index]];
+        self.placement_base[side] += 10;
     }
     fn remove_hand(&mut self, side: usize, index: usize) {
         let count = usize::from(self.hands[side][index]);
         self.hash ^= TABLES.hand[side][index][count] ^ TABLES.hand[side][index][count - 1];
         self.hands[side][index] -= 1;
         self.material[side] -= VALUE[HAND_FACE[index]];
+        self.placement_base[side] -= 10;
     }
     fn moved_face(&self, face: usize, m: Move) -> usize {
         if m.promotes() {
@@ -483,42 +548,22 @@ impl ShogiPosition {
     }
     /// Ray targets of a piece: empty squares and the first occupied square.
     fn ray_targets(&self, side: usize, face: usize, from: usize) -> u128 {
-        let all = self.occupied[0] | self.occupied[1];
-        let mut targets = 0u128;
-        for &(right, forward, max) in RAYS[face] {
-            let mut at = from;
-            for _ in 0..max {
-                let Some(next) = offset(at, side, right, forward) else {
-                    break;
-                };
-                targets |= 1 << next;
-                if all & (1 << next) != 0 {
-                    break;
-                }
-                at = next;
-            }
+        let occupied = self.occupied[0] | self.occupied[1];
+        match face {
+            1 | 8 => (0..4).fold(0, |mask, d| mask | ray(from, d, occupied)),
+            2 | 9 => (4..8).fold(0, |mask, d| mask | ray(from, d, occupied)),
+            6 => ray(from, if side == 0 { 0 } else { 3 }, occupied),
+            _ => 0,
         }
-        targets
     }
     /// True if a piece of `by` attacks the square.
     fn attacked(&self, target: usize, by: usize) -> bool {
-        let t = &TABLES;
-        for face in 0..FACES {
-            if t.leapers_to[by][face][target] & self.pieces[by][face] != 0 {
-                return true;
-            }
-        }
-        for face in [1, 2, 6, 8, 9] {
-            let mut sliders = self.pieces[by][face];
-            while sliders != 0 {
-                let from = sliders.trailing_zeros() as usize;
-                sliders &= sliders - 1;
-                if self.ray_targets(by, face, from) & (1 << target) != 0 {
-                    return true;
-                }
-            }
-        }
-        false
+        attackers(
+            target,
+            by,
+            self.occupied[0] | self.occupied[1],
+            &self.pieces,
+        ) != 0
     }
     #[allow(clippy::needless_range_loop)]
     fn generate_all(&self, stage: Stage, moves: &mut Vec<Move>) {
@@ -643,23 +688,126 @@ impl ShogiPosition {
     fn ply(&self) -> usize {
         self.keys.len() - 1 - self.root
     }
+    /// Conventional least-valuable-attacker swap evaluation. Every capture
+    /// transfers the victim's base piece to hand as well as removing its board
+    /// value. Recompute attackers after each removal to reveal slider x-rays.
+    /// This is a local exchange heuristic, not a full tactical search.
+    fn exchange_value(&self, m: Move) -> i32 {
+        let target = m.to();
+        let side = self.side;
+        let mut pieces = self.pieces;
+        let mut occupied = self.occupied[0] | self.occupied[1];
+        let mut gains = [0i32; SQUARES];
+        let face = if m.is_drop() {
+            HAND_FACE[m.from() - DROP]
+        } else {
+            decode_piece(self.board[m.from()]).1
+        };
+        let mut on_target = self.moved_face(face, m);
+        gains[0] = VALUE[on_target] - VALUE[face];
+        if self.board[target] != 0 {
+            let (owner, victim) = decode_piece(self.board[target]);
+            pieces[owner][victim] &= !(1 << target);
+            gains[0] += VALUE[victim] + VALUE[base(victim)];
+        }
+        if !m.is_drop() {
+            pieces[side][face] &= !(1 << m.from());
+            occupied &= !(1 << m.from());
+        }
+        pieces[side][on_target] |= 1 << target;
+        occupied |= 1 << target;
+        let king = pieces[side][KING].trailing_zeros() as usize;
+        if attackers(king, side ^ 1, occupied, &pieces) != 0 {
+            return -MATE_SCORE;
+        }
+        let mut turn = side ^ 1;
+        let mut depth = 0;
+        // A legal king recapture ends an exchange: kings cannot be captured.
+        while on_target != KING && depth + 1 < gains.len() {
+            let candidates = attackers(target, turn, occupied, &pieces);
+            let mut selected = None;
+            let mut least_cost = i32::MAX;
+            for attacker_face in 0..FACES {
+                let cost = if attacker_face == KING {
+                    MATE_SCORE
+                } else {
+                    VALUE[attacker_face] + VALUE[base(attacker_face)]
+                };
+                if cost >= least_cost {
+                    continue;
+                }
+                let mut sources = candidates & pieces[turn][attacker_face];
+                while sources != 0 {
+                    let from = sources.trailing_zeros() as usize;
+                    sources &= sources - 1;
+                    // Promotion gains material for free on this target. The
+                    // promoted piece has the same base hand value if captured.
+                    let promotes = attacker_face == base(attacker_face)
+                        && attacker_face != KING
+                        && attacker_face != 3
+                        && (in_zone(turn, from) || in_zone(turn, target));
+                    let result = self.moved_face(
+                        attacker_face,
+                        if promotes {
+                            Move::new(from, target).promoted()
+                        } else {
+                            Move::new(from, target)
+                        },
+                    );
+                    pieces[turn ^ 1][on_target] &= !(1 << target);
+                    pieces[turn][attacker_face] &= !(1 << from);
+                    pieces[turn][result] |= 1 << target;
+                    let after_occupied = occupied & !(1 << from);
+                    let king = pieces[turn][KING].trailing_zeros() as usize;
+                    let legal = attackers(king, turn ^ 1, after_occupied, &pieces) == 0;
+                    pieces[turn][result] &= !(1 << target);
+                    pieces[turn][attacker_face] |= 1 << from;
+                    pieces[turn ^ 1][on_target] |= 1 << target;
+                    if legal {
+                        selected = Some((from, attacker_face, result));
+                        least_cost = cost;
+                        break;
+                    }
+                }
+            }
+            let Some((from, attacker_face, result)) = selected else {
+                break;
+            };
+            depth += 1;
+            gains[depth] = VALUE[on_target] + VALUE[base(on_target)] + VALUE[result]
+                - VALUE[attacker_face]
+                - gains[depth - 1];
+            pieces[turn ^ 1][on_target] &= !(1 << target);
+            pieces[turn][attacker_face] &= !(1 << from);
+            pieces[turn][result] |= 1 << target;
+            occupied &= !(1 << from);
+            on_target = result;
+            turn ^= 1;
+        }
+        while depth > 0 {
+            gains[depth - 1] = -(-gains[depth - 1]).max(gains[depth]);
+            depth -= 1;
+        }
+        gains[0]
+    }
+
     /// Static evaluation terms other than material, for one side.
     fn placement(&self, side: usize) -> i32 {
-        let mut score = 0;
-        // Pawns gain value as they advance; they promote in the zone.
-        let mut pawns = self.pieces[side][PAWN];
-        while pawns != 0 {
-            let square = pawns.trailing_zeros() as usize;
-            pawns &= pawns - 1;
-            let row = square / 9;
-            score += 4 * if side == 0 { 8 - row } else { row } as i32;
-        }
-        // Own pieces next to the King protect it.
         let king = self.king(side);
-        score += 8 * (TABLES.leaps[0][KING][king] & self.occupied[side]).count_ones() as i32;
-        // A piece in hand can go to any empty square.
-        let in_hand: i32 = self.hands[side].iter().map(|&n| i32::from(n)).sum();
-        score + 10 * in_hand
+        self.placement_base[side]
+            + 8 * (TABLES.leaps[0][KING][king] & self.occupied[side]).count_ones() as i32
+    }
+}
+
+fn pawn_placement(side: usize, face: usize, square: usize) -> i32 {
+    if face == PAWN {
+        4 * if side == 0 {
+            8 - square / 9
+        } else {
+            square / 9
+        } as i32
+    } else {
+        0
     }
 }
 
@@ -670,6 +818,55 @@ fn square(index: usize) -> Square {
 impl SearchPosition for ShogiPosition {
     type Move = Move;
     const HISTORY_SLOTS: usize = 2 * FACES * SQUARES;
+    const QUIESCENCE_CHECKS: bool = true;
+
+    fn generate_quiescence_checks(&self, moves: &mut Vec<Move>) {
+        let side = self.side;
+        let king = self.king(side ^ 1);
+        let occupied = self.occupied[0] | self.occupied[1];
+        let empty = ALL & !occupied;
+        // A drop cannot discover a check. Generate only direct checking
+        // squares, then leave king safety and pawn-drop mate to make().
+        for (index, &face) in HAND_FACE.iter().enumerate() {
+            if self.hands[side][index] == 0 {
+                continue;
+            }
+            let mut targets =
+                TABLES.leapers_to[side][face][king] | self.ray_targets(side ^ 1, face, king);
+            targets &= empty & self.drop_squares(side, face);
+            while targets != 0 {
+                let to = targets.trailing_zeros() as usize;
+                targets &= targets - 1;
+                moves.push(Move::new(DROP + index, to));
+            }
+        }
+        let mut pieces = self.pieces;
+        for face in 0..FACES {
+            let mut sources = self.pieces[side][face];
+            while sources != 0 {
+                let from = sources.trailing_zeros() as usize;
+                sources &= sources - 1;
+                let mut targets =
+                    (TABLES.leaps[side][face][from] | self.ray_targets(side, face, from)) & empty;
+                while targets != 0 {
+                    let to = targets.trailing_zeros() as usize;
+                    targets &= targets - 1;
+                    if Self::dead_rank(side, face, to) {
+                        continue;
+                    }
+                    // Unpromoted quiet moves only: promotions already occur
+                    // in the tactical stage, including quiet promotions.
+                    pieces[side][face] ^= (1 << from) | (1 << to);
+                    let after = (occupied & !(1 << from)) | (1 << to);
+                    let checking = attackers(king, side, after, &pieces) != 0;
+                    pieces[side][face] ^= (1 << from) | (1 << to);
+                    if checking {
+                        moves.push(Move::new(from, to));
+                    }
+                }
+            }
+        }
+    }
 
     fn hash(&self) -> u64 {
         self.hash
@@ -883,27 +1080,9 @@ impl SearchPosition for ShogiPosition {
         gain.max(0)
     }
     fn exchange_at_least(&self, m: Move, threshold: i32) -> bool {
-        // One-step exchange estimate. A capture of a piece that is worth at
-        // least the capturing piece is good. If not, the capturing piece must
-        // not be open to recapture.
-        if m.is_drop() {
-            return threshold <= 0;
-        }
-        let (side, face) = decode_piece(self.board[m.from()]);
-        let gain = self.tactical_gain(m);
-        if gain < threshold {
-            return false;
-        }
-        let mover = VALUE[self.moved_face(face, m)];
-        let victim = match self.board[m.to()] {
-            0 => 0,
-            code => VALUE[decode_piece(code).1],
-        };
-        if victim >= mover {
-            return true;
-        }
-        !self.attacked(m.to(), side ^ 1) || gain - mover - VALUE[base(face)] >= threshold
+        self.exchange_value(m) >= threshold
     }
+
     fn history_slot(&self, m: Move) -> usize {
         let face = if m.is_drop() {
             HAND_FACE[m.from() - DROP]

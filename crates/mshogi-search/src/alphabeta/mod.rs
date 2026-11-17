@@ -51,6 +51,13 @@ pub trait SearchPosition {
     /// only the existing absolute-ply bound. At a finite horizon, a threatened
     /// leaf has the same uncertain zero estimate as the absolute-ply horizon.
     const QUIESCENCE_PLIES: usize = MAX_PLY;
+    /// Search non-tactical checking moves at the first quiescence ply only.
+    /// Opt-in keeps the existing policy unchanged for other games.
+    const QUIESCENCE_CHECKS: bool = false;
+
+    /// Append only non-tactical pseudo-legal checking moves. Their legality
+    /// still belongs to `make`; captures/promotions must not be duplicated.
+    fn generate_quiescence_checks(&self, _moves: &mut Vec<Self::Move>) {}
 
     /// Hash of the board state: equal for positions that have the same pieces,
     /// side to move and move rights, independent of the path.
@@ -197,6 +204,7 @@ struct Pick<M> {
     killer: usize,
     in_check: bool,
     quiescence: bool,
+    checks: bool,
 }
 
 const NO_SLOT: usize = usize::MAX;
@@ -507,7 +515,7 @@ impl<P: SearchPosition> Run<'_, P> {
                 2 => {
                     let buffers = &mut self.s.buffers[ply];
                     if pick.index >= buffers.moves.len() {
-                        pick.stage = if pick.quiescence && !pick.in_check {
+                        pick.stage = if pick.quiescence && !pick.in_check && !pick.checks {
                             7
                         } else if pick.quiescence {
                             4
@@ -561,7 +569,11 @@ impl<P: SearchPosition> Run<'_, P> {
                     let buffers = &mut self.s.buffers[ply];
                     buffers.moves.clear();
                     buffers.scores.clear();
-                    self.pos.generate_search(Stage::Quiet, &mut buffers.moves);
+                    if pick.quiescence && !pick.in_check {
+                        self.pos.generate_quiescence_checks(&mut buffers.moves);
+                    } else {
+                        self.pos.generate_search(Stage::Quiet, &mut buffers.moves);
+                    }
                     for &m in &buffers.moves {
                         let slot = self.pos.history_slot(m);
                         let mut score = self.s.history[slot];
@@ -812,6 +824,7 @@ impl<P: SearchPosition> Run<'_, P> {
             killer: 0,
             in_check,
             quiescence: false,
+            checks: false,
         };
         let original_alpha = alpha;
         let mut best = if claimable { 0 } else { -INF };
@@ -994,6 +1007,13 @@ impl<P: SearchPosition> Run<'_, P> {
         } else {
             0
         };
+        // A capture-only cached leaf must not cut off a fresh checking stage.
+        let checks = P::QUIESCENCE_CHECKS && qdepth == 0;
+        let table_depth = if P::QUIESCENCE_CHECKS && qdepth > 0 {
+            table_depth.min(-1)
+        } else {
+            table_depth
+        };
         let claimable = self.pos.draw_claimable();
         let hash = self.pos.hash();
         let hit = self.s.table.probe(hash, ply as i32);
@@ -1044,11 +1064,14 @@ impl<P: SearchPosition> Run<'_, P> {
             killer: 0,
             in_check,
             quiescence: true,
+            checks,
         };
         let mut best_move = None;
         let mut count = 0usize;
         while let Some(m) = self.next_move(ply, &mut pick) {
-            if let Some(eval) = eval {
+            if let Some(eval) = eval
+                && (!checks || self.pos.is_tactical(m))
+            {
                 let reach = eval + self.pos.tactical_gain(m) + 200;
                 if reach <= alpha {
                     best = best.max(reach);

@@ -8,11 +8,11 @@ use mshogi_core::{
 use mshogi_search::shogi as search;
 use serde::{Deserialize, Serialize};
 
-/// Current finite Shogi engine-turn settings.
+/// Time-primary Shogi play; depth and nodes remain finite safety ceilings.
 pub const SHOGI_PLAY_LIMITS: crate::WorkLimits = crate::WorkLimits {
-    time_ms: None,
-    depth: search::DEFAULT_LIMITS.depth,
-    nodes: search::DEFAULT_LIMITS.nodes,
+    time_ms: Some(1_000),
+    depth: search::MAX_DEPTH,
+    nodes: search::MAX_NODES,
 };
 
 /// Native shogi complete continuation choice.
@@ -402,3 +402,34 @@ mod identity_tests {
 pub const SHOGI_MAX_DEPTH: u16 = search::MAX_DEPTH;
 /// Maximum supported Shogi node budget for native consumers.
 pub const SHOGI_MAX_NODES: u64 = search::MAX_NODES;
+
+/// Shogi front-end access to the same timed history-prefix policy as protocol4.
+/// Fixed-work searches use fresh state and leave the retained timed state alone.
+#[derive(Default)]
+pub struct ShogiSearchSession {
+    slot: crate::server::Slot<search::Engine>,
+}
+impl ShogiSearchSession {
+    /// Search one native history with optional elapsed-time control.
+    pub fn search(
+        &mut self,
+        game: &mshogi_core::shogi::Game,
+        limits: search::Limits,
+        time: Option<mshogi_search::alphabeta::timing::TimeBudget>,
+        stop: impl FnMut() -> bool,
+    ) -> Result<search::SearchResult, search::SearchError> {
+        use mshogi_search::alphabeta::timing::RequestTime;
+        let timing = RequestTime::new(time);
+        let record = mshogi_core::shogi::GameRecord::from_game(game);
+        let mut engine = self
+            .slot
+            .acquire_record(
+                &CanonicalRecord::shogi(record.clone()),
+                time.is_some(),
+                |n| record.prefix(n).ok().map(CanonicalRecord::shogi),
+                || Ok::<_, std::convert::Infallible>(search::new_engine()),
+            )
+            .expect("infallible engine allocation");
+        search::search_with_state(game, limits, timing.remaining(), &mut engine, stop)
+    }
+}

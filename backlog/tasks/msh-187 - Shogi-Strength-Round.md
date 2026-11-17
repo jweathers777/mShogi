@@ -1,9 +1,11 @@
 ---
 id: MSH-187
 title: Shogi Strength Round
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-11-16T20:51:00Z'
+updated_date: '2026-11-17T06:40:00Z'
 labels:
   - handle:shogi-strength-round
 milestone: m-5
@@ -60,3 +62,21 @@ Each retained set passes Shogi perft and differential tests against the native r
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Freeze task-start main1d19a544 and profile the Shogi full path on ordinary and hand-heavy roots; reuse MSH-186 baseline with a fresh identity-bound probe. 2. Implement one coherent classical set: faster attack/ray and evaluation updates, full exchange estimates, a bounded first-quiescence checking stage through a default-preserving shared-core hook; validate exact move/state restoration and tactical behavior. 3. Independently implement desktop/default-USI time budgets through the existing shared session policy; retain explicit fixed-work requests and validate affected native/desktop/USI consumers. 4. Before games, compare fixed-depth/time/development tactics and preserve Chess output through default-preserving hooks. Retain the search set only after native correctness and a frozen-predecessor sequential clock test; use cloud for a maximum that would exceed one local hour, reusing existing Batch infrastructure. 5. Record decisions and measured limits; do not add evaluation tuning without a useful independent corpus and a bounded subsequent-set plan. Review meaningful changes independently, update shared-core documentation and verification, integrate main and push. Scope already permits a coherent set with later evaluation work separately recorded.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner: Codex chat01a1e634-7fc9-72c2-b4b4-07022a7df3ec. Primary checkout was clean main1d19a544, owned by this chat after MSH-186 (Shogi Strength Harness), with no active Backlog owners. Feature branch codex/shogi-strength-round; other worktrees untouched. Installed Backlog1.55.3 matches baseline. Frozen task-start predecessor1d19a544cc3e1ca3e92a0e8f53268758967329bf. Initial inspection: existing fast u128 board/incremental material/hash,16MiB retained table, per-node scan/ray generation, no quiescence checkstage, one-step exchange estimate. Baseline MSH-186 ordinary1000ms depths14/16/11/11/10 and12/12shortmate cases (sixgeometries, ceiling-limited). Profile full path before first coherent searchset; native rules remain authoritative. Level1 native search; targetedLevel2 desktop/USI default time integration.
+
+First-set hypothesis: reverse target attack lookup and incremental placement remove repeated per-node scans; exchange-aware ordering and bounded quiet checking moves improve drop tactics without multiplying every quiet move. Benefit target: materially faster/deeper ordinary timed search, no shortmate regression, and H1=15Elo against frozen1d19a544. Comparison: same compiler/build/CPU/5+.2 clock and sixpaired opening families, native replay, SPRT H0=0/H1=15 alpha=beta=.05 min30 max600pairs, stop on failures and sequential decision; no external engines. Focused profiling/baselines <=10min local. Cloud execution plan/cost ceiling must be fixed before launch; reuse established project resources, one machine type, no new infrastructure. Checkpoint after correctness and timed probes, then after bounded games; weak benefit requires direction change before another fix round. Tuned evaluation remains a later coherent set only if justified; do not treat tiny generation demo as training-ready.
+
+Cloud resource checkpoint before launch: reuse existing mshogi project/us-central1 Batch, configured bucket/registry/worker identity,8 c3-standard-4 machines maximum, no retries. First-submit through cleanup <=60min, reserve300s cleanup, <=8VMh and US$2 compute at verified rate0.201608/VMh (8VMh=1.612864). Max600pairs is statistical ceiling, not guaranteed completion under resources. Start8pair pilot then24pair batches; immutable wholepairs, globalfailurestop, evaluateSPRT beforefurtherbatch, retainalllaunchedpairs. Same5+.2 control/candidatebaselineCPUtype. No externalratinggames/newinfrastructure. Infrastructure adaptation reviewed beforebillablelaunch. Nativequiet-check coreunitchecks12passed including first-q-entry cache discrimination and no material-delta pruning ofquietmate.
+
+First coherent source checkpoint: precomputed rays/reverseattack lookup, incremental existing placement, full swapSEE with board+hand values/promotion/pins, firstquiescence quietchecking stage via default-offsharedhook, desktop/defaultUSI1s using existingretainedsessionpolicy. Positionfixedwork profile identical1448000childvisits/checksum across9roots: frozen0.366378/0.352444s, candidate0.215712/0.215788s (~1.67x throughput). This isolatespositionwork, notstrength. 135searchlibrary tests pass,5ignored; focusedShogi perft/randomnative/state/eval/quietcheck/SEE tests pass. Core independently accepted after removing extra optoutclassification cost. Time focusedUSI12/parser2/desktop2/sharedtiming3pass2ignored. Next frozen candidatebuild and same-root time/depth/tactics plus exactChessfixeddepthcomparison; no cloudlaunch until checkpoint evidence/review.
+<!-- SECTION:NOTES:END -->

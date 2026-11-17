@@ -27,7 +27,7 @@ pub(crate) struct Session {
     tenjiku: Slot<mshogi_search::tenjiku::Engine>,
 }
 /// One lifecycle rule for every game. Fixed-limit requests do not touch this slot.
-struct Slot<T> {
+pub(crate) struct Slot<T> {
     kept: Option<(mshogi_core::native::CanonicalRecord, T)>,
 }
 impl<T> Default for Slot<T> {
@@ -35,7 +35,7 @@ impl<T> Default for Slot<T> {
         Self { kept: None }
     }
 }
-trait Reset {
+pub(crate) trait Reset {
     fn reset(&mut self);
 }
 impl Reset for SearchCoordinator {
@@ -55,23 +55,37 @@ impl<T: Reset> Slot<T> {
         prefix: impl FnOnce(usize) -> Option<mshogi_core::native::CanonicalRecord>,
         create: impl FnOnce() -> Result<T, E>,
     ) -> Result<EngineState<'_, T>, E> {
-        if context.limits.time_ms.is_none() {
+        self.acquire_record(
+            &context.game,
+            context.limits.time_ms.is_some(),
+            prefix,
+            create,
+        )
+    }
+    pub(crate) fn acquire_record<E>(
+        &mut self,
+        record: &mshogi_core::native::CanonicalRecord,
+        timed: bool,
+        prefix: impl FnOnce(usize) -> Option<mshogi_core::native::CanonicalRecord>,
+        create: impl FnOnce() -> Result<T, E>,
+    ) -> Result<EngineState<'_, T>, E> {
+        if !timed {
             return create().map(EngineState::Fresh);
         }
         if let Some((last, state)) = &mut self.kept {
             if prefix(last.event_count()).as_ref() != Some(last) {
                 state.reset();
             }
-            *last = context.game.clone();
+            *last = record.clone();
         } else {
-            self.kept = Some((context.game.clone(), create()?));
+            self.kept = Some((record.clone(), create()?));
         }
         Ok(EngineState::Kept(
             &mut self.kept.as_mut().expect("kept engine").1,
         ))
     }
 }
-enum EngineState<'a, T> {
+pub(crate) enum EngineState<'a, T> {
     Fresh(T),
     Kept(&'a mut T),
 }

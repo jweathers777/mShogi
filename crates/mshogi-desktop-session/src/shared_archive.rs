@@ -628,6 +628,12 @@ impl ShogiSession {
             && response.context.limits
                 != (WorkLimits {
                     time_ms: None,
+                    depth: 64,
+                    nodes: 300_000,
+                })
+            && response.context.limits
+                != (WorkLimits {
+                    time_ms: None,
                     depth: 2,
                     nodes: 5000,
                 })

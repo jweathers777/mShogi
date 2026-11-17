@@ -1,11 +1,11 @@
 ---
 id: MSH-186
 title: Shogi Strength Harness
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:51:00Z'
-updated_date: '2026-11-17T02:11:00Z'
+updated_date: '2026-11-17T02:21:00Z'
 labels:
   - handle:shogi-strength-harness
 milestone: m-5
@@ -43,24 +43,24 @@ Give Shogi the same development measurements that Chess has, so that MSH-187 (Sh
 - Opponent pool proposal (no rating games in this task): research USI engines that can play the accepted profile `mshogi.shogi.csa36.v1` (fourth-occurrence repetition, perpetual-check loss, entering-king declaration). Candidates include Fairy-Stockfish and YaneuraOu (also at reduced settings, for example classical evaluation or node limits) and other open engines. For each: license, version, source, profile compatibility, settings, approximate strength and fit with the existing USI adapter (`experiment-external usi`). Present a short recommendation with a bounded baseline protocol and budget for John's approval. External engines stay measurement tools only, never rules oracles or build/CI dependencies.
 
 ## Completion
-Tools, data, baseline numbers and the opponent proposal are documented in docs/m5 (link from docs/m5/strength-harness.md and docs/m5/strength-roadmap.md). Independent review covers the tools and the data sources. Verification level 1 (tool and test changes only; no production rule or search change).
+Tools, data, baseline numbers and the opponent proposal are documented in docs/m5 (link from docs/m5/strength-harness.md and docs/m5/strength-roadmap.md). Independent review covers the tools and the data sources. Targeted verification level 2 for native clock execution and POSIX process supervision; no production rule or search change. Verify the actual macOS process path and record deferred Linux/Windows scope without claiming unperformed platform checks.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Shogi benchmark, tactical suite and opening set exist in tools/strength/data with recorded sources and licenses, and the strength CLI runs each one for Shogi.
-- [ ] #2 A Shogi clock-mode predecessor game test with the sequential stopping rule runs end to end; native rules decide and replay every scored game.
-- [ ] #3 A reproducible procedure makes labeled Shogi positions for Texel tuning, with documented size and generation conditions.
-- [ ] #4 Baseline results of current main for benchmark, tactical suite and depth at a stated time control are recorded with revision and environment.
-- [ ] #5 A written opponent-pool proposal (engines, versions, licenses, csa36 compatibility, settings, protocol and budget) is presented to John; no external rating games run in this task.
-- [ ] #6 Independent review accepts the tools and data sources.
+- [x] #1 Shogi benchmark, tactical suite and opening set exist in tools/strength/data with recorded sources and licenses, and the strength CLI runs each one for Shogi.
+- [x] #2 A Shogi clock-mode predecessor game test with the sequential stopping rule runs end to end; native rules decide and replay every scored game.
+- [x] #3 A reproducible procedure makes labeled Shogi positions for Texel tuning, with documented size and generation conditions.
+- [x] #4 Baseline results of current main for benchmark, tactical suite and depth at a stated time control are recorded with revision and environment.
+- [x] #5 A written opponent-pool proposal (engines, versions, licenses, csa36 compatibility, settings, protocol and budget) is presented to John; no external rating games run in this task.
+- [x] #6 Independent review accepts the tools and data sources.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -82,4 +82,8 @@ Coherent implementation checkpoint: shared native experiment Fischer clocks and 
 Final frozen-engine probes at clean tooling e80f00a8 passed: native data9/12/6; fixed-depth three repeats1594093nodes each, median1.758934875s; short tactics12/12 across6geometries; ordinary opening timed depths14,16,11,11,10. Synthetic mate root depth64 is not ordinary depth; single timed repeat proves no determinism. Runner clippy all-targets warnings denied and workspace all-targets check pass. Bounded clock self-comparison started in target/msh186/clock-selftest, session21870, same frozen engine both sides,5+.05,4workers,max32pairs/900s; no external games or gain claim.
 
 Clock checkpoint: first batch stopped after4pairs/45.383s as required:4native conclusions,3incomplete:Stopped at27-29ms request budgets before depth1,1artifact_limit at16MiB shared report cap. All8reports replay and cleanup is empty; only1completepair enters SPRT, no decision. Preserve run unchanged. Decision: increase bounded report capacity for full320ply histories and rerun one6pair catalog demonstration at5+.2s,4workers,max900s (same frozen engine). This is an execution check, not a significance campaign; no search/rules changes. Reviewer checks actual ledger and cap correction.
+
+Final measurement: follow-up at5+.2 completed all6pairs/12native conclusions in236.400s,577.919summed pair wall-seconds; no cleanup/unscored failures. Same binary nominal5/0/7, no strength inference or SPRTdecision. All1973ledgers independently checked; one34.6MB report exceeds old32MiB cap. Native export497positions,488unique afterdedup; all6opening families hashtrain, explicit demonstration training_readyfalse with emptyvalidation/heldout. Strict split refuses beforewriting. Review corrected verification to targetedLevel2 for processsupervision: actualmacOS POSIX childcleanup/clock checks; no Windows orchestration supportclaim, Linuxruntime deferred. No cloud/Docker work for this task. Durable record docs/m5/evidence/msh186/verification.md; rawgeneratedcorpus ignored, native compressed inputs committed.
+
+Independent tools/export/partition/proposal review accepted at c1b8b479; clock/data reviewers accepted final source and receipts. All six acceptance criteria have evidence in docs/m5/evidence/msh186/verification.md. Corpus is explicitly generation-only, not fit-ready; MSH-187 (Shogi Strength Round) needs independent families before tuning. Exact native source tests and unchanged-source reuse recorded. Ready for normal integration into main; no further study authorized.
 <!-- SECTION:NOTES:END -->

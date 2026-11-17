@@ -117,10 +117,14 @@ fn capture_frozen_fixed_baseline() {
 
 #[test]
 fn fixed_search_matches_frozen_predecessor() {
-    let expected: Vec<Value> = serde_json::from_str(include_str!(
+    let mut expected: Vec<Value> = serde_json::from_str(include_str!(
         "../../../docs/m5/evidence/msh179/fixed-baseline.json"
     ))
     .unwrap();
+    // MSH-190 (Shogi Selectivity Round) adds the root mate search to Shogi:
+    // one more visit, same move and score. Other games stay identical.
+    assert_eq!(expected[1]["nodes"], 121);
+    expected[1]["nodes"] = 122.into();
     let requests: Vec<_> = roots()
         .iter()
         .enumerate()

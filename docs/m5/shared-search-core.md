@@ -27,7 +27,8 @@ says nothing about other opponents.
 
 | Module (`crates/mshogi-search/src`) | Content | Game-specific |
 |---|---|---|
-| `alphabeta/mod.rs` | `SearchPosition` trait, `Searcher`: iterative deepening, aspiration, principal-variation alpha-beta, quiescence, null move, late-move reductions, check extension, shallow futility, move ordering, limits | No |
+| `alphabeta/mod.rs` | `SearchPosition` trait, `Searcher`: iterative deepening, aspiration, principal-variation alpha-beta, quiescence, null move, late-move reductions, check extension, shallow futility, move ordering, limits; margins scaled by the game's `MARGIN_UNIT`; optional first-ply quiescence check stage and root mate search | No |
+| `alphabeta/mate.rs` | Mate search by continuous checks: df-pn over game-supplied checks and evasions, bucketed proof table, acyclic proof lines | No |
 | `alphabeta/table.rs` | Transposition table: 16-byte entries, buckets of four, size in megabytes, generation aging | No |
 | `chess_bitboard/` | Chess search position: bitboards, magic slider attacks, make/unmake in place, incremental hash, material, placement and phase, staged pseudo-legal generation, static exchange evaluation, repetition and fifty-move detection on the path | Chess |
 | `chess_eval.rs` | Classical tapered evaluation on the bitboard position | Chess |
@@ -239,10 +240,17 @@ Private analysis uses these approximations:
   which takes priority. Null moves do not advance this count.
 - Entering-king declarations are checked only at the root, not inside the tree.
 - Quiescence includes captures and promotions; in check it searches all evasions.
-  The first MSH-187 (Shogi Strength Round) candidate added quiet checks and a
-  full exchange estimate. That set failed its game-test checkpoint and was
-  rejected. The revised candidate restores the earlier tactical search policy.
-- The exchange test is a one-step estimate. Evaluation combines unchanged
+  Since MSH-190 (Shogi Selectivity Round) the first quiescence ply also tries
+  at most eight quiet checks that do not lose the moving piece; the stage does
+  not recur. The rejected MSH-187 candidate had an unbounded version.
+- The exchange test is a full swap-list SEE with board and hand values
+  (MSH-190). Margins use `MARGIN_UNIT = 200`. Quiet ordering adds bonuses for
+  checks and drops near the enemy king and a penalty for declining a Pawn,
+  Bishop or Rook promotion. In check, only interposing drops are generated.
+- A root df-pn mate search uses at most 1/8 of the budget; the alpha-beta
+  result is preferred when its mate is no longer. Mate probes inside the tree
+  were measured and rejected. See [Shogi selectivity round](shogi-selectivity-round.md).
+- Evaluation combines unchanged
   material values with Pawn advance, adjacent king cover, hand flexibility
   and tempo. Pawn advance and hand flexibility are incremental; no weights
   were tuned. Precomputed ray masks and reverse attack lookup replace
@@ -610,4 +618,10 @@ of these games moves, not in a copy for each game.
 - All six games support time budgets and retained state through the internal
   protocol. Desktop choices remain in MSH-140 (Player Thinking Time); existing
   defaults retain their fixed node limits outside Chess.
+- MSH-190 (Shogi Selectivity Round) makes the margins game-scaled
+  (`MARGIN_UNIT`, 100 for Chess, Tori, Xiangqi, Chu and Tenjiku, so their
+  search is unchanged) and adds two opt-in core features: a bounded quiescence
+  check stage (`QUIESCENCE_CHECKS`, `generate_checks`) and a root mate search
+  (`MATE_SEARCH`). Only Shogi enables them so far; another game enables them
+  after its own game test. See [Shogi selectivity round](shogi-selectivity-round.md).
 - The search is single-threaded.

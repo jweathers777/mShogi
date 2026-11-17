@@ -29,11 +29,22 @@ from tools.experiments.core import decode, digest, encode, file_hash
 from tools.strength import anchor_cloud, native_match, stats
 from tools.strength.anchor_worker import cloud_environment, put_new, require
 
-PREFIX = 'msh190'
+# Task prefixes that use this comparison policy (MSH-190, MSH-188).
+PREFIXES = ('msh190', 'msh188')
+PREFIX = PREFIXES[0]
 # Campaign window and compute cap of one comparison (all batches together).
 POLICY = anchor_cloud.CampaignPolicy(PREFIX, 2 * 3600, 4, 'tools.strength.shogi_campaign', ('worker',))
 RATE = .201608
-STORE = 'gs://mshogi-experiments-216675633801/msh190/'
+BUCKET = 'gs://mshogi-experiments-216675633801/'
+
+
+def task_prefix(m):
+    return m['experiment'].split('-', 1)[0]
+
+
+def policy(m):
+    return anchor_cloud.CampaignPolicy(task_prefix(m), POLICY.seconds, POLICY.compute_usd, POLICY.worker_module,
+                                       POLICY.worker_arguments)
 MAX_STEPS = 320
 
 
@@ -42,7 +53,7 @@ def seeds(m):
 
 
 def validate_manifest(m):
-    require(m.get('schema') == 1 and re.fullmatch(PREFIX + r'-[a-z0-9-]{1,50}', m.get('experiment', '')),
+    require(m.get('schema') == 1 and re.fullmatch(r'(' + '|'.join(PREFIXES) + r')-[a-z0-9-]{1,50}', m.get('experiment', '')),
             'wrong campaign identity')
     for field in ('campaign_started_epoch', 'deadline_epoch', 'estimated_compute_before_usd'):
         require(type(m.get(field)) in (int, float) and math.isfinite(m[field]), 'finite ' + field)
@@ -194,7 +205,7 @@ def worker(manifest_uri, store_uri):
                 store.put('abort.json', encode(claim | {'seed': seed, 'error': result.get('error')}))
             return {'seed': seed, 'complete': result['complete']}
 
-        with tempfile.TemporaryDirectory(prefix=PREFIX + '-') as directory:
+        with tempfile.TemporaryDirectory(prefix=task_prefix(m) + '-') as directory:
             with concurrent.futures.ThreadPoolExecutor(p['concurrency']) as pool:
                 futures = [pool.submit(one, seed, directory) for seed in m['bins'][index]]
                 for future in futures:
@@ -299,9 +310,9 @@ def submit(args):
     config = gcp.validate_config(decode(Path(args.config).read_bytes()))
     require(config['max_run_seconds'] == m['protocol']['task_seconds'] and config.get('vm_hourly_usd') == RATE,
             'fixed task limit and reviewed compute rate required')
-    require(config['store_uri'] == STORE + m['experiment'] + f'/batches/{seeds(m)[0]:04d}',
+    require(config['store_uri'] == BUCKET + task_prefix(m) + '/' + m['experiment'] + f'/batches/{seeds(m)[0]:04d}',
             'canonical immutable batch prefix required')
-    anchor_cloud.run(args, policy=POLICY, manifest_validator=validate_manifest)
+    anchor_cloud.run(args, policy=policy(m), manifest_validator=validate_manifest)
 
 
 def main():

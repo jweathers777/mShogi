@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:51:00Z'
-updated_date: '2026-11-17T06:40:00Z'
+updated_date: '2026-11-17T06:44:00Z'
 labels:
   - handle:shogi-strength-round
 milestone: m-5
@@ -79,4 +79,6 @@ First-set hypothesis: reverse target attack lookup and incremental placement rem
 Cloud resource checkpoint before launch: reuse existing mshogi project/us-central1 Batch, configured bucket/registry/worker identity,8 c3-standard-4 machines maximum, no retries. First-submit through cleanup <=60min, reserve300s cleanup, <=8VMh and US$2 compute at verified rate0.201608/VMh (8VMh=1.612864). Max600pairs is statistical ceiling, not guaranteed completion under resources. Start8pair pilot then24pair batches; immutable wholepairs, globalfailurestop, evaluateSPRT beforefurtherbatch, retainalllaunchedpairs. Same5+.2 control/candidatebaselineCPUtype. No externalratinggames/newinfrastructure. Infrastructure adaptation reviewed beforebillablelaunch. Nativequiet-check coreunitchecks12passed including first-q-entry cache discrimination and no material-delta pruning ofquietmate.
 
 First coherent source checkpoint: precomputed rays/reverseattack lookup, incremental existing placement, full swapSEE with board+hand values/promotion/pins, firstquiescence quietchecking stage via default-offsharedhook, desktop/defaultUSI1s using existingretainedsessionpolicy. Positionfixedwork profile identical1448000childvisits/checksum across9roots: frozen0.366378/0.352444s, candidate0.215712/0.215788s (~1.67x throughput). This isolatespositionwork, notstrength. 135searchlibrary tests pass,5ignored; focusedShogi perft/randomnative/state/eval/quietcheck/SEE tests pass. Core independently accepted after removing extra optoutclassification cost. Time focusedUSI12/parser2/desktop2/sharedtiming3pass2ignored. Next frozen candidatebuild and same-root time/depth/tactics plus exactChessfixeddepthcomparison; no cloudlaunch until checkpoint evidence/review.
+
+Measured first-set checkpoint at frozen candidate e902c31d: full fixed-depth total1.8376s ->2.1575s (nodes1594093->1884071; changedsearchwork,17.4%slower fixeddepth). Three1000ms repeats: ordinaryopening median depths14/16/11/11/10 ->15/16/12/12/10; hand-heavyactive/minor roots7/10 ->6/9, rookending16unchanged, syntheticmate64unchanged. Full timednode rate~1.129M->1.315M (+16.5%), but fasterboard work alone isnotstrength. Both12/12sixgeometryshortmate cases. Decision: continue to bounded coherent-set predecessor test, notcase-by-case tuning; addedchecking/SEE changes horizonwork and couldtrade depthforbetterdecisions. Practicalbenefit remainsunproved and hand-heavydepthregressions explicit. Noadditional localfixround before gameevidence; reject/reconsider if no gamebenefit.
 <!-- SECTION:NOTES:END -->

@@ -1,11 +1,11 @@
 ---
 id: MSH-186
 title: Shogi Strength Harness
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:51:00Z'
-updated_date: '2026-11-17T02:21:00Z'
+updated_date: '2026-11-17T02:22:00Z'
 labels:
   - handle:shogi-strength-harness
 milestone: m-5
@@ -61,7 +61,7 @@ Tools, data, baseline numbers and the opponent proposal are documented in docs/m
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -87,3 +87,9 @@ Final measurement: follow-up at5+.2 completed all6pairs/12native conclusions in2
 
 Independent tools/export/partition/proposal review accepted at c1b8b479; clock/data reviewers accepted final source and receipts. All six acceptance criteria have evidence in docs/m5/evidence/msh186/verification.md. Corpus is explicitly generation-only, not fit-ready; MSH-187 (Shogi Strength Round) needs independent families before tuning. Exact native source tests and unchanged-source reuse recorded. Ready for normal integration into main; no further study authorized.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Implemented shared Shogi benchmark/tactics/data validation, native clock-mode paired games with replay/SPRT, native-result label export and game-aware Texel partitioning. Added licensed development roots/openings with independent proof/source review and a bounded external-opponent proposal; no external games ran. Frozen engine d75ecdb8 baseline:12/12 short mate cases over6geometries; ordinary opening depth10–16 at1000ms; fixed-depth1594093nodes,1.7589s median. Initial clock attempt failed transparently on short request budgets/artifact capacity; finite128MiB evidence cap and5+.2 follow-up completed12native games, allreplayed/cleanupclean, no strength or sequential decision. Export497samples,488unique; emptyvalidation/heldout explicitly nottrainingready. Tests:102Python;34native+5example,13focused cap regressions; clippy/workspace check passed. Independent tools/data/clock/proposal reviews accepted. TargetedLevel2 macOS POSIX supervision evidence; Linuxruntime deferred, Windowsorchestration unclaimed. Verification and receipts:docs/m5/evidence/msh186/verification.md; user report:docs/m5/shogi-strength-harness.md. Integrated into main at dfd93a32, containing tested code c1b8b479 and initial source b5ec9861/e80f00a8; only completion metadata follows. Next eligible MSH-187 (Shogi Strength Round), not started; tuning needs more independent families, external study needs separate approval.
+<!-- SECTION:FINAL_SUMMARY:END -->

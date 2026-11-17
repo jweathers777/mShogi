@@ -5,7 +5,7 @@ status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-17T00:13:00Z'
+updated_date: '2026-11-17T00:17:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -57,18 +57,18 @@ The report states the estimate with its uncertainty and conditions, the bracketi
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The frozen mShogi revision, binary hash, opponent engines (exact versions, sources, build hashes, options), CCRL snapshot URL and date, openings, time control, cloud machine type, CPU model and region, and actual compute (wall time, VM-hours, estimated cost) are recorded.
-- [ ] #2 Games run in the cloud at 60 s + 0.6 s for both engines on one machine type, within the approved 6-hour wall-time and US$15 caps; every scored result is a native conclusion that passes native replay, failures or unscored games are reported, and cleanup of all cloud resources is verified.
-- [ ] #3 The rating model, prior and stopping rule are recorded before play; opponents are chosen by the sequential bracketing and main-phase rules, and the report shows each bracketing round and every opponent change.
-- [ ] #4 The report gives one combined estimate from a joint fit of all scored games with a 95% interval, per-family estimates with an agreement check, and a comparison with MSH-139 and MSH-161; it states that the index is not an official CCRL or human rating.
-- [ ] #5 docs/m5/strength-roadmap.md records the result as the closing Chess checkpoint, and an independent review accepts the method and the report.
+- [x] #1 The frozen mShogi revision, binary hash, opponent engines (exact versions, sources, build hashes, options), CCRL snapshot URL and date, openings, time control, cloud machine type, CPU model and region, and actual compute (wall time, VM-hours, estimated cost) are recorded.
+- [x] #2 Games run in the cloud at 60 s + 0.6 s for both engines on one machine type, within the approved 6-hour wall-time and US$15 caps; every scored result is a native conclusion that passes native replay, failures or unscored games are reported, and cleanup of all cloud resources is verified.
+- [x] #3 The rating model, prior and stopping rule are recorded before play; opponents are chosen by the sequential bracketing and main-phase rules, and the report shows each bracketing round and every opponent change.
+- [x] #4 The report gives one combined estimate from a joint fit of all scored games with a 95% interval, per-family estimates with an agreement check, and a comparison with MSH-139 and MSH-161; it states that the index is not an official CCRL or human rating.
+- [x] #5 docs/m5/strength-roadmap.md records the result as the closing Chess checkpoint, and an independent review accepts the method and the report.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
@@ -108,4 +108,12 @@ b10completed48/48valid with correctedworker; no new process failures, flags, cap
 b11 completed48/48valid, no new failures. Cumulative180validgames/90pairs, joint2752.62 [2711.45,2793.79], familyspread26.48. Maincoverage20Stash/22Weiss/20Supernovapairs meetsminimum; halfwidth41.17 remains above fixed40, so nextnormal24pairbatch required. Actualb11 2.6367224205VMh/USD.5315843337; cumulativeUSD2.1432934857, allresourcesabsent. b12 active on freshpairs124–147, unchangedthreefamilies and image, session40931,target/msh185/runs/b12. Original campaigndeadline continues; no reruns or extra study.
 
 Match work stopped after b12:228scoredgames/114completepairs,98W76D54L. Final joint2750.5107 [2714.8730,2786.1484], halfwidth35.6377<=40; maincoverage28Stash/30Weiss/28Supernova pairs. Familyspread35.8284<150. No further games. All236launched attempts retained:228valid,8MrBobcrashes;60additional assignments neverstarted; no reruns/singletons. All12batches independently audited, native replay and hashes pass. Final resource totals13.1838928959VMh, estimatedUSD2.657978279,9571.9593seconds through finalbatchcleanup, within originalcaps. Final live check confirms allstudyjobs/VMs/disks absent. See final-summary.json, b12-fit.json and final-cleanup.json. Report/roadmap prepared; independent finalreview and integration remain.
+
+Independent final review accepted source/report checkpoint1a954afe. Reproduction matches b12-fit byte for byte; separate native conclusion/color checks confirm98W76D54L. Recomputed VM lifecycle totals and all stopping/coverage/failure/cleanup records pass. No material findings remain. Current worker/collector/test source hashes still match the96-test checkpoint. Actual controller environment macOS27.0.1 arm64/Python3.11.0; actual cloud Linux x86-64. No Windows/GUI/release compatibility claim. Final integration into main remains before Done.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Measured frozen main f433ea13 against three independent full-strength families at60s+0.6s in Google Cloud. Final conditional index2750.51, approximate95% interval2714.87–2786.15, from228native-replayed games/114pairs (98W76D54L). Fixed precision and family coverage stops met; familyspread35.83. All8opponent crashes and60unstarted assignments retained; exact-Supernova normal shutdown classification corrected under independent review, originalreceipts preserved. No engine/rules change.96strength tests and28prior GCP checks passed; independent final review accepted1a954afe.13.183893VMh, estimatedUSD2.657978,2h39m32s; allstudyjobs/VMs/disks absent. Report and roadmap updated. Conditional index is not officialCCRL/humanrating or a measuredElogain over oldstudies. Integration pending; nextMSH-186 (Shogi Strength Harness).
+<!-- SECTION:FINAL_SUMMARY:END -->

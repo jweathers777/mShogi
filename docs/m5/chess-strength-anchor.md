@@ -4,7 +4,7 @@ The final conditional CCRL-referenced estimate is **2750.51**, with an **approxi
 
 The study retained **228 scored games in 114 complete opening pairs: 98 wins, 76 draws and 54 losses**. It stopped at the fixed precision rule: half-width 35.64 points, below 40, with 28, 30 and 28 main pairs for Stash, Weiss and Supernova. No scored singletons or rerun games were needed. The usual 300–400-game target was not needed because precision and family coverage were met earlier.
 
-All campaign jobs, VMs and disks are absent. Final independent report review and task integration remain pending; see the planned [final review](evidence/msh185/final-review.md). The result has no strength target or release qualification threshold and does not block Shogi work.
+All campaign jobs, VMs and disks are absent. The independent [final review](evidence/msh185/final-review.md) accepted the method, reproduced the result and verified the resource records. The result has no strength target or release qualification threshold and does not block Shogi work.
 
 ## Frozen engine and test conditions
 
@@ -151,6 +151,6 @@ The result supports stronger external Chess play under this study's conditions. 
 
 ## Verification and review
 
-All 96 strength-tool tests passed. The prior 28 Google Cloud runner tests also passed. The shutdown implementation review checked 27 focused worker/collector tests, negative classifications, all eight affected reports, and independent collection of the corrected fit. [Worker](evidence/msh185/worker-review.md), [statistics](evidence/msh185/statistics-review.md), [bracket](evidence/msh185/bracket-review.md), resource and shutdown reviews record their source scope and limits. Final independent report review remains pending; numerical results are final.
+All 96 strength-tool tests passed. The prior 28 Google Cloud runner tests also passed. The shutdown implementation review checked 27 focused worker/collector tests, negative classifications, all eight affected reports, and independent collection of the corrected fit. [Worker](evidence/msh185/worker-review.md), [statistics](evidence/msh185/statistics-review.md), [bracket](evidence/msh185/bracket-review.md), resource and shutdown reviews record their source scope and limits. The independent [final review](evidence/msh185/final-review.md) accepted the report and reproduced the final fit byte for byte.
 
 The [evidence index](evidence/msh185/README.md) links compact records. Raw games, logs and immutable manifests remain under `gs://mshogi-experiments-216675633801/msh185/`, with hashes in retrieval inventories. This establishes measurement infrastructure checks and Linux cloud play, not a new GUI or three-platform release qualification. MSH-186 (Shogi Strength Harness) and MSH-187 (Shogi Strength Round) remain separate next work items.

@@ -94,20 +94,28 @@ def tactics(args):
         raise ValueError('movetime must be 1..60000 ms')
     path = args.suite or str(DATA/'shogi-tactics-v1.json')
     spec = load_json(path)
-    validation = json.loads(native('validate',path,args.helper))
-    measured = json.loads(native('probe',path,args.helper,args.engine,args.movetime))
+    timeout = 60 + len(spec['positions']) * (args.movetime / 1000 + 10)
+    validation = json.loads(native('validate',path,args.helper,timeout=timeout))
+    measured = json.loads(native('probe',path,args.helper,args.engine,args.movetime,timeout=timeout))
     for p,r in zip(spec['positions'],measured['positions']):
         r.update(expected_moves=p['expected_moves'],matched_expected=r['bestmove'] in p['expected_moves'],
-                 geometry=p['geometry'],phase=p['phase'])
-    result={'kind':'mshogi-strength-tactics','game':'shogi','schema':1,'suite':spec['name'],
+                 geometry=p['geometry'],phase=p['phase'],mate_plies=p.get('mate_plies'),
+                 split=p.get('split','development'))
+    rows = measured['positions']
+    def part(selected):
+        return {'positions':len(selected),'matched_expected':sum(r['matched_expected'] for r in selected)}
+    result={'kind':'mshogi-strength-tactics','game':'shogi','schema':2,'suite':spec['name'],
             'suite_sha256':file_sha256(path),'engine':engine_identity(args.engine),
             'helper':engine_identity(args.helper),'environment':environment(),'movetime_ms':args.movetime,
-            'metric':'matches an independently authored, native-proven short checking mate; not all winning moves or held-out strength',
-            'summary':{'positions':len(measured['positions']),
-                       'matched_expected':sum(r['matched_expected'] for r in measured['positions']),
+            'metric':spec.get('metric','matches an independently established, native-proven checking mate; not all winning moves'),
+            'summary':{'positions':len(rows),
+                       'matched_expected':sum(r['matched_expected'] for r in rows),
                        'independent_geometries':len({p['geometry'] for p in spec['positions']}),
-                       'median_depth':statistics.median(r['depth'] for r in measured['positions'])},
-            'validation':validation,'results':measured['positions'],'timing':measured['timing']}
+                       'median_depth':statistics.median(r['depth'] for r in rows),
+                       'by_split':{s:part([r for r in rows if r['split']==s]) for s in sorted({r['split'] for r in rows})},
+                       'by_mate_plies':{str(n):part([r for r in rows if r['mate_plies']==n])
+                                        for n in sorted({r['mate_plies'] for r in rows if r['mate_plies']})}},
+            'validation':validation,'results':rows,'timing':measured['timing']}
     if args.out:
         write_new(args.out,result)
     print(json.dumps(result['summary'],indent=2))

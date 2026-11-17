@@ -10,10 +10,12 @@
 //! for real results, claims and histories; the caller checks the chosen move
 //! against them.
 mod history;
+pub mod mate;
 pub mod table;
 pub mod timing;
 
 use history::{ContinuationHistory, History};
+use mate::{MateLimits, MateResult, MateTable};
 use std::time::{Duration, Instant};
 use table::{Bound, TranspositionTable};
 
@@ -51,6 +53,18 @@ pub trait SearchPosition {
     /// only the existing absolute-ply bound. At a finite horizon, a threatened
     /// leaf has the same uncertain zero estimate as the absolute-ply horizon.
     const QUIESCENCE_PLIES: usize = MAX_PLY;
+    /// Material unit of the selectivity margins: the smallest material change
+    /// of an ordinary capture, in evaluation units (100 = one Chess pawn). The
+    /// core scales its futility, razoring, aspiration, null-move and
+    /// quiescence margins by `MARGIN_UNIT / 100`.
+    const MARGIN_UNIT: i32 = 100;
+    /// Most quiet checking moves tried at the first quiescence ply, after the
+    /// tactical moves. Zero disables this stage. The stage never recurs: the
+    /// reply to a check is an ordinary in-check quiescence node.
+    const QUIESCENCE_CHECKS: usize = 0;
+    /// Run the mate search by continuous checks at the root before the
+    /// iterative deepening.
+    const MATE_SEARCH: bool = false;
 
     /// Hash of the board state: equal for positions that have the same pieces,
     /// side to move and move rights, independent of the path.
@@ -65,6 +79,11 @@ pub trait SearchPosition {
     fn generate_search(&self, stage: Stage, moves: &mut Vec<Self::Move>) {
         self.generate(stage, moves);
     }
+    /// Append pseudo-legal moves that can give check, of both stages. A
+    /// superset is allowed: the core plays each move and keeps it only if the
+    /// opponent is then in check. A game that enables the quiescence check
+    /// stage or the mate search must include every legal checking move.
+    fn generate_checks(&self, _moves: &mut Vec<Self::Move>) {}
     /// Play a move. Returns false and leaves the position unchanged if the move
     /// is not legal.
     fn make(&mut self, m: Self::Move) -> bool;
@@ -97,6 +116,11 @@ pub trait SearchPosition {
     /// True if the exchange that starts with this move gains at least
     /// `threshold`. A game without an exchange test returns true.
     fn exchange_at_least(&self, m: Self::Move, threshold: i32) -> bool;
+    /// Ordering value of a quiet move added to its history score; larger is
+    /// tried first. History scores lie within about -32768..32768.
+    fn quiet_order(&self, _m: Self::Move) -> i32 {
+        0
+    }
     /// History slot of a move in this position (for example side, piece, target).
     fn history_slot(&self, m: Self::Move) -> usize;
     /// Nonzero table encoding of a move.
@@ -197,11 +221,24 @@ struct Pick<M> {
     killer: usize,
     in_check: bool,
     quiescence: bool,
+    /// Quiet checking moves still allowed in this quiescence node.
+    checks: usize,
 }
 
 const NO_SLOT: usize = usize::MAX;
-const FUTILITY: [i32; 4] = [0, 150, 300, 450];
 const HISTORY_LIMIT: i32 = 16_384;
+
+/// A margin given in Chess units (100 = one pawn), scaled to the game.
+#[inline]
+fn margin<P: SearchPosition>(chess: i32) -> i32 {
+    chess * P::MARGIN_UNIT / 100
+}
+
+/// Futility margin of a quiet move at a frontier depth of 1 to 3.
+#[inline]
+fn futility<P: SearchPosition>(depth: i32) -> i32 {
+    margin::<P>(150 * depth)
+}
 
 fn gravity(slot: &mut i32, bonus: i32) {
     *slot += bonus - *slot * bonus.abs() / HISTORY_LIMIT;
@@ -221,7 +258,14 @@ pub struct Searcher<P: SearchPosition> {
     selectivity: Selectivity,
     static_evals: Vec<Option<i32>>,
     excluded: Vec<Option<P::Move>>,
+    mate: MateTable,
 }
+
+/// Root mate search share: at most this fraction (1/n) of the soft time or
+/// node budget.
+const MATE_SHARE: u32 = 8;
+/// Root mate search nodes of a search without a node or time limit.
+const MATE_NODES: u64 = 1 << 17;
 
 impl<P: SearchPosition> Searcher<P> {
     /// Make a searcher with a table of about `megabytes`.
@@ -253,6 +297,7 @@ impl<P: SearchPosition> Searcher<P> {
             selectivity: Selectivity::default(),
             static_evals: vec![None; MAX_PLY + 2],
             excluded: vec![None; MAX_PLY + 2],
+            mate: MateTable::new(if P::MATE_SEARCH { 18 } else { 0 }),
         }
     }
     /// Set the game-specific policy before the first search.
@@ -274,6 +319,7 @@ impl<P: SearchPosition> Searcher<P> {
         self.history.clear();
         self.continuation.clear();
         self.killers.fill([None; 2]);
+        self.mate.clear();
     }
     /// Permille of sampled table entries written by the last search.
     pub fn hashfull(&self) -> u32 {
@@ -384,11 +430,16 @@ impl<P: SearchPosition> Run<'_, P> {
             };
             return outcome;
         }
+        if P::MATE_SEARCH
+            && let Some(mate) = self.root_mate()
+        {
+            return mate;
+        }
         let adaptive = self.limits.clock && self.limits.hard.is_some();
         let mut stable = 0u32;
         for depth in 1..=i32::from(self.limits.depth.max(1)).min(MAX_PLY as i32 - 1) {
             let previous = outcome.score.unwrap_or(0);
-            let mut delta = 30;
+            let mut delta = margin::<P>(30);
             let (mut alpha, mut beta) = if depth >= 4 && previous.abs() < MATE_BOUND {
                 (previous - delta, previous + delta)
             } else {
@@ -409,7 +460,7 @@ impl<P: SearchPosition> Run<'_, P> {
                     break score;
                 }
                 delta = delta.saturating_mul(2);
-                if delta > 2_000 {
+                if delta > margin::<P>(2_000) {
                     alpha = -INF;
                     beta = INF;
                 }
@@ -467,6 +518,39 @@ impl<P: SearchPosition> Run<'_, P> {
         outcome.nodes = self.nodes;
         outcome.selective_depth = self.seldepth as u16;
         outcome
+    }
+
+    /// Bounded mate search by continuous checks before the iterative
+    /// deepening. A proven mate ends the search: it is complete at any depth.
+    fn root_mate(&mut self) -> Option<Outcome<P::Move>> {
+        let nodes = self
+            .limits
+            .nodes
+            .map_or(MATE_NODES, |n| n / u64::from(MATE_SHARE))
+            .max(1);
+        let deadline = self
+            .limits
+            .hard
+            .map(|hard| self.start + self.limits.soft.unwrap_or(hard).min(hard) / MATE_SHARE);
+        let (result, visits) = mate::search(
+            self.pos,
+            &mut self.s.mate,
+            MateLimits { nodes, deadline },
+            self.stop,
+        );
+        self.nodes += visits;
+        let MateResult::Mate(line) = result else {
+            return None;
+        };
+        Some(Outcome {
+            best: line.first().copied(),
+            score: Some(MATE_SCORE - line.len() as i32),
+            depth: self.limits.depth.clamp(1, MAX_PLY as u16 - 1),
+            selective_depth: line.len() as u16,
+            nodes: self.nodes,
+            pv: line,
+            status: Status::Complete,
+        })
     }
 
     /// Count a node visit. False means the search must stop.
@@ -543,7 +627,7 @@ impl<P: SearchPosition> Run<'_, P> {
                     let buffers = &mut self.s.buffers[ply];
                     if pick.index >= buffers.moves.len() {
                         pick.stage = if pick.quiescence && !pick.in_check {
-                            7
+                            if pick.checks > 0 { 8 } else { 7 }
                         } else if pick.quiescence {
                             4
                         } else {
@@ -599,7 +683,7 @@ impl<P: SearchPosition> Run<'_, P> {
                     self.pos.generate_search(Stage::Quiet, &mut buffers.moves);
                     for &m in &buffers.moves {
                         let slot = self.pos.history_slot(m);
-                        let mut score = self.s.history[slot];
+                        let mut score = self.s.history[slot] + self.pos.quiet_order(m);
                         if previous != NO_SLOT {
                             score += self.s.continuation[(previous, slot)];
                         }
@@ -640,6 +724,39 @@ impl<P: SearchPosition> Run<'_, P> {
                     }
                     pick.index += 1;
                     return Some(buffers.bad[pick.index - 1]);
+                }
+                8 => {
+                    // Quiet checks that do not lose the moving piece.
+                    let buffers = &mut self.s.buffers[ply];
+                    let pos = &*self.pos;
+                    buffers.moves.clear();
+                    buffers.scores.clear();
+                    pos.generate_checks(&mut buffers.moves);
+                    buffers
+                        .moves
+                        .retain(|&m| !pos.is_tactical(m) && pos.exchange_at_least(m, 0));
+                    for &m in &buffers.moves {
+                        buffers.scores.push(pos.quiet_order(m));
+                    }
+                    pick.index = 0;
+                    pick.stage = 9;
+                }
+                9 => {
+                    let buffers = &mut self.s.buffers[ply];
+                    if pick.index >= buffers.moves.len() || pick.checks == 0 {
+                        pick.stage = 7;
+                        continue;
+                    }
+                    let mut best = pick.index;
+                    for i in pick.index + 1..buffers.moves.len() {
+                        if buffers.scores[i] > buffers.scores[best] {
+                            best = i;
+                        }
+                    }
+                    buffers.moves.swap(pick.index, best);
+                    buffers.scores.swap(pick.index, best);
+                    pick.index += 1;
+                    return Some(buffers.moves[pick.index - 1]);
                 }
                 _ => return None,
             }
@@ -745,12 +862,16 @@ impl<P: SearchPosition> Run<'_, P> {
             if policy.reverse_futility
                 && depth <= 6
                 && e.abs() < MATE_BOUND
-                && e - 90 * depth + if improving { 45 } else { 0 } >= beta
+                && e - margin::<P>(90) * depth + if improving { margin::<P>(45) } else { 0 } >= beta
                 && self.pos.null_move_safe()
             {
                 return e;
             }
-            if policy.razoring && depth <= 2 && e.abs() < MATE_BOUND && e + 250 * depth < alpha {
+            if policy.razoring
+                && depth <= 2
+                && e.abs() < MATE_BOUND
+                && e + margin::<P>(250) * depth < alpha
+            {
                 let score = self.quiesce(ply, 0, alpha - 1, alpha, false);
                 if self.abort || score < alpha {
                     return score;
@@ -780,7 +901,7 @@ impl<P: SearchPosition> Run<'_, P> {
             && h.score.abs() < MATE_BOUND
             && self.legal_probe(m)
         {
-            let threshold = h.score - 2 * depth;
+            let threshold = h.score - margin::<P>(2) * depth;
             self.s.excluded[ply] = Some(m);
             let score = self.search((depth - 1) / 2, ply, threshold - 1, threshold, false, false);
             self.s.excluded[ply] = None;
@@ -802,7 +923,7 @@ impl<P: SearchPosition> Run<'_, P> {
             && beta.abs() < MATE_BOUND
             && self.pos.null_move_safe()
         {
-            let reduction = 3 + depth / 4 + ((eval - beta) / 200).min(3);
+            let reduction = 3 + depth / 4 + ((eval - beta) / margin::<P>(200)).min(3);
             self.pos.make_null();
             self.s.slots[ply] = NO_SLOT;
             self.s.static_evals[ply] = None;
@@ -839,7 +960,7 @@ impl<P: SearchPosition> Run<'_, P> {
         let futile = !pv
             && depth <= 3
             && alpha.abs() < MATE_BOUND
-            && eval.is_some_and(|e| e + FUTILITY[depth as usize] <= alpha);
+            && eval.is_some_and(|e| e + futility::<P>(depth) <= alpha);
         let mut pick = Pick {
             stage: 0,
             table_move,
@@ -847,6 +968,7 @@ impl<P: SearchPosition> Run<'_, P> {
             killer: 0,
             in_check,
             quiescence: false,
+            checks: 0,
         };
         let original_alpha = alpha;
         let mut best = if claimable { 0 } else { -INF };
@@ -883,7 +1005,7 @@ impl<P: SearchPosition> Run<'_, P> {
                 // The pruned move is assumed to reach at most this value, so a
                 // stored upper bound must not be below it.
                 if let Some(eval) = eval {
-                    best = best.max(eval + FUTILITY[depth as usize]);
+                    best = best.max(eval + futility::<P>(depth));
                 }
                 continue;
             }
@@ -1079,12 +1201,20 @@ impl<P: SearchPosition> Run<'_, P> {
             killer: 0,
             in_check,
             quiescence: true,
+            checks: if qdepth == 0 && !in_check {
+                P::QUIESCENCE_CHECKS
+            } else {
+                0
+            },
         };
         let mut best_move = None;
         let mut count = 0usize;
         while let Some(m) = self.next_move(ply, &mut pick) {
-            if let Some(eval) = eval {
-                let reach = eval + self.pos.tactical_gain(m) + 200;
+            let check_stage = pick.stage == 9;
+            if let Some(eval) = eval
+                && !check_stage
+            {
+                let reach = eval + self.pos.tactical_gain(m) + margin::<P>(200);
                 if reach <= alpha {
                     best = best.max(reach);
                     continue;
@@ -1092,6 +1222,13 @@ impl<P: SearchPosition> Run<'_, P> {
             }
             if !self.pos.make(m) {
                 continue;
+            }
+            if check_stage {
+                if !self.pos.in_check() {
+                    self.pos.unmake();
+                    continue;
+                }
+                pick.checks -= 1;
             }
             count += 1;
             self.s.slots[ply] = NO_SLOT;

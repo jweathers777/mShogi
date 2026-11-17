@@ -10,6 +10,13 @@ use std::{
     fs, thread,
     time::{Duration, Instant},
 };
+#[path = "support/shogi_mate_proof.rs"]
+mod shogi_mate_proof;
+
+/// Most rows of one catalog.
+const MAX_ROWS: usize = 1024;
+/// Proof visit bound of one catalog row.
+const PROOF_VISITS: u64 = 3_000_000;
 
 fn root(p: &Value) -> Game {
     let mut game = if let Some(sfen) = p["sfen"].as_str() {
@@ -56,6 +63,7 @@ fn played(game: &Game, action: Action) -> Game {
     .expect("native action admission");
     next
 }
+#[cfg(test)]
 fn mates(game: &Game, attacker: Side, depth: u64, visits: &mut u64) -> bool {
     *visits += 1;
     assert!(
@@ -88,7 +96,7 @@ fn validate(spec: &Value) -> Value {
         .as_array()
         .or_else(|| spec["openings"].as_array())
         .expect("position catalog");
-    assert!(!rows.is_empty() && rows.len() <= 256);
+    assert!(!rows.is_empty() && rows.len() <= MAX_ROWS);
     let mut ids = BTreeSet::new();
     let mut out = vec![];
     for p in rows {
@@ -97,20 +105,15 @@ fn validate(spec: &Value) -> Value {
         let mut found = BTreeSet::new();
         let mut visits = 0;
         if let Some(depth) = p["mate_plies"].as_u64() {
-            assert!([1, 3].contains(&depth));
-            for a in game.position().legal_actions() {
-                let next = played(&game, a);
-                if next.position().is_in_check(next.position().side_to_move())
-                    && mates(
-                        &next,
-                        game.position().side_to_move(),
-                        depth - 1,
-                        &mut visits,
-                    )
-                {
-                    found.insert(a.to_string());
-                }
-            }
+            assert!(depth % 2 == 1 && depth <= u64::from(shogi_mate_proof::MAX_PROOF_PLIES));
+            // Imported diagrams have no earlier history (see the prover notes).
+            assert!(p["moves"].as_array().is_none_or(|m| m.is_empty()));
+            let mut prover = shogi_mate_proof::Prover::new(PROOF_VISITS);
+            let answers = prover
+                .answer_set(game.position(), depth as u8)
+                .expect("proof node bound exhausted; not a failed tactic");
+            found.extend(answers.iter().map(|a| a.to_string()));
+            visits = prover.visits;
             let expected: BTreeSet<_> = p["expected_moves"]
                 .as_array()
                 .unwrap()
@@ -130,7 +133,7 @@ fn validate(spec: &Value) -> Value {
 }
 fn probe(spec: &Value, engine: &str, time_ms: u64) -> Value {
     let rows = spec["positions"].as_array().expect("positions");
-    assert!(!rows.is_empty() && rows.len() <= 256);
+    assert!(!rows.is_empty() && rows.len() <= MAX_ROWS);
     assert!(time_ms <= 60_000);
     let mut out = vec![];
     for p in rows {
@@ -305,6 +308,27 @@ mod tests {
             include_str!("../../../tools/strength/data/shogi-openings-v1.json"),
         ] {
             validate(&serde_json::from_str(text).unwrap());
+        }
+    }
+    #[test]
+    fn memoized_prover_agrees_with_the_plain_recursive_proof() {
+        let text = include_str!("../../../tools/strength/data/shogi-tactics-v1.json");
+        let spec: Value = serde_json::from_str(text).unwrap();
+        for p in spec["positions"].as_array().unwrap() {
+            let game = root(p);
+            let depth = p["mate_plies"].as_u64().unwrap();
+            let side = game.position().side_to_move();
+            for a in game.position().legal_actions() {
+                let next = played(&game, a);
+                if !next.position().is_in_check(next.position().side_to_move()) {
+                    continue;
+                }
+                let plain = mates(&next, side, depth - 1, &mut 0);
+                let memo = shogi_mate_proof::Prover::new(1_000_000)
+                    .defender_mated(next.position(), (depth - 1) as u8)
+                    .unwrap();
+                assert_eq!(plain, memo, "{} {a}", p["id"]);
+            }
         }
     }
     #[test]

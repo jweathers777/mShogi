@@ -1,5 +1,6 @@
 //! Differential tests use the independent authoritative native Shogi rules.
 use super::position::ShogiPosition;
+use crate::alphabeta::mate::{self, MateLimits, MateResult, MateTable};
 use crate::alphabeta::{MATE_SCORE, SearchPosition, Stage};
 use mshogi_core::shogi::{
     Action, Game, GameCommand, GameRequest, PieceKind, Position, Side, Square,
@@ -47,6 +48,45 @@ fn compare(p: &mut ShogiPosition, native: &Position) {
     }
     assert!(p.decode(0).is_none());
     assert!(p.decode(u32::MAX).is_none());
+    compare_checks_and_evasions(p, &legal, &pseudo);
+}
+/// The check generator returns pseudo-legal moves without repeats and
+/// every legal checking move; in check, the search generator (drops only
+/// between the king and a single slider) keeps exactly the legal moves.
+fn compare_checks_and_evasions(
+    p: &mut ShogiPosition,
+    legal: &[super::position::Move],
+    pseudo: &[super::position::Move],
+) -> (usize, bool) {
+    let mut candidates = Vec::new();
+    p.generate_checks(&mut candidates);
+    for (i, m) in candidates.iter().enumerate() {
+        assert!(pseudo.contains(m), "{:?}", p.action(*m));
+        assert!(!candidates[..i].contains(m));
+    }
+    let mut checking = 0;
+    for &m in legal {
+        assert!(p.make(m));
+        let check = p.in_check();
+        p.unmake();
+        if check {
+            checking += 1;
+            assert!(candidates.contains(&m), "missing check {}", p.action(m));
+        }
+    }
+    let mut search = Vec::new();
+    p.generate_search(Stage::Tactical, &mut search);
+    p.generate_search(Stage::Quiet, &mut search);
+    let mut kept = vec![];
+    for m in search {
+        if p.make(m) {
+            p.unmake();
+            kept.push(p.action(m).to_string());
+        }
+    }
+    kept.sort();
+    assert_eq!(kept, sorted(legal.iter().map(|&m| p.action(m))));
+    (checking, p.in_check())
 }
 fn next(state: &mut u64) -> u64 {
     *state ^= *state << 13;
@@ -377,4 +417,129 @@ fn profile_position_hot_path() {
         roots.len(),
         started.elapsed().as_secs_f64()
     );
+}
+
+#[test]
+fn check_generation_and_evasions_cover_drops_discoveries_and_promotions() {
+    for sfen in [
+        // Discovered checks by a lance, a rook and a bishop behind own pieces.
+        "4k4/9/9/4S4/4L4/9/9/9/K8 b G 1",
+        "4k4/9/4N4/9/4R4/9/9/9/K8 b - 1",
+        "8k/9/6S2/9/4B4/9/9/9/K8 b P 1",
+        // Promotion checks and checking drops of every hand piece.
+        "4k4/9/9/3P1S3/9/9/9/9/K8 b RBGSNLP 1",
+        "lnsgk2nl/1r4gb1/p1ppppspp/9/1p5P1/9/PPPPPPP1P/1BG4R1/LNS1KGSNL b P 1",
+        // Single sliding check (interposition drops), double and adjacent checks.
+        "4k4/9/9/9/4r4/9/9/9/4K4 b GSN 1",
+        "4k4/9/9/9/9/9/9/9/K3r4 b GSNLP 1",
+        "4k4/9/9/9/9/9/9/3g5/4K4 b GSN 1",
+        "8k/9/1b5r1/9/9/9/9/9/7K1 b GSNP 1",
+    ] {
+        let native = Position::from_sfen(sfen).unwrap();
+        let mut p = ShogiPosition::from_position(&native);
+        compare(&mut p, &native);
+    }
+}
+
+#[test]
+fn static_exchange_uses_board_and_hand_values() {
+    let see = |sfen: &str, action: &str| {
+        let p = ShogiPosition::from_position(&Position::from_sfen(sfen).unwrap());
+        p.see(p.find(action.parse().unwrap()).unwrap())
+    };
+    // Pawn takes a Pawn defended by a Gold: equal trade, and the promoted
+    // Pawn (board 500, hand 100) is lost again.
+    assert_eq!(see("4k4/4g4/4p4/4P4/9/9/9/9/4K4 b - 1", "5d5c+"), 0);
+    assert_eq!(see("4k4/4g4/4p4/4P4/9/9/9/9/4K4 b - 1", "5d5c"), 0);
+    // An undefended Pawn: board value plus hand value.
+    assert_eq!(see("4k4/9/4p4/4P4/9/9/9/9/4K4 b - 1", "5d5c"), 200);
+    // Rook takes a King-defended Pawn and promotes: the Dragon (board 1000,
+    // hand Rook 800) is lost for Pawn and promotion gain.
+    assert_eq!(
+        see("4k4/4p4/9/9/9/4R4/9/9/K8 b - 1", "5f5b+"),
+        200 + 200 - 1800
+    );
+    assert_eq!(see("4k4/3s5/4p4/9/9/4R4/9/9/K8 b - 1", "5f5c"), 200 - 1600);
+    // A Gold drop attacked by a Pawn and defended by a Silver loses the
+    // Gold for a Pawn; an undefended drop square is safe.
+    assert_eq!(see("4k4/9/4p4/9/4S4/9/9/9/K8 b G 1", "G*5d"), 200 - 1000);
+    assert_eq!(see("4k4/9/9/9/9/9/9/9/K8 b G 1", "G*5e"), 0);
+    // The King cannot recapture on a defended square.
+    assert_eq!(see("4k4/9/9/9/4p4/4P4/4R4/9/K8 b - 1", "5f5e"), 200);
+    // X-ray: the Rook behind the Pawn defends the target square.
+    assert_eq!(
+        see("4k4/4r4/9/4p4/4P4/4R4/9/9/K8 b - 1", "5e5d"),
+        // Gote does not recapture: the Rook behind would then win its Rook.
+        200
+    );
+}
+
+fn mate_search(p: &mut ShogiPosition, nodes: u64) -> MateResult<super::position::Move> {
+    let mut table = MateTable::new(16);
+    let limits = MateLimits {
+        nodes,
+        deadline: None,
+    };
+    let before = p.hash();
+    let (result, _) = mate::search(p, &mut table, limits, &mut || false);
+    assert_eq!(p.hash(), before);
+    result
+}
+
+#[test]
+fn mate_search_finds_known_tsume_and_respects_pawn_drop_mate() {
+    let suite: serde_json::Value = serde_json::from_str(include_str!(
+        "../../../../tools/strength/data/shogi-tactics-v1.json"
+    ))
+    .unwrap();
+    for row in suite["positions"].as_array().unwrap() {
+        let native = Position::from_sfen(row["sfen"].as_str().unwrap()).unwrap();
+        let mut p = ShogiPosition::from_position(&native);
+        let MateResult::Mate(line) = mate_search(&mut p, 100_000) else {
+            panic!("no mate found in {}", row["id"]);
+        };
+        let first = p.action(line[0]).to_string();
+        let expected: Vec<_> = row["expected_moves"].as_array().unwrap().iter().collect();
+        assert!(
+            expected.iter().any(|e| e.as_str() == Some(&first)),
+            "{} {first}",
+            row["id"]
+        );
+        // The line is legal under native rules and ends in mate.
+        let mut native = native.clone();
+        for &m in &line {
+            native.apply(p.action(m)).unwrap();
+            assert!(p.make(m));
+        }
+        assert!(native.legal_actions().is_empty() && native.is_in_check(native.side_to_move()));
+    }
+    // Pawn drop to 1b would mate at once and is illegal; no other mate.
+    let sfen = "8k/9/6NG1/9/9/9/9/9/K8 b P 1";
+    let native = Position::from_sfen(sfen).unwrap();
+    assert!(!native.is_legal("P*1b".parse().unwrap()));
+    let mut p = ShogiPosition::from_position(&native);
+    match mate_search(&mut p, 200_000) {
+        MateResult::Mate(line) => {
+            assert_ne!(p.action(line[0]).to_string(), "P*1b");
+            let mut native = native.clone();
+            for &m in &line {
+                native.apply(p.action(m)).unwrap();
+            }
+            assert!(native.legal_actions().is_empty());
+        }
+        MateResult::NoMate | MateResult::Unknown => {}
+    }
+}
+
+#[test]
+fn mate_search_rejects_a_perpetual_check_cycle() {
+    // A lone Rook can check forever but never mate.
+    let native = Position::from_sfen("4k4/9/5R3/9/9/9/9/9/K8 b - 1").unwrap();
+    let mut p = ShogiPosition::from_position(&native);
+    assert_eq!(mate_search(&mut p, 500_000), MateResult::NoMate);
+    // The same after a recorded cycle: the next repetition is a rule result.
+    for a in ["4c5c", "5a4a", "5c4c", "4a5a"] {
+        play_position(&mut p, a);
+    }
+    assert!(!matches!(mate_search(&mut p, 500_000), MateResult::Mate(_)));
 }

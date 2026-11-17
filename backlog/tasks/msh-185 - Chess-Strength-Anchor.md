@@ -1,10 +1,11 @@
 ---
 id: MSH-185
 title: Chess Strength Anchor
-status: Ready
-assignee: []
+status: In Review
+assignee:
+  - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-16T21:11:00Z'
+updated_date: '2026-11-17T00:17:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -56,17 +57,63 @@ The report states the estimate with its uncertainty and conditions, the bracketi
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The frozen mShogi revision, binary hash, opponent engines (exact versions, sources, build hashes, options), CCRL snapshot URL and date, openings, time control, cloud machine type, CPU model and region, and actual compute (wall time, VM-hours, estimated cost) are recorded.
-- [ ] #2 Games run in the cloud at 60 s + 0.6 s for both engines on one machine type, within the approved 6-hour wall-time and US$15 caps; every scored result is a native conclusion that passes native replay, failures or unscored games are reported, and cleanup of all cloud resources is verified.
-- [ ] #3 The rating model, prior and stopping rule are recorded before play; opponents are chosen by the sequential bracketing and main-phase rules, and the report shows each bracketing round and every opponent change.
-- [ ] #4 The report gives one combined estimate from a joint fit of all scored games with a 95% interval, per-family estimates with an agreement check, and a comparison with MSH-139 and MSH-161; it states that the index is not an official CCRL or human rating.
-- [ ] #5 docs/m5/strength-roadmap.md records the result as the closing Chess checkpoint, and an independent review accepts the method and the report.
+- [x] #1 The frozen mShogi revision, binary hash, opponent engines (exact versions, sources, build hashes, options), CCRL snapshot URL and date, openings, time control, cloud machine type, CPU model and region, and actual compute (wall time, VM-hours, estimated cost) are recorded.
+- [x] #2 Games run in the cloud at 60 s + 0.6 s for both engines on one machine type, within the approved 6-hour wall-time and US$15 caps; every scored result is a native conclusion that passes native replay, failures or unscored games are reported, and cleanup of all cloud resources is verified.
+- [x] #3 The rating model, prior and stopping rule are recorded before play; opponents are chosen by the sequential bracketing and main-phase rules, and the report shows each bracketing round and every opponent change.
+- [x] #4 The report gives one combined estimate from a joint fit of all scored games with a 95% interval, per-family estimates with an agreement check, and a comparison with MSH-139 and MSH-161; it states that the index is not an official CCRL or human rating.
+- [x] #5 docs/m5/strength-roadmap.md records the result as the closing Chess checkpoint, and an independent review accepts the method and the report.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Inspect the native clock runner and existing GCP execution path; freeze main f433ea13 and a dated single-CPU CCRL candidate list. 2. Record the joint rating model, pair-aware uncertainty, prior, stopping rules, opening allocation and resource accounting before play; obtain independent method review. 3. Build pinned Linux engines and minimal measurement glue, verify offline and cloud smoke checks. 4. Run sequential eight-game bracketing rounds, then rotated main batches on at most eight c3-standard-4 workers, enforcing six hours and USD15 across all match work. 5. Validate native replay, joint and family estimates, failure/resource records and cleanup; review the report, update roadmap, integrate and push.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Owner: Codex chat 01a1e634-7fc9-72c2-b4b4-07022a7df3ec. Branch codex/chess-strength-anchor in the primary checkout. Startup: clean main f433ea13, no active Backlog owners, other relevant app chats idle or not loaded. Backlog 1.55.3 matches baseline. Measurement only; no production engine change. Linux cloud execution plus focused local harness checks and independent method/report review; broader platform checks are not applicable.
+
+Pre-play checkpoint: method.md, opponent-candidates.md and frozen openings under docs/m5/evidence/msh185. Independent method, statistics, worker and batch reviews completed; identified native command-size and uniform-score precision defects were corrected before play. Actual Linux config/replay probe passed with nonexistent engine paths (zero games). First three opponents and candidate passed non-search UCI/Hash64 handshakes. Initial anchor Stash20.0.1=2511 selected before play for normal increment support; MrBob0.7=2505 ignores increment in its original time policy. GCP storage prefix empty, no VMs, C3 quota32 unused; existing Pub/Sub verified. Local Docker used only to build Linux binaries/images and run offline/non-search checks. Cloud match clock has not started.
+
+First cloud bracket submitted as msh185-b01-v1 (UID msh185-b01-v1-9b664eb9-6f5a-4d1e-923d0) at 2026-11-16T21:29:58Z. Campaign clock and caps in docs/m5/evidence/msh185/campaign.json; deadline is fixed at start+21600s. Source checkpoint20d3471e; image digest6f050b230db16669df5df3aba93e94d5cad60ad8e35dfb49c7e1ffc7fddf73f1. Eight single-game tasks, Stash20.0.1, first four frozen opening pairs. Active local controller session13382 owns completion, retrieval and cleanup; output target/msh185/runs/b01, log target/msh185/batches/b01-controller.log. Durable raw store gs://mshogi-experiments-216675633801/msh185/b01. Do not duplicate submission. Startup status SCHEDULED, eight pending tasks, observed boot image batch-cos-stable-official-20261110-00-p01; no result yet.
+
+b01 completed/reviewed:5W3D0L, all8native replays and73artifact hashes pass;5checkmates,2threefold draws,1dead-position draw; no flags/failures. All8C3 workers on IntelSapphireRapids/us-central1-a;0.4938234094VM-hours, estimatedUSD0.09955875, zero allocation failures. Job/VM/disk absence verified. Provisional joint2742.66, broad2384.43–3191.01 interval. Next nearest admitted built anchor Stash21=2713; b02 four fresh pairs submitted under same campaign clock and pool image8290f64d7051548c5e86f62929c8f00e1504ceb77836c474832756224016b627. Active controller session77601;target/msh185/runs/b02. Full opponent build evidence saved; Raven0.80 excluded before use for demonstrated upstream out-of-bounds write, no gameplay patch.
+
+b02:4W4D0L againstStash21=2713; all16cumulative games replayed, joint2834.42 with wide2564.39–3140.01 interval. Native longest game413searched plies/359.2s ended checkmate. Controller returned cleanup failure only because job record deletion outlasted short polling window; VMs/disks already absent. Later exact-job cleanup proof verifies allabsent; original failure preserved, no rerun. Actual b02 .5898206584VMh/USD.1189125633, cumulativeUSD.2184713133. Reviewed controller-only180s bounded cleanup/reconciliation patch passed33tests. b03 now running Weiss0.10=2846 (nearest admitted anchor), fresh pairs8–11, session27657, same original deadline and pool image; target/msh185/runs/b03. See b02/closure.md.
+
+Current handoff: b03 finished 3W/1D/4L; b04 finished 0W/1D/7L, both against Weiss0.10 (2846). All 32 games pass native replay; b03/b04 cleanup and lifecycle records pass, with no allocation failures. Cumulative estimated compute is USD0.4410465867. Joint estimate2741.95; interval2555.31–2919.15 remains wide. Both Stash and Weiss results are retained; provisional family disagreement is visible. Fifth bracket msh185-b05-v1 is running against nearest admitted Stash21.0 (2713), fresh pairs16–19. Controller session89859 owns cleanup; target/msh185/runs/b05, raw gs://mshogi-experiments-216675633801/msh185/b05. Same campaign deadline, same pool image and worker/native/statistics sources. Do not repeat prior rounds. b03 compact evidence and independent b02-b03 review are saved; b04 compact packaging remains.
+
+Bracketing ended after seven rounds and about56minutes, before another round would exceed the one-hour phase bound. All56games are retained and native-replay valid; no game failures, flags, caps or missing scores. Joint2728.68 with2592.57–2860.37 interval; the +/-100 guide was not reached. All prior jobs/VMs/disks are absent. Actual cumulative computeUSD0.7382314755; zero allocation failures. Main selection is Stash21.0(2713), Weiss0.9(2649), MrBob0.8.0(2638), all within91points, from the deployed admitted pool. First main batch msh185-b08-v1 is active:24fresh pairs/48games, eight workers, pairs28–51, controller session3806, target/msh185/runs/b08 and gs://mshogi-experiments-216675633801/msh185/b08. Same frozen source, image, clocks and original campaign deadline. Decision and forecast in main-selection.json; no precision claim yet.
+
+First main batch b08 stopped on eight MrBob0.8.0 SIGSEGV failures during bestmove; these are unscored. Ten valid games (7W1D2L) are retained;30scheduled games never started. All66cumulative scored games pass native replay, joint2736.92 [2658.99,2814.85]. All b08 cloud resources are verified absent; actual b08 .8363486983VMh/USD.1686145884, cumulativeUSD.9068460638. Independent failure review is in progress. Replace failed MrBob with prebuilt full-strength Supernova2.3=2644 from the frozen source pool, within93points, without patching rated source. New image adds this binary only; same candidate/runner/worker, original campaign deadline. No games rerun or valid results discarded.
+
+Correction from independent native-score review: b08 valid tally is6W1D3L (not7W1D2L in the prior note); fitted results were already computed from correct native scores. Eight MrBob failures are explained by its FEN handler retaining a fixed1024entry move-history stack across full-history commands; source is unchanged and release is withdrawn. Supernova2.3 replacement clears history on each position command; independent source/options review accepted admission. b09 is active with24fresh pairs52–75, Stash21/Weiss0.9/Supernova2.3, new image72b4a8072b2d3b1db36b21183f2f51476108d408256f531b141dcfa8d37959ee; controller session66282, target/msh185/runs/b09. Original deadline/caps continue.
+
+b09 stopped on a measurement-classification defect: Supernova2.3 reached eight native conclusions but its normal quit handler sleeps1s; frozen runner waits100ms then intentionally kills/reaps. No native failure, diagnostic failure or cleanup failure occurred. Independent method review accepts a narrow exact-binary normal-postconclusion-termination correction without changing candidate, runner, clocks or game rules. Original receipts remain immutable; derived reclassification must bind report/receipt hashes and satisfy all replay, terminal-quit and process-settlement checks. Eight results5W1D2L are pending corrected-audit review;10other validgames5W3D2L retained,30assignmentsnotstarted. All b09 resources absent;1.0191979103VMh/USD.2054784523, totalUSD1.1123245161. No new cloudjob active while correction/tests/review complete.
+
+Shutdown classification correction independently accepted;96strengthtests pass. All8Supernova native results5W1D2L admitted uniformly, with original rejectedreceipts and originalfit preserved plus hashbound deriveddecisions. Cumulative84validgames/42pairs, joint2746.40 [2678.89,2813.90]; eightMrBobcrashes remain unscored,60assignments neverstarted. No game reruns. b10 is active,24freshpairs76–99, same3families; session79501,target/msh185/runs/b10. Corrected worker image60163e4fb2f8f88a28320614b7c8106a3de9c37c5ba3cff5f20d00f64eb3e0cb; candidate/native runner/opponents unchanged. Original campaigncaps continue.
+
+b10completed48/48valid with correctedworker; no new process failures, flags, caps or missing results. All132cumulative games native-replay valid; joint2742.23 [2690.41,2794.05], familyspread10.44. Maincoverage12Stash/14Weiss/12Supernovapairs, so precision/coverage stop not met. Actualb10 2.4770080343VMh/USD.4993846358; cumulativeUSD1.6117091519, all b10resourcesabsent. b11active with24freshpairs100–123, unchanged3families/image/engine, session11365,target/msh185/runs/b11. Expectedanother20–25min; campaign stillwellwithin6h/USD15. Include b09 explicit shutdownreclassification file in every laterfit.
+
+b11 completed48/48valid, no new failures. Cumulative180validgames/90pairs, joint2752.62 [2711.45,2793.79], familyspread26.48. Maincoverage20Stash/22Weiss/20Supernovapairs meetsminimum; halfwidth41.17 remains above fixed40, so nextnormal24pairbatch required. Actualb11 2.6367224205VMh/USD.5315843337; cumulativeUSD2.1432934857, allresourcesabsent. b12 active on freshpairs124–147, unchangedthreefamilies and image, session40931,target/msh185/runs/b12. Original campaigndeadline continues; no reruns or extra study.
+
+Match work stopped after b12:228scoredgames/114completepairs,98W76D54L. Final joint2750.5107 [2714.8730,2786.1484], halfwidth35.6377<=40; maincoverage28Stash/30Weiss/28Supernova pairs. Familyspread35.8284<150. No further games. All236launched attempts retained:228valid,8MrBobcrashes;60additional assignments neverstarted; no reruns/singletons. All12batches independently audited, native replay and hashes pass. Final resource totals13.1838928959VMh, estimatedUSD2.657978279,9571.9593seconds through finalbatchcleanup, within originalcaps. Final live check confirms allstudyjobs/VMs/disks absent. See final-summary.json, b12-fit.json and final-cleanup.json. Report/roadmap prepared; independent finalreview and integration remain.
+
+Independent final review accepted source/report checkpoint1a954afe. Reproduction matches b12-fit byte for byte; separate native conclusion/color checks confirm98W76D54L. Recomputed VM lifecycle totals and all stopping/coverage/failure/cleanup records pass. No material findings remain. Current worker/collector/test source hashes still match the96-test checkpoint. Actual controller environment macOS27.0.1 arm64/Python3.11.0; actual cloud Linux x86-64. No Windows/GUI/release compatibility claim. Final integration into main remains before Done.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Measured frozen main f433ea13 against three independent full-strength families at60s+0.6s in Google Cloud. Final conditional index2750.51, approximate95% interval2714.87–2786.15, from228native-replayed games/114pairs (98W76D54L). Fixed precision and family coverage stops met; familyspread35.83. All8opponent crashes and60unstarted assignments retained; exact-Supernova normal shutdown classification corrected under independent review, originalreceipts preserved. No engine/rules change.96strength tests and28prior GCP checks passed; independent final review accepted1a954afe.13.183893VMh, estimatedUSD2.657978,2h39m32s; allstudyjobs/VMs/disks absent. Report and roadmap updated. Conditional index is not officialCCRL/humanrating or a measuredElogain over oldstudies. Integration pending; nextMSH-186 (Shogi Strength Harness).
+<!-- SECTION:FINAL_SUMMARY:END -->

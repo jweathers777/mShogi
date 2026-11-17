@@ -1,12 +1,21 @@
-# Next direction — Chess anchor, then Shogi (project decision, 2026-11-16)
+# Next direction — Shogi after the Chess anchor (checkpoint, 2026-11-17)
 
-The Chess classical round (steps 1–6 below) is complete. Its gains were measured
-only against frozen predecessors. Work continues in this order:
+The Chess classical round (steps 1–6 below) and its external anchor measurement
+are complete. The frozen engine scored 98 wins, 76 draws and 54 losses in 228
+cloud games at 60 s + 0.6 s. The conditional CCRL Blitz-referenced estimate is
+2750.51, with an approximate pair-aware 95% interval of 2714.87–2786.15.
+The three family estimates differ by 35.83 points. The fixed precision stop was
+met before the approximate 300–400-game target; all required family coverage was
+complete. This is not an official CCRL or human rating, and it is not a measured
+Elo gain over the older studies. See the [report](chess-strength-anchor.md).
 
-1. MSH-185 (Chess Strength Anchor): one approved rating measurement against about
-   three independent CCRL-rated engines at 60 s + 0.6 s, with a 6-hour wall-time cap.
-   It estimates present strength and closes the Chess round. It sets no target and
-   does not block Shogi work.
+The next work is Shogi:
+
+1. MSH-185 (Chess Strength Anchor): measurement complete within the approved caps:
+   2 h 39 min 32 s, 13.1839 VM-hours and estimated US$2.658 compute. All study jobs,
+   VMs and disks were deleted. Eight opponent crashes remain unscored; all 228
+   scored games pass native replay. The result closes the Chess round and sets
+   no strength threshold for Shogi.
 2. MSH-186 (Shogi Strength Harness): Shogi benchmark, tactical suite, openings,
    clock-mode game test, Texel data and a proposed external opponent pool for
    John's approval.

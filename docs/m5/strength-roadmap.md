@@ -34,7 +34,9 @@ The next work is Shogi:
    of at least 200 positions, a control with late-game depth of at least 8, then
    a bounded quiescence check stage, full SEE, Shogi-scaled margins and drop
    ordering, and a shared-core mate search (df-pn) for Shogi tsume, each with a
-   recorded outcome.
+   recorded outcome. The set passed its sequential predecessor test at
+   10 s + 0.5 s: 95 wins, 3 draws and 30 losses in 64 pairs; in-tree mate
+   probes were rejected. See [the round](shogi-selectivity-round.md).
 6. MSH-188 (Shogi Evaluation Round): Texel-tuned Shogi terms on a self-play
    corpus of at least about 500,000 positions with a game-level held-out split.
 7. MSH-191 (Shogi Strength Anchor): one approximate floodgate-referenced

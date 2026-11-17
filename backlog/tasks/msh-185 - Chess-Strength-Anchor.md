@@ -1,11 +1,11 @@
 ---
 id: MSH-185
 title: Chess Strength Anchor
-status: In Review
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:50:00Z'
-updated_date: '2026-11-17T00:17:00Z'
+updated_date: '2026-11-17T00:18:00Z'
 labels:
   - handle:chess-strength-anchor
 milestone: m-5
@@ -69,7 +69,7 @@ The report states the estimate with its uncertainty and conditions, the bracketi
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -115,5 +115,9 @@ Independent final review accepted source/report checkpoint1a954afe. Reproduction
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Measured frozen main f433ea13 against three independent full-strength families at60s+0.6s in Google Cloud. Final conditional index2750.51, approximate95% interval2714.87–2786.15, from228native-replayed games/114pairs (98W76D54L). Fixed precision and family coverage stops met; familyspread35.83. All8opponent crashes and60unstarted assignments retained; exact-Supernova normal shutdown classification corrected under independent review, originalreceipts preserved. No engine/rules change.96strength tests and28prior GCP checks passed; independent final review accepted1a954afe.13.183893VMh, estimatedUSD2.657978,2h39m32s; allstudyjobs/VMs/disks absent. Report and roadmap updated. Conditional index is not officialCCRL/humanrating or a measuredElogain over oldstudies. Integration pending; nextMSH-186 (Shogi Strength Harness).
+Measured frozen main f433ea13 against three independent, full-strength engine families at 60 s + 0.6 s in Google Cloud. The final conditional index is 2750.51, with approximate 95% interval 2714.87–2786.15, from 228 native-replayed games in 114 pairs (98 wins, 76 draws, 54 losses). The fixed precision and family coverage stops were met; family estimates differ by 35.83 points. This is not an official CCRL or human rating, or a measured Elo gain over older studies.
+
+All eight opponent crashes and 60 unstarted assignments are recorded. A narrow measurement correction admits normal post-conclusion Supernova termination; independent review accepted it, and original receipts remain unchanged. No engine or game-rule change was made. The corrected source passed 96 strength tests; 28 earlier GCP checks passed. Final independent review accepted checkpoint 1a954afe and reproduced the fit byte for byte. Actual verification covered macOS control and Linux cloud play, not Windows, GUI or release compatibility.
+
+The campaign used 13.183893 VM-hours, estimated US$2.657978 compute and 2 h 39 min 32 s through final cleanup. All study jobs, VMs and disks are absent. Stored evidence and images are retained. Report: docs/m5/chess-strength-anchor.md; durable evidence: docs/m5/evidence/msh185/README.md. Roadmap updated. Reviewed branch tip 92d1f475 was integrated into main by merge 22c4903105dd71edb37f496241ae823cac3c5d05. No blocker remains. Next eligible project-priority task: MSH-186 (Shogi Strength Harness).
 <!-- SECTION:FINAL_SUMMARY:END -->

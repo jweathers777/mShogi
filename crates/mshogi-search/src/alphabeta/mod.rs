@@ -545,6 +545,9 @@ impl<P: SearchPosition> Run<'_, P> {
             .limits
             .hard
             .map(|hard| self.start + self.limits.soft.unwrap_or(hard).min(hard) / MATE_SHARE);
+        // Rule-decided (repetition) disproofs depend on the path and the
+        // game history; a fresh table keeps them out of later searches.
+        self.s.mate.clear();
         let (result, visits) = mate::search(
             self.pos,
             &mut self.s.mate,

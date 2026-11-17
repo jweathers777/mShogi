@@ -214,6 +214,11 @@ impl<P: SearchPosition> Mate<'_, P> {
             self.table.put(key, result.0, result.1, 0);
             return result;
         }
+        // The latest result of each searched child. The table can drop or
+        // replace an entry (a full bucket of solved entries, the ply bound),
+        // so a child's own returned numbers take precedence; otherwise the
+        // same child could be selected again without progress.
+        let mut returned: Vec<Option<(u32, u32)>> = vec![None; children.len()];
         loop {
             // pn/dn of this node, and the best and second-best child.
             let (mut pn, mut dn) = if attacker {
@@ -226,7 +231,7 @@ impl<P: SearchPosition> Mate<'_, P> {
             let mut second = INFINITE;
             let mut best_other = 0;
             for (i, child) in children.iter().enumerate() {
-                let (cpn, cdn) = self.numbers(child);
+                let (cpn, cdn) = returned[i].unwrap_or_else(|| self.numbers(child));
                 let (value, other) = if attacker { (cpn, cdn) } else { (cdn, cpn) };
                 if attacker {
                     pn = pn.min(cpn);
@@ -269,7 +274,7 @@ impl<P: SearchPosition> Mate<'_, P> {
                 self.table.put(key, INFINITE, 0, 0);
                 return (INFINITE, 0);
             }
-            self.mid(child_pn, child_dn, !attacker, ply + 1);
+            returned[best] = Some(self.mid(child_pn, child_dn, !attacker, ply + 1));
             self.pos.unmake();
         }
     }

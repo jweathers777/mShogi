@@ -543,3 +543,30 @@ fn mate_search_rejects_a_perpetual_check_cycle() {
     }
     assert!(!matches!(mate_search(&mut p, 500_000), MateResult::Mate(_)));
 }
+
+#[test]
+fn mate_search_progresses_when_the_table_drops_results() {
+    // A tiny table shared by all positions fills with solved entries and must
+    // drop unsolved work; the search must still finish each proof.
+    let suite: serde_json::Value = serde_json::from_str(include_str!(
+        "../../../../tools/strength/data/shogi-tsume-v1.json"
+    ))
+    .unwrap();
+    let mut table = MateTable::new(4);
+    let rows = suite["positions"].as_array().unwrap();
+    for row in rows
+        .iter()
+        .filter(|r| r["mate_plies"].as_u64() <= Some(5))
+        .take(40)
+    {
+        let native = Position::from_sfen(row["sfen"].as_str().unwrap()).unwrap();
+        let mut p = ShogiPosition::from_position(&native);
+        let limits = MateLimits {
+            nodes: 200_000,
+            deadline: None,
+        };
+        let (result, nodes) = mate::search(&mut p, &mut table, limits, &mut || false);
+        assert!(nodes < 200_000, "{} used the whole budget", row["id"]);
+        assert!(!matches!(result, MateResult::NoMate), "{}", row["id"]);
+    }
+}

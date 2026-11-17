@@ -1,8 +1,9 @@
 //! Measure the shared df-pn mate search alone on a Shogi tsume catalog.
 //!
-//! Usage: shogi_tsume_solve SUITE.json NODE_LIMIT OUT.json
+//! Usage: shogi_tsume_solve SUITE.json NODE_LIMIT OUT.json [TABLE_BITS [shared]]
 //!
-//! Each position gets a fresh table and the node limit. A reported mate is
+//! Each position gets the node limit and a fresh table of 2^TABLE_BITS
+//! entries (default 20), or one table for all positions with `shared`. A reported mate is
 //! replayed with the native rules: every move must be legal and the final
 //! position must be checkmate. `first_in_expected` compares the first move
 //! with the catalog's shortest-mate answer set (a longer forced mate can
@@ -20,15 +21,19 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
     let suite: Value = serde_json::from_str(&std::fs::read_to_string(&args[1]).unwrap()).unwrap();
     let limit: u64 = args[2].parse().unwrap();
+    let bits: u32 = args.get(4).map_or(20, |b| b.parse().unwrap());
+    let shared = args.get(5).map(String::as_str) == Some("shared");
+    let mut common = MateTable::new(bits);
     let mut rows = vec![];
     for p in suite["positions"].as_array().unwrap() {
         let native = Position::from_sfen(p["sfen"].as_str().unwrap()).unwrap();
         let mut position = ShogiPosition::from_position(&native);
-        let mut table = MateTable::new(20);
+        let mut fresh = MateTable::new(if shared { 2 } else { bits });
+        let table = if shared { &mut common } else { &mut fresh };
         let start = Instant::now();
         let (result, nodes) = mate::search(
             &mut position,
-            &mut table,
+            table,
             MateLimits {
                 nodes: limit,
                 deadline: None,
@@ -76,7 +81,7 @@ fn main() {
         .collect();
     times.sort_by(f64::total_cmp);
     let summary = json!({
-        "positions": rows.len(), "node_limit": limit,
+        "positions": rows.len(), "node_limit": limit, "table_bits": bits, "shared_table": shared,
         "native_checkmate": solved.len(),
         "first_in_expected": rows.iter().filter(|r| r["first_in_expected"] == true).count(),
         "reported_without_native_mate": rows.iter().filter(|r| r["status"] == "mate" && r["native_checkmate"] != true).count(),

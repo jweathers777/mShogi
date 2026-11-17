@@ -26,6 +26,106 @@ pub struct GameRecord {
     wire: WireRecord,
 }
 
+/// New native events after an exact transport-bound retained state.
+/// Deserialization checks syntax, not legality: admission occurs in a native
+/// incremental session. This is not a saved-game format or a root identity.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct GameDelta {
+    start_event: usize,
+    events: Vec<WireEvent>,
+    #[serde(deserialize_with = "required_option")]
+    conclusion: Option<WireConclusion>,
+    #[serde(deserialize_with = "required_option")]
+    score_half_points: Option<[u8; 2]>,
+}
+impl GameDelta {
+    /// Number of accepted events at the required base. Not a history identity.
+    pub fn start_event(&self) -> usize {
+        self.start_event
+    }
+    /// Number of newly supplied events.
+    pub fn event_count(&self) -> usize {
+        self.events.len()
+    }
+    /// Expected complete event count after successful admission.
+    pub fn end_event(&self) -> Option<usize> {
+        self.start_event.checked_add(self.events.len())
+    }
+    /// Strict duplicate-preserving typed parsing, bounded as native records.
+    pub fn from_json(text: &str) -> Result<Self, RecordError> {
+        if text.len() > MAX_RECORD_BYTES {
+            return Err(RecordError::Capacity);
+        }
+        let delta: Self =
+            serde_json::from_str(text).map_err(|e| RecordError::Json(e.to_string()))?;
+        delta.check_capacity()?;
+        Ok(delta)
+    }
+    /// Compact transport encoding; unchanged saved-game records use GameRecord.
+    pub fn to_json(&self) -> Result<String, RecordError> {
+        self.check_capacity()?;
+        let text = serde_json::to_string(self).map_err(|e| RecordError::Json(e.to_string()))?;
+        if text.len() > MAX_RECORD_BYTES {
+            return Err(RecordError::Capacity);
+        }
+        Ok(text)
+    }
+    fn check_capacity(&self) -> Result<(), RecordError> {
+        if self.end_event().is_none_or(|end| end > MAX_RECORD_EVENTS) {
+            return Err(RecordError::Capacity);
+        }
+        Ok(())
+    }
+    fn apply(&self, game: &mut Game) -> Result<(), RecordError> {
+        self.check_capacity()?;
+        if self.start_event != game.events().len() {
+            return Err(RecordError::Prefix);
+        }
+        // Parse every command before mutation. Derived diagrams are compared
+        // byte-for-byte to native canonical output; they are never imported.
+        let commands = self
+            .events
+            .iter()
+            .enumerate()
+            .map(|(offset, event)| {
+                let index = self.start_event + offset;
+                if event.index != index {
+                    return Err(RecordError::Event(index));
+                }
+                event.command.to_native().ok_or(RecordError::Event(index))
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+        game.append_transaction(|game| {
+            for (event, command) in self.events.iter().zip(commands) {
+                game.apply_command(event.actor.native(), command)
+                    .map_err(|e| replay_error(event.index, e))?;
+                if *event != WireEvent::from(game.events().last().expect("just appended event")) {
+                    return Err(RecordError::Event(event.index));
+                }
+            }
+            if self.conclusion != game.conclusion().map(WireConclusion::from)
+                || self.score_half_points != score(game.conclusion())
+            {
+                return Err(RecordError::Conclusion);
+            }
+            Ok(())
+        })
+    }
+}
+
+impl crate::native::incremental::IncrementalRecord for GameRecord {
+    type Game = Game;
+    type Delta = GameDelta;
+    type Error = RecordError;
+    fn reconstruct(&self) -> Result<Game, RecordError> {
+        self.to_game()
+    }
+    fn append(game: &mut Game, delta: &GameDelta) -> Result<(), RecordError> {
+        delta.apply(game)
+    }
+}
+
 /// Explicit rejection of malformed, unsupported or inconsistent native records.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum RecordError {
@@ -270,6 +370,21 @@ impl GameRecord {
             (&event.conclusion, event.score_half_points)
         };
         conclusion == &previous.conclusion && score == previous.score_half_points
+    }
+
+    /// Copy only new events for an incremental transport. The host must first
+    /// establish the exact previous record with `has_prefix`; a count alone
+    /// cannot establish that relationship. No replay or full ledger copy occurs.
+    pub fn suffix(&self, start_event: usize) -> Result<GameDelta, RecordError> {
+        if start_event > self.wire.events.len() {
+            return Err(RecordError::Prefix);
+        }
+        Ok(GameDelta {
+            start_event,
+            events: self.wire.events[start_event..].to_vec(),
+            conclusion: self.wire.conclusion.clone(),
+            score_half_points: self.wire.score_half_points,
+        })
     }
 
     /// Rebuild an event prefix; a same-board terminal command remains a distinct prefix.

@@ -246,6 +246,7 @@ fn worker(shared: Arc<Shared>, path: PathBuf, options: BridgeOptions) {
     shared.exited.store(true, Ordering::Release);
 }
 struct Process {
+    incremental: crate::incremental::Client,
     child: Child,
     pipes: Vec<JoinHandle<()>>,
     stderr: Arc<Mutex<Vec<u8>>>,
@@ -343,6 +344,7 @@ impl Process {
                 }
             });
         let mut process = Self {
+            incremental: crate::incremental::Client::default(),
             child,
             pipes: Vec::new(),
             stderr,
@@ -450,16 +452,6 @@ fn run(
     pending: &Pending,
     engine: &mut Option<Process>,
 ) -> ExecutionResponse {
-    let mut bytes = match serde_json::to_vec(&*pending.context) {
-        Ok(bytes) => bytes,
-        Err(error) => return pending.context.failure(FailureKind::InvalidRequest, error),
-    };
-    if bytes.len() > MAX_REQUEST_BYTES {
-        return pending
-            .context
-            .failure(FailureKind::InvalidRequest, "request exceeds byte cap");
-    }
-    bytes.push(b'\n');
     if pending.cancelled.load(Ordering::Acquire) {
         return pending
             .context
@@ -479,7 +471,20 @@ fn run(
                 }
             },
         };
-        let exchange = exchange(&mut process, kept, &bytes, pending, deadline);
+        let exchange = match process.incremental.encode(&pending.context) {
+            Ok(mut bytes) if bytes.len() <= MAX_REQUEST_BYTES => {
+                bytes.push(b'\n');
+                exchange(&mut process, kept, &bytes, pending, deadline)
+            }
+            Ok(_) => Exchange::Failure(
+                pending
+                    .context
+                    .failure(FailureKind::InvalidRequest, "request exceeds byte cap"),
+            ),
+            Err(error) => {
+                Exchange::Failure(pending.context.failure(FailureKind::InvalidRequest, error))
+            }
+        };
         if let Exchange::Response(response) = exchange {
             *engine = Some(process);
             return response;
@@ -539,10 +544,11 @@ fn exchange(
                     if bytes.last() != Some(&b'\n') {
                         ended = Some(bytes);
                     } else {
-                        let response: ExecutionResponse = match serde_json::from_slice(&bytes) {
-                            Ok(response) => response,
-                            Err(error) => return fail(FailureKind::MalformedResponse, &error),
-                        };
+                        let response =
+                            match process.incremental.decode(&bytes, pending.context.clone()) {
+                                Ok(response) => response,
+                                Err((kind, error)) => return fail(kind, &error),
+                            };
                         if !response.matches(&pending.context) {
                             return fail(
                                 FailureKind::ContextMismatch,

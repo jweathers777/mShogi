@@ -138,7 +138,7 @@ impl Choice {
         }
     }
 }
-/// Last completed decision; an incomplete first iteration has none.
+/// Completed decision or an explicitly unscored timed legal fallback.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Decision {
     /// A proposed native choice, not an already applied command.
@@ -149,7 +149,7 @@ pub enum Decision {
 /// Actual observations. All scores use the captured native root side's perspective.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SearchResult {
-    /// None before a complete iteration, never a fabricated fallback.
+    /// A timed live request can retain a legal root choice at depth zero.
     pub decision: Option<Decision>,
     /// Root-side score; terminal distance counts board/declaration command edges.
     pub score: Option<i32>,
@@ -159,7 +159,7 @@ pub struct SearchResult {
     pub completed_depth: u16,
     /// Admitted visits, including quiescence and partial work.
     pub nodes: u64,
-    /// Completed continuation, possibly ending in a declaration.
+    /// Completed continuation, or the one unsearched timed fallback move.
     pub principal_variation: Vec<Choice>,
     /// Actual completion, finite budget exhaustion or cooperative stop.
     pub status: SearchStatus,
@@ -207,6 +207,10 @@ pub fn search_with_stop(
 
 /// Search with caller-owned state and an optional total adapter time budget.
 /// Use a fresh engine for reproducible fixed-limit requests.
+/// A timed live request retains a native legal root-order move if no iteration
+/// completes. That choice has no score or completed depth. External cancellation
+/// still returns no fallback; native terminal and declaration decisions stay
+/// authoritative. The mandatory root checks can outlast a minimal time budget.
 pub fn search_with_state(
     game: &Game,
     limits: Limits,
@@ -215,7 +219,6 @@ pub fn search_with_state(
     mut stop: impl FnMut() -> bool,
 ) -> Result<SearchResult, SearchError> {
     let timing = alphabeta::timing::RequestTime::new(time);
-    let mut stop = || stop() || timing.expired();
     if !limits.valid() {
         return Err(SearchError::InvalidLimits);
     }
@@ -233,18 +236,20 @@ pub fn search_with_state(
         result.status = SearchStatus::Stopped;
         return Ok(result);
     }
-    if limits.nodes == 0 {
+    if limits.nodes == 0 && time.is_none() {
         result.status = SearchStatus::NodeLimit;
         return Ok(result);
     }
     if let Some(conclusion) = game.conclusion() {
         result.decision = Some(Decision::Finished(conclusion));
         result.score = Some(terminal_score(conclusion, root_side, 0));
-        result.completed_depth = 1;
-        result.nodes = 1;
+        // With no search work admitted, observe the existing native result
+        // without claiming an iteration or a node visit.
+        result.completed_depth = u16::from(limits.nodes > 0);
+        result.nodes = u64::from(limits.nodes > 0);
         return Ok(result);
     }
-    if game.declaration_eligibility(root_side).eligible() {
+    if game.declaration_eligibility(root_side).eligible() && (time.is_none() || limits.nodes >= 2) {
         result.nodes = 1;
         if stop() {
             result.status = SearchStatus::Stopped;
@@ -276,11 +281,21 @@ pub fn search_with_state(
         return Err(SearchError::Invariant);
     }
     let mut position = ShogiPosition::from_game(game);
-    let outcome = engine.search(
-        &mut position,
-        timing.limits(limits.depth, Some(limits.nodes)),
-        &mut stop,
-    );
+    let outcome = if time.is_some() {
+        let fallback = position.find(legal[0]).ok_or(SearchError::Invariant)?;
+        engine.search_with_timed_fallback(
+            &mut position,
+            timing.limits(limits.depth, Some(limits.nodes)),
+            &mut stop,
+            fallback,
+        )
+    } else {
+        engine.search(
+            &mut position,
+            timing.limits(limits.depth, Some(limits.nodes)),
+            &mut stop,
+        )
+    };
     result.nodes = outcome.nodes;
     result.completed_depth = outcome.depth;
     result.status = match outcome.status {

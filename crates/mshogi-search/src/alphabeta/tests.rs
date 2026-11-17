@@ -3,6 +3,44 @@
 //! last counter wins. The theory is known: a count divisible by four loses.
 use super::*;
 
+#[test]
+fn timed_native_fallback_is_unscored_and_does_not_override_cancellation_or_fixed_work() {
+    let root = Counters {
+        left: 12,
+        path: vec![],
+        nulls: 0,
+    };
+    for (nodes, hard, expected) in [
+        (Some(100), Duration::ZERO, Status::Stopped),
+        (Some(0), Duration::from_secs(1), Status::NodeLimit),
+        (Some(1), Duration::from_secs(1), Status::NodeLimit),
+    ] {
+        let mut p = root.clone();
+        let mut s = Searcher::new(1);
+        let mut bounds = limits(40);
+        bounds.nodes = nodes;
+        bounds.hard = Some(hard);
+        let result = s.search_with_timed_fallback(&mut p, bounds, &mut || false, 2);
+        assert_eq!(
+            (result.best, result.score, result.depth),
+            (Some(2), None, 0)
+        );
+        assert_eq!(result.pv, vec![2]);
+        assert_eq!(result.status, expected);
+        assert!(result.nodes <= nodes.unwrap());
+        assert_eq!(p.left, root.left);
+        assert!(p.path.is_empty());
+        let cancelled = s.search_with_timed_fallback(&mut p, bounds, &mut || true, 2);
+        assert!(cancelled.best.is_none());
+        assert!(cancelled.pv.is_empty());
+        bounds.hard = None;
+        let original = Searcher::new(1).search(&mut p, bounds, &mut || false);
+        let opted_in =
+            Searcher::new(1).search_with_timed_fallback(&mut p, bounds, &mut || false, 2);
+        assert_eq!(original, opted_in);
+    }
+}
+
 #[derive(Clone)]
 struct Counters {
     left: u32,

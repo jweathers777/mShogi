@@ -421,47 +421,57 @@ impl Game {
         if request.expected != self.context() {
             return Err(GameError::StaleContext);
         }
+        let before = self.clone();
+        let mut candidate = self.clone();
+        candidate.apply_command(request.actor, request.command)?;
+        *self = candidate;
+        Ok(GameUndo {
+            before,
+            after: self.clone(),
+        })
+    }
+
+    /// Rules-owned command execution after a caller has bound the prior state.
+    /// Internal callers must provide transaction rollback on an error.
+    pub(super) fn apply_command(
+        &mut self,
+        actor: Side,
+        command: GameCommand,
+    ) -> Result<(), GameError> {
         if self.conclusion.is_some() {
             return Err(GameError::Concluded);
         }
-        let before = self.clone();
-        let mut candidate = self.clone();
-        let (gave_check, declaration) = match request.command {
+        let (gave_check, declaration) = match command {
             GameCommand::Play(action) => {
-                if request.actor != candidate.position.side_to_move() {
+                if actor != self.position.side_to_move() {
                     return Err(GameError::WrongActor);
                 }
-                candidate
-                    .position
+                self.position
                     .apply(action)
                     .map_err(GameError::IllegalAction)?;
-                let check = candidate
-                    .position
-                    .is_in_check(candidate.position.side_to_move());
-                candidate.checks.push(CheckStep {
-                    actor: request.actor,
+                let check = self.position.is_in_check(self.position.side_to_move());
+                self.checks.push(CheckStep {
+                    actor,
                     gave_check: check,
                 });
-                candidate
-                    .identities
-                    .push(candidate.position.repetition_identity());
-                candidate.conclusion = candidate.after_action_conclusion(request.actor, action)?;
+                self.identities.push(self.position.repetition_identity());
+                self.conclusion = self.after_action_conclusion(actor, action)?;
                 (Some(check), None)
             }
             GameCommand::Resign => {
-                candidate.conclusion = Some(Conclusion::Win {
-                    winner: request.actor.opponent(),
+                self.conclusion = Some(Conclusion::Win {
+                    winner: actor.opponent(),
                     reason: WinReason::Resignation,
                 });
                 (None, None)
             }
             GameCommand::DeclareEnteringKing => {
-                let evidence = candidate.declaration_eligibility(request.actor);
-                candidate.conclusion = Some(Conclusion::Win {
+                let evidence = self.declaration_eligibility(actor);
+                self.conclusion = Some(Conclusion::Win {
                     winner: if evidence.eligible() {
-                        request.actor
+                        actor
                     } else {
-                        request.actor.opponent()
+                        actor.opponent()
                     },
                     reason: if evidence.eligible() {
                         WinReason::EnteringKing
@@ -472,20 +482,38 @@ impl Game {
                 (None, Some(evidence))
             }
         };
-        candidate.events.push(GameEvent {
-            index: candidate.events.len(),
-            actor: request.actor,
-            command: request.command,
+        self.events.push(GameEvent {
+            index: self.events.len(),
+            actor,
+            command,
             gave_check,
             declaration,
-            after_sfen: candidate.position.to_sfen(),
-            conclusion: candidate.conclusion,
+            after_sfen: self.position.to_sfen(),
+            conclusion: self.conclusion,
         });
-        *self = candidate;
-        Ok(GameUndo {
-            before,
-            after: self.clone(),
-        })
+        Ok(())
+    }
+
+    /// Atomic append-only transaction without copying the accepted history.
+    /// Only the record adapter can use this path, and it never rewrites a prefix.
+    pub(super) fn append_transaction<T, E>(
+        &mut self,
+        apply: impl FnOnce(&mut Self) -> Result<T, E>,
+    ) -> Result<T, E> {
+        let position = self.position.clone();
+        let conclusion = self.conclusion;
+        let events = self.events.len();
+        let identities = self.identities.len();
+        let checks = self.checks.len();
+        let result = apply(self);
+        if result.is_err() {
+            self.position = position;
+            self.conclusion = conclusion;
+            self.events.truncate(events);
+            self.identities.truncate(identities);
+            self.checks.truncate(checks);
+        }
+        result
     }
     /// Restore board, commands, counters, occurrences and checks exactly. Runtime hosts must
     /// separately invalidate pending execution identities when changing their session.

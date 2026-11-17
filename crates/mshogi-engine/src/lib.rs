@@ -9,6 +9,7 @@ mod observation_identity;
 pub use analysis::*;
 mod bridge;
 mod chu;
+pub mod incremental;
 mod server;
 mod shared;
 mod shogi;

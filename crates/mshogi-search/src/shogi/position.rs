@@ -883,6 +883,7 @@ impl ShogiPosition {
     }
     /// Terms that depend on more than one piece: slider mobility and king
     /// safety, for one side.
+    #[allow(clippy::needless_range_loop)]
     fn dynamic_features(&self, side: usize, sink: &mut impl FnMut(usize, i32)) {
         use super::eval::*;
         let occupied = self.occupied[0] | self.occupied[1];

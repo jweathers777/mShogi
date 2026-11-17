@@ -4,6 +4,7 @@ title: Shogi Selectivity Round
 status: Ready
 assignee: []
 created_date: '2026-11-17T16:42:00Z'
+updated_date: '2026-11-17T16:47:00Z'
 labels:
   - handle:shogi-selectivity-round
 milestone: m-5
@@ -65,3 +66,9 @@ Every item in step 2 has a recorded outcome: retained with evidence, or rejected
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Shared-core rule (John, 2026-11-17): build each search technique in the shared search core (crates/mshogi-search/src/alphabeta), with Shogi supplying only game data through the position trait. The core margins are now fixed constants for Chess values (for example FUTILITY [0,150,300,450] in alphabeta/mod.rs); make them scale from a value the game supplies (for example its smallest piece value), so every game gets correct margins. The quiescence check stage and SEE-based pruning are core features that a game turns on and feeds with its own move and exchange data. Do not create a Shogi-only search path. Other games keep their present behavior unless a change is tested for them.
+<!-- SECTION:NOTES:END -->

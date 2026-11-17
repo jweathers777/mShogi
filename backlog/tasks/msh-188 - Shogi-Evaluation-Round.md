@@ -4,7 +4,7 @@ title: Shogi Evaluation Round
 status: Ready
 assignee: []
 created_date: '2026-11-17T08:58:00Z'
-updated_date: '2026-11-17T16:42:00Z'
+updated_date: '2026-11-17T16:47:00Z'
 labels:
   - handle:shogi-evaluation-round
 milestone: m-5
@@ -59,3 +59,9 @@ Retained changes pass native perft and differential checks, the development tact
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Shared-core rule (John, 2026-11-17): evaluation terms belong to the Shogi position (game data); the Texel tuning tool and corpus format stay shared across games. Do not add search changes in this task.
+<!-- SECTION:NOTES:END -->

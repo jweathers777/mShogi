@@ -4,6 +4,7 @@ title: Shogi Request Overhead
 status: Ready
 assignee: []
 created_date: '2026-11-17T16:41:00Z'
+updated_date: '2026-11-17T16:47:00Z'
 labels:
   - handle:shogi-request-overhead
 milestone: m-5
@@ -54,3 +55,9 @@ Verification Level 2 (process and session lifetime, protocol). Independent revie
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Shared mechanism (John, 2026-11-17): MSH-187 connected only Shogi to the generic engine session slot with a Shogi-specific prefix check (crates/mshogi-engine/src/server.rs, shogi.rs: record.has_prefix). Build incremental session state at that shared session layer, game-independent, so Chess, Tori, Xiangqi, Chu and Tenjiku can use it without new code paths. Shogi is the first user.
+<!-- SECTION:NOTES:END -->

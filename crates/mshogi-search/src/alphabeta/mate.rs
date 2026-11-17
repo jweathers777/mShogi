@@ -25,6 +25,8 @@ struct Entry {
     key: u64,
     pn: u32,
     dn: u32,
+    /// For a proven node: plies to mate along the stored proof.
+    len: u32,
 }
 
 /// Fixed-size proof table, replace-always.
@@ -53,9 +55,14 @@ impl MateTable {
             (1, 1)
         }
     }
-    fn put(&mut self, key: u64, pn: u32, dn: u32) {
+    /// Proof length of a proven entry, if stored.
+    fn len(&self, key: u64) -> Option<u32> {
+        let e = self.entries[key as usize & self.mask];
+        (e.key == key && key != 0 && e.pn == 0).then_some(e.len)
+    }
+    fn put(&mut self, key: u64, pn: u32, dn: u32, len: u32) {
         if key != 0 {
-            self.entries[key as usize & self.mask] = Entry { key, pn, dn };
+            self.entries[key as usize & self.mask] = Entry { key, pn, dn, len };
         }
     }
 }
@@ -172,7 +179,7 @@ impl<P: SearchPosition> Mate<'_, P> {
             } else {
                 (0, INFINITE)
             };
-            self.table.put(key, result.0, result.1);
+            self.table.put(key, result.0, result.1, 0);
             return result;
         }
         loop {
@@ -206,7 +213,12 @@ impl<P: SearchPosition> Mate<'_, P> {
                 }
             }
             if pn >= th_pn || dn >= th_dn || pn == 0 || dn == 0 || self.exhausted() {
-                self.table.put(key, pn, dn);
+                let len = if pn == 0 {
+                    self.proof_len(&children, attacker)
+                } else {
+                    0
+                };
+                self.table.put(key, pn, dn, len);
                 return (pn, dn);
             }
             // 1+epsilon threshold for the selected child.
@@ -222,7 +234,7 @@ impl<P: SearchPosition> Mate<'_, P> {
             let child = children[best];
             if !self.pos.make(child.m) {
                 // Generation and admission disagree: treat as no mate.
-                self.table.put(key, INFINITE, 0);
+                self.table.put(key, INFINITE, 0, 0);
                 return (INFINITE, 0);
             }
             self.mid(child_pn, child_dn, !attacker, ply + 1);
@@ -230,10 +242,30 @@ impl<P: SearchPosition> Mate<'_, P> {
         }
     }
 
-    /// Follow proven moves from the root to the mate.
+    /// Proof length of a proven node: the shortest proven attacker move, or
+    /// the longest defender reply, plus one.
+    fn proof_len(&self, children: &[Child<P::Move>], attacker: bool) -> u32 {
+        let lengths = children
+            .iter()
+            .filter(|c| !c.ruled)
+            .filter_map(|c| self.table.len(c.key));
+        1 + if attacker {
+            lengths.min()
+        } else {
+            lengths.max()
+        }
+        .unwrap_or(MAX_MATE_PLY as u32)
+    }
+
+    /// Follow proven moves from the root to the mate along strictly
+    /// decreasing stored proof lengths, so the line cannot cycle.
     fn proof_line(&mut self) -> Option<Vec<P::Move>> {
         let mut line = vec![];
         let mut attacker = true;
+        let mut bound = self
+            .table
+            .len(self.pos.hash())
+            .map_or(MAX_MATE_PLY as u32 + 1, |len| len + 1);
         let ok = loop {
             let children = self.children(attacker);
             if children.is_empty() {
@@ -242,22 +274,28 @@ impl<P: SearchPosition> Mate<'_, P> {
             if line.len() >= MAX_MATE_PLY {
                 break false;
             }
-            // Attacker: a proven move. Defender: the reply with the largest
-            // remaining proof work, a proxy for the longest resistance.
+            // Attacker: the shortest proven move. Defender: the longest
+            // resistance; every reply must be proven.
+            let proven = children.iter().filter(|c| !c.ruled).filter_map(|c| {
+                self.table
+                    .len(c.key)
+                    .filter(|&len| len < bound)
+                    .map(|len| (len, c))
+            });
             let pick = if attacker {
-                children
-                    .iter()
-                    .find(|c| !c.ruled && self.table.get(c.key).0 == 0)
+                proven.min_by_key(|&(len, _)| len)
+            } else if children
+                .iter()
+                .all(|c| !c.ruled && self.table.len(c.key).is_some())
+            {
+                proven.max_by_key(|&(len, _)| len)
             } else {
-                children
-                    .iter()
-                    .filter(|c| !c.ruled)
-                    .max_by_key(|c| self.table.get(c.key).1)
-                    .filter(|c| self.table.get(c.key).0 == 0)
+                None
             };
-            let Some(&child) = pick else {
+            let Some((len, &child)) = pick else {
                 break false;
             };
+            bound = len;
             if !self.pos.make(child.m) {
                 break false;
             }

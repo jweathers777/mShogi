@@ -1,11 +1,11 @@
 ---
 id: MSH-187
 title: Shogi Strength Round
-status: In Progress
+status: In Review
 assignee:
   - '@codex'
 created_date: '2026-11-16T20:51:00Z'
-updated_date: '2026-11-17T08:09:00Z'
+updated_date: '2026-11-17T09:02:00Z'
 labels:
   - handle:shogi-strength-round
 milestone: m-5
@@ -16,6 +16,7 @@ documentation:
   - docs/m5/strength-roadmap.md
   - docs/m5/strength-harness.md
   - docs/m5/evidence/msh180/README.md
+  - docs/m5/shogi-strength-round.md
 priority: high
 ordinal: 194000
 ---
@@ -48,25 +49,25 @@ Each retained set passes Shogi perft and differential tests against the native r
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Before each coherent set, the task records baseline, intended benefit, comparison method, resource limit and decision checkpoint; each set is retained or rejected on that evidence.
-- [ ] #2 Retained changes pass Shogi perft and randomized differential tests against the native rules, and all other games' search tests still pass.
-- [ ] #3 Retained changes improve the Shogi tactical suite or depth at time, and win a sequential clock-mode game test against the frozen task-start predecessor.
-- [ ] #4 Desktop play and default USI use a time budget through the shared session policy, with the affected desktop and USI checks recorded.
-- [ ] #5 Results before and after, decisions, limitations and independent review are recorded, and docs/m5/shared-search-core.md is current.
+- [x] #1 Before each coherent set, the task records baseline, intended benefit, comparison method, resource limit and decision checkpoint; each set is retained or rejected on that evidence.
+- [x] #2 Retained changes pass Shogi perft and randomized differential tests against the native rules, and all other games' search tests still pass.
+- [x] #3 Retained changes improve the Shogi tactical suite or depth at time, and win a sequential clock-mode game test against the frozen task-start predecessor.
+- [x] #4 Desktop play and default USI use a time budget through the shared session policy, with the affected desktop and USI checks recorded.
+- [x] #5 Results before and after, decisions, limitations and independent review are recorded, and docs/m5/shared-search-core.md is current.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-1. Preserve frozen predecessor 1d19a544 and rejected first candidate e902/ed92 with its failed cloud evidence. 2. Retain only the reviewed speed/history/time candidate frozen at ef1c94a3: faster equivalent attacks and incremental unchanged evaluation, exact validated history-prefix cache matching, and shared timed desktop/USI defaults; shared search policy and SEE match the predecessor. 3. Use completed native/differential, 21-root fixed-work identity, tactical and affected consumer checks, plus independent source review; bind Linux image and replay provenance. 4. Run the separate six-worker round-2 sequential 5+.2 predecessor comparison with fixed H1=15, native conclusions only and failure stop. Use one true 60-minute epoch, aggregate 8 VMh/$2 including round 1, and verify cleanup. 5. Retain only with required strength acceptance; otherwise record no decision or failure without weakening criteria. If accepted, update final evidence/current docs, record later evaluation work separately, integrate main and push; no extra campaign or external study follows automatically.
+1. Preserve task-start predecessor 1d19a544 and all rejected candidates and failed comparisons. 2. Retain only tested ef1 speed/history/time source; shared search policy and SEE match the predecessor. 3. Complete native correctness, perft/differential, fixed-work identity, depth/tactics and affected time/session consumer checks with independent source review. 4. Qualify unchanged native ef1 in the separately frozen 5+.5 round3 protocol with tools200a, fixed deadline and aggregate resource caps; preserve both failed5+.2 campaigns separately. 5. Record H1 outcome, native replay, independent game/resource review and MSH-188 (Shogi Evaluation Round), then integrate into main and push.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -99,4 +100,18 @@ Second campaign stopped: six pairs launched, four complete (candidate 5 wins/0 d
 Timing-viability checkpoint: 96 matched local requests completed in36.89s with zero errors/forced cleanup. Both frozen engines completed every original114/115ms request locally; cloud starvation did not reproduce on this Mac. All48 requests at400ms also completed, with failed-history depths6-8 for predecessor and7-8 for candidate; maximum caller latency397.56ms. This supports, but does not prove, a separate cloud pilot at5+.5. Decision: keep candidate ef1 and frozen predecessor unchanged; adapt only the measurement control/bounds, preserving both failed campaigns. New frozen protocol bundle: base5s/increment.5s,420s pair bound,1200s worker task, at most5VMs/two pairs per VM; six original openings, native conclusions, sameH1=15/SPRT and failures stop remain unchanged. Before launch independently review exact bundle validation and backward validation of old receipts. Aggregate8VMh/$2 remains; prior conservative2.222044513VMh/$ .447981950. New60min window/5VM envelope totals7.222044513VMh/$1.45602195. Preserve original8-VM controller envelopes; derive separate5-VM upper bounds only after full resource audit confirms<=5VMs/nofailedinsertions and exact immutable receipts. No score is assigned to incomplete games, and no games are pooled.
 
 Final third-protocol review accepted after51offline tests. Corrected worker bound to1320s (not initial1200 proposal) for two420s pairs and retained reserves. New bundle fixed5+.5/420s pair/1320s task/max5VMs/two pairs,570s worker start reserve. Initial launch needs3360s; later bins need1500s for two pairs or930s for one. Submit enforces audited aggregate gate directly and refreshes admission time after native replay; no second replay and no launch if margin expired. Both prior protocol receipts remain valid. Worker file/image/source identities are separate from unchanged ef1/1d native binaries. Independent review and exact hashes: docs/m5/evidence/msh187/round3-protocol-review.md. No third-campaign launch yet.
+
+Third-protocol worker tools frozen at200a391022d2499d0d8ff6a5bd445ecedd424a79; native candidate/runner/config writer remain ef1c94a3536aeac2feaa85f1722968c9bf864c0c and predecessor1d19a544. Immutable worker image sha256:d95c4322c3c5a60dbe992db6fc623ca1ca3d6ace626edb3d3f2235210e3ab355 passed exact worker-file/native-binary verification and one-step-per-color5+.5 native smoke/replay/emptycleanup (unscored). Separate third comparison pilot5pairs submitted msh187-round3-b01. True epoch1794903132.236144, fixed deadline1794906732.236144 (09:12:12 UTC), initial aggregate envelope7.22204451296VMh/$1.45602195017. No old games are pooled. Existing source verification remains unchanged; winning predecessor criterion still pending.
+
+Third comparison through15pairs:24 candidate wins/1draw/5losses, no unfinished games; LLR1.4840140434 below2.9444389792 and minimum30notmet. Both batches pass local native replay, independent game/clock/source review, verifiedcleanup, and actualresourceaudit. Independent reviewer checked1260+2882 clock transitions, all applied with positive completed depth. Pilot actual .28606183165VMh/$ .05767235375; secondbatch .54745256166VMh/$ .11037081605. Batch3 seeds16-25 submitted under same fixedsource/control/deadline; no strength acceptance yet. B03 inputs reuse the already fully replayed prior summary to avoid an extra offline replay pass; submit still performs every native/provenance/resource/time admission check.
+
+Final round3 host replay/aggregation passed: 30 complete pairs, 50 wins/1 draw/9 losses, pentanomial [0,0,9,1,20], LLR3.5711588644 above2.9444389792; H1 accepted at the30-pair minimum. No unfinished games or failures; all60 games replayed by native authority. Four batches completed before the fixed09:12:12UTC deadline and all owned jobs/VMs/disks are absent. Final native source ef1 remains byte-identical at HEAD200a; worker source separately200a. Actual round3 allocation1.7779004117VMh/$0.3584389462; all three campaigns3.1222800120VMh/$0.6294766287 estimated compute. Separate conservative all-round allocation4.7467197375VMh below8VMh/$2. See docs/m5/evidence/msh187/round3 and revised/verification.json. Retain speed/history/time set; reject earlier full SEE and quiet-check additions. MSH-188 (Shogi Evaluation Round) records next bounded set, not started. In Review pending final campaign review and main integration.
+
+Independent final campaign review accepted at docs/m5/evidence/msh187/round3/README.md: all30 report/config identities,60 native conclusions,8935 clock transitions, paired openings, source/image hashes and7 batch resource audits checked. Final source-scope review confirms nativeHEAD200a equals testedef1. No unresolved material findings. Applicable verification is Level1 search and targetedLevel2 time/session on macOS plus Linux worker execution; Windows and packaged GUI remain deferred integration checkpoints, not claimed passed.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Retained faster equivalent Shogi position operations, exact validated history-prefix cache matching and one-second desktop/default USI play. Final source ef1 preserves predecessor search policy and evaluation weights. Ordinary1000ms opening depths improve14/16/11/11/10 to15/17/12/12/11; identical fixed work takes25.9% less time, while one hand-heavy throughput case regresses2.9%. Tactics12/12 unchanged. Correctness/consumer checks:840 passed14 ignored, focused native19 and22 test runs, strict Clippy and standaloneTauri passed;21 fixed-work roots identical. Final5+.5 cloud comparison accepted H1:50W1D9L,30pairs,LLR3.5712; all60 native replays and independent review passed. Earlier quiet-check/full-SEE set rejected and both failed5+.2 campaigns preserved separately. All campaign compute3.12228VMh/~$0.62948 estimated; all jobs/VMs/disks removed. Report: docs/m5/shogi-strength-round.md; canonical source verification: revised/verification.json; final game review: round3/README.md. MSH-188 (Shogi Evaluation Round) is the next scoped task, not started. No external rating, tuned evaluation, Windows runtime or packaged GUI result claimed. Integration into main pending; real commit references will be appended after merge.
+<!-- SECTION:FINAL_SUMMARY:END -->

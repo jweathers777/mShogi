@@ -1,4 +1,4 @@
-"""Prepare self-generated Texel data; never use game scores as result labels.
+"""Prepare self-generated Texel data; never use search scores as result labels.
 
 Generate with the frozen chess_selfplay example, then run:
 python3 -m tools.strength.texel_data split CORPUS_DIR MANIFEST.json

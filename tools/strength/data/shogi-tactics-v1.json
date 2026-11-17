@@ -102,7 +102,7 @@
       ],
       "mate_plies": 1,
       "phase": "endgame",
-      "reason": "Pawn4b4a must promote. Tokin4a checks5a, covers4b; Gold5c covers5b, and is protected by Bishop3b. Bishop3b4a+ instead gives adjacent horse check and is protected by Pawn4b. Defender6a pawn and6b knight occupy remaining escapes and cannot capture either checker. Unpromoted bishop4a does not check.",
+      "reason": "Pawn4b4a must promote. Tokin4a checks5a, covers4b; Gold5c covers5b; Bishop3b protects Tokin4a. Bishop3b4a+ instead gives adjacent horse check and is protected by Pawn4b. Defender6a pawn and6b knight occupy remaining escapes and cannot capture either checker. Unpromoted bishop4a does not check.",
       "source": "Original MSH-186 composition, 2026-11-17; not a published tsume. promotion-choice",
       "license": "CC0-1.0",
       "geometry": "promotion-choice"
@@ -117,7 +117,7 @@
       ],
       "mate_plies": 1,
       "phase": "endgame",
-      "reason": "Rotate all squares180 degrees and exchange owners in this proof: Pawn4b4a must promote. Tokin4a checks5a, covers4b; Gold5c covers5b, and is protected by Bishop3b. Bishop3b4a+ instead gives adjacent horse check and is protected by Pawn4b. Defender6a pawn and6b knight occupy remaining escapes and cannot capture either checker. Unpromoted bishop4a does not check.",
+      "reason": "Rotate all squares180 degrees and exchange owners in this proof: Pawn4b4a must promote. Tokin4a checks5a, covers4b; Gold5c covers5b; Bishop3b protects Tokin4a. Bishop3b4a+ instead gives adjacent horse check and is protected by Pawn4b. Defender6a pawn and6b knight occupy remaining escapes and cannot capture either checker. Unpromoted bishop4a does not check.",
       "source": "Original MSH-186 composition, 2026-11-17; not a published tsume. promotion-choice",
       "license": "CC0-1.0",
       "geometry": "promotion-choice"

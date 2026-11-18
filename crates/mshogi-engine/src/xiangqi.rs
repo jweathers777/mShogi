@@ -371,3 +371,48 @@ mod identity_tests {
         assert_eq!(telemetry.score_label(), None);
     }
 }
+
+/// Xiangqi front-end access to the shared timed history-prefix policy.
+/// Timed searches keep the table while each request extends the previous
+/// native history (same root, policy and event prefix); fixed-work searches
+/// use fresh state and leave the kept state alone.
+#[derive(Default)]
+pub struct XiangqiSearchSession {
+    slot: crate::server::Slot<search::Engine>,
+    last: Option<(
+        mshogi_core::xiangqi::PositionRoot,
+        mshogi_core::xiangqi::ClaimPolicy,
+        Vec<mshogi_core::xiangqi::GameEvent>,
+    )>,
+}
+impl XiangqiSearchSession {
+    /// Search one native history with optional elapsed-time control.
+    pub fn search(
+        &mut self,
+        game: &mshogi_core::xiangqi::Game,
+        limits: search::Limits,
+        time: Option<mshogi_search::alphabeta::timing::TimeBudget>,
+        stop: impl FnMut() -> bool,
+    ) -> Result<search::SearchResult, search::SearchError> {
+        use mshogi_search::alphabeta::timing::RequestTime;
+        let timing = RequestTime::new(time);
+        if time.is_none() {
+            return search::search_with_state(game, limits, None, &mut search::new_engine(), stop);
+        }
+        let events = game.events();
+        let reset = self.last.as_ref().is_none_or(|(root, policy, previous)| {
+            root != game.root()
+                || *policy != game.claim_policy()
+                || previous.len() > events.len()
+                || previous[..] != events[..previous.len()]
+        });
+        self.last = Some((game.root().clone(), game.claim_policy(), events.to_vec()));
+        let mut engine = self
+            .slot
+            .acquire_incremental(reset, || {
+                Ok::<_, std::convert::Infallible>(search::new_engine())
+            })
+            .expect("infallible engine allocation");
+        search::search_with_state(game, limits, timing.remaining(), &mut engine, stop)
+    }
+}

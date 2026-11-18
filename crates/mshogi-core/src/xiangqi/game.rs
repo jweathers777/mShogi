@@ -925,6 +925,22 @@ impl Game {
         self.token.revision = revision;
         Ok(())
     }
+    /// Exact copy of the complete committed game with a fresh runtime identity.
+    ///
+    /// The copy has the same root, policy, commands, events and derived state,
+    /// without replay. Reversal tokens of this game do not apply to the copy.
+    /// Use it for private analysis copies; it admits nothing new.
+    pub fn fork(&self) -> Result<Self, GameError> {
+        let instance = NEXT_INSTANCE
+            .try_update(Ordering::Relaxed, Ordering::Relaxed, |v| v.checked_add(1))
+            .map_err(|_| GameError::Capacity)?;
+        let mut copy = self.transaction_copy();
+        copy.token = RuntimeToken {
+            instance,
+            revision: self.token.revision,
+        };
+        Ok(copy)
+    }
     /// Reconstruct a complete committed command prefix with fresh runtime identity.
     ///
     /// Event selections inside an atomic command's derived events cannot be

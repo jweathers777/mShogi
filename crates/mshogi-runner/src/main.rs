@@ -101,6 +101,25 @@ fn execute() -> Result<(), String> {
             println!("replayed clocked shogi game: {} accepted replies", report.turns.len());
             Ok(())
         }
+        [_, command, config, output] if command == "xiangqi-match" => {
+            let config = mshogi_runner::xiangqi_match::MatchConfig::from_json(&read(config, 1_048_576)?)
+                .map_err(|e| e.to_string())?;
+            let report = mshogi_runner::xiangqi_match::run(&config).map_err(|e| e.to_string())?;
+            std::fs::write(output, report.to_json().map_err(|e| e.to_string())?)
+                .map_err(|e| e.to_string())?;
+            println!(
+                "{}",
+                serde_json::json!({"stop": report.stop, "conclusion": report.conclusion,
+                    "engine_score": report.engine_score, "plies": report.turns.len()})
+            );
+            Ok(())
+        }
+        [_, command, input] if command == "xiangqi-match-replay" => {
+            let report = mshogi_runner::xiangqi_match::MatchReport::from_json(&read(input, 67_108_864)?)
+                .map_err(|e| e.to_string())?;
+            println!("replayed clocked xiangqi game: {} accepted replies", report.turns.len());
+            Ok(())
+        }
         [_, command, input] if command == "shogi-replay" => {
             let report = mshogi_runner::shogi::Report::from_json(&read(input, 67_108_864)?)
                 .map_err(|e| e.to_string())?;
@@ -137,7 +156,7 @@ fn execute() -> Result<(), String> {
             Ok(())
         }
         _ => Err(
-            "usage: mshogi-match experiment-template EXE CONFIG | experiment-run CONFIG REPORT | experiment-replay REPORT | experiment-data REPORT JSONL | experiment-external uci|usi|xiangqi-uci09 CONFIG REPORT | experiment-external-replay REPORT | run CONFIG REPORT | replay REPORT | shogi-run CONFIG REPORT | shogi-replay REPORT | xiangqi-run CONFIG REPORT | xiangqi-replay REPORT"
+            "usage: mshogi-match experiment-template EXE CONFIG | experiment-run CONFIG REPORT | experiment-replay REPORT | experiment-data REPORT JSONL | experiment-external uci|usi|xiangqi-uci09 CONFIG REPORT | experiment-external-replay REPORT | run CONFIG REPORT | replay REPORT | shogi-run CONFIG REPORT | shogi-replay REPORT | xiangqi-run CONFIG REPORT | xiangqi-replay REPORT | shogi-match CONFIG REPORT | shogi-match-replay REPORT | xiangqi-match CONFIG REPORT | xiangqi-match-replay REPORT"
                 .into(),
         ),
     }

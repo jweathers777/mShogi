@@ -1,9 +1,11 @@
 ---
 id: MSH-194
 title: Xiangqi Strength Harness
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-18T19:25:00Z'
+updated_date: '2026-11-18T19:26:00Z'
 labels:
   - handle:xiangqi-strength-harness
   - xiangqi
@@ -46,3 +48,14 @@ Handle: Xiangqi Strength Harness
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Clocked persistent Xiangqi match route in mshogi-runner (xiangqi-match / xiangqi-match-replay), modelled on shogi_match.rs, UCI Pikafish 0.9 dialect, controller-owned Fischer clocks, native admission and replay; tests.
+2. Opening catalog: original transcriptions of conventional Xiangqi opening trunks with development extensions, native validation and a fixed engine balance screen; at least 100.
+3. Tactical suite: forced mates mined from self-play reports and proved by a native reference prover (checking-move AND/OR search), answer set = all shortest-mate first moves, split by source game; baseline score.
+4. Self-play/export example for depth measurement and Texel rows; choose the predecessor control with median late-game depth >= 8.
+5. Opponent and judge proposal (Pikafish, Fairy-Stockfish classical, ElephantEye) with builds, licences, limits and rating-reference limits for John.
+6. Docs, evidence, review, integration.
+<!-- SECTION:PLAN:END -->

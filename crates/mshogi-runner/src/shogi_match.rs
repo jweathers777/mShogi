@@ -10,19 +10,16 @@
 //! time-loss rule. Every report replays against the native rules, and its clock
 //! ledger is recomputed from the recorded elapsed times.
 use crate::{
-    process::{Engine, Output, escaped},
+    clocked::{Dialect, Host, Outcome},
+    process::{Engine, escaped},
     shogi::{
-        Failure, FailureKind, Opening, Process, Traffic, canonical, digest, option_value, position,
-        reply, submit,
+        Failure, FailureKind, Opening, Process, Traffic, canonical, digest, position, reply, submit,
     },
     *,
 };
 use mshogi_core::{native::CanonicalRecord, shogi::*};
 use serde::{Deserialize, Serialize};
-use std::{
-    sync::mpsc::RecvTimeoutError,
-    time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
 
 /// Equal Fischer clock for both sides, in milliseconds.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -313,247 +310,6 @@ impl MatchReport {
     }
 }
 
-struct Host<'a> {
-    config: &'a MatchConfig,
-    start: Instant,
-    version: usize,
-    traffic: Vec<Traffic>,
-    bytes: usize,
-    complete: bool,
-}
-
-impl Host<'_> {
-    fn failure(
-        &self,
-        engine: usize,
-        kind: FailureKind,
-        phase: &str,
-        detail: impl Into<String>,
-    ) -> Failure {
-        Failure {
-            kind,
-            engine,
-            generation: 1,
-            phase: phase.into(),
-            detail: detail.into().chars().take(1024).collect(),
-        }
-    }
-    fn log(
-        &mut self,
-        engine: usize,
-        direction: &str,
-        phase: &str,
-        text: String,
-        written: Option<bool>,
-    ) {
-        let event = Traffic {
-            engine,
-            generation: 1,
-            version: self.version,
-            at_ns: self.start.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64,
-            direction: direction.into(),
-            phase: phase.into(),
-            text,
-            written,
-        };
-        let size = serde_json::to_vec(&event).map_or(usize::MAX, |b| b.len());
-        if self.bytes.saturating_add(size) > self.config.io.transcript_bytes {
-            self.complete = false;
-            return;
-        }
-        self.bytes += size;
-        self.traffic.push(event);
-    }
-    fn send(&mut self, engine: &mut Engine, phase: &str, text: &str) -> Result<(), Failure> {
-        if text.len() + 1 > self.config.io.command_bytes {
-            return Err(self.failure(
-                engine.index,
-                FailureKind::ResourceLimit,
-                phase,
-                "command exceeds limit",
-            ));
-        }
-        let result = engine.write(
-            format!("{text}\n").into_bytes(),
-            Duration::from_millis(self.config.watchdogs.write_ms),
-        );
-        self.log(
-            engine.index,
-            "command",
-            phase,
-            text.into(),
-            Some(result.is_ok()),
-        );
-        result.map_err(|e| {
-            self.failure(
-                engine.index,
-                FailureKind::UnexpectedExit,
-                phase,
-                String::from(e),
-            )
-        })
-    }
-    /// Next non-empty line before the deadline; `None` at the deadline.
-    fn line(
-        &mut self,
-        engine: &mut Engine,
-        phase: &str,
-        deadline: Instant,
-    ) -> Result<Option<String>, Failure> {
-        loop {
-            let now = Instant::now();
-            if now >= deadline {
-                return Ok(None);
-            }
-            match engine.receive((deadline - now).min(Duration::from_millis(5))) {
-                Ok(Output::Line(bytes)) => {
-                    if bytes.is_empty() {
-                        continue;
-                    }
-                    if !bytes.is_ascii()
-                        || bytes
-                            .iter()
-                            .any(|b| b.is_ascii_control() && !b.is_ascii_whitespace())
-                    {
-                        self.log(engine.index, "response", phase, escaped(&bytes), None);
-                        return Err(self.failure(
-                            engine.index,
-                            FailureKind::MalformedReply,
-                            phase,
-                            "non-ASCII/control output",
-                        ));
-                    }
-                    let text = String::from_utf8(bytes).unwrap();
-                    if !text.starts_with("info") {
-                        self.log(
-                            engine.index,
-                            "response",
-                            phase,
-                            escaped(text.as_bytes()),
-                            None,
-                        );
-                    }
-                    return Ok(Some(text));
-                }
-                Ok(Output::Oversized) => {
-                    return Err(self.failure(
-                        engine.index,
-                        FailureKind::ResourceLimit,
-                        phase,
-                        "oversized protocol line",
-                    ));
-                }
-                Ok(Output::Eof) => {
-                    return Err(self.failure(
-                        engine.index,
-                        FailureKind::UnexpectedExit,
-                        phase,
-                        "EOF before required reply",
-                    ));
-                }
-                Ok(Output::Error(e)) => {
-                    return Err(self.failure(engine.index, FailureKind::UnexpectedExit, phase, e));
-                }
-                Err(RecvTimeoutError::Disconnected) => {
-                    return Err(self.failure(
-                        engine.index,
-                        FailureKind::MissingReply,
-                        phase,
-                        "stdout reader closed",
-                    ));
-                }
-                Err(RecvTimeoutError::Timeout) => {}
-            }
-        }
-    }
-    fn expect(
-        &mut self,
-        engine: &mut Engine,
-        phase: &str,
-        token: &str,
-        millis: u64,
-    ) -> Result<Vec<String>, Failure> {
-        let deadline = Instant::now() + Duration::from_millis(millis);
-        let mut lines = Vec::new();
-        loop {
-            let Some(line) = self.line(engine, phase, deadline)? else {
-                return Err(self.failure(
-                    engine.index,
-                    FailureKind::Watchdog,
-                    phase,
-                    format!("no {token}"),
-                ));
-            };
-            if line == token {
-                return Ok(lines);
-            }
-            if lines.len() >= 512 {
-                return Err(self.failure(
-                    engine.index,
-                    FailureKind::ResourceLimit,
-                    phase,
-                    "too many lines",
-                ));
-            }
-            lines.push(line);
-        }
-    }
-    fn prepare(&mut self, engine: &mut Engine) -> Result<Vec<String>, Failure> {
-        let index = engine.index;
-        self.send(engine, "handshake", "usi")?;
-        let lines = self.expect(
-            engine,
-            "handshake",
-            "usiok",
-            self.config.watchdogs.handshake_ms,
-        )?;
-        for option in &self.config.engines[index].options {
-            let prefix = format!("option name {} type ", option.name);
-            let advertised = lines.iter().find(|l| l.starts_with(&prefix)).cloned();
-            match advertised {
-                Some(line) if option_value(&line, &option.value) => {}
-                Some(_) => {
-                    return Err(self.failure(
-                        index,
-                        FailureKind::Configuration,
-                        "options",
-                        format!("value not supported: {}", option.name),
-                    ));
-                }
-                None => {
-                    return Err(self.failure(
-                        index,
-                        FailureKind::Configuration,
-                        "options",
-                        format!("option not advertised: {}", option.name),
-                    ));
-                }
-            }
-            self.send(
-                engine,
-                "options",
-                &format!("setoption name {} value {}", option.name, option.value),
-            )?;
-        }
-        self.send(engine, "readiness", "isready")?;
-        self.expect(
-            engine,
-            "readiness",
-            "readyok",
-            self.config.watchdogs.ready_ms,
-        )?;
-        self.send(engine, "newgame", "usinewgame")?;
-        Ok(lines.into_iter().filter(|l| l.starts_with("id ")).collect())
-    }
-}
-
-enum Outcome {
-    Accepted(String, u64, u64),
-    Exhausted(u64),
-    /// The overall game watchdog, not the mover's clock, ended the wait.
-    Watchdog,
-}
-
 /// Play one clocked game. Native admission alone decides results.
 pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
     config.validate()?;
@@ -564,7 +320,14 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
     });
     let mut game = config.opening.game()?;
     let mut host = Host {
-        config,
+        dialect: Dialect {
+            hello: "usi",
+            ok: "usiok",
+            newgame: "usinewgame",
+        },
+        engines: &config.engines,
+        watchdogs: config.watchdogs,
+        io: config.io,
         start: Instant::now(),
         version: game.events().len(),
         traffic: vec![],
@@ -625,43 +388,14 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
                 info_lines: 0,
             };
             let engine = &mut engines[index];
-            let outcome = (|| -> Result<Outcome, Failure> {
-                host.send(engine, "position", &context.position)?;
-                host.send(engine, "search", &context.go)?;
-                let started = Instant::now();
-                let limit = clock[side].saturating_add(config.grace_ms);
-                let clock_deadline = started + Duration::from_millis(limit);
-                let reply_deadline = clock_deadline.min(deadline);
-                let watchdog_capped = deadline < clock_deadline;
-                let mut info = 0u64;
-                loop {
-                    match host.line(engine, "search", reply_deadline)? {
-                        None => {
-                            if watchdog_capped {
-                                return Ok(Outcome::Watchdog);
-                            }
-                            let elapsed = started.elapsed().as_millis() as u64;
-                            return Ok(Outcome::Exhausted(elapsed.max(limit + 1)));
-                        }
-                        Some(line) if line.starts_with("bestmove") => {
-                            let elapsed = started.elapsed().as_micros().div_ceil(1000) as u64;
-                            if elapsed > limit {
-                                return Ok(Outcome::Exhausted(elapsed));
-                            }
-                            return Ok(Outcome::Accepted(line, elapsed, info));
-                        }
-                        Some(line) if line.starts_with("info") => info += 1,
-                        Some(_) => {
-                            return Err(host.failure(
-                                index,
-                                FailureKind::MalformedReply,
-                                "search",
-                                "unexpected search output",
-                            ));
-                        }
-                    }
-                }
-            })();
+            let outcome = host.search(
+                engine,
+                &context.position,
+                &context.go,
+                clock[side],
+                config.grace_ms,
+                deadline,
+            );
             match outcome {
                 Ok(Outcome::Accepted(line, elapsed, info)) => {
                     let command = match reply(&line) {

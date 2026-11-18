@@ -1,6 +1,9 @@
 //! Bounded Pikafish-compatible UCI0-9 over authoritative native Xiangqi.
 //! Ordinary search is sound_fast_only; UCI cannot request exact proof or native claims.
+//! Clocked requests (`wtime btime winc binc`, Red is white) keep the search
+//! table while each position extends the previous one.
 use mshogi_core::xiangqi::*;
+use mshogi_search::alphabeta::timing::TimeBudget;
 use mshogi_search::xiangqi::{self as search, Choice, Decision, Limits, SearchResult};
 use std::{
     io::{self, Write},
@@ -20,6 +23,8 @@ struct Context {
     version: u64,
     game: GameContext,
     limits: Limits,
+    time: Option<TimeBudget>,
+    game_generation: u64,
 }
 struct Job {
     context: Context,
@@ -47,6 +52,8 @@ impl Worker {
         let handle = thread::Builder::new()
             .name("mshogi-xiangqi-uci-search".into())
             .spawn(move || {
+                let mut session = mshogi_engine::XiangqiSearchSession::default();
+                let mut generation = 0;
                 loop {
                     let job = {
                         let (lock, wake) = &*work;
@@ -59,10 +66,15 @@ impl Worker {
                         }
                         box_.pending.take().unwrap()
                     };
-                    let result = search::search_with_stop(&job.game, job.context.limits, || {
-                        job.stop.load(Ordering::Acquire)
-                    })
-                    .map_err(|e| e.to_string());
+                    if generation != job.context.game_generation {
+                        session = mshogi_engine::XiangqiSearchSession::default();
+                        generation = job.context.game_generation;
+                    }
+                    let result = session
+                        .search(&job.game, job.context.limits, job.context.time, || {
+                            job.stop.load(Ordering::Acquire)
+                        })
+                        .map_err(|e| e.to_string());
                     let mut box_ = work.0.lock().unwrap();
                     if box_.shutdown {
                         break;
@@ -118,6 +130,7 @@ struct Adapter {
     running: Option<Running>,
     worker: Worker,
     ended: bool,
+    game_generation: u64,
 }
 impl Adapter {
     fn retire(&mut self) -> Result<(), String> {
@@ -174,20 +187,19 @@ impl Adapter {
             "ucinewgame" if args.is_empty() => self.retire().map(|()| {
                 self.game = Game::standard(ClaimPolicy::AutoValidClaims).expect("standard native root");
                 self.ended = false;
+                self.game_generation += 1;
             }),
             "position" => self
                 .retire()
-                .and_then(|()| parse_position(args))
-                .map(|game| {
-                    self.game = game;
-                    self.ended = false;
-                }),
+                .and_then(|()| parse_position(args, &mut self.game))
+                .map(|()| self.ended = false),
             "setoption" => self.set_option(args),
             "go" => self.retire().and_then(|()| {
                 if self.ended {
                     return Err("gameover retired this game; send position or ucinewgame".into());
                 }
-                let (limits, hold) = parse_go(args, self.limits)?;
+                let (limits, hold, time) =
+                    parse_go(args, self.limits, self.game.position().side_to_move())?;
                 self.next_id = self
                     .next_id
                     .checked_add(1)
@@ -197,11 +209,13 @@ impl Adapter {
                     version: self.version,
                     game: self.game.context(),
                     limits,
+                    time,
+                    game_generation: self.game_generation,
                 };
                 let stop = Arc::new(AtomicBool::new(false));
                 self.worker.submit(Job {
                     context: context.clone(),
-                    game: GameRecord::from_game(&self.game).and_then(|record| record.to_game()).map_err(|e| e.to_string())?,
+                    game: self.game.fork().map_err(|e| e.to_string())?,
                     stop: stop.clone(),
                 });
                 self.running = Some(Running {
@@ -214,7 +228,7 @@ impl Adapter {
                 Ok(())
             }),
             _ => Err(
-                "unsupported command/parameters; untimed Xiangqi UCI0-9 only (no clocks, pondering, claims or exact proof)"
+                "unsupported command/parameters; Xiangqi UCI0-9 (no pondering, claims or exact proof)"
                     .into(),
             ),
         };
@@ -287,9 +301,10 @@ impl Adapter {
         let result = r.result.unwrap();
         let text = match result.decision.unwrap() {
             Decision::Choose(choice) => {
-                let mut candidate = GameRecord::from_game(&self.game)
-                    .and_then(|record| record.to_game())
-                    .map_err(io::Error::other)?;
+                let mut candidate = self
+                    .game
+                    .fork()
+                    .map_err(|e| io::Error::other(format!("{e:?}")))?;
                 candidate
                     .submit(GameRequest {
                         expected: candidate.context(),
@@ -328,8 +343,18 @@ fn number(text: &str) -> Result<u64, String> {
     }
     text.parse().map_err(|_| "number exceeds u64".into())
 }
-fn parse_go(args: &[&str], mut limits: Limits) -> Result<(Limits, bool), String> {
+/// Parse `go`: fixed work (`depth`, `nodes`), `movetime`, or Fischer clocks
+/// (`wtime`, `btime`, `winc`, `binc`; Red is white) allocated with the shared
+/// clock policy. Time controls search to the maximum depth and node bounds.
+fn parse_go(
+    args: &[&str],
+    mut limits: Limits,
+    side: Side,
+) -> Result<(Limits, bool, Option<TimeBudget>), String> {
     let mut hold = false;
+    let mut movetime = None;
+    let mut clock = [None, None];
+    let mut increment = [0, 0];
     let mut seen = Vec::new();
     let mut i = 0;
     while i < args.len() {
@@ -339,22 +364,34 @@ fn parse_go(args: &[&str], mut limits: Limits) -> Result<(Limits, bool), String>
             return Err("duplicate go control".into());
         }
         seen.push(key);
+        if key == "infinite" {
+            hold = true;
+            continue;
+        }
+        if !matches!(
+            key,
+            "depth" | "nodes" | "movetime" | "wtime" | "btime" | "winc" | "binc"
+        ) {
+            return Err(format!(
+                "unsupported go control {key}; no pondering, exact proof or searchmoves"
+            ));
+        }
+        let value = number(args.get(i).ok_or("missing go value")?)?;
+        i += 1;
         match key {
-            "infinite" => hold = true,
-            "depth" | "nodes" => {
-                let value = number(args.get(i).ok_or("missing go value")?)?;
-                i += 1;
-                if key == "depth" {
-                    limits.depth = value.try_into().map_err(|_| "unsupported depth")?;
-                } else {
-                    limits.nodes = value;
+            "depth" => limits.depth = value.try_into().map_err(|_| "unsupported depth")?,
+            "nodes" => limits.nodes = value,
+            "movetime" => {
+                if !(1..=60_000).contains(&value) {
+                    return Err("movetime outside1..60000ms".into());
                 }
+                movetime = Some(value);
             }
-            _ => {
-                return Err(format!(
-                    "unsupported go control {key}; no clocks, pondering, exact proof or searchmoves"
-                ));
-            }
+            "wtime" => clock[0] = Some(value),
+            "btime" => clock[1] = Some(value),
+            "winc" => increment[0] = value,
+            "binc" => increment[1] = value,
+            _ => unreachable!(),
         }
     }
     if !limits.valid() {
@@ -364,9 +401,42 @@ fn parse_go(args: &[&str], mut limits: Limits) -> Result<(Limits, bool), String>
             search::MAX_NODES
         ));
     }
-    Ok((limits, hold))
+    let own = usize::from(side == Side::Black);
+    let clocked = seen
+        .iter()
+        .any(|k| matches!(*k, "wtime" | "btime" | "winc" | "binc"));
+    if clocked && clock[own].is_none() {
+        return Err("clock controls require the moving side's remaining time".into());
+    }
+    let fixed = seen.iter().any(|k| matches!(*k, "depth" | "nodes"));
+    if (movetime.is_some() || clocked) && (fixed || hold) {
+        return Err("time controls cannot combine with fixed work or infinite".into());
+    }
+    if movetime.is_some() && clocked {
+        return Err("movetime cannot combine with clock controls".into());
+    }
+    let mut time = movetime.map(TimeBudget::from_hard_ms);
+    if let Some(remaining) = clock[own] {
+        time = Some(
+            TimeBudget::from_clock_ms(remaining, increment[own], CLOCK_MOVES)
+                .with_response_margin(),
+        );
+    }
+    if time.is_some() {
+        limits = Limits {
+            depth: search::MAX_DEPTH,
+            nodes: search::MAX_NODES,
+        };
+    }
+    Ok((limits, hold, time))
 }
-fn parse_position(args: &[&str]) -> Result<Game, String> {
+/// Expected remaining moves for clock allocation, as for Chess and Shogi.
+const CLOCK_MOVES: u64 = 30;
+/// Parse `position` into `current`. When the root and policy match and the
+/// current board actions are a prefix of the new list, only the new suffix is
+/// admitted; otherwise the game is rebuilt from the root. Native admission
+/// checks every action either way. On error `current` is unchanged.
+fn parse_position(args: &[&str], current: &mut Game) -> Result<(), String> {
     let (root, rest) =
         match args {
             ["startpos", rest @ ..] => (PositionRoot::standard(), rest),
@@ -380,25 +450,53 @@ fn parse_position(args: &[&str]) -> Result<Game, String> {
                     .into(),
             ),
         };
-    let mut game = Game::from_root(root, ClaimPolicy::AutoValidClaims)
-        .map_err(|e| format!("native root: {e:?}"))?;
     let moves = match rest {
         [] => &[][..],
         ["moves", moves @ ..] => moves,
         _ => return Err("expected moves suffix".into()),
     };
-    for (index, text) in moves.iter().enumerate() {
-        let action: Action = text
-            .parse()
-            .map_err(|e| format!("move {}: {e}", index + 1))?;
+    let actions = moves
+        .iter()
+        .enumerate()
+        .map(|(index, text)| {
+            text.parse::<Action>()
+                .map_err(|e| format!("move {}: {e}", index + 1))
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    // `current` was built by this function, so its commands are board actions.
+    let known: Vec<Action> = current
+        .events()
+        .iter()
+        .filter_map(|e| match e.event {
+            EventKind::BoardAction { action, .. } => Some(action),
+            _ => None,
+        })
+        .collect();
+    let (mut game, start) = match known {
+        known
+            if current.root() == &root
+                && current.claim_policy() == ClaimPolicy::AutoValidClaims
+                && known.len() <= actions.len()
+                && known[..] == actions[..known.len()] =>
+        {
+            (current.fork().map_err(|e| format!("{e:?}"))?, known.len())
+        }
+        _ => (
+            Game::from_root(root, ClaimPolicy::AutoValidClaims)
+                .map_err(|e| format!("native root: {e:?}"))?,
+            0,
+        ),
+    };
+    for (index, action) in actions.iter().enumerate().skip(start) {
         game.submit(GameRequest {
             expected: game.context(),
             actor: game.position().side_to_move(),
-            command: GameCommand::Play { action },
+            command: GameCommand::Play { action: *action },
         })
         .map_err(|e| format!("move {} native rejection: {e:?}", index + 1))?;
     }
-    Ok(game)
+    *current = game;
+    Ok(())
 }
 fn report(result: &SearchResult, elapsed: Duration, out: &mut impl Write) -> io::Result<()> {
     let mut line = format!(
@@ -444,6 +542,7 @@ pub fn run() -> ExitCode {
         running: None,
         worker,
         ended: false,
+        game_generation: 0,
     };
     let (send, recv) = mpsc::sync_channel(32);
     if let Err(e) = thread::Builder::new()

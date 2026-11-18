@@ -144,8 +144,10 @@ fn supplied_history_changes_search_without_invented_pre_root_history() {
 fn promotion_drop_declaration_and_pv_mapping_are_native() {
     let mut e = engine();
     for (root, expected) in [
-        ("8k/9/9/4P4/9/9/9/9/K8 b - 1", "5d5c+"),
-        ("8k/4P4/9/9/9/9/9/9/K8 b - 1", "5b5a+"),
+        // Sente's King on its castled square: a corner King step is worth
+        // more than a depth-one promotion under the tuned MSH-188 terms.
+        ("8k/9/9/4P4/9/9/9/1K7/9 b - 1", "5d5c+"),
+        ("8k/4P4/9/9/9/9/9/1K7/9 b - 1", "5b5a+"),
         ("3lkl3/3p1p3/4K4/9/9/9/9/9/9 b G 1", "G*5b"),
         ("K8/1RB6/1+P+P+P+P+P+P+P+P/9/9/9/9/9/8k b B5P 1", "win"),
     ] {

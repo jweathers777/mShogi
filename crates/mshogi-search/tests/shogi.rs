@@ -222,10 +222,11 @@ fn independent_material_arithmetic_covers_promoted_board_and_both_hands() {
 }
 #[test]
 fn independent_capture_demote_promotion_and_mating_drop_selections() {
+    // Sente's King stands on its castled square (see the optional-promotion test).
     for (sfen, action, _legacy_score) in [
-        ("8k/9/9/4p4/4R4/9/9/9/K8 b - 1", "5e5d", 900),
-        ("8k/9/9/4+p4/4R4/9/9/9/K8 b - 1", "5e5d", 900),
-        ("8k/9/4P4/9/9/9/9/9/K8 b - 1", "5c5b+", 500),
+        ("8k/9/9/4p4/4R4/9/9/1K7/9 b - 1", "5e5d", 900),
+        ("8k/9/9/4+p4/4R4/9/9/1K7/9 b - 1", "5e5d", 900),
+        ("8k/9/4P4/9/9/9/9/1K7/9 b - 1", "5c5b+", 500),
         ("3lkl3/3p1p3/4K4/9/9/9/9/9/9 b G 1", "G*5b", WIN_SCORE - 1),
     ] {
         let game = game(sfen);
@@ -452,7 +453,10 @@ fn bounded_completion_cancellation_and_root_restoration() {
 
 #[test]
 fn optional_promotion_and_drop_branching_produce_native_lines() {
-    let optional = game("8k/9/9/4P4/9/9/9/9/K8 b - 1");
+    // The Sente King stands on its castled square: tuned king-placement
+    // terms (MSH-188) make a King step from the corner worth more than a
+    // depth-one promotion, which is not what these cases test.
+    let optional = game("8k/9/9/4P4/9/9/9/1K7/9 b - 1");
     let result = run(&optional, 1);
     assert!(result.score.unwrap() > 0);
     assert_eq!(choice(&result), Choice::Move("5d5c+".parse().unwrap()));

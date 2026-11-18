@@ -1,7 +1,7 @@
 ---
 id: MSH-188
 title: Shogi Evaluation Round
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-17T08:58:00Z'
@@ -58,7 +58,7 @@ Retained changes pass native perft and differential checks, the development tact
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -101,6 +101,8 @@ Batch 2 (msh188-corpus2, image sha256:e84da71f..., source 69651fca): 4,400 pairs
 - Tactical suite at 1 s: 386/413 (development 271, held-out 115) vs predecessor 382 (271/111).
 - Independent review (fresh-context subagent): no correctness bugs. Applied: fixed 16-chunk loss summation (refit gives identical weights), evaluation identity asserted also in check, source revisions in evidence, predecessor tactical link, explicit King-placement risk; checkpoint added to MSH-191. Recorded: evaluator identity unchanged (consumers only classify score bounds), Chess K grid may differ in last bits, Chess weights not refitted.
 - Checks at final source: workspace clippy clean; 857 consumer tests pass (14 ignored); native Shogi 19; search lib tests and both Texel example tests pass.
+
+Integrated into main by merge 20cdace1 (branch codex/msh-188-shogi-evaluation); pushed to origin/main.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

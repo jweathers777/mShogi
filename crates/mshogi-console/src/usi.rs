@@ -1,5 +1,6 @@
 //! Bounded USI with time-primary default play and explicit fixed work. Search observations never become fallback actions.
 use mshogi_core::shogi::*;
+use mshogi_search::alphabeta::timing::TimeBudget;
 use mshogi_search::shogi::{self as search, Choice, Decision, Limits, SearchResult};
 use std::{
     io::{self, Write},
@@ -19,7 +20,7 @@ struct Context {
     version: u64,
     game: GameContext,
     limits: Limits,
-    time_ms: Option<u64>,
+    time: Option<TimeBudget>,
     game_generation: u64,
 }
 struct Job {
@@ -67,14 +68,9 @@ impl Worker {
                         generation = job.context.game_generation;
                     }
                     let result = session
-                        .search(
-                            &job.game,
-                            job.context.limits,
-                            job.context
-                                .time_ms
-                                .map(mshogi_search::alphabeta::timing::TimeBudget::from_hard_ms),
-                            || job.stop.load(Ordering::Acquire),
-                        )
+                        .search(&job.game, job.context.limits, job.context.time, || {
+                            job.stop.load(Ordering::Acquire)
+                        })
                         .map_err(|e| e.to_string());
                     let mut box_ = work.0.lock().unwrap();
                     if box_.shutdown {
@@ -217,7 +213,12 @@ impl Adapter {
                 if self.ended {
                     return Err("gameover retired this game; send position or usinewgame".into());
                 }
-                let (limits, hold, time_ms) = parse_go(args, self.limits, self.fixed_options)?;
+                let (limits, hold, time) = parse_go(
+                    args,
+                    self.limits,
+                    self.fixed_options,
+                    self.game.position().side_to_move(),
+                )?;
                 self.next_id = self
                     .next_id
                     .checked_add(1)
@@ -227,7 +228,7 @@ impl Adapter {
                     version: self.version,
                     game: self.game.context(),
                     limits,
-                    time_ms,
+                    time,
                     game_generation: self.game_generation,
                 };
                 let stop = Arc::new(AtomicBool::new(false));
@@ -245,7 +246,7 @@ impl Adapter {
                 });
                 Ok(())
             }),
-            _ => Err("unsupported command/parameters; no game clocks, pondering or tsume".into()),
+            _ => Err("unsupported command/parameters; no pondering or tsume".into()),
         };
         if let Err(e) = result {
             eprintln!("usi: {}", crate::record_io::diagnostic(&e));
@@ -288,7 +289,7 @@ impl Adapter {
             && completion.context.version == self.version
             && completion.context.game == self.game.context()
             && completion.context.limits == r.context.limits
-            && completion.context.time_ms == r.context.time_ms
+            && completion.context.time == r.context.time
             && completion.context.game_generation == r.context.game_generation
         {
             let result = completion.result.map_err(io::Error::other)?;
@@ -361,13 +362,20 @@ fn number(text: &str) -> Result<u64, String> {
     }
     text.parse().map_err(|_| "number exceeds u64".into())
 }
+/// Parse `go`. A fixed `movetime`, or Fischer/byoyomi clocks (`btime`,
+/// `wtime`, `binc`, `winc`, `byoyomi`) allocated with the shared clock policy,
+/// or fixed work. Without controls the search uses one second.
 fn parse_go(
     args: &[&str],
     mut limits: Limits,
     fixed_options: bool,
-) -> Result<(Limits, bool, Option<u64>), String> {
+    side: Side,
+) -> Result<(Limits, bool, Option<TimeBudget>), String> {
     let mut fixed = fixed_options;
-    let mut time_ms = None;
+    let mut movetime = None;
+    let mut clock = [None, None];
+    let mut increment = [0, 0];
+    let mut byoyomi = 0;
     let mut hold = false;
     let mut seen = Vec::new();
     let mut i = 0;
@@ -378,31 +386,41 @@ fn parse_go(
             return Err("duplicate go control".into());
         }
         seen.push(key);
+        if key == "infinite" {
+            hold = true;
+            continue;
+        }
+        if !matches!(
+            key,
+            "movetime" | "depth" | "nodes" | "btime" | "wtime" | "binc" | "winc" | "byoyomi"
+        ) {
+            return Err(format!(
+                "unsupported go control {key}; no pondering, tsume or searchmoves"
+            ));
+        }
+        let value = number(args.get(i).ok_or("missing go value")?)?;
+        i += 1;
         match key {
-            "infinite" => hold = true,
             "movetime" => {
-                let value = number(args.get(i).ok_or("missing movetime value")?)?;
-                i += 1;
                 if !(1..=60_000).contains(&value) {
                     return Err("movetime outside1..60000ms".into());
                 }
-                time_ms = Some(value);
+                movetime = Some(value);
             }
-            "depth" | "nodes" => {
+            "depth" => {
                 fixed = true;
-                let value = number(args.get(i).ok_or("missing go value")?)?;
-                i += 1;
-                if key == "depth" {
-                    limits.depth = value.try_into().map_err(|_| "unsupported depth")?;
-                } else {
-                    limits.nodes = value;
-                }
+                limits.depth = value.try_into().map_err(|_| "unsupported depth")?;
             }
-            _ => {
-                return Err(format!(
-                    "unsupported go control {key}; no clocks, pondering, tsume or searchmoves"
-                ));
+            "nodes" => {
+                fixed = true;
+                limits.nodes = value;
             }
+            "btime" => clock[0] = Some(value),
+            "wtime" => clock[1] = Some(value),
+            "binc" => increment[0] = value,
+            "winc" => increment[1] = value,
+            "byoyomi" => byoyomi = value,
+            _ => unreachable!(),
         }
     }
     if !limits.valid() {
@@ -412,18 +430,40 @@ fn parse_go(
             search::MAX_NODES
         ));
     }
-    if time_ms.is_some() && (fixed || hold) {
-        return Err("movetime cannot combine with fixed work, fixed options or infinite".into());
+    let own = usize::from(side == Side::Gote);
+    let clocked = seen
+        .iter()
+        .any(|k| matches!(*k, "btime" | "wtime" | "binc" | "winc" | "byoyomi"));
+    if clocked && clock[own].is_none() {
+        return Err("clock controls require the moving side's remaining time".into());
+    }
+    if (movetime.is_some() || clocked) && (fixed || hold) {
+        return Err(
+            "time controls cannot combine with fixed work, fixed options or infinite".into(),
+        );
+    }
+    if movetime.is_some() && clocked {
+        return Err("movetime cannot combine with clock controls".into());
+    }
+    let mut time = movetime.map(TimeBudget::from_hard_ms);
+    if let Some(remaining) = clock[own] {
+        // Byoyomi time is spent each move like an increment; keep its margin.
+        let per_move = increment[own].saturating_add(byoyomi);
+        time = Some(
+            TimeBudget::from_clock_ms(remaining, per_move, CLOCK_MOVES).with_response_margin(),
+        );
     }
     if !fixed && !hold {
         limits = Limits {
             depth: search::MAX_DEPTH,
             nodes: search::MAX_NODES,
         };
-        time_ms = Some(time_ms.unwrap_or(1_000));
+        time = Some(time.unwrap_or_else(|| TimeBudget::from_hard_ms(1_000)));
     }
-    Ok((limits, hold, time_ms))
+    Ok((limits, hold, time))
 }
+/// Expected remaining moves for clock allocation, as for Chess UCI.
+const CLOCK_MOVES: u64 = 30;
 fn parse_position(args: &[&str]) -> Result<Game, String> {
     let (mut game, rest) = match args {
         ["startpos", rest @ ..] => (Game::new(), rest),
@@ -585,8 +625,9 @@ mod tests {
     use super::*;
     #[test]
     fn default_time_and_explicit_fixed_work_are_distinct() {
-        let (limits, hold, time) = parse_go(&[], search::DEFAULT_LIMITS, false).unwrap();
-        assert_eq!(time, Some(1_000));
+        let (limits, hold, time) =
+            parse_go(&[], search::DEFAULT_LIMITS, false, Side::Sente).unwrap();
+        assert_eq!(time, Some(TimeBudget::from_hard_ms(1_000)));
         assert!(!hold);
         assert_eq!(
             limits,
@@ -599,6 +640,7 @@ mod tests {
             &["depth", "3", "nodes", "20000"],
             search::DEFAULT_LIMITS,
             false,
+            Side::Sente,
         )
         .unwrap();
         assert_eq!(
@@ -609,18 +651,28 @@ mod tests {
             }
         );
         assert_eq!(time, None);
-        assert_eq!(parse_go(&[], search::DEFAULT_LIMITS, true).unwrap().2, None);
         assert_eq!(
-            parse_go(&["infinite"], search::DEFAULT_LIMITS, false)
+            parse_go(&[], search::DEFAULT_LIMITS, true, Side::Sente)
                 .unwrap()
                 .2,
             None
         );
         assert_eq!(
-            parse_go(&["movetime", "125"], search::DEFAULT_LIMITS, false)
+            parse_go(&["infinite"], search::DEFAULT_LIMITS, false, Side::Sente)
                 .unwrap()
                 .2,
-            Some(125)
+            None
+        );
+        assert_eq!(
+            parse_go(
+                &["movetime", "125"],
+                search::DEFAULT_LIMITS,
+                false,
+                Side::Sente
+            )
+            .unwrap()
+            .2,
+            Some(TimeBudget::from_hard_ms(125))
         );
     }
     #[test]
@@ -632,8 +684,48 @@ mod tests {
             vec!["movetime", "100", "infinite"],
             vec!["movetime", "100", "movetime", "200"],
         ] {
-            assert!(parse_go(&args, search::DEFAULT_LIMITS, false).is_err());
+            assert!(parse_go(&args, search::DEFAULT_LIMITS, false, Side::Sente).is_err());
         }
-        assert!(parse_go(&["movetime", "100"], search::DEFAULT_LIMITS, true).is_err());
+        assert!(
+            parse_go(
+                &["movetime", "100"],
+                search::DEFAULT_LIMITS,
+                true,
+                Side::Sente
+            )
+            .is_err()
+        );
+        for args in [
+            vec!["btime", "1000", "depth", "2"],
+            vec!["btime", "1000", "movetime", "10"],
+            vec!["btime", "1000", "infinite"],
+            vec!["wtime", "1000"],
+            vec!["btime", "1000", "ponder"],
+        ] {
+            assert!(
+                parse_go(&args, search::DEFAULT_LIMITS, false, Side::Sente).is_err(),
+                "{args:?}"
+            );
+        }
+    }
+    #[test]
+    fn fischer_clock_uses_the_moving_sides_time_and_increment() {
+        let args = [
+            "btime", "60000", "wtime", "30000", "binc", "1000", "winc", "500",
+        ];
+        let (limits, hold, sente) =
+            parse_go(&args, search::DEFAULT_LIMITS, false, Side::Sente).unwrap();
+        assert!(!hold);
+        assert_eq!(limits.depth, search::MAX_DEPTH);
+        let expected = TimeBudget::from_clock_ms(60_000, 1_000, CLOCK_MOVES).with_response_margin();
+        assert_eq!(sente, Some(expected));
+        let (_, _, gote) = parse_go(&args, search::DEFAULT_LIMITS, false, Side::Gote).unwrap();
+        assert_eq!(
+            gote,
+            Some(TimeBudget::from_clock_ms(30_000, 500, CLOCK_MOVES).with_response_margin())
+        );
+        assert!(
+            sente.unwrap().clock && sente.unwrap().hard < std::time::Duration::from_millis(60_000)
+        );
     }
 }

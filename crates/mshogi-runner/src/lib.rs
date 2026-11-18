@@ -7,6 +7,8 @@ mod report;
 mod run;
 /// Native shogi USI experiments, separate from chess clocks and outcomes.
 pub mod shogi;
+/// Persistent, clocked USI Shogi games for external strength studies.
+pub mod shogi_match;
 /// Native Xiangqi UCI0-9 experiments, explicit profile and unscored limits.
 pub mod xiangqi;
 pub use config::*;

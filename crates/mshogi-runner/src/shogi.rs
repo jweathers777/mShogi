@@ -24,7 +24,7 @@ pub struct Opening {
     pub moves: Vec<String>,
 }
 impl Opening {
-    fn game(&self) -> Result<Game, RunnerError> {
+    pub(crate) fn game(&self) -> Result<Game, RunnerError> {
         let mut game = if let Some(sfen) = &self.sfen {
             let position = Position::from_sfen(sfen).map_err(|e| RunnerError(e.to_string()))?;
             let root = match GameRoot::import(
@@ -296,15 +296,15 @@ pub struct Report {
     /// Opening/assignment-specific games.
     pub games: Vec<GameReport>,
 }
-fn canonical(game: &Game) -> Result<String, RunnerError> {
+pub(crate) fn canonical(game: &Game) -> Result<String, RunnerError> {
     CanonicalRecord::shogi(GameRecord::from_game(game))
         .to_json()
         .map_err(|e| RunnerError(e.to_string()))
 }
-fn digest(game: &Game) -> Result<String, RunnerError> {
+pub(crate) fn digest(game: &Game) -> Result<String, RunnerError> {
     Ok(format!("{:x}", Sha256::digest(canonical(game)?.as_bytes())))
 }
-fn submit(game: &mut Game, command: GameCommand) -> Result<(), String> {
+pub(crate) fn submit(game: &mut Game, command: GameCommand) -> Result<(), String> {
     game.submit(GameRequest {
         expected: game.context(),
         actor: game.position().side_to_move(),
@@ -313,7 +313,7 @@ fn submit(game: &mut Game, command: GameCommand) -> Result<(), String> {
     .map(|_| ())
     .map_err(|e| format!("{e:?}"))
 }
-fn position(game: &Game) -> String {
+pub(crate) fn position(game: &Game) -> String {
     let mut text = if game.root().has_complete_initial_history() {
         "position startpos".into()
     } else {
@@ -337,7 +337,7 @@ fn go(work: WorkLimit) -> String {
         work.nodes.unwrap()
     )
 }
-fn option_value(advertised: &str, value: &str) -> bool {
+pub(crate) fn option_value(advertised: &str, value: &str) -> bool {
     let Some((_, spec)) = advertised.split_once(" type ") else {
         return false;
     };
@@ -361,7 +361,7 @@ fn option_value(advertised: &str, value: &str) -> bool {
         _ => false,
     }
 }
-fn reply(text: &str) -> Result<GameCommand, String> {
+pub(crate) fn reply(text: &str) -> Result<GameCommand, String> {
     let words: Vec<_> = text.split_ascii_whitespace().collect();
     let token = match words.as_slice() {
         ["bestmove", token] => *token,

@@ -55,6 +55,12 @@ The next work is Shogi:
    50-move clock allocation, tested as one set at 15 s + 0.25 s, gave no
    decision at 315 pairs (about 0 Elo); both changes were rejected. See
    [the round](shogi-king-clock-round.md).
+9. Shogi baseline (John, 2026-11-18): the classical engine (index about 2765)
+   is the baseline for later learned evaluation; piece-pair evaluation is not
+   pursued. MSH-193 (Shogi Blunder Screen) found 226 clear blunders in 15,805
+   moves, spread over time trouble, capture and drop refutations (none >= 30%);
+   a longer search avoids only 28%. No fix round; the positions form a blunder
+   suite. See [the screen](shogi-blunder-screen.md).
 
 MSH-50 (Conventional Shogi) keeps the Shogi strength criteria and the final
 measurement. MSH-173 and MSH-176 (legacy Chu comparison) are deferred.

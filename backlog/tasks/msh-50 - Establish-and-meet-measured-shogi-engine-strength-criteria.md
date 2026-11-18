@@ -4,7 +4,7 @@ title: Establish and meet measured shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-18T16:08:00Z'
+updated_date: '2026-11-18T18:15:00Z'
 labels:
   - handle:conventional-shogi
 milestone: m-5
@@ -108,4 +108,6 @@ Proxy:
 Path (classical, non-NNUE, bounded): the main remaining lever is evaluation quality. Bonanza-style piece-pair evaluation (KPP/KKP linear tables, incremental update) trained by regression on a larger self-play corpus is what moved 2006-2017 engines from strong amateur to professional strength without neural networks. AGENTS.md authorizes Texel tuning of handwritten terms and reserves 'learned evaluation' for neural networks; piece-pair tables are linear but very large, so John should confirm they count as classical. Budget proposal: at most two rounds (piece-pair evaluation with a larger corpus; then one search/time round), each with a predecessor test and a short anchor recheck, roughly US$10-25 cloud each; stop and report if the index stays below 3000 after both.
 
 Owner decision (John, 2026-11-18): piece-pair (KPP) evaluation is not pursued because it does not transfer to larger variants. The current classical Shogi engine (MSH-191 index about 2765) is the accepted baseline for later learned-evaluation experiments; further Shogi strength work is deferred to learned evaluation (MSH-55). Before freezing, one bounded blunder screen (MSH-193) documents the baseline's weaknesses and may fix a mechanism that explains a large share of clear blunders.
+
+MSH-193 (Shogi Blunder Screen), 2026-11-18: 226 clear blunders in 15,805 baseline moves (1.43/100), none in a mechanism >= 30% (time trouble 28.3%, capture refutation 27.0%, drop refutation 23.5%); 10 s search avoids only 28%; elmo losses are gradual (1 clear blunder in 24 games). No fix round. Blunder suite tools/strength/data/shogi-blunders-v1.json; baseline avoids 73/226 at 1 s.
 <!-- SECTION:NOTES:END -->

@@ -1,7 +1,7 @@
 ---
 id: MSH-193
 title: Shogi Blunder Screen
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-18T16:08:00Z'
@@ -51,13 +51,15 @@ Screen results, mechanism shares, suite and decision recorded; caps: judge compu
 - [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
 - [x] #2 Applicable independent review is recorded and material findings are resolved.
 - [x] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 2026-11-18 (@claude). Screen: 31,535 positions judged (1.38 h, US$2.23, cleanup verified); 226 clear blunders in 15,805 mShogi moves (1.43/100), 116 games; elmo games 1 blunder. Mechanisms: time trouble 28.3%, capture refutation 27.0%, drop refutation 23.5%, other 19.0%, short mate 1.8%, king zone 0.4%. 10 s recheck: 86 changed, 63 avoided (28%). Fix rule not triggered; no fix round. Suite tools/strength/data/shogi-blunders-v1.json (226; 164 dev / 62 held-out); baseline at 1 s avoids 73. Deviation recorded: implemented capture class counts any capture, King-safety proxy is 'refutation lands next to the King' (decision unaffected). Independent review accepted after wording/provenance fixes.
+
+Integrated into main by merge 7c1508a0; pushed.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

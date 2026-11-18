@@ -97,10 +97,9 @@ pub fn load<M: TexelModel>(path: &str, expected: &str) -> Result<Dataset<M::Prep
 
 /// Mean squared error of the logistic prediction, computed in parallel.
 pub fn mse<M: TexelModel>(data: &Dataset<M::Prepared>, weights: &[i32], k: f64) -> f64 {
-    let threads = std::thread::available_parallelism()
-        .map_or(1, |n| n.get())
-        .min(16);
-    let chunk = data.samples.len().div_ceil(threads).max(1);
+    // A fixed chunk count keeps the floating-point sum order, and therefore
+    // fit selection, independent of the host's CPU count.
+    let chunk = data.samples.len().div_ceil(16).max(1);
     let total: f64 = std::thread::scope(|scope| {
         let handles: Vec<_> = data
             .samples

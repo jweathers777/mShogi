@@ -59,9 +59,7 @@ fn compare(p: &mut ShogiPosition, native: &Position) {
     }
     assert_eq!(attacked, expected, "{}", native.to_sfen());
     // The incremental search evaluation equals the full feature sum.
-    if !p.in_check() {
-        assert_eq!(p.evaluate(), super::eval::score(p, &super::eval::DEFAULT));
-    }
+    assert_eq!(p.evaluate(), super::eval::score(p, &super::eval::DEFAULT));
     let legal = p.legal_moves();
     assert_eq!(
         sorted(legal.iter().map(|&m| p.action(m))),

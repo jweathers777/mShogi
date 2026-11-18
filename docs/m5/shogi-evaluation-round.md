@@ -54,7 +54,7 @@ Local, Apple M1 Pro, Rust 1.99.1 release:
 | Fixed-depth bench nodes | 2,400,987 | 1,113,070 |
 | Nodes per second | 1.22 million | 1.09 million |
 | Depth at 1000 ms (nine roots) | 15, 16, 11, 13, 11, 6, 64, 15, 11 | 15, 17, 16, 16, 14, 8, 64, 16, 11 |
-| Tactical suite at 1000 ms | 382 / 413 | 386 / 413 |
+| Tactical suite at 1000 ms ([predecessor](evidence/msh190/tactics-final-1000.json), [candidate](evidence/msh188/tactics-candidate-1000.json)) | 382 / 413 | 386 / 413 |
 | — development / held-out | 271 / 111 | 271 / 115 |
 
 The per-node terms cost about 10% speed; the tuned evaluation shrinks fixed-depth trees by 54%, so timed depth rises on every ordinary root.
@@ -72,6 +72,11 @@ Pentanomial [2, 0, 17, 0, 45]; Elo estimate +283 (95% interval 209 to 387); clou
 
 ## Verification and limits
 
-Level 1. Workspace Clippy with warnings denied passed; release tests for search, engine, console, desktop session and runner passed 857 with 14 ignored; native Shogi tests passed 19. Three toy fixtures (two search integration tests and one USI test) now place Sente's King on its castled square: the tuned King terms make a corner King step worth more than a depth-one promotion there, which those tests do not test. The cross-game fixed-search fingerprint changes only for Shogi.
+Level 1. Independent review (fresh context) found no correctness bugs; its risks are recorded above and its nits were applied (deterministic loss summation, evaluation identity also checked in check, source revisions in evidence). Workspace Clippy with warnings denied passed; release tests for search, engine, console, desktop session and runner passed 857 with 14 ignored; native Shogi tests passed 19. Three toy fixtures (two search integration tests and one USI test) now place Sente's King on its castled square: the tuned King terms make a corner King step worth more than a depth-one promotion there, which those tests do not test. The cross-game fixed-search fingerprint changes only for Shogi.
 
-Limits: the corpus is self-play of one engine at fixed budgets and may carry its style; the slight loss in hand-poor positions and the advanced-King bonus may need attention in later rounds; weights are untested against external engines (MSH-191, Shogi Strength Anchor).
+Limits and risks:
+
+- The fitted King placement is extreme and likely reflects outcome correlation in this self-play corpus: a King in the back-rank corner (file distance 4, rank 0, the Anaguma square) scores about 456 below the castled square 8h, and a King beyond the fourth rank gains up to 400. Both engines in the predecessor test share these blind spots, so the game test cannot detect them. MSH-191 (Shogi Strength Anchor) should check King handling against external opponents; 32 of 133 weights end on a bound.
+- The corpus is self-play of one engine at fixed budgets and may carry its style. Hand-poor positions fit slightly worse than before.
+- The evaluator identity is unchanged. Consumers use it only to classify score bounds of saved observations; no consumer compares scores across revisions.
+- The shared tool sums the loss in 16 fixed chunks in parallel and computes the K grid as `low + (high − low) · t / 35`. Chess K values can differ from the earlier `t / 20` in the last bits; the frozen Chess weights were not refitted.

@@ -4,7 +4,7 @@ title: Establish and meet measured shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-17T17:34:00Z'
+updated_date: '2026-11-18T09:49:00Z'
 labels:
   - handle:conventional-shogi
 milestone: m-5
@@ -94,4 +94,8 @@ MSH-187 (Shogi Strength Round) isolates a coherent speed/history/time set; see d
 Owner direction, 2026-11-17: after MSH-187 (Shogi Strength Round), the Shogi order is MSH-189 (Shogi Request Overhead), MSH-190 (Shogi Selectivity Round), then MSH-188 (Shogi Evaluation Round).
 
 Owner direction, 2026-11-17: MSH-191 (Shogi Strength Anchor) follows MSH-188 and gives the first floodgate-referenced Shogi strength estimate. Strength targets for this task stay John's decision after that result.
+
+From MSH-191 (Shogi Strength Anchor), 2026-11-18: conditional floodgate-referenced index 2765 (approx. 95% 2723-2807) at 60 s + 1 s, 304 games, engine main de5ae4ae (search/eval) with USI clocks. Gikou family 2772; YaneuraOu/elmo 1000k 0/24 (family spread 374 > 150). Not an official floodgate rating; report docs/m5/shogi-strength-anchor.md.
+
+Correction (MSH-191 review): the 374-point family spread is a mechanical flag; the elmo-only value is prior-dominated and the difference is weakly supported (0/24, p = 0.06 at 2765). elmo was dropped after m01, a recorded deviation that moves the index toward the Gikou family.
 <!-- SECTION:NOTES:END -->

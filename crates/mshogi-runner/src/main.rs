@@ -82,6 +82,25 @@ fn execute() -> Result<(), String> {
             }
             Ok(())
         }
+        [_, command, config, output] if command == "shogi-match" => {
+            let config = mshogi_runner::shogi_match::MatchConfig::from_json(&read(config, 1_048_576)?)
+                .map_err(|e| e.to_string())?;
+            let report = mshogi_runner::shogi_match::run(&config).map_err(|e| e.to_string())?;
+            std::fs::write(output, report.to_json().map_err(|e| e.to_string())?)
+                .map_err(|e| e.to_string())?;
+            println!(
+                "{}",
+                serde_json::json!({"stop": report.stop, "conclusion": report.conclusion,
+                    "engine_score": report.engine_score, "plies": report.turns.len()})
+            );
+            Ok(())
+        }
+        [_, command, input] if command == "shogi-match-replay" => {
+            let report = mshogi_runner::shogi_match::MatchReport::from_json(&read(input, 67_108_864)?)
+                .map_err(|e| e.to_string())?;
+            println!("replayed clocked shogi game: {} accepted replies", report.turns.len());
+            Ok(())
+        }
         [_, command, input] if command == "shogi-replay" => {
             let report = mshogi_runner::shogi::Report::from_json(&read(input, 67_108_864)?)
                 .map_err(|e| e.to_string())?;

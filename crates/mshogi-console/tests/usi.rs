@@ -265,7 +265,8 @@ fn malformed_positions_controls_and_options_are_atomic_and_explicit() {
         "position startpos moves 7g7f bad",
         "setoption name RulesProfile value wrong",
         "setoption name Unknown value 1",
-        "go btime 1000 wtime 1000",
+        // Gote is to move: a clock without Gote's time is incomplete.
+        "go btime 1000 binc 100",
         "go ponder",
         "go depth 0",
         "go nodes 5000001",
@@ -390,5 +391,16 @@ fn bounded_movetime_and_fixed_options_keep_native_moves_and_reproducible_probes(
     };
     assert_eq!(work(&first), work(&second));
     assert_eq!(work(&first).0, 1);
+    assert_eq!(e.finish(true).0, 0);
+}
+#[test]
+fn fischer_clock_go_returns_a_native_legal_move_within_the_allocation() {
+    let mut e = engine();
+    e.send("position startpos moves 7g7f");
+    let started = std::time::Instant::now();
+    e.send("go btime 3000 wtime 2000 binc 100 winc 100");
+    assert_native_best(&e.until("bestmove"), &after_7g7f());
+    // Gote's allocation from 2 s + 0.1 s is far below one second.
+    assert!(started.elapsed() < std::time::Duration::from_millis(1500));
     assert_eq!(e.finish(true).0, 0);
 }

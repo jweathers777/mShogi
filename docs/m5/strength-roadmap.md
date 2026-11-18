@@ -45,6 +45,12 @@ The next work is Shogi:
 7. MSH-191 (Shogi Strength Anchor): one approximate floodgate-referenced
    strength estimate against rated reference engines, run like MSH-185 in the
    cloud (6 hours, US$15 caps). No games on public servers.
+   Done: conditional floodgate-referenced index 2765 (approx. 95% 2723-2807)
+   from 304 games at 60 s + 1 s against Gikou v2.0.2 depth 3/5/7 and
+   YaneuraOu/elmo 1000k. The family check is flagged but weakly supported
+   (0/24 against elmo, p = 0.06); elmo was dropped mid-study (a recorded
+   deviation), so the index is mostly Gikou-referenced. See
+   [the report](shogi-strength-anchor.md).
 
 MSH-50 (Conventional Shogi) keeps the Shogi strength criteria and the final
 measurement. MSH-173 and MSH-176 (legacy Chu comparison) are deferred.

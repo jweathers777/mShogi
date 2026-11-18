@@ -1,4 +1,5 @@
 //! Reproducible native UCI experiments over the authoritative chess match API.
+mod clocked;
 mod config;
 /// Reproducible six-game native experiments and data, separate from strength claims.
 pub mod experiments;
@@ -11,6 +12,8 @@ pub mod shogi;
 pub mod shogi_match;
 /// Native Xiangqi UCI0-9 experiments, explicit profile and unscored limits.
 pub mod xiangqi;
+/// Persistent, clocked UCI Xiangqi games for strength studies.
+pub mod xiangqi_match;
 pub use config::*;
 pub use report::*;
 pub use run::run_experiment;

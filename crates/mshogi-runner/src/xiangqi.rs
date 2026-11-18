@@ -27,7 +27,7 @@ pub struct Opening {
     pub moves: Vec<String>,
 }
 impl Opening {
-    fn game(&self) -> Result<Game, RunnerError> {
+    pub(crate) fn game(&self) -> Result<Game, RunnerError> {
         let mut game = if let Some(text) = &self.canonical {
             if self.fen.is_some() || !self.moves.is_empty() {
                 return Err(RunnerError(
@@ -328,12 +328,12 @@ pub struct Report {
     /// Opening/assignment-specific games.
     pub games: Vec<GameReport>,
 }
-fn canonical(game: &Game) -> Result<String, RunnerError> {
+pub(crate) fn canonical(game: &Game) -> Result<String, RunnerError> {
     CanonicalRecord::xiangqi(GameRecord::from_game(game).map_err(|e| RunnerError(e.to_string()))?)
         .to_json()
         .map_err(|e| RunnerError(e.to_string()))
 }
-fn digest(game: &Game) -> Result<String, RunnerError> {
+pub(crate) fn digest(game: &Game) -> Result<String, RunnerError> {
     Ok(format!("{:x}", Sha256::digest(canonical(game)?.as_bytes())))
 }
 fn admit(game: &mut Game, command: GameCommand) -> Result<(), GameError> {
@@ -344,7 +344,7 @@ fn admit(game: &mut Game, command: GameCommand) -> Result<(), GameError> {
     })
     .map(|_| ())
 }
-fn submit(game: &mut Game, command: GameCommand) -> Result<(), String> {
+pub(crate) fn submit(game: &mut Game, command: GameCommand) -> Result<(), String> {
     admit(game, command).map_err(|e| e.to_string())
 }
 fn external_prefix(game: &Game) -> Result<(), String> {
@@ -376,7 +376,7 @@ fn external_prefix(game: &Game) -> Result<(), String> {
     }
     Ok(())
 }
-fn position(game: &Game) -> String {
+pub(crate) fn position(game: &Game) -> String {
     let mut text = if game.root().origin() == RootOrigin::StandardInitial {
         "position startpos".into()
     } else {
@@ -402,7 +402,7 @@ fn position(game: &Game) -> String {
     }
     text
 }
-fn score(conclusion: Conclusion) -> [u8; 2] {
+pub(crate) fn score(conclusion: Conclusion) -> [u8; 2] {
     match conclusion {
         Conclusion::Draw { .. } => [1, 1],
         Conclusion::Win {
@@ -450,7 +450,7 @@ fn option_value(advertised: &str, value: &str) -> bool {
         _ => false,
     }
 }
-fn reply(text: &str) -> Result<GameCommand, String> {
+pub(crate) fn reply(text: &str) -> Result<GameCommand, String> {
     let words: Vec<_> = text.split_ascii_whitespace().collect();
     let token = match words.as_slice() {
         ["bestmove", token] => *token,

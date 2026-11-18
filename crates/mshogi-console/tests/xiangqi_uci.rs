@@ -243,7 +243,9 @@ fn unsupported_controls_options_and_oversized_input_are_explicit_and_drained() {
     let mut e = engine();
     e.send("setoption name RulesProfile value other");
     e.send("setoption name Nodes value 5000001");
-    e.send("go movetime 1");
+    e.send("go ponder");
+    e.send("go wtime 1000 depth 3");
+    e.send("go btime 1000");
     e.send("go depth 1 depth 2");
     e.send(&"x".repeat(4097));
     e.send("isready");
@@ -254,9 +256,86 @@ fn unsupported_controls_options_and_oversized_input_are_explicit_and_drained() {
         "immutable",
         "depth1..64/nodes0..5000000",
         "unsupported go control",
+        "time controls cannot combine",
+        "remaining time",
         "duplicate go control",
         "line exceeds 4096",
     ] {
         assert!(err.contains(expected), "missing {expected}: {err}");
     }
+}
+#[test]
+fn fischer_clock_requests_return_moves_within_the_allocation() {
+    let mut e = engine();
+    e.send("ucinewgame");
+    let mut moves: Vec<String> = vec![];
+    for _ in 0..4 {
+        let position = if moves.is_empty() {
+            "position startpos".to_string()
+        } else {
+            format!("position startpos moves {}", moves.join(" "))
+        };
+        e.send(&position);
+        let started = Instant::now();
+        e.send("go wtime 3000 btime 3000 winc 100 binc 100");
+        let lines = e.until("bestmove");
+        let elapsed = started.elapsed();
+        // 3 s over 30 expected moves plus most of the increment is about 175 ms.
+        assert!(elapsed < Duration::from_millis(1_000), "{elapsed:?}");
+        let best = lines
+            .last()
+            .unwrap()
+            .split_whitespace()
+            .nth(1)
+            .unwrap()
+            .to_string();
+        assert_eq!(best.len(), 4, "{lines:?}");
+        moves.push(best);
+    }
+    e.send("go movetime 50");
+    e.until("bestmove");
+    let (code, err, _) = e.finish(true);
+    assert_eq!(code, 0, "{err}");
+}
+#[test]
+fn incremental_position_handles_takeback_divergence_new_roots_and_errors() {
+    let mut e = engine();
+    let search = |e: &mut Engine, position: &str| {
+        if !position.is_empty() {
+            e.send(position);
+        }
+        e.send("go depth 1");
+        let lines = e.until("bestmove");
+        let side = if lines.iter().any(|l| l.contains("perspective Red")) {
+            "Red"
+        } else {
+            "Black"
+        };
+        let best = lines
+            .last()
+            .unwrap()
+            .split_whitespace()
+            .nth(1)
+            .unwrap()
+            .to_string();
+        (side, best)
+    };
+    assert_eq!(search(&mut e, "position startpos moves h2e2 h9g7").0, "Red");
+    // Takeback: a shorter list rebuilds from the root.
+    assert_eq!(search(&mut e, "position startpos moves h2e2").0, "Black");
+    // Divergence after a common prefix.
+    let (side, _) = search(&mut e, "position startpos moves h2e2 b9c7 h0g2");
+    assert_eq!(side, "Black");
+    // The same moves after a different root use the new root.
+    let (side, best) = search(&mut e, &format!("position fen {TACTIC}"));
+    assert_eq!(side, "Red");
+    assert!(best.starts_with("e7") || best.starts_with("d0"), "{best}");
+    // An illegal suffix is refused and the earlier game stays current.
+    assert_eq!(search(&mut e, "position startpos moves h2e2 h9g7").0, "Red");
+    let (side, best) = search(&mut e, "position startpos moves h2e2 h9g7 a0a9");
+    assert_eq!(side, "Red");
+    assert_ne!(best, "a0a9");
+    let (code, err, _) = e.finish(true);
+    assert_eq!(code, 0, "{err}");
+    assert!(err.contains("native rejection"), "{err}");
 }

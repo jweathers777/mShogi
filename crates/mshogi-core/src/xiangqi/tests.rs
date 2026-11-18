@@ -514,3 +514,44 @@ fn raw_counter_preserves_check_plies_and_root_provenance_through_reversal() {
     assert_eq!(&position, root.position());
     assert_eq!(root.to_json(), encoded_root);
 }
+#[test]
+fn fork_copies_the_committed_game_without_replay_and_keeps_tokens_apart() {
+    let mut game = Game::standard(ClaimPolicy::AutoValidClaims).unwrap();
+    let mut last = None;
+    for text in ["h2e2", "h9g7", "h0g2", "i9h9"] {
+        let action: Action = text.parse().unwrap();
+        last = Some(
+            game.submit(GameRequest {
+                expected: game.context(),
+                actor: game.position().side_to_move(),
+                command: GameCommand::Play { action },
+            })
+            .unwrap()
+            .undo,
+        );
+    }
+    let mut fork = game.fork().unwrap();
+    // The same committed game as an independent native replay.
+    let replay = game.committed_prefix(game.events().len()).unwrap();
+    assert_eq!(
+        GameRecord::from_game(&fork).unwrap(),
+        GameRecord::from_game(&replay).unwrap()
+    );
+    assert_eq!(fork.events(), game.events());
+    assert_ne!(fork.context(), game.context());
+    // The original's reversal token does not apply to the copy.
+    assert!(fork.undo(last.take().unwrap()).is_err());
+    // The copy admits play on its own; the original is unchanged.
+    let action: Action = "b0c2".parse().unwrap();
+    fork.submit(GameRequest {
+        expected: fork.context(),
+        actor: fork.position().side_to_move(),
+        command: GameCommand::Play { action },
+    })
+    .unwrap();
+    assert_eq!(fork.events().len(), game.events().len() + 1);
+    assert_eq!(
+        GameRecord::from_game(&game).unwrap(),
+        GameRecord::from_game(&replay).unwrap()
+    );
+}

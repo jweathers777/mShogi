@@ -11,9 +11,15 @@ import json
 from pathlib import Path
 
 
+FIELDS = {'chess': 4, 'shogi': 3, 'xiangqi': 2}
+POSITION = {'chess': 'fen', 'shogi': 'sfen', 'xiangqi': 'fen'}
+OUTCOME = {'chess': 'white_outcome', 'shogi': 'sente_outcome', 'xiangqi': 'red_outcome'}
+
+
 def key(fen, game='chess'):
-    # SFEN board, side and hands; its fourth field is only the move counter.
-    return ' '.join(fen.split()[:3 if game == 'shogi' else 4])
+    # Board identity: Chess FEN without clocks, SFEN board, side and hands
+    # (its fourth field is only the move counter), Xiangqi FEN board and side.
+    return ' '.join(fen.split()[:FIELDS[game]])
 
 
 def digest(path):
@@ -21,10 +27,10 @@ def digest(path):
 
 
 def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False):
-    if game not in ('chess', 'shogi'):
+    if game not in FIELDS:
         raise ValueError('unsupported game')
-    position_field = 'sfen' if game == 'shogi' else 'fen'
-    outcome_field = 'sente_outcome' if game == 'shogi' else 'white_outcome'
+    position_field = POSITION[game]
+    outcome_field = OUTCOME[game]
     files = sorted(root.glob('games-*.jsonl'))
     games = sorted((json.loads(line) for path in files for line in path.read_text().splitlines()),
                    key=lambda g: g['game_id'])
@@ -100,7 +106,7 @@ def main():
     parser.add_argument('command', choices=['split'])
     parser.add_argument('corpus', type=Path)
     parser.add_argument('manifest', type=Path)
-    parser.add_argument('--game', choices=['chess', 'shogi'], default='chess')
+    parser.add_argument('--game', choices=sorted(FIELDS), default='chess')
     parser.add_argument('--by-opening', action='store_true',
                         help='family = catalog opening id (use when random plies follow the catalog prefix)')
     parser.add_argument('--allow-empty-demonstration', action='store_true',

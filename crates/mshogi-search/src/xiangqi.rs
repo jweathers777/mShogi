@@ -5,8 +5,8 @@ mod position_tests;
 use crate::alphabeta::{self, SearchPosition, Searcher};
 use mshogi_core::xiangqi::{
     Action, Conclusion, ExactAnalysis, ExactFailure, ExactLimits, ExactObservation, ExactStop,
-    ExactVerdict, Game, GameCommand, GameError, GameRecord, GameRequest, NoWinAssessment,
-    PendingAdjudication, PieceKind, Position, RecordError, Side,
+    ExactVerdict, Game, GameCommand, GameError, GameRequest, NoWinAssessment, PendingAdjudication,
+    PieceKind, Position, RecordError, Side,
 };
 use position::XiangqiPosition;
 use std::{error::Error, fmt};
@@ -235,7 +235,8 @@ pub fn search_with_state(
     mut stop: impl FnMut() -> bool,
 ) -> Result<SearchResult, SearchError> {
     let timing = alphabeta::timing::RequestTime::new(time);
-    let mut stop = || stop() || timing.expired();
+    // The core enforces the hard deadline through its limits, so a timed
+    // request that expires is not a cancellation and may use its fallback.
     run(
         game,
         limits,
@@ -357,11 +358,22 @@ fn run(
     let root = result.perspective;
     let claim = game.natural_count_eligibility(root).eligible;
     let mut position = XiangqiPosition::from_game(game);
-    let outcome = engine.search(
-        &mut position,
-        timing.limits(limits.depth, Some(limits.nodes)),
-        stop,
-    );
+    let outcome = if timing.remaining().is_some() {
+        // A timed request always returns a legal move (native root order).
+        let fallback = position.find(legal[0]).ok_or(SearchError::Invariant)?;
+        engine.search_with_timed_fallback(
+            &mut position,
+            timing.limits(limits.depth, Some(limits.nodes)),
+            stop,
+            fallback,
+        )
+    } else {
+        engine.search(
+            &mut position,
+            timing.limits(limits.depth, Some(limits.nodes)),
+            stop,
+        )
+    };
     result.nodes = outcome.nodes;
     result.completed_depth = outcome.depth;
     result.status = match outcome.status {
@@ -373,8 +385,7 @@ fn run(
         result.completed_depth = 0;
         return Ok(result);
     };
-    let record = GameRecord::from_game(game).map_err(SearchError::Record)?;
-    let mut native = record.to_game().map_err(SearchError::Record)?;
+    let mut native = game.fork().map_err(SearchError::Transition)?;
     // A valid root claim is an option, not an automatic draw. A completed
     // search must prefer it when the move score is no better than zero.
     if claim && outcome.score.is_some_and(|score| score <= 0) {

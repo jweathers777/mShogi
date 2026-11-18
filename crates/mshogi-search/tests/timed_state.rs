@@ -79,7 +79,8 @@ state_case!(
 state_case!(
     xiangqi_state_and_time,
     xiangqi,
-    mshogi_core::xiangqi::Game::standard(mshogi_core::xiangqi::ClaimPolicy::Explicit).unwrap()
+    mshogi_core::xiangqi::Game::standard(mshogi_core::xiangqi::ClaimPolicy::Explicit).unwrap(),
+    true
 );
 state_case!(chu_state_and_time, chu, mshogi_core::chu::Game::standard());
 state_case!(

@@ -4,20 +4,13 @@ title: Establish and meet measured xiangqi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-15T22:31:00Z'
+updated_date: '2026-11-18T19:25:00Z'
 labels:
   - handle:conventional-xiangqi
 milestone: m-5
 dependencies:
-  - MSH-48
-  - MSH-45
-  - MSH-109
-  - MSH-49
-  - MSH-136
-  - MSH-137
-  - MSH-138
-  - MSH-139
   - MSH-181
+  - MSH-198
 documentation:
   - docs/design.md
   - docs/m5/strength-roadmap.md
@@ -80,4 +73,6 @@ Status check, 2026-11-15: the 2026-11-09 note above asks for John's choice of th
 Decision, 2026-11-15: John set the order of games: Shogi and Xiangqi move to the shared core first, then Chu Shogi and Tenjiku Shogi. When this task starts is still John's selection.
 
 Status check, 2026-11-15: the move of this game to the shared search core is now the separate task MSH-181. This task keeps the strength criteria, opponent pool and measurement, and depends on MSH-181.
+
+Direction, 2026-11-18 (John): Xiangqi follows the per-game classical strength program in docs/m5/strength-roadmap.md (the same standards as Chess and Shogi). The work is MSH-194 (Xiangqi Strength Harness), MSH-195 (Xiangqi Selectivity Round), MSH-196 (Xiangqi Evaluation Round), MSH-197 (Xiangqi Strength Anchor, needs approval with caps) and MSH-198 (Xiangqi Blunder Screen). This task keeps the final criteria and verdict.
 <!-- SECTION:NOTES:END -->

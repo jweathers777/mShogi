@@ -56,6 +56,12 @@ frozen-predecessor tests, tactical suites and, if available, a deeper search
 of mShogi itself as a judge carry the evidence. A judge of the same family is
 weaker evidence; say so in the report.
 
+**Current game: Xiangqi** (John, 2026-11-18): MSH-194 (Xiangqi Strength
+Harness), MSH-195 (Xiangqi Selectivity Round), MSH-196 (Xiangqi Evaluation
+Round), MSH-197 (Xiangqi Strength Anchor) and MSH-198 (Xiangqi Blunder Screen).
+MSH-54 (Conventional Xiangqi) keeps the final criteria. Tori, Chu and Tenjiku
+(MSH-51, MSH-52, MSH-53) get their step tasks when John starts them.
+
 # Next direction — Shogi after the Chess anchor (checkpoint, 2026-11-17)
 
 The Chess classical round (steps 1–6 below) and its external anchor measurement

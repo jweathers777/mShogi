@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-18T16:08:00Z'
-updated_date: '2026-11-18T16:08:00Z'
+updated_date: '2026-11-18T18:17:00Z'
 labels:
   - handle:shogi-blunder-screen
 milestone: m-5
@@ -39,17 +39,29 @@ Screen results, mechanism shares, suite and decision recorded; caps: judge compu
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Rules (judge, nodes, win-probability conversion, blunder threshold, mechanism classes, fix rule) are recorded before results.
-- [ ] #2 All 304 MSH-191 games are screened within the compute cap; blunder counts and mechanism shares are reported, with mShogi long-search rechecks.
-- [ ] #3 A Shogi blunder suite with judge reference moves and a by-game held-out split exists with recorded provenance.
-- [ ] #4 The fix rule outcome is recorded; any fix is general, passes Shogi correctness and consumer tests and wins a sequential predecessor test, or is rejected with its result.
-- [ ] #5 Results, compute, limits and independent review are recorded and docs are current.
+- [x] #1 Rules (judge, nodes, win-probability conversion, blunder threshold, mechanism classes, fix rule) are recorded before results.
+- [x] #2 All 304 MSH-191 games are screened within the compute cap; blunder counts and mechanism shares are reported, with mShogi long-search rechecks.
+- [x] #3 A Shogi blunder suite with judge reference moves and a by-game held-out split exists with recorded provenance.
+- [x] #4 The fix rule outcome is recorded; any fix is general, passes Shogi correctness and consumer tests and wins a sequential predecessor test, or is rejected with its result.
+- [x] #5 Results, compute, limits and independent review are recorded and docs are current.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-11-18 (@claude). Screen: 31,535 positions judged (1.38 h, US$2.23, cleanup verified); 226 clear blunders in 15,805 mShogi moves (1.43/100), 116 games; elmo games 1 blunder. Mechanisms: time trouble 28.3%, capture refutation 27.0%, drop refutation 23.5%, other 19.0%, short mate 1.8%, king zone 0.4%. 10 s recheck: 86 changed, 63 avoided (28%). Fix rule not triggered; no fix round. Suite tools/strength/data/shogi-blunders-v1.json (226; 164 dev / 62 held-out); baseline at 1 s avoids 73. Deviation recorded: implemented capture class counts any capture, King-safety proxy is 'refutation lands next to the King' (decision unaffected). Independent review accepted after wording/provenance fixes.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+MSH-193 (Shogi Blunder Screen) judged all 31,535 positions of the 304 MSH-191 games with YaneuraOu v4.79 + elmo at 3M nodes (cloud, US$2.23). The baseline made 226 clear blunders in 15,805 moves (1.43 per 100), spread over time trouble (28%), capture refutations (27%) and drop refutations (24%); the elmo losses were gradual. A 10 s rerun avoids only 28%. The frozen fix rule (one mechanism >= 30%) was not triggered, so no engine change was made. The 226 positions form shogi-blunders-v1 (by-game held-out split); baseline avoids 73 at 1 s. Report docs/m5/shogi-blunder-screen.md; evidence docs/m5/evidence/msh193; roadmap and MSH-50 updated; independent review accepted. Integrated into main.
+<!-- SECTION:FINAL_SUMMARY:END -->

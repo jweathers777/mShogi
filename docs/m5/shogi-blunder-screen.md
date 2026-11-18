@@ -7,7 +7,7 @@ John accepted the classical Shogi engine (main `ce2f79bd`, MSH-191 index about 2
 - **Judge:** YaneuraOu v4.79 + elmo WCSC27, the MSH-191 admitted build, at 3,000,000 nodes per position, one thread, no book; used only to score positions, never as a rules authority. All 31,535 positions after the opening prefixes were judged on Google Cloud Batch (eight c3-standard-4 VMs, four judges each): 1.38 hours, US$2.23 conservative, cleanup verified.
 - **Win probability for mShogi:** p = 1/(1+exp(−cp/600)); mate scores map to 1 or 0.
 - **Clear blunder:** an mShogi move with p_before ≥ 0.30 and p_after ≤ p_before − 0.30.
-- **Mechanism (one per blunder, by priority):** time trouble (< 2 s on mShogi's clock); allowed a short mate (judge mate in ≤ 7); the judge's refutation captures a piece; the refutation is a drop; the refutation lands next to mShogi's King; other.
+- **Mechanism (one per blunder, by priority), as implemented:** time trouble (< 2 s on mShogi's clock); allowed a short mate (judge mate in ≤ 7 plies); the judge's refutation captures any piece; the refutation is a drop; the refutation lands next to mShogi's King; other. *Deviation from the frozen wording:* the task text said "capture of an undefended or under-defended piece" and "King-safety collapse"; the code counts any capture and uses "refutation lands next to the King" as the King-safety proxy. A stricter capture class would move some blunders to "other", which has no general fix, so the decision below is unchanged.
 - **Fix rule:** one fix round only if one mechanism explains ≥ 30% and maps to a general change.
 
 ## Results
@@ -32,18 +32,18 @@ The elmo games contain almost no clear blunders: by the judge's view, mShogi fel
 | King-zone refutation | 1 | 0.4% | 0 | 0 |
 | **All** | **226** | | **86** | **63 (28%)** |
 
-"Changed at 10 s" reruns the baseline at 10 seconds on the position, against about 1–2 seconds in the game. "Avoided" means the judge no longer rates the new move a clear blunder.
+"Changed at 10 s" reruns the baseline at 10 seconds on the position (fresh process, empty table, no history), against about 1–2 seconds in the game. "Avoided" means the judge (same settings, `position sfen … moves <new move>`) no longer rates the new move a clear blunder; provenance in [recheck.py](evidence/msh193/recheck.py).
 
 ## Interpretation and decision
 
 - **The fix rule is not triggered.** The largest mechanism, time trouble, is 28.3%. Merging categories after seeing the results would break the frozen rule, so no fix round was run.
-- **More time is not the answer.** Even five to ten times more thinking avoids only 28% of all clear blunders and 36% of time-trouble blunders. This agrees with MSH-192, where reallocating the clock gave no gain.
-- **The blunders are spread evenly over tactical refutations by capture and by drop** that mShogi does not see or misjudges even with deeper search. That points to evaluation quality and horizon effects in general, not one missing rule. A learned evaluation is the natural next lever (MSH-55), as John decided for the baseline.
+- **Modestly more time does not resolve most blunders.** A 10-second rerun (about one or two plies deeper, without game history or a warm table) avoids only 28% of all clear blunders and 36% of time-trouble blunders. This agrees with MSH-192, where reallocating the clock gave no gain. It cannot separate evaluation blind spots from deeper search horizons.
+- **The blunders are spread over tactical refutations by capture and by drop** that mShogi does not avoid even with this extra time. No single rule-level gap stands out. Whether evaluation quality (the learned-evaluation direction John chose, MSH-55) or deeper search would help most is not determined by this screen.
 - No gross single weakness was found. The baseline is documented as an engine that blunders about once per 70 moves at this control and is outplayed gradually by much stronger opponents.
 
 ## Blunder suite
 
-[`shogi-blunders-v1.json`](../../tools/strength/data/shogi-blunders-v1.json) has the 226 positions with the played blunder, the judge's reference move and refutation, the mechanism, mShogi's clock, and a by-game held-out split (164 development, 62 held-out). Baseline at 1000 ms per position: avoids the recorded blunder in 73 of 226 positions (50 of 164 development, 23 of 62 held-out) and plays the reference move in 51. Avoiding the played move does not prove a good move; the reference is one good move, not the only one.
+[`shogi-blunders-v1.json`](../../tools/strength/data/shogi-blunders-v1.json) has the 226 positions with the played blunder, the judge's reference move and refutation, the mechanism, mShogi's clock, and a by-game held-out split (164 development, 62 held-out; the two games of one opening pair can fall on different sides). Baseline at 1000 ms per position: avoids the recorded blunder in 73 of 226 positions (50 of 164 development, 23 of 62 held-out) and plays the reference move in 51. Avoiding the played move does not prove a good move; the reference is one good move, not the only one.
 
 ## Limits
 

@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-18T19:25:00Z'
-updated_date: '2026-11-18T19:26:00Z'
+updated_date: '2026-11-18T20:31:00Z'
 labels:
   - handle:xiangqi-strength-harness
   - xiangqi
@@ -59,3 +59,17 @@ Handle: Xiangqi Strength Harness
 5. Opponent and judge proposal (Pikafish, Fairy-Stockfish classical, ElephantEye) with builds, licences, limits and rating-reference limits for John.
 6. Docs, evidence, review, integration.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Progress 2026-11-18 (branch codex/msh-194-xiangqi-harness, commits a9bcb915, c97fde2b, b3a0442b). Verification level 1 (local macOS arm64) plus protocol/process change in runner and console (targeted). Report: docs/m5/xiangqi-strength-harness.md; evidence docs/m5/evidence/msh194.
+- Found and fixed: Xiangqi UCI had no clocks; per-request overhead grew ~2.5 ms/ply (native submit copies history, 3-4 replays per request). Added native Game::fork, session event-prefix reuse, incremental position, timed fallback move. Overhead now flat ~3 ms.
+- Clocked route xiangqi-match/xiangqi-match-replay with shared runner::clocked host (Shogi route refactored onto it; its tests pass).
+- Openings: 112 admitted (depth 11, +-150), 12 families.
+- Tactical suite: 373 positions (91 held-out), complete native answer sets; baseline 373/373 at 200 ms: saturated, regression guard only.
+- Control 5 s + 0.1 s: late-game fresh depth median 10 at 100 ms; 1,120 games all native conclusions.
+- Export + texel split for xiangqi verified.
+- Finding: 47/1,120 games lost by perpetual chase (search scores chase cycles as draw).
+- Opponent/judge proposal in report; no external games run.
+<!-- SECTION:NOTES:END -->

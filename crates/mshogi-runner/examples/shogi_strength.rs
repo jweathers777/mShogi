@@ -270,10 +270,7 @@ fn main() {
             args[5].parse().unwrap(),
         ))
         .unwrap(),
-        "export" => export(
-            &input,
-            args.get(4).map_or(4, |n| n.parse().unwrap()),
-        ),
+        "export" => export(&input, args.get(4).map_or(4, |n| n.parse().unwrap())),
         _ => panic!(
             "usage: shogi_strength validate|export INPUT OUTPUT | probe INPUT OUTPUT ENGINE TIME_MS(0=depth)"
         ),

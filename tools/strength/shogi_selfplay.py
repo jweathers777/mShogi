@@ -53,7 +53,8 @@ def validate_manifest(m):
     require(m['deadline_epoch'] == m['campaign_started_epoch'] + pol.seconds, 'fixed campaign deadline')
     require(0 <= m['estimated_compute_before_usd'] < pol.compute_usd, 'compute cap reached')
     p = m.get('protocol', {})
-    require(set(p) == {'nodes', 'concurrency', 'pair_ms', 'task_seconds', 'every', 'max_steps'}, 'protocol fields')
+    require(set(p) - {'random_plies'} == {'nodes', 'concurrency', 'pair_ms', 'task_seconds', 'every', 'max_steps'}
+            and p.get('random_plies', 0) in (0, 1, 2, 3, 4), 'protocol fields')
     low, high = p['nodes']
     require(1000 <= low <= high <= 1_000_000 and 1 <= p['concurrency'] <= 4 and 1 <= p['every'] <= 16
             and p['max_steps'] == 320 and 60000 <= p['pair_ms'] <= 900000, 'protocol bounds')
@@ -92,7 +93,8 @@ def cloud_pair(m, seed, directory):
                                baseline_depth=64, baseline_nodes=base, calibrate=False,
                                max_steps=p['max_steps'], pair_wall_ms=p['pair_ms'], game='shogi',
                                watchdog_ms=None, openings=str(catalog),
-                               opening_count=len(m['openings']['openings']))
+                               opening_count=len(m['openings']['openings']),
+                               random_plies=p.get('random_plies', 0))
         result = native_match.run_pair(args, seed, directory)
         raw = gzip.decompress((directory / result['report']).read_bytes())
         plain = directory / 'report.json'

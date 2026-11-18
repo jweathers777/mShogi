@@ -126,3 +126,13 @@ fn a_full_mshogi_game_replays_and_tampering_is_rejected() {
     tampered.turns.pop();
     assert!(tampered.replay().is_err());
 }
+
+#[test]
+fn the_game_watchdog_is_a_time_limit_not_a_clock_exhaustion() {
+    let mut c = config([fixture("timeout"), fixture("resign")], 0, 60_000);
+    c.max_game_ms = 1_000;
+    let report = run(&c).unwrap();
+    assert_eq!(report.stop, MatchStop::TimeLimit);
+    assert!(report.exhaustion.is_none() && report.engine_score.is_none());
+    MatchReport::from_json(&report.to_json().unwrap()).unwrap();
+}

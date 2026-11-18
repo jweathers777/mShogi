@@ -550,6 +550,8 @@ impl Host<'_> {
 enum Outcome {
     Accepted(String, u64, u64),
     Exhausted(u64),
+    /// The overall game watchdog, not the mover's clock, ended the wait.
+    Watchdog,
 }
 
 /// Play one clocked game. Native admission alone decides results.
@@ -628,11 +630,16 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
                 host.send(engine, "search", &context.go)?;
                 let started = Instant::now();
                 let limit = clock[side].saturating_add(config.grace_ms);
-                let reply_deadline = (started + Duration::from_millis(limit)).min(deadline);
+                let clock_deadline = started + Duration::from_millis(limit);
+                let reply_deadline = clock_deadline.min(deadline);
+                let watchdog_capped = deadline < clock_deadline;
                 let mut info = 0u64;
                 loop {
                     match host.line(engine, "search", reply_deadline)? {
                         None => {
+                            if watchdog_capped {
+                                return Ok(Outcome::Watchdog);
+                            }
                             let elapsed = started.elapsed().as_millis() as u64;
                             return Ok(Outcome::Exhausted(elapsed.max(limit + 1)));
                         }
@@ -686,6 +693,7 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
                         ..context
                     });
                 }
+                Ok(Outcome::Watchdog) => break MatchStop::TimeLimit,
                 Ok(Outcome::Exhausted(elapsed)) => {
                     exhaustion = Some(Exhaustion {
                         engine: index,

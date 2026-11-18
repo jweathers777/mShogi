@@ -4,7 +4,7 @@ The conditional floodgate-referenced estimate of mShogi is **2765**, with an **a
 
 The study scored **304 games in 152 complete opening pairs: 141 wins, 0 draws, 163 losses**. Every game ended in a native conclusion that passed native replay. No game failed, ran out of time or was left unscored. The study stopped at its frozen size rule (about 300 games) after 1.99 campaign hours and US$3.04 conservative compute, within the approved 6-hour and US$15 caps.
 
-**The two opponent families disagree.** Against the Gikou family the estimate is 2772 (2729–2816). Against YaneuraOu with the elmo evaluation at 1,000k nodes, mShogi lost all 24 games, which implies a much lower number. The spread, 374 points, exceeds the 150-point agreement check. The combined number is therefore mostly a Gikou-referenced index; see [Limits](#limits).
+**The family check is flagged but only weakly supported.** Against the Gikou family the estimate is 2772 (2729–2816). Against YaneuraOu with the elmo evaluation at 1,000k nodes, mShogi lost all 24 games. The mechanical spread, 374 points, exceeds the 150-point check, but the elmo-only value (2398) is set mostly by the prior, and its interval (1771–2881) contains the Gikou value. The combined number is mostly Gikou-referenced, partly because elmo was not scheduled after its first 24 games (a deviation, see below); see [Limits](#limits).
 
 ## Frozen engine and conditions
 
@@ -65,7 +65,14 @@ Frozen before play in [method.md](evidence/msh191/method.md), with one addendum 
 | m04 | Gikou d5, Gikou d3 | 9–15, 19–5 | 2788.6 | 45.1 |
 | m05 | Gikou d5, Gikou d3 | 6–18, 14–10 | 2765.2 | 42.2 |
 
-Bracketing stopped at half-width 88.7 ≤ 100 after eight rounds (0.66 h). Only Gikou depth 5 lay within ±150 of the bracket estimate; elmo 1000k, the only other reproducible family, was 336 points above. The addendum therefore paired Gikou depth 5 with elmo 1000k in m01. After elmo scored 0/24, it was no longer scheduled (its games stay in every fit). m02 used Gikou depth 7, which has the same rating as elmo, as an equal-rating check. Depth 7 then left the 25–75% band and was replaced by the nearer depth 3 for m03–m05. Each decision and its evidence was recorded in the task before the batch it governed. The [rounds record](evidence/msh191/rounds.json) and batch manifests give every selection reason.
+Bracketing stopped at half-width 88.7 ≤ 100 after eight rounds (0.66 h), as frozen. Only Gikou depth 5 lay within ±150 of the bracket estimate; elmo 1000k, the only other reproducible family, was 336 points above. The addendum, committed before m01, therefore paired Gikou depth 5 with elmo 1000k in every main batch.
+
+**Deviations from the frozen addendum.** Two main-phase choices were made after seeing results and were not allowed by the addendum:
+
+1. After elmo scored 0/24 in m01, it was no longer scheduled. The stated reason ("0% gives no further information") was wrong: at 2765 an elmo game still carries about 40% of the information of an even game, and more elmo games were the way to test the family difference. Its 24 games stay in every fit.
+2. m02 used Gikou depth 7 (3130, equal in rating to elmo, outside ±150) as an equal-rating check; it then left the 25–75% band and was replaced by the nearer depth 3 for m03–m05 under the frozen replacement rule.
+
+These choices move the combined estimate toward the Gikou family. For comparison: the joint fit through m01 (the last batch that followed the addendum) is **2771.9** (half-width 71.4); the Gikou-only fit of all games is 2772.3; the final joint fit is 2765.2. Each decision was written to the task record and to the batch manifest's selection reason before its batch ran, but the task record was committed later, so file timestamps are the only evidence of that order. The [rounds record](evidence/msh191/rounds.json) and batch manifests give every selection reason.
 
 ## Results
 
@@ -76,16 +83,20 @@ Bracketing stopped at half-width 88.7 ≤ 100 after eight rounds (0.66 h). Only 
 | Gikou d7 (3130) | 3–0–21 | 12.5% | 10.9% | 2797 |
 | elmo 1000k (3131) | 0–0–24 | 0.0% | 10.9% | (2398, prior-dominated) |
 
-The three Gikou settings fit consistently: their single-opponent estimates lie within 35 points. elmo 1000k, rated the same as Gikou depth 7, scored 0/24 against 3/24 for depth 7. mShogi scored 66/152 as Sente and 75/152 as Gote. Games lasted 34–229 plies (median 104); 163 ended in checkmate and 141 in resignation.
+The three Gikou settings fit consistently: their single-opponent estimates lie within 35 points. elmo 1000k, rated the same as Gikou depth 7, scored 0/24 against 3/24 for depth 7. At 2765 the model gives 0/24 against elmo a probability of 0.063, and elmo 0/24 against depth 7 3/24 has one-sided Fisher p = 0.12. The data therefore only weakly indicate a real difference between the two 3130-rated anchors. mShogi scored 66/152 as Sente and 75/152 as Gote. Games lasted 34–229 plies (median 104); 163 ended in checkmate and 141 in resignation. All 141 mShogi wins came from opponent resignations and all 163 losses were checkmates: mShogi never resigns. No game ended by an entering-king declaration; that path was exercised only in admission and tests.
 
 The elmo games are ordinary: all 24 ended in checkmate of mShogi after 62–119 plies, with no clock exhaustion. After spending its base time mShogi plays near its 1-second increment, about the same pace as elmo's 1,000k-node searches.
 
 ## Limits
 
-- **Family disagreement (374 points).** Against Gikou the index is about 2770; against YaneuraOu/elmo at equal floodgate rating mShogi wins nothing. Possible causes include different floodgate conditions for the two entries (hardware, books, time controls, opponent pools), the assumed version and setting mapping, and mShogi weaknesses that elmo exploits more than depth-limited Gikou (for example the extreme King-placement terms noted in MSH-188). These games do not separate the causes. The combined estimate is effectively Gikou-referenced, and one family is a narrow base.
+- **Family check (flagged, weakly supported).** Against Gikou the index is about 2770; against YaneuraOu/elmo at equal floodgate rating mShogi won none of 24 games (p = 0.063 at 2765). If the difference is real, possible causes include different floodgate conditions for the two entries (hardware, books, time controls, opponent pools), the assumed version and setting mapping, and mShogi weaknesses that elmo exploits more than depth-limited Gikou (for example the extreme King-placement terms noted in MSH-188). These games do not separate the causes. The combined estimate is effectively Gikou-referenced, and one family is a narrow base.
 - **Conditional scale.** Floodgate ratings come from other hardware, time controls (mostly longer), books and pools. The depth- and node-limited anchors reduce hardware dependence for the opponents, but not for mShogi, which plays on the clock.
-- **Statistical interval only.** The interval excludes anchor rating error (Gikou entries have about 250 floodgate games each), mapping assumptions and systematic family effects.
+- **Statistical interval only.** The interval excludes anchor rating error, mapping assumptions and systematic family effects. From their floodgate win/loss counts, each Gikou entry (about 250 games, last played 2026-07-15) has a rating standard error of at least about 22 points (more, because its opponents' ratings are also estimated); elmo 1000k (2,314 games) about 7. Shifting all Gikou anchors by ±25 moves the estimate to 2741 / 2789. Anchor error is therefore about as large as the statistical half-width of ±42.
 - No external games were played on floodgate or any public server, and no games are published.
+
+## Route change after the study
+
+The review found that the overall 30-minute game watchdog, had it ended a search, would have been recorded as a clock exhaustion with an invented elapsed time instead of an unscored time limit. No game in the study reached the watchdog. The runner now records it as `time_limit`, with a test; the study's binaries and results are unchanged.
 
 ## Compute and cleanup
 

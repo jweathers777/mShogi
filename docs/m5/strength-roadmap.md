@@ -47,8 +47,9 @@ The next work is Shogi:
    cloud (6 hours, US$15 caps). No games on public servers.
    Done: conditional floodgate-referenced index 2765 (approx. 95% 2723-2807)
    from 304 games at 60 s + 1 s against Gikou v2.0.2 depth 3/5/7 and
-   YaneuraOu/elmo 1000k. The families disagree by 374 points (0/24 against
-   elmo); the index is effectively Gikou-referenced. See
+   YaneuraOu/elmo 1000k. The family check is flagged but weakly supported
+   (0/24 against elmo, p = 0.06); elmo was dropped mid-study (a recorded
+   deviation), so the index is mostly Gikou-referenced. See
    [the report](shogi-strength-anchor.md).
 
 MSH-50 (Conventional Shogi) keeps the Shogi strength criteria and the final

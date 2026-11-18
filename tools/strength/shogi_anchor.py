@@ -48,7 +48,7 @@ def policy():
 def engine_config(build, name):
     entry = build['engines'][name]
     return {'path': entry['path'], 'args': entry.get('args', []), 'options': entry.get('options', []),
-            'model_path': None, 'model_identity': name + '/' + entry['source'], 'deterministic': False}
+            'model_path': None, 'model_identity': name, 'deterministic': False}
 
 
 def match_config(build, spec):

@@ -25,11 +25,15 @@ from tools.experiments.core import decode, digest, encode, file_hash
 from tools.strength import anchor_stats
 
 PREFIX = 'msh191'
+# Task prefixes that use this campaign policy (MSH-191 anchor, MSH-192 follow-up).
+PREFIXES = ('msh191', 'msh192')
 CAMPAIGN_SECONDS = 6 * 3600
 COMPUTE_USD = 15
 RATE = .201608
-STORE = 'gs://mshogi-experiments-216675633801/msh191/'
+BUCKET = 'gs://mshogi-experiments-216675633801/'
 CLOCK = {'base_ms': 60000, 'increment_ms': 1000}
+# Reviewed clocks: the anchor control and the same 60:1 ratio for fast tests.
+CLOCKS = ({'base_ms': 60000, 'increment_ms': 1000}, {'base_ms': 15000, 'increment_ms': 250})
 GRACE_MS = 500
 PROFILE = 'mshogi.shogi.csa36.v1'
 
@@ -39,9 +43,10 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def policy():
+def policy(m=None):
     from tools.strength import anchor_cloud
-    return anchor_cloud.CampaignPolicy(PREFIX, CAMPAIGN_SECONDS, COMPUTE_USD, 'tools.strength.shogi_anchor',
+    prefix = m['experiment'].split('-', 1)[0] if m else PREFIX
+    return anchor_cloud.CampaignPolicy(prefix, CAMPAIGN_SECONDS, COMPUTE_USD, 'tools.strength.shogi_anchor',
                                        ('worker',))
 
 
@@ -51,12 +56,16 @@ def engine_config(build, name):
             'model_path': None, 'model_identity': name, 'deterministic': False}
 
 
-def match_config(build, spec):
+def clock_of(m):
+    return m.get('clock', CLOCK)
+
+
+def match_config(build, spec, clock=CLOCK):
     """Native clocked-game config: engine 0 is mShogi, engine 1 the opponent."""
     return {'schema_version': 1, 'profile': PROFILE, 'id': spec['id'],
             'engines': [engine_config(build, 'candidate'), engine_config(build, spec['opponent'])],
             'opening': {'id': spec['opening']['id'], 'sfen': None, 'moves': spec['opening']['moves']},
-            'sente': 1 if spec['swapped'] else 0, 'clock': dict(CLOCK), 'grace_ms': GRACE_MS,
+            'sente': 1 if spec['swapped'] else 0, 'clock': dict(clock), 'grace_ms': GRACE_MS,
             'max_game_ms': 1_800_000,
             'watchdogs': {'handshake_ms': 120000, 'ready_ms': 120000, 'response_ms': 60000,
                           'write_ms': 2000, 'cleanup_ms': 5000},
@@ -65,9 +74,10 @@ def match_config(build, spec):
 
 
 def validate_manifest(m):
-    require(m.get('schema') == 1 and re.fullmatch(PREFIX + r'-[a-z0-9-]{1,50}', m.get('experiment', '')),
+    require(m.get('schema') == 1 and re.fullmatch(r'(' + '|'.join(PREFIXES) + r')-[a-z0-9-]{1,50}', m.get('experiment', '')),
             'wrong campaign identity')
-    require(m.get('phase') in ('bracket', 'main', 'smoke'), 'phase')
+    require(m.get('phase') in ('bracket', 'main', 'smoke', 'sprt'), 'phase')
+    require(clock_of(m) in CLOCKS, 'reviewed clock')
     for field in ('campaign_started_epoch', 'deadline_epoch', 'estimated_compute_before_usd'):
         require(type(m.get(field)) in (int, float) and math.isfinite(m[field]), 'finite ' + field)
     require(m['deadline_epoch'] == m['campaign_started_epoch'] + CAMPAIGN_SECONDS, 'fixed campaign deadline')
@@ -101,12 +111,12 @@ def validate_manifest(m):
                     and o['swapped'] != spec['swapped'] for o in pair), 'pair consistency')
         pair.append(spec)
         require(1 <= len(spec['opening']['moves']) <= 32, 'catalog opening prefix')
-    require(len(seen) <= 400, 'game cap')
+    require(len(seen) <= 640, 'game cap')
 
 
-def audit(report, spec, build):
+def audit(report, spec, build, clock=CLOCK):
     """Check the effective configuration and identities; return the score."""
-    require(report['config'] == match_config(build, spec), 'effective config differs from manifest')
+    require(report['config'] == match_config(build, spec, clock), 'effective config differs from manifest')
     for index, name in enumerate(('candidate', spec['opponent'])):
         require(report['identities'][index]['executable']['sha256'] == build['engines'][name]['sha256'],
                 'participant binary differs: ' + name)
@@ -114,7 +124,8 @@ def audit(report, spec, build):
                   and not p['observation']['cleanup_failures'] for p in report['processes'])
     complete = report['stop'] == 'native_conclusion' and report['engine_score'] is not None and healthy
     for turn in report['turns']:
-        require(turn['go'].startswith('go btime ') and turn['go'].endswith(' binc 1000 winc 1000'),
+        increment = clock['increment_ms']
+        require(turn['go'].startswith('go btime ') and turn['go'].endswith(f' binc {increment} winc {increment}'),
                 'unexpected clock command')
     return {'complete': complete, 'healthy': healthy, 'stop': report['stop'],
             'score': report['engine_score'][0] / 2 if complete else None,
@@ -122,9 +133,9 @@ def audit(report, spec, build):
             'exhaustion': report.get('exhaustion'), 'failure': report.get('failure')}
 
 
-def run_game(build, spec, dest, deadline_epoch):
+def run_game(build, spec, dest, deadline_epoch, clock=CLOCK):
     dest.mkdir()
-    cfg = match_config(build, spec)
+    cfg = match_config(build, spec, clock)
     (dest / 'config.json').write_bytes(encode(cfg))
     receipt = {'id': spec['id'], 'pair_id': spec['pair_id'], 'opponent': spec['opponent'],
                'swapped': spec['swapped'], 'started_epoch': time.time(), 'complete': False, 'score': None}
@@ -157,7 +168,7 @@ def run_game(build, spec, dest, deadline_epoch):
                                     text=True, timeout=120)
             receipt['replay'] = {'returncode': replay.returncode, 'stdout': replay.stdout[-2000:],
                                  'stderr': replay.stderr[-2000:]}
-            receipt.update(audit(decode(raw), spec, build))
+            receipt.update(audit(decode(raw), spec, build, clock))
             receipt['complete'] = bool(receipt['complete'] and replay.returncode == 0
                                        and receipt.get('returncode') == 0)
             report.unlink()
@@ -189,13 +200,13 @@ def worker(manifest_uri, store_uri):
     receipt = dict(claim, complete=False, games=[])
     try:
         receipt['environment'] = cloud_environment()
-        with tempfile.TemporaryDirectory(prefix=PREFIX + '-') as directory:
+        with tempfile.TemporaryDirectory(prefix='shogi-anchor-') as directory:
             for spec in m['bins'][index]:
                 require(time.time() < m['deadline_epoch'] - 300, 'campaign deadline reached')
                 prefix = 'games/' + spec['id']
                 put_new(store, prefix + '/launch.json', encode(claim | {'spec': spec}))
                 dest = Path(directory) / spec['id']
-                result = run_game(m['build'], spec, dest, m['deadline_epoch'])
+                result = run_game(m['build'], spec, dest, m['deadline_epoch'], clock_of(m))
                 files = sorted(p for p in dest.iterdir() if p.name != 'receipt.json') + [dest / 'receipt.json']
                 for path in files:
                     put_new(store, prefix + '/' + path.name, path.read_bytes())
@@ -227,6 +238,7 @@ def prepare(args):
          'campaign_started_epoch': campaign['started_epoch'],
          'deadline_epoch': campaign['started_epoch'] + CAMPAIGN_SECONDS,
          'estimated_compute_before_usd': args.compute_before, 'selection_reason': args.reason,
+         **({'clock': {'base_ms': args.clock[0], 'increment_ms': args.clock[1]}} if args.clock else {}),
          'source_files': {n: digest(Path(n).read_bytes()) for n in
                           ('tools/strength/shogi_anchor.py', 'tools/strength/anchor_stats.py',
                            'docs/m5/evidence/msh191/method.md')}}
@@ -243,8 +255,9 @@ def submit(args):
     require(args.image == m['build']['runtime_image'], 'image differs from frozen worker')
     config = gcp.validate_config(decode(Path(args.config).read_bytes()))
     require(config.get('vm_hourly_usd') == RATE, 'reviewed compute rate')
-    require(config['store_uri'] == STORE + m['experiment'], 'canonical batch prefix')
-    anchor_cloud.run(args, policy=policy(), manifest_validator=validate_manifest)
+    prefix = m['experiment'].split('-', 1)[0]
+    require(config['store_uri'] == BUCKET + prefix + '/' + m['experiment'], 'canonical batch prefix')
+    anchor_cloud.run(args, policy=policy(m), manifest_validator=validate_manifest)
 
 
 def collect(run, runner):
@@ -268,7 +281,7 @@ def collect(run, runner):
             f.write(raw)
             f.flush()
             subprocess.run([runner, 'shogi-match-replay', f.name], check=True, capture_output=True, timeout=120)
-        observed = audit(json.loads(raw), spec, build)
+        observed = audit(json.loads(raw), spec, build, clock_of(m))
         require(observed['complete'] == receipt['complete'] and observed['score'] == receipt['score'],
                 'receipt disagrees with native report')
         if not observed['complete']:
@@ -299,6 +312,17 @@ def summarize(args):
                                      'losses': sum(g['score'] == 0 for g in rows),
                                      'score': sum(g['score'] for g in rows) / len(rows),
                                      'fit': anchor_stats.fit(rows, args.prior_mean, args.prior_sd)}
+    if args.sprt:
+        from tools.strength import stats
+        pairs = {}
+        for g in games:
+            pairs.setdefault(g['pair_id'], []).append(g['score'])
+        complete = [sum(v) / 2 for k, v in sorted(pairs.items()) if len(v) == 2]
+        counts = stats.pentanomial(complete)
+        test = stats.Sprt(0, args.sprt, .05, .05, 30)
+        result['sprt'] = {'h1': args.sprt, 'pentanomial': counts, **test.status(counts),
+                          'estimate': stats.estimate(counts), 'complete_pairs': len(complete)}
+        print(json.dumps(result['sprt'], indent=1))
     with Path(args.output).open('x') as f:
         json.dump(result, f, indent=1)
     print(json.dumps({'joint': {k: result['joint'][k] for k in ('estimate', 'interval95', 'half_width',
@@ -317,11 +341,12 @@ def main():
     a = sub.add_parser('prepare')
     for key in ('build', 'openings', 'campaign', 'name', 'reason', 'output'):
         a.add_argument('--' + key, required=True)
-    a.add_argument('--phase', choices=['bracket', 'main', 'smoke'], required=True)
+    a.add_argument('--phase', choices=['bracket', 'main', 'smoke', 'sprt'], required=True)
     a.add_argument('--opponents', nargs='+', required=True)
     a.add_argument('--first-pair', type=int, required=True)
     a.add_argument('--pairs', type=int, required=True)
     a.add_argument('--compute-before', type=float, required=True)
+    a.add_argument('--clock', type=int, nargs=2, help='base_ms increment_ms (reviewed values only)')
     s = sub.add_parser('submit')
     for key in ('manifest', 'config', 'image', 'job', 'out'):
         s.add_argument('--' + key, required=True)
@@ -332,6 +357,7 @@ def main():
     z.add_argument('--runner', default='target/release/mshogi-match')
     z.add_argument('--prior-mean', type=float, default=2900.0)
     z.add_argument('--prior-sd', type=float, default=500.0)
+    z.add_argument('--sprt', type=float, help='also run the pentanomial SPRT (H0=0, this H1) over complete pairs')
     args = p.parse_args()
     if args.command == 'worker':
         worker(args.manifest, args.store)

@@ -14,6 +14,7 @@ pub mod chu;
 pub mod shogi;
 mod square_set;
 pub mod tenjiku;
+pub mod texel;
 pub mod tori;
 pub mod xiangqi;
 

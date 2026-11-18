@@ -39,6 +39,9 @@ The next work is Shogi:
    probes were rejected. See [the round](shogi-selectivity-round.md).
 6. MSH-188 (Shogi Evaluation Round): Texel-tuned Shogi terms on a self-play
    corpus of at least about 500,000 positions with a game-level held-out split.
+   Done: 501,006 quiet positions, held-out loss 0.21891 -> 0.21398, and the
+   sequential predecessor test passed (107 wins, 21 losses in 64 pairs). See
+   [the round](shogi-evaluation-round.md).
 7. MSH-191 (Shogi Strength Anchor): one approximate floodgate-referenced
    strength estimate against rated reference engines, run like MSH-185 in the
    cloud (6 hours, US$15 caps). No games on public servers.

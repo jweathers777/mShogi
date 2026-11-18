@@ -36,6 +36,15 @@ class ManifestTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             campaign.validate_manifest(bad)
 
+    def test_task_prefixes_select_their_own_store_and_owner_label(self):
+        m = manifest()
+        m['experiment'] = 'msh188-test'
+        campaign.validate_manifest(m)
+        self.assertEqual(campaign.policy(m).owner_label, 'msh188-owner')
+        m['experiment'] = 'msh999-test'
+        with self.assertRaises(ValueError):
+            campaign.validate_manifest(m)
+
     def test_openings_never_repeat_and_catalog_is_large(self):
         m = manifest()
         m['protocol']['max_pairs'] = 121

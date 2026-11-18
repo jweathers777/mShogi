@@ -20,7 +20,7 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def split(root, manifest_path, game='chess', allow_empty=False):
+def split(root, manifest_path, game='chess', allow_empty=False, by_opening=False):
     if game not in ('chess', 'shogi'):
         raise ValueError('unsupported game')
     position_field = 'sfen' if game == 'shogi' else 'fen'
@@ -34,7 +34,8 @@ def split(root, manifest_path, game='chess', allow_empty=False):
     rows = []
     for g in games:
         # Equal initial boards (even from transposed opening moves) are one family.
-        family = hashlib.sha256(key(g['initial_' + position_field], game).encode()).hexdigest()
+        source = g['opening_id'] if by_opening else key(g['initial_' + position_field], game)
+        family = hashlib.sha256(source.encode()).hexdigest()
         bucket = int(family[:16], 16) % 10
         part = 'heldout' if bucket == 0 else 'validation' if bucket == 1 else 'train'
         partitions[g['game_id']] = part
@@ -79,7 +80,8 @@ def split(root, manifest_path, game='chess', allow_empty=False):
         'allow_empty_demonstration': allow_empty,
         'use': 'User-authorized internal classical tuning; no imported corpus',
         'project_terms': 'BSD-LICENSE',
-        'split_rule': 'SHA256(initial board/side/rights-or-hands) first64bits mod10:0heldout,1validation,2..9train',
+        'split_rule': ('SHA256(catalog opening id)' if by_opening else 'SHA256(initial board/side/rights-or-hands)')
+                      + ' first64bits mod10:0heldout,1validation,2..9train',
         'dedup_rule': 'Remove all cross-partition board/side/rights duplicates; retain first within-partition board',
         'inputs': {str(p): digest(p) for p in files},
         'games': len(games), 'stops': dict(collections.Counter(g['stop'] for g in games)),
@@ -99,10 +101,12 @@ def main():
     parser.add_argument('corpus', type=Path)
     parser.add_argument('manifest', type=Path)
     parser.add_argument('--game', choices=['chess', 'shogi'], default='chess')
+    parser.add_argument('--by-opening', action='store_true',
+                        help='family = catalog opening id (use when random plies follow the catalog prefix)')
     parser.add_argument('--allow-empty-demonstration', action='store_true',
                         help='write empty partitions for a small generation demonstration; not training-ready')
     args = parser.parse_args()
-    split(args.corpus, args.manifest, args.game, args.allow_empty_demonstration)
+    split(args.corpus, args.manifest, args.game, args.allow_empty_demonstration, args.by_opening)
 
 
 if __name__ == '__main__':

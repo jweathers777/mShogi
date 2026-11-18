@@ -29,6 +29,7 @@ says nothing about other opponents.
 |---|---|---|
 | `alphabeta/mod.rs` | `SearchPosition` trait, `Searcher`: iterative deepening, aspiration, principal-variation alpha-beta, quiescence, null move, late-move reductions, check extension, shallow futility, move ordering, limits; margins scaled by the game's `MARGIN_UNIT`; optional first-ply quiescence check stage and root mate search | No |
 | `alphabeta/mate.rs` | Mate search by continuous checks: df-pn over game-supplied checks and evasions, bucketed proof table, acyclic proof lines | No |
+| `texel.rs`, `examples/support/texel.rs` | Shared Texel model trait and fitting tool (corpus format, K calibration, coordinate descent, validation and held-out checks) | No |
 | `alphabeta/table.rs` | Transposition table: 16-byte entries, buckets of four, size in megabytes, generation aging | No |
 | `chess_bitboard/` | Chess search position: bitboards, magic slider attacks, make/unmake in place, incremental hash, material, placement and phase, staged pseudo-legal generation, static exchange evaluation, repetition and fifty-move detection on the path | Chess |
 | `chess_eval.rs` | Classical tapered evaluation on the bitboard position | Chess |
@@ -250,11 +251,12 @@ Private analysis uses these approximations:
 - A root df-pn mate search uses at most 1/8 of the budget; the alpha-beta
   result is preferred when its mate is no longer. Mate probes inside the tree
   were measured and rejected. See [Shogi selectivity round](shogi-selectivity-round.md).
-- Evaluation combines unchanged
-  material values with Pawn advance, adjacent king cover, hand flexibility
-  and tempo. Pawn advance and hand flexibility are incremental; no weights
-  were tuned. Precomputed ray masks and reverse attack lookup replace
-  repeated ray walks.
+- Evaluation (MSH-188, Shogi Evaluation Round) is linear in 133 Texel-tuned
+  weights: board and hand values, rank tables, King placement, slider mobility
+  and King safety. Static terms are incremental; mobility and King safety are
+  computed per node. Fitting uses the shared Texel tool
+  (`examples/support/texel.rs`, trait `texel::TexelModel`), which Chess also
+  uses. See [Shogi evaluation round](shogi-evaluation-round.md).
 
 Limits are depth 1–64 and at most 5,000,000 nodes. Desktop play and bare USI
 `go` use 1,000 ms with those depth/node safety ceilings; a reported line has at

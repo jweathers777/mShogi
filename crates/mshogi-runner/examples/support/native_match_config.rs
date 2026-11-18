@@ -12,6 +12,8 @@ pub struct Args {
     watchdog_ms: u64,
     pub openings: Option<String>,
     pub opening_index: usize,
+    /// Seeded random legal plies appended to a catalog opening (self-play corpora).
+    pub random_plies: usize,
     clock: Option<FischerClock>,
 }
 impl Args {
@@ -29,6 +31,7 @@ impl Args {
         let mut watchdog_ms = None;
         let mut openings = None;
         let mut opening_index = 0;
+        let mut random_plies = 0;
         let mut base = None;
         let mut increment = None;
         let positional = if profile { 11 } else { 10 };
@@ -39,6 +42,7 @@ impl Args {
                 "--watchdog-ms" => watchdog_ms = Some(value.parse().unwrap()),
                 "--openings" => openings = Some(value),
                 "--opening-index" => opening_index = value.parse().unwrap(),
+                "--random-plies" => random_plies = value.parse().unwrap(),
                 "--clock-base-ms" => base = Some(value.parse().unwrap()),
                 "--clock-increment-ms" => increment = Some(value.parse().unwrap()),
                 _ => panic!("unknown flag {flag}"),
@@ -68,6 +72,7 @@ impl Args {
                 watchdog_ms,
                 openings,
                 opening_index,
+                random_plies,
                 clock,
             },
             profile,

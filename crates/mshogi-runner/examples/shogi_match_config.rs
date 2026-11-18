@@ -22,7 +22,29 @@ fn main() {
         let row = rows
             .get(args.opening_index)
             .expect("opening index within catalog");
-        let game = opening_game(row);
+        let mut game = opening_game(row);
+        assert!(args.random_plies <= 8, "at most eight random plies");
+        // Corpus generation only: seeded native legal plies after the catalog
+        // prefix so that repeated openings diverge. The opening id stays the
+        // catalog id, so splits by opening remain valid.
+        let mut state = args.seed.wrapping_mul(0x9E37_79B9_7F4A_7C15) | 1;
+        for _ in 0..args.random_plies {
+            state ^= state << 13;
+            state ^= state >> 7;
+            state ^= state << 17;
+            let legal = game.position().legal_actions();
+            let action = legal[state as usize % legal.len()];
+            game.submit(GameRequest {
+                expected: game.context(),
+                actor: game.position().side_to_move(),
+                command: GameCommand::Play(action),
+            })
+            .unwrap();
+        }
+        assert!(
+            game.conclusion().is_none(),
+            "random plies concluded the opening"
+        );
         args.write(
             "MSH-186",
             "Shogi",
@@ -30,10 +52,18 @@ fn main() {
             CanonicalRecord::shogi(GameRecord::from_game(&game)),
             row["id"].as_str().unwrap().into(),
             format!(
-                "Frozen catalog SHA256 {}; index {}; source/rights: {}",
+                "Frozen catalog SHA256 {}; index {}; source/rights: {}{}",
                 mshogi_runner::experiments::digest(&text),
                 args.opening_index,
-                catalog["provenance"]
+                catalog["provenance"],
+                if args.random_plies > 0 {
+                    format!(
+                        "; plus {} seeded random legal plies (seed {})",
+                        args.random_plies, args.seed
+                    )
+                } else {
+                    String::new()
+                }
             ),
         );
         return;

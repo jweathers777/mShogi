@@ -178,6 +178,10 @@ struct Tables {
     leapers_to: [[[u128; SQUARES]; FACES]; 2],
     rays: [[u128; 8]; SQUARES],
     files: [u128; 9],
+    /// Squares within two king steps of a square, excluding it.
+    near: [u128; SQUARES],
+    /// Squares within three king steps of a square.
+    near3: [u128; SQUARES],
     piece: [[[u64; SQUARES]; FACES]; 2],
     hand: [[[u64; 19]; HAND_FACES]; 2],
     side: u64,
@@ -189,6 +193,8 @@ static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
         leapers_to: [[[0; SQUARES]; FACES]; 2],
         rays: [[0; 8]; SQUARES],
         files: [0; 9],
+        near: [0; SQUARES],
+        near3: [0; SQUARES],
         piece: [[[0; SQUARES]; FACES]; 2],
         hand: [[[0; 19]; HAND_FACES]; 2],
         side: 0,
@@ -214,6 +220,16 @@ static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
             }
         }
         t.files[square % 9] |= 1 << square;
+        for other in 0..SQUARES {
+            let rows = (square / 9).abs_diff(other / 9);
+            let columns = (square % 9).abs_diff(other % 9);
+            if other != square && rows <= 2 && columns <= 2 {
+                t.near[square] |= 1 << other;
+            }
+            if rows <= 3 && columns <= 3 {
+                t.near3[square] |= 1 << other;
+            }
+        }
     }
     // Fixed-seed SplitMix64: the keys are the same in each process.
     let mut state = 0x5091_5EED_0000_0180_u64;
@@ -292,8 +308,9 @@ pub struct ShogiPosition {
     hash: u64,
     /// Board and hand material of each side.
     material: [i32; 2],
-    /// Pawn advancement and hand-count placement, maintained with material.
-    placement_base: [i32; 2],
+    /// Incremental evaluation terms of each side with the compiled weights:
+    /// board values, rank tables, king rank and file, and hand terms.
+    accumulated: [i32; 2],
     /// True if the side to move is in check.
     check: bool,
     /// Plies since the latest null move, or all known plies.
@@ -327,7 +344,7 @@ impl ShogiPosition {
             side: side_index(position.side_to_move()),
             hash: 0,
             material: [0; 2],
-            placement_base: [0; 2],
+            accumulated: [0; 2],
             check: false,
             reversible: 0,
             completed: position.completed_actions(),
@@ -497,34 +514,34 @@ impl ShogiPosition {
         self.pieces[side][KING].trailing_zeros() as usize
     }
     fn put(&mut self, side: usize, face: usize, square: usize) {
+        self.accumulated[side] += square_weight(side, face, square);
         self.board[square] = code(side, face);
         self.pieces[side][face] |= 1 << square;
         self.occupied[side] |= 1 << square;
         self.hash ^= TABLES.piece[side][face][square];
         self.material[side] += VALUE[face];
-        self.placement_base[side] += pawn_placement(side, face, square);
     }
     fn take(&mut self, side: usize, face: usize, square: usize) {
+        self.accumulated[side] -= square_weight(side, face, square);
         self.board[square] = 0;
         self.pieces[side][face] &= !(1 << square);
         self.occupied[side] &= !(1 << square);
         self.hash ^= TABLES.piece[side][face][square];
         self.material[side] -= VALUE[face];
-        self.placement_base[side] -= pawn_placement(side, face, square);
     }
     fn add_hand(&mut self, side: usize, index: usize) {
         let count = usize::from(self.hands[side][index]);
+        self.accumulated[side] += hand_weight(index, count);
         self.hash ^= TABLES.hand[side][index][count] ^ TABLES.hand[side][index][count + 1];
         self.hands[side][index] += 1;
         self.material[side] += VALUE[HAND_FACE[index]];
-        self.placement_base[side] += 10;
     }
     fn remove_hand(&mut self, side: usize, index: usize) {
         let count = usize::from(self.hands[side][index]);
+        self.accumulated[side] -= hand_weight(index, count - 1);
         self.hash ^= TABLES.hand[side][index][count] ^ TABLES.hand[side][index][count - 1];
         self.hands[side][index] -= 1;
         self.material[side] -= VALUE[HAND_FACE[index]];
-        self.placement_base[side] -= 10;
     }
     fn moved_face(&self, face: usize, m: Move) -> usize {
         if m.promotes() {
@@ -835,24 +852,153 @@ impl ShogiPosition {
         }
         gains[0]
     }
-    /// Static evaluation terms other than material, for one side.
-    fn placement(&self, side: usize) -> i32 {
+    /// Evaluation features (`super::eval`): each is the side to move's
+    /// value minus the opponent's, plus the tempo. `sink(index, value)`
+    /// receives every nonzero contribution. The search computes the same
+    /// sum with incremental static terms (`evaluate`).
+    pub fn features(&self, sink: &mut impl FnMut(usize, i32)) {
+        use super::eval::*;
+        for side in 0..2 {
+            let sign = if side == self.side { 1 } else { -1 };
+            for face in 0..FACES {
+                let mut set = self.pieces[side][face];
+                while set != 0 {
+                    let square = set.trailing_zeros() as usize;
+                    set &= set - 1;
+                    for (index, value) in square_features(side, face, square) {
+                        sink(index, sign * value);
+                    }
+                }
+            }
+            for index in 0..HAND_FACES {
+                let count = i32::from(self.hands[side][index]);
+                if count > 0 {
+                    sink(HAND + index, sign * count);
+                    sink(HAND_FIRST + index, sign);
+                }
+            }
+            self.dynamic_features(side, &mut |index, value| sink(index, sign * value));
+        }
+        sink(TEMPO, 1);
+    }
+    /// Terms that depend on more than one piece: slider mobility and king
+    /// safety, for one side.
+    #[allow(clippy::needless_range_loop)]
+    fn dynamic_features(&self, side: usize, sink: &mut impl FnMut(usize, i32)) {
+        use super::eval::*;
+        let occupied = self.occupied[0] | self.occupied[1];
+        let enemy = side ^ 1;
+        for (slot, face) in [6, 2, 1, 9, 8].into_iter().enumerate() {
+            let mut set = self.pieces[side][face];
+            while set != 0 {
+                let square = set.trailing_zeros() as usize;
+                set &= set - 1;
+                let reach = self.ray_targets(side, face, square) & !self.occupied[side];
+                let count = reach.count_ones() as i32;
+                if count != 0 {
+                    sink(MOBILITY + slot, count);
+                }
+            }
+        }
         let king = self.king(side);
-        self.placement_base[side]
-            + 8 * (TABLES.leaps[0][KING][king] & self.occupied[side]).count_ones() as i32
+        let around = TABLES.leaps[0][KING][king];
+        let own = (around & self.occupied[side]).count_ones() as i32;
+        if own != 0 {
+            sink(KING_ADJACENT_OWN, own);
+        }
+        // Enemy attacks on the squares next to the king: leapers reach at
+        // most two ranks, so only pieces within three squares matter.
+        let mut map = 0u128;
+        let reach = TABLES.near3[king];
+        for face in 0..FACES {
+            let mut set = self.pieces[enemy][face]
+                & if matches!(face, 1 | 2 | 6 | 8 | 9) {
+                    ALL
+                } else {
+                    reach
+                };
+            while set != 0 {
+                let from = set.trailing_zeros() as usize;
+                set &= set - 1;
+                map |= TABLES.leaps[enemy][face][from];
+                if !RAYS[face].is_empty() {
+                    map |= self.ray_targets(enemy, face, from);
+                }
+            }
+        }
+        let attacked = (around & map).count_ones() as i32;
+        if attacked != 0 {
+            sink(KING_ADJACENT_ATTACKED, attacked);
+        }
+        let near = TABLES.near[king];
+        let enemies = (near & self.occupied[enemy] & !self.pieces[enemy][KING]).count_ones() as i32;
+        if enemies != 0 {
+            sink(KING_NEAR_ENEMY, enemies);
+        }
+        let defenders = self.pieces[side][3]
+            | self.pieces[side][4]
+            | self.pieces[side][10]
+            | self.pieces[side][11]
+            | self.pieces[side][12]
+            | self.pieces[side][13];
+        let defenders = (near & defenders).count_ones() as i32;
+        if defenders != 0 {
+            sink(KING_NEAR_DEFENDERS, defenders);
+        }
+        let held: i32 = (0..HAND_FACES - 1)
+            .map(|index| i32::from(self.hands[enemy][index]))
+            .sum();
+        let empty = (around & !occupied).count_ones() as i32;
+        if held * empty != 0 {
+            sink(KING_DROP_THREAT, held * empty);
+        }
+    }
+    /// Evaluation with explicit weights through the incremental path shape:
+    /// static terms for the compiled weights must match `accumulated`.
+    fn dynamic_score(&self, side: usize) -> i32 {
+        let weights = &super::eval::DEFAULT;
+        let mut total = 0;
+        self.dynamic_features(side, &mut |index, value| total += weights[index] * value);
+        total
     }
 }
 
-fn pawn_placement(side: usize, face: usize, square: usize) -> i32 {
-    if face == PAWN {
-        4 * if side == 0 {
-            8 - square / 9
-        } else {
-            square / 9
-        } as i32
+/// Static features of one piece on a square: board value and rank table,
+/// or the king's rank and file.
+fn square_features(side: usize, face: usize, square: usize) -> [(usize, i32); 2] {
+    use super::eval::*;
+    // Rank-table group of a face: Pawn, Lance, Knight, Silver, Gold-like,
+    // Bishop, Rook, Horse, Dragon.
+    const GROUP: [usize; FACES] = [0, 6, 5, 4, 3, 2, 1, 0, 8, 7, 4, 4, 4, 4];
+    let advanced = if side == 0 {
+        8 - square / 9
     } else {
-        0
+        square / 9
+    };
+    if face == KING {
+        [
+            (KING_RANK + advanced, 1),
+            (KING_FILE + (square % 9).abs_diff(4), 1),
+        ]
+    } else {
+        [(BOARD + face - 1, 1), (PST + GROUP[face] * 9 + advanced, 1)]
     }
+}
+fn square_weight(side: usize, face: usize, square: usize) -> i32 {
+    square_features(side, face, square)
+        .iter()
+        .map(|&(index, value)| super::eval::DEFAULT[index] * value)
+        .sum()
+}
+/// Change of the hand terms when a hand count rises from `count`.
+fn hand_weight(index: usize, count: usize) -> i32 {
+    use super::eval::*;
+    DEFAULT[HAND + index]
+        + if count == 0 {
+            DEFAULT[HAND_FIRST + index]
+        } else {
+            0
+        }
 }
 
 fn square(index: usize) -> Square {
@@ -1116,9 +1262,9 @@ impl SearchPosition for ShogiPosition {
     }
     fn evaluate(&self) -> i32 {
         let side = self.side;
-        self.material[side] - self.material[side ^ 1] + self.placement(side)
-            - self.placement(side ^ 1)
-            + 10
+        self.accumulated[side] - self.accumulated[side ^ 1] + self.dynamic_score(side)
+            - self.dynamic_score(side ^ 1)
+            + super::eval::DEFAULT[super::eval::TEMPO]
     }
     fn is_tactical(&self, m: Move) -> bool {
         if m.is_drop() {

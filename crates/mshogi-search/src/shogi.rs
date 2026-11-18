@@ -1,4 +1,5 @@
 //! Shogi adapter for the game-independent alpha-beta core.
+pub mod eval;
 pub mod position;
 #[cfg(test)]
 mod position_tests;

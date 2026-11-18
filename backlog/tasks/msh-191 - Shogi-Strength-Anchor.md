@@ -4,6 +4,7 @@ title: Shogi Strength Anchor
 status: Ready
 assignee: []
 created_date: '2026-11-17T17:34:00Z'
+updated_date: '2026-11-18T05:48:00Z'
 labels:
   - handle:shogi-strength-anchor
 milestone: m-5
@@ -69,3 +70,9 @@ Report in docs/m5 with the estimate, its interval and its limits: floodgate rati
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+From MSH-188 (Shogi Evaluation Round), 2026-11-18: the tuned Shogi evaluation has extreme King-placement weights (back-rank corner/Anaguma square about 456 below 8h; up to +400 for a King beyond the fourth rank) fitted on self-play outcomes. The predecessor game test cannot detect blind spots shared by both engines; check King handling and Anaguma games against external opponents here.
+<!-- SECTION:NOTES:END -->

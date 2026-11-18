@@ -121,10 +121,14 @@ fn fixed_search_matches_frozen_predecessor() {
         "../../../docs/m5/evidence/msh179/fixed-baseline.json"
     ))
     .unwrap();
-    // MSH-190 (Shogi Selectivity Round) adds the root mate search to Shogi:
-    // one more visit, same move and score. Other games stay identical.
+    // Shogi alone changed after MSH-179: MSH-190 (Shogi Selectivity Round)
+    // added the root mate search (121 -> 122 nodes) and MSH-188 (Shogi
+    // Evaluation Round) the tuned evaluation (move, nodes and score below).
+    // Other games stay identical.
     assert_eq!(expected[1]["nodes"], 121);
-    expected[1]["nodes"] = 122.into();
+    expected[1]["action"] = json!({"action": "5i5h", "kind": "move"});
+    expected[1]["nodes"] = 125.into();
+    expected[1]["score"] = 0.into();
     let requests: Vec<_> = roots()
         .iter()
         .enumerate()

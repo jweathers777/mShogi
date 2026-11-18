@@ -71,6 +71,8 @@ def run_pair(args, seed, out):
     if getattr(args, 'openings', None):
         command.extend(['--openings', args.openings, '--opening-index',
                         str((seed - 1) % args.opening_count)])
+        if getattr(args, 'random_plies', 0):
+            command.extend(['--random-plies', str(args.random_plies)])
     if args.game == 'tenjiku':
         command.append(args.profile)
     if args.watchdog_ms is not None:

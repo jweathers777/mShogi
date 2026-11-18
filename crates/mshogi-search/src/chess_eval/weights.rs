@@ -210,3 +210,49 @@ impl Prepared {
         e
     }
 }
+
+/// Chess model of the shared Texel tool (`crate::texel::TexelModel`).
+pub struct ChessTexel;
+impl crate::texel::TexelModel for ChessTexel {
+    type Prepared = Prepared;
+    const KIND: &'static str = "chess";
+    const POSITION_FIELD: &'static str = "fen";
+    const STEPS: &'static [i32] = &[16, 8, 4, 2, 1];
+    fn names() -> &'static [&'static str] {
+        &NAMES
+    }
+    fn initial() -> Vec<i32> {
+        INITIAL.0.to_vec()
+    }
+    fn lower() -> Vec<i32> {
+        LOWER.to_vec()
+    }
+    fn upper() -> Vec<i32> {
+        UPPER.to_vec()
+    }
+    fn key(position: &str) -> String {
+        position
+            .split_whitespace()
+            .take(4)
+            .collect::<Vec<_>>()
+            .join(" ")
+    }
+    fn prepare(position: &str) -> Result<Option<Prepared>, String> {
+        let native =
+            mshogi_core::chess::Position::from_fen(position).map_err(|e| format!("{e:?}"))?;
+        Ok(Some(Prepared::new(&ChessPosition::from_position(&native))))
+    }
+    fn score(prepared: &Prepared, weights: &[i32]) -> i32 {
+        prepared.score(&Weights(weights.try_into().expect("chess weight count")))
+    }
+    fn buckets() -> &'static [&'static str] {
+        &["low_0_1600", "middle_1601_4800", "high_above_4800"]
+    }
+    fn bucket(prepared: &Prepared) -> usize {
+        match prepared.phase() {
+            ..=1600 => 0,
+            1601..=4800 => 1,
+            _ => 2,
+        }
+    }
+}

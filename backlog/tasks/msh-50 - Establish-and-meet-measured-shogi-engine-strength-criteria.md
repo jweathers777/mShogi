@@ -4,7 +4,7 @@ title: Establish and meet measured shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-18T11:10:00Z'
+updated_date: '2026-11-18T16:08:00Z'
 labels:
   - handle:conventional-shogi
 milestone: m-5
@@ -100,4 +100,12 @@ From MSH-191 (Shogi Strength Anchor), 2026-11-18: conditional floodgate-referenc
 Correction (MSH-191 review): the 374-point family spread is a mechanical flag; the elmo-only value is prior-dominated and the difference is weakly supported (0/24, p = 0.06 at 2765). elmo was dropped after m01, a recorded deviation that moves the index toward the Gikou family.
 
 Owner target (John, 2026-11-18): mShogi should play competent Shogi with no obvious blunders, as far as non-NNUE (classical) techniques allow; move it out of strong-amateur into solid professional level - it need not match the Chess engine or beat most professionals, but its ranking should not be below professional strength if that is achievable without NNUE. Limit effort: this engine is a solid foundation for later NN-evaluation experiments and less-known games (for example Chu Shogi), not a large standalone investment. Measurable proxy (floodgate-referenced level and a blunder criterion) to be proposed by the agent and confirmed by John before it is used as an acceptance threshold.
+
+Proposal for John (agent, 2026-11-18) - measurable proxy for the owner target and a bounded path. NOT an accepted threshold until John confirms.
+Proxy:
+(1) Level: conditional floodgate-referenced index >= 3000 at 60 s + 1 s, measured as in MSH-191 against at least two families with the family check reported. Rationale: no calibrated floodgate-to-professional mapping exists; the classical engines that reached and passed professional level around 2013-2017 appear on floodgate at about 2900-3300 (Yss1000k 2893, elmo_WCSC27_479_1000k 3131, gikou2_1c 3300). 3000 is about +235 over today's 2765 and is an assumption, not a measured pro rating.
+(2) Blunders: (a) the 413-position tsume suite at 1 s >= 95% (today 386/413 = 93.5%); (b) a blunder screen of mShogi's anchor games with a stronger reference engine used only as a measurement tool: rate of moves that turn a non-losing position into a clearly lost one, target and threshold to be fixed after one baseline measurement.
+Path (classical, non-NNUE, bounded): the main remaining lever is evaluation quality. Bonanza-style piece-pair evaluation (KPP/KKP linear tables, incremental update) trained by regression on a larger self-play corpus is what moved 2006-2017 engines from strong amateur to professional strength without neural networks. AGENTS.md authorizes Texel tuning of handwritten terms and reserves 'learned evaluation' for neural networks; piece-pair tables are linear but very large, so John should confirm they count as classical. Budget proposal: at most two rounds (piece-pair evaluation with a larger corpus; then one search/time round), each with a predecessor test and a short anchor recheck, roughly US$10-25 cloud each; stop and report if the index stays below 3000 after both.
+
+Owner decision (John, 2026-11-18): piece-pair (KPP) evaluation is not pursued because it does not transfer to larger variants. The current classical Shogi engine (MSH-191 index about 2765) is the accepted baseline for later learned-evaluation experiments; further Shogi strength work is deferred to learned evaluation (MSH-55). Before freezing, one bounded blunder screen (MSH-193) documents the baseline's weaknesses and may fix a mechanism that explains a large share of clear blunders.
 <!-- SECTION:NOTES:END -->

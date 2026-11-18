@@ -4,6 +4,7 @@ title: Xiangqi Selectivity Round
 status: Ready
 assignee: []
 created_date: '2026-11-18T19:25:00Z'
+updated_date: '2026-11-18T21:15:00Z'
 labels:
   - handle:xiangqi-selectivity-round
   - xiangqi
@@ -45,3 +46,9 @@ Handle: Xiangqi Selectivity Round
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+From MSH-194 (Xiangqi Strength Harness), 2026-11-18: use the 5 s + 0.1 s control, tools/strength/xiangqi_games.py, xiangqi-openings-v1 and the tactical suite as a regression guard (it is saturated). Observed: 47 of 1,120 self-play games lost by the native perpetual-chase rule because the private search scores chase cycles as draws; consider a chase-aware repetition score in this round. Request overhead is now flat (~3 ms).
+<!-- SECTION:NOTES:END -->

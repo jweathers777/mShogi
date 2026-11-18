@@ -328,7 +328,8 @@ fn depth(paths: &Value, ms: u64, min_ply: usize) -> Value {
 
 /// Complete answer sets: every first move that forces a win (checkmate or
 /// stalemate) within `mate_plies` with a full-width attacker, from the native
-/// prover. Rows whose full proof exceeds the bound are dropped and counted.
+/// prover. Rows whose full proof exceeds the bound, and rows with a one-ply
+/// win (trivial), are dropped and counted.
 fn complete(spec: &Value) -> Value {
     let rows = spec["positions"].as_array().unwrap();
     let done = parallel(rows, |r| {
@@ -341,6 +342,7 @@ fn complete(spec: &Value) -> Value {
         let answers = prover.answer_set(&position, plies);
         let shortest = Prover::full(FULL_VISITS).shortest(&position, plies);
         match (answers, shortest) {
+            (Ok(_), Ok(Some(1))) => Err("one_ply_win"),
             (Ok(a), Ok(Some(win))) => {
                 let mut row = r.clone();
                 let checks = strings(&r["expected_moves"]);
@@ -349,15 +351,20 @@ fn complete(spec: &Value) -> Value {
                 row["expected_moves"] = json!(all);
                 row["checking_answers"] = json!(checks);
                 row["shortest_win_plies"] = json!(win);
-                Some(row)
+                Ok(row)
             }
-            _ => None,
+            _ => Err("full_proof_bound"),
         }
     });
-    let dropped = done.iter().filter(|r| r.is_none()).count();
+    let count = |why: &str| {
+        done.iter()
+            .filter(|r| r.as_ref().err() == Some(&why))
+            .count()
+    };
     let mut out = spec.clone();
+    out["dropped_one_ply_win"] = json!(count("one_ply_win"));
+    out["dropped_full_proof_bound"] = json!(count("full_proof_bound"));
     out["positions"] = json!(done.into_iter().flatten().collect::<Vec<_>>());
-    out["dropped_full_proof_bound"] = json!(dropped);
     out
 }
 

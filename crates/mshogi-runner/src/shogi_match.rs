@@ -297,7 +297,8 @@ impl MatchReport {
                     })
             }
             MatchStop::TimeLimit => game.conclusion().is_none(),
-            MatchStop::Failure => self.failure.is_some(),
+            // Failures stop an open game; a concluded game cannot also fail.
+            MatchStop::Failure => game.conclusion().is_none() && self.failure.is_some(),
         };
         if !consistent
             || self.engine_score != expected_score

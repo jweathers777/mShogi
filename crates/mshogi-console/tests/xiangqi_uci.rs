@@ -297,3 +297,45 @@ fn fischer_clock_requests_return_moves_within_the_allocation() {
     let (code, err, _) = e.finish(true);
     assert_eq!(code, 0, "{err}");
 }
+#[test]
+fn incremental_position_handles_takeback_divergence_new_roots_and_errors() {
+    let mut e = engine();
+    let search = |e: &mut Engine, position: &str| {
+        if !position.is_empty() {
+            e.send(position);
+        }
+        e.send("go depth 1");
+        let lines = e.until("bestmove");
+        let side = if lines.iter().any(|l| l.contains("perspective Red")) {
+            "Red"
+        } else {
+            "Black"
+        };
+        let best = lines
+            .last()
+            .unwrap()
+            .split_whitespace()
+            .nth(1)
+            .unwrap()
+            .to_string();
+        (side, best)
+    };
+    assert_eq!(search(&mut e, "position startpos moves h2e2 h9g7").0, "Red");
+    // Takeback: a shorter list rebuilds from the root.
+    assert_eq!(search(&mut e, "position startpos moves h2e2").0, "Black");
+    // Divergence after a common prefix.
+    let (side, _) = search(&mut e, "position startpos moves h2e2 b9c7 h0g2");
+    assert_eq!(side, "Black");
+    // The same moves after a different root use the new root.
+    let (side, best) = search(&mut e, &format!("position fen {TACTIC}"));
+    assert_eq!(side, "Red");
+    assert!(best.starts_with("e7") || best.starts_with("d0"), "{best}");
+    // An illegal suffix is refused and the earlier game stays current.
+    assert_eq!(search(&mut e, "position startpos moves h2e2 h9g7").0, "Red");
+    let (side, best) = search(&mut e, "position startpos moves h2e2 h9g7 a0a9");
+    assert_eq!(side, "Red");
+    assert_ne!(best, "a0a9");
+    let (code, err, _) = e.finish(true);
+    assert_eq!(code, 0, "{err}");
+    assert!(err.contains("native rejection"), "{err}");
+}

@@ -4,7 +4,7 @@ title: Establish and meet measured shogi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-18T09:49:00Z'
+updated_date: '2026-11-18T11:10:00Z'
 labels:
   - handle:conventional-shogi
 milestone: m-5
@@ -98,4 +98,6 @@ Owner direction, 2026-11-17: MSH-191 (Shogi Strength Anchor) follows MSH-188 and
 From MSH-191 (Shogi Strength Anchor), 2026-11-18: conditional floodgate-referenced index 2765 (approx. 95% 2723-2807) at 60 s + 1 s, 304 games, engine main de5ae4ae (search/eval) with USI clocks. Gikou family 2772; YaneuraOu/elmo 1000k 0/24 (family spread 374 > 150). Not an official floodgate rating; report docs/m5/shogi-strength-anchor.md.
 
 Correction (MSH-191 review): the 374-point family spread is a mechanical flag; the elmo-only value is prior-dominated and the difference is weakly supported (0/24, p = 0.06 at 2765). elmo was dropped after m01, a recorded deviation that moves the index toward the Gikou family.
+
+Owner target (John, 2026-11-18): mShogi should play competent Shogi with no obvious blunders, as far as non-NNUE (classical) techniques allow; move it out of strong-amateur into solid professional level - it need not match the Chess engine or beat most professionals, but its ranking should not be below professional strength if that is achievable without NNUE. Limit effort: this engine is a solid foundation for later NN-evaluation experiments and less-known games (for example Chu Shogi), not a large standalone investment. Measurable proxy (floodgate-referenced level and a blunder criterion) to be proposed by the agent and confirmed by John before it is used as an acceptance threshold.
 <!-- SECTION:NOTES:END -->

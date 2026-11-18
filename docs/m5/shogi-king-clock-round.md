@@ -28,11 +28,11 @@ Candidate `de66ac9e` against predecessor `ce2f79bd`, both through the clocked US
 | 200 | [53, 4, 89, 9, 45] | −0.48 | −9.6 |
 | 315 | [77, 6, 142, 14, 76] | −0.09 | 3.3 |
 
-No decision at the maximum; the estimate is about zero. No game failed. Compute: 14.00 conservative VM-hours, US$2.82, 1.86 hours; all jobs verified absent.
+No decision at the maximum; the estimate is about zero. No game failed. Compute: 14.00 conservative VM-hours, US$2.82; 1.82 hours of batch time (1.86 hours including gaps between batches); all jobs verified absent. The new `--sprt` and clock paths of the tool have no unit tests; they were checked by the reviewer against the evidence.
 
 ## Decision
 
-Both changes are rejected: neither the clock allocation nor the bounded King weights improve play measurably, and the King weights were not causing visible misplays. The frozen checkpoint allowed one ablation; it was not run, because splitting a null set is unlikely to be informative and would exceed this round's cap. The planned anchor recheck was not run, because no engine change remains. The predecessor's code is restored.
+Both changes are rejected: the set showed no gain, and the individual effects were not measured (they could offset each other). The diagnosis observed no King walks or corner Kings, so the extreme weights were not visibly harmful. The recorded checkpoint called for one ablation; it was deliberately not run. That is a decision, not a cap limit: a shorter ablation would have fitted the US$6 cap, but a null set gave little reason to expect a useful split. The test also ran at 15 s + 0.25 s rather than the 60 s + 1 s named in the acceptance criteria (same base-to-increment ratio, four times cheaper). The planned anchor recheck was not run, because no engine change remains. The predecessor's code is restored.
 
 Retained infrastructure: the anchor tool accepts per-manifest reviewed clocks (60 s + 1 s or 15 s + 0.25 s), a predecessor opponent and a sequential-test summary (`summarize --sprt`), and the MSH-192 prefix.
 

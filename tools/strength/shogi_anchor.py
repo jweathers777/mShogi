@@ -25,10 +25,12 @@ from tools.experiments.core import decode, digest, encode, file_hash
 from tools.strength import anchor_stats
 
 PREFIX = 'msh191'
+# Task prefixes that use this campaign policy (MSH-191 anchor, MSH-192 follow-up).
+PREFIXES = ('msh191', 'msh192')
 CAMPAIGN_SECONDS = 6 * 3600
 COMPUTE_USD = 15
 RATE = .201608
-STORE = 'gs://mshogi-experiments-216675633801/msh191/'
+BUCKET = 'gs://mshogi-experiments-216675633801/'
 CLOCK = {'base_ms': 60000, 'increment_ms': 1000}
 # Reviewed clocks: the anchor control and the same 60:1 ratio for fast tests.
 CLOCKS = ({'base_ms': 60000, 'increment_ms': 1000}, {'base_ms': 15000, 'increment_ms': 250})
@@ -41,9 +43,10 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def policy():
+def policy(m=None):
     from tools.strength import anchor_cloud
-    return anchor_cloud.CampaignPolicy(PREFIX, CAMPAIGN_SECONDS, COMPUTE_USD, 'tools.strength.shogi_anchor',
+    prefix = m['experiment'].split('-', 1)[0] if m else PREFIX
+    return anchor_cloud.CampaignPolicy(prefix, CAMPAIGN_SECONDS, COMPUTE_USD, 'tools.strength.shogi_anchor',
                                        ('worker',))
 
 
@@ -71,7 +74,7 @@ def match_config(build, spec, clock=CLOCK):
 
 
 def validate_manifest(m):
-    require(m.get('schema') == 1 and re.fullmatch(PREFIX + r'-[a-z0-9-]{1,50}', m.get('experiment', '')),
+    require(m.get('schema') == 1 and re.fullmatch(r'(' + '|'.join(PREFIXES) + r')-[a-z0-9-]{1,50}', m.get('experiment', '')),
             'wrong campaign identity')
     require(m.get('phase') in ('bracket', 'main', 'smoke', 'sprt'), 'phase')
     require(clock_of(m) in CLOCKS, 'reviewed clock')
@@ -197,7 +200,7 @@ def worker(manifest_uri, store_uri):
     receipt = dict(claim, complete=False, games=[])
     try:
         receipt['environment'] = cloud_environment()
-        with tempfile.TemporaryDirectory(prefix=PREFIX + '-') as directory:
+        with tempfile.TemporaryDirectory(prefix='shogi-anchor-') as directory:
             for spec in m['bins'][index]:
                 require(time.time() < m['deadline_epoch'] - 300, 'campaign deadline reached')
                 prefix = 'games/' + spec['id']
@@ -252,8 +255,9 @@ def submit(args):
     require(args.image == m['build']['runtime_image'], 'image differs from frozen worker')
     config = gcp.validate_config(decode(Path(args.config).read_bytes()))
     require(config.get('vm_hourly_usd') == RATE, 'reviewed compute rate')
-    require(config['store_uri'] == STORE + m['experiment'], 'canonical batch prefix')
-    anchor_cloud.run(args, policy=policy(), manifest_validator=validate_manifest)
+    prefix = m['experiment'].split('-', 1)[0]
+    require(config['store_uri'] == BUCKET + prefix + '/' + m['experiment'], 'canonical batch prefix')
+    anchor_cloud.run(args, policy=policy(m), manifest_validator=validate_manifest)
 
 
 def collect(run, runner):

@@ -1,3 +1,61 @@
+# Per-game classical strength program (John, 2026-11-18)
+
+John set these standards for Chess and Shogi. They apply to every game
+(Xiangqi, Tori, Chu, Tenjiku) without repeating them per task. Adjust only for
+real differences: available opponents, known techniques and game rules.
+Record each adjustment and its reason in the game's task.
+
+**Target.** Competent play with no obvious blunders, as far as classical
+(non-neural) techniques reach with bounded effort. The result is a solid
+classical baseline for later learned evaluation (MSH-55, MSH-135). It is not a
+goal to beat the strongest engines. Do not spend large time or money for small
+gains. Prefer techniques that transfer between games; do not build heavy
+game-specific machinery (for example Shogi piece-pair tables). Neural
+evaluation needs separate approval.
+
+**Order of work for one game.** Each step is one bounded task. Skip a step only
+with a recorded reason.
+
+1. **Harness.** At least 100 balanced openings; a tactical suite of at least
+   200 positions with independently established answers and a held-out part; a
+   clocked, persistent-process match route with native admission of every
+   reply; a game-test control at which the median late-game depth is at least
+   8; and a self-play export for Texel data. Propose an external opponent pool
+   (and a stronger judge engine, if one exists) for John's approval.
+2. **Selectivity round.** Adopt the shared-core techniques that the game can
+   use: quiescence check stage, full SEE, game-scaled margins (`MARGIN_UNIT`),
+   move ordering, and the shared df-pn mate search where mates are deep or
+   forcing. Each technique gets a recorded outcome.
+3. **Evaluation round.** Texel-tune the handwritten terms (material, placement,
+   mobility, King safety and game-specific terms) with the shared tool
+   (`crates/mshogi-search/src/texel.rs`) on at least about 500,000 quiet
+   self-play positions, with a split by game or opening and a held-out loss.
+4. **Strength anchor (needs John's approval with time and dollar caps).** One
+   approximate rating against independent rated opponents, run in the cloud
+   like MSH-185 and MSH-191. No public servers and no published games. If no
+   rated opponents exist, record that limit; do not invent a rating.
+5. **Blunder screen.** Judge mShogi's moves with a much stronger engine (a
+   measurement tool only), fix the blunder rule, classes and a fix rule
+   (one mechanism of at least 30% that maps to a general change) before the
+   results. Keep the blunder positions as a reusable suite.
+6. **Stop or continue.** After the screen, John decides whether the game is
+   at its baseline. A further round needs a specific weakness with evidence.
+
+**Rules of each round.** Freeze the predecessor at the start. Record the
+baseline, intended benefit, comparison method, caps and decision checkpoint
+before the work. Test coherent sets with the sequential pentanomial test
+(H1 about 15 Elo for search, 10 for evaluation; see "Game tests in this
+direction" below). Keep a change only with evidence; report null results and
+revert. Run long tests in the cloud (`tools/experiments/gcp.py`) with a dollar
+cap, and verify cleanup. Get independent review from a fresh session. The
+native rules stay the only authority for moves, histories and results.
+
+**Games without strong opponents.** For Chu and Tenjiku (and Tori, where few
+engines exist), the anchor step is replaced by a recorded limitation. The
+frozen-predecessor tests, tactical suites and, if available, a deeper search
+of mShogi itself as a judge carry the evidence. A judge of the same family is
+weaker evidence; say so in the report.
+
 # Next direction — Shogi after the Chess anchor (checkpoint, 2026-11-17)
 
 The Chess classical round (steps 1–6 below) and its external anchor measurement

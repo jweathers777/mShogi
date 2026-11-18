@@ -63,6 +63,15 @@ Harness) and MSH-164 (Shared Search Core):
   regressions plainly. These rules do not authorize extra spending, studies,
   changed game rules, or work outside the authorized scope.
 
+## Per-game strength program
+
+Project direction, 2026-11-18: every game follows the per-game classical
+strength program in `docs/m5/strength-roadmap.md` (harness, selectivity round,
+evaluation round, approved anchor, blunder screen, stop decision). The target is
+competent play without obvious blunders from classical techniques at bounded
+effort, as a baseline for later learned evaluation. Adjust only for available
+opponents, known techniques and rules, and record the reason in the task.
+
 ## Long tests run in the cloud
 
 Project direction, 2026-11-16: run long measurement work (game tests, rating

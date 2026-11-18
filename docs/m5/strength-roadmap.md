@@ -51,6 +51,10 @@ The next work is Shogi:
    (0/24 against elmo, p = 0.06); elmo was dropped mid-study (a recorded
    deviation), so the index is mostly Gikou-referenced. See
    [the report](shogi-strength-anchor.md).
+8. MSH-192 (Shogi King and Clock Round): bounded King-placement weights and
+   50-move clock allocation, tested as one set at 15 s + 0.25 s, gave no
+   decision at 315 pairs (about 0 Elo); both changes were rejected. See
+   [the round](shogi-king-clock-round.md).
 
 MSH-50 (Conventional Shogi) keeps the Shogi strength criteria and the final
 measurement. MSH-173 and MSH-176 (legacy Chu comparison) are deferred.

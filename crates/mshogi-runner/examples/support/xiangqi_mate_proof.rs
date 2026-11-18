@@ -2,10 +2,11 @@
 //!
 //! This is the answer source of the Xiangqi tactical suite. It uses only
 //! `mshogi_core::xiangqi::Position` (native legality, including General
-//! safety and facing Generals) and is independent of the search crate. The
-//! attacker plays only checking moves; the defender plays every legal reply.
-//! The defender loses when it has no legal action (checkmate; stalemate is
-//! also a loss in Xiangqi, but a checked defender is always mated here).
+//! safety and facing Generals) and is independent of the search crate. In
+//! checking mode the attacker plays only checking moves (used to find
+//! positions); in full mode it plays every legal move (used for complete
+//! answer sets). The defender plays every legal reply and loses when it has no
+//! legal action: checkmate or stalemate, both losses in Xiangqi.
 //!
 //! Roots are diagrams without earlier history. Native rules act on a
 //! repetition only from its third occurrence (warning or pending
@@ -39,6 +40,8 @@ fn key(position: &Position) -> String {
 /// Memoized bounded AND-OR proof search.
 pub struct Prover {
     memo: HashMap<(String, bool), Known>,
+    /// Attacker plays every legal move instead of only checks.
+    pub full: bool,
     /// Node visits so far.
     pub visits: u64,
     /// Visit bound.
@@ -64,8 +67,17 @@ impl Prover {
     pub fn new(cap: u64) -> Self {
         Self {
             memo: HashMap::new(),
+            full: false,
             visits: 0,
             cap,
+        }
+    }
+
+    /// New full-width prover: the attacker may play any legal move.
+    pub fn full(cap: u64) -> Self {
+        Self {
+            full: true,
+            ..Self::new(cap)
         }
     }
 
@@ -124,7 +136,7 @@ impl Prover {
             return Ok(false);
         }
         let mut result = false;
-        for (_, next) in successors(position, true) {
+        for (_, next) in successors(position, !self.full) {
             if self.node(&next, plies - 1, false)? {
                 result = true;
                 break;
@@ -143,10 +155,10 @@ impl Prover {
         }
     }
 
-    /// All checking first moves that mate within `plies` plies.
+    /// All first moves (checking only, unless full) that win within `plies` plies.
     pub fn answer_set(&mut self, position: &Position, plies: u8) -> Result<Vec<Action>, Exhausted> {
         let mut found = vec![];
-        for (a, next) in successors(position, true) {
+        for (a, next) in successors(position, !self.full) {
             if self.defender_mated(&next, plies - 1)? {
                 found.push(a);
             }
@@ -155,7 +167,11 @@ impl Prover {
     }
 
     /// Shortest odd mate length up to `max_plies`, or None if none exists.
-    pub fn shortest(&mut self, position: &Position, max_plies: u8) -> Result<Option<u8>, Exhausted> {
+    pub fn shortest(
+        &mut self,
+        position: &Position,
+        max_plies: u8,
+    ) -> Result<Option<u8>, Exhausted> {
         for plies in (1..=max_plies).step_by(2) {
             if self.attacker_mates(position, plies)? {
                 return Ok(Some(plies));

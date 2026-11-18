@@ -6,6 +6,7 @@
 //!   xiangqi_strength screen CANDIDATES.json OUT.json DEPTH
 //!   xiangqi_strength mine REPORTS.json OUT.jsonl     (REPORTS: list of xiangqi-match report paths)
 //!   xiangqi_strength probe SUITE.json OUT.json TIME_MS
+//!   xiangqi_strength complete SUITE.json OUT.json
 //!   xiangqi_strength export REPORTS.json OUT.jsonl EVERY
 //!   xiangqi_strength depth REPORTS.json OUT.json TIME_MS MIN_PLY
 use mshogi_core::xiangqi::*;
@@ -19,6 +20,8 @@ use xiangqi_mate_proof::{MAX_PROOF_PLIES, Prover};
 
 /// Proof visit bound of one mined position.
 const PROOF_VISITS: u64 = 400_000;
+/// Full-width proof visit bound of one suite position.
+const FULL_VISITS: u64 = 20_000_000;
 
 /// Native game from an optional FEN root and a UCI move list. `Err` names the
 /// first refused move.
@@ -27,8 +30,8 @@ fn build(fen: Option<&str>, moves: &[String]) -> Result<Game, String> {
         Some(fen) => PositionRoot::from_fen(fen).map_err(|e| e.to_string())?,
         None => PositionRoot::standard(),
     };
-    let mut game = Game::from_root(root, ClaimPolicy::AutoValidClaims)
-        .map_err(|e| format!("root: {e:?}"))?;
+    let mut game =
+        Game::from_root(root, ClaimPolicy::AutoValidClaims).map_err(|e| format!("root: {e:?}"))?;
     for (index, text) in moves.iter().enumerate() {
         let action: Action = text
             .parse()
@@ -139,7 +142,12 @@ fn mine(paths: &Value) -> String {
                 && plies >= 3
                 && let Ok(answers) = Prover::new(PROOF_VISITS).answer_set(&position, plies)
             {
-                let played = turn.reply.split_whitespace().nth(1).unwrap_or("").to_string();
+                let played = turn
+                    .reply
+                    .split_whitespace()
+                    .nth(1)
+                    .unwrap_or("")
+                    .to_string();
                 let expected: Vec<String> = answers.iter().map(|a| a.to_string()).collect();
                 out.push(json!({"fen": diagram(&position), "mate_plies": plies,
                     "expected_moves": expected, "played": played,
@@ -147,7 +155,12 @@ fn mine(paths: &Value) -> String {
                     "source_report_sha256": digest, "game": report.config.id,
                     "opening_id": opening.id, "ply": ply}));
             }
-            let Ok(action) = turn.reply.split_whitespace().nth(1).unwrap_or("").parse::<Action>()
+            let Ok(action) = turn
+                .reply
+                .split_whitespace()
+                .nth(1)
+                .unwrap_or("")
+                .parse::<Action>()
             else {
                 break;
             };
@@ -186,7 +199,7 @@ fn probe(spec: &Value, ms: u64) -> Value {
         };
         let pass = strings(&r["expected_moves"]).contains(&chosen);
         json!({"id": r["id"], "split": r["split"], "mate_plies": r["mate_plies"], "chosen": chosen,
-               "pass": pass, "depth": result.completed_depth, "nodes": result.nodes})
+               "pass": pass, "score": result.score, "depth": result.completed_depth, "nodes": result.nodes})
     });
     let count = |split: Option<&str>| {
         let selected: Vec<_> = results
@@ -223,7 +236,9 @@ fn export(paths: &Value, every: usize) -> String {
             (report.stop == mshogi_runner::xiangqi_match::MatchStop::NativeConclusion).then(|| {
                 let [red, _] = match c {
                     Conclusion::Draw { .. } => [1, 1],
-                    Conclusion::Win { winner: Side::Red, .. } => [2, 0],
+                    Conclusion::Win {
+                        winner: Side::Red, ..
+                    } => [2, 0],
                     Conclusion::Win { .. } => [0, 2],
                 };
                 f64::from(red) / 2.0
@@ -234,9 +249,16 @@ fn export(paths: &Value, every: usize) -> String {
             if let Some(outcome) = red_outcome
                 && ply % every == 0
             {
-                samples.push(json!({"fen": position.to_fen().unwrap(), "red_outcome": outcome, "ply": ply}));
+                samples.push(
+                    json!({"fen": position.to_fen().unwrap(), "red_outcome": outcome, "ply": ply}),
+                );
             }
-            let Ok(action) = turn.reply.split_whitespace().nth(1).unwrap_or("").parse::<Action>()
+            let Ok(action) = turn
+                .reply
+                .split_whitespace()
+                .nth(1)
+                .unwrap_or("")
+                .parse::<Action>()
             else {
                 break;
             };
@@ -260,16 +282,23 @@ fn depth(paths: &Value, ms: u64, min_ply: usize) -> Value {
     let paths: Vec<String> = strings(paths);
     let mut positions = vec![];
     for path in &paths {
-        let report =
-            mshogi_runner::xiangqi_match::MatchReport::from_json(&fs::read_to_string(path).unwrap())
-                .unwrap();
+        let report = mshogi_runner::xiangqi_match::MatchReport::from_json(
+            &fs::read_to_string(path).unwrap(),
+        )
+        .unwrap();
         let opening = &report.config.opening;
         let mut moves = opening.moves.clone();
         for (ply, turn) in report.turns.iter().enumerate() {
             if ply >= min_ply && ply % 4 == 0 {
                 positions.push((opening.fen.clone(), moves.clone()));
             }
-            moves.push(turn.reply.split_whitespace().nth(1).unwrap_or("").to_string());
+            moves.push(
+                turn.reply
+                    .split_whitespace()
+                    .nth(1)
+                    .unwrap_or("")
+                    .to_string(),
+            );
         }
     }
     // One search per core keeps the measurement close to a single game.
@@ -297,14 +326,52 @@ fn depth(paths: &Value, ms: u64, min_ply: usize) -> Value {
            "threads": thread::available_parallelism().map_or(4, |n| n.get())})
 }
 
+/// Complete answer sets: every first move that forces a win (checkmate or
+/// stalemate) within `mate_plies` with a full-width attacker, from the native
+/// prover. Rows whose full proof exceeds the bound are dropped and counted.
+fn complete(spec: &Value) -> Value {
+    let rows = spec["positions"].as_array().unwrap();
+    let done = parallel(rows, |r| {
+        let position = PositionRoot::from_fen(r["fen"].as_str().unwrap())
+            .unwrap()
+            .position()
+            .clone();
+        let plies = r["mate_plies"].as_u64().unwrap() as u8;
+        let mut prover = Prover::full(FULL_VISITS);
+        let answers = prover.answer_set(&position, plies);
+        let shortest = Prover::full(FULL_VISITS).shortest(&position, plies);
+        match (answers, shortest) {
+            (Ok(a), Ok(Some(win))) => {
+                let mut row = r.clone();
+                let checks = strings(&r["expected_moves"]);
+                let all: Vec<String> = a.iter().map(|m| m.to_string()).collect();
+                assert!(checks.iter().all(|c| all.contains(c)), "{}", r["id"]);
+                row["expected_moves"] = json!(all);
+                row["checking_answers"] = json!(checks);
+                row["shortest_win_plies"] = json!(win);
+                Some(row)
+            }
+            _ => None,
+        }
+    });
+    let dropped = done.iter().filter(|r| r.is_none()).count();
+    let mut out = spec.clone();
+    out["positions"] = json!(done.into_iter().flatten().collect::<Vec<_>>());
+    out["dropped_full_proof_bound"] = json!(dropped);
+    out
+}
+
 fn main() {
     let args: Vec<_> = std::env::args().collect();
     let input: Value = serde_json::from_str(&fs::read_to_string(&args[2]).unwrap()).unwrap();
     let output = match args[1].as_str() {
-        "screen" => serde_json::to_string_pretty(&screen(&input, args[4].parse().unwrap())).unwrap(),
+        "screen" => {
+            serde_json::to_string_pretty(&screen(&input, args[4].parse().unwrap())).unwrap()
+        }
         "mine" => mine(&input),
         "probe" => serde_json::to_string_pretty(&probe(&input, args[4].parse().unwrap())).unwrap(),
         "export" => export(&input, args[4].parse().unwrap()),
+        "complete" => serde_json::to_string_pretty(&complete(&input)).unwrap(),
         "depth" => serde_json::to_string_pretty(&depth(
             &input,
             args[4].parse().unwrap(),
@@ -344,7 +411,10 @@ mod tests {
         // mate. b1d1 is check but e9 is free; a8a9 frees rank 8; a8d8 can be
         // captured.
         let fen = "3k5/R8/9/9/9/9/9/9/1R7/5K3 w - - 0 1";
-        assert_eq!(Prover::new(100_000).shortest(&pos(fen), 7).unwrap(), Some(1));
+        assert_eq!(
+            Prover::new(100_000).shortest(&pos(fen), 7).unwrap(),
+            Some(1)
+        );
         assert_eq!(answers(fen, 1), vec!["b1b9".to_string()]);
     }
     #[test]
@@ -371,9 +441,52 @@ mod tests {
                     let memo = Prover::new(1_000_000)
                         .defender_mated(&next, plies - 1)
                         .unwrap();
-                    assert_eq!(memo, plain_defender_mated(&next, plies - 1), "{fen} {a} {plies}");
+                    assert_eq!(
+                        memo,
+                        plain_defender_mated(&next, plies - 1),
+                        "{fen} {a} {plies}"
+                    );
                 }
             }
         }
+    }
+    #[test]
+    fn suite_answer_sets_agree_with_plain_recursion() {
+        // Every checking first move is classified again without memo: checking
+        // answers mate within mate_plies, other checks do not.
+        let text = include_str!("../../../tools/strength/data/xiangqi-tactics-v1.json");
+        let spec: Value = serde_json::from_str(text).unwrap();
+        let rows: Vec<&Value> = spec["positions"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|p| p["mate_plies"].as_u64().unwrap() <= 5)
+            .collect();
+        assert!(rows.len() > 200);
+        parallel(&rows, |p| {
+            let position = pos(p["fen"].as_str().unwrap());
+            let plies = p["mate_plies"].as_u64().unwrap() as u8;
+            let expected = strings(&p["checking_answers"]);
+            assert!(!expected.is_empty());
+            assert!(
+                expected
+                    .iter()
+                    .all(|e| strings(&p["expected_moves"]).contains(e))
+            );
+            for (a, next) in xiangqi_mate_proof::successors(&position, true) {
+                let mates = plain_defender_mated(&next, plies - 1);
+                assert_eq!(mates, expected.contains(&a.to_string()), "{} {a}", p["id"]);
+            }
+            // No shorter mate exists.
+            if plies > 1 {
+                for (a, next) in xiangqi_mate_proof::successors(&position, true) {
+                    assert!(
+                        !plain_defender_mated(&next, plies - 3),
+                        "{} {a} shorter",
+                        p["id"]
+                    );
+                }
+            }
+        });
     }
 }

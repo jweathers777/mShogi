@@ -462,8 +462,11 @@ fn parse_go(
     }
     Ok((limits, hold, time))
 }
-/// Expected remaining moves for clock allocation, as for Chess UCI.
-const CLOCK_MOVES: u64 = 30;
+/// Expected remaining own moves for clock allocation. Shogi games are longer
+/// than Chess games (MSH-191 median about 100 plies, so about 50 moves each),
+/// and their decisive attacks come late; the Chess-style 30 spent the base
+/// time before the late middlegame (MSH-192).
+const CLOCK_MOVES: u64 = 50;
 fn parse_position(args: &[&str]) -> Result<Game, String> {
     let (mut game, rest) = match args {
         ["startpos", rest @ ..] => (Game::new(), rest),

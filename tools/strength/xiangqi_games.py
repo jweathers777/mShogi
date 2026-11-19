@@ -9,6 +9,9 @@ adjudication, watchdog and failures are recorded unscored.
 Local: python3 -m tools.strength.xiangqi_games run --runner R --a ENGINE --b ENGINE \
     --openings CATALOG --pairs N --base-ms 5000 --inc-ms 100 --out DIR [--workers 8]
 Summary: python3 -m tools.strength.xiangqi_games summary DIR
+Sequential test (engine A is the candidate):
+    python3 -m tools.strength.xiangqi_games sprt DIR [DIR ...] --h1 15
+Batches continue the opening order with --first-pair.
 """
 import argparse
 import concurrent.futures
@@ -32,7 +35,7 @@ def engine(path, label):
 def configs(args):
     catalog = json.load(open(args.openings))['openings']
     out = []
-    for pair in range(1, args.pairs + 1):
+    for pair in range(args.first_pair, args.first_pair + args.pairs):
         o = catalog[(pair - 1) % len(catalog)]
         for red in (0, 1):
             out.append({
@@ -75,6 +78,24 @@ def load(directory):
     return games
 
 
+def sprt(args):
+    from tools.strength import stats
+    pairs, unscored = {}, 0
+    for directory in args.dirs:
+        for g in load(directory):
+            pair = g['config']['id'].split('-')[0]
+            if g['engine_score'] is None:
+                unscored += 1
+                continue
+            pairs.setdefault(pair, []).append(g['engine_score'][0] / 2)
+    complete = [sum(v) / 2 for _, v in sorted(pairs.items()) if len(v) == 2]
+    counts = stats.pentanomial(complete)
+    test = stats.Sprt(0, args.h1, .05, .05, 30)
+    print(json.dumps({'h1': args.h1, 'pentanomial': counts, 'complete_pairs': len(complete),
+                      'unscored_games': unscored, **test.status(counts),
+                      'estimate': stats.estimate(counts)}, indent=1))
+
+
 def summary(args):
     games = load(args.dir)
     stops, score, plies, unscored = {}, [0, 0], [], []
@@ -106,11 +127,15 @@ def main():
     r.add_argument('--grace-ms', type=int, default=500)
     r.add_argument('--max-game-ms', type=int, default=1_800_000)
     r.add_argument('--workers', type=int, default=8)
+    r.add_argument('--first-pair', type=int, default=1)
     r.add_argument('--out', required=True)
     s = sub.add_parser('summary')
     s.add_argument('dir')
+    t = sub.add_parser('sprt')
+    t.add_argument('dirs', nargs='+')
+    t.add_argument('--h1', type=float, default=15)
     args = p.parse_args()
-    {'run': run, 'summary': summary}[args.command](args)
+    {'run': run, 'summary': summary, 'sprt': sprt}[args.command](args)
 
 
 if __name__ == '__main__':

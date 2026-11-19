@@ -1,10 +1,11 @@
 ---
 id: MSH-195
 title: Xiangqi Selectivity Round
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-18T19:25:00Z'
-updated_date: '2026-11-18T21:15:00Z'
+updated_date: '2026-11-19T08:06:00Z'
 labels:
   - handle:xiangqi-selectivity-round
   - xiangqi
@@ -47,8 +48,34 @@ Handle: Xiangqi Selectivity Round
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Baseline: frozen predecessor = main 7967841f (MSH-194 engine). Late-game fresh depth median 10 at 100 ms (MSH-194); tactical suite 373/373 (saturated, regression guard); 47/1,120 harness self-play games lost by the native perpetual-chase rule.
+Intended benefit: fewer tactical and rule losses and deeper effective search at the 5 s + 0.1 s control.
+Set (coherent, tested together):
+1. Chase-aware repetition score: a cycle in which every move of one side checks or chases (moved non-General, non-Soldier piece attacks an unprotected non-General piece other than an uncrossed Soldier, or a Horse/Cannon attacks a Chariot) loses for that side; both or neither: draw. Approximation of native WXF; native rules stay authoritative.
+2. Full SEE (swap list on a scratch board, least valuable attacker first) for exchange_at_least.
+3. generate_checks (complete superset of checking moves) with a bounded quiescence check stage (QUIESCENCE_CHECKS).
+4. Shared-core df-pn root mate search (MATE_SEARCH).
+5. MARGIN_UNIT: soldier = 100 already equals the smallest capture; record as unchanged. quiet_order: adopt only with a specific signal.
+6. Profile per-node costs (rule_score calls has_legal_move at every node) and fix clear waste.
+Comparison: perft and native differential tests; check-generator completeness test against brute force; tactical suite; sequential pentanomial predecessor test H0=0, H1=15 at 5 s + 0.1 s, max 600 pairs, xiangqi-openings-v1, local 8 workers while under about 1 hour, else cloud.
+Caps: local only unless the test needs more than about 1 hour; cloud cap US$5. Checkpoint: after the game test, keep the set on H1, reject and revert on H0, consider an ablation only with a specific doubt.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 From MSH-194 (Xiangqi Strength Harness), 2026-11-18: use the 5 s + 0.1 s control, tools/strength/xiangqi_games.py, xiangqi-openings-v1 and the tactical suite as a regression guard (it is saturated). Observed: 47 of 1,120 self-play games lost by the native perpetual-chase rule because the private search scores chase cycles as draws; consider a chase-aware repetition score in this round. Request overhead is now flat (~3 ms).
+
+2026-11-19 implementation (branch codex/msh-195-xiangqi-selectivity, candidate 900f565c, binary sha256 prefix ec9736052fc2417d; predecessor main 7967841f, f3425d1af6224986):
+- Profile: targets() was ~65% of search samples via attacked(). Reverse-scan attack test (rays from the target; table-reverse for jumping pieces): identical fixed-depth moves and nodes, ~2.2x nodes/s. Differential test against the old scan.
+- Chase-aware repetition (one-sided check/chase cycle loses), lazy flags in search, eager for history; tests: constructed chase cycle, protected cycle draws, lazy vs eager flags.
+- Full SEE with dynamic screens and reverse least-attacker; tests: hand-calculated exchanges, differential against target-scan SEE.
+- generate_checks (complete superset, tested against native checks), QUIESCENCE_CHECKS=8, MATE_SEARCH=true.
+- MARGIN_UNIT unchanged (soldier 100 = smallest capture). quiet_order not adopted (no specific signal).
+- Measured: full set 1.47x predecessor nodes/s on a middlegame (depth 16 vs 14 in 4 s); late-game fresh depth at 100 ms median 10 (p10 9, was 8). Tactical suite 373/373 at 200 ms; 354/373 at 5 ms (pred 361).
+- Release suites for search, engine, runner, console pass; all_games_timing Xiangqi fingerprint 313->324 nodes, same move.
+- Game test started locally: 40-pair batches, 5 s + 0.1 s, H1=15.
 <!-- SECTION:NOTES:END -->

@@ -32,15 +32,26 @@ def engine(path, label):
             'model_path': None, 'model_identity': label, 'deterministic': False}
 
 
+def spec(path_or_engine, label, json_path):
+    """Engine config and wire format: an mShogi binary, or a JSON spec
+    {"engine": EngineConfig, "wire": Wire} for an external engine."""
+    if json_path:
+        d = json.load(open(json_path))
+        return d['engine'], d.get('wire', {})
+    return engine(path_or_engine, label), {}
+
+
 def configs(args):
     catalog = json.load(open(args.openings))['openings']
+    a, wa = spec(args.a, 'A', args.a_json)
+    b, wb = spec(args.b, 'B', args.b_json)
     out = []
     for pair in range(args.first_pair, args.first_pair + args.pairs):
         o = catalog[(pair - 1) % len(catalog)]
         for red in (0, 1):
             out.append({
                 'schema_version': 1, 'profile': PROFILE, 'id': f'pair{pair:04d}-{o["id"]}-red{red}'[:128],
-                'engines': [engine(args.a, 'A'), engine(args.b, 'B')],
+                'engines': [a, b], 'wire': [wa, wb],
                 'opening': {'id': o['id'], 'fen': o.get('fen'), 'canonical': None, 'moves': o['moves']},
                 'red': red, 'clock': {'base_ms': args.base_ms, 'increment_ms': args.inc_ms},
                 'grace_ms': args.grace_ms, 'max_game_ms': args.max_game_ms,
@@ -118,8 +129,10 @@ def main():
     sub = p.add_subparsers(dest='command', required=True)
     r = sub.add_parser('run')
     r.add_argument('--runner', required=True)
-    r.add_argument('--a', required=True)
-    r.add_argument('--b', required=True)
+    r.add_argument('--a')
+    r.add_argument('--b')
+    r.add_argument('--a-json', help='external engine spec for engine A')
+    r.add_argument('--b-json', help='external engine spec for engine B')
     r.add_argument('--openings', required=True)
     r.add_argument('--pairs', type=int, required=True)
     r.add_argument('--base-ms', type=int, default=5000)

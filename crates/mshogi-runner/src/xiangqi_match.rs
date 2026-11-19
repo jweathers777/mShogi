@@ -20,6 +20,35 @@ use mshogi_core::{native::CanonicalRecord, xiangqi::*};
 use serde::{Deserialize, Serialize};
 use std::time::{Duration, Instant};
 
+/// Engine protocol.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum Protocol {
+    /// UCI, Pikafish dialect (files a-i, ranks 0-9).
+    #[default]
+    Uci,
+    /// UCCI (ElephantEye): `ucci`, `setoption NAME VALUE`, `go time T increment I`.
+    Ucci,
+}
+
+/// How one engine's commands and replies are written on the wire. The
+/// controller translates; native rules still decide every move.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Wire {
+    /// Engine protocol.
+    #[serde(default)]
+    pub protocol: Protocol,
+    /// Added to every rank number of a move on the wire (1 for
+    /// Fairy-Stockfish, whose Xiangqi ranks are 1-10).
+    #[serde(default)]
+    pub rank_offset: u8,
+    /// Fixed node count per move instead of clock commands; the clock is
+    /// still charged.
+    #[serde(default)]
+    pub nodes: Option<u64>,
+}
+
 /// One clocked game between two UCI Xiangqi engines.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -36,6 +65,9 @@ pub struct MatchConfig {
     pub opening: Opening,
     /// Engine index (0 or 1) that plays Red.
     pub red: usize,
+    /// Wire format of engine 0 and engine 1 (default: Pikafish UCI, clocked).
+    #[serde(default)]
+    pub wire: [Wire; 2],
     /// Fischer clock of both sides.
     pub clock: Clock,
     /// Allowance beyond the remaining time for transport, in milliseconds.
@@ -83,6 +115,13 @@ impl MatchConfig {
             return Err(RunnerError(
                 "opening is already concluded or pending".into(),
             ));
+        }
+        if self
+            .wire
+            .iter()
+            .any(|w| w.rank_offset > 1 || w.nodes.is_some_and(|n| !(1..=100_000_000).contains(&n)))
+        {
+            return Err(RunnerError("unsupported wire settings".into()));
         }
         crate::config::validate_processes(&self.engines, self.watchdogs, self.io)?;
         Ok(())
@@ -205,6 +244,117 @@ fn go(clock: [u64; 2], increment: u64) -> String {
     )
 }
 
+/// Search command of one engine on the wire.
+fn go_for(wire: Wire, clock: [u64; 2], increment: u64, side: usize) -> String {
+    match (wire.nodes, wire.protocol) {
+        (Some(nodes), _) => format!("go nodes {nodes}"),
+        (None, Protocol::Uci) => go(clock, increment),
+        (None, Protocol::Ucci) => format!("go time {} increment {increment}", clock[side]),
+    }
+}
+
+/// Shift the rank numbers of a move token such as `h2e2` by `delta`.
+fn shift_move(token: &str, delta: i32) -> Option<String> {
+    let bytes = token.as_bytes();
+    let mut out = String::new();
+    let mut i = 0;
+    for _ in 0..2 {
+        let file = *bytes.get(i)?;
+        if !(b'a'..=b'i').contains(&file) {
+            return None;
+        }
+        i += 1;
+        let start = i;
+        while i < bytes.len() && bytes[i].is_ascii_digit() {
+            i += 1;
+        }
+        let rank: i32 = token.get(start..i)?.parse().ok()?;
+        let rank = rank + delta;
+        if !(0..=10).contains(&rank) {
+            return None;
+        }
+        out.push(file as char);
+        out.push_str(&rank.to_string());
+    }
+    (i == bytes.len()).then_some(out)
+}
+
+/// Position command of one engine on the wire.
+fn position_for(wire: Wire, game: &Game) -> String {
+    let mut text = position(game);
+    if wire.protocol == Protocol::Ucci && text.starts_with("position startpos") {
+        let fen = PositionRoot::standard()
+            .position()
+            .to_fen()
+            .expect("standard root");
+        text = text.replacen("position startpos", &format!("position fen {fen}"), 1);
+    }
+    if wire.rank_offset == 0 {
+        return text;
+    }
+    match text.split_once(" moves ") {
+        Some((head, moves)) => {
+            let shifted: Vec<String> = moves
+                .split(' ')
+                .map(|m| shift_move(m, i32::from(wire.rank_offset)).expect("native action"))
+                .collect();
+            format!("{head} moves {}", shifted.join(" "))
+        }
+        None => text,
+    }
+}
+
+/// Native command of a reply line on the wire. UCCI may end a reply with
+/// `resign` (a native resignation; the move is not played) or `draw` (a draw
+/// offer, which this board-only protocol cannot carry: ignored, the move is
+/// played).
+fn reply_for(wire: Wire, line: &str) -> Result<GameCommand, String> {
+    let line = if wire.protocol == Protocol::Ucci {
+        match line.trim_end().rsplit_once(' ') {
+            Some((_, "resign")) => return Ok(GameCommand::Resign),
+            Some((head, "draw")) => head.to_string(),
+            _ => line.to_string(),
+        }
+    } else {
+        line.to_string()
+    };
+    let line = line.as_str();
+    if wire.rank_offset == 0 {
+        return reply(line);
+    }
+    let words: Vec<String> = line
+        .split_ascii_whitespace()
+        .enumerate()
+        .map(|(i, w)| {
+            if i == 0 || w == "ponder" || w == "resign" {
+                Some(w.to_string())
+            } else {
+                // Fail closed: an untranslatable move token is malformed.
+                shift_move(w, -i32::from(wire.rank_offset))
+            }
+        })
+        .collect::<Option<Vec<_>>>()
+        .ok_or("move token outside the engine's rank range")?;
+    reply(&words.join(" "))
+}
+
+fn dialect(wire: Wire) -> Dialect {
+    match wire.protocol {
+        Protocol::Uci => Dialect {
+            hello: "uci",
+            ok: "uciok",
+            newgame: "ucinewgame",
+            ucci_options: false,
+        },
+        Protocol::Ucci => Dialect {
+            hello: "ucci",
+            ok: "ucciok",
+            newgame: "setoption newgame",
+            ucci_options: true,
+        },
+    }
+}
+
 fn side_index(side: Side) -> usize {
     usize::from(side == Side::Black)
 }
@@ -241,13 +391,14 @@ impl MatchReport {
             }
             let actor = game.position().side_to_move();
             let side = side_index(actor);
+            let wire = c.wire[c.engine_for(actor)];
             if turn.engine != c.engine_for(actor)
                 || turn.actor != actor
                 || turn.version != game.events().len()
                 || turn.context_sha256 != digest(&game)?
-                || turn.position != position(&game)
+                || turn.position != position_for(wire, &game)
                 || turn.clock_before_ms != clock
-                || turn.go != go(clock, c.clock.increment_ms)
+                || turn.go != go_for(wire, clock, c.clock.increment_ms, side)
                 || turn.elapsed_ms > clock[side].saturating_add(c.grace_ms)
             {
                 return Err(RunnerError("turn context or clock ledger mismatch".into()));
@@ -267,7 +418,11 @@ impl MatchReport {
                 return Err(RunnerError("turn lacks command/response evidence".into()));
             }
             clock[side] = clock[side].saturating_sub(turn.elapsed_ms) + c.clock.increment_ms;
-            submit(&mut game, reply(&turn.reply).map_err(RunnerError)?).map_err(RunnerError)?;
+            submit(
+                &mut game,
+                reply_for(wire, &turn.reply).map_err(RunnerError)?,
+            )
+            .map_err(RunnerError)?;
         }
         let CanonicalRecord::Xiangqi(record) =
             CanonicalRecord::from_json(&self.game).map_err(|e| RunnerError(e.to_string()))?
@@ -325,11 +480,7 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
     });
     let mut game = config.opening.game()?;
     let mut host = Host {
-        dialect: Dialect {
-            hello: "uci",
-            ok: "uciok",
-            newgame: "ucinewgame",
-        },
+        dialects: config.wire.map(dialect),
         engines: &config.engines,
         watchdogs: config.watchdogs,
         io: config.io,
@@ -388,8 +539,8 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
                 version: host.version,
                 context_sha256: digest(&game)?,
                 actor,
-                position: position(&game),
-                go: go(clock, config.clock.increment_ms),
+                position: position_for(config.wire[index], &game),
+                go: go_for(config.wire[index], clock, config.clock.increment_ms, side),
                 reply: String::new(),
                 clock_before_ms: clock,
                 elapsed_ms: 0,
@@ -405,7 +556,7 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
             );
             match outcome {
                 Ok(Outcome::Accepted(line, elapsed, info)) => {
-                    let command = match reply(&line) {
+                    let command = match reply_for(config.wire[index], &line) {
                         Ok(command) => command,
                         Err(e) => {
                             failure =
@@ -484,4 +635,79 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
     };
     report.replay()?;
     Ok(report)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn rank_offsets_translate_moves_both_ways() {
+        assert_eq!(shift_move("h2e2", 1).unwrap(), "h3e3");
+        assert_eq!(shift_move("i9h9", 1).unwrap(), "i10h10");
+        assert_eq!(shift_move("i10h10", -1).unwrap(), "i9h9");
+        assert!(shift_move("j1a1", 1).is_none());
+        assert!(shift_move("a9a9x", 1).is_none());
+        let fairy = Wire {
+            rank_offset: 1,
+            ..Wire::default()
+        };
+        assert_eq!(
+            reply_for(fairy, "bestmove h1g3 ponder i10h10").unwrap(),
+            reply("bestmove h0g2 ponder i9h9").unwrap()
+        );
+        // Rank 0 does not exist for Fairy-Stockfish: rejected, not misread.
+        assert!(reply_for(fairy, "bestmove a0a1").is_err());
+    }
+    #[test]
+    fn wire_commands_follow_each_engine_protocol() {
+        let mut game = Game::standard(ClaimPolicy::AutoValidClaims).unwrap();
+        submit(
+            &mut game,
+            GameCommand::Play {
+                action: "h2e2".parse().unwrap(),
+            },
+        )
+        .unwrap();
+        let ucci = Wire {
+            protocol: Protocol::Ucci,
+            ..Wire::default()
+        };
+        assert!(position_for(ucci, &game).starts_with("position fen rnbakabnr/9/1c5c1/"));
+        assert!(position_for(ucci, &game).ends_with(" moves h2e2"));
+        let fairy = Wire {
+            rank_offset: 1,
+            ..Wire::default()
+        };
+        assert_eq!(position_for(fairy, &game), "position startpos moves h3e3");
+        assert_eq!(
+            go_for(ucci, [3000, 2000], 100, 1),
+            "go time 2000 increment 100"
+        );
+        assert_eq!(
+            go_for(Wire::default(), [3000, 2000], 100, 1),
+            "go wtime 3000 btime 2000 winc 100 binc 100"
+        );
+        let nodes = Wire {
+            nodes: Some(5000),
+            ..Wire::default()
+        };
+        assert_eq!(go_for(nodes, [3000, 2000], 100, 0), "go nodes 5000");
+    }
+    #[test]
+    fn ucci_resign_and_draw_suffixes_are_explicit() {
+        let ucci = Wire {
+            protocol: Protocol::Ucci,
+            ..Wire::default()
+        };
+        assert_eq!(
+            reply_for(ucci, "bestmove b9a9 ponder a8a9 resign").unwrap(),
+            GameCommand::Resign
+        );
+        assert_eq!(
+            reply_for(ucci, "bestmove c9a7 ponder h3i5 draw").unwrap(),
+            reply("bestmove c9a7 ponder h3i5").unwrap()
+        );
+        // A UCI engine has no such suffix.
+        assert!(reply_for(Wire::default(), "bestmove b9a9 resign").is_err());
+    }
 }

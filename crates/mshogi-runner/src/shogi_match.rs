@@ -321,11 +321,12 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
     });
     let mut game = config.opening.game()?;
     let mut host = Host {
-        dialect: Dialect {
+        dialects: [Dialect {
             hello: "usi",
             ok: "usiok",
             newgame: "usinewgame",
-        },
+            ucci_options: false,
+        }; 2],
         engines: &config.engines,
         watchdogs: config.watchdogs,
         io: config.io,

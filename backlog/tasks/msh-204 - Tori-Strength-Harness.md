@@ -4,6 +4,7 @@ title: Tori Strength Harness
 status: Ready
 assignee: []
 created_date: '2026-11-19T19:43:00Z'
+updated_date: '2026-11-19T19:45:00Z'
 labels:
   - handle:tori-strength-harness
   - tori
@@ -20,21 +21,20 @@ ordinal: 211000
 <!-- SECTION:DESCRIPTION:BEGIN -->
 Handle: Tori Strength Harness
 
-**Problem.** Tori Shogi searches through the shared core (MSH-165) with a basic evaluation, but has no engine protocol and no match route: it is played only through the interactive shell. Without these, no game test, corpus or measurement is possible.
+**Problem.** Tori Shogi searches through the shared core (MSH-165) with a basic evaluation. It has no openings catalog, tactical suite, chosen game-test control or Texel export of the program standard. Tori has no USI-style text protocol, but it does not need one: the native experiment runner already plays clocked Tori games through the structured internal protocol (MSH-179), and no external Tori engines are used (John, 2026-11-19).
 
-**Objective.** The harness step of the per-game classical strength program (docs/m5/strength-roadmap.md) for Tori. Per John (2026-11-19) no external opponents are sought for games after Xiangqi.
+**Objective.** The harness step of the per-game classical strength program (docs/m5/strength-roadmap.md) for Tori.
 
-**Approach.** A USI-style engine protocol for Tori using native notation and the clocked persistent-process host shared with Shogi and Xiangqi; openings, a tactical suite from a native mate prover (Tori has drops), a game-test control, Texel export, and a time-odds measurement of what speed is worth.
+**Approach.** Reuse the clocked native experiment route; openings; a tactical suite from a native mate prover (Tori has drops); a game-test control; Texel export; a time-odds measurement of what speed is worth.
 
 **Completion.** The criteria below are met with recorded evidence.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A Tori engine protocol (handshake, options, position with native move history, clocked and fixed-work go, bestmove) with tests; native admission of every reply.
-- [ ] #2 A clocked Tori match route on the shared host that plays and replays games natively, with tests.
-- [ ] #3 At least 100 balanced openings with source and balance rule; a tactical suite of at least 200 positions with native-prover answers and a held-out part, with the baseline score.
-- [ ] #4 A game-test control with median late-game depth of at least 8; Texel export with a split; a time-odds measurement (2x time) recorded.
+- [ ] #1 At least 100 balanced openings with source and balance rule; a tactical suite of at least 200 positions with native-prover answers and a held-out part, with the baseline score.
+- [ ] #2 A game-test control with median late-game depth of at least 8; Texel export with a split; a time-odds measurement (2x time) recorded.
+- [ ] #3 Tori games use the existing clocked native experiment route (mshogi-match experiment-run with a Fischer clock, structured internal protocol, MSH-179); any gap for this harness (for example per-player clocks for time odds, or opening catalogs) is closed with tests; no text engine protocol is added, since no external Tori engines are used.
 <!-- AC:END -->
 
 ## Definition of Done

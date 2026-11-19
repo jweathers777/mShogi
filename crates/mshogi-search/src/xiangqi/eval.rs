@@ -179,7 +179,16 @@ const fn bounds(upper: bool) -> [i32; COUNT] {
     let mut b = [0; COUNT];
     let mut i = 0;
     while i < COUNT {
-        b[i] = if i < 6 {
+        b[i] = if i < 2 {
+            // Advisor and Elephant: the first fit (MSH-196) put both at a
+            // lower bound of 100 and lost its game test; keep them at least
+            // three quarters of their classical value.
+            if upper {
+                init[i] * 8 / 5
+            } else {
+                init[i] * 3 / 4
+            }
+        } else if i < 6 {
             if upper { init[i] * 8 / 5 } else { init[i] / 2 }
         } else if i < GENERAL_RANK1 {
             if upper { 150 } else { -150 }
@@ -208,12 +217,12 @@ pub const LOWER: [i32; COUNT] = bounds(false);
 /// Inclusive upper bounds.
 pub const UPPER: [i32; COUNT] = bounds(true);
 /// Compiled weights used by the search: the MSH-196 (Xiangqi Evaluation
-/// Round) fit, docs/m5/evidence/msh196/fit.json.
+/// Round) revised fit, docs/m5/evidence/msh196/fit2.json.
 pub const DEFAULT: [i32; COUNT] = [
-    100, 100, 528, 1252, 482, 100, 0, 0, 0, 0, 52, 136, 150, 150, 150, -8, -32, -8, 48, -24, -64,
-    -64, -60, 40, 140, 112, 148, 120, 150, 150, 150, -8, 50, 12, 6, -64, 128, 2, 36, 38, 72, 74,
-    108, 142, 112, 150, 150, 137, 102, 67, 96, 64, 34, 100, 102, 72, 42, 76, 44, 76, 44, 48, 44,
-    72, 68, 64, 0, -32, -32, 0, 0, 0, 30, 0, 10, 10, -32, -64, 0, 0,
+    150, 150, 528, 1252, 514, 100, 0, 0, 0, 0, 52, 136, 150, 150, 150, -8, -32, -8, 48, 8, -64,
+    -64, -60, 40, 140, 112, 148, 120, 120, 120, 150, -8, 50, 12, 38, -32, 150, 34, 68, 70, 104,
+    106, 108, 142, 112, 150, 150, 105, 70, 35, 64, 96, 66, 100, 102, 104, 74, 108, 76, 108, 76, 16,
+    -20, 8, 36, 0, 32, 0, -32, 0, -32, 0, 30, 0, 10, 10, -32, -64, 0, 0,
 ];
 
 /// Score from the side to move with a weight vector.

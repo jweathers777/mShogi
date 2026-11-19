@@ -790,7 +790,7 @@ impl XiangqiPosition {
                 }
             }
         }
-        self.dynamic_features(self.side, sink);
+        self.dynamic_features(self.side, true, sink);
         sink(super::eval::TEMPO, 1);
     }
     /// Chariots, Horses and Cannons of both sides.
@@ -803,8 +803,11 @@ impl XiangqiPosition {
     }
     /// Per-node terms (mobility, piece value by phase, General safety),
     /// `side` minus the opponent.
-    fn dynamic_features(&self, side: usize, sink: &mut impl FnMut(usize, i32)) {
+    /// With `all` false, terms whose compiled weight is zero are skipped
+    /// (the search evaluation); fitting needs every term.
+    fn dynamic_features(&self, side: usize, all: bool, sink: &mut impl FnMut(usize, i32)) {
         use super::eval::*;
+        let want = |index: usize| all || DEFAULT[index] != 0;
         let majors = i32::from(self.majors());
         let empty = ALL & !(self.occupied[0] | self.occupied[1]);
         for s in 0..2 {
@@ -812,6 +815,9 @@ impl XiangqiPosition {
             let them = s ^ 1;
             let mut mobility = [0i32; 3];
             for (slot, kind) in [(0, HORSE), (1, ROOK), (2, CANNON)] {
+                if !want(MOBILITY_HORSE + slot) {
+                    continue;
+                }
                 let mut pieces = self.pieces[s][kind];
                 while pieces != 0 {
                     let at = pieces.trailing_zeros() as usize;
@@ -852,6 +858,9 @@ impl XiangqiPosition {
             sink(ENEMY_CANNON_FILE, sign * on_file(self.pieces[them][CANNON]));
             let mut attacked = 0;
             for (dx, dy) in DIRECTIONS {
+                if !want(GENERAL_ADJACENT_ATTACKED) {
+                    break;
+                }
                 if let Some(at) = offset(general, dx, dy)
                     && palace(s, at)
                     && self.attacked(at, them)
@@ -1175,7 +1184,7 @@ impl SearchPosition for XiangqiPosition {
     fn evaluate(&self) -> i32 {
         let side = self.side;
         let mut dynamic = 0;
-        self.dynamic_features(side, &mut |index, value| {
+        self.dynamic_features(side, false, &mut |index, value| {
             dynamic += super::eval::DEFAULT[index] * value
         });
         self.accumulated[side] - self.accumulated[side ^ 1]

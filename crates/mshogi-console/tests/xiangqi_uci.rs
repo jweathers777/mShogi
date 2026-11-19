@@ -339,3 +339,23 @@ fn incremental_position_handles_takeback_divergence_new_roots_and_errors() {
     assert_eq!(code, 0, "{err}");
     assert!(err.contains("native rejection"), "{err}");
 }
+#[test]
+fn hash_option_is_bounded_and_a_new_size_is_used_for_the_next_search() {
+    let mut e = engine();
+    e.send("uci");
+    let lines = e.until("uciok");
+    assert!(
+        lines
+            .iter()
+            .any(|l| l == "option name Hash type spin default 64 min 1 max 1024")
+    );
+    e.send("setoption name Hash value 0");
+    e.send("setoption name Hash value 1025");
+    e.send("setoption name Hash value 8");
+    e.send("position startpos");
+    e.send("go movetime 50");
+    e.until("bestmove");
+    let (code, err, _) = e.finish(true);
+    assert_eq!(code, 0, "{err}");
+    assert_eq!(err.matches("Hash outside 1..1024").count(), 2, "{err}");
+}

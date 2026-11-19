@@ -1,11 +1,11 @@
 ---
 id: MSH-198
 title: Xiangqi Blunder Screen
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-18T19:25:00Z'
-updated_date: '2026-11-19T16:20:00Z'
+updated_date: '2026-11-19T16:29:00Z'
 labels:
   - handle:xiangqi-blunder-screen
   - xiangqi
@@ -34,18 +34,18 @@ Handle: Xiangqi Blunder Screen
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The blunder rule, mechanism classes and fix rule are recorded before the results.
-- [ ] #2 Clear blunders, rates and mechanism shares are reported; the positions are kept as a suite with a held-out split.
-- [ ] #3 Any fix round follows the round rules of the program; otherwise the decision not to fix is recorded.
-- [ ] #4 Independent review is recorded and findings are resolved.
+- [x] #1 The blunder rule, mechanism classes and fix rule are recorded before the results.
+- [x] #2 Clear blunders, rates and mechanism shares are reported; the positions are kept as a suite with a held-out split.
+- [x] #3 Any fix round follows the round rules of the program; otherwise the decision not to fix is recorded.
+- [x] #4 Independent review is recorded and findings are resolved.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -65,3 +65,13 @@ Checks: rerun mShogi at 10 s per position (fresh process, no history) and re-jud
 <!-- SECTION:NOTES:BEGIN -->
 John, 2026-11-19: MSH-197 (Xiangqi Strength Anchor) now measures a reference ladder and judged move quality with the MSH-193 definitions on the ladder games. This screen can reuse that judging; its own work is the mechanism classes, the fix rule and the blunder suite.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Xiangqi blunder screen with rules fixed before results (task plan). Report: docs/m5/xiangqi-blunder-screen.md; evidence docs/m5/evidence/msh198; suite tools/strength/data/xiangqi-blunders-v1.json (187 positions, 132 development / 55 held-out).
+
+mShogi's moves in the 578 scored MSH-197 ladder games (60 s + 1 s), judged by full-strength Pikafish: 26 clear blunders and 161 mistakes in 18,856 moves. Classes: other (no capture or short mate in the judge's first reply) 85%, refutation captures a major piece 5.3%, a minor piece 5.3%, allowed short mate 4.3%, time trouble 0, repetition rule 0. Fix rule (one class >= 30% mapping to a general change) not triggered, also with clear blunders only; no fix round. A 10 s rerun (median in-game time 1.5 s) avoids 78 of 187 errors (42%), 13 of 26 clear blunders. Cause of the residual errors not determined.
+
+Verification: classifier and judge tests (Python 146 passed), independent review (nothing blocking; wording and records fixed). Open: John's stop-or-continue decision for Xiangqi (MSH-54). Integrated into main by merge 9934eba6.
+<!-- SECTION:FINAL_SUMMARY:END -->

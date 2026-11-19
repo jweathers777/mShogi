@@ -77,12 +77,14 @@ def extract(runs):
                     action = native_reply(words[1], c['wire'][t['engine']])
                     if action is None:
                         break
-                    turns.append({'player': players[t['engine']], 'index': len(moves), 'move': action})
+                    side = 0 if t['actor'] == 'red' else 1
+                    turns.append({'player': players[t['engine']], 'index': len(moves), 'move': action,
+                                  'clock_ms': t['clock_before_ms'][side]})
                     moves.append(action)
                 require(c['opening'].get('fen') is None, 'catalog openings start from the standard root')
                 games.append({'id': f"{receipt['id']}-red{red}", 'players': players, 'red': c['red'],
                               'engine_score': report['engine_score'], 'moves': moves, 'start': start,
-                              'turns': turns})
+                              'turns': turns, 'conclusion': report['conclusion']})
     return games
 
 

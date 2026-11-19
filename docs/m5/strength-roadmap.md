@@ -109,6 +109,11 @@ about +41 Elo; [round](xiangqi-speed-round.md)).
 **Xiangqi baseline accepted** (John, 2026-11-19): this classical engine is the
 Xiangqi baseline for later learned evaluation; no further classical Xiangqi round
 is planned unless John asks.
+
+**Current game: Tori Shogi** (John, 2026-11-19): MSH-204 (Tori Strength
+Harness), MSH-205 (Tori Selectivity Round), MSH-206 (Tori Evaluation Round),
+MSH-207 (Tori Strength Assessment); MSH-200 (Tori Move Generation Deep Dive)
+is the discussion slot with John. MSH-51 keeps the final criteria.
 MSH-54 (Conventional Xiangqi) keeps the final criteria. Tori, Chu and Tenjiku
 (MSH-51, MSH-52, MSH-53) get their step tasks when John starts them.
 

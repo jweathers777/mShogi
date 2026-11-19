@@ -131,7 +131,7 @@ fn fixed_search_matches_frozen_predecessor() {
     assert_eq!(expected[1]["nodes"], 121);
     assert_eq!(expected[2]["nodes"], 313);
     expected[2]["action"] = json!({"action": "b0c2", "kind": "move"});
-    expected[2]["nodes"] = 217.into();
+    expected[2]["nodes"] = 787.into();
     expected[2]["score"] = 0.into();
     expected[1]["action"] = json!({"action": "5i5h", "kind": "move"});
     expected[1]["nodes"] = 125.into();

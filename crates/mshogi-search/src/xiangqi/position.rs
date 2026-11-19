@@ -16,7 +16,20 @@ const KINDS: [PieceKind; 7] = [
     PieceKind::Cannon,
     PieceKind::Soldier,
 ];
-const VALUE: [i32; 7] = [0, 200, 200, 400, 900, 450, 100];
+/// Exchange values (SEE, capture gain and order): the compiled material
+/// weights, so that exchanges and the evaluation agree.
+const VALUE: [i32; 7] = {
+    use super::eval::{DEFAULT, MATERIAL};
+    [
+        0,
+        DEFAULT[MATERIAL],
+        DEFAULT[MATERIAL + 1],
+        DEFAULT[MATERIAL + 2],
+        DEFAULT[MATERIAL + 3],
+        DEFAULT[MATERIAL + 4],
+        DEFAULT[MATERIAL + 5],
+    ]
+};
 const GENERAL: usize = 0;
 const ADVISOR: usize = 1;
 const ELEPHANT: usize = 2;
@@ -392,7 +405,7 @@ impl XiangqiPosition {
         self.pieces[side][kind] |= 1 << at;
         self.occupied[side] |= 1 << at;
         self.hash ^= TABLES.pieces[side][kind][at];
-        self.material[side] += VALUE[kind];
+        self.material[side] += super::piece_value(KINDS[kind]);
         self.accumulated[side] += STATIC[side][kind][at];
     }
     fn take(&mut self, side: usize, kind: usize, at: usize) {
@@ -400,7 +413,7 @@ impl XiangqiPosition {
         self.pieces[side][kind] &= !(1 << at);
         self.occupied[side] &= !(1 << at);
         self.hash ^= TABLES.pieces[side][kind][at];
-        self.material[side] -= VALUE[kind];
+        self.material[side] -= super::piece_value(KINDS[kind]);
         self.accumulated[side] -= STATIC[side][kind][at];
     }
     /// All local targets before friendly occupancy and royal-capture filtering.

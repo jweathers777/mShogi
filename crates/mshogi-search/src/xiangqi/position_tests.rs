@@ -369,27 +369,37 @@ fn a_one_sided_chase_cycle_loses_for_the_chaser_and_mutual_or_protected_cycles_d
 #[test]
 fn static_exchange_follows_changing_cannon_screens() {
     // a-file: Black Chariot a9, Black Horse a5, Red Chariot a1, Red Cannon a0.
-    // Cannon takes first (screen a1): Horse +400; if the Chariot recaptures
-    // the Cannon (-450), the Red Chariot takes it (+900), so Black stops: +400.
-    // Chariot takes first: +400, Chariot recaptures (-900), and the Cannon
-    // has lost its screen: -500.
+    // Cannon takes first (screen a1): Horse; if the Chariot recaptures the
+    // Cannon, the Red Chariot takes it, so Black stops: +Horse. Chariot takes
+    // first: +Horse, Chariot recaptures, and the Cannon has lost its screen:
+    // Horse - Chariot.
     let p = XiangqiPosition::from_position(
         &Position::from_fen("r3k4/9/9/9/n8/9/9/9/R8/C2K5 w - - 0 1").unwrap(),
     );
     let cannon = p.find("a0a5".parse().unwrap()).unwrap();
     let chariot = p.find("a1a5".parse().unwrap()).unwrap();
-    assert_eq!(p.see(cannon), 400);
-    assert_eq!(p.see(chariot), -500);
-    // An undefended Horse: +400. A Soldier on e8 defended by the Black Advisor
-    // and General, taken by a Chariot from e1: +100 - 900 = -800.
+    // Values are the compiled material weights.
+    use super::eval::{DEFAULT, MATERIAL};
+    let (horse, rook, soldier) = (
+        DEFAULT[MATERIAL + 2],
+        DEFAULT[MATERIAL + 3],
+        DEFAULT[MATERIAL + 5],
+    );
+    assert_eq!(p.see(cannon), horse);
+    assert_eq!(p.see(chariot), horse - rook);
+    // An undefended Horse: +Horse. A Soldier on e8 defended by the Black
+    // Advisor and General, taken by a Chariot from e1: Soldier - Chariot.
     let p = XiangqiPosition::from_position(
         &Position::from_fen("3ak4/4p4/9/9/n8/9/9/9/9/R2K5 w - - 0 1").unwrap(),
     );
-    assert_eq!(p.see(p.find("a0a5".parse().unwrap()).unwrap()), 400);
+    assert_eq!(p.see(p.find("a0a5".parse().unwrap()).unwrap()), horse);
     let p = XiangqiPosition::from_position(
         &Position::from_fen("3ak4/4p4/9/9/9/9/9/9/4R4/3K5 w - - 0 1").unwrap(),
     );
-    assert_eq!(p.see(p.find("e1e8".parse().unwrap()).unwrap()), -800);
+    assert_eq!(
+        p.see(p.find("e1e8".parse().unwrap()).unwrap()),
+        soldier - rook
+    );
 }
 #[test]
 fn check_generator_contains_every_legal_checking_move_on_random_games() {

@@ -46,6 +46,7 @@ def validate_manifest(m):
     p = m.get('protocol', {})
     require(set(p) == {'base_ms', 'increment_ms', 'concurrency', 'pair_ms', 'task_seconds', 'every'},
             'protocol fields')
+    require(all(type(p[k]) is int for k in p), 'integer protocol values')
     require(1000 <= p['base_ms'] <= 60000 and 0 <= p['increment_ms'] <= 5000 and 1 <= p['concurrency'] <= 4
             and 1 <= p['every'] <= 16 and 60000 <= p['pair_ms'] <= 900000 and p['task_seconds'] <= CAMPAIGN_SECONDS,
             'protocol bounds')

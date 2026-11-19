@@ -95,6 +95,9 @@ Done so far: MSH-194 (harness: clocked route, 112 openings, 373-position suite,
 control 5 s + 0.1 s); MSH-195 (selectivity set: 2x faster attack test,
 chase-aware repetition, SEE, check stage, root mate search; H1 at 80 pairs,
 about +166 Elo against its predecessor; [round](xiangqi-selectivity-round.md)).
+MSH-196 (evaluation: Texel-fitted material and placement tables on 631,802
+quiet self-play positions; per-node terms lost and stay at zero; about +221 Elo
+in an independent confirmation batch; [round](xiangqi-evaluation-round.md)).
 MSH-54 (Conventional Xiangqi) keeps the final criteria. Tori, Chu and Tenjiku
 (MSH-51, MSH-52, MSH-53) get their step tasks when John starts them.
 

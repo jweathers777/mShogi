@@ -190,6 +190,12 @@ pub struct XiangqiPosition {
     stack: Vec<Undo>,
     keys: Vec<u64>,
     checks: Vec<bool>,
+    /// Per position up to the root: the move into it chased (search
+    /// approximation of WXF). Positions after the root are computed only
+    /// when a repetition needs them.
+    pub(crate) chases: Vec<bool>,
+    /// Compute chase flags in `make` (only while replaying game history).
+    track_chases: bool,
     root: usize,
     /// Known plies after the latest capture or null move.
     reversible: usize,
@@ -209,6 +215,8 @@ impl XiangqiPosition {
             stack: Vec::with_capacity(160),
             keys: Vec::with_capacity(700),
             checks: Vec::with_capacity(700),
+            chases: Vec::with_capacity(700),
+            track_chases: false,
             root: 0,
             reversible: 0,
         };
@@ -221,12 +229,14 @@ impl XiangqiPosition {
         p.check = p.attacked(p.general(p.side), p.side ^ 1);
         p.keys.push(p.hash);
         p.checks.push(p.check);
+        p.chases.push(false);
         p
     }
     /// Replay only recorded board actions on the private board, once per request.
     /// Warnings, claims and other non-board events do not add repetition keys.
     pub fn from_game(game: &Game) -> Self {
         let mut p = Self::from_position(game.root().position());
+        p.track_chases = true;
         for event in game.events() {
             if let EventKind::BoardAction { action, .. } = event.event {
                 let m = p.find(action).expect("native action is pseudo-legal");
@@ -234,6 +244,7 @@ impl XiangqiPosition {
             }
         }
         p.stack.clear();
+        p.track_chases = false;
         p.root = p.keys.len() - 1;
         p
     }
@@ -396,7 +407,82 @@ impl XiangqiPosition {
                 return true;
             }
         }
-        for kind in 0..7 {
+        // Chariots and Cannons: scan outward from the target. The first
+        // piece on a line attacks if it is a Chariot; the second (beyond one
+        // screen) attacks if it is a Cannon.
+        if self.pieces[by][ROOK] | self.pieces[by][CANNON] != 0 {
+            let rook = code(by, ROOK);
+            let cannon = code(by, CANNON);
+            for (dx, dy) in DIRECTIONS {
+                let mut at = target;
+                let mut screened = false;
+                while let Some(to) = offset(at, dx, dy) {
+                    let piece = self.board[to];
+                    if piece != 0 {
+                        if !screened {
+                            if piece == rook {
+                                return true;
+                            }
+                            screened = true;
+                        } else {
+                            if piece == cannon {
+                                return true;
+                            }
+                            break;
+                        }
+                    }
+                    at = to;
+                }
+            }
+        }
+        // Jumping and stepping pieces: their move geometry is symmetric, so
+        // the table entries of the target give every possible source square.
+        // A piece found there is confirmed with its own forward targets
+        // (legs, eyes, palace and river rules).
+        let t = &TABLES;
+        for kind in [GENERAL, ADVISOR, ELEPHANT, HORSE] {
+            if self.pieces[by][kind] == 0 {
+                continue;
+            }
+            let wanted = code(by, kind);
+            for jump in &t.jumps[by][kind][target][..usize::from(t.counts[by][kind][target])] {
+                let from = usize::from(jump.to);
+                if self.board[from] == wanted
+                    && self.targets(by, kind, from, true) & (1 << target) != 0
+                {
+                    return true;
+                }
+            }
+        }
+        if self.pieces[by][SOLDIER] != 0 {
+            let wanted = code(by, SOLDIER);
+            let back: i8 = if by == 0 { -1 } else { 1 };
+            for (dx, dy) in [(0, back), (-1, 0), (1, 0)] {
+                if let Some(from) = offset(target, dx, dy)
+                    && self.board[from] == wanted
+                    && self.targets(by, SOLDIER, from, true) & (1 << target) != 0
+                {
+                    return true;
+                }
+            }
+        }
+        false
+    }
+    /// Reference attack test over every piece's targets, for differential tests.
+    #[cfg(test)]
+    pub(crate) fn attacked_by_targets(&self, target: usize, by: usize) -> bool {
+        let their = self.general(by);
+        if target % 9 == their % 9 && self.board[target] == code(by ^ 1, GENERAL) {
+            let (low, high) = if their < target {
+                (their, target)
+            } else {
+                (target, their)
+            };
+            if (low + 9..high).step_by(9).all(|at| self.board[at] == 0) {
+                return true;
+            }
+        }
+        (0..7).any(|kind| {
             let mut pieces = self.pieces[by][kind];
             while pieces != 0 {
                 let from = pieces.trailing_zeros() as usize;
@@ -405,8 +491,234 @@ impl XiangqiPosition {
                     return true;
                 }
             }
+            false
+        })
+    }
+    /// Fast attack test, exposed for differential tests.
+    #[cfg(test)]
+    pub(crate) fn attacked_fast(&self, target: usize, by: usize) -> bool {
+        self.attacked(target, by)
+    }
+    /// Chase flags of the positions `start..=current`: stored flags up to the
+    /// root, and for later positions the search moves walked back on a
+    /// scratch board.
+    pub(crate) fn chase_flags(&self, start: usize) -> Vec<bool> {
+        let current = self.keys.len() - 1;
+        let mut flags = vec![false; current + 1 - start];
+        let mut b = self.scratch();
+        for i in (start..=current).rev() {
+            if i <= self.root {
+                flags[i - start] = self.chases[i];
+                continue;
+            }
+            // No null move lies in the window: a null move resets
+            // `reversible`, which bounds the repetition scan.
+            let undo = self.stack[i - self.root - 1];
+            let (from, to) = (undo.m.from(), undo.m.to());
+            debug_assert!(b.board[to] != 0, "board move in the repetition window");
+            let (side, kind) = piece_parts(b.board[to]);
+            flags[i - start] = undo.captured == 0 && b.chases_after(side, kind, to);
+            b.take(side, kind, to);
+            b.put(side, kind, from);
+            if undo.captured != 0 {
+                let (s, k) = piece_parts(undo.captured);
+                b.put(s, k, to);
+            }
+        }
+        flags
+    }
+    /// Search approximation of a WXF chase by the piece that just moved to
+    /// `to`: it attacks an opposing piece other than the General and an
+    /// uncrossed Soldier that is not protected, or a Horse or Cannon attacks
+    /// a Chariot. Generals and Soldiers may chase freely.
+    fn chases_after(&self, side: usize, kind: usize, to: usize) -> bool {
+        if kind == GENERAL || kind == SOLDIER {
+            return false;
+        }
+        let them = side ^ 1;
+        let mut victims =
+            self.targets(side, kind, to, true) & self.occupied[them] & !self.pieces[them][GENERAL];
+        while victims != 0 {
+            let at = victims.trailing_zeros() as usize;
+            victims &= victims - 1;
+            let (_, victim) = piece_parts(self.board[at]);
+            if victim == SOLDIER && !crossed(them, at) {
+                continue;
+            }
+            if victim == ROOK && (kind == HORSE || kind == CANNON) {
+                return true;
+            }
+            if !self.attacked(at, them) {
+                return true;
+            }
         }
         false
+    }
+    /// Static exchange evaluation of a move: the material balance of the
+    /// best sequence of captures on its target square, least valuable
+    /// attacker first. Cannon screens and Horse legs change as pieces leave,
+    /// so attackers are found again on a scratch board after each capture.
+    /// Pins and General exposure are ignored, as in the usual SEE.
+    pub fn see(&self, m: Move) -> i32 {
+        let value = |kind: usize| if kind == GENERAL { 10_000 } else { VALUE[kind] };
+        let mut b = self.scratch();
+        let (from, to) = (m.from(), m.to());
+        let (side, mut kind) = piece_parts(self.board[from]);
+        let mut gain = [0i32; 32];
+        if self.board[to] != 0 {
+            let (s, k) = piece_parts(self.board[to]);
+            gain[0] = value(k);
+            b.take(s, k, to);
+        }
+        b.take(side, kind, from);
+        b.put(side, kind, to);
+        let mut depth = 0;
+        let mut turn = side ^ 1;
+        loop {
+            let attacker = b.least_attacker(to, turn);
+            let Some((next, at)) = attacker else { break };
+            if depth + 1 >= gain.len() {
+                break;
+            }
+            depth += 1;
+            gain[depth] = value(kind) - gain[depth - 1];
+            b.take(turn ^ 1, kind, to);
+            b.take(turn, next, at);
+            b.put(turn, next, to);
+            kind = next;
+            turn ^= 1;
+        }
+        while depth > 0 {
+            gain[depth - 1] = -(-gain[depth - 1]).max(gain[depth]);
+            depth -= 1;
+        }
+        gain[0]
+    }
+    /// Least valuable piece of `by` that attacks `target`, with its square,
+    /// found from the target as in `attacked`.
+    fn least_attacker(&self, target: usize, by: usize) -> Option<(usize, usize)> {
+        let t = &TABLES;
+        if self.pieces[by][SOLDIER] != 0 {
+            let wanted = code(by, SOLDIER);
+            let back: i8 = if by == 0 { -1 } else { 1 };
+            for (dx, dy) in [(0, back), (-1, 0), (1, 0)] {
+                if let Some(from) = offset(target, dx, dy)
+                    && self.board[from] == wanted
+                    && self.targets(by, SOLDIER, from, true) & (1 << target) != 0
+                {
+                    return Some((SOLDIER, from));
+                }
+            }
+        }
+        for kind in [ADVISOR, ELEPHANT, HORSE] {
+            if self.pieces[by][kind] == 0 {
+                continue;
+            }
+            let wanted = code(by, kind);
+            for jump in &t.jumps[by][kind][target][..usize::from(t.counts[by][kind][target])] {
+                let from = usize::from(jump.to);
+                if self.board[from] == wanted
+                    && self.targets(by, kind, from, true) & (1 << target) != 0
+                {
+                    return Some((kind, from));
+                }
+            }
+        }
+        let (rook, cannon) = (code(by, ROOK), code(by, CANNON));
+        let mut chariot = None;
+        if self.pieces[by][ROOK] | self.pieces[by][CANNON] != 0 {
+            for (dx, dy) in DIRECTIONS {
+                let mut at = target;
+                let mut screened = false;
+                while let Some(to) = offset(at, dx, dy) {
+                    let piece = self.board[to];
+                    if piece != 0 {
+                        if !screened {
+                            if piece == rook && chariot.is_none() {
+                                chariot = Some(to);
+                            }
+                            screened = true;
+                        } else {
+                            if piece == cannon {
+                                return Some((CANNON, to));
+                            }
+                            break;
+                        }
+                    }
+                    at = to;
+                }
+            }
+        }
+        if let Some(at) = chariot {
+            return Some((ROOK, at));
+        }
+        if self.pieces[by][GENERAL] == 0 {
+            // A General captured earlier in the exchange.
+            return None;
+        }
+        let general = self.general(by);
+        (self.targets(by, GENERAL, general, true) & (1 << target) != 0)
+            .then_some((GENERAL, general))
+    }
+    /// Reference SEE whose attacker search scans every piece's targets in
+    /// value order, for differential tests.
+    #[cfg(test)]
+    pub(crate) fn see_by_target_scan(&self, m: Move) -> i32 {
+        const ORDER: [usize; 7] = [SOLDIER, ADVISOR, ELEPHANT, HORSE, CANNON, ROOK, GENERAL];
+        let value = |kind: usize| if kind == GENERAL { 10_000 } else { VALUE[kind] };
+        let mut b = self.scratch();
+        let (from, to) = (m.from(), m.to());
+        let (side, mut kind) = piece_parts(self.board[from]);
+        let mut gain = vec![0i32];
+        if self.board[to] != 0 {
+            let (s, k) = piece_parts(self.board[to]);
+            gain[0] = value(k);
+            b.take(s, k, to);
+        }
+        b.take(side, kind, from);
+        b.put(side, kind, to);
+        let mut turn = side ^ 1;
+        while let Some((next, at)) = ORDER.iter().find_map(|&k| {
+            let mut pieces = b.pieces[turn][k];
+            while pieces != 0 {
+                let at = pieces.trailing_zeros() as usize;
+                pieces &= pieces - 1;
+                if b.targets(turn, k, at, true) & (1 << to) != 0 {
+                    return Some((k, at));
+                }
+            }
+            None
+        }) {
+            gain.push(value(kind) - gain[gain.len() - 1]);
+            b.take(turn ^ 1, kind, to);
+            b.take(turn, next, at);
+            b.put(turn, next, to);
+            kind = next;
+            turn ^= 1;
+        }
+        for d in (1..gain.len()).rev() {
+            gain[d - 1] = -(-gain[d - 1]).max(gain[d]);
+        }
+        gain[0]
+    }
+    fn scratch(&self) -> Self {
+        Self {
+            board: self.board,
+            pieces: self.pieces,
+            occupied: self.occupied,
+            side: self.side,
+            hash: self.hash,
+            material: self.material,
+            placement: self.placement,
+            check: self.check,
+            stack: Vec::new(),
+            keys: Vec::new(),
+            checks: Vec::new(),
+            chases: Vec::new(),
+            track_chases: false,
+            root: 0,
+            reversible: 0,
+        }
     }
     // Fixed-size scratch state only: no history clone or allocation per node.
     fn has_legal_move(&self) -> bool {
@@ -422,6 +734,8 @@ impl XiangqiPosition {
             stack: Vec::new(),
             keys: Vec::new(),
             checks: Vec::new(),
+            chases: Vec::new(),
+            track_chases: false,
             root: 0,
             reversible: 0,
         };
@@ -466,6 +780,8 @@ impl XiangqiPosition {
 impl SearchPosition for XiangqiPosition {
     type Move = Move;
     const HISTORY_SLOTS: usize = 2 * 7 * N;
+    const QUIESCENCE_CHECKS: usize = 8;
+    const MATE_SEARCH: bool = true;
     fn hash(&self) -> u64 {
         self.hash
     }
@@ -485,6 +801,84 @@ impl SearchPosition for XiangqiPosition {
                 let from = pieces.trailing_zeros() as usize;
                 pieces &= pieces - 1;
                 let mut targets = self.targets(self.side, kind, from, capture) & mask;
+                while targets != 0 {
+                    let to = targets.trailing_zeros() as usize;
+                    targets &= targets - 1;
+                    moves.push(Move::new(from, to));
+                }
+            }
+        }
+    }
+    /// Superset of every legal checking move. A check needs one of: a
+    /// Chariot or Cannon landing on the General's file or rank, any piece
+    /// landing there (new Cannon screen) or leaving it (uncovered Chariot or
+    /// Cannon line, removed second screen), a Horse landing a Horse move from
+    /// the General, a Soldier landing next to it, or a piece leaving the leg
+    /// square of a Horse aimed at the General.
+    fn generate_checks(&self, moves: &mut Vec<Move>) {
+        let side = self.side;
+        let g = self.general(side ^ 1);
+        let (gx, gy) = (g % 9, g / 9);
+        let mut line: u128 = 0;
+        for at in 0..N {
+            if at != g && (at % 9 == gx || at / 9 == gy) {
+                line |= 1 << at;
+            }
+        }
+        let mut horse_squares: u128 = 0;
+        let mut legs: u128 = 0;
+        for (dx, dy) in [
+            (1, 2),
+            (2, 1),
+            (-1, 2),
+            (-2, 1),
+            (1, -2),
+            (2, -1),
+            (-1, -2),
+            (-2, -1),
+        ] {
+            if let Some(at) = offset(g, dx, dy) {
+                horse_squares |= 1 << at;
+                if self.board[at] == code(side, HORSE) {
+                    // The leg is next to the Horse along its two-step axis.
+                    let leg = offset(
+                        at,
+                        if dx.abs() == 2 { -dx / 2 } else { 0 },
+                        if dy.abs() == 2 { -dy / 2 } else { 0 },
+                    )
+                    .expect("on board");
+                    legs |= 1 << leg;
+                }
+            }
+        }
+        let mut adjacent: u128 = 0;
+        for (dx, dy) in DIRECTIONS {
+            if let Some(at) = offset(g, dx, dy) {
+                adjacent |= 1 << at;
+            }
+        }
+        let enemy = self.occupied[side ^ 1] & !self.pieces[side ^ 1][GENERAL];
+        let empty = ALL & !(self.occupied[0] | self.occupied[1]);
+        for kind in 0..7 {
+            let mut pieces = self.pieces[side][kind];
+            while pieces != 0 {
+                let from = pieces.trailing_zeros() as usize;
+                pieces &= pieces - 1;
+                let all = (self.targets(side, kind, from, true) & enemy)
+                    | (self.targets(side, kind, from, false) & empty);
+                let wanted = if (line | legs) & (1 << from) != 0 {
+                    all
+                } else {
+                    let mut w = line;
+                    if kind == HORSE {
+                        w |= horse_squares;
+                    }
+                    if kind == SOLDIER {
+                        w |= adjacent;
+                    }
+                    all & w
+                };
+                let mut targets = wanted;
                 while targets != 0 {
                     let to = targets.trailing_zeros() as usize;
                     targets &= targets - 1;
@@ -520,18 +914,22 @@ impl SearchPosition for XiangqiPosition {
         self.stack.push(undo);
         self.keys.push(self.hash);
         self.checks.push(false);
+        self.chases.push(false);
         if self.attacked(self.general(side), side ^ 1) {
             self.unmake();
             return false;
         }
         self.check = self.attacked(self.general(side ^ 1), side);
         *self.checks.last_mut().unwrap() = self.check;
+        let chase = self.track_chases && undo.captured == 0 && self.chases_after(side, kind, to);
+        *self.chases.last_mut().unwrap() = chase;
         true
     }
     fn unmake(&mut self) {
         let undo = self.stack.pop().expect("balanced make/unmake");
         self.keys.pop();
         self.checks.pop();
+        self.chases.pop();
         self.side ^= 1;
         let (from, to) = (undo.m.from(), undo.m.to());
         let (_, kind) = piece_parts(self.board[to]);
@@ -557,6 +955,7 @@ impl SearchPosition for XiangqiPosition {
         self.hash ^= TABLES.side;
         self.keys.push(self.hash);
         self.checks.push(false);
+        self.chases.push(false);
         self.check = false;
         self.reversible = 0;
     }
@@ -564,6 +963,7 @@ impl SearchPosition for XiangqiPosition {
         let undo = self.stack.pop().expect("balanced null move");
         self.keys.pop();
         self.checks.pop();
+        self.chases.pop();
         self.side ^= 1;
         self.hash = undo.hash;
         self.check = undo.check;
@@ -594,19 +994,30 @@ impl SearchPosition for XiangqiPosition {
             }
             earlier += 1;
             if index >= self.root || earlier >= 2 {
-                // Approximate WXF conduct: a continuous checker loses;
-                // other cycles draw. Chase/exchange obligations remain native.
-                for side in 0..2 {
-                    if (index + 1..=current)
-                        .filter(|&i| self.side ^ ((current - i) & 1) ^ 1 == side)
-                        .all(|i| self.checks[i])
-                    {
-                        return Some(if side == self.side {
-                            -MATE_SCORE + self.ply() as i32
-                        } else {
-                            MATE_SCORE - self.ply() as i32
-                        });
-                    }
+                // Approximate WXF conduct. A side whose every move in the
+                // cycle checks loses; otherwise a side whose every move
+                // checks or chases loses; both or neither: draw. Native
+                // rules adjudicate the real game.
+                let moves_of = |side: usize| {
+                    (index + 1..=current)
+                        .filter(move |&i| self.side ^ ((current - i) & 1) ^ 1 == side)
+                };
+                let checker = [0, 1].map(|side| moves_of(side).all(|i| self.checks[i]));
+                let loser = if checker[0] != checker[1] {
+                    Some(usize::from(checker[1]))
+                } else {
+                    let chases = self.chase_flags(index + 1);
+                    let violator = [0, 1].map(|side| {
+                        moves_of(side).all(|i| self.checks[i] || chases[i - index - 1])
+                    });
+                    (violator[0] != violator[1]).then(|| usize::from(violator[1]))
+                };
+                if let Some(side) = loser {
+                    return Some(if side == self.side {
+                        -MATE_SCORE + self.ply() as i32
+                    } else {
+                        MATE_SCORE - self.ply() as i32
+                    });
                 }
                 return Some(0);
             }
@@ -640,7 +1051,7 @@ impl SearchPosition for XiangqiPosition {
             return false;
         }
         let mover = VALUE[piece_parts(self.board[m.from()]).1];
-        gain - mover >= threshold || !self.attacked(m.to(), self.side ^ 1)
+        gain - mover >= threshold || self.see(m) >= threshold
     }
     fn history_slot(&self, m: Move) -> usize {
         (self.side * 7 + piece_parts(self.board[m.from()]).1) * N + m.to()

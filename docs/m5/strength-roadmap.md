@@ -91,6 +91,10 @@ generator is validated by perft and differential tests against them.
 Harness), MSH-195 (Xiangqi Selectivity Round), MSH-196 (Xiangqi Evaluation
 Round), MSH-197 (Xiangqi Strength Anchor: reference ladder and judged move
 quality) and MSH-198 (Xiangqi Blunder Screen).
+Done so far: MSH-194 (harness: clocked route, 112 openings, 373-position suite,
+control 5 s + 0.1 s); MSH-195 (selectivity set: 2x faster attack test,
+chase-aware repetition, SEE, check stage, root mate search; H1 at 80 pairs,
+about +166 Elo against its predecessor; [round](xiangqi-selectivity-round.md)).
 MSH-54 (Conventional Xiangqi) keeps the final criteria. Tori, Chu and Tenjiku
 (MSH-51, MSH-52, MSH-53) get their step tasks when John starts them.
 

@@ -305,3 +305,205 @@ fn table_decode_accepts_exactly_generated_moves() {
     }
     assert_eq!(decoded, pseudo.len());
 }
+#[test]
+fn reverse_attack_scan_agrees_with_every_piece_target_on_random_games() {
+    let mut checked = 0;
+    for seed in 1..=40u64 {
+        let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
+        let mut native = Position::initial();
+        let mut p = XiangqiPosition::from_position(&native);
+        for _ in 0..160 {
+            for target in 0..90 {
+                for by in 0..2 {
+                    assert_eq!(
+                        p.attacked_fast(target, by),
+                        p.attacked_by_targets(target, by),
+                        "seed {seed} target {target} by {by}"
+                    );
+                    checked += 1;
+                }
+            }
+            let legal = native.legal_actions().unwrap();
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
+            assert!(p.make(p.find(action).unwrap()));
+            native.apply(action).unwrap();
+        }
+    }
+    assert!(checked > 500_000, "{checked}");
+}
+#[test]
+fn a_one_sided_chase_cycle_loses_for_the_chaser_and_mutual_or_protected_cycles_draw() {
+    // Red Chariot chases the unprotected Black Horse between b7 and c9:
+    // c3b3 attacks b7 along the b-file, b3c3 attacks c9 along the c-file. The
+    // Horse's own moves attack nothing. Every Red move chases: Red loses.
+    let fen = "4k4/9/1n7/9/9/9/2R6/9/9/3K5 w - - 0 1";
+    let mut native = Position::from_fen(fen).unwrap();
+    let mut p = XiangqiPosition::from_position(&native);
+    for action in ["c3b3", "b7c9", "b3c3", "c9b7"] {
+        play(&mut p, &mut native, action);
+    }
+    assert_eq!(p.side_to_move(), Side::Red);
+    assert_eq!(p.rule_score(), Some(-MATE_SCORE + 4));
+    // The same cycle from Black's side to move: Red, not the mover, loses.
+    p.unmake();
+    native = Position::from_fen(fen).unwrap();
+    let mut q = XiangqiPosition::from_position(&native);
+    for action in ["c3b3", "b7c9", "b3c3", "c9b7", "c3b3"] {
+        play(&mut q, &mut native, action);
+    }
+    assert_eq!(q.side_to_move(), Side::Black);
+    assert_eq!(q.rule_score(), Some(MATE_SCORE - 5));
+    // Protected Horse: a Black Chariot on a7 guards b7 along rank 7 and one
+    // on a9 guards c9 along rank 9. The Red moves are not chases: draw.
+    let protected = "r3k4/9/rn7/9/9/9/2R6/9/9/3K5 w - - 0 1";
+    let mut native = Position::from_fen(protected).unwrap();
+    let mut r = XiangqiPosition::from_position(&native);
+    for action in ["c3b3", "b7c9", "b3c3", "c9b7"] {
+        play(&mut r, &mut native, action);
+    }
+    assert_eq!(r.rule_score(), Some(0));
+}
+#[test]
+fn static_exchange_follows_changing_cannon_screens() {
+    // a-file: Black Chariot a9, Black Horse a5, Red Chariot a1, Red Cannon a0.
+    // Cannon takes first (screen a1): Horse +400; if the Chariot recaptures
+    // the Cannon (-450), the Red Chariot takes it (+900), so Black stops: +400.
+    // Chariot takes first: +400, Chariot recaptures (-900), and the Cannon
+    // has lost its screen: -500.
+    let p = XiangqiPosition::from_position(
+        &Position::from_fen("r3k4/9/9/9/n8/9/9/9/R8/C2K5 w - - 0 1").unwrap(),
+    );
+    let cannon = p.find("a0a5".parse().unwrap()).unwrap();
+    let chariot = p.find("a1a5".parse().unwrap()).unwrap();
+    assert_eq!(p.see(cannon), 400);
+    assert_eq!(p.see(chariot), -500);
+    // An undefended Horse: +400. A Soldier on e8 defended by the Black Advisor
+    // and General, taken by a Chariot from e1: +100 - 900 = -800.
+    let p = XiangqiPosition::from_position(
+        &Position::from_fen("3ak4/4p4/9/9/n8/9/9/9/9/R2K5 w - - 0 1").unwrap(),
+    );
+    assert_eq!(p.see(p.find("a0a5".parse().unwrap()).unwrap()), 400);
+    let p = XiangqiPosition::from_position(
+        &Position::from_fen("3ak4/4p4/9/9/9/9/9/9/4R4/3K5 w - - 0 1").unwrap(),
+    );
+    assert_eq!(p.see(p.find("e1e8".parse().unwrap()).unwrap()), -800);
+}
+#[test]
+fn check_generator_contains_every_legal_checking_move_on_random_games() {
+    use crate::alphabeta::SearchPosition;
+    let mut checks = 0;
+    for seed in 1..=40u64 {
+        let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
+        let mut native = Position::initial();
+        let mut p = XiangqiPosition::from_position(&native);
+        for _ in 0..160 {
+            let mut generated = Vec::new();
+            p.generate_checks(&mut generated);
+            for action in native.legal_actions().unwrap() {
+                let mut after = native.clone();
+                after.apply(action).unwrap();
+                if after.is_in_check(after.side_to_move()) {
+                    checks += 1;
+                    let m = p.find(action).unwrap();
+                    assert!(generated.contains(&m), "seed {seed} missing check {action}");
+                }
+            }
+            let legal = native.legal_actions().unwrap();
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
+            assert!(p.make(p.find(action).unwrap()));
+            native.apply(action).unwrap();
+        }
+    }
+    assert!(checks > 1_000, "{checks}");
+}
+#[test]
+fn reverse_least_attacker_agrees_with_a_value_ordered_target_scan() {
+    // On random games, the SEE of every capture equals a reference swap
+    // computed from full target scans (independent attacker search).
+    use crate::alphabeta::{SearchPosition, Stage};
+    let mut compared = 0;
+    for seed in 1..=30u64 {
+        let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
+        let mut native = Position::initial();
+        let mut p = XiangqiPosition::from_position(&native);
+        for _ in 0..140 {
+            let mut captures = Vec::new();
+            p.generate(Stage::Tactical, &mut captures);
+            for m in captures {
+                assert_eq!(p.see(m), p.see_by_target_scan(m), "seed {seed}");
+                compared += 1;
+            }
+            let legal = native.legal_actions().unwrap();
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
+            assert!(p.make(p.find(action).unwrap()));
+            native.apply(action).unwrap();
+        }
+    }
+    assert!(compared > 2_000, "{compared}");
+}
+#[test]
+fn lazy_search_chase_flags_equal_flags_computed_while_replaying_history() {
+    let mut compared = 0;
+    for seed in 1..=20u64 {
+        let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
+        let mut game = Game::standard(ClaimPolicy::Explicit).unwrap();
+        let mut lazy = XiangqiPosition::from_game(&game);
+        for _ in 0..120 {
+            if game.conclusion().is_some() || game.pending_adjudication().is_some() {
+                break;
+            }
+            let legal = game.position().legal_actions().unwrap();
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
+            game.submit(GameRequest {
+                expected: game.context(),
+                actor: game.position().side_to_move(),
+                command: GameCommand::Play { action },
+            })
+            .unwrap();
+            assert!(lazy.make(lazy.find(action).unwrap()));
+        }
+        let eager = XiangqiPosition::from_game(&game);
+        let flags = lazy.chase_flags(1);
+        assert_eq!(flags, eager.chases[1..].to_vec(), "seed {seed}");
+        compared += flags.len();
+    }
+    assert!(compared > 1_000, "{compared}");
+}
+#[test]
+fn a_chase_cycle_that_starts_in_game_history_uses_stored_and_lazy_flags() {
+    // The chase cycle of the test above. Six moves are native game history
+    // (flags stored during replay): the start position occurs twice there.
+    // Two search moves (lazy flags) give its third occurrence, which a cycle
+    // reaching into history needs.
+    let root = PositionRoot::from_fen("4k4/9/1n7/9/9/9/2R6/9/9/3K5 w - - 0 1").unwrap();
+    let mut game = Game::from_root(root, ClaimPolicy::Explicit).unwrap();
+    for text in ["c3b3", "b7c9", "b3c3", "c9b7", "c3b3", "b7c9"] {
+        game.submit(GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: GameCommand::Play {
+                action: text.parse().unwrap(),
+            },
+        })
+        .unwrap();
+    }
+    let mut p = XiangqiPosition::from_game(&game);
+    for text in ["b3c3", "c9b7"] {
+        let m = p.find(text.parse().unwrap()).unwrap();
+        assert!(p.make(m));
+    }
+    // Red to move at ply 2 from the root; every Red move chased: Red loses.
+    assert_eq!(p.rule_score(), Some(-MATE_SCORE + 2));
+}

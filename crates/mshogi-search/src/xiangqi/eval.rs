@@ -207,8 +207,14 @@ pub const INITIAL: [i32; COUNT] = initial();
 pub const LOWER: [i32; COUNT] = bounds(false);
 /// Inclusive upper bounds.
 pub const UPPER: [i32; COUNT] = bounds(true);
-/// Compiled weights used by the search.
-pub const DEFAULT: [i32; COUNT] = INITIAL;
+/// Compiled weights used by the search: the MSH-196 (Xiangqi Evaluation
+/// Round) fit, docs/m5/evidence/msh196/fit.json.
+pub const DEFAULT: [i32; COUNT] = [
+    100, 100, 528, 1252, 482, 100, 0, 0, 0, 0, 52, 136, 150, 150, 150, -8, -32, -8, 48, -24, -64,
+    -64, -60, 40, 140, 112, 148, 120, 150, 150, 150, -8, 50, 12, 6, -64, 128, 2, 36, 38, 72, 74,
+    108, 142, 112, 150, 150, 137, 102, 67, 96, 64, 34, 100, 102, 72, 42, 76, 44, 76, 44, 48, 44,
+    72, 68, 64, 0, -32, -32, 0, 0, 0, 30, 0, 10, 10, -32, -64, 0, 0,
+];
 
 /// Score from the side to move with a weight vector.
 pub fn score(position: &XiangqiPosition, weights: &[i32; COUNT]) -> i32 {
@@ -241,6 +247,8 @@ impl crate::texel::TexelModel for XiangqiTexel {
     const KIND: &'static str = "xiangqi";
     const POSITION_FIELD: &'static str = "fen";
     const STEPS: &'static [i32] = &[32, 16, 8, 4, 2, 1];
+    // Most self-play games are drawn, so outcomes depend weakly on score.
+    const K_RANGE: (f64, f64) = (0.01, 0.71);
     fn names() -> &'static [&'static str] {
         &NAMES
     }

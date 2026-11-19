@@ -509,7 +509,7 @@ fn a_chase_cycle_that_starts_in_game_history_uses_stored_and_lazy_flags() {
 }
 #[test]
 fn evaluation_equals_the_feature_sum_with_compiled_and_initial_weights() {
-    use super::eval::{DEFAULT, INITIAL, score};
+    use super::eval::{DEFAULT, score};
     let mut checked = 0;
     for seed in 1..=20u64 {
         let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
@@ -523,7 +523,6 @@ fn evaluation_equals_the_feature_sum_with_compiled_and_initial_weights() {
                 assert_eq!(fresh.evaluate(), p.evaluate());
                 checked += 1;
             }
-            let _ = score(&p, &INITIAL);
             let legal = native.legal_actions().unwrap();
             if legal.is_empty() {
                 break;
@@ -534,4 +533,102 @@ fn evaluation_equals_the_feature_sum_with_compiled_and_initial_weights() {
         }
     }
     assert!(checked > 1_500, "{checked}");
+}
+#[test]
+fn initial_weights_equal_the_earlier_hand_set_formula_on_random_games() {
+    // The predecessor's evaluation, copied as written before MSH-196:
+    // material plus placement formulas and a tempo of 10 for the mover.
+    use super::eval::{INITIAL, score};
+    fn old(native: &Position) -> i32 {
+        let mut total = [0i32; 2];
+        for (at, piece) in native.pieces() {
+            let side = usize::from(piece.side == Side::Black);
+            let index = at.index();
+            let rank = if side == 0 { index / 9 } else { 9 - index / 9 } as i32;
+            let central = 4 - (index % 9).abs_diff(4) as i32;
+            let (value, placement) = match piece.kind {
+                mshogi_core::xiangqi::PieceKind::General => (0, 0),
+                mshogi_core::xiangqi::PieceKind::Advisor => (200, 0),
+                mshogi_core::xiangqi::PieceKind::Elephant => (200, 0),
+                mshogi_core::xiangqi::PieceKind::Horse => (400, 6 * central + 4 * rank.min(6)),
+                mshogi_core::xiangqi::PieceKind::Rook => (900, 3 * central + 2 * rank),
+                mshogi_core::xiangqi::PieceKind::Cannon => (450, 4 * central + 2 * rank.min(6)),
+                mshogi_core::xiangqi::PieceKind::Soldier => (
+                    100,
+                    20 * (rank - 3).max(0) + if rank >= 5 { 8 * central } else { 0 },
+                ),
+            };
+            total[side] += value + placement;
+        }
+        let me = usize::from(native.side_to_move() == Side::Black);
+        total[me] - total[me ^ 1] + 10
+    }
+    let mut checked = 0;
+    for seed in 1..=20u64 {
+        let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
+        let mut native = Position::initial();
+        let mut p = XiangqiPosition::from_position(&native);
+        for _ in 0..150 {
+            assert_eq!(score(&p, &INITIAL), old(&native), "seed {seed}");
+            checked += 1;
+            let legal = native.legal_actions().unwrap();
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
+            assert!(p.make(p.find(action).unwrap()));
+            native.apply(action).unwrap();
+        }
+    }
+    assert!(checked > 2_000, "{checked}");
+}
+#[test]
+fn colour_mirrored_positions_have_equal_evaluations_and_features() {
+    // Mirror a position top-bottom and swap colours: the side to move sees
+    // the same position, so every feature and the evaluation must agree.
+    use super::eval::{COUNT, INITIAL, score};
+    fn mirror(fen: &str) -> String {
+        let fields: Vec<&str> = fen.split(' ').collect();
+        let board: Vec<String> = fields[0]
+            .split('/')
+            .rev()
+            .map(|row| {
+                row.chars()
+                    .map(|c| {
+                        if c.is_ascii_uppercase() {
+                            c.to_ascii_lowercase()
+                        } else {
+                            c.to_ascii_uppercase()
+                        }
+                    })
+                    .collect()
+            })
+            .collect();
+        let side = if fields[1] == "w" { "b" } else { "w" };
+        format!("{} {} - - 0 1", board.join("/"), side)
+    }
+    let mut checked = 0;
+    for seed in 1..=10u64 {
+        let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
+        let mut native = Position::initial();
+        for _ in 0..120 {
+            let fen = native.to_fen().unwrap();
+            let a = XiangqiPosition::from_position(&Position::from_fen(&fen).unwrap());
+            let b = XiangqiPosition::from_position(&Position::from_fen(&mirror(&fen)).unwrap());
+            let (mut fa, mut fb) = ([0i32; COUNT], [0i32; COUNT]);
+            a.features(&mut |i, v| fa[i] += v);
+            b.features(&mut |i, v| fb[i] += v);
+            assert_eq!(fa, fb, "{fen}");
+            assert_eq!(a.evaluate(), b.evaluate());
+            assert_eq!(score(&a, &INITIAL), score(&b, &INITIAL));
+            checked += 1;
+            let legal = native.legal_actions().unwrap();
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
+            native.apply(action).unwrap();
+        }
+    }
+    assert!(checked > 800, "{checked}");
 }

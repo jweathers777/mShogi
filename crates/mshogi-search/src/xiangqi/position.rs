@@ -807,6 +807,20 @@ impl XiangqiPosition {
     /// (the search evaluation); fitting needs every term.
     fn dynamic_features(&self, side: usize, all: bool, sink: &mut impl FnMut(usize, i32)) {
         use super::eval::*;
+        // The compiled weights keep every per-node term at zero (MSH-196):
+        // the search then skips this work entirely.
+        const ACTIVE: bool = {
+            let mut any = false;
+            let mut i = MOBILITY_HORSE;
+            while i < TEMPO {
+                any |= DEFAULT[i] != 0;
+                i += 1;
+            }
+            any
+        };
+        if !all && !ACTIVE {
+            return;
+        }
         let want = |index: usize| all || DEFAULT[index] != 0;
         let majors = i32::from(self.majors());
         let empty = ALL & !(self.occupied[0] | self.occupied[1]);

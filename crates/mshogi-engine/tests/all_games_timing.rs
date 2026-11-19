@@ -125,11 +125,14 @@ fn fixed_search_matches_frozen_predecessor() {
     // added the root mate search (121 -> 122 nodes) and MSH-188 (Shogi
     // Evaluation Round) the tuned evaluation (move, nodes and score below).
     // MSH-195 (Xiangqi Selectivity Round) added the Xiangqi root mate search
-    // and quiescence check stage: same move and score, 313 -> 324 nodes.
-    // Other games stay identical.
+    // and quiescence check stage (313 -> 324 nodes, same move); MSH-196
+    // (Xiangqi Evaluation Round) the fitted evaluation (move, nodes and score
+    // below). Other games stay identical.
     assert_eq!(expected[1]["nodes"], 121);
     assert_eq!(expected[2]["nodes"], 313);
-    expected[2]["nodes"] = 324.into();
+    expected[2]["action"] = json!({"action": "b0c2", "kind": "move"});
+    expected[2]["nodes"] = 217.into();
+    expected[2]["score"] = 0.into();
     expected[1]["action"] = json!({"action": "5i5h", "kind": "move"});
     expected[1]["nodes"] = 125.into();
     expected[1]["score"] = 0.into();

@@ -1,10 +1,11 @@
 ---
 id: MSH-197
 title: Xiangqi Strength Anchor
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-18T19:25:00Z'
-updated_date: '2026-11-19T07:12:00Z'
+updated_date: '2026-11-19T13:58:00Z'
 labels:
   - handle:xiangqi-strength-anchor
   - xiangqi
@@ -47,3 +48,11 @@ Handle: Xiangqi Strength Anchor
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Approval, 2026-11-19 (John, verbatim reply to 'Approve the MSH-197 reference ladder with caps of about 6 hours and US$15?'): "Yes, approve caps". Approved: reference ladder of classical ElephantEye, Fairy-Stockfish without its neural network and Pikafish at fixed node limits; full-strength Pikafish as judge; caps about 6 hours and US$15; no public servers, no published games.
+
+Ladder frozen 2026-11-19 before any study game: docs/m5/evidence/msh197/ladder.json (players mshogi, eleeye 3.31 UCCI, fairy_sf_14 classical, Pikafish 2026-09-06 at 300/1000/3000 nodes; 60 s + 1 s; 290 pairs; Bradley-Terry fit with pika1000 = 0; Pikafish judge). Runner: per-engine wire formats (UCI, UCCI with resign/draw suffix rules, Fairy rank offset, fixed nodes).
+<!-- SECTION:NOTES:END -->

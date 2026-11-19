@@ -237,6 +237,7 @@ def load_games(run_dirs):
                               'score': (g['engine_score'][0] / 2) if g.get('engine_score') else None,
                               'stop': g.get('stop'), 'exhaustion': g.get('exhaustion'),
                               'failure': (g.get('failure') or {}).get('kind') if g.get('failure') else None,
+                              'failure_engine': (g.get('failure') or {}).get('engine') if g.get('failure') else None,
                               'returncode': g['returncode']})
     return games
 
@@ -305,9 +306,8 @@ def summary(args):
     for g in games:
         if g['score'] is None:
             e = g['exhaustion']
-            who = None
-            if e:
-                who = g['a'] if e['engine'] == 0 else g['b']
+            index = e['engine'] if e else g['failure_engine']
+            who = None if index is None else (g['a'] if index == 0 else g['b'])
             unscored.setdefault(who or 'other', []).append({'pair': g['pair'], 'stop': g['stop'],
                                                             'failure': g['failure']})
     print(json.dumps({'games': len(games), 'table': table,

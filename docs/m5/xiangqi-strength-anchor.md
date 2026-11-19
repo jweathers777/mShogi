@@ -2,7 +2,7 @@
 
 The measurement step of the [per-game classical strength program](strength-roadmap.md#per-game-classical-strength-program-john-2026-11-18) for Xiangqi, by the method for games without a public rating list (John, 2026-11-19): a fixed reference ladder (relative Elo) and move quality judged by a much stronger engine, reported separately. **No rating on a human or published scale is claimed.** Evidence: [evidence/msh197](evidence/msh197/).
 
-**Result: mShogi (main `e15bdd63`, the MSH-196 engine) is +18 Elo (approx. 95% −35 to +66) relative to Pikafish limited to 1,000 nodes per move, about 110 Elo below ElephantEye 3.31 and about 270 below Fairy-Stockfish 14 with classical evaluation, at 60 s + 1 s. Its mean win-probability loss per move (0.0130) is between Pikafish at 1,000 and at 300 nodes.**
+**Result: mShogi (main `e15bdd63`, the MSH-196 engine) is +18 Elo (approx. 95% −35 to +66) relative to Pikafish limited to 1,000 nodes per move, about 110 Elo below ElephantEye 3.31 and about 270 below Fairy-Stockfish 14 with classical evaluation, at 60 s + 1 s. The gap to full-strength Pikafish was not measured (it played no ladder games): it is more than the about 330 Elo between mShogi and Pikafish limited to 3,000 nodes. mShogi's mean win-probability loss per move (0.0130) is between Pikafish at 1,000 and at 300 nodes.**
 
 ## Approval and caps
 
@@ -25,7 +25,7 @@ The rungs were chosen from a local calibration pilot at 10 s + 0.1 s (8 pairs ea
 
 ## Results
 
-290 pairs, 580 games; 578 scored. Two games (both ElephantEye against Fairy-Stockfish) are unscored: ElephantEye answered `nobestmove` in positions where native rules allowed moves. No clock exhaustion and no other failure.
+290 pairs, 580 games; 578 scored. Two games (both ElephantEye against Fairy-Stockfish) are unscored, both ElephantEye's: it answered `nobestmove` in positions where native rules allowed moves (cause unknown; [summary](evidence/msh197/ladder-summary.json) lists unscored stops per engine). No clock exhaustion and no other failure.
 
 | mShogi against | Score |
 | --- | ---: |
@@ -50,7 +50,7 @@ Historical tie (weak, older conditions): the Fairy-Stockfish wiki estimates clas
 
 ## Judged move quality
 
-Full-strength Pikafish (1,000,000 nodes, one thread) judged the position before and after every move of the 578 scored games (65,011 positions; 454 gave no score line and are skipped) with the MSH-193 definitions ([results](evidence/msh197/move-quality.json), [run](evidence/msh197/judge-run.json)).
+Full-strength Pikafish (1,000,000 nodes, one thread) judged the position before and after every move of the 578 scored games (65,011 positions; 454 gave no score line, mostly the positions after game-ending moves where Pikafish reports `mate 0` without a principal variation, and are skipped: those final moves are left out of the counts) with the MSH-193 definitions ([results](evidence/msh197/move-quality.json), [run](evidence/msh197/judge-run.json)).
 
 | Player | Moves | Clear blunders / 100 moves | Mean win-probability loss |
 | --- | ---: | ---: | ---: |
@@ -61,12 +61,16 @@ Full-strength Pikafish (1,000,000 nodes, one thread) judged the position before 
 | **mShogi** | 18,856 | 0.14 | 0.0130 |
 | Pikafish 300 nodes | 5,901 | 0.39 | 0.0179 |
 
-The mean loss orders the players almost as the ladder does (mShogi and Pikafish at 1,000 nodes are swapped, within their Elo uncertainty). Clear blunders as defined are rare for every player here and do not separate them; the Pikafish centipawn scale differs from the Shogi judge's, so these rates are not comparable with MSH-193's 1.43 per 100 moves.
+The players met different opponents (for example Pikafish at 300 nodes played only mShogi and Pikafish at 1,000 nodes), so each player's moves come from different positions. With that limit, the mean loss orders the players almost as the ladder does (mShogi and Pikafish at 1,000 nodes are swapped, within their Elo uncertainty). Clear blunders as defined are rare for every player here and do not separate them; the Pikafish centipawn scale differs from the Shogi judge's, so these rates are not comparable with MSH-193's 1.43 per 100 moves.
 
 ## Interpretation
 
-- mShogi now plays at about the level of Pikafish limited to 1,000 nodes, and clearly below the two established classical engines. Its weakness is gradual (mean loss), not frequent clear blunders.
+- mShogi now plays at about the level of Pikafish limited to 1,000 nodes, and below the two established classical engines (narrowly separated from ElephantEye: the intervals just do not overlap). Its weakness is gradual (mean loss), not frequent clear blunders.
 - The ladder is relative: it is not a human-scale rating, and the Pikafish rungs are node-limited rather than time-limited, so their place depends on the time control.
+
+## Verification and review
+
+Level 1 with targeted protocol checks: runner unit tests for every wire translation (including UCCI suffixes and a fail-closed Fairy rank check), Xiangqi and Shogi match integration tests, release suites for runner, console and engine, Python tests for the rating fit (two- and three-player cases against the logistic formula) and the judge rules. Independent review ([review](evidence/msh197/review.md)): one blocking item (the gap to full-strength Pikafish) answered above; per-engine unscored stops, the opponent-set limit and the fail-closed translation applied. Minor notes kept: bootstrap percentiles use 300 iterations, and a player with zero score would be clamped (did not occur).
 
 ## Next
 

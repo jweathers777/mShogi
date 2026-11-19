@@ -327,12 +327,14 @@ fn reply_for(wire: Wire, line: &str) -> Result<GameCommand, String> {
         .enumerate()
         .map(|(i, w)| {
             if i == 0 || w == "ponder" || w == "resign" {
-                w.to_string()
+                Some(w.to_string())
             } else {
-                shift_move(w, -i32::from(wire.rank_offset)).unwrap_or_else(|| w.to_string())
+                // Fail closed: an untranslatable move token is malformed.
+                shift_move(w, -i32::from(wire.rank_offset))
             }
         })
-        .collect();
+        .collect::<Option<Vec<_>>>()
+        .ok_or("move token outside the engine's rank range")?;
     reply(&words.join(" "))
 }
 
@@ -653,6 +655,8 @@ mod tests {
             reply_for(fairy, "bestmove h1g3 ponder i10h10").unwrap(),
             reply("bestmove h0g2 ponder i9h9").unwrap()
         );
+        // Rank 0 does not exist for Fairy-Stockfish: rejected, not misread.
+        assert!(reply_for(fairy, "bestmove a0a1").is_err());
     }
     #[test]
     fn wire_commands_follow_each_engine_protocol() {

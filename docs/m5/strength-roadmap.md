@@ -98,6 +98,9 @@ about +166 Elo against its predecessor; [round](xiangqi-selectivity-round.md)).
 MSH-196 (evaluation: Texel-fitted material and placement tables on 631,802
 quiet self-play positions; per-node terms lost and stay at zero; about +221 Elo
 in an independent confirmation batch; [round](xiangqi-evaluation-round.md)).
+MSH-197 (reference ladder at 60 s + 1 s: mShogi +18 Elo, approx. 95% -35 to +66,
+relative to Pikafish at 1,000 nodes; about 110 below ElephantEye 3.31 and 270
+below classical Fairy-Stockfish; [report](xiangqi-strength-anchor.md)).
 MSH-54 (Conventional Xiangqi) keeps the final criteria. Tori, Chu and Tenjiku
 (MSH-51, MSH-52, MSH-53) get their step tasks when John starts them.
 

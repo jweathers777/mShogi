@@ -1,11 +1,11 @@
 ---
 id: MSH-197
 title: Xiangqi Strength Anchor
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-18T19:25:00Z'
-updated_date: '2026-11-19T13:58:00Z'
+updated_date: '2026-11-19T16:12:00Z'
 labels:
   - handle:xiangqi-strength-anchor
   - xiangqi
@@ -34,19 +34,19 @@ Handle: Xiangqi Strength Anchor
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 John's approval of the opponent pool, time control and caps is recorded before any game.
-- [ ] #2 Independent review is recorded and findings are resolved.
-- [ ] #3 The frozen ladder (engines, versions, licences, limits), the fitting method and the reference rung are recorded before any game.
-- [ ] #4 mShogi's ladder placement and gap to full-strength Pikafish are reported with uncertainty, conditions, failures, unscored stops per engine and compute; all scored games replay natively; cloud cleanup is verified.
-- [ ] #5 Judged move quality (clear blunders per 100 moves, mean win-probability loss) is reported with the MSH-193 definitions; no human-scale rating is claimed.
+- [x] #1 John's approval of the opponent pool, time control and caps is recorded before any game.
+- [x] #2 Independent review is recorded and findings are resolved.
+- [x] #3 The frozen ladder (engines, versions, licences, limits), the fitting method and the reference rung are recorded before any game.
+- [x] #4 mShogi's ladder placement and gap to full-strength Pikafish are reported with uncertainty, conditions, failures, unscored stops per engine and compute; all scored games replay natively; cloud cleanup is verified.
+- [x] #5 Judged move quality (clear blunders per 100 moves, mean win-probability loss) is reported with the MSH-193 definitions; no human-scale rating is claimed.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Notes
@@ -56,3 +56,13 @@ Approval, 2026-11-19 (John, verbatim reply to 'Approve the MSH-197 reference lad
 
 Ladder frozen 2026-11-19 before any study game: docs/m5/evidence/msh197/ladder.json (players mshogi, eleeye 3.31 UCCI, fairy_sf_14 classical, Pikafish 2026-09-06 at 300/1000/3000 nodes; 60 s + 1 s; 290 pairs; Bradley-Terry fit with pika1000 = 0; Pikafish judge). Runner: per-engine wire formats (UCI, UCCI with resign/draw suffix rules, Fairy rank offset, fixed nodes).
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Xiangqi strength measured by the method for games without a rating list. Report: docs/m5/xiangqi-strength-anchor.md; evidence docs/m5/evidence/msh197.
+
+Frozen ladder (60 s + 1 s, 290 pairs, 578 scored games): Bradley-Terry with Pikafish 1,000 nodes = 0: mShogi +18 (approx. 95% -35 to +66), ElephantEye 3.31 +129, classical Fairy-Stockfish 14 +290, Pikafish 3,000 nodes +349, 300 nodes -203. Gap to full-strength Pikafish not measured; more than about 330 Elo. Unscored: 2 ElephantEye games (nobestmove). Judged move quality (Pikafish 1M nodes, MSH-193 definitions): mShogi mean win-probability loss 0.0130 per move, 0.14 clear blunders per 100 moves; ordering by mean loss close to the ladder. No human-scale rating claimed.
+
+Runner: per-engine wire formats (UCCI incl. resign/draw suffixes, Fairy ranks 1-10, fixed nodes); tools xiangqi_ladder.py and xiangqi_judge.py with tests. Approval (John, 2026-11-19) and downloads approved; cost US$3.24 of US$15, about 2 h of 6 h; cleanup verified. Independent review: blocking item answered, fixes applied. Linux/Windows CI deferred. Next: MSH-198 (Xiangqi Blunder Screen) can reuse the judged positions. Integrated into main by merge a7737464.
+<!-- SECTION:FINAL_SUMMARY:END -->

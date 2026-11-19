@@ -642,3 +642,122 @@ fn colour_mirrored_positions_have_equal_evaluations_and_features() {
     }
     assert!(checked > 800, "{checked}");
 }
+#[test]
+fn line_tables_equal_the_ray_walk_for_every_square_on_random_games() {
+    let mut checked = 0;
+    for seed in 1..=30u64 {
+        let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
+        let mut native = Position::initial();
+        let mut p = XiangqiPosition::from_position(&native);
+        for _ in 0..150 {
+            for from in 0..90 {
+                for (kind, capture) in [(4, true), (4, false), (5, true), (5, false)] {
+                    assert_eq!(
+                        p.slider_targets(kind, from, capture),
+                        p.slider_targets_by_walk(kind, from, capture),
+                        "seed {seed} from {from} kind {kind} capture {capture}"
+                    );
+                    checked += 1;
+                }
+            }
+            let legal = native.legal_actions().unwrap();
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
+            assert!(p.make(p.find(action).unwrap()));
+            native.apply(action).unwrap();
+        }
+    }
+    assert!(checked > 1_000_000, "{checked}");
+}
+#[test]
+fn filtered_legality_and_check_flags_equal_native_for_every_move_on_random_games() {
+    let mut checked = 0;
+    for seed in 1..=30u64 {
+        let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
+        let mut native = Position::initial();
+        let mut p = XiangqiPosition::from_position(&native);
+        for _ in 0..150 {
+            let legal = native.legal_actions().unwrap();
+            let mut moves = Vec::new();
+            p.generate(Stage::Tactical, &mut moves);
+            p.generate(Stage::Quiet, &mut moves);
+            for m in moves {
+                let action = p.action(m);
+                let ok = p.make(m);
+                assert_eq!(ok, legal.contains(&action), "seed {seed} {action}");
+                if ok {
+                    let mut after = native.clone();
+                    after.apply(action).unwrap();
+                    assert_eq!(
+                        p.in_check(),
+                        after.is_in_check(after.side_to_move()),
+                        "seed {seed} {action}"
+                    );
+                    p.unmake();
+                    checked += 1;
+                }
+            }
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
+            assert!(p.make(p.find(action).unwrap()));
+            native.apply(action).unwrap();
+        }
+    }
+    assert!(checked > 100_000, "{checked}");
+}
+#[test]
+fn filtered_legality_and_check_flags_equal_native_in_targeted_endgames() {
+    // Endgame roots for the rare cases: facing Generals, a Cannon screen
+    // made by a capture on the General's line, discovered Horse-leg checks
+    // and Soldier checks. Every pseudo-legal move of every position on
+    // random walks from these roots is compared with the native rules.
+    let roots = [
+        "4k4/9/9/9/9/9/9/9/9/3K5 w - - 0 1",
+        "3k5/9/9/9/4c4/9/4R4/9/4A4/4K4 w - - 0 1",
+        "4k4/9/4n4/4p4/9/9/2N6/9/4A4/4K4 w - - 0 1",
+        "3k5/4P4/9/9/9/9/9/9/9/4K4 w - - 0 1",
+        "3ak4/4a4/4c4/9/2n6/9/4R4/4C4/9/3K5 b - - 0 1",
+        "4k4/4a4/2N6/9/9/9/4p4/9/4c4/3K5 w - - 0 1",
+    ];
+    let mut checked = 0;
+    for (r, fen) in roots.iter().enumerate() {
+        for seed in 1..=6u64 {
+            let mut rng = (seed + 100 * r as u64).wrapping_mul(0x9e3779b97f4a7c15) | 1;
+            let mut native = Position::from_fen(fen).unwrap();
+            let mut p = XiangqiPosition::from_position(&native);
+            for _ in 0..40 {
+                let legal = native.legal_actions().unwrap();
+                let mut moves = Vec::new();
+                p.generate(Stage::Tactical, &mut moves);
+                p.generate(Stage::Quiet, &mut moves);
+                for m in moves {
+                    let action = p.action(m);
+                    let ok = p.make(m);
+                    assert_eq!(ok, legal.contains(&action), "{fen} {action}");
+                    if ok {
+                        let mut after = native.clone();
+                        after.apply(action).unwrap();
+                        assert_eq!(
+                            p.in_check(),
+                            after.is_in_check(after.side_to_move()),
+                            "{fen} {action}"
+                        );
+                        p.unmake();
+                        checked += 1;
+                    }
+                }
+                if legal.is_empty() {
+                    break;
+                }
+                let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
+                assert!(p.make(p.find(action).unwrap()));
+                native.apply(action).unwrap();
+            }
+        }
+    }
+    assert!(checked > 2_000, "{checked}");
+}

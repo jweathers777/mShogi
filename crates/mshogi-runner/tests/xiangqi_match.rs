@@ -32,6 +32,7 @@ fn config(engines: [EngineConfig; 2], red: usize, base_ms: u64) -> MatchConfig {
         },
         red,
         wire: Default::default(),
+        odds: None,
         clock: Clock {
             base_ms,
             increment_ms: 100,
@@ -147,5 +148,32 @@ fn a_full_mshogi_game_replays_and_tampering_is_rejected() {
     assert!(tampered.replay().is_err());
     let mut tampered = report;
     tampered.turns.pop();
+    assert!(tampered.replay().is_err());
+}
+
+#[test]
+fn time_odds_give_each_engine_its_own_clock_and_replay_checks_them() {
+    // Engine 1 resigns at once; with engine 0 Red the first go carries Red's
+    // (engine 0) and Black's (engine 1) own clocks and increments.
+    let mut c = config([fixture("resign"), fixture("resign")], 1, 1000);
+    c.odds = Some([
+        Clock {
+            base_ms: 2000,
+            increment_ms: 50,
+        },
+        Clock {
+            base_ms: 1000,
+            increment_ms: 20,
+        },
+    ]);
+    let report = run(&c).unwrap();
+    // Engine 1 plays Red: Red has 1000 + 20, Black (engine 0) 2000 + 50.
+    assert_eq!(
+        report.turns[0].go,
+        "go wtime 1000 btime 2000 winc 20 binc 50"
+    );
+    MatchReport::from_json(&report.to_json().unwrap()).unwrap();
+    let mut tampered = report;
+    tampered.config.odds = None;
     assert!(tampered.replay().is_err());
 }

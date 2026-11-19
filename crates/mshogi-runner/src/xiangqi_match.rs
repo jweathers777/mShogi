@@ -70,6 +70,10 @@ pub struct MatchConfig {
     pub wire: [Wire; 2],
     /// Fischer clock of both sides.
     pub clock: Clock,
+    /// Per-engine clocks (time odds) for engine 0 and engine 1; replaces
+    /// `clock` when present.
+    #[serde(default)]
+    pub odds: Option<[Clock; 2]>,
     /// Allowance beyond the remaining time for transport, in milliseconds.
     pub grace_ms: u64,
     /// Overall experiment watchdog; expiry is unscored, not a rules result.
@@ -97,8 +101,10 @@ impl MatchConfig {
         }
         if self.id.is_empty()
             || self.id.len() > 128
-            || !(1_000..=3_600_000).contains(&self.clock.base_ms)
-            || self.clock.increment_ms > 60_000
+            || [self.clock]
+                .iter()
+                .chain(self.odds.iter().flatten())
+                .any(|c| !(1_000..=3_600_000).contains(&c.base_ms) || c.increment_ms > 60_000)
             || self.grace_ms > 5_000
             || !(1..=21_600_000).contains(&self.max_game_ms)
         {
@@ -125,6 +131,15 @@ impl MatchConfig {
         }
         crate::config::validate_processes(&self.engines, self.watchdogs, self.io)?;
         Ok(())
+    }
+    /// Starting time and increment of Red and Black.
+    fn side_clocks(&self) -> ([u64; 2], [u64; 2]) {
+        let of = |side: Side| self.odds.map_or(self.clock, |o| o[self.engine_for(side)]);
+        let (red, black) = (of(Side::Red), of(Side::Black));
+        (
+            [red.base_ms, black.base_ms],
+            [red.increment_ms, black.increment_ms],
+        )
     }
     fn engine_for(&self, side: Side) -> usize {
         if side == Side::Red {
@@ -237,19 +252,19 @@ pub struct MatchReport {
     pub elapsed_ns: u64,
 }
 
-fn go(clock: [u64; 2], increment: u64) -> String {
+fn go(clock: [u64; 2], increment: [u64; 2]) -> String {
     format!(
-        "go wtime {} btime {} winc {increment} binc {increment}",
-        clock[0], clock[1]
+        "go wtime {} btime {} winc {} binc {}",
+        clock[0], clock[1], increment[0], increment[1]
     )
 }
 
 /// Search command of one engine on the wire.
-fn go_for(wire: Wire, clock: [u64; 2], increment: u64, side: usize) -> String {
+fn go_for(wire: Wire, clock: [u64; 2], increment: [u64; 2], side: usize) -> String {
     match (wire.nodes, wire.protocol) {
         (Some(nodes), _) => format!("go nodes {nodes}"),
         (None, Protocol::Uci) => go(clock, increment),
-        (None, Protocol::Ucci) => format!("go time {} increment {increment}", clock[side]),
+        (None, Protocol::Ucci) => format!("go time {} increment {}", clock[side], increment[side]),
     }
 }
 
@@ -382,7 +397,7 @@ impl MatchReport {
             return Err(RunnerError("unsupported match report version".into()));
         }
         let mut game = c.opening.game()?;
-        let mut clock = [c.clock.base_ms; 2];
+        let (mut clock, increment) = c.side_clocks();
         for turn in &self.turns {
             if game.conclusion().is_some() || game.pending_adjudication().is_some() {
                 return Err(RunnerError(
@@ -398,7 +413,7 @@ impl MatchReport {
                 || turn.context_sha256 != digest(&game)?
                 || turn.position != position_for(wire, &game)
                 || turn.clock_before_ms != clock
-                || turn.go != go_for(wire, clock, c.clock.increment_ms, side)
+                || turn.go != go_for(wire, clock, increment, side)
                 || turn.elapsed_ms > clock[side].saturating_add(c.grace_ms)
             {
                 return Err(RunnerError("turn context or clock ledger mismatch".into()));
@@ -417,7 +432,7 @@ impl MatchReport {
             {
                 return Err(RunnerError("turn lacks command/response evidence".into()));
             }
-            clock[side] = clock[side].saturating_sub(turn.elapsed_ms) + c.clock.increment_ms;
+            clock[side] = clock[side].saturating_sub(turn.elapsed_ms) + increment[side];
             submit(
                 &mut game,
                 reply_for(wire, &turn.reply).map_err(RunnerError)?,
@@ -513,7 +528,7 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
             }
         }
     }
-    let mut clock = [config.clock.base_ms; 2];
+    let (mut clock, increment) = config.side_clocks();
     let mut turns = Vec::new();
     let mut exhaustion = None;
     let deadline = host.start + Duration::from_millis(config.max_game_ms);
@@ -540,7 +555,7 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
                 context_sha256: digest(&game)?,
                 actor,
                 position: position_for(config.wire[index], &game),
-                go: go_for(config.wire[index], clock, config.clock.increment_ms, side),
+                go: go_for(config.wire[index], clock, increment, side),
                 reply: String::new(),
                 clock_before_ms: clock,
                 elapsed_ms: 0,
@@ -578,7 +593,7 @@ pub fn run(config: &MatchConfig) -> Result<MatchReport, RunnerError> {
                         ));
                         break MatchStop::Failure;
                     }
-                    clock[side] = clock[side].saturating_sub(elapsed) + config.clock.increment_ms;
+                    clock[side] = clock[side].saturating_sub(elapsed) + increment[side];
                     turns.push(ClockedTurn {
                         reply: line,
                         elapsed_ms: elapsed,
@@ -680,18 +695,18 @@ mod tests {
         };
         assert_eq!(position_for(fairy, &game), "position startpos moves h3e3");
         assert_eq!(
-            go_for(ucci, [3000, 2000], 100, 1),
+            go_for(ucci, [3000, 2000], [100, 100], 1),
             "go time 2000 increment 100"
         );
         assert_eq!(
-            go_for(Wire::default(), [3000, 2000], 100, 1),
+            go_for(Wire::default(), [3000, 2000], [100, 100], 1),
             "go wtime 3000 btime 2000 winc 100 binc 100"
         );
         let nodes = Wire {
             nodes: Some(5000),
             ..Wire::default()
         };
-        assert_eq!(go_for(nodes, [3000, 2000], 100, 0), "go nodes 5000");
+        assert_eq!(go_for(nodes, [3000, 2000], [100, 100], 0), "go nodes 5000");
     }
     #[test]
     fn ucci_resign_and_draw_suffixes_are_explicit() {

@@ -45,13 +45,20 @@ def configs(args):
     catalog = json.load(open(args.openings))['openings']
     a, wa = spec(args.a, 'A', args.a_json)
     b, wb = spec(args.b, 'B', args.b_json)
+    for e, mb in ((a, args.a_hash), (b, args.b_hash)):
+        if mb:
+            e['options'] = e['options'] + [{'name': 'Hash', 'value': str(mb)}]
+    odds = None
+    if args.odds:
+        ab, ai, bb, bi = (int(x) for x in args.odds.split(','))
+        odds = [{'base_ms': ab, 'increment_ms': ai}, {'base_ms': bb, 'increment_ms': bi}]
     out = []
     for pair in range(args.first_pair, args.first_pair + args.pairs):
         o = catalog[(pair - 1) % len(catalog)]
         for red in (0, 1):
             out.append({
                 'schema_version': 1, 'profile': PROFILE, 'id': f'pair{pair:04d}-{o["id"]}-red{red}'[:128],
-                'engines': [a, b], 'wire': [wa, wb],
+                'engines': [a, b], 'wire': [wa, wb], 'odds': odds,
                 'opening': {'id': o['id'], 'fen': o.get('fen'), 'canonical': None, 'moves': o['moves']},
                 'red': red, 'clock': {'base_ms': args.base_ms, 'increment_ms': args.inc_ms},
                 'grace_ms': args.grace_ms, 'max_game_ms': args.max_game_ms,
@@ -141,6 +148,9 @@ def main():
     r.add_argument('--max-game-ms', type=int, default=1_800_000)
     r.add_argument('--workers', type=int, default=8)
     r.add_argument('--first-pair', type=int, default=1)
+    r.add_argument('--a-hash', type=int, help='Hash option (MB) for engine A')
+    r.add_argument('--b-hash', type=int, help='Hash option (MB) for engine B')
+    r.add_argument('--odds', help='time odds: A_BASE_MS,A_INC_MS,B_BASE_MS,B_INC_MS')
     r.add_argument('--out', required=True)
     s = sub.add_parser('summary')
     s.add_argument('dir')

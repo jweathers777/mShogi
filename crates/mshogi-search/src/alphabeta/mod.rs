@@ -84,8 +84,9 @@ pub trait SearchPosition {
     /// opponent is then in check. A game that enables the quiescence check
     /// stage or the mate search must include every legal checking move.
     fn generate_checks(&self, _moves: &mut Vec<Self::Move>) {}
-    /// Play a move. Returns false and leaves the position unchanged if the move
-    /// is not legal.
+    /// Play a pseudo-legal move (generated, or checked with `is_pseudo_legal`
+    /// or `decode`). Returns false and leaves the position unchanged if the
+    /// move is not legal. A game may rely on the pseudo-legal precondition.
     fn make(&mut self, m: Self::Move) -> bool;
     /// Take back the last move played with `make`.
     fn unmake(&mut self);

@@ -81,6 +81,73 @@ struct Tables {
     pieces: [[[u64; N]; 7]; 2],
     side: u64,
 }
+/// Squares on the rank and file of each square (excluding it).
+static LINE_MASK: LazyLock<[u128; N]> = LazyLock::new(|| {
+    std::array::from_fn(|at| {
+        (0..N)
+            .filter(|&o| o != at && (o % 9 == at % 9 || o / 9 == at / 9))
+            .fold(0, |m, o| m | 1 << o)
+    })
+});
+/// Squares a Horse move away from each square.
+static HORSE_SQUARES: LazyLock<[u128; N]> = LazyLock::new(|| {
+    std::array::from_fn(|at| {
+        [
+            (1, 2),
+            (2, 1),
+            (-1, 2),
+            (-2, 1),
+            (1, -2),
+            (2, -1),
+            (-1, -2),
+            (-2, -1),
+        ]
+        .into_iter()
+        .filter_map(|(dx, dy)| offset(at, dx, dy))
+        .fold(0, |m, o| m | 1 << o)
+    })
+});
+/// Horses that can attack each square: (source, leg) pairs; `N` marks unused.
+static HORSE_REVERSE: LazyLock<[[(u8, u8); 8]; N]> = LazyLock::new(|| {
+    std::array::from_fn(|target| {
+        let mut out = [(N as u8, N as u8); 8];
+        for (i, (dx, dy)) in [
+            (1, 2),
+            (2, 1),
+            (-1, 2),
+            (-2, 1),
+            (1, -2),
+            (2, -1),
+            (-1, -2),
+            (-2, -1),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            if let Some(from) = offset(target, dx, dy) {
+                // The Horse moves from `from` by (-dx, -dy); its leg is the
+                // first step along the two-square axis.
+                let leg = offset(
+                    from,
+                    if dx.abs() == 2 { -dx / 2 } else { 0 },
+                    if dy.abs() == 2 { -dy / 2 } else { 0 },
+                )
+                .expect("on board");
+                out[i] = (from as u8, leg as u8);
+            }
+        }
+        out
+    })
+});
+/// Orthogonally adjacent squares of each square.
+static ADJACENT: LazyLock<[u128; N]> = LazyLock::new(|| {
+    std::array::from_fn(|at| {
+        DIRECTIONS
+            .into_iter()
+            .filter_map(|(dx, dy)| offset(at, dx, dy))
+            .fold(0, |m, o| m | 1 << o)
+    })
+});
 /// Static evaluation of each piece on each square with the compiled weights.
 static STATIC: LazyLock<Box<[[[i32; N]; 7]; 2]>> = LazyLock::new(|| {
     let mut t = Box::new([[[0; N]; 7]; 2]);
@@ -94,6 +161,76 @@ static STATIC: LazyLock<Box<[[[i32; N]; 7]; 2]>> = LazyLock::new(|| {
         }
     }
     t
+});
+/// Chariot and Cannon targets along one rank (9 squares) or file (10
+/// squares), indexed by mode, position and line occupancy. Modes: 0 Chariot,
+/// 1 Cannon quiet moves, 2 Cannon capture influence (squares beyond one
+/// screen up to and including the next piece), as in the ray walk.
+struct Lines {
+    rank: Vec<u16>,
+    file: Vec<u16>,
+    /// File-0 squares of a 10-bit file mask; shift by the file index.
+    spread: Vec<u128>,
+}
+fn line_targets(len: usize, pos: usize, occ: u32, mode: usize) -> u16 {
+    let mut out = 0u16;
+    for dir in [1i32, -1] {
+        let mut at = pos as i32 + dir;
+        let mut screened = false;
+        while (0..len as i32).contains(&at) {
+            let occupied = occ & (1 << at) != 0;
+            match mode {
+                0 => {
+                    out |= 1 << at;
+                    if occupied {
+                        break;
+                    }
+                }
+                1 => {
+                    if occupied {
+                        break;
+                    }
+                    out |= 1 << at;
+                }
+                _ => {
+                    if !screened {
+                        screened = occupied;
+                    } else {
+                        out |= 1 << at;
+                        if occupied {
+                            break;
+                        }
+                    }
+                }
+            }
+            at += dir;
+        }
+    }
+    out
+}
+static LINES: LazyLock<Lines> = LazyLock::new(|| {
+    let mut rank = vec![0; 3 * 9 * 512];
+    let mut file = vec![0; 3 * 10 * 1024];
+    for mode in 0..3 {
+        for pos in 0..9 {
+            for occ in 0..512u32 {
+                rank[(mode * 9 + pos) * 512 + occ as usize] = line_targets(9, pos, occ, mode);
+            }
+        }
+        for pos in 0..10 {
+            for occ in 0..1024u32 {
+                file[(mode * 10 + pos) * 1024 + occ as usize] = line_targets(10, pos, occ, mode);
+            }
+        }
+    }
+    let spread = (0..1024u32)
+        .map(|mask| {
+            (0..10)
+                .filter(|r| mask & (1 << r) != 0)
+                .fold(0u128, |acc, r| acc | 1 << (r * 9))
+        })
+        .collect();
+    Lines { rank, file, spread }
 });
 #[allow(clippy::needless_range_loop)]
 static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
@@ -209,6 +346,8 @@ pub struct XiangqiPosition {
     board: [u8; N],
     pieces: [[u128; 7]; 2],
     occupied: [u128; 2],
+    /// Occupancy of each file, bit r = rank r.
+    files: [u16; 9],
     side: usize,
     hash: u64,
     material: [i32; 2],
@@ -235,6 +374,7 @@ impl XiangqiPosition {
             board: [0; N],
             pieces: [[0; 7]; 2],
             occupied: [0; 2],
+            files: [0; 9],
             side: owner(native.side_to_move()),
             hash: 0,
             material: [0; 2],
@@ -404,6 +544,7 @@ impl XiangqiPosition {
         self.board[at] = code(side, kind);
         self.pieces[side][kind] |= 1 << at;
         self.occupied[side] |= 1 << at;
+        self.files[at % 9] |= 1 << (at / 9);
         self.hash ^= TABLES.pieces[side][kind][at];
         self.material[side] += super::piece_value(KINDS[kind]);
         self.accumulated[side] += STATIC[side][kind][at];
@@ -412,6 +553,7 @@ impl XiangqiPosition {
         self.board[at] = 0;
         self.pieces[side][kind] &= !(1 << at);
         self.occupied[side] &= !(1 << at);
+        self.files[at % 9] &= !(1 << (at / 9));
         self.hash ^= TABLES.pieces[side][kind][at];
         self.material[side] -= super::piece_value(KINDS[kind]);
         self.accumulated[side] -= STATIC[side][kind][at];
@@ -420,6 +562,39 @@ impl XiangqiPosition {
     /// For Cannons, quiet targets precede the screen; capture targets follow it.
     fn targets(&self, side: usize, kind: usize, from: usize, capture: bool) -> u128 {
         if kind == ROOK || kind == CANNON {
+            let mode = if kind == ROOK {
+                0
+            } else if capture {
+                2
+            } else {
+                1
+            };
+            let (x, y) = (from % 9, from / 9);
+            let occ = self.occupied[0] | self.occupied[1];
+            let rank_occ = ((occ >> (9 * y)) & 0x1FF) as usize;
+            let lines = &*LINES;
+            let rank = u128::from(lines.rank[(mode * 9 + x) * 512 + rank_occ]) << (9 * y);
+            let file_mask = lines.file[(mode * 10 + y) * 1024 + usize::from(self.files[x])];
+            return rank | lines.spread[usize::from(file_mask)] << x;
+        }
+        let mut targets = 0;
+        let t = &TABLES;
+        for jump in &t.jumps[side][kind][from][..usize::from(t.counts[side][kind][from])] {
+            if usize::from(jump.blocker) == N || self.board[usize::from(jump.blocker)] == 0 {
+                targets |= 1 << jump.to;
+            }
+        }
+        targets
+    }
+    /// Table targets of a Chariot (kind 4) or Cannon (kind 5), for tests.
+    #[cfg(test)]
+    pub(crate) fn slider_targets(&self, kind: usize, from: usize, capture: bool) -> u128 {
+        self.targets(0, kind, from, capture)
+    }
+    /// Reference ray walk for Chariot and Cannon targets, for differential tests.
+    #[cfg(test)]
+    pub(crate) fn slider_targets_by_walk(&self, kind: usize, from: usize, capture: bool) -> u128 {
+        {
             let mut targets = 0;
             for (dx, dy) in DIRECTIONS {
                 let mut at = from;
@@ -451,16 +626,8 @@ impl XiangqiPosition {
                     at = to;
                 }
             }
-            return targets;
+            targets
         }
-        let mut targets = 0;
-        let t = &TABLES;
-        for jump in &t.jumps[side][kind][from][..usize::from(t.counts[side][kind][from])] {
-            if usize::from(jump.blocker) == N || self.board[usize::from(jump.blocker)] == 0 {
-                targets |= 1 << jump.to;
-            }
-        }
-        targets
     }
     fn attacked(&self, target: usize, by: usize) -> bool {
         // A flying General attacks only the opposing General, never an
@@ -476,60 +643,68 @@ impl XiangqiPosition {
                 return true;
             }
         }
-        // Chariots and Cannons: scan outward from the target. The first
-        // piece on a line attacks if it is a Chariot; the second (beyond one
-        // screen) attacks if it is a Cannon.
+        // Chariots and Cannons: lines are symmetric, so the Chariot and Cannon
+        // capture lines from the target find every attacker.
         if self.pieces[by][ROOK] | self.pieces[by][CANNON] != 0 {
-            let rook = code(by, ROOK);
-            let cannon = code(by, CANNON);
+            let rook_line = self.targets(by, ROOK, target, true);
+            if rook_line & self.pieces[by][ROOK] != 0 {
+                return true;
+            }
+            let cannon_line = self.targets(by, CANNON, target, true);
+            if cannon_line & self.pieces[by][CANNON] != 0 {
+                return true;
+            }
+        }
+        // Jumping and stepping pieces, found from the target with their
+        // legs, eyes, palace and river rules checked directly.
+        let general = code(by, GENERAL);
+        let advisor = code(by, ADVISOR);
+        if palace(by, target) {
             for (dx, dy) in DIRECTIONS {
-                let mut at = target;
-                let mut screened = false;
-                while let Some(to) = offset(at, dx, dy) {
-                    let piece = self.board[to];
-                    if piece != 0 {
-                        if !screened {
-                            if piece == rook {
-                                return true;
-                            }
-                            screened = true;
-                        } else {
-                            if piece == cannon {
-                                return true;
-                            }
-                            break;
-                        }
+                if offset(target, dx, dy).is_some_and(|at| self.board[at] == general) {
+                    return true;
+                }
+            }
+            if self.pieces[by][ADVISOR] != 0 {
+                for (dx, dy) in [(1, 1), (1, -1), (-1, 1), (-1, -1)] {
+                    if offset(target, dx, dy).is_some_and(|at| self.board[at] == advisor) {
+                        return true;
                     }
-                    at = to;
                 }
             }
         }
-        // Jumping and stepping pieces: their move geometry is symmetric, so
-        // the table entries of the target give every possible source square.
-        // A piece found there is confirmed with its own forward targets
-        // (legs, eyes, palace and river rules).
-        let t = &TABLES;
-        for kind in [GENERAL, ADVISOR, ELEPHANT, HORSE] {
-            if self.pieces[by][kind] == 0 {
-                continue;
+        if self.pieces[by][ELEPHANT] != 0 && !crossed(by, target) {
+            let elephant = code(by, ELEPHANT);
+            for (dx, dy) in [(2, 2), (2, -2), (-2, 2), (-2, -2)] {
+                if let Some(at) = offset(target, dx, dy)
+                    && self.board[at] == elephant
+                    && self.board[offset(target, dx / 2, dy / 2).expect("on board")] == 0
+                {
+                    return true;
+                }
             }
-            let wanted = code(by, kind);
-            for jump in &t.jumps[by][kind][target][..usize::from(t.counts[by][kind][target])] {
-                let from = usize::from(jump.to);
-                if self.board[from] == wanted
-                    && self.targets(by, kind, from, true) & (1 << target) != 0
+        }
+        if self.pieces[by][HORSE] != 0 {
+            let horse = code(by, HORSE);
+            for &(from, leg) in &HORSE_REVERSE[target] {
+                if from != N as u8
+                    && self.board[usize::from(from)] == horse
+                    && self.board[usize::from(leg)] == 0
                 {
                     return true;
                 }
             }
         }
         if self.pieces[by][SOLDIER] != 0 {
-            let wanted = code(by, SOLDIER);
+            let soldier = code(by, SOLDIER);
             let back: i8 = if by == 0 { -1 } else { 1 };
-            for (dx, dy) in [(0, back), (-1, 0), (1, 0)] {
-                if let Some(from) = offset(target, dx, dy)
-                    && self.board[from] == wanted
-                    && self.targets(by, SOLDIER, from, true) & (1 << target) != 0
+            if offset(target, 0, back).is_some_and(|at| self.board[at] == soldier) {
+                return true;
+            }
+            for dx in [-1, 1] {
+                if let Some(at) = offset(target, dx, 0)
+                    && self.board[at] == soldier
+                    && crossed(by, at)
                 {
                     return true;
                 }
@@ -595,6 +770,45 @@ impl XiangqiPosition {
             }
         }
         flags
+    }
+    /// Leg squares of `side`'s opponent Horses that attack `general` once the
+    /// leg is empty (a piece leaving one exposes the General).
+    fn enemy_horse_legs(&self, side: usize, general: usize) -> u128 {
+        self.horse_legs(side ^ 1, general)
+    }
+    /// Leg squares of `side`'s Horses aimed at the opposing `general`.
+    fn own_horse_legs(&self, side: usize, general: usize) -> u128 {
+        self.horse_legs(side, general)
+    }
+    fn horse_legs(&self, horses: usize, general: usize) -> u128 {
+        let wanted = code(horses, HORSE);
+        let mut legs = 0;
+        if self.pieces[horses][HORSE] == 0 {
+            return 0;
+        }
+        for (dx, dy) in [
+            (1, 2),
+            (2, 1),
+            (-1, 2),
+            (-2, 1),
+            (1, -2),
+            (2, -1),
+            (-1, -2),
+            (-2, -1),
+        ] {
+            if let Some(at) = offset(general, dx, dy)
+                && self.board[at] == wanted
+            {
+                let leg = offset(
+                    at,
+                    if dx.abs() == 2 { -dx / 2 } else { 0 },
+                    if dy.abs() == 2 { -dy / 2 } else { 0 },
+                )
+                .expect("on board");
+                legs |= 1 << leg;
+            }
+        }
+        legs
     }
     /// Search approximation of a WXF chase by the piece that just moved to
     /// `to`: it attacks an opposing piece other than the General and an
@@ -666,68 +880,74 @@ impl XiangqiPosition {
     /// Least valuable piece of `by` that attacks `target`, with its square,
     /// found from the target as in `attacked`.
     fn least_attacker(&self, target: usize, by: usize) -> Option<(usize, usize)> {
-        let t = &TABLES;
+        // Same direct checks as `attacked`, in value order.
         if self.pieces[by][SOLDIER] != 0 {
-            let wanted = code(by, SOLDIER);
+            let soldier = code(by, SOLDIER);
             let back: i8 = if by == 0 { -1 } else { 1 };
-            for (dx, dy) in [(0, back), (-1, 0), (1, 0)] {
-                if let Some(from) = offset(target, dx, dy)
-                    && self.board[from] == wanted
-                    && self.targets(by, SOLDIER, from, true) & (1 << target) != 0
+            if let Some(at) = offset(target, 0, back)
+                && self.board[at] == soldier
+            {
+                return Some((SOLDIER, at));
+            }
+            for dx in [-1, 1] {
+                if let Some(at) = offset(target, dx, 0)
+                    && self.board[at] == soldier
+                    && crossed(by, at)
                 {
-                    return Some((SOLDIER, from));
+                    return Some((SOLDIER, at));
                 }
             }
         }
-        for kind in [ADVISOR, ELEPHANT, HORSE] {
-            if self.pieces[by][kind] == 0 {
-                continue;
-            }
-            let wanted = code(by, kind);
-            for jump in &t.jumps[by][kind][target][..usize::from(t.counts[by][kind][target])] {
-                let from = usize::from(jump.to);
-                if self.board[from] == wanted
-                    && self.targets(by, kind, from, true) & (1 << target) != 0
+        if palace(by, target) && self.pieces[by][ADVISOR] != 0 {
+            let advisor = code(by, ADVISOR);
+            for (dx, dy) in [(1, 1), (1, -1), (-1, 1), (-1, -1)] {
+                if let Some(at) = offset(target, dx, dy)
+                    && self.board[at] == advisor
                 {
-                    return Some((kind, from));
+                    return Some((ADVISOR, at));
                 }
             }
         }
-        let (rook, cannon) = (code(by, ROOK), code(by, CANNON));
-        let mut chariot = None;
-        if self.pieces[by][ROOK] | self.pieces[by][CANNON] != 0 {
-            for (dx, dy) in DIRECTIONS {
-                let mut at = target;
-                let mut screened = false;
-                while let Some(to) = offset(at, dx, dy) {
-                    let piece = self.board[to];
-                    if piece != 0 {
-                        if !screened {
-                            if piece == rook && chariot.is_none() {
-                                chariot = Some(to);
-                            }
-                            screened = true;
-                        } else {
-                            if piece == cannon {
-                                return Some((CANNON, to));
-                            }
-                            break;
-                        }
-                    }
-                    at = to;
+        if self.pieces[by][ELEPHANT] != 0 && !crossed(by, target) {
+            let elephant = code(by, ELEPHANT);
+            for (dx, dy) in [(2, 2), (2, -2), (-2, 2), (-2, -2)] {
+                if let Some(at) = offset(target, dx, dy)
+                    && self.board[at] == elephant
+                    && self.board[offset(target, dx / 2, dy / 2).expect("on board")] == 0
+                {
+                    return Some((ELEPHANT, at));
                 }
             }
         }
-        if let Some(at) = chariot {
-            return Some((ROOK, at));
+        if self.pieces[by][HORSE] != 0 {
+            let horse = code(by, HORSE);
+            for &(from, leg) in &HORSE_REVERSE[target] {
+                if from != N as u8
+                    && self.board[usize::from(from)] == horse
+                    && self.board[usize::from(leg)] == 0
+                {
+                    return Some((HORSE, usize::from(from)));
+                }
+            }
+        }
+        if self.pieces[by][CANNON] != 0 {
+            let cannons = self.targets(by, CANNON, target, true) & self.pieces[by][CANNON];
+            if cannons != 0 {
+                return Some((CANNON, cannons.trailing_zeros() as usize));
+            }
+        }
+        if self.pieces[by][ROOK] != 0 {
+            let rooks = self.targets(by, ROOK, target, true) & self.pieces[by][ROOK];
+            if rooks != 0 {
+                return Some((ROOK, rooks.trailing_zeros() as usize));
+            }
         }
         if self.pieces[by][GENERAL] == 0 {
             // A General captured earlier in the exchange.
             return None;
         }
         let general = self.general(by);
-        (self.targets(by, GENERAL, general, true) & (1 << target) != 0)
-            .then_some((GENERAL, general))
+        (palace(by, target) && ADJACENT[general] & (1 << target) != 0).then_some((GENERAL, general))
     }
     /// Reference SEE whose attacker search scans every piece's targets in
     /// value order, for differential tests.
@@ -775,6 +995,7 @@ impl XiangqiPosition {
             board: self.board,
             pieces: self.pieces,
             occupied: self.occupied,
+            files: self.files,
             side: self.side,
             hash: self.hash,
             material: self.material,
@@ -904,6 +1125,7 @@ impl XiangqiPosition {
             board: self.board,
             pieces: self.pieces,
             occupied: self.occupied,
+            files: self.files,
             side: self.side,
             hash: self.hash,
             material: self.material,
@@ -1066,12 +1288,24 @@ impl SearchPosition for XiangqiPosition {
         }
     }
     fn make(&mut self, m: Move) -> bool {
-        if !self.is_pseudo_legal(m) {
-            return false;
-        }
+        // Every caller passes a pseudo-legal move: generated moves, killers
+        // checked with `is_pseudo_legal`, table moves through `decode`.
+        debug_assert!(self.is_pseudo_legal(m), "pseudo-legal move");
         let side = self.side;
         let (from, to) = (m.from(), m.to());
         let (_, kind) = piece_parts(self.board[from]);
+        // Before the move: can it expose the own General, and can it check?
+        let own = self.general(side);
+        let needs_legality = kind == GENERAL
+            || self.check
+            || (LINE_MASK[own] | self.enemy_horse_legs(side, own)) & (1 << from) != 0
+            || LINE_MASK[own] & (1 << to) != 0;
+        let them = self.general(side ^ 1);
+        let may_check = kind == GENERAL
+            || (LINE_MASK[them] | self.own_horse_legs(side, them)) & (1 << from) != 0
+            || LINE_MASK[them] & (1 << to) != 0
+            || (kind == HORSE && HORSE_SQUARES[them] & (1 << to) != 0)
+            || (kind == SOLDIER && ADJACENT[them] & (1 << to) != 0);
         let undo = Undo {
             m,
             captured: self.board[to],
@@ -1093,11 +1327,11 @@ impl SearchPosition for XiangqiPosition {
         self.keys.push(self.hash);
         self.checks.push(false);
         self.chases.push(false);
-        if self.attacked(self.general(side), side ^ 1) {
+        if needs_legality && self.attacked(self.general(side), side ^ 1) {
             self.unmake();
             return false;
         }
-        self.check = self.attacked(self.general(side ^ 1), side);
+        self.check = may_check && self.attacked(self.general(side ^ 1), side);
         *self.checks.last_mut().unwrap() = self.check;
         let chase = self.track_chases && undo.captured == 0 && self.chases_after(side, kind, to);
         *self.chases.last_mut().unwrap() = chase;

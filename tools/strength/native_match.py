@@ -133,7 +133,7 @@ def summary(args, rows, start, failure=None):
 
 def main(default_game="shogi"):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--game', choices=['shogi', 'xiangqi', 'chu', 'tenjiku'], default=default_game)
+    parser.add_argument('--game', choices=['shogi', 'xiangqi', 'tori', 'chu', 'tenjiku'], default=default_game)
     parser.add_argument('--profile', choices=['adams', 'muller'])
     parser.add_argument('--candidate', required=True)
     parser.add_argument('--baseline', required=True)
@@ -161,19 +161,19 @@ def main(default_game="shogi"):
     args = parser.parse_args()
     if (args.game == 'tenjiku') != (args.profile is not None):
         parser.error('--profile adams|muller is required only for --game tenjiku')
-    defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'chu': (1, 512, 500), 'tenjiku': (1, 1024, 500)}
+    defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'tori': (1, 512, 500), 'chu': (1, 512, 500), 'tenjiku': (1, 1024, 500)}
     depth, nodes, args.max_steps = defaults[args.game]
     if args.base is not None:
-        if args.game != 'shogi' or not (0.001 <= args.base <= 600 and 0 <= args.increment <= 60):
-            parser.error('clock mode requires Shogi, base 0.001..600 and increment 0..60 seconds')
+        if args.game not in ('shogi', 'tori') or not (0.001 <= args.base <= 600 and 0 <= args.increment <= 60):
+            parser.error('clock mode requires Shogi or Tori, base 0.001..600 and increment 0..60 seconds')
         if args.candidate_nodes is not None or args.baseline_nodes is not None or args.baseline_depth is not None:
             parser.error('clock mode uses symmetric native safety caps; do not supply fixed work')
         args.candidate_nodes = args.baseline_nodes = 5_000_000
         args.baseline_depth = 64
     elif args.candidate_nodes is None or args.increment != 0:
         parser.error('fixed-work mode requires --candidate-nodes; increment requires --base')
-    if args.openings and args.game != 'shogi':
-        parser.error('--openings currently requires Shogi')
+    if args.openings and args.game not in ('shogi', 'tori'):
+        parser.error('--openings currently requires Shogi or Tori')
     if args.first_seed < 0:
         parser.error('--first-seed must be nonnegative')
     if args.baseline_depth is None:

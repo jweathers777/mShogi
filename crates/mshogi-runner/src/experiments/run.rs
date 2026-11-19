@@ -61,6 +61,8 @@ pub fn run_with_stop(
         let opening = &config.openings[pairing.opening];
         let mut state = native::NativeState::from_root(&opening.root).map_err(err)?;
         let initial = state.root().map_err(err)?;
+        // The opening root is reserved before the schedule; charge only growth.
+        let mut root_len = serde_json::to_vec(&initial).map_err(err)?.len();
         let mut game = Game {
             pairing,
             steps: vec![],
@@ -154,7 +156,7 @@ pub fn run_with_stop(
             if observation.is_none() {
                 bridges[player].cancel();
             }
-            let mut candidate = native::NativeState::from_root(&before).map_err(err)?;
+            let mut candidate = state.fork().map_err(err)?;
             let decision = if let Some(o) = &observation {
                 if config.clock.is_some() && elapsed_ns.div_ceil(1_000_000) >= remaining[player] {
                     failure = Some("clock_limit".into());
@@ -199,9 +201,15 @@ pub fn run_with_stop(
                 applied: matches!(decision, native::Admission::Applied),
             };
             let after = candidate.root().map_err(err)?;
-            let cost = serde_json::to_vec(&step).map_err(err)?.len()
-                + serde_json::to_vec(&after).map_err(err)?.len()
+            // Charge the encoded (record-elided) step and the final-root growth,
+            // so the charge is linear in game length (MSH-204).
+            let after_len = serde_json::to_vec(&after).map_err(err)?.len();
+            let cost = serde_json::to_vec(&super::encoded_step(&step)?)
+                .map_err(err)?
+                .len()
+                + after_len.saturating_sub(root_len)
                 + 1024;
+            root_len = root_len.max(after_len);
             if cost > 8 * 1024 * 1024 {
                 return Err(err(
                     "bounded protocol/native evidence exceeded reserved transition capacity",

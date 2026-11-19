@@ -13,10 +13,9 @@ use sha2::{Digest, Sha256};
 use std::{collections::BTreeSet, path::Path};
 
 /// Aggregate config/report/data resource bound, independent of product budgets.
-// A complete two-color Shogi pair carries full histories in every request and
-// observation. Measured history growth projects about 60 MiB encoded and up to
-// 100 MiB charged for two 320-ply games. Keep finite headroom for that contract;
-// the runner still reserves 8 MiB per transition and retains all schedule caps.
+// Encoded steps omit the native record that native replay restores (MSH-204),
+// so a report grows linearly with game length; the runner still reserves
+// 8 MiB per transition and retains all schedule caps.
 pub const MAX_BYTES: usize = 128 * 1024 * 1024;
 /// Versioned schedule and evidence family.
 pub const SCHEMA: u32 = 1;
@@ -169,9 +168,12 @@ fn clock_work(
             clock.increment_ms,
             30,
         );
-        let hard = (allocation.hard.as_millis() as u64).min(60_000);
-        let reserve = (if first { 300 } else { 50 }).min(hard / 2);
-        work.time_ms = Some(hard.saturating_sub(reserve));
+        // The engine treats `time_ms` as a fixed move time, so it receives the
+        // nominal allocation, not the hard ceiling (three times nominal), which
+        // spent the base time within a few moves (MSH-204).
+        let nominal = (allocation.soft.as_millis() as u64).min(60_000);
+        let reserve = (if first { 300 } else { 50 }).min(nominal / 2);
+        work.time_ms = Some(nominal.saturating_sub(reserve));
     }
     work
 }
@@ -487,8 +489,7 @@ fn admit_with_match_capacity(
     limits: WorkLimits,
     match_capacity: usize,
 ) -> Result<native::Admission, String> {
-    let before = state.root()?;
-    let mut candidate = native::NativeState::from_root(&before)?;
+    let mut candidate = state.fork()?;
     let decision = candidate.admit(result)?;
     let after = candidate
         .root()
@@ -642,8 +643,56 @@ impl Report {
         if text.len() > MAX_BYTES {
             return Err(err("experiment report exceeds128MiB"));
         }
-        let report: Self = serde_json::from_str(text).map_err(err)?;
+        let report = Self::decode(serde_json::from_str(text).map_err(err)?)?;
         report.validate()?;
+        Ok(report)
+    }
+    /// Encoded form: each step's native record (request and observation
+    /// context) is omitted, because it equals the replayed native history
+    /// before that step (MSH-204, Tori Strength Harness). Without this, report
+    /// size grew with the square of game length.
+    fn encoded(&self) -> Result<serde_json::Value, RunnerError> {
+        let mut value = serde_json::to_value(self).map_err(err)?;
+        for game in value["games"].as_array_mut().into_iter().flatten() {
+            for step in game["steps"].as_array_mut().into_iter().flatten() {
+                elide(step);
+            }
+        }
+        Ok(value)
+    }
+    /// Restore each omitted step record from native replay of the recorded
+    /// observations, without decoding that record again. A step that carries
+    /// its record is decoded strictly; validation compares it with replay.
+    fn decode(mut value: serde_json::Value) -> Result<Self, RunnerError> {
+        let config: Config = serde_json::from_value(value["config"].clone()).map_err(err)?;
+        config.validate()?;
+        let mut games = vec![];
+        for game in value["games"].as_array_mut().into_iter().flatten() {
+            let pairing: Pairing = serde_json::from_value(game["pairing"].clone()).map_err(err)?;
+            let opening = config
+                .openings
+                .get(pairing.opening)
+                .ok_or_else(|| err("pairing opening outside the configuration"))?;
+            let mut state = native::NativeState::from_root(&opening.root).map_err(err)?;
+            let raw = std::mem::take(&mut game["steps"]);
+            let mut steps = vec![];
+            for raw in raw.as_array().into_iter().flatten() {
+                let step = decode_step(raw, &state)?;
+                if let (true, Some(o)) = (step.applied, &step.observation) {
+                    admit_bounded(&mut state, &o.result, step.request.limits).map_err(err)?;
+                }
+                steps.push(step);
+            }
+            game["steps"] = serde_json::Value::Array(vec![]);
+            games.push(steps);
+        }
+        let mut report: Self = serde_json::from_value(value).map_err(err)?;
+        if report.games.len() != games.len() {
+            return Err(err("report game count changed while decoding"));
+        }
+        for (game, steps) in report.games.iter_mut().zip(games) {
+            game.steps = steps;
+        }
         Ok(report)
     }
     /// Consume editable evidence after one complete native validation.
@@ -657,7 +706,7 @@ impl Report {
         self.encode()
     }
     fn encode(&self) -> Result<String, RunnerError> {
-        let s = serde_json::to_string(self).map_err(err)?;
+        let s = self.encoded()?.to_string();
         if s.len() > MAX_BYTES {
             return Err(err("report encoding exceeds128MiB"));
         }
@@ -666,7 +715,7 @@ impl Report {
     /// Re-admit recorded observations without rerunning engines or trusting scores.
     pub fn validate(&self) -> Result<(), RunnerError> {
         self.config.validate()?;
-        if serde_json::to_vec(self).map_err(err)?.len() > MAX_BYTES {
+        if self.encoded()?.to_string().len() > MAX_BYTES {
             return Err(err("typed report exceeds128MiB"));
         }
         if self.schema != SCHEMA
@@ -843,6 +892,78 @@ impl Report {
         }
         Ok(())
     }
+}
+/// One encoded step. Without a request record, the record is the replayed
+/// native history before the step, supplied to both request and observation.
+fn decode_step(raw: &serde_json::Value, state: &native::NativeState) -> Result<Step, RunnerError> {
+    if raw["request"].get("game").is_some() {
+        return serde_json::from_str(&raw.to_string()).map_err(err);
+    }
+    #[derive(Deserialize)]
+    #[serde(deny_unknown_fields)]
+    struct ContextWire {
+        purpose: ExecutionPurpose,
+        request_id: u64,
+        session_version: u64,
+        process_generation: u64,
+        limits: WorkLimits,
+    }
+    #[derive(Deserialize)]
+    #[serde(deny_unknown_fields)]
+    struct StepWire {
+        player: usize,
+        #[serde(default)]
+        clock: Option<ClockReceipt>,
+        elapsed_ns: u64,
+        request: ContextWire,
+        observation: Option<Box<serde_json::value::RawValue>>,
+        failure: Option<String>,
+        applied: bool,
+    }
+    let wire: StepWire = serde_json::from_str(&raw.to_string()).map_err(err)?;
+    let game = state.root().map_err(err)?.record;
+    let observation = wire
+        .observation
+        .map(|o| {
+            ExecutionObservation::from_json_with_record(o.get(), game.clone(), &mut || false)
+                .map_err(|e| err(e.to_string()))
+        })
+        .transpose()?;
+    Ok(Step {
+        player: wire.player,
+        clock: wire.clock,
+        elapsed_ns: wire.elapsed_ns,
+        request: ExecutionContext {
+            purpose: wire.request.purpose,
+            request_id: wire.request.request_id,
+            session_version: wire.request.session_version,
+            process_generation: wire.request.process_generation,
+            game,
+            limits: wire.request.limits,
+        },
+        observation,
+        failure: wire.failure,
+        applied: wire.applied,
+    })
+}
+/// Remove the replay-determined native record from one encoded step.
+fn elide(step: &mut serde_json::Value) {
+    if let Some(c) = step.get_mut("request").and_then(|c| c.as_object_mut()) {
+        c.remove("game");
+    }
+    if let Some(c) = step
+        .get_mut("observation")
+        .and_then(|o| o.get_mut("context"))
+        .and_then(|c| c.as_object_mut())
+    {
+        c.remove("game");
+    }
+}
+/// Encoded size basis of one step (record omitted).
+pub(super) fn encoded_step(step: &Step) -> Result<serde_json::Value, RunnerError> {
+    let mut value = serde_json::to_value(step).map_err(err)?;
+    elide(&mut value);
+    Ok(value)
 }
 fn stop_for(a: native::Admission) -> Option<String> {
     match a {

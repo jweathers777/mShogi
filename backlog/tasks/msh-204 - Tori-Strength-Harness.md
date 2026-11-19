@@ -1,10 +1,11 @@
 ---
 id: MSH-204
 title: Tori Strength Harness
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-19T19:45:00Z'
+updated_date: '2026-11-19T20:34:00Z'
 labels:
   - handle:tori-strength-harness
   - tori
@@ -44,3 +45,23 @@ Handle: Tori Strength Harness
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Findings 2026-11-19 (smoke games, 5 s + 0.1 s): both games ended unscored with clock_limit. (a) Per-request overhead grows with game length (about 70 ms at move 195): Tori requests carry and replay the full record; the shared incremental session of MSH-189 (Session<R>, SessionServer<A>) is wired only for Shogi. (b) The native runner passes the clock allocation's hard limit (3x nominal) as a fixed move time, so the engine spends the base time in about 20 moves.
+Plan:
+1. Tori adopts the incremental session: native tori GameRecord has_prefix/suffix and a strict GameDelta, IncrementalRecord impl (append with full native admission and effect checks); engine Delta::Tori, ToriAdapter, server dispatch, Client::supports Tori. Tests as for Shogi (tampered deltas, prefix mismatch, reset).
+2. Runner clock allocation: time_ms = nominal allocation (soft), not the hard limit; record the semantic change (affects future clocked native-route runs, incl. Shogi native route).
+3. tori_match_config on shared Args with catalogs; native_match.py Tori clocks/openings (done).
+4. Openings: seeded plausible openings (shallow-search candidate moves within a margin of best), balance screen at fixed depth with a rule fixed before screening; at least 100.
+5. Tactical suite: native Tori mate prover (checks-only attacker, drops), mined from self-play, complete answer sets as in MSH-194; held-out split.
+6. Control with late-game depth >= 8; Texel export; time-odds test (2x time).
+7. Review, report, integration.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-11-19 harness infrastructure (Level 1 local, macOS arm64): (1) Tori adopts the incremental session protocol (core GameDelta/IncrementalRecord, engine ToriAdapter; engine turns only). (2) Native Tori Game::fork (exact copy, fresh runtime identity) for search validation, ToriResult::validate and runner transaction copies. (3) Tori admission computes encoded bytes from cached per-event lengths (exact; differential test against full encoding after play/undo/redo/prefix/stop/resign). (4) Clocked runner gives the nominal (soft) allocation, not the 3x hard ceiling. (5) Experiment reports omit each step's native record (request and observation context); decode restores it from native replay without re-decoding; reports and byte charges are now linear in game length (Tori pair 4.6 MB -> 40 KB gz; replay of a 357+111-ply pair 75 s -> 1.75 s). Smoke: per-request overhead flat (median -13 to -5 ms over the game). Tests: core/engine/search/runner/console 943 passed, desktop-session 322 passed, Clippy clean. OPEN DECISION: 2 of 20 smoke games reached the recorded MSH-129 native Tori capacity (65,536 replay units, about 360 board plies) and ended unscored; asked John how to treat this.
+<!-- SECTION:NOTES:END -->

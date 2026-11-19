@@ -773,3 +773,66 @@ fn real_event_limit_preserves_two_slots_for_stop_and_resignation() {
         g.capacity_usage().unwrap()
     );
 }
+
+#[test]
+fn cached_encoded_length_equals_full_encoding_after_every_operation() {
+    // MSH-204: admission computes encoded bytes from cached event lengths
+    // instead of encoding the history again. Compare with the real encoding
+    // after plays (captures, drops, promotions), undo, redo, prefixes,
+    // repetition obligations and unscored stops on seeded random games.
+    let exact = |g: &Game| {
+        assert_eq!(
+            g.capacity_usage().unwrap().encoded_bytes,
+            record::encode(g).unwrap().len()
+        );
+    };
+    for seed in 1..=6u64 {
+        let mut state = seed.wrapping_mul(0x9E37_79B9_7F4A_7C15) | 1;
+        let mut next = move || {
+            state ^= state << 13;
+            state ^= state >> 7;
+            state ^= state << 17;
+            state
+        };
+        let mut g = Game::standard();
+        exact(&g);
+        for ply in 0..160 {
+            let legal = g.legal_actions();
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next() % legal.len() as u64) as usize];
+            let side = g.position().side_to_move();
+            let mut undo = submit(&mut g, side, GameCommand::Play { action }).unwrap();
+            exact(&g);
+            if ply % 7 == 3 {
+                let mut redo = g.undo(&mut undo).unwrap();
+                exact(&g);
+                g.redo(&mut redo).unwrap();
+                exact(&g);
+            }
+            if ply % 31 == 0 {
+                let count = (next() % (g.events().len() as u64 + 1)) as usize;
+                let prefix = g.record_prefix(count).unwrap().to_game().unwrap();
+                exact(&prefix);
+            }
+            if g.conclusion().is_some() {
+                break;
+            }
+        }
+        if g.conclusion().is_none() {
+            let side = g.position().side_to_move();
+            submit(
+                &mut g,
+                side,
+                GameCommand::Stop {
+                    reason: StopReason::WorkLimit,
+                },
+            )
+            .unwrap();
+            exact(&g);
+            submit(&mut g, side.opponent(), GameCommand::Resign).unwrap();
+            exact(&g);
+        }
+    }
+}

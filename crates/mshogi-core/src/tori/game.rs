@@ -301,6 +301,8 @@ pub struct Game {
     pub(super) root: StructuralState,
     local: LocalPosition,
     pub(super) events: Vec<GameEvent>,
+    /// Cumulative compact encoded event lengths: entry i covers events[..=i].
+    event_bytes: Vec<usize>,
     keys: Vec<RepetitionKey>,
     actions: Vec<Action>,
     snapshots: Vec<HistorySnapshot>,
@@ -354,6 +356,7 @@ impl Game {
             root,
             local,
             events: vec![],
+            event_bytes: vec![],
             keys: vec![key],
             actions: vec![],
             snapshots: vec![],
@@ -439,6 +442,7 @@ impl Game {
         let snapshot = self.event_prefix(count).map_err(|_| RecordError::Prefix)?;
         let mut prefix = self.transaction_copy();
         prefix.events.truncate(count);
+        prefix.event_bytes.truncate(count);
         prefix.snapshots.truncate(count);
         prefix.actions.truncate(snapshot.board_ply);
         prefix.keys.truncate(snapshot.board_ply + 1);
@@ -470,18 +474,22 @@ impl Game {
     /// Actual native encoded bytes and deterministic bounded replay accounting.
     pub fn capacity_usage(&self) -> Result<CapacityUsage, GameError> {
         Ok(CapacityUsage {
-            encoded_bytes: record::encode(self)
-                .map_err(|_| GameError::Capacity(Resource::EncodedBytes))?
-                .len(),
+            encoded_bytes: self.encoded_len()?,
             events: self.events.len(),
             replay_work: self.replay_work(),
         })
+    }
+    /// Exact full encoded length from cached event lengths (MSH-204).
+    fn encoded_len(&self) -> Result<usize, GameError> {
+        record::encoded_len(self, self.event_bytes.last().copied().unwrap_or(0))
+            .map_err(|_| GameError::Capacity(Resource::EncodedBytes))
     }
     fn transaction_copy(&self) -> Self {
         Self {
             root: self.root.clone(),
             local: self.local.clone(),
             events: self.events.clone(),
+            event_bytes: self.event_bytes.clone(),
             keys: self.keys.clone(),
             actions: self.actions.clone(),
             snapshots: self.snapshots.clone(),
@@ -490,6 +498,20 @@ impl Game {
             node: self.node,
             branch: self.branch,
         }
+    }
+    /// Exact copy of the committed game with a fresh runtime identity, without
+    /// replay (MSH-204). Reversal tokens of this game do not apply to the copy.
+    /// Use it for private analysis copies; it admits nothing new.
+    pub fn fork(&self) -> Result<Self, GameError> {
+        let instance = NEXT_INSTANCE
+            .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+            .map_err(|_| GameError::Capacity(Resource::Counter))?;
+        let mut copy = self.transaction_copy();
+        copy.runtime = RuntimeToken {
+            instance,
+            revision: self.runtime.revision,
+        };
+        Ok(copy)
     }
     /// Atomic participant admission. Capacity is checked on a complete candidate before commit.
     pub fn submit(&mut self, request: GameRequest) -> Result<GameUndo, GameError> {
@@ -610,6 +632,11 @@ impl Game {
             incomplete,
             replay_work: work,
         };
+        let event_len =
+            record::event_len(&event).map_err(|_| GameError::Capacity(Resource::EncodedBytes))?;
+        candidate
+            .event_bytes
+            .push(self.event_bytes.last().copied().unwrap_or(0) + event_len);
         candidate.events.push(event.clone());
         candidate.snapshots.push(HistorySnapshot {
             state: candidate.position().state().clone(),
@@ -625,9 +652,7 @@ impl Game {
             GameCommand::Stop { .. } => 1,
             _ => 0,
         };
-        let bytes = record::encode(&candidate)
-            .map_err(|_| GameError::Capacity(Resource::EncodedBytes))?
-            .len();
+        let bytes = candidate.encoded_len()?;
         check_capacity(
             CapacityUsage {
                 encoded_bytes: bytes,
@@ -673,6 +698,7 @@ impl Game {
         let last = self.events.last().expect("undo post-state").clone();
         let before = self.event_prefix(undo.before_len)?;
         self.events.truncate(undo.before_len);
+        self.event_bytes.truncate(undo.before_len);
         self.snapshots.truncate(undo.before_len);
         self.actions.truncate(before.board_ply);
         self.keys.truncate(before.board_ply + 1);

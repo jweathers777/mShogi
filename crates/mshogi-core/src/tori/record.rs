@@ -19,6 +19,125 @@ pub struct GameRecord {
     board_plies: usize,
     side: Side,
     conclusion: Option<Conclusion>,
+    /// Root and event ledger kept for prefix identity and suffixes, so an
+    /// incremental transport neither re-parses nor replays the record.
+    root: WirePosition,
+    root_conclusion: Option<Conclusion>,
+    ledger: Vec<GameEvent>,
+}
+
+/// New native events after an exact transport-bound retained state (MSH-204).
+/// Deserialization checks syntax only; admission occurs in a native
+/// incremental session. This is not a saved-game format or a root identity.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct GameDelta {
+    start_event: usize,
+    events: Vec<GameEvent>,
+    #[serde(deserialize_with = "required_option")]
+    conclusion: Option<Conclusion>,
+}
+impl GameDelta {
+    /// Number of accepted events at the required base. Not a history identity.
+    pub fn start_event(&self) -> usize {
+        self.start_event
+    }
+    /// Number of newly supplied events.
+    pub fn event_count(&self) -> usize {
+        self.events.len()
+    }
+    /// Strict duplicate-free typed parsing, bounded as native records.
+    pub fn from_json(text: &str) -> Result<Self, RecordError> {
+        strict(text, MAX_GAME_RECORD_BYTES)?;
+        let delta: Self = serde_json::from_str(text).map_err(|_| RecordError::Json)?;
+        delta.check_capacity()?;
+        Ok(delta)
+    }
+    /// Compact transport encoding.
+    pub fn to_json(&self) -> Result<String, RecordError> {
+        self.check_capacity()?;
+        let text = serde_json::to_string(self).map_err(|_| RecordError::Json)?;
+        if text.len() > MAX_GAME_RECORD_BYTES {
+            return Err(RecordError::Capacity);
+        }
+        Ok(text)
+    }
+    fn check_capacity(&self) -> Result<(), RecordError> {
+        if self
+            .start_event
+            .checked_add(self.events.len())
+            .is_none_or(|end| end > MAX_GAME_EVENTS)
+        {
+            return Err(RecordError::Capacity);
+        }
+        Ok(())
+    }
+    /// Admit every new command natively and check each derived event and the
+    /// final conclusion. On any failure the game is restored exactly.
+    fn apply(&self, game: &mut Game) -> Result<(), RecordError> {
+        self.check_capacity()?;
+        if self.start_event != game.events.len() {
+            return Err(RecordError::Prefix);
+        }
+        let mut undo: Vec<GameUndo> = Vec::with_capacity(self.events.len());
+        let mut failure = None;
+        for (offset, event) in self.events.iter().enumerate() {
+            let index = self.start_event + offset;
+            if event.index != index {
+                failure = Some(RecordError::Command(index));
+                break;
+            }
+            match game.submit(GameRequest {
+                expected: game.context(),
+                actor: event.actor,
+                command: event.command,
+            }) {
+                Ok(token) => undo.push(token),
+                Err(GameError::Capacity(_)) => {
+                    failure = Some(RecordError::Capacity);
+                    break;
+                }
+                Err(_) => {
+                    failure = Some(RecordError::Command(index));
+                    break;
+                }
+            }
+            if game.events.last() != Some(event) {
+                failure = Some(RecordError::Derived);
+                break;
+            }
+        }
+        if failure.is_none() && self.conclusion != game.conclusion() {
+            failure = Some(RecordError::Derived);
+        }
+        match failure {
+            None => Ok(()),
+            Some(error) => {
+                while let Some(mut token) = undo.pop() {
+                    game.undo(&mut token).expect("restore the retained game");
+                }
+                Err(error)
+            }
+        }
+    }
+}
+impl crate::native::incremental::IncrementalRecord for GameRecord {
+    type Game = Game;
+    type Delta = GameDelta;
+    type Error = RecordError;
+    fn reconstruct(&self) -> Result<Game, RecordError> {
+        self.to_game()
+    }
+    fn append(game: &mut Game, delta: &GameDelta) -> Result<(), RecordError> {
+        delta.apply(game)
+    }
+}
+// Nullable fields are still mandatory: plain Option decoding would accept
+// an omitted field as null.
+fn required_option<'de, D: serde::Deserializer<'de>, T: Deserialize<'de>>(
+    d: D,
+) -> Result<Option<T>, D::Error> {
+    Option::<T>::deserialize(d)
 }
 /// Malformed/capacity/semantic rejection, never a game result.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -147,6 +266,12 @@ struct WireRecord {
 impl WireRecord {
     fn from_game(game: &Game) -> Self {
         Self {
+            events: game.events.clone(),
+            ..Self::without_events(game)
+        }
+    }
+    fn without_events(game: &Game) -> Self {
+        Self {
             format: "mshogi.tori.game".into(),
             game: "tori".into(),
             profile: PROFILE_ID.into(),
@@ -155,7 +280,7 @@ impl WireRecord {
             mode: "untimed".into(),
             root: WirePosition::from_state(&game.root),
             root_conclusion: game.event_prefix(0).expect("root").conclusion,
-            events: game.events.clone(),
+            events: vec![],
             current_position: WirePosition::from_state(game.position().state()),
             conclusion: game.conclusion(),
             obligation: game.obligation().cloned(),
@@ -165,6 +290,21 @@ impl WireRecord {
 }
 pub(super) fn encode(game: &Game) -> Result<String, RecordError> {
     serde_json::to_string(&WireRecord::from_game(game)).map_err(|_| RecordError::Json)
+}
+/// Exact length of [`encode`] without encoding the history again (MSH-204).
+/// Compact JSON writes the event list as `[e1,e2,...]`, so the length is the
+/// record with an empty list plus each event's own encoding and the commas.
+pub(super) fn encoded_len(game: &Game, event_bytes: usize) -> Result<usize, RecordError> {
+    let empty = serde_json::to_vec(&WireRecord::without_events(game))
+        .map_err(|_| RecordError::Json)?
+        .len();
+    Ok(empty + event_bytes + game.events.len().saturating_sub(1))
+}
+/// Compact encoded length of one event inside the record.
+pub(super) fn event_len(event: &GameEvent) -> Result<usize, RecordError> {
+    serde_json::to_vec(event)
+        .map(|v| v.len())
+        .map_err(|_| RecordError::Json)
 }
 impl GameRecord {
     /// Encode all accepted history without truncation. Admission guarantees this bound.
@@ -179,6 +319,32 @@ impl GameRecord {
             board_plies: game.snapshot().board_ply,
             side: game.position().side_to_move(),
             conclusion: game.conclusion(),
+            root: WirePosition::from_state(&game.root),
+            root_conclusion: game.event_prefix(0).expect("root").conclusion,
+            ledger: game.events.clone(),
+        })
+    }
+    /// Whether an already validated record is an exact prefix of this record:
+    /// same root and root result and the earlier events in order. Both records
+    /// were replay-validated, so equal roots and events imply equal derived
+    /// state. Cache identity only; nothing is admitted or reconstructed.
+    pub fn has_prefix(&self, earlier: &Self) -> bool {
+        let count = earlier.ledger.len();
+        count <= self.ledger.len()
+            && self.root == earlier.root
+            && self.root_conclusion == earlier.root_conclusion
+            && self.ledger[..count] == earlier.ledger[..]
+    }
+    /// Copy only new events for an incremental transport. The host must first
+    /// establish the previous record with `has_prefix`.
+    pub fn suffix(&self, start_event: usize) -> Result<GameDelta, RecordError> {
+        if start_event > self.ledger.len() {
+            return Err(RecordError::Prefix);
+        }
+        Ok(GameDelta {
+            start_event,
+            events: self.ledger[start_event..].to_vec(),
+            conclusion: self.conclusion,
         })
     }
     /// Actual native bytes; runtime identities are deliberately excluded.

@@ -10,7 +10,9 @@ mod game;
 pub mod notation;
 mod record;
 pub use game::*;
-pub use record::{GAME_RECORD_SCHEMA_VERSION, GameRecord, MAX_GAME_RECORD_BYTES, RecordError};
+pub use record::{
+    GAME_RECORD_SCHEMA_VERSION, GameDelta, GameRecord, MAX_GAME_RECORD_BYTES, RecordError,
+};
 
 #[cfg(test)]
 mod conformance;

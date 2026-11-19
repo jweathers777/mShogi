@@ -411,14 +411,15 @@ fn fischer_allocation_charge_and_replay_refuse_tampering() {
         nodes: 512,
         time_ms: None,
     };
-    // (9950 / 30 + 75) * 3 = 1218; first-request transport reserve = 300.
+    // Nominal 9950 / 30 + 75 = 406 (not the 3x hard ceiling, MSH-204);
+    // transport reserve min(300, 406 / 2) = 203 first, then 50.
     assert_eq!(
         clock_work(work, Some(clock), 10_000, true).time_ms,
-        Some(918)
+        Some(203)
     );
     assert_eq!(
         clock_work(work, Some(clock), 10_000, false).time_ms,
-        Some(1168)
+        Some(356)
     );
     assert_eq!(
         clock_receipt(clock, 10_000, 1_000_001, true).after_ms,
@@ -571,6 +572,41 @@ fn successful_shogi_clock_steps_replay_both_players_and_colors() {
     }
     report.validate().unwrap();
     assert!(report.games.iter().all(|g| g.score_first_twice.is_none()));
+    // Encoded steps omit the replay-determined native record (MSH-204); the
+    // decoder restores it by native replay and the result is identical.
+    let text = report.to_json().unwrap();
+    let encoded: serde_json::Value = serde_json::from_str(&text).unwrap();
+    for step in encoded["games"][0]["steps"].as_array().unwrap() {
+        assert!(step["request"].get("game").is_none());
+        assert!(step["observation"]["context"].get("game").is_none());
+    }
+    let decoded = Report::from_json(&text).unwrap();
+    assert_eq!(decoded.to_json().unwrap(), text);
+    for (a, b) in decoded.games.iter().zip(&report.games) {
+        for (x, y) in a.steps.iter().zip(&b.steps) {
+            assert_eq!(x.request, y.request);
+        }
+    }
+    // A full (unelided) record is still accepted and checked against replay.
+    let full = serde_json::to_string(&report).unwrap();
+    assert!(Report::from_json(&full).is_ok());
+    let mut tampered: serde_json::Value = serde_json::from_str(&full).unwrap();
+    tampered["games"][0]["steps"][1]["request"]["game"] =
+        tampered["games"][0]["steps"][0]["request"]["game"].clone();
+    assert!(Report::from_json(&tampered.to_string()).is_err());
+    // A record kept only in the observation is refused: a record is either
+    // omitted in both places or present in both.
+    let mut mixed = encoded.clone();
+    mixed["games"][0]["steps"][0]["observation"]["context"]["game"] = serde_json::from_str::<
+        serde_json::Value,
+    >(&full)
+    .unwrap()["games"][0]["steps"][0]["request"]["game"]
+        .clone();
+    assert!(Report::from_json(&mixed.to_string()).is_err());
+    // An elided step after a changed observation replays a different history.
+    let mut changed = encoded.clone();
+    changed["games"][0]["steps"][0]["applied"] = serde_json::json!(false);
+    assert!(Report::from_json(&changed.to_string()).is_err());
     let mut bad = report.clone();
     bad.games[1].steps[2].clock.as_mut().unwrap().before_ms = 10_000;
     assert!(bad.validate().is_err());

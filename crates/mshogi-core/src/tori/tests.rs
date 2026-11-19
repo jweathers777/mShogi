@@ -749,3 +749,116 @@ fn incomplete_legality_boundary_is_explicit_not_silently_partial() {
         );
     }
 }
+
+#[test]
+fn incremental_suffixes_match_full_replay_and_tampering_leaves_the_game_unchanged() {
+    use crate::native::incremental::{IncrementalRecord, Session};
+    let mut seed = 0x2545_f491_4f6c_dd1du64;
+    for _ in 0..12 {
+        let mut game = Game::standard();
+        let mut session = Session::<GameRecord>::new();
+        session
+            .reset(&GameRecord::from_game(&game).unwrap())
+            .unwrap();
+        let mut previous = GameRecord::from_game(&game).unwrap();
+        for _ in 0..60 {
+            if game.conclusion().is_some() {
+                break;
+            }
+            let legal = game.legal_actions();
+            if legal.is_empty() {
+                break;
+            }
+            for _ in 0..1 + (seed % 3) {
+                if game.conclusion().is_some() || game.legal_actions().is_empty() {
+                    break;
+                }
+                seed ^= seed << 13;
+                seed ^= seed >> 7;
+                seed ^= seed << 17;
+                let legal = game.legal_actions();
+                let action = legal[(seed % legal.len() as u64) as usize];
+                game.submit(GameRequest {
+                    expected: game.context(),
+                    actor: game.position().side_to_move(),
+                    command: GameCommand::Play { action },
+                })
+                .unwrap();
+            }
+            let current = GameRecord::from_game(&game).unwrap();
+            assert!(current.has_prefix(&previous));
+            assert!(current.has_prefix(&current));
+            if current.event_count() > previous.event_count() {
+                assert!(!previous.has_prefix(&current));
+            }
+            let delta = current.suffix(previous.event_count()).unwrap();
+            let delta = GameDelta::from_json(&delta.to_json().unwrap()).unwrap();
+            // Tampered deltas are refused and leave the retained game intact.
+            let mut wrong_start = serde_json::to_value(&delta).unwrap();
+            wrong_start["start_event"] = (delta.start_event() + 1).into();
+            let wrong_start: GameDelta = serde_json::from_value(wrong_start).unwrap();
+            assert!(session.advance(&wrong_start).is_err());
+            if delta.event_count() > 0 {
+                let mut altered = serde_json::to_value(&delta).unwrap();
+                let last = altered["events"].as_array().unwrap().len() - 1;
+                altered["events"][last]["board_ply"] = 999.into();
+                let altered: GameDelta = serde_json::from_value(altered).unwrap();
+                assert!(session.advance(&altered).is_err());
+            }
+            assert_eq!(
+                GameRecord::from_game(session.game().unwrap()).unwrap(),
+                previous
+            );
+            session.advance(&delta).unwrap();
+            assert_eq!(
+                GameRecord::from_game(session.game().unwrap()).unwrap(),
+                current
+            );
+            assert_eq!(
+                current.reconstruct().unwrap().events(),
+                session.game().unwrap().events()
+            );
+            previous = current;
+        }
+    }
+    // A delta with an omitted nullable field is malformed.
+    assert!(GameDelta::from_json(r#"{"start_event":0,"events":[]}"#).is_err());
+    assert!(
+        GameDelta::from_json(r#"{"start_event":0,"events":[],"conclusion":null,"x":1}"#).is_err()
+    );
+}
+
+#[test]
+fn fork_copies_the_committed_game_without_replay_and_keeps_tokens_apart() {
+    let mut game = Game::standard();
+    let mut last = None;
+    for _ in 0..6 {
+        let action = game.legal_actions()[0];
+        last = Some(
+            game.submit(GameRequest {
+                expected: game.context(),
+                actor: game.position().side_to_move(),
+                command: GameCommand::Play { action },
+            })
+            .unwrap(),
+        );
+    }
+    let mut fork = game.fork().unwrap();
+    assert_eq!(
+        GameRecord::from_game(&fork).unwrap(),
+        GameRecord::from_game(&GameRecord::from_game(&game).unwrap().to_game().unwrap()).unwrap()
+    );
+    assert_ne!(fork.context(), game.context());
+    let mut token = last.take().unwrap();
+    assert!(fork.undo(&mut token).is_err());
+    let action = fork.legal_actions()[0];
+    fork.submit(GameRequest {
+        expected: fork.context(),
+        actor: fork.position().side_to_move(),
+        command: GameCommand::Play { action },
+    })
+    .unwrap();
+    assert_eq!(fork.events().len(), game.events().len() + 1);
+    // The original still accepts its own reversal token.
+    assert!(game.undo(&mut token).is_ok());
+}

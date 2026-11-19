@@ -4,6 +4,7 @@ title: Xiangqi Blunder Screen
 status: To Do
 assignee: []
 created_date: '2026-11-18T19:25:00Z'
+updated_date: '2026-11-19T07:12:00Z'
 labels:
   - handle:xiangqi-blunder-screen
   - xiangqi
@@ -45,3 +46,9 @@ Handle: Xiangqi Blunder Screen
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+John, 2026-11-19: MSH-197 (Xiangqi Strength Anchor) now measures a reference ladder and judged move quality with the MSH-193 definitions on the ladder games. This screen can reuse that judging; its own work is the mechanism classes, the fix rule and the blunder suite.
+<!-- SECTION:NOTES:END -->

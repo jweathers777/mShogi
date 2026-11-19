@@ -71,6 +71,9 @@ evaluation round, approved anchor, blunder screen, stop decision). The target is
 competent play without obvious blunders from classical techniques at bounded
 effort, as a baseline for later learned evaluation. Adjust only for available
 opponents, known techniques and rules, and record the reason in the task.
+Where no public rating list exists, measure with a fixed reference ladder and
+judged move quality (roadmap, "Measurement without a rating list"). For games
+after Xiangqi, do not look for external opponents (John, 2026-11-19).
 
 ## Long tests run in the cloud
 

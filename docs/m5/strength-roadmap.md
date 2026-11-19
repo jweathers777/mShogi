@@ -30,10 +30,11 @@ with a recorded reason.
    mobility, King safety and game-specific terms) with the shared tool
    (`crates/mshogi-search/src/texel.rs`) on at least about 500,000 quiet
    self-play positions, with a split by game or opening and a held-out loss.
-4. **Strength anchor (needs John's approval with time and dollar caps).** One
-   approximate rating against independent rated opponents, run in the cloud
-   like MSH-185 and MSH-191. No public servers and no published games. If no
-   rated opponents exist, record that limit; do not invent a rating.
+4. **Strength measurement (needs John's approval with time and dollar caps).**
+   Where a public rating list exists (CCRL, floodgate), one approximate rating
+   against independent rated opponents, run in the cloud like MSH-185 and
+   MSH-191. Where none exists, see "Measurement without a rating list" below.
+   No public servers and no published games. Never invent a rating.
 5. **Blunder screen.** Judge mShogi's moves with a much stronger engine (a
    measurement tool only), fix the blunder rule, classes and a fix rule
    (one mechanism of at least 30% that maps to a general change) before the
@@ -50,15 +51,46 @@ revert. Run long tests in the cloud (`tools/experiments/gcp.py`) with a dollar
 cap, and verify cleanup. Get independent review from a fresh session. The
 native rules stay the only authority for moves, histories and results.
 
-**Games without strong opponents.** For Chu and Tenjiku (and Tori, where few
-engines exist), the anchor step is replaced by a recorded limitation. The
-frozen-predecessor tests, tactical suites and, if available, a deeper search
-of mShogi itself as a judge carry the evidence. A judge of the same family is
-weaker evidence; say so in the report.
+**Measurement without a rating list** (John, 2026-11-19). Use three
+measures and report them separately:
+
+- **Reference ladder (relative Elo).** Freeze a set of independent opponents
+  over a range of strengths (exact versions; fixed node limits where possible,
+  so the ladder does not depend on the machine). Play a round robin and fit
+  all ratings together (Ordo or BayesElo) with one rung fixed at 0. Report
+  mShogi's place, its gap to the strongest engine, and any historical tie
+  (for example an engine in an old league), marked as historical.
+- **Judged move quality.** With a much stronger engine as judge, report clear
+  blunders per 100 moves and mean win-probability loss per move, with the
+  MSH-193 definitions (p = 1/(1+exp(-cp/600)); clear blunder: p_before >= 0.30
+  and p_after <= p_before - 0.30). Judge the ladder games.
+- **Method check (optional, small).** Where a true anchor exists (Chess,
+  Shogi), test whether the same ladder and quality measures place those
+  engines consistently with their anchors.
+
+A human-scale rating needs rated human games (public servers or a rated game
+database) and is not a goal now.
+
+**Games after Xiangqi: no opponent search** (John, 2026-11-19). For Tori, Chu
+and Tenjiku, do not spend time looking for external opponents or judges.
+Optimize the search as far as classical techniques allow, adapted to the
+game. The evidence is frozen-predecessor tests, tactical suites, a scaling
+curve (strength against depth or time) and blunder rates judged by a much
+deeper mShogi search. A same-family judge is weaker evidence; say so in the
+report. Steps 4 and 5 above change accordingly.
+
+**Move generation deep dive per game** (John, 2026-11-19). Each game with
+pieces that need non-standard generation (for example the Lion, Fire Demon
+and range-jumping Generals) has a discussion task with John to explore the
+best move generation for those pieces: MSH-200 (Tori Move Generation Deep
+Dive), MSH-201 (Chu Move Generation Deep Dive), MSH-202 (Tenjiku Move
+Generation Deep Dive). Native rules stay the authority; a faster search-side
+generator is validated by perft and differential tests against them.
 
 **Current game: Xiangqi** (John, 2026-11-18): MSH-194 (Xiangqi Strength
 Harness), MSH-195 (Xiangqi Selectivity Round), MSH-196 (Xiangqi Evaluation
-Round), MSH-197 (Xiangqi Strength Anchor) and MSH-198 (Xiangqi Blunder Screen).
+Round), MSH-197 (Xiangqi Strength Anchor: reference ladder and judged move
+quality) and MSH-198 (Xiangqi Blunder Screen).
 MSH-54 (Conventional Xiangqi) keeps the final criteria. Tori, Chu and Tenjiku
 (MSH-51, MSH-52, MSH-53) get their step tasks when John starts them.
 

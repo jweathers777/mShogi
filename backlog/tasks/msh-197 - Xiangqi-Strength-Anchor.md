@@ -4,6 +4,7 @@ title: Xiangqi Strength Anchor
 status: To Do
 assignee: []
 created_date: '2026-11-18T19:25:00Z'
+updated_date: '2026-11-19T07:12:00Z'
 labels:
   - handle:xiangqi-strength-anchor
   - xiangqi
@@ -21,20 +22,22 @@ ordinal: 204000
 <!-- SECTION:DESCRIPTION:BEGIN -->
 Handle: Xiangqi Strength Anchor
 
-**Problem.** Predecessor tests show gains, not strength. Xiangqi needs one approximate external reference, as Chess (MSH-185) and Shogi (MSH-191) have.
+**Problem.** Predecessor tests show gains, not strength. Chess (MSH-185) and Shogi (MSH-191) have approximate ratings against public rating lists; Xiangqi has no current public rating list for engines (MSH-194, Xiangqi Strength Harness).
 
-**Objective.** The anchor step of the per-game classical strength program (docs/m5/strength-roadmap.md).
+**Objective.** Measure Xiangqi strength by the program's method for games without a rating list (docs/m5/strength-roadmap.md, "Measurement without a rating list", John 2026-11-19): a fixed reference ladder (relative Elo) and move quality judged by a much stronger engine, reported separately.
 
-**Approach.** Use the opponent pool proposed in the harness task after John approves it with time and dollar caps. Run in the cloud with the clocked route. No public servers and no published games. If no credible rating reference exists, report a relative ladder and state the limit.
+**Approach.** Freeze the ladder before any game: classical ElephantEye, Fairy-Stockfish without its neural network, and Pikafish at three or four fixed node limits (exact versions and licences confirmed). Play a round robin in the cloud with the clocked route and fit all ratings together (Ordo or BayesElo) with one rung fixed at 0. Judge the ladder games with full-strength Pikafish using the MSH-193 definitions; this may be shared with MSH-198 (Xiangqi Blunder Screen). Optional small method check on Chess and Shogi, where true anchors exist. No public servers and no published games; no human-scale rating claimed. Report unscored stops (clock exhaustion) per engine.
 
-**Completion.** A recorded estimate or ladder with its uncertainty, conditions and compute. The status stays To Do until John approves the pool and caps.
+**Completion.** Ladder placement, gap to full Pikafish, judged blunder rate and mean win-probability loss, with uncertainty, conditions and compute. Status stays To Do until John approves the ladder and caps (proposal: about 6 hours, US$15).
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 John's approval of the opponent pool, time control and caps is recorded before any game.
-- [ ] #2 The estimate or ladder, its uncertainty, conditions, failures and compute are reported; all scored games replay natively; cloud cleanup is verified.
-- [ ] #3 Independent review is recorded and findings are resolved.
+- [ ] #2 Independent review is recorded and findings are resolved.
+- [ ] #3 The frozen ladder (engines, versions, licences, limits), the fitting method and the reference rung are recorded before any game.
+- [ ] #4 mShogi's ladder placement and gap to full-strength Pikafish are reported with uncertainty, conditions, failures, unscored stops per engine and compute; all scored games replay natively; cloud cleanup is verified.
+- [ ] #5 Judged move quality (clear blunders per 100 moves, mean win-probability loss) is reported with the MSH-193 definitions; no human-scale rating is claimed.
 <!-- AC:END -->
 
 ## Definition of Done

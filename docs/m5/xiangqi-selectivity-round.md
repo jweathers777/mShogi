@@ -17,7 +17,7 @@ Predecessor: main `7967841f` (the MSH-194 engine). Late-game fresh-search depth 
 | `MARGIN_UNIT` | Unchanged: a Soldier (100) is already the smallest capture. |
 | `quiet_order` | Not adopted: no specific ordering signal beyond history. |
 
-Measurements of the full set: 1.47× the predecessor's nodes per second on a middlegame (depth 16 against 14 in 4 s); late-game fresh depth at 100 ms median 10, 10th percentile 9 (was 8). The new stages use part of the speed gain. Tactical suite: 373/373 at 200 ms; 354/373 at 5 ms (predecessor 361), where the root mate search costs time at very small budgets.
+Measurements of the full set: 1.5–1.6× the predecessor's nodes per second on a middlegame (depth 16 against 14 in 4 s; [speed](evidence/msh195/speed-middlegame-4s.txt)); late-game fresh depth at 100 ms median 10, 10th percentile 9 (was 8). The new stages use part of the speed gain. Tactical suite: 373/373 at 200 ms. At 5 ms, two runs each give 359 and 361 for the predecessor and 358 and 362 for the candidate: no difference beyond run-to-run noise ([results](evidence/msh195/)).
 
 ## Game test
 
@@ -30,11 +30,15 @@ Candidate `900f565c` against predecessor `7967841f`, both through `mshogi-match 
 
 H1 accepted at 80 pairs (bound ±2.94). No unscored game. Compute: 7.4 minutes of local wall time.
 
-Outcomes, descriptive (160 games): the predecessor lost 28 games by the perpetual-chase rule, 46 by checkmate and 7 by stalemate; the candidate lost 1, 5 and 4. 69 games were drawn (43 natural count, 26 repetition). The chase-aware repetition score probably explains a large part of the gain, but the parts were not measured one at a time (coherent set, as the program prescribes).
+Outcomes, descriptive (160 games, [outcomes](evidence/msh195/game-outcomes.json), [batches](evidence/msh195/sprt-batches.txt)): the predecessor lost 28 games by the perpetual-chase rule, 46 by checkmate and 7 by stalemate; the candidate lost 1, 5 and 4. 69 games were drawn (43 natural count, 26 repetition). The chase-aware repetition score probably explains a large part of the gain, but the parts were not measured one at a time (coherent set, as the program prescribes).
 
 ## Correctness
 
 Search, engine, runner and console release suites pass. The Xiangqi entry of the all-games fixed fingerprint changed from 313 to 324 nodes with the same move and score (root mate search and check stage). Perft and native differential tests are unchanged and pass.
+
+## Review
+
+Independent review ([review](evidence/msh195/review.md)): nothing blocking. Applied: committed the missing evidence, bounded the SEE swap list, asserted the no-null-move precondition of lazy chase flags, and added a test of a chase cycle that starts in game history (stored and lazy flags together). A cycle where one side checks every move and the other chases every move takes the same branch as the tested perpetual-check case (the checker loses).
 
 ## Limits
 

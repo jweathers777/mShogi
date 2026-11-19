@@ -511,8 +511,11 @@ impl XiangqiPosition {
                 flags[i - start] = self.chases[i];
                 continue;
             }
+            // No null move lies in the window: a null move resets
+            // `reversible`, which bounds the repetition scan.
             let undo = self.stack[i - self.root - 1];
             let (from, to) = (undo.m.from(), undo.m.to());
+            debug_assert!(b.board[to] != 0, "board move in the repetition window");
             let (side, kind) = piece_parts(b.board[to]);
             flags[i - start] = undo.captured == 0 && b.chases_after(side, kind, to);
             b.take(side, kind, to);
@@ -574,10 +577,10 @@ impl XiangqiPosition {
         loop {
             let attacker = b.least_attacker(to, turn);
             let Some((next, at)) = attacker else { break };
-            depth += 1;
-            if depth >= gain.len() {
+            if depth + 1 >= gain.len() {
                 break;
             }
+            depth += 1;
             gain[depth] = value(kind) - gain[depth - 1];
             b.take(turn ^ 1, kind, to);
             b.take(turn, next, at);

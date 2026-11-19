@@ -481,3 +481,29 @@ fn lazy_search_chase_flags_equal_flags_computed_while_replaying_history() {
     }
     assert!(compared > 1_000, "{compared}");
 }
+#[test]
+fn a_chase_cycle_that_starts_in_game_history_uses_stored_and_lazy_flags() {
+    // The chase cycle of the test above. Six moves are native game history
+    // (flags stored during replay): the start position occurs twice there.
+    // Two search moves (lazy flags) give its third occurrence, which a cycle
+    // reaching into history needs.
+    let root = PositionRoot::from_fen("4k4/9/1n7/9/9/9/2R6/9/9/3K5 w - - 0 1").unwrap();
+    let mut game = Game::from_root(root, ClaimPolicy::Explicit).unwrap();
+    for text in ["c3b3", "b7c9", "b3c3", "c9b7", "c3b3", "b7c9"] {
+        game.submit(GameRequest {
+            expected: game.context(),
+            actor: game.position().side_to_move(),
+            command: GameCommand::Play {
+                action: text.parse().unwrap(),
+            },
+        })
+        .unwrap();
+    }
+    let mut p = XiangqiPosition::from_game(&game);
+    for text in ["b3c3", "c9b7"] {
+        let m = p.find(text.parse().unwrap()).unwrap();
+        assert!(p.make(m));
+    }
+    // Red to move at ply 2 from the root; every Red move chased: Red loses.
+    assert_eq!(p.rule_score(), Some(-MATE_SCORE + 2));
+}

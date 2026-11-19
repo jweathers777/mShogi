@@ -396,7 +396,82 @@ impl XiangqiPosition {
                 return true;
             }
         }
-        for kind in 0..7 {
+        // Chariots and Cannons: scan outward from the target. The first
+        // piece on a line attacks if it is a Chariot; the second (beyond one
+        // screen) attacks if it is a Cannon.
+        if self.pieces[by][ROOK] | self.pieces[by][CANNON] != 0 {
+            let rook = code(by, ROOK);
+            let cannon = code(by, CANNON);
+            for (dx, dy) in DIRECTIONS {
+                let mut at = target;
+                let mut screened = false;
+                while let Some(to) = offset(at, dx, dy) {
+                    let piece = self.board[to];
+                    if piece != 0 {
+                        if !screened {
+                            if piece == rook {
+                                return true;
+                            }
+                            screened = true;
+                        } else {
+                            if piece == cannon {
+                                return true;
+                            }
+                            break;
+                        }
+                    }
+                    at = to;
+                }
+            }
+        }
+        // Jumping and stepping pieces: their move geometry is symmetric, so
+        // the table entries of the target give every possible source square.
+        // A piece found there is confirmed with its own forward targets
+        // (legs, eyes, palace and river rules).
+        let t = &TABLES;
+        for kind in [GENERAL, ADVISOR, ELEPHANT, HORSE] {
+            if self.pieces[by][kind] == 0 {
+                continue;
+            }
+            let wanted = code(by, kind);
+            for jump in &t.jumps[by][kind][target][..usize::from(t.counts[by][kind][target])] {
+                let from = usize::from(jump.to);
+                if self.board[from] == wanted
+                    && self.targets(by, kind, from, true) & (1 << target) != 0
+                {
+                    return true;
+                }
+            }
+        }
+        if self.pieces[by][SOLDIER] != 0 {
+            let wanted = code(by, SOLDIER);
+            let back: i8 = if by == 0 { -1 } else { 1 };
+            for (dx, dy) in [(0, back), (-1, 0), (1, 0)] {
+                if let Some(from) = offset(target, dx, dy)
+                    && self.board[from] == wanted
+                    && self.targets(by, SOLDIER, from, true) & (1 << target) != 0
+                {
+                    return true;
+                }
+            }
+        }
+        false
+    }
+    /// Reference attack test over every piece's targets, for differential tests.
+    #[cfg(test)]
+    pub(crate) fn attacked_by_targets(&self, target: usize, by: usize) -> bool {
+        let their = self.general(by);
+        if target % 9 == their % 9 && self.board[target] == code(by ^ 1, GENERAL) {
+            let (low, high) = if their < target {
+                (their, target)
+            } else {
+                (target, their)
+            };
+            if (low + 9..high).step_by(9).all(|at| self.board[at] == 0) {
+                return true;
+            }
+        }
+        (0..7).any(|kind| {
             let mut pieces = self.pieces[by][kind];
             while pieces != 0 {
                 let from = pieces.trailing_zeros() as usize;
@@ -405,8 +480,13 @@ impl XiangqiPosition {
                     return true;
                 }
             }
-        }
-        false
+            false
+        })
+    }
+    /// Fast attack test, exposed for differential tests.
+    #[cfg(test)]
+    pub(crate) fn attacked_fast(&self, target: usize, by: usize) -> bool {
+        self.attacked(target, by)
     }
     // Fixed-size scratch state only: no history clone or allocation per node.
     fn has_legal_move(&self) -> bool {

@@ -305,3 +305,32 @@ fn table_decode_accepts_exactly_generated_moves() {
     }
     assert_eq!(decoded, pseudo.len());
 }
+#[test]
+fn reverse_attack_scan_agrees_with_every_piece_target_on_random_games() {
+    let mut checked = 0;
+    for seed in 1..=40u64 {
+        let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
+        let mut native = Position::initial();
+        let mut p = XiangqiPosition::from_position(&native);
+        for _ in 0..160 {
+            for target in 0..90 {
+                for by in 0..2 {
+                    assert_eq!(
+                        p.attacked_fast(target, by),
+                        p.attacked_by_targets(target, by),
+                        "seed {seed} target {target} by {by}"
+                    );
+                    checked += 1;
+                }
+            }
+            let legal = native.legal_actions().unwrap();
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
+            assert!(p.make(p.find(action).unwrap()));
+            native.apply(action).unwrap();
+        }
+    }
+    assert!(checked > 500_000, "{checked}");
+}

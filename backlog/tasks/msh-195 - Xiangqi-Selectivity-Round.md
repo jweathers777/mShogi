@@ -1,11 +1,11 @@
 ---
 id: MSH-195
 title: Xiangqi Selectivity Round
-status: In Progress
+status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-18T19:25:00Z'
-updated_date: '2026-11-19T08:06:00Z'
+updated_date: '2026-11-19T08:26:00Z'
 labels:
   - handle:xiangqi-selectivity-round
   - xiangqi
@@ -34,18 +34,18 @@ Handle: Xiangqi Selectivity Round
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Each adopted or rejected technique has a recorded outcome with its reason.
-- [ ] #2 Perft, native differential and history tests pass; the tactical suite score is recorded against the baseline.
-- [ ] #3 The kept set passes the sequential pentanomial predecessor test (H1 about 15 Elo) at the harness control, with compute recorded; a null result is reported and reverted.
-- [ ] #4 Independent review is recorded and findings are resolved.
+- [x] #1 Each adopted or rejected technique has a recorded outcome with its reason.
+- [x] #2 Perft, native differential and history tests pass; the tactical suite score is recorded against the baseline.
+- [x] #3 The kept set passes the sequential pentanomial predecessor test (H1 about 15 Elo) at the harness control, with compute recorded; a null result is reported and reverted.
+- [x] #4 Independent review is recorded and findings are resolved.
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
-- [ ] #2 Applicable independent review is recorded and material findings are resolved.
-- [ ] #3 Relevant documentation and follow-up tasks are current.
-- [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
+- [x] #1 Acceptance criteria have supporting evidence; failed or unavailable checks are not presented as passed.
+- [x] #2 Applicable independent review is recorded and material findings are resolved.
+- [x] #3 Relevant documentation and follow-up tasks are current.
+- [x] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -79,3 +79,13 @@ From MSH-194 (Xiangqi Strength Harness), 2026-11-18: use the 5 s + 0.1 s control
 - Release suites for search, engine, runner, console pass; all_games_timing Xiangqi fingerprint 313->324 nodes, same move.
 - Game test started locally: 40-pair batches, 5 s + 0.1 s, H1=15.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Xiangqi selectivity set kept: H1 against the frozen predecessor (main 7967841f) after 80 pairs at 5 s + 0.1 s, pentanomial [1,5,19,32,23], LLR 6.50, about +166 Elo (approx. 95% 123-214), no unscored games, 7.4 min local compute. Report: docs/m5/xiangqi-selectivity-round.md; evidence docs/m5/evidence/msh195.
+
+Changes and outcomes: reverse-scan attack test (profile showed ~65% of time in attack tests; identical fixed-depth search, ~2.2x nodes/s alone); chase-aware repetition score (one-sided check or chase cycle loses; lazy flags in search); full SEE with dynamic Cannon screens; complete checking-move generator with an 8-move quiescence check stage and the shared root df-pn mate search. MARGIN_UNIT unchanged (Soldier 100); quiet_order not adopted. Full set: 1.5-1.6x predecessor nodes/s; late-game depth p10 8 -> 9; tactical suite 373/373 at 200 ms, no difference at 5 ms beyond noise. In the test games the predecessor lost 28 by perpetual chase and 46 by checkmate, the candidate 1 and 5 (descriptive; parts not measured one at a time).
+
+Verification Level 1: release suites 1,248 passed, 16 ignored, 0 failed; search suite rerun after review fixes; clippy/fmt clean; Python 139 passed. Linux/Windows CI deferred. Independent review: nothing blocking; fixes applied (evidence, SEE bound, chase-flag precondition, pre-root cycle test). Limit: the chase rule in search approximates WXF conduct. Next: MSH-196 (Xiangqi Evaluation Round). Integrated into main by merge 1b374090.
+<!-- SECTION:FINAL_SUMMARY:END -->

@@ -31,6 +31,7 @@ fn config(engines: [EngineConfig; 2], red: usize, base_ms: u64) -> MatchConfig {
             moves: vec![],
         },
         red,
+        wire: Default::default(),
         clock: Clock {
             base_ms,
             increment_ms: 100,

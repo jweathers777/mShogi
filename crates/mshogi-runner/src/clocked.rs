@@ -21,10 +21,14 @@ pub(crate) struct Dialect {
     pub ok: &'static str,
     /// New-game command, for example `usinewgame`.
     pub newgame: &'static str,
+    /// UCCI option syntax (`option NAME type ...`, `setoption NAME VALUE`)
+    /// instead of the UCI/USI `name`/`value` keywords.
+    pub ucci_options: bool,
 }
 
 pub(crate) struct Host<'a> {
-    pub dialect: Dialect,
+    /// Dialect of engine 0 and engine 1.
+    pub dialects: [Dialect; 2],
     pub engines: &'a [EngineConfig; 2],
     pub watchdogs: Watchdogs,
     pub io: IoLimits,
@@ -218,15 +222,15 @@ impl Host<'_> {
     }
     pub(crate) fn prepare(&mut self, engine: &mut Engine) -> Result<Vec<String>, Failure> {
         let index = engine.index;
-        self.send(engine, "handshake", self.dialect.hello)?;
-        let lines = self.expect(
-            engine,
-            "handshake",
-            self.dialect.ok,
-            self.watchdogs.handshake_ms,
-        )?;
+        let dialect = self.dialects[index];
+        self.send(engine, "handshake", dialect.hello)?;
+        let lines = self.expect(engine, "handshake", dialect.ok, self.watchdogs.handshake_ms)?;
         for option in &self.engines[index].options {
-            let prefix = format!("option name {} type ", option.name);
+            let prefix = if dialect.ucci_options {
+                format!("option {} type ", option.name)
+            } else {
+                format!("option name {} type ", option.name)
+            };
             let advertised = lines.iter().find(|l| l.starts_with(&prefix)).cloned();
             match advertised {
                 Some(line) if option_value(&line, &option.value) => {}
@@ -250,12 +254,16 @@ impl Host<'_> {
             self.send(
                 engine,
                 "options",
-                &format!("setoption name {} value {}", option.name, option.value),
+                &if dialect.ucci_options {
+                    format!("setoption {} {}", option.name, option.value)
+                } else {
+                    format!("setoption name {} value {}", option.name, option.value)
+                },
             )?;
         }
         self.send(engine, "readiness", "isready")?;
         self.expect(engine, "readiness", "readyok", self.watchdogs.ready_ms)?;
-        self.send(engine, "newgame", self.dialect.newgame)?;
+        self.send(engine, "newgame", dialect.newgame)?;
         Ok(lines.into_iter().filter(|l| l.starts_with("id ")).collect())
     }
 }

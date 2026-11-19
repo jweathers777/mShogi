@@ -106,6 +106,9 @@ MSH-198 (blunder screen: 26 clear blunders and 161 mistakes in 18,856 moves,
 [screen](xiangqi-blunder-screen.md)). MSH-203 (speed round: a time doubling is
 worth about +209 Elo; attack tables, legality filter and a 64 MB table gave
 about +41 Elo; [round](xiangqi-speed-round.md)).
+**Xiangqi baseline accepted** (John, 2026-11-19): this classical engine is the
+Xiangqi baseline for later learned evaluation; no further classical Xiangqi round
+is planned unless John asks.
 MSH-54 (Conventional Xiangqi) keeps the final criteria. Tori, Chu and Tenjiku
 (MSH-51, MSH-52, MSH-53) get their step tasks when John starts them.
 

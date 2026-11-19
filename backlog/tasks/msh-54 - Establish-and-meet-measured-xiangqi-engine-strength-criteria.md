@@ -4,7 +4,7 @@ title: Establish and meet measured xiangqi engine strength criteria
 status: To Do
 assignee: []
 created_date: '2026-10-25T15:39:00Z'
-updated_date: '2026-11-19T16:29:00Z'
+updated_date: '2026-11-19T19:42:00Z'
 labels:
   - handle:conventional-xiangqi
 milestone: m-5
@@ -77,4 +77,6 @@ Status check, 2026-11-15: the move of this game to the shared search core is now
 Direction, 2026-11-18 (John): Xiangqi follows the per-game classical strength program in docs/m5/strength-roadmap.md (the same standards as Chess and Shogi). The work is MSH-194 (Xiangqi Strength Harness), MSH-195 (Xiangqi Selectivity Round), MSH-196 (Xiangqi Evaluation Round), MSH-197 (Xiangqi Strength Anchor, needs approval with caps) and MSH-198 (Xiangqi Blunder Screen). This task keeps the final criteria and verdict.
 
 2026-11-19: Xiangqi program steps done: MSH-194 harness, MSH-195 selectivity (+166 Elo vs predecessor), MSH-196 evaluation (+221 confirmation), MSH-197 ladder (mShogi +18 vs Pikafish 1,000 nodes; about 110 below ElephantEye 3.31, 270 below classical Fairy-Stockfish), MSH-198 blunder screen (no gross single weakness; 42% of errors avoided with 10 s). Awaiting John's stop-or-continue decision (program step 6).
+
+Decision, 2026-11-19 (John, verbatim: "Accept baseline"): the Xiangqi classical engine after MSH-194..198 and MSH-203 (main 8c7f487d; ladder MSH-197 measured before MSH-203: +18 Elo relative to Pikafish at 1,000 nodes; MSH-203 then added about +41 Elo against its predecessor) is accepted as the Xiangqi baseline for later learned evaluation (MSH-55, MSH-135). No further Xiangqi classical round is planned unless John asks. This task keeps the formal criteria and final verdict for M5 closure.
 <!-- SECTION:NOTES:END -->

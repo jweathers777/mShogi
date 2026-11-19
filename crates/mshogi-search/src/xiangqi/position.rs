@@ -68,6 +68,20 @@ struct Tables {
     pieces: [[[u64; N]; 7]; 2],
     side: u64,
 }
+/// Static evaluation of each piece on each square with the compiled weights.
+static STATIC: LazyLock<Box<[[[i32; N]; 7]; 2]>> = LazyLock::new(|| {
+    let mut t = Box::new([[[0; N]; 7]; 2]);
+    for side in 0..2 {
+        for kind in 0..7 {
+            for at in 0..N {
+                XiangqiPosition::static_features(side, kind, at, &mut |index, value| {
+                    t[side][kind][at] += super::eval::DEFAULT[index] * value
+                });
+            }
+        }
+    }
+    t
+});
 #[allow(clippy::needless_range_loop)]
 static TABLES: LazyLock<Box<Tables>> = LazyLock::new(|| {
     let mut t = Box::new(Tables {
@@ -185,7 +199,8 @@ pub struct XiangqiPosition {
     side: usize,
     hash: u64,
     material: [i32; 2],
-    placement: [i32; 2],
+    /// Static evaluation terms (material and placement) with the compiled weights.
+    accumulated: [i32; 2],
     check: bool,
     stack: Vec<Undo>,
     keys: Vec<u64>,
@@ -210,7 +225,7 @@ impl XiangqiPosition {
             side: owner(native.side_to_move()),
             hash: 0,
             material: [0; 2],
-            placement: [0; 2],
+            accumulated: [0; 2],
             check: false,
             stack: Vec::with_capacity(160),
             keys: Vec::with_capacity(700),
@@ -320,15 +335,56 @@ impl XiangqiPosition {
     fn general(&self, side: usize) -> usize {
         self.pieces[side][GENERAL].trailing_zeros() as usize
     }
-    fn piece_placement(side: usize, kind: usize, at: usize) -> i32 {
+    /// Static features of one piece: material and placement, value +1.
+    fn static_features(side: usize, kind: usize, at: usize, sink: &mut impl FnMut(usize, i32)) {
+        use super::eval::*;
         let rank = if side == 0 { at / 9 } else { 9 - at / 9 };
-        let central = 4 - (at % 9).abs_diff(4) as i32;
+        let distance = (at % 9).abs_diff(4);
         match kind {
-            SOLDIER => 20 * rank.saturating_sub(3) as i32 + if rank >= 5 { 8 * central } else { 0 },
-            HORSE => 6 * central + 4 * rank.min(6) as i32,
-            ROOK => 3 * central + 2 * rank as i32,
-            CANNON => 4 * central + 2 * rank.min(6) as i32,
-            _ => 0,
+            GENERAL => {
+                if rank == 1 {
+                    sink(GENERAL_RANK1, 1);
+                } else if rank == 2 {
+                    sink(GENERAL_RANK2, 1);
+                }
+                if distance != 0 {
+                    sink(GENERAL_OFF_FILE, 1);
+                }
+            }
+            ADVISOR => {
+                sink(MATERIAL, 1);
+                if rank == 1 && distance == 0 {
+                    sink(ADVISOR_CENTER, 1);
+                }
+            }
+            ELEPHANT => {
+                sink(MATERIAL + 1, 1);
+                if rank == 2 && distance == 0 {
+                    sink(ELEPHANT_CENTER, 1);
+                }
+            }
+            HORSE => {
+                sink(MATERIAL + 2, 1);
+                sink(HORSE_RANK + rank, 1);
+                sink(HORSE_FILE + distance, 1);
+            }
+            ROOK => {
+                sink(MATERIAL + 3, 1);
+                sink(ROOK_RANK + rank, 1);
+                sink(ROOK_FILE + distance, 1);
+            }
+            CANNON => {
+                sink(MATERIAL + 4, 1);
+                sink(CANNON_RANK + rank, 1);
+                sink(CANNON_FILE + distance, 1);
+            }
+            _ => {
+                sink(MATERIAL + 5, 1);
+                sink(SOLDIER_RANK + rank, 1);
+                if rank >= 5 {
+                    sink(SOLDIER_FILE + distance, 1);
+                }
+            }
         }
     }
     fn put(&mut self, side: usize, kind: usize, at: usize) {
@@ -337,7 +393,7 @@ impl XiangqiPosition {
         self.occupied[side] |= 1 << at;
         self.hash ^= TABLES.pieces[side][kind][at];
         self.material[side] += VALUE[kind];
-        self.placement[side] += Self::piece_placement(side, kind, at);
+        self.accumulated[side] += STATIC[side][kind][at];
     }
     fn take(&mut self, side: usize, kind: usize, at: usize) {
         self.board[at] = 0;
@@ -345,7 +401,7 @@ impl XiangqiPosition {
         self.occupied[side] &= !(1 << at);
         self.hash ^= TABLES.pieces[side][kind][at];
         self.material[side] -= VALUE[kind];
-        self.placement[side] -= Self::piece_placement(side, kind, at);
+        self.accumulated[side] -= STATIC[side][kind][at];
     }
     /// All local targets before friendly occupancy and royal-capture filtering.
     /// For Cannons, quiet targets precede the screen; capture targets follow it.
@@ -709,7 +765,7 @@ impl XiangqiPosition {
             side: self.side,
             hash: self.hash,
             material: self.material,
-            placement: self.placement,
+            accumulated: self.accumulated,
             check: self.check,
             stack: Vec::new(),
             keys: Vec::new(),
@@ -718,6 +774,92 @@ impl XiangqiPosition {
             track_chases: false,
             root: 0,
             reversible: 0,
+        }
+    }
+    /// All evaluation features, side to move minus opponent: static terms
+    /// of every piece, the dynamic terms and the tempo.
+    pub fn features(&self, sink: &mut impl FnMut(usize, i32)) {
+        for side in 0..2 {
+            let sign = if side == self.side { 1 } else { -1 };
+            for kind in 0..7 {
+                let mut pieces = self.pieces[side][kind];
+                while pieces != 0 {
+                    let at = pieces.trailing_zeros() as usize;
+                    pieces &= pieces - 1;
+                    Self::static_features(side, kind, at, &mut |i, v| sink(i, sign * v));
+                }
+            }
+        }
+        self.dynamic_features(self.side, sink);
+        sink(super::eval::TEMPO, 1);
+    }
+    /// Chariots, Horses and Cannons of both sides.
+    pub fn majors(&self) -> u8 {
+        (0..2)
+            .map(|s| {
+                (self.pieces[s][ROOK] | self.pieces[s][HORSE] | self.pieces[s][CANNON]).count_ones()
+            })
+            .sum::<u32>() as u8
+    }
+    /// Per-node terms (mobility, piece value by phase, General safety),
+    /// `side` minus the opponent.
+    fn dynamic_features(&self, side: usize, sink: &mut impl FnMut(usize, i32)) {
+        use super::eval::*;
+        let majors = i32::from(self.majors());
+        let empty = ALL & !(self.occupied[0] | self.occupied[1]);
+        for s in 0..2 {
+            let sign = if s == side { 1 } else { -1 };
+            let them = s ^ 1;
+            let mut mobility = [0i32; 3];
+            for (slot, kind) in [(0, HORSE), (1, ROOK), (2, CANNON)] {
+                let mut pieces = self.pieces[s][kind];
+                while pieces != 0 {
+                    let at = pieces.trailing_zeros() as usize;
+                    pieces &= pieces - 1;
+                    let reach = if kind == CANNON {
+                        (self.targets(s, kind, at, false) & empty)
+                            | (self.targets(s, kind, at, true) & self.occupied[them])
+                    } else {
+                        self.targets(s, kind, at, true) & !self.occupied[s]
+                    };
+                    mobility[slot] += reach.count_ones() as i32;
+                }
+            }
+            sink(MOBILITY_HORSE, sign * mobility[0]);
+            sink(MOBILITY_ROOK, sign * mobility[1]);
+            sink(MOBILITY_CANNON, sign * mobility[2]);
+            sink(
+                HORSE_PHASE,
+                sign * self.pieces[s][HORSE].count_ones() as i32 * majors,
+            );
+            sink(
+                CANNON_PHASE,
+                sign * self.pieces[s][CANNON].count_ones() as i32 * majors,
+            );
+            let general = self.general(s);
+            let file = general % 9;
+            let on_file = |bits: u128| {
+                let mut count = 0;
+                let mut b = bits;
+                while b != 0 {
+                    let at = b.trailing_zeros() as usize;
+                    b &= b - 1;
+                    count += i32::from(at % 9 == file);
+                }
+                count
+            };
+            sink(ENEMY_ROOK_FILE, sign * on_file(self.pieces[them][ROOK]));
+            sink(ENEMY_CANNON_FILE, sign * on_file(self.pieces[them][CANNON]));
+            let mut attacked = 0;
+            for (dx, dy) in DIRECTIONS {
+                if let Some(at) = offset(general, dx, dy)
+                    && palace(s, at)
+                    && self.attacked(at, them)
+                {
+                    attacked += 1;
+                }
+            }
+            sink(GENERAL_ADJACENT_ATTACKED, sign * attacked);
         }
     }
     // Fixed-size scratch state only: no history clone or allocation per node.
@@ -729,7 +871,7 @@ impl XiangqiPosition {
             side: self.side,
             hash: self.hash,
             material: self.material,
-            placement: self.placement,
+            accumulated: self.accumulated,
             check: self.check,
             stack: Vec::new(),
             keys: Vec::new(),
@@ -1031,9 +1173,14 @@ impl SearchPosition for XiangqiPosition {
         -MATE_SCORE + ply
     }
     fn evaluate(&self) -> i32 {
-        self.material[self.side] - self.material[self.side ^ 1] + self.placement[self.side]
-            - self.placement[self.side ^ 1]
-            + 10
+        let side = self.side;
+        let mut dynamic = 0;
+        self.dynamic_features(side, &mut |index, value| {
+            dynamic += super::eval::DEFAULT[index] * value
+        });
+        self.accumulated[side] - self.accumulated[side ^ 1]
+            + dynamic
+            + super::eval::DEFAULT[super::eval::TEMPO]
     }
     fn is_tactical(&self, m: Move) -> bool {
         self.board[m.to()] != 0

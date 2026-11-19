@@ -507,3 +507,31 @@ fn a_chase_cycle_that_starts_in_game_history_uses_stored_and_lazy_flags() {
     // Red to move at ply 2 from the root; every Red move chased: Red loses.
     assert_eq!(p.rule_score(), Some(-MATE_SCORE + 2));
 }
+#[test]
+fn evaluation_equals_the_feature_sum_with_compiled_and_initial_weights() {
+    use super::eval::{DEFAULT, INITIAL, score};
+    let mut checked = 0;
+    for seed in 1..=20u64 {
+        let mut rng = seed.wrapping_mul(0x9e3779b97f4a7c15) | 1;
+        let mut native = Position::initial();
+        let mut p = XiangqiPosition::from_position(&native);
+        for _ in 0..150 {
+            if !p.in_check() {
+                assert_eq!(p.evaluate(), score(&p, &DEFAULT), "seed {seed}");
+                // A fresh position from the native board has the same value.
+                let fresh = XiangqiPosition::from_position(&native);
+                assert_eq!(fresh.evaluate(), p.evaluate());
+                checked += 1;
+            }
+            let _ = score(&p, &INITIAL);
+            let legal = native.legal_actions().unwrap();
+            if legal.is_empty() {
+                break;
+            }
+            let action = legal[(next(&mut rng) % legal.len() as u64) as usize];
+            assert!(p.make(p.find(action).unwrap()));
+            native.apply(action).unwrap();
+        }
+    }
+    assert!(checked > 1_500, "{checked}");
+}

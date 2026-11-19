@@ -7,7 +7,7 @@ ladder runs (native-replayed reports) and the collected Pikafish judgement
 - Clear blunder: p_before >= 0.30 and p_after <= p_before - 0.30.
 - Mistake: p_before >= 0.20, loss >= 0.15, not a clear blunder.
 - Class by priority: time_trouble (< 2,000 ms on mShogi's clock),
-  repetition_rule (game lost by a native repetition fault within 20 plies),
+  repetition_rule (game lost by a native repetition fault within 20 plies after the move),
   allowed_short_mate (opponent mates in <= 7 plies by the judge),
   refuted_major_capture (judge's reply captures a Chariot, Horse or Cannon),
   refuted_minor_capture (captures an Advisor, Elephant or Soldier), other.
@@ -47,7 +47,7 @@ def classify(game, turn, after, player_side):
     c = game.get('conclusion') or {}
     reason = c.get('reason') or {}
     if (c.get('kind') == 'win' and isinstance(reason, dict) and reason.get('kind') == 'repetition'
-            and c.get('winner') != player_side and len(game['moves']) - turn['index'] <= 20):
+            and c.get('winner') != player_side and len(game['moves']) - (turn['index'] + 1) <= 20):
         return 'repetition_rule'
     score = after.get('score')
     if score and score[0] == 'mate' and 0 < score[1] <= 4:
@@ -103,7 +103,37 @@ def analyze(games, judged, player='mshogi'):
             'errors': errors}
 
 
+def suite(errors_path, out_path):
+    """Blunder suite from the classified errors (one row per error position)."""
+    d = json.loads(Path(errors_path).read_text())
+    rows = []
+    for e in d['errors']:
+        rows.append({'id': f"{e['game']}-p{e['index']}", 'fen': None, 'moves': e['moves'], 'kind': e['kind'],
+                     'class': e['class'], 'played': e['played'], 'judge_move': e['judge_move'],
+                     'refutation': e['refutation'], 'p_before': e['p_before'], 'p_after': e['p_after'],
+                     'clock_ms': e['clock_ms'], 'split': e['split'],
+                     'source': (f"mShogi move at ply index {e['index']} (0-based, from the standard root) of MSH-197 "
+                                f"ladder game {e['game']} (60 s + 1 s), judged by Pikafish 2026-09-06 at "
+                                f"1,000,000 nodes")})
+    rows.sort(key=lambda r: (r['split'], r['id']))
+    out = {'name': 'xiangqi-blunders-v1', 'profile': 'mshogi.xiangqi.wxf2018.v1',
+           'license': 'Project-generated data, BSD-LICENSE',
+           'metric': ('avoid: the engine plays a move other than `played`; better: the judge no longer rates the '
+                      'new move an error (same definitions). `judge_move` is one good move, not the only one.'),
+           'definitions': ('p = 1/(1+exp(-cp/600)); clear blunder p_before >= 0.30 and p_after <= p_before - 0.30; '
+                           'mistake p_before >= 0.20 and loss >= 0.15'),
+           'split_rule': ('held-out when sha256(game id)[0] % 4 == 0; never cross a game (the two games of one '
+                          'opening pair can fall on different sides)'),
+           'positions': rows}
+    Path(out_path).write_text(json.dumps(out, indent=1))
+    return len(rows)
+
+
 def main():
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == 'suite':
+        print(suite(sys.argv[2], sys.argv[3]), 'positions')
+        return
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('runs', nargs='+')
     p.add_argument('--judged', required=True)

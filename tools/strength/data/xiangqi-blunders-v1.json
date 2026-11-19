@@ -4,7 +4,7 @@
  "license": "Project-generated data, BSD-LICENSE",
  "metric": "avoid: the engine plays a move other than `played`; better: the judge no longer rates the new move an error (same definitions). `judge_move` is one good move, not the only one.",
  "definitions": "p = 1/(1+exp(-cp/600)); clear blunder p_before >= 0.30 and p_after <= p_before - 0.30; mistake p_before >= 0.20 and loss >= 0.15",
- "split_rule": "held-out when sha256(game id)[0] % 4 == 0; never cross a game",
+ "split_rule": "held-out when sha256(game id)[0] % 4 == 0; never cross a game (the two games of one opening pair can fall on different sides)",
  "positions": [
   {
    "id": "mshogi-eleeye-002-red1-p53",
@@ -73,7 +73,7 @@
    "p_after": 0.074,
    "clock_ms": 19273,
    "split": "development",
-   "source": "mShogi move 53 of MSH-197 ladder game mshogi-eleeye-002-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 53 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-002-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-003-red0-p66",
@@ -155,7 +155,7 @@
    "p_after": 0.0,
    "clock_ms": 15035,
    "split": "development",
-   "source": "mShogi move 66 of MSH-197 ladder game mshogi-eleeye-003-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 66 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-003-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-003-red1-p111",
@@ -282,7 +282,7 @@
    "p_after": 0.744,
    "clock_ms": 18640,
    "split": "development",
-   "source": "mShogi move 111 of MSH-197 ladder game mshogi-eleeye-003-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 111 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-003-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-008-red1-p103",
@@ -401,7 +401,7 @@
    "p_after": 0.5,
    "clock_ms": 18799,
    "split": "development",
-   "source": "mShogi move 103 of MSH-197 ladder game mshogi-eleeye-008-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 103 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-008-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-008-red1-p105",
@@ -522,7 +522,7 @@
    "p_after": 0.5,
    "clock_ms": 18692,
    "split": "development",
-   "source": "mShogi move 105 of MSH-197 ladder game mshogi-eleeye-008-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 105 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-008-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-008-red1-p107",
@@ -645,7 +645,7 @@
    "p_after": 0.5,
    "clock_ms": 19684,
    "split": "development",
-   "source": "mShogi move 107 of MSH-197 ladder game mshogi-eleeye-008-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 107 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-008-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-009-red0-p200",
@@ -861,7 +861,7 @@
    "p_after": 0.5,
    "clock_ms": 11281,
    "split": "development",
-   "source": "mShogi move 200 of MSH-197 ladder game mshogi-eleeye-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 200 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-009-red0-p202",
@@ -1079,7 +1079,7 @@
    "p_after": 0.5,
    "clock_ms": 12276,
    "split": "development",
-   "source": "mShogi move 202 of MSH-197 ladder game mshogi-eleeye-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 202 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-009-red0-p204",
@@ -1299,7 +1299,7 @@
    "p_after": 0.5,
    "clock_ms": 13271,
    "split": "development",
-   "source": "mShogi move 204 of MSH-197 ladder game mshogi-eleeye-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 204 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-011-red0-p128",
@@ -1443,7 +1443,7 @@
    "p_after": 0.0,
    "clock_ms": 12592,
    "split": "development",
-   "source": "mShogi move 128 of MSH-197 ladder game mshogi-eleeye-011-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 128 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-011-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-012-red0-p40",
@@ -1499,7 +1499,7 @@
    "p_after": 0.119,
    "clock_ms": 36769,
    "split": "development",
-   "source": "mShogi move 40 of MSH-197 ladder game mshogi-eleeye-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 40 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-012-red1-p51",
@@ -1566,7 +1566,7 @@
    "p_after": 0.0,
    "clock_ms": 22262,
    "split": "development",
-   "source": "mShogi move 51 of MSH-197 ladder game mshogi-eleeye-012-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 51 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-012-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-013-red0-p174",
@@ -1756,7 +1756,7 @@
    "p_after": 0.506,
    "clock_ms": 13527,
    "split": "development",
-   "source": "mShogi move 174 of MSH-197 ladder game mshogi-eleeye-013-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 174 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-013-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-013-red0-p176",
@@ -1948,7 +1948,7 @@
    "p_after": 0.506,
    "clock_ms": 14519,
    "split": "development",
-   "source": "mShogi move 176 of MSH-197 ladder game mshogi-eleeye-013-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 176 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-013-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-015-red1-p43",
@@ -2007,7 +2007,7 @@
    "p_after": 0.31,
    "clock_ms": 36237,
    "split": "development",
-   "source": "mShogi move 43 of MSH-197 ladder game mshogi-eleeye-015-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 43 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-015-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-016-red0-p114",
@@ -2137,7 +2137,7 @@
    "p_after": 0.316,
    "clock_ms": 16274,
    "split": "development",
-   "source": "mShogi move 114 of MSH-197 ladder game mshogi-eleeye-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 114 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-016-red0-p116",
@@ -2269,7 +2269,7 @@
    "p_after": 0.0,
    "clock_ms": 15382,
    "split": "development",
-   "source": "mShogi move 116 of MSH-197 ladder game mshogi-eleeye-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 116 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-019-red1-p55",
@@ -2340,7 +2340,7 @@
    "p_after": 0.313,
    "clock_ms": 30219,
    "split": "development",
-   "source": "mShogi move 55 of MSH-197 ladder game mshogi-eleeye-019-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 55 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-019-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-019-red1-p61",
@@ -2417,7 +2417,7 @@
    "p_after": 0.0,
    "clock_ms": 26809,
    "split": "development",
-   "source": "mShogi move 61 of MSH-197 ladder game mshogi-eleeye-019-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 61 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-019-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-020-red1-p107",
@@ -2540,7 +2540,7 @@
    "p_after": 0.0,
    "clock_ms": 9247,
    "split": "development",
-   "source": "mShogi move 107 of MSH-197 ladder game mshogi-eleeye-020-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 107 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-020-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-021-red0-p84",
@@ -2640,7 +2640,7 @@
    "p_after": 0.0,
    "clock_ms": 16151,
    "split": "development",
-   "source": "mShogi move 84 of MSH-197 ladder game mshogi-eleeye-021-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 84 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-021-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-023-red0-p110",
@@ -2766,7 +2766,7 @@
    "p_after": 0.5,
    "clock_ms": 16945,
    "split": "development",
-   "source": "mShogi move 110 of MSH-197 ladder game mshogi-eleeye-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 110 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-023-red0-p112",
@@ -2894,7 +2894,7 @@
    "p_after": 0.5,
    "clock_ms": 15224,
    "split": "development",
-   "source": "mShogi move 112 of MSH-197 ladder game mshogi-eleeye-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 112 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-023-red0-p114",
@@ -3024,7 +3024,7 @@
    "p_after": 0.5,
    "clock_ms": 16218,
    "split": "development",
-   "source": "mShogi move 114 of MSH-197 ladder game mshogi-eleeye-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 114 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-023-red0-p116",
@@ -3156,7 +3156,7 @@
    "p_after": 0.5,
    "clock_ms": 17211,
    "split": "development",
-   "source": "mShogi move 116 of MSH-197 ladder game mshogi-eleeye-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 116 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-024-red0-p36",
@@ -3208,7 +3208,7 @@
    "p_after": 0.514,
    "clock_ms": 39489,
    "split": "development",
-   "source": "mShogi move 36 of MSH-197 ladder game mshogi-eleeye-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 36 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-024-red0-p52",
@@ -3276,7 +3276,7 @@
    "p_after": 0.412,
    "clock_ms": 33745,
    "split": "development",
-   "source": "mShogi move 52 of MSH-197 ladder game mshogi-eleeye-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 52 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-024-red0-p90",
@@ -3382,7 +3382,7 @@
    "p_after": 0.397,
    "clock_ms": 13455,
    "split": "development",
-   "source": "mShogi move 90 of MSH-197 ladder game mshogi-eleeye-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 90 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-024-red0-p92",
@@ -3490,7 +3490,7 @@
    "p_after": 0.309,
    "clock_ms": 12003,
    "split": "development",
-   "source": "mShogi move 92 of MSH-197 ladder game mshogi-eleeye-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 92 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-024-red1-p69",
@@ -3575,7 +3575,7 @@
    "p_after": 0.748,
    "clock_ms": 18681,
    "split": "development",
-   "source": "mShogi move 69 of MSH-197 ladder game mshogi-eleeye-024-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 69 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-024-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-025-red1-p31",
@@ -3622,7 +3622,7 @@
    "p_after": 0.345,
    "clock_ms": 42024,
    "split": "development",
-   "source": "mShogi move 31 of MSH-197 ladder game mshogi-eleeye-025-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 31 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-025-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-025-red1-p35",
@@ -3673,7 +3673,7 @@
    "p_after": 0.0,
    "clock_ms": 36317,
    "split": "development",
-   "source": "mShogi move 35 of MSH-197 ladder game mshogi-eleeye-025-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 35 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-025-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-028-red0-p148",
@@ -3837,7 +3837,7 @@
    "p_after": 0.813,
    "clock_ms": 11517,
    "split": "development",
-   "source": "mShogi move 148 of MSH-197 ladder game mshogi-eleeye-028-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 148 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-028-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-028-red1-p71",
@@ -3924,7 +3924,7 @@
    "p_after": 0.0,
    "clock_ms": 16515,
    "split": "development",
-   "source": "mShogi move 71 of MSH-197 ladder game mshogi-eleeye-028-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 71 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-028-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-006-red0-p60",
@@ -4000,7 +4000,7 @@
    "p_after": 0.418,
    "clock_ms": 23891,
    "split": "development",
-   "source": "mShogi move 60 of MSH-197 ladder game mshogi-fairy-006-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 60 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-006-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-006-red0-p66",
@@ -4082,7 +4082,7 @@
    "p_after": 0.0,
    "clock_ms": 21730,
    "split": "development",
-   "source": "mShogi move 66 of MSH-197 ladder game mshogi-fairy-006-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 66 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-006-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-008-red1-p35",
@@ -4133,7 +4133,7 @@
    "p_after": 0.055,
    "clock_ms": 35124,
    "split": "development",
-   "source": "mShogi move 35 of MSH-197 ladder game mshogi-fairy-008-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 35 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-008-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-008-red1-p37",
@@ -4186,7 +4186,7 @@
    "p_after": 0.0,
    "clock_ms": 30413,
    "split": "development",
-   "source": "mShogi move 37 of MSH-197 ladder game mshogi-fairy-008-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 37 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-008-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-009-red1-p41",
@@ -4243,7 +4243,7 @@
    "p_after": 0.0,
    "clock_ms": 39517,
    "split": "development",
-   "source": "mShogi move 41 of MSH-197 ladder game mshogi-fairy-009-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 41 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-009-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-013-red1-p127",
@@ -4386,7 +4386,7 @@
    "p_after": 0.335,
    "clock_ms": 13624,
    "split": "development",
-   "source": "mShogi move 127 of MSH-197 ladder game mshogi-fairy-013-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 127 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-013-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-013-red1-p155",
@@ -4557,7 +4557,7 @@
    "p_after": 0.0,
    "clock_ms": 9850,
    "split": "development",
-   "source": "mShogi move 155 of MSH-197 ladder game mshogi-fairy-013-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 155 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-013-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-016-red0-p106",
@@ -4679,7 +4679,7 @@
    "p_after": 0.0,
    "clock_ms": 14726,
    "split": "development",
-   "source": "mShogi move 106 of MSH-197 ladder game mshogi-fairy-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 106 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-018-red0-p46",
@@ -4741,7 +4741,7 @@
    "p_after": 0.0,
    "clock_ms": 34496,
    "split": "development",
-   "source": "mShogi move 46 of MSH-197 ladder game mshogi-fairy-018-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 46 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-018-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-020-red0-p70",
@@ -4827,7 +4827,7 @@
    "p_after": 0.241,
    "clock_ms": 15685,
    "split": "development",
-   "source": "mShogi move 70 of MSH-197 ladder game mshogi-fairy-020-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 70 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-020-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-022-red0-p46",
@@ -4889,7 +4889,7 @@
    "p_after": 0.0,
    "clock_ms": 25461,
    "split": "development",
-   "source": "mShogi move 46 of MSH-197 ladder game mshogi-fairy-022-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 46 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-022-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-023-red1-p131",
@@ -5036,7 +5036,7 @@
    "p_after": 0.0,
    "clock_ms": 15696,
    "split": "development",
-   "source": "mShogi move 131 of MSH-197 ladder game mshogi-fairy-023-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 131 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-023-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-024-red0-p46",
@@ -5098,7 +5098,7 @@
    "p_after": 0.354,
    "clock_ms": 26603,
    "split": "development",
-   "source": "mShogi move 46 of MSH-197 ladder game mshogi-fairy-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 46 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-024-red0-p68",
@@ -5182,7 +5182,7 @@
    "p_after": 0.0,
    "clock_ms": 12004,
    "split": "development",
-   "source": "mShogi move 68 of MSH-197 ladder game mshogi-fairy-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 68 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-024-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-024-red1-p71",
@@ -5269,7 +5269,7 @@
    "p_after": 0.0,
    "clock_ms": 18294,
    "split": "development",
-   "source": "mShogi move 71 of MSH-197 ladder game mshogi-fairy-024-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 71 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-024-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-024-red1-p75",
@@ -5360,7 +5360,7 @@
    "p_after": 0.0,
    "clock_ms": 16492,
    "split": "development",
-   "source": "mShogi move 75 of MSH-197 ladder game mshogi-fairy-024-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 75 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-024-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-025-red0-p84",
@@ -5460,7 +5460,7 @@
    "p_after": 0.0,
    "clock_ms": 21596,
    "split": "development",
-   "source": "mShogi move 84 of MSH-197 ladder game mshogi-fairy-025-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 84 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-025-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-025-red0-p88",
@@ -5564,7 +5564,7 @@
    "p_after": 0.0,
    "clock_ms": 19975,
    "split": "development",
-   "source": "mShogi move 88 of MSH-197 ladder game mshogi-fairy-025-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 88 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-025-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-028-red0-p102",
@@ -5682,7 +5682,7 @@
    "p_after": 0.335,
    "clock_ms": 11809,
    "split": "development",
-   "source": "mShogi move 102 of MSH-197 ladder game mshogi-fairy-028-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 102 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-028-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-029-red1-p143",
@@ -5841,7 +5841,7 @@
    "p_after": 0.5,
    "clock_ms": 20284,
    "split": "development",
-   "source": "mShogi move 143 of MSH-197 ladder game mshogi-fairy-029-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 143 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-029-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-029-red1-p151",
@@ -6008,7 +6008,7 @@
    "p_after": 0.5,
    "clock_ms": 23060,
    "split": "development",
-   "source": "mShogi move 151 of MSH-197 ladder game mshogi-fairy-029-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 151 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-029-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-001-red0-p56",
@@ -6080,7 +6080,7 @@
    "p_after": 0.0,
    "clock_ms": 22751,
    "split": "development",
-   "source": "mShogi move 56 of MSH-197 ladder game mshogi-pika1000-001-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 56 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-001-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-001-red1-p87",
@@ -6183,7 +6183,7 @@
    "p_after": 0.832,
    "clock_ms": 23546,
    "split": "development",
-   "source": "mShogi move 87 of MSH-197 ladder game mshogi-pika1000-001-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 87 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-001-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-001-red1-p89",
@@ -6288,7 +6288,7 @@
    "p_after": 0.747,
    "clock_ms": 23601,
    "split": "development",
-   "source": "mShogi move 89 of MSH-197 ladder game mshogi-pika1000-001-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 89 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-001-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-002-red0-p82",
@@ -6386,7 +6386,7 @@
    "p_after": 0.0,
    "clock_ms": 9227,
    "split": "development",
-   "source": "mShogi move 82 of MSH-197 ladder game mshogi-pika1000-002-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 82 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-002-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-002-red0-p88",
@@ -6490,7 +6490,7 @@
    "p_after": 0.0,
    "clock_ms": 8541,
    "split": "development",
-   "source": "mShogi move 88 of MSH-197 ladder game mshogi-pika1000-002-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 88 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-002-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-002-red1-p85",
@@ -6591,7 +6591,7 @@
    "p_after": 0.418,
    "clock_ms": 12763,
    "split": "development",
-   "source": "mShogi move 85 of MSH-197 ladder game mshogi-pika1000-002-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 85 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-002-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-003-red1-p65",
@@ -6672,7 +6672,7 @@
    "p_after": 0.0,
    "clock_ms": 19021,
    "split": "development",
-   "source": "mShogi move 65 of MSH-197 ladder game mshogi-pika1000-003-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 65 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-003-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-004-red1-p85",
@@ -6773,7 +6773,7 @@
    "p_after": 0.325,
    "clock_ms": 12591,
    "split": "development",
-   "source": "mShogi move 85 of MSH-197 ladder game mshogi-pika1000-004-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 85 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-004-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-004-red1-p87",
@@ -6876,7 +6876,7 @@
    "p_after": 0.0,
    "clock_ms": 11161,
    "split": "development",
-   "source": "mShogi move 87 of MSH-197 ladder game mshogi-pika1000-004-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 87 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-004-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-005-red1-p51",
@@ -6943,7 +6943,7 @@
    "p_after": 0.0,
    "clock_ms": 23199,
    "split": "development",
-   "source": "mShogi move 51 of MSH-197 ladder game mshogi-pika1000-005-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 51 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-005-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-006-red1-p27",
@@ -6986,7 +6986,7 @@
    "p_after": 0.504,
    "clock_ms": 45335,
    "split": "development",
-   "source": "mShogi move 27 of MSH-197 ladder game mshogi-pika1000-006-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 27 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-006-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-006-red1-p33",
@@ -7035,7 +7035,7 @@
    "p_after": 0.304,
    "clock_ms": 40142,
    "split": "development",
-   "source": "mShogi move 33 of MSH-197 ladder game mshogi-pika1000-006-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 33 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-006-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-007-red0-p36",
@@ -7087,7 +7087,7 @@
    "p_after": 0.473,
    "clock_ms": 39705,
    "split": "development",
-   "source": "mShogi move 36 of MSH-197 ladder game mshogi-pika1000-007-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 36 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-007-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-009-red0-p110",
@@ -7213,7 +7213,7 @@
    "p_after": 0.0,
    "clock_ms": 6644,
    "split": "development",
-   "source": "mShogi move 110 of MSH-197 ladder game mshogi-pika1000-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 110 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-009-red0-p68",
@@ -7297,7 +7297,7 @@
    "p_after": 0.0,
    "clock_ms": 11430,
    "split": "development",
-   "source": "mShogi move 68 of MSH-197 ladder game mshogi-pika1000-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 68 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-009-red1-p49",
@@ -7362,7 +7362,7 @@
    "p_after": 0.34,
    "clock_ms": 26120,
    "split": "development",
-   "source": "mShogi move 49 of MSH-197 ladder game mshogi-pika1000-009-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 49 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-009-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-012-red1-p43",
@@ -7421,7 +7421,7 @@
    "p_after": 0.344,
    "clock_ms": 40380,
    "split": "development",
-   "source": "mShogi move 43 of MSH-197 ladder game mshogi-pika1000-012-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 43 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-012-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-014-red1-p87",
@@ -7524,7 +7524,7 @@
    "p_after": 0.81,
    "clock_ms": 22138,
    "split": "development",
-   "source": "mShogi move 87 of MSH-197 ladder game mshogi-pika1000-014-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 87 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-014-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-014-red1-p91",
@@ -7631,7 +7631,7 @@
    "p_after": 0.835,
    "clock_ms": 23230,
    "split": "development",
-   "source": "mShogi move 91 of MSH-197 ladder game mshogi-pika1000-014-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 91 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-014-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-016-red0-p140",
@@ -7787,7 +7787,7 @@
    "p_after": 0.0,
    "clock_ms": 8878,
    "split": "development",
-   "source": "mShogi move 140 of MSH-197 ladder game mshogi-pika1000-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 140 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-021-red1-p197",
@@ -8000,7 +8000,7 @@
    "p_after": 0.0,
    "clock_ms": 6379,
    "split": "development",
-   "source": "mShogi move 197 of MSH-197 ladder game mshogi-pika1000-021-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 197 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-021-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-023-red1-p123",
@@ -8139,7 +8139,7 @@
    "p_after": 0.0,
    "clock_ms": 6594,
    "split": "development",
-   "source": "mShogi move 123 of MSH-197 ladder game mshogi-pika1000-023-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 123 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-023-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-025-red0-p80",
@@ -8235,7 +8235,7 @@
    "p_after": 0.0,
    "clock_ms": 11884,
    "split": "development",
-   "source": "mShogi move 80 of MSH-197 ladder game mshogi-pika1000-025-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 80 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-025-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-028-red0-p94",
@@ -8345,7 +8345,7 @@
    "p_after": 0.0,
    "clock_ms": 6928,
    "split": "development",
-   "source": "mShogi move 94 of MSH-197 ladder game mshogi-pika1000-028-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 94 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-028-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-029-red0-p26",
@@ -8387,7 +8387,7 @@
    "p_after": 0.416,
    "clock_ms": 45382,
    "split": "development",
-   "source": "mShogi move 26 of MSH-197 ladder game mshogi-pika1000-029-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 26 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-029-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-030-red0-p66",
@@ -8469,7 +8469,7 @@
    "p_after": 0.08,
    "clock_ms": 15013,
    "split": "development",
-   "source": "mShogi move 66 of MSH-197 ladder game mshogi-pika1000-030-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 66 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-030-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-030-red1-p33",
@@ -8518,7 +8518,7 @@
    "p_after": 0.267,
    "clock_ms": 37841,
    "split": "development",
-   "source": "mShogi move 33 of MSH-197 ladder game mshogi-pika1000-030-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 33 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-030-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-036-red1-p87",
@@ -8621,7 +8621,7 @@
    "p_after": 0.0,
    "clock_ms": 13386,
    "split": "development",
-   "source": "mShogi move 87 of MSH-197 ladder game mshogi-pika1000-036-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 87 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-036-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-037-red1-p41",
@@ -8678,7 +8678,7 @@
    "p_after": 0.314,
    "clock_ms": 26866,
    "split": "development",
-   "source": "mShogi move 41 of MSH-197 ladder game mshogi-pika1000-037-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 41 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-037-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-037-red1-p49",
@@ -8743,7 +8743,7 @@
    "p_after": 0.0,
    "clock_ms": 25046,
    "split": "development",
-   "source": "mShogi move 49 of MSH-197 ladder game mshogi-pika1000-037-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 49 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-037-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-037-red1-p53",
@@ -8812,7 +8812,7 @@
    "p_after": 0.0,
    "clock_ms": 24119,
    "split": "development",
-   "source": "mShogi move 53 of MSH-197 ladder game mshogi-pika1000-037-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 53 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-037-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-038-red0-p26",
@@ -8854,7 +8854,7 @@
    "p_after": 0.416,
    "clock_ms": 44577,
    "split": "development",
-   "source": "mShogi move 26 of MSH-197 ladder game mshogi-pika1000-038-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 26 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-038-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-039-red0-p82",
@@ -8952,7 +8952,7 @@
    "p_after": 0.0,
    "clock_ms": 16047,
    "split": "development",
-   "source": "mShogi move 82 of MSH-197 ladder game mshogi-pika1000-039-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 82 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-039-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-039-red1-p231",
@@ -9199,7 +9199,7 @@
    "p_after": 0.0,
    "clock_ms": 4200,
    "split": "development",
-   "source": "mShogi move 231 of MSH-197 ladder game mshogi-pika1000-039-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 231 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-039-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-003-red0-p46",
@@ -9261,7 +9261,7 @@
    "p_after": 0.252,
    "clock_ms": 32374,
    "split": "development",
-   "source": "mShogi move 46 of MSH-197 ladder game mshogi-pika300-003-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 46 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-003-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-003-red1-p41",
@@ -9318,7 +9318,7 @@
    "p_after": 0.0,
    "clock_ms": 30788,
    "split": "development",
-   "source": "mShogi move 41 of MSH-197 ladder game mshogi-pika300-003-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 41 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-003-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-003-red1-p47",
@@ -9381,7 +9381,7 @@
    "p_after": 0.0,
    "clock_ms": 21900,
    "split": "development",
-   "source": "mShogi move 47 of MSH-197 ladder game mshogi-pika300-003-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 47 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-003-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-006-red0-p62",
@@ -9459,7 +9459,7 @@
    "p_after": 0.53,
    "clock_ms": 30397,
    "split": "development",
-   "source": "mShogi move 62 of MSH-197 ladder game mshogi-pika300-006-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 62 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-006-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-006-red1-p25",
@@ -9500,7 +9500,7 @@
    "p_after": 0.0,
    "clock_ms": 44043,
    "split": "development",
-   "source": "mShogi move 25 of MSH-197 ladder game mshogi-pika300-006-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 25 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-006-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-010-red1-p53",
@@ -9569,7 +9569,7 @@
    "p_after": 0.381,
    "clock_ms": 31570,
    "split": "development",
-   "source": "mShogi move 53 of MSH-197 ladder game mshogi-pika300-010-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 53 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-010-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-010-red1-p57",
@@ -9642,7 +9642,7 @@
    "p_after": 0.0,
    "clock_ms": 28489,
    "split": "development",
-   "source": "mShogi move 57 of MSH-197 ladder game mshogi-pika300-010-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 57 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-010-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-011-red1-p49",
@@ -9707,7 +9707,7 @@
    "p_after": 0.802,
    "clock_ms": 38462,
    "split": "development",
-   "source": "mShogi move 49 of MSH-197 ladder game mshogi-pika300-011-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 49 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-011-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-013-red0-p26",
@@ -9749,7 +9749,7 @@
    "p_after": 0.341,
    "clock_ms": 47728,
    "split": "development",
-   "source": "mShogi move 26 of MSH-197 ladder game mshogi-pika300-013-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 26 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-013-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-013-red1-p45",
@@ -9810,7 +9810,7 @@
    "p_after": 0.611,
    "clock_ms": 26854,
    "split": "development",
-   "source": "mShogi move 45 of MSH-197 ladder game mshogi-pika300-013-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 45 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-013-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-016-red0-p60",
@@ -9886,7 +9886,7 @@
    "p_after": 0.32,
    "clock_ms": 23529,
    "split": "development",
-   "source": "mShogi move 60 of MSH-197 ladder game mshogi-pika300-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 60 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-016-red0-p82",
@@ -9984,7 +9984,7 @@
    "p_after": 0.209,
    "clock_ms": 13561,
    "split": "development",
-   "source": "mShogi move 82 of MSH-197 ladder game mshogi-pika300-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 82 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-016-red0-p86",
@@ -10086,7 +10086,7 @@
    "p_after": 0.0,
    "clock_ms": 12221,
    "split": "development",
-   "source": "mShogi move 86 of MSH-197 ladder game mshogi-pika300-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 86 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-016-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-017-red1-p57",
@@ -10159,7 +10159,7 @@
    "p_after": 0.25,
    "clock_ms": 31020,
    "split": "development",
-   "source": "mShogi move 57 of MSH-197 ladder game mshogi-pika300-017-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 57 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-017-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-024-red1-p103",
@@ -10278,7 +10278,7 @@
    "p_after": 0.722,
    "clock_ms": 20429,
    "split": "development",
-   "source": "mShogi move 103 of MSH-197 ladder game mshogi-pika300-024-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 103 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-024-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-027-red1-p15",
@@ -10309,7 +10309,7 @@
    "p_after": 0.315,
    "clock_ms": 54489,
    "split": "development",
-   "source": "mShogi move 15 of MSH-197 ladder game mshogi-pika300-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 15 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-027-red1-p25",
@@ -10350,7 +10350,7 @@
    "p_after": 0.0,
    "clock_ms": 42811,
    "split": "development",
-   "source": "mShogi move 25 of MSH-197 ladder game mshogi-pika300-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 25 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-027-red1-p37",
@@ -10403,7 +10403,7 @@
    "p_after": 0.0,
    "clock_ms": 32636,
    "split": "development",
-   "source": "mShogi move 37 of MSH-197 ladder game mshogi-pika300-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 37 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-028-red1-p45",
@@ -10464,7 +10464,7 @@
    "p_after": 0.345,
    "clock_ms": 32804,
    "split": "development",
-   "source": "mShogi move 45 of MSH-197 ladder game mshogi-pika300-028-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 45 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-028-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-028-red1-p53",
@@ -10533,7 +10533,7 @@
    "p_after": 0.0,
    "clock_ms": 24777,
    "split": "development",
-   "source": "mShogi move 53 of MSH-197 ladder game mshogi-pika300-028-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 53 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-028-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-032-red1-p47",
@@ -10596,7 +10596,7 @@
    "p_after": 0.0,
    "clock_ms": 30470,
    "split": "development",
-   "source": "mShogi move 47 of MSH-197 ladder game mshogi-pika300-032-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 47 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-032-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-033-red0-p44",
@@ -10656,7 +10656,7 @@
    "p_after": 0.741,
    "clock_ms": 29221,
    "split": "development",
-   "source": "mShogi move 44 of MSH-197 ladder game mshogi-pika300-033-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 44 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-033-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-036-red0-p128",
@@ -10800,7 +10800,7 @@
    "p_after": 0.0,
    "clock_ms": 4942,
    "split": "development",
-   "source": "mShogi move 128 of MSH-197 ladder game mshogi-pika300-036-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 128 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-036-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-037-red0-p20",
@@ -10836,7 +10836,7 @@
    "p_after": 0.319,
    "clock_ms": 52443,
    "split": "development",
-   "source": "mShogi move 20 of MSH-197 ladder game mshogi-pika300-037-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 20 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-037-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-001-red0-p106",
@@ -10958,7 +10958,7 @@
    "p_after": 0.0,
    "clock_ms": 15258,
    "split": "development",
-   "source": "mShogi move 106 of MSH-197 ladder game mshogi-pika3000-001-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 106 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-001-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-001-red0-p116",
@@ -11090,7 +11090,7 @@
    "p_after": 0.0,
    "clock_ms": 14179,
    "split": "development",
-   "source": "mShogi move 116 of MSH-197 ladder game mshogi-pika3000-001-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 116 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-001-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-002-red0-p184",
@@ -11290,7 +11290,7 @@
    "p_after": 0.0,
    "clock_ms": 4943,
    "split": "development",
-   "source": "mShogi move 184 of MSH-197 ladder game mshogi-pika3000-002-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 184 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-002-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-002-red0-p208",
@@ -11514,7 +11514,7 @@
    "p_after": 0.0,
    "clock_ms": 6287,
    "split": "development",
-   "source": "mShogi move 208 of MSH-197 ladder game mshogi-pika3000-002-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 208 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-002-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-005-red0-p100",
@@ -11630,7 +11630,7 @@
    "p_after": 0.0,
    "clock_ms": 22778,
    "split": "development",
-   "source": "mShogi move 100 of MSH-197 ladder game mshogi-pika3000-005-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 100 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-005-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-005-red0-p134",
@@ -11780,7 +11780,7 @@
    "p_after": 0.0,
    "clock_ms": 12484,
    "split": "development",
-   "source": "mShogi move 134 of MSH-197 ladder game mshogi-pika3000-005-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 134 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-005-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-007-red0-p78",
@@ -11874,7 +11874,7 @@
    "p_after": 0.0,
    "clock_ms": 9881,
    "split": "development",
-   "source": "mShogi move 78 of MSH-197 ladder game mshogi-pika3000-007-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 78 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-007-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-010-red0-p152",
@@ -12042,7 +12042,7 @@
    "p_after": 0.309,
    "clock_ms": 9179,
    "split": "development",
-   "source": "mShogi move 152 of MSH-197 ladder game mshogi-pika3000-010-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 152 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-010-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-010-red0-p246",
@@ -12304,7 +12304,7 @@
    "p_after": 0.0,
    "clock_ms": 2660,
    "split": "development",
-   "source": "mShogi move 246 of MSH-197 ladder game mshogi-pika3000-010-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 246 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-010-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-012-red1-p49",
@@ -12369,7 +12369,7 @@
    "p_after": 0.081,
    "clock_ms": 19191,
    "split": "development",
-   "source": "mShogi move 49 of MSH-197 ladder game mshogi-pika3000-012-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 49 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-012-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-014-red0-p72",
@@ -12457,7 +12457,7 @@
    "p_after": 0.723,
    "clock_ms": 18732,
    "split": "development",
-   "source": "mShogi move 72 of MSH-197 ladder game mshogi-pika3000-014-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 72 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-014-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-014-red0-p76",
@@ -12549,7 +12549,7 @@
    "p_after": 0.721,
    "clock_ms": 16581,
    "split": "development",
-   "source": "mShogi move 76 of MSH-197 ladder game mshogi-pika3000-014-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 76 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-014-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-017-red0-p80",
@@ -12645,7 +12645,7 @@
    "p_after": 0.31,
    "clock_ms": 17712,
    "split": "development",
-   "source": "mShogi move 80 of MSH-197 ladder game mshogi-pika3000-017-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 80 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-017-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-017-red0-p90",
@@ -12751,7 +12751,7 @@
    "p_after": 0.0,
    "clock_ms": 15219,
    "split": "development",
-   "source": "mShogi move 90 of MSH-197 ladder game mshogi-pika3000-017-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 90 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-017-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-017-red1-p55",
@@ -12822,7 +12822,7 @@
    "p_after": 0.0,
    "clock_ms": 22853,
    "split": "development",
-   "source": "mShogi move 55 of MSH-197 ladder game mshogi-pika3000-017-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 55 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-017-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-027-red1-p35",
@@ -12873,7 +12873,7 @@
    "p_after": 0.309,
    "clock_ms": 37104,
    "split": "development",
-   "source": "mShogi move 35 of MSH-197 ladder game mshogi-pika3000-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 35 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-029-red0-p174",
@@ -13063,7 +13063,7 @@
    "p_after": 0.0,
    "clock_ms": 11729,
    "split": "development",
-   "source": "mShogi move 174 of MSH-197 ladder game mshogi-pika3000-029-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 174 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-029-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-030-red0-p146",
@@ -13225,7 +13225,7 @@
    "p_after": 0.0,
    "clock_ms": 5881,
    "split": "development",
-   "source": "mShogi move 146 of MSH-197 ladder game mshogi-pika3000-030-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 146 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-030-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-030-red1-p83",
@@ -13324,7 +13324,7 @@
    "p_after": 0.0,
    "clock_ms": 9355,
    "split": "development",
-   "source": "mShogi move 83 of MSH-197 ladder game mshogi-pika3000-030-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 83 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-030-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-001-red0-p42",
@@ -13382,7 +13382,7 @@
    "p_after": 0.423,
    "clock_ms": 34196,
    "split": "held-out",
-   "source": "mShogi move 42 of MSH-197 ladder game mshogi-eleeye-001-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 42 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-001-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-011-red1-p47",
@@ -13445,7 +13445,7 @@
    "p_after": 0.0,
    "clock_ms": 24882,
    "split": "held-out",
-   "source": "mShogi move 47 of MSH-197 ladder game mshogi-eleeye-011-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 47 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-011-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-015-red0-p72",
@@ -13533,7 +13533,7 @@
    "p_after": 0.0,
    "clock_ms": 19659,
    "split": "held-out",
-   "source": "mShogi move 72 of MSH-197 ladder game mshogi-eleeye-015-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 72 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-015-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-017-red1-p99",
@@ -13648,7 +13648,7 @@
    "p_after": 0.0,
    "clock_ms": 9012,
    "split": "held-out",
-   "source": "mShogi move 99 of MSH-197 ladder game mshogi-eleeye-017-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 99 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-017-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-023-red1-p39",
@@ -13703,7 +13703,7 @@
    "p_after": 0.34,
    "clock_ms": 27335,
    "split": "held-out",
-   "source": "mShogi move 39 of MSH-197 ladder game mshogi-eleeye-023-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 39 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-023-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-eleeye-027-red0-p30",
@@ -13749,7 +13749,7 @@
    "p_after": 0.0,
    "clock_ms": 33654,
    "split": "held-out",
-   "source": "mShogi move 30 of MSH-197 ladder game mshogi-eleeye-027-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 30 (0-based, from the standard root) of MSH-197 ladder game mshogi-eleeye-027-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-001-red0-p46",
@@ -13811,7 +13811,7 @@
    "p_after": 0.0,
    "clock_ms": 27063,
    "split": "held-out",
-   "source": "mShogi move 46 of MSH-197 ladder game mshogi-fairy-001-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 46 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-001-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-001-red1-p37",
@@ -13864,7 +13864,7 @@
    "p_after": 0.0,
    "clock_ms": 31606,
    "split": "held-out",
-   "source": "mShogi move 37 of MSH-197 ladder game mshogi-fairy-001-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 37 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-001-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-002-red1-p29",
@@ -13909,7 +13909,7 @@
    "p_after": 0.435,
    "clock_ms": 37951,
    "split": "held-out",
-   "source": "mShogi move 29 of MSH-197 ladder game mshogi-fairy-002-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 29 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-002-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-002-red1-p53",
@@ -13978,7 +13978,7 @@
    "p_after": 0.288,
    "clock_ms": 27775,
    "split": "held-out",
-   "source": "mShogi move 53 of MSH-197 ladder game mshogi-fairy-002-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 53 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-002-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-008-red0-p26",
@@ -14020,7 +14020,7 @@
    "p_after": 0.244,
    "clock_ms": 35405,
    "split": "held-out",
-   "source": "mShogi move 26 of MSH-197 ladder game mshogi-fairy-008-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 26 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-008-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-008-red0-p36",
@@ -14072,7 +14072,7 @@
    "p_after": 0.0,
    "clock_ms": 24860,
    "split": "held-out",
-   "source": "mShogi move 36 of MSH-197 ladder game mshogi-fairy-008-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 36 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-008-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-010-red1-p73",
@@ -14161,7 +14161,7 @@
    "p_after": 0.05,
    "clock_ms": 12877,
    "split": "held-out",
-   "source": "mShogi move 73 of MSH-197 ladder game mshogi-fairy-010-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 73 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-010-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-010-red1-p77",
@@ -14254,7 +14254,7 @@
    "p_after": 0.0,
    "clock_ms": 12695,
    "split": "held-out",
-   "source": "mShogi move 77 of MSH-197 ladder game mshogi-fairy-010-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 77 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-010-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-017-red0-p34",
@@ -14304,7 +14304,7 @@
    "p_after": 0.688,
    "clock_ms": 42499,
    "split": "held-out",
-   "source": "mShogi move 34 of MSH-197 ladder game mshogi-fairy-017-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 34 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-017-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-017-red0-p36",
@@ -14356,7 +14356,7 @@
    "p_after": 0.7,
    "clock_ms": 43492,
    "split": "held-out",
-   "source": "mShogi move 36 of MSH-197 ladder game mshogi-fairy-017-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 36 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-017-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-017-red1-p57",
@@ -14429,7 +14429,7 @@
    "p_after": 0.0,
    "clock_ms": 25498,
    "split": "held-out",
-   "source": "mShogi move 57 of MSH-197 ladder game mshogi-fairy-017-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 57 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-017-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-019-red0-p66",
@@ -14511,7 +14511,7 @@
    "p_after": 0.084,
    "clock_ms": 20428,
    "split": "held-out",
-   "source": "mShogi move 66 of MSH-197 ladder game mshogi-fairy-019-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 66 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-019-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-023-red0-p44",
@@ -14571,7 +14571,7 @@
    "p_after": 0.248,
    "clock_ms": 32517,
    "split": "held-out",
-   "source": "mShogi move 44 of MSH-197 ladder game mshogi-fairy-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 44 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-026-red0-p60",
@@ -14647,7 +14647,7 @@
    "p_after": 0.0,
    "clock_ms": 22445,
    "split": "held-out",
-   "source": "mShogi move 60 of MSH-197 ladder game mshogi-fairy-026-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 60 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-026-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-026-red1-p141",
@@ -14804,7 +14804,7 @@
    "p_after": 0.0,
    "clock_ms": 16861,
    "split": "held-out",
-   "source": "mShogi move 141 of MSH-197 ladder game mshogi-fairy-026-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 141 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-026-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-027-red1-p127",
@@ -14947,7 +14947,7 @@
    "p_after": 0.0,
    "clock_ms": 9804,
    "split": "held-out",
-   "source": "mShogi move 127 of MSH-197 ladder game mshogi-fairy-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 127 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-fairy-027-red1-p145",
@@ -15108,7 +15108,7 @@
    "p_after": 0.0,
    "clock_ms": 12647,
    "split": "held-out",
-   "source": "mShogi move 145 of MSH-197 ladder game mshogi-fairy-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 145 (0-based, from the standard root) of MSH-197 ladder game mshogi-fairy-027-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-003-red0-p170",
@@ -15294,7 +15294,7 @@
    "p_after": 0.0,
    "clock_ms": 6930,
    "split": "held-out",
-   "source": "mShogi move 170 of MSH-197 ladder game mshogi-pika1000-003-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 170 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-003-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-003-red0-p182",
@@ -15492,7 +15492,7 @@
    "p_after": 0.0,
    "clock_ms": 8087,
    "split": "held-out",
-   "source": "mShogi move 182 of MSH-197 ladder game mshogi-pika1000-003-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 182 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-003-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-003-red0-p186",
@@ -15694,7 +15694,7 @@
    "p_after": 0.0,
    "clock_ms": 7547,
    "split": "held-out",
-   "source": "mShogi move 186 of MSH-197 ladder game mshogi-pika1000-003-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 186 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-003-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika1000-034-red0-p122",
@@ -15832,7 +15832,7 @@
    "p_after": 0.0,
    "clock_ms": 2744,
    "split": "held-out",
-   "source": "mShogi move 122 of MSH-197 ladder game mshogi-pika1000-034-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 122 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika1000-034-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-012-red0-p50",
@@ -15898,7 +15898,7 @@
    "p_after": 0.0,
    "clock_ms": 17749,
    "split": "held-out",
-   "source": "mShogi move 50 of MSH-197 ladder game mshogi-pika300-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 50 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-023-red0-p24",
@@ -15938,7 +15938,7 @@
    "p_after": 0.261,
    "clock_ms": 46969,
    "split": "held-out",
-   "source": "mShogi move 24 of MSH-197 ladder game mshogi-pika300-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 24 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-023-red0-p40",
@@ -15994,7 +15994,7 @@
    "p_after": 0.348,
    "clock_ms": 30642,
    "split": "held-out",
-   "source": "mShogi move 40 of MSH-197 ladder game mshogi-pika300-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 40 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-023-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-025-red1-p87",
@@ -16097,7 +16097,7 @@
    "p_after": 0.113,
    "clock_ms": 22108,
    "split": "held-out",
-   "source": "mShogi move 87 of MSH-197 ladder game mshogi-pika300-025-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 87 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-025-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-033-red1-p61",
@@ -16174,7 +16174,7 @@
    "p_after": 0.107,
    "clock_ms": 24880,
    "split": "held-out",
-   "source": "mShogi move 61 of MSH-197 ladder game mshogi-pika300-033-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 61 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-033-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-034-red1-p29",
@@ -16219,7 +16219,7 @@
    "p_after": 0.5,
    "clock_ms": 44111,
    "split": "held-out",
-   "source": "mShogi move 29 of MSH-197 ladder game mshogi-pika300-034-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 29 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-034-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-035-red0-p48",
@@ -16283,7 +16283,7 @@
    "p_after": 0.0,
    "clock_ms": 29926,
    "split": "held-out",
-   "source": "mShogi move 48 of MSH-197 ladder game mshogi-pika300-035-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 48 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-035-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika300-035-red0-p52",
@@ -16351,7 +16351,7 @@
    "p_after": 0.0,
    "clock_ms": 25431,
    "split": "held-out",
-   "source": "mShogi move 52 of MSH-197 ladder game mshogi-pika300-035-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 52 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika300-035-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-004-red0-p88",
@@ -16455,7 +16455,7 @@
    "p_after": 0.0,
    "clock_ms": 9180,
    "split": "held-out",
-   "source": "mShogi move 88 of MSH-197 ladder game mshogi-pika3000-004-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 88 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-004-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-009-red0-p62",
@@ -16533,7 +16533,7 @@
    "p_after": 0.0,
    "clock_ms": 16638,
    "split": "held-out",
-   "source": "mShogi move 62 of MSH-197 ladder game mshogi-pika3000-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 62 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-009-red0-p68",
@@ -16617,7 +16617,7 @@
    "p_after": 0.0,
    "clock_ms": 16811,
    "split": "held-out",
-   "source": "mShogi move 68 of MSH-197 ladder game mshogi-pika3000-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 68 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-009-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-012-red0-p118",
@@ -16751,7 +16751,7 @@
    "p_after": 0.304,
    "clock_ms": 9755,
    "split": "held-out",
-   "source": "mShogi move 118 of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 118 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-012-red0-p122",
@@ -16889,7 +16889,7 @@
    "p_after": 0.0,
    "clock_ms": 9256,
    "split": "held-out",
-   "source": "mShogi move 122 of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 122 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-012-red0-p144",
@@ -17049,7 +17049,7 @@
    "p_after": 0.0,
    "clock_ms": 11676,
    "split": "held-out",
-   "source": "mShogi move 144 of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 144 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-012-red0-p146",
@@ -17211,7 +17211,7 @@
    "p_after": 0.0,
    "clock_ms": 11852,
    "split": "held-out",
-   "source": "mShogi move 146 of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 146 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-012-red0-p154",
@@ -17381,7 +17381,7 @@
    "p_after": 0.0,
    "clock_ms": 9344,
    "split": "held-out",
-   "source": "mShogi move 154 of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 154 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-012-red0-p160",
@@ -17557,7 +17557,7 @@
    "p_after": 0.0,
    "clock_ms": 6421,
    "split": "held-out",
-   "source": "mShogi move 160 of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 160 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-012-red0-p166",
@@ -17739,7 +17739,7 @@
    "p_after": 0.0,
    "clock_ms": 6723,
    "split": "held-out",
-   "source": "mShogi move 166 of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 166 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-012-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-015-red0-p32",
@@ -17787,7 +17787,7 @@
    "p_after": 0.323,
    "clock_ms": 44313,
    "split": "held-out",
-   "source": "mShogi move 32 of MSH-197 ladder game mshogi-pika3000-015-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 32 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-015-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-015-red1-p77",
@@ -17880,7 +17880,7 @@
    "p_after": 0.0,
    "clock_ms": 24446,
    "split": "held-out",
-   "source": "mShogi move 77 of MSH-197 ladder game mshogi-pika3000-015-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 77 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-015-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-015-red1-p87",
@@ -17983,7 +17983,7 @@
    "p_after": 0.0,
    "clock_ms": 16967,
    "split": "held-out",
-   "source": "mShogi move 87 of MSH-197 ladder game mshogi-pika3000-015-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 87 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-015-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-018-red1-p79",
@@ -18078,7 +18078,7 @@
    "p_after": 0.0,
    "clock_ms": 20592,
    "split": "held-out",
-   "source": "mShogi move 79 of MSH-197 ladder game mshogi-pika3000-018-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 79 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-018-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-018-red1-p83",
@@ -18177,7 +18177,7 @@
    "p_after": 0.0,
    "clock_ms": 20093,
    "split": "held-out",
-   "source": "mShogi move 83 of MSH-197 ladder game mshogi-pika3000-018-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 83 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-018-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-022-red1-p37",
@@ -18230,7 +18230,7 @@
    "p_after": 0.0,
    "clock_ms": 25411,
    "split": "held-out",
-   "source": "mShogi move 37 of MSH-197 ladder game mshogi-pika3000-022-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 37 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-022-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-026-red0-p22",
@@ -18268,7 +18268,7 @@
    "p_after": 0.323,
    "clock_ms": 53891,
    "split": "held-out",
-   "source": "mShogi move 22 of MSH-197 ladder game mshogi-pika3000-026-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 22 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-026-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-026-red0-p38",
@@ -18322,7 +18322,7 @@
    "p_after": 0.0,
    "clock_ms": 35862,
    "split": "held-out",
-   "source": "mShogi move 38 of MSH-197 ladder game mshogi-pika3000-026-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 38 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-026-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-027-red0-p108",
@@ -18446,7 +18446,7 @@
    "p_after": 0.0,
    "clock_ms": 15960,
    "split": "held-out",
-   "source": "mShogi move 108 of MSH-197 ladder game mshogi-pika3000-027-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 108 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-027-red0 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   },
   {
    "id": "mshogi-pika3000-028-red1-p105",
@@ -18567,7 +18567,7 @@
    "p_after": 0.052,
    "clock_ms": 2739,
    "split": "held-out",
-   "source": "mShogi move 105 of MSH-197 ladder game mshogi-pika3000-028-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
+   "source": "mShogi move at ply index 105 (0-based, from the standard root) of MSH-197 ladder game mshogi-pika3000-028-red1 (60 s + 1 s), judged by Pikafish 2026-09-06 at 1,000,000 nodes"
   }
  ]
 }

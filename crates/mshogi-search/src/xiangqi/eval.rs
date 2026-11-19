@@ -194,12 +194,11 @@ const fn bounds(upper: bool) -> [i32; COUNT] {
             if upper { 150 } else { -150 }
         } else if i < MOBILITY_HORSE {
             if upper { 100 } else { -100 }
-        } else if i < HORSE_PHASE {
-            if upper { 30 } else { 0 }
-        } else if i < ENEMY_ROOK_FILE {
-            if upper { 10 } else { -10 }
         } else if i < TEMPO {
-            if upper { 50 } else { -150 }
+            // Per-node terms stay at zero: two fits that used them (Chariot
+            // mobility and phase terms at their bounds) lost their game
+            // tests (MSH-196). Only static terms and the tempo are tuned.
+            0
         } else if upper {
             60
         } else {
@@ -217,12 +216,12 @@ pub const LOWER: [i32; COUNT] = bounds(false);
 /// Inclusive upper bounds.
 pub const UPPER: [i32; COUNT] = bounds(true);
 /// Compiled weights used by the search: the MSH-196 (Xiangqi Evaluation
-/// Round) revised fit, docs/m5/evidence/msh196/fit2.json.
+/// Round) static-term fit, docs/m5/evidence/msh196/fit3.json.
 pub const DEFAULT: [i32; COUNT] = [
-    150, 150, 528, 1252, 514, 100, 0, 0, 0, 0, 52, 136, 150, 150, 150, -8, -32, -8, 48, 8, -64,
-    -64, -60, 40, 140, 112, 148, 120, 120, 120, 150, -8, 50, 12, 38, -32, 150, 34, 68, 70, 104,
-    106, 108, 142, 112, 150, 150, 105, 70, 35, 64, 96, 66, 100, 102, 104, 74, 108, 76, 108, 76, 16,
-    -20, 8, 36, 0, 32, 0, -32, 0, -32, 0, 30, 0, 10, 10, -32, -64, 0, 0,
+    150, 150, 512, 1440, 498, 108, 0, 0, 0, -16, 20, 112, 126, 150, 142, -32, -32, -8, 40, 16, -56,
+    -48, -44, 56, 142, 120, 132, 120, 120, 120, 134, 24, 90, 60, 62, -8, 48, 10, 76, 134, 150, 150,
+    150, 150, 134, 142, 150, 150, 118, 118, 72, 112, 74, 148, 134, 128, 90, 132, 92, 116, 84, 48,
+    12, 24, 36, 24, 0, -32, -24, -16, -24, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ];
 
 /// Score from the side to move with a weight vector.

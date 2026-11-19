@@ -1,4 +1,6 @@
 //! Xiangqi adapter for the shared alpha-beta core; native rules own actual play.
+/// Tunable classical evaluation weights and the Texel model.
+pub mod eval;
 pub mod position;
 #[cfg(test)]
 mod position_tests;

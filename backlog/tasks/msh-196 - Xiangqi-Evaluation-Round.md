@@ -1,9 +1,11 @@
 ---
 id: MSH-196
 title: Xiangqi Evaluation Round
-status: Ready
-assignee: []
+status: In Progress
+assignee:
+  - '@claude'
 created_date: '2026-11-18T19:25:00Z'
+updated_date: '2026-11-19T12:46:00Z'
 labels:
   - handle:xiangqi-evaluation-round
   - xiangqi
@@ -45,3 +47,15 @@ Handle: Xiangqi Evaluation Round
 - [ ] #3 Relevant documentation and follow-up tasks are current.
 - [ ] #4 The result is integrated into the recorded integration branch with a durable completion or handoff summary.
 <!-- DOD:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Executed plan, see report docs/m5/xiangqi-evaluation-round.md: 80-weight linear evaluation (INITIAL = old evaluation); cloud self-play corpus (3,200 pairs, 631,802 unique quiet positions); Texel fits; held-out loss read after each fit (three times); sequential tests H1=10 at 5 s + 0.1 s. fit1 H0, bounded revision fit2 H0, controlled experiment fit3 (per-node terms pinned at 0) H1 with confirmation; review follow-up: exchange values from material weights, no decision at 600 pairs (+9.0), kept on recorded grounds.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-11-19: corpus msh196-corpus (3,200 pairs, 631,802 unique quiet positions, US$1.19). fit1 (all terms) H0 -33 Elo/200 pairs; fit2 (bounded revision: skip zero per-node terms, Advisor/Elephant lower 150) H0 -33/200; controlled experiment fit3 (per-node terms pinned 0, otherwise fit2) H1 at 40 pairs +262, confirmation pairs 41-80 +221; combined +241 (187-308). Final source keeps fit3; search skips per-node work. Report docs/m5/xiangqi-evaluation-round.md. Release suites pass; review running.
+<!-- SECTION:NOTES:END -->

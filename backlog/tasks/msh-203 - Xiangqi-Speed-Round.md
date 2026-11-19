@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T17:17:00Z'
-updated_date: '2026-11-19T17:18:00Z'
+updated_date: '2026-11-19T18:38:00Z'
 labels:
   - handle:xiangqi-speed-round
   - xiangqi
@@ -56,3 +56,13 @@ Predecessor: main 4d8497fd (MSH-196 engine). Baseline speed: ~0.9-1.0 M nodes/s 
 3. Speed set: rank/file occupancy tables for Chariot and Cannon targets and attacks; per-node danger set (own General's lines for screens and pins, Horse legs, facing file, General moves, in-check) so only risky moves get the full legality test.
 4. Checks: perft and native differential tests unchanged; fixed-depth search identical (pure speed change); speed and depth measurements; sequential test only if search output changes (identical search needs no game test per roadmap) - plus the table default change, which does change play, tested in 2(b).
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-11-19 measurements (local, macOS arm64, 8 games in parallel):
+- Time odds 10 s + 0.2 s vs 5 s + 0.1 s (same engine): H1 at 40 pairs, about +209 Elo, pentanomial [0,0,5,27,8].
+- Table 64 MB vs 16 MB at 5 s + 0.1 s: no decision at 600 pairs, +11.6 Elo (-1.2 to +24.4); 64 MB adopted on recorded grounds (consistent positive estimate, larger effect expected at longer controls, opponents in MSH-197 used 64 MB).
+- Speed set: rank/file occupancy tables for Chariot/Cannon (1.2 M table checks vs ray walk), direct reverse attack checks for jumping pieces and in SEE, danger-set legality and check filter in make, redundant pseudo-legality check removed from make. Throughput about 1.06 -> 1.28 M nodes/s (+20%). Fixed-depth best moves identical; node counts differ slightly in 2 of 4 positions (SEE attacker choice among equal Cannons/Chariots).
+- Game test of the set (candidate e491bcdb vs predecessor main) running: 5 s + 0.1 s, H1 = 15.
+<!-- SECTION:NOTES:END -->

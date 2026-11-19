@@ -103,8 +103,9 @@ relative to Pikafish at 1,000 nodes; about 110 below ElephantEye 3.31 and 270
 below classical Fairy-Stockfish; [report](xiangqi-strength-anchor.md)).
 MSH-198 (blunder screen: 26 clear blunders and 161 mistakes in 18,856 moves,
 85% quiet positional errors; no fix round; a 10 s rerun avoids 42%;
-[screen](xiangqi-blunder-screen.md)). Next: John's stop-or-continue decision
-for Xiangqi.
+[screen](xiangqi-blunder-screen.md)). MSH-203 (speed round: a time doubling is
+worth about +209 Elo; attack tables, legality filter and a 64 MB table gave
+about +41 Elo; [round](xiangqi-speed-round.md)).
 MSH-54 (Conventional Xiangqi) keeps the final criteria. Tori, Chu and Tenjiku
 (MSH-51, MSH-52, MSH-53) get their step tasks when John starts them.
 

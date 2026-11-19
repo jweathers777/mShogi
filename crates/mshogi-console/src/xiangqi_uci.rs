@@ -25,6 +25,7 @@ struct Context {
     limits: Limits,
     time: Option<TimeBudget>,
     game_generation: u64,
+    table_mb: usize,
 }
 struct Job {
     context: Context,
@@ -54,6 +55,7 @@ impl Worker {
             .spawn(move || {
                 let mut session = mshogi_engine::XiangqiSearchSession::default();
                 let mut generation = 0;
+                let mut table_mb = search::DEFAULT_TABLE_MB;
                 loop {
                     let job = {
                         let (lock, wake) = &*work;
@@ -66,8 +68,10 @@ impl Worker {
                         }
                         box_.pending.take().unwrap()
                     };
-                    if generation != job.context.game_generation {
-                        session = mshogi_engine::XiangqiSearchSession::default();
+                    if generation != job.context.game_generation || table_mb != job.context.table_mb
+                    {
+                        table_mb = job.context.table_mb;
+                        session = mshogi_engine::XiangqiSearchSession::with_table(table_mb);
                         generation = job.context.game_generation;
                     }
                     let result = session
@@ -131,6 +135,7 @@ struct Adapter {
     worker: Worker,
     ended: bool,
     game_generation: u64,
+    table_mb: usize,
 }
 impl Adapter {
     fn retire(&mut self) -> Result<(), String> {
@@ -162,6 +167,12 @@ impl Adapter {
                     out,
                     "option name Nodes type spin default {} min 0 max {}",
                     search::DEFAULT_LIMITS.nodes, search::MAX_NODES
+                )?;
+                writeln!(
+                    out,
+                    "option name Hash type spin default {} min 1 max {}",
+                    search::DEFAULT_TABLE_MB,
+                    search::MAX_TABLE_MB
                 )?;
                 writeln!(
                     out,
@@ -211,6 +222,7 @@ impl Adapter {
                     limits,
                     time,
                     game_generation: self.game_generation,
+                    table_mb: self.table_mb,
                 };
                 let stop = Arc::new(AtomicBool::new(false));
                 self.worker.submit(Job {
@@ -239,7 +251,9 @@ impl Adapter {
     }
     fn set_option(&mut self, args: &[&str]) -> Result<(), String> {
         let ["name", name, "value", value] = args else {
-            return Err("expected setoption name Depth|Nodes|RulesProfile value <value>".into());
+            return Err(
+                "expected setoption name Depth|Nodes|Hash|RulesProfile value <value>".into(),
+            );
         };
         let mut limits = self.limits;
         match *name {
@@ -249,6 +263,15 @@ impl Adapter {
                     .map_err(|_| "depth exceeds supported bounds")?
             }
             "Nodes" => limits.nodes = number(value)?,
+            "Hash" => {
+                let mb = number(value)?;
+                if !(1..=search::MAX_TABLE_MB as u64).contains(&mb) {
+                    return Err(format!("Hash outside 1..{}", search::MAX_TABLE_MB));
+                }
+                self.retire()?;
+                self.table_mb = mb as usize;
+                return Ok(());
+            }
             "RulesProfile" if *value == PROFILE_ID => {}
             _ => return Err("unsupported option/value; rules profile is immutable".into()),
         }
@@ -543,6 +566,7 @@ pub fn run() -> ExitCode {
         worker,
         ended: false,
         game_generation: 0,
+        table_mb: search::DEFAULT_TABLE_MB,
     };
     let (send, recv) = mpsc::sync_channel(32);
     if let Err(e) = thread::Builder::new()

@@ -379,6 +379,8 @@ mod identity_tests {
 #[derive(Default)]
 pub struct XiangqiSearchSession {
     slot: crate::server::Slot<search::Engine>,
+    /// Table size in megabytes for timed searches; 0 means the default.
+    table_mb: usize,
     last: Option<(
         mshogi_core::xiangqi::PositionRoot,
         mshogi_core::xiangqi::ClaimPolicy,
@@ -386,6 +388,13 @@ pub struct XiangqiSearchSession {
     )>,
 }
 impl XiangqiSearchSession {
+    /// Session whose timed searches use a table of `megabytes`.
+    pub fn with_table(megabytes: usize) -> Self {
+        Self {
+            table_mb: megabytes,
+            ..Self::default()
+        }
+    }
     /// Search one native history with optional elapsed-time control.
     pub fn search(
         &mut self,
@@ -407,10 +416,15 @@ impl XiangqiSearchSession {
                 || previous[..] != events[..previous.len()]
         });
         self.last = Some((game.root().clone(), game.claim_policy(), events.to_vec()));
+        let table_mb = self.table_mb;
         let mut engine = self
             .slot
             .acquire_incremental(reset, || {
-                Ok::<_, std::convert::Infallible>(search::new_engine())
+                Ok::<_, std::convert::Infallible>(if table_mb == 0 {
+                    search::new_engine()
+                } else {
+                    search::new_engine_sized(table_mb)
+                })
             })
             .expect("infallible engine allocation");
         search::search_with_state(game, limits, timing.remaining(), &mut engine, stop)

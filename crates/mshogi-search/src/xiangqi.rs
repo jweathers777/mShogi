@@ -213,9 +213,17 @@ pub fn search(game: &Game, limits: Limits) -> Result<SearchResult, SearchError> 
 }
 /// Persistent search state for one Xiangqi game.
 pub type Engine = Searcher<XiangqiPosition>;
+/// Default search table size in megabytes.
+pub const DEFAULT_TABLE_MB: usize = 64;
+/// Largest supported search table in megabytes.
+pub const MAX_TABLE_MB: usize = 1024;
 /// Start with an empty table and move statistics.
 pub fn new_engine() -> Engine {
-    Searcher::new(16)
+    Searcher::new(DEFAULT_TABLE_MB)
+}
+/// Start with an empty table of `megabytes` (clamped to 1..=MAX_TABLE_MB).
+pub fn new_engine_sized(megabytes: usize) -> Engine {
+    Searcher::new(megabytes.clamp(1, MAX_TABLE_MB))
 }
 /// Recorded sound_fast_only policy. Fast Unknown is retained as uncertainty,
 /// not a claim of winnability. No implicit exact graph at any node.

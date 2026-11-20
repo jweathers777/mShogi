@@ -68,6 +68,10 @@ def run_pair(args, seed, out):
     if getattr(args, 'base', None) is not None:
         command.extend(['--clock-base-ms', str(round(args.base * 1000)),
                         '--clock-increment-ms', str(round(args.increment * 1000))])
+        # MSH-204: Tori runs give the engine the nominal move time; other games
+        # keep the earlier hard-ceiling policy so their evidence stays comparable.
+        if args.game == 'tori':
+            command.extend(['--clock-allocation', 'nominal'])
     if getattr(args, 'openings', None):
         command.extend(['--openings', args.openings, '--opening-index',
                         str((seed - 1) % args.opening_count)])

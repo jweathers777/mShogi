@@ -405,21 +405,49 @@ fn fischer_allocation_charge_and_replay_refuse_tampering() {
     let clock = FischerClock {
         base_ms: 10_000,
         increment_ms: 100,
+        allocation: ClockAllocation::Hard,
     };
     let work = WorkLimits {
         depth: 4,
         nodes: 512,
         time_ms: None,
     };
-    // Nominal 9950 / 30 + 75 = 406 (not the 3x hard ceiling, MSH-204);
-    // transport reserve min(300, 406 / 2) = 203 first, then 50.
+    // Hard policy (earlier configurations): (9950 / 30 + 75) * 3 = 1218;
+    // first-request transport reserve = 300.
     assert_eq!(
         clock_work(work, Some(clock), 10_000, true).time_ms,
-        Some(203)
+        Some(918)
     );
     assert_eq!(
         clock_work(work, Some(clock), 10_000, false).time_ms,
+        Some(1168)
+    );
+    // Nominal policy (MSH-204): 9950 / 30 + 75 = 406; reserve
+    // min(300, 406 / 2) = 203 first, then 50.
+    let nominal = FischerClock {
+        allocation: ClockAllocation::Nominal,
+        ..clock
+    };
+    assert_eq!(
+        clock_work(work, Some(nominal), 10_000, true).time_ms,
+        Some(203)
+    );
+    assert_eq!(
+        clock_work(work, Some(nominal), 10_000, false).time_ms,
         Some(356)
+    );
+    // An absent policy is the earlier hard policy, and the hard policy is not
+    // written, so earlier configuration identities are unchanged.
+    let old: FischerClock =
+        serde_json::from_str(r#"{"base_ms":10000,"increment_ms":100}"#).unwrap();
+    assert_eq!(old.allocation, ClockAllocation::Hard);
+    assert_eq!(
+        serde_json::to_string(&old).unwrap(),
+        r#"{"base_ms":10000,"increment_ms":100}"#
+    );
+    assert_eq!(
+        serde_json::to_string(&nominal).unwrap(),
+        r#"{"base_ms":10000,"increment_ms":100,"allocation":"nominal"}"#
     );
     assert_eq!(
         clock_receipt(clock, 10_000, 1_000_001, true).after_ms,
@@ -497,6 +525,7 @@ fn successful_shogi_clock_steps_replay_both_players_and_colors() {
     c.clock = Some(FischerClock {
         base_ms: 10_000,
         increment_ms: 100,
+        allocation: ClockAllocation::Hard,
     });
     let mut report = run_with_stop(&c, &mut || true).unwrap().into_report();
     let mut request_id = 0;
@@ -572,6 +601,12 @@ fn successful_shogi_clock_steps_replay_both_players_and_colors() {
     }
     report.validate().unwrap();
     assert!(report.games.iter().all(|g| g.score_first_twice.is_none()));
+    // The recorded allocation policy is checked: the same steps under the
+    // other policy no longer replay (MSH-204 review).
+    let mut other = report.clone();
+    other.config.clock.as_mut().unwrap().allocation = ClockAllocation::Nominal;
+    other.config_sha256 = digest(&serde_json::to_string(&other.config).unwrap());
+    assert!(other.validate().is_err());
     // Encoded steps omit the replay-determined native record (MSH-204); the
     // decoder restores it by native replay and the result is identical.
     let text = report.to_json().unwrap();
@@ -603,6 +638,10 @@ fn successful_shogi_clock_steps_replay_both_players_and_colors() {
     .unwrap()["games"][0]["steps"][0]["request"]["game"]
         .clone();
     assert!(Report::from_json(&mixed.to_string()).is_err());
+    // An explicit null record in an elided observation is not the canonical form.
+    let mut null = encoded.clone();
+    null["games"][0]["steps"][0]["observation"]["context"]["game"] = serde_json::Value::Null;
+    assert!(Report::from_json(&null.to_string()).is_err());
     // An elided step after a changed observation replays a different history.
     let mut changed = encoded.clone();
     changed["games"][0]["steps"][0]["applied"] = serde_json::json!(false);
@@ -621,6 +660,7 @@ fn clock_control_refuses_watchdog_below_possible_allocation() {
     c.clock = Some(FischerClock {
         base_ms: 600_000,
         increment_ms: 60_000,
+        allocation: ClockAllocation::Hard,
     });
     c.watchdog_ms = 30_000;
     assert!(c.validate().unwrap_err().to_string().contains("watchdog"));

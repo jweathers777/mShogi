@@ -294,6 +294,23 @@ impl CanonicalRecord {
         {
             return Err(EnvelopeError::Identity);
         }
+        if wire.game_kind == GameKind::Tori {
+            // The payload's own schema and edition must equal the envelope
+            // labels; schema 1 is upgraded on read (MSH-208), so the parsed
+            // record alone cannot show which schema the payload had.
+            #[derive(Deserialize)]
+            struct Labels {
+                schema_version: u32,
+                edition: String,
+            }
+            let labels: Labels =
+                serde_json::from_str(wire.payload.get()).map_err(EnvelopeError::encoding)?;
+            if labels.schema_version != wire.native_schema_version
+                || labels.edition != wire.profile_edition
+            {
+                return Err(EnvelopeError::Identity);
+            }
+        }
         let record = match wire.game_kind {
             GameKind::Chess => Self::chess(
                 chess::GameRecord::from_json(wire.payload.get())

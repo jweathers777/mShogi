@@ -13,13 +13,17 @@ use serde_json::value::RawValue;
 use std::fmt;
 
 /// Whole-document deterministic validation allowance, distinct from native caps.
-pub const MAX_TORI_DOCUMENT_WORK: u64 = 262_144;
+/// About one second of native replay at the measured rate below; raised from
+/// 262,144 by MSH-208 so a document can hold full-length (1,024-event) records.
+pub const MAX_TORI_DOCUMENT_WORK: u64 = 1_048_576;
 // A native root admission/serialization costs work even without any events.
 const ROOT_WORK: u64 = 128;
-/// Modelled work of one native board action. Since MSH-208 (Tori Repetition
-/// Rule) a native admission checks repetition by a digest scan and encoded
-/// size from cached lengths, so a record replays in time linear in its events.
-const PLAY_WORK: u64 = 2;
+/// Modelled work of one native board action, calibrated in units of about one
+/// microsecond: the earlier model charged 65,341 units for a 360-ply record that
+/// replayed in about 65 ms (release, macOS arm64), and since MSH-208 (Tori
+/// Repetition Rule) a 1,022-ply record replays in about 94 ms, about 92 us per
+/// ply. 128 per action keeps the model conservative.
+const PLAY_WORK: u64 = 128;
 /// Upper bound of one record's modelled replay work (all events are plays).
 const MAX_RECORD_WORK: u64 = ROOT_WORK + PLAY_WORK * t::MAX_GAME_EVENTS as u64;
 const NATIVE_RESERVED_BYTES: usize = 8192;

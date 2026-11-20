@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-20T07:34:00Z'
+updated_date: '2026-11-20T08:24:00Z'
 labels:
   - handle:tori-strength-harness
   - tori
@@ -69,4 +69,6 @@ Plan:
 2026-11-19 openings: tools/strength/data/tori-openings-v1.json, 218 admitted of 300 distinct candidates (82 unbalanced). Rule fixed before screening: 8 plies from the standard root, each ply chooses uniformly (seed 204) among actions within 50 of the best depth-6 score; screen at fixed depth 12 by the search at 6c7be47a, admit |score| <= 100 Swallow hundredths. Generator crates/mshogi-search/examples/tori_openings.rs; candidates and screen in docs/m5/evidence/msh204/openings/. 8 pairs at 5 s + 0.1 s through the clocked route from the catalog: 15 games concluded natively, 1 reached native capacity (ply 361 incl. opening). Capacity total so far: 3 of 36 games.
 
 2026-11-20: Blocked on MSH-208 (Tori Repetition Rule). John decided the Tori repetition rule (Shogi-style position repetition, third occurrence forbidden, different move required) and the removal of the replay-work count that ended about 8% of self-play games unscored at about 360 plies. Game tests resume after MSH-208. MSH-209 (Native Consistency Review) covers the cross-game safeguard inconsistency.
+
+2026-11-20 after MSH-208 (Tori Repetition Rule, commit 9d06871d): 8 pairs (16 games) at 5 s + 0.1 s from tori-openings-v1: 15 concluded natively, 0 reached a native limit (old 360-ply limit gone), median 205.5 plies, 1 game reached the runner step limit (max_steps 500; runner Config::validate caps max_steps at 512). Next in MSH-204: raise the runner step cap toward the native 1,024-event limit, and fix before results the rule for a game that reaches a limit (pair excluded from SPRT, counted, stop above a set share), as proposed to John on 2026-11-20.
 <!-- SECTION:NOTES:END -->

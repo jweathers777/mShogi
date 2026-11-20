@@ -109,6 +109,28 @@ fn schema_one_record_with_a_third_occurrence_is_refused_at_that_command() {
         "payload": serde_json::from_str::<Value>(&text).unwrap(),
     });
     assert!(CanonicalRecord::from_json(&envelope.to_string()).is_err());
+    // Envelope labels must match the payload's own schema and edition, in
+    // both directions (review of MSH-208).
+    let current = t::GameRecord::from_json(&v1("tori-contract")).unwrap();
+    let mixed = [
+        (
+            serde_json::from_str::<Value>(current.to_json()).unwrap(),
+            json!(1),
+            json!(t::PROFILE_EDITION_V1),
+        ),
+        (
+            serde_json::from_str::<Value>(&v1("tori-contract")).unwrap(),
+            json!(t::GAME_RECORD_SCHEMA_VERSION),
+            json!(t::PROFILE_EDITION),
+        ),
+    ];
+    for (payload, schema, edition) in mixed {
+        let envelope = json!({
+            "envelope_version": 1, "game_kind": "tori", "rules_profile": "mshogi.tori.modern.v1",
+            "profile_edition": edition, "native_schema_version": schema, "payload": payload,
+        });
+        assert!(CanonicalRecord::from_json(&envelope.to_string()).is_err());
+    }
     // A schema-1 body under the current edition or schema number is refused.
     let mut wrong: Value = serde_json::from_str(&v1("tori-contract")).unwrap();
     wrong["edition"] = json!(t::PROFILE_EDITION);

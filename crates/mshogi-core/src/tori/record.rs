@@ -75,7 +75,8 @@ impl GameDelta {
         Ok(())
     }
     /// Admit every new command natively and check each derived event and the
-    /// final conclusion. On any failure the game is restored exactly.
+    /// final conclusion. On any failure the undo tokens restore the same
+    /// semantic game (events and state); the runtime revision still advances.
     fn apply(&self, game: &mut Game) -> Result<(), RecordError> {
         self.check_capacity()?;
         if self.start_event != game.events.len() {

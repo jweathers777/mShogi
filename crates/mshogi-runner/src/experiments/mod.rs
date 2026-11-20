@@ -144,6 +144,27 @@ pub struct FischerClock {
     pub base_ms: u64,
     /// Added only after an accepted native command.
     pub increment_ms: u64,
+    /// Move-time policy. Absent in earlier configurations, which used the
+    /// hard ceiling; it is part of the configuration identity when present.
+    #[serde(default, skip_serializing_if = "ClockAllocation::is_hard")]
+    pub allocation: ClockAllocation,
+}
+/// The move time the runner gives the engine from the remaining clock. The
+/// engine treats it as a fixed move time.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ClockAllocation {
+    /// Three times the nominal allocation (until MSH-204). It spends the base
+    /// time within a few moves; kept so earlier reports replay unchanged.
+    #[default]
+    Hard,
+    /// The nominal allocation (MSH-204, Tori Strength Harness).
+    Nominal,
+}
+impl ClockAllocation {
+    fn is_hard(&self) -> bool {
+        *self == Self::Hard
+    }
 }
 /// Replayable clock receipt, charged for transport and process overhead too.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -168,12 +189,16 @@ fn clock_work(
             clock.increment_ms,
             30,
         );
-        // The engine treats `time_ms` as a fixed move time, so it receives the
-        // nominal allocation, not the hard ceiling (three times nominal), which
-        // spent the base time within a few moves (MSH-204).
-        let nominal = (allocation.soft.as_millis() as u64).min(60_000);
-        let reserve = (if first { 300 } else { 50 }).min(nominal / 2);
-        work.time_ms = Some(nominal.saturating_sub(reserve));
+        // The recorded policy selects the move time (MSH-204): earlier
+        // configurations replay with the hard ceiling they used.
+        let allotted = (match clock.allocation {
+            ClockAllocation::Hard => allocation.hard,
+            ClockAllocation::Nominal => allocation.soft,
+        }
+        .as_millis() as u64)
+            .min(60_000);
+        let reserve = (if first { 300 } else { 50 }).min(allotted / 2);
+        work.time_ms = Some(allotted.saturating_sub(reserve));
     }
     work
 }

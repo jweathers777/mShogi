@@ -1,6 +1,7 @@
 //! Authoritative Tori history and admission; local board rules remain in LocalPosition.
 use super::*;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::sync::atomic::{AtomicU64, Ordering};
 
 /// Total committed commands/events, including reserved concluding administration.
@@ -294,6 +295,9 @@ pub struct Game {
     digests: Vec<u64>,
     /// Whether some position with this side to move occurred at least twice.
     repeated: [bool; 2],
+    /// Key digest to known position indices, so the third-occurrence check
+    /// looks up each action's resulting position instead of scanning history.
+    positions: HashMap<u64, Vec<usize>>,
     actions: Vec<Action>,
     snapshots: Vec<HistorySnapshot>,
     root_snapshot: HistorySnapshot,
@@ -348,6 +352,7 @@ impl Game {
             events: vec![],
             event_bytes: vec![],
             digests: vec![key.digest()],
+            positions: HashMap::from([(key.digest(), vec![0])]),
             keys: vec![key],
             repeated: [false; 2],
             actions: vec![],
@@ -483,6 +488,7 @@ impl Game {
             keys: self.keys.clone(),
             digests: self.digests.clone(),
             repeated: self.repeated,
+            positions: self.positions.clone(),
             actions: self.actions.clone(),
             snapshots: self.snapshots.clone(),
             root_snapshot: self.root_snapshot.clone(),
@@ -564,7 +570,13 @@ impl Game {
                 );
                 candidate.actions.push(action);
                 let key = RepetitionKey::from_position(candidate.position());
-                candidate.digests.push(key.digest());
+                let digest = key.digest();
+                candidate.digests.push(digest);
+                candidate
+                    .positions
+                    .entry(digest)
+                    .or_default()
+                    .push(candidate.keys.len());
                 candidate.keys.push(key);
                 occurrences = candidate.current_occurrences();
                 if occurrences.len() >= 2 {
@@ -685,7 +697,6 @@ impl Game {
         if !self.repeated[side.opponent() as usize] {
             return None;
         }
-        let next = self.keys.len();
         let forbidden: Vec<Action> = local
             .iter()
             .copied()
@@ -693,16 +704,26 @@ impl Game {
                 let mut after = self.local.clone();
                 after.apply(action).expect("locally legal action");
                 let key = RepetitionKey::from_position(after.position());
-                self.earlier(&key, key.digest(), next).len() >= 2
+                self.positions.get(&key.digest()).is_some_and(|known| {
+                    known.iter().filter(|&&i| self.keys[i] == key).count() >= 2
+                })
             })
             .collect();
         (!forbidden.is_empty()).then_some(Repetition { side, forbidden })
     }
-    /// Recompute the twice-occurred flags after truncating history.
+    /// Rebuild the position index and twice-occurred flags after truncating history.
     fn recompute_repeated(&mut self) {
+        self.positions.clear();
+        for (i, &digest) in self.digests.iter().enumerate() {
+            self.positions.entry(digest).or_default().push(i);
+        }
         self.repeated = [false; 2];
         for (i, key) in self.keys.iter().enumerate() {
-            if !self.earlier(key, self.digests[i], i).is_empty() {
+            let same = self.positions[&self.digests[i]]
+                .iter()
+                .filter(|&&j| self.keys[j] == *key)
+                .count();
+            if same >= 2 {
                 self.repeated[key.side as usize] = true;
             }
         }

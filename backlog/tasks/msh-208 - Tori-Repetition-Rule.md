@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-20T07:38:00Z'
+updated_date: '2026-11-20T08:21:00Z'
 labels:
   - handle:tori-repetition-rule
   - tori
@@ -66,4 +66,6 @@ Branch codex/msh-208-tori-repetition, stacked on codex/msh-204-tori-harness (sha
 
 <!-- SECTION:NOTES:BEGIN -->
 2026-11-20: limits changed from the proposed 4,096 entries / 2 MiB to 1,024 entries / 512 KiB: native MAX_RECORD_ENVELOPE_BYTES and engine MAX_REQUEST_BYTES are 1 MiB for all games, so a 2 MiB Tori record could not cross the engine protocol or desktop documents. 512 KiB holds about 1,000 plies at about 470 bytes per event. Cross-game limits go to MSH-209.
+
+2026-11-20 implementation at 9d06871d (Level 2: native rule, record schema, desktop document/presentation, frontend). Checks (macOS arm64, release): cargo test --workspace --no-fail-fast 1,303 passed, 0 Tori failures; one Chess process test (mshogi-console desktop_play actual_missing_response_and_failed_process_pause_without_a_chess_score) failed once under full parallel load and passed 4 of 4 reruns alone, unrelated files; Clippy clean; fmt clean; desktop vitest 609 passed; tsc clean; desktop/scripts test_gui_smoke.py 133 passed; tools/strength tests 146 passed. New evidence: hand-derived fixtures TORI-H-COUNT/INITIATOR/CHECK/FORCED-QUIET/SEPARATED/REPLAY-UNDO/FORCED-FULL/CAPTURE-DROP/C-HISTORY (713 executed, 713 passed, 14 pending, 0 failed); digest-vs-full-key differential (64 seeded games, 1,310 restricted positions, 1 forced loss, all equal); schema-1 records from the earlier desktop QA documents (4 load, tori-obligation8 refused at event 7); exact 1,024-event boundary with Stop/Resign reservations. Desktop documents of the earlier edition are refused (identity mismatch); QA documents regenerated (forced-prefix6, repetition7). Packaged GUI journey (gui-smoke.py Tori repetition section) updated but NOT run; deferred to the next packaged GUI checkpoint. Search: root uses the native restriction; in-search third occurrence is a loss for the mover; the full-history scan experiment is deferred to MSH-205 (Tori Selectivity Round), whose predecessor is this engine, because a game test across a rule change has no valid predecessor.
 <!-- SECTION:NOTES:END -->

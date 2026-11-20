@@ -358,6 +358,16 @@ impl ExecutionObservation {
         let context: ContextWire =
             serde_json::from_str(wire.context.get()).map_err(|error| error.to_string())?;
         check(stop)?;
+        // With a supplied record the field must be absent, not null.
+        if supplied.is_some()
+            && serde_json::from_str::<serde_json::Map<String, serde_json::Value>>(
+                wire.context.get(),
+            )
+            .map_err(|error| error.to_string())?
+            .contains_key("game")
+        {
+            return Err("Execution observation context repeats the supplied record.".into());
+        }
         let game = match (context.game, supplied) {
             (Some(raw), None) => CanonicalRecord::from_json_with_stop(raw.get(), stop).map_err(
                 |error| match error {

@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@claude'
 created_date: '2026-11-20T07:34:00Z'
-updated_date: '2026-11-20T08:59:00Z'
+updated_date: '2026-11-20T11:51:00Z'
 labels:
   - handle:tori-repetition-rule
   - tori
@@ -72,6 +72,8 @@ Branch codex/msh-208-tori-repetition, stacked on codex/msh-204-tori-harness (sha
 2026-11-20 independent review of 9d06871d (fresh reviewer): nothing blocking; fixture expectations re-derived independently and confirmed. Should-fix resolved at c7e013a2: (1) envelope accepted mismatched Tori schema/edition labels -> payload labels must equal envelope labels, tests for both directions; (2) per-action history scan made replay superlinear and the desktop model understated it -> native position index (digest -> indices), desktop PLAY_WORK=128 calibrated (old: 65,341 units for a 360-ply record replaying in about 65 ms release; new: 1,022-ply record about 94 ms), MAX_TORI_DOCUMENT_WORK 262,144 -> 1,048,576 so full-length records fit. Note for John: TORI-H-INITIATOR restricts the player whose move would create the third occurrence (Gote in the 4-ply cycle Sente starts), per John's wording; the 2022 rule book and PyChess say the player who started the sequence must vary. Checks at c7e013a2: cargo test --workspace --release 1,305 passed 0 failed; Clippy clean; vitest 609; tsc clean; gui-smoke tests 133; tools/strength tests 146.
 
 2026-11-20 second review round (both fresh reviewers re-reviewed c7e013a2): nothing blocking. Index equals full-key scan (reviewer's own 17,626 checks incl. undo/redo/record_prefix). Calibration corrected: long-test figure is two replays (about 140 ms per 1,022-ply replay, 137 us/ply); PLAY_WORK set to 192 (about 1.4x measured at full length; 256 made the work budget bind before the 4,096 aggregate event limit). Envelope test now matches EnvelopeError::Identity. All 10 committed clocked MSH-186 reports replay. Integrated: merge b40422e2 into main; post-merge core/runner/engine 588 passed 0 failed.
+
+2026-11-20 John defined who must break a loop: 'Find the earliest position in the loop that later comes back. The player whose move first produced it started the repetition, and that player must break the loop.' A root (standard start or diagram) counts as produced by the player who is not to move. This equals the implemented rule (the refused move is always the starter's); recorded in T06; TORI-H-INITIATOR now states starter gote, starter_responsible true (corpus sha e947f1d8...). No behaviour change; core Tori 48, conformance, desktop Tori 66, search Tori 13 tests pass; Clippy clean.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary

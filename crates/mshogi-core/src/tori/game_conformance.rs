@@ -135,9 +135,9 @@ impl NativeAdapter for GameAdapter {
                 "repetition" => repetition(g.repetition()),
                 "conclusion" => conclusion(g.conclusion()),
                 "responsible" => json!(g.repetition().ok_or("missing restriction")?.side),
-                "starter_not_responsible" => json!(
+                "starter_responsible" => json!(
                     side(f.given["sequence_starter"].as_str().unwrap())
-                        != g.repetition().ok_or("missing restriction")?.side
+                        == g.repetition().ok_or("missing restriction")?.side
                 ),
                 "accepted" | "restriction_cleared" | "alternative_accepted" => {
                     let result = play(&mut g, action(&f.given["next_action"]));

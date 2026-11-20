@@ -161,6 +161,15 @@ Abstract Games Museum as "third occurrence; change the repeating move".
 - An action whose resulting key already occurred twice is refused without
   changing state (`ThirdOccurrence`); it is not an illegal-move loss. A key
   therefore occurs at most twice.
+- Who must break the loop (John, 2026-11-20): "Find the earliest position in
+  the loop that later comes back. The player whose move first produced it
+  started the repetition, and that player must break the loop." A position
+  always has the same side to move, so the player who produces it is always the
+  other side, and the earliest position of a loop is the first to come back
+  each time around. The refused action above is therefore always the starter's.
+  A loop that begins at the root (the standard start or a set-up diagram),
+  which no move produced, counts the root as produced by the player who is not
+  to move (John, 2026-11-20).
 - If the side to move has board-legal actions but every one is refused by this
   rule, that side loses at once (`repetition_forfeit`). If it has no board-legal
   action, T05 checkmate or quiet-immobility loss takes precedence. There is no

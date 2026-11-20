@@ -1546,7 +1546,7 @@
             "result_face": "Ph"
           }
         ],
-        "sequence_starter": "sente",
+        "sequence_starter": "gote",
         "next_action": {
           "kind": "move",
           "from": "5a",
@@ -1556,12 +1556,12 @@
       },
       "expected": {
         "responsible": "gote",
-        "starter_not_responsible": true,
+        "starter_responsible": true,
         "accepted": true,
         "restriction_cleared": true,
         "conclusion": null
       },
-      "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output."
+      "expectation_method": "Hand-derived from T06 as decided by John (MSH-208, 2026-11-20): a key is board, both hands and side to move; an action whose resulting key already occurred twice in the known history is refused. Not engine output. Starter per John's loop definition: the root is counted as produced by Gote, the side not to move."
     },
     {
       "id": "TORI-H-CHECK",

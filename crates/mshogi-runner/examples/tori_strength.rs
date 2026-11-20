@@ -22,6 +22,8 @@ use tori_mate_proof::{MAX_PROOF_PLIES, Prover, successors};
 
 /// Proof visit bound of one mined position.
 const PROOF_VISITS: u64 = 400_000;
+/// Prover identity in stored proof keys; change it when the prover changes.
+const PROVER_VERSION: &str = "tori-mate-proof-v2";
 /// Full-width proof visit bound of one played action.
 const FULL_VISITS: u64 = 20_000_000;
 
@@ -264,11 +266,14 @@ fn prove_one(position: &Position, action: Action, plies: u8) -> (Option<bool>, u
     (result, prover.visits)
 }
 
-/// Stored proof results: key `id|action|mate_plies|visit bound`. A stored
+/// Stored proof results: key `sha256(canonical diagram)|action|mate_plies|
+/// visit bound|prover version`. A stored
 /// result is reused by later probes of any budget or engine version (the
 /// suite and the native rules decide it, not the engine).
-fn store_key(id: &str, action: &str, plies: u8) -> String {
-    format!("{id}|{action}|{plies}|{FULL_VISITS}")
+fn store_key(diagram: &Value, action: &str, plies: u8) -> String {
+    // serde_json maps keep sorted keys: compact text is canonical JSON.
+    let digest = Sha256::digest(serde_json::to_string(diagram).unwrap().as_bytes());
+    format!("{digest:x}|{action}|{plies}|{FULL_VISITS}|{PROVER_VERSION}")
 }
 
 fn read_store(path: Option<&String>) -> serde_json::Map<String, Value> {
@@ -309,7 +314,7 @@ fn prove(spec: &Value, probes: &[Value], store: Option<&String>) -> Value {
             let chosen = r["chosen"].as_str().unwrap().to_string();
             let row = rows[&id];
             let plies = row["mate_plies"].as_u64().unwrap() as u8;
-            let key = store_key(&id, &chosen, plies);
+            let key = store_key(&row["diagram"], &chosen, plies);
             if strings(&row["checking_answers"]).contains(&chosen) || known.contains_key(&key) {
                 continue;
             }
@@ -374,7 +379,7 @@ fn probe(spec: &Value, ms: u64, store: Option<&String>) -> Value {
                 let verdict = if strings(&r["checking_answers"]).contains(&text) {
                     "listed"
                 } else if let Some(v) = known
-                    .get(&store_key(r["id"].as_str().unwrap(), &text, plies))
+                    .get(&store_key(&r["diagram"], &text, plies))
                     .and_then(|v| v["verdict"].as_str())
                 {
                     match v {
@@ -698,5 +703,90 @@ mod tests {
             positions >= 5 && compared > 200 && wins_found >= positions,
             "{positions} positions, {compared} compared, {wins_found} wins"
         );
+    }
+
+    #[test]
+    fn proof_store_key_uses_the_canonical_diagram_digest() {
+        // Same canonical JSON as Python json.dumps(sort_keys=True,
+        // separators=(',', ':')): sorted keys, compact.
+        let d: Value = serde_json::from_str(
+            r#"{"side_to_move":"s","hands":{"s":{"Sw":1},"g":{}},"board":["g:Ph:4a","s:Ph:4g"]}"#,
+        )
+        .unwrap();
+        let key = store_key(&d, "Ph4g-4f", 3);
+        assert!(
+            key.starts_with("ee0e6ccc00e3b76ce11dc0798ede6e1de7b7c5e1aa840ccf35cec5b3d97aeba3|"),
+            "{key}"
+        );
+        assert!(key.ends_with("|Ph4g-4f|3|20000000|tori-mate-proof-v2"));
+    }
+
+    /// Positions from seeded random play where the checking prover finds a
+    /// win of exactly `plies` plies (and none shorter).
+    fn random_wins(plies: u8, count: usize, seeds: u64) -> Vec<LocalPosition> {
+        let mut out = vec![];
+        for seed in 1..=seeds {
+            if out.len() >= count {
+                break;
+            }
+            let mut state = seed.wrapping_mul(0x9E37_79B9_7F4A_7C15) | 1;
+            let mut local = LocalPosition::admit(Position::standard()).unwrap();
+            for _ in 0..200 {
+                let legal = local.legal_actions();
+                if legal.is_empty() {
+                    break;
+                }
+                if Prover::new(200_000).shortest(&local, plies).ok().flatten() == Some(plies) {
+                    out.push(local.clone());
+                    break;
+                }
+                state ^= state << 13;
+                state ^= state >> 7;
+                state ^= state << 17;
+                local
+                    .apply(legal[(state % legal.len() as u64) as usize])
+                    .unwrap();
+            }
+        }
+        out
+    }
+
+    #[test]
+    fn memo_reuse_across_depths_and_five_ply_wins_agree_with_plain_recursion() {
+        // Five-ply: every checking first action of each position, memo prover
+        // (full width) against plain full-width recursion.
+        let positions = random_wins(5, 3, 600);
+        let mut compared = 0;
+        let mut wins = 0;
+        for local in &positions {
+            for (a, after) in successors(local, true) {
+                let proved = wins_local(local, a, 5);
+                assert_eq!(proved, plain_full_defender_mated(&after, 4), "{a:?}");
+                wins += usize::from(proved);
+                compared += 1;
+                // The same prover reused across depths gives the fresh answers.
+                let mut reused = Prover::full(FULL_VISITS);
+                let deep = reused.defender_mated(&after, 4).unwrap();
+                let shallow = reused.defender_mated(&after, 2).unwrap();
+                let mut reused2 = Prover::full(FULL_VISITS);
+                let shallow2 = reused2.defender_mated(&after, 2).unwrap();
+                let deep2 = reused2.defender_mated(&after, 4).unwrap();
+                let fresh2 = Prover::full(FULL_VISITS).defender_mated(&after, 2).unwrap();
+                assert_eq!((deep, shallow), (proved, fresh2));
+                assert_eq!((deep2, shallow2), (proved, fresh2));
+            }
+        }
+        eprintln!(
+            "{} positions, {compared} checking actions, {wins} five-ply wins",
+            positions.len()
+        );
+        assert!(
+            positions.len() >= 2 && wins >= positions.len(),
+            "{compared} compared, {wins} wins"
+        );
+    }
+
+    fn wins_local(local: &LocalPosition, action: Action, plies: u8) -> bool {
+        wins(local.position(), action, plies).expect("within bound")
     }
 }

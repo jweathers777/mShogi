@@ -197,6 +197,8 @@ def main(default_game="shogi"):
         parser.error('--profile adams|muller is required only for --game tenjiku')
     defaults = {'shogi': (2, 5000, 320), 'xiangqi': (1, 128, 500), 'tori': (1, 512, 1000), 'chu': (1, 512, 500), 'tenjiku': (1, 1024, 500)}
     depth, nodes, args.max_steps = defaults[args.game]
+    if args.candidate_time_factor != 1 and args.base is None:
+        parser.error('--candidate-time-factor needs a clock (--base)')
     if args.base is not None:
         if args.game not in ('shogi', 'tori') or not (0.001 <= args.base <= 600 and 0 <= args.increment <= 60):
             parser.error('clock mode requires Shogi or Tori, base 0.001..600 and increment 0..60 seconds')

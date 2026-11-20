@@ -19,6 +19,7 @@ Usage:
 """
 import argparse
 import concurrent.futures
+import hashlib
 import json
 import math
 import os
@@ -35,6 +36,9 @@ COMPUTE_USD = 5
 # Frozen data in the worker image; a local smoke run may point elsewhere.
 DATA = os.environ.get('MSH204_DATA', '/opt/data')
 ENGINES = ('engine', 'runner', 'writer', 'helper')
+# Must equal FULL_VISITS and PROVER_VERSION in crates/mshogi-runner/examples/tori_strength.rs.
+PROOF_BOUND = 20_000_000
+PROVER_VERSION = 'tori-mate-proof-v2'
 
 
 def policy():
@@ -271,30 +275,59 @@ def collect(raw, out):
     import statistics
     from tools.strength import native_match, stats
     raw = Path(raw)
+    from tools.experiments.core import decode
+    manifest = decode((raw / 'manifest.json').read_bytes())
+    # Every task must have completed; a failed or skipped pair stops the analysis.
+    for receipt in sorted(raw.glob('tasks/*/receipt.json')):
+        r = json.loads(receipt.read_text())
+        if not r.get('complete'):
+            raise SystemExit(f'{receipt}: task incomplete: {r.get("error")}')
+        for row in r['results']:
+            if row.get('error'):
+                raise SystemExit(f'{receipt}: {row["task"]["kind"]} failed: {row["error"]}')
+            for pair in (row.get('result') or {}).get('pairs', []) if row['task']['kind'] == 'pairs' else []:
+                if 'error' in pair or 'skipped' in pair:
+                    raise SystemExit(f'{receipt}: pair {pair["seed"]} not played: {pair}')
     result = {}
     for label in ('control', 'odds'):
+        expected = sorted(s for b in manifest['bins'] for t in b
+                          if t['kind'] == 'pairs' and t['label'] == label for s in t['seeds'])
         summaries = [json.loads(f.read_text()) for f in sorted(raw.glob(f'tasks/*/*/{label}/pair-*.summary.json'))]
-        reports = sorted(raw.glob(f'tasks/*/*/{label}/pair-*.report.json.gz'))
+        if sorted(row['seed'] for row in summaries) != expected:
+            raise SystemExit(f'{label}: pair summaries do not match the manifest seeds')
+        reason = native_match.unfinished(SimpleNamespace(game='tori'), summaries)
+        if reason:
+            raise SystemExit(f'{label}: {reason}')
         stops = collections.Counter(s for row in summaries for s in row['stops'])
         plies = [n for row in summaries for n in row['plies']]
         scored = [row['pair_score'] for row in summaries if row['pair_score'] is not None]
         counts = stats.pentanomial(scored)
-        late = []
-        for row in summaries:
-            for player in row['turns']:
-                late += [t['depth'] for i, t in enumerate(player) if 2 * i >= 100]
-        seconds = [t['seconds'] for row in summaries for player in row['turns'] for t in player]
-        entry = {'pairs': len(summaries), 'reports': len(reports), 'stops': dict(stops),
+        # Real-game depth by ply within each game (after the opening), from the
+        # native-replayed reports; both players' moves count.
+        late, seconds = [], []
+        for path in sorted(raw.glob(f'tasks/*/*/{label}/pair-*.report.json.gz')):
+            for game in json.loads(gzip.decompress(path.read_bytes()))['games']:
+                for ply, step in enumerate(game['steps']):
+                    t = native_match.telemetry(step['observation']) if step['observation'] else None
+                    if t is None:
+                        continue
+                    seconds.append(step['elapsed_ns'] / 1e9)
+                    if ply >= 100:
+                        late.append(t['completed_depth'])
+        late.sort()
+        entry = {'pairs': len(summaries), 'seeds_expected': len(expected), 'stops': dict(stops),
                  'length_limited_pairs': sum(native_match.length_limited(
                      SimpleNamespace(game='tori'), row) for row in summaries),
                  'median_plies': statistics.median(plies) if plies else None, 'max_plies': max(plies, default=None),
                  'game_depth_from_ply_100': {'moves': len(late),
                                              'median': statistics.median(late) if late else None,
-                                             'p10': sorted(late)[len(late) // 10] if late else None},
+                                             'p10': late[len(late) // 10] if late else None},
                  'median_move_seconds': statistics.median(seconds) if seconds else None,
                  'pentanomial': counts, 'estimate': stats.estimate(counts) if sum(counts) else None,
-                 'sprt': stats.Sprt(0, 15, .05, .05, 30).status(counts) if sum(counts) else None}
+                 'sprt_fixed_sample': stats.Sprt(0, 15, .05, .05, 30).status(counts) if sum(counts) else None}
         result[label] = entry
+    suite = json.loads(Path('tools/strength/data/tori-tactics-v1.json').read_text())
+    diagrams = {r['id']: r['diagram'] for r in suite['positions']}
     probes = collections.defaultdict(list)
     for f in sorted(raw.glob('tasks/*/*/probe/probe-*.json')):
         ms = int(f.name.split('-')[1])
@@ -310,14 +343,19 @@ def collect(raw, out):
                                'held_out': count('held-out')}
         for r in rows:
             if r['verdict'] in ('proved_win', 'refuted', 'unknown'):
-                proofs[f"{r['id']}|{r['chosen']}|{r['mate_plies']}|20000000"] = {'verdict': r['verdict']}
+                # Same key as tori_strength store_key: canonical diagram digest,
+                # action, mate length, visit bound, prover version.
+                digest = hashlib.sha256(json.dumps(diagrams[r['id']], sort_keys=True,
+                                                   separators=(',', ':')).encode()).hexdigest()
+                proofs[f"{digest}|{r['chosen']}|{r['mate_plies']}|{PROOF_BOUND}|{PROVER_VERSION}"] = {
+                    'verdict': r['verdict'], 'id': r['id']}
     result['proofs_stored'] = len(proofs)
     depth = [json.loads(f.read_text()) for f in sorted(raw.glob('tasks/*/*/depth/depth-*.json'))]
     result['fresh_search_depth'] = depth
     Path(out).write_text(json.dumps(result, indent=1))
     Path(out).with_name('proof-store.json').write_text(json.dumps(
         {'rule': 'native full-width prover; verdict proved_win | refuted | unknown (visit bound)',
-         'visit_bound': 20_000_000, 'proofs': proofs}, indent=1))
+         'visit_bound': PROOF_BOUND, 'prover': PROVER_VERSION, 'proofs': proofs}, indent=1))
     print(json.dumps({k: v for k, v in result.items() if k != 'fresh_search_depth'}, indent=1)[:4000])
     print(json.dumps(depth, indent=1))
 

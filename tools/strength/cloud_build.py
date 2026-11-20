@@ -187,6 +187,8 @@ def fetch(args):
         (out / name).chmod(0o755)
     for name in ('source.txt', 'rustc.txt'):
         (out / name).write_bytes(store.get('out/' + name))
+    if args.revision:
+        require((out / 'source.txt').read_text().strip() == args.revision, 'binaries are from another commit')
     (out / 'build-receipt.json').write_text(json.dumps(receipt, indent=1))
     print(json.dumps({'build_seconds': round(receipt['build_seconds']), 'outputs': receipt['outputs']}, indent=1))
 
@@ -217,6 +219,7 @@ def main():
     f = sub.add_parser('fetch')
     f.add_argument('--store', required=True)
     f.add_argument('--dir', required=True)
+    f.add_argument('--revision', help='expected commit of the binaries')
     a = p.parse_args()
     {'worker': lambda: worker(a.manifest, a.store), 'pack': lambda: pack(a), 'submit': lambda: submit(a),
      'fetch': lambda: fetch(a)}[a.command]()

@@ -42,5 +42,15 @@ class Manifest(unittest.TestCase):
                 tori_cloud.validate_manifest(copy.deepcopy(bad))
 
 
+class ProofKey(unittest.TestCase):
+    def test_python_and_rust_proof_constants_agree(self):
+        import re
+        from pathlib import Path
+        rust = Path('crates/mshogi-runner/examples/tori_strength.rs').read_text()
+        bound = int(re.search(r'const FULL_VISITS: u64 = ([0-9_]+);', rust).group(1).replace('_', ''))
+        version = re.search(r'const PROVER_VERSION: &str = "([^"]+)";', rust).group(1)
+        self.assertEqual((bound, version), (tori_cloud.PROOF_BOUND, tori_cloud.PROVER_VERSION))
+
+
 if __name__ == '__main__':
     unittest.main()

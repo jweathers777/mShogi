@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@claude'
 created_date: '2026-11-19T19:43:00Z'
-updated_date: '2026-11-20T11:55:00Z'
+updated_date: '2026-11-20T16:21:00Z'
 labels:
   - handle:tori-strength-harness
   - tori
@@ -75,4 +75,6 @@ Revised 2026-11-20 after MSH-208, before any game-test result: runner max_steps 
 2026-11-20 after MSH-208 (Tori Repetition Rule, commit 9d06871d): 8 pairs (16 games) at 5 s + 0.1 s from tori-openings-v1: 15 concluded natively, 0 reached a native limit (old 360-ply limit gone), median 205.5 plies, 1 game reached the runner step limit (max_steps 500; runner Config::validate caps max_steps at 512). Next in MSH-204: raise the runner step cap toward the native 1,024-event limit, and fix before results the rule for a game that reaches a limit (pair excluded from SPRT, counted, stop above a set share), as proposed to John on 2026-11-20.
 
 2026-11-20 independent review of 6c7be47a and 6f035708 (fresh reviewer): B1 blocking — the clock-allocation change broke replay of committed clocked Shogi reports (MSH-186) and changed future Shogi runs silently. Resolved at c7e013a2: FischerClock.allocation (hard|nominal), absent = hard and not serialized, so configuration identities are unchanged; validate uses the recorded policy; config writer flag --clock-allocation; native_match.py passes nominal for Tori only. Both committed MSH-186 clocked reports (clock-attempt-01/02 pair-0001) replay again; a test shows a report under the other policy is refused. Notes resolved: explicit null record in an elided observation refused; GameDelta doc comment corrected; catalog writer tools/strength/make_tori_openings.py committed and reproduces tori-openings-v1.json byte for byte.
+
+2026-11-20 results (report docs/m5/tori-strength-harness.md, evidence docs/m5/evidence/msh204): openings 218 (tori-openings-v1); tactical suite 502 positions (378 dev, 124 held-out; 150/152/200 of 3/5/7 plies) from 112 local 1 s + 0.02 s self-play pairs; answers = checking answers from the native prover, other played actions proved by the full-width prover at scoring time (proof store, tests against plain recursion). Baseline (cloud c3-standard-4): 20 ms 346/502, 200 ms 484/502, 1000 ms 501/502; no unknown proofs. Control 5 s + 0.1 s nominal: 56 pairs, 111 native conclusions, 1 length-limited pair (1.8%); real-game median depth from ply 100 = 10 (p10 8); fresh 100 ms search median 8 (p10 7). Time odds 2x: 96 pairs [1,0,23,0,72], +330 Elo (266-418), H1. Texel export/split: 256 games, 12,880 positions, train 9,995 / validation 383 / held-out 2,097. Cloud: build-38d880a0-1, msh204-smoke-1, msh204-campaign-1; about 3.5 VM-hours, US$0.70 upper bound; cleanup verified. Process note: two local prover runs (about 10 CPU-hours) were stopped as wasteful; John 2026-11-20: heavy work runs in the cloud, including compiles (tools/strength/cloud_build.py). Independent review requested.
 <!-- SECTION:NOTES:END -->
